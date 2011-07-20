@@ -1,5 +1,5 @@
 //
-//  WAArticleViewController.h
+//  WAArticlesViewController.h
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 7/20/11.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAArticleViewController : UIViewController
+@interface WAArticlesViewController : UIViewController
 
 @end

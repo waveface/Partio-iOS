@@ -1,15 +1,15 @@
 //
-//  WAArticleViewController.m
+//  WAArticlesViewController.m
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 7/20/11.
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
-#import "WAArticleViewController.h"
+#import "WAArticlesViewController.h"
 #import "WACompositionViewController.h"
 
-@implementation WAArticleViewController
+@implementation WAArticlesViewController
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -18,6 +18,7 @@
 	if (!self)
 		return nil;
 		
+	self.title = @"Articles";
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
 	
 	return self;
