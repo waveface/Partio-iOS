@@ -22,6 +22,9 @@
 		FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
 		FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */; };
+		FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */; };
+		FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
+		FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +104,9 @@
 		FF73A5BE13D6DCA400D54EC6 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MGSplitViewController.h; path = external/MGSplitViewController/Classes/MGSplitViewController.h; sourceTree = "<group>"; };
 		FF73A5BF13D6DCA400D54EC6 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MGSplitViewController.m; path = external/MGSplitViewController/Classes/MGSplitViewController.m; sourceTree = "<group>"; };
 		FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
+		FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		FF73A69713D6E08100D54EC6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		FF73A69913D6E08800D54EC6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,13 +114,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
+				FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */,
+				FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */,
+				FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */,
+				FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */,
+				FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */,
 				FF73A5FD13D6DDF300D54EC6 /* libAQGridView.a in Frameworks */,
 				FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */,
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
 				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
-				FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */,
-				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
-				FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +133,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF73A54813D6C2CC00D54EC6 /* wammer-iOS */,
 				FF73A54113D6C2CC00D54EC6 /* Frameworks */,
 				FF73A53F13D6C2CC00D54EC6 /* Products */,
@@ -145,6 +153,10 @@
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
 				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
+				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
+				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
+				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
+				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
@@ -393,6 +405,10 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -420,6 +436,10 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = 2;

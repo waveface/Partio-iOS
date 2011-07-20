@@ -9,7 +9,14 @@
 #import "WAArticlesViewController.h"
 #import "WACompositionViewController.h"
 
+
+@interface WAArticlesViewController () <IRPaginatedViewDelegate>
+
+@end
+
+
 @implementation WAArticlesViewController
+@dynamic view;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -27,9 +34,24 @@
 
 - (void) loadView {
 
-	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	self.view = [[[IRPaginatedView alloc] initWithFrame:CGRectZero] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = [UIColor whiteColor];
+	
+	self.view.delegate = self;
+	
+}
+
+- (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return 200;
+
+}
+
+- (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
+
+	UIView *returnedView = [[[UIView alloc] initWithFrame:paginatedView.bounds] autorelease];
+	returnedView.backgroundColor = [UIColor whiteColor];
 	
 	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
@@ -38,9 +60,25 @@
 	descriptionLabel.text = NSStringFromClass([self class]);
 	[descriptionLabel sizeToFit];
 	
-	descriptionLabel.center = self.view.center;
+	descriptionLabel.center = returnedView.center;
 	
-	[self.view addSubview:descriptionLabel];
+	[returnedView addSubview:descriptionLabel];
+	
+	return returnedView;
+
+}
+
+- (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return nil;
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self.view reloadViews];
 
 }
 

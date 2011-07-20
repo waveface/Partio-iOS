@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "IRPaginatedView.h"
 
 @interface WAArticlesViewController : UIViewController
+
+@property (nonatomic,retain) IRPaginatedView *view;
 
 @end
