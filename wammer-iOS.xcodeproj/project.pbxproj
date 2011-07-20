@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		FF73A53E13D6C2CC00D54EC6 /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF73A53E13D6C2CC00D54EC6 /* wammer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF73A54413D6C2CC00D54EC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -54,7 +54,7 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A53E13D6C2CC00D54EC6 /* wammer-iOS.app */,
+				FF73A53E13D6C2CC00D54EC6 /* wammer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,9 +93,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FF73A53D13D6C2CC00D54EC6 /* wammer-iOS */ = {
+		FF73A53D13D6C2CC00D54EC6 /* wammer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer-iOS" */;
+			buildConfigurationList = FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer" */;
 			buildPhases = (
 				FF73A53A13D6C2CC00D54EC6 /* Sources */,
 				FF73A53B13D6C2CC00D54EC6 /* Frameworks */,
@@ -105,9 +105,9 @@
 			);
 			dependencies = (
 			);
-			name = "wammer-iOS";
+			name = wammer;
 			productName = "wammer-iOS";
-			productReference = FF73A53E13D6C2CC00D54EC6 /* wammer-iOS.app */;
+			productReference = FF73A53E13D6C2CC00D54EC6 /* wammer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -130,7 +130,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FF73A53D13D6C2CC00D54EC6 /* wammer-iOS */,
+				FF73A53D13D6C2CC00D54EC6 /* wammer */,
 			);
 		};
 /* End PBXProject section */
@@ -176,7 +176,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (2PT2NL823H)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -192,6 +192,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -204,7 +205,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (2PT2NL823H)";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -214,6 +215,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
 				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -255,7 +257,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer-iOS" */ = {
+		FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF73A55713D6C2CD00D54EC6 /* Debug */,
