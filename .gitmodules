@@ -1,0 +1,12 @@
+[submodule "external/IRFoundations"]
+	path = external/IRFoundations
+	url = git://github.com/iridia/IRFoundations.git
+[submodule "external/MGSplitViewController"]
+	path = external/MGSplitViewController
+	url = git://github.com/iridia/MGSplitViewController.git
+[submodule "external/AQGridView"]
+	path = external/AQGridView
+	url = git://github.com/iridia/AQGridView.git
+[submodule "external/IRWebAPIKit"]
+	path = external/IRWebAPIKit
+	url = git://github.com/iridia/IRWebAPIKit.git
