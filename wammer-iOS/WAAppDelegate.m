@@ -15,7 +15,10 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(@"WAArticleViewController") alloc] init] autorelease]] autorelease];
+	
 	[self.window makeKeyAndVisible];
+	
 	return YES;
 	
 }

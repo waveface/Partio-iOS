@@ -13,6 +13,8 @@
 		FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */; };
 		FF73A54F13D6C2CD00D54EC6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FF73A55313D6C2CD00D54EC6 /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
+		FF73A56C13D6CD2200D54EC6 /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAArticleViewController.m */; };
+		FF73A56F13D6CD4100D54EC6 /* WACompositionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		FF73A55013D6C2CD00D54EC6 /* wammer-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS-Prefix.pch"; sourceTree = "<group>"; };
 		FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppDelegate.h; sourceTree = "<group>"; };
 		FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppDelegate.m; sourceTree = "<group>"; };
+		FF73A56A13D6CD2200D54EC6 /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
+		FF73A56B13D6CD2200D54EC6 /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
+		FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewController.h; sourceTree = "<group>"; };
+		FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +80,10 @@
 			children = (
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
+				FF73A56A13D6CD2200D54EC6 /* WAArticleViewController.h */,
+				FF73A56B13D6CD2200D54EC6 /* WAArticleViewController.m */,
+				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
+				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
 				FF73A54913D6C2CD00D54EC6 /* Supporting Files */,
 			);
 			path = "wammer-iOS";
@@ -153,6 +163,8 @@
 			files = (
 				FF73A54F13D6C2CD00D54EC6 /* main.m in Sources */,
 				FF73A55313D6C2CD00D54EC6 /* WAAppDelegate.m in Sources */,
+				FF73A56C13D6CD2200D54EC6 /* WAArticleViewController.m in Sources */,
+				FF73A56F13D6CD4100D54EC6 /* WACompositionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
