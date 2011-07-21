@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="844" systemVersion="11A511" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Article">
+        <attribute name="creationDeviceName" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="article" inverseEntity="Comment"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="File" inverseName="article" inverseEntity="File"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="articles" inverseEntity="User"/>
+    </entity>
+    <entity name="Comment">
+        <attribute name="creationDeviceName" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="comments" inverseEntity="Article"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="comments" inverseEntity="User"/>
+    </entity>
+    <entity name="File">
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="resourceFilePath" optional="YES" attributeType="String"/>
+        <attribute name="resourceType" optional="YES" attributeType="String"/>
+        <attribute name="resourceURL" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailFilePath" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Article" inverseName="files" inverseEntity="Article"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="files" inverseEntity="User"/>
+    </entity>
+    <entity name="User">
+        <attribute name="avatar" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer"/>
+        <attribute name="avatarURL" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Article" inverseName="owner" inverseEntity="Article"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Comment" inverseName="owner" inverseEntity="Comment"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="File" inverseName="owner" inverseEntity="File"/>
+    </entity>
+    <elements>
+        <element name="Article" positionX="-5760" positionY="-1656" width="128" height="150"/>
+        <element name="Comment" positionX="-5546" positionY="-1656" width="128" height="135"/>
+        <element name="File" positionX="-5976" positionY="-1653" width="128" height="195"/>
+        <element name="User" positionX="-5796" positionY="-1368" width="128" height="165"/>
+    </elements>
+</model>
