@@ -12,4 +12,10 @@
 
 @property (nonatomic, readwrite, retain) UIWindow *window;
 
+//	Network activity indications.
+//	Stackable.  Not thread safe.  Must invoke on main thread.
+
+- (void) beginNetworkActivity;
+- (void) endNetworkActivity;
+
 @end

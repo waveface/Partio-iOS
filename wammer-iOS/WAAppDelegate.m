@@ -23,4 +23,43 @@
 	
 }
 
+
+
+
+
+static unsigned int networkActivityStackingCount = 0;
+
+- (void) beginNetworkActivity {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+	
+	networkActivityStackingCount++;
+	
+	if (networkActivityStackingCount > 0)
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+}
+
+- (void) endNetworkActivity {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+
+	NSParameterAssert(networkActivityStackingCount > 0);
+	networkActivityStackingCount--;	
+	
+	if (networkActivityStackingCount == 0)
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+}
+
 @end
