@@ -6,10 +6,13 @@
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
+#import "JSONKit.h"
 #import "WARemoteInterface.h"
 #import "IRWebAPIEngine.h"
 #import "IRWebAPIEngine+FormMultipart.h"
 #import "IRWebAPIEngine+LocalCaching.h"
+
+#import "WAAppDelegate.h"
 
 
 
@@ -42,6 +45,12 @@
 
 
 
+@interface WARemoteInterface ()
+
++ (JSONDecoder *) sharedDecoder;
+
+@end
+
 @implementation WARemoteInterface
 
 + (WARemoteInterface *) sharedInterface {
@@ -58,11 +67,57 @@
 
 }
 
++ (JSONDecoder *) sharedDecoder {
+
+	static JSONDecoder *returnedDecoder = nil;
+	static dispatch_once_t onceToken = 0;
+	
+	dispatch_once(&onceToken, ^{
+		JKParseOptionFlags sloppy = JKParseOptionComments|JKParseOptionUnicodeNewlines|JKParseOptionLooseUnicode|JKParseOptionPermitTextAfterValidJSON;
+		returnedDecoder = [JSONDecoder decoderWithParseOptions:sloppy];
+		[returnedDecoder retain];
+	});
+
+	return returnedDecoder;
+
+}
+
++ (id) decodedJSONObjectFromData:(NSData *)data {
+	
+	return [[self sharedDecoder] objectWithData:data];
+
+}
+
 - (id) init {
 
 	IRWebAPIEngine *engine = [[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] autorelease];	
+	
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
+	
+	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
+		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
+		return inOriginalContext;
+	} copy] autorelease]];
+	
+	[engine.globalResponsePostTransformers addObject:[[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity]; });
+		return inParsedResponse;
+	} copy] autorelease]];
+	
+	engine.parser = ^ (NSData *incomingData) {
+	
+		NSError *parsingError = nil;
+		id anObject = [[WARemoteInterface sharedDecoder] objectWithData:incomingData error:&parsingError];
+		
+		if (!anObject) {
+			NSLog(@"Error parsing: %@", parsingError);
+			return (NSDictionary *)nil;
+		}
+		
+		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
+	
+	};
 
 	return [self initWithEngine:engine authenticator:nil];
 
