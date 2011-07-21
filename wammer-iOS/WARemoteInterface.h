@@ -10,6 +10,8 @@
 
 @interface WARemoteInterface : IRWebAPIInterface
 
++ (WARemoteInterface *) sharedInterface;
+
 //	GET /articles
 - (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
