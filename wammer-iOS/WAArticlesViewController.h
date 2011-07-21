@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "IRPaginatedView.h"
+#import <CoreData/CoreData.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface WAArticlesViewController : UIViewController
 
