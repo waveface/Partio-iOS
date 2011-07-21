@@ -10,3 +10,6 @@
 [submodule "external/IRWebAPIKit"]
 	path = external/IRWebAPIKit
 	url = git://github.com/iridia/IRWebAPIKit.git
+[submodule "external/mockingBird"]
+	path = external/mockingBird
+	url = git://github.com/waveface/mockingBird.git
