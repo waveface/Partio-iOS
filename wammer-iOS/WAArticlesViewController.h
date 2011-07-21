@@ -11,6 +11,4 @@
 
 @interface WAArticlesViewController : UIViewController
 
-@property (nonatomic,retain) IRPaginatedView *view;
-
 @end

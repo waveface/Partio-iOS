@@ -12,11 +12,13 @@
 
 @interface WAArticlesViewController () <IRPaginatedViewDelegate>
 
+@property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
+
 @end
 
 
 @implementation WAArticlesViewController
-@dynamic view;
+@synthesize paginatedView;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -34,11 +36,27 @@
 
 - (void) loadView {
 
-	self.view = [[[IRPaginatedView alloc] initWithFrame:CGRectZero] autorelease];
+	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = [UIColor whiteColor];
 	
-	self.view.delegate = self;
+	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.paginatedView.backgroundColor = [UIColor whiteColor];
+	self.paginatedView.delegate = self;
+	
+	UISlider *pageSlider = [[[UISlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	pageSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+	
+	UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1}, NO, 0.0f);
+	UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+	
+	[pageSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
+	[pageSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
+	
+	[self.view addSubview:self.paginatedView];
+	[self.view addSubview:pageSlider];
 	
 }
 
@@ -48,16 +66,16 @@
 
 }
 
-- (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
+- (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	UIView *returnedView = [[[UIView alloc] initWithFrame:paginatedView.bounds] autorelease];
+	UIView *returnedView = [[[UIView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
 	returnedView.backgroundColor = [UIColor whiteColor];
 	
 	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	descriptionLabel.textAlignment = UITextAlignmentCenter;
 	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-	descriptionLabel.text = NSStringFromClass([self class]);
+	descriptionLabel.text = [NSString stringWithFormat:@"<%@ %x> page for article at index %i", NSStringFromClass([self class]), self, index];
 	[descriptionLabel sizeToFit];
 	
 	descriptionLabel.center = returnedView.center;
@@ -78,7 +96,7 @@
 
 	[super viewWillAppear:animated];
 	
-	[self.view reloadViews];
+	[self.paginatedView reloadViews];
 
 }
 
