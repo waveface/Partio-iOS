@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
 		FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
@@ -80,6 +81,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
 		FF73A53E13D6C2CC00D54EC6 /* wammer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF73A54413D6C2CC00D54EC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -174,6 +176,7 @@
 				FF73A56B13D6CD2200D54EC6 /* WAArticlesViewController.m */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */,
 				FF73A54913D6C2CD00D54EC6 /* Supporting Files */,
 			);
 			path = "wammer-iOS";
@@ -344,6 +347,7 @@
 				FF73A5C013D6DCA400D54EC6 /* MGSplitCornersView.m in Sources */,
 				FF73A5C113D6DCA400D54EC6 /* MGSplitDividerView.m in Sources */,
 				FF73A5C213D6DCA400D54EC6 /* MGSplitViewController.m in Sources */,
+				FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,6 +459,7 @@
 				GCC_PREFIX_HEADER = "wammer-iOS/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer-iOS/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -466,6 +471,7 @@
 				GCC_PREFIX_HEADER = "wammer-iOS/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer-iOS/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -492,6 +498,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */,
+			);
+			currentVersion = FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */;
+			path = WAModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = FF73A53513D6C2CC00D54EC6 /* Project object */;
 }
