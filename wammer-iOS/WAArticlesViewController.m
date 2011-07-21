@@ -9,6 +9,8 @@
 #import "WADataStore.h"
 #import "WAArticlesViewController.h"
 #import "WACompositionViewController.h"
+#import "WAPaginationSlider.h"
+
 #import "IRPaginatedView.h"
 
 
@@ -19,6 +21,7 @@
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
+@property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
 
 @end
 
@@ -28,6 +31,7 @@
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize coachmarkView;
+@synthesize paginationSlider;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -59,6 +63,7 @@
 - (void) dealloc {
 	
 	[paginatedView release];
+	[paginationSlider release];
 	[managedObjectContext release];
 	[fetchedResultsController release];
 	[super dealloc];
@@ -95,35 +100,14 @@
 	})())];
 	
 	
-	UIView *paginationSliderContainer = [[[UIView alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
-	paginationSliderContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
+	self.paginationSlider = [[[WAPaginationSlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
+	self.paginationSlider.delegate = self;
 	
-	UISlider *pageSlider = [[[UISlider alloc] initWithFrame:paginationSliderContainer.bounds] autorelease];
-	pageSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	
-	UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1 }, NO, 0.0f);
-	UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	UIGraphicsBeginImageContextWithOptions((CGSize){ 24, 24 }, NO, 0.0f);
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGContextSetFillColorWithColor(context, [[UIColor blackColor] colorWithAlphaComponent:0.35f].CGColor);
-	CGContextFillEllipseInRect(context, (CGRect){ 6, 6, 12, 12 });
-	UIImage *dotImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-	
-	UIImageView *dotImageView = [[[UIImageView alloc] initWithImage:dotImage] autorelease];
-	[dotImageView sizeToFit];
-	
-	[paginationSliderContainer addSubview:dotImageView];
-	[paginationSliderContainer addSubview:pageSlider];
-	
-	[pageSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
-	[pageSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
 	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.coachmarkView];
-	[self.view addSubview:paginationSliderContainer];
+	[self.view addSubview:self.paginationSlider];
 	
 }
 
