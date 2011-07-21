@@ -19,10 +19,6 @@
 	
 	[self.window makeKeyAndVisible];
 	
-	//	TEST
-	
-	[(NSObject *)NSClassFromString(@"WADataStore") performSelector:@selector(defaultStore)];
-	
 	return YES;
 	
 }
