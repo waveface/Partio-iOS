@@ -45,6 +45,8 @@
 
 
 
+static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
+
 @interface WARemoteInterface ()
 
 + (JSONDecoder *) sharedDecoder;
@@ -123,21 +125,110 @@
 
 }
 
-- (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock; {}
+- (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-//	GET /article/#
-- (void) retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *retrievedArticleRep))successBlock onFailure:(void(^)(NSError *error))failureBlock; {}
+	[self.engine fireAPIRequestNamed:@"articles" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		[NSNumber numberWithUnsignedInteger:maximumNumberOfArticles], @"limit",
+		aContinuation, @"timestamp",
+		
+	nil] options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"articles"]);
+		
+	} failureHandler:nil];
 
-//	GET /article/#/comments
-- (void) retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSArray *retrievedComentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock; {}
+}
 
-//	POST /article
-- (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock; {}
+- (void) retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *retrievedArticleRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {	
+	[self.engine fireAPIRequestNamed:[@"article" stringByAppendingPathComponent:anIdentifier] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"article"]);
+		
+	} failureHandler:nil];	
 
-//	POST /file
-- (void) uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void(^)(NSDictionary *uploadedFileRep))successBlock onFailure:(void(^)(NSError *error))failureBlock; {}
+}
 
-//	POST /comment
-- (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock { }
+- (void) retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSArray *retrievedComentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:[[@"article" stringByAppendingPathComponent:anIdentifier] stringByAppendingPathComponent:@"comments"] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"comments"]);
+		
+	} failureHandler:nil];
+
+}
+
+- (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"article" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		[NSMutableDictionary dictionaryWithObjectsAndKeys:
+		
+			creatorIdentifier, @"creator_id",
+			@"iPad", @"creation_device_name",
+			bodyText, @"text",
+			[attachmentIdentifiers JSONString], @"files",
+		
+		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
+		
+		@"POST", kIRWebAPIEngineRequestHTTPMethod,
+	
+	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"article"]);
+		
+	} failureHandler:nil];
+	
+}
+
+- (void) uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void(^)(NSDictionary *uploadedFileRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"file" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		[NSMutableDictionary dictionaryWithObjectsAndKeys:
+		
+			aFileURL, @"file",
+			creatorIdentifier, @"creator_id",
+			@"public.item", @"type",
+		
+		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
+		
+		@"POST", kIRWebAPIEngineRequestHTTPMethod,
+	
+	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"file"]);
+		
+	} failureHandler:nil];
+	
+}
+
+- (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"comment" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		creatorIdentifier, @"creator_id",
+		@"iPad", @"creation_device_name",
+		anIdentifier, @"article_id",
+		bodyText, @"text",
+	
+	nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		@"POST", kIRWebAPIEngineRequestHTTPMethod,
+	
+	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"comment"]);
+		
+	} failureHandler:nil];
+
+}
 
 @end
