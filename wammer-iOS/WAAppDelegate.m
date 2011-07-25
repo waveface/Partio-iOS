@@ -15,9 +15,51 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(@"WAArticlesViewController") alloc] init] autorelease]] autorelease];
+	
 	[self.window makeKeyAndVisible];
+	
 	return YES;
 	
+}
+
+
+
+
+
+static unsigned int networkActivityStackingCount = 0;
+
+- (void) beginNetworkActivity {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+	
+	networkActivityStackingCount++;
+	
+	if (networkActivityStackingCount > 0)
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+}
+
+- (void) endNetworkActivity {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+
+	NSParameterAssert(networkActivityStackingCount > 0);
+	networkActivityStackingCount--;	
+	
+	if (networkActivityStackingCount == 0)
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
 }
 
 @end
