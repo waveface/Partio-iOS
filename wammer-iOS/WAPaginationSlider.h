@@ -27,6 +27,9 @@
 @property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
 
 @property (nonatomic, readwrite, assign) NSUInteger numberOfPages;
+@property (nonatomic, readwrite, assign) NSUInteger currentPage;
+- (void) setCurrentPage:(NSUInteger)newPage animated:(BOOL)animate;
+
 @property (nonatomic, readwrite, assign) BOOL snapsToPages;
 
 @property (nonatomic, readwrite, assign) id<WAPaginationSliderDelegate> delegate;
