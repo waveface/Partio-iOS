@@ -64,6 +64,7 @@
 	
 	[paginatedView release];
 	[paginationSlider release];
+	[coachmarkView release];
 	[managedObjectContext release];
 	[fetchedResultsController release];
 	[super dealloc];
@@ -80,6 +81,7 @@
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = [UIColor whiteColor];
 	self.paginatedView.delegate = self;
+	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -104,11 +106,22 @@
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
 	self.paginationSlider.delegate = self;
 	
-	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.coachmarkView];
 	[self.view addSubview:self.paginationSlider];
 	
+}
+
+- (void) viewDidUnload {
+
+	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
+	
+	self.paginatedView = nil;
+	self.coachmarkView = nil;
+	self.paginationSlider = nil;
+	
+	[super viewDidUnload];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -131,9 +144,11 @@
 		#if 1
 		
 		self.paginationSlider.hidden = NO;
-		self.paginationSlider.numberOfPages = 17;
+		self.paginationSlider.numberOfPages = 16;
 		
 		#endif
+		
+		self.coachmarkView.hidden = YES;
 		
 		CGRect paginationSliderFrame = self.paginationSlider.frame;
 		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
@@ -145,7 +160,20 @@
 
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	if ((object == self.paginatedView) && ([keyPath isEqualToString:@"currentPage"])) {
+	
+		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
+		self.paginationSlider.currentPage = newPage;
+	
+	}
+
+}
+
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return 16;
 
 	return [[self.fetchedResultsController fetchedObjects] count];
 
@@ -164,6 +192,7 @@
 	[descriptionLabel sizeToFit];
 	
 	descriptionLabel.center = returnedView.center;
+	descriptionLabel.frame = CGRectIntegral(descriptionLabel.frame);
 	
 	[returnedView addSubview:descriptionLabel];
 	
@@ -180,6 +209,35 @@
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
 	//	NSLog(@"%s %@ %i", __PRETTY_FUNCTION__, slider, destinationPage);
+	
+	if (self.paginatedView.currentPage == destinationPage)
+		return;
+	
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[CATransaction begin];
+		CATransition *transition = [CATransition animation];
+		transition.type = kCATransitionMoveIn;
+		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
+		transition.duration = 0.25f;
+		transition.fillMode = kCAFillModeForwards;
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.removedOnCompletion = YES;
+		
+		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
+		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
+		
+		[CATransaction setCompletionBlock: ^ {
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+			});
+		}];
+		
+		[CATransaction commit];
+	
+	});
 
 }
 
@@ -194,7 +252,16 @@
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[self.paginatedView setNeedsLayout];
+
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
+
+	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
+		return (self.interfaceOrientation == newOrientation);
 
 	return YES;
 	

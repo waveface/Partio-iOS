@@ -17,7 +17,7 @@
 
 @implementation WAPaginationSlider
 @synthesize slider;
-@synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, snapsToPages, delegate;
+@synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
 
 + (UIImage *) transparentImage {
 
@@ -50,6 +50,7 @@
 	self.edgeInsets = (UIEdgeInsets){ 0, 12, 0, 12 };
 	
 	self.numberOfPages = 24;
+	self.currentPage = 0;
 	self.snapsToPages = YES;
 	
 	self.slider = [[[UISlider alloc] initWithFrame:self.bounds] autorelease];
@@ -146,18 +147,45 @@
 
 - (void) sliderDidMove:(UISlider *)aSlider {
 
-	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
-	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
+	//	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
+	//	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
 
 }
 
 - (void) sliderTouchDidEnd:(UISlider *)aSlider {
+
+	[self willChangeValueForKey:@"currentPage"];
+	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
+	[self didChangeValueForKey:@"currentPage"];
 	
-	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
-	CGFloat inferredSliderSnappingValue = [self positionForPageNumber:inferredPageNumber];
+	CGFloat inferredSliderSnappingValue = [self positionForPageNumber:self.currentPage];
+	
+	[self.delegate paginationSlider:self didMoveToPage:self.currentPage];
 	
 	if (self.snapsToPages)
 		[aSlider setValue:inferredSliderSnappingValue animated:YES];
+
+}
+
+- (void) setCurrentPage:(NSUInteger)newPage {
+
+	[self setCurrentPage:newPage animated:YES];
+
+}
+
+- (void) setCurrentPage:(NSUInteger)newPage animated:(BOOL)animate {
+
+	if (currentPage == newPage)
+		return;
+	
+	[self willChangeValueForKey:@"currentPage"];
+	
+	currentPage = newPage;
+	
+	if (![self.slider isTracking])
+		[self.slider setValue:[self positionForPageNumber:newPage] animated:animate];
+	
+	[self didChangeValueForKey:@"currentPage"];
 
 }
 
