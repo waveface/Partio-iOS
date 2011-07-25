@@ -14,7 +14,7 @@
 #import "IRPaginatedView.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate>
+@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -123,8 +123,23 @@
 		[self.fetchedResultsController performFetch:nil];
 		[self.paginatedView reloadViews];
 		
-		BOOL hasContent = [[self.fetchedResultsController fetchedObjects] count];
-		self.coachmarkView.hidden = hasContent;
+		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
+		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
+		self.paginationSlider.hidden = (numberOfFetchedObjects > 0); 
+		self.paginationSlider.numberOfPages = numberOfFetchedObjects;
+		
+		#if 1
+		
+		self.paginationSlider.hidden = NO;
+		self.paginationSlider.numberOfPages = 17;
+		
+		#endif
+		
+		CGRect paginationSliderFrame = self.paginationSlider.frame;
+		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
+		paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
+		self.paginationSlider.frame = paginationSliderFrame;
+		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 		
 	});
 
@@ -159,6 +174,12 @@
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
 	return nil;
+
+}
+
+- (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
+
+	//	NSLog(@"%s %@ %i", __PRETTY_FUNCTION__, slider, destinationPage);
 
 }
 

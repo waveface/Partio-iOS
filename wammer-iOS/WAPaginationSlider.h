@@ -24,6 +24,10 @@
 
 @property (nonatomic, readwrite, assign) CGFloat dotRadius;
 @property (nonatomic, readwrite, assign) CGFloat dotMargin;
+@property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
+
+@property (nonatomic, readwrite, assign) NSUInteger numberOfPages;
+@property (nonatomic, readwrite, assign) BOOL snapsToPages;
 
 @property (nonatomic, readwrite, assign) id<WAPaginationSliderDelegate> delegate;
 
