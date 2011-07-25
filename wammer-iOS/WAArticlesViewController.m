@@ -131,9 +131,11 @@
 		#if 1
 		
 		self.paginationSlider.hidden = NO;
-		self.paginationSlider.numberOfPages = 17;
+		self.paginationSlider.numberOfPages = 16;
 		
 		#endif
+		
+		self.coachmarkView.hidden = YES;
 		
 		CGRect paginationSliderFrame = self.paginationSlider.frame;
 		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
@@ -146,6 +148,8 @@
 }
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return 16;
 
 	return [[self.fetchedResultsController fetchedObjects] count];
 
@@ -164,6 +168,7 @@
 	[descriptionLabel sizeToFit];
 	
 	descriptionLabel.center = returnedView.center;
+	descriptionLabel.frame = CGRectIntegral(descriptionLabel.frame);
 	
 	[returnedView addSubview:descriptionLabel];
 	
@@ -180,6 +185,35 @@
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
 	//	NSLog(@"%s %@ %i", __PRETTY_FUNCTION__, slider, destinationPage);
+	
+	if (self.paginatedView.currentPage == destinationPage)
+		return;
+	
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[CATransaction begin];
+		CATransition *transition = [CATransition animation];
+		transition.type = kCATransitionMoveIn;
+		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
+		transition.duration = 0.25f;
+		transition.fillMode = kCAFillModeForwards;
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.removedOnCompletion = YES;
+		
+		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
+		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
+		
+		[CATransaction setCompletionBlock: ^ {
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+			});
+		}];
+		
+		[CATransaction commit];
+	
+	});
 
 }
 
@@ -194,7 +228,10 @@
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
+
+	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
+		return (self.interfaceOrientation == newOrientation);
 
 	return YES;
 	

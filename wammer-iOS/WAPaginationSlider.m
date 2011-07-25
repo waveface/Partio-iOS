@@ -146,8 +146,8 @@
 
 - (void) sliderDidMove:(UISlider *)aSlider {
 
-	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
-	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
+	//	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
+	//	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
 
 }
 
@@ -155,6 +155,8 @@
 	
 	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
 	CGFloat inferredSliderSnappingValue = [self positionForPageNumber:inferredPageNumber];
+	
+	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
 	
 	if (self.snapsToPages)
 		[aSlider setValue:inferredSliderSnappingValue animated:YES];
