@@ -64,6 +64,7 @@
 	
 	[paginatedView release];
 	[paginationSlider release];
+	[coachmarkView release];
 	[managedObjectContext release];
 	[fetchedResultsController release];
 	[super dealloc];
@@ -80,6 +81,7 @@
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = [UIColor whiteColor];
 	self.paginatedView.delegate = self;
+	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -104,11 +106,22 @@
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
 	self.paginationSlider.delegate = self;
 	
-	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.coachmarkView];
 	[self.view addSubview:self.paginationSlider];
 	
+}
+
+- (void) viewDidUnload {
+
+	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
+	
+	self.paginatedView = nil;
+	self.coachmarkView = nil;
+	self.paginationSlider = nil;
+	
+	[super viewDidUnload];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -144,6 +157,17 @@
 		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 		
 	});
+
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	if ((object == self.paginatedView) && ([keyPath isEqualToString:@"currentPage"])) {
+	
+		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
+		self.paginationSlider.currentPage = newPage;
+	
+	}
 
 }
 
@@ -225,6 +249,12 @@
 	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
+
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[self.paginatedView setNeedsLayout];
 
 }
 
