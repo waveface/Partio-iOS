@@ -246,7 +246,7 @@
 	WACompositionViewController *compositionVC = [[[WACompositionViewController alloc] init] autorelease];
 	
 	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
-	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
+	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 

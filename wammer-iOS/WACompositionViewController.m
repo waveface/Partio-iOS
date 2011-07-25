@@ -8,7 +8,14 @@
 
 #import "WACompositionViewController.h"
 
-@implementation WACompositionViewController 
+
+@interface WACompositionViewController ()
+@property (nonatomic, readwrite, retain) UISegmentedControl *contentToggle;
+@end
+
+
+@implementation WACompositionViewController
+@synthesize contentToggle;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -18,8 +25,7 @@
 		return nil;
 	
 	self.title = @"Compose";
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	
+		
 	return self;
 
 }
@@ -40,6 +46,28 @@
 	descriptionLabel.center = self.view.center;
 	
 	[self.view addSubview:descriptionLabel];
+	
+	
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+	
+	self.contentToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
+		@"Compose",
+		@"Preview",
+	nil]];
+	
+	self.contentToggle.segmentedControlStyle = UISegmentedControlStyleBar;
+	
+	[self.contentToggle setSelectedSegmentIndex:0];
+	[self.contentToggle sizeToFit];
+	
+	self.navigationItem.titleView = self.contentToggle;
+
+}
+
+- (void) handleDone:(UIBarButtonItem *)sender {
+
+	[self dismissModalViewControllerAnimated:YES];
 
 }
 
