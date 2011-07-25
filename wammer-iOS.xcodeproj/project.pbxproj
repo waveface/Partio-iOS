@@ -30,6 +30,7 @@
 		FF97382513D821DF003D1722 /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
 		FF97386113D82B4F003D1722 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
+		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,7 @@
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
 		FF97385F13D82B4F003D1722 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = external/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		FF97386013D82B4F003D1722 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = external/JSONKit/JSONKit.m; sourceTree = "<group>"; };
+		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				FF73A54813D6C2CC00D54EC6 /* wammer-iOS */,
+				FFC2E04C13DD706600816EA1 /* Resources */,
 				FF73A54113D6C2CC00D54EC6 /* Frameworks */,
 				FF73A53F13D6C2CC00D54EC6 /* Products */,
 			);
@@ -275,6 +278,15 @@
 			name = JSONKit;
 			sourceTree = "<group>";
 		};
+		FFC2E04C13DD706600816EA1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
+			);
+			name = Resources;
+			path = "wammer-iOS";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -374,6 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */,
+				FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
