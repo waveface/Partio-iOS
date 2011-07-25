@@ -6,19 +6,32 @@
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
+#import "WADataStore.h"
 #import "WAArticlesViewController.h"
 #import "WACompositionViewController.h"
+#import "WAPaginationSlider.h"
+
+#import "IRPaginatedView.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate>
+@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
+@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+
+@property (nonatomic, readwrite, retain) UIView *coachmarkView;
+@property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
 
 @end
 
 
 @implementation WAArticlesViewController
 @synthesize paginatedView;
+@synthesize fetchedResultsController;
+@synthesize managedObjectContext;
+@synthesize coachmarkView;
+@synthesize paginationSlider;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -30,7 +43,30 @@
 	self.title = @"Articles";
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
 	
+	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
+	
+		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
+		returnedRequest.entity = [NSEntityDescription entityForName:@"Article" inManagedObjectContext:self.managedObjectContext];
+		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+		nil];
+		
+		return returnedRequest;
+	
+	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+		
 	return self;
+
+}
+
+- (void) dealloc {
+	
+	[paginatedView release];
+	[paginationSlider release];
+	[managedObjectContext release];
+	[fetchedResultsController release];
+	[super dealloc];
 
 }
 
@@ -45,24 +81,73 @@
 	self.paginatedView.backgroundColor = [UIColor whiteColor];
 	self.paginatedView.delegate = self;
 	
-	UISlider *pageSlider = [[[UISlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
-	pageSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.coachmarkView.opaque = NO;
+	self.coachmarkView.backgroundColor = [UIColor clearColor];
+	[self.coachmarkView addSubview:((^ {
 	
-	UIGraphicsBeginImageContextWithOptions((CGSize){ 1, 1}, NO, 0.0f);
-	UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
+		UILabel *returnedLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		returnedLabel.text = @"No Articles";
+		returnedLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+		returnedLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+		
+		[returnedLabel sizeToFit];
+		[returnedLabel setCenter:self.coachmarkView.center];
+		
+		return returnedLabel;
+		
+	})())];
 	
-	[pageSlider setMinimumTrackImage:transparentImage forState:UIControlStateNormal];
-	[pageSlider setMaximumTrackImage:transparentImage forState:UIControlStateNormal];
+	
+	self.paginationSlider = [[[WAPaginationSlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
+	self.paginationSlider.delegate = self;
+	
 	
 	[self.view addSubview:self.paginatedView];
-	[self.view addSubview:pageSlider];
+	[self.view addSubview:self.coachmarkView];
+	[self.view addSubview:self.paginationSlider];
 	
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	//	I am not really sure this works!
+	
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		
+		[self.fetchedResultsController performFetch:nil];
+		[self.paginatedView reloadViews];
+		
+		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
+		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
+		self.paginationSlider.hidden = (numberOfFetchedObjects > 0); 
+		self.paginationSlider.numberOfPages = numberOfFetchedObjects;
+		
+		#if 1
+		
+		self.paginationSlider.hidden = NO;
+		self.paginationSlider.numberOfPages = 17;
+		
+		#endif
+		
+		CGRect paginationSliderFrame = self.paginationSlider.frame;
+		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
+		paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
+		self.paginationSlider.frame = paginationSliderFrame;
+		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
+		
+	});
+
 }
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return 200;
+	return [[self.fetchedResultsController fetchedObjects] count];
 
 }
 
@@ -92,11 +177,9 @@
 
 }
 
-- (void) viewWillAppear:(BOOL)animated {
+- (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
-	[super viewWillAppear:animated];
-	
-	[self.paginatedView reloadViews];
+	//	NSLog(@"%s %@ %i", __PRETTY_FUNCTION__, slider, destinationPage);
 
 }
 
