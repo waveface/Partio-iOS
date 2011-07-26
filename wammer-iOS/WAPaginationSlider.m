@@ -58,6 +58,7 @@
 	[self.slider setMinimumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider setMaximumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider addTarget:self action:@selector(sliderDidMove:) forControlEvents:UIControlEventValueChanged];
+	[self.slider addTarget:self action:@selector(sliderTouchDidStart:) forControlEvents:UIControlEventTouchDown];
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpInside];
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpOutside];
 	
@@ -145,10 +146,23 @@
 
 }
 
+- (void) sliderTouchDidStart:(UISlider *)aSlider {
+
+	[self willChangeValueForKey:@"currentPage"];
+	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
+	[self didChangeValueForKey:@"currentPage"];
+	
+	NSLog(@"slider start with current page %i", currentPage);
+
+}
+
 - (void) sliderDidMove:(UISlider *)aSlider {
 
-	//	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
-	//	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
+	[self willChangeValueForKey:@"currentPage"];
+	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
+	[self didChangeValueForKey:@"currentPage"];
+	
+	NSLog(@"slider moved with current page %i", currentPage);
 
 }
 
@@ -157,6 +171,8 @@
 	[self willChangeValueForKey:@"currentPage"];
 	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
 	[self didChangeValueForKey:@"currentPage"];
+	
+	NSLog(@"slider end with current page %i", currentPage);
 	
 	CGFloat inferredSliderSnappingValue = [self positionForPageNumber:self.currentPage];
 	
