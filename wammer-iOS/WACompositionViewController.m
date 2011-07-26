@@ -69,7 +69,7 @@
 
 	[self dismissModalViewControllerAnimated:YES];
 
-}
+}	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
