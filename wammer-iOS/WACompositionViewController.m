@@ -10,12 +10,20 @@
 
 
 @interface WACompositionViewController ()
-@property (nonatomic, readwrite, retain) UISegmentedControl *contentToggle;
+
+//	?
+
 @end
 
 
 @implementation WACompositionViewController
-@synthesize contentToggle;
+
++ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
+
+	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
+	return returnedController;
+	
+}
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -25,7 +33,9 @@
 		return nil;
 	
 	self.title = @"Compose";
-		
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+	
 	return self;
 
 }
@@ -36,33 +46,6 @@
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = [UIColor whiteColor];
 	
-	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-	descriptionLabel.textAlignment = UITextAlignmentCenter;
-	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-	descriptionLabel.text = NSStringFromClass([self class]);
-	[descriptionLabel sizeToFit];
-	
-	descriptionLabel.center = self.view.center;
-	
-	[self.view addSubview:descriptionLabel];
-	
-	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
-	
-	self.contentToggle = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:
-		@"Compose",
-		@"Preview",
-	nil]];
-	
-	self.contentToggle.segmentedControlStyle = UISegmentedControlStyleBar;
-	
-	[self.contentToggle setSelectedSegmentIndex:0];
-	[self.contentToggle sizeToFit];
-	
-	self.navigationItem.titleView = self.contentToggle;
-
 }
 
 - (void) handleDone:(UIBarButtonItem *)sender {
