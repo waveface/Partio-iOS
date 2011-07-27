@@ -217,16 +217,41 @@
 	returnedView.backgroundColor = [UIColor whiteColor];
 	
 	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	descriptionLabel.textAlignment = UITextAlignmentCenter;
 	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 	descriptionLabel.text = [NSString stringWithFormat:@"<%@ %x> page for article at index %i", NSStringFromClass([self class]), self, index];
 	[descriptionLabel sizeToFit];
 	
-	descriptionLabel.center = returnedView.center;
-	descriptionLabel.frame = CGRectIntegral(descriptionLabel.frame);
+	UILabel *contentLabel = [[[UILabel alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
+	contentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+	contentLabel.text = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]] description];
+	contentLabel.numberOfLines = 0;
+	[contentLabel sizeToFit];
+	
+	CGPoint contentTopCenterOrigin = (CGPoint){ 0.5f * CGRectGetWidth(aPaginatedView.bounds), 256.0f };	//	0.5f * CGRectGetHeight(aPaginatedView.bounds)
+	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(descriptionLabel.frame);
+	contentTopCenterOrigin.y -= 0.5f * 24.0f;
+	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(contentLabel.frame);
+	
+	descriptionLabel.frame = CGRectIntegral((CGRect){
+		(CGPoint){
+			contentTopCenterOrigin.x - 0.5f * descriptionLabel.frame.size.width,
+			contentTopCenterOrigin.y
+		},
+		descriptionLabel.frame.size
+	});
+	
+	contentLabel.frame = CGRectIntegral((CGRect){
+		(CGPoint){
+			contentTopCenterOrigin.x - 0.5f * contentLabel.frame.size.width,
+			contentTopCenterOrigin.y + descriptionLabel.frame.size.height + 24.0f
+		},
+		contentLabel.frame.size
+	});
 	
 	[returnedView addSubview:descriptionLabel];
+	[returnedView addSubview:contentLabel];
 	
 	return returnedView;
 
