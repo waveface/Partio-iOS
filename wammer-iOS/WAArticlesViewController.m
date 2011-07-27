@@ -171,20 +171,12 @@
 		
 		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
 		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
-		self.paginationSlider.hidden = (numberOfFetchedObjects > 0); 
+		self.paginationSlider.hidden = (numberOfFetchedObjects == 0); 
 		self.paginationSlider.numberOfPages = numberOfFetchedObjects;
 		
-		#if 1
-		
-		self.paginationSlider.hidden = NO;
-		self.paginationSlider.numberOfPages = 16;
-		
-		#endif
-		
-		self.coachmarkView.hidden = YES;
-		
 		CGRect paginationSliderFrame = self.paginationSlider.frame;
-		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
+		paginationSliderFrame.size.width = MIN(512, MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+		
 		paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 		self.paginationSlider.frame = paginationSliderFrame;
 		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
