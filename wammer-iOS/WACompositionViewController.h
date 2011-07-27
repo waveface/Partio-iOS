@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+
 
 @interface WACompositionViewController : UIViewController
+
++ (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
 
 @end

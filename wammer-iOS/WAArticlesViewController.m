@@ -12,11 +12,16 @@
 #import "WAPaginationSlider.h"
 
 #import "IRPaginatedView.h"
+#import "IRBarButtonItem.h"
+#import "IRTransparentToolbar.h"
+#import "IRActionSheetController.h"
+#import "IRActionSheet.h"
 
 
 @interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
+@property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
@@ -32,6 +37,7 @@
 @synthesize managedObjectContext;
 @synthesize coachmarkView;
 @synthesize paginationSlider;
+@synthesize debugActionSheetController;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -40,9 +46,28 @@
 	if (!self)
 		return nil;
 		
+	IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+	toolbar.usesCustomLayout = NO;
+	toolbar.items = [NSArray arrayWithObjects:
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+	nil];
+		
 	self.title = @"Articles";
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
 	
+	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Debug Import" block:^(void) {
+		
+			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
+		
+		}],
+	
+	nil]];
+		
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
@@ -160,6 +185,15 @@
 
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	if (self.debugActionSheetController.managedActionSheet.visible)
+		[self.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:self.debugActionSheetController.managedActionSheet.cancelButtonIndex animated:animated];
+
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
 	if ((object == self.paginatedView) && ([keyPath isEqualToString:@"currentPage"])) {
@@ -241,12 +275,18 @@
 
 }
 
+- (void) handleAction:(UIBarButtonItem *)sender {
+
+	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
+
+}
+
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
 	WACompositionViewController *compositionVC = [[[WACompositionViewController alloc] init] autorelease];
 	
 	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
-	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
+	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 
