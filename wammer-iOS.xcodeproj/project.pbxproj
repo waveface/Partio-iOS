@@ -30,6 +30,11 @@
 		FF97382513D821DF003D1722 /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
 		FF97386113D82B4F003D1722 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
+		FF9DA0BE13DFF6BC00D6B28B /* WAMockArticlesList.json in Resources */ = {isa = PBXBuildFile; fileRef = FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */; };
+		FF9DA0C113DFF88F00D6B28B /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C013DFF88F00D6B28B /* WAUser.m */; };
+		FF9DA0C413DFF89000D6B28B /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C313DFF89000D6B28B /* WAArticle.m */; };
+		FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
+		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
 		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
 /* End PBXBuildFile section */
 
@@ -122,6 +127,15 @@
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
 		FF97385F13D82B4F003D1722 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = external/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		FF97386013D82B4F003D1722 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = external/JSONKit/JSONKit.m; sourceTree = "<group>"; };
+		FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockArticlesList.json; path = Resources/WAMockArticlesList.json; sourceTree = "<group>"; };
+		FF9DA0BF13DFF88F00D6B28B /* WAUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUser.h; sourceTree = "<group>"; };
+		FF9DA0C013DFF88F00D6B28B /* WAUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUser.m; sourceTree = "<group>"; };
+		FF9DA0C213DFF89000D6B28B /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
+		FF9DA0C313DFF89000D6B28B /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
+		FF9DA0C513DFF89000D6B28B /* WAComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComment.h; sourceTree = "<group>"; };
+		FF9DA0C613DFF89000D6B28B /* WAComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComment.m; sourceTree = "<group>"; };
+		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
+		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -252,6 +266,14 @@
 			isa = PBXGroup;
 			children = (
 				FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */,
+				FF9DA0C813DFF89000D6B28B /* WAFile.h */,
+				FF9DA0C913DFF89000D6B28B /* WAFile.m */,
+				FF9DA0C513DFF89000D6B28B /* WAComment.h */,
+				FF9DA0C613DFF89000D6B28B /* WAComment.m */,
+				FF9DA0C213DFF89000D6B28B /* WAArticle.h */,
+				FF9DA0C313DFF89000D6B28B /* WAArticle.m */,
+				FF9DA0BF13DFF88F00D6B28B /* WAUser.h */,
+				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
 				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
@@ -282,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
+				FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */,
 			);
 			name = Resources;
 			path = "wammer-iOS";
@@ -387,6 +410,7 @@
 			files = (
 				FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */,
 				FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */,
+				FF9DA0BE13DFF6BC00D6B28B /* WAMockArticlesList.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +433,10 @@
 				FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */,
 				FF97386113D82B4F003D1722 /* JSONKit.m in Sources */,
 				FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */,
+				FF9DA0C113DFF88F00D6B28B /* WAUser.m in Sources */,
+				FF9DA0C413DFF89000D6B28B /* WAArticle.m in Sources */,
+				FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */,
+				FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

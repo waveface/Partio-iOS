@@ -11,6 +11,8 @@
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 
+#import "WARemoteInterface.h"
+
 #import "IRPaginatedView.h"
 #import "IRBarButtonItem.h"
 #import "IRTransparentToolbar.h"
@@ -18,7 +20,7 @@
 #import "IRActionSheet.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
+@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -27,6 +29,8 @@
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
+
+- (void) refreshData;
 
 @end
 
@@ -72,7 +76,7 @@
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.entity = [NSEntityDescription entityForName:@"Article" inManagedObjectContext:self.managedObjectContext];
+		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -80,6 +84,8 @@
 		return returnedRequest;
 	
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
 		
 	return self;
 
@@ -157,26 +163,20 @@
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
+	
+		[self refreshData];
 		
 		[self.fetchedResultsController performFetch:nil];
 		[self.paginatedView reloadViews];
 		
 		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
 		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
-		self.paginationSlider.hidden = (numberOfFetchedObjects > 0); 
+		self.paginationSlider.hidden = (numberOfFetchedObjects == 0); 
 		self.paginationSlider.numberOfPages = numberOfFetchedObjects;
 		
-		#if 1
-		
-		self.paginationSlider.hidden = NO;
-		self.paginationSlider.numberOfPages = 16;
-		
-		#endif
-		
-		self.coachmarkView.hidden = YES;
-		
 		CGRect paginationSliderFrame = self.paginationSlider.frame;
-		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
+		paginationSliderFrame.size.width = MIN(512, MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+		
 		paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 		self.paginationSlider.frame = paginationSliderFrame;
 		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
@@ -207,8 +207,6 @@
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return 16;
-
 	return [[self.fetchedResultsController fetchedObjects] count];
 
 }
@@ -219,16 +217,41 @@
 	returnedView.backgroundColor = [UIColor whiteColor];
 	
 	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	descriptionLabel.textAlignment = UITextAlignmentCenter;
 	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 	descriptionLabel.text = [NSString stringWithFormat:@"<%@ %x> page for article at index %i", NSStringFromClass([self class]), self, index];
 	[descriptionLabel sizeToFit];
 	
-	descriptionLabel.center = returnedView.center;
-	descriptionLabel.frame = CGRectIntegral(descriptionLabel.frame);
+	UILabel *contentLabel = [[[UILabel alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
+	contentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+	contentLabel.text = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]] description];
+	contentLabel.numberOfLines = 0;
+	[contentLabel sizeToFit];
+	
+	CGPoint contentTopCenterOrigin = (CGPoint){ 0.5f * CGRectGetWidth(aPaginatedView.bounds), 256.0f };	//	0.5f * CGRectGetHeight(aPaginatedView.bounds)
+	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(descriptionLabel.frame);
+	contentTopCenterOrigin.y -= 0.5f * 24.0f;
+	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(contentLabel.frame);
+	
+	descriptionLabel.frame = CGRectIntegral((CGRect){
+		(CGPoint){
+			contentTopCenterOrigin.x - 0.5f * descriptionLabel.frame.size.width,
+			contentTopCenterOrigin.y
+		},
+		descriptionLabel.frame.size
+	});
+	
+	contentLabel.frame = CGRectIntegral((CGRect){
+		(CGPoint){
+			contentTopCenterOrigin.x - 0.5f * contentLabel.frame.size.width,
+			contentTopCenterOrigin.y + descriptionLabel.frame.size.height + 24.0f
+		},
+		contentLabel.frame.size
+	});
 	
 	[returnedView addSubview:descriptionLabel];
+	[returnedView addSubview:contentLabel];
 	
 	return returnedView;
 
@@ -304,6 +327,45 @@
 		return (self.interfaceOrientation == newOrientation);
 
 	return YES;
+	
+}
+
+
+
+
+
+- (void) refreshData {
+
+	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+	
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"WAFile", @"files",
+			@"WAComment", @"comments",
+		nil] options:0];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Saving Error %@", savingError);
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"Fail %@", error);
+		
+	}];
+
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+	
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
 }
 

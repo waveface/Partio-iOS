@@ -28,4 +28,28 @@
 
 }
 
+- (NSDate *) dateFromISO8601String:(NSString *)aValue {
+
+	static NSDateFormatter *sharedFormatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedFormatter = [[NSDateFormatter alloc] init];
+		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
+		sharedFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+	});
+	
+	if ([aValue isKindOfClass:[NSString class]]) {
+		NSDate *returned = nil;
+		NSError *error = nil;
+		if (![sharedFormatter getObjectValue:&returned forString:aValue range:NULL error:&error]){
+			NSLog(@"Error parsing date %@", error);
+		}
+		NSParameterAssert(returned);
+		return returned;
+	}
+		
+	return nil;
+
+}
+
 @end
