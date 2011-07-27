@@ -11,6 +11,8 @@
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 
+#import "WARemoteInterface.h"
+
 #import "IRPaginatedView.h"
 #import "IRBarButtonItem.h"
 #import "IRTransparentToolbar.h"
@@ -18,7 +20,7 @@
 #import "IRActionSheet.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
+@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -27,6 +29,8 @@
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
+
+- (void) refreshData;
 
 @end
 
@@ -72,7 +76,7 @@
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.entity = [NSEntityDescription entityForName:@"Article" inManagedObjectContext:self.managedObjectContext];
+		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -80,6 +84,8 @@
 		return returnedRequest;
 	
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
 		
 	return self;
 
@@ -157,6 +163,8 @@
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
+	
+		[self refreshData];
 		
 		[self.fetchedResultsController performFetch:nil];
 		[self.paginatedView reloadViews];
@@ -206,8 +214,6 @@
 }
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
-
-	return 16;
 
 	return [[self.fetchedResultsController fetchedObjects] count];
 
@@ -304,6 +310,45 @@
 		return (self.interfaceOrientation == newOrientation);
 
 	return YES;
+	
+}
+
+
+
+
+
+- (void) refreshData {
+
+	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+	
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"WAFile", @"files",
+			@"WAComment", @"comments",
+		nil] options:0];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Saving Error %@", savingError);
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"Fail %@", error);
+		
+	}];
+
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+	
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
 }
 
