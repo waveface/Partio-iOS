@@ -178,8 +178,6 @@
 		self.pageIndicatorLabel.alpha = 1.0f;
 	
 	} completion:nil];
-	
-	NSLog(@"slider start with current page %i", currentPage);
 
 }
 
@@ -194,8 +192,6 @@
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(self.bounds), -12.0f };
 
-	NSLog(@"slider moved with current page %i", currentPage);
-
 }
 
 - (void) sliderTouchDidEnd:(UISlider *)aSlider {
@@ -203,9 +199,7 @@
 	[self willChangeValueForKey:@"currentPage"];
 	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
 	[self didChangeValueForKey:@"currentPage"];
-	
-	NSLog(@"slider end with current page %i", currentPage);
-	
+		
 	[UIView animateWithDuration:0.125f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionAllowUserInteraction animations: ^ {
 		
 		self.pageIndicatorLabel.alpha = 0.0f;
