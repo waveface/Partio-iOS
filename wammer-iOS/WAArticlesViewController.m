@@ -64,15 +64,15 @@
 		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
 		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
 	nil];
-		
-	self.title = @"Articles";
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
+	
+	self.title = @"Articles";
 	
 	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:@"Debug Import" block:^(void) {
 		
-			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
+			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff, but you should not have to relaunch the app to see them anyway." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
 		
 		}],
 	
@@ -127,18 +127,12 @@
 	self.coachmarkView.backgroundColor = [UIColor clearColor];
 	[self.coachmarkView addSubview:((^ {
 	
-		UILabel *returnedLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-		returnedLabel.text = @"No Articles";
-		returnedLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-		returnedLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-		returnedLabel.backgroundColor = [UIColor clearColor];
-		returnedLabel.opaque = NO;
-		
-		[returnedLabel sizeToFit];
-		[returnedLabel setCenter:self.coachmarkView.center];
-		
-		return returnedLabel;
-		
+		UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+		spinner.center = (CGPoint){ CGRectGetMidX(self.coachmarkView.bounds), CGRectGetMidY(self.coachmarkView.bounds) };
+		spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+		[spinner startAnimating];
+		return spinner;
+	
 	})())];
 	
 	
@@ -172,24 +166,10 @@
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-	
-		[self refreshData];
 		
-		[self.fetchedResultsController performFetch:nil];
 		[self refreshPaginatedViewPages];
-		
-		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
-		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
-		self.paginationSlider.hidden = (numberOfFetchedObjects == 0); 
-		self.paginationSlider.numberOfPages = numberOfFetchedObjects;
-		
-		CGRect paginationSliderFrame = self.paginationSlider.frame;
-		paginationSliderFrame.size.width = MIN(512, MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
-		
-		paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
-		self.paginationSlider.frame = paginationSliderFrame;
-		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
-		
+		[self refreshData];
+				
 	});
 
 }
@@ -316,6 +296,8 @@
 
 - (void) refreshPaginatedViewPages {
 
+	[self.fetchedResultsController performFetch:nil];
+	
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
 
 		return [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
@@ -323,6 +305,18 @@
 	}];
 	
 	[self.paginatedView reloadViews];
+	
+	NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
+	self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
+	self.paginationSlider.hidden = (numberOfFetchedObjects == 0); 
+	self.paginationSlider.numberOfPages = numberOfFetchedObjects;
+	
+	CGRect paginationSliderFrame = self.paginationSlider.frame;
+	paginationSliderFrame.size.width = MIN(512, MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+	
+	paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
+	self.paginationSlider.frame = paginationSliderFrame;
+	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 
 }
 
@@ -340,6 +334,10 @@
 		NSError *savingError = nil;
 		if (![context save:&savingError])
 			NSLog(@"Saving Error %@", savingError);
+			
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self refreshPaginatedViewPages];
+		});
 		
 	} onFailure:^(NSError *error) {
 		
