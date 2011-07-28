@@ -99,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
+		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
@@ -160,8 +161,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
 				FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */,
+				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
 				FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */,
 				FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */,
 				FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */,
@@ -197,6 +198,7 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
 				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,

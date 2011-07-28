@@ -72,83 +72,23 @@
 	self.relativeCreationDateLabel.text = [self.article.timestamp description];
 	self.articleDescriptionLabel.text = self.article.text;
 	self.mainContentView.files = self.article.files;
-	
-	#if 1
-	
-		if (![self.mainContentView.files count]) {
-
-			WAFile *tempFile = [WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-					@"FOO", @"url",
-				
-				nil]];
-			
-			NSLog(@"tempFile %@", tempFile);
-		
-			self.mainContentView.files = [NSSet setWithObjects:
-				tempFile,			
-			nil];
-			
-			self.mainContentView.files = [NSSet setWithObject:@"FOO BAR"];
-			
-			NSLog(@"self.mainContentView.files %@", self.mainContentView.files);
-		
-		}
-	
-	#endif
-	
 	self.avatarView.image = self.article.owner.avatar;
 	[self.commentsView reloadData]; // Eh?
 	
 }
 
-//- (void) loadView {
-//
-//	//	Trigger faulting
-//	[self.article timestamp];
-//
-//	UIView *returnedView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
-//	returnedView.backgroundColor = [UIColor whiteColor];
-//	
-//	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-//	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-//	descriptionLabel.textAlignment = UITextAlignmentCenter;
-//	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-//	descriptionLabel.text = [NSString stringWithFormat:@"<%@ %x> page for article", NSStringFromClass([self class]), self];
-//	[descriptionLabel sizeToFit];
-//	
-//	UILabel *contentLabel = [[[UILabel alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
-//	contentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-//	contentLabel.text = [self.article description];
-//	contentLabel.numberOfLines = 0;
-//	[contentLabel sizeToFit];
-//	
-//	CGPoint contentTopCenterOrigin = (CGPoint){ 0.5f * CGRectGetWidth(returnedView.bounds), 256.0f };
-//	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(descriptionLabel.frame);
-//	contentTopCenterOrigin.y -= 0.5f * 24.0f;
-//	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(contentLabel.frame);
-//	
-//	descriptionLabel.frame = CGRectIntegral((CGRect){
-//		(CGPoint){
-//			contentTopCenterOrigin.x - 0.5f * descriptionLabel.frame.size.width,
-//			contentTopCenterOrigin.y
-//		},
-//		descriptionLabel.frame.size
-//	});
-//	
-//	contentLabel.frame = CGRectIntegral((CGRect){
-//		(CGPoint){
-//			contentTopCenterOrigin.x - 0.5f * contentLabel.frame.size.width,
-//			contentTopCenterOrigin.y + descriptionLabel.frame.size.height + 24.0f
-//		},
-//		contentLabel.frame.size
-//	});
-//	
-//	[returnedView addSubview:descriptionLabel];
-//	[returnedView addSubview:contentLabel];
-//	
-//	self.view = returnedView;
-//
-//}
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	//	Unfortunately, when using shadowPath with shouldRasterize
+
+	for (UIView *aView in self.mainContentView.subviews) {
+		CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
+		aView.layer.shadowOpacity = 0.0f;
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
+			aView.layer.shadowOpacity = oldShadowOpacity;
+		});
+	}
+
+}
 
 @end

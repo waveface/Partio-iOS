@@ -43,7 +43,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIView" id="228681309">
 						<reference key="NSNextResponder" ref="275414550"/>
-						<int key="NSvFlags">266</int>
+						<int key="NSvFlags">269</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIImageView" id="95196131">
@@ -134,7 +134,6 @@
 								<string key="NSFrame">{{672, 28}, {36, 33}}</string>
 								<reference key="NSSuperview" ref="228681309"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:184</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -227,7 +226,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="95196131"/>
 						<string key="NSReuseIdentifierKey">_NS:49</string>
-						<object class="NSColor" key="IBUIBackgroundColor">
+						<object class="NSColor" key="IBUIBackgroundColor" id="807237930">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
@@ -235,7 +234,7 @@
 					</object>
 					<object class="IBUILabel" id="263191292">
 						<reference key="NSNextResponder" ref="275414550"/>
-						<int key="NSvFlags">266</int>
+						<int key="NSvFlags">269</int>
 						<string key="NSFrame">{{40, 764}, {688, 40}}</string>
 						<reference key="NSSuperview" ref="275414550"/>
 						<reference key="NSWindow"/>
@@ -278,11 +277,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="263191292"/>
 						<string key="NSReuseIdentifierKey">_NS:49</string>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MC43NQA</bytes>
-							<reference key="NSCustomColorSpace" ref="941210834"/>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="807237930"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
