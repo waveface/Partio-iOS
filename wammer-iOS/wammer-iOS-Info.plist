@@ -6,18 +6,18 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Wammer</string>
+	<key>CFBundleDocumentTypes</key>
+	<array/>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
 	<string>Icon-72.png</string>
 	<key>CFBundleIconFiles</key>
 	<array>
-		<string>Icon-72.png</string>
+		<string>Icon.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.waveface.${PRODUCT_NAME:rfc1034identifier}</string>
-	<key>UIPrerenderedIcon</key>
-	<true/>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -28,6 +28,8 @@
 	<string>0.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array/>
 	<key>CFBundleVersion</key>
 	<string>${CURRENT_PROJECT_VERSION}</string>
 	<key>LSApplicationCategoryType</key>
@@ -39,5 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array/>
+	<key>UTImportedTypeDeclarations</key>
+	<array/>
 </dict>
 </plist>
