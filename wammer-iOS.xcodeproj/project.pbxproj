@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
+		FF21C8D313E14CF9009B980D /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
 		FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
 		FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
 		FF4FA01213E13249002C627F /* WAArticleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController.xib */; };
@@ -98,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
+		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FF21C8D213E14CF9009B980D /* IPSample */,
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
 				FF4FA01413E136A0002C627F /* WACapsuleRight.png */,
 				FF4FA01513E136A0002C627F /* WACapsuleSingle.png */,
@@ -437,6 +440,7 @@
 				FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */,
 				FF4FA01713E136A0002C627F /* WACapsuleRight.png in Resources */,
 				FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */,
+				FF21C8D313E14CF9009B980D /* IPSample in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
