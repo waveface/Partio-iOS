@@ -131,6 +131,8 @@
 		returnedLabel.text = @"No Articles";
 		returnedLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 		returnedLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+		returnedLabel.backgroundColor = [UIColor clearColor];
+		returnedLabel.opaque = NO;
 		
 		[returnedLabel sizeToFit];
 		[returnedLabel setCenter:self.coachmarkView.center];
@@ -229,7 +231,13 @@
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return [self.articleViewControllers objectAtIndex:index];
+	@try {
+		return [self.articleViewControllers objectAtIndex:index];
+	} @catch (NSException *e) {
+		//	
+	}
+	
+	return nil;
 
 }
 
