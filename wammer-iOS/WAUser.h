@@ -12,7 +12,7 @@
 
 @interface WAUser : IRManagedObject
 
-@property (nonatomic, retain) id avatar;
+@property (nonatomic, retain) UIImage * avatar;
 @property (nonatomic, retain) NSString * avatarURL;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * identifier;

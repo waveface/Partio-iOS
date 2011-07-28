@@ -19,6 +19,8 @@
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
 
+#import "WAArticleViewController.h"
+
 
 @interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
 
@@ -30,7 +32,10 @@
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
 
+@property (nonatomic, readwrite, retain) NSArray *articleViewControllers;
+
 - (void) refreshData;
+- (void) refreshPaginatedViewPages;
 
 @end
 
@@ -42,6 +47,7 @@
 @synthesize coachmarkView;
 @synthesize paginationSlider;
 @synthesize debugActionSheetController;
+@synthesize articleViewControllers;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -77,6 +83,7 @@
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -106,11 +113,11 @@
 
 	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.view.backgroundColor = [UIColor whiteColor];
+	self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
 	
-	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.paginatedView.backgroundColor = [UIColor whiteColor];
+	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
 	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
@@ -167,7 +174,7 @@
 		[self refreshData];
 		
 		[self.fetchedResultsController performFetch:nil];
-		[self.paginatedView reloadViews];
+		[self refreshPaginatedViewPages];
 		
 		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
 		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
@@ -213,45 +220,8 @@
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	UIView *returnedView = [[[UIView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
-	returnedView.backgroundColor = [UIColor whiteColor];
-	
-	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-	descriptionLabel.textAlignment = UITextAlignmentCenter;
-	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-	descriptionLabel.text = [NSString stringWithFormat:@"<%@ %x> page for article at index %i", NSStringFromClass([self class]), self, index];
-	[descriptionLabel sizeToFit];
-	
-	UILabel *contentLabel = [[[UILabel alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
-	contentLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-	contentLabel.text = [[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]] description];
-	contentLabel.numberOfLines = 0;
-	[contentLabel sizeToFit];
-	
-	CGPoint contentTopCenterOrigin = (CGPoint){ 0.5f * CGRectGetWidth(aPaginatedView.bounds), 256.0f };	//	0.5f * CGRectGetHeight(aPaginatedView.bounds)
-	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(descriptionLabel.frame);
-	contentTopCenterOrigin.y -= 0.5f * 24.0f;
-	contentTopCenterOrigin.y -= 0.5f * CGRectGetHeight(contentLabel.frame);
-	
-	descriptionLabel.frame = CGRectIntegral((CGRect){
-		(CGPoint){
-			contentTopCenterOrigin.x - 0.5f * descriptionLabel.frame.size.width,
-			contentTopCenterOrigin.y
-		},
-		descriptionLabel.frame.size
-	});
-	
-	contentLabel.frame = CGRectIntegral((CGRect){
-		(CGPoint){
-			contentTopCenterOrigin.x - 0.5f * contentLabel.frame.size.width,
-			contentTopCenterOrigin.y + descriptionLabel.frame.size.height + 24.0f
-		},
-		contentLabel.frame.size
-	});
-	
-	[returnedView addSubview:descriptionLabel];
-	[returnedView addSubview:contentLabel];
+	UIView *returnedView = [self viewControllerForSubviewAtIndex:index inPaginatedView:aPaginatedView].view;
+	returnedView.backgroundColor = self.paginatedView.backgroundColor;
 	
 	return returnedView;
 
@@ -259,7 +229,7 @@
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return nil;
+	return [self.articleViewControllers objectAtIndex:index];
 
 }
 
@@ -318,6 +288,8 @@
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[self.paginatedView setNeedsLayout];
+	
+	[[self viewControllerForSubviewAtIndex:self.paginatedView.currentPage inPaginatedView:self.paginatedView] willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 }
 
@@ -333,6 +305,18 @@
 
 
 
+
+- (void) refreshPaginatedViewPages {
+
+	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
+
+		return [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		
+	}];
+	
+	[self.paginatedView reloadViews];
+
+}
 
 - (void) refreshData {
 
