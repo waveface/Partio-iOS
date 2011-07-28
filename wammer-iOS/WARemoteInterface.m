@@ -35,6 +35,9 @@
 
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
 
+	if ([inMethodName isEqualToString:@"articles"])
+		return [[NSBundle mainBundle] URLForResource:@"WAMockArticlesList" withExtension:@"json"];
+
 	return [super baseURLForMethodNamed:inMethodName];
 
 }

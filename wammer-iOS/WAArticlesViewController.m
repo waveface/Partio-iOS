@@ -11,17 +11,31 @@
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 
+#import "WARemoteInterface.h"
+
 #import "IRPaginatedView.h"
+#import "IRBarButtonItem.h"
+#import "IRTransparentToolbar.h"
+#import "IRActionSheetController.h"
+#import "IRActionSheet.h"
+
+#import "WAArticleViewController.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
+@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
+@property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
+
+@property (nonatomic, readwrite, retain) NSArray *articleViewControllers;
+
+- (void) refreshData;
+- (void) refreshPaginatedViewPages;
 
 @end
 
@@ -32,6 +46,8 @@
 @synthesize managedObjectContext;
 @synthesize coachmarkView;
 @synthesize paginationSlider;
+@synthesize debugActionSheetController;
+@synthesize articleViewControllers;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -40,14 +56,34 @@
 	if (!self)
 		return nil;
 		
+	IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+	toolbar.usesCustomLayout = NO;
+	toolbar.items = [NSArray arrayWithObjects:
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+	nil];
+		
 	self.title = @"Articles";
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
 	
+	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Debug Import" block:^(void) {
+		
+			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
+		
+		}],
+	
+	nil]];
+		
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.entity = [NSEntityDescription entityForName:@"Article" inManagedObjectContext:self.managedObjectContext];
+		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -55,6 +91,8 @@
 		return returnedRequest;
 	
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	
+	self.fetchedResultsController.delegate = self;
 		
 	return self;
 
@@ -75,11 +113,11 @@
 
 	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.view.backgroundColor = [UIColor whiteColor];
+	self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
 	
-	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.paginatedView.backgroundColor = [UIColor whiteColor];
+	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
 	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
@@ -132,31 +170,34 @@
 	
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
+	
+		[self refreshData];
 		
 		[self.fetchedResultsController performFetch:nil];
-		[self.paginatedView reloadViews];
+		[self refreshPaginatedViewPages];
 		
 		NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
 		self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
-		self.paginationSlider.hidden = (numberOfFetchedObjects > 0); 
+		self.paginationSlider.hidden = (numberOfFetchedObjects == 0); 
 		self.paginationSlider.numberOfPages = numberOfFetchedObjects;
 		
-		#if 1
-		
-		self.paginationSlider.hidden = NO;
-		self.paginationSlider.numberOfPages = 16;
-		
-		#endif
-		
-		self.coachmarkView.hidden = YES;
-		
 		CGRect paginationSliderFrame = self.paginationSlider.frame;
-		paginationSliderFrame.size.width = MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius));
+		paginationSliderFrame.size.width = MIN(512, MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+		
 		paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 		self.paginationSlider.frame = paginationSliderFrame;
 		self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 		
 	});
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	if (self.debugActionSheetController.managedActionSheet.visible)
+		[self.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:self.debugActionSheetController.managedActionSheet.cancelButtonIndex animated:animated];
 
 }
 
@@ -173,28 +214,14 @@
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return 16;
-
 	return [[self.fetchedResultsController fetchedObjects] count];
 
 }
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	UIView *returnedView = [[[UIView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
-	returnedView.backgroundColor = [UIColor whiteColor];
-	
-	UILabel *descriptionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-	descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-	descriptionLabel.textAlignment = UITextAlignmentCenter;
-	descriptionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-	descriptionLabel.text = [NSString stringWithFormat:@"<%@ %x> page for article at index %i", NSStringFromClass([self class]), self, index];
-	[descriptionLabel sizeToFit];
-	
-	descriptionLabel.center = returnedView.center;
-	descriptionLabel.frame = CGRectIntegral(descriptionLabel.frame);
-	
-	[returnedView addSubview:descriptionLabel];
+	UIView *returnedView = [self viewControllerForSubviewAtIndex:index inPaginatedView:aPaginatedView].view;
+	returnedView.backgroundColor = self.paginatedView.backgroundColor;
 	
 	return returnedView;
 
@@ -202,7 +229,7 @@
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return nil;
+	return [self.articleViewControllers objectAtIndex:index];
 
 }
 
@@ -241,12 +268,18 @@
 
 }
 
+- (void) handleAction:(UIBarButtonItem *)sender {
+
+	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
+
+}
+
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
 	WACompositionViewController *compositionVC = [[[WACompositionViewController alloc] init] autorelease];
 	
 	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
-	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
+	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 
@@ -255,6 +288,8 @@
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[self.paginatedView setNeedsLayout];
+	
+	[[self viewControllerForSubviewAtIndex:self.paginatedView.currentPage inPaginatedView:self.paginatedView] willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 }
 
@@ -264,6 +299,57 @@
 		return (self.interfaceOrientation == newOrientation);
 
 	return YES;
+	
+}
+
+
+
+
+
+- (void) refreshPaginatedViewPages {
+
+	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
+
+		return [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		
+	}];
+	
+	[self.paginatedView reloadViews];
+
+}
+
+- (void) refreshData {
+
+	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+	
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"WAFile", @"files",
+			@"WAComment", @"comments",
+		nil] options:0];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Saving Error %@", savingError);
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"Fail %@", error);
+		
+	}];
+
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+	
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
 }
 

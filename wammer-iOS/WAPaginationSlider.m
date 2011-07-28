@@ -11,6 +11,7 @@
 
 @interface WAPaginationSlider ()
 @property (nonatomic, readwrite, retain) UISlider *slider; 
+@property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel; 
 + (UIImage *) transparentImage;
 @end
 
@@ -18,6 +19,7 @@
 @implementation WAPaginationSlider
 @synthesize slider;
 @synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
+@synthesize pageIndicatorLabel;
 
 + (UIImage *) transparentImage {
 
@@ -58,10 +60,22 @@
 	[self.slider setMinimumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider setMaximumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider addTarget:self action:@selector(sliderDidMove:) forControlEvents:UIControlEventValueChanged];
+	[self.slider addTarget:self action:@selector(sliderTouchDidStart:) forControlEvents:UIControlEventTouchDown];
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpInside];
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpOutside];
 	
+	self.pageIndicatorLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	self.pageIndicatorLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+	self.pageIndicatorLabel.textColor = [UIColor whiteColor];
+	self.pageIndicatorLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.35f];
+	self.pageIndicatorLabel.opaque = NO;
+	self.pageIndicatorLabel.alpha = 0;
+	self.pageIndicatorLabel.userInteractionEnabled = NO;
+	self.pageIndicatorLabel.textAlignment = UITextAlignmentCenter;
+	self.pageIndicatorLabel.layer.cornerRadius = 4.0f;
+	
 	[self addSubview:self.slider];
+	[self addSubview:self.pageIndicatorLabel];
 	
 	return self;
 	
@@ -69,10 +83,12 @@
 
 - (void) layoutSubviews {
 
+	static int dotTag = 1048576;
+
 	NSMutableSet *dequeuedDots = [NSMutableSet set];
 
 	for (UIView *aSubview in self.subviews)
-		if (aSubview != self.slider)
+		if (aSubview.tag == dotTag)
 			[dequeuedDots addObject:aSubview];
 
 	CGFloat usableWidth = CGRectGetWidth(self.bounds) - self.edgeInsets.left - self.edgeInsets.right;
@@ -97,6 +113,7 @@
 	if (numberOfRequiredNewDots)
 	for (int i = 0; i < numberOfRequiredNewDots; i++) {
 		UIView *dotView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, self.dotRadius, self.dotRadius }] autorelease];
+		dotView.tag = dotTag;
 		dotView.layer.contents = (id)dotImage.CGImage;
 		[dequeuedDots addObject:dotView];
 	}
@@ -145,10 +162,35 @@
 
 }
 
+- (void) sliderTouchDidStart:(UISlider *)aSlider {
+
+	[self willChangeValueForKey:@"currentPage"];
+	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
+	[self didChangeValueForKey:@"currentPage"];
+	
+	self.pageIndicatorLabel.text = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];
+	[self.pageIndicatorLabel sizeToFit];
+	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(self.bounds), -12.0f };
+	
+	[UIView animateWithDuration:0.125f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionAllowUserInteraction animations: ^ {
+		
+		self.pageIndicatorLabel.alpha = 1.0f;
+	
+	} completion:nil];
+
+}
+
 - (void) sliderDidMove:(UISlider *)aSlider {
 
-	//	NSUInteger inferredPageNumber = [self estimatedPageNumberForPosition:aSlider.value];
-	//	[self.delegate paginationSlider:self didMoveToPage:inferredPageNumber];
+	[self willChangeValueForKey:@"currentPage"];
+	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
+	[self didChangeValueForKey:@"currentPage"];
+	
+	self.pageIndicatorLabel.text = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];
+	[self.pageIndicatorLabel sizeToFit];
+	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(self.bounds), -12.0f };
 
 }
 
@@ -157,13 +199,23 @@
 	[self willChangeValueForKey:@"currentPage"];
 	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
 	[self didChangeValueForKey:@"currentPage"];
+		
+	[UIView animateWithDuration:0.125f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionAllowUserInteraction animations: ^ {
+		
+		self.pageIndicatorLabel.alpha = 0.0f;
 	
-	CGFloat inferredSliderSnappingValue = [self positionForPageNumber:self.currentPage];
+	} completion:nil];
 	
-	[self.delegate paginationSlider:self didMoveToPage:self.currentPage];
+	NSUInteger capturedCurrentPage = self.currentPage;
+	dispatch_async(dispatch_get_current_queue(), ^ {
 	
-	if (self.snapsToPages)
-		[aSlider setValue:inferredSliderSnappingValue animated:YES];
+		CGFloat inferredSliderSnappingValue = [self positionForPageNumber:capturedCurrentPage];
+		[self.delegate paginationSlider:self didMoveToPage:capturedCurrentPage];
+		
+		if (self.snapsToPages)
+			[aSlider setValue:inferredSliderSnappingValue animated:YES];
+		
+	});
 
 }
 

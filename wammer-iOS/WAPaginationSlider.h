@@ -31,7 +31,10 @@
 - (void) setCurrentPage:(NSUInteger)newPage animated:(BOOL)animate;
 
 @property (nonatomic, readwrite, assign) BOOL snapsToPages;
-
 @property (nonatomic, readwrite, assign) id<WAPaginationSliderDelegate> delegate;
+
+- (void) sliderTouchDidStart:(UISlider *)aSlider;
+- (void) sliderDidMove:(UISlider *)aSlider;
+- (void) sliderTouchDidEnd:(UISlider *)aSlider;
 
 @end
