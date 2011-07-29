@@ -7,7 +7,7 @@
 //
 
 #import "WADataStore.h"
-#import "WAArticlesViewController.h"
+#import "WAArticlesViewController_iPhone.h"
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 
@@ -22,7 +22,7 @@
 #import "WAArticleViewController.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
+@interface WAArticlesViewController_iPhone () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -40,7 +40,7 @@
 @end
 
 
-@implementation WAArticlesViewController
+@implementation WAArticlesViewController_iPhone
 @synthesize paginatedView;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
@@ -66,7 +66,7 @@
 	nil];
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
 	
-	self.title = @"Articles";
+	self.title = @"Articles(iPhone)";
 	
 	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
 	
