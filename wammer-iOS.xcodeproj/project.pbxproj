@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4B1527A213E29E72006E9737 /* WAArticlesViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WAArticlesViewController_iPhone.m */; };
-		4B1527A713E2A0B6006E9737 /* WAArticleViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A613E2A0B6006E9737 /* WAArticleViewController_iPhone.m */; };
-		4B1527A913E2A2F7006E9737 /* WAArticleViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B1527A813E2A2F7006E9737 /* WAArticleViewController_iPhone.xib */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
 		FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FF21C8D313E14CF9009B980D /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
@@ -104,9 +102,6 @@
 /* Begin PBXFileReference section */
 		4B1527A013E29E72006E9737 /* WAArticlesViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAArticlesViewController_iPhone.h; path = "wammer-iOS/WAArticlesViewController_iPhone.h"; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAArticlesViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAArticlesViewController_iPhone.m; path = "wammer-iOS/WAArticlesViewController_iPhone.m"; sourceTree = "<group>"; };
-		4B1527A513E2A0B6006E9737 /* WAArticleViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAArticleViewController_iPhone.h; path = "wammer-iOS/WAArticleViewController_iPhone.h"; sourceTree = "<group>"; };
-		4B1527A613E2A0B6006E9737 /* WAArticleViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAArticleViewController_iPhone.m; path = "wammer-iOS/WAArticleViewController_iPhone.m"; sourceTree = "<group>"; };
-		4B1527A813E2A2F7006E9737 /* WAArticleViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAArticleViewController_iPhone.xib; path = "wammer-iOS/Resources/WAArticleViewController_iPhone.xib"; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -192,9 +187,6 @@
 			children = (
 				4B1527A013E29E72006E9737 /* WAArticlesViewController_iPhone.h */,
 				4B1527A113E29E72006E9737 /* WAArticlesViewController_iPhone.m */,
-				4B1527A513E2A0B6006E9737 /* WAArticleViewController_iPhone.h */,
-				4B1527A613E2A0B6006E9737 /* WAArticleViewController_iPhone.m */,
-				4B1527A813E2A2F7006E9737 /* WAArticleViewController_iPhone.xib */,
 			);
 			name = iPhone;
 			sourceTree = "<group>";
@@ -481,7 +473,6 @@
 				FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */,
 				FF21C8D313E14CF9009B980D /* IPSample in Resources */,
 				FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */,
-				4B1527A913E2A2F7006E9737 /* WAArticleViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +502,6 @@
 				FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */,
 				FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */,
 				4B1527A213E29E72006E9737 /* WAArticlesViewController_iPhone.m in Sources */,
-				4B1527A713E2A0B6006E9737 /* WAArticleViewController_iPhone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
