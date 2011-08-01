@@ -8,10 +8,9 @@
 
 #import "WAArticleViewController.h"
 #import "WADataStore.h"
-
 #import "WAImageStackView.h"
 
-@interface WAArticleViewController ()
+@interface WAArticleViewController () <UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
@@ -24,7 +23,7 @@
 
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, commentRevealButton, commentPostButton, commentCloseButton, compositionAccessoryView, compositionContentField, compositionSendButton, commentsView, overlayView, backgroundView;
+@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, commentRevealButton, commentPostButton, commentCloseButton, compositionAccessoryView, compositionContentField, compositionSendButton, commentsView, commentsContainerView, commentsRevealingActionContainerView, overlayView, backgroundView;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -49,6 +48,37 @@
 
 	[super viewDidLoad];
 	[self refreshView];
+	
+	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
+	self.commentsContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
+	
+	
+	self.commentsContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
+	self.commentsContainerView.layer.shadowOpacity = 0.5f;
+	self.commentsContainerView.layer.shadowRadius = 4.0f;
+
+	//	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(self.commentsContainerView) nrContainerView = self.commentsContainerView;
+	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
+	
+	self.commentsContainerView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	
+		CGPoint pointWithinRevealingContainerView = [nrContainerView convertPoint:aPoint toView:nrRevealingActionContainerView];
+		
+		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
+			return YES;
+			
+		return superAnswer;
+	
+	};
+	
+	UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentViewPan:)] autorelease];
+	panGestureRecognizer.delegate = self;
+	[self.view addGestureRecognizer:panGestureRecognizer];
+	
+	[self.commentsContainerView addSubview:self.commentsRevealingActionContainerView];
+	[self.view addSubview:self.commentsContainerView];
+	
 	[self updateLayoutForCommentsVisible:NO];
 
 }
@@ -79,14 +109,19 @@
 	if (!self.userNameLabel.text)
 		self.userNameLabel.text = @"A Certain User";
 	
-	[self.commentsView reloadData]; // Eh?
+	//	[self.commentsView reloadData]; // Eh?
 	
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	//	Unfortunately, when using shadowPath with shouldRasterize
-
+	
+	CGRect commentsContainerViewFrame = self.commentsContainerView.frame;
+	BOOL commentsContainerVisible = (CGRectGetMinY(commentsContainerViewFrame) >= CGRectGetMinY(self.view.bounds));
+	
+	[self updateLayoutForCommentsVisible:commentsContainerVisible];
+	
 	for (UIView *aView in self.mainContentView.subviews) {
 		CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
 		aView.layer.shadowOpacity = 0.0f;
@@ -100,6 +135,92 @@
 
 
 
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)panGestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+		BOOL hitsCommentView = CGRectContainsPoint(
+			UIEdgeInsetsInsetRect(self.commentsRevealingActionContainerView.bounds, (UIEdgeInsets){ -8, -8, -8, -8 }),
+			[touch locationInView:self.commentsRevealingActionContainerView]
+		);
+		
+		return hitsCommentView;
+
+}
+
+- (void) handleCommentViewPan:(UIPanGestureRecognizer *)panRecognizer {
+	
+	static BOOL commentsViewWasShown = NO;
+	static CGPoint beginTouch = (CGPoint){ 0, 0 };
+	
+	CGFloat distance = [panRecognizer locationInView:self.view].y - CGRectGetMinY(self.view.bounds);
+	distance = MAX(0, MIN(CGRectGetHeight(self.commentsContainerView.frame), distance));
+	
+	CGFloat delta = fabsf([panRecognizer locationInView:self.view].y - beginTouch.y);
+	
+	switch (panRecognizer.state) {
+	
+		case UIGestureRecognizerStatePossible:
+		case UIGestureRecognizerStateBegan: {
+		
+			commentsViewWasShown = (CGRectGetMaxY(self.commentsContainerView.frame) == CGRectGetHeight(self.commentsContainerView.frame));
+			beginTouch = [panRecognizer locationInView:self.view];
+		
+			break;
+		}
+		
+		case UIGestureRecognizerStateChanged: {
+		
+			CGPoint newOrigin = (CGPoint){
+				CGRectGetMidX(self.view.bounds) - 0.5f * CGRectGetWidth(self.commentsContainerView.frame),
+				distance - CGRectGetHeight(self.commentsContainerView.frame)
+			};
+		
+			void (^operations)() = ^ {
+				self.commentsContainerView.frame = (CGRect){ newOrigin, self.commentsContainerView.frame.size };
+			};
+		
+			if (!commentsViewWasShown && (distance < 64.0f)) {
+			
+				NSTimeInterval duration = ((distance / 64.0f) * 0.3f);
+			
+				if (duration > 0.1f)
+					[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:operations completion:nil];
+				else
+					operations();
+			
+			} else {
+			
+				operations();
+			
+			}
+						
+			break;
+		
+		}
+		case UIGestureRecognizerStateEnded:
+		case UIGestureRecognizerStateCancelled:
+		case UIGestureRecognizerStateFailed: {
+		
+			CGFloat currentCommentsContainerViewHeight = CGRectGetHeight(self.commentsContainerView.frame);
+			
+			[UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void) {
+			
+				if (!commentsViewWasShown && (distance < 0.25f * currentCommentsContainerViewHeight))
+					[self updateLayoutForCommentsVisible:NO];
+				else if (commentsViewWasShown && (distance < 0.75f * currentCommentsContainerViewHeight))
+					[self updateLayoutForCommentsVisible:NO];
+				else
+					[self updateLayoutForCommentsVisible:YES];
+			
+			} completion:nil];
+
+			break;
+			
+		}
+	
+	};
+	
+}
 
 - (void) handleCommentReveal:(id)sender {
 	dispatch_async(dispatch_get_main_queue(), ^ {
@@ -126,6 +247,28 @@
 }
 
 - (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments {
+
+	self.commentsRevealingActionContainerView.frame = (CGRect){
+		(CGPoint){
+			CGRectGetMidX(self.commentsContainerView.bounds) - 0.5f * CGRectGetWidth(self.commentsRevealingActionContainerView.bounds),
+			CGRectGetMaxY(self.commentsContainerView.bounds)
+		},
+		self.commentsRevealingActionContainerView.frame.size
+	};
+	
+	CGSize commentsContainerViewSize = (CGSize){
+		768.0f - 32.0f,
+		CGRectGetHeight(self.view.bounds) - 96.0f
+	};
+	
+	self.commentsContainerView.frame = (CGRect){
+		(CGPoint){
+			CGRectGetMidX(self.view.bounds) - 0.5f * commentsContainerViewSize.width,
+			(showingDetailedComments ? 0.0f : -1.0f) * commentsContainerViewSize.height
+		},
+		commentsContainerViewSize
+	};
+	
 	
 	if (showingDetailedComments) {
 		
@@ -136,8 +279,18 @@
 		self.commentCloseButton.alpha = 1.0f;
 		self.commentCloseButton.enabled = YES;
 		
-		self.mainContentView.alpha = 0.0f;
-		self.articleDescriptionLabel.alpha = 0.0f;
+		BOOL needsReload = (!self.commentsView.dataSource || !self.commentsView.delegate);
+	
+		if (!self.commentsView.dataSource)
+			self.commentsView.dataSource = self;
+
+		if (!self.commentsView.delegate)
+			self.commentsView.delegate = self;
+
+		if (needsReload) {
+			NSLog(@"FIXME: Needing Reload");
+			//	[self.commentsView reloadData];
+		}
 		
 	} else {
 		
@@ -148,11 +301,18 @@
 		self.commentCloseButton.alpha = 0.0f;
 		self.commentCloseButton.enabled = NO;
 		
-		self.mainContentView.alpha = 1.0f;
-		self.articleDescriptionLabel.alpha = 1.0f;
-		
 	}
 	
+}
+
+
+
+
+
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+
+	return 0;
+
 }
 
 @end
