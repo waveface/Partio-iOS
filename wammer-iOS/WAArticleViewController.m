@@ -6,6 +6,7 @@
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
+#import "QuartzCore+IRAdditions.h"
 #import "WAArticleViewController.h"
 #import "WADataStore.h"
 #import "WAImageStackView.h"
@@ -56,6 +57,16 @@
 	self.commentsContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
 	self.commentsContainerView.layer.shadowOpacity = 0.5f;
 	self.commentsContainerView.layer.shadowRadius = 4.0f;
+	self.commentsContainerView.layer.actions = [NSDictionary dictionaryWithObjectsAndKeys:
+		[NSNull null], @"shadowPath",
+	nil];
+	self.commentsRevealingActionContainerView.layer.actions = [NSDictionary dictionaryWithObjectsAndKeys:
+		[NSNull null], @"shadowPath",
+	nil];
+	
+	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
+	self.commentsRevealingActionContainerView.layer.shadowOpacity = 0.5f;
+	self.commentsRevealingActionContainerView.layer.shadowRadius = 4.0f;
 
 	//	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self.commentsContainerView) nrContainerView = self.commentsContainerView;
@@ -77,6 +88,7 @@
 	[self.view addGestureRecognizer:panGestureRecognizer];
 	
 	[self.commentsContainerView addSubview:self.commentsRevealingActionContainerView];
+	[self.commentsContainerView sendSubviewToBack:self.commentsRevealingActionContainerView];
 	[self.view addSubview:self.commentsContainerView];
 	
 	[self updateLayoutForCommentsVisible:NO];
@@ -115,12 +127,39 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
-	//	Unfortunately, when using shadowPath with shouldRasterize
+	CGPathRef oldCommentsContainerShadowPath = self.commentsContainerView.layer.shadowPath;
+	CGPathRef oldCommentsRevealingActionContainerShadowPath = self.commentsRevealingActionContainerView.layer.shadowPath;
+
+	if (oldCommentsContainerShadowPath)
+		CFRetain(oldCommentsContainerShadowPath);
 	
+	if (oldCommentsRevealingActionContainerShadowPath)
+		CFRetain(oldCommentsRevealingActionContainerShadowPath);
+		
 	CGRect commentsContainerViewFrame = self.commentsContainerView.frame;
 	BOOL commentsContainerVisible = (CGRectGetMinY(commentsContainerViewFrame) >= CGRectGetMinY(self.view.bounds));
-	
 	[self updateLayoutForCommentsVisible:commentsContainerVisible];
+	
+	if (oldCommentsContainerShadowPath) {
+		[self.commentsContainerView.layer addAnimation:((^ {
+			CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+			transition.fromValue = (id)oldCommentsContainerShadowPath;
+			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			transition.duration = duration;
+			return transition;
+		})()) forKey:@"transition"];
+		CFRelease(oldCommentsContainerShadowPath);
+	}
+	if (oldCommentsRevealingActionContainerShadowPath) {
+		[self.commentsRevealingActionContainerView.layer addAnimation:((^ {
+			CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+			transition.fromValue = (id)oldCommentsRevealingActionContainerShadowPath;
+			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			transition.duration = duration;
+			return transition;
+		})()) forKey:@"transition"];
+		CFRelease(oldCommentsRevealingActionContainerShadowPath);
+	}
 	
 	for (UIView *aView in self.mainContentView.subviews) {
 		CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
@@ -129,7 +168,7 @@
 			aView.layer.shadowOpacity = oldShadowOpacity;
 		});
 	}
-
+	
 }
 
 
@@ -155,8 +194,6 @@
 	CGFloat distance = [panRecognizer locationInView:self.view].y - CGRectGetMinY(self.view.bounds);
 	distance = MAX(0, MIN(CGRectGetHeight(self.commentsContainerView.frame), distance));
 	
-	CGFloat delta = fabsf([panRecognizer locationInView:self.view].y - beginTouch.y);
-	
 	switch (panRecognizer.state) {
 	
 		case UIGestureRecognizerStatePossible:
@@ -177,6 +214,7 @@
 		
 			void (^operations)() = ^ {
 				self.commentsContainerView.frame = (CGRect){ newOrigin, self.commentsContainerView.frame.size };
+				self.commentsContainerView.layer.shadowOpacity = (distance > 0.0f) ? 0.5f : 0.0f;
 			};
 		
 			if (!commentsViewWasShown && (distance < 64.0f)) {
@@ -203,7 +241,11 @@
 		
 			CGFloat currentCommentsContainerViewHeight = CGRectGetHeight(self.commentsContainerView.frame);
 			
+			__block CGFloat oldShadowOpacity, newShadowOpacity;
+			
 			[UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void) {
+			
+				oldShadowOpacity = self.commentsContainerView.layer.shadowOpacity;
 			
 				if (!commentsViewWasShown && (distance < 0.25f * currentCommentsContainerViewHeight))
 					[self updateLayoutForCommentsVisible:NO];
@@ -211,8 +253,15 @@
 					[self updateLayoutForCommentsVisible:NO];
 				else
 					[self updateLayoutForCommentsVisible:YES];
+					
+				newShadowOpacity = self.commentsContainerView.layer.shadowOpacity;
+				self.commentsContainerView.layer.shadowOpacity = oldShadowOpacity;
 			
-			} completion:nil];
+			} completion:^(BOOL finished) {
+				
+				self.commentsContainerView.layer.shadowOpacity = newShadowOpacity;
+				
+			}];
 
 			break;
 			
@@ -269,6 +318,8 @@
 		commentsContainerViewSize
 	};
 	
+	self.commentsContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.commentsContainerView.bounds].CGPath;
+	self.commentsRevealingActionContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.commentsRevealingActionContainerView.bounds].CGPath;
 	
 	if (showingDetailedComments) {
 		
@@ -278,6 +329,7 @@
 		self.commentRevealButton.enabled = NO;
 		self.commentCloseButton.alpha = 1.0f;
 		self.commentCloseButton.enabled = YES;
+		self.commentsContainerView.layer.shadowOpacity = 0.5f;
 		
 		BOOL needsReload = (!self.commentsView.dataSource || !self.commentsView.delegate);
 	
@@ -300,7 +352,8 @@
 		self.commentRevealButton.enabled = YES;
 		self.commentCloseButton.alpha = 0.0f;
 		self.commentCloseButton.enabled = NO;
-		
+		self.commentsContainerView.layer.shadowOpacity = 0.0f;
+
 	}
 	
 }
