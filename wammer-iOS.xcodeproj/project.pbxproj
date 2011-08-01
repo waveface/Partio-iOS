@@ -50,6 +50,7 @@
 		FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
 		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
+		FFD47E2013E6711400C385C1 /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD47E1F13E6711400C385C1 /* WAView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +169,8 @@
 		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
+		FFD47E1E13E6711400C385C1 /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
+		FFD47E1F13E6711400C385C1 /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -239,6 +242,8 @@
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
 				FF4FA01113E13249002C627F /* WAArticleViewController.xib */,
+				FFD47E1E13E6711400C385C1 /* WAView.h */,
+				FFD47E1F13E6711400C385C1 /* WAView.m */,
 				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
 				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
@@ -499,6 +504,7 @@
 				FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */,
 				FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */,
 				FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */,
+				FFD47E2013E6711400C385C1 /* WAView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
