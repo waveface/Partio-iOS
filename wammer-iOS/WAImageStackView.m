@@ -153,7 +153,7 @@
 		
 		if (!hasUsedFirstPhoto) {
 		
-			photoViewFrame = IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 24.0f, YES);
+			photoViewFrame = IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES);
 			
 			wrappingImageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;

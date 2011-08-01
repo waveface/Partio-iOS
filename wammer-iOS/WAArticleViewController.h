@@ -15,6 +15,9 @@
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
 
+@property (nonatomic, readwrite, retain) IBOutlet UIView *overlayView;
+@property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
+
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *mainContentView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
@@ -30,5 +33,10 @@
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
 
 @property (nonatomic, readwrite, retain) IBOutlet UITableView *commentsView;
+
+
+- (IBAction) handleCommentReveal:(id)sender;
+- (IBAction) handleCommentPost:(id)sender;
+- (IBAction) handleCommentClose:(id)sender;
 
 @end

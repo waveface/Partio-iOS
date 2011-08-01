@@ -17,13 +17,14 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
 - (void) refreshView;
+- (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments;
 
 @end
 
 
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, commentRevealButton, commentPostButton, commentCloseButton, compositionAccessoryView, compositionContentField, compositionSendButton, commentsView;
+@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, commentRevealButton, commentPostButton, commentCloseButton, compositionAccessoryView, compositionContentField, compositionSendButton, commentsView, overlayView, backgroundView;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -48,6 +49,7 @@
 
 	[super viewDidLoad];
 	[self refreshView];
+	[self updateLayoutForCommentsVisible:NO];
 
 }
 
@@ -55,7 +57,7 @@
 
 	if (article == newArticle)
 		return;
-		
+	
 	[self willChangeValueForKey:@"article"];
 	[article release];
 	article = [newArticle retain];
@@ -73,6 +75,10 @@
 	self.articleDescriptionLabel.text = self.article.text;
 	self.mainContentView.files = self.article.files;
 	self.avatarView.image = self.article.owner.avatar;
+	
+	if (!self.userNameLabel.text)
+		self.userNameLabel.text = @"A Certain User";
+	
 	[self.commentsView reloadData]; // Eh?
 	
 }
@@ -89,6 +95,64 @@
 		});
 	}
 
+}
+
+
+
+
+
+- (void) handleCommentReveal:(id)sender {
+	dispatch_async(dispatch_get_main_queue(), ^ {
+		[UIView animateWithDuration:0.3f animations: ^ {
+			[self updateLayoutForCommentsVisible:YES];
+		}];
+	});
+}
+
+- (void) handleCommentClose:(id)sender {
+	dispatch_async(dispatch_get_main_queue(), ^ {
+		[UIView animateWithDuration:0.3f animations: ^ {
+			[self updateLayoutForCommentsVisible:NO];
+		}];	
+	});
+}
+
+- (void) handleCommentPost:(id)sender {
+	dispatch_async(dispatch_get_main_queue(), ^ {
+		[UIView animateWithDuration:0.3f animations: ^ {
+			[self updateLayoutForCommentsVisible:YES];
+		}];
+	});
+}
+
+- (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments {
+	
+	if (showingDetailedComments) {
+		
+		self.commentPostButton.alpha = 0.0f;
+		self.commentPostButton.enabled = NO;
+		self.commentRevealButton.alpha = 0.0f;
+		self.commentRevealButton.enabled = NO;
+		self.commentCloseButton.alpha = 1.0f;
+		self.commentCloseButton.enabled = YES;
+		
+		self.mainContentView.alpha = 0.0f;
+		self.articleDescriptionLabel.alpha = 0.0f;
+		
+	} else {
+		
+		self.commentPostButton.alpha = 1.0f;
+		self.commentPostButton.enabled = YES;
+		self.commentRevealButton.alpha = 1.0f;
+		self.commentRevealButton.enabled = YES;
+		self.commentCloseButton.alpha = 0.0f;
+		self.commentCloseButton.enabled = NO;
+		
+		self.mainContentView.alpha = 1.0f;
+		self.articleDescriptionLabel.alpha = 1.0f;
+		
+	}
+	
 }
 
 @end
