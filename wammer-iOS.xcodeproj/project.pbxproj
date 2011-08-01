@@ -243,6 +243,8 @@
 				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
+				FF269E5913D84A420085E20A /* WAPaginationSlider.m */,
 				FF97382213D821C1003D1722 /* Model */,
 				FF97384613D82771003D1722 /* API */,
 				FF73A54913D6C2CD00D54EC6 /* Supporting Files */,
@@ -313,8 +315,6 @@
 				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
-				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
-				FF269E5913D84A420085E20A /* WAPaginationSlider.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
