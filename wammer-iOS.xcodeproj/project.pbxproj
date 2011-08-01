@@ -12,6 +12,7 @@
 		FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FF21C8D313E14CF9009B980D /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
 		FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
+		FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
 		FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
 		FF4FA01213E13249002C627F /* WAArticleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController.xib */; };
 		FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01313E136A0002C627F /* WACapsuleLeft.png */; };
@@ -102,12 +103,18 @@
 /* Begin PBXFileReference section */
 		4B1527A013E29E72006E9737 /* WAArticlesViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAArticlesViewController_iPhone.h; path = "wammer-iOS/WAArticlesViewController_iPhone.h"; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAArticlesViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAArticlesViewController_iPhone.m; path = "wammer-iOS/WAArticlesViewController_iPhone.m"; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../Icon.png; sourceTree = "<group>"; };
+=======
+		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
+>>>>>>> ev-develop
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
+		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
+		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01113E13249002C627F /* WAArticleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAArticleViewController.xib; path = Resources/WAArticleViewController.xib; sourceTree = "<group>"; };
@@ -196,12 +203,33 @@
 			children = (
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
+<<<<<<< HEAD
+=======
+				FF3ACA9113E6AD1C000F608C /* Views */,
+>>>>>>> ev-develop
 				FF97382213D821C1003D1722 /* Model */,
 				FF97384613D82771003D1722 /* API */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
 		};
+<<<<<<< HEAD
+=======
+		FF3ACA9113E6AD1C000F608C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
+				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
+				FF3ACA8E13E6ACFB000F608C /* WAView.h */,
+				FF3ACA8F13E6ACFB000F608C /* WAView.m */,
+				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
+				FF269E5913D84A420085E20A /* WAPaginationSlider.m */,
+			);
+			name = Views;
+			path = "wammer-iOS";
+			sourceTree = "<group>";
+		};
+>>>>>>> ev-develop
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
@@ -251,8 +279,6 @@
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
 				FF4FA01113E13249002C627F /* WAArticleViewController.xib */,
-				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
-				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
 			);
@@ -324,8 +350,6 @@
 				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
-				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
-				FF269E5913D84A420085E20A /* WAPaginationSlider.m */,
 			);
 			name = Model;
 			path = "wammer-iOS";
@@ -358,6 +382,7 @@
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
 				FF4FA01413E136A0002C627F /* WACapsuleRight.png */,
 				FF4FA01513E136A0002C627F /* WACapsuleSingle.png */,
+				FAE26ECA13E1435D00CB1E3A /* Icon.png */,
 				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
 				FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */,
 			);
@@ -502,6 +527,10 @@
 				FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */,
 				FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */,
 				4B1527A213E29E72006E9737 /* WAArticlesViewController_iPhone.m in Sources */,
+<<<<<<< HEAD
+=======
+				FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */,
+>>>>>>> ev-develop
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

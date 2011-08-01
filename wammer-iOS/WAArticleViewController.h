@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <QuartzCore/QuartzCore.h>
 
+#import "WAView.h"
 @class WAImageStackView;
 
 @interface WAArticleViewController : UIViewController
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
+
+@property (nonatomic, readwrite, retain) IBOutlet UIView *overlayView;
+@property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *mainContentView;
@@ -30,5 +35,12 @@
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
 
 @property (nonatomic, readwrite, retain) IBOutlet UITableView *commentsView;
+@property (nonatomic, readwrite, retain) IBOutlet WAView *commentsContainerView;
+@property (nonatomic, readwrite, retain) IBOutlet UIView *commentsRevealingActionContainerView;
+
+
+- (IBAction) handleCommentReveal:(id)sender;
+- (IBAction) handleCommentPost:(id)sender;
+- (IBAction) handleCommentClose:(id)sender;
 
 @end

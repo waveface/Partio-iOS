@@ -113,7 +113,7 @@
 
 	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.view.backgroundColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
+	self.view.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
 	
 	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -312,7 +312,7 @@
 	self.paginationSlider.numberOfPages = numberOfFetchedObjects;
 	
 	CGRect paginationSliderFrame = self.paginationSlider.frame;
-	paginationSliderFrame.size.width = MIN(512, MAX(MIN(300, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+	paginationSliderFrame.size.width = MIN(256, MAX(MIN(192, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
 	
 	paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 	self.paginationSlider.frame = paginationSliderFrame;

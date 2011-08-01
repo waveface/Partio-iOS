@@ -15,12 +15,9 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    NSString *device = @"WAArticlesViewController";
-    if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad) {
-        device = @"WAArticlesViewController_iPhone";
-    }
-	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(device) alloc] init] autorelease]] autorelease];
+	
+	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAArticlesViewController_iPhone" : @"WAArticlesViewController";
+	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease]] autorelease];
 	
 	[self.window makeKeyAndVisible];
 	
@@ -42,7 +39,7 @@ static unsigned int networkActivityStackingCount = 0;
 		});
 		return;
 	}
-//	
+	
 	networkActivityStackingCount++;
 	
 	if (networkActivityStackingCount > 0)
@@ -60,7 +57,7 @@ static unsigned int networkActivityStackingCount = 0;
 	}
 
 	NSParameterAssert(networkActivityStackingCount > 0);
-//	networkActivityStackingCount--;	
+	networkActivityStackingCount--;
 	
 	if (networkActivityStackingCount == 0)
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
