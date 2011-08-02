@@ -53,7 +53,14 @@
 	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	self.commentsContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
 	
+	self.commentsView.layer.cornerRadius = 4.0f;
+	self.commentsView.layer.masksToBounds = YES;
+	self.commentsView.layer.backgroundColor = [UIColor whiteColor].CGColor;
+	self.commentsView.contentInset = (UIEdgeInsets){ 20, 0, 0, 0 };
+	self.commentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, 0, 0 };
+	self.commentsView.frame = UIEdgeInsetsInsetRect(self.commentsView.frame, (UIEdgeInsets){ -20, 0, 0, 0 });
 	
+	self.commentsContainerView.backgroundColor = [UIColor clearColor];
 	self.commentsContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
 	self.commentsContainerView.layer.shadowOpacity = 0.5f;
 	self.commentsContainerView.layer.shadowRadius = 4.0f;
