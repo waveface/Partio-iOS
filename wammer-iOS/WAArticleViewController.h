@@ -17,30 +17,11 @@
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
 
-@property (nonatomic, readwrite, retain) IBOutlet UIView *overlayView;
-@property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
-
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *mainContentView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *relativeCreationDateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel;
-@property (nonatomic, readwrite, retain) IBOutlet UIButton *commentRevealButton;
-@property (nonatomic, readwrite, retain) IBOutlet UIButton *commentPostButton;
-
-@property (nonatomic, readwrite, retain) IBOutlet UIButton *commentCloseButton;
-@property (nonatomic, readwrite, retain) IBOutlet UIView *compositionAccessoryView;
-@property (nonatomic, readwrite, retain) IBOutlet UITextField *compositionContentField;
-@property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
-
-@property (nonatomic, readwrite, retain) IBOutlet UITableView *commentsView;
-@property (nonatomic, readwrite, retain) IBOutlet WAView *commentsContainerView;
-@property (nonatomic, readwrite, retain) IBOutlet UIView *commentsRevealingActionContainerView;
-
-
-- (IBAction) handleCommentReveal:(id)sender;
-- (IBAction) handleCommentPost:(id)sender;
-- (IBAction) handleCommentClose:(id)sender;
 
 @end
