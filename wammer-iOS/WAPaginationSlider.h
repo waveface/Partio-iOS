@@ -14,7 +14,6 @@
 
 @protocol WAPaginationSliderDelegate <NSObject>
 
-- (BOOL) paginationSlider:(WAPaginationSlider *)slider shouldMoveToPage:(NSUInteger)destinationPage;
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage;
 
 @end
