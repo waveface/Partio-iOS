@@ -9,6 +9,7 @@
 #import "WAArticleCommentsViewController.h"
 
 #import "CoreData+IRAdditions.h"
+#import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
 @interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -119,6 +120,8 @@
 
 	__block __typeof__(self.commentsContainerView) nrContainerView = self.commentsContainerView;
 	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
+	__block __typeof__(self.commentRevealButton) nrCommentRevealButton = self.commentRevealButton;
+	__block __typeof__(self.commentCloseButton) nrCommentCloseButton = self.commentCloseButton;
 	
 	nrContainerView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
@@ -136,6 +139,30 @@
 	
 	nrContainerView.onLayoutSubviews = ^ {
 		nrContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrContainerView.bounds].CGPath;
+	};
+	
+	nrRevealingActionContainerView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	
+		if (CGRectContainsPoint(UIEdgeInsetsInsetRect(nrRevealingActionContainerView.bounds, (UIEdgeInsets){ -32, -32, -32, -32 }), aPoint))
+			return YES;
+		
+		return superAnswer;
+	
+	};
+	
+	nrRevealingActionContainerView.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	
+		if (superAnswer)
+			return superAnswer;
+		
+		if (nrCommentRevealButton.enabled)
+			return nrCommentRevealButton;
+		
+		if (nrCommentCloseButton.enabled)
+			return nrCommentCloseButton;
+		
+		return nil;
+	
 	};
 
 	nrRevealingActionContainerView.onLayoutSubviews = ^ {
@@ -301,7 +328,9 @@
 
 	[self.commentRevealButton setTitle:[NSString stringWithFormat:@"%x %@", [self.article.comments count], (([self.article.comments count] > 1) ? @"comments" : @"comment")] forState:UIControlStateNormal];
 	
-	[self.commentsView reloadData];
+	IRCATransact(^ {
+		[self.commentsView reloadData];
+	});
 
 }
 

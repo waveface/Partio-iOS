@@ -14,22 +14,26 @@
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
+	UIView *superAnswer = [super hitTest:point withEvent:event];
+
 	if (self.onHitTestWithEvent) {
-		UIView *ownAnswer = self.onHitTestWithEvent(point, event);
+		UIView *ownAnswer = self.onHitTestWithEvent(point, event, superAnswer);
 		if (ownAnswer)
 			return ownAnswer;
 	}
 	
-	return [super hitTest:point withEvent:event];
+	return superAnswer;
 
 }
 
 - (BOOL) pointInside:(CGPoint)point withEvent:(UIEvent *)event {
 
+	BOOL superAnswer = [super pointInside:point withEvent:event];
+
 	if (self.onPointInsideWithEvent)
-		return onPointInsideWithEvent(point, event, [super pointInside:point withEvent:event]);
+		return onPointInsideWithEvent(point, event, superAnswer);
 	
-	return [super pointInside:point withEvent:event];
+	return superAnswer;
 	
 }
 
