@@ -556,7 +556,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (2PT2NL823H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (2PT2NL823H)";
@@ -586,7 +586,7 @@
 				);
 				PROVISIONING_PROFILE = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = 2;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -596,7 +596,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (2PT2NL823H)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (2PT2NL823H)";
@@ -620,7 +620,7 @@
 				);
 				PROVISIONING_PROFILE = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BCA394F2-F706-42C5-AD2A-01DE81D02A26";
-				SDKROOT = iphoneos;
+				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
