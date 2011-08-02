@@ -232,7 +232,15 @@
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
 		self.paginationSlider.currentPage = newPage;
 		
-		self.articleCommentsViewController.representedArticleURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+		NSURL *oldURI = self.articleCommentsViewController.representedArticleURI;
+		NSURL *newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+		
+		if ([oldURI isEqual:newURI])
+			return;
+		
+		self.articleCommentsViewController.representedArticleURI = newURI;
+		
+		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden];
 	
 	}
 
