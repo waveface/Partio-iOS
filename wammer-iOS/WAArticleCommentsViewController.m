@@ -11,11 +11,13 @@
 #import "CoreData+IRAdditions.h"
 #import "WADataStore.h"
 
-@interface WAArticleCommentsViewController ()
+@interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) WAArticle *article;
+
+- (void) refreshView;
 
 @end
 
@@ -148,6 +150,14 @@
 		self.commentsRevealingActionContainerView.frame.size	
 	};
 	
+	
+	self.commentsView.dataSource = self;
+	self.commentsView.delegate = self;
+	self.commentsView.rowHeight = 96.0f;
+	
+	if (self.article)
+		[self refreshView];
+	
 }
 
 - (void) viewDidUnload {
@@ -245,6 +255,9 @@
 	
 	}
 	
+	
+	[self refreshView];
+	
 }
 
 
@@ -267,6 +280,35 @@
 
 
 
+- (void) setArticle:(WAArticle *)newArticle {
+
+	if (newArticle == article)
+		return;
+	
+	[self willChangeValueForKey:@"article"];
+	[article release];
+	article = [newArticle retain];
+	
+	self.fetchedResultsController = nil;
+	
+	[self didChangeValueForKey:@"article"];
+	
+	[self refreshView];
+	
+}
+
+- (void) refreshView {
+
+	[self.commentRevealButton setTitle:[NSString stringWithFormat:@"%x %@", [self.article.comments count], (([self.article.comments count] > 1) ? @"comments" : @"comment")] forState:UIControlStateNormal];
+	
+	[self.commentsView reloadData];
+
+}
+
+
+
+
+
 - (NSFetchedResultsController *) fetchedResultsController {
 
 	if (fetchedResultsController)
@@ -276,10 +318,23 @@
 		return nil;
 		
 	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRCommentsForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-		self.article, @"OWNER",
+		self.article, @"Article",
 	nil]];
 	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+	nil];
+	
+	
+	NSLog(@"fetchRequest %@", fetchRequest);
+	
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	
+	NSError *fetchingError = nil;
+	if (![fetchedResultsController performFetch:&fetchingError])
+		NSLog(@"Error fetching: %@", fetchingError);
+	
+	NSLog(@"Fetched %@", self.fetchedResultsController.fetchedObjects);
 	
 	return fetchedResultsController;
 
@@ -287,7 +342,7 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-	return 200;
+	return [[self.fetchedResultsController fetchedObjects] count];
 
 }
 
@@ -295,14 +350,21 @@
 
 	static NSString *cellIdentifier = @"CommentsCell";
 	
+	WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+	
 	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (!cell) {
 	
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
+		
+		cell.detailTextLabel.numberOfLines = 0;
+		cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
 	
 	}
 	
-	cell.textLabel.text = [indexPath description];
+	cell.textLabel.text = [NSString stringWithFormat:@"%@ via %@ at %@", representedComment.owner.nickname, representedComment.creationDeviceName, representedComment.timestamp];
+	
+	cell.detailTextLabel.text = representedComment.text;
 	
 	return cell;
 

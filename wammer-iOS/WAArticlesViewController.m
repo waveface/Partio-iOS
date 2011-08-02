@@ -195,6 +195,7 @@
 		
 	});
 	
+	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController viewWillAppear:animated];
 
 }
@@ -230,6 +231,8 @@
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
 		self.paginationSlider.currentPage = newPage;
+		
+		self.articleCommentsViewController.representedArticleURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
 	
 	}
 
@@ -320,10 +323,10 @@
 	
 	[[self viewControllerForSubviewAtIndex:self.paginatedView.currentPage inPaginatedView:self.paginatedView] willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	[self.articleCommentsViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
+	//	Do the update first because we cache the updated shadow path in the net method in the articleCommentsViewController.
 	[self updateLayoutForCommentsVisible:[self inferredArticleCommentsVisible]];
-
+	
+	[self.articleCommentsViewController willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 }
 
