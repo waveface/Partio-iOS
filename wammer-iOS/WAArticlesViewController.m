@@ -417,12 +417,7 @@
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)panGestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
-	BOOL hitsCommentView = CGRectContainsPoint(
-		UIEdgeInsetsInsetRect(self.articleCommentsViewController.commentsRevealingActionContainerView.bounds, (UIEdgeInsets){ -8, -8, -8, -8 }),
-		[touch locationInView:self.articleCommentsViewController.commentsRevealingActionContainerView]
-	);
-	
-	return hitsCommentView;
+	return [self.articleCommentsViewController.commentsRevealingActionContainerView pointInside:[touch locationInView:self.articleCommentsViewController.commentsRevealingActionContainerView] withEvent:nil];
 
 }
 
