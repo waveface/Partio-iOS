@@ -192,8 +192,17 @@
 		
 		[self refreshPaginatedViewPages];
 		[self refreshData];
-				
+		
 	});
+	
+	[self.articleCommentsViewController viewWillAppear:animated];
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	[self.articleCommentsViewController viewDidAppear:animated];
 
 }
 
@@ -203,6 +212,15 @@
 	
 	if (self.debugActionSheetController.managedActionSheet.visible)
 		[self.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:self.debugActionSheetController.managedActionSheet.cancelButtonIndex animated:animated];
+		
+	[self.articleCommentsViewController viewWillDisappear:animated];
+
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+
+	[super viewDidDisappear:animated];
+	[self.articleCommentsViewController viewDidDisappear:animated];
 
 }
 
@@ -338,9 +356,7 @@
 		},
 		commentsContainerViewSize
 	};
-	
-	NSLog(@"%s -> %x, self.articleCommentsViewController.view.frame = %@ \n %@", __PRETTY_FUNCTION__, showingDetailedComments, NSStringFromCGRect(self.articleCommentsViewController.view.frame), [NSThread callStackSymbols]);
-	
+		
 	self.articleCommentsViewController.state = showingDetailedComments ? WAArticleCommentsViewControllerStateShown : WAArticleCommentsViewControllerStateHidden;
 	
 }

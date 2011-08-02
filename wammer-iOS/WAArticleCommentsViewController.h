@@ -47,6 +47,4 @@ typedef enum {
 - (IBAction) handleCommentPost:(id)sender;
 - (IBAction) handleCommentClose:(id)sender;
 
-- (void) updateLayerShadowPaths;
-
 @end

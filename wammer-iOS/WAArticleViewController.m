@@ -36,10 +36,31 @@
 
 }
 
+- (void) viewDidUnload {
+
+	self.contextInfoContainer = nil;
+	self.mainContentView = nil;
+	self.avatarView = nil;
+	self.relativeCreationDateLabel = nil;
+	self.userNameLabel = nil;
+	self.articleDescriptionLabel = nil;
+
+	[super viewDidUnload];
+
+}
+
 - (void) dealloc {
 
 	[managedObjectContext release];
 	[article release];
+	
+	[contextInfoContainer release];
+	[mainContentView release];
+	[avatarView release];
+	[relativeCreationDateLabel release];
+	[userNameLabel release];
+	[articleDescriptionLabel release];
+	
 	[super dealloc];
 
 }

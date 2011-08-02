@@ -65,7 +65,7 @@
 
 	[super viewWillAppear:animated];
 	
-	if (!self.fetchedResultsController.fetchedObjects) {
+	if (self.article && !self.fetchedResultsController.fetchedObjects) {
 		NSError *fetchingError = nil;
 		if (![self.fetchedResultsController performFetch:&fetchingError])
 			NSLog(@"Error fetching: %@", fetchingError);
@@ -148,6 +148,24 @@
 		self.commentsRevealingActionContainerView.frame.size	
 	};
 	
+}
+
+- (void) viewDidUnload {
+
+	self.commentsView = nil;
+	self.commentRevealButton = nil;
+	self.commentPostButton = nil;
+	self.commentCloseButton = nil;
+
+	self.compositionContentField = nil;
+	self.compositionSendButton = nil;
+
+	self.compositionAccessoryView = nil;
+	self.commentsContainerView = nil;
+	self.commentsRevealingActionContainerView = nil;
+
+	[super viewDidUnload];
+
 }
 
 
@@ -253,6 +271,9 @@
 
 	if (fetchedResultsController)
 		return fetchedResultsController;
+	
+	if (!self.article)
+		return nil;
 		
 	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRCommentsForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
 		self.article, @"OWNER",
@@ -289,9 +310,21 @@
 
 - (void) dealloc {
 
+	[commentsView release];
+	[commentRevealButton release];
+	[commentPostButton release];
+	[commentCloseButton release];
+	[compositionContentField release];
+	[compositionSendButton release];
+	[compositionAccessoryView release];
+	[commentsContainerView release];
+	[commentsRevealingActionContainerView release];
+	
 	[managedObjectContext release];
 	[fetchedResultsController release];
 	[article release];
+	
+	[super dealloc];
 
 }
 
