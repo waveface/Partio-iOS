@@ -12,5 +12,6 @@
 
 @property (nonatomic, readwrite, copy) UIView * (^onHitTestWithEvent)(CGPoint aPoint, UIEvent *anEvent);
 @property (nonatomic, readwrite, copy) BOOL (^onPointInsideWithEvent)(CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer);
+@property (nonatomic, readwrite, copy) void (^onLayoutSubviews)();
 
 @end
