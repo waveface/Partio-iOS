@@ -12,7 +12,10 @@
 #import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
-@interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate>
+#import "UIView+WAAdditions.h"
+#import "CGGeometry+IRAdditions.h"
+
+@interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -90,9 +93,11 @@
 	[self.view addSubview:self.compositionAccessoryView];
 	
 	__block __typeof__(self.view) nrView = self.view;
+	__block __typeof__(self.commentsView) nrCommentsView = self.commentsView;
 	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
 	__block __typeof__(self.commentRevealButton) nrCommentRevealButton = self.commentRevealButton;
 	__block __typeof__(self.commentCloseButton) nrCommentCloseButton = self.commentCloseButton;
+	__block __typeof__(self.compositionAccessoryView) nrCompositionAccessoryView = self.compositionAccessoryView;
 	
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
 	self.view.backgroundColor = [UIColor clearColor];
@@ -118,14 +123,49 @@
 	self.commentsRevealingActionContainerView.layer.shadowRadius = 4.0f;
 	
 	self.compositionAccessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	self.compositionAccessoryView.backgroundColor = [UIColor whiteColor];
-	self.compositionAccessoryView.layer.cornerRadius = 4.0f;
-	self.compositionAccessoryView.layer.masksToBounds = YES;
+	self.compositionAccessoryView.backgroundColor = [UIColor clearColor];
+	self.compositionAccessoryView.opaque = NO;
+	
+	self.compositionContentField.backgroundColor = [UIColor clearColor];
+	
+	//	self.compositionAccessoryView.layer.cornerRadius = 4.0f;
+	//	self.compositionAccessoryView.layer.masksToBounds = YES;
+	
+	[self.compositionSendButton setBackgroundImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:8 topCapHeight:8] forState:UIControlStateNormal];
+	
+	
+	
+	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:9 topCapHeight:9]] autorelease];
+	NSParameterAssert(textWellBackgroundView.image);
+	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
+	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ -2, -2, -2, -2 });
+	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
+	
+	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
+	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -4, 0, 0, 0 });
+	[self.compositionAccessoryView insertSubview:backgroundView atIndex:0];
+	
+	[self.compositionAccessoryView.superview bringSubviewToFront:self.compositionAccessoryView];
 	
 	
 	self.view.onLayoutSubviews = ^ {
 		
 		nrView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrView.bounds].CGPath;
+		
+		static CGFloat inactiveAccessoryViewHeight = 64.0f;
+		static CGFloat activeAccessoryViewHeight = 128.0f;
+		
+		BOOL accessoryViewActive = !![nrCompositionAccessoryView waFirstResponderInView];
+		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
+		
+		CGRect accessoryViewFrame, nullRect;
+		CGRectDivide(self.view.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
+		
+		nrCommentsView.contentInset = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
+		nrCommentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
+		
+		nrCompositionAccessoryView.frame = accessoryViewFrame;
 		
 	};
 	
@@ -417,6 +457,28 @@
 	
 	return cell;
 
+}
+
+
+
+
+
+- (void) textViewDidBeginEditing:(UITextView *)textView {
+
+	[UIView animateWithDuration:0.3f animations: ^ {
+		[self.view setNeedsLayout];
+		[self.view layoutIfNeeded];
+	}];
+
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView {
+
+	[UIView animateWithDuration:0.3f animations: ^ {
+		[self.view setNeedsLayout];
+		[self.view layoutIfNeeded];
+	}];
+	
 }
 
 - (void) dealloc {
