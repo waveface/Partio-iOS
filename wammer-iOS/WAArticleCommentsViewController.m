@@ -127,6 +127,7 @@
 	self.compositionAccessoryView.opaque = NO;
 	
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
+	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
 	
 	//	self.compositionAccessoryView.layer.cornerRadius = 4.0f;
 	//	self.compositionAccessoryView.layer.masksToBounds = YES;
@@ -352,15 +353,17 @@
 
 
 - (void) handleCommentReveal:(id)sender {
-	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateShown];
+	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateShown onFulfillment:nil];
 }
 
 - (void) handleCommentClose:(id)sender {
-	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateHidden];
+	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateHidden onFulfillment:nil];
 }
 
 - (void) handleCommentPost:(id)sender {
-	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateHidden];
+	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateShown onFulfillment: ^ {
+		[self.compositionContentField becomeFirstResponder];
+	}];
 }
 
 
