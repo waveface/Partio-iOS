@@ -19,7 +19,7 @@ typedef enum {
 
 @class WAArticleCommentsViewController;
 @protocol WAArticleCommentsViewControllerDelegate <NSObject>
-- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState;
+- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void(^)(void))aCompletionBlock;
 @end
 
 

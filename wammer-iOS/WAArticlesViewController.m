@@ -221,7 +221,6 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
-
 	if ((object == self.paginatedView) && ([keyPath isEqualToString:@"currentPage"])) {
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
@@ -238,7 +237,7 @@
 			return;
 		
 		self.articleCommentsViewController.representedArticleURI = newURI;
-		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden];
+		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden onFulfillment:nil];
 	
 	}
 
@@ -375,7 +374,7 @@
 	
 }
 
-- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState {
+- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void (^)(void))aCompletionBlock {
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -397,6 +396,9 @@
 				}
 				
 			}
+			
+			if (aCompletionBlock)
+				aCompletionBlock();
 			
 			newShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
 		
