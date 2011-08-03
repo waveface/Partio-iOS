@@ -447,11 +447,12 @@
 		
 		case UIGestureRecognizerStateChanged: {
 		
+			CGPoint oldOrigin = self.articleCommentsViewController.view.frame.origin;
 			CGPoint newOrigin = (CGPoint){
 				CGRectGetMidX(self.view.bounds) - 0.5f * CGRectGetWidth(self.articleCommentsViewController.view.frame),
 				distance - CGRectGetHeight(self.articleCommentsViewController.view.frame)
 			};
-		
+			
 			void (^operations)() = ^ {
 				self.articleCommentsViewController.view.frame = (CGRect){ newOrigin, self.articleCommentsViewController.view.frame.size };
 				self.articleCommentsViewController.view.layer.shadowOpacity = (distance > 0.0f) ? 0.5f : 0.0f;
@@ -461,8 +462,8 @@
 			
 				NSTimeInterval duration = ((distance / 64.0f) * 0.3f);
 			
-				if (duration > 0.1f)
-					[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:operations completion:nil];
+				if ((fabsf(oldOrigin.y - newOrigin.y) > 2) && (duration > 0.1f))
+					[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:operations completion:nil];
 				else
 					operations();
 			
