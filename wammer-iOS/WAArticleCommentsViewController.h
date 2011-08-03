@@ -38,7 +38,7 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *commentPostButton;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *commentCloseButton;
 
-@property (nonatomic, readwrite, retain) IBOutlet UITextField *compositionContentField;
+@property (nonatomic, readwrite, retain) IBOutlet UITextView *compositionContentField;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
 
 @property (nonatomic, readwrite, retain) IBOutlet WAView *compositionAccessoryView;
