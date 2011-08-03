@@ -125,7 +125,6 @@
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
-	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -161,7 +160,10 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	[self refreshPaginatedViewPages];
+	[self refreshData];
 	[self updateLayoutForCommentsVisible:NO];
+	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
 	UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentViewPan:)] autorelease];
 	panGestureRecognizer.delegate = self;
@@ -184,16 +186,6 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-	
-	//	I am not really sure this works!
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		
-		[self refreshPaginatedViewPages];
-		[self refreshData];
-		
-	});
 	
 	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController viewWillAppear:animated];
@@ -227,15 +219,20 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
+
 	if ((object == self.paginatedView) && ([keyPath isEqualToString:@"currentPage"])) {
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
 		self.paginationSlider.currentPage = newPage;
 		
 		NSURL *oldURI = self.articleCommentsViewController.representedArticleURI;
-		NSURL *newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+		NSURL *newURI = nil;
 		
-		if ([oldURI isEqual:newURI])
+		@try {
+			newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+		} @catch (NSException *exception) { /* NO OP */ }
+		
+		if (oldURI && [oldURI isEqual:newURI])
 			return;
 		
 		self.articleCommentsViewController.representedArticleURI = newURI;
