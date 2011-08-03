@@ -22,7 +22,7 @@
 
 @implementation WAImageStackView
 
-@synthesize files, shownImageFilePaths;
+@synthesize files, delegate, shownImageFilePaths;
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 
@@ -61,8 +61,6 @@
 	if (object == self)
 	if ([keyPath isEqualToString:@"files"]) {
 	
-	 
-	
 		self.shownImageFilePaths = [[[[self.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {
 			
 			return (BOOL)UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage);
@@ -83,7 +81,6 @@
 				
 			NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
 			return [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
-			
 			
 		}];
 		
@@ -177,10 +174,8 @@
 		wrappingImageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:wrappingImageView.bounds].CGPath;
 	 
 		if (wrappingImageView.superview != self) {
-			
 			[self addSubview:wrappingImageView];
 			[self sendSubviewToBack:wrappingImageView];
-			
 		}
 				
 		[removedPhotoViews removeObject:wrappingImageView];
