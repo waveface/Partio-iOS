@@ -9,8 +9,18 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <UIKit/UIKit.h>
 
+
+@class WAImageStackView;
+
+
+@protocol WAImageStackViewDelegate <NSObject>
+- (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithGlobalContentRect:(CGRect)aRect;
+@end
+
+
 @interface WAImageStackView : UIView
 
 @property (nonatomic, readwrite, retain) NSSet *files;
+@property (nonatomic, readwrite, assign) id<WAImageStackViewDelegate> delegate;
 
 @end
