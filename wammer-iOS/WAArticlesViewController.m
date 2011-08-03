@@ -22,6 +22,8 @@
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
 
+#import "UIView+WAAdditions.h"
+
 
 @interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -236,7 +238,6 @@
 			return;
 		
 		self.articleCommentsViewController.representedArticleURI = newURI;
-		
 		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden];
 	
 	}
@@ -364,8 +365,13 @@
 		},
 		commentsContainerViewSize
 	};
-		
+	
+			
 	self.articleCommentsViewController.state = showingDetailedComments ? WAArticleCommentsViewControllerStateShown : WAArticleCommentsViewControllerStateHidden;
+	
+	
+	if (!showingDetailedComments)	
+		[[self.articleCommentsViewController.view waFirstResponderInView] resignFirstResponder];
 	
 }
 
@@ -374,7 +380,7 @@
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		__block CGFloat oldShadowOpacity, newShadowOpacity;
-		oldShadowOpacity = self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity;
+		oldShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
 	
 		[UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations: ^ {
 		
@@ -392,19 +398,19 @@
 				
 			}
 			
-			newShadowOpacity = self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity;
+			newShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
 		
 			if (newShadowOpacity == 0.0f) {
 			
 				//	Only preserve the old shadow opacity if it is going away as soon as the animation runs, otherwise keep it as long as possible
 				
-				self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity = oldShadowOpacity;
+				self.articleCommentsViewController.view.layer.shadowOpacity = oldShadowOpacity;
 			
 			}
 			
 		} completion: ^ (BOOL didFinish) {
 			
-			self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity = newShadowOpacity;
+			self.articleCommentsViewController.view.layer.shadowOpacity = newShadowOpacity;
 		
 		}];
 		
@@ -424,14 +430,14 @@
 	static CGPoint beginTouch = (CGPoint){ 0, 0 };
 	
 	CGFloat distance = [panRecognizer locationInView:self.view].y - CGRectGetMinY(self.view.bounds);
-	distance = MAX(0, MIN(CGRectGetHeight(self.articleCommentsViewController.commentsContainerView.frame), distance));
+	distance = MAX(0, MIN(CGRectGetHeight(self.articleCommentsViewController.view.frame), distance));
 	
 	switch (panRecognizer.state) {
 	
 		case UIGestureRecognizerStatePossible:
 		case UIGestureRecognizerStateBegan: {
 		
-			commentsViewWasShown = (CGRectGetMaxY(self.articleCommentsViewController.commentsContainerView.frame) == CGRectGetHeight(self.articleCommentsViewController.commentsContainerView.frame));
+			commentsViewWasShown = (CGRectGetMaxY(self.articleCommentsViewController.view.frame) == CGRectGetHeight(self.articleCommentsViewController.view.frame));
 			beginTouch = [panRecognizer locationInView:self.view];
 		
 			break;
@@ -440,13 +446,13 @@
 		case UIGestureRecognizerStateChanged: {
 		
 			CGPoint newOrigin = (CGPoint){
-				CGRectGetMidX(self.view.bounds) - 0.5f * CGRectGetWidth(self.articleCommentsViewController.commentsContainerView.frame),
-				distance - CGRectGetHeight(self.articleCommentsViewController.commentsContainerView.frame)
+				CGRectGetMidX(self.view.bounds) - 0.5f * CGRectGetWidth(self.articleCommentsViewController.view.frame),
+				distance - CGRectGetHeight(self.articleCommentsViewController.view.frame)
 			};
 		
 			void (^operations)() = ^ {
-				self.articleCommentsViewController.commentsContainerView.frame = (CGRect){ newOrigin, self.articleCommentsViewController.commentsContainerView.frame.size };
-				self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity = (distance > 0.0f) ? 0.5f : 0.0f;
+				self.articleCommentsViewController.view.frame = (CGRect){ newOrigin, self.articleCommentsViewController.view.frame.size };
+				self.articleCommentsViewController.view.layer.shadowOpacity = (distance > 0.0f) ? 0.5f : 0.0f;
 			};
 		
 			if (!commentsViewWasShown && (distance < 64.0f)) {
@@ -471,10 +477,10 @@
 		case UIGestureRecognizerStateCancelled:
 		case UIGestureRecognizerStateFailed: {
 		
-			CGFloat currentCommentsContainerViewHeight = CGRectGetHeight(self.articleCommentsViewController.commentsContainerView.frame);
+			CGFloat currentCommentsContainerViewHeight = CGRectGetHeight(self.articleCommentsViewController.view.frame);
 			
 			__block CGFloat oldShadowOpacity, newShadowOpacity;
-			oldShadowOpacity = self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity;
+			oldShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
 			
 			[UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void) {
 			
@@ -485,13 +491,13 @@
 				else
 					[self updateLayoutForCommentsVisible:YES];
 				
-				newShadowOpacity = self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity;
+				newShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
 				
-				self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity = oldShadowOpacity;
+				self.articleCommentsViewController.view.layer.shadowOpacity = oldShadowOpacity;
 					
 			} completion: ^ (BOOL didFinish) {
 			
-				self.articleCommentsViewController.commentsContainerView.layer.shadowOpacity = newShadowOpacity;
+				self.articleCommentsViewController.view.layer.shadowOpacity = newShadowOpacity;
 			
 			}];
 

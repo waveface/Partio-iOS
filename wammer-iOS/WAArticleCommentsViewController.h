@@ -27,6 +27,8 @@ typedef enum {
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
 
+@property (nonatomic, readwrite, retain) IBOutlet WAView *view;
+
 @property (nonatomic, readwrite, retain) NSURL *representedArticleURI;
 @property (nonatomic, readwrite, assign) id<WAArticleCommentsViewControllerDelegate> delegate;
 @property (nonatomic, readwrite, assign) WAArticleCommentsViewControllerState state;
@@ -36,11 +38,10 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *commentPostButton;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *commentCloseButton;
 
-@property (nonatomic, readwrite, retain) IBOutlet UITextField *compositionContentField;
+@property (nonatomic, readwrite, retain) IBOutlet UITextView *compositionContentField;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
 
 @property (nonatomic, readwrite, retain) IBOutlet WAView *compositionAccessoryView;
-@property (nonatomic, readwrite, retain) IBOutlet WAView *commentsContainerView;
 @property (nonatomic, readwrite, retain) IBOutlet WAView *commentsRevealingActionContainerView;
 
 - (IBAction) handleCommentReveal:(id)sender;

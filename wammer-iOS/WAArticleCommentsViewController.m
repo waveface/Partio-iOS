@@ -12,7 +12,10 @@
 #import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
-@interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate>
+#import "UIView+WAAdditions.h"
+#import "CGGeometry+IRAdditions.h"
+
+@interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -24,7 +27,8 @@
 
 
 @implementation WAArticleCommentsViewController
-@synthesize commentsView, commentRevealButton, commentPostButton, commentCloseButton, compositionContentField, compositionSendButton, compositionAccessoryView, commentsContainerView, commentsRevealingActionContainerView;
+@dynamic view;
+@synthesize commentsView, commentRevealButton, commentPostButton, commentCloseButton, compositionContentField, compositionSendButton, compositionAccessoryView, commentsRevealingActionContainerView;
 @synthesize delegate, state;
 @synthesize managedObjectContext, fetchedResultsController, article;
 
@@ -85,103 +89,161 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	[self.view insertSubview:self.commentsRevealingActionContainerView atIndex:0];
+	[self.view addSubview:self.compositionAccessoryView];
 	
-	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
-	self.commentsContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
+	__block __typeof__(self.view) nrView = self.view;
+	__block __typeof__(self.commentsView) nrCommentsView = self.commentsView;
+	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
+	__block __typeof__(self.commentRevealButton) nrCommentRevealButton = self.commentRevealButton;
+	__block __typeof__(self.commentCloseButton) nrCommentCloseButton = self.commentCloseButton;
+	__block __typeof__(self.compositionAccessoryView) nrCompositionAccessoryView = self.compositionAccessoryView;
+	
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
+	self.view.backgroundColor = [UIColor clearColor];
+	self.view.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
+	self.view.layer.shadowOpacity = 0.5f;
+	self.view.layer.shadowRadius = 4.0f;
 	
 	self.commentsView.layer.cornerRadius = 4.0f;
 	self.commentsView.layer.masksToBounds = YES;
 	self.commentsView.layer.backgroundColor = [UIColor whiteColor].CGColor;
-	self.commentsView.contentInset = (UIEdgeInsets){ 20, 0, 0, 0 };
-	self.commentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, 0, 0 };
-	self.commentsView.frame = UIEdgeInsetsInsetRect(self.commentsView.frame, (UIEdgeInsets){ -20, 0, 0, 0 });
-	
-	self.commentsContainerView.backgroundColor = [UIColor clearColor];
-	self.commentsRevealingActionContainerView.backgroundColor = [UIColor clearColor];
-	
-	self.commentsContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
-	self.commentsContainerView.layer.shadowOpacity = 0.5f;
-	self.commentsContainerView.layer.shadowRadius = 4.0f;
-	
-	UIView *commentsContainerBackgroundView = [[[UIView alloc] initWithFrame:self.commentsContainerView.bounds] autorelease];
-	commentsContainerBackgroundView.backgroundColor = [UIColor clearColor];
-	
-	CAShapeLayer *maskLayer = [CAShapeLayer layer];
-	maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.commentsRevealingActionContainerView.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:(CGSize){ 4.0f, 4.0f }].CGPath;
-	maskLayer.fillColor = [UIColor whiteColor].CGColor;
-
-	[commentsContainerBackgroundView.layer addSublayer:maskLayer];
-	[self.commentsRevealingActionContainerView addSubview:commentsContainerBackgroundView];
-	[self.commentsRevealingActionContainerView sendSubviewToBack:commentsContainerBackgroundView];
-	
-	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
-	self.commentsRevealingActionContainerView.layer.shadowOpacity = 0.5f;
-	self.commentsRevealingActionContainerView.layer.shadowRadius = 4.0f;
-
-	__block __typeof__(self.commentsContainerView) nrContainerView = self.commentsContainerView;
-	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
-	__block __typeof__(self.commentRevealButton) nrCommentRevealButton = self.commentRevealButton;
-	__block __typeof__(self.commentCloseButton) nrCommentCloseButton = self.commentCloseButton;
-	
-	nrContainerView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
-	
-		CGPoint pointWithinRevealingContainerView = [nrContainerView convertPoint:aPoint toView:nrRevealingActionContainerView];
-		
-		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
-			return YES;
-			
-		return superAnswer;
-	
-	};
-	
-	[self.commentsContainerView addSubview:self.commentsRevealingActionContainerView];
-	[self.commentsContainerView sendSubviewToBack:self.commentsRevealingActionContainerView];
-	
-	nrContainerView.onLayoutSubviews = ^ {
-		nrContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrContainerView.bounds].CGPath;
-	};
-	
-	nrRevealingActionContainerView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
-	
-		if (CGRectContainsPoint(UIEdgeInsetsInsetRect(nrRevealingActionContainerView.bounds, (UIEdgeInsets){ -32, -32, -32, -32 }), aPoint))
-			return YES;
-		
-		return superAnswer;
-	
-	};
-	
-	nrRevealingActionContainerView.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
-	
-		if (superAnswer)
-			return superAnswer;
-		
-		if (nrCommentRevealButton.enabled)
-			return nrCommentRevealButton;
-		
-		if (nrCommentCloseButton.enabled)
-			return nrCommentCloseButton;
-		
-		return nil;
-	
-	};
-
-	nrRevealingActionContainerView.onLayoutSubviews = ^ {
-		nrRevealingActionContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrRevealingActionContainerView.bounds].CGPath;
-	};
-	
-	self.commentsRevealingActionContainerView.frame = (CGRect) {
-		(CGPoint){
-			roundf(0.5f * (CGRectGetWidth(self.commentsContainerView.bounds) - CGRectGetWidth(self.commentsRevealingActionContainerView.frame))),
-			CGRectGetHeight(self.commentsContainerView.bounds)
-		},
-		self.commentsRevealingActionContainerView.frame.size	
-	};
-	
-	
+	self.commentsView.contentInset = (UIEdgeInsets){ 20, 0, CGRectGetHeight(self.compositionAccessoryView.frame), 0 };
+	self.commentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, CGRectGetHeight(self.compositionAccessoryView.frame), 0 };
+	self.commentsView.frame = UIEdgeInsetsInsetRect(self.commentsView.frame, (UIEdgeInsets){ -20.0f, 0.0f, 0.0f, 0.0f });
+	self.commentsView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.commentsView.dataSource = self;
 	self.commentsView.delegate = self;
 	self.commentsView.rowHeight = 96.0f;
 	
+	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
+	self.commentsRevealingActionContainerView.backgroundColor = [UIColor clearColor];
+	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
+	self.commentsRevealingActionContainerView.layer.shadowOpacity = 0.5f;
+	self.commentsRevealingActionContainerView.layer.shadowRadius = 4.0f;
+	
+	self.compositionAccessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+	self.compositionAccessoryView.backgroundColor = [UIColor clearColor];
+	self.compositionAccessoryView.opaque = NO;
+	
+	self.compositionContentField.backgroundColor = [UIColor clearColor];
+	
+	//	self.compositionAccessoryView.layer.cornerRadius = 4.0f;
+	//	self.compositionAccessoryView.layer.masksToBounds = YES;
+	
+	[self.compositionSendButton setBackgroundImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:8 topCapHeight:8] forState:UIControlStateNormal];
+	
+	
+	
+	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:9 topCapHeight:9]] autorelease];
+	NSParameterAssert(textWellBackgroundView.image);
+	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
+	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ -2, -2, -2, -2 });
+	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
+	
+	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
+	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -4, 0, 0, 0 });
+	[self.compositionAccessoryView insertSubview:backgroundView atIndex:0];
+	
+	[self.compositionAccessoryView.superview bringSubviewToFront:self.compositionAccessoryView];
+	
+	
+	self.view.onLayoutSubviews = ^ {
+		
+		nrView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrView.bounds].CGPath;
+		
+		static CGFloat inactiveAccessoryViewHeight = 64.0f;
+		static CGFloat activeAccessoryViewHeight = 128.0f;
+		
+		BOOL accessoryViewActive = !![nrCompositionAccessoryView waFirstResponderInView];
+		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
+		
+		CGRect accessoryViewFrame, nullRect;
+		CGRectDivide(self.view.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
+		
+		nrCommentsView.contentInset = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
+		nrCommentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
+		
+		nrCompositionAccessoryView.frame = accessoryViewFrame;
+		
+	};
+	
+	self.view.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+		
+		CGPoint pointWithinRevealingContainerView = [nrView convertPoint:aPoint toView:nrRevealingActionContainerView];
+		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
+			return YES;
+		else
+			return superAnswer;
+		
+	};
+	
+	self.commentsRevealingActionContainerView.onLayoutSubviews = ^ {
+		
+		nrRevealingActionContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrRevealingActionContainerView.bounds].CGPath;
+		
+	};
+	
+	self.commentsRevealingActionContainerView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+		
+		if (CGRectContainsPoint(UIEdgeInsetsInsetRect(nrRevealingActionContainerView.bounds, (UIEdgeInsets){ -32, -32, -32, -32 }), aPoint))
+			return YES;
+		else
+			return superAnswer;
+			
+	};
+	
+	self.commentsRevealingActionContainerView.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+		
+		if (superAnswer)
+			return superAnswer;
+		else if (nrCommentRevealButton.enabled)
+			return nrCommentRevealButton;
+		else if (nrCommentCloseButton.enabled)
+			return nrCommentCloseButton;
+		else
+			return nil;
+		
+	};
+	
+	[self.commentsRevealingActionContainerView insertSubview:((^ { 
+
+		UIView *commentsContainerBackgroundView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+		commentsContainerBackgroundView.backgroundColor = [UIColor clearColor];
+		
+		[commentsContainerBackgroundView.layer addSublayer:((^ {
+			
+			CAShapeLayer *maskLayer = [CAShapeLayer layer];
+			maskLayer.path = [UIBezierPath bezierPathWithRoundedRect:self.commentsRevealingActionContainerView.bounds byRoundingCorners:UIRectCornerBottomLeft|UIRectCornerBottomRight cornerRadii:(CGSize){ 4.0f, 4.0f }].CGPath;
+			maskLayer.fillColor = [UIColor whiteColor].CGColor;
+			return maskLayer;
+		
+		})())];
+		
+		return commentsContainerBackgroundView;
+	
+	})()) atIndex:0];
+	
+	self.compositionAccessoryView.frame = (CGRect){
+		(CGPoint){
+			0,
+			CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
+		},
+		(CGSize){
+			CGRectGetWidth(self.view.bounds),
+			CGRectGetHeight(self.compositionAccessoryView.frame)	
+		}
+	};
+	
+	self.commentsRevealingActionContainerView.frame = (CGRect) {
+		(CGPoint){
+			roundf(0.5f * (CGRectGetWidth(self.view.bounds) - CGRectGetWidth(self.commentsRevealingActionContainerView.frame))),
+			CGRectGetHeight(self.view.bounds)
+		},
+		self.commentsRevealingActionContainerView.frame.size	
+	};
+		
 	if (self.article)
 		[self refreshView];
 	
@@ -198,7 +260,6 @@
 	self.compositionSendButton = nil;
 
 	self.compositionAccessoryView = nil;
-	self.commentsContainerView = nil;
 	self.commentsRevealingActionContainerView = nil;
 
 	[super viewDidUnload];
@@ -211,7 +272,7 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
-	CGPathRef oldCommentsContainerShadowPath = self.commentsContainerView.layer.shadowPath;
+	CGPathRef oldCommentsContainerShadowPath = self.view.layer.shadowPath;
 	CGPathRef oldCommentsRevealingActionContainerShadowPath = self.commentsRevealingActionContainerView.layer.shadowPath;
 
 	if (oldCommentsContainerShadowPath)
@@ -221,7 +282,7 @@
 		CFRetain(oldCommentsRevealingActionContainerShadowPath);
 		
 	if (oldCommentsContainerShadowPath) {
-		[self.commentsContainerView.layer addAnimation:((^ {
+		[self.view.layer addAnimation:((^ {
 			CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
 			transition.fromValue = (id)oldCommentsContainerShadowPath;
 			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -262,7 +323,7 @@
 			self.commentRevealButton.enabled = NO;
 			self.commentCloseButton.alpha = 1.0f;
 			self.commentCloseButton.enabled = YES;
-			self.commentsContainerView.layer.shadowOpacity = 0.5f;
+			self.view.layer.shadowOpacity = 0.5f;
 			break;
 			
 		}
@@ -275,13 +336,12 @@
 			self.commentRevealButton.enabled = YES;
 			self.commentCloseButton.alpha = 0.0f;
 			self.commentCloseButton.enabled = NO;
-			self.commentsContainerView.layer.shadowOpacity = 0.0f;
+			self.view.layer.shadowOpacity = 0.0f;
 			break;
 			
 		}
 	
 	}
-	
 	
 	[self refreshView];
 	
@@ -399,6 +459,28 @@
 
 }
 
+
+
+
+
+- (void) textViewDidBeginEditing:(UITextView *)textView {
+
+	[UIView animateWithDuration:0.3f animations: ^ {
+		[self.view setNeedsLayout];
+		[self.view layoutIfNeeded];
+	}];
+
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView {
+
+	[UIView animateWithDuration:0.3f animations: ^ {
+		[self.view setNeedsLayout];
+		[self.view layoutIfNeeded];
+	}];
+	
+}
+
 - (void) dealloc {
 
 	[commentsView release];
@@ -408,7 +490,6 @@
 	[compositionContentField release];
 	[compositionSendButton release];
 	[compositionAccessoryView release];
-	[commentsContainerView release];
 	[commentsRevealingActionContainerView release];
 	
 	[managedObjectContext release];
