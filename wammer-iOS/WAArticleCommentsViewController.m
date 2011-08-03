@@ -102,8 +102,8 @@
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
 	self.view.backgroundColor = [UIColor clearColor];
 	self.view.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
-	self.view.layer.shadowOpacity = 0.5f;
-	self.view.layer.shadowRadius = 4.0f;
+	self.view.layer.shadowOpacity = 0.25f;
+	self.view.layer.shadowRadius = 2.0f;
 	
 	self.commentsView.layer.cornerRadius = 4.0f;
 	self.commentsView.layer.masksToBounds = YES;
@@ -119,8 +119,8 @@
 	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	self.commentsRevealingActionContainerView.backgroundColor = [UIColor clearColor];
 	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
-	self.commentsRevealingActionContainerView.layer.shadowOpacity = 0.5f;
-	self.commentsRevealingActionContainerView.layer.shadowRadius = 4.0f;
+	self.commentsRevealingActionContainerView.layer.shadowOpacity = 0.25f;
+	self.commentsRevealingActionContainerView.layer.shadowRadius = 2.0f;
 	
 	self.compositionAccessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.compositionAccessoryView.backgroundColor = [UIColor clearColor];
@@ -180,6 +180,17 @@
 		
 	};
 	
+	self.view.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	
+		UIView *hitSubview = [nrRevealingActionContainerView hitTest:aPoint withEvent:anEvent];
+		
+		if (hitSubview)
+			return hitSubview;
+		else
+			return (UIView *)superAnswer;
+	
+	};
+	
 	self.commentsRevealingActionContainerView.onLayoutSubviews = ^ {
 		
 		nrRevealingActionContainerView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrRevealingActionContainerView.bounds].CGPath;
@@ -196,15 +207,15 @@
 	};
 	
 	self.commentsRevealingActionContainerView.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
-		
-		if (superAnswer)
-			return superAnswer;
-		else if (nrCommentRevealButton.enabled)
-			return nrCommentRevealButton;
+	
+		if (nrCommentRevealButton.enabled)
+			return (UIView *)nrCommentRevealButton;
 		else if (nrCommentCloseButton.enabled)
-			return nrCommentCloseButton;
+			return (UIView *)nrCommentCloseButton;
+		else if (superAnswer)
+			return (UIView *)superAnswer;
 		else
-			return nil;
+			return (UIView *)nil;
 		
 	};
 	
