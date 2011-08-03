@@ -22,6 +22,8 @@
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
 
+#import "UIView+WAAdditions.h"
+
 
 @interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate>
 
@@ -368,28 +370,8 @@
 	self.articleCommentsViewController.state = showingDetailedComments ? WAArticleCommentsViewControllerStateShown : WAArticleCommentsViewControllerStateHidden;
 	
 	
-	if (!showingDetailedComments) {
-	
-		__block UIView * (^firstResponderInView)(UIView *aView) = nil;
-		firstResponderInView = ^ (UIView *aView) {
-		
-			for (UIView *aSubview in aView.subviews) {
-				UIView *foundFirstResponder = firstResponderInView(aSubview);
-				if (foundFirstResponder)
-					return foundFirstResponder;
-			}
-			
-			if (aView.isFirstResponder)
-				return aView;
-			
-			return nil;
-		
-		};
-		
-		UIView *foundFirstResponder = firstResponderInView(self.articleCommentsViewController.view);
-		[foundFirstResponder resignFirstResponder];
-	
-	}
+	if (!showingDetailedComments)	
+		[[self.articleCommentsViewController.view waFirstResponderInView] resignFirstResponder];
 	
 }
 
