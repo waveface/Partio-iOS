@@ -191,6 +191,13 @@
 	
 	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController viewWillAppear:animated];
+	
+	@try {
+		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
+		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
+	} @catch (NSException *e) {
+    //	NO OP
+	}
 
 }
 
