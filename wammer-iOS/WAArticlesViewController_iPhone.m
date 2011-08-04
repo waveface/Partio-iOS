@@ -56,7 +56,12 @@
 	if (!self)
 		return nil;
 		
-	IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)];
+    
+    //self.navigationItem.rightBarButtonItem = settings;
+    self.title = @"Morning Post";
+	
+    IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
 	toolbar.usesCustomLayout = NO;
 	toolbar.items = [NSArray arrayWithObjects:
 		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
@@ -64,9 +69,8 @@
 		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
 		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
 	nil];
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
+	//self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
 	
-	self.title = @"Articles(iPhone)";
 	
 	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
 	
@@ -357,6 +361,11 @@
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
+}
+
+- (IBAction)showAccount:(id)sender
+{
+    
 }
 
 @end
