@@ -9,9 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
+#import "AQGridView.h"
+#import "IRTransparentToolbar.h"
+
 
 @interface WACompositionViewController : UIViewController
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
+
+@property (nonatomic, readwrite, retain) IBOutlet AQGridView *photosView;
+@property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView;
+@property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar;
 
 @end
