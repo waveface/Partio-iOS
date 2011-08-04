@@ -554,6 +554,8 @@
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		
+		//	NSLog(@"retrievedArticleReps %@", retrievedArticleReps);
+		
 		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAFile", @"files",
 			@"WAComment", @"comments",

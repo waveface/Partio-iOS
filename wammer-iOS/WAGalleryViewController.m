@@ -10,4 +10,12 @@
 
 @implementation WAGalleryViewController
 
++ (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
+
+	WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
+	
+	return returnedController;
+
+}
+
 @end

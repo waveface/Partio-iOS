@@ -10,12 +10,23 @@
 #import "WADataStore.h"
 
 #import "CGGeometry+IRAdditions.h"
+#import "QuartzCore+IRAdditions.h"
 
 
-@interface WAImageStackView ()
+
+
+
+static NSString *kWAImageStackViewElementCanonicalTransform;
+
+
+@interface WAImageStackView () <UIGestureRecognizerDelegate>
 
 - (void) waInit;
 @property (nonatomic, readwrite, retain) NSArray *shownImageFilePaths;
+@property (nonatomic, readwrite, retain) UIPinchGestureRecognizer *pinchRecognizer;
+@property (nonatomic, readwrite, retain) UIRotationGestureRecognizer *rotationRecognizer;
+
+@property (nonatomic, readwrite, assign) UIView *firstPhotoView;
 
 @end
 
@@ -23,6 +34,7 @@
 @implementation WAImageStackView
 
 @synthesize files, delegate, shownImageFilePaths;
+@synthesize pinchRecognizer, rotationRecognizer, firstPhotoView;
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 
@@ -53,6 +65,26 @@
 - (void) waInit {
 
 	[self addObserver:self forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
+	
+	self.pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
+	self.pinchRecognizer.delegate = self;
+	[self addGestureRecognizer:self.pinchRecognizer];
+	
+	self.rotationRecognizer = [[[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotation:)] autorelease];
+	self.rotationRecognizer.delegate = self;
+	[self addGestureRecognizer:self.rotationRecognizer];
+	
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	if (gestureRecognizer == self.pinchRecognizer)
+		return (otherGestureRecognizer == self.rotationRecognizer);
+	
+	if (gestureRecognizer == self.rotationRecognizer)
+		return (otherGestureRecognizer == self.pinchRecognizer);
+
+	return NO;
 
 }
 
@@ -80,7 +112,7 @@
 				return aFile.resourceFilePath;
 				
 			NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
-			return [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
+				return [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
 			
 		}];
 		
@@ -88,8 +120,17 @@
 
 }
 
-- (void) layoutSubviews {
 
+- (void) setShownImageFilePaths:(NSArray *)newShownImageFilePaths {
+
+	if (newShownImageFilePaths == shownImageFilePaths)
+		return;
+	
+	[self willChangeValueForKey:@"shownImageFilePaths"];
+	[shownImageFilePaths release];
+	shownImageFilePaths = [newShownImageFilePaths retain];
+	[self didChangeValueForKey:@"shownImageFilePaths"];
+	
 	static int kPhotoViewTag = 1024;
 	
 	NSMutableSet *removedPhotoViews = [NSMutableSet setWithArray:[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
@@ -151,9 +192,10 @@
 		if (!hasUsedFirstPhoto) {
 		
 			photoViewFrame = IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES);
-			
 			wrappingImageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
+			
+			self.firstPhotoView = wrappingImageView;
 
 		} else {
 		
@@ -166,6 +208,7 @@
 
 		}
 		
+		objc_setAssociatedObject(wrappingImageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:wrappingImageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		wrappingImageView.frame = photoViewFrame;
 		
 		if (!hasUsedFirstPhoto)
@@ -187,10 +230,73 @@
 
 }
 
+- (void) handlePinch:(UIPinchGestureRecognizer *)aPinchRecognizer {
+
+	NSValue *canonicalTransformValue = objc_getAssociatedObject(self.firstPhotoView.layer, kWAImageStackViewElementCanonicalTransform);
+	CATransform3D canonicalTransform = canonicalTransformValue ? [canonicalTransformValue CATransform3DValue] : CATransform3DIdentity;
+	
+	switch (aPinchRecognizer.state) {
+	
+		case UIGestureRecognizerStatePossible:
+		case UIGestureRecognizerStateBegan: {
+		
+			break;
+		
+		}
+		
+		case UIGestureRecognizerStateChanged: {
+		
+			IRCATransact(^ {
+				self.firstPhotoView.layer.transform = CATransform3DConcat(
+					CATransform3DConcat(
+						canonicalTransform,
+						CATransform3DMakeScale(self.pinchRecognizer.scale, self.pinchRecognizer.scale, 1.0f)
+					),
+					CATransform3DMakeRotation(self.rotationRecognizer.rotation, 0.0f, 0.0f, 1.0f)
+				);
+			});
+		
+			break;
+		
+		}
+		
+		case UIGestureRecognizerStateEnded:
+		case UIGestureRecognizerStateCancelled:
+		case UIGestureRecognizerStateFailed: {
+		
+			CATransform3D oldTransform = ((CALayer *)[self.firstPhotoView.layer presentationLayer]).transform;
+			CATransform3D newTransform = canonicalTransform;
+			
+			CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+			transformAnimation.fromValue = [NSValue valueWithCATransform3D:oldTransform];
+			transformAnimation.toValue = [NSValue valueWithCATransform3D:newTransform];
+			transformAnimation.removedOnCompletion = YES;
+			transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			transformAnimation.duration = 0.3f;
+		
+			self.firstPhotoView.layer.transform = newTransform;
+			[self.firstPhotoView.layer addAnimation:transformAnimation forKey:@"transition"];
+			
+			break;
+		
+		}
+	
+	}
+
+}
+
+- (void) handleRotation:(UIRotationGestureRecognizer *)aRotationRecognizer {
+
+	//	We let this be an empty no-op and have the pinch recognizer do all the work instead.
+
+}
+
 - (void) dealloc {
 
 	[self removeObserver:self forKeyPath:@"files"];
 	[shownImageFilePaths release];
+	[pinchRecognizer release];
+	[rotationRecognizer release];
 	[super dealloc];
 
 }
