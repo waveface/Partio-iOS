@@ -214,7 +214,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 		if (idx == ([allPhotoViews count] - 1)) {
 		
-			photoViewFrame = IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES);
+			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES));
 			imageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
 			
