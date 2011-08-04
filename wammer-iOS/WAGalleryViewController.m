@@ -9,6 +9,7 @@
 #import "WAGalleryViewController.h"
 #import "IRPaginatedView.h"
 #import "WADataStore.h"
+#import "WAGalleryImageView.h"
 
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate>
@@ -177,15 +178,13 @@
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
+	//	HEH
+
 	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
-	
 	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
 	NSString *resourceFilePath = [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
 	
-	UIImageView *returnedView =  [[[UIImageView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
-	returnedView.backgroundColor = [UIColor blackColor];
-	returnedView.image = [UIImage imageWithContentsOfFile:resourceFilePath];
-	returnedView.contentMode = UIViewContentModeScaleAspectFit;
+	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:[UIImage imageWithContentsOfFile:resourceFilePath]];
 	
 	return returnedView;
 
