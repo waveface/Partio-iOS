@@ -138,8 +138,6 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		//	Get the first two photographs if possible.
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
 	
-		NSLog(@"self.shownImageFilePaths %@", self.shownImageFilePaths);
-		
 	}
 
 }
