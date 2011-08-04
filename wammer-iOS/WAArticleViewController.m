@@ -106,13 +106,29 @@
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	
+
 	for (UIView *aView in self.mainContentView.subviews) {
-		CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
-		aView.layer.shadowOpacity = 0.0f;
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
-			aView.layer.shadowOpacity = oldShadowOpacity;
-		});
+	
+		CGPathRef oldShadowPath = aView.layer.shadowPath;
+
+		if (oldShadowPath) {
+			CFRetain(oldShadowPath);
+			[aView.layer addAnimation:((^ {
+				CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+				transition.fromValue = (id)oldShadowPath;
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transition.duration = duration;
+				return transition;
+			})()) forKey:@"transition"];
+			CFRelease(oldShadowPath);
+		}
+	
+		//	CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
+		//	aView.layer.shadowOpacity = 0.0f;
+		//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
+		//		aView.layer.shadowOpacity = oldShadowOpacity;
+		//	});
+		
 	}
 		
 }
