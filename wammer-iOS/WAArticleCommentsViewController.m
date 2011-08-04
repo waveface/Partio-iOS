@@ -209,13 +209,17 @@
 	self.commentsRevealingActionContainerView.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
 	
 		if (nrCommentRevealButton.enabled)
-			return (UIView *)nrCommentRevealButton;
-		else if (nrCommentCloseButton.enabled)
-			return (UIView *)nrCommentCloseButton;
-		else if (superAnswer)
+		if (CGRectContainsPoint(UIEdgeInsetsInsetRect(nrCommentRevealButton.frame, (UIEdgeInsets){ -22.0f, -22.0f, -22.0f, -22.0f }), aPoint))
+				return (UIView *)nrCommentRevealButton;
+		
+		if (nrCommentCloseButton.enabled)
+		if (CGRectContainsPoint(UIEdgeInsetsInsetRect(nrCommentCloseButton.frame, (UIEdgeInsets){ -22.0f, -22.0f, -22.0f, -22.0f }), aPoint))
+				return (UIView *)nrCommentCloseButton;
+		
+		if (superAnswer)
 			return (UIView *)superAnswer;
-		else
-			return (UIView *)nil;
+			
+		return (UIView *)nil;
 		
 	};
 	
