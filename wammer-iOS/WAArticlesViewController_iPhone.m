@@ -20,6 +20,7 @@
 #import "IRActionSheet.h"
 
 #import "WAArticleViewController.h"
+#import "WAUserSelectionViewController.h"
 
 
 @interface WAArticlesViewController_iPhone () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate>
@@ -275,6 +276,13 @@
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 
+}
+
+- (void) handleAccount:(UIBarButtonItem *)sender {
+    WAUserSelectionViewController *usvc = [[[WAUserSelectionViewController alloc] init] autorelease];
+    
+	[self.navigationController presentModalViewController:usvc animated:YES];
+    
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
