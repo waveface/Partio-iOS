@@ -526,9 +526,19 @@
 
 	[self.fetchedResultsController performFetch:nil];
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
 
-		return [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		WAArticleViewController *returnedViewController = [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
+		
+			if (action)
+				action(nrSelf);
+		
+		};
+		
+		return returnedViewController;
 		
 	}];
 	
