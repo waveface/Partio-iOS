@@ -40,6 +40,7 @@
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="owner" inverseEntity="WAFile"/>
     </entity>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
+    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
     <elements>
         <element name="WAArticle" positionX="-5760" positionY="-1656" width="128" height="150"/>
         <element name="WAComment" positionX="-5546" positionY="-1656" width="128" height="135"/>

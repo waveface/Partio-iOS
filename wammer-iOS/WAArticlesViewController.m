@@ -191,6 +191,13 @@
 	
 	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController viewWillAppear:animated];
+	
+	@try {
+		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
+		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
+	} @catch (NSException *e) {
+    //	NO OP
+	}
 
 }
 
@@ -221,7 +228,6 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
-
 	if ((object == self.paginatedView) && ([keyPath isEqualToString:@"currentPage"])) {
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
@@ -238,7 +244,7 @@
 			return;
 		
 		self.articleCommentsViewController.representedArticleURI = newURI;
-		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden];
+		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden onFulfillment:nil];
 	
 	}
 
@@ -375,7 +381,7 @@
 	
 }
 
-- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState {
+- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void (^)(void))aCompletionBlock {
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -397,6 +403,9 @@
 				}
 				
 			}
+			
+			if (aCompletionBlock)
+				aCompletionBlock();
 			
 			newShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
 		
@@ -427,77 +436,84 @@
 - (void) handleCommentViewPan:(UIPanGestureRecognizer *)panRecognizer {
 	
 	static BOOL commentsViewWasShown = NO;
-	static CGPoint beginTouch = (CGPoint){ 0, 0 };
 	
-	CGFloat distance = [panRecognizer locationInView:self.view].y - CGRectGetMinY(self.view.bounds);
-	distance = MAX(0, MIN(CGRectGetHeight(self.articleCommentsViewController.view.frame), distance));
+	UIView *articleCommentsView = articleCommentsViewController.view;
+	CGFloat desiredRevealingPortionLength = MAX(0, MIN(CGRectGetHeight(articleCommentsView.frame), ([panRecognizer locationInView:self.view].y - CGRectGetMinY(self.view.bounds))));
 	
 	switch (panRecognizer.state) {
 	
 		case UIGestureRecognizerStatePossible:
 		case UIGestureRecognizerStateBegan: {
-		
-			commentsViewWasShown = (CGRectGetMaxY(self.articleCommentsViewController.view.frame) == CGRectGetHeight(self.articleCommentsViewController.view.frame));
-			beginTouch = [panRecognizer locationInView:self.view];
-		
+			
+			commentsViewWasShown = (CGRectGetMaxY(articleCommentsView.frame) == CGRectGetHeight(articleCommentsView.frame));
+			
 			break;
+			
 		}
 		
 		case UIGestureRecognizerStateChanged: {
-		
+			
+			static CGFloat minCatchupAnimationDistance = 3.0f;
+			static CGFloat maxCatchupAnimationDistance = 64.0f;
+			static NSTimeInterval minCatchupAnimationDuration = 0.1f;
+			static NSTimeInterval maxCatchupAnimationDuration = 0.3f;
+			BOOL animatesCatchup = NO;
+			
+			CGPoint oldOrigin = articleCommentsView.frame.origin;
 			CGPoint newOrigin = (CGPoint){
-				CGRectGetMidX(self.view.bounds) - 0.5f * CGRectGetWidth(self.articleCommentsViewController.view.frame),
-				distance - CGRectGetHeight(self.articleCommentsViewController.view.frame)
+				CGRectGetMidX(self.view.bounds) - 0.5f * CGRectGetWidth(articleCommentsView.frame),
+				desiredRevealingPortionLength - CGRectGetHeight(articleCommentsView.frame)
 			};
-		
+			
+			NSTimeInterval catchupAnimationDuration = ((desiredRevealingPortionLength / maxCatchupAnimationDistance) * maxCatchupAnimationDuration);;
+			
+			if (!commentsViewWasShown && (desiredRevealingPortionLength <= maxCatchupAnimationDistance))
+				if (fabsf(oldOrigin.y - newOrigin.y) >= minCatchupAnimationDistance)
+					if (catchupAnimationDuration >= minCatchupAnimationDuration)
+						animatesCatchup = YES;
+			
 			void (^operations)() = ^ {
-				self.articleCommentsViewController.view.frame = (CGRect){ newOrigin, self.articleCommentsViewController.view.frame.size };
-				self.articleCommentsViewController.view.layer.shadowOpacity = (distance > 0.0f) ? 0.5f : 0.0f;
+				articleCommentsView.frame = (CGRect){ newOrigin, articleCommentsView.frame.size };
+				articleCommentsView.layer.shadowOpacity = (desiredRevealingPortionLength > 0.0f) ? 0.5f : 0.0f;
 			};
-		
-			if (!commentsViewWasShown && (distance < 64.0f)) {
 			
-				NSTimeInterval duration = ((distance / 64.0f) * 0.3f);
-			
-				if (duration > 0.1f)
-					[UIView animateWithDuration:duration delay:0.0f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:operations completion:nil];
-				else
-					operations();
-			
+			if (animatesCatchup) {
+				[UIView animateWithDuration:catchupAnimationDuration delay:0.0f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:operations completion:nil];
 			} else {
-			
 				operations();
-			
 			}
-						
+			
 			break;
 		
 		}
+		
 		case UIGestureRecognizerStateEnded:
 		case UIGestureRecognizerStateCancelled:
 		case UIGestureRecognizerStateFailed: {
 		
-			CGFloat currentCommentsContainerViewHeight = CGRectGetHeight(self.articleCommentsViewController.view.frame);
-			
 			__block CGFloat oldShadowOpacity, newShadowOpacity;
-			oldShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
+			oldShadowOpacity = articleCommentsView.layer.shadowOpacity;
 			
 			[UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void) {
 			
-				if (!commentsViewWasShown && (distance < 0.25f * currentCommentsContainerViewHeight))
-					[self updateLayoutForCommentsVisible:NO];
-				else if (commentsViewWasShown && (distance < 0.75f * currentCommentsContainerViewHeight))
-					[self updateLayoutForCommentsVisible:NO];
+				BOOL commentsShallBeVisible = YES;
+				CGFloat commentsViewHeight = CGRectGetHeight(articleCommentsView.frame);
+				
+				if (!commentsViewWasShown && (desiredRevealingPortionLength < 0.25f * commentsViewHeight))
+					commentsShallBeVisible = NO;
+				else if (commentsViewWasShown && (desiredRevealingPortionLength < 0.75f * commentsViewHeight))
+					commentsShallBeVisible = NO;
 				else
-					[self updateLayoutForCommentsVisible:YES];
+					commentsShallBeVisible = YES;
+					
+				[self updateLayoutForCommentsVisible:commentsShallBeVisible];
 				
-				newShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
-				
-				self.articleCommentsViewController.view.layer.shadowOpacity = oldShadowOpacity;
+				newShadowOpacity = articleCommentsView.layer.shadowOpacity;
+				articleCommentsView.layer.shadowOpacity = oldShadowOpacity;
 					
 			} completion: ^ (BOOL didFinish) {
 			
-				self.articleCommentsViewController.view.layer.shadowOpacity = newShadowOpacity;
+				articleCommentsView.layer.shadowOpacity = newShadowOpacity;
 			
 			}];
 
@@ -517,9 +533,19 @@
 
 	[self.fetchedResultsController performFetch:nil];
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
 
-		return [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		WAArticleViewController *returnedViewController = [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
+		
+			if (action)
+				action(nrSelf);
+		
+		};
+		
+		return returnedViewController;
 		
 	}];
 	
@@ -544,6 +570,8 @@
 	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		
+		//	NSLog(@"retrievedArticleReps %@", retrievedArticleReps);
 		
 		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAFile", @"files",

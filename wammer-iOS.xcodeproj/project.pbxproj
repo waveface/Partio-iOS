@@ -240,8 +240,6 @@
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
-				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
 				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF3ACA8E13E6ACFB000F608C /* WAView.h */,
@@ -307,6 +305,8 @@
 				FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
+				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 			);
 			name = iPad;
 			path = "wammer-iOS";

@@ -7,10 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+#import "WAView.h"
 
 @interface WAGalleryViewController : UIViewController
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI;
+
+@property (nonatomic, readwrite, retain) WAView *view;
 
 @end
                                                                                                                                                                                                                                                                                      
