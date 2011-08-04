@@ -16,7 +16,8 @@
 
 
 
-static NSString *kWAImageStackViewElementCanonicalTransform;
+static const NSString *kWAImageStackViewElementCanonicalTransform = @"kWAImageStackViewElementCanonicalTransform";
+static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewElementImagePath";
 
 
 @interface WAImageStackView () <UIGestureRecognizerDelegate>
@@ -33,6 +34,7 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 
 @implementation WAImageStackView
 
+@synthesize state;
 @synthesize files, delegate, shownImageFilePaths;
 @synthesize pinchRecognizer, rotationRecognizer, firstPhotoView;
 
@@ -64,6 +66,8 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 
 - (void) waInit {
 
+	self.state = WAImageStackViewInteractionNormal;
+
 	[self addObserver:self forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
@@ -74,6 +78,17 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 	self.rotationRecognizer.delegate = self;
 	[self addGestureRecognizer:self.rotationRecognizer];
 	
+}
+
+- (void) setState:(WAImageStackViewInteractionState)newState {
+
+	if (state == newState)
+		return;
+	
+ 	[self willChangeValueForKey:@"state"];
+	state = newState;
+	[self didChangeValueForKey:@"state"];
+
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -137,13 +152,11 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 		return (BOOL)(aSubview.tag == kPhotoViewTag);
 	}]]];
 	
-	
-	static NSString *kImagePath = @"WAImageStackView_Subview_ImagePath";
 	void (^setImagePath)(id object, NSString *path) = ^ (id object, NSString *path) {
-		objc_setAssociatedObject(object, kImagePath, path, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		objc_setAssociatedObject(object, kWAImageStackViewElementImagePath, path, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	};
 	NSString * (^getImagePath)(id object) = ^ (id object) {
-		return (NSString *)objc_getAssociatedObject(object, kImagePath);
+		return (NSString *)objc_getAssociatedObject(object, kWAImageStackViewElementImagePath);
 	};
 	
 
@@ -240,11 +253,15 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 		case UIGestureRecognizerStatePossible:
 		case UIGestureRecognizerStateBegan: {
 		
+			self.state = WAImageStackViewInteractionNormal;
+		
 			break;
 		
 		}
 		
 		case UIGestureRecognizerStateChanged: {
+		
+			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 		
 			IRCATransact(^ {
 				self.firstPhotoView.layer.transform = CATransform3DConcat(
@@ -263,6 +280,11 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 		case UIGestureRecognizerStateEnded:
 		case UIGestureRecognizerStateCancelled:
 		case UIGestureRecognizerStateFailed: {
+		
+			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
+			
+			if (self.state == WAImageStackViewInteractionZoomInPossible)
+				[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(self.firstPhotoView, kWAImageStackViewElementImagePath)] contentRect:self.firstPhotoView.frame transform:self.firstPhotoView.layer.transform];
 		
 			CATransform3D oldTransform = ((CALayer *)[self.firstPhotoView.layer presentationLayer]).transform;
 			CATransform3D newTransform = canonicalTransform;
@@ -288,6 +310,7 @@ static NSString *kWAImageStackViewElementCanonicalTransform;
 - (void) handleRotation:(UIRotationGestureRecognizer *)aRotationRecognizer {
 
 	//	We let this be an empty no-op and have the pinch recognizer do all the work instead.
+	//	The rotation gesture recognizer is only wired up to provide adequate information.
 
 }
 
