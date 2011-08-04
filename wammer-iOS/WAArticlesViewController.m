@@ -320,7 +320,7 @@
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
-	WACompositionViewController *compositionVC = [[[WACompositionViewController alloc] init] autorelease];
+	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:nil];
 	
 	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
 	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
