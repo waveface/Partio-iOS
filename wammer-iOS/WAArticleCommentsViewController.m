@@ -429,9 +429,6 @@
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
 	nil];
 	
-	
-	NSLog(@"fetchRequest %@", fetchRequest);
-	
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	NSError *fetchingError = nil;

@@ -59,6 +59,7 @@
 		FFF9B7A913E7D8E5002A9D7F /* WATinyArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */; };
 		FFF9B7AA13E7D8E5002A9D7F /* WATinyArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */; };
 		FFF9B7AE13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */; };
+		FFFFD9DB13EAABDB000E3D2D /* WACompositionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,6 +192,7 @@
 		FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDown.png; path = Resources/WATinyArrowDown.png; sourceTree = "<group>"; };
 		FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowUp.png; path = Resources/WATinyArrowUp.png; sourceTree = "<group>"; };
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
+		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,6 +307,7 @@
 				FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
 				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
 				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 			);
@@ -542,6 +545,7 @@
 				FF13871113E94F0700154B7D /* WACompositionBarBackground.png in Resources */,
 				FF13871313E95C3900154B7D /* WACompositionTextWellBackground.png in Resources */,
 				FF13871513E95E0800154B7D /* WACompositionSendButtonBackground.png in Resources */,
+				FFFFD9DB13EAABDB000E3D2D /* WACompositionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,6 +640,7 @@
 					"$(PROJECT_DIR)/external/IRFoundations/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
+					"$(PROJECT_DIR)/external/AQGridView/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -669,6 +674,7 @@
 					"$(PROJECT_DIR)/external/IRFoundations/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
+					"$(PROJECT_DIR)/external/AQGridView/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
