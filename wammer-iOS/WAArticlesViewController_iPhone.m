@@ -281,7 +281,7 @@
 - (void) handleAccount:(UIBarButtonItem *)sender {
     WAUserSelectionViewController *usvc = [[[WAUserSelectionViewController alloc] init] autorelease];
     
-	[self.navigationController presentModalViewController:usvc animated:YES];
+	[self.navigationController pushViewController:usvc animated:YES];
     
 }
 

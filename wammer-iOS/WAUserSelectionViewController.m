@@ -140,7 +140,7 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-	return [[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
+	return 2;//[[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
 
 }
 
@@ -153,6 +153,16 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
 	}
 	
+    if([indexPath row] == 0){
+        cell.textLabel.text = @"Kitty";
+        cell.imageView.image = [UIImage imageNamed:@"IPSample/IPSample_001.jpg"]; 
+    }else{
+        cell.textLabel.text = @"Kitten";
+        cell.imageView.image = [UIImage imageNamed:@"IPSample/IPSample_002.jpg"]; 
+    }
+    
+    return cell;
+    
 	WAUser *representedUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	//	NSDictionary *userObject = (NSDictionary *)[self.eligibleUsers objectAtIndex:indexPath.row];
@@ -202,6 +212,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    return ;
 	NSURL *userRep = [[(IRManagedObject *)[self.fetchedResultsController objectAtIndexPath:indexPath] objectID] URIRepresentation];
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
