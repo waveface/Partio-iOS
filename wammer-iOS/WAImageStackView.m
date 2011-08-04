@@ -26,8 +26,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 @property (nonatomic, readwrite, retain) NSArray *shownImageFilePaths;
 @property (nonatomic, readwrite, retain) UIPinchGestureRecognizer *pinchRecognizer;
 @property (nonatomic, readwrite, retain) UIRotationGestureRecognizer *rotationRecognizer;
-
 @property (nonatomic, readwrite, assign) UIView *firstPhotoView;
+@property (nonatomic, readwrite, assign) BOOL gestureProcessingOngoing;
 
 @end
 
@@ -37,6 +37,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 @synthesize state;
 @synthesize files, delegate, shownImageFilePaths;
 @synthesize pinchRecognizer, rotationRecognizer, firstPhotoView;
+@synthesize gestureProcessingOngoing;
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 
@@ -66,6 +67,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 
 - (void) waInit {
 
+	self.gestureProcessingOngoing = NO;
 	self.state = WAImageStackViewInteractionNormal;
 
 	[self addObserver:self forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
@@ -145,6 +147,16 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	[shownImageFilePaths release];
 	shownImageFilePaths = [newShownImageFilePaths retain];
 	[self didChangeValueForKey:@"shownImageFilePaths"];
+	
+	[self setNeedsLayout];
+	[self layoutIfNeeded];
+
+}
+	
+- (void) layoutSubviews {
+
+	if (self.gestureProcessingOngoing)
+		return;
 	
 	static int kPhotoViewTag = 1024;
 	
@@ -254,6 +266,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		case UIGestureRecognizerStateBegan: {
 		
 			self.state = WAImageStackViewInteractionNormal;
+			self.gestureProcessingOngoing = YES;
 		
 			break;
 		
@@ -298,6 +311,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 			self.firstPhotoView.layer.transform = newTransform;
 			[self.firstPhotoView.layer addAnimation:transformAnimation forKey:@"transition"];
+			
+			self.gestureProcessingOngoing = NO;
 			
 			break;
 		
