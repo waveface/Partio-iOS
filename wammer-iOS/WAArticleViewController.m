@@ -10,8 +10,9 @@
 #import "WAArticleViewController.h"
 #import "WADataStore.h"
 #import "WAImageStackView.h"
+#import "WAGalleryViewController.h"
 
-@interface WAArticleViewController () <UIGestureRecognizerDelegate>
+@interface WAArticleViewController () <UIGestureRecognizerDelegate, WAImageStackViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
@@ -24,6 +25,7 @@
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
 @synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel;
+@synthesize onPresentingViewController;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -53,6 +55,7 @@
 
 	[managedObjectContext release];
 	[article release];
+	[onPresentingViewController release];
 	
 	[contextInfoContainer release];
 	[mainContentView release];
@@ -69,6 +72,8 @@
 
 	[super viewDidLoad];
 	[self refreshView];
+	
+	self.mainContentView.delegate = self;
 		
 }
 
@@ -109,7 +114,7 @@
 			aView.layer.shadowOpacity = oldShadowOpacity;
 		});
 	}
-	
+		
 }
 
 
@@ -119,6 +124,27 @@
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
 	return 0;
+
+}
+
+- (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
+
+	//	NSString* (^NSStringFromTransform3D) (CATransform3D) = ^ (CATransform3D xform ) {
+	//		return [NSString stringWithFormat:@"[%f %f %f %f; %f %f %f %f; %f %f %f %f; %f %f %f %f]",
+	//			xform.m11, xform.m12, xform.m13, xform.m14,
+	//			xform.m21, xform.m22, xform.m23, xform.m24,
+	//			xform.m31, xform.m32, xform.m33, xform.m34,
+	//			xform.m41, xform.m42, xform.m43, xform.m44
+	//		];
+	//	};
+
+	WAGalleryViewController *galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]];
+	galleryViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+	galleryViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	
+	self.onPresentingViewController( ^ (UIViewController *parentViewController) {
+		[parentViewController presentModalViewController:galleryViewController animated:YES];
+	});
 
 }
 

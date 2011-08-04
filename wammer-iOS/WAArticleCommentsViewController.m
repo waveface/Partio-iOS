@@ -129,9 +129,6 @@
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
 	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
 	
-	//	self.compositionAccessoryView.layer.cornerRadius = 4.0f;
-	//	self.compositionAccessoryView.layer.masksToBounds = YES;
-	
 	[self.compositionSendButton setBackgroundImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:8 topCapHeight:8] forState:UIControlStateNormal];
 	
 	
@@ -440,8 +437,6 @@
 	NSError *fetchingError = nil;
 	if (![fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"Error fetching: %@", fetchingError);
-	
-	NSLog(@"Fetched %@", self.fetchedResultsController.fetchedObjects);
 	
 	return fetchedResultsController;
 

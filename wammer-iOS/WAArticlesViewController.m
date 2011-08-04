@@ -191,6 +191,13 @@
 	
 	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController viewWillAppear:animated];
+	
+	@try {
+		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
+		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
+	} @catch (NSException *e) {
+    //	NO OP
+	}
 
 }
 
@@ -526,9 +533,19 @@
 
 	[self.fetchedResultsController performFetch:nil];
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
 
-		return [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		WAArticleViewController *returnedViewController = [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
+		
+			if (action)
+				action(nrSelf);
+		
+		};
+		
+		return returnedViewController;
 		
 	}];
 	
@@ -553,6 +570,8 @@
 	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		
+		//	NSLog(@"retrievedArticleReps %@", retrievedArticleReps);
 		
 		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAFile", @"files",
