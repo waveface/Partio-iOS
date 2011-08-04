@@ -193,6 +193,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		[self insertSubview:imageView atIndex:0];		
 		
 	}];
+	
 }
 	
 - (void) layoutSubviews {

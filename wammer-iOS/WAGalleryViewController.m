@@ -57,6 +57,8 @@
 	
 	self.wantsFullScreenLayout = YES;
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
 	return self;
 
 }
@@ -64,6 +66,42 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 
 	return YES;
+
+}
+
+- (void) setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext {
+
+	if (newManagedObjectContext == managedObjectContext)
+		return;
+		
+	[self willChangeValueForKey:@"managedObjectContext"];
+	[managedObjectContext release];
+	managedObjectContext = [newManagedObjectContext retain];
+	[self didChangeValueForKey:@"managedObjectContext"];
+
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		NSUInteger oldCurrentPage = self.paginatedView.currentPage;
+		
+		[UIView transitionWithView:self.paginatedView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		
+			[self.paginatedView reloadViews];
+			[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
+		
+		} completion:nil];
+	
+	});
 
 }
 
@@ -76,7 +114,10 @@
 		self.article, @"Article",
 	nil]];
 	
+	fetchRequest.returnsObjectsAsFaults = NO;
+	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"resourceURL" ascending:YES],
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 	nil];
 		
@@ -85,6 +126,8 @@
 	NSError *fetchingError;
 	if (![self.fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"Error fetching: %@", fetchingError);
+	
+	NSLog(@"FETCHED %@", self.fetchedResultsController.fetchedObjects);
 		
 	self.previousNavigationItem.title = self.article.text;
 	
@@ -178,11 +221,11 @@
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	//	HEH
-
 	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
-	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
-	NSString *resourceFilePath = [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
+	NSString *resourceFilePath = representedFile.resourceFilePath;
+	
+	//	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
+	//	NSString *resourceFilePath = [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
 	
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:[UIImage imageWithContentsOfFile:resourceFilePath]];
 	
@@ -281,6 +324,8 @@
 }
 
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[article release];

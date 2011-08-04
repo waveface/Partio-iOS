@@ -36,6 +36,10 @@
 	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 	self.activityIndicator.hidesWhenStopped = NO;
+	self.activityIndicator.center = (CGPoint){
+		CGRectGetMidX(self.bounds),
+		CGRectGetMidY(self.bounds)
+	};
 	[self.activityIndicator startAnimating];
 	[self addSubview:self.activityIndicator];
 
@@ -43,13 +47,31 @@
 
 - (void) setImage:(UIImage *)newImage {
 
+	[self setImage:newImage animated:NO];
+
+}
+
+- (void) setImage:(UIImage *)newImage animated:(BOOL)animate {
+
 	if (self.imageView.image == newImage)
 		return;
 
-	[self willChangeValueForKey:@"image"];
-	self.imageView.image = newImage;
-	self.activityIndicator.hidden = !!(newImage);
-	[self didChangeValueForKey:@"image"];
+	void (^operations)() = ^ {
+		[self willChangeValueForKey:@"image"];
+		self.imageView.image = newImage;
+		self.activityIndicator.hidden = !!(newImage);
+		[self didChangeValueForKey:@"image"];
+	};
+
+	if (animate) {
+	
+		[UIView transitionWithView:self duration:0.3f options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:operations completion:nil];
+	
+	} else {
+	
+		operations();
+	
+	}
 
 }
 

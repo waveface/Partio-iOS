@@ -14,6 +14,8 @@
 @interface WAGalleryImageView : UIView
 
 + (WAGalleryImageView *) viewForImage:(UIImage *)image;
+
 @property (nonatomic, readwrite, retain) UIImage *image;
+- (void) setImage:(UIImage *)newImage animated:(BOOL)animate;
 
 @end
