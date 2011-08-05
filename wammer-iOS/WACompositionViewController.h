@@ -20,7 +20,8 @@
 @property (nonatomic, readwrite, retain) IBOutlet AQGridView *photosView;
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar;
+@property (nonatomic, readwrite, retain) IBOutlet UIView *noPhotoReminderView;
 
-- (IBAction) handleCameraItemTap:(UIBarButtonItem *)sender;
+- (IBAction) handleCameraItemTap:(UIButton *)sender;
 
 @end
