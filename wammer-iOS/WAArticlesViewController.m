@@ -111,12 +111,17 @@
 - (void) dealloc {
 	
 	[paginatedView release];
-	[paginationSlider release];
-	[coachmarkView release];
-	[managedObjectContext release];
+	[debugActionSheetController release];
 	[fetchedResultsController release];
-	[articleCommentsViewController release];
+	[managedObjectContext release];
+	
+	[coachmarkView release];
+	[paginationSlider release];
+	[articleViewControllers release];
+	
 	[articleCommentsDismissalButton release];
+	[articleCommentsViewController release];
+	
 	[super dealloc];
 
 }
@@ -187,12 +192,18 @@
 
 - (void) viewDidUnload {
 
+	//	TBD remember current paginated view page
+
 	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	self.paginatedView = nil;
+	self.debugActionSheetController = nil;
+	
 	self.coachmarkView = nil;
 	self.paginationSlider = nil;
+	self.articleViewControllers = nil;
 	self.articleCommentsDismissalButton = nil;
+	self.articleCommentsViewController = nil;
 	
 	[super viewDidUnload];
 
