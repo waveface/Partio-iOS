@@ -10,6 +10,7 @@
 #import "WAArticlesViewController.h"
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
+#import "WAImageStackView.h"
 
 #import "WARemoteInterface.h"
 
@@ -346,6 +347,16 @@
 
 	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
 		return (self.interfaceOrientation == newOrientation);
+		
+	if ([self.articleViewControllers count] > self.paginatedView.currentPage)
+	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView.gestureProcessingOngoing)
+		return (self.interfaceOrientation == newOrientation);
+	
+	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
+		return (self.interfaceOrientation == newOrientation);
+
+	return YES;
+
 
 	return YES;
 	

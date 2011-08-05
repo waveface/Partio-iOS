@@ -163,6 +163,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	
 	static int kPhotoViewTag = 1024;
 	
+	self.firstPhotoView = nil;
+
 	[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		return (BOOL)(aSubview.tag == kPhotoViewTag);
@@ -172,9 +174,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		[aSubview removeFromSuperview];
 		
 	}];
-	
-	self.firstPhotoView = nil;
-	
+		
 	[shownImageFilePaths enumerateObjectsUsingBlock: ^ (NSString *aFilePath, NSUInteger idx, BOOL *stop) {
 	
 		UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -289,12 +289,14 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		case UIGestureRecognizerStateCancelled:
 		case UIGestureRecognizerStateFailed: {
 		
+			UIView *capturedFirstPhotoView = [[self.firstPhotoView retain] autorelease];
+		
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 			
 			if (self.state == WAImageStackViewInteractionZoomInPossible)
-				[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(self.firstPhotoView, kWAImageStackViewElementImagePath)] contentRect:self.firstPhotoView.frame transform:self.firstPhotoView.layer.transform];
+				[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
 		
-			CATransform3D oldTransform = ((CALayer *)[self.firstPhotoView.layer presentationLayer]).transform;
+			CATransform3D oldTransform = ((CALayer *)[capturedFirstPhotoView.layer presentationLayer]).transform;
 			CATransform3D newTransform = canonicalTransform;
 			
 			CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
@@ -304,8 +306,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 			transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 			transformAnimation.duration = 0.3f;
 		
-			self.firstPhotoView.layer.transform = newTransform;
-			[self.firstPhotoView.layer addAnimation:transformAnimation forKey:@"transition"];
+			capturedFirstPhotoView.layer.transform = newTransform;
+			[capturedFirstPhotoView.layer addAnimation:transformAnimation forKey:@"transition"];
 			
 			self.gestureProcessingOngoing = NO;
 			
