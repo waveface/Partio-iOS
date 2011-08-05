@@ -143,6 +143,7 @@
 	self.noPhotoReminderView = nil;
 	self.contentTextView = nil;
 	self.toolbar = nil;
+	self.imagePickerPopover = nil;
 
 	[super viewDidUnload];
 
