@@ -274,8 +274,6 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		case UIGestureRecognizerStateChanged: {
 		
 			CGPoint currentTouchPoint = [aPinchRecognizer locationInView:self];
-			NSLog(@"startingTouchPoint %@", NSStringFromCGPoint(startingTouchPoint));
-			NSLog(@"currentTouchPoint %@", NSStringFromCGPoint(currentTouchPoint));
 			
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 		
