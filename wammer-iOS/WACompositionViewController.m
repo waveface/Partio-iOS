@@ -387,6 +387,10 @@
 		[imagePickerPopover dismissPopoverAnimated:YES];
 	
 	
+	if (!selectedAssetURI && !representedAsset)
+		return;
+	
+	
 	//	Copy the file away immediately
 	
 	NSURL *finalFileURL = nil;
