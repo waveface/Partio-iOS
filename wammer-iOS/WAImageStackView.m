@@ -145,6 +145,13 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 
 - (void) setShownImageFilePaths:(NSArray *)newShownImageFilePaths {
 
+	if (self.gestureProcessingOngoing) {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				[self performSelector:_cmd withObject:newShownImageFilePaths];
+		});
+		return;
+	}
+	
 	if (newShownImageFilePaths == shownImageFilePaths)
 		return;
 	
@@ -165,6 +172,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		[aSubview removeFromSuperview];
 		
 	}];
+	
+	self.firstPhotoView = nil;
 	
 	[shownImageFilePaths enumerateObjectsUsingBlock: ^ (NSString *aFilePath, NSUInteger idx, BOOL *stop) {
 	
@@ -191,6 +200,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		[self insertSubview:imageView atIndex:0];		
 		
 	}];
+	
+	[self setNeedsLayout];
 	
 }
 	
