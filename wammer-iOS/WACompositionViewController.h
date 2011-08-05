@@ -21,4 +21,6 @@
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar;
 
+- (IBAction) handleCameraItemTap:(UIBarButtonItem *)sender;
+
 @end

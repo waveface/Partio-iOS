@@ -38,6 +38,37 @@
 
 }
 
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[UIView transitionWithView:self.view duration:0.3f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		
+			[self refreshView];
+		
+		} completion:nil];
+	
+	});
+
+}
+
 - (void) viewDidUnload {
 
 	self.contextInfoContainer = nil;
@@ -52,6 +83,8 @@
 }
 
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[article release];
@@ -106,13 +139,29 @@
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	
+
 	for (UIView *aView in self.mainContentView.subviews) {
-		CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
-		aView.layer.shadowOpacity = 0.0f;
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
-			aView.layer.shadowOpacity = oldShadowOpacity;
-		});
+	
+		CGPathRef oldShadowPath = aView.layer.shadowPath;
+
+		if (oldShadowPath) {
+			CFRetain(oldShadowPath);
+			[aView.layer addAnimation:((^ {
+				CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+				transition.fromValue = (id)oldShadowPath;
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transition.duration = duration;
+				return transition;
+			})()) forKey:@"transition"];
+			CFRelease(oldShadowPath);
+		}
+	
+		//	CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
+		//	aView.layer.shadowOpacity = 0.0f;
+		//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
+		//		aView.layer.shadowOpacity = oldShadowOpacity;
+		//	});
+		
 	}
 		
 }
