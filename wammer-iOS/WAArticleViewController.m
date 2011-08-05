@@ -59,11 +59,11 @@
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
-		[UIView transitionWithView:self.view duration:0.3f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		//	[UIView transitionWithView:self.view duration:0.3f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations: ^ {
 		
 			[self refreshView];
 		
-		} completion:nil];
+		//	} completion:nil];
 	
 	});
 
