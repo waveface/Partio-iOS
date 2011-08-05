@@ -246,7 +246,7 @@
 
 - (IBAction) handleCameraItemTap:(UIBarButtonItem *)sender {
 
-	[self.imagePickerPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+	[self.imagePickerPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 
 	//	?
 
@@ -273,29 +273,37 @@
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
 	
-	NSURL *finalFileURL = nil;
-	
-	if (selectedAssetURI) {
-	
-		finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
-	
-	} else if (!selectedAssetURI && representedAsset) {
-	
-		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]])];
-			
-	}
-	
-	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-	stitchedFile.resourceType = (NSString *)kUTTypeImage;
-	stitchedFile.resourceURL = [finalFileURL absoluteString];
-	stitchedFile.resourceFilePath = [finalFileURL path];
-	stitchedFile.article = self.article;
-	
-	[self.managedObjectContext save:nil];
-	
 	if ([imagePickerPopover isPopoverVisible])
 		[imagePickerPopover dismissPopoverAnimated:YES];
+		
+	dispatch_async(dispatch_get_global_queue(0, 0), ^ {
 
+		NSURL *finalFileURL = nil;
+		
+		if (selectedAssetURI) {
+		
+			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+		
+		} else if (!selectedAssetURI && representedAsset) {
+		
+			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]])];
+				
+		}
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+			stitchedFile.resourceType = (NSString *)kUTTypeImage;
+			stitchedFile.resourceURL = [finalFileURL absoluteString];
+			stitchedFile.resourceFilePath = [finalFileURL path];
+			stitchedFile.article = self.article;
+			
+			[self.managedObjectContext save:nil];
+		
+		});
+	
+	});
+	
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
