@@ -316,6 +316,7 @@
 	self.paginatedView = nil;
 	self.navigationBar = nil;
 	self.toolbar = nil;
+	self.previousNavigationItem = nil;
 	
 	[super viewDidUnload];
 
@@ -326,12 +327,13 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
+	[fetchedResultsController release];
 	[article release];
-	[previousNavigationItem release];
+	[paginatedView release];
 	
 	[navigationBar release];
 	[toolbar release];
-	[paginatedView release];
+	[previousNavigationItem release];
 	
 	[super dealloc];
 
