@@ -7,9 +7,13 @@
 //
 
 #import "WAAppDelegate.h"
+#import "IRRemoteResourcesManager.h"
+
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
+@end
+
 
 @implementation WAAppDelegate
-
 @synthesize window = _window;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -61,6 +65,23 @@ static unsigned int networkActivityStackingCount = 0;
 	
 	if (networkActivityStackingCount == 0)
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+}
+
+- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
+
+	[self beginNetworkActivity];
+
+}
+
+- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFinishDownloadingResourceAtURL:(NSURL *)anURL {
+
+	[self endNetworkActivity];
+
+}
+- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL {
+
+	[self endNetworkActivity];
 
 }
 

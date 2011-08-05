@@ -111,28 +111,33 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	if ([keyPath isEqualToString:@"files"]) {
 	
 		self.shownImageFilePaths = [[[[self.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {
-			
-			return (BOOL)UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage);
-			
-		}] allObjects] sortedArrayUsingComparator:^NSComparisonResult(WAFile *lhsFile, WAFile *rhsFile) {
 		
+			if (!aFile.resourceFilePath)
+				return NO;
+			
+			if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage))
+				return NO;
+			
+			return YES;
+			
+		}] allObjects] sortedArrayUsingComparator: ^ NSComparisonResult(WAFile *lhsFile, WAFile *rhsFile) {
+		
+			NSComparisonResult resourceURLResult = [lhsFile.resourceURL compare:rhsFile.resourceURL];
+			if (resourceURLResult != NSOrderedSame)
+				return resourceURLResult;
+			
+			//	The timestamp is toxic
 			return [lhsFile.timestamp compare:rhsFile.timestamp];
 			
 		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
 		
-			if (index >= 2) {
-					*stop = YES;
-					return (id)nil;
-			}
-			
-			if (aFile.resourceFilePath)
-				return aFile.resourceFilePath;
-				
-			NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
-				return [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
+			return aFile.resourceFilePath;
 			
 		}];
 		
+		//	Get the first two photographs if possible.
+		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
+	
 	}
 
 }
@@ -148,9 +153,45 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	shownImageFilePaths = [newShownImageFilePaths retain];
 	[self didChangeValueForKey:@"shownImageFilePaths"];
 	
-	[self setNeedsLayout];
-	[self layoutIfNeeded];
-
+	
+	static int kPhotoViewTag = 1024;
+	
+	[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+		
+		return (BOOL)(aSubview.tag == kPhotoViewTag);
+			
+	}]] enumerateObjectsUsingBlock:^(UIView *aSubview, NSUInteger idx, BOOL *stop) {
+	
+		[aSubview removeFromSuperview];
+		
+	}];
+	
+	[shownImageFilePaths enumerateObjectsUsingBlock: ^ (NSString *aFilePath, NSUInteger idx, BOOL *stop) {
+	
+		UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+		objc_setAssociatedObject(imageView, kWAImageStackViewElementImagePath, aFilePath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		imageView.tag = kPhotoViewTag;
+		imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+		imageView.layer.borderWidth = 4.0f;
+		imageView.layer.shadowOffset = (CGSize){ 0, 2 };
+		imageView.layer.shadowRadius = 2.0f;
+		imageView.layer.shadowOpacity = 0.25f;
+		imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
+		imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+		imageView.layer.shouldRasterize = YES;
+		imageView.opaque = NO;
+		
+		UIImageView *innerImageView = [[[UIImageView alloc] initWithFrame:imageView.bounds] autorelease];
+		innerImageView.image = [UIImage imageWithContentsOfFile:aFilePath];
+		innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		innerImageView.layer.masksToBounds = YES;
+		
+		[imageView addSubview:innerImageView];
+				
+		[self insertSubview:imageView atIndex:0];		
+		
+	}];
+	
 }
 	
 - (void) layoutSubviews {
@@ -159,68 +200,25 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		return;
 	
 	static int kPhotoViewTag = 1024;
+	__block CGRect photoViewFrame = CGRectNull;
 	
-	NSMutableSet *removedPhotoViews = [NSMutableSet setWithArray:[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+	NSArray *allPhotoViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+		
 		return (BOOL)(aSubview.tag == kPhotoViewTag);
-	}]]];
+			
+	}]];
 	
-	void (^setImagePath)(id object, NSString *path) = ^ (id object, NSString *path) {
-		objc_setAssociatedObject(object, kWAImageStackViewElementImagePath, path, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	};
-	NSString * (^getImagePath)(id object) = ^ (id object) {
-		return (NSString *)objc_getAssociatedObject(object, kWAImageStackViewElementImagePath);
-	};
+	[allPhotoViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock: ^ (UIView *imageView, NSUInteger idx, BOOL *stop) {
 	
-
-	for (NSString *aPath in self.shownImageFilePaths) {
+		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
 		
-		if (![[removedPhotoViews objectsPassingTest: ^ (UIView *aSubview, BOOL *stop) {
-			
-			return [getImagePath(aSubview) isEqual:aPath];
-			
-		}] count]) {
-			
-			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			UIImageView *innerImageView = [[[UIImageView alloc] initWithFrame:imageView.bounds] autorelease];
-			
-			innerImageView.image = [UIImage imageWithContentsOfFile:aPath];
-			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			innerImageView.layer.masksToBounds = YES;
-			[imageView addSubview:innerImageView];
-			
-			imageView.tag = kPhotoViewTag;
-			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-			imageView.layer.borderWidth = 4.0f;
-			imageView.layer.shadowOffset = (CGSize){ 0, 2 };
-			imageView.layer.shadowRadius = 2.0f;
-			imageView.layer.shadowOpacity = 0.25f;
-			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
-			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-			imageView.layer.shouldRasterize = YES;
-			imageView.opaque = NO;
-			
-			setImagePath(imageView, aPath);
-			[removedPhotoViews addObject:imageView];
-			
-		}
+		if (idx == ([allPhotoViews count] - 1)) {
 		
-	}
-	
-	
-	CGRect photoViewFrame = CGRectNull;
-	BOOL hasUsedFirstPhoto = NO;
-	
-	for (UIView *wrappingImageView in [[removedPhotoViews copy] autorelease]) {
-	
-		UIImageView *innerImageView = (UIImageView *)[[wrappingImageView subviews] objectAtIndex:0];
-		
-		if (!hasUsedFirstPhoto) {
-		
-			photoViewFrame = IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES);
-			wrappingImageView.layer.transform = CATransform3DIdentity;
+			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES));
+			imageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
 			
-			self.firstPhotoView = wrappingImageView;
+			self.firstPhotoView = imageView;
 
 		} else {
 		
@@ -228,30 +226,16 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 			CGFloat allowedAdditionalDeltaInDegrees = 0.0f; //	 with this much added variance
 			CGFloat rotatedDegrees = baseDelta + ((rand() % 2) ? 1 : -1) * (((1.0f * rand()) / (1.0f * INT_MAX)) * allowedAdditionalDeltaInDegrees);
 			
-			wrappingImageView.layer.transform = CATransform3DMakeRotation((rotatedDegrees / 360.0f) * 2 * M_PI, 	0.0f, 0.0f, 1.0f);
+			imageView.layer.transform = CATransform3DMakeRotation((rotatedDegrees / 360.0f) * 2 * M_PI, 0.0f, 0.0f, 1.0f);
 			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
 
 		}
 		
-		objc_setAssociatedObject(wrappingImageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:wrappingImageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		wrappingImageView.frame = photoViewFrame;
+		imageView.frame = photoViewFrame;
+		imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:imageView.bounds].CGPath;
+		objc_setAssociatedObject(imageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:imageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
-		if (!hasUsedFirstPhoto)
-			hasUsedFirstPhoto = YES;
-
-		wrappingImageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:wrappingImageView.bounds].CGPath;
-	 
-		if (wrappingImageView.superview != self) {
-			[self addSubview:wrappingImageView];
-			[self sendSubviewToBack:wrappingImageView];
-		}
-				
-		[removedPhotoViews removeObject:wrappingImageView];
-		
-	}
-	
-	for (UIView *anImageView in removedPhotoViews)
-		[anImageView removeFromSuperview];
+	}];
 
 }
 
