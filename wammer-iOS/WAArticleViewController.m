@@ -38,6 +38,37 @@
 
 }
 
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[UIView transitionWithView:self.view duration:0.3f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		
+			[self refreshView];
+		
+		} completion:nil];
+	
+	});
+
+}
+
 - (void) viewDidUnload {
 
 	self.contextInfoContainer = nil;
@@ -52,6 +83,8 @@
 }
 
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[article release];
