@@ -126,8 +126,6 @@
 	NSError *fetchingError;
 	if (![self.fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"Error fetching: %@", fetchingError);
-	
-	NSLog(@"FETCHED %@", self.fetchedResultsController.fetchedObjects);
 		
 	self.previousNavigationItem.title = self.article.text;
 	
