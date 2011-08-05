@@ -35,10 +35,11 @@
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
-
 @property (nonatomic, readwrite, retain) NSArray *articleViewControllers;
 - (void) refreshData;
 - (void) refreshPaginatedViewPages;
+
+@property (nonatomic, readwrite, retain) UIButton *articleCommentsDismissalButton;
 
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *articleCommentsViewController;
 - (BOOL) inferredArticleCommentsVisible;
@@ -56,6 +57,7 @@
 @synthesize debugActionSheetController;
 @synthesize articleViewControllers;
 @synthesize articleCommentsViewController;
+@synthesize articleCommentsDismissalButton;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -109,11 +111,17 @@
 - (void) dealloc {
 	
 	[paginatedView release];
-	[paginationSlider release];
-	[coachmarkView release];
-	[managedObjectContext release];
+	[debugActionSheetController release];
 	[fetchedResultsController release];
+	[managedObjectContext release];
+	
+	[coachmarkView release];
+	[paginationSlider release];
+	[articleViewControllers release];
+	
+	[articleCommentsDismissalButton release];
 	[articleCommentsViewController release];
+	
 	[super dealloc];
 
 }
@@ -143,19 +151,27 @@
 	
 	})())];
 	
-	
 	self.paginationSlider = [[[WAPaginationSlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
 	self.paginationSlider.delegate = self;
 	
-	[self.view addSubview:self.paginatedView];
-	[self.view addSubview:self.coachmarkView];
-	[self.view addSubview:self.paginationSlider];
+	self.articleCommentsDismissalButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[self.articleCommentsDismissalButton addTarget:self action:@selector(handleArticleContentsDismissal:) forControlEvents:UIControlEventTouchUpInside];
+	self.articleCommentsDismissalButton.frame = self.view.bounds;
+	self.articleCommentsDismissalButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.articleCommentsDismissalButton.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+	self.articleCommentsDismissalButton.alpha = 0;
+	self.articleCommentsDismissalButton.enabled = NO;
 	
 	self.articleCommentsViewController = [WAArticleCommentsViewController controllerRepresentingArticle:nil];
 	self.articleCommentsViewController.delegate = self;
-	[self.view addSubview:self.articleCommentsViewController.view];
 	
+	[self.view addSubview:self.paginatedView];
+	[self.view addSubview:self.coachmarkView];
+	[self.view addSubview:self.paginationSlider];
+	[self.view addSubview:self.articleCommentsDismissalButton];
+	[self.view addSubview:self.articleCommentsViewController.view];
+
 	[self updateLayoutForCommentsVisible:NO];
 	
 }
@@ -176,11 +192,18 @@
 
 - (void) viewDidUnload {
 
+	//	TBD remember current paginated view page
+
 	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	self.paginatedView = nil;
+	self.debugActionSheetController = nil;
+	
 	self.coachmarkView = nil;
 	self.paginationSlider = nil;
+	self.articleViewControllers = nil;
+	self.articleCommentsDismissalButton = nil;
+	self.articleCommentsViewController = nil;
 	
 	[super viewDidUnload];
 
@@ -330,6 +353,12 @@
 
 }
 
+- (void) handleArticleContentsDismissal:(UIButton *)sender {
+
+	[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden onFulfillment:nil];
+
+}
+
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[self.paginatedView setNeedsLayout];
@@ -383,7 +412,10 @@
 		commentsContainerViewSize
 	};
 	
-			
+	
+	self.articleCommentsDismissalButton.alpha = showingDetailedComments ? 1 : 0;
+	self.articleCommentsDismissalButton.enabled = showingDetailedComments ? YES : NO;
+	
 	self.articleCommentsViewController.state = showingDetailedComments ? WAArticleCommentsViewControllerStateShown : WAArticleCommentsViewControllerStateHidden;
 	
 	

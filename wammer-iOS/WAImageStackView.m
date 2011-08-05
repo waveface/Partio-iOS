@@ -252,6 +252,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 
 - (void) handlePinch:(UIPinchGestureRecognizer *)aPinchRecognizer {
 
+	static CGPoint startingTouchPoint;
+
 	NSValue *canonicalTransformValue = objc_getAssociatedObject(self.firstPhotoView.layer, kWAImageStackViewElementCanonicalTransform);
 	CATransform3D canonicalTransform = canonicalTransformValue ? [canonicalTransformValue CATransform3DValue] : CATransform3DIdentity;
 	
@@ -259,6 +261,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	
 		case UIGestureRecognizerStatePossible:
 		case UIGestureRecognizerStateBegan: {
+		
+			startingTouchPoint = [aPinchRecognizer locationInView:self];
 		
 			self.state = WAImageStackViewInteractionNormal;
 			self.gestureProcessingOngoing = YES;
@@ -269,16 +273,34 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 		case UIGestureRecognizerStateChanged: {
 		
+			CGPoint currentTouchPoint = [aPinchRecognizer locationInView:self];
+			NSLog(@"startingTouchPoint %@", NSStringFromCGPoint(startingTouchPoint));
+			NSLog(@"currentTouchPoint %@", NSStringFromCGPoint(currentTouchPoint));
+			
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 		
 			IRCATransact(^ {
-				self.firstPhotoView.layer.transform = CATransform3DConcat(
-					CATransform3DConcat(
-						canonicalTransform,
-						CATransform3DMakeScale(self.pinchRecognizer.scale, self.pinchRecognizer.scale, 1.0f)
-					),
-					CATransform3DMakeRotation(self.rotationRecognizer.rotation, 0.0f, 0.0f, 1.0f)
+			
+				CATransform3D translationTransform = CATransform3DMakeTranslation(
+					currentTouchPoint.x - startingTouchPoint.x, 
+					currentTouchPoint.y - startingTouchPoint.y,
+					0.0f
 				);
+				
+				CATransform3D scaleTransform = CATransform3DMakeScale(
+					self.pinchRecognizer.scale,
+					self.pinchRecognizer.scale,
+					1.0f
+				);
+				
+				CATransform3D rotationTransform = CATransform3DMakeRotation(
+					self.rotationRecognizer.rotation, 
+					0.0f, 
+					0.0f, 
+					1.0f
+				);
+			
+				self.firstPhotoView.layer.transform = CATransform3DConcat(CATransform3DConcat(CATransform3DConcat(canonicalTransform, scaleTransform), rotationTransform), translationTransform);
 			});
 		
 			break;
