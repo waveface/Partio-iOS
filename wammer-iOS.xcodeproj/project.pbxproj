@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B1527A213E29E72006E9737 /* WAArticlesViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WAArticlesViewController_iPhone.m */; };
+		4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
 		FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FF13870F13E94B6E00154B7D /* UIView+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF13870E13E94B6E00154B7D /* UIView+WAAdditions.m */; };
@@ -24,6 +25,9 @@
 		FF4FA01713E136A0002C627F /* WACapsuleRight.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01413E136A0002C627F /* WACapsuleRight.png */; };
 		FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01513E136A0002C627F /* WACapsuleSingle.png */; };
 		FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
+		FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5A83D413EB056800836A1B /* WAGalleryImageView.m */; };
+		FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */; };
+		FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */; };
 		FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
 		FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
@@ -50,7 +54,11 @@
 		FF9DA0C413DFF89000D6B28B /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C313DFF89000D6B28B /* WAArticle.m */; };
 		FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
+		FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
 		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
+		FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
+		FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
+		FFF1F60113EFDF9600D3997C /* WAMockUsersList.json in Resources */ = {isa = PBXBuildFile; fileRef = FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */; };
 		FFF9B79E13E7D0D5002A9D7F /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
 		FFF9B7A513E7D8E5002A9D7F /* WACapsuleLeftPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B79F13E7D8E5002A9D7F /* WACapsuleLeftPressed.png */; };
 		FFF9B7A613E7D8E5002A9D7F /* WACapsuleRightPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A013E7D8E5002A9D7F /* WACapsuleRightPressed.png */; };
@@ -59,6 +67,7 @@
 		FFF9B7A913E7D8E5002A9D7F /* WATinyArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */; };
 		FFF9B7AA13E7D8E5002A9D7F /* WATinyArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */; };
 		FFF9B7AE13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */; };
+		FFFFD9DB13EAABDB000E3D2D /* WACompositionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,10 +125,12 @@
 /* Begin PBXFileReference section */
 		4B1527A013E29E72006E9737 /* WAArticlesViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAArticlesViewController_iPhone.h; path = "wammer-iOS/WAArticlesViewController_iPhone.h"; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAArticlesViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAArticlesViewController_iPhone.m; path = "wammer-iOS/WAArticlesViewController_iPhone.m"; sourceTree = "<group>"; };
+		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
+		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
-		FF13870D13E94B6E00154B7D /* UIView+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+WAAdditions.h"; path = "wammer-iOS/UIView+WAAdditions.h"; sourceTree = "<group>"; };
-		FF13870E13E94B6E00154B7D /* UIView+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+WAAdditions.m"; path = "wammer-iOS/UIView+WAAdditions.m"; sourceTree = "<group>"; };
+		FF13870D13E94B6E00154B7D /* UIView+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+WAAdditions.h"; sourceTree = "<group>"; };
+		FF13870E13E94B6E00154B7D /* UIView+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+WAAdditions.m"; sourceTree = "<group>"; };
 		FF13871013E94F0700154B7D /* WACompositionBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBarBackground.png; path = Resources/WACompositionBarBackground.png; sourceTree = "<group>"; };
 		FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionTextWellBackground.png; path = Resources/WACompositionTextWellBackground.png; sourceTree = "<group>"; };
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
@@ -139,6 +150,10 @@
 		FF4FA01513E136A0002C627F /* WACapsuleSingle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleSingle.png; path = Resources/WACapsuleSingle.png; sourceTree = "<group>"; };
 		FF4FA01913E13D43002C627F /* WAImageStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStackView.h; sourceTree = "<group>"; };
 		FF4FA01A13E13D44002C627F /* WAImageStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStackView.m; sourceTree = "<group>"; };
+		FF5A83D313EB056800836A1B /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
+		FF5A83D413EB056800836A1B /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageView.m; sourceTree = "<group>"; };
+		FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyCameraRoll-Large~ipad.png"; path = "Resources/PLEmptyCameraRoll-Large~ipad.png"; sourceTree = "<group>"; };
+		FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyPhotoAlbum-Large~ipad.png"; path = "Resources/PLEmptyPhotoAlbum-Large~ipad.png"; sourceTree = "<group>"; };
 		FF73A53E13D6C2CC00D54EC6 /* wammer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF73A54413D6C2CC00D54EC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -147,8 +162,8 @@
 		FF73A54C13D6C2CD00D54EC6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FF73A54E13D6C2CD00D54EC6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FF73A55013D6C2CD00D54EC6 /* wammer-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS-Prefix.pch"; sourceTree = "<group>"; };
-		FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppDelegate.h; sourceTree = "<group>"; };
-		FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppDelegate.m; sourceTree = "<group>"; };
+		FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WAAppDelegate.h; path = "wammer-iOS/WAAppDelegate.h"; sourceTree = "<group>"; };
+		FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WAAppDelegate.m; path = "wammer-iOS/WAAppDelegate.m"; sourceTree = "<group>"; };
 		FF73A56A13D6CD2200D54EC6 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticlesViewController.h; sourceTree = "<group>"; };
 		FF73A56B13D6CD2200D54EC6 /* WAArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticlesViewController.m; sourceTree = "<group>"; };
 		FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewController.h; sourceTree = "<group>"; };
@@ -181,7 +196,11 @@
 		FF9DA0C613DFF89000D6B28B /* WAComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComment.m; sourceTree = "<group>"; };
 		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
+		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
+		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
+		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockUsersList.json; path = Resources/WAMockUsersList.json; sourceTree = "<group>"; };
 		FFF9B79C13E7D0D5002A9D7F /* WAArticleCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewController.h; sourceTree = "<group>"; };
 		FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleCommentsViewController.m; sourceTree = "<group>"; };
 		FFF9B79F13E7D8E5002A9D7F /* WACapsuleLeftPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeftPressed.png; path = Resources/WACapsuleLeftPressed.png; sourceTree = "<group>"; };
@@ -191,6 +210,7 @@
 		FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDown.png; path = Resources/WATinyArrowDown.png; sourceTree = "<group>"; };
 		FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowUp.png; path = Resources/WATinyArrowUp.png; sourceTree = "<group>"; };
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
+		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +218,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */,
 				FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */,
 				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
 				FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */,
@@ -226,8 +247,8 @@
 		4B1527A413E29F38006E9737 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FF13870D13E94B6E00154B7D /* UIView+WAAdditions.h */,
-				FF13870E13E94B6E00154B7D /* UIView+WAAdditions.m */,
+				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
+				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
@@ -240,6 +261,10 @@
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FF13870D13E94B6E00154B7D /* UIView+WAAdditions.h */,
+				FF13870E13E94B6E00154B7D /* UIView+WAAdditions.m */,
+				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
+				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
 				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF3ACA8E13E6ACFB000F608C /* WAView.h */,
@@ -280,6 +305,7 @@
 				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
 				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
+				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
 				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF97386213D82B55003D1722 /* JSONKit */,
@@ -293,8 +319,6 @@
 		FF73A54813D6C2CC00D54EC6 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
-				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
 				FF73A56A13D6CD2200D54EC6 /* WAArticlesViewController.h */,
 				FF73A56B13D6CD2200D54EC6 /* WAArticlesViewController.m */,
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
@@ -305,8 +329,11 @@
 				FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */,
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
 				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
 				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
+				FF5A83D313EB056800836A1B /* WAGalleryImageView.h */,
+				FF5A83D413EB056800836A1B /* WAGalleryImageView.m */,
 			);
 			name = iPad;
 			path = "wammer-iOS";
@@ -376,6 +403,8 @@
 				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
+				4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */,
+				4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */,
 			);
 			name = Model;
 			path = "wammer-iOS";
@@ -403,6 +432,10 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */,
+				FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */,
+				FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */,
+				FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */,
 				FF21C8D213E14CF9009B980D /* IPSample */,
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
 				FF4FA01413E136A0002C627F /* WACapsuleRight.png */,
@@ -419,6 +452,7 @@
 				FAE26ECA13E1435D00CB1E3A /* Icon.png */,
 				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
 				FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */,
+				FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */,
 			);
 			name = Resources;
 			path = "wammer-iOS";
@@ -542,6 +576,12 @@
 				FF13871113E94F0700154B7D /* WACompositionBarBackground.png in Resources */,
 				FF13871313E95C3900154B7D /* WACompositionTextWellBackground.png in Resources */,
 				FF13871513E95E0800154B7D /* WACompositionSendButtonBackground.png in Resources */,
+				FFFFD9DB13EAABDB000E3D2D /* WACompositionViewController.xib in Resources */,
+				FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */,
+				FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */,
+				FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */,
+				FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */,
+				FFF1F60113EFDF9600D3997C /* WAMockUsersList.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,6 +615,8 @@
 				FFF9B79E13E7D0D5002A9D7F /* WAArticleCommentsViewController.m in Sources */,
 				FF4D07E113E9253D006020AC /* WAGalleryViewController.m in Sources */,
 				FF13870F13E94B6E00154B7D /* UIView+WAAdditions.m in Sources */,
+				FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */,
+				4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,8 +658,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (2PT2NL823H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (2PT2NL823H)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 7;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -633,9 +675,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/external/IRFoundations/**",
+					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
+					"$(PROJECT_DIR)/external/AQGridView/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -656,8 +699,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (2PT2NL823H)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (2PT2NL823H)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 7;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -666,9 +709,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/external/IRFoundations/**",
+					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
+					"$(PROJECT_DIR)/external/AQGridView/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

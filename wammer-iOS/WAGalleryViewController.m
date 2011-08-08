@@ -9,6 +9,7 @@
 #import "WAGalleryViewController.h"
 #import "IRPaginatedView.h"
 #import "WADataStore.h"
+#import "WAGalleryImageView.h"
 
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate>
@@ -56,6 +57,8 @@
 	
 	self.wantsFullScreenLayout = YES;
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
 	return self;
 
 }
@@ -63,6 +66,42 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 
 	return YES;
+
+}
+
+- (void) setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext {
+
+	if (newManagedObjectContext == managedObjectContext)
+		return;
+		
+	[self willChangeValueForKey:@"managedObjectContext"];
+	[managedObjectContext release];
+	managedObjectContext = [newManagedObjectContext retain];
+	[self didChangeValueForKey:@"managedObjectContext"];
+
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		NSUInteger oldCurrentPage = self.paginatedView.currentPage;
+		
+		[UIView transitionWithView:self.paginatedView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		
+			[self.paginatedView reloadViews];
+			[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
+		
+		} completion:nil];
+	
+	});
 
 }
 
@@ -75,7 +114,10 @@
 		self.article, @"Article",
 	nil]];
 	
+	fetchRequest.returnsObjectsAsFaults = NO;
+	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"resourceURL" ascending:YES],
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 	nil];
 		
@@ -178,14 +220,12 @@
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
 	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+	NSString *resourceFilePath = representedFile.resourceFilePath;
 	
-	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
-	NSString *resourceFilePath = [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
+	//	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
+	//	NSString *resourceFilePath = [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
 	
-	UIImageView *returnedView =  [[[UIImageView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
-	returnedView.backgroundColor = [UIColor blackColor];
-	returnedView.image = [UIImage imageWithContentsOfFile:resourceFilePath];
-	returnedView.contentMode = UIViewContentModeScaleAspectFit;
+	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:[UIImage imageWithContentsOfFile:resourceFilePath]];
 	
 	return returnedView;
 
@@ -276,6 +316,7 @@
 	self.paginatedView = nil;
 	self.navigationBar = nil;
 	self.toolbar = nil;
+	self.previousNavigationItem = nil;
 	
 	[super viewDidUnload];
 
@@ -283,13 +324,16 @@
 
 - (void) dealloc {
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+
 	[managedObjectContext release];
+	[fetchedResultsController release];
 	[article release];
-	[previousNavigationItem release];
+	[paginatedView release];
 	
 	[navigationBar release];
 	[toolbar release];
-	[paginatedView release];
+	[previousNavigationItem release];
 	
 	[super dealloc];
 

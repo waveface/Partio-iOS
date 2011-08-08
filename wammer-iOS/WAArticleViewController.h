@@ -23,6 +23,7 @@
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *relativeCreationDateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel;
+@property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
 
 @property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController *parentViewController));
 

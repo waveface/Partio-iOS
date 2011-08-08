@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
+#import "IRWebAPIKit.h"
+
 @class WAArticle, WAUser;
 
 @interface WAFile : IRManagedObject
@@ -24,5 +26,8 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
+
++ (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
++ (NSOperationQueue *) remoteResourceHandlingQueue;
 
 @end

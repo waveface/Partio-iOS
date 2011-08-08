@@ -11,6 +11,7 @@
 #import "WADataStore.h"
 #import "WAImageStackView.h"
 #import "WAGalleryViewController.h"
+#import "IRRelativeDateFormatter.h"
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate, WAImageStackViewDelegate>
 
@@ -19,12 +20,14 @@
 
 - (void) refreshView;
 
++ (IRRelativeDateFormatter *) relativeDateFormatter;
+
 @end
 
 
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel;
+@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
@@ -35,6 +38,37 @@
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:articleObjectURL];
 	
 	return returnedController;
+
+}
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		//	[UIView transitionWithView:self.view duration:0.3f options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		
+			[self refreshView];
+		
+		//	} completion:nil];
+	
+	});
 
 }
 
@@ -52,6 +86,8 @@
 }
 
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[article release];
@@ -95,10 +131,28 @@
 - (void) refreshView {
 
 	self.userNameLabel.text = self.article.owner.nickname;
-	self.relativeCreationDateLabel.text = [self.article.timestamp description];
+	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
 	self.mainContentView.files = self.article.files;
 	self.avatarView.image = self.article.owner.avatar;
+	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
+	
+	[self.relativeCreationDateLabel sizeToFit];
+	self.relativeCreationDateLabel.frame = (CGRect){
+		(CGPoint) {
+			CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
+			self.relativeCreationDateLabel.frame.origin.y
+		},
+		self.relativeCreationDateLabel.frame.size
+	};
+	
+	self.deviceDescriptionLabel.frame = (CGRect){
+		(CGPoint){
+			self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
+			self.deviceDescriptionLabel.frame.origin.y
+		},
+		self.deviceDescriptionLabel.frame.size
+	};
 	
 	if (!self.userNameLabel.text)
 		self.userNameLabel.text = @"A Certain User";
@@ -106,13 +160,29 @@
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	
+
 	for (UIView *aView in self.mainContentView.subviews) {
-		CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
-		aView.layer.shadowOpacity = 0.0f;
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
-			aView.layer.shadowOpacity = oldShadowOpacity;
-		});
+	
+		CGPathRef oldShadowPath = aView.layer.shadowPath;
+
+		if (oldShadowPath) {
+			CFRetain(oldShadowPath);
+			[aView.layer addAnimation:((^ {
+				CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+				transition.fromValue = (id)oldShadowPath;
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transition.duration = duration;
+				return transition;
+			})()) forKey:@"transition"];
+			CFRelease(oldShadowPath);
+		}
+	
+		//	CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
+		//	aView.layer.shadowOpacity = 0.0f;
+		//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
+		//		aView.layer.shadowOpacity = oldShadowOpacity;
+		//	});
+		
 	}
 		
 }
@@ -145,6 +215,25 @@
 	self.onPresentingViewController( ^ (UIViewController *parentViewController) {
 		[parentViewController presentModalViewController:galleryViewController animated:YES];
 	});
+
+}
+
+
+
+
+
++ (IRRelativeDateFormatter *) relativeDateFormatter {
+
+	static IRRelativeDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+
+		formatter = [[IRRelativeDateFormatter alloc] init];
+		formatter.approximationMaxTokenCount = 1;
+			
+	});
+
+	return formatter;
 
 }
 

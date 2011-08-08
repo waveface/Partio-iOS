@@ -20,4 +20,31 @@
 @dynamic comments;
 @dynamic files;
 
++ (NSString *) keyPathHoldingUniqueValue {
+
+	return @"identifier";
+
+}
+
++ (NSDictionary *) remoteDictionaryConfigurationMapping {
+
+	static NSDictionary *mapping = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"avatarURL", @"avatar_url",
+			@"identifier", @"id",
+			@"nickname", @"nickname",
+			@"email", @"email",
+		nil];
+		
+		[mapping retain];
+		
+	});
+
+	return mapping;
+
+}
+
 @end

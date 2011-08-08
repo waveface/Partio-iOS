@@ -10,6 +10,7 @@
 #import "WAArticlesViewController.h"
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
+#import "WAImageStackView.h"
 
 #import "WARemoteInterface.h"
 
@@ -21,6 +22,8 @@
 
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
+
+#import "WAUserSelectionViewController.h"
 
 #import "UIView+WAAdditions.h"
 
@@ -34,14 +37,17 @@
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
-
 @property (nonatomic, readwrite, retain) NSArray *articleViewControllers;
 - (void) refreshData;
 - (void) refreshPaginatedViewPages;
 
+@property (nonatomic, readwrite, retain) UIButton *articleCommentsDismissalButton;
+
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *articleCommentsViewController;
 - (BOOL) inferredArticleCommentsVisible;
 - (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments;
+
+@property (nonatomic, readwrite, retain) UIPopoverController *userSelectionPopoverController;
 
 @end
 
@@ -55,6 +61,8 @@
 @synthesize debugActionSheetController;
 @synthesize articleViewControllers;
 @synthesize articleCommentsViewController;
+@synthesize articleCommentsDismissalButton;
+@synthesize userSelectionPopoverController;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -62,16 +70,35 @@
 	
 	if (!self)
 		return nil;
+	
+	self.navigationItem.leftBarButtonItem = ((^ {
+	
+		__block IRBarButtonItem *returnedItem = nil;
+		__block __typeof__(self) nrSelf = self;
+		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Accounts" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+		returnedItem.block = ^ {
 		
-	IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
-	toolbar.usesCustomLayout = NO;
-	toolbar.items = [NSArray arrayWithObjects:
-		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
-		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
-	nil];
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
+			[nrSelf.userSelectionPopoverController presentPopoverFromBarButtonItem:returnedItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		
+		};
+		
+		return returnedItem;
+	
+	})());
+	
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+	
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSArray arrayWithObjects:
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+		nil];
+		return toolbar;
+	
+	})())];
 	
 	self.title = @"Articles";
 	
@@ -108,11 +135,18 @@
 - (void) dealloc {
 	
 	[paginatedView release];
-	[paginationSlider release];
-	[coachmarkView release];
-	[managedObjectContext release];
+	[debugActionSheetController release];
 	[fetchedResultsController release];
+	[managedObjectContext release];
+	
+	[coachmarkView release];
+	[paginationSlider release];
+	[articleViewControllers release];
+	
+	[articleCommentsDismissalButton release];
 	[articleCommentsViewController release];
+	[userSelectionPopoverController release];
+	
 	[super dealloc];
 
 }
@@ -142,19 +176,27 @@
 	
 	})())];
 	
-	
 	self.paginationSlider = [[[WAPaginationSlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
 	self.paginationSlider.delegate = self;
 	
-	[self.view addSubview:self.paginatedView];
-	[self.view addSubview:self.coachmarkView];
-	[self.view addSubview:self.paginationSlider];
+	self.articleCommentsDismissalButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[self.articleCommentsDismissalButton addTarget:self action:@selector(handleArticleContentsDismissal:) forControlEvents:UIControlEventTouchUpInside];
+	self.articleCommentsDismissalButton.frame = self.view.bounds;
+	self.articleCommentsDismissalButton.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.articleCommentsDismissalButton.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
+	self.articleCommentsDismissalButton.alpha = 0;
+	self.articleCommentsDismissalButton.enabled = NO;
 	
 	self.articleCommentsViewController = [WAArticleCommentsViewController controllerRepresentingArticle:nil];
 	self.articleCommentsViewController.delegate = self;
-	[self.view addSubview:self.articleCommentsViewController.view];
 	
+	[self.view addSubview:self.paginatedView];
+	[self.view addSubview:self.coachmarkView];
+	[self.view addSubview:self.paginationSlider];
+	[self.view addSubview:self.articleCommentsDismissalButton];
+	[self.view addSubview:self.articleCommentsViewController.view];
+
 	[self updateLayoutForCommentsVisible:NO];
 	
 }
@@ -175,11 +217,20 @@
 
 - (void) viewDidUnload {
 
+	//	TBD remember current paginated view page
+
 	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	self.paginatedView = nil;
+	self.debugActionSheetController = nil;
+	
 	self.coachmarkView = nil;
 	self.paginationSlider = nil;
+	self.articleViewControllers = nil;
+	self.articleCommentsDismissalButton = nil;
+	self.articleCommentsViewController = nil;
+	
+	self.userSelectionPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -320,12 +371,18 @@
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
-	WACompositionViewController *compositionVC = [[[WACompositionViewController alloc] init] autorelease];
+	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:nil];
 	
 	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
 	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
+
+}
+
+- (void) handleArticleContentsDismissal:(UIButton *)sender {
+
+	[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden onFulfillment:nil];
 
 }
 
@@ -346,6 +403,16 @@
 
 	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
 		return (self.interfaceOrientation == newOrientation);
+		
+	if ([self.articleViewControllers count] > self.paginatedView.currentPage)
+	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView.gestureProcessingOngoing)
+		return (self.interfaceOrientation == newOrientation);
+	
+	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
+		return (self.interfaceOrientation == newOrientation);
+
+	return YES;
+
 
 	return YES;
 	
@@ -372,7 +439,10 @@
 		commentsContainerViewSize
 	};
 	
-			
+	
+	self.articleCommentsDismissalButton.alpha = showingDetailedComments ? 1 : 0;
+	self.articleCommentsDismissalButton.enabled = showingDetailedComments ? YES : NO;
+	
 	self.articleCommentsViewController.state = showingDetailedComments ? WAArticleCommentsViewControllerStateShown : WAArticleCommentsViewControllerStateHidden;
 	
 	
@@ -571,11 +641,22 @@
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		
-		//	NSLog(@"retrievedArticleReps %@", retrievedArticleReps);
+		retrievedArticleReps = [retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
 		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
+			
+			[mutatedRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[inUserRep objectForKey:@"creator_id"], @"id",
+			nil] forKey:@"owner"];
+		
+			return mutatedRep;
+			
+		}];
+		
+		NSArray *insertedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAFile", @"files",
 			@"WAComment", @"comments",
+			@"WAUser", @"owner",
 		nil] options:0];
 		
 		NSError *savingError = nil;
@@ -604,6 +685,35 @@
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
+}
+
+
+
+
+
+- (UIPopoverController *) userSelectionPopoverController {
+
+	if (userSelectionPopoverController)
+		return userSelectionPopoverController;
+		
+	__block __typeof__(self) nrSelf = self;
+	
+	WAUserSelectionViewController *userSelectionViewController = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+	
+		NSLog(@"Did pick user object at %@", pickedUser);
+		[nrSelf.userSelectionPopoverController dismissPopoverAnimated:YES];
+		
+	}];
+	
+	
+	UINavigationController *userSelectionNavigationController = [[[UINavigationController alloc] initWithRootViewController:userSelectionViewController] autorelease];
+	
+	userSelectionViewController.title = @"Accounts";
+	
+	self.userSelectionPopoverController = [[[UIPopoverController alloc] initWithContentViewController:userSelectionNavigationController] autorelease];
+		
+	return self.userSelectionPopoverController;
+
 }
 
 @end
