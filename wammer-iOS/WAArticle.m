@@ -40,6 +40,7 @@
 			@"timestamp", @"timestamp",
 			@"files", @"files",
 			@"comments", @"comments",
+			@"owner", @"owner",
 			//	@"creator_id" this needs transforming
 		nil];
 		
