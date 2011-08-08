@@ -11,6 +11,7 @@
 #import "WADataStore.h"
 #import "WAImageStackView.h"
 #import "WAGalleryViewController.h"
+#import "IRRelativeDateFormatter.h"
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate, WAImageStackViewDelegate>
 
@@ -19,12 +20,14 @@
 
 - (void) refreshView;
 
++ (IRRelativeDateFormatter *) relativeDateFormatter;
+
 @end
 
 
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel;
+@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
@@ -128,10 +131,28 @@
 - (void) refreshView {
 
 	self.userNameLabel.text = self.article.owner.nickname;
-	self.relativeCreationDateLabel.text = [self.article.timestamp description];
+	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
 	self.mainContentView.files = self.article.files;
 	self.avatarView.image = self.article.owner.avatar;
+	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
+	
+	[self.relativeCreationDateLabel sizeToFit];
+	self.relativeCreationDateLabel.frame = (CGRect){
+		(CGPoint) {
+			CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
+			self.relativeCreationDateLabel.frame.origin.y
+		},
+		self.relativeCreationDateLabel.frame.size
+	};
+	
+	self.deviceDescriptionLabel.frame = (CGRect){
+		(CGPoint){
+			self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
+			self.deviceDescriptionLabel.frame.origin.y
+		},
+		self.deviceDescriptionLabel.frame.size
+	};
 	
 	if (!self.userNameLabel.text)
 		self.userNameLabel.text = @"A Certain User";
@@ -194,6 +215,25 @@
 	self.onPresentingViewController( ^ (UIViewController *parentViewController) {
 		[parentViewController presentModalViewController:galleryViewController animated:YES];
 	});
+
+}
+
+
+
+
+
++ (IRRelativeDateFormatter *) relativeDateFormatter {
+
+	static IRRelativeDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+
+		formatter = [[IRRelativeDateFormatter alloc] init];
+		formatter.approximationMaxTokenCount = 1;
+			
+	});
+
+	return formatter;
 
 }
 
