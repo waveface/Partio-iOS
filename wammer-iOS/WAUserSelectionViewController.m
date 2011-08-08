@@ -68,7 +68,9 @@
 	
 		if ([self isViewLoaded]) {
 			if ([self.tableView.indexPathsForVisibleRows count]) {
+				[self.tableView beginUpdates];
 				[self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+				[self.tableView endUpdates];
 			} else {
 				[self.tableView reloadData];
 			}
@@ -140,45 +142,32 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-	return 2;//[[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
+	if (!self.fetchedResultsController.fetchedObjects)
+		return 0;
+	
+	return [[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
 
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	static NSString *identifier = @"Cell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
 	}
 	
-    if([indexPath row] == 0){
-        cell.textLabel.text = @"Kitty";
-        cell.imageView.image = [UIImage imageNamed:@"IPSample/IPSample_001.jpg"]; 
-    }else{
-        cell.textLabel.text = @"Kitten";
-        cell.imageView.image = [UIImage imageNamed:@"IPSample/IPSample_002.jpg"]; 
-    }
-    
-    return cell;
-    
 	WAUser *representedUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-	//	NSDictionary *userObject = (NSDictionary *)[self.eligibleUsers objectAtIndex:indexPath.row];
+	NSParameterAssert(representedUser);
 	
-	if ([representedUser.identifier isEqual:[[WADataStore defaultStore] currentUserIdentifier]]) {
-	
-		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	
-	} else {
-	
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	
-	}
-	
+	BOOL representedUserIsCurrentUser = NO; //[representedUser.identifier isEqual:[[WADataStore defaultStore] currentUserIdentifier]];
+	cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	cell.textLabel.text = representedUser.nickname;
 	cell.imageView.image = representedUser.avatar;
+	
+	
+	//	Visual: Add a rounded corner on the top left or lower left of the image
 	
 	if (indexPath.row == 0) {
 	
@@ -192,27 +181,19 @@
 		cell.imageView.layer.mask.bounds = (CGRect){ 0, 0, 44, 44 };
 		((CAShapeLayer *)(cell.imageView.layer.mask)).path = (CGPathRef)[UIBezierPath bezierPathWithRoundedRect:(CGRect){ 22, 22, 44, 44 } byRoundingCorners:UIRectCornerBottomLeft cornerRadii:(CGSize){ 10.0f, 10.0f }].CGPath;
 
-
-	
 	} else {
 	
 		cell.imageView.layer.mask = nil;
 	
 	}
 	
+	
 	return cell;
 	
 }
 
-- (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-
-	return @"Pick a user";
-
-}
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    return ;
 	NSURL *userRep = [[(IRManagedObject *)[self.fetchedResultsController objectAtIndexPath:indexPath] objectID] URIRepresentation];
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
@@ -229,9 +210,24 @@
 
 
 - (void) handleRefresh {
-    NSArray *retrievedUsers = [[NSArray alloc]init];
-    NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-    [WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"uid" ofRemoteDictionaries:retrievedUsers];
+
+	[[WARemoteInterface sharedInterface] retrieveAvailableUsersOnSuccess:^(NSArray *retrievedUserReps) {
+		
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		NSArray *savedUsers = [WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"id" ofRemoteDictionaries:retrievedUserReps];
+		
+		NSLog(@"savedUsers %@", savedUsers);
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Saving failed: %@", savingError);
+		
+	} onFailure:^(NSError *error) {
+	
+		//	Handle reload?
+		
+	}];
+
 }
 
 @end
