@@ -66,15 +66,17 @@
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
-		if ([self isViewLoaded]) {
-			if ([self.tableView.indexPathsForVisibleRows count]) {
-				[self.tableView beginUpdates];
-				[self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
-				[self.tableView endUpdates];
-			} else {
-				[self.tableView reloadData];
-			}
-		}
+		if (![self isViewLoaded])
+			return;
+
+		//	if ([self.tableView.indexPathsForVisibleRows count]) {
+		//		[self.tableView beginUpdates];
+		//		[self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+		//		[self.tableView endUpdates];
+		//		return;
+		//	}
+		
+		[self.tableView reloadData];
 		
 	});
 
@@ -215,8 +217,6 @@
 		
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		NSArray *savedUsers = [WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"id" ofRemoteDictionaries:retrievedUserReps];
-		
-		NSLog(@"savedUsers %@", savedUsers);
 		
 		NSError *savingError = nil;
 		if (![context save:&savingError])
