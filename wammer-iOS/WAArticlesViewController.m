@@ -641,11 +641,22 @@
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		
-		//	NSLog(@"retrievedArticleReps %@", retrievedArticleReps);
+		retrievedArticleReps = [retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
 		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
+			
+			[mutatedRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[inUserRep objectForKey:@"creator_id"], @"id",
+			nil] forKey:@"owner"];
+		
+			return mutatedRep;
+			
+		}];
+		
+		NSArray *insertedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAFile", @"files",
 			@"WAComment", @"comments",
+			@"WAUser", @"owner",
 		nil] options:0];
 		
 		NSError *savingError = nil;
