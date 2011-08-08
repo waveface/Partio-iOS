@@ -23,6 +23,8 @@
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
 
+#import "WAUserSelectionViewController.h"
+
 #import "UIView+WAAdditions.h"
 
 
@@ -45,6 +47,8 @@
 - (BOOL) inferredArticleCommentsVisible;
 - (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments;
 
+@property (nonatomic, readwrite, retain) UIPopoverController *userSelectionPopoverController;
+
 @end
 
 
@@ -58,6 +62,7 @@
 @synthesize articleViewControllers;
 @synthesize articleCommentsViewController;
 @synthesize articleCommentsDismissalButton;
+@synthesize userSelectionPopoverController;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -65,16 +70,35 @@
 	
 	if (!self)
 		return nil;
+	
+	self.navigationItem.leftBarButtonItem = ((^ {
+	
+		__block IRBarButtonItem *returnedItem = nil;
+		__block __typeof__(self) nrSelf = self;
+		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Accounts" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+		returnedItem.block = ^ {
 		
-	IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
-	toolbar.usesCustomLayout = NO;
-	toolbar.items = [NSArray arrayWithObjects:
-		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
-		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
-	nil];
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:toolbar];
+			[nrSelf.userSelectionPopoverController presentPopoverFromBarButtonItem:returnedItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+		
+		};
+		
+		return returnedItem;
+	
+	})());
+	
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+	
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSArray arrayWithObjects:
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+		nil];
+		return toolbar;
+	
+	})())];
 	
 	self.title = @"Articles";
 	
@@ -121,6 +145,7 @@
 	
 	[articleCommentsDismissalButton release];
 	[articleCommentsViewController release];
+	[userSelectionPopoverController release];
 	
 	[super dealloc];
 
@@ -204,6 +229,8 @@
 	self.articleViewControllers = nil;
 	self.articleCommentsDismissalButton = nil;
 	self.articleCommentsViewController = nil;
+	
+	self.userSelectionPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -647,6 +674,35 @@
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
+}
+
+
+
+
+
+- (UIPopoverController *) userSelectionPopoverController {
+
+	if (userSelectionPopoverController)
+		return userSelectionPopoverController;
+		
+	__block __typeof__(self) nrSelf = self;
+	
+	WAUserSelectionViewController *userSelectionViewController = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+	
+		NSLog(@"Did pick user object at %@", pickedUser);
+		[nrSelf.userSelectionPopoverController dismissPopoverAnimated:YES];
+		
+	}];
+	
+	
+	UINavigationController *userSelectionNavigationController = [[[UINavigationController alloc] initWithRootViewController:userSelectionViewController] autorelease];
+	
+	userSelectionViewController.title = @"Accounts";
+	
+	self.userSelectionPopoverController = [[[UIPopoverController alloc] initWithContentViewController:userSelectionNavigationController] autorelease];
+		
+	return self.userSelectionPopoverController;
+
 }
 
 @end

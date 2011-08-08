@@ -38,6 +38,9 @@
 	if ([inMethodName isEqualToString:@"articles"])
 		return [[NSBundle mainBundle] URLForResource:@"WAMockArticlesList" withExtension:@"json"];
 
+	if ([inMethodName isEqualToString:@"users"])
+		return [[NSBundle mainBundle] URLForResource:@"WAMockUsersList" withExtension:@"json"];
+		
 	return [super baseURLForMethodNamed:inMethodName];
 
 }
@@ -125,6 +128,30 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	};
 
 	return [self initWithEngine:engine authenticator:nil];
+
+}
+
+- (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"users" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	nil] options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+		
+		NSArray *userReps = [inResponseOrNil objectForKey:@"users"];
+		return [userReps isKindOfClass:[NSArray class]];
+		
+	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		NSArray *userReps = [inResponseOrNil objectForKey:@"users"];
+	
+		if (successBlock)
+			successBlock(userReps);
+		
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock(nil);
+
+	}];
 
 }
 

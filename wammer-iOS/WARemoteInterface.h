@@ -5,12 +5,16 @@
 //  Created by Evadne Wu on 7/21/11.
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
+//  https://gist.github.com/46e424e637d6634979d3
 
 #import "IRWebAPIKit.h"
 
 @interface WARemoteInterface : IRWebAPIInterface
 
 + (WARemoteInterface *) sharedInterface;
+
+//	GET /users
+- (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	GET /articles
 - (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
