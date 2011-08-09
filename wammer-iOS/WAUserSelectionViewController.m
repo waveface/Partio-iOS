@@ -169,9 +169,9 @@
         representedUserIsCurrentUser = YES;
     cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	cell.textLabel.text = representedUser.nickname;
-	cell.imageView.image = representedUser.avatar;
-	
-	
+    // should load from cache here.
+    cell.imageView.image = representedUser.avatar;
+    
 	//	Visual: Add a rounded corner on the top left or lower left of the image
 	
 	if (indexPath.row == 0) {
@@ -199,8 +199,13 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	NSURL *userRep = [[(IRManagedObject *)[self.fetchedResultsController objectAtIndexPath:indexPath] objectID] URIRepresentation];
+    WAUser *changeToUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    [[NSUserDefaults standardUserDefaults] setObject:changeToUser.identifier forKey:@"WhoAmI"];
+	
+    NSURL *userRep = [[(IRManagedObject *)changeToUser objectID] URIRepresentation];
 
+    [self.tableView reloadData];
+    
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		if (self.completionBlock)
