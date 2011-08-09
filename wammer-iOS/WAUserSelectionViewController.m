@@ -130,9 +130,8 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-	
 	[self handleRefresh];
-	[self.tableView reloadData];
+    [self.tableView reloadData];
 
 }
 
@@ -163,8 +162,12 @@
 	WAUser *representedUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSParameterAssert(representedUser);
 	
+    NSString *currentUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"WhoAmI"];
+    
 	BOOL representedUserIsCurrentUser = NO; //[representedUser.identifier isEqual:[[WADataStore defaultStore] currentUserIdentifier]];
-	cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+	if( [representedUser.identifier isEqualToString:currentUser] )
+        representedUserIsCurrentUser = YES;
+    cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	cell.textLabel.text = representedUser.nickname;
 	cell.imageView.image = representedUser.avatar;
 	
