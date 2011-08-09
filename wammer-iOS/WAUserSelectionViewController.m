@@ -213,19 +213,10 @@
 
 - (void) handleRefresh {
 
-	[[WARemoteInterface sharedInterface] retrieveAvailableUsersOnSuccess:^(NSArray *retrievedUserReps) {
-		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		NSArray *savedUsers = [WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"id" ofRemoteDictionaries:retrievedUserReps];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Saving failed: %@", savingError);
-		
-	} onFailure:^(NSError *error) {
+	[[WADataStore defaultStore] updateUsersWithCompletion: ^ {
 	
-		//	Handle reload?
-		
+		//	No op, changes are merged thru notifications
+	
 	}];
 
 }

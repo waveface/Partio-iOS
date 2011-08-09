@@ -8,6 +8,7 @@
 //  https://gist.github.com/46e424e637d6634979d3
 
 #import "IRWebAPIKit.h"
+#import "WADataStore.h"
 
 @interface WARemoteInterface : IRWebAPIInterface
 
@@ -33,5 +34,16 @@
 
 //	POST /comment
 - (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
+@end
+
+
+
+
+
+@interface WADataStore (WARemoteInterfaceAdditions)
+
+- (void) updateUsersWithCompletion:(void(^)(void))aBlock;
+- (void) updateArticlesWithCompletion:(void(^)(void))aBlock;
 
 @end
