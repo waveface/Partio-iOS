@@ -150,6 +150,7 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
+		cell.layer.shouldRasterize = YES;
 	}
 	
 	WAUser *representedUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
