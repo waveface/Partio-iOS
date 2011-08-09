@@ -133,10 +133,10 @@
 	
 	
 	
-	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:9 topCapHeight:9]] autorelease];
+	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:14 topCapHeight:14]] autorelease];
 	NSParameterAssert(textWellBackgroundView.image);
 	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
-	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ -2, -2, -2, -2 });
+	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ 0, -2, -2, -2 });
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
 	
 	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
