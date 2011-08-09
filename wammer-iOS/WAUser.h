@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
+#import "IRWebAPIKit.h"
+
 @interface WAUser : IRManagedObject
 
 @property (nonatomic, retain) UIImage * avatar;
@@ -20,6 +22,10 @@
 @property (nonatomic, retain) NSSet *articles;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
+
++ (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
++ (NSOperationQueue *) remoteResourceHandlingQueue;
+
 @end
 
 @interface WAUser (CoreDataGeneratedAccessors)
