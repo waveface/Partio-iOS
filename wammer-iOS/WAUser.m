@@ -7,6 +7,7 @@
 //
 
 #import "WAUser.h"
+#import "WADataStore.h"
 
 
 @implementation WAUser
@@ -53,6 +54,82 @@
 
 	return mapping;
 
+}
+
++ (IRRemoteResourcesManager *) sharedRemoteResourcesManager {
+
+	static IRRemoteResourcesManager *sharedManager = nil;
+	static dispatch_once_t onceToken;
+	
+	dispatch_once(&onceToken, ^{
+    
+		sharedManager = [[IRRemoteResourcesManager alloc] init];
+		sharedManager.delegate = (id<IRRemoteResourcesManagerDelegate>)[UIApplication sharedApplication].delegate;
+		
+		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:MLRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
+			
+			NSURL *representingURL = (NSURL *)[aNotification object];
+			NSData *resourceData = [sharedManager resourceAtRemoteURL:representingURL skippingUncachedFile:NO];
+			
+			if (![resourceData length])
+			return;
+						
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			NSArray *matchingObjects = [context executeFetchRequest:((^ {
+				
+				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
+				fr.entity = [WAUser entityDescriptionForContext:context];
+				fr.predicate = [NSPredicate predicateWithFormat:@"avatarURL == %@", [representingURL absoluteString]];
+				
+				return fr;
+			
+			})()) error:nil];
+			
+			for (WAUser *matchingObject in matchingObjects)
+				matchingObject.avatar = [UIImage imageWithData:resourceData];
+			
+			[context save:nil];
+			
+		}];
+		
+		objc_setAssociatedObject(sharedManager, @"boundNotificationObject", notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC); 
+
+	});
+	
+	return sharedManager;
+
+}
+
++ (NSOperationQueue *) remoteResourceHandlingQueue {
+
+	static NSOperationQueue *returnedQueue = nil;
+	static dispatch_once_t onceToken;
+	
+	dispatch_once(&onceToken, ^{
+		returnedQueue = [[NSOperationQueue alloc] init];
+	});
+	
+	return returnedQueue;
+
+}
+
+- (UIImage *) avatar {
+
+	UIImage *primitiveAvatar = [self primitiveValueForKey:@"avatar"];
+	
+	if (primitiveAvatar)
+		return primitiveAvatar;
+	
+	if (!self.avatarURL)
+		return nil;
+	
+	NSURL *actualAvatarURL = [NSURL URLWithString:self.avatarURL];
+	
+	if (![actualAvatarURL isFileURL])
+		[[[self class] sharedRemoteResourcesManager] retrieveResourceAtRemoteURL:actualAvatarURL forceReload:YES];
+	
+	return nil;
+	
 }
 
 @end
