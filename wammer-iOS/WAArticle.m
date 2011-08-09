@@ -27,6 +27,14 @@
 
 }
 
++ (BOOL) skipsNonexistantRemoteKey {
+
+	//	Allows piecemeal data patching, by skipping code path that assigns a placeholder value for any missing value
+	//	that -configureWithRemoteDictionary: gets
+	return YES;
+	
+}
+
 + (NSDictionary *) remoteDictionaryConfigurationMapping {
 
 	static NSDictionary *mapping = nil;

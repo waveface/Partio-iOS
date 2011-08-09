@@ -262,3 +262,74 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 @end
+
+
+
+
+
+@implementation WADataStore (WARemoteInterfaceAdditions)
+
+- (void) updateUsersWithCompletion:(void(^)(void))aBlock {
+
+	[[WARemoteInterface sharedInterface] retrieveAvailableUsersOnSuccess:^(NSArray *retrievedUserReps) {
+		
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		[WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"id" ofRemoteDictionaries:retrievedUserReps];
+	
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Saving failed: %@", savingError);
+		
+		if (aBlock)
+			aBlock();
+		
+	} onFailure:^(NSError *error) {
+	
+		//	Handle reload?
+		
+	}];
+
+}
+
+- (void) updateArticlesWithCompletion:(void(^)(void))aBlock {
+
+	//	?
+	
+	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+	
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		
+		retrievedArticleReps = [retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
+		
+			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
+			
+			[mutatedRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[inUserRep objectForKey:@"creator_id"], @"id",
+			nil] forKey:@"owner"];
+		
+			return mutatedRep;
+			
+		}];
+		
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"WAFile", @"files",
+			@"WAComment", @"comments",
+			@"WAUser", @"owner",
+		nil] options:0];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Saving Error %@", savingError);
+		
+		if (aBlock)
+			aBlock();
+		
+	} onFailure: ^ (NSError *error) {
+		
+		//	Currently a NO OP
+		
+	}];
+
+}
+
+@end
