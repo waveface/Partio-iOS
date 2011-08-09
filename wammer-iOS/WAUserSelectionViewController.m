@@ -69,13 +69,6 @@
 		if (![self isViewLoaded])
 			return;
 
-		//	if ([self.tableView.indexPathsForVisibleRows count]) {
-		//		[self.tableView beginUpdates];
-		//		[self.tableView reloadRowsAtIndexPaths:self.tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
-		//		[self.tableView endUpdates];
-		//		return;
-		//	}
-		
 		[self.tableView reloadData];
 		
 	});
@@ -131,7 +124,7 @@
 
 	[super viewWillAppear:animated];
 	[self handleRefresh];
-    [self.tableView reloadData];
+	[self.tableView reloadData];
 
 }
 
@@ -157,21 +150,22 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
+		cell.layer.shouldRasterize = YES;
 	}
 	
 	WAUser *representedUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSParameterAssert(representedUser);
 	
-    NSString *currentUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"WhoAmI"];
-    
-	BOOL representedUserIsCurrentUser = NO; //[representedUser.identifier isEqual:[[WADataStore defaultStore] currentUserIdentifier]];
-	if( [representedUser.identifier isEqualToString:currentUser] )
-        representedUserIsCurrentUser = YES;
-    cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+	NSString *currentUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"WhoAmI"];
+	BOOL representedUserIsCurrentUser = [representedUser.identifier isEqualToString:currentUser];
+	
+	cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 	cell.textLabel.text = representedUser.nickname;
-    // should load from cache here.
-    cell.imageView.image = representedUser.avatar;
-    
+	cell.imageView.image = representedUser.avatar;
+	
+	if (!cell.imageView.image)
+		cell.imageView.image = [UIImage imageNamed:@"WADefaultUserIcon"];
+	
 	//	Visual: Add a rounded corner on the top left or lower left of the image
 	
 	if (indexPath.row == 0) {
