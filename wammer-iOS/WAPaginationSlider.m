@@ -67,7 +67,7 @@
 	self.pageIndicatorLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 	self.pageIndicatorLabel.font = [UIFont boldSystemFontOfSize:14.0f];
 	self.pageIndicatorLabel.textColor = [UIColor whiteColor];
-	self.pageIndicatorLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.35f];
+	self.pageIndicatorLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
 	self.pageIndicatorLabel.opaque = NO;
 	self.pageIndicatorLabel.alpha = 0;
 	self.pageIndicatorLabel.userInteractionEnabled = NO;
