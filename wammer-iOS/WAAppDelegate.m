@@ -23,15 +23,18 @@
 	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAArticlesViewController_iPhone" : @"WAArticlesViewController";
 	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease]] autorelease];
 	
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *appDefaults = [NSDictionary
+                                dictionaryWithObject:@"fc3a9ff8bc0a11e0b3b7c82b" forKey:@"WhoAmI"];
+        
+    [defaults registerDefaults:appDefaults];
+    NSLog(@"%@", defaults);
+    
 	[self.window makeKeyAndVisible];
 	
 	return YES;
 	
 }
-
-
-
-
 
 static unsigned int networkActivityStackingCount = 0;
 

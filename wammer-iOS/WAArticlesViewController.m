@@ -636,40 +636,16 @@
 }
 
 - (void) refreshData {
-
-	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		
-		retrievedArticleReps = [retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
-		
-			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
-			
-			[mutatedRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-				[inUserRep objectForKey:@"creator_id"], @"id",
-			nil] forKey:@"owner"];
-		
-			return mutatedRep;
-			
-		}];
-		
-		NSArray *insertedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-			@"WAFile", @"files",
-			@"WAComment", @"comments",
-			@"WAUser", @"owner",
-		nil] options:0];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Saving Error %@", savingError);
-			
+	[[WADataStore defaultStore] updateUsersWithCompletion:nil];
+
+	[[WADataStore defaultStore] updateArticlesWithCompletion: ^ {
+	
 		dispatch_async(dispatch_get_main_queue(), ^ {
+			
 			[self refreshPaginatedViewPages];
-		});
-		
-	} onFailure:^(NSError *error) {
-		
-		NSLog(@"Fail %@", error);
+			
+		});	
 		
 	}];
 
