@@ -160,6 +160,8 @@
 	if ([[UIDevice currentDevice].name rangeOfString:@"Simulator"].location != NSNotFound)
 		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
 	
+	self.view.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
+	
 	self.contentTextView.text = self.article.text;
 	
 	self.toolbar.opaque = NO;
@@ -179,11 +181,11 @@
 	self.noPhotoReminderView.frame = self.photosView.frame;
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
 	[self.view addSubview:self.noPhotoReminderView];
-		
+	
 	UIView *photosBackgroundView = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
 	photosBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
 	photosBackgroundView.autoresizingMask = self.photosView.autoresizingMask;
-	photosBackgroundView.layer.cornerRadius = 4.0f;
+	photosBackgroundView.frame = UIEdgeInsetsInsetRect(photosBackgroundView.frame, (UIEdgeInsets){ -20, -20, -40, -20 });
 	photosBackgroundView.layer.masksToBounds = YES;
 	photosBackgroundView.userInteractionEnabled = NO;
 	[self.view insertSubview:photosBackgroundView atIndex:0];
@@ -191,12 +193,30 @@
 	IRConcaveView *photosConcaveEdgeView = [[[IRConcaveView alloc] initWithFrame:self.photosView.frame] autorelease];
 	photosConcaveEdgeView.autoresizingMask = self.photosView.autoresizingMask;
 	photosConcaveEdgeView.backgroundColor = nil;
-	photosConcaveEdgeView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0.0f alpha:0.5f] offset:(CGSize){ 0.0f, 1.0f } spread:3.0f];
-	photosConcaveEdgeView.layer.cornerRadius = 4.0f;
+	photosConcaveEdgeView.frame = UIEdgeInsetsInsetRect(photosConcaveEdgeView.frame, (UIEdgeInsets){ -20, -20, -40, -20 });
+	photosConcaveEdgeView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0.0f alpha:0.5f] offset:(CGSize){ 0.0f, -1.0f } spread:3.0f];
 	photosConcaveEdgeView.layer.masksToBounds = YES;
 	photosConcaveEdgeView.userInteractionEnabled = NO;
 	[self.view addSubview:photosConcaveEdgeView];
+	
+	
+	self.contentTextView.backgroundColor = nil;
+	self.contentTextView.opaque = NO;
+	self.contentTextView.contentInset = (UIEdgeInsets){ 10, 0, 0, 0 };
+	self.contentTextView.bounces = YES;
+	self.contentTextView.alwaysBounceVertical = YES;
+	
+	if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound)
+		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
 
+	IRConcaveView *contentTextBackgroundView = [[[IRConcaveView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	contentTextBackgroundView.autoresizingMask = self.contentTextView.autoresizingMask;
+	contentTextBackgroundView.innerShadow = nil;
+	contentTextBackgroundView.frame = UIEdgeInsetsInsetRect(contentTextBackgroundView.frame, (UIEdgeInsets){ -10, -20, -20, -20 });
+	contentTextBackgroundView.userInteractionEnabled = NO;
+	contentTextBackgroundView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1];
+	[self.view insertSubview:contentTextBackgroundView atIndex:0];
+		
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -305,10 +325,12 @@
 
 
 
+//	Deleting all the changed stuff and saving is like throwing all the stuff away
+//	In that sense just don’t do anything.
+
 - (void) handleDone:(UIBarButtonItem *)sender {
 
-	[self.article.managedObjectContext deleteObject:self.article];
-	[self.article.managedObjectContext save:nil];
+	//	TBD save a draft
 
 	[self dismissModalViewControllerAnimated:YES];
 
@@ -316,9 +338,6 @@
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	[self.article.managedObjectContext deleteObject:self.article];
-	[self.article.managedObjectContext save:nil];
-	
 	[self dismissModalViewControllerAnimated:YES];
 
 }
