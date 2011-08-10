@@ -19,6 +19,8 @@
 		FF13871313E95C3900154B7D /* WACompositionTextWellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */; };
 		FF13871513E95E0800154B7D /* WACompositionSendButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */; };
 		FF21C8D313E14CF9009B980D /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
+		FF24072C13F27F4A000B2CAA /* WAPatternCarbonFibre.png in Resources */ = {isa = PBXBuildFile; fileRef = FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */; };
+		FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF24072E13F2881E000B2CAA /* WAViewController.m */; };
 		FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
 		FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
 		FF4D07E113E9253D006020AC /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4D07E013E9253D006020AC /* WAGalleryViewController.m */; };
@@ -142,6 +144,9 @@
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
+		FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternCarbonFibre.png; path = Resources/WAPatternCarbonFibre.png; sourceTree = "<group>"; };
+		FF24072D13F2881E000B2CAA /* WAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAViewController.h; path = "wammer-iOS/WAViewController.h"; sourceTree = "<group>"; };
+		FF24072E13F2881E000B2CAA /* WAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAViewController.m; path = "wammer-iOS/WAViewController.m"; sourceTree = "<group>"; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
@@ -255,6 +260,8 @@
 			children = (
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
+				FF24072D13F2881E000B2CAA /* WAViewController.h */,
+				FF24072E13F2881E000B2CAA /* WAViewController.m */,
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
@@ -439,6 +446,7 @@
 			isa = PBXGroup;
 			children = (
 				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
+				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
 				FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */,
 				FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */,
 				FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */,
@@ -594,6 +602,7 @@
 				FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */,
 				FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */,
 				FF027CC413F1433B009D979A /* WAPatternPaper.png in Resources */,
+				FF24072C13F27F4A000B2CAA /* WAPatternCarbonFibre.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +638,7 @@
 				FF13870F13E94B6E00154B7D /* UIView+WAAdditions.m in Sources */,
 				FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */,
 				4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */,
+				FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

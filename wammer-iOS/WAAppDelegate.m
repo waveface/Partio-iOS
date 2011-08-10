@@ -8,6 +8,9 @@
 
 #import "WAAppDelegate.h"
 #import "IRRemoteResourcesManager.h"
+#import "WAUserSelectionViewController.h"
+#import "WADataStore.h"
+#import "WAViewController.h"
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
 @end
@@ -18,20 +21,90 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 	
 	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAArticlesViewController_iPhone" : @"WAArticlesViewController";
 	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease]] autorelease];
 	
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *appDefaults = [NSDictionary
-                                dictionaryWithObject:@"fc3a9ff8bc0a11e0b3b7c82b" forKey:@"WhoAmI"];
-        
-    [defaults registerDefaults:appDefaults];
-    NSLog(@"%@", defaults);
-    
 	[self.window makeKeyAndVisible];
 	
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	
+	if (!currentUserIdentifier) {
+
+		switch (UI_USER_INTERFACE_IDIOM()) {
+		
+			case UIUserInterfaceIdiomPad: {
+			
+				WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
+				fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+					return YES;
+				};
+				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
+				[fullscreenBaseVC.view addSubview:((^ {
+					
+					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+					spinner.center = (CGPoint){
+						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
+						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
+					};
+					[spinner startAnimating];
+					return spinner;
+					
+				})())];
+				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternCarbonFibre"]];
+				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
+				
+				__block WAUserSelectionViewController *userSelectionVC;
+				userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+				
+					NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
+					WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
+					NSString *userIdentifier = userObject.identifier;
+				
+					[[NSUserDefaults  standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+					[[NSUserDefaults  standardUserDefaults] synchronize];
+					
+					[userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
+					
+					void (^operations)() = ^ {
+						
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.duration = 0.3f;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.removedOnCompletion = YES;
+						[self.window.rootViewController dismissModalViewControllerAnimated:NO];
+						[self.window.layer addAnimation:transition forKey:@"transition"];
+						
+					};
+					
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
+					
+				}];
+				
+				UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
+				userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+				[fullscreenBaseVC presentModalViewController:userSelectionWrappingVC animated:YES];
+			
+				//	Work here
+			
+				break;
+			
+			}
+			
+			case UIUserInterfaceIdiomPhone:
+			default: {
+			
+				break;
+			
+			}
+		
+		}
+	
+	}
+		
 	return YES;
 	
 }

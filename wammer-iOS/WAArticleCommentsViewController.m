@@ -138,7 +138,7 @@
 	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
 	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ 0, -2, -2, -2 });
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
-	
+		
 	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -4, 0, 0, 0 });
@@ -163,8 +163,16 @@
 		nrCommentsView.contentInset = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
 		nrCommentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
 		
-		nrCompositionAccessoryView.frame = accessoryViewFrame;
+		if (nrView.bounds.size.height == 0) {
+			
+			//	OMG, this case happens when the app launches in landscape.  Since the text field does not have flexible top / bottom margins, a zero enclosing superview height makes the text field taller than the enclosing superview, and subsequent restoration of the height won’t help anyway: the metrics were already destructed. x_x
+			
+			accessoryViewFrame.size.height = MIN(activeAccessoryViewHeight, MAX(inactiveAccessoryViewHeight, accessoryViewFrame.size.height));
+			
+		}
 		
+		nrCompositionAccessoryView.frame = accessoryViewFrame;
+				
 	};
 	
 	self.view.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {

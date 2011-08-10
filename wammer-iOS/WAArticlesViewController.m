@@ -78,7 +78,8 @@
 		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Accounts" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 		returnedItem.block = ^ {
 		
-			[nrSelf.userSelectionPopoverController presentPopoverFromBarButtonItem:returnedItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+			if (!nrSelf.userSelectionPopoverController.popoverVisible)
+				[nrSelf.userSelectionPopoverController presentPopoverFromBarButtonItem:returnedItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		
 		};
 		
@@ -113,7 +114,7 @@
 	nil]];
 		
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
@@ -124,7 +125,7 @@
 		
 		return returnedRequest;
 	
-	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
 		
@@ -161,6 +162,7 @@
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
+	self.paginatedView.horizontalSpacing = 32.0f;
 	
 	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -241,13 +243,16 @@
 	[super viewWillAppear:animated];
 	
 	[self updateLayoutForCommentsVisible:NO];
+	[self.articleCommentsViewController.view setNeedsLayout];
 	[self.articleCommentsViewController viewWillAppear:animated];
 	
-	@try {
-		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
-		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
-	} @catch (NSException *e) {
-    //	NO OP
+	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
+		@try {
+			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
+			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
+		} @catch (NSException *e) {
+			//	NO OP
+		}
 	}
 
 }
@@ -288,7 +293,9 @@
 		NSURL *newURI = nil;
 		
 		@try {
-			newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+			if ([self.fetchedResultsController.fetchedObjects count]) {
+				newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+			}
 		} @catch (NSException *exception) { /* NO OP */ }
 		
 		if (oldURI && [oldURI isEqual:newURI])
@@ -330,8 +337,6 @@
 
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
-	//	NSLog(@"%s %@ %i", __PRETTY_FUNCTION__, slider, destinationPage);
-	
 	if (self.paginatedView.currentPage == destinationPage)
 		return;
 	
@@ -676,18 +681,15 @@
 	
 	WAUserSelectionViewController *userSelectionViewController = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
 	
-		NSLog(@"Did pick user object at %@", pickedUser);
 		[nrSelf.userSelectionPopoverController dismissPopoverAnimated:YES];
 		
 	}];
 	
 	
 	UINavigationController *userSelectionNavigationController = [[[UINavigationController alloc] initWithRootViewController:userSelectionViewController] autorelease];
-	
 	userSelectionViewController.title = @"Accounts";
 	
 	self.userSelectionPopoverController = [[[UIPopoverController alloc] initWithContentViewController:userSelectionNavigationController] autorelease];
-		
 	return self.userSelectionPopoverController;
 
 }
