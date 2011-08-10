@@ -78,7 +78,8 @@
 		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Accounts" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 		returnedItem.block = ^ {
 		
-			[nrSelf.userSelectionPopoverController presentPopoverFromBarButtonItem:returnedItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+			if (!nrSelf.userSelectionPopoverController.popoverVisible)
+				[nrSelf.userSelectionPopoverController presentPopoverFromBarButtonItem:returnedItem permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 		
 		};
 		
