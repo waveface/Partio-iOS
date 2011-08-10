@@ -28,9 +28,6 @@
 	
 	[self.window makeKeyAndVisible];
 	
-	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WhoAmI"];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-	
 	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
 	
 	if (!currentUserIdentifier) {
