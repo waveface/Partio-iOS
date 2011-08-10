@@ -243,6 +243,7 @@
 	[super viewWillAppear:animated];
 	
 	[self updateLayoutForCommentsVisible:NO];
+	[self.articleCommentsViewController.view setNeedsLayout];
 	[self.articleCommentsViewController viewWillAppear:animated];
 	
 	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
