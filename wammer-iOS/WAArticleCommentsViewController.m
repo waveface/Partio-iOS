@@ -122,9 +122,12 @@
 	self.commentsRevealingActionContainerView.layer.shadowOpacity = 0.25f;
 	self.commentsRevealingActionContainerView.layer.shadowRadius = 2.0f;
 	
+	
 	self.compositionAccessoryView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.compositionAccessoryView.backgroundColor = [UIColor clearColor];
 	self.compositionAccessoryView.opaque = NO;
+	//self.compositionAccessoryView.layer.borderColor = [UIColor redColor].CGColor;
+	//self.compositionAccessoryView.layer.borderWidth = 2.0f;
 	
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
 	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
