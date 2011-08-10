@@ -274,6 +274,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[[WARemoteInterface sharedInterface] retrieveAvailableUsersOnSuccess:^(NSArray *retrievedUserReps) {
 		
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		
 		[WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"id" ofRemoteDictionaries:retrievedUserReps];
 	
 		NSError *savingError = nil;
@@ -298,8 +300,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
-		retrievedArticleReps = [retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
 		
 			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
 			
@@ -309,12 +312,12 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 			return mutatedRep;
 			
-		}];
+		}] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAFile", @"files",
 			@"WAComment", @"comments",
 			@"WAUser", @"owner",
+		
 		nil] options:0];
 		
 		NSError *savingError = nil;

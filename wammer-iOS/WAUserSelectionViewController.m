@@ -58,17 +58,15 @@
 	
 	}
 	
-	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	
-	NSError *fetchingError = nil;
-	if (![fetchedResultsController performFetch:&fetchingError])
-		NSLog(@"Error (re)fetching %@", fetchingError);
-	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		
 		if (![self isViewLoaded])
 			return;
 
+		self.fetchedResultsController = nil;
+		
 		[self.tableView reloadData];
 		
 	});
@@ -120,17 +118,32 @@
 
 }
 
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	[self.tableView reloadData];
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
 	[self handleRefresh];
-	[self.tableView reloadData];
 
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 
 	return YES;
+
+}
+
+- (NSInteger) numberOfSectionsInTableView {
+
+	if (!self.fetchedResultsController.fetchedObjects)
+		return 0;
+	
+	return 1;
 
 }
 
@@ -154,6 +167,9 @@
 	}
 	
 	WAUser *representedUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	if (!representedUser) {
+		NSLog(@"NO REPRESENTED USER");
+	}
 	NSParameterAssert(representedUser);
 	
 	NSString *currentUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"WhoAmI"];
@@ -173,7 +189,7 @@
 		cell.imageView.layer.mask = [CAShapeLayer layer];
 		cell.imageView.layer.mask.bounds = (CGRect){ 0, 0, 44, 44 };
 		((CAShapeLayer *)(cell.imageView.layer.mask)).path = (CGPathRef)[UIBezierPath bezierPathWithRoundedRect:(CGRect){ 22, 22, 44, 44 } byRoundingCorners:UIRectCornerTopLeft cornerRadii:(CGSize){ 10.0f, 10.0f }].CGPath;
-	
+		
 	} else if (indexPath.row == ([self tableView:tableView numberOfRowsInSection:indexPath.section] - 1)) {
 	
 		cell.imageView.layer.mask = [CAShapeLayer layer];

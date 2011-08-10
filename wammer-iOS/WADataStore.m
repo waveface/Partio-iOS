@@ -24,7 +24,7 @@
 
 - (NSManagedObjectModel *) defaultManagedObjectModel {
 
-	return [[NSManagedObjectModel alloc] initWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"WAModel" withExtension:@"momd"]];
+	return [[[NSManagedObjectModel alloc] initWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"WAModel" withExtension:@"momd"]] autorelease];
 
 }
 
