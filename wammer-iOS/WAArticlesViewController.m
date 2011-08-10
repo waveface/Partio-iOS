@@ -244,11 +244,13 @@
 	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController viewWillAppear:animated];
 	
-	@try {
-		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
-		[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
-	} @catch (NSException *e) {
-    //	NO OP
+	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
+		@try {
+			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
+			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
+		} @catch (NSException *e) {
+			//	NO OP
+		}
 	}
 
 }
@@ -289,7 +291,9 @@
 		NSURL *newURI = nil;
 		
 		@try {
-			newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+			if ([self.fetchedResultsController.fetchedObjects count]) {
+				newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
+			}
 		} @catch (NSException *exception) { /* NO OP */ }
 		
 		if (oldURI && [oldURI isEqual:newURI])
