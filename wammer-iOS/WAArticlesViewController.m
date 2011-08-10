@@ -162,6 +162,7 @@
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
+	self.paginatedView.horizontalSpacing = 32.0f;
 	
 	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
