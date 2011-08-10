@@ -58,10 +58,10 @@
 	
 	}
 	
-	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		
 		if (![self isViewLoaded])
 			return;
 
