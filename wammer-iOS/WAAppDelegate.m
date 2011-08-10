@@ -49,8 +49,8 @@
 					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
 					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 					spinner.center = (CGPoint){
-						CGRectGetMidX(fullscreenBaseVC.view.bounds),
-						CGRectGetMidY(fullscreenBaseVC.view.bounds)
+						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
+						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
 					};
 					[spinner startAnimating];
 					return spinner;
