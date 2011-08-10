@@ -113,7 +113,7 @@
 	nil]];
 		
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
@@ -124,7 +124,7 @@
 		
 		return returnedRequest;
 	
-	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
 		
@@ -330,8 +330,6 @@
 
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
-	//	NSLog(@"%s %@ %i", __PRETTY_FUNCTION__, slider, destinationPage);
-	
 	if (self.paginatedView.currentPage == destinationPage)
 		return;
 	
@@ -676,18 +674,15 @@
 	
 	WAUserSelectionViewController *userSelectionViewController = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
 	
-		NSLog(@"Did pick user object at %@", pickedUser);
 		[nrSelf.userSelectionPopoverController dismissPopoverAnimated:YES];
 		
 	}];
 	
 	
 	UINavigationController *userSelectionNavigationController = [[[UINavigationController alloc] initWithRootViewController:userSelectionViewController] autorelease];
-	
 	userSelectionViewController.title = @"Accounts";
 	
 	self.userSelectionPopoverController = [[[UIPopoverController alloc] initWithContentViewController:userSelectionNavigationController] autorelease];
-		
 	return self.userSelectionPopoverController;
 
 }
