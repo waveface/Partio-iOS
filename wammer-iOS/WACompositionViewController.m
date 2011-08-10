@@ -325,10 +325,12 @@
 
 
 
+//	Deleting all the changed stuff and saving is like throwing all the stuff away
+//	In that sense just don’t do anything.
+
 - (void) handleDone:(UIBarButtonItem *)sender {
 
-	[self.article.managedObjectContext deleteObject:self.article];
-	[self.article.managedObjectContext save:nil];
+	//	TBD save a draft
 
 	[self dismissModalViewControllerAnimated:YES];
 
@@ -336,9 +338,6 @@
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	[self.article.managedObjectContext deleteObject:self.article];
-	[self.article.managedObjectContext save:nil];
-	
 	[self dismissModalViewControllerAnimated:YES];
 
 }
