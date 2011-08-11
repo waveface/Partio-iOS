@@ -12,6 +12,7 @@
 #import "IRConcaveView.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "WACompositionViewPhotoCell.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
@@ -115,7 +116,7 @@
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
+	//	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
 
 }
 
@@ -261,34 +262,20 @@
 
 	static NSString * const identifier = @"photoCell";
 	
-	AQGridViewCell *cell = [gridView dequeueReusableCellWithIdentifier:identifier];
+	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
 	
 	if (!cell) {
 	
-		cell = [[[AQGridViewCell alloc] initWithFrame:(CGRect){
+		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell.frame = (CGRect){
 			CGPointZero,
 			[self portraitGridCellSizeForGridView:gridView]
-		} reuseIdentifier:identifier] autorelease];
-		
-		cell.backgroundColor = nil;
-		cell.contentView.backgroundColor = nil;
-		cell.selectionStyle = AQGridViewCellSelectionStyleNone;
-		cell.contentView.layer.shouldRasterize = YES;
-		cell.contentView.layer.shadowOffset = (CGSize){ 0, 0 };
-		cell.contentView.layer.shadowOpacity = 0.95f;
-		cell.contentView.layer.shadowRadius = 1.0f;
-		
-		UIView *imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(cell.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
-		imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
-		imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-		[cell.contentView addSubview:imageContainer];
-		
+		};
+				
 	}
 		
-	UIImage *cellImage = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
-	UIView *imageContainer = (UIView *)[cell.contentView.subviews objectAtIndex:0];
-	imageContainer.layer.contents = (id)cellImage.CGImage;
+	cell.image = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
 	
 	return cell;
 
@@ -345,33 +332,33 @@
 
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
 
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, [[UIApplication sharedApplication].keyWindow performSelector:@selector(recursiveDescription)]);
+
 	[(IRActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:@"Photo Library" block: ^ {
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
+			//	This works around an iOS 5 EXC_BAD_ACCESS crasher…
+			NSLog(@"Sync");
+		
+			__block __typeof__(self.imagePickerPopover) nrImagePickerPopover = self.imagePickerPopover;
+		
+			if (nrImagePickerPopover.popoverVisible)
+				[nrImagePickerPopover dismissPopoverAnimated:NO];
 			
-				[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-			
-			});
+			[nrImagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
 		
 		}],
 		
 		[IRAction actionWithTitle:@"Take Photo" block: ^ {
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				__block __typeof__(self) nrSelf = self;
+			__block __typeof__(self) nrSelf = self;
 
-				IRImagePickerController *imagePickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
-				
-					[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-					
-				}];
-				
-				[self presentModalViewController:imagePickerController animated:YES];
+			IRImagePickerController *imagePickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+			}];
 			
-			});
+			[self presentModalViewController:imagePickerController animated:YES];
 		
 		}],
 	
