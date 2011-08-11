@@ -20,6 +20,7 @@
 @dynamic comments;
 @dynamic files;
 @dynamic owner;
+@dynamic fileOrder;
 
 + (NSString *) keyPathHoldingUniqueValue {
 
@@ -66,6 +67,107 @@
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
 	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
+
+}
+
+
+
+
+
+- (NSArray *) fileOrder {
+
+	NSArray *primitiveFileOrder = [self primitiveValueForKey:@"fileOrder"];
+	if (primitiveFileOrder) {
+	
+		//	[((NSManagedObject *)[self.files anyObject]).managedObjectContext obtainPermanentIDsForObjects:[self.files allObjects] error:nil];
+	
+		NSArray *allFileObjectURIs = [[self.files allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
+			return [[inObject objectID] URIRepresentation];
+		}];
+		
+		NSSet *orderedFileURIs = [NSSet setWithArray:primitiveFileOrder];
+		NSSet *existingFileURIs = [NSSet setWithArray:allFileObjectURIs];
+		
+		if (![orderedFileURIs isEqual:existingFileURIs]) {
+		
+			[self willChangeValueForKey:@"fileOrder"];
+			
+			NSMutableArray *newPrimitiveFileOrder = [[primitiveFileOrder mutableCopy] autorelease];
+			
+			[newPrimitiveFileOrder removeObjectsAtIndexes:[newPrimitiveFileOrder indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+				return (BOOL)(![existingFileURIs containsObject:obj]);
+			}]];
+			
+			[newPrimitiveFileOrder addObjectsFromArray:[[existingFileURIs objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+				return (BOOL)(![orderedFileURIs containsObject:obj]);
+			}] allObjects]];
+			
+			[self didChangeValueForKey:@"fileOrder"];
+		
+		}
+		
+		return primitiveFileOrder;
+		
+	}
+	
+	self.fileOrder = [NSArray array];
+	return self.fileOrder;
+
+}
+
+- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
+
+	[super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
+	
+	if (![inKey isEqualToString:@"files"])
+		return;
+
+	[((NSManagedObject *)[inObjects anyObject]).managedObjectContext obtainPermanentIDsForObjects:[inObjects allObjects] error:nil];
+	
+	NSArray *inObjectURIs = [[inObjects allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
+		return [[inObject objectID] URIRepresentation];
+	}];
+	
+	switch (inMutationKind) {
+	
+		case NSKeyValueUnionSetMutation: {
+			
+			NSMutableArray *newFileOrder = [[self.fileOrder mutableCopy] autorelease];
+			[newFileOrder addObjectsFromArray:inObjectURIs];
+			self.fileOrder = newFileOrder;
+			
+			break;
+			
+		}
+		
+		case NSKeyValueMinusSetMutation: {
+			
+			NSMutableArray *newFileOrder = [[self.fileOrder mutableCopy] autorelease];
+			[newFileOrder removeObjectsInArray:[self.fileOrder objectsAtIndexes:[self.fileOrder indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) { return [inObjectURIs containsObject:obj]; }]]];
+			self.fileOrder = newFileOrder;
+			
+			break;
+			
+		}
+		
+		case NSKeyValueIntersectSetMutation: {
+		
+			NSMutableArray *newFileOrder = [[self.fileOrder mutableCopy] autorelease];
+			[newFileOrder removeObjectsInArray:inObjectURIs];
+			self.fileOrder = newFileOrder;
+			
+			break;
+			
+		}
+		
+		case NSKeyValueSetSetMutation: {
+		
+			self.fileOrder = inObjectURIs;
+			break;
+			
+		}
+	
+	}
 
 }
 
