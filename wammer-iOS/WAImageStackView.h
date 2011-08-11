@@ -27,7 +27,7 @@ typedef enum {
 @interface WAImageStackView : UIView
 
 @property (nonatomic, readwrite, assign) WAImageStackViewInteractionState state;
-@property (nonatomic, readwrite, retain) NSSet *files;
+@property (nonatomic, readwrite, retain) NSArray *files;
 @property (nonatomic, readwrite, assign) id<WAImageStackViewDelegate> delegate;
 @property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
 

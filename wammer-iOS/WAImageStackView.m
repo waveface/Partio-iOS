@@ -110,32 +110,18 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	if (object == self)
 	if ([keyPath isEqualToString:@"files"]) {
 	
-		self.shownImageFilePaths = [[[[self.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {
+		self.shownImageFilePaths = [self.files irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
 		
 			if (!aFile.resourceFilePath)
-				return NO;
+				return (id)nil;
 			
 			if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage))
-				return NO;
+				return (id)nil;
 			
-			return YES;
-			
-		}] allObjects] sortedArrayUsingComparator: ^ NSComparisonResult(WAFile *lhsFile, WAFile *rhsFile) {
-		
-			NSComparisonResult resourceURLResult = [lhsFile.resourceURL compare:rhsFile.resourceURL];
-			if (resourceURLResult != NSOrderedSame)
-				return resourceURLResult;
-			
-			//	The timestamp is toxic
-			return [lhsFile.timestamp compare:rhsFile.timestamp];
-			
-		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-		
 			return aFile.resourceFilePath;
 			
 		}];
-		
-		//	Get the first two photographs if possible.
+	
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
 	
 	}

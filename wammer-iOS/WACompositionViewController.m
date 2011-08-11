@@ -172,11 +172,12 @@
 	self.photosView.layer.cornerRadius = 4.0f;
 	self.photosView.opaque = NO;
 	self.photosView.bounces = YES;
+	self.photosView.clipsToBounds = NO;
 	self.photosView.alwaysBounceHorizontal = YES;
 	self.photosView.alwaysBounceVertical = NO;
 	self.photosView.directionalLockEnabled = YES;
 	self.photosView.contentSizeGrowsToFillBounds = NO;
-	self.photosView.contentInset = (UIEdgeInsets){ 0, 12, 0, 12 };
+	//	self.photosView.contentInset = (UIEdgeInsets){ 0, 12, 0, 12 };
 	
 	self.noPhotoReminderView.frame = self.photosView.frame;
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;

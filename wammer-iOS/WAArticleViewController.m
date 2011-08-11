@@ -128,7 +128,11 @@
 	self.userNameLabel.text = self.article.owner.nickname;
 	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
-	self.mainContentView.files = self.article.files;
+	self.mainContentView.files = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+		return [[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+		}] anyObject];
+	}];
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	
