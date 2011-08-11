@@ -279,9 +279,24 @@
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
-    WAUserSelectionViewController *usvc = [[[WAUserSelectionViewController alloc] init] autorelease];
+
     
-	[self.navigationController pushViewController:usvc animated:YES];
+    __block WAUserSelectionViewController *userSelectionVC = nil;
+    userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+        
+        NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
+        WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
+        NSString *userIdentifier = userObject.identifier;
+        
+        [[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
+        
+    }];
+
+    UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
+	[self.navigationController presentModalViewController:nc animated:YES];
     
 }
 
