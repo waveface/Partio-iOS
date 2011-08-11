@@ -51,6 +51,8 @@
 		FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */; };
 		FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
 		FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
+		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
+		FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
 		FF97382513D821DF003D1722 /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
 		FF97386113D82B4F003D1722 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
@@ -192,6 +194,9 @@
 		FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF73A69713D6E08100D54EC6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FF73A69913D6E08800D54EC6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
+		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
+		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
@@ -343,6 +348,8 @@
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
+				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
+				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
 				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
 				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 				FF5A83D313EB056800836A1B /* WAGalleryImageView.h */,
@@ -452,6 +459,7 @@
 				FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */,
 				FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */,
 				FF027CC313F1433B009D979A /* WAPatternPaper.png */,
+				FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */,
 				FF21C8D213E14CF9009B980D /* IPSample */,
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
 				FF4FA01413E136A0002C627F /* WACapsuleRight.png */,
@@ -603,6 +611,7 @@
 				FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */,
 				FF027CC413F1433B009D979A /* WAPatternPaper.png in Resources */,
 				FF24072C13F27F4A000B2CAA /* WAPatternCarbonFibre.png in Resources */,
+				FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +648,7 @@
 				FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */,
 				4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */,
 				FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */,
+				FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

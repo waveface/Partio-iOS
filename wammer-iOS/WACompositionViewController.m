@@ -12,12 +12,12 @@
 #import "IRConcaveView.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "WACompositionViewPhotoCell.h"
 
 
-@interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
+@interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 
@@ -28,7 +28,7 @@
 
 
 @implementation WACompositionViewController
-@synthesize managedObjectContext, fetchedResultsController, article;
+@synthesize managedObjectContext, article;
 @synthesize photosView, contentTextView, toolbar;
 @synthesize imagePickerPopover;
 @synthesize noPhotoReminderView;
@@ -86,39 +86,6 @@
 
 }
 
-- (NSFetchedResultsController *) fetchedResultsController {
-
-	if (fetchedResultsController)
-		return fetchedResultsController;
-	
-	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-		self.article, @"Article",
-	nil]];
-	
-	fetchRequest.returnsObjectsAsFaults = NO;
-	
-	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"resourceURL" ascending:YES],
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-	nil];
-		
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
-	self.fetchedResultsController.delegate = self;
-	
-	NSError *fetchingError;
-	if (![self.fetchedResultsController performFetch:&fetchingError])
-		NSLog(@"Error fetching: %@", fetchingError);
-	
-	return fetchedResultsController;
-
-}
-
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
-
-}
-
 - (void) dealloc {
 
 	[photosView release];
@@ -129,7 +96,6 @@
 	[article irRemoveObserverBlocksForKeyPath:@"files"];
 	
 	[managedObjectContext release];
-	[fetchedResultsController release];
 	[article release];
 	[imagePickerPopover release];
 
@@ -172,11 +138,13 @@
 	self.photosView.layer.cornerRadius = 4.0f;
 	self.photosView.opaque = NO;
 	self.photosView.bounces = YES;
+	self.photosView.clipsToBounds = NO;
 	self.photosView.alwaysBounceHorizontal = YES;
 	self.photosView.alwaysBounceVertical = NO;
 	self.photosView.directionalLockEnabled = YES;
 	self.photosView.contentSizeGrowsToFillBounds = NO;
-	self.photosView.contentInset = (UIEdgeInsets){ 0, 12, 0, 12 };
+	self.photosView.showsVerticalScrollIndicator = NO;
+	self.photosView.showsHorizontalScrollIndicator = NO;
 	
 	self.noPhotoReminderView.frame = self.photosView.frame;
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
@@ -252,7 +220,7 @@
 
 - (NSUInteger) numberOfItemsInGridView:(AQGridView *)gridView {
 
-	return [self.fetchedResultsController.fetchedObjects count];
+	return [self.article.fileOrder count];
 
 }
 
@@ -260,34 +228,28 @@
 
 	static NSString * const identifier = @"photoCell";
 	
-	AQGridViewCell *cell = [gridView dequeueReusableCellWithIdentifier:identifier];
-	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
+	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {
+		return [[[aFile objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:index]];
+	}] anyObject];
 	
 	if (!cell) {
 	
-		cell = [[[AQGridViewCell alloc] initWithFrame:(CGRect){
+		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell.frame = (CGRect){
 			CGPointZero,
 			[self portraitGridCellSizeForGridView:gridView]
-		} reuseIdentifier:identifier] autorelease];
-		
-		cell.backgroundColor = nil;
-		cell.contentView.backgroundColor = nil;
-		cell.selectionStyle = AQGridViewCellSelectionStyleNone;
-		cell.contentView.layer.shouldRasterize = YES;
-		cell.contentView.layer.shadowOffset = (CGSize){ 0, 0 };
-		cell.contentView.layer.shadowOpacity = 0.95f;
-		cell.contentView.layer.shadowRadius = 1.0f;
-		
-		UIView *imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(cell.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
-		imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
-		imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-		[cell.contentView addSubview:imageContainer];
-		
+		};
+				
 	}
 		
-	UIImage *cellImage = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
-	UIView *imageContainer = (UIView *)[cell.contentView.subviews objectAtIndex:0];
-	imageContainer.layer.contents = (id)cellImage.CGImage;
+	cell.image = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
+
+	cell.onRemove = ^ {	
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[representedFile.article removeFilesObject:representedFile];
+		});
+	};
 	
 	return cell;
 
@@ -348,29 +310,21 @@
 	
 		[IRAction actionWithTitle:@"Photo Library" block: ^ {
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
+			self.imagePickerPopover = nil;
 			
-				[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-			
-			});
+			[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
 		
 		}],
 		
 		[IRAction actionWithTitle:@"Take Photo" block: ^ {
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				__block __typeof__(self) nrSelf = self;
+			__block __typeof__(self) nrSelf = self;
 
-				IRImagePickerController *imagePickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
-				
-					[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-					
-				}];
-				
-				[self presentModalViewController:imagePickerController animated:YES];
+			IRImagePickerController *imagePickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+			}];
 			
-			});
+			[self presentModalViewController:imagePickerController animated:YES];
 		
 		}],
 	
@@ -399,46 +353,29 @@
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
 	
-	//	Ditch the views
-	
-	[self.modalViewController dismissModalViewControllerAnimated:YES];
-	
-	if ([imagePickerPopover isPopoverVisible])
-		[imagePickerPopover dismissPopoverAnimated:YES];
-	
-	
-	if (!selectedAssetURI && !representedAsset)
-		return;
-	
-	
-	//	Copy the file away immediately
-	
-	NSURL *finalFileURL = nil;
-	
-	if (selectedAssetURI) {
-	
-		finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
-	
-	} else if (!selectedAssetURI && representedAsset) {
-	
-		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]])];
-			
-	}
-	
-	
-	//	Then fix stuff up
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
+	if (selectedAssetURI || representedAsset) {
+
+		NSURL *finalFileURL = nil;
+		
+		if (selectedAssetURI)
+			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+		
+		if (!finalFileURL)
+		if (!selectedAssetURI && representedAsset)
+			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]])];
+		
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 		stitchedFile.resourceType = (NSString *)kUTTypeImage;
 		stitchedFile.resourceURL = [finalFileURL absoluteString];
 		stitchedFile.resourceFilePath = [finalFileURL path];
 		stitchedFile.article = self.article;
 		
-		[self.managedObjectContext save:nil];
+	}
 	
-	});
+	[self.modalViewController dismissModalViewControllerAnimated:YES];
+	
+	if ([imagePickerPopover isPopoverVisible])
+		[imagePickerPopover dismissPopoverAnimated:YES];
 	
 }
 
