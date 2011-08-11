@@ -96,6 +96,38 @@
 			
 			case UIUserInterfaceIdiomPhone:
 			default: {
+                
+                __block WAUserSelectionViewController *userSelectionVC;
+				userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+                    
+					NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
+					WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
+					NSString *userIdentifier = userObject.identifier;
+                    
+					[[NSUserDefaults  standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+					[[NSUserDefaults  standardUserDefaults] synchronize];
+					
+					[userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
+					
+					void (^operations)() = ^ {
+						
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.duration = 0.3f;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.removedOnCompletion = YES;
+						[self.window.rootViewController dismissModalViewControllerAnimated:NO];
+						[self.window.layer addAnimation:transition forKey:@"transition"];
+						
+					};
+					
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
+					
+				}];
+				
+				UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
+				userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+                [self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
 			
 				break;
 			
