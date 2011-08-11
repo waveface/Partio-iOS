@@ -12,6 +12,7 @@
 #import "IRConcaveView.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "WACompositionViewPhotoCell.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
@@ -261,34 +262,20 @@
 
 	static NSString * const identifier = @"photoCell";
 	
-	AQGridViewCell *cell = [gridView dequeueReusableCellWithIdentifier:identifier];
+	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
 	
 	if (!cell) {
 	
-		cell = [[[AQGridViewCell alloc] initWithFrame:(CGRect){
+		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell.frame = (CGRect){
 			CGPointZero,
 			[self portraitGridCellSizeForGridView:gridView]
-		} reuseIdentifier:identifier] autorelease];
-		
-		cell.backgroundColor = nil;
-		cell.contentView.backgroundColor = nil;
-		cell.selectionStyle = AQGridViewCellSelectionStyleNone;
-		cell.contentView.layer.shouldRasterize = YES;
-		cell.contentView.layer.shadowOffset = (CGSize){ 0, 0 };
-		cell.contentView.layer.shadowOpacity = 0.95f;
-		cell.contentView.layer.shadowRadius = 1.0f;
-		
-		UIView *imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(cell.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
-		imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
-		imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-		[cell.contentView addSubview:imageContainer];
-		
+		};
+				
 	}
 		
-	UIImage *cellImage = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
-	UIView *imageContainer = (UIView *)[cell.contentView.subviews objectAtIndex:0];
-	imageContainer.layer.contents = (id)cellImage.CGImage;
+	cell.image = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
 	
 	return cell;
 
