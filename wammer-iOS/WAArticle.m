@@ -79,11 +79,27 @@
 	NSArray *primitiveFileOrder = [self primitiveValueForKey:@"fileOrder"];
 	if (primitiveFileOrder) {
 	
-		//	[((NSManagedObject *)[self.files anyObject]).managedObjectContext obtainPermanentIDsForObjects:[self.files allObjects] error:nil];
-	
+		[((NSManagedObject *)[self.files anyObject]).managedObjectContext obtainPermanentIDsForObjects:[self.files allObjects] error:nil];
 		NSArray *allFileObjectURIs = [[self.files allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
 			return [[inObject objectID] URIRepresentation];
 		}];
+		
+		
+		if ([primitiveFileOrder count] != [allFileObjectURIs count]) {
+		
+			[self willChangeValueForKey:@"fileOrder"];
+		
+			NSMutableArray *reconciledFileOrder = [NSMutableArray array];
+			for (NSURL *anObjectURI in primitiveFileOrder)
+				if (![reconciledFileOrder containsObject:anObjectURI])
+					if ([allFileObjectURIs containsObject:anObjectURI])
+						[reconciledFileOrder addObject:anObjectURI];
+			
+			primitiveFileOrder = reconciledFileOrder;
+		
+			[self didChangeValueForKey:@"fileOrder"];
+			
+		}
 		
 		NSSet *orderedFileURIs = [NSSet setWithArray:primitiveFileOrder];
 		NSSet *existingFileURIs = [NSSet setWithArray:allFileObjectURIs];
