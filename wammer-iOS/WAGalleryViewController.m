@@ -219,7 +219,13 @@
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (id obj, BOOL *stop) {
+		return [[[obj objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:index]];
+	}] anyObject];
+	
+	NSParameterAssert(representedFile);
+
+	//	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
 	NSString *resourceFilePath = representedFile.resourceFilePath;
 	
 	//	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
