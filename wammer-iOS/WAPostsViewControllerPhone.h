@@ -10,6 +10,6 @@
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface WAPostsViewControllerPhone : UIViewController
+@interface WAPostsViewControllerPhone : UITableViewController
 
 @end
