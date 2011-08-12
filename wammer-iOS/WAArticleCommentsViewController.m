@@ -459,19 +459,15 @@
 	
 	WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	UITableViewCell *cell = [aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (!cell) {
-	
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier] autorelease];
+	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (!cell)
+		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
 		
-		cell.detailTextLabel.numberOfLines = 0;
-		cell.detailTextLabel.lineBreakMode = UILineBreakModeTailTruncation;
-	
-	}
-	
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ via %@ at %@", representedComment.owner.nickname, representedComment.creationDeviceName, representedComment.timestamp];
-	
-	cell.detailTextLabel.text = representedComment.text;
+	cell.userNicknameLabel.text = representedComment.owner.nickname;
+	cell.avatarView.image = representedComment.owner.avatar;
+	cell.contentTextLabel.text = representedComment.text;
+	cell.dateLabel.text = [representedComment.timestamp description];
+	cell.originLabel.text = representedComment.creationDeviceName;
 	
 	return cell;
 
