@@ -274,7 +274,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[[WARemoteInterface sharedInterface] retrieveAvailableUsersOnSuccess:^(NSArray *retrievedUserReps) {
 		
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 		
 		[WAUser insertOrUpdateObjectsIntoContext:context withExistingProperty:@"identifier" matchingKeyPath:@"id" ofRemoteDictionaries:retrievedUserReps];
 	
@@ -300,15 +300,38 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 		
 		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
 		
 			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
 			
-			[mutatedRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-				[inUserRep objectForKey:@"creator_id"], @"id",
-			nil] forKey:@"owner"];
+			if ([mutatedRep objectForKey:@"id"]) {
+				[mutatedRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+					[inUserRep objectForKey:@"creator_id"], @"id",
+				nil] forKey:@"owner"];
+			}
+			
+			NSArray *commentReps = [mutatedRep objectForKey:@"comments"];
+			if (commentReps) {
+			
+				[mutatedRep setObject:[commentReps irMap: ^ (NSDictionary *aCommentRep, int index, BOOL *stop) {
+				
+					NSMutableDictionary *mutatedCommentRep = [[aCommentRep mutableCopy] autorelease];
+					
+					if ([aCommentRep objectForKey:@"creator_id"]) {
+						[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+							[aCommentRep objectForKey:@"creator_id"], @"id",
+						nil] forKey:@"owner"];
+					}
+					
+					return mutatedCommentRep;
+					
+					NSLog(@"mutatedCommentRep %@", mutatedCommentRep);
+					
+				}] forKey:@"comments"];
+			
+			}
 		
 			return mutatedRep;
 			
