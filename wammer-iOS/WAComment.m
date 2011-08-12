@@ -46,6 +46,7 @@
 			@"identifier", @"id",
 			@"text", @"text",
 			@"timestamp", @"timestamp",
+			@"owner", @"owner",
 		nil];
 		
 		[mapping retain];
@@ -54,6 +55,24 @@
 
 	return mapping;
 
+}
+
++ (NSDictionary *) defaultHierarchicalEntityMapping {
+
+	static NSDictionary *mapping = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"WAUser", @"owner",
+		nil];
+		
+		[mapping retain];
+		
+	});
+
+	return mapping;
+	
 }
 
 + (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {

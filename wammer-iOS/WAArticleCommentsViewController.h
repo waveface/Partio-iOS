@@ -10,6 +10,7 @@
 #import <CoreData/CoreData.h>
 
 #import "WAView.h"
+#import "WAArticleCommentsViewCell.h"
 
 
 typedef enum {
