@@ -20,6 +20,7 @@
 #import "IRActionSheet.h"
 
 #import "WAArticleViewController.h"
+#import "WAPostViewControllerPhone.h"
 #import "WAUserSelectionViewController.h"
 
 

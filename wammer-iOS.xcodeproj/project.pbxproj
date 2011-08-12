@@ -133,7 +133,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; name = WAPostsViewControllerPhone.h; path = "wammer-iOS/WAPostsViewControllerPhone.h"; sourceTree = "<group>"; };
+		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostsViewControllerPhone.h; path = "wammer-iOS/WAPostsViewControllerPhone.h"; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostsViewControllerPhone.m; path = "wammer-iOS/WAPostsViewControllerPhone.m"; sourceTree = "<group>"; };
 		4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAComposeViewControllerPhone.h; path = "wammer-iOS/WAComposeViewControllerPhone.h"; sourceTree = "<group>"; };
 		4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAComposeViewControllerPhone.m; path = "wammer-iOS/WAComposeViewControllerPhone.m"; sourceTree = "<group>"; };
