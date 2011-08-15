@@ -413,7 +413,7 @@
 
 - (void) refreshView {
 
-	[self.commentRevealButton setTitle:[NSString stringWithFormat:@"%x %@", [self.article.comments count], (([self.article.comments count] > 1) ? @"comments" : @"comment")] forState:UIControlStateNormal];
+	[self.commentRevealButton setTitle:[NSString stringWithFormat:@"%i %@", [self.article.comments count], (([self.article.comments count] > 1) ? @"comments" : @"comment")] forState:UIControlStateNormal];
 	
 	IRCATransact(^ {
 		[self.commentsView reloadData];
