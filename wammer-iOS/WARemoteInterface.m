@@ -260,7 +260,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (failureBlock)
-			failureBlock([NSError errorWithDomain:nil code:0 userInfo:inResponseOrNil]);
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
 		
 	}];
 
