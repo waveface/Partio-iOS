@@ -34,10 +34,10 @@
 		FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
 		FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */; };
 		FF55C23A13F5270600F38861 /* WAArticleCommentsViewCell-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */; };
-		FF55C23B13F52D1400F38861 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4D07E013E9253D006020AC /* WAGalleryViewController.m */; };
 		FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5A83D413EB056800836A1B /* WAGalleryImageView.m */; };
 		FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */; };
 		FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */; };
+		FF6FFCC513F86445000C582D /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
 		FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
 		FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
@@ -180,6 +180,8 @@
 		FF5A83D413EB056800836A1B /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryImageView.m; path = "wammer-iOS/WAGalleryImageView.m"; sourceTree = "<group>"; };
 		FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyCameraRoll-Large~ipad.png"; path = "Resources/PLEmptyCameraRoll-Large~ipad.png"; sourceTree = "<group>"; };
 		FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyPhotoAlbum-Large~ipad.png"; path = "Resources/PLEmptyPhotoAlbum-Large~ipad.png"; sourceTree = "<group>"; };
+		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "wammer-iOS/WAGalleryViewController.h"; sourceTree = "<group>"; };
+		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryViewController.m; path = "wammer-iOS/WAGalleryViewController.m"; sourceTree = "<group>"; };
 		FF73A53E13D6C2CC00D54EC6 /* wammer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF73A54413D6C2CC00D54EC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -314,10 +316,10 @@
 		FF55C23513F5251D00F38861 /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
-				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
-				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 				FF5A83D313EB056800836A1B /* WAGalleryImageView.h */,
 				FF5A83D413EB056800836A1B /* WAGalleryImageView.m */,
+				FF6FFCC313F86445000C582D /* WAGalleryViewController.h */,
+				FF6FFCC413F86445000C582D /* WAGalleryViewController.m */,
 			);
 			name = Gallery;
 			sourceTree = "<group>";
@@ -682,7 +684,7 @@
 				4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */,
 				4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */,
 				FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */,
-				FF55C23B13F52D1400F38861 /* WAGalleryViewController.m in Sources */,
+				FF6FFCC513F86445000C582D /* WAGalleryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
