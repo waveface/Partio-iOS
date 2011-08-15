@@ -21,6 +21,8 @@
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
+@property (nonatomic, readwrite, retain) WAArticleCommentsViewCell *cellPrototype;
+
 - (void) refreshView;
 
 @end
@@ -31,6 +33,7 @@
 @synthesize commentsView, commentRevealButton, commentPostButton, commentCloseButton, compositionContentField, compositionSendButton, compositionAccessoryView, commentsRevealingActionContainerView;
 @synthesize delegate, state;
 @synthesize managedObjectContext, fetchedResultsController, article;
+@synthesize cellPrototype;
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -282,6 +285,7 @@
 
 	self.compositionAccessoryView = nil;
 	self.commentsRevealingActionContainerView = nil;
+	self.cellPrototype = nil;
 
 	[super viewDidUnload];
 
@@ -453,6 +457,43 @@
 
 }
 
+- (WAArticleCommentsViewCell *) cellPrototype {
+	
+	if (cellPrototype)
+		return cellPrototype;
+	
+	self.cellPrototype = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:nil] autorelease];
+	
+	return cellPrototype;
+	
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	self.cellPrototype.frame = (CGRect){
+		CGPointZero,
+		(CGSize){
+			tableView.frame.size.width,
+			tableView.rowHeight
+		}
+	};
+	
+	CGRect oldFrame = self.cellPrototype.contentTextLabel.frame;
+	CGFloat oldHeight = CGRectGetHeight(oldFrame);
+	
+	self.cellPrototype.contentTextLabel.text = ((WAComment *)[self.fetchedResultsController objectAtIndexPath:indexPath]).text;
+	[self.cellPrototype.contentTextLabel sizeToFit];
+	
+	CGRect newFrame = self.cellPrototype.contentTextLabel.frame;
+	CGFloat newHeight = CGRectGetHeight(newFrame);
+	
+	CGFloat cellHeight = CGRectGetHeight(cellPrototype.frame) + (newHeight - oldHeight);
+	self.cellPrototype.contentTextLabel.frame = oldFrame;
+	
+	return cellHeight;
+
+}
+
 - (UITableViewCell *) tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	static NSString *cellIdentifier = @"CommentsCell";
@@ -505,6 +546,8 @@
 	[compositionSendButton release];
 	[compositionAccessoryView release];
 	[commentsRevealingActionContainerView release];
+	
+	[cellPrototype release];
 	
 	[managedObjectContext release];
 	[fetchedResultsController release];

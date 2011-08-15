@@ -305,30 +305,41 @@
 }
 
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
-
-	[(IRActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:@"Photo Library" block: ^ {
+	__block __typeof__(self) nrSelf = self;
+	
+	NSMutableArray *availableActions = [NSMutableArray arrayWithObject:[IRAction actionWithTitle:@"Photo Library" block: ^ {
 		
-			self.imagePickerPopover = nil;
+		nrSelf.imagePickerPopover = nil;
+		[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+		
+	}]];
+	
+	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
+	
+		[availableActions addObject:[IRAction actionWithTitle:@"Take Photo" block: ^ {
 			
-			[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-		
-		}],
-		
-		[IRAction actionWithTitle:@"Take Photo" block: ^ {
-		
-			__block __typeof__(self) nrSelf = self;
-
-			IRImagePickerController *imagePickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+			[nrSelf presentModalViewController:[IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-			}];
+			}] animated:YES];
 			
-			[self presentModalViewController:imagePickerController animated:YES];
+		}]];
 		
-		}],
+	}
 	
-	nil]] singleUseActionSheet] showFromRect:sender.bounds inView:sender animated:YES];
+	if ([availableActions count] == 1) {
+		
+		//	With only one action we don’t even need to show the action sheet
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[(IRAction *)[availableActions objectAtIndex:0] invoke];
+		});
+		
+	} else {
+	
+		[(IRActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:availableActions] singleUseActionSheet] showFromRect:sender.bounds inView:sender animated:YES];
+		
+	}
 	
 }
 
