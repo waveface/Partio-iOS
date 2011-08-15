@@ -457,6 +457,12 @@
 	
 }
 
+- (BOOL) articleCommentsViewController:(WAArticleCommentsViewController *)controller canSendComment:(NSString *)commentText {
+
+	return (BOOL)(![[commentText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]);
+
+}
+
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void (^)(void))aCompletionBlock {
 	
 	BOOL didWriteComment = !([[controller.compositionContentField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]);
@@ -524,6 +530,58 @@
 		});
 		
 	}
+	
+}
+
+- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
+	
+	WAArticle *currentArticle = [[self.fetchedResultsController fetchedObjects] objectAtIndex:self.paginatedView.currentPage];
+	NSString *currentArticleIdentifier = currentArticle.identifier;
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	
+	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
+		
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		
+		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
+		
+			[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				[NSDictionary dictionaryWithObject:currentUserIdentifier forKey:@"id"], @"owner",
+				commentText, @"text",
+				[NSDictionary dictionaryWithObject:currentArticleIdentifier forKey:@"id"], @"article",
+				IRWebAPIKitNonce(), @"id",
+			
+			nil],
+		
+		nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			@"WAFile", @"files",
+			@"WAArticle", @"article",
+			@"WAUser", @"owner",
+		
+		nil] options:0];
+		
+		for (WAComment *aComment in insertedComments)
+			if (!aComment.timestamp)
+				aComment.timestamp = [NSDate date];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Error saving: %@", savingError);
+			
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			
+			[controller.commentsView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([controller.commentsView numberOfRowsInSection:([controller.commentsView numberOfSections] - 1)] - 1) inSection:([controller.commentsView numberOfSections] - 1)] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		
+		});
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"error %@", error);
+		
+	}];
 	
 }
 

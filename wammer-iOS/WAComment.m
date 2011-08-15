@@ -47,6 +47,7 @@
 			@"text", @"text",
 			@"timestamp", @"timestamp",
 			@"owner", @"owner",
+			@"article", @"article",
 		nil];
 		
 		[mapping retain];
@@ -65,6 +66,7 @@
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAUser", @"owner",
+			@"WAArticle", @"article",
 		nil];
 		
 		[mapping retain];

@@ -257,7 +257,12 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"comment"]);
 		
-	} failureHandler:nil];
+	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:nil code:0 userInfo:inResponseOrNil]);
+		
+	}];
 
 }
 
