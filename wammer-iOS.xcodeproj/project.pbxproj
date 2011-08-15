@@ -163,8 +163,8 @@
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
 		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
-		FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "/Works/Code/waveface-wammer-iOS/wammer-iOS/WAGalleryViewController.h"; sourceTree = "<absolute>"; };
-		FF4D07E013E9253D006020AC /* wammer-iOS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = folder; name = "wammer-iOS"; path = "/Users/evadne/Works/Code/waveface-wammer-iOS/wammer-iOS"; sourceTree = "<absolute>"; };
+		FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "/Users/evadne/Works/Code/waveface-wammer-iOS/wammer-iOS/WAGalleryViewController.h"; sourceTree = "<absolute>"; };
+		FF4D07E013E9253D006020AC /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryViewController.m; path = "/Users/evadne/Works/Code/waveface-wammer-iOS/wammer-iOS/WAGalleryViewController.m"; sourceTree = "<absolute>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01113E13249002C627F /* WAArticleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAArticleViewController.xib; path = Resources/WAArticleViewController.xib; sourceTree = "<group>"; };
@@ -384,7 +384,7 @@
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
 				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
-				FF4D07E013E9253D006020AC /* wammer-iOS */,
+				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 			);
 			name = iPad;
 			path = "wammer-iOS";
