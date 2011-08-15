@@ -19,6 +19,7 @@
 #import "IRTransparentToolbar.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "IRAlertView.h"
 
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
@@ -457,8 +458,10 @@
 }
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void (^)(void))aCompletionBlock {
-
-	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+	BOOL didWriteComment = !([[controller.compositionContentField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]);
+	
+	void (^operations)() = ^ {
 	
 		__block CGFloat oldShadowOpacity, newShadowOpacity;
 		oldShadowOpacity = self.articleCommentsViewController.view.layer.shadowOpacity;
@@ -474,6 +477,7 @@
 				
 				case WAArticleCommentsViewControllerStateHidden: {
 					[self updateLayoutForCommentsVisible:NO];
+					controller.compositionContentField.text = nil;
 					break;
 				}
 				
@@ -498,8 +502,29 @@
 		
 		}];
 		
-	});
-
+	};
+	
+	
+	//	Doing these async bounces allow the animation transactions to fully commit without affecting each other
+	
+	if (!didWriteComment) {
+		
+		dispatch_async(dispatch_get_main_queue(), operations);
+		
+	} else {
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			
+			[[IRAlertView alertViewWithTitle:@"Clear Comment" message:@"Really remove your comment?" cancelAction:[IRAction actionWithTitle:@"Keep" block:nil] otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:@"Remove" block: ^ {
+				
+				dispatch_async(dispatch_get_main_queue(), operations);
+				
+			}], nil]] show];
+		
+		});
+		
+	}
+	
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)panGestureRecognizer shouldReceiveTouch:(UITouch *)touch {
