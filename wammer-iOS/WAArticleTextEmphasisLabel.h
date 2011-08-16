@@ -1,5 +1,5 @@
 //
-//  WAArticleTextEmphasisView.h
+//  WAArticleTextEmphasisLabel.h
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 8/16/11.
@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAArticleTextEmphasisView : UIView
+
+@interface WAArticleTextEmphasisLabel : UILabel
+
+@property (nonatomic, readwrite, retain) IBOutlet UILabel *label;
+@property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
 
 @end

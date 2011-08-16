@@ -221,6 +221,8 @@
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
 		FF97385F13D82B4F003D1722 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = external/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		FF97386013D82B4F003D1722 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = external/JSONKit/JSONKit.m; sourceTree = "<group>"; };
+		FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTextEmphasisLabel.h; sourceTree = "<group>"; };
+		FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextEmphasisLabel.m; sourceTree = "<group>"; };
 		FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockArticlesList.json; path = Resources/WAMockArticlesList.json; sourceTree = "<group>"; };
 		FF9DA0BF13DFF88F00D6B28B /* WAUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUser.h; sourceTree = "<group>"; };
 		FF9DA0C013DFF88F00D6B28B /* WAUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUser.m; sourceTree = "<group>"; };
@@ -375,6 +377,8 @@
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
 				FF4FA01113E13249002C627F /* WAArticleViewController.xib */,
+				FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */,
+				FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */,
 				FFF9B79C13E7D0D5002A9D7F /* WAArticleCommentsViewController.h */,
 				FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */,
 				FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */,
@@ -690,6 +694,7 @@
 				4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */,
 				FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */,
 				FF6FFCC513F86445000C582D /* WAGalleryViewController.m in Sources */,
+				FF9A17B913FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
