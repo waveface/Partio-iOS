@@ -521,7 +521,7 @@
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-			[[IRAlertView alertViewWithTitle:@"Clear Comment" message:@"Really remove your comment?" cancelAction:[IRAction actionWithTitle:@"Keep" block:nil] otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:@"Remove" block: ^ {
+			[[IRAlertView alertViewWithTitle:@"Clear Comment?" message:@"All text will be removed." cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:@"OK" block: ^ {
 				
 				dispatch_async(dispatch_get_main_queue(), operations);
 				
@@ -552,6 +552,7 @@
 				commentText, @"text",
 				[NSDictionary dictionaryWithObject:currentArticleIdentifier forKey:@"id"], @"article",
 				IRWebAPIKitNonce(), @"id",
+				@"iPad Mock", @"creation_device_name",
 			
 			nil],
 		
