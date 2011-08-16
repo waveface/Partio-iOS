@@ -51,9 +51,9 @@
 	self.imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
 	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 0 };
-	self.imageContainer.layer.shadowOpacity = 0.95f;
-	self.imageContainer.layer.shadowRadius = 1.0f;
+	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
+	self.imageContainer.layer.shadowOpacity = 0.5f;
+	self.imageContainer.layer.shadowRadius = 2.0f;
 	[self.contentView addSubview:self.imageContainer];
 	
 	self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
