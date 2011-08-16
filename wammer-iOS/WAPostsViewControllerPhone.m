@@ -23,13 +23,17 @@
 #import "WAPostViewControllerPhone.h"
 #import "WAUserSelectionViewController.h"
 
+#import "WAArticleCommentsViewCell.h"
 
-@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate>
+
+@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void) refreshData;
+
++ (IRRelativeDateFormatter *) relativeDateFormatter;
 
 @end
 
@@ -37,6 +41,17 @@
 @implementation WAPostsViewControllerPhone
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
+
+//- (void) loadView {
+//    UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+//    tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+//    tableView.delegate = self;
+//    tableView.dataSource = self;
+//    [tableView reloadData];
+//    
+//    self.view = tableView;
+//    [tableView release];
+//}
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -64,7 +79,9 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
-		
+	
+	[self.fetchedResultsController performFetch:nil];
+    
 	return self;
 
 }
@@ -104,10 +121,47 @@
 	
 }
 
-- (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+    if (!self.fetchedResultsController.fetchedObjects) {
+        return 0;
+    }
+    return 1;
+}
 
-	return [[self.fetchedResultsController fetchedObjects] count];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if(!self.fetchedResultsController.fetchedObjects)
+        return 0;
+    NSLog(@"number of rows called...");
+    return [[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *identifier = @"CommentCell";
+    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell) {
+        cell = [[WAArticleCommentsViewCell alloc] initWithStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:identifier];
+        cell.layer.shouldRasterize = YES;
+    }
+    
+    WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if(!post){
+        NSLog(@"No posts");
+    }
+    
+    cell.userNicknameLabel.text = post.owner.nickname;
+    cell.avatarView.image = post.owner.avatar;
+    cell.contentTextLabel.text = post.text;
+    cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+    cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 150;
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
@@ -186,5 +240,19 @@
     [self.navigationController pushViewController:pvc animated:YES];
 }
 
++ (IRRelativeDateFormatter *) relativeDateFormatter {
+    
+	static IRRelativeDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+        
+		formatter = [[IRRelativeDateFormatter alloc] init];
+		formatter.approximationMaxTokenCount = 1;
+        
+	});
+    
+	return formatter;
+    
+}
 
 @end
