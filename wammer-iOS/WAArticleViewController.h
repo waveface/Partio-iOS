@@ -11,6 +11,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WAView.h"
+#import "WAArticleTextEmphasisLabel.h"
+
+
 @class WAImageStackView;
 
 @interface WAArticleViewController : UIViewController
@@ -19,6 +22,7 @@
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
+@property (nonatomic, readwrite, retain) IBOutlet WAArticleTextEmphasisLabel *textEmphasisView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *relativeCreationDateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;

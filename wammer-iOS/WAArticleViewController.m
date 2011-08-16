@@ -27,7 +27,7 @@
 
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, imageStackView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
+@synthesize contextInfoContainer, imageStackView, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
@@ -71,6 +71,7 @@
 
 	self.contextInfoContainer = nil;
 	self.imageStackView = nil;
+	self.textEmphasisView = nil;
 	self.avatarView = nil;
 	self.relativeCreationDateLabel = nil;
 	self.userNameLabel = nil;
@@ -90,6 +91,7 @@
 	
 	[contextInfoContainer release];
 	[imageStackView release];
+	[textEmphasisView release];
 	[avatarView release];
 	[relativeCreationDateLabel release];
 	[userNameLabel release];
@@ -102,9 +104,44 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	[self refreshView];
 	
 	self.imageStackView.delegate = self;
+	
+	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
+	self.textEmphasisView.label.font = [UIFont systemFontOfSize:20.0f];
+	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
+	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	
+	UIImageView *bubbleView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WASpeechBubble"] stretchableImageWithLeftCapWidth:160 topCapHeight:32]] autorelease];
+	bubbleView.frame = UIEdgeInsetsInsetRect(self.textEmphasisView.backgroundView.bounds, (UIEdgeInsets){ -28, -32, -32, -32 });
+	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[self.textEmphasisView.backgroundView addSubview:bubbleView];
+	
+	((WAView *)self.view).onLayoutSubviews = ^ {
+		
+		[self.textEmphasisView sizeToFit];
+		self.textEmphasisView.center = self.imageStackView.center;
+		
+		[self.relativeCreationDateLabel sizeToFit];
+		self.relativeCreationDateLabel.frame = (CGRect){
+			(CGPoint) {
+				CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
+				self.relativeCreationDateLabel.frame.origin.y
+			},
+			self.relativeCreationDateLabel.frame.size
+		};
+		
+		self.deviceDescriptionLabel.frame = (CGRect){
+			(CGPoint){
+				self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
+				self.deviceDescriptionLabel.frame.origin.y
+			},
+			self.deviceDescriptionLabel.frame.size
+		};
+		
+	};
+	
+	[self refreshView];
 		
 }
 
@@ -136,25 +173,13 @@
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	
-	[self.relativeCreationDateLabel sizeToFit];
-	self.relativeCreationDateLabel.frame = (CGRect){
-		(CGPoint) {
-			CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
-			self.relativeCreationDateLabel.frame.origin.y
-		},
-		self.relativeCreationDateLabel.frame.size
-	};
-	
-	self.deviceDescriptionLabel.frame = (CGRect){
-		(CGPoint){
-			self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
-			self.deviceDescriptionLabel.frame.origin.y
-		},
-		self.deviceDescriptionLabel.frame.size
-	};
-	
+	self.textEmphasisView.label.text = self.article.text;
+	self.textEmphasisView.hidden = ([self.article.files count] != 0);
+		
 	if (!self.userNameLabel.text)
 		self.userNameLabel.text = @"A Certain User";
+	
+	[self.view setNeedsLayout];
 	
 }
 
