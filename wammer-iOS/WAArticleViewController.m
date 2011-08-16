@@ -27,7 +27,7 @@
 
 @implementation WAArticleViewController
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, mainContentView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
+@synthesize contextInfoContainer, imageStackView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
@@ -70,7 +70,7 @@
 - (void) viewDidUnload {
 
 	self.contextInfoContainer = nil;
-	self.mainContentView = nil;
+	self.imageStackView = nil;
 	self.avatarView = nil;
 	self.relativeCreationDateLabel = nil;
 	self.userNameLabel = nil;
@@ -89,7 +89,7 @@
 	[onPresentingViewController release];
 	
 	[contextInfoContainer release];
-	[mainContentView release];
+	[imageStackView release];
 	[avatarView release];
 	[relativeCreationDateLabel release];
 	[userNameLabel release];
@@ -104,7 +104,7 @@
 	[super viewDidLoad];
 	[self refreshView];
 	
-	self.mainContentView.delegate = self;
+	self.imageStackView.delegate = self;
 		
 }
 
@@ -128,7 +128,7 @@
 	self.userNameLabel.text = self.article.owner.nickname;
 	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
-	self.mainContentView.files = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+	self.imageStackView.files = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
 		return [[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
 			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
 		}] anyObject];
@@ -160,7 +160,7 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
-	for (UIView *aView in self.mainContentView.subviews) {
+	for (UIView *aView in self.imageStackView.subviews) {
 	
 		CGPathRef oldShadowPath = aView.layer.shadowPath;
 

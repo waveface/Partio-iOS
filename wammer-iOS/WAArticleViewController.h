@@ -18,7 +18,7 @@
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
-@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *mainContentView;
+@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *relativeCreationDateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;
