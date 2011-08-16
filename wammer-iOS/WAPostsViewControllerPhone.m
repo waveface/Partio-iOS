@@ -26,7 +26,7 @@
 #import "WAArticleCommentsViewCell.h"
 
 
-@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -41,17 +41,6 @@
 @implementation WAPostsViewControllerPhone
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
-
-//- (void) loadView {
-//    UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-//    tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-//    tableView.delegate = self;
-//    tableView.dataSource = self;
-//    [tableView reloadData];
-//    
-//    self.view = tableView;
-//    [tableView release];
-//}
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -132,7 +121,6 @@
 {
     if(!self.fetchedResultsController.fetchedObjects)
         return 0;
-    NSLog(@"number of rows called...");
     return [[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
 }
 
@@ -232,6 +220,12 @@
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    WAPostViewControllerPhone *pvc = [[[WAPostViewControllerPhone alloc]init]autorelease];
+    [self.navigationController pushViewController:pvc animated:YES];
 }
 
 - (void) showPostView:(UIBarButtonItem *)sender
