@@ -77,7 +77,7 @@
 	[article irRemoveObserverBlocksForKeyPath:@"files"];	
 	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];	
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionNew context:nil];	
 	
 	[article release];
 	article = [newArticle retain];
@@ -145,6 +145,7 @@
 	self.photosView.contentSizeGrowsToFillBounds = NO;
 	self.photosView.showsVerticalScrollIndicator = NO;
 	self.photosView.showsHorizontalScrollIndicator = NO;
+	self.photosView.leftContentInset = 8.0f;
 	
 	self.noPhotoReminderView.frame = self.photosView.frame;
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
@@ -167,6 +168,9 @@
 	photosConcaveEdgeView.userInteractionEnabled = NO;
 	[self.view addSubview:photosConcaveEdgeView];
 	
+	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 42, 20 };
+	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, -42, -20 });
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.opaque = NO;
@@ -264,7 +268,7 @@
 			
 		@try {
 		
-			self.noPhotoReminderView.hidden = ([self.article.files count] > 0);
+			self.noPhotoReminderView.hidden = ([self.article.fileOrder count] > 0);
 		
 		} @catch (NSException *e) {
 		
@@ -274,8 +278,23 @@
 				@throw e;
 			
     } @finally {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+		
+				[self.photosView reloadData];
+				
+				UIEdgeInsets insets = [objc_getAssociatedObject(self.photosView, @"defaultInsets") UIEdgeInsetsValue];
+				CGFloat addedPadding = roundf(0.5f * MAX(0, CGRectGetWidth(self.photosView.frame) - insets.left - insets.right - self.photosView.contentSize.width));
+				insets.left += addedPadding;
+				
+				self.photosView.contentInset = insets;
+				
+				CGRect cellRect = [self.photosView rectForItemAtIndex:(self.photosView.numberOfItems - 1)];
+				cellRect.size = [self portraitGridCellSizeForGridView:self.photosView];
+				
+				[self.photosView scrollRectToVisible:cellRect animated:YES];
 			
-			[self.photosView reloadData];
+			});
 		
 		}
 		

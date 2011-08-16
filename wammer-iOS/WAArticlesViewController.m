@@ -249,8 +249,8 @@
 	
 	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
 		@try {
-			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView setNeedsLayout];
-			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView layoutIfNeeded];
+			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView setNeedsLayout];
+			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView layoutIfNeeded];
 		} @catch (NSException *e) {
 			//	NO OP
 		}
@@ -411,7 +411,7 @@
 		return (self.interfaceOrientation == newOrientation);
 		
 	if ([self.articleViewControllers count] > self.paginatedView.currentPage)
-	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).mainContentView.gestureProcessingOngoing)
+	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView.gestureProcessingOngoing)
 		return (self.interfaceOrientation == newOrientation);
 	
 	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
@@ -521,7 +521,7 @@
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-			[[IRAlertView alertViewWithTitle:@"Clear Comment" message:@"Really remove your comment?" cancelAction:[IRAction actionWithTitle:@"Keep" block:nil] otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:@"Remove" block: ^ {
+			[[IRAlertView alertViewWithTitle:@"Clear Comment?" message:@"All text will be removed." cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:@"OK" block: ^ {
 				
 				dispatch_async(dispatch_get_main_queue(), operations);
 				
@@ -552,6 +552,7 @@
 				commentText, @"text",
 				[NSDictionary dictionaryWithObject:currentArticleIdentifier forKey:@"id"], @"article",
 				IRWebAPIKitNonce(), @"id",
+				@"iPad Mock", @"creation_device_name",
 			
 			nil],
 		

@@ -74,60 +74,62 @@
 
 
 
-- (NSArray *) fileOrder {
+- (void) awakeFromFetch {
 
 	NSArray *primitiveFileOrder = [self primitiveValueForKey:@"fileOrder"];
-	if (primitiveFileOrder) {
+	if (!primitiveFileOrder)
+		primitiveFileOrder = [NSArray array];
 	
-		[((NSManagedObject *)[self.files anyObject]).managedObjectContext obtainPermanentIDsForObjects:[self.files allObjects] error:nil];
-		NSArray *allFileObjectURIs = [[self.files allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
-			return [[inObject objectID] URIRepresentation];
-		}];
+	[((NSManagedObject *)[self.files anyObject]).managedObjectContext obtainPermanentIDsForObjects:[self.files allObjects] error:nil];
+	NSArray *allFileObjectURIs = [[self.files allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
+		return [[inObject objectID] URIRepresentation];
+	}];
+	
+	if ([primitiveFileOrder count] != [allFileObjectURIs count]) {
+	
+		NSMutableArray *reconciledFileOrder = [NSMutableArray array];
+		for (NSURL *anObjectURI in primitiveFileOrder)
+			if (![reconciledFileOrder containsObject:anObjectURI])
+				if ([allFileObjectURIs containsObject:anObjectURI])
+					[reconciledFileOrder addObject:anObjectURI];
 		
-		
-		if ([primitiveFileOrder count] != [allFileObjectURIs count]) {
-		
-			[self willChangeValueForKey:@"fileOrder"];
-		
-			NSMutableArray *reconciledFileOrder = [NSMutableArray array];
-			for (NSURL *anObjectURI in primitiveFileOrder)
-				if (![reconciledFileOrder containsObject:anObjectURI])
-					if ([allFileObjectURIs containsObject:anObjectURI])
-						[reconciledFileOrder addObject:anObjectURI];
-			
-			primitiveFileOrder = reconciledFileOrder;
-		
-			[self didChangeValueForKey:@"fileOrder"];
-			
-		}
-		
-		NSSet *orderedFileURIs = [NSSet setWithArray:primitiveFileOrder];
-		NSSet *existingFileURIs = [NSSet setWithArray:allFileObjectURIs];
-		
-		if (![orderedFileURIs isEqual:existingFileURIs]) {
-		
-			[self willChangeValueForKey:@"fileOrder"];
-			
-			NSMutableArray *newPrimitiveFileOrder = [[primitiveFileOrder mutableCopy] autorelease];
-			
-			[newPrimitiveFileOrder removeObjectsAtIndexes:[newPrimitiveFileOrder indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
-				return (BOOL)(![existingFileURIs containsObject:obj]);
-			}]];
-			
-			[newPrimitiveFileOrder addObjectsFromArray:[[existingFileURIs objectsPassingTest:^BOOL(id obj, BOOL *stop) {
-				return (BOOL)(![orderedFileURIs containsObject:obj]);
-			}] allObjects]];
-			
-			[self didChangeValueForKey:@"fileOrder"];
-		
-		}
-		
-		return primitiveFileOrder;
+		primitiveFileOrder = reconciledFileOrder;
 		
 	}
 	
-	self.fileOrder = [NSArray array];
-	return self.fileOrder;
+	NSSet *orderedFileURIs = [NSSet setWithArray:primitiveFileOrder];
+	NSSet *existingFileURIs = [NSSet setWithArray:allFileObjectURIs];
+		
+	if (![orderedFileURIs isEqual:existingFileURIs]) {
+	
+		NSMutableArray *newPrimitiveFileOrder = [[primitiveFileOrder mutableCopy] autorelease];
+		
+		[newPrimitiveFileOrder removeObjectsAtIndexes:[newPrimitiveFileOrder indexesOfObjectsPassingTest:^(id obj, NSUInteger idx, BOOL *stop) {
+			return (BOOL)(![existingFileURIs containsObject:obj]);
+		}]];
+		
+		[newPrimitiveFileOrder addObjectsFromArray:[[existingFileURIs objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+			return (BOOL)(![orderedFileURIs containsObject:obj]);
+		}] allObjects]];
+	
+	}
+		
+	[self setPrimitiveValue:primitiveFileOrder forKey:@"fileOrder"];
+	
+}
+
+- (NSArray *) fileOrder {
+
+	NSArray *returnedOrder = [self primitiveValueForKey:@"fileOrder"];
+	
+	if (!returnedOrder) {
+		returnedOrder = [NSArray array];
+		[self willChangeValueForKey:@"fileOrder"];
+		[self setPrimitiveValue:returnedOrder forKey:@"fileOrder"];
+		[self didChangeValueForKey:@"fileOrder"];
+	}
+	
+	return returnedOrder;
 
 }
 
