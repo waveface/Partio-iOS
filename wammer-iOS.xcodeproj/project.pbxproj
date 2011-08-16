@@ -34,10 +34,8 @@
 		FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
 		FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */; };
 		FF55C23A13F5270600F38861 /* WAArticleCommentsViewCell-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */; };
-		FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5A83D413EB056800836A1B /* WAGalleryImageView.m */; };
 		FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */; };
 		FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */; };
-		FF6FFCC513F86445000C582D /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
 		FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
 		FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
@@ -57,6 +55,8 @@
 		FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
 		FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
 		FF878BBD13FA6F8700B76807 /* WASpeechBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */; };
+		FF878C0813FA730100B76807 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
+		FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
 		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
 		FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
 		FF97382513D821DF003D1722 /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
@@ -165,8 +165,6 @@
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
 		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
-		FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "/Users/evadne/Works/Code/waveface-wammer-iOS/wammer-iOS/WAGalleryViewController.h"; sourceTree = "<absolute>"; };
-		FF4D07E013E9253D006020AC /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryViewController.m; path = "/Users/evadne/Works/Code/waveface-wammer-iOS/wammer-iOS/WAGalleryViewController.m"; sourceTree = "<absolute>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01113E13249002C627F /* WAArticleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAArticleViewController.xib; path = Resources/WAArticleViewController.xib; sourceTree = "<group>"; };
@@ -178,8 +176,6 @@
 		FF55C23613F5256B00F38861 /* WAArticleCommentsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewCell.h; sourceTree = "<group>"; };
 		FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleCommentsViewCell.m; sourceTree = "<group>"; };
 		FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleCommentsViewCell-Default.xib"; sourceTree = "<group>"; };
-		FF5A83D313EB056800836A1B /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryImageView.h; path = "wammer-iOS/WAGalleryImageView.h"; sourceTree = "<group>"; };
-		FF5A83D413EB056800836A1B /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryImageView.m; path = "wammer-iOS/WAGalleryImageView.m"; sourceTree = "<group>"; };
 		FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyCameraRoll-Large~ipad.png"; path = "Resources/PLEmptyCameraRoll-Large~ipad.png"; sourceTree = "<group>"; };
 		FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyPhotoAlbum-Large~ipad.png"; path = "Resources/PLEmptyPhotoAlbum-Large~ipad.png"; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "wammer-iOS/WAGalleryViewController.h"; sourceTree = "<group>"; };
@@ -212,6 +208,8 @@
 		FF73A69713D6E08100D54EC6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FF73A69913D6E08800D54EC6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
+		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryImageView.h; path = "wammer-iOS/WAGalleryImageView.h"; sourceTree = "<group>"; };
+		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryImageView.m; path = "wammer-iOS/WAGalleryImageView.m"; sourceTree = "<group>"; };
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
@@ -321,8 +319,8 @@
 		FF55C23513F5251D00F38861 /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
-				FF5A83D313EB056800836A1B /* WAGalleryImageView.h */,
-				FF5A83D413EB056800836A1B /* WAGalleryImageView.m */,
+				FF878C0613FA730100B76807 /* WAGalleryImageView.h */,
+				FF878C0713FA730100B76807 /* WAGalleryImageView.m */,
 				FF6FFCC313F86445000C582D /* WAGalleryViewController.h */,
 				FF6FFCC413F86445000C582D /* WAGalleryViewController.m */,
 			);
@@ -390,8 +388,6 @@
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
-				FF4D07DF13E9253D006020AC /* WAGalleryViewController.h */,
-				FF4D07E013E9253D006020AC /* WAGalleryViewController.m */,
 			);
 			name = iPad;
 			path = "wammer-iOS";
@@ -686,15 +682,15 @@
 				FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */,
 				FFF9B79E13E7D0D5002A9D7F /* WAArticleCommentsViewController.m in Sources */,
 				FF13870F13E94B6E00154B7D /* UIView+WAAdditions.m in Sources */,
-				FF5A83D513EB056800836A1B /* WAGalleryImageView.m in Sources */,
 				4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */,
 				FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */,
 				FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */,
 				4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */,
 				4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */,
 				FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */,
-				FF6FFCC513F86445000C582D /* WAGalleryViewController.m in Sources */,
 				FF9A17B913FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m in Sources */,
+				FF878C0813FA730100B76807 /* WAGalleryImageView.m in Sources */,
+				FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
