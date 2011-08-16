@@ -167,6 +167,8 @@
 	photosConcaveEdgeView.userInteractionEnabled = NO;
 	[self.view addSubview:photosConcaveEdgeView];
 	
+	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 42, 20 };
+	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, -42, -20 });
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.opaque = NO;
