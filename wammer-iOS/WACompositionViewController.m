@@ -145,6 +145,7 @@
 	self.photosView.contentSizeGrowsToFillBounds = NO;
 	self.photosView.showsVerticalScrollIndicator = NO;
 	self.photosView.showsHorizontalScrollIndicator = NO;
+	self.photosView.leftContentInset = 8.0f;
 	
 	self.noPhotoReminderView.frame = self.photosView.frame;
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
@@ -167,6 +168,9 @@
 	photosConcaveEdgeView.userInteractionEnabled = NO;
 	[self.view addSubview:photosConcaveEdgeView];
 	
+	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 42, 20 };
+	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, -42, -20 });
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.opaque = NO;
@@ -276,6 +280,12 @@
     } @finally {
 			
 			[self.photosView reloadData];
+			
+			UIEdgeInsets insets = [objc_getAssociatedObject(self.photosView, @"defaultInsets") UIEdgeInsetsValue];
+			
+			CGFloat addedPadding = roundf(0.5f * MAX(0, CGRectGetWidth(self.photosView.frame) - insets.left - insets.right - self.photosView.contentSize.width));
+			insets.left += addedPadding;
+			self.photosView.contentInset = insets;
 		
 		}
 		

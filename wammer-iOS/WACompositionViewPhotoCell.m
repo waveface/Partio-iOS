@@ -6,12 +6,14 @@
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
+#import "WAView.h"
 #import "WACompositionViewPhotoCell.h"
 
 
 @interface WACompositionViewPhotoCell ()
 @property (nonatomic, readwrite, retain) UIView *imageContainer;
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
+- (void) setContentView:(UIView *)aView;
 @end
 
 @implementation WACompositionViewPhotoCell
@@ -22,6 +24,16 @@
 	WACompositionViewPhotoCell *returnedCell = [[[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier] autorelease];
 	
 	return returnedCell;
+
+}
+
+- (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+
+	UIView *buttonAnswer = [self.removeButton hitTest:[self convertPoint:point toView:self.removeButton] withEvent:event];
+	if (buttonAnswer)
+		return buttonAnswer;
+
+	return [super hitTest:point withEvent:event];
 
 }
 
@@ -48,6 +60,8 @@
 	[self.removeButton addTarget:self action:@selector(handleRemove:) forControlEvents:UIControlEventTouchUpInside];
 	[self.removeButton setImage:[UIImage imageNamed:@"WAButtonSpringBoardRemove"] forState:UIControlStateNormal];
 	[self.removeButton sizeToFit];
+	self.removeButton.frame = UIEdgeInsetsInsetRect(self.removeButton.frame, (UIEdgeInsets){ -16, -16, -16, -16 });
+	self.removeButton.imageView.contentMode = UIViewContentModeCenter;
 	[self.contentView addSubview:self.removeButton];
 	
 	return self;
