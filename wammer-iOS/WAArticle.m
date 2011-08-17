@@ -21,6 +21,7 @@
 @dynamic files;
 @dynamic owner;
 @dynamic fileOrder;
+@dynamic draft;
 
 + (NSString *) keyPathHoldingUniqueValue {
 
