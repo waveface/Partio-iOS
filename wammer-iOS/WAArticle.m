@@ -124,9 +124,9 @@
 	
 	if (!returnedOrder) {
 		returnedOrder = [NSArray array];
-		[self willChangeValueForKey:@"fileOrder"];
+	//	[self willChangeValueForKey:@"fileOrder"];
 		[self setPrimitiveValue:returnedOrder forKey:@"fileOrder"];
-		[self didChangeValueForKey:@"fileOrder"];
+	//	[self didChangeValueForKey:@"fileOrder"];
 	}
 	
 	return returnedOrder;
