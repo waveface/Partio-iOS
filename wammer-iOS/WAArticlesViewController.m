@@ -304,6 +304,14 @@
 		
 		self.articleCommentsViewController.representedArticleURI = newURI;
 		[self articleCommentsViewController:self.articleCommentsViewController wantsState:WAArticleCommentsViewControllerStateHidden onFulfillment:nil];
+		
+		if (!self.articleCommentsViewController.representedArticleURI) {
+			self.articleCommentsViewController.view.layer.opacity = 0.85f;
+			self.articleCommentsViewController.view.userInteractionEnabled = NO;
+		} else {
+			self.articleCommentsViewController.view.layer.opacity = 1.0f;
+			self.articleCommentsViewController.view.userInteractionEnabled = YES;
+		}
 	
 	}
 
@@ -588,7 +596,11 @@
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)panGestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
-	return [self.articleCommentsViewController.commentsRevealingActionContainerView pointInside:[touch locationInView:self.articleCommentsViewController.commentsRevealingActionContainerView] withEvent:nil];
+	BOOL touchInsideTab = [self.articleCommentsViewController.commentsRevealingActionContainerView pointInside:[touch locationInView:self.articleCommentsViewController.commentsRevealingActionContainerView] withEvent:nil];
+	
+	BOOL hasRepresentedArticle = (self.articleCommentsViewController.representedArticleURI != nil);
+	
+	return touchInsideTab && hasRepresentedArticle;
 
 }
 
