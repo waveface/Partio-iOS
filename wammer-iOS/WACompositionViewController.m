@@ -93,7 +93,7 @@
 	[noPhotoReminderView release];
 	[toolbar release];
 
-	[article irRemoveObserverBlocksForKeyPath:@"files"];
+	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	
 	[managedObjectContext release];
 	[article release];
@@ -263,14 +263,10 @@
 
 	NSLog(@"did change from %@ to %@ with kind %@", fromValue, toValue, changeKind);
 	
-	[self retain];
-	
 	//	The idea is to animate removals and insertions using AQGridView’s own animation if possible
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
-		[self autorelease];
-		
 		if (![self isViewLoaded])
 			return;
 			
@@ -320,7 +316,7 @@
 - (void) handleDone:(UIBarButtonItem *)sender {
 
 	//	TBD save a draft
-
+	
 	[self dismissModalViewControllerAnimated:YES];
 
 }	
