@@ -28,20 +28,24 @@
 
 + (WARemoteInterfaceContext *) context {
 
-	NSURL *baseURL = [NSURL URLWithString:@"http://api.waveface.com"];
+	NSURL *baseURL = [NSURL URLWithString:@"http://api.waveface.com:8080"];
 	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
 
 }
 
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
 
+	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
+	
 	if ([inMethodName isEqualToString:@"articles"])
-		return [[NSBundle mainBundle] URLForResource:@"WAMockArticlesList" withExtension:@"json"];
-
+		returnedURL = [NSURL URLWithString:@"api/v1/posts/fetch_all" relativeToURL:self.baseURL];
+	
 	if ([inMethodName isEqualToString:@"users"])
-		return [[NSBundle mainBundle] URLForResource:@"WAMockUsersList" withExtension:@"json"];
+		returnedURL = [NSURL URLWithString:@"api/v1/users/fetch_all" relativeToURL:self.baseURL];
+	
+	NSLog(@"returnedURL %@ %@", returnedURL, [returnedURL absoluteString]);
 		
-	return [super baseURLForMethodNamed:inMethodName];
+	return returnedURL;
 
 }
 
@@ -113,6 +117,29 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return inParsedResponse;
 	} copy] autorelease]];
 	
+	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
+	
+		//	Transforms example.com?queryparam=value&… to example.com/queryparam/value/…
+	
+		NSDictionary *queryParameters = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+		NSURL *requestURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		
+		if (![[requestURL host] isEqual:[engine.context.baseURL host]])
+			return inOriginalContext;
+		
+		NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
+		NSMutableString *transposedRequestParams = [NSMutableString string];
+		[queryParameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			[transposedRequestParams appendFormat:@"%@/%@/", key, obj];
+		}];
+		
+		[returnedContext setObject:[NSURL URLWithString:transposedRequestParams relativeToURL:requestURL] forKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		[returnedContext removeObjectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+		
+		return returnedContext;
+	
+	} copy] autorelease]];
+	
 	engine.parser = ^ (NSData *incomingData) {
 	
 		NSError *parsingError = nil;
@@ -126,6 +153,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
 	
 	};
+
 
 	return [self initWithEngine:engine authenticator:nil];
 
