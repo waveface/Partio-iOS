@@ -77,7 +77,7 @@
 	[article irRemoveObserverBlocksForKeyPath:@"files"];	
 	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionNew context:nil];	
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
 	
 	[article release];
 	article = [newArticle retain];
@@ -260,6 +260,10 @@
 }
 
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+
+	NSLog(@"did change from %@ to %@ with kind %@", fromValue, toValue, changeKind);
+	
+	//	The idea is to animate removals and insertions using AQGridView’s own animation if possible
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
