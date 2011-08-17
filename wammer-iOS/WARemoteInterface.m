@@ -42,6 +42,9 @@
 	
 	if ([inMethodName isEqualToString:@"users"])
 		returnedURL = [NSURL URLWithString:@"api/v1/users/fetch_all" relativeToURL:self.baseURL];
+		
+	if ([inMethodName isEqualToString:@"createArticle"])
+		returnedURL = [NSURL URLWithString:@"api/v1/post/create_new_post" relativeToURL:self.baseURL];
 	
 	NSLog(@"returnedURL %@ %@", returnedURL, [returnedURL absoluteString]);
 		
@@ -222,7 +225,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	[self.engine fireAPIRequestNamed:@"article" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"createArticle" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
