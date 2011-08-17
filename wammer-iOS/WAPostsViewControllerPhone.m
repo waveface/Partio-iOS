@@ -224,8 +224,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WAPostViewControllerPhone *pvc = [[[WAPostViewControllerPhone alloc]init]autorelease];
-    [self.navigationController pushViewController:pvc animated:YES];
+    WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
+    
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void) showPostView:(UIBarButtonItem *)sender
