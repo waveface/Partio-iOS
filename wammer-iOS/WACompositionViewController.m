@@ -326,6 +326,15 @@
 
 	//	TBD save a draft
 	
+	self.article.text = self.contentTextView.text;
+	
+	NSError *savingError = nil;
+	if (![self.managedObjectContext save:&savingError])
+		NSLog(@"Error saving: %@", savingError);
+	
+	if (self.completionBlock)
+		self.completionBlock([[self.article objectID] URIRepresentation]);
+	
 	[self dismissModalViewControllerAnimated:YES];
 
 }	
