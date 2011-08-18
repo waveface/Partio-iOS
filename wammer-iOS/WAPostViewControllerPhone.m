@@ -131,8 +131,6 @@
     //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
     
-    NSLog(@"%@ comment(s).", [self.post.comments count]);
-    
     return cell;
 }
 

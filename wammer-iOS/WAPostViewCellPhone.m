@@ -48,10 +48,12 @@
 	
 	self.style = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
+    self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
 	
 	return self;
 	
 }
+
 
 - (void) dealloc {
 
