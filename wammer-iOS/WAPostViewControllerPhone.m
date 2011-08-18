@@ -8,8 +8,29 @@
 
 #import "WAPostViewControllerPhone.h"
 #import "WAComposeViewControllerPhone.h"
+#import "WADataStore.h"
+#import "WAArticleCommentsViewCell.h"
+#import "WAArticle.h"
+
+@interface WAPostViewControllerPhone ()
+
+@property (nonatomic, readwrite, retain) WAArticle *post;
+@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+
+@end
 
 @implementation WAPostViewControllerPhone
+@synthesize post, managedObjectContext;
+
++ (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL{
+    
+    WAPostViewControllerPhone *controller = [[self alloc] initWithStyle:UITableViewStylePlain];
+    
+    controller.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+    controller.post = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:postURL];
+    
+    return controller;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -85,28 +106,30 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"PostCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
     
-    // Configure the cell...
+    cell.userNicknameLabel.text = post.owner.nickname;
+    cell.avatarView.image = post.owner.avatar;
+    cell.contentTextLabel.text = post.text;
+    //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+    cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
     
     return cell;
 }
@@ -163,5 +186,11 @@
      [detailViewController release];
      */
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 150;
+}
+
 
 @end
