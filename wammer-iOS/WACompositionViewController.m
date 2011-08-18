@@ -21,6 +21,8 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 
+@property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
+
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 - (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
@@ -32,6 +34,7 @@
 @synthesize photosView, contentTextView, toolbar;
 @synthesize imagePickerPopover;
 @synthesize noPhotoReminderView;
+@synthesize completionBlock;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -40,8 +43,12 @@
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
 	
-	if (!returnedController.article)
+	if (!returnedController.article) {
 		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+		returnedController.article.draft = [NSNumber numberWithBool:YES];
+	}
+	
+	returnedController.completionBlock = aBlock;
 	
 	return returnedController;
 	
@@ -98,6 +105,8 @@
 	[managedObjectContext release];
 	[article release];
 	[imagePickerPopover release];
+	
+	[completionBlock release];
 
 	[super dealloc];
 
