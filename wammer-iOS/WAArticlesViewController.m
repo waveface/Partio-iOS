@@ -725,9 +725,6 @@
 		
 	}];
 	
-	//	NSUInteger lastCurrentPageIndex = self.paginatedView.currentPage;
-	//	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
-	
 	[self.paginatedView reloadViews];
 	
 	NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
@@ -742,9 +739,7 @@
 	self.paginationSlider.frame = paginationSliderFrame;
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	
-	//	if (lastNumberOfPages == 0)
 	[self.paginatedView scrollToPageAtIndex:(self.paginatedView.numberOfPages - 1) animated:NO];
-	UIView *pageView = [self.paginatedView existingPageAtIndex:(self.paginatedView.numberOfPages - 1)];
 	
 }
 
