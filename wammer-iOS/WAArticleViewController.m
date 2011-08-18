@@ -201,12 +201,6 @@
 			CFRelease(oldShadowPath);
 		}
 	
-		//	CGFloat oldShadowOpacity = aView.layer.shadowOpacity;
-		//	aView.layer.shadowOpacity = 0.0f;
-		//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC * duration), dispatch_get_main_queue(), ^ {
-		//		aView.layer.shadowOpacity = oldShadowOpacity;
-		//	});
-		
 	}
 		
 }

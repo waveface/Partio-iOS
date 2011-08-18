@@ -28,20 +28,31 @@
 
 + (WARemoteInterfaceContext *) context {
 
-	NSURL *baseURL = [NSURL URLWithString:@"http://api.waveface.com"];
+	//	NSURL *baseURL = [NSURL URLWithString:@"http://localhost/~evadne/waveface-wammer-API/v1/"];
+	NSURL *baseURL = [NSURL URLWithString:@"http://api.waveface.com:8080/api/v1/"];
 	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
 
 }
 
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
 
+	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
+	
 	if ([inMethodName isEqualToString:@"articles"])
-		return [[NSBundle mainBundle] URLForResource:@"WAMockArticlesList" withExtension:@"json"];
-
+		returnedURL = [NSURL URLWithString:@"posts/fetch_all/" relativeToURL:self.baseURL];
+	
 	if ([inMethodName isEqualToString:@"users"])
-		return [[NSBundle mainBundle] URLForResource:@"WAMockUsersList" withExtension:@"json"];
+		returnedURL = [NSURL URLWithString:@"users/fetch_all/" relativeToURL:self.baseURL];
 		
-	return [super baseURLForMethodNamed:inMethodName];
+	if ([inMethodName isEqualToString:@"createArticle"])
+		returnedURL = [NSURL URLWithString:@"post/create_new_post/" relativeToURL:self.baseURL];
+		
+	if ([inMethodName isEqualToString:@"createFile"])
+		returnedURL = [NSURL URLWithString:@"file/upload_file/" relativeToURL:self.baseURL];
+	
+	NSLog(@"returnedURL %@ %@", returnedURL, [returnedURL absoluteString]);
+		
+	return returnedURL;
 
 }
 
@@ -113,6 +124,56 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return inParsedResponse;
 	} copy] autorelease]];
 	
+//	[engine.requestTransformers setObject:[NSArray arrayWithObjects:[[ ^ (NSDictionary *inOriginalContext) {
+//	
+//		NSArray *tempURLs = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextLocalCachingTemporaryFileURLsKey];
+//		
+//		if (![tempURLs count])
+//			return inOriginalContext;
+//		
+//		NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
+//		
+//		[mutatedContext setObject:[tempURLs irMap: ^ (NSURL *anOldURL, int index, BOOL *stop) {
+//		
+//			NSURL *newURL = [NSURL fileURLWithPath:[[[anOldURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
+//			NSError *movingError = nil;
+//			
+//			if (![[NSFileManager defaultManager] moveItemAtURL:anOldURL toURL:newURL error:&movingError]) {
+//				NSLog(@"Error moving: %@ — using the old URI.", movingError);
+//				return anOldURL;
+//			}
+//			
+//			return newURL;
+//			
+//		}] forKey:kIRWebAPIEngineRequestContextLocalCachingTemporaryFileURLsKey];
+//		
+//		return mutatedContext;
+//		
+//	} copy] autorelease], nil] forKey:@"createFile"];
+	
+	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
+	
+		//	Transforms example.com?queryparam=value&… to example.com/queryparam/value/…
+	
+		NSDictionary *queryParameters = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+		NSURL *requestURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		
+		if (![[requestURL host] isEqual:[engine.context.baseURL host]])
+			return inOriginalContext;
+		
+		NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
+		NSMutableString *transposedRequestParams = [NSMutableString string];
+		[queryParameters enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			[transposedRequestParams appendFormat:@"%@/%@/", key, obj];
+		}];
+		
+		[returnedContext setObject:[NSURL URLWithString:transposedRequestParams relativeToURL:requestURL] forKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		[returnedContext removeObjectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+		
+		return returnedContext;
+	
+	} copy] autorelease]];
+	
 	engine.parser = ^ (NSData *incomingData) {
 	
 		NSError *parsingError = nil;
@@ -126,6 +187,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
 	
 	};
+
 
 	return [self initWithEngine:engine authenticator:nil];
 
@@ -162,12 +224,21 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		[NSNumber numberWithUnsignedInteger:maximumNumberOfArticles], @"limit",
 		aContinuation, @"timestamp",
 		
-	nil] options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	
+		return [[inResponseOrNil objectForKey:@"posts"] isKindOfClass:[NSArray class]];
+		
+	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
-			successBlock([inResponseOrNil objectForKey:@"articles"]);
+			successBlock([inResponseOrNil objectForKey:@"posts"]);
 		
-	} failureHandler:nil];
+	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
+		
+	}];
 
 }
 
@@ -175,7 +246,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[self.engine fireAPIRequestNamed:[@"article" stringByAppendingPathComponent:anIdentifier] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
-			successBlock([inResponseOrNil objectForKey:@"article"]);
+			successBlock([inResponseOrNil objectForKey:@"post"]);
 		
 	} failureHandler:nil];	
 
@@ -194,48 +265,80 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	[self.engine fireAPIRequestNamed:@"article" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"createArticle" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
-		
-			creatorIdentifier, @"creator_id",
+	
+			IRWebAPIKitStringValue(creatorIdentifier), @"creator_id",
 			@"iPad", @"creation_device_name",
-			bodyText, @"text",
+			IRWebAPIKitStringValue(bodyText), @"text",
 			[attachmentIdentifiers JSONString], @"files",
 		
 		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 		
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
-	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] validator: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	
+		return (BOOL)[[inResponseOrNil objectForKey:@"post"] isKindOfClass:[NSDictionary class]];
+		
+	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
-			successBlock([inResponseOrNil objectForKey:@"article"]);
+			successBlock([inResponseOrNil objectForKey:@"post"]);
 		
-	} failureHandler:nil];
+	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseContext]);
+		
+	}];
 	
 }
 
 - (void) uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void(^)(NSDictionary *uploadedFileRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	[self.engine fireAPIRequestNamed:@"file" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+	NSURL *movableFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
+	NSURL *newURL = [NSURL fileURLWithPath:[[[movableFileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
+
+	NSError *movingError = nil;
+	if (![[NSFileManager defaultManager] moveItemAtURL:movableFileURL toURL:newURL error:&movingError]) {
+		NSLog(@"Error moving: %@ — using the old URI.", movingError);
+	}
+
+	[self.engine fireAPIRequestNamed:@"createFile" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
-			aFileURL, @"file",
+			newURL, @"file_content",
 			creatorIdentifier, @"creator_id",
+			IRWebAPIKitStringValue([UIDevice currentDevice].model), @"creation_device_name",
+			@"", @"text",
 			@"public.item", @"type",
 		
 		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 		
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
-	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+		
+		return ([[inResponseOrNil objectForKey:@"file"] isKindOfClass:[NSDictionary class]]);
+		
+	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"file"]);
 		
-	} failureHandler:nil];
+		[[NSFileManager defaultManager] removeItemAtURL:newURL error:nil];
+		
+	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
+		
+		[[NSFileManager defaultManager] removeItemAtURL:newURL error:nil];
+		
+	}];
 	
 }
 
