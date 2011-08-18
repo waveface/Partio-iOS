@@ -32,10 +32,15 @@
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
-	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	NSManagedObjectContext *usedContext = [[WADataStore defaultStore] disposableMOC];
+	WAArticle *usedArticle = (WAArticle *)[usedContext irManagedObjectForURI:articleObjectURL];
+
+	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ([usedArticle.files count] ? @"Default" : @"Plaintext")];
 	
-	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:articleObjectURL];
+	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	
+	returnedController.managedObjectContext = usedContext;
+	returnedController.article = usedArticle;
 	
 	return returnedController;
 
@@ -122,34 +127,74 @@
 	[self.textEmphasisView.backgroundView addSubview:bubbleView];
 	
 	((WAView *)self.view).onLayoutSubviews = ^ {
+	
+		if (self.textEmphasisView && !self.textEmphasisView.hidden) {		
 		
-		[self.textEmphasisView sizeToFit];
-		self.textEmphasisView.frame = (CGRect) {
-			self.textEmphasisView.frame.origin,
-			(CGSize) {
-				MAX(540, self.textEmphasisView.frame.size.width),
-				MIN(480, MAX(144 - 32 - 32, self.textEmphasisView.frame.size.height))
-			}
-		};
-		self.textEmphasisView.center = self.imageStackView.center;
-		self.textEmphasisView.frame = CGRectIntegral(self.textEmphasisView.frame);
+			CGRect usableRect = UIEdgeInsetsInsetRect(self.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
 		
-		[self.relativeCreationDateLabel sizeToFit];
-		self.relativeCreationDateLabel.frame = (CGRect){
-			(CGPoint) {
-				CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
-				self.relativeCreationDateLabel.frame.origin.y
-			},
-			self.relativeCreationDateLabel.frame.size
-		};
+			[self.textEmphasisView sizeToFit];
+			self.textEmphasisView.frame = (CGRect){
+				self.textEmphasisView.frame.origin,
+				(CGSize) {
+					MAX(540, self.textEmphasisView.frame.size.width),
+					MIN(480, MAX(144 - 32 - 32, self.textEmphasisView.frame.size.height))
+				}
+			};
+			self.textEmphasisView.center = (CGPoint){
+				CGRectGetMidX(usableRect),
+				CGRectGetMidY(usableRect)
+			};
+			self.textEmphasisView.frame = CGRectIntegral(self.textEmphasisView.frame);
+			
+			self.contextInfoContainer.frame = (CGRect){
+				self.contextInfoContainer.frame.origin,
+				(CGSize){
+					CGRectGetWidth(self.textEmphasisView.frame),
+					CGRectGetHeight(self.contextInfoContainer.frame)
+				}
+			};
+			
+			self.contextInfoContainer.center = (CGPoint){
+				CGRectGetMidX(usableRect),
+				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(self.textEmphasisView.frame) + CGRectGetHeight(self.contextInfoContainer.frame) + 10.0f
+			};
+			
+			
+			CGRect actualContentRect = CGRectUnion(self.textEmphasisView.frame, self.contextInfoContainer.frame);
+			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(self.textEmphasisView.frame);
+			self.textEmphasisView.frame = CGRectOffset(self.textEmphasisView.frame, usableRect.origin.x, usableRect.origin.y + delta);
+			self.contextInfoContainer.frame = CGRectOffset(self.contextInfoContainer.frame, usableRect.origin.x, usableRect.origin.y + delta);
+			
+			[self.relativeCreationDateLabel sizeToFit];
+			
+			self.deviceDescriptionLabel.frame = (CGRect){
+				(CGPoint){
+					CGRectGetMaxX(self.relativeCreationDateLabel.frame) + 10,
+					self.deviceDescriptionLabel.frame.origin.y
+				},
+				self.deviceDescriptionLabel.frame.size
+			};
+						
+		} else {
 		
-		self.deviceDescriptionLabel.frame = (CGRect){
-			(CGPoint){
-				self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
-				self.deviceDescriptionLabel.frame.origin.y
-			},
-			self.deviceDescriptionLabel.frame.size
-		};
+			[self.relativeCreationDateLabel sizeToFit];
+			self.relativeCreationDateLabel.frame = (CGRect){
+				(CGPoint) {
+					CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
+					self.relativeCreationDateLabel.frame.origin.y
+				},
+				self.relativeCreationDateLabel.frame.size
+			};
+			
+			self.deviceDescriptionLabel.frame = (CGRect){
+				(CGPoint){
+					self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
+					self.deviceDescriptionLabel.frame.origin.y
+				},
+				self.deviceDescriptionLabel.frame.size
+			};
+		
+		}
 		
 	};
 	
