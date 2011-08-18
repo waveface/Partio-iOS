@@ -26,6 +26,8 @@
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 - (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
+- (void) adjustPhotos;
+
 @end
 
 
@@ -296,12 +298,8 @@
 		
 				[self.photosView reloadData];
 				
-				UIEdgeInsets insets = [objc_getAssociatedObject(self.photosView, @"defaultInsets") UIEdgeInsetsValue];
-				CGFloat addedPadding = roundf(0.5f * MAX(0, CGRectGetWidth(self.photosView.frame) - insets.left - insets.right - self.photosView.contentSize.width));
-				insets.left += addedPadding;
-				
-				self.photosView.contentInset = insets;
-				
+				[self adjustPhotos];
+								
 				CGRect cellRect = [self.photosView rectForItemAtIndex:(self.photosView.numberOfItems - 1)];
 				cellRect.size = [self portraitGridCellSizeForGridView:self.photosView];
 				
@@ -312,6 +310,24 @@
 		}
 		
 	});
+
+}
+
+- (void) adjustPhotos {
+
+		UIEdgeInsets insets = [objc_getAssociatedObject(self.photosView, @"defaultInsets") UIEdgeInsetsValue];
+		CGFloat addedPadding = roundf(0.5f * MAX(0, CGRectGetWidth(self.photosView.frame) - insets.left - insets.right - self.photosView.contentSize.width));
+		insets.left += addedPadding;
+		
+		self.photosView.contentInset = insets;
+
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	[self adjustPhotos];
 
 }
 

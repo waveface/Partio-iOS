@@ -69,6 +69,24 @@
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
+		
+	if ([aLocalKeyPath isEqualToString:@"resourceType"]) {
+	
+		if (UTTypeConformsTo((CFStringRef)aValue, kUTTypeItem))
+			return aValue;
+		
+		id returnedValue = IRWebAPIKitStringValue(aValue);
+		
+		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
+		
+		if (CFArrayGetCount(possibleTypes) > 0) {
+			NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
+			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
+		}
+	
+		return returnedValue;
+		
+	}
 	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
