@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WAArticle.h"
 
 @interface WAPostViewControllerPhone : UITableViewController
+
++ (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL;
 
 @end
