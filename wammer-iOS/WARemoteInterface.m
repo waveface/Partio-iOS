@@ -49,9 +49,10 @@
 		
 	if ([inMethodName isEqualToString:@"createFile"])
 		returnedURL = [NSURL URLWithString:@"file/upload_file/" relativeToURL:self.baseURL];
-	
-	NSLog(@"returnedURL %@ %@", returnedURL, [returnedURL absoluteString]);
 		
+	if ([inMethodName isEqualToString:@"createComment"])
+		returnedURL = [NSURL URLWithString:@"post/create_new_comment/" relativeToURL:self.baseURL];
+	
 	return returnedURL;
 
 }
@@ -159,6 +160,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		NSURL *requestURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
 		
 		if (![[requestURL host] isEqual:[engine.context.baseURL host]])
+			return inOriginalContext;
+		
+		if (![[inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPMethod] isEqual:@"GET"])
 			return inOriginalContext;
 		
 		NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
@@ -344,14 +348,16 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	[self.engine fireAPIRequestNamed:@"comment" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"createComment" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[NSDictionary dictionaryWithObjectsAndKeys:
 	
-		creatorIdentifier, @"creator_id",
-		@"iPad", @"creation_device_name",
-		anIdentifier, @"article_id",
-		bodyText, @"text",
-	
-	nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
+			creatorIdentifier, @"creator_id",
+			@"iPad", @"creation_device_name",
+			anIdentifier, @"post_id",
+			bodyText, @"text",
+		
+		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 		
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
