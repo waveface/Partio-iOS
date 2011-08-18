@@ -46,4 +46,6 @@
 - (void) updateUsersWithCompletion:(void(^)(void))aBlock;
 - (void) updateArticlesWithCompletion:(void(^)(void))aBlock;
 
+- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock;
+
 @end
