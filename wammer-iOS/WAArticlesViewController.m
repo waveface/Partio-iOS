@@ -557,18 +557,24 @@
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
+		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
+		
+		if ([createdCommentRep objectForKey:@"creator_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[createdCommentRep objectForKey:@"creator_id"], @"id",
+			nil] forKey:@"owner"];
+		}
+		
+		if ([createdCommentRep objectForKey:@"post_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[createdCommentRep objectForKey:@"post_id"], @"id",
+			nil] forKey:@"article"];
+		}
+		
 		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
-		
-			[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				[NSDictionary dictionaryWithObject:currentUserIdentifier forKey:@"id"], @"owner",
-				commentText, @"text",
-				[NSDictionary dictionaryWithObject:currentArticleIdentifier forKey:@"id"], @"article",
-				IRWebAPIKitNonce(), @"id",
-				@"iPad Mock", @"creation_device_name",
-			
-			nil],
-		
+
+			mutatedCommentRep,
+				
 		nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			@"WAFile", @"files",

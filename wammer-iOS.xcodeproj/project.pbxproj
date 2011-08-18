@@ -29,7 +29,7 @@
 		FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
 		FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
 		FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
-		FF4FA01213E13249002C627F /* WAArticleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController.xib */; };
+		FF4FA01213E13249002C627F /* WAArticleViewController-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */; };
 		FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01313E136A0002C627F /* WACapsuleLeft.png */; };
 		FF4FA01713E136A0002C627F /* WACapsuleRight.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01413E136A0002C627F /* WACapsuleRight.png */; };
 		FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01513E136A0002C627F /* WACapsuleSingle.png */; };
@@ -71,6 +71,7 @@
 		FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
 		FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
+		FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
 		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
 		FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
 		FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
@@ -172,7 +173,7 @@
 		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
-		FF4FA01113E13249002C627F /* WAArticleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAArticleViewController.xib; path = Resources/WAArticleViewController.xib; sourceTree = "<group>"; };
+		FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Default.xib"; path = "Resources/WAArticleViewController-Default.xib"; sourceTree = "<group>"; };
 		FF4FA01313E136A0002C627F /* WACapsuleLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeft.png; path = Resources/WACapsuleLeft.png; sourceTree = "<group>"; };
 		FF4FA01413E136A0002C627F /* WACapsuleRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleRight.png; path = Resources/WACapsuleRight.png; sourceTree = "<group>"; };
 		FF4FA01513E136A0002C627F /* WACapsuleSingle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleSingle.png; path = Resources/WACapsuleSingle.png; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
+		FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Plaintext.xib"; path = "Resources/WAArticleViewController-Plaintext.xib"; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -382,7 +384,8 @@
 				FF73A56B13D6CD2200D54EC6 /* WAArticlesViewController.m */,
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
-				FF4FA01113E13249002C627F /* WAArticleViewController.xib */,
+				FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */,
+				FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */,
 				FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */,
 				FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */,
 				FFF9B79C13E7D0D5002A9D7F /* WAArticleCommentsViewController.h */,
@@ -628,7 +631,7 @@
 				FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */,
 				FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */,
 				FF9DA0BE13DFF6BC00D6B28B /* WAMockArticlesList.json in Resources */,
-				FF4FA01213E13249002C627F /* WAArticleViewController.xib in Resources */,
+				FF4FA01213E13249002C627F /* WAArticleViewController-Default.xib in Resources */,
 				FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */,
 				FF4FA01713E136A0002C627F /* WACapsuleRight.png in Resources */,
 				FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */,
@@ -659,6 +662,7 @@
 				FF55C23A13F5270600F38861 /* WAArticleCommentsViewCell-Default.xib in Resources */,
 				FF878BBD13FA6F8700B76807 /* WASpeechBubble.png in Resources */,
 				4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */,
+				FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
