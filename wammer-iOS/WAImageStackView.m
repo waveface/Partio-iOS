@@ -115,13 +115,14 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 			if (!aFile.resourceFilePath)
 				return (id)nil;
 			
-			if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage))
-				return (id)nil;
+			//	if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage)) {
+			//		return (id)nil;
+			//	}	
 			
 			return aFile.resourceFilePath;
 			
 		}];
-	
+			
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
 	
 	}
