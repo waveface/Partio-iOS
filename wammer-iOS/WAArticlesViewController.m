@@ -742,9 +742,10 @@
 	self.paginationSlider.frame = paginationSliderFrame;
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	
-	//	if (lastNumberOfPages == 0)
-	[self.paginatedView scrollToPageAtIndex:(self.paginatedView.numberOfPages - 1) animated:NO];
-	UIView *pageView = [self.paginatedView existingPageAtIndex:(self.paginatedView.numberOfPages - 1)];
+	if (self.paginatedView.numberOfPages > 0) {
+		[self.paginatedView scrollToPageAtIndex:(self.paginatedView.numberOfPages - 1) animated:NO];
+		self.paginationSlider.currentPage = self.paginatedView.currentPage;
+	}
 	
 }
 
