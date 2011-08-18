@@ -334,13 +334,10 @@
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
-	@try {
-		return [self.articleViewControllers objectAtIndex:index];
-	} @catch (NSException *e) {
-		//	
-	}
-	
-	return nil;
+	if ([self.articleViewControllers count] < (index + 1))
+		return nil;
+
+	return [self.articleViewControllers objectAtIndex:index];
 
 }
 
