@@ -23,6 +23,7 @@
 @property (nonatomic, retain) WAUser *owner;
 
 @property (nonatomic, retain) NSArray *fileOrder;
+@property (nonatomic, retain) NSNumber *draft;
 
 @end
 

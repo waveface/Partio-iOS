@@ -34,7 +34,7 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		sharedFormatter = [[NSDateFormatter alloc] init];
-		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
+		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
 		sharedFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
 	});
 	

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="851" systemVersion="11A511" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="562" systemVersion="11B2118" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDeviceName" optional="YES" attributeType="String"/>
+        <attribute name="draft" attributeType="Boolean" defaultValueString="NO"/>
         <attribute name="fileOrder" optional="YES" attributeType="Transformable"/>
         <attribute name="identifier" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
@@ -43,7 +44,7 @@
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
     <elements>
-        <element name="WAArticle" positionX="-5760" positionY="-1656" width="128" height="165"/>
+        <element name="WAArticle" positionX="-5760" positionY="-1656" width="128" height="180"/>
         <element name="WAComment" positionX="-5546" positionY="-1656" width="128" height="135"/>
         <element name="WAFile" positionX="-5976" positionY="-1653" width="128" height="195"/>
         <element name="WAUser" positionX="-5796" positionY="-1368" width="128" height="165"/>
