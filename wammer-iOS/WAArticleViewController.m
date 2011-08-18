@@ -112,7 +112,7 @@
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	UIImageView *bubbleView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WASpeechBubble"] stretchableImageWithLeftCapWidth:160 topCapHeight:32]] autorelease];
+	UIImageView *bubbleView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WASpeechBubble"] stretchableImageWithLeftCapWidth:120 topCapHeight:32]] autorelease];
 	bubbleView.frame = UIEdgeInsetsInsetRect(self.textEmphasisView.backgroundView.bounds, (UIEdgeInsets){ -28, -32, -32, -32 });
 	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.textEmphasisView.backgroundView addSubview:bubbleView];
@@ -120,7 +120,15 @@
 	((WAView *)self.view).onLayoutSubviews = ^ {
 		
 		[self.textEmphasisView sizeToFit];
+		self.textEmphasisView.frame = (CGRect) {
+			self.textEmphasisView.frame.origin,
+			(CGSize) {
+				MAX(540, self.textEmphasisView.frame.size.width),
+				MIN(480, MAX(144 - 32 - 32, self.textEmphasisView.frame.size.height))
+			}
+		};
 		self.textEmphasisView.center = self.imageStackView.center;
+		self.textEmphasisView.frame = CGRectIntegral(self.textEmphasisView.frame);
 		
 		[self.relativeCreationDateLabel sizeToFit];
 		self.relativeCreationDateLabel.frame = (CGRect){
@@ -175,7 +183,7 @@
 	
 	self.textEmphasisView.label.text = self.article.text;
 	self.textEmphasisView.hidden = ([self.article.files count] != 0);
-		
+	
 	if (!self.userNameLabel.text)
 		self.userNameLabel.text = @"A Certain User";
 	
