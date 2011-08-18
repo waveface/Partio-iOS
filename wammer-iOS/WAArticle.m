@@ -67,6 +67,9 @@
 	if ([aLocalKeyPath isEqualToString:@"timestamp"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
 	
+	if ([aLocalKeyPath isEqualToString:@"identifier"])
+		return IRWebAPIKitStringValue(aValue);
+	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
 }
