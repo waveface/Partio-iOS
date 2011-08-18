@@ -24,6 +24,7 @@
 #import "WAUserSelectionViewController.h"
 
 #import "WAArticleCommentsViewCell.h"
+#import "WAPostViewCellPhone.h"
 
 
 @interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate>
@@ -126,10 +127,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"CommentCell";
-    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    static NSString *identifier = @"PostCell";
+    WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell) {
-        cell = [[WAArticleCommentsViewCell alloc] initWithStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:identifier];
+        cell = [[WAPostViewCellPhone alloc] initWithStyle:WAPostViewCellStyleDefault reuseIdentifier:identifier];
         cell.layer.shouldRasterize = YES;
     }
     
@@ -138,18 +139,21 @@
         NSLog(@"No posts");
     }
     
-    cell.userNicknameLabel.text = post.owner.nickname;
+    cell.userNicknameLabel.text = @"TETE";// post.owner.nickname;
     cell.avatarView.image = post.owner.avatar;
     cell.contentTextLabel.text = post.text;
-    cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+    cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                           [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                           [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%@ comments", @"10"];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    return 160;
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {

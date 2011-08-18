@@ -18,7 +18,7 @@
 @implementation WAPostViewCellPhone
 @synthesize style;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
+@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel, extraInfoButton;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
@@ -32,11 +32,11 @@
 	
 	switch (aStyle) {
 		case WAPostViewCellStyleDefault: {
-			loadedNibName = @"WAPostViewCell-Default";
+			loadedNibName = @"WAPostViewCellPhone-Default";
 			break;
 		}
 		case WAPostViewCellStyleImageStack: {
-			loadedNibName = @"WAPostViewCell-ImageStack";
+			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
 	}

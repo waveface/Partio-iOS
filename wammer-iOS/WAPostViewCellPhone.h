@@ -26,6 +26,7 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
+@property (nonatomic, readwrite, retain) IBOutlet UIButton *extraInfoButton;
 
 @end
 
