@@ -314,7 +314,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			creatorIdentifier, @"creator_id",
 			IRWebAPIKitStringValue([UIDevice currentDevice].model), @"creation_device_name",
 			@"", @"text",
-			@"public.item", @"type",
+			@"public.image", @"type",
 		
 		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 		
