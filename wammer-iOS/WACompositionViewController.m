@@ -21,6 +21,8 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 
+@property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
+
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 - (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
@@ -32,6 +34,7 @@
 @synthesize photosView, contentTextView, toolbar;
 @synthesize imagePickerPopover;
 @synthesize noPhotoReminderView;
+@synthesize completionBlock;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -40,8 +43,12 @@
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
 	
-	if (!returnedController.article)
+	if (!returnedController.article) {
 		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+		returnedController.article.draft = [NSNumber numberWithBool:YES];
+	}
+	
+	returnedController.completionBlock = aBlock;
 	
 	return returnedController;
 	
@@ -77,7 +84,7 @@
 	[article irRemoveObserverBlocksForKeyPath:@"files"];	
 	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionNew context:nil];	
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
 	
 	[article release];
 	article = [newArticle retain];
@@ -93,11 +100,13 @@
 	[noPhotoReminderView release];
 	[toolbar release];
 
-	[article irRemoveObserverBlocksForKeyPath:@"files"];
+	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	
 	[managedObjectContext release];
 	[article release];
 	[imagePickerPopover release];
+	
+	[completionBlock release];
 
 	[super dealloc];
 
@@ -261,6 +270,10 @@
 
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
 
+	NSLog(@"did change from %@ to %@ with kind %@", fromValue, toValue, changeKind);
+	
+	//	The idea is to animate removals and insertions using AQGridView’s own animation if possible
+
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		if (![self isViewLoaded])
@@ -312,7 +325,16 @@
 - (void) handleDone:(UIBarButtonItem *)sender {
 
 	//	TBD save a draft
-
+	
+	self.article.text = self.contentTextView.text;
+	
+	NSError *savingError = nil;
+	if (![self.managedObjectContext save:&savingError])
+		NSLog(@"Error saving: %@", savingError);
+	
+	if (self.completionBlock)
+		self.completionBlock([[self.article objectID] URIRepresentation]);
+	
 	[self dismissModalViewControllerAnimated:YES];
 
 }	

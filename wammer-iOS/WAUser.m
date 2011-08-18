@@ -56,6 +56,15 @@
 
 }
 
++ (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
+
+	if ([aLocalKeyPath isEqualToString:@"identifier"])
+		return IRWebAPIKitStringValue(aValue);
+	
+	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
+
+}
+
 + (IRRemoteResourcesManager *) sharedRemoteResourcesManager {
 
 	static IRRemoteResourcesManager *sharedManager = nil;

@@ -21,6 +21,7 @@
 @dynamic files;
 @dynamic owner;
 @dynamic fileOrder;
+@dynamic draft;
 
 + (NSString *) keyPathHoldingUniqueValue {
 
@@ -65,6 +66,9 @@
 
 	if ([aLocalKeyPath isEqualToString:@"timestamp"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	
+	if ([aLocalKeyPath isEqualToString:@"identifier"])
+		return IRWebAPIKitStringValue(aValue);
 	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
@@ -124,9 +128,9 @@
 	
 	if (!returnedOrder) {
 		returnedOrder = [NSArray array];
-		[self willChangeValueForKey:@"fileOrder"];
+	//	[self willChangeValueForKey:@"fileOrder"];
 		[self setPrimitiveValue:returnedOrder forKey:@"fileOrder"];
-		[self didChangeValueForKey:@"fileOrder"];
+	//	[self didChangeValueForKey:@"fileOrder"];
 	}
 	
 	return returnedOrder;
