@@ -49,6 +49,8 @@
 	
 	if (!self)
 		return nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 		
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
     self.title = @"Wammer";
@@ -56,25 +58,43 @@
     
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
-	
+        
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil];
+                                           [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+                                           nil];
 		
 		return returnedRequest;
-	
+        
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
-	
-	[self.fetchedResultsController performFetch:nil];
+    
+    
+    NSError *error;
+	[self.fetchedResultsController performFetch:&error];
     
 	return self;
 
 }
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+    
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+        
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+        
+	});
+    
+}
+
 
 - (void) dealloc {
 	
@@ -146,7 +166,7 @@
                            [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                            [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%@ comments", @"10"];
+    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%@ comments", @"0"];
     
     return cell;
 }
@@ -188,8 +208,7 @@
 }
 
 - (void) refreshData {
-
-	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+    [[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		
@@ -201,11 +220,7 @@
 		NSError *savingError = nil;
 		if (![context save:&savingError])
 			NSLog(@"Saving Error %@", savingError);
-			
-		dispatch_async(dispatch_get_main_queue(), ^ {
-//			[self refreshPaginatedViewPages];
-		});
-		
+    
 	} onFailure:^(NSError *error) {
 		
 		NSLog(@"Fail %@", error);
@@ -223,7 +238,8 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
-	
+    [self.tableView reloadData];
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
