@@ -208,24 +208,9 @@
 }
 
 - (void) refreshData {
-    [[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
-	
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:retrievedArticleReps usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-			@"WAFile", @"files",
-			@"WAComment", @"comments",
-		nil] options:0];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Saving Error %@", savingError);
-    
-	} onFailure:^(NSError *error) {
-		
-		NSLog(@"Fail %@", error);
-		
-	}];
+
+	[[WADataStore defaultStore] updateUsersWithCompletion:nil];
+	[[WADataStore defaultStore] updateArticlesWithCompletion:nil];
 
 }
 
