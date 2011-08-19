@@ -29,7 +29,7 @@
 #import "UIView+WAAdditions.h"
 
 
-@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate>
+@interface WAArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, NSFetchedResultsControllerDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate, WAArticleViewControllerPresenting>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -186,6 +186,7 @@
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
 	self.paginatedView.horizontalSpacing = 32.0f;
+	self.paginatedView.scrollView.clipsToBounds = NO;
 	
 	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -269,6 +270,8 @@
 	[self.articleCommentsViewController.view setNeedsLayout];
 	[self.articleCommentsViewController viewWillAppear:animated];
 	
+	[self setContextControlsVisible:YES animated:NO];
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -293,6 +296,43 @@
 
 	[super viewDidDisappear:animated];
 	[self.articleCommentsViewController viewDidDisappear:animated];
+
+}
+
+- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
+
+	self.navigationController.view.backgroundColor = self.paginatedView.backgroundColor;
+	self.navigationController.view.clipsToBounds = NO;
+	self.view.superview.clipsToBounds = NO;
+	self.view.superview.superview.clipsToBounds = NO;
+	
+	if (!contextControlsVisible) {
+		self.articleCommentsViewController.commentsView.hidden = YES;
+		self.articleCommentsViewController.compositionAccessoryView.hidden = YES;
+	}
+
+	[UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^(void) {
+		
+		if (contextControlsVisible) {
+			self.navigationController.navigationBar.alpha = 1;
+			self.paginationSlider.alpha = 1;
+			self.articleCommentsViewController.commentsRevealingActionContainerView.alpha = 1;
+			//	self.articleCommentsViewController.view.alpha = 1;
+		} else {
+			self.navigationController.navigationBar.alpha = 0.01f;
+			self.paginationSlider.alpha = 0.01f;
+			self.articleCommentsViewController.commentsRevealingActionContainerView.alpha = 0;
+			//	self.articleCommentsViewController.view.alpha = 0.01f;
+		}
+		
+	} completion: ^ (BOOL finished) {
+		
+		if (finished && contextControlsVisible) {
+			self.articleCommentsViewController.commentsView.hidden = NO;
+			self.articleCommentsViewController.compositionAccessoryView.hidden = NO;
+		}
+		
+	}];
 
 }
 
@@ -359,7 +399,7 @@
 	if (self.paginatedView.currentPage == destinationPage)
 		return;
 	
-	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	//	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -375,11 +415,11 @@
 		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
 		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
 		
-		[CATransaction setCompletionBlock: ^ {
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-			});
-		}];
+		//	[CATransaction setCompletionBlock: ^ {
+		//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+		//			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		//		});
+		//	}];
 		
 		[CATransaction commit];
 	
