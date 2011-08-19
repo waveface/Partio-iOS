@@ -80,7 +80,7 @@
 		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
 		
 		if (CFArrayGetCount(possibleTypes) > 0) {
-			NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
+			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
 			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
 		}
 	
