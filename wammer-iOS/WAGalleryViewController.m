@@ -25,9 +25,7 @@
 
 - (void) waSubviewWillLayout;
 
-@property (nonatomic ,readwrite, assign) BOOL contextControlsShown;
-- (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate completion:(void(^)(void))callback;
-- (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate barringInteraction:(BOOL)barringInteraction completion:(void(^)(void))callback;
+@property (nonatomic, readwrite, assign) BOOL contextControlsShown;
 
 @end
 
@@ -143,7 +141,7 @@
 		[nrSelf waSubviewWillLayout];
 	};
 	
-	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:@"PREVIOUS ARTICLE"] autorelease];
+	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] isEqualToString:@""] ? @"Article" : self.article.text)] autorelease];
 	
 	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.horizontalSpacing = 24.0f;
@@ -284,7 +282,7 @@
 	
 	NSTimeInterval animationDuration = animate ? 0.3f : 0.0f;
 	
-	if (barringInteraction) {
+	if (barringInteraction && (animationDuration > 0)) {
 	
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){

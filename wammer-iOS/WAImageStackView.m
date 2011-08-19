@@ -18,6 +18,7 @@
 
 static const NSString *kWAImageStackViewElementCanonicalTransform = @"kWAImageStackViewElementCanonicalTransform";
 static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewElementImagePath";
+static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElementImage";
 
 
 @interface WAImageStackView () <UIGestureRecognizerDelegate>
@@ -139,11 +140,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 			
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
 		
-		if ([self.shownImageFilePaths count]) {
-			[self.activityIndicator startAnimating];
-		} else {
-			[self.activityIndicator stopAnimating];
-		}
+		[self.activityIndicator startAnimating];
 	
 	}
 
@@ -186,6 +183,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	
 		UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 		objc_setAssociatedObject(imageView, kWAImageStackViewElementImagePath, aFilePath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, [UIImage imageWithContentsOfFile:aFilePath], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		imageView.tag = kPhotoViewTag;
 		imageView.layer.borderColor = [UIColor whiteColor].CGColor;
 		imageView.layer.borderWidth = 4.0f;
@@ -197,8 +195,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		imageView.layer.shouldRasterize = YES;
 		imageView.opaque = NO;
 		
-		UIImageView *innerImageView = [[[UIImageView alloc] initWithFrame:imageView.bounds] autorelease];
-		innerImageView.image = [UIImage imageWithContentsOfFile:aFilePath];
+		UIView *innerImageView = [[[UIView alloc] initWithFrame:imageView.bounds] autorelease];
+		innerImageView.layer.contents = (id)((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).CGImage;
 		innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		innerImageView.layer.masksToBounds = YES;
 		
@@ -234,7 +232,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 		if (idx == ([allPhotoViews count] - 1)) {
 		
-			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES));
+			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size, self.bounds, 8.0f, YES));
 			imageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
 			
@@ -322,6 +320,11 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 			
+			CGRect capturedRect = capturedFirstPhotoView.layer.bounds;
+			capturedRect.origin = capturedFirstPhotoView.layer.position;
+			capturedRect.origin.x -= 0.5f * CGRectGetWidth(capturedRect);
+			capturedRect.origin.y -= 0.5f * CGRectGetHeight(capturedRect);
+			
 			CATransform3D oldTransform = ((CALayer *)[capturedFirstPhotoView.layer presentationLayer]).transform;
 			CATransform3D newTransform = canonicalTransform;
 
@@ -329,7 +332,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 			
 				dispatch_async(dispatch_get_main_queue(), ^ {
 												
-					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
+					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImage) contentRect:capturedRect transform:oldTransform];
 					
 					capturedFirstPhotoView.layer.transform = newTransform;
 				
