@@ -78,6 +78,8 @@
 
 - (void) viewDidUnload {
 
+	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
+
 	self.contextInfoContainer = nil;
 	self.imageStackView = nil;
 	self.textEmphasisView = nil;
@@ -90,9 +92,19 @@
 
 }
 
+- (void) didReceiveMemoryWarning {
+
+	[self retain];
+	[super didReceiveMemoryWarning];
+	[self autorelease];
+
+}
+
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	
+	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 
 	[managedObjectContext release];
 	[article release];
@@ -129,6 +141,28 @@
 	avatarContainingView.layer.shadowRadius = 2.0f;
 	
 	self.imageStackView.delegate = self;
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
+		[inNewValue getValue:&state];
+		
+		nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+			switch (state) {
+				case WAImageStackViewInteractionNormal: {			
+					[parentViewController setContextControlsVisible:YES animated:YES];
+					break;
+				}
+				case WAImageStackViewInteractionZoomInPossible: {			
+					[parentViewController setContextControlsVisible:NO animated:YES];
+					break;
+				}
+			}
+		});
+		
+	} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
 	self.textEmphasisView.label.font = [UIFont systemFontOfSize:20.0f];
@@ -287,22 +321,84 @@
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
-
-	//	NSString* (^NSStringFromTransform3D) (CATransform3D) = ^ (CATransform3D xform ) {
-	//		return [NSString stringWithFormat:@"[%f %f %f %f; %f %f %f %f; %f %f %f %f; %f %f %f %f]",
-	//			xform.m11, xform.m12, xform.m13, xform.m14,
-	//			xform.m21, xform.m22, xform.m23, xform.m24,
-	//			xform.m31, xform.m32, xform.m33, xform.m34,
-	//			xform.m41, xform.m42, xform.m43, xform.m44
-	//		];
-	//	};
-
-	WAGalleryViewController *galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]];
-	galleryViewController.modalPresentationStyle = UIModalPresentationFullScreen;
-	galleryViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	
-	self.onPresentingViewController( ^ (UIViewController *parentViewController) {
-		[parentViewController presentModalViewController:galleryViewController animated:YES];
+	aStackView.firstPhotoView.alpha = 0.0f;
+
+	UIView *rootView = self.view.window.rootViewController.view;
+	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
+		
+	UIView *statusBarPaddingView = [[[UIView alloc] initWithFrame:[rootView.window convertRect:statusBarFrame toView:rootView]] autorelease];
+	statusBarPaddingView.backgroundColor = [UIColor blackColor];
+	[rootView addSubview:statusBarPaddingView];
+
+	UIView *fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:aRect fromView:aStackView]] autorelease];
+	CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){
+		16.0f * fauxView.frame.size.width,
+		16.0f * fauxView.frame.size.height
+	}, UIEdgeInsetsInsetRect(rootView.bounds, (UIEdgeInsets){ 0, 0, 0, 0}), 0.0f, YES));
+	CGFloat aspectRatio = CGRectGetWidth(fullRect) / CGRectGetWidth(fauxView.frame);
+	CATransform3D finalTransform = CATransform3DConcat(CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), CATransform3DMakeTranslation(0.0f, -10.0f, 0.0f));
+	fauxView.layer.contents = (id)representedImage.CGImage;
+	fauxView.layer.contentsGravity = kCAGravityResizeAspect;
+	fauxView.layer.transform = finalTransform;
+	[rootView addSubview:fauxView];
+		
+	UIView *backdropView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	backdropView.backgroundColor = [UIColor blackColor];
+	backdropView.layer.opacity = 1.0f;
+	[rootView insertSubview:backdropView belowSubview:fauxView];
+	
+	static NSTimeInterval animationDuration = 0.3f;
+	
+	[backdropView.layer addAnimation:((^ {
+		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+		animation.fromValue = [NSNumber numberWithFloat:0.0f];
+		animation.toValue = [NSNumber numberWithFloat:1.0f];
+		animation.duration = animationDuration;
+		animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		animation.fillMode = kCAFillModeForwards;
+		animation.removedOnCompletion = YES;
+		return animation;
+	})()) forKey:@"transition"];
+	
+	[fauxView.layer addAnimation:((^ {
+		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform"];
+		animation.fromValue = [NSValue valueWithCATransform3D:layerTransform];
+		animation.toValue = [NSValue valueWithCATransform3D:finalTransform];
+		animation.duration = animationDuration;
+		animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		animation.fillMode = kCAFillModeForwards;
+		animation.removedOnCompletion = YES;
+		return animation;
+	})()) forKey:@"transition"];
+		
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+	
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35f * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+
+			IRCATransact(^ {
+		
+				[statusBarPaddingView removeFromSuperview];
+				[fauxView removeFromSuperview];
+				[backdropView removeFromSuperview];
+				
+				aStackView.firstPhotoView.alpha = 1.0f;
+				
+				WAGalleryViewController *galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation]];
+				galleryViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+				galleryViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+				
+				self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+					[parentViewController presentModalViewController:galleryViewController animated:NO];
+				});
+			
+			});
+
+		});
+	
 	});
 
 }

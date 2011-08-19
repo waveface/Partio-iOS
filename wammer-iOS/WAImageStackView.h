@@ -30,6 +30,7 @@ typedef enum {
 @property (nonatomic, readwrite, retain) NSArray *files;
 @property (nonatomic, readwrite, assign) id<WAImageStackViewDelegate> delegate;
 @property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
+@property (nonatomic, readonly, assign) UIView *firstPhotoView;
 
 - (void) reset;
 
