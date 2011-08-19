@@ -106,7 +106,7 @@
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 		[NSSortDescriptor sortDescriptorWithKey:@"nickname" ascending:YES],
 	nil];
-	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"self != nil"];
+	fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (nickname != nil)"];
 
 	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
