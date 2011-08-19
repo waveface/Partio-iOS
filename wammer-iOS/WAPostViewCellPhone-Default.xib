@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1072</int>
-		<string key="IBDocument.SystemVersion">11A511</string>
+		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1617</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
 		<string key="IBDocument.HIToolboxVersion">566.00</string>
@@ -153,10 +153,9 @@
 							<object class="IBUIButton" id="287859818">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">270</int>
-								<string key="NSFrame">{{59, 63}, {96, 29}}</string>
+								<string key="NSFrame">{{59, 60}, {96, 34}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:237</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -168,7 +167,7 @@
 									<int key="NSfFlags">16</int>
 								</object>
 								<int key="IBUILineBreakMode">2</int>
-								<string key="IBUINormalTitle">00 comments</string>
+								<string key="IBUINormalTitle">no comments</string>
 								<object class="NSColor" key="IBUIHighlightedTitleColor">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>

@@ -115,13 +115,14 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 			if (!aFile.resourceFilePath)
 				return (id)nil;
 			
-			if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage))
-				return (id)nil;
+			//	if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage)) {
+			//		return (id)nil;
+			//	}	
 			
 			return aFile.resourceFilePath;
 			
 		}];
-	
+			
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
 	
 	}
@@ -193,8 +194,10 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	
 - (void) layoutSubviews {
 
-	if (self.gestureProcessingOngoing)
+	if (self.gestureProcessingOngoing) {
+		NSLog(@"self.gestureProcessingOngoing ON, skipping relayout");
 		return;
+	}
 	
 	static int kPhotoViewTag = 1024;
 	__block CGRect photoViewFrame = CGRectNull;
@@ -299,22 +302,33 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 			
-			if (self.state == WAImageStackViewInteractionZoomInPossible)
-				[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
-		
 			CATransform3D oldTransform = ((CALayer *)[capturedFirstPhotoView.layer presentationLayer]).transform;
 			CATransform3D newTransform = canonicalTransform;
+
+			if (self.state == WAImageStackViewInteractionZoomInPossible) {
 			
-			CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
-			transformAnimation.fromValue = [NSValue valueWithCATransform3D:oldTransform];
-			transformAnimation.toValue = [NSValue valueWithCATransform3D:newTransform];
-			transformAnimation.removedOnCompletion = YES;
-			transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-			transformAnimation.duration = 0.3f;
+				dispatch_async(dispatch_get_main_queue(), ^ {
+												
+					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
+					
+					capturedFirstPhotoView.layer.transform = newTransform;
+				
+				});
+
+			} else {
+							
+				CABasicAnimation *transformAnimation = [CABasicAnimation animationWithKeyPath:@"transform"];
+				transformAnimation.fromValue = [NSValue valueWithCATransform3D:oldTransform];
+				transformAnimation.toValue = [NSValue valueWithCATransform3D:newTransform];
+				transformAnimation.removedOnCompletion = YES;
+				transformAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transformAnimation.duration = 0.3f;
+			
+				capturedFirstPhotoView.layer.transform = newTransform;
+				[capturedFirstPhotoView.layer addAnimation:transformAnimation forKey:@"transition"];
+			
+			}
 		
-			capturedFirstPhotoView.layer.transform = newTransform;
-			[capturedFirstPhotoView.layer addAnimation:transformAnimation forKey:@"transition"];
-			
 			self.gestureProcessingOngoing = NO;
 			
 			break;
@@ -329,6 +343,13 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 
 	//	We let this be an empty no-op and have the pinch recognizer do all the work instead.
 	//	The rotation gesture recognizer is only wired up to provide adequate information.
+
+}
+
+- (void) reset {
+
+	self.gestureProcessingOngoing = NO;
+	[self setNeedsLayout];
 
 }
 

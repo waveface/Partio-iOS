@@ -129,12 +129,34 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 		
 	return self;
 
 }
 
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		
+		if ([self isViewLoaded])
+			[self refreshPaginatedViewPages];
+			
+	});
+
+}
+
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	[paginatedView release];
 	[debugActionSheetController release];
@@ -249,8 +271,9 @@
 	
 	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
 		@try {
-			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView setNeedsLayout];
-			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView layoutIfNeeded];
+		
+			WAArticleViewController *articleViewController = (WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage];
+
 		} @catch (NSException *e) {
 			//	NO OP
 		}
@@ -384,119 +407,11 @@
 
 	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
-		if (!anArticleURLOrNil)
-			return;
-			
-		NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil withCompletion: ^ {
 		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURLOrNil];
-				
-		void (^uploadArticleIfAppropriate)(NSURL *articleURL) = ^ (NSURL *articleURL) {
+			[self refreshData];
 		
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:articleURL];
-			
-			NSMutableArray *remoteFileIdentifiers = [NSMutableArray array];
-			
-			for (NSURL *aFileObjectURI in updatedArticle.fileOrder) {
-				WAFile *aFile = (WAFile *)[context irManagedObjectForURI:aFileObjectURI];
-				if (!aFile.identifier) {
-					NSLog(@"Article file %@ does not have a remote identifier; bailing upload pending future invocation.", aFile);
-					return;
-				}
-				[remoteFileIdentifiers addObject:aFile.identifier];
-			}
-			
-			[[WARemoteInterface sharedInterface] createArticleAsUser:currentUserIdentifier withText:updatedArticle.text attachments:remoteFileIdentifiers usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
-			
-				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:createdCommentRep] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-					@"WAFile", @"files",
-					@"WAComment", @"comments",
-					@"WAUser", @"owner",
-				
-				nil] options:0];
-				
-				for (WAArticle *anArticle in touchedArticles)
-					anArticle.draft = [NSNumber numberWithBool:NO];
-				
-			} onFailure:^(NSError *error) {
-			
-				NSLog(@"Fail %@", error);
-				
-			}];
-
-		};
-		
-		if (![updatedArticle.fileOrder count]) {
-		
-			//	If there are no attachments, all the merry
-			//	Just send the article out and call it done.
-			
-			uploadArticleIfAppropriate(anArticleURLOrNil);
-			return;
-			
-		}
-		
-		
-		//	Otherwise, work up a queue.
-		
-		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_group_t group = dispatch_group_create();
-		
-		for (NSURL *aFileObjectURI in updatedArticle.fileOrder) {
-		
-			dispatch_group_async(group, queue, ^ {
-			
-				__block NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-				__block WAFile *updatedFile = (WAFile *)[context irManagedObjectForURI:aFileObjectURI];
-				
-				dispatch_queue_t currentQueue = dispatch_get_current_queue();
-				dispatch_retain(currentQueue);
-				
-				[[WARemoteInterface sharedInterface] uploadFileAtURL:[NSURL fileURLWithPath:updatedFile.resourceFilePath] asUser:currentUserIdentifier onSuccess:^(NSDictionary *uploadedFileRep) {
-				
-					//	Guarding against accidental crossing of thread boundaries
-					context = (id)0x1;
-					updatedFile = (id)0x1;
-				
-					NSManagedObjectContext *refreshingContext = [[WADataStore defaultStore] disposableMOC];
-					refreshingContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-					
-					WAFile *refreshedFile = (WAFile *)[refreshingContext irManagedObjectForURI:aFileObjectURI];
-					[refreshedFile configureWithRemoteDictionary:uploadedFileRep];
-					
-					NSError *savingError = nil;
-					if (![refreshingContext save:&savingError])
-						NSLog(@"Error saving: %@", savingError);
-						
-					NSURL *articleURL = [[refreshedFile.article objectID] URIRepresentation];
-					
-					dispatch_async(currentQueue, ^ {
-						uploadArticleIfAppropriate(articleURL);
-					});
-					
-					dispatch_release(currentQueue);
-					
-				} onFailure:^(NSError *error) {
-				
-					//	Guarding against accidental crossing of thread boundaries
-					context = (id)0x1;
-					updatedFile = (id)0x1;
-					
-					NSLog(@"Failed uploading file: %@", error);
-					NSLog(@"TBD: handle this gracefully");
-					
-				}];
-
-			});
-		
-		}
-		
-		dispatch_release(group);
+		}];
 	
 	}];
 	
@@ -665,18 +580,24 @@
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
+		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
+		
+		if ([createdCommentRep objectForKey:@"creator_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[createdCommentRep objectForKey:@"creator_id"], @"id",
+			nil] forKey:@"owner"];
+		}
+		
+		if ([createdCommentRep objectForKey:@"post_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[createdCommentRep objectForKey:@"post_id"], @"id",
+			nil] forKey:@"article"];
+		}
+		
 		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
-		
-			[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				[NSDictionary dictionaryWithObject:currentUserIdentifier forKey:@"id"], @"owner",
-				commentText, @"text",
-				[NSDictionary dictionaryWithObject:currentArticleIdentifier forKey:@"id"], @"article",
-				IRWebAPIKitNonce(), @"id",
-				@"iPad Mock", @"creation_device_name",
-			
-			nil],
-		
+
+			mutatedCommentRep,
+				
 		nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			@"WAFile", @"files",
@@ -833,6 +754,9 @@
 		
 	}];
 	
+	//	NSUInteger lastCurrentPageIndex = self.paginatedView.currentPage;
+	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
+	
 	[self.paginatedView reloadViews];
 	
 	NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
@@ -846,7 +770,13 @@
 	paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 	self.paginationSlider.frame = paginationSliderFrame;
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
-
+	
+	if (lastNumberOfPages == 0)
+	if (self.paginatedView.numberOfPages > 0) {
+		[self.paginatedView scrollToPageAtIndex:(self.paginatedView.numberOfPages - 1) animated:NO];
+		self.paginationSlider.currentPage = self.paginatedView.currentPage;
+	}
+	
 }
 
 - (void) refreshData {
