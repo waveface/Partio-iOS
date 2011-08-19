@@ -151,7 +151,6 @@
     WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell) {
         cell = [[WAPostViewCellPhone alloc] initWithStyle:WAPostViewCellStyleDefault reuseIdentifier:identifier];
-        cell.layer.shouldRasterize = YES;
     }
     
     WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
