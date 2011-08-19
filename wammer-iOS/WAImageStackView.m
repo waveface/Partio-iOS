@@ -140,11 +140,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
 		
-		if ([self.shownImageFilePaths count]) {
-			[self.activityIndicator startAnimating];
-		} else {
-			[self.activityIndicator stopAnimating];
-		}
+		[self.activityIndicator startAnimating];
 	
 	}
 
