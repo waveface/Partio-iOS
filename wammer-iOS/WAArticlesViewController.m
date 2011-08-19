@@ -269,16 +269,6 @@
 	[self.articleCommentsViewController.view setNeedsLayout];
 	[self.articleCommentsViewController viewWillAppear:animated];
 	
-	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
-		@try {
-		
-			WAArticleViewController *articleViewController = (WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage];
-
-		} @catch (NSException *e) {
-			//	NO OP
-		}
-	}
-
 }
 
 - (void) viewDidAppear:(BOOL)animated {
