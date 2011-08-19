@@ -16,5 +16,9 @@
 
 @property (nonatomic, readwrite, retain) WAView *view;
 
+@property (nonatomic, readonly, assign) BOOL contextControlsShown;
+- (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate completion:(void(^)(void))callback;
+- (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate barringInteraction:(BOOL)barringInteraction completion:(void(^)(void))callback;
+
 @end
                                                                                                                                                                                                                                                                                      

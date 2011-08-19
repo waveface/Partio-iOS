@@ -25,9 +25,7 @@
 
 - (void) waSubviewWillLayout;
 
-@property (nonatomic ,readwrite, assign) BOOL contextControlsShown;
-- (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate completion:(void(^)(void))callback;
-- (void) setContextControlsHidden:(BOOL)willHide animated:(BOOL)animate barringInteraction:(BOOL)barringInteraction completion:(void(^)(void))callback;
+@property (nonatomic, readwrite, assign) BOOL contextControlsShown;
 
 @end
 
@@ -284,7 +282,7 @@
 	
 	NSTimeInterval animationDuration = animate ? 0.3f : 0.0f;
 	
-	if (barringInteraction) {
+	if (barringInteraction && (animationDuration > 0)) {
 	
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
