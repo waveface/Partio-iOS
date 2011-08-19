@@ -90,6 +90,14 @@
 
 }
 
+- (void) didReceiveMemoryWarning {
+
+	[self retain];
+	[super didReceiveMemoryWarning];
+	[self autorelease];
+
+}
+
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
