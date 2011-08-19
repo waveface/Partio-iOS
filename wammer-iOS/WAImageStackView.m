@@ -320,6 +320,11 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 			
+			CGRect capturedRect = capturedFirstPhotoView.layer.bounds;
+			capturedRect.origin = capturedFirstPhotoView.layer.position;
+			capturedRect.origin.x -= 0.5f * CGRectGetWidth(capturedRect);
+			capturedRect.origin.y -= 0.5f * CGRectGetHeight(capturedRect);
+			
 			CATransform3D oldTransform = ((CALayer *)[capturedFirstPhotoView.layer presentationLayer]).transform;
 			CATransform3D newTransform = canonicalTransform;
 
@@ -327,7 +332,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 				dispatch_async(dispatch_get_main_queue(), ^ {
 												
-					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
+					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImage) contentRect:capturedRect transform:oldTransform];
 					
 					capturedFirstPhotoView.layer.transform = newTransform;
 				
