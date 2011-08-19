@@ -114,6 +114,20 @@
 
 	[super viewDidLoad];
 	
+	self.avatarView.layer.cornerRadius = 4.0f;
+	self.avatarView.layer.masksToBounds = YES;
+	
+	UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+	avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
+	self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
+	[avatarContainingView addSubview:self.avatarView];
+	self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
+	avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
+	avatarContainingView.layer.shadowOpacity = 0.5f;
+	avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
+	avatarContainingView.layer.shadowRadius = 2.0f;
+	
 	self.imageStackView.delegate = self;
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
