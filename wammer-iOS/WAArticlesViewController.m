@@ -129,12 +129,34 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 		
 	return self;
 
 }
 
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		
+		if ([self isViewLoaded])
+			[self refreshPaginatedViewPages];
+			
+	});
+
+}
+
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	[paginatedView release];
 	[debugActionSheetController release];
@@ -249,8 +271,9 @@
 	
 	if ([self.articleViewControllers count] > (self.paginatedView.currentPage + 1)) {
 		@try {
-			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView setNeedsLayout];
-			[((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView layoutIfNeeded];
+		
+			WAArticleViewController *articleViewController = (WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage];
+
 		} @catch (NSException *e) {
 			//	NO OP
 		}
@@ -732,7 +755,7 @@
 	}];
 	
 	//	NSUInteger lastCurrentPageIndex = self.paginatedView.currentPage;
-	//	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
+	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
 	
 	[self.paginatedView reloadViews];
 	
@@ -748,6 +771,7 @@
 	self.paginationSlider.frame = paginationSliderFrame;
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	
+	if (lastNumberOfPages == 0)
 	if (self.paginatedView.numberOfPages > 0) {
 		[self.paginatedView scrollToPageAtIndex:(self.paginatedView.numberOfPages - 1) animated:NO];
 		self.paginationSlider.currentPage = self.paginatedView.currentPage;
