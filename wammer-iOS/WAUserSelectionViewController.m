@@ -209,12 +209,13 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-    WAUser *changeToUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    [[NSUserDefaults standardUserDefaults] setObject:changeToUser.identifier forKey:@"WhoAmI"];
+	WAUser *changeToUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	[[NSUserDefaults standardUserDefaults] setObject:changeToUser.identifier forKey:@"WhoAmI"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 	
-    NSURL *userRep = [[(IRManagedObject *)changeToUser objectID] URIRepresentation];
+	NSURL *userRep = [[(IRManagedObject *)changeToUser objectID] URIRepresentation];
 
-    [self.tableView reloadData];
+	[self.tableView reloadData];
     
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
