@@ -26,6 +26,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 @property (nonatomic, readwrite, retain) NSArray *shownImageFilePaths;
 @property (nonatomic, readwrite, retain) UIPinchGestureRecognizer *pinchRecognizer;
 @property (nonatomic, readwrite, retain) UIRotationGestureRecognizer *rotationRecognizer;
+@property (nonatomic, readwrite, retain) UITapGestureRecognizer *tapRecognizer;
+@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, readwrite, assign) UIView *firstPhotoView;
 @property (nonatomic, readwrite, assign) BOOL gestureProcessingOngoing;
 
@@ -36,7 +38,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 
 @synthesize state;
 @synthesize files, delegate, shownImageFilePaths;
-@synthesize pinchRecognizer, rotationRecognizer, firstPhotoView;
+@synthesize pinchRecognizer, rotationRecognizer, tapRecognizer, activityIndicator, firstPhotoView;
 @synthesize gestureProcessingOngoing;
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
@@ -79,6 +81,18 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	self.rotationRecognizer = [[[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotation:)] autorelease];
 	self.rotationRecognizer.delegate = self;
 	[self addGestureRecognizer:self.rotationRecognizer];
+	
+	self.tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)] autorelease];
+	[self addGestureRecognizer:self.tapRecognizer];
+	
+	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+	self.activityIndicator.center = (CGPoint){
+		CGRectGetMidX(self.bounds),
+		CGRectGetMidY(self.bounds)
+	};
+	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+	[self.activityIndicator startAnimating];
+	[self insertSubview:self.activityIndicator atIndex:[self.subviews count]];
 	
 }
 
@@ -124,6 +138,12 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		}];
 			
 		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
+		
+		if ([self.shownImageFilePaths count]) {
+			[self.activityIndicator startAnimating];
+		} else {
+			[self.activityIndicator stopAnimating];
+		}
 	
 	}
 
@@ -194,10 +214,10 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	
 - (void) layoutSubviews {
 
-	if (self.gestureProcessingOngoing) {
-		NSLog(@"self.gestureProcessingOngoing ON, skipping relayout");
+	[self sendSubviewToBack:self.activityIndicator];
+
+	if (self.gestureProcessingOngoing)
 		return;
-	}
 	
 	static int kPhotoViewTag = 1024;
 	__block CGRect photoViewFrame = CGRectNull;
@@ -346,6 +366,16 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 
 }
 
+- (void) handleTap:(UITapGestureRecognizer *)aTapRecognizer {
+
+	if (self.gestureProcessingOngoing)
+		return;
+	
+	UIView *capturedFirstPhotoView = [[self.firstPhotoView retain] autorelease];
+	[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
+
+}
+
 - (void) reset {
 
 	self.gestureProcessingOngoing = NO;
@@ -356,9 +386,14 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 - (void) dealloc {
 
 	[self removeObserver:self forKeyPath:@"files"];
+	
+	[files release];
 	[shownImageFilePaths release];
 	[pinchRecognizer release];
 	[rotationRecognizer release];
+	[tapRecognizer release];
+	[activityIndicator release];
+	
 	[super dealloc];
 
 }
