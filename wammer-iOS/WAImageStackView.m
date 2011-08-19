@@ -18,6 +18,7 @@
 
 static const NSString *kWAImageStackViewElementCanonicalTransform = @"kWAImageStackViewElementCanonicalTransform";
 static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewElementImagePath";
+static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElementImage";
 
 
 @interface WAImageStackView () <UIGestureRecognizerDelegate>
@@ -186,6 +187,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 	
 		UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 		objc_setAssociatedObject(imageView, kWAImageStackViewElementImagePath, aFilePath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, [UIImage imageWithContentsOfFile:aFilePath], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		imageView.tag = kPhotoViewTag;
 		imageView.layer.borderColor = [UIColor whiteColor].CGColor;
 		imageView.layer.borderWidth = 4.0f;
@@ -197,8 +199,8 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		imageView.layer.shouldRasterize = YES;
 		imageView.opaque = NO;
 		
-		UIImageView *innerImageView = [[[UIImageView alloc] initWithFrame:imageView.bounds] autorelease];
-		innerImageView.image = [UIImage imageWithContentsOfFile:aFilePath];
+		UIView *innerImageView = [[[UIView alloc] initWithFrame:imageView.bounds] autorelease];
+		innerImageView.layer.contents = (id)((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).CGImage;
 		innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		innerImageView.layer.masksToBounds = YES;
 		
@@ -234,7 +236,7 @@ static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewEl
 		
 		if (idx == ([allPhotoViews count] - 1)) {
 		
-			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(innerImageView.image.size, self.bounds, 8.0f, YES));
+			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size, self.bounds, 8.0f, YES));
 			imageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
 			
