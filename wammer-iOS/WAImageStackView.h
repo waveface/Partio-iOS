@@ -31,4 +31,6 @@ typedef enum {
 @property (nonatomic, readwrite, assign) id<WAImageStackViewDelegate> delegate;
 @property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
 
+- (void) reset;
+
 @end
