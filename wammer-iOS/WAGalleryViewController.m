@@ -141,7 +141,7 @@
 		[nrSelf waSubviewWillLayout];
 	};
 	
-	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:@"PREVIOUS ARTICLE"] autorelease];
+	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] isEqualToString:@""] ? @"Article" : self.article.text)] autorelease];
 	
 	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.horizontalSpacing = 24.0f;
