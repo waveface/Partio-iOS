@@ -16,6 +16,10 @@
 
 @class WAImageStackView;
 
+@protocol WAArticleViewControllerPresenting
+- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
+@end
+
 @interface WAArticleViewController : UIViewController
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
@@ -29,6 +33,6 @@
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
 
-@property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController *parentViewController));
+@property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
 
 @end

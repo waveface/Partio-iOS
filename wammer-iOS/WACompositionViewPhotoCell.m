@@ -13,7 +13,6 @@
 @interface WACompositionViewPhotoCell ()
 @property (nonatomic, readwrite, retain) UIView *imageContainer;
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
-- (void) setContentView:(UIView *)aView;
 @end
 
 @implementation WACompositionViewPhotoCell

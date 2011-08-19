@@ -78,6 +78,8 @@
 
 - (void) viewDidUnload {
 
+	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
+
 	self.contextInfoContainer = nil;
 	self.imageStackView = nil;
 	self.textEmphasisView = nil;
@@ -101,6 +103,8 @@
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	
+	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 
 	[managedObjectContext release];
 	[article release];
@@ -137,6 +141,28 @@
 	avatarContainingView.layer.shadowRadius = 2.0f;
 	
 	self.imageStackView.delegate = self;
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
+		[inNewValue getValue:&state];
+		
+		nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+			switch (state) {
+				case WAImageStackViewInteractionNormal: {			
+					[parentViewController setContextControlsVisible:YES animated:YES];
+					break;
+				}
+				case WAImageStackViewInteractionZoomInPossible: {			
+					[parentViewController setContextControlsVisible:NO animated:YES];
+					break;
+				}
+			}
+		});
+		
+	} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
 	self.textEmphasisView.label.font = [UIFont systemFontOfSize:20.0f];
@@ -365,7 +391,7 @@
 				galleryViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 				galleryViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 				
-				self.onPresentingViewController( ^ (UIViewController *parentViewController) {
+				self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
 					[parentViewController presentModalViewController:galleryViewController animated:NO];
 				});
 			
