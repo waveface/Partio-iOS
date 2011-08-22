@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 7/28/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface. All rights reserved.
 //
 
 #import "QuartzCore+IRAdditions.h"
@@ -43,6 +43,12 @@
 	returnedController.article = usedArticle;
 	
 	return returnedController;
+
+}
+
+- (NSURL *) representedObjectURI {
+
+	return [[self.article objectID] URIRepresentation];
 
 }
 
