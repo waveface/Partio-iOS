@@ -293,21 +293,6 @@
 			name = iPhone;
 			sourceTree = "<group>";
 		};
-		4B1527A413E29F38006E9737 /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
-				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
-				FF73A54813D6C2CC00D54EC6 /* iPad */,
-				4B1527A313E29E8D006E9737 /* iPhone */,
-				FF55C23513F5251D00F38861 /* Gallery */,
-				FF3ACA9113E6AD1C000F608C /* Views */,
-				FF97382213D821C1003D1722 /* Model */,
-				FF97384613D82771003D1722 /* API */,
-			);
-			name = Classes;
-			sourceTree = "<group>";
-		};
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -340,7 +325,14 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				4B1527A413E29F38006E9737 /* Classes */,
+				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
+				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
+				FF73A54813D6C2CC00D54EC6 /* iPad */,
+				4B1527A313E29E8D006E9737 /* iPhone */,
+				FF55C23513F5251D00F38861 /* Gallery */,
+				FF3ACA9113E6AD1C000F608C /* Views */,
+				FF97382213D821C1003D1722 /* Model */,
+				FF97384613D82771003D1722 /* API */,
 				FF73A54913D6C2CD00D54EC6 /* Supporting Files */,
 				FFC2E04C13DD706600816EA1 /* Resources */,
 				FF73A54113D6C2CC00D54EC6 /* Frameworks */,
