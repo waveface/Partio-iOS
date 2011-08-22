@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 7/21/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface. All rights reserved.
 //
 //  https://gist.github.com/46e424e637d6634979d3
 

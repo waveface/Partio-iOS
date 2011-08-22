@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 7/28/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -34,5 +34,7 @@
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
 
 @property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
+
+- (NSURL *) representedObjectURI;
 
 @end

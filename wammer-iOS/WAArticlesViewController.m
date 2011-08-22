@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 7/20/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface. All rights reserved.
 //
 
 #import "WADataStore.h"
@@ -93,6 +93,7 @@
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSArray arrayWithObjects:
+			
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
@@ -119,7 +120,7 @@
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO) AND (files.@count != 0)"];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -347,10 +348,14 @@
 		NSURL *newURI = nil;
 		
 		@try {
+			
 			if ([self.fetchedResultsController.fetchedObjects count]) {
 				newURI = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:newPage] objectID] URIRepresentation];
 			}
-		} @catch (NSException *exception) { /* NO OP */ }
+			
+		} @catch (NSException *exception) {
+			NSLog(@"Exception %@", exception);
+		}
 		
 		if (oldURI && [oldURI isEqual:newURI])
 			return;
@@ -770,9 +775,24 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
+	NSArray *oldArticleViewControllers = [[self.articleViewControllers mutableCopy] autorelease];
+	
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
+	
+		NSURL *articleURI = [[article objectID] URIRepresentation];
+	
+		WAArticleViewController *returnedViewController = [[oldArticleViewControllers objectsAtIndexes:[oldArticleViewControllers indexesOfObjectsPassingTest: ^ (WAArticleViewController *articleViewController, NSUInteger idx, BOOL *stop) {
+		
+			return [[articleViewController representedObjectURI] isEqual:articleURI];
+			
+		}]] lastObject];
 
-		WAArticleViewController *returnedViewController = [WAArticleViewController controllerRepresentingArticle:[[article objectID] URIRepresentation]];
+		if (!returnedViewController) {
+		
+			returnedViewController = [WAArticleViewController controllerRepresentingArticle:articleURI];
+			
+		}
+		
 		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		
 			if (action)

@@ -3,16 +3,17 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 8/3/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface. All rights reserved.
 //
 
 #import "WAGalleryViewController.h"
 #import "IRPaginatedView.h"
 #import "WADataStore.h"
 #import "WAGalleryImageView.h"
+#import "WAImageStreamPickerView.h"
 
 
-@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate>
+@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -22,6 +23,7 @@
 @property (nonatomic, readwrite, retain) UINavigationBar *navigationBar;
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
 @property (nonatomic, readwrite, retain) UINavigationItem *previousNavigationItem;
+@property (nonatomic, readwrite, retain) WAImageStreamPickerView *streamPickerView;
 
 - (void) waSubviewWillLayout;
 
@@ -35,6 +37,7 @@
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize navigationBar, toolbar, previousNavigationItem;
 @synthesize paginatedView;
+@synthesize streamPickerView;
 @synthesize contextControlsShown;
 
 
@@ -159,6 +162,8 @@
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
 	
+	self.toolbar.items = [NSArray arrayWithObject:[[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView] autorelease]];
+	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.navigationBar];
 	[self.view addSubview:self.toolbar];
@@ -245,6 +250,44 @@
 
 
 
+- (WAImageStreamPickerView *) streamPickerView {
+
+	if (streamPickerView)
+		return streamPickerView;
+	
+	self.streamPickerView = [[[WAImageStreamPickerView alloc] init] autorelease];
+	self.streamPickerView.delegate = self;
+	
+	return streamPickerView;
+
+}
+
+- (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
+
+	//	TBD
+
+	return 0;
+
+}
+
+- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker {
+
+	//	TBD
+	
+	return 0;
+
+}
+
+- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem {
+
+	//	TBD
+
+}
+
+
+
+
+
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
 	if (![gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
@@ -321,6 +364,7 @@
 	self.navigationBar = nil;
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
+	self.streamPickerView = nil;
 	
 	[super viewDidUnload];
 
@@ -338,6 +382,7 @@
 	[navigationBar release];
 	[toolbar release];
 	[previousNavigationItem release];
+	[streamPickerView release];
 	
 	[super dealloc];
 
