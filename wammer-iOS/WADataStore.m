@@ -36,6 +36,7 @@
 		sharedFormatter = [[NSDateFormatter alloc] init];
 		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
 		sharedFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		sharedFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	});
 	
 	if ([aValue isKindOfClass:[NSString class]]) {
