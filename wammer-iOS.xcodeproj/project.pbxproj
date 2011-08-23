@@ -187,7 +187,7 @@
 		FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyPhotoAlbum-Large~ipad.png"; path = "Resources/PLEmptyPhotoAlbum-Large~ipad.png"; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "wammer-iOS/WAGalleryViewController.h"; sourceTree = "<group>"; };
 		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryViewController.m; path = "wammer-iOS/WAGalleryViewController.m"; sourceTree = "<group>"; };
-		FF73A53E13D6C2CC00D54EC6 /* wammer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF73A53E13D6C2CC00D54EC6 /* wammer2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF73A54413D6C2CC00D54EC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -348,7 +348,7 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A53E13D6C2CC00D54EC6 /* wammer.app */,
+				FF73A53E13D6C2CC00D54EC6 /* wammer2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -529,9 +529,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FF73A53D13D6C2CC00D54EC6 /* wammer */ = {
+		FF73A53D13D6C2CC00D54EC6 /* wammer2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer" */;
+			buildConfigurationList = FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer2" */;
 			buildPhases = (
 				FF73A53A13D6C2CC00D54EC6 /* Sources */,
 				FF73A53B13D6C2CC00D54EC6 /* Frameworks */,
@@ -544,9 +544,9 @@
 				FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FC13D6DDE800D54EC6 /* PBXTargetDependency */,
 			);
-			name = wammer;
+			name = wammer2;
 			productName = "wammer-iOS";
-			productReference = FF73A53E13D6C2CC00D54EC6 /* wammer.app */;
+			productReference = FF73A53E13D6C2CC00D54EC6 /* wammer2.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -584,7 +584,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				FF73A53D13D6C2CC00D54EC6 /* wammer */,
+				FF73A53D13D6C2CC00D54EC6 /* wammer2 */,
 			);
 		};
 /* End PBXProject section */
@@ -863,7 +863,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer" */ = {
+		FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF73A55713D6C2CD00D54EC6 /* Debug */,
