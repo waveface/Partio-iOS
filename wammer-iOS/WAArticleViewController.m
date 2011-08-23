@@ -55,7 +55,7 @@
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	return self;
@@ -72,11 +72,10 @@
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 		
 		if ([self isViewLoaded])
 			[self refreshView];
-		
-		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 	
 	});
 
@@ -276,11 +275,14 @@
 	self.userNameLabel.text = self.article.owner.nickname;
 	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
-	self.imageStackView.files = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-		return [[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+	self.imageStackView.images = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+	
+		return [UIImage imageWithContentsOfFile:((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
 			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-		}] anyObject];
+		}] anyObject]).resourceFilePath];
+		
 	}];
+	
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	

@@ -120,7 +120,7 @@
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO) AND (files.@count != 0)"];
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"];	//	 AND (files.@count != 0)
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -130,7 +130,8 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
-	
+	[self.fetchedResultsController performFetch:nil];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 		
 	return self;
@@ -148,8 +149,6 @@
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		
-		if ([self isViewLoaded])
-			[self refreshPaginatedViewPages];
 			
 	});
 
@@ -771,7 +770,29 @@
 
 - (void) refreshPaginatedViewPages {
 
-	[self.fetchedResultsController performFetch:nil];
+	BOOL later = NO;
+
+	if (self.paginatedView.scrollView.isDragging)
+		later = YES;
+	else if (self.paginatedView.scrollView.isDecelerating)
+		later = YES;
+	else if (self.paginatedView.scrollView.isTracking)
+		later = YES;
+	
+	static BOOL alreadyPostponing = NO;
+	
+	if (later) {
+		if (!alreadyPostponing) {
+			alreadyPostponing = YES;
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC), dispatch_get_current_queue(), ^ {
+				[self performSelector:_cmd];
+				alreadyPostponing = NO;
+			});
+		}
+		return;
+	}
+	
+	//	[self.fetchedResultsController performFetch:nil];
 	
 	__block __typeof__(self) nrSelf = self;
 	
@@ -787,12 +808,9 @@
 			
 		}]] lastObject];
 
-		if (!returnedViewController) {
-		
+		if (!returnedViewController)
 			returnedViewController = [WAArticleViewController controllerRepresentingArticle:articleURI];
 			
-		}
-		
 		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		
 			if (action)
@@ -803,6 +821,10 @@
 		return returnedViewController;
 		
 	}];
+	
+	
+	if ([self.articleViewControllers isEqualToArray:oldArticleViewControllers])
+		return;
 	
 	//	NSUInteger lastCurrentPageIndex = self.paginatedView.currentPage;
 	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
@@ -854,6 +876,9 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	
+	if ([self isViewLoaded])
+		[self refreshPaginatedViewPages];
 	
 }
 
