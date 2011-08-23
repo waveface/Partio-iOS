@@ -10,17 +10,24 @@
 #import "WAComposeViewControllerPhone.h"
 #import "WADataStore.h"
 #import "WAArticleCommentsViewCell.h"
+#import "WAPostViewCellPhone.h"
 #import "WAArticle.h"
 
-@interface WAPostViewControllerPhone ()
+@interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) WAArticle *post;
+@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+
+- (void) refreshData;
+
++ (IRRelativeDateFormatter *) relativeDateFormatter;
+
 
 @end
 
 @implementation WAPostViewControllerPhone
-@synthesize post, managedObjectContext;
+@synthesize post, fetchedResultsController, managedObjectContext;
 
 + (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL{
     
@@ -39,8 +46,37 @@
         // Custom initialization
         self.title = @"Comments";
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showCompose:)]autorelease];
+        
     }
     return self;
+}
+
+- (NSFetchedResultsController *) fetchedResultsController {
+    
+	if (fetchedResultsController)
+		return fetchedResultsController;
+	
+	if (!self.post)
+		return nil;
+    
+	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel 
+                                    fetchRequestFromTemplateWithName:@"WAFRCommentsForArticle" 
+                                    substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:self.post, @"Article",nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+                                    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+                                    nil];
+	
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	NSError *fetchingError = nil;
+	if (![fetchedResultsController performFetch:&fetchingError])
+		NSLog(@"Error fetching: %@", fetchingError);
+	
+	return fetchedResultsController;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,6 +115,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (self.post && !self.fetchedResultsController.fetchedObjects) {
+		NSError *fetchingError = nil;
+		if (![self.fetchedResultsController performFetch:&fetchingError])
+			NSLog(@"Error fetching: %@", fetchingError);
+		else
+			[self refreshData];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -113,16 +157,29 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 1;
+    return 1+[[[self post] comments] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"PostCell";
+    //NSLog(@"%@", [indexPath row]);
+    if( [indexPath row] == 0) {
+        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Post"];
+        if (cell == nil) {
+            cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Post"] autorelease];
+        }
     
-    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell.userNicknameLabel.text = post.owner.nickname;
+        cell.avatarView.image = post.owner.avatar;
+        cell.contentTextLabel.text = post.text;
+        //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+        cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+        return cell;
+    }
+    
+    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Comment"];
     if (cell == nil) {
-        cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Comment"] autorelease];
     }
     
     cell.userNicknameLabel.text = post.owner.nickname;
