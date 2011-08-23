@@ -771,6 +771,28 @@
 
 - (void) refreshPaginatedViewPages {
 
+	BOOL later = NO;
+
+	if (self.paginatedView.scrollView.isDragging)
+		later = YES;
+	else if (self.paginatedView.scrollView.isDecelerating)
+		later = YES;
+	else if (self.paginatedView.scrollView.isTracking)
+		later = YES;
+	
+	static BOOL alreadyPostponing = NO;
+	
+	if (later) {
+		if (!alreadyPostponing) {
+			alreadyPostponing = YES;
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC), dispatch_get_current_queue(), ^ {
+				[self performSelector:_cmd];
+				alreadyPostponing = NO;
+			});
+		}
+		return;
+	}
+	
 	[self.fetchedResultsController performFetch:nil];
 	
 	__block __typeof__(self) nrSelf = self;
@@ -787,12 +809,9 @@
 			
 		}]] lastObject];
 
-		if (!returnedViewController) {
-		
+		if (!returnedViewController)
 			returnedViewController = [WAArticleViewController controllerRepresentingArticle:articleURI];
 			
-		}
-		
 		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		
 			if (action)
@@ -803,6 +822,10 @@
 		return returnedViewController;
 		
 	}];
+	
+	
+	if ([self.articleViewControllers isEqualToArray:oldArticleViewControllers])
+		return;
 	
 	//	NSUInteger lastCurrentPageIndex = self.paginatedView.currentPage;
 	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
