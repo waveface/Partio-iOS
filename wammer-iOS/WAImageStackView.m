@@ -32,6 +32,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 @property (nonatomic, readwrite, assign) UIView *firstPhotoView;
 @property (nonatomic, readwrite, assign) BOOL gestureProcessingOngoing;
 
+- (void) setShownImages:(NSArray *)newImages withDecodingCompletion:(void(^)(void))aBlock;
+
 @end
 
 
@@ -120,6 +122,12 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) setImages:(NSArray *)newImages {
 
+	[self setImages:newImages asynchronously:YES withDecodingCompletion:nil];
+
+}
+
+- (void) setImages:(NSArray *)newImages asynchronously:(BOOL)async withDecodingCompletion:(void (^)(void))aBlock {
+
 	if (images == newImages)
 		return;
 
@@ -130,11 +138,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.activityIndicator.hidden = NO;
 	
-	static BOOL usesBackgroundDecoding = YES;
-	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
 
-	if (usesBackgroundDecoding) {
+	if (async) {
 	
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void) {
 		
@@ -143,18 +149,14 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			}];
 			
 			dispatch_async(dispatch_get_main_queue(), ^ {
-				self.shownImages = actualDecodedImages;
+				[self setShownImages:actualDecodedImages withDecodingCompletion:aBlock];
 			});
 			
 		});
 	
 	} else {
 			
-		dispatch_async(dispatch_get_main_queue(), ^ {
-		
-			self.shownImages = decodedImages;
-
-		});
+		[self setShownImages:decodedImages withDecodingCompletion:aBlock];
 	
 	}
 
@@ -162,15 +164,24 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) setShownImages:(NSArray *)newShownImages {
 
+	[self setShownImages:newShownImages withDecodingCompletion:nil];
+
+}
+
+- (void) setShownImages:(NSArray *)newShownImages withDecodingCompletion:(void(^)(void))aBlock {
+
 	if (self.gestureProcessingOngoing) {
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_current_queue(), ^(void){
-				[self performSelector:_cmd withObject:newShownImages];
+				[self performSelector:_cmd withObject:newShownImages withObject:aBlock];
 		});
 		return;
 	}
 	
-	if (newShownImages == shownImages)
+	if (newShownImages == shownImages) {
+		if (aBlock)
+			aBlock();
 		return;
+	}
 	
 	[self willChangeValueForKey:@"shownImages"];
 	[shownImages release];
@@ -223,7 +234,11 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 		}];
 		
+		[self layoutSubviews];
 		[self setNeedsLayout];
+		
+		if (aBlock)
+			aBlock();
 	
 	});
 	
