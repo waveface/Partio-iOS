@@ -120,12 +120,15 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) setImages:(NSArray *)newImages {
 
+	if (images == newImages)
+		return;
+
 	[self willChangeValueForKey:@"images"];
 	[images release];
 	images = [newImages retain];
 	[self didChangeValueForKey:@"images"];
 	
-	[self.activityIndicator startAnimating];
+	self.activityIndicator.hidden = NO;
 	
 	static BOOL usesBackgroundDecoding = NO;
 	
@@ -141,7 +144,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 			dispatch_async(dispatch_get_main_queue(), ^ {
 				self.shownImages = actualDecodedImages;
-				[self.activityIndicator stopAnimating];
 			});
 			
 		});
@@ -151,7 +153,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			self.shownImages = decodedImages;
-			[self.activityIndicator stopAnimating];
 
 		});
 	
@@ -217,6 +218,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			[imageView addSubview:innerImageView];
 					
 			[self insertSubview:imageView atIndex:0];		
+			
+			self.activityIndicator.hidden = YES;
 			
 		}];
 		

@@ -275,13 +275,30 @@
 	self.userNameLabel.text = self.article.owner.nickname;
 	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
-	self.imageStackView.images = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
 	
-		return [UIImage imageWithContentsOfFile:((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+	
+	NSArray *allFilePaths = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+	
+		return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
 			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-		}] anyObject]).resourceFilePath];
-		
+		}] anyObject]).resourceFilePath;
+	
 	}];
+	
+	if ([allFilePaths count] == [self.article.files count]) {
+	
+		self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+			
+			return [UIImage imageWithContentsOfFile:aPath];
+			
+		}];
+	
+	} else {
+	
+		self.imageStackView.images = nil;
+	
+	}
+
 	
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
@@ -307,7 +324,7 @@
 			[aView.layer addAnimation:((^ {
 				CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
 				transition.fromValue = (id)oldShadowPath;
-				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 				transition.duration = duration;
 				return transition;
 			})()) forKey:@"transition"];
