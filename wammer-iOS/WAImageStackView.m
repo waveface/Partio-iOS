@@ -130,7 +130,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.activityIndicator.hidden = NO;
 	
-	static BOOL usesBackgroundDecoding = NO;
+	static BOOL usesBackgroundDecoding = YES;
 	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
 
