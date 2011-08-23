@@ -130,7 +130,8 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
-	
+	[self.fetchedResultsController performFetch:nil];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 		
 	return self;
@@ -148,8 +149,6 @@
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		
-		if ([self isViewLoaded])
-			[self refreshPaginatedViewPages];
 			
 	});
 
@@ -793,7 +792,7 @@
 		return;
 	}
 	
-	[self.fetchedResultsController performFetch:nil];
+	//	[self.fetchedResultsController performFetch:nil];
 	
 	__block __typeof__(self) nrSelf = self;
 	
@@ -877,6 +876,9 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	
+	if ([self isViewLoaded])
+		[self refreshPaginatedViewPages];
 	
 }
 
