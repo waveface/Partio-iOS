@@ -11,20 +11,20 @@
 
 #import "CGGeometry+IRAdditions.h"
 #import "QuartzCore+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 
 
 
 
 static const NSString *kWAImageStackViewElementCanonicalTransform = @"kWAImageStackViewElementCanonicalTransform";
-static const NSString *kWAImageStackViewElementImagePath = @"kWAImageStackViewElementImagePath";
 static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElementImage";
 
 
 @interface WAImageStackView () <UIGestureRecognizerDelegate>
 
 - (void) waInit;
-@property (nonatomic, readwrite, retain) NSArray *shownImageFilePaths;
+@property (nonatomic, readwrite, retain) NSArray *shownImages;
 @property (nonatomic, readwrite, retain) UIPinchGestureRecognizer *pinchRecognizer;
 @property (nonatomic, readwrite, retain) UIRotationGestureRecognizer *rotationRecognizer;
 @property (nonatomic, readwrite, retain) UITapGestureRecognizer *tapRecognizer;
@@ -38,7 +38,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 @implementation WAImageStackView
 
 @synthesize state;
-@synthesize files, delegate, shownImageFilePaths;
+@synthesize images, delegate, shownImages;
 @synthesize pinchRecognizer, rotationRecognizer, tapRecognizer, activityIndicator, firstPhotoView;
 @synthesize gestureProcessingOngoing;
 
@@ -72,8 +72,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 	self.gestureProcessingOngoing = NO;
 	self.state = WAImageStackViewInteractionNormal;
-
-	[self addObserver:self forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
 	self.pinchRecognizer.delegate = self;
@@ -120,93 +118,111 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void) setImages:(NSArray *)newImages {
 
-	if (object == self)
-	if ([keyPath isEqualToString:@"files"]) {
+	[self willChangeValueForKey:@"images"];
+	[images release];
+	images = [newImages retain];
+	[self didChangeValueForKey:@"images"];
 	
-		self.shownImageFilePaths = [self.files irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
+	[self.activityIndicator startAnimating];
+	
+	static BOOL usesBackgroundDecoding = NO;
+	
+	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
+
+	if (usesBackgroundDecoding) {
+	
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void) {
 		
-			if (!aFile.resourceFilePath)
-				return (id)nil;
+			NSArray *actualDecodedImages = [decodedImages irMap: ^ (UIImage *anImage, int index, BOOL *stop) {
+				return [anImage irDecodedImage];
+			}];
 			
-			//	if (!UTTypeConformsTo((CFStringRef)aFile.resourceType, kUTTypeImage)) {
-			//		return (id)nil;
-			//	}	
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				self.shownImages = actualDecodedImages;
+				[self.activityIndicator stopAnimating];
+			});
 			
-			return aFile.resourceFilePath;
+		});
+	
+	} else {
 			
-		}];
-			
-		self.shownImageFilePaths = [self.shownImageFilePaths objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.shownImageFilePaths count]) }]];
+		dispatch_async(dispatch_get_main_queue(), ^ {
 		
-		[self.activityIndicator startAnimating];
+			self.shownImages = decodedImages;
+			[self.activityIndicator stopAnimating];
+
+		});
 	
 	}
 
 }
 
-
-- (void) setShownImageFilePaths:(NSArray *)newShownImageFilePaths {
+- (void) setShownImages:(NSArray *)newShownImages {
 
 	if (self.gestureProcessingOngoing) {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				[self performSelector:_cmd withObject:newShownImageFilePaths];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_current_queue(), ^(void){
+				[self performSelector:_cmd withObject:newShownImages];
 		});
 		return;
 	}
 	
-	if (newShownImageFilePaths == shownImageFilePaths)
+	if (newShownImages == shownImages)
 		return;
 	
-	[self willChangeValueForKey:@"shownImageFilePaths"];
-	[shownImageFilePaths release];
-	shownImageFilePaths = [newShownImageFilePaths retain];
-	[self didChangeValueForKey:@"shownImageFilePaths"];
+	[self willChangeValueForKey:@"shownImages"];
+	[shownImages release];
+	shownImages = [newShownImages retain];
+	[self didChangeValueForKey:@"shownImages"];
 	
 	
 	static int kPhotoViewTag = 1024;
 	
 	self.firstPhotoView = nil;
 
-	[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
-		
-		return (BOOL)(aSubview.tag == kPhotoViewTag);
+	
+	IRCATransact(^{
+
+		[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 			
-	}]] enumerateObjectsUsingBlock:^(UIView *aSubview, NSUInteger idx, BOOL *stop) {
-	
-		[aSubview removeFromSuperview];
-		
-	}];
-		
-	[shownImageFilePaths enumerateObjectsUsingBlock: ^ (NSString *aFilePath, NSUInteger idx, BOOL *stop) {
-	
-		UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		objc_setAssociatedObject(imageView, kWAImageStackViewElementImagePath, aFilePath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, [UIImage imageWithContentsOfFile:aFilePath], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		imageView.tag = kPhotoViewTag;
-		imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-		imageView.layer.borderWidth = 4.0f;
-		imageView.layer.shadowOffset = (CGSize){ 0, 2 };
-		imageView.layer.shadowRadius = 2.0f;
-		imageView.layer.shadowOpacity = 0.25f;
-		imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
-		imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-		imageView.layer.shouldRasterize = YES;
-		imageView.opaque = NO;
-		
-		UIView *innerImageView = [[[UIView alloc] initWithFrame:imageView.bounds] autorelease];
-		innerImageView.layer.contents = (id)((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).CGImage;
-		innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		innerImageView.layer.masksToBounds = YES;
-		
-		[imageView addSubview:innerImageView];
+			return (BOOL)(aSubview.tag == kPhotoViewTag);
 				
-		[self insertSubview:imageView atIndex:0];		
+		}]] enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
-	}];
+			[aSubview removeFromSuperview];
+			
+		}];
+			
+		[shownImages enumerateObjectsUsingBlock: ^ (UIImage *anImage, NSUInteger idx, BOOL *stop) {
+		
+			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+			imageView.tag = kPhotoViewTag;
+			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+			imageView.layer.borderWidth = 4.0f;
+			imageView.layer.shadowOffset = (CGSize){ 0, 2 };
+			imageView.layer.shadowRadius = 2.0f;
+			imageView.layer.shadowOpacity = 0.25f;
+			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
+			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+			imageView.layer.shouldRasterize = YES;
+			imageView.opaque = NO;
+			
+			UIView *innerImageView = [[[UIView alloc] initWithFrame:imageView.bounds] autorelease];
+			innerImageView.layer.contents = (id)((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).CGImage;
+			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			innerImageView.layer.masksToBounds = YES;
+			
+			[imageView addSubview:innerImageView];
+					
+			[self insertSubview:imageView atIndex:0];		
+			
+		}];
+		
+		[self setNeedsLayout];
 	
-	[self setNeedsLayout];
+	});
 	
 }
 	
@@ -375,7 +391,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		return;
 	
 	UIView *capturedFirstPhotoView = [[self.firstPhotoView retain] autorelease];
-	[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:[UIImage imageWithContentsOfFile:(NSString *)objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImagePath)] contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
+	[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImage) contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
 
 }
 
@@ -388,10 +404,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) dealloc {
 
-	[self removeObserver:self forKeyPath:@"files"];
-	
-	[files release];
-	[shownImageFilePaths release];
+	[images release];
+	[shownImages release];
 	[pinchRecognizer release];
 	[rotationRecognizer release];
 	[tapRecognizer release];
