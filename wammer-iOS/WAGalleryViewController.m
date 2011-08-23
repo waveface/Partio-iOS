@@ -39,6 +39,7 @@
 @synthesize paginatedView;
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
+@synthesize onDismiss;
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
@@ -204,11 +205,8 @@
 
 - (BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
 
-	dispatch_async(dispatch_get_main_queue(), ^ {
-
-		[self dismissModalViewControllerAnimated:YES];
-	
-	});
+	if (self.onDismiss)
+		dispatch_async(dispatch_get_main_queue(), self.onDismiss);
 	
 	return NO;
 
@@ -383,6 +381,8 @@
 	[toolbar release];
 	[previousNavigationItem release];
 	[streamPickerView release];
+	
+	[onDismiss release];
 	
 	[super dealloc];
 
