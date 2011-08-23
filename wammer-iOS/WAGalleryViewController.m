@@ -356,6 +356,16 @@
 
 
 
+- (UIImage *) currentImage {
+
+	return ((WAGalleryImageView *)[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage]).image;
+
+}
+
+
+
+
+
 - (void) viewDidUnload {
 
 	self.paginatedView = nil;
