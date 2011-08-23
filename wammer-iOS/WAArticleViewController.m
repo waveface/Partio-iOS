@@ -356,7 +356,7 @@
 	NSString * const animationTimingFunctionName = kCAMediaTimingFunctionEaseInEaseOut;
 	CABasicAnimation * (^animation)(NSString *keyPath, id fromValue, id toValue, NSTimeInterval duration);
 	CATransform3D (^fillingTransform)(CGRect aRect, CGRect enclosingRect);
-	
+	CATransform3D (^shrinkingTransform)(CGRect aRect, CGRect enclosingRect);
 	
 	animation = ^ (NSString *keyPath, id fromValue, id toValue, NSTimeInterval duration) {
 		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:keyPath];
@@ -378,6 +378,14 @@
 		);
 	};
 
+	shrinkingTransform = ^ (CGRect aRect, CGRect enclosingRect) {
+		CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){ 16.0f * aRect.size.width, 16.0f * aRect.size.height }, enclosingRect, 0.0f, YES));
+		CGFloat aspectRatio = CGRectGetWidth(aRect) / CGRectGetWidth(fullRect);
+		return CATransform3DConcat(
+			CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), 
+			CATransform3DMakeTranslation((CGRectGetMidX(fullRect) - CGRectGetMidX(aRect)), (CGRectGetMidY(fullRect) - CGRectGetMidY(aRect)), 0.0f)
+		);
+	};
 	
 	__block UIView *rootView, *backdropView, *statusBarPaddingView, *fauxView;
 	
@@ -420,6 +428,10 @@
 	
 	});
 	
+	[backdropView retain];
+	[statusBarPaddingView retain];
+	[fauxView retain];
+	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 	
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
@@ -430,6 +442,7 @@
 		
 				[statusBarPaddingView removeFromSuperview];
 				[fauxView removeFromSuperview];
+				[fauxView autorelease];
 				[backdropView removeFromSuperview];
 				
 				aStackView.firstPhotoView.alpha = 1.0f;
@@ -442,11 +455,104 @@
 					
 					NSParameterAssert(![UIApplication sharedApplication].statusBarHidden);
 					
-					//	[rootView addSubview:backdropView];
-					//	[rootView addSubview:fauxView];
-					//	[rootView addSubview:statusBarPaddingView];
+					NSArray *originalImages = [[imageStackView.images retain] autorelease];
+					NSMutableArray *tempImages = [[originalImages mutableCopy] autorelease];
 					
-					[galleryViewController dismissModalViewControllerAnimated:NO];
+					UIImage *currentImage = [galleryViewController currentImage];
+					
+					if (![tempImages containsObject:currentImage]) {
+						if ([tempImages count] > 0) {
+							[tempImages replaceObjectAtIndex:0 withObject:currentImage];
+						} else {
+							[tempImages insertObject:currentImage atIndex:0];
+						}
+					} else {
+						[tempImages removeObject:currentImage];
+						[tempImages insertObject:currentImage atIndex:0];
+					}
+					
+					[imageStackView setImages:tempImages asynchronously:YES withDecodingCompletion: ^ {
+					
+						[galleryViewController dismissModalViewControllerAnimated:NO];
+						
+						imageStackView.firstPhotoView.alpha = 0.0f;
+						
+						backdropView.frame = rootView.bounds;
+						
+						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:imageStackView.firstPhotoView.frame fromView:aStackView]] autorelease];
+						fauxView.layer.contents = (id)currentImage.CGImage;
+						fauxView.layer.transform = imageStackView.firstPhotoView.layer.transform;
+						fauxView.layer.contentsGravity = kCAGravityResizeAspect;
+						
+						CABasicAnimation *backdropHiding = animation(@"opacity",
+							[NSNumber numberWithFloat:1.0f],
+							[NSNumber numberWithFloat:0.0f],
+							animationDuration
+						);
+		
+						CABasicAnimation *fauxViewZoomOut = animation(@"transform", 
+							[NSValue valueWithCATransform3D:fillingTransform(fauxView.frame, rootView.bounds)],
+							[NSValue valueWithCATransform3D:fauxView.layer.transform],
+							animationDuration
+						);
+						
+						[backdropView.layer setValue:[backdropHiding toValue] forKeyPath:[backdropHiding keyPath]];
+						[backdropView.layer addAnimation:backdropHiding forKey:@"transition"];
+						[fauxView.layer setValue:[fauxViewZoomOut toValue] forKeyPath:[fauxViewZoomOut keyPath]];
+						[fauxView.layer addAnimation:fauxViewZoomOut forKey:@"transition"];
+											
+						[rootView addSubview:backdropView];
+						[rootView addSubview:fauxView];
+						[rootView addSubview:statusBarPaddingView];
+						
+						[fauxView retain];
+						
+						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+													
+							[backdropView removeFromSuperview];
+							[statusBarPaddingView removeFromSuperview];
+							[fauxView removeFromSuperview];
+							
+							[backdropView autorelease];
+							[statusBarPaddingView autorelease];
+							[fauxView autorelease];
+							
+							imageStackView.firstPhotoView.alpha = 1.0f;
+							
+							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+							
+								CATransition *fadeTransition = [CATransition animation];
+								fadeTransition.duration = 0.5f * animationDuration;
+								fadeTransition.type = kCATransitionFade;
+								fadeTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+								fadeTransition.fillMode = kCAFillModeForwards;
+								fadeTransition.removedOnCompletion = YES;
+							
+								[CATransaction begin];
+							
+								[imageStackView setImages:originalImages asynchronously:NO withDecodingCompletion:nil];
+								[imageStackView.layer addAnimation:fadeTransition forKey:@"transition"];
+
+								[CATransaction setCompletionBlock: ^ {
+								
+									//	Handle final completion stuff
+									
+								}];
+								
+								[CATransaction commit];
+								
+							});
+
+						});
+						
+						/*
+						
+						
+						*/
+						
+					}];
+					
+					//	back?
 					
 				};
 				
