@@ -349,20 +349,35 @@
 	
 	aStackView.firstPhotoView.alpha = 0.0f;
 
-	UIView *rootView = self.view.window.rootViewController.view;
 	CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-		
+	
+	UIView *rootView = self.view.window.rootViewController.view;
 	UIView *statusBarPaddingView = [[[UIView alloc] initWithFrame:[rootView.window convertRect:statusBarFrame toView:rootView]] autorelease];
 	statusBarPaddingView.backgroundColor = [UIColor blackColor];
 	[rootView addSubview:statusBarPaddingView];
 
 	UIView *fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:aRect fromView:aStackView]] autorelease];
+	
 	CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){
 		16.0f * fauxView.frame.size.width,
 		16.0f * fauxView.frame.size.height
 	}, UIEdgeInsetsInsetRect(rootView.bounds, (UIEdgeInsets){ 0, 0, 0, 0}), 0.0f, YES));
+	
 	CGFloat aspectRatio = CGRectGetWidth(fullRect) / CGRectGetWidth(fauxView.frame);
-	CATransform3D finalTransform = CATransform3DConcat(CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), CATransform3DMakeTranslation(0.0f, -10.0f, 0.0f));
+	
+	CATransform3D finalTransform = CATransform3DConcat(
+		CATransform3DMakeScale(
+			aspectRatio, 
+			aspectRatio,
+			1.0f
+		), 
+		CATransform3DMakeTranslation(
+			CGRectGetMidX(fullRect) - CGRectGetMidX(fauxView.frame), 
+			CGRectGetMidY(fullRect) - CGRectGetMidY(fauxView.frame), 
+			0.0f
+		)
+	);
+	
 	fauxView.layer.contents = (id)representedImage.CGImage;
 	fauxView.layer.contentsGravity = kCAGravityResizeAspect;
 	fauxView.layer.transform = finalTransform;
@@ -400,7 +415,7 @@
 		
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 	
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 		
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35f * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 
