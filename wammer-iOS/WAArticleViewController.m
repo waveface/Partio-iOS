@@ -72,11 +72,10 @@
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 		
 		if ([self isViewLoaded])
 			[self refreshView];
-		
-		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 	
 	});
 
