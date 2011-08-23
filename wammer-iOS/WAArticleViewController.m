@@ -414,7 +414,7 @@
 		);
 		
 		CABasicAnimation *fauxViewZoomIn = animation(@"transform", 
-			[NSValue valueWithCATransform3D:fauxView.layer.transform],
+			[NSValue valueWithCATransform3D:layerTransform],
 			[NSValue valueWithCATransform3D:fillingTransform(fauxView.frame, rootView.bounds)],
 			animationDuration
 		);
