@@ -17,9 +17,10 @@
 
 @implementation WAPostViewCellPhone
 @synthesize commentLabel;
+@synthesize commentBackground;
 @synthesize style;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel, extraInfoButton;
+@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
@@ -50,11 +51,19 @@
 	self.style = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
     self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-	
+    
+    
 	return self;
 	
 }
 
+- (void)hideComment:(BOOL)hide
+{
+    if (hide) {
+        commentLabel.hidden = hide;
+        commentBackground.hidden= hide;
+    }
+}
 
 - (void) dealloc {
 
@@ -67,6 +76,7 @@
 	[originLabel release];
 	
     [commentLabel release];
+    [commentBackground release];
 	[super dealloc];
 	
 }

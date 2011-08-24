@@ -17,10 +17,13 @@ enum {
 
 @interface WAPostViewCellPhone : UITableViewCell {
     UILabel *commentLabel;
+    UIImageView *commentBackground;
 }
 
 
 - (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+
+- (void) hideComment:(BOOL)hide;
 
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
@@ -29,8 +32,8 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
-@property (nonatomic, readwrite, retain) IBOutlet UIButton *extraInfoButton;
 @property (nonatomic, retain) IBOutlet UILabel *commentLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *commentBackground;
 
 @end
 

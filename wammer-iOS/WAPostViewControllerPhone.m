@@ -151,19 +151,21 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return 1+[[[self post] comments] count];
+    if(section == 0)
+        return 1;
+    else
+        return [[[self post] comments] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"%@", [indexPath row]);
-    if( [indexPath row] == 0) {
+    // Section 0 for post cell
+    if( [indexPath section] == 0) {
         WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Post"];
         if (cell == nil) {
             cell = [[[WAPostViewCellPhone alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Post"] autorelease];
@@ -174,20 +176,24 @@
         cell.contentTextLabel.text = post.text;
         //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
         cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+        [cell hideComment:TRUE];
         return cell;
     }
     
-    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Comment"];
-    if (cell == nil) {
-        cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Comment"] autorelease];
-    }
+    // Section 2 for comment cell
+    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row]inSection:0];
+    WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
+	
+	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	if (!cell)
+		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
     
-    cell.userNicknameLabel.text = post.owner.nickname;
-    cell.avatarView.image = post.owner.avatar;
-    cell.contentTextLabel.text = post.text;
-    //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
-    cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-    
+	cell.userNicknameLabel.text = representedComment.owner.nickname;
+	cell.avatarView.image = representedComment.owner.avatar;
+	cell.contentTextLabel.text = representedComment.text;
+	cell.dateLabel.text = [representedComment.timestamp description];
+	cell.originLabel.text = representedComment.creationDeviceName;
+	
     return cell;
 }
 
