@@ -434,7 +434,7 @@
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 	
-		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 		
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.35f * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 
@@ -535,7 +535,7 @@
 
 								[CATransaction setCompletionBlock: ^ {
 								
-									//	Handle final completion stuff
+									//	Handle final completion stuff if appropriate and necessary
 									
 								}];
 								
@@ -545,14 +545,7 @@
 
 						});
 						
-						/*
-						
-						
-						*/
-						
 					}];
-					
-					//	back?
 					
 				};
 				

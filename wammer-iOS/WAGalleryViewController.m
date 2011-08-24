@@ -162,8 +162,12 @@
 	self.toolbar = [[[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }] autorelease];
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
-	
-	self.toolbar.items = [NSArray arrayWithObject:[[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView] autorelease]];
+		
+	self.toolbar.items = [NSArray arrayWithObjects:
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+		[[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView] autorelease],
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+	nil];
 	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.navigationBar];
@@ -175,6 +179,10 @@
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)] autorelease];
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
+	
+	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+		nrSelf.streamPickerView.selectedItemIndex = [inNewValue unsignedIntValue];
+	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 
 }
 
@@ -286,8 +294,12 @@
 
 - (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(WAFile *)anItem {
 
-	//	TBD
-
+	NSUInteger index = [self.article.fileOrder indexOfObject:[[anItem objectID] URIRepresentation]];
+	
+	if (index == NSNotFound)
+		return;
+		
+	[self.paginatedView scrollToPageAtIndex:index animated:NO];
 
 }
 
@@ -377,17 +389,21 @@
 
 - (void) viewDidUnload {
 
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
+
 	self.paginatedView = nil;
 	self.navigationBar = nil;
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
-	
+		
 	[super viewDidUnload];
 
 }
 
 - (void) dealloc {
+
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
