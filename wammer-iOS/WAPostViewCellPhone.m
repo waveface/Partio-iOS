@@ -78,6 +78,8 @@
 	
     [commentLabel release];
     [commentBackground release];
+    [imageStackView release];
+    [imageStackView release];
 	[super dealloc];
 	
 }

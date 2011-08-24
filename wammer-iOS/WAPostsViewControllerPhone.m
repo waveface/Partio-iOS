@@ -139,15 +139,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"PostCell";
-    WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell) {
-        cell = [[WAPostViewCellPhone alloc] initWithStyle:WAPostViewCellStyleDefault reuseIdentifier:identifier];
-    }
     
     WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if(!post){
-        NSLog(@"No posts");
+    NSParameterAssert(post);
+    
+    static NSString *defaultCellIdentifier = @"PostCell-Default";
+    static NSString *imageCellIdentifier = @"PostCell-Stacked";
+    
+    BOOL postHasFiles = (BOOL)!![post.files count];
+    
+    NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
+    WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+    
+    WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell) {
+        cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
     }
     
     cell.userNicknameLabel.text = post.owner.nickname;
@@ -158,7 +164,9 @@
                            [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
     cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+    
     return cell;
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

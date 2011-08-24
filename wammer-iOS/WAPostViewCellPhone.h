@@ -20,6 +20,7 @@ enum {
 @interface WAPostViewCellPhone : UITableViewCell {
     UILabel *commentLabel;
     UIImageView *commentBackground;
+    WAImageStackView *imageStackView;
 }
 
 
@@ -27,7 +28,7 @@ enum {
 
 - (void) hideComment:(BOOL)hide;
 
-@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
+@property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *contentTextLabel;
