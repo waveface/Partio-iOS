@@ -256,29 +256,38 @@
 	self.streamPickerView = [[[WAImageStreamPickerView alloc] init] autorelease];
 	self.streamPickerView.delegate = self;
 	
+	[self.streamPickerView reloadData];
+	
 	return streamPickerView;
 
 }
 
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	//	TBD
-
-	return 0;
+	return [self.article.files count];
 
 }
 
-- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker {
+- (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	//	TBD
+	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (id obj, BOOL *stop) {
+		return [[[obj objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:anIndex]];
+	}] anyObject];
 	
-	return 0;
+	return representedFile;
 
 }
 
-- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem {
+- (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
+
+	return [UIImage imageWithContentsOfFile:aFile.resourceFilePath];
+
+}
+
+- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(WAFile *)anItem {
 
 	//	TBD
+
 
 }
 

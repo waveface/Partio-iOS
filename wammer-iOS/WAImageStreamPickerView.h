@@ -12,10 +12,11 @@
 @class WAImageStreamPickerView;
 @protocol WAImageStreamPickerViewDelegate <NSObject>
 
-- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem;
-- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker;
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker;
-- (id) itemInImageStreamPickerView:(WAImageStreamPickerView *)picker;
+- (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker;
+
+- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker;
+- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem;
 
 @end
 
@@ -25,6 +26,10 @@
 @property (nonatomic, readwrite, assign) id<WAImageStreamPickerViewDelegate> delegate;
 @property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
 @property (nonatomic, readwrite, retain) UIView *activeImageOverlay;
+
+@property (nonatomic, readwrite, copy) UIView * (^viewForThumbnail)(UIImage *thumbnail);
+
+//	@property (nonatomic, readwrite, assign) CGFloat aspectRatio;
 
 - (void) reloadData;
 
