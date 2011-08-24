@@ -152,8 +152,6 @@
     
     cell.userNicknameLabel.text = post.owner.nickname;
     cell.avatarView.image = post.owner.avatar;
-    cell.avatarView.layer.cornerRadius = 7.0;
-    cell.avatarView.layer.masksToBounds = YES;
     cell.contentTextLabel.text = post.text;
     cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                            [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 

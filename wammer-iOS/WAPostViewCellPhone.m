@@ -59,6 +59,9 @@
 	self.reuseIdentifier = aReuseIdentifier;
     self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     
+    self.avatarView.layer.cornerRadius = 7.0;
+    self.avatarView.layer.masksToBounds = YES;
+    
 	return self;
 	
 }
