@@ -165,13 +165,38 @@
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
     cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
     
+    NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+        
+		return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+		}] anyObject]).resourceFilePath;
+        
+	}];
+	
+	if ([allFilePaths count] == [post.files count]) {
+        
+		cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+			
+			return [UIImage imageWithContentsOfFile:aPath];
+			
+		}];
+        
+	} else {
+        
+		cell.imageStackView.images = nil;
+        
+	}
     return cell;
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 160;
+    WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if ( [post.files count ] == 0)
+        return 160;
+    else
+        return 300;
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
