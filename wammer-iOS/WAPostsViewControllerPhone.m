@@ -61,11 +61,10 @@
         
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO) AND (comments.@count != 0)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
-                                           [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+                                           [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
                                            nil];
-		
 		return returnedRequest;
         
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
@@ -114,15 +113,8 @@
 
 	[super viewWillAppear:animated];
 	
-	//	I am not really sure this works!
-	
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		
-		[self refreshData];
-				
-	});
-
+    [self.fetchedResultsController performFetch:nil];
+    [self refreshData];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -167,8 +159,7 @@
                            [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                            [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%@ comments", @"0"];
-    
+    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
     return cell;
 }
 

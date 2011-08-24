@@ -103,10 +103,11 @@
 	
 	dispatch_once(&onceToken, ^{
     
-		sharedManager = [[IRRemoteResourcesManager alloc] init];
+		sharedManager = [IRRemoteResourcesManager sharedManager];
+		sharedManager.maximumNumberOfConnections = 10;
 		sharedManager.delegate = (id<IRRemoteResourcesManagerDelegate>)[UIApplication sharedApplication].delegate;
 		
-		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:MLRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
+		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:kIRRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
 			
 			NSURL *representingURL = (NSURL *)[aNotification object];
 			NSData *resourceData = [sharedManager resourceAtRemoteURL:representingURL skippingUncachedFile:NO];
