@@ -174,8 +174,9 @@
         cell.userNicknameLabel.text = post.owner.nickname;
         cell.avatarView.image = post.owner.avatar;
         cell.contentTextLabel.text = post.text;
-        //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
-        cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+        cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                               [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                               [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
         return cell;
     }
     
@@ -190,7 +191,9 @@
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
 	cell.contentTextLabel.text = representedComment.text;
-	cell.dateLabel.text = [representedComment.timestamp description];
+	cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+
+    [representedComment.timestamp description];
 	cell.originLabel.text = representedComment.creationDeviceName;
 	
     return cell;
@@ -254,5 +257,19 @@
     return 150;
 }
 
++ (IRRelativeDateFormatter *) relativeDateFormatter {
+    
+	static IRRelativeDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+        
+		formatter = [[IRRelativeDateFormatter alloc] init];
+		formatter.approximationMaxTokenCount = 1;
+        
+	});
+    
+	return formatter;
+    
+}
 
 @end
