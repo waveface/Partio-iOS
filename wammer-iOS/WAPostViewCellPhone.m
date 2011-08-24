@@ -16,13 +16,15 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize commentLabel;
+@synthesize commentBackground;
 @synthesize style;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel, extraInfoButton;
+@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+	return [self initWithCommentsViewCellStyle:style reuseIdentifier:reuseIdentifier];
 
 }
 
@@ -39,6 +41,13 @@
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
+        case WAPostViewCellStyleCompact: {
+			loadedNibName = @"WAPostViewCellPhone-Compact";
+			break;
+		}case WAPostViewCellStyleCompactWithImageStack: {
+			loadedNibName = @"WAPostViewCellPhone-CompactWithImageStack";
+			break;
+		}
 	}
 
 	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
@@ -49,11 +58,13 @@
 	self.style = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
     self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-	
+    
+    self.avatarView.layer.cornerRadius = 7.0;
+    self.avatarView.layer.masksToBounds = YES;
+    
 	return self;
 	
 }
-
 
 - (void) dealloc {
 
@@ -65,6 +76,8 @@
 	[dateLabel release];
 	[originLabel release];
 	
+    [commentLabel release];
+    [commentBackground release];
 	[super dealloc];
 	
 }
