@@ -9,14 +9,22 @@
 #import "WAImageStreamPickerView.h"
 
 
+static int kWAImageStreamPickerComponent = 24;
+static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComponentItem";
+
 @interface WAImageStreamPickerView ()
 @property (nonatomic, readwrite, retain) NSArray *items;
 @property (nonatomic, readwrite, retain) NSArray *itemThumbnails;
+@property (nonatomic, readwrite, retain) UITapGestureRecognizer *tapRecognizer;
+@property (nonatomic, readwrite, retain) UIPanGestureRecognizer *panRecognizer;
+
+- (id) itemAtPoint:(CGPoint)aPoint;
 @end
 
 @implementation WAImageStreamPickerView
 @synthesize items, itemThumbnails, edgeInsets, activeImageOverlay, delegate;
 @synthesize viewForThumbnail;
+@synthesize tapRecognizer, panRecognizer, selectedItemIndex;
 
 - (id) init {
 
@@ -36,6 +44,14 @@
 	
 	};
 	
+	self.tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)] autorelease];
+	[self addGestureRecognizer:self.tapRecognizer];
+	
+	self.panRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)] autorelease];
+	[self addGestureRecognizer:self.panRecognizer];
+	
+	self.selectedItemIndex = NSNotFound;
+	
 	return self;
 
 }
@@ -53,9 +69,19 @@
 
 }
 
-- (void) reloadData {
+- (void) setSelectedItemIndex:(NSUInteger)newSelectedItemIndex {
 
-	NSLog(@"%s, delegate %@", __PRETTY_FUNCTION__, self.delegate);
+	if (selectedItemIndex == newSelectedItemIndex)
+		return;
+	
+	[self willChangeValueForKey:@"selectedItemIndex"];
+	selectedItemIndex = newSelectedItemIndex;
+	[self didChangeValueForKey:@"selectedItemIndex"];
+	[self setNeedsLayout];
+
+}
+
+- (void) reloadData {
 
 	NSUInteger numberOfItems = [self.delegate numberOfItemsInImageStreamPickerView:self];
 	NSMutableArray *allItems = [NSMutableArray arrayWithCapacity:numberOfItems];
@@ -69,6 +95,8 @@
 		return [self.delegate thumbnailForItem:anItem inImageStreamPickerView:self];
 	}];
 	
+	self.selectedItemIndex = [self.items count] ? 0 : NSNotFound;
+	
 	[self setNeedsLayout];
 
 }
@@ -76,9 +104,6 @@
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
-
-	static int kWAImageStreamPickerComponent = 24;
-	static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComponentItem";
 	
 	NSMutableArray *imageThumbnailViews = [[[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy] autorelease];
 	
@@ -89,24 +114,26 @@
 	};
 	
 	
-	UIView * (^thumbnailViewForItem)(id) = ^ (id anItem) {
-	
-		return [[imageThumbnailViews objectsAtIndexes:[imageThumbnailViews indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-			return (BOOL)(itemForThumbnailView(obj) == anItem);
-			
-		}]] lastObject];
-	
-	};
+	//	UIView * (^thumbnailViewForItem)(id) = ^ (id anItem) {
+	//	
+	//		return [[imageThumbnailViews objectsAtIndexes:[imageThumbnailViews indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+	//			return (BOOL)(itemForThumbnailView(obj) == anItem);
+	//			
+	//		}]] lastObject];
+	//	
+	//	};
 	
 	[[[self.subviews copy] autorelease] enumerateObjectsUsingBlock:^(UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		if (aSubview.tag != kWAImageStreamPickerComponent)
 			return;
 			
-		if (![self.items containsObject:itemForThumbnailView(aSubview)])
+		id item = itemForThumbnailView(aSubview);
+			
+		if (![self.items containsObject:item])
 			[aSubview removeFromSuperview];
 		else
-			[imageThumbnailViews replaceObjectAtIndex:idx withObject:aSubview];
+			[imageThumbnailViews replaceObjectAtIndex:[self.items indexOfObject:item] withObject:aSubview];
 		
 	}];
 
@@ -114,8 +141,13 @@
 	
 		if (![aSubview isEqual:[NSNull null]])
 			return;
+			
+		id item = [self.items objectAtIndex:idx];
 		
-		UIView *thumbnailView = self.viewForThumbnail([self.delegate thumbnailForItem:[self.items objectAtIndex:idx] inImageStreamPickerView:self]);
+		UIImage *thumbnail = [self.delegate thumbnailForItem:item inImageStreamPickerView:self];
+		
+		UIView *thumbnailView = self.viewForThumbnail(thumbnail);
+		objc_setAssociatedObject(thumbnailView, kWAImageStreamPickerComponentItem, item, OBJC_ASSOCIATION_ASSIGN);
 				
 		if (!thumbnailView)
 			return;
@@ -127,20 +159,84 @@
 	
 	CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, self.edgeInsets);
 	__block CGFloat exhaustedWidth = 0;
+	CGFloat usableWidth = CGRectGetWidth(usableRect);
 	
 	[imageThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *thumbnailView, NSUInteger idx, BOOL *stop) {
+		[self addSubview:thumbnailView];
+	}];
 	
-		CGRect thumbnailRect = IRCGSizeGetCenteredInRect(thumbnailView.frame.size, usableRect, 0.0f, YES);
+	[imageThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *thumbnailView, NSUInteger idx, BOOL *stop) {
+		CGRect thumbnailRect = IRCGSizeGetCenteredInRect((CGSize){
+			16.0f * thumbnailView.frame.size.width,
+			16.0f * thumbnailView.frame.size.height
+		}, usableRect, 0.0f, YES);
 		thumbnailRect = CGRectIntegral(thumbnailRect);
 		thumbnailRect.origin.x = exhaustedWidth;
 		thumbnailView.frame = thumbnailRect;
-		
 		exhaustedWidth += CGRectGetWidth(thumbnailRect);
-		
-		[self addSubview:thumbnailView];
-		
 	}];
-			
+	
+	CGFloat leftPadding = roundf(0.5f * (usableWidth - exhaustedWidth)) + 8;
+	if (leftPadding > 0)
+		for (UIView *aThumbnailView in imageThumbnailViews)
+			aThumbnailView.frame = CGRectOffset(aThumbnailView.frame, leftPadding, 0);
+	
+	if (self.selectedItemIndex != NSNotFound) {
+		UIView *selectedThumbnailView = [imageThumbnailViews objectAtIndex:self.selectedItemIndex];
+		selectedThumbnailView.frame = UIEdgeInsetsInsetRect(selectedThumbnailView.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
+		[selectedThumbnailView.superview bringSubviewToFront:selectedThumbnailView];
+	}
+		
+}
+
+- (void) handleTap:(UITapGestureRecognizer *)aTapRecognizer {
+
+	id hitItem = [self itemAtPoint:[aTapRecognizer locationInView:self]];
+	
+	if (!hitItem)
+		return;
+	
+	NSUInteger newItemIndex = [self.items indexOfObject:hitItem];
+	
+	if (self.selectedItemIndex == newItemIndex)
+		return;
+	
+	self.selectedItemIndex = newItemIndex;
+	[self.delegate imageStreamPickerView:self didSelectItem:hitItem];
+	[self setNeedsLayout];
+
+}
+
+- (void) handlePan:(UIPanGestureRecognizer *)aPanRecognizer {
+
+	if (aPanRecognizer.state != UIGestureRecognizerStateChanged)
+		return;
+
+	id hitItem = [self itemAtPoint:[aPanRecognizer locationInView:self]];
+	
+	if (!hitItem)
+		return;
+
+	NSUInteger newItemIndex = [self.items indexOfObject:hitItem];
+	
+	if (self.selectedItemIndex == newItemIndex)
+		return;
+	
+	self.selectedItemIndex = newItemIndex;
+	[self.delegate imageStreamPickerView:self didSelectItem:hitItem];
+	[self setNeedsLayout];
+	
+}
+
+- (id) itemAtPoint:(CGPoint)aPoint {
+
+	for (UIView *aView in self.subviews)
+		if (aView.tag == kWAImageStreamPickerComponent)
+			if ([aView pointInside:[self convertPoint:aPoint toView:aView] withEvent:nil])
+				return objc_getAssociatedObject(aView, kWAImageStreamPickerComponentItem);
+	
+	return nil;
+
 }
 
 - (void) dealloc {

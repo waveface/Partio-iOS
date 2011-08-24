@@ -26,10 +26,8 @@
 @property (nonatomic, readwrite, assign) id<WAImageStreamPickerViewDelegate> delegate;
 @property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
 @property (nonatomic, readwrite, retain) UIView *activeImageOverlay;
-
 @property (nonatomic, readwrite, copy) UIView * (^viewForThumbnail)(UIImage *thumbnail);
-
-//	@property (nonatomic, readwrite, assign) CGFloat aspectRatio;
+@property (nonatomic, readwrite, assign) NSUInteger selectedItemIndex;
 
 - (void) reloadData;
 
