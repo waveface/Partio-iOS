@@ -168,7 +168,7 @@
     if( [indexPath section] == 0) {
         WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Post"];
         if (cell == nil) {
-            cell = [[[WAPostViewCellPhone alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Post"] autorelease];
+            cell = [[[WAPostViewCellPhone alloc] initWithStyle:WAPostViewCellStyleCompact reuseIdentifier:@"Post"] autorelease];
         }
     
         cell.userNicknameLabel.text = post.owner.nickname;
@@ -176,12 +176,11 @@
         cell.contentTextLabel.text = post.text;
         //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
         cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-        [cell hideComment:TRUE];
         return cell;
     }
     
     // Section 2 for comment cell
-    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row]inSection:0];
+    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
     WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
 	
 	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];

@@ -24,7 +24,7 @@
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+	return [self initWithCommentsViewCellStyle:style reuseIdentifier:reuseIdentifier];
 
 }
 
@@ -41,6 +41,13 @@
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
+        case WAPostViewCellStyleCompact: {
+			loadedNibName = @"WAPostViewCellPhone-Compact";
+			break;
+		}case WAPostViewCellStyleCompactWithImageStack: {
+			loadedNibName = @"WAPostViewCellPhone-CompactWithImageStack";
+			break;
+		}
 	}
 
 	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
@@ -52,17 +59,8 @@
 	self.reuseIdentifier = aReuseIdentifier;
     self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
     
-    
 	return self;
 	
-}
-
-- (void)hideComment:(BOOL)hide
-{
-    if (hide) {
-        commentLabel.hidden = hide;
-        commentBackground.hidden= hide;
-    }
 }
 
 - (void) dealloc {

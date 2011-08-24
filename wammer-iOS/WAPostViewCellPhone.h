@@ -11,7 +11,9 @@
 
 enum {
 	WAPostViewCellStyleDefault,
-	WAPostViewCellStyleImageStack
+	WAPostViewCellStyleImageStack,
+    WAPostViewCellStyleCompact,
+    WAPostViewCellStyleCompactWithImageStack
 }; typedef NSUInteger WAPostViewCellStyle;
 
 
