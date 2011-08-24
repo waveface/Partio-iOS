@@ -166,17 +166,43 @@
 {
     // Section 0 for post cell
     if( [indexPath section] == 0) {
-        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Post"];
-        if (cell == nil) {
-            cell = [[[WAPostViewCellPhone alloc] initWithStyle:WAPostViewCellStyleCompact reuseIdentifier:@"Post"] autorelease];
+        BOOL postHasFiles = (BOOL)!![post.files count];
+        
+        NSString *identifier = postHasFiles ? @"WithImage" : @"TextOnly";
+        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleCompactWithImageStack : WAPostViewCellStyleCompact;
+        
+        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        if(!cell) {
+            cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
         }
-    
+        
         cell.userNicknameLabel.text = post.owner.nickname;
         cell.avatarView.image = post.owner.avatar;
         cell.contentTextLabel.text = post.text;
         cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                                [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                                [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+        NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+            
+            return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+                return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+            }] anyObject]).resourceFilePath;
+            
+        }];
+        
+        if ([allFilePaths count] == [post.files count]) {
+            
+            cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+                
+                return [UIImage imageWithContentsOfFile:aPath];
+                
+            }];
+            
+        } else {
+            
+            cell.imageStackView.images = nil;
+            
+        }
         return cell;
     }
     
@@ -254,7 +280,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    if ([indexPath section] == 0 && [post.files count] > 0 ) 
+        return 260;
+    return 160;
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
