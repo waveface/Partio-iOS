@@ -39,6 +39,7 @@
 @synthesize paginatedView;
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
+@synthesize onDismiss;
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
@@ -161,8 +162,12 @@
 	self.toolbar = [[[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }] autorelease];
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
-	
-	self.toolbar.items = [NSArray arrayWithObject:[[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView] autorelease]];
+		
+	self.toolbar.items = [NSArray arrayWithObjects:
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+		[[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView] autorelease],
+		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+	nil];
 	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.navigationBar];
@@ -174,6 +179,10 @@
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)] autorelease];
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
+	
+	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+		nrSelf.streamPickerView.selectedItemIndex = [inNewValue unsignedIntValue];
+	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 
 }
 
@@ -204,11 +213,8 @@
 
 - (BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
 
-	dispatch_async(dispatch_get_main_queue(), ^ {
-
-		[self dismissModalViewControllerAnimated:YES];
-	
-	});
+	if (self.onDismiss)
+		dispatch_async(dispatch_get_main_queue(), self.onDismiss);
 	
 	return NO;
 
@@ -258,29 +264,42 @@
 	self.streamPickerView = [[[WAImageStreamPickerView alloc] init] autorelease];
 	self.streamPickerView.delegate = self;
 	
+	[self.streamPickerView reloadData];
+	
 	return streamPickerView;
 
 }
 
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	//	TBD
-
-	return 0;
+	return [self.article.files count];
 
 }
 
-- (UIImage *) thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker {
+- (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	//	TBD
+	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (id obj, BOOL *stop) {
+		return [[[obj objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:anIndex]];
+	}] anyObject];
 	
-	return 0;
+	return representedFile;
 
 }
 
-- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem {
+- (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	//	TBD
+	return [UIImage imageWithContentsOfFile:aFile.resourceFilePath];
+
+}
+
+- (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(WAFile *)anItem {
+
+	NSUInteger index = [self.article.fileOrder indexOfObject:[[anItem objectID] URIRepresentation]];
+	
+	if (index == NSNotFound)
+		return;
+		
+	[self.paginatedView scrollToPageAtIndex:index animated:NO];
 
 }
 
@@ -358,19 +377,33 @@
 
 
 
+- (UIImage *) currentImage {
+
+	return ((WAGalleryImageView *)[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage]).image;
+
+}
+
+
+
+
+
 - (void) viewDidUnload {
+
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 
 	self.paginatedView = nil;
 	self.navigationBar = nil;
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
-	
+		
 	[super viewDidUnload];
 
 }
 
 - (void) dealloc {
+
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
@@ -383,6 +416,8 @@
 	[toolbar release];
 	[previousNavigationItem release];
 	[streamPickerView release];
+	
+	[onDismiss release];
 	
 	[super dealloc];
 

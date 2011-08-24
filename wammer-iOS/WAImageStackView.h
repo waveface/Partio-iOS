@@ -32,6 +32,7 @@ typedef enum {
 @property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
 @property (nonatomic, readonly, assign) UIView *firstPhotoView;
 
+- (void) setImages:(NSArray *)newImages asynchronously:(BOOL)async withDecodingCompletion:(void(^)(void))aBlock;
 - (void) reset;
 
 @end

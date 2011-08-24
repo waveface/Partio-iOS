@@ -16,13 +16,15 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize commentLabel;
+@synthesize commentBackground;
 @synthesize style;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel, extraInfoButton;
+@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+	return [self initWithCommentsViewCellStyle:style reuseIdentifier:reuseIdentifier];
 
 }
 
@@ -39,6 +41,13 @@
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
+        case WAPostViewCellStyleCompact: {
+			loadedNibName = @"WAPostViewCellPhone-Compact";
+			break;
+		}case WAPostViewCellStyleCompactWithImageStack: {
+			loadedNibName = @"WAPostViewCellPhone-CompactWithImageStack";
+			break;
+		}
 	}
 
 	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
@@ -48,12 +57,22 @@
 	
 	self.style = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
-    self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
-	
+    
+    self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1];
+ 
+    self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+    self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1];
+    
+    self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
+    
+    
+    self.avatarView.layer.cornerRadius = 7.0;
+    self.avatarView.layer.masksToBounds = YES;
+    
 	return self;
 	
 }
-
 
 - (void) dealloc {
 
@@ -65,6 +84,10 @@
 	[dateLabel release];
 	[originLabel release];
 	
+    [commentLabel release];
+    [commentBackground release];
+    [imageStackView release];
+    [imageStackView release];
 	[super dealloc];
 	
 }

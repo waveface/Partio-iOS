@@ -10,17 +10,24 @@
 #import "WAComposeViewControllerPhone.h"
 #import "WADataStore.h"
 #import "WAArticleCommentsViewCell.h"
+#import "WAPostViewCellPhone.h"
 #import "WAArticle.h"
 
-@interface WAPostViewControllerPhone ()
+@interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) WAArticle *post;
+@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+
+- (void) refreshData;
+
++ (IRRelativeDateFormatter *) relativeDateFormatter;
+
 
 @end
 
 @implementation WAPostViewControllerPhone
-@synthesize post, managedObjectContext;
+@synthesize post, fetchedResultsController, managedObjectContext;
 
 + (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL{
     
@@ -39,8 +46,37 @@
         // Custom initialization
         self.title = @"Comments";
         self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showCompose:)]autorelease];
+        
     }
     return self;
+}
+
+- (NSFetchedResultsController *) fetchedResultsController {
+    
+	if (fetchedResultsController)
+		return fetchedResultsController;
+	
+	if (!self.post)
+		return nil;
+    
+	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel 
+                                    fetchRequestFromTemplateWithName:@"WAFRCommentsForArticle" 
+                                    substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:self.post, @"Article",nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+                                    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+                                    nil];
+	
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	
+	self.fetchedResultsController.delegate = self;
+	
+	NSError *fetchingError = nil;
+	if (![fetchedResultsController performFetch:&fetchingError])
+		NSLog(@"Error fetching: %@", fetchingError);
+	
+	return fetchedResultsController;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -79,6 +115,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (self.post && !self.fetchedResultsController.fetchedObjects) {
+		NSError *fetchingError = nil;
+		if (![self.fetchedResultsController performFetch:&fetchingError])
+			NSLog(@"Error fetching: %@", fetchingError);
+		else
+			[self refreshData];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -107,30 +151,77 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return 1;
+    if(section == 0)
+        return 1;
+    else
+        return [[[self post] comments] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"PostCell";
-    
-    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    // Section 0 for post cell
+    if( [indexPath section] == 0) {
+        BOOL postHasFiles = (BOOL)!![post.files count];
+        
+        NSString *identifier = postHasFiles ? @"WithImage" : @"TextOnly";
+        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleCompactWithImageStack : WAPostViewCellStyleCompact;
+        
+        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        if(!cell) {
+            cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
+        }
+        
+        cell.userNicknameLabel.text = post.owner.nickname;
+        cell.avatarView.image = post.owner.avatar;
+        cell.contentTextLabel.text = post.text;
+        cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                               [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                               [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+        NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+            
+            return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+                return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+            }] anyObject]).resourceFilePath;
+            
+        }];
+        
+        if ([allFilePaths count] == [post.files count]) {
+            
+            cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+                
+                return [UIImage imageWithContentsOfFile:aPath];
+                
+            }];
+            
+        } else {
+            
+            cell.imageStackView.images = nil;
+            
+        }
+        return cell;
     }
     
-    cell.userNicknameLabel.text = post.owner.nickname;
-    cell.avatarView.image = post.owner.avatar;
-    cell.contentTextLabel.text = post.text;
-    //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
-    cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+    // Section 2 for comment cell
+    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
+    WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
+	
+	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	if (!cell)
+		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
     
+	cell.userNicknameLabel.text = representedComment.owner.nickname;
+	cell.avatarView.image = representedComment.owner.avatar;
+	cell.contentTextLabel.text = representedComment.text;
+	cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+
+    [representedComment.timestamp description];
+	cell.originLabel.text = representedComment.creationDeviceName;
+	
     return cell;
 }
 
@@ -189,8 +280,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    if ([indexPath section] == 0 && [post.files count] > 0 ) 
+        return 260;
+    return 160;
 }
 
++ (IRRelativeDateFormatter *) relativeDateFormatter {
+    
+	static IRRelativeDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+        
+		formatter = [[IRRelativeDateFormatter alloc] init];
+		formatter.approximationMaxTokenCount = 1;
+        
+	});
+    
+	return formatter;
+    
+}
 
 @end
