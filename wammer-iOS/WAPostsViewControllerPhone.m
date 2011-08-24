@@ -159,7 +159,7 @@
                            [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                            [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+    cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
     return cell;
 }
 

@@ -16,6 +16,7 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize commentLabel;
 @synthesize style;
 @dynamic reuseIdentifier;
 @synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel, extraInfoButton;
@@ -65,6 +66,7 @@
 	[dateLabel release];
 	[originLabel release];
 	
+    [commentLabel release];
 	[super dealloc];
 	
 }

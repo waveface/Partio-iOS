@@ -166,7 +166,7 @@
     if( [indexPath row] == 0) {
         WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Post"];
         if (cell == nil) {
-            cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Post"] autorelease];
+            cell = [[[WAPostViewCellPhone alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Post"] autorelease];
         }
     
         cell.userNicknameLabel.text = post.owner.nickname;

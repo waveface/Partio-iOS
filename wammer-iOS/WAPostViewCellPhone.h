@@ -15,7 +15,10 @@ enum {
 }; typedef NSUInteger WAPostViewCellStyle;
 
 
-@interface WAPostViewCellPhone : UITableViewCell
+@interface WAPostViewCellPhone : UITableViewCell {
+    UILabel *commentLabel;
+}
+
 
 - (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
@@ -27,6 +30,7 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *extraInfoButton;
+@property (nonatomic, retain) IBOutlet UILabel *commentLabel;
 
 @end
 
