@@ -57,7 +57,15 @@
 	
 	self.style = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
-    self.contentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
+    
+    self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1];
+ 
+    self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+    self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1];
+    
+    self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
+    
     
     self.avatarView.layer.cornerRadius = 7.0;
     self.avatarView.layer.masksToBounds = YES;
@@ -78,6 +86,8 @@
 	
     [commentLabel release];
     [commentBackground release];
+    [imageStackView release];
+    [imageStackView release];
 	[super dealloc];
 	
 }
