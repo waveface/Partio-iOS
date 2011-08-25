@@ -25,6 +25,7 @@
         <attribute name="resourceType" optional="YES" attributeType="String"/>
         <attribute name="resourceURL" optional="YES" attributeType="String"/>
         <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="thumbnail" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer"/>
         <attribute name="thumbnailFilePath" optional="YES" attributeType="String"/>
         <attribute name="thumbnailURL" optional="YES" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date"/>
@@ -46,7 +47,7 @@
     <elements>
         <element name="WAArticle" positionX="-5760" positionY="-1656" width="128" height="180"/>
         <element name="WAComment" positionX="-5546" positionY="-1656" width="128" height="135"/>
-        <element name="WAFile" positionX="-5976" positionY="-1653" width="128" height="195"/>
+        <element name="WAFile" positionX="-5976" positionY="-1653" width="128" height="210"/>
         <element name="WAUser" positionX="-5796" positionY="-1368" width="128" height="165"/>
     </elements>
 </model>

@@ -10,6 +10,8 @@
 #import "WAArticle.h"
 #import "WAUser.h"
 #import "WADataStore.h"
+#import "UIImage+IRAdditions.h"
+#import "CGGeometry+IRAdditions.h"
 
 
 @implementation WAFile
@@ -24,6 +26,7 @@
 @dynamic timestamp;
 @dynamic article;
 @dynamic owner;
+@dynamic thumbnail;
 
 + (NSString *) keyPathHoldingUniqueValue {
 
@@ -180,6 +183,24 @@
 	}
 	
 	return primitivePath;
+
+}
+
+- (UIImage *) thumbnail {
+
+	UIImage *primitiveThumbnail = [self primitiveValueForKey:@"thumbnail"];
+	
+	if (primitiveThumbnail)
+		return primitiveThumbnail;
+	
+	if (!self.resourceFilePath)
+		return nil;
+	
+	UIImage *resourceImage = [UIImage imageWithContentsOfFile:self.resourceFilePath];
+	
+	self.thumbnail = [resourceImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 128, 128 } }, 0.0f, YES).size];
+	
+	return self.thumbnail;
 
 }
 
