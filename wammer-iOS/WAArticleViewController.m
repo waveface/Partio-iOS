@@ -68,6 +68,12 @@
 	
 	if (savedContext == self.managedObjectContext)
 		return;
+		
+	dispatch_sync(dispatch_get_main_queue(), ^ {
+		
+		[self retain];
+	
+	});
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -76,6 +82,8 @@
 		
 		if ([self isViewLoaded])
 			[self refreshView];
+			
+		[self autorelease];
 	
 	});
 
@@ -277,25 +285,39 @@
 	self.articleDescriptionLabel.text = self.article.text;
 	
 	
-	NSArray *allFilePaths = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+	if (self.imageStackView) {
 	
-		return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-		}] anyObject]).resourceFilePath;
-	
-	}];
-	
-	if ([allFilePaths count] == [self.article.files count]) {
-	
-		self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-			
-			return [UIImage imageWithContentsOfFile:aPath];
-			
+		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewCOntrollerStackImagePaths";
+		
+		NSArray *allFilePaths = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+		
+			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+			}] anyObject]).resourceFilePath;
+		
 		}];
-	
-	} else {
-	
-		self.imageStackView.images = nil;
+		
+		if ([allFilePaths count] == [self.article.files count]) {
+		
+			NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths);
+
+			if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
+
+				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+					
+					return [UIImage imageWithContentsOfFile:aPath];
+					
+				}];
+				
+				objc_setAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
+			
+			}
+		
+		} else {
+		
+			self.imageStackView.images = nil;
+		
+		}
 	
 	}
 
@@ -346,6 +368,9 @@
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
+
+	if (!representedImage)
+		return;
 	
 	NSURL *articleURI = [[self.article objectID] URIRepresentation];
 	

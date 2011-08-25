@@ -109,4 +109,13 @@
 
 }
 
+- (void) dealloc {
+
+	[activityIndicator release];
+	[imageView release];
+
+	[super dealloc];
+	
+}
+
 @end

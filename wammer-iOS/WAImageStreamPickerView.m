@@ -161,31 +161,44 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 	__block CGFloat exhaustedWidth = 0;
 	CGFloat usableWidth = CGRectGetWidth(usableRect);
 	
-	[imageThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *thumbnailView, NSUInteger idx, BOOL *stop) {
-		[self addSubview:thumbnailView];
-	}];
+	__block UIView *selectedThumbnailView = nil;
 	
 	[imageThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *thumbnailView, NSUInteger idx, BOOL *stop) {
-		CGRect thumbnailRect = IRCGSizeGetCenteredInRect((CGSize){
+	
+		BOOL currentItemIsSelected = (self.selectedItemIndex == idx);
+		
+		CGSize calculatedSize = (CGSize){
 			16.0f * thumbnailView.frame.size.width,
 			16.0f * thumbnailView.frame.size.height
-		}, usableRect, 0.0f, YES);
+		};
+		
+		CGRect thumbnailRect = IRCGSizeGetCenteredInRect(calculatedSize, usableRect, 0.0f, YES);
+		
 		thumbnailRect = CGRectIntegral(thumbnailRect);
 		thumbnailRect.origin.x = exhaustedWidth;
 		thumbnailView.frame = thumbnailRect;
 		exhaustedWidth += CGRectGetWidth(thumbnailRect);
+		
+		if (currentItemIsSelected) {
+			
+			selectedThumbnailView = thumbnailView;
+			CGRect actualThumbnailRect = IRCGSizeGetCenteredInRect(calculatedSize, usableRect, -4.0f, YES);
+			actualThumbnailRect.origin.x = exhaustedWidth - CGRectGetWidth(thumbnailRect) - (CGRectGetWidth(actualThumbnailRect) - CGRectGetWidth(thumbnailRect));
+			thumbnailView.frame = actualThumbnailRect;
+			
+		}
+		
+		[self addSubview:thumbnailView];		
+		
 	}];
 	
 	CGFloat leftPadding = roundf(0.5f * (usableWidth - exhaustedWidth)) + 8;
 	if (leftPadding > 0)
-		for (UIView *aThumbnailView in imageThumbnailViews)
+		for (UIView *aThumbnailView in imageThumbnailViews) {
 			aThumbnailView.frame = CGRectOffset(aThumbnailView.frame, leftPadding, 0);
+		}
 	
-	if (self.selectedItemIndex != NSNotFound) {
-		UIView *selectedThumbnailView = [imageThumbnailViews objectAtIndex:self.selectedItemIndex];
-		selectedThumbnailView.frame = UIEdgeInsetsInsetRect(selectedThumbnailView.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
-		[selectedThumbnailView.superview bringSubviewToFront:selectedThumbnailView];
-	}
+	[selectedThumbnailView.superview bringSubviewToFront:selectedThumbnailView];
 		
 }
 

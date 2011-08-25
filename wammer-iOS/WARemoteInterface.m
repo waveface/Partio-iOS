@@ -455,7 +455,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			@"WAComment", @"comments",
 			@"WAUser", @"owner",
 		
-		nil] options:0];
+		nil] options:IRManagedObjectOptionIndividualOperations];
 		
 		NSError *savingError = nil;
 		if (![context save:&savingError])
@@ -508,7 +508,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 					@"WAComment", @"comments",
 					@"WAUser", @"owner",
 				
-				nil] options:0];
+				nil] options:IRManagedObjectOptionIndividualOperations];
 				
 				for (WAArticle *anArticle in touchedArticles)
 					anArticle.draft = [NSNumber numberWithBool:NO];
