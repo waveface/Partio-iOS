@@ -224,8 +224,11 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 
 	if (aPanRecognizer.state != UIGestureRecognizerStateChanged)
 		return;
+		
+	CGPoint hitPoint = [aPanRecognizer locationInView:self];
+	hitPoint.y = CGRectGetMidY(self.bounds);
 
-	id hitItem = [self itemAtPoint:[aPanRecognizer locationInView:self]];
+	id hitItem = [self itemAtPoint:hitPoint];
 	
 	if (!hitItem)
 		return;
