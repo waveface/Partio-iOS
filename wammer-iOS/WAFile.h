@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
+@property (nonatomic, retain) UIImage *thumbnail;
 
 + (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
 + (NSOperationQueue *) remoteResourceHandlingQueue;

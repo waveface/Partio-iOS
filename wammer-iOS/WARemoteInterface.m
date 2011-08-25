@@ -274,7 +274,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 	
 			IRWebAPIKitStringValue(creatorIdentifier), @"creator_id",
-			@"iPad", @"creation_device_name",
+			[UIDevice currentDevice].model, @"creation_device_name",
 			IRWebAPIKitStringValue(bodyText), @"text",
 			[attachmentIdentifiers JSONString], @"files",
 		
@@ -353,7 +353,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		[NSDictionary dictionaryWithObjectsAndKeys:
 	
 			creatorIdentifier, @"creator_id",
-			@"iPad", @"creation_device_name",
+			[UIDevice currentDevice].model, @"creation_device_name",
 			anIdentifier, @"post_id",
 			bodyText, @"text",
 		
@@ -455,7 +455,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			@"WAComment", @"comments",
 			@"WAUser", @"owner",
 		
-		nil] options:0];
+		nil] options:IRManagedObjectOptionIndividualOperations];
 		
 		NSError *savingError = nil;
 		if (![context save:&savingError])
@@ -508,7 +508,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 					@"WAComment", @"comments",
 					@"WAUser", @"owner",
 				
-				nil] options:0];
+				nil] options:IRManagedObjectOptionIndividualOperations];
 				
 				for (WAArticle *anArticle in touchedArticles)
 					anArticle.draft = [NSNumber numberWithBool:NO];

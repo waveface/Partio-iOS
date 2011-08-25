@@ -25,6 +25,7 @@
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
+#import "WAComposeViewControllerPhone.h"
 
 
 @interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate>
@@ -54,14 +55,14 @@
 		
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
     self.title = @"Wammer";
-    self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showPostView:)]autorelease];
+    self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
     
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
         
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO) AND (comments.@count != 0)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
                                            [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
                                            nil];
@@ -147,9 +148,18 @@
     static NSString *imageCellIdentifier = @"PostCell-Stacked";
     
     BOOL postHasFiles = (BOOL)!![post.files count];
+    BOOL postHasComments = (BOOL)!![post.comments count];
     
     NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
-    WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+    WAPostViewCellStyle style = WAPostViewCellStyleDefault; //text only with comment
+    
+    if (postHasFiles && postHasComments) {
+        style = WAPostViewCellStyleImageStack;
+    }else if(postHasFiles) {
+        style = WAPostViewCellStyleCompactWithImageStack;
+    }else {
+        style = WAPostViewCellStyleCompact;
+    }
     
     WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell) {
@@ -182,10 +192,9 @@
 		}];
         
 	} else {
-        
-		cell.imageStackView.images = nil;
-        
-	}
+    	cell.imageStackView.images = nil;
+    }
+    
     return cell;
     
 }
@@ -258,10 +267,20 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void) showPostView:(UIBarButtonItem *)sender
+- (void) handleCompose:(UIBarButtonItem *)sender
 {
-    WAPostViewControllerPhone *pvc = [[[WAPostViewControllerPhone alloc]init]autorelease];
-    [self.navigationController pushViewController:pvc animated:YES];
+    
+    WAComposeViewControllerPhone *cvc = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
+        
+		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil withCompletion: ^ {
+            
+			[self refreshData];
+            
+		}];
+        
+	}];
+
+    [self.navigationController pushViewController:cvc animated:YES];
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
