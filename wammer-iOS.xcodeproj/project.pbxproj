@@ -292,15 +292,15 @@
 				4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */,
 				4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */,
 				4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */,
-				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
-				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
-				4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */,
 				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
 				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
 				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
 				4B225D031404EE1300F9A1CE /* WAPostViewCellPhone-Compact.xib */,
 				4B225D3F1405044300F9A1CE /* WAPostViewCellPhone-CompactWithImageStack.xib */,
 				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
+				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
+				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
+				4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */,
 			);
 			name = iPhone;
 			sourceTree = "<group>";

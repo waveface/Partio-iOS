@@ -9,5 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface WAComposeViewControllerPhone : UIViewController
+{
+    
+    UITextView *contentTextView;
+}
 
+@property (nonatomic, retain) IBOutlet UITextView *contentTextView;
++ (WAComposeViewControllerPhone *) controllerWithPost:(NSURL *) aPostURLOrNil completion:(void(^)(NSURL *aPostURLOrNil))aBlock;
 @end

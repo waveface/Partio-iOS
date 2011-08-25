@@ -274,7 +274,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		[NSMutableDictionary dictionaryWithObjectsAndKeys:
 	
 			IRWebAPIKitStringValue(creatorIdentifier), @"creator_id",
-			@"iPad", @"creation_device_name",
+			[UIDevice currentDevice].model, @"creation_device_name",
 			IRWebAPIKitStringValue(bodyText), @"text",
 			[attachmentIdentifiers JSONString], @"files",
 		
@@ -353,7 +353,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		[NSDictionary dictionaryWithObjectsAndKeys:
 	
 			creatorIdentifier, @"creator_id",
-			@"iPad", @"creation_device_name",
+			[UIDevice currentDevice].model, @"creation_device_name",
 			anIdentifier, @"post_id",
 			bodyText, @"text",
 		
