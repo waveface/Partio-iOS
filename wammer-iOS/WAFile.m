@@ -104,7 +104,7 @@
 	dispatch_once(&onceToken, ^{
     
 		sharedManager = [IRRemoteResourcesManager sharedManager];
-		sharedManager.maximumNumberOfConnections = 10;
+		sharedManager.maximumNumberOfConnections = 2;
 		sharedManager.delegate = (id<IRRemoteResourcesManagerDelegate>)[UIApplication sharedApplication].delegate;
 		
 		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:kIRRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
