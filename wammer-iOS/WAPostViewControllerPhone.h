@@ -11,6 +11,6 @@
 
 @interface WAPostViewControllerPhone : UITableViewController
 
-+ (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL;
++ (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL ;
 
 @end
