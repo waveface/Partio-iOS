@@ -61,7 +61,7 @@
         
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO) AND (comments.@count != 0)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
                                            [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
                                            nil];
@@ -147,9 +147,18 @@
     static NSString *imageCellIdentifier = @"PostCell-Stacked";
     
     BOOL postHasFiles = (BOOL)!![post.files count];
+    BOOL postHasComments = (BOOL)!![post.comments count];
     
     NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
-    WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+    WAPostViewCellStyle style = WAPostViewCellStyleDefault;
+    
+    if (postHasFiles && postHasComments) {
+        style = WAPostViewCellStyleImageStack;
+    }else if(postHasFiles) {
+        style = WAPostViewCellStyleCompactWithImageStack;
+    }else {
+        style = WAPostViewCellStyleCompact;
+    }
     
     WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell) {
