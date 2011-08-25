@@ -11,22 +11,32 @@
 
 enum {
 	WAPostViewCellStyleDefault,
-	WAPostViewCellStyleImageStack
+	WAPostViewCellStyleImageStack,
+    WAPostViewCellStyleCompact,
+    WAPostViewCellStyleCompactWithImageStack
 }; typedef NSUInteger WAPostViewCellStyle;
 
 
-@interface WAPostViewCellPhone : UITableViewCell
+@interface WAPostViewCellPhone : UITableViewCell {
+    UILabel *commentLabel;
+    UIImageView *commentBackground;
+    WAImageStackView *imageStackView;
+}
+
 
 - (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
-@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
+- (void) hideComment:(BOOL)hide;
+
+@property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *contentTextLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
-@property (nonatomic, readwrite, retain) IBOutlet UIButton *extraInfoButton;
+@property (nonatomic, retain) IBOutlet UILabel *commentLabel;
+@property (nonatomic, retain) IBOutlet UIImageView *commentBackground;
 
 @end
 

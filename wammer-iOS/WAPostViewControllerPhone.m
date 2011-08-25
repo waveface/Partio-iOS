@@ -151,43 +151,77 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return 1+[[[self post] comments] count];
+    if(section == 0)
+        return 1;
+    else
+        return [[[self post] comments] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"%@", [indexPath row]);
-    if( [indexPath row] == 0) {
-        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Post"];
-        if (cell == nil) {
-            cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Post"] autorelease];
+    // Section 0 for post cell
+    if( [indexPath section] == 0) {
+        BOOL postHasFiles = (BOOL)!![post.files count];
+        
+        NSString *identifier = postHasFiles ? @"WithImage" : @"TextOnly";
+        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleCompactWithImageStack : WAPostViewCellStyleCompact;
+        
+        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+        if(!cell) {
+            cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
         }
-    
+        
         cell.userNicknameLabel.text = post.owner.nickname;
         cell.avatarView.image = post.owner.avatar;
         cell.contentTextLabel.text = post.text;
-        //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
-        cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+        cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                               [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                               [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+        NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+            
+            return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+                return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+            }] anyObject]).resourceFilePath;
+            
+        }];
+        
+        if ([allFilePaths count] == [post.files count]) {
+            
+            cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+                
+                return [UIImage imageWithContentsOfFile:aPath];
+                
+            }];
+            
+        } else {
+            
+            cell.imageStackView.images = nil;
+            
+        }
         return cell;
     }
     
-    WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Comment"];
-    if (cell == nil) {
-        cell = [[[WAArticleCommentsViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Comment"] autorelease];
-    }
+    // Section 2 for comment cell
+    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
+    WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
+	
+	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	if (!cell)
+		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
     
-    cell.userNicknameLabel.text = post.owner.nickname;
-    cell.avatarView.image = post.owner.avatar;
-    cell.contentTextLabel.text = post.text;
-    //cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
-    cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-    
+	cell.userNicknameLabel.text = representedComment.owner.nickname;
+	cell.avatarView.image = representedComment.owner.avatar;
+	cell.contentTextLabel.text = representedComment.text;
+	cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+
+    [representedComment.timestamp description];
+	cell.originLabel.text = representedComment.creationDeviceName;
+	
     return cell;
 }
 
@@ -246,8 +280,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    if ([indexPath section] == 0 && [post.files count] > 0 ) 
+        return 260;
+    return 160;
 }
 
++ (IRRelativeDateFormatter *) relativeDateFormatter {
+    
+	static IRRelativeDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+        
+		formatter = [[IRRelativeDateFormatter alloc] init];
+		formatter.approximationMaxTokenCount = 1;
+        
+	});
+    
+	return formatter;
+    
+}
 
 @end
