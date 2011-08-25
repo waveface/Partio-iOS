@@ -11,6 +11,7 @@
 #import "WADataStore.h"
 #import "WAGalleryImageView.h"
 #import "WAImageStreamPickerView.h"
+#import "UIImage+IRAdditions.h"
 
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate>
@@ -296,7 +297,7 @@
 
 - (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return [UIImage imageWithContentsOfFile:aFile.resourceFilePath];
+	return aFile.thumbnail;
 
 }
 
