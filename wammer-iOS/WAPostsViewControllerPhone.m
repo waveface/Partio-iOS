@@ -25,6 +25,7 @@
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
+#import "WAComposeViewControllerPhone.h"
 
 
 @interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate>
@@ -54,7 +55,7 @@
 		
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
     self.title = @"Wammer";
-    self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(showPostView:)]autorelease];
+    self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
     
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
@@ -266,10 +267,20 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void) showPostView:(UIBarButtonItem *)sender
+- (void) handleCompose:(UIBarButtonItem *)sender
 {
-    WAPostViewControllerPhone *pvc = [[[WAPostViewControllerPhone alloc]init]autorelease];
-    [self.navigationController pushViewController:pvc animated:YES];
+    
+    WAComposeViewControllerPhone *cvc = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
+        
+		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil withCompletion: ^ {
+            
+			[self refreshData];
+            
+		}];
+        
+	}];
+
+    [self.navigationController pushViewController:cvc animated:YES];
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
