@@ -69,7 +69,11 @@
 	if (savedContext == self.managedObjectContext)
 		return;
 		
-	[self retain];
+	dispatch_sync(dispatch_get_main_queue(), ^ {
+		
+		[self retain];
+	
+	});
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -364,6 +368,9 @@
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
+
+	if (!representedImage)
+		return;
 	
 	NSURL *articleURI = [[self.article objectID] URIRepresentation];
 	
