@@ -48,7 +48,10 @@
 	
 	self.style = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
-	
+    
+    self.avatarView.layer.cornerRadius = 7.0;
+    self.avatarView.layer.masksToBounds = YES;
+    
 	return self;
 	
 }

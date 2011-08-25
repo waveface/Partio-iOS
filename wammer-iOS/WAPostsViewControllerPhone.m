@@ -139,33 +139,64 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *identifier = @"PostCell";
-    WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell) {
-        cell = [[WAPostViewCellPhone alloc] initWithStyle:WAPostViewCellStyleDefault reuseIdentifier:identifier];
-    }
     
     WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if(!post){
-        NSLog(@"No posts");
+    NSParameterAssert(post);
+    
+    static NSString *defaultCellIdentifier = @"PostCell-Default";
+    static NSString *imageCellIdentifier = @"PostCell-Stacked";
+    
+    BOOL postHasFiles = (BOOL)!![post.files count];
+    
+    NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
+    WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+    
+    WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell) {
+        cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
     }
     
     cell.userNicknameLabel.text = post.owner.nickname;
     cell.avatarView.image = post.owner.avatar;
-    cell.avatarView.layer.cornerRadius = 7.0;
-    cell.avatarView.layer.masksToBounds = YES;
     cell.contentTextLabel.text = post.text;
     cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                            [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                            [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-    cell.extraInfoButton.titleLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+    cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+    
+    NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+        
+		return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+		}] anyObject]).resourceFilePath;
+        
+	}];
+	
+	if ([allFilePaths count] == [post.files count]) {
+        
+		cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+			
+			return [UIImage imageWithContentsOfFile:aPath];
+			
+		}];
+        
+	} else {
+        
+		cell.imageStackView.images = nil;
+        
+	}
     return cell;
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 160;
+    WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    if ( [post.files count ] == 0)
+        return 160;
+    else
+        return 300;
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
