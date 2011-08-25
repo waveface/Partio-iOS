@@ -11,6 +11,7 @@
 #import "WADataStore.h"
 #import "WAGalleryImageView.h"
 #import "WAImageStreamPickerView.h"
+#import "UIImage+IRAdditions.h"
 
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate>
@@ -68,6 +69,14 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 
 	return YES;
+
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	self.streamPickerView.frame = CGRectInset(self.toolbar.bounds, 10, 0);
 
 }
 
@@ -288,7 +297,7 @@
 
 - (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return [UIImage imageWithContentsOfFile:aFile.resourceFilePath];
+	return aFile.thumbnail;
 
 }
 
