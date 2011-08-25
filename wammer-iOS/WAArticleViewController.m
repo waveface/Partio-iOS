@@ -68,12 +68,11 @@
 	
 	if (savedContext == self.managedObjectContext)
 		return;
-		
-	dispatch_sync(dispatch_get_main_queue(), ^ {
-		
-		[self retain];
 	
-	});
+	if ([NSThread isMainThread])
+		[self retain];
+	else
+		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
