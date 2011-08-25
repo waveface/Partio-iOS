@@ -150,7 +150,7 @@
     BOOL postHasComments = (BOOL)!![post.comments count];
     
     NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
-    WAPostViewCellStyle style = WAPostViewCellStyleDefault;
+    WAPostViewCellStyle style = WAPostViewCellStyleDefault; //text only with comment
     
     if (postHasFiles && postHasComments) {
         style = WAPostViewCellStyleImageStack;
@@ -191,10 +191,9 @@
 		}];
         
 	} else {
-        
-		cell.imageStackView.images = nil;
-        
-	}
+    	cell.imageStackView.images = nil;
+    }
+    
     return cell;
     
 }
