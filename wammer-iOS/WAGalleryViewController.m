@@ -71,6 +71,14 @@
 
 }
 
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	self.streamPickerView.frame = CGRectInset(self.toolbar.bounds, 10, 0);
+
+}
+
 - (void) setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext {
 
 	if (newManagedObjectContext == managedObjectContext)
