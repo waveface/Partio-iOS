@@ -68,6 +68,8 @@
 	
 	if (savedContext == self.managedObjectContext)
 		return;
+		
+	[self retain];
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -76,6 +78,8 @@
 		
 		if ([self isViewLoaded])
 			[self refreshView];
+			
+		[self autorelease];
 	
 	});
 
