@@ -191,15 +191,12 @@
 							<object class="IBUIView" id="107731654">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{59, 43}, {200, 150}}</string>
+								<string key="NSFrame">{{59, 43}, {241, 150}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="76373530"/>
 								<string key="NSReuseIdentifierKey">_NS:195</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC45MDE5NjA3OTAyIDAuOTAxOTYwNzkwMiAwLjkwMTk2MDc5MDIAA</bytes>
-								</object>
+								<reference key="IBUIBackgroundColor" ref="510789719"/>
 								<object class="IBUIAccessibilityConfiguration" key="IBUIAccessibilityConfiguration">
 									<integer value="256" key="IBUIAccessibilityTraits"/>
 								</object>

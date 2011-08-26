@@ -183,7 +183,9 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 			
 			selectedThumbnailView = thumbnailView;
 			CGRect actualThumbnailRect = IRCGSizeGetCenteredInRect(calculatedSize, usableRect, -4.0f, YES);
-			actualThumbnailRect.origin.x = exhaustedWidth - CGRectGetWidth(thumbnailRect) - (CGRectGetWidth(actualThumbnailRect) - CGRectGetWidth(thumbnailRect));
+			actualThumbnailRect.origin.x = roundf(
+				exhaustedWidth - CGRectGetWidth(thumbnailRect) - 0.5f * (CGRectGetWidth(actualThumbnailRect) - CGRectGetWidth(thumbnailRect))	
+			);
 			thumbnailView.frame = actualThumbnailRect;
 			
 		}
