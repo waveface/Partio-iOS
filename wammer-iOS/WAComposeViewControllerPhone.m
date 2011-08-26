@@ -6,9 +6,10 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "IRImagePickerController.h"
+
 #import "WAComposeViewControllerPhone.h"
 #import "WADataStore.h"
-
 #import "WAAttachedMediaListViewController.h"
 
 
@@ -24,6 +25,7 @@
 @synthesize managedObjectContext, post;
 @synthesize contentTextView;
 @synthesize contentContainerView;
+@synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
@@ -94,23 +96,66 @@
 		
 	}];
 	
+	controller.headerView = self.attachmentsListViewControllerHeaderView;
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 	[self presentModalViewController:[[[UINavigationController alloc] initWithRootViewController:controller] autorelease] animated:YES];
 
-//	dispatch_async(dispatch_get_current_queue(), ^ {
-//		[[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@", NSStringFromSelector(_cmd)] message:[NSString stringWithFormat:@"TBD %s", __PRETTY_FUNCTION__] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-//	});
+}
+
+- (void) handleAttachmentAddFromCameraItemTap:(id)sender {
+
+	if (![IRImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+		return;
+		
+	__block IRImagePickerController *imagePickerController = [IRImagePickerController cameraCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	
+		NSLog(@"Done?");
+		
+		[imagePickerController dismissModalViewControllerAnimated:YES];
+		
+	}];
+	
+	[imagePickerController.view addSubview:((^ {
+		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
+		decorativeView.backgroundColor = [UIColor blackColor];
+		return decorativeView;
+	})())];
+
+	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
+
+}
+
+- (void) handleAttachmentAddFromPhotosLibraryItemTap:(id)sender {
+
+	if (![IRImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+		return;
+	
+	__block IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	
+		NSLog(@"Done?");
+		
+		[imagePickerController dismissModalViewControllerAnimated:YES];
+		
+	}];
+	
+	[imagePickerController.view addSubview:((^ {
+		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
+		decorativeView.backgroundColor = [UIColor blackColor];
+		return decorativeView;
+	})())];
+	
+	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
 
 }
 
 
-//	Deleting all the changed stuff and saving is like throwing all the stuff away
-//	In that sense just don’t do anything.
-
 - (void) handleDone:(UIBarButtonItem *)sender {
     
+	//	Deleting all the changed stuff and saving is like throwing all the stuff away
+	//	In that sense just don’t do anything.
+
 	//	TBD save a draft
 	self.post.text = self.contentTextView.text;
 	
@@ -163,7 +208,14 @@
 
 		self.contentTextView = nil;
 		self.contentContainerView = nil;
+		self.attachmentsListViewControllerHeaderView = nil;
     [super viewDidUnload];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -172,12 +224,11 @@
 }
 
 - (void)dealloc {
-	
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-    [contentTextView release];
-		[contentContainerView release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[contentTextView release];
+	[contentContainerView release];
+	[attachmentsListViewControllerHeaderView release];
+	[super dealloc];
 }
 
 @end

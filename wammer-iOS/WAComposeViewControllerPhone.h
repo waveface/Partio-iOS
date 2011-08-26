@@ -13,8 +13,11 @@
 
 @property (nonatomic, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, retain) IBOutlet UIView *contentContainerView;
+@property (nonatomic, retain) IBOutlet UIView *attachmentsListViewControllerHeaderView;
 
 - (IBAction) handleCameraItemTap:(id)sender;
+- (IBAction) handleAttachmentAddFromCameraItemTap:(id)sender;
+- (IBAction) handleAttachmentAddFromPhotosLibraryItemTap:(id)sender;
 
 + (WAComposeViewControllerPhone *) controllerWithPost:(NSURL *) aPostURLOrNil completion:(void(^)(NSURL *aPostURLOrNil))aBlock;
 
