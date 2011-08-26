@@ -6,6 +6,8 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "WADataStore.h"
 #import "WAPostsViewControllerPhone.h"
 #import "WACompositionViewController.h"
@@ -27,8 +29,12 @@
 #import "WAPostViewCellPhone.h"
 #import "WAComposeViewControllerPhone.h"
 
+#import "WAGalleryViewController.h"
 
-@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate>
+
+static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
+
+@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -164,6 +170,7 @@
     WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
     if(!cell) {
         cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
+				cell.imageStackView.delegate = self;
     }
     
     cell.userNicknameLabel.text = post.owner.nickname;
@@ -174,6 +181,9 @@
                            [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
     cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
     cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+		
+		if (cell.imageStackView)
+			objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
         
@@ -296,6 +306,78 @@
     
 	return formatter;
     
+}
+
+
+
+
+
+- (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
+
+	NSURL *representedObjectURI = objc_getAssociatedObject(aStackView, &WAPostsViewControllerPhone_RepresentedObjectURI);
+	
+	__block __typeof__(self) nrSelf = self;
+	__block WAGalleryViewController *galleryViewController = nil;
+	galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:representedObjectURI];
+	galleryViewController.hidesBottomBarWhenPushed = YES;
+	galleryViewController.onDismiss = ^ {
+
+		CATransition *transition = [CATransition animation];
+		transition.duration = 0.3f;
+		transition.type = kCATransitionPush;
+		transition.subtype = ((^ {
+			switch (self.interfaceOrientation) {
+				case UIInterfaceOrientationPortrait:
+					return kCATransitionFromLeft;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					return kCATransitionFromRight;
+				case UIInterfaceOrientationLandscapeLeft:
+					return kCATransitionFromTop;
+				case UIInterfaceOrientationLandscapeRight:
+					return kCATransitionFromBottom;
+			}
+		})());
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.fillMode = kCAFillModeForwards;
+		transition.removedOnCompletion = YES;
+
+		[galleryViewController.navigationController setNavigationBarHidden:NO animated:NO];
+		[galleryViewController.navigationController popViewControllerAnimated:NO];
+		
+		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+
+	};
+	
+	CATransition *transition = [CATransition animation];
+	transition.duration = 0.3f;
+	transition.type = kCATransitionPush;
+	transition.subtype = ((^ {
+		switch (self.interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				return kCATransitionFromRight;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				return kCATransitionFromLeft;
+			case UIInterfaceOrientationLandscapeLeft:
+				return kCATransitionFromBottom;
+			case UIInterfaceOrientationLandscapeRight:
+				return kCATransitionFromTop;
+		}
+	})());
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.fillMode = kCAFillModeForwards;
+	transition.removedOnCompletion = YES;
+	
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
+	[self.navigationController pushViewController:galleryViewController animated:NO];
+	
+	[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+	});
+	
 }
 
 @end
