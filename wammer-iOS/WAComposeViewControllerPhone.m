@@ -19,6 +19,7 @@
 @implementation WAComposeViewControllerPhone
 @synthesize managedObjectContext, post;
 @synthesize contentTextView;
+@synthesize contentContainerView;
 @synthesize completionBlock;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
@@ -43,13 +44,19 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = @"Compose";
-        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
-    }
-    return self;
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+		
+	self.title = @"Compose";
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
+
+	return self;
+
 }
 
 
@@ -105,6 +112,20 @@
 
 
 
+
+
+- (void) handleKeyboardNotification:(NSNotification *)aNotification {
+
+	NSDictionary *userInfo = [aNotification userInfo];
+	CGRect globalFinalKeyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	CGRect keyboardRectInView = [self.view.window convertRect:globalFinalKeyboardRect toView:self.view];
+	CGRect usableRect = CGRectNull, tempRect = CGRectNull;
+	CGRectDivide(self.view.bounds, &usableRect, &tempRect, CGRectGetMinY(keyboardRectInView), CGRectMinYEdge);
+	
+	self.contentContainerView.frame = usableRect;
+
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -113,24 +134,28 @@
     
     self.contentTextView.text = self.post.text;
     [self.contentTextView becomeFirstResponder];
+		
 }
 
 - (void)viewDidUnload
 {
-    [self setContentTextView:nil];
+
+		self.contentTextView = nil;
+		self.contentContainerView = nil;
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)dealloc {
+	
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+
     [contentTextView release];
+		[contentContainerView release];
     [super dealloc];
 }
 

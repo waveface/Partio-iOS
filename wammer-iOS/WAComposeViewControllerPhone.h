@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface WAComposeViewControllerPhone : UIViewController
-{
-    
-    UITextView *contentTextView;
-}
 
 @property (nonatomic, retain) IBOutlet UITextView *contentTextView;
+@property (nonatomic, retain) IBOutlet UIView *contentContainerView;
+
 + (WAComposeViewControllerPhone *) controllerWithPost:(NSURL *) aPostURLOrNil completion:(void(^)(NSURL *aPostURLOrNil))aBlock;
 @end
