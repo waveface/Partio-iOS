@@ -8,6 +8,10 @@
 
 #import "WAComposeViewControllerPhone.h"
 #import "WADataStore.h"
+
+#import "WAAttachedMediaListViewController.h"
+
+
 @interface WAComposeViewControllerPhone ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
@@ -81,9 +85,23 @@
 
 - (IBAction) handleCameraItemTap:(id)sender {
 
-	dispatch_async(dispatch_get_current_queue(), ^ {
-		[[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@", NSStringFromSelector(_cmd)] message:[NSString stringWithFormat:@"TBD %s", __PRETTY_FUNCTION__] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-	});
+	__block WAAttachedMediaListViewController *controller = nil;
+
+	controller = [WAAttachedMediaListViewController controllerWithArticleURI:nil completion: ^ (NSURL *objectURI) {
+	
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+		[controller dismissModalViewControllerAnimated:YES];
+		
+	}];
+	
+	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+	[self presentModalViewController:[[[UINavigationController alloc] initWithRootViewController:controller] autorelease] animated:YES];
+
+//	dispatch_async(dispatch_get_current_queue(), ^ {
+//		[[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@", NSStringFromSelector(_cmd)] message:[NSString stringWithFormat:@"TBD %s", __PRETTY_FUNCTION__] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+//	});
 
 }
 
