@@ -65,6 +65,7 @@
 		FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
 		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
 		FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
+		FF92796414079593007BEB65 /* WATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF92796314079593007BEB65 /* WATableViewCell.m */; };
 		FF97382513D821DF003D1722 /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
 		FF97386113D82B4F003D1722 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
@@ -229,6 +230,8 @@
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
+		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATableViewCell.h; path = "wammer-iOS/WATableViewCell.h"; sourceTree = "<group>"; };
+		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATableViewCell.m; path = "wammer-iOS/WATableViewCell.m"; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
@@ -304,6 +307,8 @@
 				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
 				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
 				4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */,
+				FF92796214079593007BEB65 /* WATableViewCell.h */,
+				FF92796314079593007BEB65 /* WATableViewCell.m */,
 			);
 			name = iPhone;
 			sourceTree = "<group>";
@@ -729,6 +734,7 @@
 				4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */,
 				FF7D466814024FD800C916F5 /* WAImageStreamPickerView.m in Sources */,
 				FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */,
+				FF92796414079593007BEB65 /* WATableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
