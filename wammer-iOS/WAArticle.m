@@ -124,15 +124,27 @@
 
 - (NSArray *) fileOrder {
 
-	NSArray *returnedOrder = [self primitiveValueForKey:@"fileOrder"];
+	NSArray *returnedOrder = nil;
+
+	@try {
+
+		returnedOrder = [self primitiveValueForKey:@"fileOrder"];
+
+	} @catch (NSException *exception) {
 	
+		NSLog(@"%s: %@", __PRETTY_FUNCTION__, exception);
+	
+		returnedOrder = [NSArray array];
+	
+	}
+		
 	if (!returnedOrder) {
 		returnedOrder = [NSArray array];
 	//	[self willChangeValueForKey:@"fileOrder"];
 		[self setPrimitiveValue:returnedOrder forKey:@"fileOrder"];
 	//	[self didChangeValueForKey:@"fileOrder"];
 	}
-	
+		
 	return returnedOrder;
 
 }
