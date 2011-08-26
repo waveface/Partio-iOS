@@ -14,5 +14,8 @@
 @property (nonatomic, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, retain) IBOutlet UIView *contentContainerView;
 
+- (IBAction) handleCameraItemTap:(id)sender;
+
 + (WAComposeViewControllerPhone *) controllerWithPost:(NSURL *) aPostURLOrNil completion:(void(^)(NSURL *aPostURLOrNil))aBlock;
+
 @end

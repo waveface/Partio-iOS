@@ -75,13 +75,16 @@
 	post = [newPost retain];
 	
 	[self didChangeValueForKey:@"article"];
+	
 }
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+
+
+- (IBAction) handleCameraItemTap:(id)sender {
+
+	dispatch_async(dispatch_get_current_queue(), ^ {
+		[[[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"%@", NSStringFromSelector(_cmd)] message:[NSString stringWithFormat:@"TBD %s", __PRETTY_FUNCTION__] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+	});
+
 }
 
 
