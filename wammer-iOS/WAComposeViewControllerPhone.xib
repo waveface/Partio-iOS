@@ -125,7 +125,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="907830666"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
+								<object class="NSColor" key="IBUIBackgroundColor" id="740223755">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
@@ -231,11 +231,8 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="530427165"/>
 				<string key="NSReuseIdentifierKey">_NS:180</string>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="140441511"/>
-				</object>
+				<reference key="IBUIBackgroundColor" ref="740223755"/>
+				<bool key="IBUIOpaque">NO</bool>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</object>

@@ -19,6 +19,8 @@
 @property (nonatomic, retain) WAArticle *post;
 @property (nonatomic, copy) void (^completionBlock)(NSURL *returnedURI);
 
+- (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset;
+
 @end
 
 @implementation WAComposeViewControllerPhone
@@ -60,6 +62,7 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	return self;
 
@@ -68,31 +71,67 @@
 
 - (void) setPost:(WAArticle *)newPost {
     
-	__block __typeof__(self) nrSelf = self;
+	//	__block __typeof__(self) nrSelf = self;
     
-	[self willChangeValueForKey:@"article"];
+	[self willChangeValueForKey:@"post"];
 	
 	[post irRemoveObserverBlocksForKeyPath:@"files"];	
-//	[newPost irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-//		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-//	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
-//	
 	[post release];
 	post = [newPost retain];
-	
-	[self didChangeValueForKey:@"article"];
+		
+	[self didChangeValueForKey:@"post"];
 	
 }
 
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	if ([NSThread isMainThread])
+		[self retain];
+	else
+		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		[self.managedObjectContext refreshObject:self.post mergeChanges:YES];
+		
+		if ([self isViewLoaded]) {
+		
+			//	Refresh view
+		
+		}
+			
+		[self autorelease];
+	
+	});
+
+}
 
 - (IBAction) handleCameraItemTap:(id)sender {
 
 	__block WAAttachedMediaListViewController *controller = nil;
+	__block __typeof__(self) nrSelf = self;
+	
+//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
+	NSLog(@"self.post %@", self.post);
+	
+	if ([self.post.objectID isTemporaryID]) {
+		NSError *permanentIDObtainingError = nil;
+		if (![self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:&permanentIDObtainingError])
+			NSLog(@"Error obtaining permanent ID: %@", permanentIDObtainingError);
+	}
+	
+	NSLog(@"post = %@", self.post);
 
-	controller = [WAAttachedMediaListViewController controllerWithArticleURI:nil completion: ^ (NSURL *objectURI) {
+	controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
 	
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-		[controller dismissModalViewControllerAnimated:YES];
+		[nrSelf dismissModalViewControllerAnimated:YES];
 		
 	}];
 	
@@ -111,8 +150,7 @@
 		
 	__block IRImagePickerController *imagePickerController = [IRImagePickerController cameraCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 	
-		NSLog(@"Done?");
-		
+		[self handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
 		[imagePickerController dismissModalViewControllerAnimated:YES];
 		
 	}];
@@ -134,8 +172,7 @@
 	
 	__block IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 	
-		NSLog(@"Done?");
-		
+		[self handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
 		[imagePickerController dismissModalViewControllerAnimated:YES];
 		
 	}];
@@ -229,6 +266,37 @@
 	[contentContainerView release];
 	[attachmentsListViewControllerHeaderView release];
 	[super dealloc];
+}
+
+
+
+
+
+- (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
+	
+	if (!selectedAssetURI)
+	if (!representedAsset)
+		return;
+
+	NSURL *finalFileURL = nil;
+	
+	if (selectedAssetURI)
+		finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+	
+	if (!finalFileURL)
+	if (!selectedAssetURI && representedAsset)
+		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]])];
+	
+	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+	stitchedFile.resourceType = (NSString *)kUTTypeImage;
+	stitchedFile.resourceURL = [finalFileURL absoluteString];
+	stitchedFile.resourceFilePath = [finalFileURL path];
+	stitchedFile.article = self.post;
+	
+	NSError *savingError = nil;
+	if (![self.managedObjectContext save:&savingError])
+		NSLog(@"Error saving: %@", savingError);
+	
 }
 
 @end
