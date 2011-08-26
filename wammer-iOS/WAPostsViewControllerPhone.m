@@ -316,6 +316,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	NSURL *representedObjectURI = objc_getAssociatedObject(aStackView, &WAPostsViewControllerPhone_RepresentedObjectURI);
 	
+	__block __typeof__(self) nrSelf = self;
 	__block WAGalleryViewController *galleryViewController = nil;
 	galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:representedObjectURI];
 	galleryViewController.hidesBottomBarWhenPushed = YES;
@@ -343,7 +344,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[galleryViewController.navigationController setNavigationBarHidden:NO animated:NO];
 		[galleryViewController.navigationController popViewControllerAnimated:NO];
 		
-		[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 
 	};
