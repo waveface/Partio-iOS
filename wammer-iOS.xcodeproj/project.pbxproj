@@ -347,8 +347,7 @@
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
 				FF55C23513F5251D00F38861 /* Gallery */,
-				FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */,
-				FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */,
+				FFA9512714077BE800BD3302 /* Attached Media */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
 				FF97382213D821C1003D1722 /* Model */,
 				FF97384613D82771003D1722 /* API */,
@@ -503,6 +502,15 @@
 				FF97386013D82B4F003D1722 /* JSONKit.m */,
 			);
 			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		FFA9512714077BE800BD3302 /* Attached Media */ = {
+			isa = PBXGroup;
+			children = (
+				FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */,
+				FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */,
+			);
+			name = "Attached Media";
 			sourceTree = "<group>";
 		};
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
