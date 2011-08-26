@@ -6,19 +6,28 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "IRImagePickerController.h"
+
 #import "WAComposeViewControllerPhone.h"
 #import "WADataStore.h"
+#import "WAAttachedMediaListViewController.h"
+
+
 @interface WAComposeViewControllerPhone ()
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAArticle *post;
 @property (nonatomic, copy) void (^completionBlock)(NSURL *returnedURI);
 
+- (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset;
+
 @end
 
 @implementation WAComposeViewControllerPhone
 @synthesize managedObjectContext, post;
 @synthesize contentTextView;
+@synthesize contentContainerView;
+@synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
@@ -43,46 +52,147 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = @"Compose";
-        self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
-    }
-    return self;
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+		
+	self.title = @"Compose";
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+
+	return self;
+
 }
 
 
 - (void) setPost:(WAArticle *)newPost {
     
-	__block __typeof__(self) nrSelf = self;
+	//	__block __typeof__(self) nrSelf = self;
     
-	[self willChangeValueForKey:@"article"];
+	[self willChangeValueForKey:@"post"];
 	
 	[post irRemoveObserverBlocksForKeyPath:@"files"];	
-//	[newPost irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-//		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-//	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
-//	
 	[post release];
 	post = [newPost retain];
+		
+	[self didChangeValueForKey:@"post"];
 	
-	[self didChangeValueForKey:@"article"];
-}
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
 
-//	Deleting all the changed stuff and saving is like throwing all the stuff away
-//	In that sense just don’t do anything.
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	if ([NSThread isMainThread])
+		[self retain];
+	else
+		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+		[self.managedObjectContext refreshObject:self.post mergeChanges:YES];
+		
+		if ([self isViewLoaded]) {
+		
+			//	Refresh view
+		
+		}
+			
+		[self autorelease];
+	
+	});
+
+}
+
+- (IBAction) handleCameraItemTap:(id)sender {
+
+	__block WAAttachedMediaListViewController *controller = nil;
+	__block __typeof__(self) nrSelf = self;
+	
+//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
+	NSLog(@"self.post %@", self.post);
+	
+	if ([self.post.objectID isTemporaryID]) {
+		NSError *permanentIDObtainingError = nil;
+		if (![self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:&permanentIDObtainingError])
+			NSLog(@"Error obtaining permanent ID: %@", permanentIDObtainingError);
+	}
+	
+	NSLog(@"post = %@", self.post);
+
+	controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
+	
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+		[nrSelf dismissModalViewControllerAnimated:YES];
+		
+	}];
+	
+	controller.headerView = self.attachmentsListViewControllerHeaderView;
+	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+	[self presentModalViewController:[[[UINavigationController alloc] initWithRootViewController:controller] autorelease] animated:YES];
+
+}
+
+- (void) handleAttachmentAddFromCameraItemTap:(id)sender {
+
+	if (![IRImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+		return;
+		
+	__block IRImagePickerController *imagePickerController = [IRImagePickerController cameraCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	
+		[self handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[imagePickerController dismissModalViewControllerAnimated:YES];
+		
+	}];
+	
+	[imagePickerController.view addSubview:((^ {
+		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
+		decorativeView.backgroundColor = [UIColor blackColor];
+		return decorativeView;
+	})())];
+
+	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
+
+}
+
+- (void) handleAttachmentAddFromPhotosLibraryItemTap:(id)sender {
+
+	if (![IRImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+		return;
+	
+	__block IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	
+		[self handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[imagePickerController dismissModalViewControllerAnimated:YES];
+		
+	}];
+	
+	[imagePickerController.view addSubview:((^ {
+		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
+		decorativeView.backgroundColor = [UIColor blackColor];
+		return decorativeView;
+	})())];
+	
+	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
+
+}
+
 
 - (void) handleDone:(UIBarButtonItem *)sender {
     
+	//	Deleting all the changed stuff and saving is like throwing all the stuff away
+	//	In that sense just don’t do anything.
+
 	//	TBD save a draft
 	self.post.text = self.contentTextView.text;
 	
@@ -105,6 +215,20 @@
 
 
 
+
+
+- (void) handleKeyboardNotification:(NSNotification *)aNotification {
+
+	NSDictionary *userInfo = [aNotification userInfo];
+	CGRect globalFinalKeyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+	CGRect keyboardRectInView = [self.view.window convertRect:globalFinalKeyboardRect toView:self.view];
+	CGRect usableRect = CGRectNull, tempRect = CGRectNull;
+	CGRectDivide(self.view.bounds, &usableRect, &tempRect, CGRectGetMinY(keyboardRectInView), CGRectMinYEdge);
+	
+	self.contentContainerView.frame = usableRect;
+
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -113,25 +237,66 @@
     
     self.contentTextView.text = self.post.text;
     [self.contentTextView becomeFirstResponder];
+		
 }
 
 - (void)viewDidUnload
 {
-    [self setContentTextView:nil];
+
+		self.contentTextView = nil;
+		self.contentContainerView = nil;
+		self.attachmentsListViewControllerHeaderView = nil;
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)dealloc {
-    [contentTextView release];
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[contentTextView release];
+	[contentContainerView release];
+	[attachmentsListViewControllerHeaderView release];
+	[super dealloc];
+}
+
+
+
+
+
+- (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
+	
+	if (!selectedAssetURI)
+	if (!representedAsset)
+		return;
+
+	NSURL *finalFileURL = nil;
+	
+	if (selectedAssetURI)
+		finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+	
+	if (!finalFileURL)
+	if (!selectedAssetURI && representedAsset)
+		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]])];
+	
+	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+	stitchedFile.resourceType = (NSString *)kUTTypeImage;
+	stitchedFile.resourceURL = [finalFileURL absoluteString];
+	stitchedFile.resourceFilePath = [finalFileURL path];
+	stitchedFile.article = self.post;
+	
+	NSError *savingError = nil;
+	if (![self.managedObjectContext save:&savingError])
+		NSLog(@"Error saving: %@", savingError);
+	
 }
 
 @end
