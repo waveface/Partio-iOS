@@ -264,9 +264,10 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
 		
+		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size, self.bounds, 8.0f, YES));
+		
 		if (idx == ([allPhotoViews count] - 1)) {
 		
-			photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size, self.bounds, 8.0f, YES));
 			imageView.layer.transform = CATransform3DIdentity;
 			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
 			
