@@ -251,8 +251,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData {
 
-	[[WADataStore defaultStore] updateUsersWithCompletion:nil];
-	[[WADataStore defaultStore] updateArticlesWithCompletion:nil];
+	[[WADataStore defaultStore] updateUsersOnSuccess:nil onFailure:nil];
+	[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
 
 }
 
@@ -282,11 +282,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     
     WAComposeViewControllerPhone *cvc = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
         
-		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil withCompletion: ^ {
+		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
             
 			[self refreshData];
             
-		}];
+		} onFailure:nil];
         
 	}];
 

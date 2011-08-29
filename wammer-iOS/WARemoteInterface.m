@@ -237,7 +237,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"posts"]);
 		
-	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
@@ -252,7 +252,12 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"post"]);
 		
-	} failureHandler:nil];	
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
+		
+	}];	
 
 }
 
@@ -263,7 +268,12 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"comments"]);
 		
-	} failureHandler:nil];
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
+		
+	}];
 
 }
 
@@ -291,7 +301,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"post"]);
 		
-	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseContext]);
@@ -335,7 +345,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 		[[NSFileManager defaultManager] removeItemAtURL:newURL error:nil];
 		
-	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
@@ -366,7 +376,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"comment"]);
 		
-	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
@@ -385,6 +395,12 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) updateUsersWithCompletion:(void(^)(void))aBlock {
 
+	[self updateUsersOnSuccess:aBlock onFailure:aBlock];
+
+}
+
+- (void) updateUsersOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
+
 	[[WARemoteInterface sharedInterface] retrieveAvailableUsersOnSuccess:^(NSArray *retrievedUserReps) {
 		
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -396,12 +412,13 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (![context save:&savingError])
 			NSLog(@"Saving failed: %@", savingError);
 		
-		if (aBlock)
-			aBlock();
+		if (successBlock)
+			successBlock();
 		
-	} onFailure:^(NSError *error) {
+	} onFailure: ^ (NSError *error) {
 	
-		//	Handle reload?
+		if (failureBlock)
+				failureBlock();
 		
 	}];
 
@@ -409,7 +426,11 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) updateArticlesWithCompletion:(void(^)(void))aBlock {
 
-	//	?
+	[self updateArticlesOnSuccess:aBlock onFailure:aBlock];
+
+}
+
+- (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 	
 	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
 	
@@ -461,8 +482,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		if (![context save:&savingError])
 			NSLog(@"Saving Error %@", savingError);
 		
-		if (aBlock)
-			aBlock();
+		if (successBlock)
+			successBlock();
 		
 	} onFailure: ^ (NSError *error) {
 		
@@ -473,6 +494,12 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock {
+
+	[self uploadArticle:anArticleURI onSuccess:aBlock onFailure:aBlock];
+
+}
+
+- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 
 		if (!anArticleURI)
 			return;
@@ -513,15 +540,15 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 				for (WAArticle *anArticle in touchedArticles)
 					anArticle.draft = [NSNumber numberWithBool:NO];
 				
-				if (aBlock)
-					aBlock();
+				if (successBlock)
+					successBlock();
 				
 			} onFailure:^(NSError *error) {
 			
 				NSLog(@"Fail %@", error);
 				
-				if (aBlock)
-					aBlock();
+				if (failureBlock)
+					failureBlock();
 				
 			}];
 
@@ -582,6 +609,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 					//	Guarding against accidental crossing of thread boundaries
 					context = (id)0x1;
 					updatedFile = (id)0x1;
+					
+					//	if (failureBlock)
+					//		failureBlock();
 					
 					NSLog(@"Failed uploading file: %@", error);
 					NSLog(@"TBD: handle this gracefully");
