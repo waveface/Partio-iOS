@@ -10,7 +10,7 @@
 
 
 @interface WAPostViewCellPhone ()
-@property (nonatomic, readwrite, assign) WAPostViewCellStyle style;
+@property (nonatomic, readwrite, assign) WAPostViewCellStyle postViewCellStyle;
 @property (nonatomic, readwrite, copy) NSString *reuseIdentifier;
 @end
 
@@ -18,13 +18,13 @@
 @implementation WAPostViewCellPhone
 @synthesize commentLabel;
 @synthesize commentBackground;
-@synthesize style;
+@synthesize postViewCellStyle;
 @dynamic reuseIdentifier;
 @synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
 
-- (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:style reuseIdentifier:reuseIdentifier];
+	return [self initWithCommentsViewCellStyle:aStyle reuseIdentifier:reuseIdentifier];
 
 }
 
@@ -41,7 +41,7 @@
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
-        case WAPostViewCellStyleCompact: {
+		case WAPostViewCellStyleCompact: {
 			loadedNibName = @"WAPostViewCellPhone-Compact";
 			break;
 		}case WAPostViewCellStyleCompactWithImageStack: {
@@ -55,20 +55,19 @@
 	if (!self)
 		return nil;
 	
-	self.style = aStyle;
+	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
     
-    self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-    self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1];
- 
-    self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-    self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1];
-    
-    self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
-    
-    
-    self.avatarView.layer.cornerRadius = 7.0;
-    self.avatarView.layer.masksToBounds = YES;
+	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+	self.backgroundView.backgroundColor = [UIColor colorWithWhite:0.95f alpha:1];
+
+	self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+	self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1];
+
+	self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
+	
+	self.avatarView.layer.cornerRadius = 7.0;
+	self.avatarView.layer.masksToBounds = YES;
     
 	return self;
 	
@@ -82,12 +81,9 @@
 	[contentTextLabel release];
 	[dateOriginLabel release];
 	[dateLabel release];
-	[originLabel release];
-	
-    [commentLabel release];
-    [commentBackground release];
-    [imageStackView release];
-    [imageStackView release];
+	[originLabel release];	
+	[commentLabel release];
+	[commentBackground release];
 	[super dealloc];
 	
 }

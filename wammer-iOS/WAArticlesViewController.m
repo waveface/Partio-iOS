@@ -441,10 +441,14 @@
 
 	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
-		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil withCompletion: ^ {
+		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
 		
 			[self refreshData];
 		
+		} onFailure: ^ {
+		
+			NSLog(@"Article upload failed.  Help!");
+					
 		}];
 	
 	}];
@@ -853,15 +857,19 @@
 
 - (void) refreshData {
 	
-	[[WADataStore defaultStore] updateUsersWithCompletion:nil];
+	[[WADataStore defaultStore] updateUsersOnSuccess:nil onFailure:nil];
 
-	[[WADataStore defaultStore] updateArticlesWithCompletion: ^ {
+	[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
 			[self refreshPaginatedViewPages];
 			
 		});	
+		
+	} onFailure: ^ {
+	
+		NSLog(@"%@ failed", NSStringFromSelector(_cmd));
 		
 	}];
 
