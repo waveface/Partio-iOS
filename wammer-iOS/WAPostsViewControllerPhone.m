@@ -152,19 +152,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     
     static NSString *defaultCellIdentifier = @"PostCell-Default";
     static NSString *imageCellIdentifier = @"PostCell-Stacked";
-    
+  static NSString *compactCellIdentifier = @"PostCell-Compact";
+  static NSString *compactWithImageCellIdentifier = @"PostCell-CompactWithImage";
+  
     BOOL postHasFiles = (BOOL)!![post.files count];
     BOOL postHasComments = (BOOL)!![post.comments count];
     
     NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
-    WAPostViewCellStyle style = WAPostViewCellStyleDefault; //text only with comment
-    
+  
+    WAPostViewCellStyle style = WAPostViewCellStyleCompact; //text only with comment
+  identifier = compactCellIdentifier;
     if (postHasFiles && postHasComments) {
         style = WAPostViewCellStyleImageStack;
+      identifier = imageCellIdentifier;
     }else if(postHasFiles) {
         style = WAPostViewCellStyleCompactWithImageStack;
-    }else {
-        style = WAPostViewCellStyleCompact;
+      identifier = compactWithImageCellIdentifier;
+    }else if(postHasComments){
+        style = WAPostViewCellStyleDefault;
+      identifier = defaultCellIdentifier;
     }
     
     WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
@@ -173,6 +179,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				cell.imageStackView.delegate = self;
     }
     
+    NSLog(@"Post ID: %@ with WAPostViewCellStyle %d", [post identifier], style);
     cell.userNicknameLabel.text = post.owner.nickname;
     cell.avatarView.image = post.owner.avatar;
     cell.contentTextLabel.text = post.text;
@@ -211,11 +218,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    if ( [post.files count ] == 0)
-        return 160;
-    else
-        return 300;
+  
+  WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+  NSString *text = [post text];
+  CGFloat height = (48.0); // Header
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 999.0) lineBreakMode:UILineBreakModeCharacterWrap].height;
+  NSLog(@"%f", height);
+  
+  if( [post.files count ] > 0)
+    height += 170;
+
+  if( [post.comments count] > 0)
+    height += 60; 
+
+  return height;
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
