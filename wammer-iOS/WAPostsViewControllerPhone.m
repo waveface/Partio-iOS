@@ -68,7 +68,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
         
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"]; //	@"ANY files.identifier != nil"]; // TBD files.thumbnailFilePath != nil
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
                                            [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
                                            nil];
@@ -94,9 +94,31 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		return;
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
-        
+	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-        
+		
+		/*
+		
+			Asynchronous file loading in WAFile works this way:
+		
+			1.	-[WAFile resourceFilePath] is accessed.
+			2.	Primitive value for the path is not found, and the primitive value for `resourceURL` is not a file URL.
+			3.	That infers the resource URL is a HTTP resource URL.
+			4.	The shared remote resources manager is triggered and a download is enqueued.
+			5.	On download completion, a disposable managed object context is created, and all managed objects in that context holding the eligible resource URLs are updated.
+			6.	The disposed managed object context is saved.  At this moment the notification is sent and this method is invoked.  However,
+			7.	The class conforms to <NSFetchedResultsControllerDelegate> and will only reload on -controllerDidChangeContent:.
+			8.	The method is not implicitly invoked because the fetched results controller’s fetch request latches on WAArticle
+			9.	So, trigger a forced refresh by refreshing all the fetched objects in the fetched results controller’s results
+			10.	This seems to work around a Core Data bug where changes on a managed object’s related entity’s attributes do not always trigger a change.
+		
+		*/
+		
+		NSArray *allFetchedObjects = [self.fetchedResultsController fetchedObjects];
+		
+		for (NSManagedObject *aFetchedObject in allFetchedObjects)
+			[aFetchedObject.managedObjectContext refreshObject:aFetchedObject mergeChanges:YES];
+			
 	});
     
 }
