@@ -111,13 +111,13 @@
 		sharedManager.delegate = (id<IRRemoteResourcesManagerDelegate>)[UIApplication sharedApplication].delegate;
 		
 		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:kIRRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
-			
+		
 			NSURL *representingURL = (NSURL *)[aNotification object];
 			NSData *resourceData = [sharedManager resourceAtRemoteURL:representingURL skippingUncachedFile:NO];
 			
 			if (![resourceData length])
 			return;
-						
+			
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			NSArray *matchingObjects = [context executeFetchRequest:((^ {
 				
@@ -132,7 +132,9 @@
 			for (WAFile *matchingObject in matchingObjects)
 				matchingObject.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
 			
-			[context save:nil];
+			NSError *savingError;
+			if (![context save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
 			
 		}];
 		

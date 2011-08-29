@@ -125,7 +125,7 @@
 							<object class="IBUILabel" id="76373530">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{59, 43}, {241, 12}}</string>
+								<string key="NSFrame">{{59, 38}, {241, 20}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
@@ -149,7 +149,7 @@
 								<int key="IBUINumberOfLines">0</int>
 							</object>
 						</object>
-						<string key="NSFrameSize">{320, 104}</string>
+						<string key="NSFrameSize">{320, 67}</string>
 						<reference key="NSSuperview" ref="102746709"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="830469168"/>
@@ -162,7 +162,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{320, 104}</string>
+				<string key="NSFrameSize">{320, 67}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="229656081"/>
@@ -238,9 +238,9 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="830469168"/>
-							<reference ref="76373530"/>
 							<reference ref="1002532177"/>
 							<reference ref="701695387"/>
+							<reference ref="76373530"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
