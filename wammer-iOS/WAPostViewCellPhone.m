@@ -24,7 +24,7 @@
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:aStyle reuseIdentifier:reuseIdentifier];
+	return [self initWithCommentsViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 
 }
 

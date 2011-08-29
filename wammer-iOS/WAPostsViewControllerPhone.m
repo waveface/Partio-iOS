@@ -198,7 +198,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
-    cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
+    cell = [[WAPostViewCellPhone alloc] initWithCommentsViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
   
