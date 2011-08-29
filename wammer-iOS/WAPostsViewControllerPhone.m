@@ -150,6 +150,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   NSParameterAssert(post);
   
+    //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
   static NSString *defaultCellIdentifier = @"PostCell-Default";
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
   static NSString *compactCellIdentifier = @"PostCell-Compact";
