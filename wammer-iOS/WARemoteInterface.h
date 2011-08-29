@@ -7,6 +7,8 @@
 //
 //  https://gist.github.com/46e424e637d6634979d3
 
+#include <AvailabilityMacros.h>
+
 #import "IRWebAPIKit.h"
 #import "WADataStore.h"
 
@@ -43,9 +45,12 @@
 
 @interface WADataStore (WARemoteInterfaceAdditions)
 
-- (void) updateUsersWithCompletion:(void(^)(void))aBlock;
-- (void) updateArticlesWithCompletion:(void(^)(void))aBlock;
+- (void) updateUsersOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
+- (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
+- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 
-- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock;
+- (void) updateUsersWithCompletion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;
+- (void) updateArticlesWithCompletion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;
+- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;
 
 @end

@@ -232,11 +232,11 @@
 
 - (void) handleRefresh {
 
-	[[WADataStore defaultStore] updateUsersWithCompletion: ^ {
+	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
 		//	No op, changes are merged thru notifications
 	
-	}];
+	} onFailure:nil];
 
 }
 
