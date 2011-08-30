@@ -262,6 +262,12 @@
 }
 */
 
+- (void) refreshData {
+
+	NSLog(@"%s TBD", __PRETTY_FUNCTION__);
+
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

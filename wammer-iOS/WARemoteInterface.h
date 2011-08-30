@@ -16,6 +16,11 @@
 
 + (WARemoteInterface *) sharedInterface;
 
+@property (nonatomic, readwrite, retain) NSString *userIdentifier;
+@property (nonatomic, readwrite, retain) NSString *userToken;
+
+- (void) retrieveTokenForUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
 //	GET /users
 - (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
