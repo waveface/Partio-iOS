@@ -38,6 +38,9 @@
 
 	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
 	
+	if ([inMethodName isEqualToString:@"authenticate"])
+		returnedURL = [NSURL URLWithString:@"../../apidev/v1/auth/login/" relativeToURL:self.baseURL];
+	
 	if ([inMethodName isEqualToString:@"articles"])
 		returnedURL = [NSURL URLWithString:@"posts/fetch_all/" relativeToURL:self.baseURL];
 	
@@ -72,6 +75,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 @end
 
 @implementation WARemoteInterface
+
+@synthesize userIdentifier, userToken;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -118,6 +123,25 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
 		return inOriginalContext;
+	} copy] autorelease]];
+	
+	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
+	
+		NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+		
+		if (originalQueryParams) {
+			if (self.userToken && self.userIdentifier) {
+				NSLog(@"has user token and identifier; overriding stuff.");
+				NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
+				NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
+				[mutatedQueryParams setObject:self.userIdentifier forKey:@"creator_id"];
+				[mutatedQueryParams setObject:self.userToken forKey:@"token"];
+				return (NSDictionary *)mutatedContext;
+			}
+		}
+	
+		return inOriginalContext;
+	
 	} copy] autorelease]];
 	
 	[engine.globalResponsePostTransformers addObject:[[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
@@ -194,6 +218,46 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 
 	return [self initWithEngine:engine authenticator:nil];
+
+}
+
+- (void) retrieveTokenForUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"userid",
+		IRWebAPIKitRFC3986EncodedStringMake(aPassword), @"password",
+	
+	nil] options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	
+		if (![[inResponseOrNil objectForKey:@"token"] isKindOfClass:[NSString class]])
+			return NO;
+		
+		if (![[inResponseOrNil objectForKey:@"creator_id"] isKindOfClass:[NSString class]])
+			return NO;
+		
+		return YES;
+		
+	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		NSString *userToken = (NSString *)[inResponseOrNil objectForKey:@"token"];
+		NSString *userIdentifier = (NSString *)[inResponseOrNil objectForKey:@"creator_id"];
+		
+		if (successBlock) {
+			successBlock(			
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					userIdentifier, @"creator_id",
+				nil], 
+				userToken
+			);
+		}
+		
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+
+		if (failureBlock)
+			failureBlock(nil);
+		
+	}];
 
 }
 
