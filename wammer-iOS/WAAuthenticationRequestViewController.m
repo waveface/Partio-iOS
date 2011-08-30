@@ -7,6 +7,7 @@
 //
 
 #import "WAAuthenticationRequestViewController.h"
+#import "WARemoteInterface.h"
 
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
@@ -14,6 +15,8 @@
 @property (nonatomic, readwrite, retain) UITextField *usernameField;
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
 @property (nonatomic, readwrite, copy) void(^completionBlock)(WAAuthenticationRequestViewController *self);
+
+- (void) authenticate;
 
 @end
 
@@ -91,8 +94,11 @@
 		if (shouldReturn) {
 			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField resignFirstResponder];
-				if (self.completionBlock)
-					self.completionBlock(self);
+				
+				[self authenticate];
+				
+//				if (self.completionBlock)
+//					self.completionBlock(self);
 			});
 		}
 		return shouldReturn;
@@ -160,6 +166,40 @@
 
 	return cell;
 	
+}
+
+
+
+
+
+- (void) authenticate {
+
+	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
+		
+		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"creator_id"];
+		[WARemoteInterface sharedInterface].userToken = token;
+		
+		//	Hook this up with Keychain services
+		
+		[[WADataStore defaultStore] updateUsersOnSuccess: ^  {
+		
+			NSLog(@"users update success");
+			
+			if (self.completionBlock)
+				self.completionBlock(self);
+			
+		} onFailure:^(void) {
+		
+			NSLog(@"Users update failed.");
+			
+		}];
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"failed: %@", error);
+		
+	}];		
+
 }
 
 @end
