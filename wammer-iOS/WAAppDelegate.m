@@ -17,7 +17,9 @@
 #import "WARemoteInterface.h"
 #import "IRKeychainManager.h"
 
-@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
+#import "WAApplicationRootViewControllerDelegate.h"
+
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate>
 @end
 
 
@@ -27,15 +29,62 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-	
-	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAPostsViewControllerPhone" : @"WAArticlesViewController";
-	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease]] autorelease];
-	
+	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
+	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAPostsViewControllerPhone" : @"WAArticlesViewController";
 	
-	//	Ask the keychain
+	UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 	
+	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+	
+	if (![self hasAuthenticationData])
+		[self presentAuthenticationRequestRemovingPriorData:YES];
+		
+	return YES;
+	
+}
+
+- (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
+
+	dispatch_async(dispatch_get_main_queue(), ^ {
+
+		[self presentAuthenticationRequestRemovingPriorData:YES];
+			
+	});
+
+}
+
+- (BOOL) hasAuthenticationData {
+
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
+	
+	if (!lastAuthenticatedUserTokenKeychainItem) {
+		if (lastAuthenticatedUserTokenKeychainItemData) {
+			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
+		}
+	}
+	
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+	return authenticationInformationSufficient;
+
+}
+
+- (void) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation {
+
+	if (erasesExistingAuthenticationInformation) {
+	
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserIdentifier"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	}
+
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
@@ -75,11 +124,9 @@
 	
 	}
 	
-	if (YES || !authenticationInformationSufficient) {
+	if (!authenticationInformationSufficient) {
 	
-		__block UIViewController *userSelectionVC = nil;
-        
-		userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self) {
+		__block UIViewController *userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self) {
 		
 				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken);
 		
@@ -113,46 +160,40 @@
 					return YES;
 				};
 				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
+				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternCarbonFibre"]];
+				
 				[fullscreenBaseVC.view addSubview:((^ {
-					
 					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
 					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 					spinner.center = (CGPoint){
 						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
 						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
 					};
-					
 					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 						[spinner startAnimating];							
 					});
-					
 					return spinner;
-					
 				})())];
-				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternCarbonFibre"]];
+				
 				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
 				[fullscreenBaseVC presentModalViewController:userSelectionWrappingVC animated:YES];
-			
+				
 				break;
 			
 			}
 			
 			case UIUserInterfaceIdiomPhone:
 			default: {
-                // no background
-                
-                [self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
 			
+				[self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
 				break;
-			
+				
 			}
 		
 		}
 	
 	}
-		
-	return YES;
-	
+
 }
 
 static unsigned int networkActivityStackingCount = 0;
