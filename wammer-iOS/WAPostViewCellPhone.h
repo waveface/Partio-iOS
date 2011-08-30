@@ -24,10 +24,9 @@ enum {
 }
 
 
-- (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
-
-- (void) hideComment:(BOOL)hide;
-
+- (id) initWithPostViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+- (void) setCommentCount:(NSUInteger)commentCount;
+  
 @property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
@@ -39,10 +38,6 @@ enum {
 @property (nonatomic, retain) IBOutlet UIImageView *commentBackground;
 
 @end
-
-
-
-
 
 @interface WAPostViewCellPhone (NibLoading)
 
