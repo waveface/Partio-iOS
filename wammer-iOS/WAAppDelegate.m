@@ -17,7 +17,9 @@
 #import "WARemoteInterface.h"
 #import "IRKeychainManager.h"
 
-@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
+#import "WAApplicationRootViewControllerDelegate.h"
+
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate>
 @end
 
 
@@ -27,12 +29,62 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-	
-	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAPostsViewControllerPhone" : @"WAArticlesViewController";
-	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:[[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease]] autorelease];
-	
+	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
+	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAPostsViewControllerPhone" : @"WAArticlesViewController";
+	
+	UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
+	
+	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+	
+	if (![self hasAuthenticationData])
+		[self presentAuthenticationRequestRemovingPriorData:YES];
+		
+	return YES;
+	
+}
+
+- (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
+
+	dispatch_async(dispatch_get_main_queue(), ^ {
+
+		[self presentAuthenticationRequestRemovingPriorData:YES];
+			
+	});
+
+}
+
+- (BOOL) hasAuthenticationData {
+
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
+	
+	if (!lastAuthenticatedUserTokenKeychainItem) {
+		if (lastAuthenticatedUserTokenKeychainItemData) {
+			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
+		}
+	}
+	
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+	return authenticationInformationSufficient;
+
+}
+
+- (void) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation {
+
+	if (erasesExistingAuthenticationInformation) {
+	
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserIdentifier"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	}
+
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
@@ -141,9 +193,7 @@
 		}
 	
 	}
-		
-	return YES;
-	
+
 }
 
 static unsigned int networkActivityStackingCount = 0;

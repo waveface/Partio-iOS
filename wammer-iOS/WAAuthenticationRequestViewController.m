@@ -68,6 +68,7 @@
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	self.usernameField.returnKeyType = UIReturnKeyNext;
 	self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
@@ -77,6 +78,7 @@
 	self.passwordField.returnKeyType = UIReturnKeyDone;
 	self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.passwordField.secureTextEntry = YES;
+	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		
 }
 

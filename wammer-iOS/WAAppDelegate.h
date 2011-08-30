@@ -18,4 +18,7 @@
 - (void) beginNetworkActivity;
 - (void) endNetworkActivity;
 
+- (BOOL) hasAuthenticationData;
+- (void) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation;
+
 @end
