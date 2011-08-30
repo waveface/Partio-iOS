@@ -72,6 +72,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) waInit {
 
+	self.layer.shouldRasterize = YES;
+
 	self.gestureProcessingOngoing = NO;
 	self.state = WAImageStackViewInteractionNormal;
 	
@@ -218,7 +220,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			imageView.layer.shadowOpacity = 0.25f;
 			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
 			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-			imageView.layer.shouldRasterize = YES;
 			imageView.opaque = NO;
 			
 			UIView *innerImageView = [[[UIView alloc] initWithFrame:imageView.bounds] autorelease];

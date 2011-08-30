@@ -405,6 +405,8 @@
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
+	
+	self.view.onLayoutSubviews = nil;
 		
 	[super viewDidUnload];
 
@@ -413,19 +415,20 @@
 - (void) dealloc {
 
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
+	self.view.onLayoutSubviews = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[fetchedResultsController release];
 	[article release];
-	[paginatedView release];
 	
+	[paginatedView release];
 	[navigationBar release];
 	[toolbar release];
 	[previousNavigationItem release];
 	[streamPickerView release];
-	
+		
 	[onDismiss release];
 	
 	[super dealloc];
