@@ -294,20 +294,25 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSString *text = [self.post text];
-  CGFloat height = [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
+  WAArticle *po = [self post];
+  
+  NSString *text;
+  CGFloat height = 48.0;
   if([indexPath section]==0){
-     height += (48.0); // Header
+     text = [po text];
     if( [post.files count ] > 0)
       height += 170.0;
     
     if( [post.comments count] > 0)
-      height += 40.0; 
-    
-    return height;
+      height += 40.0;
   }else{
-    height +=12.0;
+    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
+    WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
+    text = [representedComment text];
+    height += 32.0;
   }
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
+  
   return height;
 }
 
