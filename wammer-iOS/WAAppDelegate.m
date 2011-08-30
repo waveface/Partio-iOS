@@ -12,6 +12,8 @@
 #import "WADataStore.h"
 #import "WAViewController.h"
 
+#import "WAAuthenticationRequestViewController.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
 @end
 
@@ -30,11 +32,10 @@
 	
 	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
 	
-	if (!currentUserIdentifier) {
+	if (YES || !currentUserIdentifier) {
         
         // setup user selection view controller
-        __block WAUserSelectionViewController *userSelectionVC;
-        userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+        __block WAUserSelectionViewController *userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
             
             NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
             WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
@@ -60,6 +61,12 @@
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
             
         }];
+				
+				userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self) {
+				
+					NSLog(@"%@ completed", self);
+					
+				}];
         
         UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
         userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;

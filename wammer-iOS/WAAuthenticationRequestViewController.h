@@ -12,7 +12,8 @@
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(void(^)(WAAuthenticationRequestViewController *self))aBlock;
 
-@property (nonatomic, readwrite, retain) UITextField *usernameField;
-@property (nonatomic, readwrite, retain) UITextField *passwordField;
+@property (nonatomic, readonly, retain) UITextField *usernameField;
+@property (nonatomic, readonly, retain) UITextField *passwordField;
+@property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
 @end

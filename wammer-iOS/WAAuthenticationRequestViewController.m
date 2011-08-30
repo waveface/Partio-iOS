@@ -9,152 +9,157 @@
 #import "WAAuthenticationRequestViewController.h"
 
 
+@interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
+
+@property (nonatomic, readwrite, retain) UITextField *usernameField;
+@property (nonatomic, readwrite, retain) UITextField *passwordField;
+@property (nonatomic, readwrite, copy) void(^completionBlock)(WAAuthenticationRequestViewController *self);
+
+@end
+
+
 @implementation WAAuthenticationRequestViewController
+@synthesize labelWidth;
+@synthesize usernameField, passwordField, completionBlock;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
++ (WAAuthenticationRequestViewController *) controllerWithCompletion:(void(^)(WAAuthenticationRequestViewController *self))aBlock {
+
+	WAAuthenticationRequestViewController *returnedVC = [[[self alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+	returnedVC.completionBlock = aBlock;
+	return returnedVC;
+
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+- (id) initWithStyle:(UITableViewStyle)style {
+
+	self = [super initWithStyle:style];
+	if (!self)
+		return nil;
+	
+	self.labelWidth = 128.0f;
+	
+	return self;
+
 }
 
-#pragma mark - View lifecycle
+- (void) viewDidLoad {
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	[super viewDidLoad];
+	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.usernameField.delegate = self;
+	self.usernameField.placeholder = @"Username";
+	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
+	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	self.usernameField.returnKeyType = UIReturnKeyNext;
+	self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
+	
+	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.passwordField.delegate = self;
+	self.passwordField.placeholder = @"Password";
+	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
+	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	self.passwordField.returnKeyType = UIReturnKeyDone;
+	self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.passwordField.secureTextEntry = YES;
+	
+	[self.tableView reloadData];
+	
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+- (void) viewDidUnload {
+
+	[super viewDidUnload];
+	self.usernameField = nil;
+	self.passwordField = nil;
+	
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+
+	if (textField == self.usernameField) {
+		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
+		if (shouldReturn) {
+			dispatch_async(dispatch_get_current_queue(), ^ {
+				[self.passwordField becomeFirstResponder];
+			});
+		}
+		return shouldReturn;
+	}
+		
+	if (textField == self.passwordField) {
+		BOOL shouldReturn = ![self.passwordField.text isEqualToString:@""];
+		if (shouldReturn) {
+			dispatch_async(dispatch_get_current_queue(), ^ {
+				[self.passwordField resignFirstResponder];
+				if (self.completionBlock)
+					self.completionBlock(self);
+			});
+		}
+		return shouldReturn;
+	}
+	
+	return NO;
+
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
+- (void) viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
+- (void) viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
+- (void) viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (void) viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	return YES;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+- (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-    
-    // Configure the cell...
-    
-    return cell;
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 2;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	static NSString *CellIdentifier = @"Cell";
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+	}
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+	if (indexPath.row == 0) {
+		cell.textLabel.text = @"Username";
+		cell.accessoryView = self.usernameField;
+	} else if (indexPath.row == 1) {
+		cell.textLabel.text = @"Password";
+		cell.accessoryView = self.passwordField;
+	} else {
+		cell.accessoryView = nil;
+	}
+		
+	cell.accessoryView.frame = (CGRect){
+		CGPointZero,
+		(CGSize){
+			CGRectGetWidth(tableView.bounds) - self.labelWidth - ((self.tableView.style == UITableViewStyleGrouped) ? 10.0f : 0.0f),
+			45.0f
+		}
+	};
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+	return cell;
+	
 }
 
 @end
