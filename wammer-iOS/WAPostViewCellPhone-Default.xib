@@ -122,8 +122,9 @@
 							<object class="IBUILabel" id="76373530">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{59, 43}, {241, 12}}</string>
+								<string key="NSFrame">{{59, 35}, {240, 24}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
+								<reference key="NSNextKeyView" ref="513411887"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
 								<reference key="IBUIBackgroundColor" ref="510789719"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -139,16 +140,18 @@
 								</object>
 								<reference key="IBUITextColor" ref="1060855679"/>
 								<nil key="IBUIHighlightedColor"/>
-								<int key="IBUIBaselineAdjustment">1</int>
+								<int key="IBUIBaselineAdjustment">0</int>
 								<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 								<float key="IBUIMinimumFontSize">14</float>
 								<int key="IBUINumberOfLines">0</int>
+								<int key="IBUILineBreakMode">0</int>
 							</object>
 							<object class="IBUIImageView" id="513411887">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">264</int>
 								<string key="NSFrame">{{59, 61}, {94, 34}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
+								<reference key="NSNextKeyView" ref="776875953"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">4</int>
@@ -282,10 +285,10 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="830469168"/>
-							<reference ref="76373530"/>
 							<reference ref="1002532177"/>
 							<reference ref="701695387"/>
 							<reference ref="513411887"/>
+							<reference ref="76373530"/>
 							<reference ref="776875953"/>
 						</object>
 						<reference key="parent" ref="0"/>

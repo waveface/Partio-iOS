@@ -178,34 +178,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
   static NSString *defaultCellIdentifier = @"PostCell-Default";
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
-  static NSString *compactCellIdentifier = @"PostCell-Compact";
-  static NSString *compactWithImageCellIdentifier = @"PostCell-CompactWithImage";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
-  BOOL postHasComments = (BOOL)!![post.comments count];
   
   NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
   
-  WAPostViewCellStyle style = WAPostViewCellStyleCompact; //text only with comment
-  identifier = compactCellIdentifier;
-  if (postHasFiles && postHasComments) {
-    style = WAPostViewCellStyleImageStack;
-    identifier = imageCellIdentifier;
-  }else if(postHasFiles) {
-    style = WAPostViewCellStyleCompactWithImageStack;
-    identifier = compactWithImageCellIdentifier;
-  }else if(postHasComments){
-    style = WAPostViewCellStyleDefault;
-    identifier = defaultCellIdentifier;
-  }
+  WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
-    cell = [[WAPostViewCellPhone alloc] initWithCommentsViewCellStyle:style reuseIdentifier:identifier];
+    cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
   
-  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d", [post identifier], style);
+  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
   cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.contentTextLabel.text = post.text;
@@ -213,7 +199,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                          [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                          [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
   cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-  cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+  [cell setCommentCount:[post.comments count]];
   
   if (cell.imageStackView)
     objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -248,16 +234,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   NSString *text = [post text];
   CGFloat height = (48.0); // Header
-  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 999.0) lineBreakMode:UILineBreakModeCharacterWrap].height;
-  NSLog(@"%f", height);
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] 
+             constrainedToSize:CGSizeMake(240.0, 9999.0) 
+                 lineBreakMode:UILineBreakModeWordWrap].height;
+  NSLog(@"Height for Post %@, %f", [[[post objectID]URIRepresentation] lastPathComponent], height);
   
   if( [post.files count ] > 0)
     height += 170;
   
   if( [post.comments count] > 0)
-    height += 60; 
+    height += 40; 
   
-  return height;
+  return MAX(height, 100);
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
@@ -364,10 +352,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	return formatter;
   
 }
-
-
-
-
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
   
