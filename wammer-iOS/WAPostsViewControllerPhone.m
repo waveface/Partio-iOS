@@ -175,26 +175,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
   static NSString *defaultCellIdentifier = @"PostCell-Default";
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
-  static NSString *compactCellIdentifier = @"PostCell-Compact";
-  static NSString *compactWithImageCellIdentifier = @"PostCell-CompactWithImage";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
-  BOOL postHasComments = (BOOL)!![post.comments count];
   
   NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
   
-  WAPostViewCellStyle style = WAPostViewCellStyleCompact; //text only with comment
-  identifier = compactCellIdentifier;
-  if (postHasFiles && postHasComments) {
-    style = WAPostViewCellStyleImageStack;
-    identifier = imageCellIdentifier;
-  }else if(postHasFiles) {
-    style = WAPostViewCellStyleCompactWithImageStack;
-    identifier = compactWithImageCellIdentifier;
-  }else if(postHasComments){
-    style = WAPostViewCellStyleDefault;
-    identifier = defaultCellIdentifier;
-  }
+  WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
@@ -210,7 +196,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                          [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                          [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
   cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-  cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+  [cell setCommentCount:[post.comments count]];
   
   if (cell.imageStackView)
     objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -346,10 +332,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	return formatter;
   
 }
-
-
-
-
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
   

@@ -167,7 +167,7 @@
         BOOL postHasFiles = (BOOL)!![post.files count];
         
         NSString *identifier = postHasFiles ? @"WithImage" : @"TextOnly";
-        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleCompactWithImageStack : WAPostViewCellStyleCompact;
+        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
         
         WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
         if(!cell) {
@@ -180,6 +180,7 @@
         cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                                [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                                [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+      [cell setCommentCount:0];
         NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
             
             return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
@@ -278,9 +279,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section] == 0 && [post.files count] > 0 ) 
-        return 260;
-    return 160;
+  
+  NSString *text = [self.post text];
+  CGFloat height = (48.0); // Header
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
+  NSLog(@"%f", height);
+  
+  if( [post.files count ] > 0)
+    height += 170;
+  
+  if( [post.comments count] > 0)
+    height += 40; 
+  
+  return height;
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
