@@ -61,10 +61,10 @@
 
 	self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
 	
-  self.contentTextLabel.layer.borderColor = [UIColor redColor].CGColor;
-  self.contentTextLabel.layer.borderWidth = 2.0;
-  self.commentBackground.layer.borderColor = [UIColor greenColor].CGColor;
-  self.commentBackground.layer.borderWidth = 2.0;
+//  self.contentTextLabel.layer.borderColor = [UIColor redColor].CGColor;
+//  self.contentTextLabel.layer.borderWidth = 2.0;
+//  self.commentBackground.layer.borderColor = [UIColor greenColor].CGColor;
+//  self.commentBackground.layer.borderWidth = 2.0;
   
   self.avatarView.layer.cornerRadius = 7.0;
 	self.avatarView.layer.masksToBounds = YES;

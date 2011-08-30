@@ -231,7 +231,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   NSString *text = [post text];
   CGFloat height = (48.0); // Header
-  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] 
+             constrainedToSize:CGSizeMake(240.0, 9999.0) 
+                 lineBreakMode:UILineBreakModeWordWrap].height;
   NSLog(@"Height for Post %@, %f", [[[post objectID]URIRepresentation] lastPathComponent], height);
   
   if( [post.files count ] > 0)

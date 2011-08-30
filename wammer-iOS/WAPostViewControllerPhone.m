@@ -13,9 +13,11 @@
 #import "WAPostViewCellPhone.h"
 #import "WAArticle.h"
 
+#import "WAGalleryViewController.h"
+
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
 
-@interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate>
+@interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate>
 
 @property (nonatomic, readwrite, retain) WAArticle *post;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -322,6 +324,74 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
     
 	return formatter;
     
+}
+
+- (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
+  
+	NSURL *representedObjectURI = objc_getAssociatedObject(aStackView, &WAPostViewControllerPhone_RepresentedObjectURI);
+	
+	__block __typeof__(self) nrSelf = self;
+	__block WAGalleryViewController *galleryViewController = nil;
+	galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:representedObjectURI];
+	galleryViewController.hidesBottomBarWhenPushed = YES;
+	galleryViewController.onDismiss = ^ {
+    
+		CATransition *transition = [CATransition animation];
+		transition.duration = 0.3f;
+		transition.type = kCATransitionPush;
+		transition.subtype = ((^ {
+			switch (self.interfaceOrientation) {
+				case UIInterfaceOrientationPortrait:
+					return kCATransitionFromLeft;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					return kCATransitionFromRight;
+				case UIInterfaceOrientationLandscapeLeft:
+					return kCATransitionFromTop;
+				case UIInterfaceOrientationLandscapeRight:
+					return kCATransitionFromBottom;
+			}
+		})());
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.fillMode = kCAFillModeForwards;
+		transition.removedOnCompletion = YES;
+    
+		[galleryViewController.navigationController setNavigationBarHidden:NO animated:NO];
+		[galleryViewController.navigationController popViewControllerAnimated:NO];
+		
+		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    
+	};
+	
+	CATransition *transition = [CATransition animation];
+	transition.duration = 0.3f;
+	transition.type = kCATransitionPush;
+	transition.subtype = ((^ {
+		switch (self.interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				return kCATransitionFromRight;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				return kCATransitionFromLeft;
+			case UIInterfaceOrientationLandscapeLeft:
+				return kCATransitionFromBottom;
+			case UIInterfaceOrientationLandscapeRight:
+				return kCATransitionFromTop;
+		}
+	})());
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.fillMode = kCAFillModeForwards;
+	transition.removedOnCompletion = YES;
+	
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
+	[self.navigationController pushViewController:galleryViewController animated:NO];
+	
+	[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+  
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+	});
+	
 }
 
 @end
