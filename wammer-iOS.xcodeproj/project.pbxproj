@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4B1527A213E29E72006E9737 /* WAPostsViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */; };
-		4B225D041404EE1300F9A1CE /* WAPostViewCellPhone-Compact.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D031404EE1300F9A1CE /* WAPostViewCellPhone-Compact.xib */; };
 		4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */; };
-		4B225D401405044300F9A1CE /* WAPostViewCellPhone-CompactWithImageStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D3F1405044300F9A1CE /* WAPostViewCellPhone-CompactWithImageStack.xib */; };
 		4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */; };
 		4B587BB913F4D7AE0084E671 /* WAComposeViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */; };
 		4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */; };
@@ -165,9 +163,7 @@
 /* Begin PBXFileReference section */
 		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostsViewControllerPhone.h; path = "wammer-iOS/WAPostsViewControllerPhone.h"; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostsViewControllerPhone.m; path = "wammer-iOS/WAPostsViewControllerPhone.m"; sourceTree = "<group>"; };
-		4B225D031404EE1300F9A1CE /* WAPostViewCellPhone-Compact.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-Compact.xib"; path = "wammer-iOS/WAPostViewCellPhone-Compact.xib"; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-ImageStack.xib"; path = "wammer-iOS/WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
-		4B225D3F1405044300F9A1CE /* WAPostViewCellPhone-CompactWithImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-CompactWithImageStack.xib"; path = "wammer-iOS/WAPostViewCellPhone-CompactWithImageStack.xib"; sourceTree = "<group>"; };
 		4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAComposeViewControllerPhone.h; path = "wammer-iOS/WAComposeViewControllerPhone.h"; sourceTree = "<group>"; };
 		4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAComposeViewControllerPhone.m; path = "wammer-iOS/WAComposeViewControllerPhone.m"; sourceTree = "<group>"; };
 		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAComposeViewControllerPhone.xib; path = "wammer-iOS/WAComposeViewControllerPhone.xib"; sourceTree = "<group>"; };
@@ -325,8 +321,6 @@
 				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
 				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
 				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
-				4B225D031404EE1300F9A1CE /* WAPostViewCellPhone-Compact.xib */,
-				4B225D3F1405044300F9A1CE /* WAPostViewCellPhone-CompactWithImageStack.xib */,
 				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
 				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
 				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
@@ -736,9 +730,7 @@
 				FF878BBD13FA6F8700B76807 /* WASpeechBubble.png in Resources */,
 				4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */,
 				FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */,
-				4B225D041404EE1300F9A1CE /* WAPostViewCellPhone-Compact.xib in Resources */,
 				4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */,
-				4B225D401405044300F9A1CE /* WAPostViewCellPhone-CompactWithImageStack.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

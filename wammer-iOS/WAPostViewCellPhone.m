@@ -24,28 +24,23 @@
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+	return [self initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 
 }
 
-- (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)aStyle reuseIdentifier:(NSString *)aReuseIdentifier {
+- (id) initWithPostViewCellStyle:(WAPostViewCellStyle)aStyle reuseIdentifier:(NSString *)aReuseIdentifier {
 
 	NSString *loadedNibName = nil;
 	
 	switch (aStyle) {
-		case WAPostViewCellStyleDefault: {
+		case WAPostViewCellStyleDefault:
+		case WAPostViewCellStyleCompact: {
 			loadedNibName = @"WAPostViewCellPhone-Default";
 			break;
 		}
-		case WAPostViewCellStyleImageStack: {
+    case WAPostViewCellStyleImageStack:
+    case WAPostViewCellStyleCompactWithImageStack: {
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
-			break;
-		}
-		case WAPostViewCellStyleCompact: {
-			loadedNibName = @"WAPostViewCellPhone-Compact";
-			break;
-		}case WAPostViewCellStyleCompactWithImageStack: {
-			loadedNibName = @"WAPostViewCellPhone-CompactWithImageStack";
 			break;
 		}
 	}
@@ -66,11 +61,27 @@
 
 	self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
 	
-	self.avatarView.layer.cornerRadius = 7.0;
+//  self.contentTextLabel.layer.borderColor = [UIColor redColor].CGColor;
+//  self.contentTextLabel.layer.borderWidth = 2.0;
+//  self.commentBackground.layer.borderColor = [UIColor greenColor].CGColor;
+//  self.commentBackground.layer.borderWidth = 2.0;
+  
+  self.avatarView.layer.cornerRadius = 7.0;
 	self.avatarView.layer.masksToBounds = YES;
     
 	return self;
 	
+}
+
+- (void) setCommentCount:(NSUInteger)commentCount {
+  if (commentCount==0) {
+    self.commentBackground.hidden = YES;
+    self.commentLabel.hidden = YES;
+  } else {
+    self.commentBackground.hidden = NO;
+    self.commentLabel.hidden = NO;
+    self.commentLabel.text = [NSString stringWithFormat:@"%lu comments", commentCount];
+  }
 }
 
 - (void) dealloc {
