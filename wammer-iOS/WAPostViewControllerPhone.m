@@ -13,7 +13,11 @@
 #import "WAPostViewCellPhone.h"
 #import "WAArticle.h"
 
-@interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate>
+#import "WAGalleryViewController.h"
+
+static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
+
+@interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate>
 
 @property (nonatomic, readwrite, retain) WAArticle *post;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -164,44 +168,56 @@
 {
     // Section 0 for post cell
     if( [indexPath section] == 0) {
-        BOOL postHasFiles = (BOOL)!![post.files count];
+        //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
+      static NSString *defaultCellIdentifier = @"PostCell-Default";
+      static NSString *imageCellIdentifier = @"PostCell-Stacked";
+      
+      BOOL postHasFiles = (BOOL)!![post.files count];
+      
+      NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
+      
+      WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+      
+      WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+      if(!cell) {
+        cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
+        cell.imageStackView.delegate = self;
+      }
+      
+      NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
+      cell.userNicknameLabel.text = post.owner.nickname;
+      cell.avatarView.image = post.owner.avatar;
+      cell.contentTextLabel.text = post.text;
+      cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                             [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                             [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+      cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+      [cell setCommentCount:[post.comments count]];
+      
+      if (cell.imageStackView)
+        objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      
+      NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
         
-        NSString *identifier = postHasFiles ? @"WithImage" : @"TextOnly";
-        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleCompactWithImageStack : WAPostViewCellStyleCompact;
+        return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+          return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+        }] anyObject]).resourceFilePath;
         
-        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-        if(!cell) {
-            cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
-        }
+      }];
+      
+      if ([allFilePaths count] == [post.files count]) {
         
-        cell.userNicknameLabel.text = post.owner.nickname;
-        cell.avatarView.image = post.owner.avatar;
-        cell.contentTextLabel.text = post.text;
-        cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                               [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
-                               [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
-        NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-            
-            return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-                return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-            }] anyObject]).resourceFilePath;
-            
+        cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+          
+          return [UIImage imageWithContentsOfFile:aPath];
+          
         }];
         
-        if ([allFilePaths count] == [post.files count]) {
-            
-            cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-                
-                return [UIImage imageWithContentsOfFile:aPath];
-                
-            }];
-            
-        } else {
-            
-            cell.imageStackView.images = nil;
-            
-        }
-        return cell;
+      } else {
+        cell.imageStackView.images = nil;
+      }
+      
+      return cell;
     }
     
     // Section 2 for comment cell
@@ -262,6 +278,12 @@
 }
 */
 
+- (void) refreshData {
+
+	NSLog(@"%s TBD", __PRETTY_FUNCTION__);
+
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -278,9 +300,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section] == 0 && [post.files count] > 0 ) 
-        return 260;
-    return 160;
+  WAArticle *po = [self post];
+  
+  NSString *text;
+  CGFloat height = 48.0;
+  if([indexPath section]==0){
+     text = [po text];
+    if( [post.files count ] > 0)
+      height += 170.0;
+    
+    if( [post.comments count] > 0)
+      height += 40.0;
+  }else{
+    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
+    WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
+    text = [representedComment text];
+    height += 32.0;
+  }
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
+  
+  return height;
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
@@ -296,6 +335,74 @@
     
 	return formatter;
     
+}
+
+- (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
+  
+	NSURL *representedObjectURI = objc_getAssociatedObject(aStackView, &WAPostViewControllerPhone_RepresentedObjectURI);
+	
+	__block __typeof__(self) nrSelf = self;
+	__block WAGalleryViewController *galleryViewController = nil;
+	galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:representedObjectURI];
+	galleryViewController.hidesBottomBarWhenPushed = YES;
+	galleryViewController.onDismiss = ^ {
+    
+		CATransition *transition = [CATransition animation];
+		transition.duration = 0.3f;
+		transition.type = kCATransitionPush;
+		transition.subtype = ((^ {
+			switch (self.interfaceOrientation) {
+				case UIInterfaceOrientationPortrait:
+					return kCATransitionFromLeft;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					return kCATransitionFromRight;
+				case UIInterfaceOrientationLandscapeLeft:
+					return kCATransitionFromTop;
+				case UIInterfaceOrientationLandscapeRight:
+					return kCATransitionFromBottom;
+			}
+		})());
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.fillMode = kCAFillModeForwards;
+		transition.removedOnCompletion = YES;
+    
+		[galleryViewController.navigationController setNavigationBarHidden:NO animated:NO];
+		[galleryViewController.navigationController popViewControllerAnimated:NO];
+		
+		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+    
+	};
+	
+	CATransition *transition = [CATransition animation];
+	transition.duration = 0.3f;
+	transition.type = kCATransitionPush;
+	transition.subtype = ((^ {
+		switch (self.interfaceOrientation) {
+			case UIInterfaceOrientationPortrait:
+				return kCATransitionFromRight;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				return kCATransitionFromLeft;
+			case UIInterfaceOrientationLandscapeLeft:
+				return kCATransitionFromBottom;
+			case UIInterfaceOrientationLandscapeRight:
+				return kCATransitionFromTop;
+		}
+	})());
+	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	transition.fillMode = kCAFillModeForwards;
+	transition.removedOnCompletion = YES;
+	
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
+	[self.navigationController pushViewController:galleryViewController animated:NO];
+	
+	[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+  
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:NO];
+	});
+	
 }
 
 @end

@@ -20,6 +20,7 @@
 #import "IRTransparentToolbar.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "IRAlertView.h"
 
 #import "WAArticleViewController.h"
 #import "WAPostViewControllerPhone.h"
@@ -47,6 +48,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 
 @implementation WAPostsViewControllerPhone
+@synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 
@@ -59,7 +61,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
+	
   self.title = @"Wammer";
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
   
@@ -175,42 +178,27 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
   static NSString *defaultCellIdentifier = @"PostCell-Default";
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
-  static NSString *compactCellIdentifier = @"PostCell-Compact";
-  static NSString *compactWithImageCellIdentifier = @"PostCell-CompactWithImage";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
-  BOOL postHasComments = (BOOL)!![post.comments count];
   
   NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
   
-  WAPostViewCellStyle style = WAPostViewCellStyleCompact; //text only with comment
-  identifier = compactCellIdentifier;
-  if (postHasFiles && postHasComments) {
-    style = WAPostViewCellStyleImageStack;
-    identifier = imageCellIdentifier;
-  }else if(postHasFiles) {
-    style = WAPostViewCellStyleCompactWithImageStack;
-    identifier = compactWithImageCellIdentifier;
-  }else if(postHasComments){
-    style = WAPostViewCellStyleDefault;
-    identifier = defaultCellIdentifier;
-  }
+  WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
-    cell = [[WAPostViewCellPhone alloc] initWithCommentsViewCellStyle:style reuseIdentifier:identifier];
+    cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
-  
-  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d", [post identifier], style);
-  cell.userNicknameLabel.text = post.owner.nickname;
+	
+	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.contentTextLabel.text = post.text;
   cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                          [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                          [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
   cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-  cell.commentLabel.text = [NSString stringWithFormat:@"%lu comments", [post.comments count]];
+  [cell setCommentCount:[post.comments count]];
   
   if (cell.imageStackView)
     objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -232,7 +220,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}];
     
 	} else {
+	
     cell.imageStackView.images = nil;
+		
   }
   
   return cell;
@@ -245,37 +235,53 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   NSString *text = [post text];
   CGFloat height = (48.0); // Header
-  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 999.0) lineBreakMode:UILineBreakModeCharacterWrap].height;
-  NSLog(@"%f", height);
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] 
+             constrainedToSize:CGSizeMake(240.0, 9999.0) 
+                 lineBreakMode:UILineBreakModeWordWrap].height;
   
   if( [post.files count ] > 0)
     height += 170;
   
   if( [post.comments count] > 0)
-    height += 60; 
+    height += 40; 
   
-  return height;
+  return MAX(height, 100);
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
+
+	__block __typeof__(self) nrSelf = self;
   
-  
-  __block WAUserSelectionViewController *userSelectionVC = nil;
-  userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
-    
-    NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
-    WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
-    NSString *userIdentifier = userObject.identifier;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
-    
-  }];
-  
-  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
-	[self.navigationController presentModalViewController:nc animated:YES];
+	[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+		
+		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+					
+			});
+
+		}],
+	
+	nil]] show];
+		
+	//  __block WAUserSelectionViewController *userSelectionVC = nil;
+	//  userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+	//    
+	//    NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
+	//    WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
+	//    NSString *userIdentifier = userObject.identifier;
+	//    
+	//    [[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+	//    [[NSUserDefaults standardUserDefaults] synchronize];
+	//    
+	//    [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
+	//    
+	//  }];
+	//  
+	//  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
+	//	[self.navigationController presentModalViewController:nc animated:YES];
   
 }
 
@@ -296,16 +302,45 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	if (![self isViewLoaded])
+		return;
 	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	[self.tableView beginUpdates];
 	
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	switch (type) {
+		case NSFetchedResultsChangeInsert: {
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeDelete: {
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeMove: {
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeUpdate: {
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+	}
+
+}
+
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
-  [self.tableView reloadData];
-  
+		
+	if (![self isViewLoaded])
+		return;
+
+	[self.tableView endUpdates];
+		
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -346,10 +381,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	return formatter;
   
 }
-
-
-
-
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
   
