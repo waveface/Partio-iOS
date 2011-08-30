@@ -13,6 +13,8 @@
 #import "WAPostViewCellPhone.h"
 #import "WAArticle.h"
 
+static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
+
 @interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) WAArticle *post;
@@ -164,45 +166,56 @@
 {
     // Section 0 for post cell
     if( [indexPath section] == 0) {
-        BOOL postHasFiles = (BOOL)!![post.files count];
+        //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
+      static NSString *defaultCellIdentifier = @"PostCell-Default";
+      static NSString *imageCellIdentifier = @"PostCell-Stacked";
+      
+      BOOL postHasFiles = (BOOL)!![post.files count];
+      
+      NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
+      
+      WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+      
+      WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+      if(!cell) {
+        cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
+        cell.imageStackView.delegate = self;
+      }
+      
+      NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
+      cell.userNicknameLabel.text = post.owner.nickname;
+      cell.avatarView.image = post.owner.avatar;
+      cell.contentTextLabel.text = post.text;
+      cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+                             [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                             [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+      cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+      [cell setCommentCount:[post.comments count]];
+      
+      if (cell.imageStackView)
+        objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+      
+      NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
         
-        NSString *identifier = postHasFiles ? @"WithImage" : @"TextOnly";
-        WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+        return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+          return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+        }] anyObject]).resourceFilePath;
         
-        WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-        if(!cell) {
-            cell = [[WAPostViewCellPhone alloc] initWithStyle:style reuseIdentifier:identifier];
-        }
+      }];
+      
+      if ([allFilePaths count] == [post.files count]) {
         
-        cell.userNicknameLabel.text = post.owner.nickname;
-        cell.avatarView.image = post.owner.avatar;
-        cell.contentTextLabel.text = post.text;
-        cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                               [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
-                               [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
-      [cell setCommentCount:0];
-        NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-            
-            return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-                return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-            }] anyObject]).resourceFilePath;
-            
+        cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+          
+          return [UIImage imageWithContentsOfFile:aPath];
+          
         }];
         
-        if ([allFilePaths count] == [post.files count]) {
-            
-            cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-                
-                return [UIImage imageWithContentsOfFile:aPath];
-                
-            }];
-            
-        } else {
-            
-            cell.imageStackView.images = nil;
-            
-        }
-        return cell;
+      } else {
+        cell.imageStackView.images = nil;
+      }
+      
+      return cell;
     }
     
     // Section 2 for comment cell
@@ -279,18 +292,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  
   NSString *text = [self.post text];
-  CGFloat height = (48.0); // Header
-  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
-  NSLog(@"%f", height);
-  
-  if( [post.files count ] > 0)
-    height += 170;
-  
-  if( [post.comments count] > 0)
-    height += 40; 
-  
+  CGFloat height = [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
+  if([indexPath section]==0){
+     height += (48.0); // Header
+    if( [post.files count ] > 0)
+      height += 170.0;
+    
+    if( [post.comments count] > 0)
+      height += 40.0; 
+    
+    return height;
+  }else{
+    height +=12.0;
+  }
   return height;
 }
 
