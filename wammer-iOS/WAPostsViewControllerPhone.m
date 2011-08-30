@@ -220,7 +220,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}];
     
 	} else {
+	
     cell.imageStackView.images = nil;
+		
   }
   
   return cell;
