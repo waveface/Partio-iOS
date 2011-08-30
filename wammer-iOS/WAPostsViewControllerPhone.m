@@ -190,9 +190,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
-  
-  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
-  cell.userNicknameLabel.text = post.owner.nickname;
+	
+	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.contentTextLabel.text = post.text;
   cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
@@ -237,7 +236,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] 
              constrainedToSize:CGSizeMake(240.0, 9999.0) 
                  lineBreakMode:UILineBreakModeWordWrap].height;
-  NSLog(@"Height for Post %@, %f", [[[post objectID]URIRepresentation] lastPathComponent], height);
   
   if( [post.files count ] > 0)
     height += 170;
