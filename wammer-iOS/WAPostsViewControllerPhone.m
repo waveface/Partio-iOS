@@ -232,7 +232,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   NSString *text = [post text];
   CGFloat height = (48.0); // Header
   height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
-  NSLog(@"%f", height);
+  NSLog(@"Height for Post %@, %f", [[[post objectID]URIRepresentation] lastPathComponent], height);
   
   if( [post.files count ] > 0)
     height += 170;
@@ -240,7 +240,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if( [post.comments count] > 0)
     height += 40; 
   
-  return height;
+  return MAX(height, 100);
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
