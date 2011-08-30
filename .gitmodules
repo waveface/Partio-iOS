@@ -16,3 +16,6 @@
 [submodule "external/JSONKit"]
 	path = external/JSONKit
 	url = git://github.com/johnezang/JSONKit.git
+[submodule "external/IRKeychain"]
+	path = external/IRKeychain
+	url = git://github.com/iridia/IRKeychain.git

@@ -60,6 +60,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
+	//	TBD: Temporarily removes account switching.  We’ll use some other design later
+	self.navigationItem.leftBarButtonItem = nil;
+	
   self.title = @"Wammer";
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
   

@@ -88,6 +88,9 @@
 	
 	})());
 	
+	//	TBD: Temporarily removes account switching.  We’ll use some other design later
+	self.navigationItem.leftBarButtonItem = nil;
+	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];

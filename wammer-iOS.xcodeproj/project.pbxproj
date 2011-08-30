@@ -24,6 +24,7 @@
 		FF13871113E94F0700154B7D /* WACompositionBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871013E94F0700154B7D /* WACompositionBarBackground.png */; };
 		FF13871313E95C3900154B7D /* WACompositionTextWellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */; };
 		FF13871513E95E0800154B7D /* WACompositionSendButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */; };
+		FF164977140CC19900CAE824 /* WAAuthenticationRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */; };
 		FF21C8D313E14CF9009B980D /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
 		FF24072C13F27F4A000B2CAA /* WAPatternCarbonFibre.png in Resources */ = {isa = PBXBuildFile; fileRef = FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */; };
 		FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF24072E13F2881E000B2CAA /* WAViewController.m */; };
@@ -39,6 +40,8 @@
 		FF55C23A13F5270600F38861 /* WAArticleCommentsViewCell-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */; };
 		FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */; };
 		FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */; };
+		FF666C30140CD31D00C35CED /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2F140CD31C00C35CED /* Security.framework */; };
+		FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2B140CD2B200C35CED /* libIRKeychain.a */; };
 		FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
 		FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
@@ -92,6 +95,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = IRKeychain;
+		};
+		FF666C2D140CD30D00C35CED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = IRKeychain;
+		};
 		FF73A59C13D6DC6500D54EC6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -167,6 +184,8 @@
 		FF13871013E94F0700154B7D /* WACompositionBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBarBackground.png; path = Resources/WACompositionBarBackground.png; sourceTree = "<group>"; };
 		FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionTextWellBackground.png; path = Resources/WACompositionTextWellBackground.png; sourceTree = "<group>"; };
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
+		FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAuthenticationRequestViewController.h; path = "wammer-iOS/WAAuthenticationRequestViewController.h"; sourceTree = "<group>"; };
+		FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAuthenticationRequestViewController.m; path = "wammer-iOS/WAAuthenticationRequestViewController.m"; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternCarbonFibre.png; path = Resources/WAPatternCarbonFibre.png; sourceTree = "<group>"; };
@@ -189,6 +208,8 @@
 		FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleCommentsViewCell-Default.xib"; sourceTree = "<group>"; };
 		FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyCameraRoll-Large~ipad.png"; path = "Resources/PLEmptyCameraRoll-Large~ipad.png"; sourceTree = "<group>"; };
 		FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyPhotoAlbum-Large~ipad.png"; path = "Resources/PLEmptyPhotoAlbum-Large~ipad.png"; sourceTree = "<group>"; };
+		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
+		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "wammer-iOS/WAGalleryViewController.h"; sourceTree = "<group>"; };
 		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryViewController.m; path = "wammer-iOS/WAGalleryViewController.m"; sourceTree = "<group>"; };
 		FF73A53E13D6C2CC00D54EC6 /* wammer2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer2.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +291,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF666C30140CD31D00C35CED /* Security.framework in Frameworks */,
 				FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */,
 				FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */,
 				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
@@ -280,6 +302,7 @@
 				FF73A5FD13D6DDF300D54EC6 /* libAQGridView.a in Frameworks */,
 				FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */,
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
+				FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */,
 				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,6 +361,14 @@
 			name = Gallery;
 			sourceTree = "<group>";
 		};
+		FF666C24140CD2B200C35CED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF666C2B140CD2B200C35CED /* libIRKeychain.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
@@ -345,6 +376,8 @@
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
+				FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */,
+				FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */,
 				FF55C23513F5251D00F38861 /* Gallery */,
 				FFA9512714077BE800BD3302 /* Attached Media */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
@@ -376,10 +409,12 @@
 				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
 				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
+				FF666C2F140CD31C00C35CED /* Security.framework */,
 				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF97386213D82B55003D1722 /* JSONKit */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
+				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 			);
@@ -561,6 +596,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FF666C2E140CD30D00C35CED /* PBXTargetDependency */,
 				FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FC13D6DDE800D54EC6 /* PBXTargetDependency */,
@@ -599,6 +635,10 @@
 					ProjectRef = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
 				},
 				{
+					ProductGroup = FF666C24140CD2B200C35CED /* Products */;
+					ProjectRef = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+				},
+				{
 					ProductGroup = FF73A59F13D6DC6A00D54EC6 /* Products */;
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
@@ -611,6 +651,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FF666C2B140CD2B200C35CED /* libIRKeychain.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRKeychain.a;
+			remoteRef = FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -727,12 +774,18 @@
 				FF7D466814024FD800C916F5 /* WAImageStreamPickerView.m in Sources */,
 				FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */,
 				FF92796414079593007BEB65 /* WATableViewCell.m in Sources */,
+				FF164977140CC19900CAE824 /* WAAuthenticationRequestViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FF666C2E140CD30D00C35CED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRKeychain;
+			targetProxy = FF666C2D140CD30D00C35CED /* PBXContainerItemProxy */;
+		};
 		FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRFoundationsTouch;
@@ -789,6 +842,7 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
 					"$(PROJECT_DIR)/external/AQGridView/**",
+					"$(PROJECT_DIR)/external/IRKeychain/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -823,6 +877,7 @@
 					"$(SDKROOT)/usr/include/libxml2/**",
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
 					"$(PROJECT_DIR)/external/AQGridView/**",
+					"$(PROJECT_DIR)/external/IRKeychain/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
