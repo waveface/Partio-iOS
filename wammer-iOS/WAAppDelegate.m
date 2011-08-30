@@ -64,7 +64,7 @@
 				
 				userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self) {
 				
-					NSLog(@"%@ completed", self);
+					[self dismissModalViewControllerAnimated:YES];
 					
 				}];
         
