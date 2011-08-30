@@ -40,6 +40,19 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
+	self.title = @"Welcome";
+	
+	switch (UI_USER_INTERFACE_IDIOM()) {
+		
+		case UIUserInterfaceIdiomPhone: {
+			self.labelWidth = 128.0f;
+			break;
+		}
+		case UIUserInterfaceIdiomPad: {
+			self.labelWidth = 192.0f;
+			break;
+		}
+	}
 	
 	return self;
 
@@ -64,9 +77,7 @@
 	self.passwordField.returnKeyType = UIReturnKeyDone;
 	self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.passwordField.secureTextEntry = YES;
-	
-	[self.tableView reloadData];
-	
+		
 }
 
 - (void) viewDidUnload {
@@ -94,11 +105,7 @@
 		if (shouldReturn) {
 			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField resignFirstResponder];
-				
 				[self authenticate];
-				
-//				if (self.completionBlock)
-//					self.completionBlock(self);
 			});
 		}
 		return shouldReturn;
@@ -110,6 +117,9 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	[self.tableView reloadData];
+	[self.usernameField becomeFirstResponder];
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -174,6 +184,8 @@
 
 - (void) authenticate {
 
+	self.view.userInteractionEnabled = NO;
+
 	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
 		
 		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"creator_id"];
@@ -183,21 +195,37 @@
 		
 		[[WADataStore defaultStore] updateUsersOnSuccess: ^  {
 		
-			NSLog(@"users update success");
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				
+				if (self.completionBlock)
+					self.completionBlock(self);
+				
+				self.view.userInteractionEnabled = YES;
+				
+			});
 			
-			if (self.completionBlock)
-				self.completionBlock(self);
-			
-		} onFailure:^(void) {
+		} onFailure: ^ {
 		
-			NSLog(@"Users update failed.");
+			dispatch_async(dispatch_get_main_queue(), ^ {
+		
+				self.view.userInteractionEnabled = YES;
+				
+				[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:@"Authentication failed.  Unable to retrieve all the users." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			
+			});
 			
 		}];
 		
 	} onFailure:^(NSError *error) {
 		
-		NSLog(@"failed: %@", error);
+		dispatch_async(dispatch_get_main_queue(), ^ {
 		
+			self.view.userInteractionEnabled = YES;
+		
+			[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:[NSString stringWithFormat:@"Authentication failed: %@", error] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+		
+		});
+			
 	}];		
 
 }

@@ -240,15 +240,15 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
-		NSString *userToken = (NSString *)[inResponseOrNil objectForKey:@"token"];
-		NSString *userIdentifier = (NSString *)[inResponseOrNil objectForKey:@"creator_id"];
+		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"token"];
+		NSString *incomingIdentifier = (NSString *)[inResponseOrNil objectForKey:@"creator_id"];
 		
 		if (successBlock) {
 			successBlock(			
 				[NSDictionary dictionaryWithObjectsAndKeys:
-					userIdentifier, @"creator_id",
+					incomingIdentifier, @"creator_id",
 				nil], 
-				userToken
+				incomingToken
 			);
 		}
 		

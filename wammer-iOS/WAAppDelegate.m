@@ -14,6 +14,9 @@
 
 #import "WAAuthenticationRequestViewController.h"
 
+#import "WARemoteInterface.h"
+#import "IRKeychainManager.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
 @end
 
@@ -30,51 +33,80 @@
 	
 	[self.window makeKeyAndVisible];
 	
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
 	
-	if (YES || !currentUserIdentifier) {
+	//	Ask the keychain
+	
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
+	
+	if (!lastAuthenticatedUserTokenKeychainItem) {
+		if (lastAuthenticatedUserTokenKeychainItemData) {
+			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
+		}
+	}
+	
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+	
+	if (!lastAuthenticatedUserTokenKeychainItem)
+		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
+	
+	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken) = ^ (NSString *userIdentifier, NSString *userToken) {
+	
+		lastAuthenticatedUserTokenKeychainItem.secretString = userToken;
+		[lastAuthenticatedUserTokenKeychainItem synchronize];
+		
+		NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:lastAuthenticatedUserTokenKeychainItem];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WALastAuthenticatedUserIdentifier"];
+		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	};
+	
+	
+	if (authenticationInformationSufficient) {
+	
+		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		
+		//	We don’t have to validate this again since the token never expires
+	
+	}
+	
+	if (YES || !authenticationInformationSufficient) {
+	
+		__block UIViewController *userSelectionVC = nil;
         
-        // setup user selection view controller
-        __block WAUserSelectionViewController *userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
-            
-            NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
-            WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
-            NSString *userIdentifier = userObject.identifier;
-            
-            [[NSUserDefaults  standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
-            [[NSUserDefaults  standardUserDefaults] synchronize];
-            
-            [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
-            
-            void (^operations)() = ^ {
-                
-                CATransition *transition = [CATransition animation];
-                transition.type = kCATransitionFade;
-                transition.duration = 0.3f;
-                transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-                transition.removedOnCompletion = YES;
-                [self.window.rootViewController dismissModalViewControllerAnimated:NO];
-                [self.window.layer addAnimation:transition forKey:@"transition"];
-                
-            };
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
-            
-        }];
+		userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self) {
+		
+				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken);
+		
+				[self dismissModalViewControllerAnimated:YES];
 				
-				userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self) {
+				void (^operations)() = ^ {
+						
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.duration = 0.3f;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.removedOnCompletion = YES;
+						[[UIApplication sharedApplication].keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
+						[[UIApplication sharedApplication].keyWindow.layer addAnimation:transition forKey:@"transition"];
+						
+				};
 				
-					[self dismissModalViewControllerAnimated:YES];
-					
-				}];
-        
-        UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
-        userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
+			
+		}];
+		
+		UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
+		userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
 		
 			case UIUserInterfaceIdiomPad: {
-                // show a beautiful background on iPad
 			
 				WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
 				fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
@@ -89,7 +121,11 @@
 						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
 						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
 					};
-					[spinner startAnimating];
+					
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+						[spinner startAnimating];							
+					});
+					
 					return spinner;
 					
 				})())];
