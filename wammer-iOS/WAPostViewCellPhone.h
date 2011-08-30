@@ -26,7 +26,7 @@ enum {
 
 - (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
-- (void) hideComment:(BOOL)hide;
+//	- (void) hideComment:(BOOL)hide;
 
 @property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
