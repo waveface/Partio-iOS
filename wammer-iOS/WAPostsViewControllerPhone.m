@@ -190,9 +190,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
-  
-  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
-  cell.userNicknameLabel.text = post.owner.nickname;
+	
+	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.contentTextLabel.text = post.text;
   cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
@@ -221,7 +220,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}];
     
 	} else {
+	
     cell.imageStackView.images = nil;
+		
   }
   
   return cell;
@@ -237,7 +238,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] 
              constrainedToSize:CGSizeMake(240.0, 9999.0) 
                  lineBreakMode:UILineBreakModeWordWrap].height;
-  NSLog(@"Height for Post %@, %f", [[[post objectID]URIRepresentation] lastPathComponent], height);
   
   if( [post.files count ] > 0)
     height += 170;
@@ -302,16 +302,45 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	if (![self isViewLoaded])
+		return;
 	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	[self.tableView beginUpdates];
 	
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	switch (type) {
+		case NSFetchedResultsChangeInsert: {
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeDelete: {
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeMove: {
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeUpdate: {
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+	}
+
+}
+
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
-  [self.tableView reloadData];
-  
+		
+	if (![self isViewLoaded])
+		return;
+
+	[self.tableView endUpdates];
+		
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
