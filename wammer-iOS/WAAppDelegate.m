@@ -33,9 +33,6 @@
 	
 	[self.window makeKeyAndVisible];
 	
-	
-	//	Ask the keychain
-	
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
@@ -75,11 +72,9 @@
 	
 	}
 	
-	if (YES || !authenticationInformationSufficient) {
+	if (!authenticationInformationSufficient) {
 	
-		__block UIViewController *userSelectionVC = nil;
-        
-		userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self) {
+		__block UIViewController *userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self) {
 		
 				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken);
 		
@@ -113,38 +108,34 @@
 					return YES;
 				};
 				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
+				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternCarbonFibre"]];
+				
 				[fullscreenBaseVC.view addSubview:((^ {
-					
 					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
 					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 					spinner.center = (CGPoint){
 						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
 						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
 					};
-					
 					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 						[spinner startAnimating];							
 					});
-					
 					return spinner;
-					
 				})())];
-				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternCarbonFibre"]];
+				
 				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
 				[fullscreenBaseVC presentModalViewController:userSelectionWrappingVC animated:YES];
-			
+				
 				break;
 			
 			}
 			
 			case UIUserInterfaceIdiomPhone:
 			default: {
-                // no background
-                
-                [self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
 			
+				[self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
 				break;
-			
+				
 			}
 		
 		}
