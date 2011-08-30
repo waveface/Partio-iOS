@@ -24,11 +24,11 @@
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
-	return [self initWithCommentsViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+	return [self initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 
 }
 
-- (id) initWithCommentsViewCellStyle:(WAPostViewCellStyle)aStyle reuseIdentifier:(NSString *)aReuseIdentifier {
+- (id) initWithPostViewCellStyle:(WAPostViewCellStyle)aStyle reuseIdentifier:(NSString *)aReuseIdentifier {
 
 	NSString *loadedNibName = nil;
 	
@@ -42,10 +42,10 @@
 			break;
 		}
 		case WAPostViewCellStyleCompact: {
-			loadedNibName = @"WAPostViewCellPhone-Compact";
+			loadedNibName = @"WAPostViewCellPhone-Default";
 			break;
 		}case WAPostViewCellStyleCompactWithImageStack: {
-			loadedNibName = @"WAPostViewCellPhone-CompactWithImageStack";
+			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
 	}
@@ -66,7 +66,17 @@
 
 	self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
 	
-	self.avatarView.layer.cornerRadius = 7.0;
+  if(aStyle == WAPostViewCellStyleCompact || aStyle == WAPostViewCellStyleCompactWithImageStack ) {
+    self.commentBackground.hidden = YES;
+    self.commentLabel.hidden = YES;
+    self.contentTextLabel.layer.borderColor = [UIColor redColor].CGColor;
+    self.contentTextLabel.layer.borderWidth = 2.0;
+  } else {
+    self.contentTextLabel.layer.borderWidth = 2.0;
+    self.contentTextLabel.layer.borderColor = [UIColor greenColor].CGColor;
+  }
+
+  self.avatarView.layer.cornerRadius = 7.0;
 	self.avatarView.layer.masksToBounds = YES;
     
 	return self;

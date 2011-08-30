@@ -198,11 +198,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
-    cell = [[WAPostViewCellPhone alloc] initWithCommentsViewCellStyle:style reuseIdentifier:identifier];
+    cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
   
-  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d", [post identifier], style);
+  NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
   cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.contentTextLabel.text = post.text;
@@ -245,14 +245,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   NSString *text = [post text];
   CGFloat height = (48.0); // Header
-  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 999.0) lineBreakMode:UILineBreakModeCharacterWrap].height;
+  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
   NSLog(@"%f", height);
   
   if( [post.files count ] > 0)
     height += 170;
   
   if( [post.comments count] > 0)
-    height += 60; 
+    height += 40; 
   
   return height;
 }
