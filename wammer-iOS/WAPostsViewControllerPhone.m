@@ -20,6 +20,7 @@
 #import "IRTransparentToolbar.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "IRAlertView.h"
 
 #import "WAArticleViewController.h"
 #import "WAPostViewControllerPhone.h"
@@ -47,6 +48,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 
 @implementation WAPostsViewControllerPhone
+@synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 
@@ -59,9 +61,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
-	//	TBD: Temporarily removes account switching.  We’ll use some other design later
-	self.navigationItem.leftBarButtonItem = nil;
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
 	
   self.title = @"Wammer";
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
@@ -261,24 +261,39 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
+
+	__block __typeof__(self) nrSelf = self;
   
-  
-  __block WAUserSelectionViewController *userSelectionVC = nil;
-  userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
-    
-    NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
-    WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
-    NSString *userIdentifier = userObject.identifier;
-    
-    [[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
-    
-  }];
-  
-  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
-	[self.navigationController presentModalViewController:nc animated:YES];
+	[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+		
+		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+					
+			});
+
+		}],
+	
+	nil]] show];
+		
+	//  __block WAUserSelectionViewController *userSelectionVC = nil;
+	//  userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
+	//    
+	//    NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
+	//    WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
+	//    NSString *userIdentifier = userObject.identifier;
+	//    
+	//    [[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+	//    [[NSUserDefaults standardUserDefaults] synchronize];
+	//    
+	//    [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
+	//    
+	//  }];
+	//  
+	//  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
+	//	[self.navigationController presentModalViewController:nc animated:YES];
   
 }
 
