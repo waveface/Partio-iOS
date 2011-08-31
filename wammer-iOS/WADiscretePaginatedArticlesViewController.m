@@ -218,14 +218,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}];
 	
-//	[self.paginatedView.layer addAnimation:((^ {
-//		CATransition *fadeTransition = [CATransition animation];
-//		fadeTransition.type = kCATransitionFade;
-//		fadeTransition.duration = duration;
-//		fadeTransition.removedOnCompletion = YES;
-//		return fadeTransition;
-//	})()) forKey:@"transition"];
-	
 	[CATransaction commit];
 	
 }
