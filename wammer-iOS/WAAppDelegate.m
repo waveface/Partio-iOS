@@ -69,6 +69,12 @@
 		}
 	}
 	
+	if (lastAuthenticatedUserIdentifier)
+		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+	
+	if (lastAuthenticatedUserTokenKeychainItem.secretString)
+		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+	
 	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
 	return authenticationInformationSufficient;
 
@@ -111,6 +117,9 @@
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WALastAuthenticatedUserIdentifier"];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
+		
+		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
+		[WARemoteInterface sharedInterface].userToken = userToken;
 	
 	};
 	
