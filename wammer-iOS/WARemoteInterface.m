@@ -38,8 +38,11 @@
 
 	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
 	
-	if ([inMethodName isEqualToString:@"authenticate"])
-		returnedURL = [NSURL URLWithString:@"../../apidev/v1/auth/login/" relativeToURL:self.baseURL];
+	//if ([inMethodName isEqualToString:@"authenticate"])
+	//	returnedURL = [NSURL URLWithString:@"../../apidev/v1/auth/login/" relativeToURL:self.baseURL];
+    
+    if ([inMethodName isEqualToString:@"authenticate"])
+		returnedURL = [NSURL URLWithString:@"auth/login/" relativeToURL:self.baseURL];
 	
 	if ([inMethodName isEqualToString:@"articles"])
 		returnedURL = [NSURL URLWithString:@"posts/fetch_all/" relativeToURL:self.baseURL];
@@ -128,17 +131,25 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
 	
 		NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
-		
-		if (originalQueryParams) {
-			if (self.userToken && self.userIdentifier) {
-				NSLog(@"has user token and identifier; overriding stuff.");
-				NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
-				NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
-				[mutatedQueryParams setObject:self.userIdentifier forKey:@"creator_id"];
-				[mutatedQueryParams setObject:self.userToken forKey:@"token"];
-				return (NSDictionary *)mutatedContext;
-			}
-		}
+        
+        if (self.userToken && self.userIdentifier) {
+            
+            NSLog(@"has user token and identifier; overriding stuff.");
+            NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
+            NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
+            
+            if (!mutatedQueryParams)
+                mutatedQueryParams = [NSMutableDictionary dictionary];
+            
+            [mutatedContext setObject:mutatedQueryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+            [mutatedQueryParams setObject:self.userIdentifier forKey:@"creator_id"];
+            [mutatedQueryParams setObject:self.userToken forKey:@"token"];
+            
+            NSParameterAssert(mutatedQueryParams == [mutatedContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters]);
+            
+            return (NSDictionary *)mutatedContext;
+            
+        }
 	
 		return inOriginalContext;
 	
