@@ -26,6 +26,7 @@
 
 
 @implementation WAArticleViewController
+@synthesize presentationStyle;
 @synthesize managedObjectContext, article;
 @synthesize contextInfoContainer, imageStackView, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
@@ -181,77 +182,126 @@
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	UIImageView *bubbleView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WASpeechBubble"] stretchableImageWithLeftCapWidth:120 topCapHeight:32]] autorelease];
+	UIImageView *bubbleView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WASpeechBubble"] stretchableImageWithLeftCapWidth:84 topCapHeight:32]] autorelease];
 	bubbleView.frame = UIEdgeInsetsInsetRect(self.textEmphasisView.backgroundView.bounds, (UIEdgeInsets){ -28, -32, -32, -32 });
 	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.textEmphasisView.backgroundView addSubview:bubbleView];
 	
 	((WAView *)self.view).onLayoutSubviews = ^ {
 	
-		if (self.textEmphasisView && !self.textEmphasisView.hidden) {		
+		id self = (id)0x1; // Disables accidental referencing, and automatic block_retain(), of self
+		self = self;
+	
+		if (nrSelf.textEmphasisView && !nrSelf.textEmphasisView.hidden) {
 		
-			CGRect usableRect = UIEdgeInsetsInsetRect(self.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
+			CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
 		
-			[self.textEmphasisView sizeToFit];
-			self.textEmphasisView.frame = (CGRect){
-				self.textEmphasisView.frame.origin,
-				(CGSize) {
-					MAX(540, self.textEmphasisView.frame.size.width),
-					MIN(480, MAX(144 - 32 - 32, self.textEmphasisView.frame.size.height))
+			[nrSelf.textEmphasisView sizeToFit];
+			
+			switch (nrSelf.presentationStyle) {
+				case WAArticleViewControllerPresentationFullFrame: {
+					nrSelf.textEmphasisView.frame = (CGRect){
+						nrSelf.textEmphasisView.frame.origin,
+						(CGSize) {
+							MIN(CGRectGetWidth(usableRect) - 54, MAX(256, nrSelf.textEmphasisView.frame.size.width)),
+							MIN(CGRectGetHeight(usableRect) - 80, MAX(144 - 32 - 32, nrSelf.textEmphasisView.frame.size.height))
+						}
+					};
+					break;
 				}
-			};
-			self.textEmphasisView.center = (CGPoint){
+				case WAArticleViewControllerPresentationStandalone: {
+					nrSelf.textEmphasisView.frame = (CGRect){
+						nrSelf.textEmphasisView.frame.origin,
+						(CGSize) {
+							MAX(540, nrSelf.textEmphasisView.frame.size.width),
+							MIN(480, MAX(144 - 32 - 32, nrSelf.textEmphasisView.frame.size.height))
+						}
+					};
+					break;
+				}
+			}
+			
+			nrSelf.textEmphasisView.center = (CGPoint){
 				CGRectGetMidX(usableRect),
 				CGRectGetMidY(usableRect)
 			};
-			self.textEmphasisView.frame = CGRectIntegral(self.textEmphasisView.frame);
+			nrSelf.textEmphasisView.frame = CGRectIntegral(nrSelf.textEmphasisView.frame);
 			
-			self.contextInfoContainer.frame = (CGRect){
-				self.contextInfoContainer.frame.origin,
+			nrSelf.contextInfoContainer.frame = (CGRect){
+				nrSelf.contextInfoContainer.frame.origin,
 				(CGSize){
-					CGRectGetWidth(self.textEmphasisView.frame),
-					CGRectGetHeight(self.contextInfoContainer.frame)
+					MIN(CGRectGetWidth(usableRect) - 32, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
+					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
 				}
 			};
 			
-			self.contextInfoContainer.center = (CGPoint){
+			nrSelf.contextInfoContainer.center = (CGPoint){
 				CGRectGetMidX(usableRect),
-				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(self.textEmphasisView.frame) + CGRectGetHeight(self.contextInfoContainer.frame) + 10.0f
-			};
+				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(nrSelf.textEmphasisView.frame) + CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 10.0f
+			};			
 			
+			CGRect actualContentRect = CGRectUnion(
+				nrSelf.textEmphasisView.frame, 
+				nrSelf.contextInfoContainer.frame
+			);
+			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(nrSelf.textEmphasisView.frame);
+			nrSelf.textEmphasisView.frame = CGRectOffset(
+				nrSelf.textEmphasisView.frame, 
+				usableRect.origin.x,
+				usableRect.origin.y + delta
+			);
+			nrSelf.contextInfoContainer.frame = CGRectOffset(
+				nrSelf.contextInfoContainer.frame,
+				usableRect.origin.x,
+				usableRect.origin.y + delta
+			);
 			
-			CGRect actualContentRect = CGRectUnion(self.textEmphasisView.frame, self.contextInfoContainer.frame);
-			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(self.textEmphasisView.frame);
-			self.textEmphasisView.frame = CGRectOffset(self.textEmphasisView.frame, usableRect.origin.x, usableRect.origin.y + delta);
-			self.contextInfoContainer.frame = CGRectOffset(self.contextInfoContainer.frame, usableRect.origin.x, usableRect.origin.y + delta);
+			[nrSelf.relativeCreationDateLabel sizeToFit];
 			
-			[self.relativeCreationDateLabel sizeToFit];
-			
-			self.deviceDescriptionLabel.frame = (CGRect){
+			nrSelf.deviceDescriptionLabel.frame = (CGRect){
 				(CGPoint){
-					CGRectGetMaxX(self.relativeCreationDateLabel.frame) + 10,
-					self.deviceDescriptionLabel.frame.origin.y
+					CGRectGetMaxX(nrSelf.relativeCreationDateLabel.frame) + 10,
+					nrSelf.deviceDescriptionLabel.frame.origin.y
 				},
-				self.deviceDescriptionLabel.frame.size
+				nrSelf.deviceDescriptionLabel.frame.size
 			};
 						
 		} else {
 		
-			[self.relativeCreationDateLabel sizeToFit];
-			self.relativeCreationDateLabel.frame = (CGRect){
-				(CGPoint) {
-					CGRectGetWidth(self.relativeCreationDateLabel.superview.frame) - CGRectGetWidth(self.relativeCreationDateLabel.frame) - 32,
-					self.relativeCreationDateLabel.frame.origin.y
+			nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+		
+			nrSelf.contextInfoContainer.frame = (CGRect){
+				(CGPoint){
+					0,
+					CGRectGetHeight(nrSelf.view.bounds) - CGRectGetHeight(nrSelf.contextInfoContainer.frame) - 8
 				},
-				self.relativeCreationDateLabel.frame.size
+				(CGSize){
+					CGRectGetWidth(nrSelf.view.bounds),
+					nrSelf.contextInfoContainer.frame.size.height
+				}
+			};
+		
+			[nrSelf.relativeCreationDateLabel sizeToFit];
+			nrSelf.relativeCreationDateLabel.frame = (CGRect){
+				(CGPoint) {
+					CGRectGetWidth(
+						nrSelf.relativeCreationDateLabel.superview.frame
+					) - CGRectGetWidth(
+						nrSelf.relativeCreationDateLabel.frame
+					) - 32,
+					nrSelf.relativeCreationDateLabel.frame.origin.y
+				},
+				nrSelf.relativeCreationDateLabel.frame.size
 			};
 			
-			self.deviceDescriptionLabel.frame = (CGRect){
+			nrSelf.deviceDescriptionLabel.frame = (CGRect){
 				(CGPoint){
-					self.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(self.deviceDescriptionLabel.frame) - 10,
-					self.deviceDescriptionLabel.frame.origin.y
+					nrSelf.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(
+						nrSelf.deviceDescriptionLabel.frame
+					) - 10,
+					nrSelf.deviceDescriptionLabel.frame.origin.y
 				},
-				self.deviceDescriptionLabel.frame.size
+				nrSelf.deviceDescriptionLabel.frame.size
 			};
 		
 		}
@@ -274,6 +324,20 @@
 	
 	if ([self isViewLoaded])
 		[self refreshView];
+
+}
+
+- (void) setPresentationStyle:(WAArticleViewControllerPresentationStyle)newPresentationStyle {
+
+	if (presentationStyle == newPresentationStyle)
+		return;
+	
+	[self willChangeValueForKey:@"presentationStyle"];
+	presentationStyle = newPresentationStyle;
+	[self didChangeValueForKey:@"presentationStyle"];
+	
+	if ([self isViewLoaded])
+		[self.view setNeedsLayout];
 
 }
 
@@ -501,6 +565,7 @@
 						
 						imageStackView.firstPhotoView.alpha = 0.0f;
 						
+						rootView = self.view.window.rootViewController.view;
 						backdropView.frame = rootView.bounds;
 						
 						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:imageStackView.firstPhotoView.frame fromView:aStackView]] autorelease];
@@ -573,9 +638,11 @@
 					
 				};
 				
-				self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-					[parentViewController presentModalViewController:galleryViewController animated:NO];
-				});
+				if (self.onPresentingViewController) {
+					self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+						[parentViewController presentModalViewController:galleryViewController animated:NO];
+					});
+				}
 			
 			});
 
