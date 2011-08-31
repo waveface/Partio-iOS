@@ -20,9 +20,25 @@
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
 @end
 
+
+#ifndef __WAArticleViewController__
+#define __WAArticleViewController__
+
+typedef enum {
+    
+	WAArticleViewControllerPresentationStandalone = 0,
+	WAArticleViewControllerPresentationFullFrame,
+	WAArticleViewControllerPresentationDefault = WAArticleViewControllerPresentationStandalone
+    	
+} WAArticleViewControllerPresentationStyle;
+
+#endif
+
 @interface WAArticleViewController : UIViewController
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
+
+@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
