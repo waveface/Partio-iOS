@@ -32,7 +32,22 @@
 	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
-	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) ? @"WAPostsViewControllerPhone" : @"WAArticlesViewController";
+	NSString *rootViewControllerClassName = nil;
+	
+	switch (UI_USER_INTERFACE_IDIOM()) {
+		case UIUserInterfaceIdiomPad: {
+			rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
+			//	rootViewControllerClassName = @"WAPaginatedArticlesViewController";
+			break;
+		}
+		default:
+		case UIUserInterfaceIdiomPhone: {
+			rootViewControllerClassName = @"WAPostsViewControllerPhone";
+			break;
+		}
+	}
+	
+	NSParameterAssert(rootViewControllerClassName);
 	
 	UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
 	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
