@@ -10,6 +10,9 @@
 #import "IRDiscreteLayoutManager.h"
 #import "IRPaginatedView.h"
 
+
+static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
+
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, IRPaginatedViewDelegate>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
@@ -71,7 +74,7 @@
 	//	Since we only want one of the landscape / portrait grids to be visible, don’t use both in the array
 	
 	self.layoutGrids = [NSArray arrayWithObjects:
-		portraitGrid,
+		(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? portraitGrid : landscapeGrid),
 	nil];
 	
 	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
@@ -141,6 +144,8 @@
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
 	
+	NSMutableArray *pageElements = [NSMutableArray arrayWithCapacity:[viewGrid.layoutAreaNames count]];
+	
 	viewGrid.contentSize = aPaginatedView.frame.size;
 	
 	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
@@ -148,14 +153,13 @@
 		UIView *placedSubview = (UIView *)displayBlock(viewGrid, item);
 		NSParameterAssert(placedSubview);
 		placedSubview.frame = layoutBlock(viewGrid, item);
+		[pageElements addObject:placedSubview];
 		[returnedView addSubview:placedSubview];
 		
 	}];
 	
-	NSLog(@"returnedView %@; %@", returnedView, [returnedView recursiveDescription]);
-	
-	NSLog(@"TBD: use grid at index %i in the calculated results to lay out the page", index);
-	
+	objc_setAssociatedObject(returnedView, &kWADiscreteArticlePageElements, pageElements, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+			
 	return returnedView;
 
 }
@@ -164,6 +168,64 @@
 
 	return nil;
 
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+
+	//	If the paginated view is currently showing a view constructed with information provided by a layout grid, and that layout grid’s prototype has a fully transformable target, grab that transformable prototype and do a transform, then reposition individual items
+	
+	UIView *currentPageView = [self.paginatedView existingPageAtIndex:self.paginatedView.currentPage];
+	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
+	IRDiscreteLayoutGrid *currentPageGrid = [self.discreteLayoutResult.grids objectAtIndex:self.paginatedView.currentPage];
+	
+	NSSet *allDestinations = [currentPageGrid allTransformablePrototypeDestinations];
+	NSLog(@"allDestinations %@", allDestinations);
+	
+	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
+	
+	if ([allDestinations count] != 1) {
+		currentPageGrid.contentSize = self.view.bounds.size;
+		[currentPageGrid enumerateLayoutAreasWithBlock:^(NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+			((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = layoutBlock(currentPageGrid, item);
+		}];
+		return;
+	}
+	
+	
+	//	Assume that grid transforms are 1-to-1
+	
+	if ([allDestinations count] != 1)
+		return;
+		
+	IRDiscreteLayoutGrid *transformedGrid = [allDestinations anyObject];
+	transformedGrid = [currentPageGrid transformedGridWithPrototype:(transformedGrid.prototype ? transformedGrid.prototype : transformedGrid)];
+	
+	NSLog(@"old transformedGrid.contentSize %@", NSStringFromCGSize(transformedGrid.contentSize));
+	transformedGrid.contentSize = self.view.bounds.size;
+	
+	[[currentPageGrid retain] autorelease];
+	
+	[[self.discreteLayoutResult mutableArrayValueForKey:@"grids"] replaceObjectAtIndex:self.paginatedView.currentPage withObject:transformedGrid];
+	
+	[transformedGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+	
+		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = layoutBlock(transformedGrid, item);
+		
+	}];
+	
+//	[self.paginatedView.layer addAnimation:((^ {
+//		CATransition *fadeTransition = [CATransition animation];
+//		fadeTransition.type = kCATransitionFade;
+//		fadeTransition.duration = duration;
+//		fadeTransition.removedOnCompletion = YES;
+//		return fadeTransition;
+//	})()) forKey:@"transition"];
+	
+	[CATransaction commit];
+	
 }
 
 - (void) dealloc {
