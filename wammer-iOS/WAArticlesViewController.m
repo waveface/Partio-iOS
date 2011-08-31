@@ -9,17 +9,26 @@
 #import "WAArticlesViewController.h"
 #import "WADataStore.h"
 #import "WARemoteInterface.h"
+#import "WACompositionViewController.h"
+
+#import "IRBarButtonItem.h"
+#import "IRTransparentToolbar.h"
+#import "IRActionSheetController.h"
+#import "IRActionSheet.h"
+#import "IRAlertView.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 
 @end
 
 
 @implementation WAArticlesViewController
 @synthesize delegate, fetchedResultsController, managedObjectContext;
+@synthesize debugActionSheetController;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -43,7 +52,61 @@
 	
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
+	
+	self.navigationItem.leftBarButtonItem = ((^ {
+	
+		__block IRBarButtonItem *returnedItem = nil;
+		__block __typeof__(self) nrSelf = self;
+		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+		returnedItem.block = ^ {
+		
+			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+			
+				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+				
+					dispatch_async(dispatch_get_main_queue(), ^ {
+					
+						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+							
+					});
 
+				}],
+			
+			nil]] show];
+		
+		};
+		
+		return returnedItem;
+	
+	})());
+		
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+	
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSArray arrayWithObjects:
+			
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+		nil];
+		return toolbar;
+	
+	})())];
+	
+	self.title = @"Articles";
+	
+	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Debug Import" block:^(void) {
+		
+			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff, but you should not have to relaunch the app to see them anyway." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
+		
+		}],
+	
+	nil]];
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	return self;
@@ -72,7 +135,8 @@
 	
 	[fetchedResultsController release];
 	[managedObjectContext release];
-	
+	[debugActionSheetController release];
+
 	[super dealloc];
 
 }
@@ -87,6 +151,23 @@
 
 	[super viewDidLoad];
 	[self refreshData];
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+
+	if (self.debugActionSheetController.managedActionSheet.visible)
+		[self.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:self.debugActionSheetController.managedActionSheet.cancelButtonIndex animated:animated];
+
+}
+
+- (void) viewDidUnload {
+
+	self.debugActionSheetController = nil;
+	
+	[super viewDidUnload];
 
 }
 
@@ -129,6 +210,39 @@
 - (void) reloadViewContents {
 
 	[NSException raise:NSInternalInconsistencyException format:@"%@ shall be implemented in a subclass only, and you should not call super.", NSStringFromSelector(_cmd)];
+
+}
+
+
+
+
+
+- (void) handleAction:(UIBarButtonItem *)sender {
+
+	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
+
+}
+
+- (void) handleCompose:(UIBarButtonItem *)sender {
+
+	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
+	
+		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
+		
+			[self refreshData];
+		
+		} onFailure: ^ {
+		
+			NSLog(@"Article upload failed.  Help!");
+					
+		}];
+	
+	}];
+	
+	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
+	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
+	
+	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 
 }
 

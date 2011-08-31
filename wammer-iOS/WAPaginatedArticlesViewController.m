@@ -8,7 +8,6 @@
 
 #import "WADataStore.h"
 #import "WAPaginatedArticlesViewController.h"
-#import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 #import "WAImageStackView.h"
 
@@ -32,7 +31,6 @@
 @interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate, WAArticleViewControllerPresenting>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
-@property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
@@ -54,7 +52,6 @@
 @synthesize paginatedView;
 @synthesize coachmarkView;
 @synthesize paginationSlider;
-@synthesize debugActionSheetController;
 @synthesize articleViewControllers;
 @synthesize articleCommentsViewController;
 @synthesize articleCommentsDismissalButton;
@@ -66,60 +63,6 @@
 	
 	if (!self)
 		return nil;
-	
-	self.navigationItem.leftBarButtonItem = ((^ {
-	
-		__block IRBarButtonItem *returnedItem = nil;
-		__block __typeof__(self) nrSelf = self;
-		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-		returnedItem.block = ^ {
-		
-			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-			
-				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^ {
-					
-						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-							
-					});
-
-				}],
-			
-			nil]] show];
-		
-		};
-		
-		return returnedItem;
-	
-	})());
-		
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-	
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
-		toolbar.usesCustomLayout = NO;
-		toolbar.items = [NSArray arrayWithObjects:
-			
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
-			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
-			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
-		nil];
-		return toolbar;
-	
-	})())];
-	
-	self.title = @"Articles";
-	
-	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
-	
-		[IRAction actionWithTitle:@"Debug Import" block:^(void) {
-		
-			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff, but you should not have to relaunch the app to see them anyway." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
-		
-		}],
-	
-	nil]];
 		
 	return self;
 
@@ -128,7 +71,6 @@
 - (void) dealloc {
 	
 	[paginatedView release];
-	[debugActionSheetController release];
 	
 	[coachmarkView release];
 	[paginationSlider release];
@@ -214,7 +156,6 @@
 	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	self.paginatedView = nil;
-	self.debugActionSheetController = nil;
 	
 	self.coachmarkView = nil;
 	self.paginationSlider = nil;
@@ -251,9 +192,6 @@
 
 	[super viewWillDisappear:animated];
 	
-	if (self.debugActionSheetController.managedActionSheet.visible)
-		[self.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:self.debugActionSheetController.managedActionSheet.cancelButtonIndex animated:animated];
-		
 	[self.articleCommentsViewController viewWillDisappear:animated];
 
 }
@@ -394,35 +332,6 @@
 		[CATransaction commit];
 	
 	});
-
-}
-
-- (void) handleAction:(UIBarButtonItem *)sender {
-
-	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
-
-}
-
-- (void) handleCompose:(UIBarButtonItem *)sender {
-
-	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
-	
-		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
-		
-			[self refreshData];
-		
-		} onFailure: ^ {
-		
-			NSLog(@"Article upload failed.  Help!");
-					
-		}];
-	
-	}];
-	
-	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
-	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
-	
-	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 
 }
 
