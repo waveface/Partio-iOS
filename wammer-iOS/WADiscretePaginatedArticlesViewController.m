@@ -9,16 +9,24 @@
 #import "WADiscretePaginatedArticlesViewController.h"
 #import "IRDiscreteLayoutManager.h"
 #import "IRPaginatedView.h"
+#import "WADataStore.h"
+
+#import "WAArticleViewController.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 
-@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, IRPaginatedViewDelegate>
+static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
+
+@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, IRPaginatedViewDelegate, WAArticleViewControllerPresenting>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
+
+- (UIView *) representingViewForItem:(WAArticle *)anArticle;
+- (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
 
 @end
 
@@ -26,6 +34,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @synthesize discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 
 - (void) loadView {
+
+	NSLog(@"TBD remember previous paginated view page");
 
 	self.view = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame] autorelease];
 	self.view.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
@@ -35,6 +45,43 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginatedView.delegate = self;
 	[self.view addSubview:self.paginatedView];
 	
+	if (self.discreteLayoutResult)
+		[self.paginatedView reloadViews];
+	
+}
+
+- (UIView *) representingViewForItem:(WAArticle *)anArticle {
+
+	__block __typeof__(self) nrSelf = self;
+
+	WAArticleViewController *articleViewController = nil;
+	
+	articleViewController = objc_getAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem);
+	
+	if (!articleViewController) {
+		articleViewController = [WAArticleViewController controllerRepresentingArticle:[[anArticle objectID] URIRepresentation]];
+		articleViewController.presentationStyle = WAArticleViewControllerPresentationFullFrame;
+		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	
+	articleViewController.view.clipsToBounds = YES;
+	articleViewController.view.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
+	articleViewController.view.layer.borderWidth = 1.0f;
+	
+	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
+	
+		action(nrSelf);
+	
+	};
+	
+	return articleViewController.view;
+	
+}
+
+- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
+
+	NSLog(@"TBD %s", __PRETTY_FUNCTION__);
+
 }
 
 - (IRDiscreteLayoutManager *) discreteLayoutManager {
@@ -42,12 +89,14 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (discreteLayoutManager)
 		return discreteLayoutManager;
 		
+	__block __typeof__(self) nrSelf = self;
+		
 	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
 	
-		UIView *returnedView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 256, 256 }] autorelease];
-		returnedView.layer.borderColor = [UIColor blueColor].CGColor;
-		returnedView.layer.borderWidth = 2.0f;
-		return returnedView;
+		if (![anItem isKindOfClass:[WAArticle class]])
+			return nil;
+	
+		return [nrSelf representingViewForItem:(WAArticle *)anItem];
 	
 	} copy] autorelease];
 	
@@ -100,9 +149,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) reloadViewContents {
 	
-	NSLog(@"Now it’s time to reload stuff — fetched %@", self.fetchedResultsController.fetchedObjects);
-	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
-	NSLog(@"self.discreteLayoutResult %@", self.discreteLayoutResult);
+	if (!self.discreteLayoutResult)
+		self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
 	
 	[self.paginatedView reloadViews];
 
@@ -170,21 +218,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
-- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void) adjustPageViewAtIndex:(NSUInteger)anIndex {
 
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	[CATransaction begin];
-	[CATransaction setDisableActions:YES];
-
-	//	If the paginated view is currently showing a view constructed with information provided by a layout grid, and that layout grid’s prototype has a fully transformable target, grab that transformable prototype and do a transform, then reposition individual items
-	
-	UIView *currentPageView = [self.paginatedView existingPageAtIndex:self.paginatedView.currentPage];
+	UIView *currentPageView = [self.paginatedView existingPageAtIndex:anIndex];	
 	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
-	IRDiscreteLayoutGrid *currentPageGrid = [self.discreteLayoutResult.grids objectAtIndex:self.paginatedView.currentPage];
+	IRDiscreteLayoutGrid *currentPageGrid = [self.discreteLayoutResult.grids objectAtIndex:anIndex];
 	
 	NSSet *allDestinations = [currentPageGrid allTransformablePrototypeDestinations];
-	NSLog(@"allDestinations %@", allDestinations);
 	
 	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
 	
@@ -205,19 +245,38 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	IRDiscreteLayoutGrid *transformedGrid = [allDestinations anyObject];
 	transformedGrid = [currentPageGrid transformedGridWithPrototype:(transformedGrid.prototype ? transformedGrid.prototype : transformedGrid)];
 	
-	NSLog(@"old transformedGrid.contentSize %@", NSStringFromCGSize(transformedGrid.contentSize));
 	transformedGrid.contentSize = self.view.bounds.size;
 	
 	[[currentPageGrid retain] autorelease];
 	
-	[[self.discreteLayoutResult mutableArrayValueForKey:@"grids"] replaceObjectAtIndex:self.paginatedView.currentPage withObject:transformedGrid];
+	[[self.discreteLayoutResult mutableArrayValueForKey:@"grids"] replaceObjectAtIndex:anIndex withObject:transformedGrid];
 	
 	[transformedGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
 		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = layoutBlock(transformedGrid, item);
 		
 	}];
+
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+
+	//	If the paginated view is currently showing a view constructed with information provided by a layout grid, and that layout grid’s prototype has a fully transformable target, grab that transformable prototype and do a transform, then reposition individual items
 	
+	if (self.paginatedView.currentPage > 0)
+		[self adjustPageViewAtIndex:(self.paginatedView.currentPage - 1)];
+	
+	[self adjustPageViewAtIndex:self.paginatedView.currentPage];
+	
+	if ((self.paginatedView.currentPage + 1) < self.paginatedView.numberOfPages) {
+		[self adjustPageViewAtIndex:(self.paginatedView.currentPage + 1)];
+	}
+		
 	[CATransaction commit];
 	
 }
