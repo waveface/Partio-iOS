@@ -172,6 +172,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
 
