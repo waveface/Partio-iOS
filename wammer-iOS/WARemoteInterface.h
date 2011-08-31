@@ -18,6 +18,7 @@
 
 @property (nonatomic, readwrite, retain) NSString *userIdentifier;
 @property (nonatomic, readwrite, retain) NSString *userToken;
+@property (nonatomic, readwrite, assign) NSUInteger defaultBatchSize;
 
 - (void) retrieveTokenForUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 

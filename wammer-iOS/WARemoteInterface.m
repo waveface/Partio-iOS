@@ -76,7 +76,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 @implementation WARemoteInterface
 
-@synthesize userIdentifier, userToken;
+@synthesize userIdentifier, userToken, defaultBatchSize;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -216,6 +216,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	};
 
+	self.defaultBatchSize = 200;
 
 	return [self initWithEngine:engine authenticator:nil];
 
@@ -496,7 +497,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 	
-	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:[WARemoteInterface sharedInterface].defaultBatchSize onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
