@@ -37,7 +37,6 @@
 @property (nonatomic, readwrite, retain) UIView *coachmarkView;
 @property (nonatomic, readwrite, retain) WAPaginationSlider *paginationSlider;
 @property (nonatomic, readwrite, retain) NSArray *articleViewControllers;
-- (void) refreshData;
 - (void) refreshPaginatedViewPages;
 
 @property (nonatomic, readwrite, retain) UIButton *articleCommentsDismissalButton;

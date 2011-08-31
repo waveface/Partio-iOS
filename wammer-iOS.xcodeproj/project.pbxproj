@@ -80,6 +80,7 @@
 		FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
 		FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */; };
 		FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
+		FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
 		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
 		FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
@@ -159,6 +160,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = AQGridView;
+		};
+		FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF55E1961407CE8400D8F3C7;
+			remoteInfo = IRDiscreteLayoutManager;
+		};
+		FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF2BFEE0140AC72300604E8D;
+			remoteInfo = IRDiscreteLayoutTests;
+		};
+		FFBA66EE140E12B600BE5A1D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
+			remoteInfo = IRDiscreteLayoutManager;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -276,6 +298,7 @@
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAttachedMediaListViewController.m; path = "wammer-iOS/WAAttachedMediaListViewController.m"; sourceTree = "<group>"; };
 		FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADiscretePaginatedArticlesViewController.h; sourceTree = "<group>"; };
 		FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADiscretePaginatedArticlesViewController.m; sourceTree = "<group>"; };
+		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
 		FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Plaintext.xib"; path = "Resources/WAArticleViewController-Plaintext.xib"; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
@@ -310,6 +333,7 @@
 				FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */,
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
 				FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */,
+				FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */,
 				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +455,7 @@
 				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF97386213D82B55003D1722 /* JSONKit */,
+				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
@@ -567,6 +592,15 @@
 			name = "Attached Media";
 			sourceTree = "<group>";
 		};
+		FFBA66E3140E12AD00BE5A1D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */,
+				FFBA66ED140E12AD00BE5A1D /* IRDiscreteLayoutTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -616,6 +650,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FFBA66EF140E12B600BE5A1D /* PBXTargetDependency */,
 				FF666C2E140CD30D00C35CED /* PBXTargetDependency */,
 				FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */,
@@ -649,6 +684,10 @@
 				{
 					ProductGroup = FF73A5DA13D6DD5000D54EC6 /* Products */;
 					ProjectRef = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
+				},
+				{
+					ProductGroup = FFBA66E3140E12AD00BE5A1D /* Products */;
+					ProjectRef = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
 				},
 				{
 					ProductGroup = FF73A59613D6DC6500D54EC6 /* Products */;
@@ -704,6 +743,20 @@
 			fileType = archive.ar;
 			path = libAQGridView.a;
 			remoteRef = FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRDiscreteLayoutManager.a;
+			remoteRef = FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFBA66ED140E12AD00BE5A1D /* IRDiscreteLayoutTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IRDiscreteLayoutTests.octest;
+			remoteRef = FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -823,6 +876,11 @@
 			name = AQGridView;
 			targetProxy = FF73A5FB13D6DDE800D54EC6 /* PBXContainerItemProxy */;
 		};
+		FFBA66EF140E12B600BE5A1D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRDiscreteLayoutManager;
+			targetProxy = FFBA66EE140E12B600BE5A1D /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -865,6 +923,7 @@
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
 					"$(PROJECT_DIR)/external/AQGridView/**",
 					"$(PROJECT_DIR)/external/IRKeychain/**",
+					"$(PROJECT_DIR)/external/IRDiscreteLayoutManager/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -900,6 +959,7 @@
 					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
 					"$(PROJECT_DIR)/external/AQGridView/**",
 					"$(PROJECT_DIR)/external/IRKeychain/**",
+					"$(PROJECT_DIR)/external/IRDiscreteLayoutManager/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

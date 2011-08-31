@@ -7,23 +7,170 @@
 //
 
 #import "WADiscretePaginatedArticlesViewController.h"
+#import "IRDiscreteLayoutManager.h"
+#import "IRPaginatedView.h"
+
+@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, IRPaginatedViewDelegate>
+
+@property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
+@property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
+@property (nonatomic, readwrite, retain) NSArray *layoutGrids;
+@property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
+
+@end
 
 @implementation WADiscretePaginatedArticlesViewController
+@synthesize discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 
 - (void) loadView {
 
 	self.view = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame] autorelease];
 	self.view.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
 	
+	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
+	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.paginatedView.delegate = self;
+	[self.view addSubview:self.paginatedView];
+	
+}
+
+- (IRDiscreteLayoutManager *) discreteLayoutManager {
+
+	if (discreteLayoutManager)
+		return discreteLayoutManager;
+		
+	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
+	
+		UIView *returnedView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 256, 256 }] autorelease];
+		returnedView.layer.borderColor = [UIColor blueColor].CGColor;
+		returnedView.layer.borderWidth = 2.0f;
+		return returnedView;
+	
+	} copy] autorelease];
+	
+	IRDiscreteLayoutGrid *portraitGrid = [IRDiscreteLayoutGrid prototype];
+	[portraitGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 0, 0, 3, 1) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 0, 1, 3, 1) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 3, 0, 2, 2) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 0, 2, 5, 1) displayBlock:genericDisplayBlock];
+	
+	IRDiscreteLayoutGrid *landscapeGrid = [IRDiscreteLayoutGrid prototype];
+	[landscapeGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[landscapeGrid registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[landscapeGrid registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
+	[landscapeGrid registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 2) displayBlock:genericDisplayBlock];
+	
+	portraitGrid.contentSize = (CGSize){ 768, 1024 };
+	landscapeGrid.contentSize = (CGSize){ 1024, 768 };
+	
+	[IRDiscreteLayoutGrid markAreaNamed:@"A" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"A" inGridPrototype:landscapeGrid];
+	[IRDiscreteLayoutGrid markAreaNamed:@"B" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"B" inGridPrototype:landscapeGrid];
+	[IRDiscreteLayoutGrid markAreaNamed:@"C" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"C" inGridPrototype:landscapeGrid];
+	[IRDiscreteLayoutGrid markAreaNamed:@"D" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"D" inGridPrototype:landscapeGrid];
+	
+	//	Since we only want one of the landscape / portrait grids to be visible, don’t use both in the array
+	
+	self.layoutGrids = [NSArray arrayWithObjects:
+		portraitGrid,
+	nil];
+	
+	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
+	self.discreteLayoutManager.delegate = self;
+	self.discreteLayoutManager.dataSource = self;
+	return self.discreteLayoutManager;
+
+}
+
+- (void) viewDidUnload {
+
+	self.discreteLayoutManager = nil;
+	self.discreteLayoutResult = nil;
+	[super viewDidUnload];
+
 }
 
 -	(BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+	
 	return YES;
+	
 }
 
 - (void) reloadViewContents {
 	
 	NSLog(@"Now it’s time to reload stuff — fetched %@", self.fetchedResultsController.fetchedObjects);
+	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
+	NSLog(@"self.discreteLayoutResult %@", self.discreteLayoutResult);
+	
+	[self.paginatedView reloadViews];
+
+}
+
+- (NSUInteger) numberOfItemsForLayoutManager:(IRDiscreteLayoutManager *)manager {
+
+  return [self.fetchedResultsController.fetchedObjects count];
+
+}
+
+- (id<IRDiscreteLayoutItem>) layoutManager:(IRDiscreteLayoutManager *)manager itemAtIndex:(NSUInteger)index {
+
+  return (id<IRDiscreteLayoutItem>)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+
+}
+
+- (NSUInteger) numberOfLayoutGridsForLayoutManager:(IRDiscreteLayoutManager *)manager {
+
+  return [self.layoutGrids count];
+
+}
+
+- (id<IRDiscreteLayoutItem>) layoutManager:(IRDiscreteLayoutManager *)manager layoutGridAtIndex:(NSUInteger)index {
+
+  return (id<IRDiscreteLayoutItem>)[self.layoutGrids objectAtIndex:index];
+
+}
+
+- (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return [self.discreteLayoutResult.grids count];
+
+}
+
+- (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
+
+	UIView *returnedView = [[[UIView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
+	
+	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
+	
+	viewGrid.contentSize = aPaginatedView.frame.size;
+	
+	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+	
+		UIView *placedSubview = (UIView *)displayBlock(viewGrid, item);
+		NSParameterAssert(placedSubview);
+		placedSubview.frame = layoutBlock(viewGrid, item);
+		[returnedView addSubview:placedSubview];
+		
+	}];
+	
+	NSLog(@"returnedView %@; %@", returnedView, [returnedView recursiveDescription]);
+	
+	NSLog(@"TBD: use grid at index %i in the calculated results to lay out the page", index);
+	
+	return returnedView;
+
+}
+
+- (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return nil;
+
+}
+
+- (void) dealloc {
+
+	[discreteLayoutManager release];
+
+	[super dealloc];
 
 }
 
