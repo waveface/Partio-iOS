@@ -665,8 +665,16 @@
 			NSLog(@"Error saving: %@", savingError);
 			
 		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			@try {
 			
-			[controller.commentsView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([controller.commentsView numberOfRowsInSection:([controller.commentsView numberOfSections] - 1)] - 1) inSection:([controller.commentsView numberOfSections] - 1)] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+				[controller.commentsView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([controller.commentsView numberOfRowsInSection:([controller.commentsView numberOfSections] - 1)] - 1) inSection:([controller.commentsView numberOfSections] - 1)] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+				
+			} @catch (NSException *e) {
+				
+				//	Duh
+				
+			}
 		
 		});
 		

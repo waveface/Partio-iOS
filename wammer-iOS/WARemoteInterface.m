@@ -38,8 +38,11 @@
 
 	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
 	
-	if ([inMethodName isEqualToString:@"authenticate"])
-		returnedURL = [NSURL URLWithString:@"../../apidev/v1/auth/login/" relativeToURL:self.baseURL];
+	//if ([inMethodName isEqualToString:@"authenticate"])
+	//	returnedURL = [NSURL URLWithString:@"../../apidev/v1/auth/login/" relativeToURL:self.baseURL];
+    
+    if ([inMethodName isEqualToString:@"authenticate"])
+		returnedURL = [NSURL URLWithString:@"auth/login/" relativeToURL:self.baseURL];
 	
 	if ([inMethodName isEqualToString:@"articles"])
 		returnedURL = [NSURL URLWithString:@"posts/fetch_all/" relativeToURL:self.baseURL];
@@ -76,7 +79,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 @implementation WARemoteInterface
 
-@synthesize userIdentifier, userToken;
+@synthesize userIdentifier, userToken, defaultBatchSize;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -116,28 +119,42 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 - (id) init {
 
 	IRWebAPIEngine *engine = [[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] autorelease];	
-	
-	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
-	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
-	
+		
 	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
 		return inOriginalContext;
 	} copy] autorelease]];
 	
 	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
-	
-		NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
-		
-		if (originalQueryParams) {
-			if (self.userToken && self.userIdentifier) {
-				NSLog(@"has user token and identifier; overriding stuff.");
+			
+		if (self.userToken && self.userIdentifier) {
+
 				NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
-				NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
-				[mutatedQueryParams setObject:self.userIdentifier forKey:@"creator_id"];
-				[mutatedQueryParams setObject:self.userToken forKey:@"token"];
+				NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
+				
+				if (originalFormMultipartFields) {
+				
+					NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
+					[mutatedContext setObject:mutatedFormMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
+					[mutatedFormMultipartFields setObject:self.userIdentifier forKey:@"creator_id"];
+					[mutatedFormMultipartFields setObject:self.userToken forKey:@"token"];
+					
+				} else {
+				
+					NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+					NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
+					
+					if (!mutatedQueryParams)
+							mutatedQueryParams = [NSMutableDictionary dictionary];
+					
+					[mutatedContext setObject:mutatedQueryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+					[mutatedQueryParams setObject:self.userIdentifier forKey:@"creator_id"];
+					[mutatedQueryParams setObject:self.userToken forKey:@"token"];
+				
+				}
+				
 				return (NSDictionary *)mutatedContext;
-			}
+				
 		}
 	
 		return inOriginalContext;
@@ -148,7 +165,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity]; });
 		return inParsedResponse;
 	} copy] autorelease]];
-	
+		
 //	[engine.requestTransformers setObject:[NSArray arrayWithObjects:[[ ^ (NSDictionary *inOriginalContext) {
 //	
 //		NSArray *tempURLs = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextLocalCachingTemporaryFileURLsKey];
@@ -202,6 +219,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	} copy] autorelease]];
 	
+	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
+	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
+	
 	engine.parser = ^ (NSData *incomingData) {
 	
 		NSError *parsingError = nil;
@@ -216,6 +236,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	};
 
+	self.defaultBatchSize = 200;
 
 	return [self initWithEngine:engine authenticator:nil];
 
@@ -496,7 +517,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 	
-	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:200 onSuccess:^(NSArray *retrievedArticleReps) {
+	[[WARemoteInterface sharedInterface] retrieveArticlesWithContinuation:nil batchLimit:[WARemoteInterface sharedInterface].defaultBatchSize onSuccess:^(NSArray *retrievedArticleReps) {
 	
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
@@ -551,7 +572,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 	} onFailure: ^ (NSError *error) {
 		
-		//	Currently a NO OP
+		if (failureBlock)
+			failureBlock();
 		
 	}];
 
