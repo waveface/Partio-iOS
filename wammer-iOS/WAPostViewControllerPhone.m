@@ -14,6 +14,8 @@
 #import "WAArticle.h"
 
 #import "WAGalleryViewController.h"
+#import "WARemoteInterface.h"
+#import "WAComposeCommentViewControllerPhone.h"
 
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
 
@@ -23,6 +25,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
+- (void) didFinishComposingComment:(NSString *)commentText;
 - (void) refreshData;
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -45,12 +48,14 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-        self.title = @"Post";
-    }
-    return self;
+  self = [super initWithStyle:style];
+  if(!self)
+    return nil;
+ 
+  self.title = @"Post";
+  self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
+  
+  return self;
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
@@ -91,7 +96,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (void)showCompose:(UIBarButtonItem *)sender
 {
-    [self.navigationController pushViewController:[[WAComposeViewControllerPhone alloc]init] animated:YES];
+  [self.navigationController pushViewController:[[WAComposeCommentViewControllerPhone alloc] init] animated:YES];
 }
 
 #pragma mark - View lifecycle
@@ -237,6 +242,80 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 	cell.originLabel.text = representedComment.creationDeviceName;
 	
     return cell;
+}
+
+- (void) handleCompose:(UIBarButtonItem *)sender
+{
+
+  __block __typeof__(self) nrSelf = self;
+  
+  WAComposeCommentViewControllerPhone *ccvc = [[[WAComposeCommentViewControllerPhone alloc] init] autorelease];
+//  [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
+//    [nrSelf didFinishComposingComment:@"test"];
+//    
+//		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
+//      
+//			[self refreshData];
+//     
+//		} onFailure:nil];
+//    
+//	}];
+  
+  [self.navigationController pushViewController:ccvc animated:YES];
+}
+
+- (void) didFinishComposingComment:(NSString *)commentText 
+{
+	
+	WAArticle *currentArticle = self.post;
+	NSString *currentArticleIdentifier = currentArticle.identifier;
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	
+	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
+		
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		
+		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
+		
+		if ([createdCommentRep objectForKey:@"creator_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [createdCommentRep objectForKey:@"creator_id"], @"id",
+                                    nil] forKey:@"owner"];
+		}
+		
+		if ([createdCommentRep objectForKey:@"post_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [createdCommentRep objectForKey:@"post_id"], @"id",
+                                    nil] forKey:@"article"];
+		}
+		
+		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
+                                                                                                         
+                                                                                                         mutatedCommentRep,
+                                                                                                         
+                                                                                                         nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                                                                            
+                                                                                                                            @"WAFile", @"files",
+                                                                                                                            @"WAArticle", @"article",
+                                                                                                                            @"WAUser", @"owner",
+                                                                                                                            
+                                                                                                                            nil] options:0];
+		
+		for (WAComment *aComment in insertedComments)
+			if (!aComment.timestamp)
+				aComment.timestamp = [NSDate date];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Error saving: %@", savingError);
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"Error: %@", error);
+		
+	}];
+	
 }
 
 /*
