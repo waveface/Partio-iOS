@@ -108,32 +108,121 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	} copy] autorelease];
 	
-	IRDiscreteLayoutGrid *portraitGrid = [IRDiscreteLayoutGrid prototype];
-	[portraitGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
-	[portraitGrid registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
-	[portraitGrid registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
-	[portraitGrid registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 2, 1) displayBlock:genericDisplayBlock];
+	IRDiscreteLayoutGrid * (^gridWithLayoutBlocks)(IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) = ^ (IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) {
 	
-	IRDiscreteLayoutGrid *landscapeGrid = [IRDiscreteLayoutGrid prototype];
-	[landscapeGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
-	[landscapeGrid registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
-	[landscapeGrid registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
-	[landscapeGrid registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 2) displayBlock:genericDisplayBlock];
+		IRDiscreteLayoutGrid *returnedPrototype = [IRDiscreteLayoutGrid prototype];
+		NSUInteger numberOfAppendedLayoutAreas = 0;
 	
-	portraitGrid.contentSize = (CGSize){ 768, 1024 };
-	landscapeGrid.contentSize = (CGSize){ 1024, 768 };
+		va_list arguments;
+		va_start(arguments, aBlock);
+		for (IRDiscreteLayoutGridAreaLayoutBlock aLayoutBlock = aBlock; aLayoutBlock != nil; aLayoutBlock =	va_arg(arguments, IRDiscreteLayoutGridAreaLayoutBlock)) {
+			[returnedPrototype registerLayoutAreaNamed:[NSString stringWithFormat:@"area_%2.0i", numberOfAppendedLayoutAreas] validatorBlock:nil layoutBlock:aLayoutBlock displayBlock:genericDisplayBlock];
+			numberOfAppendedLayoutAreas++;
+		};
+		va_end(arguments);
+		return returnedPrototype;
+		
+	};
 	
-	[IRDiscreteLayoutGrid markAreaNamed:@"A" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"A" inGridPrototype:landscapeGrid];
-	[IRDiscreteLayoutGrid markAreaNamed:@"B" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"B" inGridPrototype:landscapeGrid];
-	[IRDiscreteLayoutGrid markAreaNamed:@"C" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"C" inGridPrototype:landscapeGrid];
-	[IRDiscreteLayoutGrid markAreaNamed:@"D" inGridPrototype:portraitGrid asEquivalentToAreaNamed:@"D" inGridPrototype:landscapeGrid];
+	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
+
+	void (^enqueueGridPrototypes)(IRDiscreteLayoutGrid *, IRDiscreteLayoutGrid *) = ^ (IRDiscreteLayoutGrid *aGrid, IRDiscreteLayoutGrid *anotherGrid) {
+		aGrid.contentSize = (CGSize){ 768, 1024 };
+		anotherGrid.contentSize = (CGSize){ 1024, 768 };
+		[enqueuedLayoutGrids addObject:aGrid];		
+		[aGrid enumerateLayoutAreaNamesWithBlock: ^ (NSString *anAreaName) {
+			[[aGrid class] markAreaNamed:anAreaName inGridPrototype:aGrid asEquivalentToAreaNamed:anAreaName inGridPrototype:anotherGrid];
+		}];
+	};
 	
-	//	Since we only want one of the landscape / portrait grids to be visible, don’t use both in the array
+	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
 	
-	self.layoutGrids = [NSArray arrayWithObjects:
-		(UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? portraitGrid : landscapeGrid),
-	nil];	
+	enqueueGridPrototypes(
+		gridWithLayoutBlocks(
+			make(2, 3, 0, 0, 1, 1),
+			make(2, 3, 0, 1, 1, 1),
+			make(2, 3, 1, 0, 1, 2),
+			make(2, 3, 0, 2, 2, 1),
+		nil),
+		gridWithLayoutBlocks(
+			make(3, 2, 0, 0, 1, 1),
+			make(3, 2, 0, 1, 1, 1),
+			make(3, 2, 1, 0, 1, 2),
+			make(3, 2, 2, 0, 1, 2),
+		nil)
+	);
 	
+	enqueueGridPrototypes(
+		gridWithLayoutBlocks(
+			make(2, 2, 0, 0, 2, 1),
+			make(2, 2, 0, 1, 1, 1),
+			make(2, 2, 1, 1, 1, 1), 
+		nil),
+		gridWithLayoutBlocks(
+			make(2, 2, 0, 0, 1, 2),
+			make(2, 2, 1, 0, 1, 1),
+			make(2, 2, 1, 1, 1, 1),
+		nil)
+	);
+	
+	enqueueGridPrototypes(
+		gridWithLayoutBlocks(
+			make(5, 5, 0, 0, 2, 2.5),
+			make(5, 5, 0, 2.5, 2, 2.5),
+			make(5, 5, 2, 0, 3, 1.66),
+			make(5, 5, 2, 1.66, 3, 1.66),
+			make(5, 5, 2, 3.32, 3, 1.66), 
+		nil),
+		gridWithLayoutBlocks(
+			make(5, 5, 0, 0, 2, 2.5),
+			make(5, 5, 0, 2.5, 2, 2.5),
+			make(5, 5, 2, 0, 3, 1.66),
+			make(5, 5, 2, 1.66, 3, 1.66),
+			make(5, 5, 2, 3.32, 3, 1.66),
+		nil)
+	);
+
+	enqueueGridPrototypes(
+		gridWithLayoutBlocks(
+			make(5, 5, 0, 0, 2.5, 3),
+			make(5, 5, 0, 3, 2.5, 2),
+			make(5, 5, 2.5, 0, 2.5, 1.5),
+			make(5, 5, 2.5, 1.5, 2.5, 1.5),
+			make(5, 5, 2.5, 3, 2.5, 0.66),
+			make(5, 5, 2.5, 3.66, 2.5, 0.66),
+			make(5, 5, 2.5, 4.33, 2.5, 0.66), 
+		nil),
+		gridWithLayoutBlocks(
+			make(5, 5, 0, 0, 2, 2),
+			make(5, 5, 0, 2, 2, 1),
+			make(5, 5, 0, 3, 2, 1),
+			make(5, 5, 0, 4, 2, 1),
+			make(5, 5, 2, 0, 3, 2),
+			make(5, 5, 2, 2, 3, 1.5),
+			make(5, 5, 2, 3.5, 3, 1.5),
+		nil)
+	);
+
+	enqueueGridPrototypes(
+		gridWithLayoutBlocks(
+			make(3, 3, 0, 0, 3, 1),
+			make(3, 3, 0, 1, 1.5, 1),
+			make(3, 3, 1.5, 1, 1.5, 1),
+			make(3, 3, 0, 2, 1, 1),
+			make(3, 3, 1, 2, 1, 1),
+			make(3, 3, 2, 2, 1, 1), 
+		nil),
+		gridWithLayoutBlocks(
+			make(3, 3, 0, 0, 1, 3),
+			make(3, 3, 1, 0, 1, 1.5),
+			make(3, 3, 1, 1.5, 1, 1.5),
+			make(3, 3, 2, 0, 1, 1),
+			make(3, 3, 2, 1, 1, 1),
+			make(3, 3, 2, 2, 1, 1),
+		nil)
+	);
+	
+	self.layoutGrids = enqueuedLayoutGrids;
 	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
 	self.discreteLayoutManager.delegate = self;
 	self.discreteLayoutManager.dataSource = self;
