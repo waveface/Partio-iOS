@@ -41,31 +41,20 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 }
 
-//- (void) loadView {
-//
-//	self.view = [[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame] autorelease];
-//	self.view.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
-//	
-//	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
-//	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-//	self.paginatedView.delegate = self;
-//	[self.view addSubview:self.paginatedView];
-//	
-//	if (self.discreteLayoutResult)
-//		[self.paginatedView reloadViews];
-//	
-//}
-
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 
 	if (self.discreteLayoutResult)
 		[self.paginatedView reloadViews];
+		
+	self.paginationSlider.backgroundColor = nil;
+	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
 	
-	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
-	self.paginationSlider.currentPage = self.paginatedView.currentPage;
-
+	self.paginatedView.backgroundColor = nil;
+	self.paginatedView.frame = UIEdgeInsetsInsetRect(self.paginatedView.frame, (UIEdgeInsets){ 32, 32, 0, 32 });
+	self.paginatedView.horizontalSpacing = 32.0f;
+	
 }
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
@@ -154,6 +143,8 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 - (void) viewDidUnload {
 
+	[self.paginationSlider irUnbind:@"currentPage"];
+
 	self.discreteLayoutManager = nil;
 	self.discreteLayoutResult = nil;
 	[super viewDidUnload];
@@ -172,6 +163,9 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 		self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
 	
 	[self.paginatedView reloadViews];
+	
+	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
+	self.paginationSlider.currentPage = self.paginatedView.currentPage;
 
 }
 
@@ -214,6 +208,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	NSMutableArray *pageElements = [NSMutableArray arrayWithCapacity:[viewGrid.layoutAreaNames count]];
 	
+	CGSize oldContentSize = viewGrid.contentSize;
 	viewGrid.contentSize = aPaginatedView.frame.size;
 	
 	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
@@ -228,6 +223,8 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 		[returnedView addSubview:placedSubview];
 				
 	}];
+
+	viewGrid.contentSize = oldContentSize;
 	
 	objc_setAssociatedObject(returnedView, &kWADiscreteArticlePageElements, pageElements, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
@@ -253,6 +250,8 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 - (void) adjustPageView:(UIView *)currentPageView usingGridAtIndex:(NSUInteger)anIndex {
 
+	NSLog(@"\n%s, %@, %i", __PRETTY_FUNCTION__, currentPageView, anIndex);
+
 	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
 	
 	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
@@ -261,10 +260,13 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	NSSet *allIntrospectedGrids = [allDestinations setByAddingObject:currentPageGrid];
 	IRDiscreteLayoutGrid *bestGrid = nil;
 	CGFloat currentAspectRatio = CGRectGetWidth(self.paginatedView.frame) / CGRectGetHeight(self.paginatedView.frame);
+	NSLog(@"currentAspectRatio %f", currentAspectRatio);
 	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
 		
 		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
 		CGFloat currentGridAspectRatio = aGrid.contentSize.width / aGrid.contentSize.height;
+		
+		NSLog(@"Inspected grid %x, size %@, ratio %f", (unsigned int)aGrid, NSStringFromCGSize(aGrid.contentSize), currentGridAspectRatio);
 					
 		if (!bestGrid) {
 			bestGrid = [[aGrid retain] autorelease];
@@ -279,8 +281,10 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 		
 	}
 	
+	
 	IRDiscreteLayoutGrid *transformedGrid = bestGrid;//[allDestinations anyObject];
 	transformedGrid = [currentPageGrid transformedGridWithPrototype:(transformedGrid.prototype ? transformedGrid.prototype : transformedGrid)];
+	NSLog(@"used grid is %x", (unsigned int)transformedGrid);
 	
 	CGSize oldContentSize = transformedGrid.contentSize;
 	transformedGrid.contentSize = self.paginatedView.frame.size;
@@ -350,9 +354,48 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 }
 
+- (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
+
+	if (self.paginatedView.currentPage == destinationPage)
+		return;
+	
+	//	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[CATransaction begin];
+		CATransition *transition = [CATransition animation];
+		transition.type = kCATransitionMoveIn;
+		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
+		transition.duration = 0.25f;
+		transition.fillMode = kCAFillModeForwards;
+		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		transition.removedOnCompletion = YES;
+		
+		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
+		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
+		
+		//	[CATransaction setCompletionBlock: ^ {
+		//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+		//			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		//		});
+		//	}];
+		
+		[CATransaction commit];
+	
+	});
+	
+}
+
 - (void) dealloc {
 
+	[self.paginationSlider irUnbind:@"currentPage"];
+	
+	[paginationSlider release];
+	[paginatedView release];
 	[discreteLayoutManager release];
+	[discreteLayoutResult release];
+	[layoutGrids release];
 
 	[super dealloc];
 
