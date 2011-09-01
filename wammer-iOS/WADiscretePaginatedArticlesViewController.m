@@ -101,10 +101,10 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	} copy] autorelease];
 	
 	IRDiscreteLayoutGrid *portraitGrid = [IRDiscreteLayoutGrid prototype];
-	[portraitGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 0, 0, 3, 1) displayBlock:genericDisplayBlock];
-	[portraitGrid registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 0, 1, 3, 1) displayBlock:genericDisplayBlock];
-	[portraitGrid registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 3, 0, 2, 2) displayBlock:genericDisplayBlock];
-	[portraitGrid registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(5, 3, 0, 2, 5, 1) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
+	[portraitGrid registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 2, 1) displayBlock:genericDisplayBlock];
 	
 	IRDiscreteLayoutGrid *landscapeGrid = [IRDiscreteLayoutGrid prototype];
 	[landscapeGrid registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
@@ -276,7 +276,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	if ((self.paginatedView.currentPage + 1) < self.paginatedView.numberOfPages) {
 		[self adjustPageViewAtIndex:(self.paginatedView.currentPage + 1)];
 	}
-		
+	
 	[CATransaction commit];
 	
 }
