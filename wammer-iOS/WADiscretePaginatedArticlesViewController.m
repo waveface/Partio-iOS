@@ -250,8 +250,6 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 - (void) adjustPageView:(UIView *)currentPageView usingGridAtIndex:(NSUInteger)anIndex {
 
-	NSLog(@"\n%s, %@, %i", __PRETTY_FUNCTION__, currentPageView, anIndex);
-
 	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
 	
 	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
@@ -260,14 +258,11 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	NSSet *allIntrospectedGrids = [allDestinations setByAddingObject:currentPageGrid];
 	IRDiscreteLayoutGrid *bestGrid = nil;
 	CGFloat currentAspectRatio = CGRectGetWidth(self.paginatedView.frame) / CGRectGetHeight(self.paginatedView.frame);
-	NSLog(@"currentAspectRatio %f", currentAspectRatio);
 	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
 		
 		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
 		CGFloat currentGridAspectRatio = aGrid.contentSize.width / aGrid.contentSize.height;
 		
-		NSLog(@"Inspected grid %x, size %@, ratio %f", (unsigned int)aGrid, NSStringFromCGSize(aGrid.contentSize), currentGridAspectRatio);
-					
 		if (!bestGrid) {
 			bestGrid = [[aGrid retain] autorelease];
 			continue;
@@ -284,7 +279,6 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	IRDiscreteLayoutGrid *transformedGrid = bestGrid;//[allDestinations anyObject];
 	transformedGrid = [currentPageGrid transformedGridWithPrototype:(transformedGrid.prototype ? transformedGrid.prototype : transformedGrid)];
-	NSLog(@"used grid is %x", (unsigned int)transformedGrid);
 	
 	CGSize oldContentSize = transformedGrid.contentSize;
 	transformedGrid.contentSize = self.paginatedView.frame.size;
