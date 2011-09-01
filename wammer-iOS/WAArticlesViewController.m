@@ -150,7 +150,14 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	[self refreshData];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self reloadViewContents];
 
 }
 
@@ -179,7 +186,9 @@
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-			[self reloadViewContents];
+			if ([self isViewLoaded])
+				if (self.view.window)
+					[self reloadViewContents];
 			
 		});	
 		
