@@ -13,6 +13,7 @@
 @property (nonatomic, readwrite, retain) UISlider *slider; 
 @property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel; 
 + (UIImage *) transparentImage;
+- (void) sharedInit;
 @end
 
 
@@ -47,6 +48,22 @@
 	if (!self)
 		return nil;
 	
+	[self sharedInit];
+				
+	return self;
+	
+}
+
+- (void) awakeFromNib {
+
+	[super awakeFromNib];
+	
+	[self sharedInit];
+
+}
+
+- (void) sharedInit {
+
 	self.dotRadius = 4.0f;
 	self.dotMargin = 12.0f;
 	self.edgeInsets = (UIEdgeInsets){ 0, 12, 0, 12 };
@@ -76,9 +93,7 @@
 	
 	[self addSubview:self.slider];
 	[self addSubview:self.pageIndicatorLabel];
-	
-	return self;
-	
+
 }
 
 - (void) layoutSubviews {

@@ -562,13 +562,16 @@
 					[imageStackView setImages:tempImages asynchronously:YES withDecodingCompletion: ^ {
 					
 						[galleryViewController dismissModalViewControllerAnimated:NO];
+						NSParameterAssert(imageStackView.window);
 						
 						imageStackView.firstPhotoView.alpha = 0.0f;
 						
-						rootView = self.view.window.rootViewController.view;
+						rootView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+						NSParameterAssert(rootView);
 						backdropView.frame = rootView.bounds;
 						
 						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:imageStackView.firstPhotoView.frame fromView:aStackView]] autorelease];
+						NSParameterAssert(fauxView);
 						fauxView.layer.contents = (id)currentImage.CGImage;
 						fauxView.layer.transform = imageStackView.firstPhotoView.layer.transform;
 						fauxView.layer.contentsGravity = kCAGravityResizeAspect;
