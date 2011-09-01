@@ -218,14 +218,15 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
+		if (!item)
+			return;
+	
 		UIView *placedSubview = (UIView *)displayBlock(viewGrid, item);
 		NSParameterAssert(placedSubview);
 		placedSubview.frame = layoutBlock(viewGrid, item);
 		[pageElements addObject:placedSubview];
 		[returnedView addSubview:placedSubview];
-		
-		NSLog(@"placedSubview %@", placedSubview);
-		
+				
 	}];
 	
 	objc_setAssociatedObject(returnedView, &kWADiscreteArticlePageElements, pageElements, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -286,6 +287,9 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	[[currentPageGrid retain] autorelease];
 			
 	[transformedGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+	
+		if (!item)
+			return;
 	
 		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = layoutBlock(transformedGrid, item);
 		
