@@ -328,6 +328,8 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
+	
+	removeAnimations(self.paginatedView);
 
 	//	If the paginated view is currently showing a view constructed with information provided by a layout grid, and that layout grid’s prototype has a fully transformable target, grab that transformable prototype and do a transform, then reposition individual items
 	
