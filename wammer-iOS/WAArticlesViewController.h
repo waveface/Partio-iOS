@@ -10,12 +10,14 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
-@interface WAArticlesViewController : UIViewController <WAApplicationRootViewController>
+@interface WAArticlesViewController : UIViewController <WAApplicationRootViewController, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readonly, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void) refreshData;
 - (void) reloadViewContents;
+
+- (NSURL *) representedObjectURIForInterfaceItem:(UIView *)aView;
 
 @end

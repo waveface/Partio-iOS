@@ -30,6 +30,7 @@
 @synthesize managedObjectContext, article;
 @synthesize contextInfoContainer, imageStackView, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
+@synthesize onViewTap;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -100,6 +101,8 @@
 	self.relativeCreationDateLabel = nil;
 	self.userNameLabel = nil;
 	self.articleDescriptionLabel = nil;
+	
+	self.onViewTap = nil;
 
 	[super viewDidUnload];
 
@@ -131,6 +134,8 @@
 	[userNameLabel release];
 	[articleDescriptionLabel release];
 	
+	[onViewTap release];
+	
 	[super dealloc];
 
 }
@@ -138,6 +143,8 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	
 	self.avatarView.layer.cornerRadius = 4.0f;
 	self.avatarView.layer.masksToBounds = YES;
@@ -179,6 +186,8 @@
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
 	self.textEmphasisView.label.font = [UIFont systemFontOfSize:20.0f];
+	self.textEmphasisView.label.lineBreakMode = UILineBreakModeTailTruncation;
+	self.textEmphasisView.textView.font = [UIFont systemFontOfSize:20.0f];
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
@@ -200,6 +209,10 @@
 			
 			switch (nrSelf.presentationStyle) {
 				case WAArticleViewControllerPresentationFullFrame: {
+				
+					nrSelf.textEmphasisView.label.hidden = NO;
+					nrSelf.textEmphasisView.textView.hidden = YES;
+				
 					nrSelf.textEmphasisView.frame = (CGRect){
 						nrSelf.textEmphasisView.frame.origin,
 						(CGSize) {
@@ -210,6 +223,10 @@
 					break;
 				}
 				case WAArticleViewControllerPresentationStandalone: {
+				
+					nrSelf.textEmphasisView.label.hidden = YES;
+					nrSelf.textEmphasisView.textView.hidden = NO;
+					
 					nrSelf.textEmphasisView.frame = (CGRect){
 						nrSelf.textEmphasisView.frame.origin,
 						(CGSize) {
@@ -230,7 +247,7 @@
 			nrSelf.contextInfoContainer.frame = (CGRect){
 				nrSelf.contextInfoContainer.frame.origin,
 				(CGSize){
-					MIN(CGRectGetWidth(usableRect) - 32, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
+					MIN(CGRectGetWidth(usableRect) - 20, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
 					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
 				}
 			};
@@ -268,7 +285,16 @@
 						
 		} else {
 		
-			nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+			switch (nrSelf.presentationStyle) {
+				case WAArticleViewControllerPresentationFullFrame: {
+					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+					break;
+				}
+				case WAArticleViewControllerPresentationStandalone: {
+					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+					break;
+				}
+			}
 		
 			nrSelf.contextInfoContainer.frame = (CGRect){
 				(CGPoint){
@@ -310,6 +336,13 @@
 	
 	[self refreshView];
 		
+}
+
+- (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
+
+	if (self.onViewTap)
+		self.onViewTap();
+
 }
 
 - (void) setArticle:(WAArticle *)newArticle {
@@ -388,6 +421,7 @@
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	
+	self.textEmphasisView.textView.text = self.article.text;
 	self.textEmphasisView.label.text = self.article.text;
 	self.textEmphasisView.hidden = ([self.article.files count] != 0);
 	
