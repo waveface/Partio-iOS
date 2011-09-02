@@ -71,6 +71,14 @@
 
 - (void) dealloc {
 
+	if (![NSThread isMainThread]) {
+		__block __typeof__(self) nrSelf = self;
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[nrSelf dealloc];
+		});
+		return;
+	}
+
 	[paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	[paginatedView release];
@@ -157,7 +165,9 @@
 		NSUInteger foundIndex = [self.fetchedResultsController.fetchedObjects indexOfObject:[self.fetchedResultsController.managedObjectContext irManagedObjectForURI:lastVisitedObjectURI]];
 		if (foundIndex != NSNotFound) {
 			[self.paginatedView scrollToPageAtIndex:foundIndex animated:NO];
-			NSParameterAssert(self.paginatedView.currentPage == foundIndex);
+			if (self.paginatedView.currentPage != foundIndex) {
+				NSLog(@"WARNING: Paginated view’s current page stays %i when it shall be %i", self.paginatedView.currentPage, foundIndex);
+			}
 		}
 	}
 
