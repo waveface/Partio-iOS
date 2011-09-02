@@ -186,6 +186,8 @@
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
 	self.textEmphasisView.label.font = [UIFont systemFontOfSize:20.0f];
+	self.textEmphasisView.label.lineBreakMode = UILineBreakModeTailTruncation;
+	self.textEmphasisView.textView.font = [UIFont systemFontOfSize:20.0f];
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
@@ -207,6 +209,10 @@
 			
 			switch (nrSelf.presentationStyle) {
 				case WAArticleViewControllerPresentationFullFrame: {
+				
+					nrSelf.textEmphasisView.label.hidden = NO;
+					nrSelf.textEmphasisView.textView.hidden = YES;
+				
 					nrSelf.textEmphasisView.frame = (CGRect){
 						nrSelf.textEmphasisView.frame.origin,
 						(CGSize) {
@@ -217,6 +223,10 @@
 					break;
 				}
 				case WAArticleViewControllerPresentationStandalone: {
+				
+					nrSelf.textEmphasisView.label.hidden = YES;
+					nrSelf.textEmphasisView.textView.hidden = NO;
+					
 					nrSelf.textEmphasisView.frame = (CGRect){
 						nrSelf.textEmphasisView.frame.origin,
 						(CGSize) {
