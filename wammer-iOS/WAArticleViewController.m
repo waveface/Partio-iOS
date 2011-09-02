@@ -210,8 +210,8 @@
 			switch (nrSelf.presentationStyle) {
 				case WAArticleViewControllerPresentationFullFrame: {
 				
-					nrSelf.textEmphasisView.label.hidden = NO;
-					nrSelf.textEmphasisView.textView.hidden = YES;
+				//	[nrSelf.textEmphasisView addSubview:nrSelf.textEmphasisView.label];
+				//	[nrSelf.textEmphasisView.textView removeFromSuperview];
 				
 					nrSelf.textEmphasisView.frame = (CGRect){
 						nrSelf.textEmphasisView.frame.origin,
@@ -224,9 +224,9 @@
 				}
 				case WAArticleViewControllerPresentationStandalone: {
 				
-					nrSelf.textEmphasisView.label.hidden = YES;
-					nrSelf.textEmphasisView.textView.hidden = NO;
-					
+				//	[nrSelf.textEmphasisView addSubview:nrSelf.textEmphasisView.textView];
+				//	[nrSelf.textEmphasisView.label removeFromSuperview];
+										
 					nrSelf.textEmphasisView.frame = (CGRect){
 						nrSelf.textEmphasisView.frame.origin,
 						(CGSize) {
