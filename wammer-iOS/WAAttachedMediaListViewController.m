@@ -265,11 +265,11 @@
 	WATableViewCell *cell = (WATableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
 		
-		cell = [[[WATableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
+		cell = [[[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier] autorelease];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		cell.indentationWidth = 8.0f;
-		
+    
 		cell.onSetEditing = ^ (WATableViewCell *self, BOOL editing, BOOL animated) {
 
 			if (editing) {
@@ -295,14 +295,15 @@
 	}] anyObject];
 	
 	UIImage *actualImage = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
-	
-	cell.imageView.image = [actualImage irScaledImageWithSize:(CGSize){
+	NSData *data = [[NSData alloc] initWithContentsOfFile:representedFile.resourceFilePath];
+  NSLog(@"%dK",  [data length]/1024);
+  cell.imageView.image = [actualImage irScaledImageWithSize:(CGSize){
 		aTableView.rowHeight,
 		aTableView.rowHeight
 	}];
 		
 	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", actualImage.size.width, actualImage.size.height];
-	cell.detailTextLabel.text = @"Detail?";
+  cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)[data length]/(1024.0)];
 	
 	return cell;
 
