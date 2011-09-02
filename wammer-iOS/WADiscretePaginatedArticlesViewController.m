@@ -12,10 +12,10 @@
 #import "WADataStore.h"
 
 #import "WAArticleViewController.h"
+#import "WAPaginatedArticlesViewController.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
-
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting>
@@ -64,9 +64,10 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	WAArticleViewController *articleViewController = nil;
 	
 	articleViewController = objc_getAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem);
+	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		articleViewController = [WAArticleViewController controllerRepresentingArticle:[[anArticle objectID] URIRepresentation]];
+		articleViewController = [WAArticleViewController controllerRepresentingArticle:objectURI];
 		articleViewController.presentationStyle = WAArticleViewControllerPresentationFullFrame;
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
@@ -82,6 +83,25 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	};
 	
+	articleViewController.onViewTap = ^ {
+	
+		NSLog(@"Transition.");
+		
+		WAPaginatedArticlesViewController *paginatedVC = [[[WAPaginatedArticlesViewController alloc] init] autorelease];
+		
+		paginatedVC.navigationItem.leftBarButtonItem = nil;
+		paginatedVC.navigationItem.hidesBackButton = NO;
+		
+		paginatedVC.context = [NSDictionary dictionaryWithObjectsAndKeys:
+			objectURI, @"lastVisitedObjectURI",		
+		nil];
+		
+		paginatedVC.view.clipsToBounds = YES;
+		
+		[self.navigationController pushViewController:paginatedVC animated:YES];
+	
+	};
+	
 	return articleViewController.view;
 	
 }
@@ -89,6 +109,34 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
 
 	NSLog(@"TBD %s", __PRETTY_FUNCTION__);
+
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+	self.discreteLayoutResult = nil;
+
+	[super controllerDidChangeContent:controller];
+	
+	//	Content has changed — trigger relayout.
+
+}
+
+- (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid {
+
+	return proposedGrid;
+	
+	//	TBD: grid randomization continuity comes from here
+	
+	NSLog(@"layout manager wanted to use grid %@", proposedGrid);
+	
+	NSArray *lastResultantGrids = self.discreteLayoutResult.grids;
+	if (!lastResultantGrids)
+		return proposedGrid;
+	
+	[lastResultantGrids indexOfObject:proposedGrid];
+	
+	return proposedGrid;
 
 }
 
@@ -150,6 +198,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 			make(3, 2, 1, 0, 1, 2),
 			make(3, 2, 2, 0, 1, 2),
 		nil)
+		
 	);
 	
 	enqueueGridPrototypes(
@@ -171,14 +220,14 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 			make(5, 5, 0, 2.5, 2, 2.5),
 			make(5, 5, 2, 0, 3, 1.66),
 			make(5, 5, 2, 1.66, 3, 1.66),
-			make(5, 5, 2, 3.32, 3, 1.66), 
+			make(5, 5, 2, 3.32, 3, 1.68), 
 		nil),
 		gridWithLayoutBlocks(
 			make(5, 5, 0, 0, 2, 2.5),
 			make(5, 5, 0, 2.5, 2, 2.5),
 			make(5, 5, 2, 0, 3, 1.66),
 			make(5, 5, 2, 1.66, 3, 1.66),
-			make(5, 5, 2, 3.32, 3, 1.66),
+			make(5, 5, 2, 3.32, 3, 1.68),
 		nil)
 	);
 
