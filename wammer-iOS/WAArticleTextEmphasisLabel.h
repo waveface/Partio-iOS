@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 
-@interface WAArticleTextEmphasisLabel : UILabel
+@interface WAArticleTextEmphasisLabel : UIView
 
+@property (nonatomic, readwrite, retain) IBOutlet UITextView *textView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *label;
 @property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
 

@@ -148,7 +148,7 @@
 
 	__block __typeof__(self) nrSelf = self;
 
-	self.view = [[[WAView alloc] initWithFrame:CGRectZero] autorelease];
+	self.view = [[[WAView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
 	self.view.backgroundColor = [UIColor blackColor];
 	self.view.onLayoutSubviews = ^ {
 		[nrSelf waSubviewWillLayout];
