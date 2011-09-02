@@ -86,11 +86,11 @@
 
 - (void) loadView {
 
-	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
 	
-	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
+	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 })] autorelease];
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
