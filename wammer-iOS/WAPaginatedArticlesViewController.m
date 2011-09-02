@@ -160,17 +160,6 @@
 	panGestureRecognizer.delegate = self;
 	[self.view addGestureRecognizer:panGestureRecognizer];
 	
-	NSURL *lastVisitedObjectURI = nil;
-	if ((lastVisitedObjectURI = [self.context objectForKey:@"lastVisitedObjectURI"])) {
-		NSUInteger foundIndex = [self.fetchedResultsController.fetchedObjects indexOfObject:[self.fetchedResultsController.managedObjectContext irManagedObjectForURI:lastVisitedObjectURI]];
-		if (foundIndex != NSNotFound) {
-			[self.paginatedView scrollToPageAtIndex:foundIndex animated:NO];
-			if (self.paginatedView.currentPage != foundIndex) {
-				NSLog(@"WARNING: Paginated view’s current page stays %i when it shall be %i", self.paginatedView.currentPage, foundIndex);
-			}
-		}
-	}
-
 }
 
 - (void) viewDidUnload {
@@ -202,6 +191,29 @@
 	[self.articleCommentsViewController viewWillAppear:animated];
 		
 	[self setContextControlsVisible:YES animated:NO];
+	
+	
+	NSURL *lastVisitedObjectURI = nil;
+	if ((lastVisitedObjectURI = [self.context objectForKey:@"lastVisitedObjectURI"])) {
+		
+		NSUInteger foundIndex = [self.fetchedResultsController.fetchedObjects indexOfObject:[self.fetchedResultsController.managedObjectContext irManagedObjectForURI:lastVisitedObjectURI]];
+		if (foundIndex != NSNotFound) {
+			
+			//	iOS5b7 bug workaround
+			//	Ah, the desperate
+			
+			[self.paginatedView layoutSubviews];
+			[self.paginatedView scrollToPageAtIndex:foundIndex animated:NO];
+			[self.paginatedView layoutSubviews];
+			[self.paginatedView setNeedsLayout];
+			
+			if (self.paginatedView.currentPage != foundIndex) {
+				NSLog(@"WARNING: Paginated view’s current page stays %i when it shall be %i", self.paginatedView.currentPage, foundIndex);
+			}
+			
+		}
+		
+	}
 	
 }
 
@@ -270,6 +282,7 @@
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
 		self.paginationSlider.currentPage = newPage;
+		NSLog(@"self.paginationSlider.currentPage -> %i", self.paginationSlider.currentPage);
 		
 		NSURL *oldURI = self.articleCommentsViewController.representedArticleURI;
 		NSURL *newURI = nil;
@@ -748,7 +761,8 @@
 	self.paginationSlider.numberOfPages = numberOfFetchedObjects;
 	
 	CGRect paginationSliderFrame = self.paginationSlider.frame;
-	paginationSliderFrame.size.width = MIN(256, MAX(MIN(192, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+	paginationSliderFrame.size.width = 320.0f;
+	//	paginationSliderFrame.size.width = MIN(256, MAX(MIN(192, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
 	
 	paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 	self.paginationSlider.frame = paginationSliderFrame;
