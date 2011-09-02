@@ -128,19 +128,18 @@
 	
 	NSLog(@"post = %@", self.post);
 
-	controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
+  controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
 	
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-		[nrSelf dismissModalViewControllerAnimated:YES];
+		[nrSelf.navigationController popViewControllerAnimated:YES];
 		
 	}];
 	
 	controller.headerView = self.attachmentsListViewControllerHeaderView;
-	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-	[self presentModalViewController:[[[UINavigationController alloc] initWithRootViewController:controller] autorelease] animated:YES];
-
+  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+  self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+  [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void) handleAttachmentAddFromCameraItemTap:(id)sender {
