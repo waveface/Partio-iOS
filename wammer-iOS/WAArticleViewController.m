@@ -247,7 +247,7 @@
 			nrSelf.contextInfoContainer.frame = (CGRect){
 				nrSelf.contextInfoContainer.frame.origin,
 				(CGSize){
-					MIN(CGRectGetWidth(usableRect) - 32, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
+					MIN(CGRectGetWidth(usableRect) - 20, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
 					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
 				}
 			};
@@ -285,7 +285,16 @@
 						
 		} else {
 		
-			nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+			switch (nrSelf.presentationStyle) {
+				case WAArticleViewControllerPresentationFullFrame: {
+					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+					break;
+				}
+				case WAArticleViewControllerPresentationStandalone: {
+					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+					break;
+				}
+			}
 		
 			nrSelf.contextInfoContainer.frame = (CGRect){
 				(CGPoint){
