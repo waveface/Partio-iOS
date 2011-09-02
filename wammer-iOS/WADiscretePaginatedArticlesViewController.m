@@ -85,8 +85,6 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	articleViewController.onViewTap = ^ {
 	
-		NSLog(@"Transition.");
-		
 		WAPaginatedArticlesViewController *paginatedVC = [[[WAPaginatedArticlesViewController alloc] init] autorelease];
 		
 		paginatedVC.navigationItem.leftBarButtonItem = nil;
@@ -239,7 +237,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 			make(5, 5, 2.5, 1.5, 2.5, 1.5),
 			make(5, 5, 2.5, 3, 2.5, 0.66),
 			make(5, 5, 2.5, 3.66, 2.5, 0.66),
-			make(5, 5, 2.5, 4.33, 2.5, 0.66), 
+			make(5, 5, 2.5, 4.33, 2.5, 0.67), 
 		nil),
 		gridWithLayoutBlocks(
 			make(5, 5, 0, 0, 2, 2),
