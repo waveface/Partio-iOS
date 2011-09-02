@@ -17,7 +17,7 @@
 
 
 @implementation WAArticleTextEmphasisLabel
-@synthesize label, backgroundView;
+@synthesize textView, label, backgroundView;
 
 - (id) initWithFrame:(CGRect)aFrame {
 
@@ -41,9 +41,19 @@
 
 - (void) waInitialize {
 
-	self.label = [[[UILabel alloc] initWithFrame:self.bounds] autorelease];
-	[self addSubview:self.label];
+	self.textView = [[[UITextView alloc] initWithFrame:self.bounds] autorelease];
+	self.textView.editable = NO;
+	self.textView.scrollEnabled = NO;
+	self.textView.contentInset = UIEdgeInsetsZero;
+	self.textView.dataDetectorTypes = UIDataDetectorTypeLink;
 	
+	self.textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.textView.font = [UIFont systemFontOfSize:16.0f];
+	self.textView.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+	self.textView.opaque = NO;
+	self.textView.backgroundColor = nil;
+	
+	self.label = [[[UILabel alloc] initWithFrame:self.bounds] autorelease];	
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.label.font = [UIFont systemFontOfSize:16.0f];
 	self.label.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
@@ -51,7 +61,10 @@
 	self.label.lineBreakMode = UILineBreakModeWordWrap;
 	self.label.opaque = NO;
 	self.label.backgroundColor = nil;
-		
+	
+	[self addSubview:self.label];
+	[self addSubview:self.textView];
+	
 }
 
 - (void) setBackgroundView:(UIView *)newBackgroundView {
@@ -68,13 +81,17 @@
 
 - (CGSize) sizeThatFits:(CGSize)size {
 
-	return [self.label sizeThatFits:size];
+	if (self.label.hidden)
+		return [self.textView sizeThatFits:size];
+	else
+		return [self.label sizeThatFits:size];
 
 }
 
 - (void) dealloc {
 
 	[label release];
+	[textView release];
 	[backgroundView release];
 	[super dealloc];
 

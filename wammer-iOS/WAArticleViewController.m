@@ -388,6 +388,7 @@
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	
+	self.textEmphasisView.textView.text = self.article.text;
 	self.textEmphasisView.label.text = self.article.text;
 	self.textEmphasisView.hidden = ([self.article.files count] != 0);
 	
