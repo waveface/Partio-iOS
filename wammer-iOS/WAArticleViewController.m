@@ -596,7 +596,9 @@
 					[imageStackView setImages:tempImages asynchronously:YES withDecodingCompletion: ^ {
 					
 						[galleryViewController dismissModalViewControllerAnimated:NO];
-						NSParameterAssert(imageStackView.window);
+						
+						if (!imageStackView.window)
+							NSLog(@"Warning: the image stack view %@ does not have a window.", imageStackView);
 						
 						imageStackView.firstPhotoView.alpha = 0.0f;
 						
