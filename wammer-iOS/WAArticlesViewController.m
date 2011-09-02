@@ -158,6 +158,12 @@
 	[super viewWillAppear:animated];
 	
 	[self reloadViewContents];
+	
+	double delayInSeconds = 5.0;
+dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    [self refreshData];
+});
 
 }
 
@@ -180,23 +186,21 @@
 
 - (void) refreshData {
 	
-	[[WADataStore defaultStore] updateUsersOnSuccess:nil onFailure:nil];
-
-	[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			
-			if ([self isViewLoaded])
-				if (self.view.window)
-					[self reloadViewContents];
-			
-		});	
+		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
 		
-	} onFailure: ^ {
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				
+				if ([self isViewLoaded])
+					if (self.view.window)
+						[self reloadViewContents];
+				
+			});	
+			
+		} onFailure:nil];
 	
-		NSLog(@"%@ failed", NSStringFromSelector(_cmd));
-		
-	}];
+	} onFailure:nil];
 
 }
 
