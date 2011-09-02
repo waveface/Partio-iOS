@@ -30,6 +30,7 @@
 @synthesize managedObjectContext, article;
 @synthesize contextInfoContainer, imageStackView, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
 @synthesize onPresentingViewController;
+@synthesize onViewTap;
 
 + (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -100,6 +101,8 @@
 	self.relativeCreationDateLabel = nil;
 	self.userNameLabel = nil;
 	self.articleDescriptionLabel = nil;
+	
+	self.onViewTap = nil;
 
 	[super viewDidUnload];
 
@@ -131,6 +134,8 @@
 	[userNameLabel release];
 	[articleDescriptionLabel release];
 	
+	[onViewTap release];
+	
 	[super dealloc];
 
 }
@@ -138,6 +143,8 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	
 	self.avatarView.layer.cornerRadius = 4.0f;
 	self.avatarView.layer.masksToBounds = YES;
@@ -310,6 +317,13 @@
 	
 	[self refreshView];
 		
+}
+
+- (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
+
+	if (self.onViewTap)
+		self.onViewTap();
+
 }
 
 - (void) setArticle:(WAArticle *)newArticle {
