@@ -47,8 +47,6 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.leftBarButtonItem = self.editButtonItem;
-	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
 		if (nrSelf.callback)
@@ -84,10 +82,6 @@
 
 }
 
-
-
-
-
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
 
 	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
@@ -115,22 +109,6 @@
 
 }
 
-
-
-
-- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
-
-	[super setEditing:editing animated:animated];
-	[self.tableView setEditing:editing animated:animated];
-	
-	if (editing) {
-		self.navigationItem.rightBarButtonItem.enabled = NO;
-	} else {
-		self.navigationItem.rightBarButtonItem.enabled = YES;
-	}
-
-}
-
 - (void) loadView {
 
 	self.view = [[[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds] autorelease]; // dummy size for autoresizing
@@ -142,7 +120,8 @@
 	self.tableView.dataSource = self;
 	self.tableView.rowHeight = 64.0f;
 	[self.view addSubview:self.tableView];
-	
+  [self.tableView setEditing:YES animated:YES];
+  
 	__block __typeof__(self) nrSelf = self;
 	
 	((WAView *)self.view).onLayoutSubviews = ^ {
