@@ -48,6 +48,7 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
+@property (nonatomic, readwrite, copy) void(^onViewTap)();
 
 @property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
 

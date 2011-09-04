@@ -56,6 +56,7 @@
 @synthesize articleCommentsViewController;
 @synthesize articleCommentsDismissalButton;
 @synthesize userSelectionPopoverController;
+@synthesize context;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -69,6 +70,16 @@
 }
 
 - (void) dealloc {
+
+	if (![NSThread isMainThread]) {
+		__block __typeof__(self) nrSelf = self;
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[nrSelf dealloc];
+		});
+		return;
+	}
+
+	[paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	[paginatedView release];
 	
@@ -80,17 +91,19 @@
 	[articleCommentsViewController release];
 	[userSelectionPopoverController release];
 	
+	[context release];
+	
 	[super dealloc];
 
 }
 
 - (void) loadView {
 
-	self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
 	
-	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
+	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 })] autorelease];
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
@@ -146,7 +159,7 @@
 	UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentViewPan:)] autorelease];
 	panGestureRecognizer.delegate = self;
 	[self.view addGestureRecognizer:panGestureRecognizer];
-
+	
 }
 
 - (void) viewDidUnload {
@@ -176,8 +189,31 @@
 	[self updateLayoutForCommentsVisible:NO];
 	[self.articleCommentsViewController.view setNeedsLayout];
 	[self.articleCommentsViewController viewWillAppear:animated];
-	
+		
 	[self setContextControlsVisible:YES animated:NO];
+	
+	
+	NSURL *lastVisitedObjectURI = nil;
+	if ((lastVisitedObjectURI = [self.context objectForKey:@"lastVisitedObjectURI"])) {
+		
+		NSUInteger foundIndex = [self.fetchedResultsController.fetchedObjects indexOfObject:[self.fetchedResultsController.managedObjectContext irManagedObjectForURI:lastVisitedObjectURI]];
+		if (foundIndex != NSNotFound) {
+			
+			//	iOS5b7 bug workaround
+			//	Ah, the desperate
+			
+			[self.paginatedView layoutSubviews];
+			[self.paginatedView scrollToPageAtIndex:foundIndex animated:NO];
+			[self.paginatedView layoutSubviews];
+			[self.paginatedView setNeedsLayout];
+			
+			if (self.paginatedView.currentPage != foundIndex) {
+				NSLog(@"WARNING: Paginated view’s current page stays %i when it shall be %i", self.paginatedView.currentPage, foundIndex);
+			}
+			
+		}
+		
+	}
 	
 }
 
@@ -246,6 +282,7 @@
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
 		self.paginationSlider.currentPage = newPage;
+		NSLog(@"self.paginationSlider.currentPage -> %i", self.paginationSlider.currentPage);
 		
 		NSURL *oldURI = self.articleCommentsViewController.representedArticleURI;
 		NSURL *newURI = nil;
@@ -490,8 +527,8 @@
 	
 	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
 		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
+		disposableContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
 		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
 		
@@ -507,7 +544,7 @@
 			nil] forKey:@"article"];
 		}
 		
-		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
+		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:disposableContext withRemoteResponse:[NSArray arrayWithObjects:
 
 			mutatedCommentRep,
 				
@@ -524,7 +561,7 @@
 				aComment.timestamp = [NSDate date];
 		
 		NSError *savingError = nil;
-		if (![context save:&savingError])
+		if (![disposableContext save:&savingError])
 			NSLog(@"Error saving: %@", savingError);
 			
 		dispatch_async(dispatch_get_main_queue(), ^ {
@@ -724,7 +761,8 @@
 	self.paginationSlider.numberOfPages = numberOfFetchedObjects;
 	
 	CGRect paginationSliderFrame = self.paginationSlider.frame;
-	paginationSliderFrame.size.width = MIN(256, MAX(MIN(192, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
+	paginationSliderFrame.size.width = 320.0f;
+	//	paginationSliderFrame.size.width = MIN(256, MAX(MIN(192, paginationSliderFrame.size.width), self.paginationSlider.numberOfPages * (self.paginationSlider.dotMargin + self.paginationSlider.dotRadius)));
 	
 	paginationSliderFrame.origin.x = roundf(0.5f * (CGRectGetWidth(self.paginationSlider.superview.frame) - paginationSliderFrame.size.width));
 	self.paginationSlider.frame = paginationSliderFrame;
