@@ -26,4 +26,9 @@ typedef enum {
 + (WAOverlayBezel *) bezelWithStyle:(WAOverlayBezelStyle)aStyle;
 - (WAOverlayBezel *) initWithStyle:(WAOverlayBezelStyle)aStyle;
 
+@property (nonatomic, readwrite, copy) NSString *caption;
+
+- (void) show;
+- (void) dismiss;
+
 @end

@@ -20,4 +20,9 @@
 
 - (NSURL *) representedObjectURIForInterfaceItem:(UIView *)aView;
 
+//	Overriding points for introducing additional user interface notifications
+- (void) remoteDataLoadingWillBegin;
+- (void) remoteDataLoadingDidEnd;
+- (void) remoteDataLoadingDidFailWithError:(NSError *)anError;
+
 @end
