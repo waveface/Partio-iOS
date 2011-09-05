@@ -12,10 +12,10 @@
 #import "WADataStore.h"
 
 #import "WAArticleViewController.h"
+#import "WAPaginatedArticlesViewController.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
-
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting>
@@ -64,9 +64,10 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	WAArticleViewController *articleViewController = nil;
 	
 	articleViewController = objc_getAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem);
+	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		articleViewController = [WAArticleViewController controllerRepresentingArticle:[[anArticle objectID] URIRepresentation]];
+		articleViewController = [WAArticleViewController controllerRepresentingArticle:objectURI];
 		articleViewController.presentationStyle = WAArticleViewControllerPresentationFullFrame;
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
@@ -82,6 +83,23 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	
 	};
 	
+	articleViewController.onViewTap = ^ {
+	
+		WAPaginatedArticlesViewController *paginatedVC = [[[WAPaginatedArticlesViewController alloc] init] autorelease];
+		
+		paginatedVC.navigationItem.leftBarButtonItem = nil;
+		paginatedVC.navigationItem.hidesBackButton = NO;
+		
+		paginatedVC.context = [NSDictionary dictionaryWithObjectsAndKeys:
+			objectURI, @"lastVisitedObjectURI",		
+		nil];
+		
+		paginatedVC.view.clipsToBounds = YES;
+		
+		[self.navigationController pushViewController:paginatedVC animated:YES];
+	
+	};
+	
 	return articleViewController.view;
 	
 }
@@ -89,6 +107,34 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
 
 	NSLog(@"TBD %s", __PRETTY_FUNCTION__);
+
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+	self.discreteLayoutResult = nil;
+
+	[super controllerDidChangeContent:controller];
+	
+	//	Content has changed — trigger relayout.
+
+}
+
+- (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid {
+
+	return proposedGrid;
+	
+	//	TBD: grid randomization continuity comes from here
+	
+	NSLog(@"layout manager wanted to use grid %@", proposedGrid);
+	
+	NSArray *lastResultantGrids = self.discreteLayoutResult.grids;
+	if (!lastResultantGrids)
+		return proposedGrid;
+	
+	[lastResultantGrids indexOfObject:proposedGrid];
+	
+	return proposedGrid;
 
 }
 
@@ -150,6 +196,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 			make(3, 2, 1, 0, 1, 2),
 			make(3, 2, 2, 0, 1, 2),
 		nil)
+		
 	);
 	
 	enqueueGridPrototypes(
@@ -171,14 +218,14 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 			make(5, 5, 0, 2.5, 2, 2.5),
 			make(5, 5, 2, 0, 3, 1.66),
 			make(5, 5, 2, 1.66, 3, 1.66),
-			make(5, 5, 2, 3.32, 3, 1.66), 
+			make(5, 5, 2, 3.32, 3, 1.68), 
 		nil),
 		gridWithLayoutBlocks(
 			make(5, 5, 0, 0, 2, 2.5),
 			make(5, 5, 0, 2.5, 2, 2.5),
 			make(5, 5, 2, 0, 3, 1.66),
 			make(5, 5, 2, 1.66, 3, 1.66),
-			make(5, 5, 2, 3.32, 3, 1.66),
+			make(5, 5, 2, 3.32, 3, 1.68),
 		nil)
 	);
 
@@ -190,7 +237,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 			make(5, 5, 2.5, 1.5, 2.5, 1.5),
 			make(5, 5, 2.5, 3, 2.5, 0.66),
 			make(5, 5, 2.5, 3.66, 2.5, 0.66),
-			make(5, 5, 2.5, 4.33, 2.5, 0.66), 
+			make(5, 5, 2.5, 4.33, 2.5, 0.67), 
 		nil),
 		gridWithLayoutBlocks(
 			make(5, 5, 0, 0, 2, 2),
@@ -247,14 +294,22 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 }
 
 - (void) reloadViewContents {
+
+	self.discreteLayoutResult = nil; // throw it away
 	
 	if (!self.discreteLayoutResult)
 		self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
+		
+	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
 	
+	if (self.paginatedView.scrollView.tracking || self.paginatedView.scrollView.dragging || self.paginatedView.scrollView.decelerating) {
+		NSLog(@"warning: %s shall be called later", __PRETTY_FUNCTION__);
+	};
 	[self.paginatedView reloadViews];
-	
 	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
-	self.paginationSlider.currentPage = self.paginatedView.currentPage;
+	
+	if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
+		[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
 
 }
 
@@ -442,7 +497,7 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	if (self.paginatedView.currentPage == destinationPage)
 		return;
 	
-	//	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -456,13 +511,12 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 		transition.removedOnCompletion = YES;
 		
 		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
+		[(id<UIScrollViewDelegate>)self.paginatedView scrollViewDidScroll:self.paginatedView.scrollView];
 		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
 		
-		//	[CATransaction setCompletionBlock: ^ {
-		//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-		//			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-		//		});
-		//	}];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		});
 		
 		[CATransaction commit];
 	
