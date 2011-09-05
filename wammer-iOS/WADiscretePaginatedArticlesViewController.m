@@ -396,6 +396,9 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
 	
+	if ([self.discreteLayoutResult.grids count] < (anIndex + 1))
+		return;
+	
 	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
 	IRDiscreteLayoutGrid *currentPageGrid = [self.discreteLayoutResult.grids objectAtIndex:anIndex];
 	NSSet *allDestinations = [currentPageGrid allTransformablePrototypeDestinations];
