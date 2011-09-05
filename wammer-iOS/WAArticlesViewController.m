@@ -159,7 +159,7 @@
 	
 	[self reloadViewContents];
 	
-	double delayInSeconds = 5.0;
+	double delayInSeconds = 2.0;
 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
     [self refreshData];
@@ -185,6 +185,12 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 }
 
 - (void) refreshData {
+
+	dispatch_async(dispatch_get_main_queue(), ^ {
+		
+		[self remoteDataLoadingWillBegin];
+		
+	});
 	
 	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
@@ -193,14 +199,32 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 			dispatch_async(dispatch_get_main_queue(), ^ {
 				
 				if ([self isViewLoaded])
-					if (self.view.window)
-						[self reloadViewContents];
+				if (self.view.window)
+					[self reloadViewContents];
+				
+				[self remoteDataLoadingDidEnd];
 				
 			});	
 			
-		} onFailure:nil];
+		} onFailure: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+				
+			});
+			
+		}];
 	
-	} onFailure:nil];
+	} onFailure: ^ {
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+			
+		});
+		
+	}];
 
 }
 
@@ -263,6 +287,24 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
+
+}
+
+
+
+
+
+//	These are no-ops for now, since we are optionally requiring them
+
+- (void) remoteDataLoadingWillBegin {
+
+}
+
+- (void) remoteDataLoadingDidEnd {
+
+}
+
+- (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
 
 }
 

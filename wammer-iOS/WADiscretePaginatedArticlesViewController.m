@@ -6,6 +6,7 @@
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
+#import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 #import "WADiscretePaginatedArticlesViewController.h"
 #import "IRDiscreteLayoutManager.h"
@@ -13,6 +14,8 @@
 
 #import "WAArticleViewController.h"
 #import "WAPaginatedArticlesViewController.h"
+
+#import "WAOverlayBezel.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
@@ -396,6 +399,9 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
 	
+	if ([self.discreteLayoutResult.grids count] < (anIndex + 1))
+		return;
+	
 	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
 	IRDiscreteLayoutGrid *currentPageGrid = [self.discreteLayoutResult.grids objectAtIndex:anIndex];
 	NSSet *allDestinations = [currentPageGrid allTransformablePrototypeDestinations];
@@ -535,6 +541,52 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 	[layoutGrids release];
 
 	[super dealloc];
+
+}
+
+
+
+
+
+NSString * const kLoadingBezel = @"loadingBezel";
+
+- (void) remoteDataLoadingWillBegin {
+
+	WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAOverlayBezelSpinnerStyle];
+	bezel.caption = @"Loading";
+	
+	[bezel show];
+	
+	objc_setAssociatedObject(self, &kLoadingBezel, bezel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+}
+
+- (void) remoteDataLoadingDidEnd {
+
+	WAOverlayBezel *bezel = objc_getAssociatedObject(self, &kLoadingBezel);
+	
+	[[bezel retain] autorelease];
+	objc_setAssociatedObject(self, &kLoadingBezel, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	[bezel dismiss];
+
+}
+
+- (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
+
+	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
+	[loadingBezel dismiss];
+	
+	NSParameterAssert(loadingBezel && !loadingBezel.window);
+	
+	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAOverlayBezelDefaultStyle];
+	[errorBezel show];
+	
+	double delayInSeconds = 2.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    [errorBezel dismiss];
+	});
 
 }
 
