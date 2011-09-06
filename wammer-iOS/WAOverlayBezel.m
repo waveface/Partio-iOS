@@ -11,6 +11,7 @@
 
 @interface WAOverlayBezel ()
 
+@property (nonatomic, readwrite, retain) UIImage *image;
 @property (nonatomic, readwrite, assign) WAOverlayBezelStyle *style;
 @property (nonatomic, readwrite, retain) UIView *accessoryView;
 @property (nonatomic, readwrite, retain) UILabel *captionLabel;
@@ -23,12 +24,13 @@
 
 @implementation WAOverlayBezel
 
-@synthesize style, accessoryView, caption, captionLabel, deviceOrientationTransform;
+@synthesize image, style, accessoryView, caption, captionLabel, deviceOrientationTransform;
 
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
+	[image release];
 	[accessoryView release];
 	[caption release];
 	[captionLabel release];
@@ -54,7 +56,7 @@
 	
 	switch (aStyle) {
 	
-		case WAOverlayBezelSpinnerStyle: {
+		case WAActivityIndicatorBezelStyle: {
 			
 			UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
 			[spinner startAnimating];
@@ -63,6 +65,15 @@
 		
 			break;
 		
+		}
+		
+		case WACheckmarkBezelStyle: {
+			self.image = [UIImage imageNamed:@"WAOverlayBezel-Checkmark"];
+			break;
+		}
+		case WAErrorBezelStyle: {
+			self.image = [UIImage imageNamed:@"WAOverlayBezel-Error"];
+			break;
 		}
 	
 	}
@@ -85,7 +96,7 @@
 
 - (id) initWithFrame:(CGRect)aFrame {
 
-	self = [self initWithStyle:WAOverlayBezelDefaultStyle];
+	self = [self initWithStyle:WADefaultBezelStyle];
 	if (!self)
 		return nil;
 	
@@ -111,6 +122,18 @@
 
 - (void) show {
 
+	[self showWithAnimation:WAOverlayBezelAnimationDefault];
+
+}
+
+- (void) dismiss {
+
+	[self dismissWithAnimation:WAOverlayBezelAnimationDefault];
+
+}
+
+- (void) showWithAnimation:(WAOverlayBezelAnimation)anAnimation {
+
 	if (self.window)
 		[NSException raise:NSInternalInconsistencyException format:@"%s shall only be called when the current alert view is not on screen.", __PRETTY_FUNCTION__];
 	
@@ -123,13 +146,52 @@
 
 }
 
-- (void) dismiss {
+- (void) dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation {
 
-	[self removeFromSuperview];
+	NSTimeInterval duration = 0.3f;
+	
+	[CATransaction begin];
+	
+	NSMutableArray *animations = [NSMutableArray array];
+	
+	CABasicAnimation *fadeOutAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+	fadeOutAnimation.toValue = [NSNumber numberWithFloat:0.0f];
+	[animations addObject:fadeOutAnimation];
+	
+	CAAnimationGroup *orderOutAnimation = [CAAnimationGroup animation];
+	orderOutAnimation.animations = animations;
+	orderOutAnimation.duration = duration;
+	orderOutAnimation.removedOnCompletion = YES;
+	orderOutAnimation.fillMode = kCAFillModeForwards;
+	orderOutAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	[self.layer addAnimation:orderOutAnimation forKey:kCAOnOrderOut];
+	
+	[CATransaction setCompletionBlock: ^ {
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+			[self removeFromSuperview];
+		});
+	}];
+	
+	[CATransaction commit];
 
 }
 
 - (void) layoutSubviews {
+
+	if (self.image) {
+		
+		if (!self.accessoryView)
+			self.accessoryView = [[[UIImageView alloc] initWithImage:self.image] autorelease];
+		
+		UIImageView *currentImageView = [self.accessoryView isKindOfClass:[UIImageView class]] ? (UIImageView *)self.accessoryView : nil;
+		
+		if (!currentImageView)
+			NSLog(@"Warning: %@ has an image, but its accessory view is set to something other than a default image view provided by itself.  The image will not show, or there will be inconsistent behavior.", self);
+		
+		currentImageView.image = self.image;
+		[currentImageView sizeToFit];
+		
+	}
 	
 	if (self.accessoryView) {
 		[self addSubview:self.accessoryView];
