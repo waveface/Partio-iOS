@@ -19,6 +19,8 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
+#import "UIApplication+CrashReporting.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate>
 @end
 
@@ -27,36 +29,91 @@
 @synthesize window = _window;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
+		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
+	nil]];
+	
+	[[UIApplication sharedApplication] setCrashReportRecipients:[NSArray arrayWithObjects:
+		@"Evadne Wu <evadne.wu@waveface.com>",
+	nil]];
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-	self.window.backgroundColor = [UIColor blackColor];
+	self.window.backgroundColor = [UIColor redColor];
 	[self.window makeKeyAndVisible];
 	
-	NSString *rootViewControllerClassName = nil;
 	
-	switch (UI_USER_INTERFACE_IDIOM()) {
-		case UIUserInterfaceIdiomPad: {
-			rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
-			//	rootViewControllerClassName = @"WAPaginatedArticlesViewController";
-			break;
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+	
+	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
+	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+		return YES;
+	};
+	bottomMostViewController.onLoadview = ^ (WAViewController *self) {
+		self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }] autorelease];
+		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
+	};
+	
+	self.window.rootViewController = bottomMostViewController;
+	
+	void (^initializeInterface)() = ^ {
+		
+		NSString *rootViewControllerClassName = nil;
+		
+		switch (UI_USER_INTERFACE_IDIOM()) {
+			case UIUserInterfaceIdiomPad: {
+				rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
+				//	rootViewControllerClassName = @"WAPaginatedArticlesViewController";
+				break;
+			}
+			default:
+			case UIUserInterfaceIdiomPhone: {
+				rootViewControllerClassName = @"WAPostsViewControllerPhone";
+				break;
+			}
 		}
-		default:
-		case UIUserInterfaceIdiomPhone: {
-			rootViewControllerClassName = @"WAPostsViewControllerPhone";
-			break;
+		
+		NSParameterAssert(rootViewControllerClassName);
+		
+		UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
+		
+		BOOL needsTransition = !!self.window.rootViewController;
+		self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+		
+		if (needsTransition) {
+			
+			CATransition *transition = [CATransition animation];
+			transition.type = kCATransitionFade;
+			transition.duration = 0.3f;
+			transition.fillMode = kCAFillModeForwards;
+			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			transition.removedOnCompletion = YES;
+			
+			[self.window.layer addAnimation:transition forKey:kCATransition];
+		
 		}
-	}
+		
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:needsTransition];
+		
+		if (![self hasAuthenticationData])
+			[self presentAuthenticationRequestRemovingPriorData:YES];
+		
+	};
 	
-	NSParameterAssert(rootViewControllerClassName);
-	
-	UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
-	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
-		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
-	
-	self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
-	
-	if (![self hasAuthenticationData])
-		[self presentAuthenticationRequestRemovingPriorData:YES];
+	dispatch_async(dispatch_get_current_queue(), ^ {
+		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
+			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
+				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
+					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
+					initializeInterface();
+				}];
+			} else {
+				initializeInterface();
+			}
+		}];
+	});
 		
 	return YES;
 	
@@ -184,7 +241,7 @@
 					return YES;
 				};
 				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
-				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternCarbonFibre"]];
+				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];	//	was		WAPatternCarbonFibre
 				
 				[fullscreenBaseVC.view addSubview:((^ {
 					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
