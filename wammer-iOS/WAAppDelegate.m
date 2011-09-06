@@ -30,6 +30,8 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+	NSDate *launchFinishDate = [NSDate date];
+
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
@@ -78,7 +80,7 @@
 		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 		
-		BOOL needsTransition = !!self.window.rootViewController;
+		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
 		self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
 		
 		if (needsTransition) {
@@ -101,18 +103,16 @@
 		
 	};
 	
-	dispatch_async(dispatch_get_current_queue(), ^ {
-		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
-					initializeInterface();
-				}];
-			} else {
+	[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
+		if ([[UIApplication sharedApplication] crashReportingEnabled]) {
+			[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
+				[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
 				initializeInterface();
-			}
-		}];
-	});
+			}];
+		} else {
+			initializeInterface();
+		}
+	}];
 		
 	return YES;
 	
