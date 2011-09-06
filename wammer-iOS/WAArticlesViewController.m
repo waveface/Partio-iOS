@@ -17,6 +17,8 @@
 #import "IRActionSheet.h"
 #import "IRAlertView.h"
 
+#import "WAOverlayBezel.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -271,13 +273,38 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
 	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
+		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel show];
+	
 		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
 		
-			[self refreshData];
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				[self refreshData];
+				[busyBezel dismiss];
+
+				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+				[doneBezel show];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+					[doneBezel dismiss];
+				});
+				
+			});		
 		
 		} onFailure: ^ {
 		
-			NSLog(@"Article upload failed.  Help!");
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				NSLog(@"Article upload failed.  Help!");
+				[busyBezel dismiss];
+				
+				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+				[errorBezel show];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+					[errorBezel dismiss];
+				});
+			
+			});
 					
 		}];
 	

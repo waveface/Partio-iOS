@@ -20,6 +20,7 @@
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
+static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting>
 
@@ -113,31 +114,21 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-
-	self.discreteLayoutResult = nil;
-
-	[super controllerDidChangeContent:controller];
-	
-	//	Content has changed — trigger relayout.
-
-}
-
 - (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid {
-
-	return proposedGrid;
 	
-	//	TBD: grid randomization continuity comes from here
+	NSMutableArray *lastResultantGrids = objc_getAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids);
+	NSLog(@"last resultant grids %@", lastResultantGrids);
 	
-	NSLog(@"layout manager wanted to use grid %@", proposedGrid);
-	
-	NSArray *lastResultantGrids = self.discreteLayoutResult.grids;
-	if (!lastResultantGrids)
+	if (![lastResultantGrids count]) {
+		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, nil, OBJC_ASSOCIATION_ASSIGN);
 		return proposedGrid;
+	}
 	
-	[lastResultantGrids indexOfObject:proposedGrid];
+	IRDiscreteLayoutGrid *prototype = [[[lastResultantGrids objectAtIndex:0] retain] autorelease];
+	[lastResultantGrids removeObjectAtIndex:0];
 	
-	return proposedGrid;
+	NSLog(@"returning proto %@", prototype);
+	return prototype;
 
 }
 
@@ -298,18 +289,32 @@ static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteAr
 
 - (void) reloadViewContents {
 
-	self.discreteLayoutResult = nil; // throw it away
+	UIScrollView *scrollView = self.paginatedView.scrollView;
+	if (scrollView.tracking || scrollView.dragging || scrollView.decelerating) {
+		__block __typeof__(self) nrSelf = self;
+		dispatch_async(dispatch_get_current_queue(), ^ {
+			[nrSelf performSelector:_cmd];
+		});
+		return;
+	};
 	
-	if (!self.discreteLayoutResult)
-		self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
+	if (self.discreteLayoutResult) {
+		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, int index, BOOL *stop) {
+			return aGridInstance.prototype;
+		}] mutableCopy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	
+	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
+	objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, nil, OBJC_ASSOCIATION_ASSIGN);
 		
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
 	
-	if (self.paginatedView.scrollView.tracking || self.paginatedView.scrollView.dragging || self.paginatedView.scrollView.decelerating) {
-		NSLog(@"warning: %s shall be called later", __PRETTY_FUNCTION__);
-	};
 	[self.paginatedView reloadViews];
 	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
+	
+	//	TBD: Cache contents of the previous screen, and then do some page index matching
+	//	Instead of going back to the last current page, since we might have nothing left on the current page
+	//	And things can get garbled very quickly
 	
 	if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
 		[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
@@ -552,7 +557,14 @@ NSString * const kLoadingBezel = @"loadingBezel";
 
 - (void) remoteDataLoadingWillBegin {
 
-	WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAOverlayBezelSpinnerStyle];
+	NSParameterAssert([NSThread isMainThread]);
+	
+	//	Only show on first load, when there is nothing displayed yet
+	
+	if ([self.fetchedResultsController.fetchedObjects count])
+		return;
+
+	WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
 	bezel.caption = @"Loading";
 	
 	[bezel show];
@@ -577,15 +589,16 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
 	[loadingBezel dismiss];
 	
-	NSParameterAssert(loadingBezel && !loadingBezel.window);
+	if (loadingBezel)
+		NSParameterAssert(loadingBezel && !loadingBezel.window);
 	
-	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAOverlayBezelDefaultStyle];
+	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 	[errorBezel show];
 	
 	double delayInSeconds = 2.0;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [errorBezel dismiss];
+    [errorBezel dismissWithAnimation:WAOverlayBezelAnimationZoom];
 	});
 
 }
