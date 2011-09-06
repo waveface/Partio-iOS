@@ -10,7 +10,7 @@
 
 @implementation WAViewController
 
-@synthesize onShouldAutorotateToInterfaceOrientation;
+@synthesize onShouldAutorotateToInterfaceOrientation, onLoadview;
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 
@@ -21,9 +21,19 @@
 	
 }
 
+- (void) loadView {
+
+	if (self.onLoadview)
+		self.onLoadview(self);
+	else
+		[super loadView];
+
+}
+
 - (void) dealloc {
 
 	[onShouldAutorotateToInterfaceOrientation release];
+	[onLoadview release];
 	[super dealloc];
 
 }

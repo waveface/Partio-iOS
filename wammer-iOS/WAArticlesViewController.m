@@ -16,8 +16,10 @@
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
 #import "IRAlertView.h"
+#import "IRMailComposeViewController.h"
 
 #import "WAOverlayBezel.h"
+#import "UIApplication+CrashReporting.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
@@ -101,9 +103,28 @@
 	
 	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:@"Debug Import" block:^(void) {
+		[IRAction actionWithTitle:@"Feedback" block:^ {
 		
-			[[[[UIAlertView alloc] initWithTitle:@"Debug Import" message:@"I should import stuff, but you should not have to relaunch the app to see them anyway." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil] autorelease] show];
+			if (![IRMailComposeViewController canSendMail]) {
+				[[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				return;
+			}
+			
+			__block IRMailComposeViewController *composeViewController;
+			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:@"Wammer Feedback" messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+				[composeViewController dismissModalViewControllerAnimated:YES];
+			}];
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+			
+			[self presentModalViewController:composeViewController animated:YES];
+		
+		}],
+		
+		[IRAction actionWithTitle:@"Crash" block: ^ {
+		
+			((char *)NULL)[1] = 0;
 		
 		}],
 	
