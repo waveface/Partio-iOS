@@ -16,6 +16,7 @@
 #import "WAPaginatedArticlesViewController.h"
 
 #import "WAOverlayBezel.h"
+#import "CALayer+IRAdditions.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
@@ -64,8 +65,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
 
 	__block __typeof__(self) nrSelf = self;
-
-	WAArticleViewController *articleViewController = nil;
+	__block WAArticleViewController *articleViewController = nil;
 	
 	articleViewController = objc_getAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem);
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
@@ -100,7 +100,46 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		paginatedVC.view.clipsToBounds = YES;
 		
-		[self.navigationController pushViewController:paginatedVC animated:YES];
+		UIView *backingView = [[[UIView alloc] initWithFrame:[self.view convertRect:articleViewController.view.frame fromView:articleViewController.view.superview]] autorelease];
+		UIView *backingImageHolder = [[[UIView alloc] initWithFrame:backingView.bounds] autorelease];
+		backingImageHolder.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		[backingView addSubview:backingImageHolder];
+		
+		backingView.backgroundColor = articleViewController.view.backgroundColor;
+		backingImageHolder.layer.contents = (id)[articleViewController.view.layer irRenderedImage].CGImage;
+		backingImageHolder.layer.contentsGravity = kCAGravityBottomLeft;
+		
+		[self.view addSubview:backingView];
+		backingView.layer.shadowRadius = 4.0f;
+		backingView.layer.shadowOffset = (CGSize){ 0, 2 };
+		backingView.layer.shadowOpacity = 0.25f;
+		
+		[UIView animateWithDuration:0.3f delay:0.0f options:UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionCurveEaseInOut animations: ^ {
+			
+			backingView.frame = self.view.bounds;
+			backingImageHolder.alpha = 0.0f;
+		
+		} completion: ^ (BOOL completed) {
+		
+			[CATransaction begin];
+			
+			[backingView removeFromSuperview];
+		
+			[self.navigationController pushViewController:paginatedVC animated:NO];
+			
+			[self.navigationController.topViewController.view.superview.layer addAnimation:((^ {
+				CATransition *fadeTransition = [CATransition animation];
+				fadeTransition.duration = 0.3f;
+				fadeTransition.type = kCATransitionFade;
+				fadeTransition.removedOnCompletion = YES;
+				return fadeTransition;
+			})()) forKey:kCATransition];
+
+			[CATransaction commit];
+		
+		}];
+		
+		//	[self.navigationController pushViewController:paginatedVC animated:YES];
 	
 	};
 	
