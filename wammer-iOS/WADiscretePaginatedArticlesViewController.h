@@ -7,7 +7,12 @@
 //
 
 #import "WAArticlesViewController.h"
+#import "WAPaginationSlider.h"
+#import "IRPaginatedView.h"
 
-@interface WADiscretePaginatedArticlesViewController : WAArticlesViewController
+@interface WADiscretePaginatedArticlesViewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
+
+@property (nonatomic, readwrite, retain) IBOutlet WAPaginationSlider *paginationSlider;
+@property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
 
 @end

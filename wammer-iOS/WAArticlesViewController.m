@@ -150,7 +150,20 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	[self refreshData];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self reloadViewContents];
+	
+	double delayInSeconds = 2.0;
+dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    [self refreshData];
+});
 
 }
 
@@ -172,20 +185,44 @@
 }
 
 - (void) refreshData {
-	
-	[[WADataStore defaultStore] updateUsersOnSuccess:nil onFailure:nil];
 
-	[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-	
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			
-			[self reloadViewContents];
-			
-		});	
+	dispatch_async(dispatch_get_main_queue(), ^ {
 		
-	} onFailure: ^ {
+		[self remoteDataLoadingWillBegin];
+		
+	});
 	
-		NSLog(@"%@ failed", NSStringFromSelector(_cmd));
+	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
+	
+		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				
+				if ([self isViewLoaded])
+				if (self.view.window)
+					[self reloadViewContents];
+				
+				[self remoteDataLoadingDidEnd];
+				
+			});	
+			
+		} onFailure: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+				
+			});
+			
+		}];
+	
+	} onFailure: ^ {
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+			
+		});
 		
 	}];
 
@@ -210,6 +247,13 @@
 - (void) reloadViewContents {
 
 	[NSException raise:NSInternalInconsistencyException format:@"%@ shall be implemented in a subclass only, and you should not call super.", NSStringFromSelector(_cmd)];
+
+}
+
+- (NSURL *) representedObjectURIForInterfaceItem:(UIView *)aView {
+
+	[NSException raise:NSInternalInconsistencyException format:@"%@ shall be implemented in a subclass only, and you should not call super.", NSStringFromSelector(_cmd)];
+	return nil;
 
 }
 
@@ -243,6 +287,24 @@
 	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
+
+}
+
+
+
+
+
+//	These are no-ops for now, since we are optionally requiring them
+
+- (void) remoteDataLoadingWillBegin {
+
+}
+
+- (void) remoteDataLoadingDidEnd {
+
+}
+
+- (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
 
 }
 

@@ -10,4 +10,6 @@
 
 @interface WAPaginatedArticlesViewController : WAArticlesViewController
 
+@property (nonatomic, readwrite, retain) NSDictionary *context;
+
 @end
