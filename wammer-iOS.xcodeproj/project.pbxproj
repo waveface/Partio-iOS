@@ -12,9 +12,8 @@
 		4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */; };
 		4B587BB913F4D7AE0084E671 /* WAComposeViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */; };
 		4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */; };
-		4B7C2F80141613BE00E38663 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2F7F141613BD00E38663 /* Default@2x.png */; };
-		4B7C2FA214161C8800E38663 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2F7D141613AD00E38663 /* Default.png */; };
-		4B7C2FA614161D0A00E38663 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2FA514161D0A00E38663 /* Default-Portrait~ipad.png */; };
+		4B7C2F80141613BE00E38663 /* Default@2x~iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2F7F141613BD00E38663 /* Default@2x~iPhone.png */; };
+		4B7C2FA214161C8800E38663 /* Default~iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2F7D141613AD00E38663 /* Default~iPhone.png */; };
 		4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */; };
 		4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */; };
 		4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
@@ -298,9 +297,8 @@
 		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAComposeViewControllerPhone.xib; path = "wammer-iOS/WAComposeViewControllerPhone.xib"; sourceTree = "<group>"; };
 		4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostViewControllerPhone.h; path = "wammer-iOS/WAPostViewControllerPhone.h"; sourceTree = "<group>"; };
 		4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostViewControllerPhone.m; path = "wammer-iOS/WAPostViewControllerPhone.m"; sourceTree = "<group>"; };
-		4B7C2F7D141613AD00E38663 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
-		4B7C2F7F141613BD00E38663 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
-		4B7C2FA514161D0A00E38663 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "../Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		4B7C2F7D141613AD00E38663 /* Default~iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iPhone.png"; path = "Resources/Default~iPhone.png"; sourceTree = "<group>"; };
+		4B7C2F7F141613BD00E38663 /* Default@2x~iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iPhone.png"; path = "Resources/Default@2x~iPhone.png"; sourceTree = "<group>"; };
 		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
 		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAComposeCommentViewControllerPhone.h; path = "wammer-iOS/WAComposeCommentViewControllerPhone.h"; sourceTree = "<group>"; };
@@ -767,9 +765,8 @@
 			isa = PBXGroup;
 			children = (
 				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
-				4B7C2F7D141613AD00E38663 /* Default.png */,
-				4B7C2F7F141613BD00E38663 /* Default@2x.png */,
-				4B7C2FA514161D0A00E38663 /* Default-Portrait~ipad.png */,
+				4B7C2F7D141613AD00E38663 /* Default~iPhone.png */,
+				4B7C2F7F141613BD00E38663 /* Default@2x~iPhone.png */,
 				FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */,
 				FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
@@ -1066,10 +1063,9 @@
 				FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */,
 				4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */,
 				4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */,
-				4B7C2F80141613BE00E38663 /* Default@2x.png in Resources */,
+				4B7C2F80141613BE00E38663 /* Default@2x~iPhone.png in Resources */,
 				FF5B83B3140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib in Resources */,
-				4B7C2FA214161C8800E38663 /* Default.png in Resources */,
-				4B7C2FA614161D0A00E38663 /* Default-Portrait~ipad.png in Resources */,
+				4B7C2FA214161C8800E38663 /* Default~iPhone.png in Resources */,
 				FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */,
 				FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */,
 				FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */,
