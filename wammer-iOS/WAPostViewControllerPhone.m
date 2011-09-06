@@ -55,7 +55,54 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
   self.title = @"Post";
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
   
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+  
   return self;
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+  
+  NSLog(@"%@: a managed object context saved, merge it", self);
+  
+  if (aNotification.object == self.managedObjectContext)
+    return;
+  
+  [self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+  
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+  
+  //  This method will be called initially to populate the table view, and also on updates so the table view shows newly composed comments
+  
+  void (^operation)() = ^ {
+  
+    if (![self isViewLoaded])
+      return;
+      
+    [self.tableView reloadData];
+    
+    NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
+    
+    if (indexPathForLastCell) {
+      [self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+  
+  };
+  
+  if ([NSThread isMainThread])
+    operation();
+  else
+    dispatch_async(dispatch_get_main_queue(), operation);
+
+}
+
+- (void) dealloc {
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  
+  [super dealloc];
+  
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
@@ -121,15 +168,8 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    
-    if (self.post && !self.fetchedResultsController.fetchedObjects) {
-		NSError *fetchingError = nil;
-		if (![self.fetchedResultsController performFetch:&fetchingError])
-			NSLog(@"Error fetching: %@", fetchingError);
-		else
-			[self refreshData];
-	}
+  [super viewWillAppear:animated];
+  [self refreshData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -347,8 +387,8 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 */
 
 - (void) refreshData {
-
-	NSLog(@"%s TBD", __PRETTY_FUNCTION__);
+  
+ NSLog(@"%s TBD", __PRETTY_FUNCTION__);
 
 }
 
