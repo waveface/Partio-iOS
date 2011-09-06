@@ -903,7 +903,8 @@
 		FF61638514161A61004738D3 /* CrashReporter.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CrashReporter.framework;
+			name = CrashReporter.framework;
+			path = CrashReporter;
 			remoteRef = FF61638414161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1200,7 +1201,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1244,7 +1245,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
