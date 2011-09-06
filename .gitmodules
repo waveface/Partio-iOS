@@ -22,3 +22,6 @@
 [submodule "external/IRDiscreteLayoutManager"]
 	path = external/IRDiscreteLayoutManager
 	url = git://github.com/iridia/IRDiscreteLayoutManager.git
+[submodule "external/PLCrashReporter"]
+	path = external/PLCrashReporter
+	url = git://github.com/iridia/PLCrashReporter.git
