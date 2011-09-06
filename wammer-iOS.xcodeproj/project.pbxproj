@@ -30,6 +30,8 @@
 		FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF24072E13F2881E000B2CAA /* WAViewController.m */; };
 		FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
 		FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
+		FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */; };
+		FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */ = {isa = PBXBuildFile; fileRef = FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */; };
 		FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
 		FF4FA01213E13249002C627F /* WAArticleViewController-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */; };
 		FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01313E136A0002C627F /* WACapsuleLeft.png */; };
@@ -221,6 +223,8 @@
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
 		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
+		FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAOverlayBezel-Checkmark.png"; path = "Resources/WAOverlayBezel-Checkmark.png"; sourceTree = "<group>"; };
+		FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAOverlayBezel-Error.png"; path = "Resources/WAOverlayBezel-Error.png"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Default.xib"; path = "Resources/WAArticleViewController-Default.xib"; sourceTree = "<group>"; };
@@ -612,6 +616,8 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */,
+				FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
 				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
 				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
@@ -811,6 +817,8 @@
 				FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */,
 				4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */,
 				FF5B83B3140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib in Resources */,
+				FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */,
+				FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
