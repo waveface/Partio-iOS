@@ -247,19 +247,8 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 - (void) handleCompose:(UIBarButtonItem *)sender
 {
 
-  __block __typeof__(self) nrSelf = self;
-  
-  WAComposeCommentViewControllerPhone *ccvc = [[[WAComposeCommentViewControllerPhone alloc] init] autorelease];
-//  [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
-//    [nrSelf didFinishComposingComment:@"test"];
-//    
-//		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
-//      
-//			[self refreshData];
-//     
-//		} onFailure:nil];
-//    
-//	}];
+  WAComposeCommentViewControllerPhone *ccvc = [WAComposeCommentViewControllerPhone controllerWithPost:[[self.post objectID] URIRepresentation] 
+                                                                                           completion:nil];
   
   [self.navigationController pushViewController:ccvc animated:YES];
 }
