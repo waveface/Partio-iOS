@@ -72,6 +72,7 @@
 		FF890C9C14161AA500CD7D1F /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638714161A61004738D3 /* libCrashReporter-iphoneos.a */; };
 		FF890C9D14161AA500CD7D1F /* libCrashReporter-iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638914161A61004738D3 /* libCrashReporter-iphonesimulator.a */; };
 		FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */; };
+		FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */; };
 		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
 		FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
 		FF92796414079593007BEB65 /* WATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF92796314079593007BEB65 /* WATableViewCell.m */; };
@@ -375,6 +376,8 @@
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryImageView.h; path = "wammer-iOS/WAGalleryImageView.h"; sourceTree = "<group>"; };
 		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryImageView.m; path = "wammer-iOS/WAGalleryImageView.m"; sourceTree = "<group>"; };
 		FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternBlackPaper.png; path = Resources/WAPatternBlackPaper.png; sourceTree = "<group>"; };
+		FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+CrashReporting.h"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.h"; sourceTree = SOURCE_ROOT; };
+		FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+CrashReporting.m"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.m"; sourceTree = SOURCE_ROOT; };
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
@@ -635,6 +638,8 @@
 				FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */,
 				FF73A54E13D6C2CD00D54EC6 /* main.m */,
 				FF73A55013D6C2CD00D54EC6 /* wammer-iOS-Prefix.pch */,
+				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
+				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 			);
 			name = "Supporting Files";
 			path = "wammer-iOS";
@@ -1088,6 +1093,7 @@
 				FF71D3F9140E0A0C0069B161 /* WAArticlesViewController.m in Sources */,
 				FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */,
 				FFF4EAC91410EFE2007F444B /* WAOverlayBezel.m in Sources */,
+				FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
