@@ -63,7 +63,6 @@
 		switch (UI_USER_INTERFACE_IDIOM()) {
 			case UIUserInterfaceIdiomPad: {
 				rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
-				//	rootViewControllerClassName = @"WAPaginatedArticlesViewController";
 				break;
 			}
 			default:
