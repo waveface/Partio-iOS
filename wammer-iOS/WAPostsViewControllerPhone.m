@@ -357,9 +357,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAComposeViewControllerPhone *cvc = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
-      
-			[self refreshData];
-      
+      static dispatch_once_t onceToken;
+      dispatch_once(&onceToken, ^{
+        [self refreshData];
+      });
 		} onFailure:nil];
     
 	}];
