@@ -12,12 +12,19 @@
 #define __WAOverlayBezel__
 
 typedef enum {
-
-	WAOverlayBezelSpinnerStyle = 0,
-	
-	WAOverlayBezelDefaultStyle = WAOverlayBezelSpinnerStyle
-
+	WAActivityIndicatorBezelStyle = 0,
+	WACheckmarkBezelStyle,
+	WAErrorBezelStyle,
+	WADefaultBezelStyle = WAActivityIndicatorBezelStyle
 } WAOverlayBezelStyle;
+
+typedef enum {
+	WAOverlayBezelAnimationNone = 0,
+	WAOverlayBezelAnimationFade = 1 << 1,
+	WAOverlayBezelAnimationZoom = 1 << 2,
+	WAOverlayBezelAnimationSlide = 1 << 3,
+	WAOverlayBezelAnimationDefault = WAOverlayBezelAnimationNone
+} WAOverlayBezelAnimation;
 
 #endif
 
@@ -30,5 +37,8 @@ typedef enum {
 
 - (void) show;
 - (void) dismiss;
+
+- (void) showWithAnimation:(WAOverlayBezelAnimation)anAnimation;
+- (void) dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation;
 
 @end

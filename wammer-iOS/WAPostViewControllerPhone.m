@@ -14,6 +14,8 @@
 #import "WAArticle.h"
 
 #import "WAGalleryViewController.h"
+#import "WARemoteInterface.h"
+#import "WAComposeCommentViewControllerPhone.h"
 
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
 
@@ -23,6 +25,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
+- (void) didFinishComposingComment:(NSString *)commentText;
 - (void) refreshData;
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -45,12 +48,61 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-        self.title = @"Post";
+  self = [super initWithStyle:style];
+  if(!self)
+    return nil;
+ 
+  self.title = @"Post";
+  self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+  
+  return self;
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+  
+  NSLog(@"%@: a managed object context saved, merge it", self);
+  
+  if (aNotification.object == self.managedObjectContext)
+    return;
+  
+  [self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+  
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+  
+  //  This method will be called initially to populate the table view, and also on updates so the table view shows newly composed comments
+  
+  void (^operation)() = ^ {
+  
+    if (![self isViewLoaded])
+      return;
+      
+    [self.tableView reloadData];
+    
+    NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
+    
+    if (indexPathForLastCell) {
+      [self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-    return self;
+  
+  };
+  
+  if ([NSThread isMainThread])
+    operation();
+  else
+    dispatch_async(dispatch_get_main_queue(), operation);
+
+}
+
+- (void) dealloc {
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  
+  [super dealloc];
+  
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
@@ -91,7 +143,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (void)showCompose:(UIBarButtonItem *)sender
 {
-    [self.navigationController pushViewController:[[WAComposeViewControllerPhone alloc]init] animated:YES];
+  [self.navigationController pushViewController:[[WAComposeCommentViewControllerPhone alloc] init] animated:YES];
 }
 
 #pragma mark - View lifecycle
@@ -116,15 +168,8 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
-    
-    if (self.post && !self.fetchedResultsController.fetchedObjects) {
-		NSError *fetchingError = nil;
-		if (![self.fetchedResultsController performFetch:&fetchingError])
-			NSLog(@"Error fetching: %@", fetchingError);
-		else
-			[self refreshData];
-	}
+  [super viewWillAppear:animated];
+  [self refreshData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -239,6 +284,69 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
     return cell;
 }
 
+- (void) handleCompose:(UIBarButtonItem *)sender
+{
+
+  WAComposeCommentViewControllerPhone *ccvc = [WAComposeCommentViewControllerPhone controllerWithPost:[[self.post objectID] URIRepresentation] 
+                                                                                           completion:nil];
+  
+  [self.navigationController pushViewController:ccvc animated:YES];
+}
+
+- (void) didFinishComposingComment:(NSString *)commentText 
+{
+	
+	WAArticle *currentArticle = self.post;
+	NSString *currentArticleIdentifier = currentArticle.identifier;
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	
+	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
+		
+		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		
+		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
+		
+		if ([createdCommentRep objectForKey:@"creator_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [createdCommentRep objectForKey:@"creator_id"], @"id",
+                                    nil] forKey:@"owner"];
+		}
+		
+		if ([createdCommentRep objectForKey:@"post_id"]) {
+			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
+                                    [createdCommentRep objectForKey:@"post_id"], @"id",
+                                    nil] forKey:@"article"];
+		}
+		
+		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
+                                                                                                         
+                                                                                                         mutatedCommentRep,
+                                                                                                         
+                                                                                                         nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                                                                            
+                                                                                                                            @"WAFile", @"files",
+                                                                                                                            @"WAArticle", @"article",
+                                                                                                                            @"WAUser", @"owner",
+                                                                                                                            
+                                                                                                                            nil] options:0];
+		
+		for (WAComment *aComment in insertedComments)
+			if (!aComment.timestamp)
+				aComment.timestamp = [NSDate date];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"Error saving: %@", savingError);
+		
+	} onFailure:^(NSError *error) {
+		
+		NSLog(@"Error: %@", error);
+		
+	}];
+	
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -279,8 +387,8 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 */
 
 - (void) refreshData {
-
-	NSLog(@"%s TBD", __PRETTY_FUNCTION__);
+  
+ NSLog(@"%s TBD", __PRETTY_FUNCTION__);
 
 }
 
