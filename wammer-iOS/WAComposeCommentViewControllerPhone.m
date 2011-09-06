@@ -41,8 +41,24 @@
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   }
   return self;
+}
+
+- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
+  
+	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	
+	if (savedContext == self.managedObjectContext)
+		return;
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+    
+		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+    
+	});
+  
 }
 
 - (void)didReceiveMemoryWarning
