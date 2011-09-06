@@ -12,7 +12,12 @@
 		4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */; };
 		4B587BB913F4D7AE0084E671 /* WAComposeViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */; };
 		4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */; };
+		4B7C2F80141613BE00E38663 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2F7F141613BD00E38663 /* Default@2x.png */; };
+		4B7C2FA214161C8800E38663 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2F7D141613AD00E38663 /* Default.png */; };
+		4B7C2FA614161D0A00E38663 /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7C2FA514161D0A00E38663 /* Default-Portrait~ipad.png */; };
 		4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */; };
+		4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */; };
+		4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
 		4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
@@ -293,8 +298,14 @@
 		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAComposeViewControllerPhone.xib; path = "wammer-iOS/WAComposeViewControllerPhone.xib"; sourceTree = "<group>"; };
 		4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostViewControllerPhone.h; path = "wammer-iOS/WAPostViewControllerPhone.h"; sourceTree = "<group>"; };
 		4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostViewControllerPhone.m; path = "wammer-iOS/WAPostViewControllerPhone.m"; sourceTree = "<group>"; };
+		4B7C2F7D141613AD00E38663 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
+		4B7C2F7F141613BD00E38663 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
+		4B7C2FA514161D0A00E38663 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "../Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
 		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
+		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAComposeCommentViewControllerPhone.h; path = "wammer-iOS/WAComposeCommentViewControllerPhone.h"; sourceTree = "<group>"; };
+		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAComposeCommentViewControllerPhone.m; path = "wammer-iOS/WAComposeCommentViewControllerPhone.m"; sourceTree = "<group>"; };
+		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAComposeCommentViewControllerPhone.xib; path = "wammer-iOS/WAComposeCommentViewControllerPhone.xib"; sourceTree = "<group>"; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-Default.xib"; path = "wammer-iOS/WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostViewCellPhone.h; path = "wammer-iOS/WAPostViewCellPhone.h"; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostViewCellPhone.m; path = "wammer-iOS/WAPostViewCellPhone.m"; sourceTree = "<group>"; };
@@ -468,6 +479,9 @@
 				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
 				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
 				4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */,
+				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
+				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
+				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
 				FF92796214079593007BEB65 /* WATableViewCell.h */,
 				FF92796314079593007BEB65 /* WATableViewCell.m */,
 			);
@@ -753,6 +767,9 @@
 			isa = PBXGroup;
 			children = (
 				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
+				4B7C2F7D141613AD00E38663 /* Default.png */,
+				4B7C2F7F141613BD00E38663 /* Default@2x.png */,
+				4B7C2FA514161D0A00E38663 /* Default-Portrait~ipad.png */,
 				FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */,
 				FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
@@ -1048,7 +1065,11 @@
 				4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */,
 				FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */,
 				4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */,
+				4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */,
+				4B7C2F80141613BE00E38663 /* Default@2x.png in Resources */,
 				FF5B83B3140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib in Resources */,
+				4B7C2FA214161C8800E38663 /* Default.png in Resources */,
+				4B7C2FA614161D0A00E38663 /* Default-Portrait~ipad.png in Resources */,
 				FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */,
 				FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */,
 				FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */,
@@ -1100,6 +1121,7 @@
 				FF164977140CC19900CAE824 /* WAAuthenticationRequestViewController.m in Sources */,
 				FF71D3F9140E0A0C0069B161 /* WAArticlesViewController.m in Sources */,
 				FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */,
+				4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */,
 				FFF4EAC91410EFE2007F444B /* WAOverlayBezel.m in Sources */,
 				FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */,
 			);
