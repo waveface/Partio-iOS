@@ -71,6 +71,7 @@
 		FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
 		FF890C9C14161AA500CD7D1F /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638714161A61004738D3 /* libCrashReporter-iphoneos.a */; };
 		FF890C9D14161AA500CD7D1F /* libCrashReporter-iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638914161A61004738D3 /* libCrashReporter-iphonesimulator.a */; };
+		FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */; };
 		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
 		FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
 		FF92796414079593007BEB65 /* WATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF92796314079593007BEB65 /* WATableViewCell.m */; };
@@ -373,6 +374,7 @@
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryImageView.h; path = "wammer-iOS/WAGalleryImageView.h"; sourceTree = "<group>"; };
 		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryImageView.m; path = "wammer-iOS/WAGalleryImageView.m"; sourceTree = "<group>"; };
+		FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternBlackPaper.png; path = Resources/WAPatternBlackPaper.png; sourceTree = "<group>"; };
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
@@ -737,6 +739,7 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
 				FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */,
 				FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
@@ -1035,6 +1038,7 @@
 				FF5B83B3140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib in Resources */,
 				FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */,
 				FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */,
+				FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
