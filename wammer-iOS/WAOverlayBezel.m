@@ -159,9 +159,7 @@
 	}
 
 	NSTimeInterval duration = 0.3f;
-	
-	[CATransaction begin];
-	
+		
 	NSMutableArray *animations = [NSMutableArray array];
 	
 	if (anAnimation & WAOverlayBezelAnimationFade) {
@@ -191,6 +189,9 @@
 	orderOutAnimation.removedOnCompletion = YES;
 	orderOutAnimation.fillMode = kCAFillModeForwards;
 	orderOutAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	
+	[CATransaction begin];
+	
 	[self.layer addAnimation:orderOutAnimation forKey:kCATransition];
 	
 	for (CABasicAnimation *anAnimation in orderOutAnimation.animations)
