@@ -16,6 +16,7 @@
 #import "WAPaginatedArticlesViewController.h"
 
 #import "WAOverlayBezel.h"
+#import "CALayer+IRAdditions.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
@@ -64,15 +65,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
 
 	__block __typeof__(self) nrSelf = self;
-
-	WAArticleViewController *articleViewController = nil;
+	__block WAArticleViewController *articleViewController = nil;
 	
 	articleViewController = objc_getAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem);
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		articleViewController = [WAArticleViewController controllerRepresentingArticle:objectURI];
-		articleViewController.presentationStyle = WAArticleViewControllerPresentationFullFrame;
+		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:([anArticle.fileOrder count] ? WADiscreteSingleImageArticleStyle : WADiscretePlaintextArticleStyle)];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
@@ -89,6 +88,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	articleViewController.onViewTap = ^ {
 	
+		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
 		WAPaginatedArticlesViewController *paginatedVC = [[[WAPaginatedArticlesViewController alloc] init] autorelease];
 		
 		paginatedVC.navigationItem.leftBarButtonItem = nil;
@@ -100,7 +101,54 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		paginatedVC.view.clipsToBounds = YES;
 		
-		[self.navigationController pushViewController:paginatedVC animated:YES];
+		UIView *backgroundView = [[[UIView alloc] initWithFrame:[self.navigationController.view convertRect:self.navigationController.topViewController.view.frame fromView:self.navigationController.topViewController.view.superview]] autorelease];
+		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+		
+		UIView *backingView = [[[UIView alloc] initWithFrame:[self.navigationController.view convertRect:articleViewController.view.frame fromView:articleViewController.view.superview]] autorelease];
+		UIView *backingImageHolder = [[[UIView alloc] initWithFrame:backingView.bounds] autorelease];
+		backingImageHolder.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		[backingView addSubview:backingImageHolder];
+		
+		backingView.backgroundColor = articleViewController.view.backgroundColor;
+		backingImageHolder.layer.contents = (id)[articleViewController.view.layer irRenderedImage].CGImage;
+		backingImageHolder.layer.contentsGravity = kCAGravityCenter;
+		
+		[self.navigationController.view addSubview:backgroundView];		
+		[self.navigationController.view addSubview:backingView];
+		//	backingView.layer.shadowRadius = 4.0f;
+		//	backingView.layer.shadowOffset = (CGSize){ 0, 2 };
+		//	backingView.layer.shadowOpacity = 0.25f;
+		backingView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
+		
+		backgroundView.alpha = 0;
+		
+		[UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionCurveEaseInOut animations: ^ {
+			
+			backingView.frame = [self.navigationController.view convertRect:self.navigationController.topViewController.view.frame fromView:self.navigationController.topViewController.view.superview];
+			backingImageHolder.alpha = 0.0f;
+			backgroundView.alpha = 1.0f;
+		
+		} completion: ^ (BOOL completed) {
+		
+			backingView.layer.shadowOpacity = 0.0f;
+			[backgroundView removeFromSuperview];
+		
+			[self.navigationController pushViewController:paginatedVC animated:NO];
+			
+			[UIView animateWithDuration:0.35f animations: ^ {
+			
+				backingView.alpha = 0.0f;
+				
+			} completion: ^ (BOOL finished) {
+			
+				[backingView removeFromSuperview];
+				
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+				
+			}];
+
+		}];
 	
 	};
 	
@@ -586,9 +634,6 @@ NSString * const kLoadingBezel = @"loadingBezel";
 
 	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
 	[loadingBezel dismiss];
-	
-	if (loadingBezel)
-		NSParameterAssert(loadingBezel && !loadingBezel.window);
 	
 	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 	[errorBezel show];

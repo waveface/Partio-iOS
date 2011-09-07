@@ -282,7 +282,6 @@
 	
 		NSUInteger newPage = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntValue];
 		self.paginationSlider.currentPage = newPage;
-		NSLog(@"self.paginationSlider.currentPage -> %i", self.paginationSlider.currentPage);
 		
 		NSURL *oldURI = self.articleCommentsViewController.representedArticleURI;
 		NSURL *newURI = nil;
@@ -733,7 +732,7 @@
 		}]] lastObject];
 
 		if (!returnedViewController)
-			returnedViewController = [WAArticleViewController controllerRepresentingArticle:articleURI];
+			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:([article.fileOrder count] ? WAFullFrameImageStackArticleStyle : WAFullFramePlaintextArticleStyle)];
 			
 		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		

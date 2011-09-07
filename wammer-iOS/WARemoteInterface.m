@@ -276,7 +276,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 
 		if (failureBlock)
-			failureBlock(nil);
+			failureBlock([inResponseContext objectForKey:kIRWebAPIEngineUnderlyingError]);
 		
 	}];
 

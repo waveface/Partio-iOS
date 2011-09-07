@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIWindow+IRAdditions.h"
 
 @interface WAAppDelegate : UIResponder <UIApplicationDelegate>
 

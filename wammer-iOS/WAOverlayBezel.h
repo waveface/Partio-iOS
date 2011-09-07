@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIWindow+IRAdditions.h"
 
 #ifndef __WAOverlayBezel__
 #define __WAOverlayBezel__
