@@ -78,7 +78,7 @@
 	self.passwordField.placeholder = @"Password";
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	self.passwordField.returnKeyType = UIReturnKeyDone;
+	self.passwordField.returnKeyType = UIReturnKeyGo;
 	self.passwordField.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.passwordField.secureTextEntry = YES;
 	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
