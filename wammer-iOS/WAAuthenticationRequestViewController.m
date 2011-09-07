@@ -9,6 +9,8 @@
 #import "WAAuthenticationRequestViewController.h"
 #import "WARemoteInterface.h"
 
+#import "WAOverlayBezel.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -188,6 +190,10 @@
 
 - (void) authenticate {
 
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	busyBezel.caption = @"Processing";
+	
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 
 	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
@@ -206,13 +212,17 @@
 				
 				self.view.userInteractionEnabled = YES;
 				
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				
 			});
 			
 		} onFailure: ^ {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
-		
+		 
 				self.view.userInteractionEnabled = YES;
+				
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				
 				[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:@"Authentication failed.  Unable to retrieve all the users." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 			
@@ -224,10 +234,21 @@
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
-			self.view.userInteractionEnabled = YES;
-		
-			[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:[NSString stringWithFormat:@"Authentication failed: %@", error] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-		
+			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+			errorBezel.caption = [[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey];
+			
+			[CATransaction begin];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			[CATransaction commit];
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+			
+				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				self.view.userInteractionEnabled = YES;			
+				
+			});
+						
 		});
 			
 	}];		
