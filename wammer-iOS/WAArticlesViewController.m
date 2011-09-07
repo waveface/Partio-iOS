@@ -27,12 +27,15 @@
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 
+@property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
+
 @end
 
 
 @implementation WAArticlesViewController
 @synthesize delegate, fetchedResultsController, managedObjectContext;
 @synthesize debugActionSheetController;
+@synthesize updatesViewOnControllerChangeFinish;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -258,12 +261,34 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 	
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	
+	switch (type) {
+		
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeMove: {
+			self.updatesViewOnControllerChangeFinish = YES;
+			break;
+		}
+		
+		case NSFetchedResultsChangeUpdate:
+			break;
+		
+	};
+
+}
+
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
-	
-	if ([self isViewLoaded])
-		[self reloadViewContents];
+		
+	if (self.updatesViewOnControllerChangeFinish) {
+		if ([self isViewLoaded]) {
+				NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+			[self reloadViewContents];
+		}
+	}
+		
+	self.updatesViewOnControllerChangeFinish = NO;
 	
 }
 
