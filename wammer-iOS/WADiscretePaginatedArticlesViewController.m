@@ -71,8 +71,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		articleViewController = [WAArticleViewController controllerRepresentingArticle:objectURI];
-		articleViewController.presentationStyle = WAArticleViewControllerPresentationFullFrame;
+		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:([anArticle.fileOrder count] ? WADiscreteSingleImageArticleStyle : WADiscretePlaintextArticleStyle)];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
@@ -586,9 +585,6 @@ NSString * const kLoadingBezel = @"loadingBezel";
 
 	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
 	[loadingBezel dismiss];
-	
-	if (loadingBezel)
-		NSParameterAssert(loadingBezel && !loadingBezel.window);
 	
 	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 	[errorBezel show];

@@ -85,6 +85,7 @@
 	self.captionLabel.numberOfLines = 1;
 	self.captionLabel.opaque = NO;
 	self.captionLabel.backgroundColor = nil;
+	self.captionLabel.textAlignment = UITextAlignmentCenter;
 	
 	self.deviceOrientationTransform = CATransform3DIdentity;
 	[self handleDeviceOrientationDidChange:nil];
@@ -132,6 +133,17 @@
 
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	NSLog(@"self.window.irInterfaceBounds %@", NSStringFromCGRect(self.window.irInterfaceBounds));
+
+	self.center = (CGPoint){
+		roundf(CGRectGetMidX(self.window.irInterfaceBounds)),
+		roundf(CGRectGetMidY(self.window.irInterfaceBounds))
+	};
+
+}
+
 - (void) showWithAnimation:(WAOverlayBezelAnimation)anAnimation {
 
 	if (self.window)
@@ -139,24 +151,49 @@
 	
 	UIWindow *window = [UIApplication sharedApplication].keyWindow;
 	[window addSubview:self];
-	self.center = (CGPoint){
-		CGRectGetMidX(window.bounds),
-		CGRectGetMidY(window.bounds)
-	};
+	
+	[window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionNew context:nil];
+	[self observeValueForKeyPath:@"irInterfaceBounds" ofObject:nil change:nil context:nil];
 
 }
 
 - (void) dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation {
 
+	[self.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
+
+	void (^remove)() = ^ {
+		[self removeFromSuperview];
+	};
+	
+	if (anAnimation == WAOverlayBezelAnimationNone) {
+		remove();
+		return;
+	}
+
 	NSTimeInterval duration = 0.3f;
-	
-	[CATransaction begin];
-	
+		
 	NSMutableArray *animations = [NSMutableArray array];
 	
-	CABasicAnimation *fadeOutAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
-	fadeOutAnimation.toValue = [NSNumber numberWithFloat:0.0f];
-	[animations addObject:fadeOutAnimation];
+	if (anAnimation & WAOverlayBezelAnimationFade) {
+		CABasicAnimation *fadeOutAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+		fadeOutAnimation.fromValue = [NSNumber numberWithFloat:1.0f];
+		fadeOutAnimation.toValue = [NSNumber numberWithFloat:0.0f];
+		fadeOutAnimation.duration = duration;
+		[animations addObject:fadeOutAnimation];	
+	}
+	
+	if (anAnimation & WAOverlayBezelAnimationSlide) {
+		NSLog(@"TBD %s WAOverlayBezelAnimationSlide", __PRETTY_FUNCTION__);
+	}
+
+	if (anAnimation & WAOverlayBezelAnimationZoom) {
+		NSLog(@"TBD %s WAOverlayBezelAnimationZoom", __PRETTY_FUNCTION__);
+	}
+	
+	if (!animations) {
+		remove();
+		return;
+	}
 	
 	CAAnimationGroup *orderOutAnimation = [CAAnimationGroup animation];
 	orderOutAnimation.animations = animations;
@@ -164,13 +201,15 @@
 	orderOutAnimation.removedOnCompletion = YES;
 	orderOutAnimation.fillMode = kCAFillModeForwards;
 	orderOutAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	[self.layer addAnimation:orderOutAnimation forKey:kCAOnOrderOut];
 	
-	[CATransaction setCompletionBlock: ^ {
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			[self removeFromSuperview];
-		});
-	}];
+	[CATransaction begin];
+	
+	[self.layer addAnimation:orderOutAnimation forKey:kCATransition];
+	
+	for (CABasicAnimation *anAnimation in orderOutAnimation.animations)
+		[self.layer setValue:anAnimation.toValue forKey:anAnimation.keyPath];
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), dispatch_get_main_queue(), remove);
 	
 	[CATransaction commit];
 
@@ -196,8 +235,8 @@
 	if (self.accessoryView) {
 		[self addSubview:self.accessoryView];
 		self.accessoryView.center = (CGPoint){
-			CGRectGetMidX(self.bounds),
-			CGRectGetMidY(self.bounds)
+			roundf(CGRectGetMidX(self.bounds)),
+			roundf(CGRectGetMidY(self.bounds))
 		};
 	}
 	
