@@ -15,6 +15,8 @@
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate, WAImageStackViewDelegate>
 
+@property (nonatomic, readwrite, retain) NSURL *representedObjectURI;
+@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
@@ -26,31 +28,23 @@
 
 
 @implementation WAArticleViewController
-@synthesize presentationStyle;
+@synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
 @synthesize contextInfoContainer, imageStackView, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
-@synthesize onPresentingViewController;
-@synthesize onViewTap;
+@synthesize onPresentingViewController, onViewTap;
 
-+ (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
++ (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSManagedObjectContext *usedContext = [[WADataStore defaultStore] disposableMOC];
-	WAArticle *usedArticle = (WAArticle *)[usedContext irManagedObjectForURI:articleObjectURL];
+	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ((NSString *[]){
+		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
+		[WAFullFrameImageStackArticleStyle] = @"Default",
+		[WADiscretePlaintextArticleStyle] = @"Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Default"
+	}[aStyle])];
 
-	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ([usedArticle.files count] ? @"Default" : @"Plaintext")];
-	
 	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
-	
-	returnedController.managedObjectContext = usedContext;
-	returnedController.article = usedArticle;
-	
+	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
-
-}
-
-- (NSURL *) representedObjectURI {
-
-	return [[self.article objectID] URIRepresentation];
 
 }
 
@@ -64,17 +58,30 @@
 
 }
 
+- (NSManagedObjectContext *) managedObjectContext {
+
+	if (!managedObjectContext)
+		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	
+	return managedObjectContext;
+
+}
+
+- (WAArticle *) article {
+
+	if (!article)
+		self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI];
+	
+	return article;
+
+}
+
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
 
 	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
 	
 	if (savedContext == self.managedObjectContext)
 		return;
-	
-	if ([NSThread isMainThread])
-		[self retain];
-	else
-		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -83,8 +90,6 @@
 		
 		if ([self isViewLoaded])
 			[self refreshView];
-			
-		[self autorelease];
 	
 	});
 
@@ -92,8 +97,11 @@
 
 - (void) viewDidUnload {
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
-
+	
+	self.managedObjectContext = nil;
+	self.article = nil;
 	self.contextInfoContainer = nil;
 	self.imageStackView = nil;
 	self.textEmphasisView = nil;
@@ -101,31 +109,19 @@
 	self.relativeCreationDateLabel = nil;
 	self.userNameLabel = nil;
 	self.articleDescriptionLabel = nil;
-	
-	self.onViewTap = nil;
 
 	[super viewDidUnload];
-
-}
-
-- (void) didReceiveMemoryWarning {
-
-	[self retain];
-	[super didReceiveMemoryWarning];
-	[self autorelease];
 
 }
 
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
-	
 	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 
 	[managedObjectContext release];
 	[article release];
 	[onPresentingViewController release];
-	
 	[contextInfoContainer release];
 	[imageStackView release];
 	[textEmphasisView release];
@@ -191,58 +187,34 @@
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	UIImageView *bubbleView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WASpeechBubble"] stretchableImageWithLeftCapWidth:84 topCapHeight:32]] autorelease];
-	bubbleView.frame = UIEdgeInsetsInsetRect(self.textEmphasisView.backgroundView.bounds, (UIEdgeInsets){ -28, -32, -32, -32 });
+	UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
+	bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
+	bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
+	bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
 	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.textEmphasisView.backgroundView addSubview:bubbleView];
 	
 	((WAView *)self.view).onLayoutSubviews = ^ {
 	
-		id self = (id)0x1; // Disables accidental referencing, and automatic block_retain(), of self
-		self = self;
+		WAArticleTextEmphasisLabel *textLabel = nrSelf.textEmphasisView;
 	
-		if (nrSelf.textEmphasisView && !nrSelf.textEmphasisView.hidden) {
+		if (textLabel && !textLabel.hidden) {
 		
 			CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
-		
-			[nrSelf.textEmphasisView sizeToFit];
+			[textLabel sizeToFit];
 			
-			switch (nrSelf.presentationStyle) {
-				case WAArticleViewControllerPresentationFullFrame: {
-				
-				//	[nrSelf.textEmphasisView addSubview:nrSelf.textEmphasisView.label];
-				//	[nrSelf.textEmphasisView.textView removeFromSuperview];
-				
-					nrSelf.textEmphasisView.frame = (CGRect){
-						nrSelf.textEmphasisView.frame.origin,
-						(CGSize) {
-							MIN(CGRectGetWidth(usableRect) - 54, MAX(256, nrSelf.textEmphasisView.frame.size.width)),
-							MIN(CGRectGetHeight(usableRect) - 80, MAX(144 - 32 - 32, nrSelf.textEmphasisView.frame.size.height))
-						}
-					};
-					break;
-				}
-				case WAArticleViewControllerPresentationStandalone: {
-				
-				//	[nrSelf.textEmphasisView addSubview:nrSelf.textEmphasisView.textView];
-				//	[nrSelf.textEmphasisView.label removeFromSuperview];
-										
-					nrSelf.textEmphasisView.frame = (CGRect){
-						nrSelf.textEmphasisView.frame.origin,
-						(CGSize) {
-							MAX(540, nrSelf.textEmphasisView.frame.size.width),
-							MIN(480, MAX(144 - 32 - 32, nrSelf.textEmphasisView.frame.size.height))
-						}
-					};
-					break;
-				}
-			}
-			
-			nrSelf.textEmphasisView.center = (CGPoint){
-				CGRectGetMidX(usableRect),
-				CGRectGetMidY(usableRect)
+			CGSize labelSize = (CGSize) {
+				MIN(CGRectGetWidth(usableRect) - 54, MAX(256, textLabel.frame.size.width)),
+				MIN(CGRectGetHeight(usableRect) - 80, MAX(80, textLabel.frame.size.height))
 			};
-			nrSelf.textEmphasisView.frame = CGRectIntegral(nrSelf.textEmphasisView.frame);
+			
+			textLabel.frame = (CGRect){
+				(CGPoint){
+					roundf(CGRectGetMidX(usableRect) - 0.5f * labelSize.width),
+					roundf(CGRectGetMidY(usableRect) - 0.5f * labelSize.height)
+				},
+				labelSize
+			};
 			
 			nrSelf.contextInfoContainer.frame = (CGRect){
 				nrSelf.contextInfoContainer.frame.origin,
@@ -285,16 +257,16 @@
 						
 		} else {
 		
-			switch (nrSelf.presentationStyle) {
-				case WAArticleViewControllerPresentationFullFrame: {
-					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-					break;
-				}
-				case WAArticleViewControllerPresentationStandalone: {
-					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-					break;
-				}
-			}
+//			switch (nrSelf.presentationStyle) {
+//				case WAArticleViewControllerPresentationFullFrame: {
+//					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+//					break;
+//				}
+//				case WAArticleViewControllerPresentationStandalone: {
+//					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+//					break;
+//				}
+//			}
 		
 			nrSelf.contextInfoContainer.frame = (CGRect){
 				(CGPoint){

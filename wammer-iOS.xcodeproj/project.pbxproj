@@ -17,6 +17,7 @@
 		4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
 		4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
+		FA3188F91417620100C81D53 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
 		FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */; };
 		FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */; };
@@ -71,8 +72,6 @@
 		FF878BBD13FA6F8700B76807 /* WASpeechBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */; };
 		FF878C0813FA730100B76807 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
 		FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
-		FF890C9C14161AA500CD7D1F /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638714161A61004738D3 /* libCrashReporter-iphoneos.a */; };
-		FF890C9D14161AA500CD7D1F /* libCrashReporter-iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638914161A61004738D3 /* libCrashReporter-iphonesimulator.a */; };
 		FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */; };
 		FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */; };
 		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
@@ -89,6 +88,7 @@
 		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
 		FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
 		FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */; };
+		FFB9699814177373001E923C /* UIWindow+IRAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB9699714177373001E923C /* UIWindow+IRAdditions.m */; };
 		FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
 		FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
@@ -133,20 +133,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 058812B91040582D009128FB;
 			remoteInfo = "CrashReporter-iOS";
-		};
-		FF61638614161A61004738D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 05CD31520EE936A9000FDE88;
-			remoteInfo = "CrashReporter-iOS-Device";
-		};
-		FF61638814161A61004738D3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 05CD31630EE93905000FDE88;
-			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
 		FF61638A14161A61004738D3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -413,6 +399,8 @@
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAttachedMediaListViewController.h; path = "wammer-iOS/WAAttachedMediaListViewController.h"; sourceTree = "<group>"; };
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAttachedMediaListViewController.m; path = "wammer-iOS/WAAttachedMediaListViewController.m"; sourceTree = "<group>"; };
+		FFB9699614177373001E923C /* UIWindow+IRAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIWindow+IRAdditions.h"; path = "wammer-iOS/UIWindow+IRAdditions.h"; sourceTree = "<group>"; };
+		FFB9699714177373001E923C /* UIWindow+IRAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIWindow+IRAdditions.m"; path = "wammer-iOS/UIWindow+IRAdditions.m"; sourceTree = "<group>"; };
 		FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADiscretePaginatedArticlesViewController.h; sourceTree = "<group>"; };
 		FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADiscretePaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
@@ -458,8 +446,7 @@
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
 				FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */,
 				FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */,
-				FF890C9C14161AA500CD7D1F /* libCrashReporter-iphoneos.a in Frameworks */,
-				FF890C9D14161AA500CD7D1F /* libCrashReporter-iphonesimulator.a in Frameworks */,
+				FA3188F91417620100C81D53 /* libCrashReporter-iphoneos.a in Frameworks */,
 				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -528,9 +515,7 @@
 			children = (
 				FF61638114161A61004738D3 /* libCrashReporter-MacOSX-Static.a */,
 				FF61638314161A61004738D3 /* CrashReporter.framework */,
-				FF61638514161A61004738D3 /* CrashReporter.framework */,
-				FF61638714161A61004738D3 /* libCrashReporter-iphoneos.a */,
-				FF61638914161A61004738D3 /* libCrashReporter-iphonesimulator.a */,
+				FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */,
 				FF61638B14161A61004738D3 /* plcrashutil */,
 				FF61638D14161A61004738D3 /* Tests-MacOSX.octest */,
 				FF61638F14161A61004738D3 /* Tests-iOS-Simulator.app */,
@@ -565,6 +550,8 @@
 			children = (
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
+				FFB9699614177373001E923C /* UIWindow+IRAdditions.h */,
+				FFB9699714177373001E923C /* UIWindow+IRAdditions.m */,
 				FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF71D3F3140E09EF0069B161 /* Base Articles View */,
@@ -900,25 +887,11 @@
 			remoteRef = FF61638214161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF61638514161A61004738D3 /* CrashReporter.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CrashReporter.framework;
-			remoteRef = FF61638414161A61004738D3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF61638714161A61004738D3 /* libCrashReporter-iphoneos.a */ = {
+		FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libCrashReporter-iphoneos.a";
-			remoteRef = FF61638614161A61004738D3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF61638914161A61004738D3 /* libCrashReporter-iphonesimulator.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libCrashReporter-iphonesimulator.a";
-			remoteRef = FF61638814161A61004738D3 /* PBXContainerItemProxy */;
+			remoteRef = FF61638414161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF61638B14161A61004738D3 /* plcrashutil */ = {
@@ -1146,6 +1119,7 @@
 				4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */,
 				FFF4EAC91410EFE2007F444B /* WAOverlayBezel.m in Sources */,
 				FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */,
+				FFB9699814177373001E923C /* UIWindow+IRAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1200,7 +1174,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 28;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1230,6 +1204,7 @@
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos4.3;
+				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1243,7 +1218,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 12;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -1266,8 +1241,9 @@
 					"-all_load",
 				);
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "95CDBD7F-FCDF-4E58-8B72-6C03B796D9B4";
 				SDKROOT = iphoneos4.3;
+				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
