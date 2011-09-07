@@ -586,9 +586,6 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
 	[loadingBezel dismiss];
 	
-	if (loadingBezel)
-		NSParameterAssert(loadingBezel && !loadingBezel.window);
-	
 	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 	[errorBezel show];
 	
