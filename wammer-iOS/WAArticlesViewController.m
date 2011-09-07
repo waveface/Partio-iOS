@@ -257,7 +257,7 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
+	//	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 	
 }
 
@@ -283,7 +283,6 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		
 	if (self.updatesViewOnControllerChangeFinish) {
 		if ([self isViewLoaded]) {
-				NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
 			[self reloadViewContents];
 		}
 	}
