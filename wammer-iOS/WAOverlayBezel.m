@@ -133,6 +133,17 @@
 
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	NSLog(@"self.window.irInterfaceBounds %@", NSStringFromCGRect(self.window.irInterfaceBounds));
+
+	self.center = (CGPoint){
+		roundf(CGRectGetMidX(self.window.irInterfaceBounds)),
+		roundf(CGRectGetMidY(self.window.irInterfaceBounds))
+	};
+
+}
+
 - (void) showWithAnimation:(WAOverlayBezelAnimation)anAnimation {
 
 	if (self.window)
@@ -140,14 +151,15 @@
 	
 	UIWindow *window = [UIApplication sharedApplication].keyWindow;
 	[window addSubview:self];
-	self.center = (CGPoint){
-		CGRectGetMidX(window.bounds),
-		CGRectGetMidY(window.bounds)
-	};
+	
+	[window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionNew context:nil];
+	[self observeValueForKeyPath:@"irInterfaceBounds" ofObject:nil change:nil context:nil];
 
 }
 
 - (void) dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation {
+
+	[self.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
 
 	void (^remove)() = ^ {
 		[self removeFromSuperview];
