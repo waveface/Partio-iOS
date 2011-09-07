@@ -733,7 +733,7 @@
 		}]] lastObject];
 
 		if (!returnedViewController)
-			returnedViewController = [WAArticleViewController controllerRepresentingArticle:articleURI];
+			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:([article.fileOrder count] ? WAFullFrameImageStackArticleStyle : WAFullFramePlaintextArticleStyle)];
 			
 		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		

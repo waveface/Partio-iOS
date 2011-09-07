@@ -25,20 +25,22 @@
 #define __WAArticleViewController__
 
 typedef enum {
-    
-	WAArticleViewControllerPresentationStandalone = 0,
-	WAArticleViewControllerPresentationFullFrame,
-	WAArticleViewControllerPresentationDefault = WAArticleViewControllerPresentationStandalone
-    	
+	WAFullFramePlaintextArticleStyle = 0,
+	WAFullFrameImageStackArticleStyle,
+	WADiscretePlaintextArticleStyle,
+	WADiscreteSingleImageArticleStyle
 } WAArticleViewControllerPresentationStyle;
 
 #endif
 
 @interface WAArticleViewController : UIViewController
 
-+ (WAArticleViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
++ (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 
-@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
+@property (nonatomic, readonly, retain) NSURL *representedObjectURI;
+@property (nonatomic, readonly, assign) WAArticleViewControllerPresentationStyle presentationStyle;
+@property (nonatomic, readwrite, copy) void (^onViewTap)();
+@property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
@@ -48,10 +50,5 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
-@property (nonatomic, readwrite, copy) void(^onViewTap)();
-
-@property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
-
-- (NSURL *) representedObjectURI;
 
 @end
