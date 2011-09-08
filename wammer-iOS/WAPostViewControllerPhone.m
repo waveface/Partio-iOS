@@ -17,7 +17,11 @@
 #import "WARemoteInterface.h"
 #import "WAComposeCommentViewControllerPhone.h"
 
+#import "IRShapeView.h"
+#import "IRTableView.h"
+
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
+static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbove";
 
 @interface WAPostViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate>
 
@@ -32,6 +36,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 
 @end
+
 
 @implementation WAPostViewControllerPhone
 @synthesize post, fetchedResultsController, managedObjectContext;
@@ -58,6 +63,40 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
   return self;
+
+}
+
+- (void) loadView {
+
+	self.tableView = [[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	self.view = self.tableView;
+	
+	__block IRTableView *nrTV = ((IRTableView *)self.tableView);
+	nrTV.onLayoutSubviews = ^ {
+		
+		for (UIView *aSubview in nrTV.subviews)
+		if (objc_getAssociatedObject(aSubview, &kWAPostViewCellFloatsAbove) == (id)kCFBooleanTrue) {
+
+			[aSubview.superview bringSubviewToFront:aSubview];
+			
+			for (UIView *aCellSubview in aSubview.subviews) {
+				
+				aCellSubview.hidden = NO;
+			
+				if (CGRectGetHeight(aCellSubview.frame) == 1)
+				if (CGRectGetMaxY(aCellSubview.frame) == CGRectGetHeight(aSubview.bounds)) {
+					aCellSubview.hidden = YES;
+				}
+				
+			}
+			
+		}
+		
+	};
+	
+	self.tableView.delegate = self;
+	self.tableView.dataSource = self;
+
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
@@ -81,6 +120,8 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
       return;
       
     [self.tableView reloadData];
+		[self.tableView layoutSubviews];
+		[self.tableView setNeedsLayout];
     
     NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
     
@@ -151,6 +192,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+		[self.tableView setNeedsLayout];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -168,8 +210,12 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[self.tableView layoutSubviews];
+	[self.tableView setNeedsLayout];
   [super viewWillAppear:animated];
   [self refreshData];
+	[self.tableView layoutSubviews];
+	[self.tableView setNeedsLayout];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -225,19 +271,68 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
       
       WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
       if(!cell) {
-        cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
+			       
+				cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
         cell.imageStackView.delegate = self;
+
+				objc_setAssociatedObject(cell, &kWAPostViewCellFloatsAbove, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+
+				cell.backgroundView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+				cell.clipsToBounds = NO;
+				cell.backgroundView.clipsToBounds = NO;
+				cell.backgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+								
+				[cell.backgroundView addSubview:((^ {
+					
+					static const CGRect triangle = (CGRect){ 0, 0, 16, 12 };
+					IRShapeView *decorativeTriangleView = [[[IRShapeView alloc] initWithFrame:triangle] autorelease];
+					decorativeTriangleView.layer.path = (( ^ {
+						UIBezierPath *path = [UIBezierPath bezierPath];
+						[path moveToPoint:(CGPoint){
+							CGRectGetMidX(triangle),
+							CGRectGetMinY(triangle)
+						}];
+						[path addLineToPoint:(CGPoint){
+							CGRectGetMaxX(triangle),
+							CGRectGetMaxY(triangle)
+						}];
+						[path addLineToPoint:(CGPoint){
+							CGRectGetMinX(triangle),
+							CGRectGetMaxY(triangle)
+						}];
+						[path addLineToPoint:(CGPoint){
+							CGRectGetMidX(triangle),
+							CGRectGetMinY(triangle)
+						}];
+						return path;
+					})()).CGPath;
+					decorativeTriangleView.layer.fillColor = [UIColor whiteColor].CGColor;
+					
+					decorativeTriangleView.frame = (CGRect){
+						(CGPoint){
+							CGRectGetMinX(cell.backgroundView.frame) + 16,
+							CGRectGetMaxY(cell.backgroundView.frame) - CGRectGetHeight(triangle) + 2,
+						},
+						triangle.size
+					};
+					
+					decorativeTriangleView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
+					
+					return decorativeTriangleView;
+					
+				})())];
+				
       }
-      
+			
       NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
       cell.userNicknameLabel.text = post.owner.nickname;
       cell.avatarView.image = post.owner.avatar;
-      cell.contentTextLabel.text = post.text;
+      cell.contentTextView.text = post.text;
       cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                              [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                              [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
       cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-      [cell setCommentCount:[post.comments count]];
+      [cell setCommentCount:0];
       
       if (cell.imageStackView)
         objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -427,7 +522,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
   }
   height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
   
-  return height;
+  return MAX(height,100);
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {

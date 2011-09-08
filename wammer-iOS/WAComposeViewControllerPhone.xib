@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
+		<int key="IBDocument.SystemTarget">1072</int>
 		<string key="IBDocument.SystemVersion">11B26</string>
 		<string key="IBDocument.InterfaceBuilderVersion">1934</string>
 		<string key="IBDocument.AppKitVersion">1138</string>
@@ -52,6 +52,7 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{320, 372}</string>
 								<reference key="NSSuperview" ref="47957778"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="322335691"/>
 								<string key="NSReuseIdentifierKey">_NS:613</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
@@ -91,6 +92,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 										<int key="NSvFlags">292</int>
 										<string key="NSFrame">{{12, 7}, {29, 31}}</string>
 										<reference key="NSSuperview" ref="322335691"/>
+										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:222</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -127,6 +129,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 								</object>
 								<string key="NSFrame">{{0, 372}, {320, 44}}</string>
 								<reference key="NSSuperview" ref="47957778"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="907830666"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="740223755">
@@ -148,6 +151,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						</object>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="299358764"/>
 						<string key="NSReuseIdentifierKey">_NS:180</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -162,6 +166,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				</object>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="47957778"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -175,7 +180,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUIView" id="215708612">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">258</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -184,7 +189,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{20, 10}, {80, 24}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="267765065"/>
 						<string key="NSReuseIdentifierKey">_NS:222</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="707999970">
@@ -211,8 +215,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{140, 10}, {80, 24}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:222</string>
 						<reference key="IBUIBackgroundColor" ref="707999970"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -231,8 +233,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 					</object>
 				</object>
 				<string key="NSFrameSize">{240, 44}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="530427165"/>
 				<string key="NSReuseIdentifierKey">_NS:180</string>
 				<reference key="IBUIBackgroundColor" ref="740223755"/>
@@ -274,6 +274,14 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<reference key="destination" ref="215708612"/>
 					</object>
 					<int key="connectionID">23</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="299358764"/>
+						<reference key="destination" ref="372490531"/>
+					</object>
+					<int key="connectionID">27</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -448,11 +456,121 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">26</int>
+			<int key="maxID">27</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">IRTransparentToolbar</string>
+					<string key="superclassName">UIToolbar</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/IRTransparentToolbar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WAComposeViewControllerPhone</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>handleAttachmentAddFromCameraItemTap:</string>
+							<string>handleAttachmentAddFromPhotosLibraryItemTap:</string>
+							<string>handleCameraItemTap:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>handleAttachmentAddFromCameraItemTap:</string>
+							<string>handleAttachmentAddFromPhotosLibraryItemTap:</string>
+							<string>handleCameraItemTap:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">handleAttachmentAddFromCameraItemTap:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">handleAttachmentAddFromPhotosLibraryItemTap:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">handleCameraItemTap:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>attachmentsListViewControllerHeaderView</string>
+							<string>contentContainerView</string>
+							<string>contentTextView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIView</string>
+							<string>UIView</string>
+							<string>UITextView</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>attachmentsListViewControllerHeaderView</string>
+							<string>contentContainerView</string>
+							<string>contentTextView</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">attachmentsListViewControllerHeaderView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">contentContainerView</string>
+								<string key="candidateClassName">UIView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">contentTextView</string>
+								<string key="candidateClassName">UITextView</string>
+							</object>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WAComposeViewControllerPhone.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WAView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WAView.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1072" key="NS.object.0"/>
+		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
 			<integer value="3000" key="NS.object.0"/>

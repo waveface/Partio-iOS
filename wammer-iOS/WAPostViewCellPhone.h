@@ -31,6 +31,7 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *contentTextLabel;
+@property (retain, nonatomic) IBOutlet UITextView *contentTextView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
