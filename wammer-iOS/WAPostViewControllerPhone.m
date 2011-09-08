@@ -237,7 +237,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
                              [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                              [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
       cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-      [cell setCommentCount:[post.comments count]];
+      [cell setCommentCount:0];
       
       if (cell.imageStackView)
         objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -427,7 +427,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
   }
   height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
   
-  return height;
+  return MAX(height,100);
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
