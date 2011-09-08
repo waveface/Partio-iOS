@@ -274,6 +274,13 @@
 			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
 			remoteInfo = IRDiscreteLayoutManager;
 		};
+		FFEAC69614196F2F00A25517 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 05CD31620EE93905000FDE88;
+			remoteInfo = "CrashReporter-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -815,6 +822,7 @@
 				FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FC13D6DDE800D54EC6 /* PBXTargetDependency */,
+				FFEAC69714196F2F00A25517 /* PBXTargetDependency */,
 			);
 			name = wammer2;
 			productName = "wammer-iOS";
@@ -1151,6 +1159,11 @@
 			isa = PBXTargetDependency;
 			name = IRDiscreteLayoutManager;
 			targetProxy = FFBA66EE140E12B600BE5A1D /* PBXContainerItemProxy */;
+		};
+		FFEAC69714196F2F00A25517 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CrashReporter-iOS";
+			targetProxy = FFEAC69614196F2F00A25517 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
