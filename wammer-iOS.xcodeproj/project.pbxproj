@@ -1190,12 +1190,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
-					"$(SDKROOT)/usr/include/libxml2/**",
-					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
-					"$(PROJECT_DIR)/external/AQGridView/**",
-					"$(PROJECT_DIR)/external/IRKeychain/**",
-					"$(PROJECT_DIR)/external/IRDiscreteLayoutManager/**",
-					"$(PROJECT_DIR)/external/PLCrashReporter/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -1228,12 +1228,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
-					"$(SDKROOT)/usr/include/libxml2/**",
-					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
-					"$(PROJECT_DIR)/external/AQGridView/**",
-					"$(PROJECT_DIR)/external/IRKeychain/**",
-					"$(PROJECT_DIR)/external/IRDiscreteLayoutManager/**",
-					"$(PROJECT_DIR)/external/PLCrashReporter/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
