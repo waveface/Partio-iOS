@@ -16,6 +16,7 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize contentTextView;
 @synthesize commentLabel;
 @synthesize commentBackground;
 @synthesize postViewCellStyle;
@@ -69,6 +70,9 @@
   self.avatarView.layer.cornerRadius = 7.0;
 	self.avatarView.layer.masksToBounds = YES;
     
+  self.contentTextView.contentInset = UIEdgeInsetsMake(-10,-8,0,0);
+  self.contentTextView.textAlignment = UITextAlignmentLeft;
+  
 	return self;
 	
 }
@@ -95,6 +99,7 @@
 	[originLabel release];	
 	[commentLabel release];
 	[commentBackground release];
+    [contentTextView release];
 	[super dealloc];
 	
 }
