@@ -12,7 +12,7 @@
 #import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
-#import "UIView+WAAdditions.h"
+#import "UIView+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "WARemoteInterface.h"
 
@@ -183,7 +183,7 @@
 		static CGFloat inactiveAccessoryViewHeight = 64.0f;
 		static CGFloat activeAccessoryViewHeight = 128.0f;
 		
-		BOOL accessoryViewActive = !![nrCompositionAccessoryView waFirstResponderInView];
+		BOOL accessoryViewActive = !![nrCompositionAccessoryView irFirstResponderInView];
 		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
 		
 		CGRect accessoryViewFrame, nullRect;
