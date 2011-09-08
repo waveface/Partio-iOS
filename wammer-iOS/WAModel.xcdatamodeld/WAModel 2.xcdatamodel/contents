@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="562" systemVersion="11B2118" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="WAArticle" representedClassName="WAArticle">
+        <attribute name="creationDeviceName" optional="YES" attributeType="String"/>
+        <attribute name="draft" attributeType="Boolean" defaultValueString="NO"/>
+        <attribute name="fileOrder" optional="YES" attributeType="Transformable"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="article" inverseEntity="WAFile"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="articles" inverseEntity="WAUser"/>
+    </entity>
+    <entity name="WAComment" representedClassName="WAComment">
+        <attribute name="creationDeviceName" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="comments" inverseEntity="WAArticle"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="comments" inverseEntity="WAUser"/>
+    </entity>
+    <entity name="WAFile" representedClassName="WAFile">
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="resourceFilePath" optional="YES" attributeType="String"/>
+        <attribute name="resourceType" optional="YES" attributeType="String"/>
+        <attribute name="resourceURL" optional="YES" attributeType="String"/>
+        <attribute name="text" optional="YES" attributeType="String"/>
+        <attribute name="thumbnail" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer"/>
+        <attribute name="thumbnailFilePath" optional="YES" attributeType="String"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser"/>
+    </entity>
+    <entity name="WAUser" representedClassName="WAUser">
+        <attribute name="avatar" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer"/>
+        <attribute name="avatarURL" optional="YES" attributeType="String"/>
+        <attribute name="email" optional="YES" attributeType="String"/>
+        <attribute name="identifier" optional="YES" attributeType="String"/>
+        <attribute name="nickname" optional="YES" attributeType="String"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="owner" inverseEntity="WAArticle"/>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAComment" inverseName="owner" inverseEntity="WAComment"/>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="owner" inverseEntity="WAFile"/>
+    </entity>
+    <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
+    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
+    <elements>
+        <element name="WAArticle" positionX="-5760" positionY="-1656" width="128" height="180"/>
+        <element name="WAComment" positionX="-5546" positionY="-1656" width="128" height="135"/>
+        <element name="WAFile" positionX="-5976" positionY="-1653" width="128" height="210"/>
+        <element name="WAUser" positionX="-5796" positionY="-1368" width="128" height="165"/>
+    </elements>
+</model>
