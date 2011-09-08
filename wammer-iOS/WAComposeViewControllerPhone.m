@@ -58,14 +58,13 @@
 		
 	self.title = @"Compose";
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(handleDone:)] autorelease];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	return self;
-
 }
 
 
@@ -202,13 +201,13 @@
 	if (self.completionBlock)
 		self.completionBlock([[self.post objectID] URIRepresentation]);
 	
-	[self.navigationController popViewControllerAnimated:YES];
+	[self.parentViewController dismissModalViewControllerAnimated:YES];
     
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
     
-	[self.navigationController popViewControllerAnimated:YES];
+	[self.navigationController dismissModalViewControllerAnimated:YES];
     
 }
 
