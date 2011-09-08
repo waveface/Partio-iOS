@@ -560,6 +560,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			@"WAFile", @"files",
 			@"WAComment", @"comments",
 			@"WAUser", @"owner",
+			@"WAPreview", @"previews",
 		
 		nil] options:IRManagedObjectOptionIndividualOperations];
 		
@@ -620,11 +621,14 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 					@"WAFile", @"files",
 					@"WAComment", @"comments",
 					@"WAUser", @"owner",
+					@"WAPreview", @"previews",
 				
 				nil] options:IRManagedObjectOptionIndividualOperations];
 				
-				for (WAArticle *anArticle in touchedArticles)
-					anArticle.draft = [NSNumber numberWithBool:NO];
+				for (WAArticle *anArticle in touchedArticles) {
+					anArticle.draft = (NSNumber *)kCFBooleanFalse;
+					NSLog(@"article %@, previews %@", anArticle, anArticle.previews);
+				}
 				
 				if (successBlock)
 					successBlock();
