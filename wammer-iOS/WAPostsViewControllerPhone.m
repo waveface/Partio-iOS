@@ -194,6 +194,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.contentTextLabel.text = post.text;
+  cell.contentTextView.text = post.text;
   cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                          [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                          [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
@@ -354,7 +355,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) handleCompose:(UIBarButtonItem *)sender
 {
   
-  WAComposeViewControllerPhone *cvc = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
+  WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
       static dispatch_once_t onceToken;
@@ -365,7 +366,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     
 	}];
   
-  [self.navigationController pushViewController:cvc animated:YES];
+  UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
+  navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+  [self presentModalViewController:navigationController animated:YES];
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
