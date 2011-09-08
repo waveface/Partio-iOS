@@ -93,6 +93,8 @@
 		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
 		FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
 		FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
+		FFDDB4B61418BB5900FE9CE2 /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
+		FFDDB4B91418BB5900FE9CE2 /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B81418BB5900FE9CE2 /* WAOpenGraphElement.m */; };
 		FFE3E8F8141647D600519BCD /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F4141647D600519BCD /* Default-Landscape.png */; };
 		FFE3E8F9141647D600519BCD /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F5141647D600519BCD /* Default-Portrait.png */; };
 		FFE3E8FA141647D600519BCD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F6141647D600519BCD /* Default.png */; };
@@ -402,6 +404,11 @@
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 2.xcdatamodel"; sourceTree = "<group>"; };
+		FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreview.h; sourceTree = "<group>"; };
+		FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreview.m; sourceTree = "<group>"; };
+		FFDDB4B71418BB5900FE9CE2 /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
+		FFDDB4B81418BB5900FE9CE2 /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
 		FFE3E8F4141647D600519BCD /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape.png"; path = "Resources/Default-Landscape.png"; sourceTree = "<group>"; };
 		FFE3E8F5141647D600519BCD /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
 		FFE3E8F6141647D600519BCD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
@@ -696,6 +703,10 @@
 				FF9DA0C313DFF89000D6B28B /* WAArticle.m */,
 				FF9DA0BF13DFF88F00D6B28B /* WAUser.h */,
 				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
+				FFDDB4B71418BB5900FE9CE2 /* WAOpenGraphElement.h */,
+				FFDDB4B81418BB5900FE9CE2 /* WAOpenGraphElement.m */,
+				FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */,
+				FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
 				4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */,
@@ -1108,6 +1119,8 @@
 				4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */,
 				FFF4EAC91410EFE2007F444B /* WAOverlayBezel.m in Sources */,
 				FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */,
+				FFDDB4B61418BB5900FE9CE2 /* WAPreview.m in Sources */,
+				FFDDB4B91418BB5900FE9CE2 /* WAOpenGraphElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1295,9 +1308,10 @@
 		FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */,
 				FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */;
+			currentVersion = FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
