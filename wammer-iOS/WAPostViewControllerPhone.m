@@ -232,7 +232,7 @@ static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPos
       NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
       cell.userNicknameLabel.text = post.owner.nickname;
       cell.avatarView.image = post.owner.avatar;
-      cell.contentTextLabel.text = post.text;
+      cell.contentTextView.text = post.text;
       cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                              [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                              [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
