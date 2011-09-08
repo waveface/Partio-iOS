@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
+@property (nonatomic, retain) NSSet *previews;
 @property (nonatomic, retain) WAUser *owner;
 
 @property (nonatomic, retain) NSArray *fileOrder;

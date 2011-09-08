@@ -25,7 +25,7 @@
 
 #import "WAUserSelectionViewController.h"
 
-#import "UIView+WAAdditions.h"
+#import "UIView+IRAdditions.h"
 
 
 @interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate, WAArticleViewControllerPresenting>
@@ -438,7 +438,7 @@
 	
 	
 	if (!showingDetailedComments)	
-		[[self.articleCommentsViewController.view waFirstResponderInView] resignFirstResponder];
+		[[self.articleCommentsViewController.view irFirstResponderInView] resignFirstResponder];
 	
 }
 

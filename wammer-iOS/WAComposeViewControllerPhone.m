@@ -13,7 +13,7 @@
 #import "WAAttachedMediaListViewController.h"
 
 
-@interface WAComposeViewControllerPhone ()
+@interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAArticle *post;
@@ -58,14 +58,15 @@
 		
 	self.title = @"Compose";
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(handleDone:)] autorelease];
+  
+  self.navigationItem.rightBarButtonItem.enabled = false;
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 
-	return self;
-
+ 	return self;
 }
 
 
@@ -193,7 +194,7 @@
 	//	In that sense just don’t do anything.
 
 	//	TBD save a draft
-	self.post.text = self.contentTextView.text;
+  self.post.text = self.contentTextView.text;
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
@@ -202,19 +203,15 @@
 	if (self.completionBlock)
 		self.completionBlock([[self.post objectID] URIRepresentation]);
 	
-	[self.navigationController popViewControllerAnimated:YES];
+	[self.parentViewController dismissModalViewControllerAnimated:YES];
     
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
     
-	[self.navigationController popViewControllerAnimated:YES];
+	[self.navigationController dismissModalViewControllerAnimated:YES];
     
 }
-
-
-
-
 
 - (void) handleKeyboardNotification:(NSNotification *)aNotification {
 
@@ -226,6 +223,11 @@
 	
 	self.contentContainerView.frame = usableRect;
 
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+  self.navigationItem.rightBarButtonItem.enabled = self.contentTextView.hasText;
+  NSLog(@"textViewD");
 }
 
 #pragma mark - View lifecycle

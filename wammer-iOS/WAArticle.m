@@ -19,6 +19,7 @@
 @dynamic timestamp;
 @dynamic comments;
 @dynamic files;
+@dynamic previews;
 @dynamic owner;
 @dynamic fileOrder;
 @dynamic draft;
@@ -50,6 +51,7 @@
 			@"timestamp", @"timestamp",
 			@"files", @"files",
 			@"comments", @"comments",
+			@"previews", @"previews",
 			@"owner", @"owner",
 			//	@"creator_id" this needs transforming
 		nil];
