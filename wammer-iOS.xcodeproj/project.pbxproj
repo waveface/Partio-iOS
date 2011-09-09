@@ -521,7 +521,7 @@
 			children = (
 				FF61638114161A61004738D3 /* libCrashReporter-MacOSX-Static.a */,
 				FF61638314161A61004738D3 /* CrashReporter.framework */,
-				FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */,
+				FF61638514161A61004738D3 /* libCrashReporter-iOS.a */,
 				FF61638B14161A61004738D3 /* plcrashutil */,
 				FF61638D14161A61004738D3 /* Tests-MacOSX.octest */,
 				FF61638F14161A61004738D3 /* Tests-iOS-Simulator.app */,
@@ -896,7 +896,7 @@
 			remoteRef = FF61638214161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */ = {
+		FF61638514161A61004738D3 /* libCrashReporter-iOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = "libCrashReporter-iOS.a";
