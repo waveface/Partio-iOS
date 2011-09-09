@@ -82,7 +82,7 @@
 
 	NSParameterAssert(!self.editing);
 	
-	WAArticle *newArticle = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:newURI];
+	WAArticle *newArticle = newURI ? (WAArticle *)[self.managedObjectContext irManagedObjectForURI:newURI] : nil;
 	
 	if ([newArticle isEqual:self.article])
 		return;
