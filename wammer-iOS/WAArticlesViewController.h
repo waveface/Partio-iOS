@@ -15,7 +15,11 @@
 @property (nonatomic, readonly, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
 
+- (void) setNeedsRefresh;
+- (BOOL) needsRefresh;
+- (void) refreshDataIfNeeded;
 - (void) refreshData;
+
 - (void) reloadViewContents;
 
 - (NSURL *) representedObjectURIForInterfaceItem:(UIView *)aView;

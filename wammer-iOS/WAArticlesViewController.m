@@ -29,13 +29,18 @@
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
+@property (nonatomic, readwrite, assign) BOOL needsRefresh;
+@property (nonatomic, readwrite, retain) NSDate *lastRefreshDate;
+@property (nonatomic, readwrite, assign) NSTimeInterval refreshInterval;
+
 @end
 
 
 @implementation WAArticlesViewController
 @synthesize delegate, fetchedResultsController, managedObjectContext;
 @synthesize debugActionSheetController;
-@synthesize updatesViewOnControllerChangeFinish;
+@synthesize updatesViewOnControllerChangeFinish; 
+@synthesize needsRefresh, lastRefreshDate, refreshInterval;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -135,6 +140,10 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
+	self.needsRefresh = YES;
+	self.lastRefreshDate = nil;
+	self.refreshInterval = 10;
+		
 	return self;
 
 }
@@ -162,6 +171,8 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
+	
+	[lastRefreshDate release];
 
 	[super dealloc];
 
@@ -182,14 +193,8 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-	
 	[self reloadViewContents];
-	
-	double delayInSeconds = 2.0;
-dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [self refreshData];
-});
+	[self setNeedsRefresh];
 
 }
 
@@ -210,13 +215,45 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
 }
 
+- (void) setNeedsRefresh {
+
+	self.needsRefresh = YES;
+	
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshData) object:nil];
+	
+	NSTimeInterval delta = self.lastRefreshDate ? [[NSDate date] timeIntervalSinceDate:[self.lastRefreshDate dateByAddingTimeInterval:self.refreshInterval]] : self.refreshInterval;
+	
+	NSLog(@"%@ Needs refresh, in %f seconds.", self, delta);
+
+	if (delta > 0) {
+		[self performSelector:@selector(refreshData) withObject:nil afterDelay:delta];
+	} else if ((delta + self.refreshInterval) > 0) {
+		NSLog(@"Refresh in %f seconds.", (delta + self.refreshInterval));
+		[self performSelector:@selector(refreshData) withObject:nil afterDelay:(delta + self.refreshInterval)];
+	} else {
+		NSLog(@"Refresh now.");
+		[self refreshData];
+	}
+	
+}
+
+- (void) refreshDataIfNeeded {
+
+	if ([self needsRefresh])
+		[self refreshData];
+
+}
+
 - (void) refreshData {
 
-	dispatch_async(dispatch_get_main_queue(), ^ {
-		
-		[self remoteDataLoadingWillBegin];
-		
-	});
+	NSLog(@"%@ Refreshing.", self);
+
+	NSParameterAssert([NSThread isMainThread]);
+	
+	self.needsRefresh = NO;
+	self.lastRefreshDate = [NSDate date];
+	
+	[self remoteDataLoadingWillBegin];
 	
 	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
