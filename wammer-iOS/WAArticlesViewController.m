@@ -52,7 +52,7 @@
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
-		
+				
 		return returnedRequest;
 	
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
@@ -149,7 +149,6 @@
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		
 			
 	});
 
@@ -182,14 +181,8 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-	
-	[self reloadViewContents];
-	
-	double delayInSeconds = 2.0;
-dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [self refreshData];
-});
+	[self reloadViewContents];	
+	[self refreshData];
 
 }
 
@@ -212,23 +205,25 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 
 - (void) refreshData {
 
-	dispatch_async(dispatch_get_main_queue(), ^ {
-		
-		[self remoteDataLoadingWillBegin];
-		
-	});
+	__block __typeof__(self) nrSelf = self;
+	
+	[nrSelf retain];
+
+	NSParameterAssert([NSThread isMainThread]);
+	[nrSelf remoteDataLoadingWillBegin];
 	
 	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
 		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				if ([nrSelf isViewLoaded])
+				if (nrSelf.view.window)
+					[nrSelf reloadViewContents];
 				
-				if ([self isViewLoaded])
-				if (self.view.window)
-					[self reloadViewContents];
-				
-				[self remoteDataLoadingDidEnd];
+				[nrSelf remoteDataLoadingDidEnd];
+				[nrSelf autorelease];
 				
 			});	
 			
@@ -236,7 +231,8 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+				[nrSelf remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+				[nrSelf autorelease];
 				
 			});
 			
@@ -247,6 +243,8 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+
+			[self autorelease];
 			
 		});
 		
@@ -282,6 +280,7 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 		
 	if (self.updatesViewOnControllerChangeFinish) {
+	
 		if ([self isViewLoaded]) {
 			[self reloadViewContents];
 		}
@@ -377,6 +376,18 @@ dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 }
 
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
+
+}
+
+
+
+
+
+- (void) didReceiveMemoryWarning {
+
+	[self retain];
+	[super didReceiveMemoryWarning];
+	[self release];
 
 }
 

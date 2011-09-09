@@ -12,6 +12,9 @@
 #import "WAImageStackView.h"
 #import "WAGalleryViewController.h"
 #import "IRRelativeDateFormatter.h"
+#import "IRPaginatedView.h"
+
+#import "WAPaginatedArticlesViewController.h"
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate, WAImageStackViewDelegate>
 
@@ -83,6 +86,8 @@
 	if (savedContext == self.managedObjectContext)
 		return;
 	
+	[self retain];
+	
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
@@ -91,6 +96,8 @@
 		if ([self isViewLoaded])
 			[self refreshView];
 	
+		[self autorelease];
+
 	});
 
 }
@@ -139,7 +146,6 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	
 	self.avatarView.layer.cornerRadius = 4.0f;
@@ -542,11 +548,15 @@
 				aStackView.firstPhotoView.alpha = 1.0f;
 				
 				__block WAGalleryViewController *galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:articleURI];
+				__block __typeof__(self) nrSelf = self;
 				galleryViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 				galleryViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 				
 				galleryViewController.onDismiss = ^ {
-					
+				
+					[nrSelf view];
+					NSParameterAssert(imageStackView == [nrSelf imageStackView]);
+
 					NSParameterAssert(![UIApplication sharedApplication].statusBarHidden);
 					
 					NSArray *originalImages = [[imageStackView.images retain] autorelease];
@@ -564,13 +574,21 @@
 						[tempImages removeObject:currentImage];
 						[tempImages insertObject:currentImage atIndex:0];
 					}
+										
+					UINavigationController *parentVC = (UINavigationController *)galleryViewController.parentViewController;
+					[galleryViewController dismissModalViewControllerAnimated:NO];
 					
-					[imageStackView setImages:tempImages asynchronously:YES withDecodingCompletion: ^ {
+					//	Nav controller will NOT update its view until necessary
+					[parentVC.view setNeedsLayout];
+					[parentVC.view layoutIfNeeded];
+					[parentVC.topViewController.view setNeedsLayout];
+					[parentVC.topViewController.view layoutIfNeeded];
 					
-						[galleryViewController dismissModalViewControllerAnimated:NO];
+					NSParameterAssert(imageStackView.window);
+					
+					[imageStackView setImages:tempImages asynchronously:NO withDecodingCompletion: ^ {
 						
-						if (!imageStackView.window)
-							NSLog(@"Warning: the image stack view %@ does not have a window.", imageStackView);
+						NSParameterAssert(imageStackView.firstPhotoView);
 						
 						imageStackView.firstPhotoView.alpha = 0.0f;
 						
@@ -578,7 +596,7 @@
 						NSParameterAssert(rootView);
 						backdropView.frame = rootView.bounds;
 						
-						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:imageStackView.firstPhotoView.frame fromView:aStackView]] autorelease];
+						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:imageStackView.firstPhotoView.frame fromView:imageStackView]] autorelease];
 						NSParameterAssert(fauxView);
 						fauxView.layer.contents = (id)currentImage.CGImage;
 						fauxView.layer.transform = imageStackView.firstPhotoView.layer.transform;

@@ -11,6 +11,8 @@
 #import "WAUser.h"
 #import "WAOpenGraphElement.h"
 
+#import "WADataStore.h"
+
 
 @implementation WAPreview
 
@@ -45,6 +47,8 @@
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 			@"identifier", @"id",
 			@"htmlSynopsis", @"soul",
+			@"timestamp", @"timestamp",
+			@"text", @"text",
 		nil];
 		
 		[mapping retain];
@@ -52,6 +56,15 @@
 	});
 
 	return mapping;
+
+}
+
++ (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
+
+	if ([aLocalKeyPath isEqualToString:@"timestamp"])
+		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
+	
+	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
 }
 

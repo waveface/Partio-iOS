@@ -19,6 +19,8 @@
 - (void) reloadViewContents;
 
 - (NSURL *) representedObjectURIForInterfaceItem:(UIView *)aView;
+- (UIView *) interfaceItemForRepresentedObjectURI:(NSURL *)anURI createIfNecessary:(BOOL)createsOffsecreenItemIfNecessary;	//	 Might return nil if the item is not there
+
 
 //	Overriding points for introducing additional user interface notifications
 - (void) remoteDataLoadingWillBegin;
