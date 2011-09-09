@@ -226,6 +226,18 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 
+	//	I am not sure if mutating the context is all well, though
+
+	self.context = ((^ {
+		
+		NSMutableDictionary *mutatedContext = [[self.context mutableCopy] autorelease];
+		NSURL *objectURL = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:self.paginatedView.currentPage] objectID] URIRepresentation];
+		[mutatedContext setObject:objectURL forKey:@"lastVisitedObjectURI"];
+		
+		return mutatedContext;
+		
+	})());
+	
 	[super viewWillDisappear:animated];
 	
 	[self.articleCommentsViewController viewWillDisappear:animated];
