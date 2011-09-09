@@ -17,7 +17,7 @@
 		4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
 		4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
-		FA3188F91417620100C81D53 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */; };
+		FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iOS.a */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
 		FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */; };
 		FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */; };
@@ -454,7 +454,7 @@
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
 				FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */,
 				FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */,
-				FA3188F91417620100C81D53 /* libCrashReporter-iphoneos.a in Frameworks */,
+				FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */,
 				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -899,7 +899,7 @@
 		FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libCrashReporter-iphoneos.a";
+			path = "libCrashReporter-iOS.a";
 			remoteRef = FF61638414161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
