@@ -17,7 +17,7 @@
 		4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
 		4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
-		FA3188F91417620100C81D53 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */; };
+		FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iOS.a */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
 		FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */; };
 		FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */; };
@@ -274,6 +274,13 @@
 			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
 			remoteInfo = IRDiscreteLayoutManager;
 		};
+		FFEAC69614196F2F00A25517 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 05CD31620EE93905000FDE88;
+			remoteInfo = "CrashReporter-iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -397,6 +404,7 @@
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAttachedMediaListViewController.h; path = "wammer-iOS/WAAttachedMediaListViewController.h"; sourceTree = "<group>"; };
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAttachedMediaListViewController.m; path = "wammer-iOS/WAAttachedMediaListViewController.m"; sourceTree = "<group>"; };
+		FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADiscretePaginatedArticlesViewController.h; sourceTree = "<group>"; };
 		FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADiscretePaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
@@ -447,7 +455,7 @@
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
 				FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */,
 				FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */,
-				FA3188F91417620100C81D53 /* libCrashReporter-iphoneos.a in Frameworks */,
+				FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */,
 				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -514,7 +522,7 @@
 			children = (
 				FF61638114161A61004738D3 /* libCrashReporter-MacOSX-Static.a */,
 				FF61638314161A61004738D3 /* CrashReporter.framework */,
-				FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */,
+				FF61638514161A61004738D3 /* libCrashReporter-iOS.a */,
 				FF61638B14161A61004738D3 /* plcrashutil */,
 				FF61638D14161A61004738D3 /* Tests-MacOSX.octest */,
 				FF61638F14161A61004738D3 /* Tests-iOS-Simulator.app */,
@@ -815,6 +823,7 @@
 				FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */,
 				FF73A5FC13D6DDE800D54EC6 /* PBXTargetDependency */,
+				FFEAC69714196F2F00A25517 /* PBXTargetDependency */,
 			);
 			name = wammer2;
 			productName = "wammer-iOS";
@@ -888,10 +897,10 @@
 			remoteRef = FF61638214161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF61638514161A61004738D3 /* libCrashReporter-iphoneos.a */ = {
+		FF61638514161A61004738D3 /* libCrashReporter-iOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = "libCrashReporter-iphoneos.a";
+			path = "libCrashReporter-iOS.a";
 			remoteRef = FF61638414161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1152,6 +1161,11 @@
 			name = IRDiscreteLayoutManager;
 			targetProxy = FFBA66EE140E12B600BE5A1D /* PBXContainerItemProxy */;
 		};
+		FFEAC69714196F2F00A25517 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CrashReporter-iOS";
+			targetProxy = FFEAC69614196F2F00A25517 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1190,12 +1204,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
-					"$(SDKROOT)/usr/include/libxml2/**",
-					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
-					"$(PROJECT_DIR)/external/AQGridView/**",
-					"$(PROJECT_DIR)/external/IRKeychain/**",
-					"$(PROJECT_DIR)/external/IRDiscreteLayoutManager/**",
-					"$(PROJECT_DIR)/external/PLCrashReporter/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -1228,12 +1242,12 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(PROJECT_DIR)/external/IRFoundations\"/**",
-					"$(SDKROOT)/usr/include/libxml2/**",
-					"$(PROJECT_DIR)/external/IRWebAPIKit/**",
-					"$(PROJECT_DIR)/external/AQGridView/**",
-					"$(PROJECT_DIR)/external/IRKeychain/**",
-					"$(PROJECT_DIR)/external/IRDiscreteLayoutManager/**",
-					"$(PROJECT_DIR)/external/PLCrashReporter/**",
+					"\"$(SDKROOT)/usr/include/libxml2\"/**",
+					"\"$(PROJECT_DIR)/external/IRWebAPIKit\"/**",
+					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
+					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
+					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1308,10 +1322,11 @@
 		FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */,
 				FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */,
 				FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */;
+			currentVersion = FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

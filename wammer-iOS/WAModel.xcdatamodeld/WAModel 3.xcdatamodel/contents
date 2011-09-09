@@ -42,7 +42,6 @@
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="preview" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAPreview" inverseName="graphElement" inverseEntity="WAPreview" syncable="YES"/>
     </entity>
     <entity name="WAPreview" representedClassName="WAPreview" syncable="YES">
         <attribute name="htmlSynopsis" optional="YES" attributeType="String" syncable="YES"/>
@@ -50,7 +49,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="previews" inverseEntity="WAArticle" syncable="YES"/>
-        <relationship name="graphElement" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="WAOpenGraphElement" inverseName="preview" inverseEntity="WAOpenGraphElement" syncable="YES"/>
+        <relationship name="graphElement" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="WAOpenGraphElement" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="previews" inverseEntity="WAUser" syncable="YES"/>
     </entity>
     <entity name="WAUser" representedClassName="WAUser">
@@ -70,7 +69,7 @@
         <element name="WAArticle" positionX="72" positionY="0" width="128" height="195"/>
         <element name="WAComment" positionX="286" positionY="144" width="128" height="135"/>
         <element name="WAFile" positionX="-146" positionY="-36" width="128" height="210"/>
-        <element name="WAOpenGraphElement" positionX="-360" positionY="216" width="128" height="180"/>
+        <element name="WAOpenGraphElement" positionX="-360" positionY="216" width="128" height="150"/>
         <element name="WAPreview" positionX="-144" positionY="252" width="128" height="150"/>
         <element name="WAUser" positionX="106" positionY="324" width="128" height="165"/>
     </elements>

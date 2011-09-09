@@ -103,16 +103,27 @@
 		
 	};
 	
-	[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-		if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-			[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-				[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
+	
+	//	UIApplication+CrashReporter shall only be used on a real device for now
+	
+	if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
+	
+		initializeInterface();
+	
+	} else {
+	
+		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
+			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
+				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
+					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
+					initializeInterface();
+				}];
+			} else {
 				initializeInterface();
-			}];
-		} else {
-			initializeInterface();
-		}
-	}];
+			}
+		}];
+	
+	}
 		
 	return YES;
 	
