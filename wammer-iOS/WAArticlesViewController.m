@@ -29,18 +29,13 @@
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
-@property (nonatomic, readwrite, assign) BOOL needsRefresh;
-@property (nonatomic, readwrite, retain) NSDate *lastRefreshDate;
-@property (nonatomic, readwrite, assign) NSTimeInterval refreshInterval;
-
 @end
 
 
 @implementation WAArticlesViewController
 @synthesize delegate, fetchedResultsController, managedObjectContext;
 @synthesize debugActionSheetController;
-@synthesize updatesViewOnControllerChangeFinish; 
-@synthesize needsRefresh, lastRefreshDate, refreshInterval;
+@synthesize updatesViewOnControllerChangeFinish;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -57,7 +52,7 @@
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
-		
+				
 		return returnedRequest;
 	
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
@@ -140,10 +135,6 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
-	self.needsRefresh = YES;
-	self.lastRefreshDate = nil;
-	self.refreshInterval = 10;
-		
 	return self;
 
 }
@@ -158,7 +149,6 @@
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		
 			
 	});
 
@@ -171,8 +161,6 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
-	
-	[lastRefreshDate release];
 
 	[super dealloc];
 
@@ -193,8 +181,8 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-	[self reloadViewContents];
-	[self setNeedsRefresh];
+	[self reloadViewContents];	
+	[self refreshData];
 
 }
 
@@ -215,57 +203,27 @@
 
 }
 
-- (void) setNeedsRefresh {
-
-	self.needsRefresh = YES;
-	
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(refreshData) object:nil];
-	
-	NSTimeInterval delta = self.lastRefreshDate ? [[NSDate date] timeIntervalSinceDate:[self.lastRefreshDate dateByAddingTimeInterval:self.refreshInterval]] : self.refreshInterval;
-	
-	NSLog(@"%@ Needs refresh, in %f seconds.", self, delta);
-
-	if (delta > 0) {
-		[self performSelector:@selector(refreshData) withObject:nil afterDelay:delta];
-	} else if ((delta + self.refreshInterval) > 0) {
-		NSLog(@"Refresh in %f seconds.", (delta + self.refreshInterval));
-		[self performSelector:@selector(refreshData) withObject:nil afterDelay:(delta + self.refreshInterval)];
-	} else {
-		NSLog(@"Refresh now.");
-		[self refreshData];
-	}
-	
-}
-
-- (void) refreshDataIfNeeded {
-
-	if ([self needsRefresh])
-		[self refreshData];
-
-}
-
 - (void) refreshData {
 
-	NSLog(@"%@ Refreshing.", self);
+	__block __typeof__(self) nrSelf = self;
+	
+	[nrSelf retain];
 
 	NSParameterAssert([NSThread isMainThread]);
-	
-	self.needsRefresh = NO;
-	self.lastRefreshDate = [NSDate date];
-	
-	[self remoteDataLoadingWillBegin];
+	[nrSelf remoteDataLoadingWillBegin];
 	
 	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
 		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				if ([nrSelf isViewLoaded])
+				if (nrSelf.view.window)
+					[nrSelf reloadViewContents];
 				
-				if ([self isViewLoaded])
-				if (self.view.window)
-					[self reloadViewContents];
-				
-				[self remoteDataLoadingDidEnd];
+				[nrSelf remoteDataLoadingDidEnd];
+				[nrSelf autorelease];
 				
 			});	
 			
@@ -273,7 +231,8 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+				[nrSelf remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+				[nrSelf autorelease];
 				
 			});
 			
@@ -284,6 +243,8 @@
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
+
+			[self autorelease];
 			
 		});
 		
@@ -319,6 +280,7 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 		
 	if (self.updatesViewOnControllerChangeFinish) {
+	
 		if ([self isViewLoaded]) {
 			[self reloadViewContents];
 		}
@@ -414,6 +376,18 @@
 }
 
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
+
+}
+
+
+
+
+
+- (void) didReceiveMemoryWarning {
+
+	[self retain];
+	[super didReceiveMemoryWarning];
+	[self release];
 
 }
 

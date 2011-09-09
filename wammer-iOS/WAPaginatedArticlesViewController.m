@@ -71,16 +71,9 @@
 
 - (void) dealloc {
 
-	if (![NSThread isMainThread]) {
-		__block __typeof__(self) nrSelf = self;
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[nrSelf dealloc];
-		});
-		return;
-	}
+	NSParameterAssert([NSThread isMainThread]);
 
 	[paginatedView removeObserver:self forKeyPath:@"currentPage"];
-	
 	[paginatedView release];
 	
 	[coachmarkView release];
@@ -169,10 +162,13 @@
 	[self.paginatedView removeObserver:self forKeyPath:@"currentPage"];
 	
 	self.paginatedView = nil;
-	
 	self.coachmarkView = nil;
 	self.paginationSlider = nil;
-	self.articleViewControllers = nil;
+	
+	//	Don’t throw them away.
+	//	Just keep them.
+	//	self.articleViewControllers = nil;
+	
 	self.articleCommentsDismissalButton = nil;
 	self.articleCommentsViewController = nil;
 	
@@ -225,8 +221,6 @@
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-
-	//	I am not sure if mutating the context is all well, though
 
 	self.context = ((^ {
 		
@@ -736,15 +730,19 @@
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
 	
 		NSURL *articleURI = [[article objectID] URIRepresentation];
-	
+		
 		WAArticleViewController *returnedViewController = [[oldArticleViewControllers objectsAtIndexes:[oldArticleViewControllers indexesOfObjectsPassingTest: ^ (WAArticleViewController *articleViewController, NSUInteger idx, BOOL *stop) {
 		
-			return [[articleViewController representedObjectURI] isEqual:articleURI];
+			return [[[articleViewController representedObjectURI] absoluteString] isEqual:[articleURI absoluteString]];
 			
 		}]] lastObject];
 
-		if (!returnedViewController)
+		if (!returnedViewController) {
+			
 			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:([article.fileOrder count] ? WAFullFrameImageStackArticleStyle : WAFullFramePlaintextArticleStyle)];
+			NSParameterAssert([[returnedViewController.representedObjectURI absoluteString] isEqualToString:[articleURI absoluteString]]);
+				
+		}
 			
 		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		
@@ -756,16 +754,16 @@
 		return returnedViewController;
 		
 	}];
+		
 	
-	
-	if ([self.articleViewControllers isEqualToArray:oldArticleViewControllers])
-		return;
+	[self.paginatedView reloadViews];
+
+	//	if ([self.articleViewControllers isEqualToArray:oldArticleViewControllers])
+	//		return;
 	
 	//	NSUInteger lastCurrentPageIndex = self.paginatedView.currentPage;
 	NSUInteger lastNumberOfPages = self.paginatedView.numberOfPages;
-	
-	[self.paginatedView reloadViews];
-	
+		
 	NSUInteger numberOfFetchedObjects = [[self.fetchedResultsController fetchedObjects] count];
 	self.coachmarkView.hidden = (numberOfFetchedObjects > 0);
 	self.paginationSlider.hidden = (numberOfFetchedObjects == 0); 
