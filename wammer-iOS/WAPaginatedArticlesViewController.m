@@ -744,7 +744,11 @@
 
 		if (!returnedViewController) {
 			
-			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:([article.fileOrder count] ? WAFullFrameImageStackArticleStyle : WAFullFramePlaintextArticleStyle)];
+			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:(
+				[article.fileOrder count] ? WAFullFrameImageStackArticleStyle :
+				[article.previews count] ? WAFullFramePreviewArticleStyle : 
+				WAFullFramePlaintextArticleStyle
+			)];
 			NSParameterAssert([[returnedViewController.representedObjectURI absoluteString] isEqualToString:[articleURI absoluteString]]);
 				
 		}
