@@ -193,7 +193,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
-  cell.contentTextLabel.text = post.text;
   cell.contentTextView.text = post.text;
   cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                          [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
@@ -241,7 +240,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                  lineBreakMode:UILineBreakModeWordWrap].height;
   
   if( [post.files count ] > 0)
-    height += 170;
+    height += 180;
   
   if( [post.comments count] > 0)
     height += 40; 
