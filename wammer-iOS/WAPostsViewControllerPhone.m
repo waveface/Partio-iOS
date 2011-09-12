@@ -180,10 +180,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
+  BOOL postHasPreview = (BOOL)!![post.previews count];
   
   NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
   
   WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+  style = postHasPreview ? WAPostViewCellStyleImageStack: style;
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
@@ -200,6 +202,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
   [cell setCommentCount:[post.comments count]];
   
+  if(postHasPreview){
+    NSEnumerator *enumerator = [post.previews objectEnumerator];
+    WAPreview *preview = (WAPreview *)[enumerator nextObject];
+    cell.contentTextView.text = preview.htmlSynopsis;
+  }
+    
+    
+    
   if (cell.imageStackView)
     objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
