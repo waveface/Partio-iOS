@@ -7,12 +7,13 @@
 //
 
 #import "WAArticleTextEmphasisLabel.h"
+#import "IRLabel.h"
 
 
-@interface WAArticleTextEmphasisLabel ()
+@interface WAArticleTextEmphasisLabel () <UIWebViewDelegate>
 
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *textView;
-@property (nonatomic, readwrite, retain) IBOutlet UILabel *label;
+@property (nonatomic, readwrite, retain) IBOutlet IRLabel *label;
 
 - (void) waInitialize;
 
@@ -20,7 +21,7 @@
 
 
 @implementation WAArticleTextEmphasisLabel
-@synthesize textView, label, backgroundView;
+@synthesize textView, label, backgroundView, font;
 
 - (id) initWithFrame:(CGRect)aFrame {
 
@@ -43,32 +44,20 @@
 }
 
 - (void) waInitialize {
+
+
+	self.font = [UIFont systemFontOfSize:20.0f];
 		
-	self.label = [[[UILabel alloc] initWithFrame:self.bounds] autorelease];	
+	self.label = [[[IRLabel alloc] initWithFrame:self.bounds] autorelease];	
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.label.font = [UIFont systemFontOfSize:16.0f];
+	self.label.font = self.font;
 	self.label.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
 	self.label.numberOfLines = 0;
-	self.label.lineBreakMode = UILineBreakModeWordWrap;
+	self.label.lineBreakMode = UILineBreakModeTailTruncation;
 	self.label.opaque = NO;
 	self.label.backgroundColor = nil;
+	self.label.userInteractionEnabled = YES;
 	[self addSubview:self.label];
-	
-	//	self.textView = [[[UITextView alloc] initWithFrame:self.bounds] autorelease];
-	self.textView.editable = NO;
-	self.textView.scrollEnabled = NO;
-	self.textView.contentInset = UIEdgeInsetsZero;
-	self.textView.dataDetectorTypes = UIDataDetectorTypeLink;	
-	self.textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.textView.font = [UIFont systemFontOfSize:16.0f];
-	self.textView.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-	self.textView.opaque = NO;
-	self.textView.backgroundColor = nil;
-	[self addSubview:self.textView];
-	
-	self.label.font = [UIFont systemFontOfSize:20.0f];
-	self.label.lineBreakMode = UILineBreakModeTailTruncation;
-	self.textView.font = [UIFont systemFontOfSize:20.0f];
 	
 }
 
@@ -85,43 +74,42 @@
 }
 
 - (void) setText:(NSString *)text {
-
-	self.label.text = text;
-	self.textView.text = text;
+	
+	NSMutableAttributedString *attributedString = [[[self.label attributedStringForString:text] mutableCopy] autorelease];
+	
+	[attributedString beginEditing];
+	
+	[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:text options:0 range:(NSRange){ 0, [text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+	
+		[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+			result.URL, kIRTextLinkAttribute,
+		nil] range:result.range];
+		
+	}];
+	
+	[attributedString endEditing];
+	
+	self.label.attributedText = attributedString;
 
 }
 
 - (NSString *) text {
 
-	if (self.label.hidden)
-		return self.textView.text;
-	
-	return self.label.text;
+	return (NSString *)self.label.text;
 
 }
 
 - (CGSize) sizeThatFits:(CGSize)size {
 
-	if (self.label.hidden)
-		return [self.textView sizeThatFits:size];
-	else
-		return [self.label sizeThatFits:size];
+	return [self.label sizeThatFits:size];
 
-}
-
-- (void) layoutSubviews {
-
-	[super layoutSubviews];
-
-	self.textView.frame = self.bounds;
-	self.label.frame = self.bounds;
-	
 }
 
 - (void) dealloc {
 
+	[font release];
 	[label release];
-	[textView release];
 	[backgroundView release];
 	[super dealloc];
 
