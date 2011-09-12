@@ -30,7 +30,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void) didFinishComposingComment:(NSString *)commentText;
-- (void) viewDecorator:(WAPostViewCellPhone *)cell;
+- (void) cellViewWithDecoration:(WAPostViewCellPhone *)cell;
 - (void) refreshData;
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -256,7 +256,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
         return [[[self post] comments] count];
 }
 
-- (void)viewDecorator:(WAPostViewCellPhone *)cell {
+- (void)cellViewWithDecoration:(WAPostViewCellPhone *)cell {
   objc_setAssociatedObject(cell, &kWAPostViewCellFloatsAbove, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
   
   cell.backgroundView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
@@ -325,7 +325,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 				cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
         cell.imageStackView.delegate = self;
         
-				[self viewDecorator:cell];
+				[self cellViewWithDecoration:cell];
       }
 			
       NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
