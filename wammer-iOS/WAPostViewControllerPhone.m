@@ -30,6 +30,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
 - (void) didFinishComposingComment:(NSString *)commentText;
+- (void) viewDecorator:(WAPostViewCellPhone *)cell;
 - (void) refreshData;
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -255,6 +256,55 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
         return [[[self post] comments] count];
 }
 
+- (void)viewDecorator:(WAPostViewCellPhone *)cell {
+  objc_setAssociatedObject(cell, &kWAPostViewCellFloatsAbove, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+  
+  cell.backgroundView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+  cell.clipsToBounds = NO;
+  cell.backgroundView.clipsToBounds = NO;
+  cell.backgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
+  
+  [cell.backgroundView addSubview:((^ {
+    
+    static const CGRect triangle = (CGRect){ 0, 0, 16, 12 };
+    IRShapeView *decorativeTriangleView = [[[IRShapeView alloc] initWithFrame:triangle] autorelease];
+    decorativeTriangleView.layer.path = (( ^ {
+      UIBezierPath *path = [UIBezierPath bezierPath];
+      [path moveToPoint:(CGPoint){
+        CGRectGetMidX(triangle),
+        CGRectGetMinY(triangle)
+      }];
+      [path addLineToPoint:(CGPoint){
+        CGRectGetMaxX(triangle),
+        CGRectGetMaxY(triangle)
+      }];
+      [path addLineToPoint:(CGPoint){
+        CGRectGetMinX(triangle),
+        CGRectGetMaxY(triangle)
+      }];
+      [path addLineToPoint:(CGPoint){
+        CGRectGetMidX(triangle),
+        CGRectGetMinY(triangle)
+      }];
+      return path;
+    })()).CGPath;
+    decorativeTriangleView.layer.fillColor = [UIColor whiteColor].CGColor;
+    
+    decorativeTriangleView.frame = (CGRect){
+      (CGPoint){
+        CGRectGetMinX(cell.backgroundView.frame) + 16,
+        CGRectGetMaxY(cell.backgroundView.frame) - CGRectGetHeight(triangle) + 2,
+      },
+      triangle.size
+    };
+    
+    decorativeTriangleView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
+    
+    return decorativeTriangleView;
+    
+  })())];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Section 0 for post cell
@@ -274,54 +324,8 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 			       
 				cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
         cell.imageStackView.delegate = self;
-
-				objc_setAssociatedObject(cell, &kWAPostViewCellFloatsAbove, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
-
-				cell.backgroundView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
-				cell.clipsToBounds = NO;
-				cell.backgroundView.clipsToBounds = NO;
-				cell.backgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
-								
-				[cell.backgroundView addSubview:((^ {
-					
-					static const CGRect triangle = (CGRect){ 0, 0, 16, 12 };
-					IRShapeView *decorativeTriangleView = [[[IRShapeView alloc] initWithFrame:triangle] autorelease];
-					decorativeTriangleView.layer.path = (( ^ {
-						UIBezierPath *path = [UIBezierPath bezierPath];
-						[path moveToPoint:(CGPoint){
-							CGRectGetMidX(triangle),
-							CGRectGetMinY(triangle)
-						}];
-						[path addLineToPoint:(CGPoint){
-							CGRectGetMaxX(triangle),
-							CGRectGetMaxY(triangle)
-						}];
-						[path addLineToPoint:(CGPoint){
-							CGRectGetMinX(triangle),
-							CGRectGetMaxY(triangle)
-						}];
-						[path addLineToPoint:(CGPoint){
-							CGRectGetMidX(triangle),
-							CGRectGetMinY(triangle)
-						}];
-						return path;
-					})()).CGPath;
-					decorativeTriangleView.layer.fillColor = [UIColor whiteColor].CGColor;
-					
-					decorativeTriangleView.frame = (CGRect){
-						(CGPoint){
-							CGRectGetMinX(cell.backgroundView.frame) + 16,
-							CGRectGetMaxY(cell.backgroundView.frame) - CGRectGetHeight(triangle) + 2,
-						},
-						triangle.size
-					};
-					
-					decorativeTriangleView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
-					
-					return decorativeTriangleView;
-					
-				})())];
-				
+        
+				[self viewDecorator:cell];
       }
 			
       NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
