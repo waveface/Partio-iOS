@@ -241,7 +241,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                  lineBreakMode:UILineBreakModeWordWrap].height;
   
   if( [post.files count ] > 0)
-    height += 170;
+    height += 180;
   
   if( [post.comments count] > 0)
     height += 40; 
