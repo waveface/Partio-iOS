@@ -71,7 +71,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:([anArticle.fileOrder count] ? WADiscreteSingleImageArticleStyle : WADiscretePlaintextArticleStyle)];
+		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:(
+			[anArticle.fileOrder count] ? WADiscreteSingleImageArticleStyle :
+			[anArticle.previews count] ? WADiscretePreviewArticleStyle : 
+			WADiscretePlaintextArticleStyle
+		)];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
