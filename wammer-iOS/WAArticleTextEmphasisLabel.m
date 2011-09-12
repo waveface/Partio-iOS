@@ -11,6 +11,9 @@
 
 @interface WAArticleTextEmphasisLabel ()
 
+@property (nonatomic, readwrite, retain) IBOutlet UITextView *textView;
+@property (nonatomic, readwrite, retain) IBOutlet UILabel *label;
+
 - (void) waInitialize;
 
 @end
@@ -40,7 +43,7 @@
 }
 
 - (void) waInitialize {
-	
+		
 	self.label = [[[UILabel alloc] initWithFrame:self.bounds] autorelease];	
 	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.label.font = [UIFont systemFontOfSize:16.0f];
@@ -63,6 +66,10 @@
 	self.textView.backgroundColor = nil;
 	[self addSubview:self.textView];
 	
+	self.label.font = [UIFont systemFontOfSize:20.0f];
+	self.label.lineBreakMode = UILineBreakModeTailTruncation;
+	self.textView.font = [UIFont systemFontOfSize:20.0f];
+	
 }
 
 - (void) setBackgroundView:(UIView *)newBackgroundView {
@@ -74,6 +81,22 @@
 	[self insertSubview:newBackgroundView atIndex:0];
 	backgroundView.frame = self.bounds;
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+
+}
+
+- (void) setText:(NSString *)text {
+
+	self.label.text = text;
+	self.textView.text = text;
+
+}
+
+- (NSString *) text {
+
+	if (self.label.hidden)
+		return self.textView.text;
+	
+	return self.label.text;
 
 }
 

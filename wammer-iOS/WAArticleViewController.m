@@ -189,9 +189,6 @@
 	} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
-	self.textEmphasisView.label.font = [UIFont systemFontOfSize:20.0f];
-	self.textEmphasisView.label.lineBreakMode = UILineBreakModeTailTruncation;
-	self.textEmphasisView.textView.font = [UIFont systemFontOfSize:20.0f];
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
@@ -401,8 +398,7 @@
 	self.avatarView.image = self.article.owner.avatar;
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	
-	self.textEmphasisView.textView.text = self.article.text;
-	self.textEmphasisView.label.text = self.article.text;
+	self.textEmphasisView.text = self.article.text;
 	self.textEmphasisView.hidden = ([self.article.files count] != 0);
 	
 	if (!self.userNameLabel.text)

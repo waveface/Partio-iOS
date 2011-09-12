@@ -11,8 +11,9 @@
 
 @interface WAArticleTextEmphasisLabel : UIView
 
-@property (nonatomic, readwrite, retain) IBOutlet UITextView *textView;
-@property (nonatomic, readwrite, retain) IBOutlet UILabel *label;
+@property (nonatomic, readwrite, copy) NSString *text;
+//	@property (nonatomic, readwrite, retain) IBOutlet UITextView *textView;
+//	@property (nonatomic, readwrite, retain) IBOutlet UILabel *label;
 @property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
 
 @end
