@@ -414,17 +414,16 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
                                     nil] forKey:@"article"];
 		}
 		
-		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
-                                                                                                         
-                                                                                                         mutatedCommentRep,
-                                                                                                         
-                                                                                                         nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                                                                            
-                                                                                                                            @"WAFile", @"files",
-                                                                                                                            @"WAArticle", @"article",
-                                                                                                                            @"WAUser", @"owner",
-                                                                                                                            
-                                                                                                                            nil] options:0];
+		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context 
+                                                          withRemoteResponse:[NSArray arrayWithObjects:
+                                                                              mutatedCommentRep,
+                                                                              nil] 
+                                                                usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
+                                                                              @"WAFile", @"files",
+                                                                              @"WAArticle", @"article",
+                                                                              @"WAUser", @"owner",
+                                                                              nil] 
+                                                                     options:0];
 		
 		for (WAComment *aComment in insertedComments)
 			if (!aComment.timestamp)
