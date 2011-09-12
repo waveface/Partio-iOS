@@ -41,8 +41,10 @@
 	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ((NSString *[]){
 		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
 		[WAFullFrameImageStackArticleStyle] = @"Default",
+		[WAFullFramePreviewArticleStyle] = @"Preview",
 		[WADiscretePlaintextArticleStyle] = @"Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Default"
+		[WADiscreteSingleImageArticleStyle] = @"Default",
+		[WADiscretePreviewArticleStyle] = @"Preview"
 	}[aStyle])];
 
 	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];

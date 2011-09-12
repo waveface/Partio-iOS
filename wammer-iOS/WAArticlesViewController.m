@@ -210,7 +210,7 @@
 	[nrSelf retain];
 
 	NSParameterAssert([NSThread isMainThread]);
-	[nrSelf remoteDataLoadingWillBegin];
+	[nrSelf remoteDataLoadingWillBeginForOperation:@"refreshData"];
 	
 	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
@@ -365,20 +365,59 @@
 
 
 
-//	These are no-ops for now, since we are optionally requiring them
+NSString * const kLoadingBezel = @"loadingBezel";
 
 - (void) remoteDataLoadingWillBegin {
+
+	[self remoteDataLoadingWillBeginForOperation:nil];
+
+}
+
+- (void) remoteDataLoadingWillBeginForOperation:(NSString *)aMethodName {
+
+	NSParameterAssert([NSThread isMainThread]);
+		
+	if ([aMethodName isEqualToString:@"refreshData"]) {
+		//	Only show on first load, when there is nothing displayed yet
+		if ([self.fetchedResultsController.fetchedObjects count])
+			return;
+	}
+
+	WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
+	bezel.caption = @"Loading";
+	
+	[bezel show];
+	
+	objc_setAssociatedObject(self, &kLoadingBezel, bezel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
 - (void) remoteDataLoadingDidEnd {
 
+	WAOverlayBezel *bezel = objc_getAssociatedObject(self, &kLoadingBezel);
+	
+	[[bezel retain] autorelease];
+	objc_setAssociatedObject(self, &kLoadingBezel, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	[bezel dismiss];
+
 }
 
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
 
-}
+	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
+	[loadingBezel dismiss];
+	
+	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+	[errorBezel show];
+	
+	double delayInSeconds = 2.0;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    [errorBezel dismissWithAnimation:WAOverlayBezelAnimationZoom];
+	});
 
+}
 
 
 

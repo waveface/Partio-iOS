@@ -38,6 +38,21 @@
 	
 }
 
+- (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
+
+	[super configureWithRemoteDictionary:inDictionary];
+	
+	NSDictionary *graphRep = [inDictionary objectForKey:@"og"];
+	
+	if (graphRep) {
+		if (!self.graphElement)
+			self.graphElement = [WAOpenGraphElement objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:graphRep];
+		else
+			[self.graphElement configureWithRemoteDictionary:graphRep];
+	}
+	
+}
+
 + (NSDictionary *) remoteDictionaryConfigurationMapping {
 
 	static NSDictionary *mapping = nil;

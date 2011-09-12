@@ -27,8 +27,10 @@
 typedef enum {
 	WAFullFramePlaintextArticleStyle = 0,
 	WAFullFrameImageStackArticleStyle,
+	WAFullFramePreviewArticleStyle,
 	WADiscretePlaintextArticleStyle,
-	WADiscreteSingleImageArticleStyle
+	WADiscreteSingleImageArticleStyle,
+	WADiscretePreviewArticleStyle
 } WAArticleViewControllerPresentationStyle;
 
 #endif

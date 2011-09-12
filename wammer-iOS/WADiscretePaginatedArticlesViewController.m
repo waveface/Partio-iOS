@@ -71,7 +71,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:([anArticle.fileOrder count] ? WADiscreteSingleImageArticleStyle : WADiscretePlaintextArticleStyle)];
+		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:(
+			[anArticle.fileOrder count] ? WADiscreteSingleImageArticleStyle :
+			[anArticle.previews count] ? WADiscretePreviewArticleStyle : 
+			WADiscretePlaintextArticleStyle
+		)];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
@@ -592,57 +596,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[layoutGrids release];
 
 	[super dealloc];
-
-}
-
-
-
-
-
-NSString * const kLoadingBezel = @"loadingBezel";
-
-- (void) remoteDataLoadingWillBegin {
-
-	NSParameterAssert([NSThread isMainThread]);
-	
-	//	Only show on first load, when there is nothing displayed yet
-	
-	if ([self.fetchedResultsController.fetchedObjects count])
-		return;
-
-	WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WADefaultBezelStyle];
-	bezel.caption = @"Loading";
-	
-	[bezel show];
-	
-	objc_setAssociatedObject(self, &kLoadingBezel, bezel, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
-}
-
-- (void) remoteDataLoadingDidEnd {
-
-	WAOverlayBezel *bezel = objc_getAssociatedObject(self, &kLoadingBezel);
-	
-	[[bezel retain] autorelease];
-	objc_setAssociatedObject(self, &kLoadingBezel, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	
-	[bezel dismiss];
-
-}
-
-- (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
-
-	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
-	[loadingBezel dismiss];
-	
-	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-	[errorBezel show];
-	
-	double delayInSeconds = 2.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [errorBezel dismissWithAnimation:WAOverlayBezelAnimationZoom];
-	});
 
 }
 
