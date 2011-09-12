@@ -87,6 +87,7 @@
 		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
 		FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
 		FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */; };
+		FFB67957141E345C006F84E3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
 		FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
@@ -254,6 +255,13 @@
 			remoteGlobalIDString = D2AAC07D0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
+		FFB67978141E3DCF006F84E3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFB67969141E3DCF006F84E3 /* IRTypography.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = IRTypography;
+		};
 		FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
@@ -406,6 +414,8 @@
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAttachedMediaListViewController.h; path = "wammer-iOS/WAAttachedMediaListViewController.h"; sourceTree = "<group>"; };
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAttachedMediaListViewController.m; path = "wammer-iOS/WAAttachedMediaListViewController.m"; sourceTree = "<group>"; };
 		FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
+		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		FFB67969141E3DCF006F84E3 /* IRTypography.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRTypography.xcodeproj; path = external/IRTypography/IRTypography.xcodeproj; sourceTree = "<group>"; };
 		FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADiscretePaginatedArticlesViewController.h; sourceTree = "<group>"; };
 		FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADiscretePaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
@@ -452,6 +462,7 @@
 				FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */,
 				FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */,
 				FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */,
+				FFB67957141E345C006F84E3 /* CoreText.framework in Frameworks */,
 				FF73A5FD13D6DDF300D54EC6 /* libAQGridView.a in Frameworks */,
 				FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */,
 				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
@@ -587,6 +598,7 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FFB67956141E345C006F84E3 /* CoreText.framework */,
 				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
@@ -604,6 +616,7 @@
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
+				FFB67969141E3DCF006F84E3 /* IRTypography.xcodeproj */,
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 			);
@@ -755,6 +768,14 @@
 			name = "Attached Media";
 			sourceTree = "<group>";
 		};
+		FFB6796A141E3DCF006F84E3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFB67979141E3DCF006F84E3 /* libIRTypography.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FFBA66E3140E12AD00BE5A1D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -872,6 +893,10 @@
 				{
 					ProductGroup = FF666C24140CD2B200C35CED /* Products */;
 					ProjectRef = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+				},
+				{
+					ProductGroup = FFB6796A141E3DCF006F84E3 /* Products */;
+					ProjectRef = FFB67969141E3DCF006F84E3 /* IRTypography.xcodeproj */;
 				},
 				{
 					ProductGroup = FF73A59F13D6DC6A00D54EC6 /* Products */;
@@ -996,6 +1021,13 @@
 			fileType = archive.ar;
 			path = libAQGridView.a;
 			remoteRef = FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFB67979141E3DCF006F84E3 /* libIRTypography.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRTypography.a;
+			remoteRef = FFB67978141E3DCF006F84E3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */ = {
