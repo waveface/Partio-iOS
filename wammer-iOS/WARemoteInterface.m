@@ -547,8 +547,6 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 					
 					return mutatedCommentRep;
 					
-					NSLog(@"mutatedCommentRep %@", mutatedCommentRep);
-					
 				}] forKey:@"comments"];
 			
 			}
