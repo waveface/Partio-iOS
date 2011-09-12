@@ -217,6 +217,9 @@
 
 - (void) layoutSubviews {
 
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+
 	if (self.image) {
 		
 		if (!self.accessoryView)
@@ -258,6 +261,8 @@
 	
 	if (!CATransform3DEqualToTransform(self.layer.transform, self.deviceOrientationTransform))
 		self.layer.transform = self.deviceOrientationTransform;
+
+	[CATransaction commit];
 
 }
 

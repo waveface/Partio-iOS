@@ -41,6 +41,7 @@
 			@"text", @"description",
 			@"title", @"title",
 			@"url", @"url",
+			@"type", @"type",
 		nil];
 		
 		[mapping retain];
