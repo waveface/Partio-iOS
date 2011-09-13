@@ -21,14 +21,14 @@
 @synthesize commentBackground;
 @synthesize postViewCellStyle;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
+@synthesize imageStackView, avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel;
 
 - (void) dealloc {
   
 	[imageStackView release];
 	[avatarView release];
 	[userNicknameLabel release];
-	[contentTextLabel release];
+	[contentDescriptionLabel release];
 	[dateOriginLabel release];
 	[dateLabel release];
 	[originLabel release];	
@@ -50,16 +50,17 @@
 	NSString *loadedNibName = nil;
 	
 	switch (aStyle) {
-		case WAPostViewCellStyleDefault:
-		case WAPostViewCellStyleCompact: {
+		case WAPostViewCellStyleDefault:{
 			loadedNibName = @"WAPostViewCellPhone-Default";
 			break;
 		}
-    case WAPostViewCellStyleImageStack:
-    case WAPostViewCellStyleCompactWithImageStack: {
+    case WAPostViewCellStyleImageStack: {
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
+    case WAPostViewCellStyleWebLink: {
+      loadedNibName = @"WAPostViewCellPhone-WebLink";
+    }
 	}
 
 	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
