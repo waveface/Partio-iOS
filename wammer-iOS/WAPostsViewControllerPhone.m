@@ -141,6 +141,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 }
 
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	
+	self.tableView.separatorColor = [UIColor colorWithWhite:.96 alpha:1];
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
   
 	[super viewWillAppear:animated];
@@ -187,7 +195,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if (postHasFiles) {
     identifier = imageCellIdentifier;
     style = WAPostViewCellStyleImageStack;
-  } else if(postHasPreview ) {
+  } else if (postHasPreview) {
     identifier = webLinkCellIdentifier;
     style = WAPostViewCellStyleWebLink;
   } else {
@@ -196,7 +204,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   }
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-  if(!cell) {
+  if (!cell) {
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
   }
@@ -204,25 +212,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   // Common components
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
-  cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                         [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
-                         [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
-  cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-  [cell setCommentCount:[post.comments count]];
-  
-  cell.contentTextView.text = post.text;
+  cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
+  cell.commentLabel.text = post.text;
   
   // For web link
-  if(postHasPreview){
-    NSEnumerator *enumerator = [post.previews objectEnumerator];
-    WAPreview *preview = (WAPreview *)[enumerator nextObject];
-    cell.contentTextView.text = [post text];
-    cell.contentDescriptionLabel.text = [preview.graphElement text];
-    NSLog(@"%@", [preview.graphElement thumbnailURL]);
-    // put thumbnail into image stack
+  if (postHasPreview) {
+	
+		WAPreview *anyPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+		nil]] lastObject];	
+		[cell.previewBadge configureWithPreview:anyPreview];
+		
   }
-    
-    
     
   if (postHasFiles)
     objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -235,9 +236,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     
 	}];
 	
+	
+	NSArray *allImages = nil;
+	
 	if ([allFilePaths count] == [post.files count]) {
     
-		cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+		allImages = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
 			
 			return [UIImage imageWithContentsOfFile:aPath];
 			
@@ -245,31 +249,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     
 	} else {
 	
-    cell.imageStackView.images = nil;
+    allImages = nil;
 		
   }
+	
+	[cell.imageStackView setImages:allImages asynchronously:YES withDecodingCompletion:nil];
   
   return cell;
   
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  NSString *text = [post text];
-  CGFloat height = (48.0); // Header
-  height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] 
-             constrainedToSize:CGSizeMake(240.0, 9999.0) 
-                 lineBreakMode:UILineBreakModeWordWrap].height;
-  
-  if( [post.files count ] > 0)
-    height += 180;
-  
-  if( [post.previews count ] > 0)
-    height += 155;
-  
-  return MAX(height, 100);
+	UIFont *baseFont = [UIFont fontWithName:@"Helvetica" size:14.0];
+  CGFloat height = [post.text sizeWithFont:baseFont constrainedToSize:(CGSize){
+		CGRectGetWidth(tableView.frame) - 80,
+		9999.0
+	} lineBreakMode:UILineBreakModeWordWrap].height;
+	return 64 + height + ([post.files count] ? 158 : [post.previews count] ? 96 : 0);
+	
 }
 
 - (void) handleAccount:(UIBarButtonItem *)sender {
@@ -290,23 +289,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	nil]] show];
 		
-	//  __block WAUserSelectionViewController *userSelectionVC = nil;
-	//  userSelectionVC = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
-	//    
-	//    NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
-	//    WAUser *userObject = (WAUser *)[disposableContext irManagedObjectForURI:pickedUser];
-	//    NSString *userIdentifier = userObject.identifier;
-	//    
-	//    [[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
-	//    [[NSUserDefaults standardUserDefaults] synchronize];
-	//    
-	//    [userSelectionVC.navigationController dismissModalViewControllerAnimated:YES];
-	//    
-	//  }];
-	//  
-	//  UINavigationController *nc = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
-	//	[self.navigationController presentModalViewController:nc animated:YES];
-  
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {

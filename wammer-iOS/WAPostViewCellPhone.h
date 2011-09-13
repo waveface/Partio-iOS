@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "WAImageStackView.h"
+#import "WAPreviewBadge.h"
+#import "IRGradientView.h"
+#import "IRLabel.h"
 
 enum {
 	WAPostViewCellStyleDefault,
@@ -16,15 +19,9 @@ enum {
 }; typedef NSUInteger WAPostViewCellStyle;
 
 
-@interface WAPostViewCellPhone : UITableViewCell {
-    UILabel *commentLabel;
-    UIImageView *commentBackground;
-    WAImageStackView *imageStackView;
-}
-
+@interface WAPostViewCellPhone : UITableViewCell
 
 - (id) initWithPostViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
-- (void) setCommentCount:(NSUInteger)commentCount;
 
 @property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
@@ -34,8 +31,9 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
-@property (nonatomic, retain) IBOutlet UILabel *commentLabel;
+@property (nonatomic, retain) IBOutlet IRLabel *commentLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *commentBackground;
+@property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge;
 
 @end
 

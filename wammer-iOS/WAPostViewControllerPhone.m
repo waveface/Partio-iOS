@@ -331,12 +331,11 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
       cell.userNicknameLabel.text = post.owner.nickname;
       cell.avatarView.image = post.owner.avatar;
-      cell.contentTextView.text = post.text;
+      cell.commentLabel.text = post.text;
       cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                              [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                              [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
       cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-      [cell setCommentCount:0];
       
       if (cell.imageStackView)
         objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -368,13 +367,13 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
     NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
     WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
 	
-	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
-		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
+		cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
     
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
-	cell.contentTextLabel.text = representedComment.text;
+	cell.commentLabel.text = representedComment.text;
 	cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
 
     [representedComment.timestamp description];
