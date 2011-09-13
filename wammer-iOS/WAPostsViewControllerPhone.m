@@ -175,17 +175,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   NSParameterAssert(post);
   
-    //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
-  static NSString *defaultCellIdentifier = @"PostCell-Default";
+  static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
+  static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
   
-  NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
-  
-  WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
-  style = postHasPreview ? WAPostViewCellStyleImageStack: style;
+  NSString *identifier = nil;
+  WAPostViewCellStyle style = 0;
+  if (postHasFiles) {
+    identifier = imageCellIdentifier;
+    style = WAPostViewCellStyleImageStack;
+  } else if(postHasPreview ) {
+    identifier = webLinkCellIdentifier;
+    style = WAPostViewCellStyleWebLink;
+  } else {
+    identifier = textOnlyCellIdentifier;
+    style = WAPostViewCellStyleDefault;
+  }
   
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if(!cell) {
@@ -193,24 +201,30 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell.imageStackView.delegate = self;
   }
 	
+  // Common components
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
-  cell.contentTextView.text = post.text;
   cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
                          [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
                          [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
   cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
   [cell setCommentCount:[post.comments count]];
   
+  cell.contentTextView.text = post.text;
+  
+  // For web link
   if(postHasPreview){
     NSEnumerator *enumerator = [post.previews objectEnumerator];
     WAPreview *preview = (WAPreview *)[enumerator nextObject];
-    cell.contentTextView.text = preview.htmlSynopsis;
+    cell.contentTextView.text = [post text];
+    cell.contentDescriptionLabel.text = [preview.graphElement text];
+    NSLog(@"%@", [preview.graphElement thumbnailURL]);
+    // put thumbnail into image stack
   }
     
     
     
-  if (cell.imageStackView)
+  if (postHasFiles)
     objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
   NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
@@ -252,8 +266,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if( [post.files count ] > 0)
     height += 180;
   
-  if( [post.comments count] > 0)
-    height += 40; 
+  if( [post.previews count ] > 0)
+    height += 155;
   
   return MAX(height, 100);
 }

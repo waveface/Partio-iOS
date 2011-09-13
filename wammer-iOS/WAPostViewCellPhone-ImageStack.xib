@@ -130,28 +130,11 @@
 									<int key="NSfFlags">16</int>
 								</object>
 							</object>
-							<object class="IBUIImageView" id="513411887">
-								<reference key="NSNextResponder" ref="229656081"/>
-								<int key="NSvFlags">264</int>
-								<string key="NSFrame">{{59, 228}, {94, 34}}</string>
-								<reference key="NSSuperview" ref="229656081"/>
-								<reference key="NSNextKeyView" ref="776875953"/>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIClipsSubviews">YES</bool>
-								<int key="IBUIContentMode">4</int>
-								<bool key="IBUIMultipleTouchEnabled">YES</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">WACapsuleSingle.png</string>
-								</object>
-							</object>
 							<object class="IBUILabel" id="776875953">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">264</int>
-								<string key="NSFrame">{{68, 234}, {77, 21}}</string>
+								<string key="NSFrame">{{68, 246}, {77, 21}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:327</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -182,10 +165,10 @@
 							</object>
 							<object class="IBUITextView" id="970733497">
 								<reference key="NSNextResponder" ref="229656081"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{60, 201}, {240, 25}}</string>
+								<int key="NSvFlags">308</int>
+								<string key="NSFrame">{{60, 201}, {240, 46}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
-								<reference key="NSNextKeyView" ref="513411887"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:640</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">1</int>
@@ -276,14 +259,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">commentBackground</string>
-						<reference key="source" ref="102746709"/>
-						<reference key="destination" ref="513411887"/>
-					</object>
-					<int key="connectionID">28</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">imageStackView</string>
 						<reference key="source" ref="102746709"/>
 						<reference key="destination" ref="107731654"/>
@@ -329,10 +304,9 @@
 							<reference ref="830469168"/>
 							<reference ref="1002532177"/>
 							<reference ref="701695387"/>
-							<reference ref="107731654"/>
-							<reference ref="513411887"/>
 							<reference ref="776875953"/>
 							<reference ref="970733497"/>
+							<reference ref="107731654"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -349,11 +323,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">9</int>
 						<reference key="object" ref="701695387"/>
-						<reference key="parent" ref="102746709"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">25</int>
-						<reference key="object" ref="513411887"/>
 						<reference key="parent" ref="102746709"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -381,7 +350,6 @@
 					<string>-1.IBPluginDependency</string>
 					<string>-2.CustomClassName</string>
 					<string>-2.IBPluginDependency</string>
-					<string>25.IBPluginDependency</string>
 					<string>26.IBPluginDependency</string>
 					<string>29.CustomClassName</string>
 					<string>29.IBPluginDependency</string>
@@ -396,7 +364,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WAImageStackView</string>
@@ -436,10 +403,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">WACapsuleSingle.png</string>
-			<string key="NS.object.0">{92, 34}</string>
-		</object>
 		<string key="IBCocoaTouchPluginVersion">931</string>
 	</data>
 </archive>

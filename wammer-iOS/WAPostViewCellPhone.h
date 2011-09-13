@@ -12,8 +12,7 @@
 enum {
 	WAPostViewCellStyleDefault,
 	WAPostViewCellStyleImageStack,
-    WAPostViewCellStyleCompact,
-    WAPostViewCellStyleCompactWithImageStack
+  WAPostViewCellStyleWebLink
 }; typedef NSUInteger WAPostViewCellStyle;
 
 
@@ -30,7 +29,7 @@ enum {
 @property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
-@property (nonatomic, readwrite, retain) IBOutlet UILabel *contentTextLabel;
+@property (nonatomic, readwrite, retain) IBOutlet UILabel *contentDescriptionLabel;
 @property (retain, nonatomic) IBOutlet UITextView *contentTextView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel;
