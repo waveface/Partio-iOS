@@ -21,6 +21,10 @@
 @property (nonatomic, readwrite, retain) UIFont *textFont;
 @property (nonatomic, readwrite, retain) UIColor *textColor;
 
+@property (nonatomic, readwrite, retain) UIView *backgroundView;
+
+@property (nonatomic, readwrite, assign) CGFloat minimumAcceptibleFullFrameAspectRatio;
+
 - (void) configureWithPreview:(WAPreview *)aPreview; 
 
 @end
