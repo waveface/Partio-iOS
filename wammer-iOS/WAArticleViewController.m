@@ -368,29 +368,7 @@
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 	nil]] lastObject];
 	
-	self.previewBadge.image = [UIImage imageWithContentsOfFile:anyPreview.graphElement.thumbnailFilePath];
-	self.previewBadge.link = anyPreview.graphElement.url ? [NSURL URLWithString:anyPreview.graphElement.url] : nil;
-	self.previewBadge.title = ((^ {
-		
-		NSString *graphTitle = anyPreview.graphElement.title;
-		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-			return graphTitle;
-			
-		return nil;
-		
-	})());
-	
-	self.previewBadge.text = ((^ {
-		
-		NSString *graphText = anyPreview.graphElement.text;
-		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-			return graphText;
-			
-		return nil;
-		
-	})());
-	
-	[self.previewBadge setNeedsLayout];
+	[self.previewBadge configureWithPreview:anyPreview];
 	
 	if (self.imageStackView) {
 	
