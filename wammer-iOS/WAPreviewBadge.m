@@ -8,6 +8,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "WADataStore.h"
+
 #import "WAPreviewBadge.h"
 #import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
@@ -38,6 +40,7 @@ typedef enum {
 @implementation WAPreviewBadge
 @synthesize image, title, text, link;
 @synthesize imageView, label;
+@synthesize titleFont, titleColor, textFont, textColor;
 
 - (id) initWithFrame:(CGRect)frame {
 	
@@ -60,13 +63,17 @@ typedef enum {
 
 - (void) waSharedInit {
 
+	self.titleFont = [UIFont boldSystemFontOfSize:20.0f];
+	self.titleColor = [UIColor colorWithRed:0 green:0 blue:0.45f alpha:1.0f];
+	self.textFont = [UIFont systemFontOfSize:18.0f];
+	self.textColor = [UIColor blackColor];
+
 	UIView *backgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WAPreviewBadge"]] autorelease];
 	backgroundView.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ -4, -4, -4, -4 });
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.layer.contentsCenter = (CGRect){ 10.0/24.0, 10.0/24.0, 4./24., 4.0/24.0 };
 	backgroundView.opaque = NO;
 	backgroundView.backgroundColor = nil;
-	backgroundView.alpha = 0.25f;
 	[self addSubview:backgroundView];
 
 }
@@ -134,8 +141,8 @@ typedef enum {
 	
 	if (self.title || self.text) {
 	
-		NSDictionary *titleAttributes = [NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:20.0f] color:[UIColor colorWithRed:0 green:0 blue:0.45f alpha:1.0f]];
-		NSDictionary *contentAttributes = [NSAttributedString irAttributesForFont:[UIFont systemFontOfSize:18.0f] color:[UIColor blackColor]];
+		NSDictionary *titleAttributes = [NSAttributedString irAttributesForFont:self.titleFont color:self.titleColor];
+		NSDictionary *contentAttributes = [NSAttributedString irAttributesForFont:self.textFont color:self.textColor];
 		
 		if (self.link)
 			titleAttributes = [titleAttributes irDictionaryBySettingObject:self.link forKey:kIRTextLinkAttribute];
@@ -197,6 +204,35 @@ typedef enum {
 		}
 		
 	}
+
+}
+
+- (void) configureWithPreview:(WAPreview *)aPreview {
+
+	self.image = [UIImage imageWithContentsOfFile:aPreview.graphElement.thumbnailFilePath];
+	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
+	self.title = ((^ {
+		
+		NSString *graphTitle = aPreview.graphElement.title;
+		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+			return graphTitle;
+			
+		return nil;
+		
+	})());
+	
+	self.text = ((^ {
+		
+		NSString *graphText = aPreview.graphElement.text;
+		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+			return graphText;
+			
+		return nil;
+		
+	})());
+	
+	[self setNeedsLayout];
+	[self.label setNeedsDisplay];
 
 }
 

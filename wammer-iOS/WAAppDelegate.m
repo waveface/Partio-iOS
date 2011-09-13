@@ -41,7 +41,7 @@
 	nil]];
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-	self.window.backgroundColor = [UIColor redColor];
+	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
 	

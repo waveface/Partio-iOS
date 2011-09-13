@@ -138,6 +138,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	images = [newImages retain];
 	[self didChangeValueForKey:@"images"];
 	
+	[self setShownImages:nil withDecodingCompletion:nil];
+	
 	self.activityIndicator.hidden = NO;
 	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
@@ -149,6 +151,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			NSArray *actualDecodedImages = [decodedImages irMap: ^ (UIImage *anImage, int index, BOOL *stop) {
 				return [anImage irDecodedImage];
 			}];
+			
+			if (![self.images isEqual:actualDecodedImages])
+				return;
 			
 			dispatch_async(dispatch_get_main_queue(), ^ {
 				[self setShownImages:actualDecodedImages withDecodingCompletion:aBlock];
