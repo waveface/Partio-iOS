@@ -22,4 +22,7 @@
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * url;
 
++ (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
++ (NSOperationQueue *) remoteResourceHandlingQueue;
+
 @end
