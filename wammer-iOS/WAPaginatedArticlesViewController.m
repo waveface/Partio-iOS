@@ -530,6 +530,8 @@
 	NSString *currentArticleIdentifier = currentArticle.identifier;
 	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
 	
+	[self remoteDataLoadingWillBeginForOperation:@"createComment"];
+	
 	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
 		
 		NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
@@ -580,12 +582,15 @@
 				//	Duh
 				
 			}
+			
+			[self remoteDataLoadingDidEnd];
 		
 		});
 		
 	} onFailure:^(NSError *error) {
 		
 		NSLog(@"Error: %@", error);
+		[self remoteDataLoadingDidFailWithError:error];
 		
 	}];
 	
@@ -739,7 +744,11 @@
 
 		if (!returnedViewController) {
 			
-			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:([article.fileOrder count] ? WAFullFrameImageStackArticleStyle : WAFullFramePlaintextArticleStyle)];
+			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:(
+				[article.fileOrder count] ? WAFullFrameImageStackArticleStyle :
+				[article.previews count] ? WAFullFramePreviewArticleStyle : 
+				WAFullFramePlaintextArticleStyle
+			)];
 			NSParameterAssert([[returnedViewController.representedObjectURI absoluteString] isEqualToString:[articleURI absoluteString]]);
 				
 		}

@@ -12,6 +12,8 @@
 #import "WAComment.h"
 #import "WAArticle.h"
 #import "WAUser.h"
+#import "WAPreview.h"
+#import "WAOpenGraphElement.h"
 
 @interface WADataStore : IRDataStore
 

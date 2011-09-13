@@ -23,7 +23,9 @@
 
 
 //	Overriding points for introducing additional user interface notifications
-- (void) remoteDataLoadingWillBegin;
+
+- (void) remoteDataLoadingWillBegin __deprecated;
+- (void) remoteDataLoadingWillBeginForOperation:(NSString *)aMethodName;
 - (void) remoteDataLoadingDidEnd;
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError;
 

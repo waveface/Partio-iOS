@@ -21,7 +21,23 @@
 @synthesize commentBackground;
 @synthesize postViewCellStyle;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
+@synthesize imageStackView, avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel;
+
+- (void) dealloc {
+  
+	[imageStackView release];
+	[avatarView release];
+	[userNicknameLabel release];
+	[contentDescriptionLabel release];
+	[dateOriginLabel release];
+	[dateLabel release];
+	[originLabel release];	
+	[commentLabel release];
+	[commentBackground release];
+  [contentTextView release];
+	[super dealloc];
+	
+}
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
@@ -34,16 +50,17 @@
 	NSString *loadedNibName = nil;
 	
 	switch (aStyle) {
-		case WAPostViewCellStyleDefault:
-		case WAPostViewCellStyleCompact: {
+		case WAPostViewCellStyleDefault:{
 			loadedNibName = @"WAPostViewCellPhone-Default";
 			break;
 		}
-    case WAPostViewCellStyleImageStack:
-    case WAPostViewCellStyleCompactWithImageStack: {
+    case WAPostViewCellStyleImageStack: {
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
 			break;
 		}
+    case WAPostViewCellStyleWebLink: {
+      loadedNibName = @"WAPostViewCellPhone-WebLink";
+    }
 	}
 
 	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
@@ -70,6 +87,7 @@
   self.avatarView.layer.cornerRadius = 7.0;
 	self.avatarView.layer.masksToBounds = YES;
     
+  // TODO: URLs are touchable but all other text should be touch through.
   self.contentTextView.contentInset = UIEdgeInsetsMake(-10,-8,0,0);
   self.contentTextView.textAlignment = UITextAlignmentLeft;
   
@@ -86,22 +104,6 @@
     self.commentLabel.hidden = NO;
     self.commentLabel.text = [NSString stringWithFormat:@"%lu comments", commentCount];
   }
-}
-
-- (void) dealloc {
-
-	[imageStackView release];
-	[avatarView release];
-	[userNicknameLabel release];
-	[contentTextLabel release];
-	[dateOriginLabel release];
-	[dateLabel release];
-	[originLabel release];	
-	[commentLabel release];
-	[commentBackground release];
-    [contentTextView release];
-	[super dealloc];
-	
 }
 
 @end
