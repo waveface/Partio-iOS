@@ -226,8 +226,7 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-  self.navigationItem.rightBarButtonItem.enabled = self.contentTextView.hasText;
-  NSLog(@"textViewD");
+	self.navigationItem.rightBarButtonItem.enabled = self.contentTextView.hasText;
 }
 
 #pragma mark - View lifecycle
