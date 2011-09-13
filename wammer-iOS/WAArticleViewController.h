@@ -13,6 +13,8 @@
 #import "WAView.h"
 #import "WAArticleTextEmphasisLabel.h"
 
+#import "WAPreviewBadge.h"
+
 
 @class WAImageStackView;
 
@@ -46,11 +48,14 @@ typedef enum {
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
+@property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) IBOutlet WAArticleTextEmphasisLabel *textEmphasisView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *relativeCreationDateLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
+
+@property (nonatomic, readwrite, retain) IBOutlet UITextView *contextTextView;
 
 @end

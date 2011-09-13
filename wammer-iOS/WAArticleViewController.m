@@ -33,7 +33,7 @@
 @implementation WAArticleViewController
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, imageStackView, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel;
+@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView;
 @synthesize onPresentingViewController, onViewTap;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
@@ -113,11 +113,13 @@
 	self.article = nil;
 	self.contextInfoContainer = nil;
 	self.imageStackView = nil;
+	self.previewBadge = nil;
 	self.textEmphasisView = nil;
 	self.avatarView = nil;
 	self.relativeCreationDateLabel = nil;
 	self.userNameLabel = nil;
 	self.articleDescriptionLabel = nil;
+	self.contextTextView = nil;
 
 	[super viewDidUnload];
 
@@ -133,11 +135,13 @@
 	[onPresentingViewController release];
 	[contextInfoContainer release];
 	[imageStackView release];
+	[previewBadge release];
 	[textEmphasisView release];
 	[avatarView release];
 	[relativeCreationDateLabel release];
 	[userNameLabel release];
 	[articleDescriptionLabel release];
+	[contextTextView release];
 	
 	[onViewTap release];
 	
@@ -165,6 +169,7 @@
 	avatarContainingView.layer.shadowRadius = 2.0f;
 	
 	self.imageStackView.delegate = self;
+	self.imageStackView.backgroundColor = [UIColor colorWithWhite:0.75f alpha:0.25f];
 	
 	__block __typeof__(self) nrSelf = self;
 	
@@ -353,10 +358,39 @@
 
 - (void) refreshView {
 
+	self.contextTextView.text = [self description];
+
 	self.userNameLabel.text = self.article.owner.nickname;
 	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
 	self.articleDescriptionLabel.text = self.article.text;
 	
+	WAPreview *anyPreview = (WAPreview *)[[[self.article.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+	nil]] lastObject];
+	
+	self.previewBadge.image = [UIImage imageWithContentsOfFile:anyPreview.graphElement.thumbnailFilePath];
+	self.previewBadge.link = anyPreview.graphElement.url ? [NSURL URLWithString:anyPreview.graphElement.url] : nil;
+	self.previewBadge.title = ((^ {
+		
+		NSString *graphTitle = anyPreview.graphElement.title;
+		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+			return graphTitle;
+			
+		return nil;
+		
+	})());
+	
+	self.previewBadge.text = ((^ {
+		
+		NSString *graphText = anyPreview.graphElement.text;
+		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+			return graphText;
+			
+		return nil;
+		
+	})());
+	
+	[self.previewBadge setNeedsLayout];
 	
 	if (self.imageStackView) {
 	
@@ -375,7 +409,7 @@
 			NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths);
 
 			if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
-
+			
 				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
 					
 					return [UIImage imageWithContentsOfFile:aPath];
