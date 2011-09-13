@@ -39,6 +39,8 @@
 
 - (void) layoutSubviews {
 
+	[super layoutSubviews];
+
 	if (self.onLayoutSubviews)
 		self.onLayoutSubviews();
 

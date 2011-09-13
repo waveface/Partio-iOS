@@ -269,8 +269,11 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	[allPhotoViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock: ^ (UIView *imageView, NSUInteger idx, BOOL *stop) {
 	
 		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
+		CGSize imageSize = ((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size;
+		imageSize.width *= 16;
+		imageSize.height *= 16;
 		
-		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size, self.bounds, 8.0f, YES));
+		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(imageSize, self.bounds, 8.0f, YES));
 		
 		if (idx == ([allPhotoViews count] - 1)) {
 		
