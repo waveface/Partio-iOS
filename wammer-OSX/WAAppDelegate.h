@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Iridia Productions. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
 #import <Cocoa/Cocoa.h>
 
 @interface WAAppDelegate : NSObject <NSApplicationDelegate>

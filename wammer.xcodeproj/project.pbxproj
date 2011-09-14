@@ -14,7 +14,6 @@
 		FFCFE08A142111E100B9E6AF /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BB13D6DCA400D54EC6 /* MGSplitCornersView.m */; };
 		FFCFE08B142111E100B9E6AF /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BD13D6DCA400D54EC6 /* MGSplitDividerView.m */; };
 		FFCFE08C142111E100B9E6AF /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BF13D6DCA400D54EC6 /* MGSplitViewController.m */; };
-		FFCFE08D142111E100B9E6AF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
 		FFCFE090142111E100B9E6AF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
@@ -118,6 +117,14 @@
 		FFCFE0F4142111E100B9E6AF /* WAArticleViewController-Discrete-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */; };
 		FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */; };
 		FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */; };
+		FFFDEF121421165E0083BEFB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FFFDEF101421165E0083BEFB /* InfoPlist.strings */; };
+		FFFDEF141421165E0083BEFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFDEF131421165E0083BEFB /* main.m */; };
+		FFFDEF181421165E0083BEFB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FFFDEF161421165E0083BEFB /* Credits.rtf */; };
+		FFFDEF1E1421165E0083BEFB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFDEF1C1421165E0083BEFB /* MainMenu.xib */; };
+		FFFDEF231421167B0083BEFB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFDEF221421167B0083BEFB /* Cocoa.framework */; };
+		FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
+		FFFDF01214211E9C0083BEFB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFDEFC614211D800083BEFB /* UIKit.framework */; };
+		FFFDF01314211EAE0083BEFB /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFDEF1A1421165E0083BEFB /* WAAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -289,6 +296,62 @@
 			remoteGlobalIDString = 05CD31620EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS";
 		};
+		FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FFFDEF7014211BCC0083BEFB;
+			remoteInfo = IRFoundations;
+		};
+		FFFDEFC514211D800083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = UIKit;
+		};
+		FFFDEFC714211D870083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = UIKit;
+		};
+		FFFDF0641421230C0083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = StoreKit;
+		};
+		FFFDF06F142123110083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF066142123100083BEFB /* MessageUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = MessageUI;
+		};
+		FFFDF079142123170083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = MediaPlayer;
+		};
+		FFFDF0821421231B0083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = AVFoundation;
+		};
+		FFFDF08C142123220083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = AddressBookUI;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -450,6 +513,23 @@
 		FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDown.png; path = Resources/WATinyArrowDown.png; sourceTree = "<group>"; };
 		FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowUp.png; path = Resources/WATinyArrowUp.png; sourceTree = "<group>"; };
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
+		FFFDEF051421165E0083BEFB /* wammer-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFFDEF0F1421165E0083BEFB /* wammer-OSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wammer-OSX-Info.plist"; sourceTree = "<group>"; };
+		FFFDEF111421165E0083BEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FFFDEF131421165E0083BEFB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FFFDEF151421165E0083BEFB /* wammer-OSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-OSX-Prefix.pch"; sourceTree = "<group>"; };
+		FFFDEF171421165E0083BEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		FFFDEF191421165E0083BEFB /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppDelegate.h; sourceTree = "<group>"; };
+		FFFDEF1A1421165E0083BEFB /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppDelegate.m; sourceTree = "<group>"; };
+		FFFDEF1D1421165E0083BEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FFFDEF221421167B0083BEFB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		FFFDEF24142116C90083BEFB /* wammer-OSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "wammer-OSX.entitlements"; sourceTree = "<group>"; };
+		FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIKit.xcodeproj; path = external/Chameleon/UIKit/UIKit.xcodeproj; sourceTree = "<group>"; };
+		FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StoreKit.xcodeproj; path = external/Chameleon/StoreKit/StoreKit.xcodeproj; sourceTree = "<group>"; };
+		FFFDF066142123100083BEFB /* MessageUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MessageUI.xcodeproj; path = external/Chameleon/MessageUI/MessageUI.xcodeproj; sourceTree = "<group>"; };
+		FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MediaPlayer.xcodeproj; path = external/Chameleon/MediaPlayer/MediaPlayer.xcodeproj; sourceTree = "<group>"; };
+		FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AVFoundation.xcodeproj; path = external/Chameleon/AVFoundation/AVFoundation.xcodeproj; sourceTree = "<group>"; };
+		FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AddressBookUI.xcodeproj; path = external/Chameleon/AddressBookUI/AddressBookUI.xcodeproj; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -475,6 +555,15 @@
 				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
 				FFCFE0C1142111E100B9E6AF /* libCrashReporter-iOS.a in Frameworks */,
 				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFFDEF021421165E0083BEFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFFDEF231421167B0083BEFB /* Cocoa.framework in Frameworks */,
+				FFFDF01214211E9C0083BEFB /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +675,7 @@
 				FF71D3F3140E09EF0069B161 /* Base Articles View */,
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
+				FFFDEF0D1421165E0083BEFB /* Mac */,
 				FF55C23513F5251D00F38861 /* Gallery */,
 				FFA9512714077BE800BD3302 /* Attached Media */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
@@ -602,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
+				FFFDEF051421165E0083BEFB /* wammer-OSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -609,18 +700,8 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FFB67956141E345C006F84E3 /* CoreText.framework */,
-				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
-				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
-				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
-				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
-				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
-				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
-				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
-				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
-				FF666C2F140CD31C00C35CED /* Security.framework */,
-				FF61635E141618BD004738D3 /* MessageUI.framework */,
-				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
+				FFFDEFB414211D5C0083BEFB /* iOS */,
+				FFFDF08E142123260083BEFB /* OS X */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF97386213D82B55003D1722 /* JSONKit */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
@@ -685,6 +766,7 @@
 			isa = PBXGroup;
 			children = (
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
+				FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -835,6 +917,112 @@
 			path = wammer;
 			sourceTree = "<group>";
 		};
+		FFFDEF0D1421165E0083BEFB /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEF24142116C90083BEFB /* wammer-OSX.entitlements */,
+				FFFDEF191421165E0083BEFB /* WAAppDelegate.h */,
+				FFFDEF1A1421165E0083BEFB /* WAAppDelegate.m */,
+				FFFDEF1C1421165E0083BEFB /* MainMenu.xib */,
+				FFFDEF0E1421165E0083BEFB /* Supporting Files */,
+			);
+			name = Mac;
+			path = "wammer-OSX";
+			sourceTree = "<group>";
+		};
+		FFFDEF0E1421165E0083BEFB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEF0F1421165E0083BEFB /* wammer-OSX-Info.plist */,
+				FFFDEF101421165E0083BEFB /* InfoPlist.strings */,
+				FFFDEF131421165E0083BEFB /* main.m */,
+				FFFDEF151421165E0083BEFB /* wammer-OSX-Prefix.pch */,
+				FFFDEF161421165E0083BEFB /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FFFDEFB414211D5C0083BEFB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				FFB67956141E345C006F84E3 /* CoreText.framework */,
+				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
+				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
+				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
+				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
+				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
+				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
+				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
+				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
+				FF666C2F140CD31C00C35CED /* Security.framework */,
+				FF61635E141618BD004738D3 /* MessageUI.framework */,
+				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		FFFDEFBF14211D7F0083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEFC614211D800083BEFB /* UIKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF05E1421230C0083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF0651421230C0083BEFB /* StoreKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF067142123100083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF070142123110083BEFB /* MessageUI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF072142123160083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF07A142123170083BEFB /* MediaPlayer.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF07C1421231B0083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF0831421231B0083BEFB /* AVFoundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF085142123210083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF08D142123220083BEFB /* AddressBookUI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF08E142123260083BEFB /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEF221421167B0083BEFB /* Cocoa.framework */,
+				FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */,
+				FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */,
+				FFFDF066142123100083BEFB /* MessageUI.xcodeproj */,
+				FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */,
+				FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */,
+				FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -862,6 +1050,24 @@
 			productReference = FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FFFDEF041421165E0083BEFB /* wammer-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFFDEF1F1421165E0083BEFB /* Build configuration list for PBXNativeTarget "wammer-OSX" */;
+			buildPhases = (
+				FFFDEF011421165E0083BEFB /* Sources */,
+				FFFDEF021421165E0083BEFB /* Frameworks */,
+				FFFDEF031421165E0083BEFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FFFDEFC814211D870083BEFB /* PBXTargetDependency */,
+			);
+			name = "wammer-OSX";
+			productName = "wammer-OSX";
+			productReference = FFFDEF051421165E0083BEFB /* wammer-OSX.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -883,8 +1089,16 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = FFFDF085142123210083BEFB /* Products */;
+					ProjectRef = FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */;
+				},
+				{
 					ProductGroup = FF73A5DA13D6DD5000D54EC6 /* Products */;
 					ProjectRef = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDF07C1421231B0083BEFB /* Products */;
+					ProjectRef = FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */;
 				},
 				{
 					ProductGroup = FF61636414161A61004738D3 /* Products */;
@@ -906,10 +1120,27 @@
 					ProductGroup = FF73A59F13D6DC6A00D54EC6 /* Products */;
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
+				{
+					ProductGroup = FFFDF072142123160083BEFB /* Products */;
+					ProjectRef = FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDF067142123100083BEFB /* Products */;
+					ProjectRef = FFFDF066142123100083BEFB /* MessageUI.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDF05E1421230C0083BEFB /* Products */;
+					ProjectRef = FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDEFBF14211D7F0083BEFB /* Products */;
+					ProjectRef = FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				FFCFE078142111E100B9E6AF /* wammer-iOS */,
+				FFFDEF041421165E0083BEFB /* wammer-OSX */,
 			);
 		};
 /* End PBXProject section */
@@ -1041,6 +1272,55 @@
 			remoteRef = FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRFoundations.a;
+			remoteRef = FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDEFC614211D800083BEFB /* UIKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UIKit.framework;
+			remoteRef = FFFDEFC514211D800083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF0651421230C0083BEFB /* StoreKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = StoreKit.framework;
+			remoteRef = FFFDF0641421230C0083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF070142123110083BEFB /* MessageUI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MessageUI.framework;
+			remoteRef = FFFDF06F142123110083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF07A142123170083BEFB /* MediaPlayer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MediaPlayer.framework;
+			remoteRef = FFFDF079142123170083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF0831421231B0083BEFB /* AVFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AVFoundation.framework;
+			remoteRef = FFFDF0821421231B0083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF08D142123220083BEFB /* AddressBookUI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AddressBookUI.framework;
+			remoteRef = FFFDF08C142123220083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1102,6 +1382,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FFFDEF031421165E0083BEFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFFDEF121421165E0083BEFB /* InfoPlist.strings in Resources */,
+				FFFDEF181421165E0083BEFB /* Credits.rtf in Resources */,
+				FFFDEF1E1421165E0083BEFB /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1133,7 +1423,6 @@
 				FFCFE08A142111E100B9E6AF /* MGSplitCornersView.m in Sources */,
 				FFCFE08B142111E100B9E6AF /* MGSplitDividerView.m in Sources */,
 				FFCFE08C142111E100B9E6AF /* MGSplitViewController.m in Sources */,
-				FFCFE08D142111E100B9E6AF /* WAModel.xcdatamodeld in Sources */,
 				FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */,
 				FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */,
 				FFCFE090142111E100B9E6AF /* JSONKit.m in Sources */,
@@ -1169,6 +1458,16 @@
 				FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */,
 				FFCFE0AF142111E100B9E6AF /* WAOpenGraphElement.m in Sources */,
 				FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */,
+				FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFFDEF011421165E0083BEFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFFDF01314211EAE0083BEFB /* WAAppDelegate.m in Sources */,
+				FFFDEF141421165E0083BEFB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1205,6 +1504,11 @@
 			name = "CrashReporter-iOS";
 			targetProxy = FFCFE084142111E100B9E6AF /* PBXContainerItemProxy */;
 		};
+		FFFDEFC814211D870083BEFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UIKit;
+			targetProxy = FFFDEFC714211D870083BEFB /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1214,6 +1518,30 @@
 				FF73A54C13D6C2CD00D54EC6 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FFFDEF101421165E0083BEFB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFFDEF111421165E0083BEFB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FFFDEF161421165E0083BEFB /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFFDEF171421165E0083BEFB /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		FFFDEF1C1421165E0083BEFB /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFFDEF1D1421165E0083BEFB /* en */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1334,6 +1662,79 @@
 			};
 			name = Release;
 		};
+		FFFDEF201421165E0083BEFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CODE_SIGN_IDENTITY = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wammer-OSX/wammer-OSX-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "wammer-OSX/wammer-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-framework",
+					WebKit,
+					"-framework",
+					QTKit,
+					"-framework",
+					QuartzCore,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		FFFDEF211421165E0083BEFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wammer-OSX/wammer-OSX-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "wammer-OSX/wammer-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-framework",
+					WebKit,
+					"-framework",
+					QTKit,
+					"-framework",
+					QuartzCore,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1351,6 +1752,15 @@
 			buildConfigurations = (
 				FFCFE0F9142111E100B9E6AF /* Debug */,
 				FFCFE0FA142111E100B9E6AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFFDEF1F1421165E0083BEFB /* Build configuration list for PBXNativeTarget "wammer-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFFDEF201421165E0083BEFB /* Debug */,
+				FFFDEF211421165E0083BEFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
