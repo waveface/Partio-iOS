@@ -7,117 +7,124 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4B1527A213E29E72006E9737 /* WAPostsViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */; };
-		4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */; };
-		4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */; };
-		4B587BB913F4D7AE0084E671 /* WAComposeViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */; };
-		4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */; };
-		4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */; };
-		4B989DC2141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
-		4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */; };
-		4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
-		4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
-		4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
-		FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iOS.a */; };
-		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
-		FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */; };
-		FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */; };
-		FF027CC413F1433B009D979A /* WAPatternPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC313F1433B009D979A /* WAPatternPaper.png */; };
-		FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
-		FF13871113E94F0700154B7D /* WACompositionBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871013E94F0700154B7D /* WACompositionBarBackground.png */; };
-		FF13871313E95C3900154B7D /* WACompositionTextWellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */; };
-		FF13871513E95E0800154B7D /* WACompositionSendButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */; };
-		FF164977140CC19900CAE824 /* WAAuthenticationRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */; };
-		FF21C8D313E14CF9009B980D /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
-		FF24072C13F27F4A000B2CAA /* WAPatternCarbonFibre.png in Resources */ = {isa = PBXBuildFile; fileRef = FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */; };
-		FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF24072E13F2881E000B2CAA /* WAViewController.m */; };
-		FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
-		FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
-		FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */; };
-		FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */ = {isa = PBXBuildFile; fileRef = FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */; };
-		FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
-		FF4FA01213E13249002C627F /* WAArticleViewController-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */; };
-		FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01313E136A0002C627F /* WACapsuleLeft.png */; };
-		FF4FA01713E136A0002C627F /* WACapsuleRight.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01413E136A0002C627F /* WACapsuleRight.png */; };
-		FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01513E136A0002C627F /* WACapsuleSingle.png */; };
-		FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
-		FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */; };
-		FF55C23A13F5270600F38861 /* WAArticleCommentsViewCell-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */; };
-		FF5B83B3140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */; };
-		FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */; };
-		FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */; };
-		FF61635F141618BD004738D3 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
-		FF666C30140CD31D00C35CED /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2F140CD31C00C35CED /* Security.framework */; };
-		FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2B140CD2B200C35CED /* libIRKeychain.a */; };
-		FF71D3F9140E0A0C0069B161 /* WAArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */; };
-		FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
-		FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
-		FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
-		FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */; };
-		FF73A54F13D6C2CD00D54EC6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
-		FF73A55313D6C2CD00D54EC6 /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
-		FF73A56C13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
-		FF73A56F13D6CD4100D54EC6 /* WACompositionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */; };
-		FF73A5C013D6DCA400D54EC6 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BB13D6DCA400D54EC6 /* MGSplitCornersView.m */; };
-		FF73A5C113D6DCA400D54EC6 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BD13D6DCA400D54EC6 /* MGSplitDividerView.m */; };
-		FF73A5C213D6DCA400D54EC6 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BF13D6DCA400D54EC6 /* MGSplitViewController.m */; };
-		FF73A5FD13D6DDF300D54EC6 /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5DE13D6DD5000D54EC6 /* libAQGridView.a */; };
-		FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
-		FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
-		FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */; };
-		FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */; };
-		FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
-		FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
-		FF7D466814024FD800C916F5 /* WAImageStreamPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */; };
-		FF878BBD13FA6F8700B76807 /* WASpeechBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */; };
-		FF878C0813FA730100B76807 /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
-		FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
-		FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */; };
-		FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */; };
-		FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
-		FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
-		FF92796414079593007BEB65 /* WATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF92796314079593007BEB65 /* WATableViewCell.m */; };
-		FF97382513D821DF003D1722 /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
-		FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
-		FF97386113D82B4F003D1722 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
-		FF9A17B913FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */; };
-		FF9DA0BE13DFF6BC00D6B28B /* WAMockArticlesList.json in Resources */ = {isa = PBXBuildFile; fileRef = FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */; };
-		FF9DA0C113DFF88F00D6B28B /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C013DFF88F00D6B28B /* WAUser.m */; };
-		FF9DA0C413DFF89000D6B28B /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C313DFF89000D6B28B /* WAArticle.m */; };
-		FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
-		FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
-		FFA34019141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */; };
-		FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
-		FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */; };
-		FFB67957141E345C006F84E3 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		FFB81A7E141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */; };
-		FFB81A80141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */; };
-		FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
-		FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
-		FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
-		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
-		FFC47FCA141DF97800D5FD12 /* WAArticleViewController-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */; };
-		FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
-		FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
-		FFD2D915141F4D3600F21D22 /* WAPreviewBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */; };
-		FFD2D917141F4E7E00F21D22 /* WAPreviewBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */; };
-		FFDDB4B61418BB5900FE9CE2 /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
-		FFDDB4B91418BB5900FE9CE2 /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B81418BB5900FE9CE2 /* WAOpenGraphElement.m */; };
-		FFE3E8F8141647D600519BCD /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F4141647D600519BCD /* Default-Landscape.png */; };
-		FFE3E8F9141647D600519BCD /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F5141647D600519BCD /* Default-Portrait.png */; };
-		FFE3E8FA141647D600519BCD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F6141647D600519BCD /* Default.png */; };
-		FFE3E8FB141647D600519BCD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F7141647D600519BCD /* Default@2x.png */; };
-		FFF1F60113EFDF9600D3997C /* WAMockUsersList.json in Resources */ = {isa = PBXBuildFile; fileRef = FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */; };
-		FFF4EAC91410EFE2007F444B /* WAOverlayBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */; };
-		FFF9B79E13E7D0D5002A9D7F /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
-		FFF9B7A513E7D8E5002A9D7F /* WACapsuleLeftPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B79F13E7D8E5002A9D7F /* WACapsuleLeftPressed.png */; };
-		FFF9B7A613E7D8E5002A9D7F /* WACapsuleRightPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A013E7D8E5002A9D7F /* WACapsuleRightPressed.png */; };
-		FFF9B7A713E7D8E5002A9D7F /* WACapsuleSinglePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A113E7D8E5002A9D7F /* WACapsuleSinglePressed.png */; };
-		FFF9B7A813E7D8E5002A9D7F /* WAReply.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A213E7D8E5002A9D7F /* WAReply.png */; };
-		FFF9B7A913E7D8E5002A9D7F /* WATinyArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */; };
-		FFF9B7AA13E7D8E5002A9D7F /* WATinyArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */; };
-		FFF9B7AE13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */; };
-		FFFFD9DB13EAABDB000E3D2D /* WACompositionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */; };
+		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
+		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
+		FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
+		FFCFE089142111E100B9E6AF /* WACompositionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */; };
+		FFCFE08A142111E100B9E6AF /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BB13D6DCA400D54EC6 /* MGSplitCornersView.m */; };
+		FFCFE08B142111E100B9E6AF /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BD13D6DCA400D54EC6 /* MGSplitDividerView.m */; };
+		FFCFE08C142111E100B9E6AF /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A5BF13D6DCA400D54EC6 /* MGSplitViewController.m */; };
+		FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
+		FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
+		FFCFE090142111E100B9E6AF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
+		FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
+		FFCFE092142111E100B9E6AF /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C013DFF88F00D6B28B /* WAUser.m */; };
+		FFCFE093142111E100B9E6AF /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C313DFF89000D6B28B /* WAArticle.m */; };
+		FFCFE094142111E100B9E6AF /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
+		FFCFE095142111E100B9E6AF /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C913DFF89000D6B28B /* WAFile.m */; };
+		FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
+		FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
+		FFCFE098142111E100B9E6AF /* WAPostsViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */; };
+		FFCFE099142111E100B9E6AF /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
+		FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
+		FFCFE09B142111E100B9E6AF /* WAUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */; };
+		FFCFE09C142111E100B9E6AF /* WAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF24072E13F2881E000B2CAA /* WAViewController.m */; };
+		FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
+		FFCFE09E142111E100B9E6AF /* WAComposeViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */; };
+		FFCFE09F142111E100B9E6AF /* WAPostViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */; };
+		FFCFE0A0142111E100B9E6AF /* WAArticleCommentsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */; };
+		FFCFE0A1142111E100B9E6AF /* WAArticleTextEmphasisLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */; };
+		FFCFE0A2142111E100B9E6AF /* WAGalleryImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF878C0713FA730100B76807 /* WAGalleryImageView.m */; };
+		FFCFE0A3142111E100B9E6AF /* WAGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6FFCC413F86445000C582D /* WAGalleryViewController.m */; };
+		FFCFE0A4142111E100B9E6AF /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
+		FFCFE0A5142111E100B9E6AF /* WAImageStreamPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */; };
+		FFCFE0A6142111E100B9E6AF /* WAAttachedMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */; };
+		FFCFE0A7142111E100B9E6AF /* WATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF92796314079593007BEB65 /* WATableViewCell.m */; };
+		FFCFE0A8142111E100B9E6AF /* WAAuthenticationRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */; };
+		FFCFE0A9142111E100B9E6AF /* WAArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */; };
+		FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
+		FFCFE0AB142111E100B9E6AF /* WAComposeCommentViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */; };
+		FFCFE0AC142111E100B9E6AF /* WAOverlayBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */; };
+		FFCFE0AD142111E100B9E6AF /* UIApplication+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */; };
+		FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
+		FFCFE0AF142111E100B9E6AF /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B81418BB5900FE9CE2 /* WAOpenGraphElement.m */; };
+		FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */; };
+		FFCFE0B2142111E100B9E6AF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
+		FFCFE0B3142111E100B9E6AF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2F140CD31C00C35CED /* Security.framework */; };
+		FFCFE0B4142111E100B9E6AF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
+		FFCFE0B5142111E100B9E6AF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */; };
+		FFCFE0B6142111E100B9E6AF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
+		FFCFE0B7142111E100B9E6AF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
+		FFCFE0B8142111E100B9E6AF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */; };
+		FFCFE0B9142111E100B9E6AF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
+		FFCFE0BA142111E100B9E6AF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69713D6E08100D54EC6 /* CoreData.framework */; };
+		FFCFE0BB142111E100B9E6AF /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB67956141E345C006F84E3 /* CoreText.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5DE13D6DD5000D54EC6 /* libAQGridView.a */; };
+		FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
+		FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
+		FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2B140CD2B200C35CED /* libIRKeychain.a */; };
+		FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
+		FFCFE0C1142111E100B9E6AF /* libCrashReporter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iOS.a */; };
+		FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */; };
+		FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */; };
+		FFCFE0C5142111E100B9E6AF /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
+		FFCFE0C6142111E100B9E6AF /* WAMockArticlesList.json in Resources */ = {isa = PBXBuildFile; fileRef = FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */; };
+		FFCFE0C7142111E100B9E6AF /* WAArticleViewController-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */; };
+		FFCFE0C8142111E100B9E6AF /* WACapsuleLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01313E136A0002C627F /* WACapsuleLeft.png */; };
+		FFCFE0C9142111E100B9E6AF /* WACapsuleRight.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01413E136A0002C627F /* WACapsuleRight.png */; };
+		FFCFE0CA142111E100B9E6AF /* WACapsuleSingle.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4FA01513E136A0002C627F /* WACapsuleSingle.png */; };
+		FFCFE0CB142111E100B9E6AF /* IPSample in Resources */ = {isa = PBXBuildFile; fileRef = FF21C8D213E14CF9009B980D /* IPSample */; };
+		FFCFE0CC142111E100B9E6AF /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
+		FFCFE0CD142111E100B9E6AF /* WACapsuleLeftPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B79F13E7D8E5002A9D7F /* WACapsuleLeftPressed.png */; };
+		FFCFE0CE142111E100B9E6AF /* WACapsuleRightPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A013E7D8E5002A9D7F /* WACapsuleRightPressed.png */; };
+		FFCFE0CF142111E100B9E6AF /* WACapsuleSinglePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A113E7D8E5002A9D7F /* WACapsuleSinglePressed.png */; };
+		FFCFE0D0142111E100B9E6AF /* WAReply.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A213E7D8E5002A9D7F /* WAReply.png */; };
+		FFCFE0D1142111E100B9E6AF /* WATinyArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */; };
+		FFCFE0D2142111E100B9E6AF /* WATinyArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */; };
+		FFCFE0D3142111E100B9E6AF /* WAArticleCommentsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */; };
+		FFCFE0D4142111E100B9E6AF /* WACompositionBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871013E94F0700154B7D /* WACompositionBarBackground.png */; };
+		FFCFE0D5142111E100B9E6AF /* WACompositionTextWellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */; };
+		FFCFE0D6142111E100B9E6AF /* WACompositionSendButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */; };
+		FFCFE0D7142111E100B9E6AF /* WACompositionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */; };
+		FFCFE0D8142111E100B9E6AF /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
+		FFCFE0D9142111E100B9E6AF /* PLEmptyCameraRoll-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */; };
+		FFCFE0DA142111E100B9E6AF /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */; };
+		FFCFE0DB142111E100B9E6AF /* WAPhotoQueueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */; };
+		FFCFE0DC142111E100B9E6AF /* WAMockUsersList.json in Resources */ = {isa = PBXBuildFile; fileRef = FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */; };
+		FFCFE0DD142111E100B9E6AF /* WADefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */; };
+		FFCFE0DE142111E100B9E6AF /* WAPatternGreenFibers.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */; };
+		FFCFE0DF142111E100B9E6AF /* WAPatternPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC313F1433B009D979A /* WAPatternPaper.png */; };
+		FFCFE0E0142111E100B9E6AF /* WAPatternCarbonFibre.png in Resources */ = {isa = PBXBuildFile; fileRef = FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */; };
+		FFCFE0E1142111E100B9E6AF /* WAButtonSpringBoardRemove.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */; };
+		FFCFE0E2142111E100B9E6AF /* WAComposeViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */; };
+		FFCFE0E3142111E100B9E6AF /* WAArticleCommentsViewCell-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */; };
+		FFCFE0E4142111E100B9E6AF /* WASpeechBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */; };
+		FFCFE0E5142111E100B9E6AF /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
+		FFCFE0E6142111E100B9E6AF /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
+		FFCFE0E7142111E100B9E6AF /* WAPostViewCellPhone-ImageStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */; };
+		FFCFE0E8142111E100B9E6AF /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
+		FFCFE0E9142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */; };
+		FFCFE0EA142111E100B9E6AF /* WAOverlayBezel-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */; };
+		FFCFE0EB142111E100B9E6AF /* WAOverlayBezel-Error.png in Resources */ = {isa = PBXBuildFile; fileRef = FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */; };
+		FFCFE0EC142111E100B9E6AF /* WAPatternBlackPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */; };
+		FFCFE0ED142111E100B9E6AF /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F4141647D600519BCD /* Default-Landscape.png */; };
+		FFCFE0EE142111E100B9E6AF /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F5141647D600519BCD /* Default-Portrait.png */; };
+		FFCFE0EF142111E100B9E6AF /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F6141647D600519BCD /* Default.png */; };
+		FFCFE0F0142111E100B9E6AF /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFE3E8F7141647D600519BCD /* Default@2x.png */; };
+		FFCFE0F1142111E100B9E6AF /* WAArticleViewController-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */; };
+		FFCFE0F2142111E100B9E6AF /* WAPreviewBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */; };
+		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
+		FFCFE0F4142111E100B9E6AF /* WAArticleViewController-Discrete-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */; };
+		FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */; };
+		FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */; };
+		FFFDEF121421165E0083BEFB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FFFDEF101421165E0083BEFB /* InfoPlist.strings */; };
+		FFFDEF141421165E0083BEFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFDEF131421165E0083BEFB /* main.m */; };
+		FFFDEF181421165E0083BEFB /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FFFDEF161421165E0083BEFB /* Credits.rtf */; };
+		FFFDEF1E1421165E0083BEFB /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFDEF1C1421165E0083BEFB /* MainMenu.xib */; };
+		FFFDEF231421167B0083BEFB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFDEF221421167B0083BEFB /* Cocoa.framework */; };
+		FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
+		FFFDF01214211E9C0083BEFB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFFDEFC614211D800083BEFB /* UIKit.framework */; };
+		FFFDF01314211EAE0083BEFB /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFDEF1A1421165E0083BEFB /* WAAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,13 +212,6 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = IRKeychain;
 		};
-		FF666C2D140CD30D00C35CED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = IRKeychain;
-		};
 		FF73A59C13D6DC6500D54EC6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -240,27 +240,6 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
-		FF73A5F713D6DDE800D54EC6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF0A8BA81337AFB700DDA47C;
-			remoteInfo = IRFoundationsTouch;
-		};
-		FF73A5F913D6DDE800D54EC6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF7408231296A8D200571D46;
-			remoteInfo = IRWebAPIKit;
-		};
-		FF73A5FB13D6DDE800D54EC6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D2AAC07D0554694100DB518D;
-			remoteInfo = AQGridView;
-		};
 		FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
@@ -275,40 +254,124 @@
 			remoteGlobalIDString = FF2BFEE0140AC72300604E8D;
 			remoteInfo = IRDiscreteLayoutTests;
 		};
-		FFBA66EE140E12B600BE5A1D /* PBXContainerItemProxy */ = {
+		FFCFE07A142111E100B9E6AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
 			remoteInfo = IRDiscreteLayoutManager;
 		};
-		FFEAC69614196F2F00A25517 /* PBXContainerItemProxy */ = {
+		FFCFE07C142111E100B9E6AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = IRKeychain;
+		};
+		FFCFE07E142111E100B9E6AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF0A8BA81337AFB700DDA47C;
+			remoteInfo = IRFoundationsTouch;
+		};
+		FFCFE080142111E100B9E6AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF7408231296A8D200571D46;
+			remoteInfo = IRWebAPIKit;
+		};
+		FFCFE082142111E100B9E6AF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = AQGridView;
+		};
+		FFCFE084142111E100B9E6AF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 05CD31620EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS";
 		};
+		FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FFFDEF7014211BCC0083BEFB;
+			remoteInfo = IRFoundations;
+		};
+		FFFDEFC514211D800083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = UIKit;
+		};
+		FFFDEFC714211D870083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = UIKit;
+		};
+		FFFDF0641421230C0083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = StoreKit;
+		};
+		FFFDF06F142123110083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF066142123100083BEFB /* MessageUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = MessageUI;
+		};
+		FFFDF079142123170083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = MediaPlayer;
+		};
+		FFFDF0821421231B0083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = AVFoundation;
+		};
+		FFFDF08C142123220083BEFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = AddressBookUI;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostsViewControllerPhone.h; path = "wammer-iOS/WAPostsViewControllerPhone.h"; sourceTree = "<group>"; };
-		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostsViewControllerPhone.m; path = "wammer-iOS/WAPostsViewControllerPhone.m"; sourceTree = "<group>"; };
-		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-ImageStack.xib"; path = "wammer-iOS/WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
-		4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAComposeViewControllerPhone.h; path = "wammer-iOS/WAComposeViewControllerPhone.h"; sourceTree = "<group>"; };
-		4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAComposeViewControllerPhone.m; path = "wammer-iOS/WAComposeViewControllerPhone.m"; sourceTree = "<group>"; };
-		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAComposeViewControllerPhone.xib; path = "wammer-iOS/WAComposeViewControllerPhone.xib"; sourceTree = "<group>"; };
-		4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostViewControllerPhone.h; path = "wammer-iOS/WAPostViewControllerPhone.h"; sourceTree = "<group>"; };
-		4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostViewControllerPhone.m; path = "wammer-iOS/WAPostViewControllerPhone.m"; sourceTree = "<group>"; };
+		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostsViewControllerPhone.h; sourceTree = "<group>"; };
+		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostsViewControllerPhone.m; sourceTree = "<group>"; };
+		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeViewControllerPhone.h; sourceTree = "<group>"; };
+		4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeViewControllerPhone.m; sourceTree = "<group>"; };
+		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeViewControllerPhone.xib; sourceTree = "<group>"; };
+		4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewControllerPhone.h; sourceTree = "<group>"; };
+		4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewControllerPhone.m; sourceTree = "<group>"; };
 		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
 		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
-		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-WebLink.xib"; path = "wammer-iOS/WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAComposeCommentViewControllerPhone.h; path = "wammer-iOS/WAComposeCommentViewControllerPhone.h"; sourceTree = "<group>"; };
-		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAComposeCommentViewControllerPhone.m; path = "wammer-iOS/WAComposeCommentViewControllerPhone.m"; sourceTree = "<group>"; };
-		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WAComposeCommentViewControllerPhone.xib; path = "wammer-iOS/WAComposeCommentViewControllerPhone.xib"; sourceTree = "<group>"; };
-		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-Default.xib"; path = "wammer-iOS/WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
-		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostViewCellPhone.h; path = "wammer-iOS/WAPostViewCellPhone.h"; sourceTree = "<group>"; };
-		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostViewCellPhone.m; path = "wammer-iOS/WAPostViewCellPhone.m"; sourceTree = "<group>"; };
+		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
+		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
+		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
+		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeCommentViewControllerPhone.xib; sourceTree = "<group>"; };
+		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
+		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
+		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
@@ -317,8 +380,8 @@
 		FF13871013E94F0700154B7D /* WACompositionBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBarBackground.png; path = Resources/WACompositionBarBackground.png; sourceTree = "<group>"; };
 		FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionTextWellBackground.png; path = Resources/WACompositionTextWellBackground.png; sourceTree = "<group>"; };
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
-		FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAuthenticationRequestViewController.h; path = "wammer-iOS/WAAuthenticationRequestViewController.h"; sourceTree = "<group>"; };
-		FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAuthenticationRequestViewController.m; path = "wammer-iOS/WAAuthenticationRequestViewController.m"; sourceTree = "<group>"; };
+		FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAuthenticationRequestViewController.h; sourceTree = "<group>"; };
+		FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAuthenticationRequestViewController.m; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternCarbonFibre.png; path = Resources/WAPatternCarbonFibre.png; sourceTree = "<group>"; };
@@ -348,11 +411,10 @@
 		FF61636314161A61004738D3 /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = external/PLCrashReporter/CrashReporter.xcodeproj; sourceTree = "<group>"; };
 		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
 		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryViewController.h; path = "wammer-iOS/WAGalleryViewController.h"; sourceTree = "<group>"; };
-		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryViewController.m; path = "wammer-iOS/WAGalleryViewController.m"; sourceTree = "<group>"; };
-		FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAArticlesViewController.h; path = "wammer-iOS/WAArticlesViewController.h"; sourceTree = "<group>"; };
-		FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAArticlesViewController.m; path = "wammer-iOS/WAArticlesViewController.m"; sourceTree = "<group>"; };
-		FF73A53E13D6C2CC00D54EC6 /* wammer2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammer2.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
+		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryViewController.m; sourceTree = "<group>"; };
+		FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticlesViewController.h; sourceTree = "<group>"; };
+		FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticlesViewController.m; sourceTree = "<group>"; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		FF73A54413D6C2CC00D54EC6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -360,8 +422,8 @@
 		FF73A54C13D6C2CD00D54EC6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FF73A54E13D6C2CD00D54EC6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FF73A55013D6C2CD00D54EC6 /* wammer-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS-Prefix.pch"; sourceTree = "<group>"; };
-		FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WAAppDelegate.h; path = "wammer-iOS/WAAppDelegate.h"; sourceTree = "<group>"; };
-		FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WAAppDelegate.m; path = "wammer-iOS/WAAppDelegate.m"; sourceTree = "<group>"; };
+		FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = WAAppDelegate.h; path = wammer/WAAppDelegate.h; sourceTree = "<group>"; };
+		FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = WAAppDelegate.m; path = wammer/WAAppDelegate.m; sourceTree = "<group>"; };
 		FF73A56A13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginatedArticlesViewController.h; sourceTree = "<group>"; };
 		FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewController.h; sourceTree = "<group>"; };
@@ -382,16 +444,16 @@
 		FF7D466614024FD800C916F5 /* WAImageStreamPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStreamPickerView.h; sourceTree = "<group>"; };
 		FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStreamPickerView.m; sourceTree = "<group>"; };
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
-		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAGalleryImageView.h; path = "wammer-iOS/WAGalleryImageView.h"; sourceTree = "<group>"; };
-		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAGalleryImageView.m; path = "wammer-iOS/WAGalleryImageView.m"; sourceTree = "<group>"; };
+		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
+		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageView.m; sourceTree = "<group>"; };
 		FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternBlackPaper.png; path = Resources/WAPatternBlackPaper.png; sourceTree = "<group>"; };
 		FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+CrashReporting.h"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.h"; sourceTree = SOURCE_ROOT; };
 		FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+CrashReporting.m"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.m"; sourceTree = SOURCE_ROOT; };
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
-		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATableViewCell.h; path = "wammer-iOS/WATableViewCell.h"; sourceTree = "<group>"; };
-		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATableViewCell.m; path = "wammer-iOS/WATableViewCell.m"; sourceTree = "<group>"; };
+		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATableViewCell.h; sourceTree = "<group>"; };
+		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATableViewCell.m; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
@@ -410,10 +472,10 @@
 		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Preview.xib"; path = "Resources/WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
-		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = "wammer-iOS/WAApplicationRootViewControllerDelegate.h"; sourceTree = "<group>"; };
+		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = wammer/WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
-		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAttachedMediaListViewController.h; path = "wammer-iOS/WAAttachedMediaListViewController.h"; sourceTree = "<group>"; };
-		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAttachedMediaListViewController.m; path = "wammer-iOS/WAAttachedMediaListViewController.m"; sourceTree = "<group>"; };
+		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAttachedMediaListViewController.h; sourceTree = "<group>"; };
+		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAttachedMediaListViewController.m; sourceTree = "<group>"; };
 		FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Plaintext.xib"; path = "Resources/WAArticleViewController-Discrete-Plaintext.xib"; sourceTree = "<group>"; };
@@ -426,6 +488,7 @@
 		FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Preview.xib"; path = "Resources/WAArticleViewController-Preview.xib"; sourceTree = "<group>"; };
 		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewBadge.m; sourceTree = "<group>"; };
 		FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewBadge.png; path = Resources/WAPreviewBadge.png; sourceTree = "<group>"; };
@@ -450,31 +513,57 @@
 		FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDown.png; path = Resources/WATinyArrowDown.png; sourceTree = "<group>"; };
 		FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowUp.png; path = Resources/WATinyArrowUp.png; sourceTree = "<group>"; };
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
+		FFFDEF051421165E0083BEFB /* wammer-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFFDEF0F1421165E0083BEFB /* wammer-OSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wammer-OSX-Info.plist"; sourceTree = "<group>"; };
+		FFFDEF111421165E0083BEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FFFDEF131421165E0083BEFB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FFFDEF151421165E0083BEFB /* wammer-OSX-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-OSX-Prefix.pch"; sourceTree = "<group>"; };
+		FFFDEF171421165E0083BEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		FFFDEF191421165E0083BEFB /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppDelegate.h; sourceTree = "<group>"; };
+		FFFDEF1A1421165E0083BEFB /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppDelegate.m; sourceTree = "<group>"; };
+		FFFDEF1D1421165E0083BEFB /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		FFFDEF221421167B0083BEFB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		FFFDEF24142116C90083BEFB /* wammer-OSX.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "wammer-OSX.entitlements"; sourceTree = "<group>"; };
+		FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIKit.xcodeproj; path = external/Chameleon/UIKit/UIKit.xcodeproj; sourceTree = "<group>"; };
+		FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = StoreKit.xcodeproj; path = external/Chameleon/StoreKit/StoreKit.xcodeproj; sourceTree = "<group>"; };
+		FFFDF066142123100083BEFB /* MessageUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MessageUI.xcodeproj; path = external/Chameleon/MessageUI/MessageUI.xcodeproj; sourceTree = "<group>"; };
+		FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MediaPlayer.xcodeproj; path = external/Chameleon/MediaPlayer/MediaPlayer.xcodeproj; sourceTree = "<group>"; };
+		FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AVFoundation.xcodeproj; path = external/Chameleon/AVFoundation/AVFoundation.xcodeproj; sourceTree = "<group>"; };
+		FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AddressBookUI.xcodeproj; path = external/Chameleon/AddressBookUI/AddressBookUI.xcodeproj; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FF73A53B13D6C2CC00D54EC6 /* Frameworks */ = {
+		FFCFE0B1142111E100B9E6AF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF61635F141618BD004738D3 /* MessageUI.framework in Frameworks */,
-				FF666C30140CD31D00C35CED /* Security.framework in Frameworks */,
-				FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */,
-				FF73A69613D6E07D00D54EC6 /* MobileCoreServices.framework in Frameworks */,
-				FF73A54513D6C2CC00D54EC6 /* Foundation.framework in Frameworks */,
-				FF73A54313D6C2CC00D54EC6 /* UIKit.framework in Frameworks */,
-				FF73A54713D6C2CC00D54EC6 /* CoreGraphics.framework in Frameworks */,
-				FF73A69A13D6E08800D54EC6 /* QuartzCore.framework in Frameworks */,
-				FF73A69813D6E08100D54EC6 /* CoreData.framework in Frameworks */,
-				FFB67957141E345C006F84E3 /* CoreText.framework in Frameworks */,
-				FF73A5FD13D6DDF300D54EC6 /* libAQGridView.a in Frameworks */,
-				FF73A5FE13D6DDF300D54EC6 /* libIRFoundationsTouch.a in Frameworks */,
-				FF73A5FF13D6DDF300D54EC6 /* libIRWebAPIKit.a in Frameworks */,
-				FF666C7B140CD79300C35CED /* libIRKeychain.a in Frameworks */,
-				FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */,
-				FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */,
-				FF73A60113D6DDF800D54EC6 /* libxml2.2.7.3.dylib in Frameworks */,
+				FFCFE0B2142111E100B9E6AF /* MessageUI.framework in Frameworks */,
+				FFCFE0B3142111E100B9E6AF /* Security.framework in Frameworks */,
+				FFCFE0B4142111E100B9E6AF /* AssetsLibrary.framework in Frameworks */,
+				FFCFE0B5142111E100B9E6AF /* MobileCoreServices.framework in Frameworks */,
+				FFCFE0B6142111E100B9E6AF /* Foundation.framework in Frameworks */,
+				FFCFE0B7142111E100B9E6AF /* UIKit.framework in Frameworks */,
+				FFCFE0B8142111E100B9E6AF /* CoreGraphics.framework in Frameworks */,
+				FFCFE0B9142111E100B9E6AF /* QuartzCore.framework in Frameworks */,
+				FFCFE0BA142111E100B9E6AF /* CoreData.framework in Frameworks */,
+				FFCFE0BB142111E100B9E6AF /* CoreText.framework in Frameworks */,
+				FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */,
+				FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */,
+				FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */,
+				FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */,
+				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
+				FFCFE0C1142111E100B9E6AF /* libCrashReporter-iOS.a in Frameworks */,
+				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFFDEF021421165E0083BEFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFFDEF231421167B0083BEFB /* Cocoa.framework in Frameworks */,
+				FFFDF01214211E9C0083BEFB /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +592,7 @@
 				FF92796314079593007BEB65 /* WATableViewCell.m */,
 			);
 			name = iPhone;
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
@@ -524,7 +614,7 @@
 				FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */,
 			);
 			name = Views;
-			path = "wammer-iOS";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF55C23513F5251D00F38861 /* Gallery */ = {
@@ -536,6 +626,7 @@
 				FF6FFCC413F86445000C582D /* WAGalleryViewController.m */,
 			);
 			name = Gallery;
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF61636414161A61004738D3 /* Products */ = {
@@ -571,6 +662,7 @@
 				FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */,
 			);
 			name = "Base Articles View";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF73A53313D6C2CC00D54EC6 = {
@@ -583,6 +675,7 @@
 				FF71D3F3140E09EF0069B161 /* Base Articles View */,
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
+				FFFDEF0D1421165E0083BEFB /* Mac */,
 				FF55C23513F5251D00F38861 /* Gallery */,
 				FFA9512714077BE800BD3302 /* Attached Media */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
@@ -598,7 +691,8 @@
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A53E13D6C2CC00D54EC6 /* wammer2.app */,
+				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
+				FFFDEF051421165E0083BEFB /* wammer-OSX.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -606,18 +700,8 @@
 		FF73A54113D6C2CC00D54EC6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FFB67956141E345C006F84E3 /* CoreText.framework */,
-				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
-				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
-				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
-				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
-				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
-				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
-				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
-				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
-				FF666C2F140CD31C00C35CED /* Security.framework */,
-				FF61635E141618BD004738D3 /* MessageUI.framework */,
-				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
+				FFFDEFB414211D5C0083BEFB /* iOS */,
+				FFFDF08E142123260083BEFB /* OS X */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF97386213D82B55003D1722 /* JSONKit */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
@@ -661,7 +745,7 @@
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
 			);
 			name = iPad;
-			path = "wammer-iOS";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF73A54913D6C2CD00D54EC6 /* Supporting Files */ = {
@@ -675,13 +759,14 @@
 				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 			);
 			name = "Supporting Files";
-			path = "wammer-iOS";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF73A59613D6DC6500D54EC6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
+				FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -723,6 +808,7 @@
 				FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */,
 			);
 			name = Authentication;
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF97382213D821C1003D1722 /* Model */ = {
@@ -747,7 +833,7 @@
 				4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */,
 			);
 			name = Model;
-			path = "wammer-iOS";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF97384613D82771003D1722 /* API */ = {
@@ -757,7 +843,7 @@
 				FF97384813D8278E003D1722 /* WARemoteInterface.m */,
 			);
 			name = API;
-			path = "wammer-iOS";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FF97386213D82B55003D1722 /* JSONKit */ = {
@@ -776,6 +862,7 @@
 				FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */,
 			);
 			name = "Attached Media";
+			path = wammer;
 			sourceTree = "<group>";
 		};
 		FFBA66E3140E12AD00BE5A1D /* Products */ = {
@@ -827,34 +914,158 @@
 				FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */,
 			);
 			name = Resources;
-			path = "wammer-iOS";
+			path = wammer;
+			sourceTree = "<group>";
+		};
+		FFFDEF0D1421165E0083BEFB /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEF24142116C90083BEFB /* wammer-OSX.entitlements */,
+				FFFDEF191421165E0083BEFB /* WAAppDelegate.h */,
+				FFFDEF1A1421165E0083BEFB /* WAAppDelegate.m */,
+				FFFDEF1C1421165E0083BEFB /* MainMenu.xib */,
+				FFFDEF0E1421165E0083BEFB /* Supporting Files */,
+			);
+			name = Mac;
+			path = "wammer-OSX";
+			sourceTree = "<group>";
+		};
+		FFFDEF0E1421165E0083BEFB /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEF0F1421165E0083BEFB /* wammer-OSX-Info.plist */,
+				FFFDEF101421165E0083BEFB /* InfoPlist.strings */,
+				FFFDEF131421165E0083BEFB /* main.m */,
+				FFFDEF151421165E0083BEFB /* wammer-OSX-Prefix.pch */,
+				FFFDEF161421165E0083BEFB /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		FFFDEFB414211D5C0083BEFB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				FFB67956141E345C006F84E3 /* CoreText.framework */,
+				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
+				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
+				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
+				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
+				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
+				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
+				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
+				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
+				FF666C2F140CD31C00C35CED /* Security.framework */,
+				FF61635E141618BD004738D3 /* MessageUI.framework */,
+				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		FFFDEFBF14211D7F0083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEFC614211D800083BEFB /* UIKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF05E1421230C0083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF0651421230C0083BEFB /* StoreKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF067142123100083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF070142123110083BEFB /* MessageUI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF072142123160083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF07A142123170083BEFB /* MediaPlayer.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF07C1421231B0083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF0831421231B0083BEFB /* AVFoundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF085142123210083BEFB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDF08D142123220083BEFB /* AddressBookUI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFFDF08E142123260083BEFB /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				FFFDEF221421167B0083BEFB /* Cocoa.framework */,
+				FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */,
+				FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */,
+				FFFDF066142123100083BEFB /* MessageUI.xcodeproj */,
+				FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */,
+				FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */,
+				FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */,
+			);
+			name = "OS X";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FF73A53D13D6C2CC00D54EC6 /* wammer2 */ = {
+		FFCFE078142111E100B9E6AF /* wammer-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer2" */;
+			buildConfigurationList = FFCFE0F8142111E100B9E6AF /* Build configuration list for PBXNativeTarget "wammer-iOS" */;
 			buildPhases = (
-				FF73A53A13D6C2CC00D54EC6 /* Sources */,
-				FF73A53B13D6C2CC00D54EC6 /* Frameworks */,
-				FF73A53C13D6C2CC00D54EC6 /* Resources */,
-				FFE3E8FC1416481500519BCD /* Run Script */,
+				FFCFE085142111E100B9E6AF /* Sources */,
+				FFCFE0B1142111E100B9E6AF /* Frameworks */,
+				FFCFE0C3142111E100B9E6AF /* Resources */,
+				FFCFE0F7142111E100B9E6AF /* IRCommitSHA */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				FFBA66EF140E12B600BE5A1D /* PBXTargetDependency */,
-				FF666C2E140CD30D00C35CED /* PBXTargetDependency */,
-				FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */,
-				FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */,
-				FF73A5FC13D6DDE800D54EC6 /* PBXTargetDependency */,
-				FFEAC69714196F2F00A25517 /* PBXTargetDependency */,
+				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
+				FFCFE07B142111E100B9E6AF /* PBXTargetDependency */,
+				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
+				FFCFE07F142111E100B9E6AF /* PBXTargetDependency */,
+				FFCFE081142111E100B9E6AF /* PBXTargetDependency */,
+				FFCFE083142111E100B9E6AF /* PBXTargetDependency */,
 			);
-			name = wammer2;
+			name = "wammer-iOS";
 			productName = "wammer-iOS";
-			productReference = FF73A53E13D6C2CC00D54EC6 /* wammer2.app */;
+			productReference = FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FFFDEF041421165E0083BEFB /* wammer-OSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FFFDEF1F1421165E0083BEFB /* Build configuration list for PBXNativeTarget "wammer-OSX" */;
+			buildPhases = (
+				FFFDEF011421165E0083BEFB /* Sources */,
+				FFFDEF021421165E0083BEFB /* Frameworks */,
+				FFFDEF031421165E0083BEFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FFFDEFC814211D870083BEFB /* PBXTargetDependency */,
+			);
+			name = "wammer-OSX";
+			productName = "wammer-OSX";
+			productReference = FFFDEF051421165E0083BEFB /* wammer-OSX.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -866,7 +1077,7 @@
 				LastUpgradeCheck = 0420;
 				ORGANIZATIONNAME = Waveface;
 			};
-			buildConfigurationList = FF73A53813D6C2CC00D54EC6 /* Build configuration list for PBXProject "wammer-iOS" */;
+			buildConfigurationList = FF73A53813D6C2CC00D54EC6 /* Build configuration list for PBXProject "wammer" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -878,8 +1089,16 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = FFFDF085142123210083BEFB /* Products */;
+					ProjectRef = FFFDF084142123210083BEFB /* AddressBookUI.xcodeproj */;
+				},
+				{
 					ProductGroup = FF73A5DA13D6DD5000D54EC6 /* Products */;
 					ProjectRef = FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDF07C1421231B0083BEFB /* Products */;
+					ProjectRef = FFFDF07B1421231B0083BEFB /* AVFoundation.xcodeproj */;
 				},
 				{
 					ProductGroup = FF61636414161A61004738D3 /* Products */;
@@ -901,10 +1120,27 @@
 					ProductGroup = FF73A59F13D6DC6A00D54EC6 /* Products */;
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
 				},
+				{
+					ProductGroup = FFFDF072142123160083BEFB /* Products */;
+					ProjectRef = FFFDF071142123160083BEFB /* MediaPlayer.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDF067142123100083BEFB /* Products */;
+					ProjectRef = FFFDF066142123100083BEFB /* MessageUI.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDF05E1421230C0083BEFB /* Products */;
+					ProjectRef = FFFDF05D1421230C0083BEFB /* StoreKit.xcodeproj */;
+				},
+				{
+					ProductGroup = FFFDEFBF14211D7F0083BEFB /* Products */;
+					ProjectRef = FFFDEFBE14211D7F0083BEFB /* UIKit.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
-				FF73A53D13D6C2CC00D54EC6 /* wammer2 */,
+				FFCFE078142111E100B9E6AF /* wammer-iOS */,
+				FFFDEF041421165E0083BEFB /* wammer-OSX */,
 			);
 		};
 /* End PBXProject section */
@@ -1036,169 +1272,242 @@
 			remoteRef = FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRFoundations.a;
+			remoteRef = FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDEFC614211D800083BEFB /* UIKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UIKit.framework;
+			remoteRef = FFFDEFC514211D800083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF0651421230C0083BEFB /* StoreKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = StoreKit.framework;
+			remoteRef = FFFDF0641421230C0083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF070142123110083BEFB /* MessageUI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MessageUI.framework;
+			remoteRef = FFFDF06F142123110083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF07A142123170083BEFB /* MediaPlayer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = MediaPlayer.framework;
+			remoteRef = FFFDF079142123170083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF0831421231B0083BEFB /* AVFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AVFoundation.framework;
+			remoteRef = FFFDF0821421231B0083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFFDF08D142123220083BEFB /* AddressBookUI.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AddressBookUI.framework;
+			remoteRef = FFFDF08C142123220083BEFB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		FF73A53C13D6C2CC00D54EC6 /* Resources */ = {
+		FFCFE0C3142111E100B9E6AF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */,
-				FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */,
-				FF9DA0BE13DFF6BC00D6B28B /* WAMockArticlesList.json in Resources */,
-				FF4FA01213E13249002C627F /* WAArticleViewController-Default.xib in Resources */,
-				FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */,
-				FF4FA01713E136A0002C627F /* WACapsuleRight.png in Resources */,
-				FF4FA01813E136A1002C627F /* WACapsuleSingle.png in Resources */,
-				FF21C8D313E14CF9009B980D /* IPSample in Resources */,
-				FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */,
-				FFF9B7A513E7D8E5002A9D7F /* WACapsuleLeftPressed.png in Resources */,
-				FFF9B7A613E7D8E5002A9D7F /* WACapsuleRightPressed.png in Resources */,
-				FFF9B7A713E7D8E5002A9D7F /* WACapsuleSinglePressed.png in Resources */,
-				FFF9B7A813E7D8E5002A9D7F /* WAReply.png in Resources */,
-				FFF9B7A913E7D8E5002A9D7F /* WATinyArrowDown.png in Resources */,
-				FFF9B7AA13E7D8E5002A9D7F /* WATinyArrowUp.png in Resources */,
-				FFF9B7AE13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib in Resources */,
-				FF13871113E94F0700154B7D /* WACompositionBarBackground.png in Resources */,
-				FF13871313E95C3900154B7D /* WACompositionTextWellBackground.png in Resources */,
-				FF13871513E95E0800154B7D /* WACompositionSendButtonBackground.png in Resources */,
-				FFFFD9DB13EAABDB000E3D2D /* WACompositionViewController.xib in Resources */,
-				FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */,
-				FF615EAD13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png in Resources */,
-				FF615EAF13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */,
-				FFA67D5313EBD35C00159B6E /* WAPhotoQueueBackground.png in Resources */,
-				FFF1F60113EFDF9600D3997C /* WAMockUsersList.json in Resources */,
-				FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */,
-				FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */,
-				FF027CC413F1433B009D979A /* WAPatternPaper.png in Resources */,
-				FF24072C13F27F4A000B2CAA /* WAPatternCarbonFibre.png in Resources */,
-				FF8CDE8713F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png in Resources */,
-				4B587BB913F4D7AE0084E671 /* WAComposeViewControllerPhone.xib in Resources */,
-				FF55C23A13F5270600F38861 /* WAArticleCommentsViewCell-Default.xib in Resources */,
-				FF878BBD13FA6F8700B76807 /* WASpeechBubble.png in Resources */,
-				4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */,
-				FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */,
-				4B225D1A1404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib in Resources */,
-				4BBCADCF140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib in Resources */,
-				FF5B83B3140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib in Resources */,
-				FF42567E1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png in Resources */,
-				FF42567F1414DFA0005A12ED /* WAOverlayBezel-Error.png in Resources */,
-				FF890C9F141624B700CD7D1F /* WAPatternBlackPaper.png in Resources */,
-				FFE3E8F8141647D600519BCD /* Default-Landscape.png in Resources */,
-				FFE3E8F9141647D600519BCD /* Default-Portrait.png in Resources */,
-				FFE3E8FA141647D600519BCD /* Default.png in Resources */,
-				FFE3E8FB141647D600519BCD /* Default@2x.png in Resources */,
-				FFC47FCA141DF97800D5FD12 /* WAArticleViewController-Preview.xib in Resources */,
-				FFD2D917141F4E7E00F21D22 /* WAPreviewBadge.png in Resources */,
-				4B989DC2141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib in Resources */,
-				FFA34019141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib in Resources */,
-				FFB81A7E141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib in Resources */,
-				FFB81A80141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib in Resources */,
+				FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */,
+				FFCFE0C5142111E100B9E6AF /* Icon-72.png in Resources */,
+				FFCFE0C6142111E100B9E6AF /* WAMockArticlesList.json in Resources */,
+				FFCFE0C7142111E100B9E6AF /* WAArticleViewController-Default.xib in Resources */,
+				FFCFE0C8142111E100B9E6AF /* WACapsuleLeft.png in Resources */,
+				FFCFE0C9142111E100B9E6AF /* WACapsuleRight.png in Resources */,
+				FFCFE0CA142111E100B9E6AF /* WACapsuleSingle.png in Resources */,
+				FFCFE0CB142111E100B9E6AF /* IPSample in Resources */,
+				FFCFE0CC142111E100B9E6AF /* Icon.png in Resources */,
+				FFCFE0CD142111E100B9E6AF /* WACapsuleLeftPressed.png in Resources */,
+				FFCFE0CE142111E100B9E6AF /* WACapsuleRightPressed.png in Resources */,
+				FFCFE0CF142111E100B9E6AF /* WACapsuleSinglePressed.png in Resources */,
+				FFCFE0D0142111E100B9E6AF /* WAReply.png in Resources */,
+				FFCFE0D1142111E100B9E6AF /* WATinyArrowDown.png in Resources */,
+				FFCFE0D2142111E100B9E6AF /* WATinyArrowUp.png in Resources */,
+				FFCFE0D3142111E100B9E6AF /* WAArticleCommentsViewController.xib in Resources */,
+				FFCFE0D4142111E100B9E6AF /* WACompositionBarBackground.png in Resources */,
+				FFCFE0D5142111E100B9E6AF /* WACompositionTextWellBackground.png in Resources */,
+				FFCFE0D6142111E100B9E6AF /* WACompositionSendButtonBackground.png in Resources */,
+				FFCFE0D7142111E100B9E6AF /* WACompositionViewController.xib in Resources */,
+				FFCFE0D8142111E100B9E6AF /* PLCameraButtonIcon.png in Resources */,
+				FFCFE0D9142111E100B9E6AF /* PLEmptyCameraRoll-Large~ipad.png in Resources */,
+				FFCFE0DA142111E100B9E6AF /* PLEmptyPhotoAlbum-Large~ipad.png in Resources */,
+				FFCFE0DB142111E100B9E6AF /* WAPhotoQueueBackground.png in Resources */,
+				FFCFE0DC142111E100B9E6AF /* WAMockUsersList.json in Resources */,
+				FFCFE0DD142111E100B9E6AF /* WADefaultUserIcon.png in Resources */,
+				FFCFE0DE142111E100B9E6AF /* WAPatternGreenFibers.png in Resources */,
+				FFCFE0DF142111E100B9E6AF /* WAPatternPaper.png in Resources */,
+				FFCFE0E0142111E100B9E6AF /* WAPatternCarbonFibre.png in Resources */,
+				FFCFE0E1142111E100B9E6AF /* WAButtonSpringBoardRemove.png in Resources */,
+				FFCFE0E2142111E100B9E6AF /* WAComposeViewControllerPhone.xib in Resources */,
+				FFCFE0E3142111E100B9E6AF /* WAArticleCommentsViewCell-Default.xib in Resources */,
+				FFCFE0E4142111E100B9E6AF /* WASpeechBubble.png in Resources */,
+				FFCFE0E5142111E100B9E6AF /* WAPostViewCellPhone-Default.xib in Resources */,
+				FFCFE0E6142111E100B9E6AF /* WAArticleViewController-Plaintext.xib in Resources */,
+				FFCFE0E7142111E100B9E6AF /* WAPostViewCellPhone-ImageStack.xib in Resources */,
+				FFCFE0E8142111E100B9E6AF /* WAComposeCommentViewControllerPhone.xib in Resources */,
+				FFCFE0E9142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.xib in Resources */,
+				FFCFE0EA142111E100B9E6AF /* WAOverlayBezel-Checkmark.png in Resources */,
+				FFCFE0EB142111E100B9E6AF /* WAOverlayBezel-Error.png in Resources */,
+				FFCFE0EC142111E100B9E6AF /* WAPatternBlackPaper.png in Resources */,
+				FFCFE0ED142111E100B9E6AF /* Default-Landscape.png in Resources */,
+				FFCFE0EE142111E100B9E6AF /* Default-Portrait.png in Resources */,
+				FFCFE0EF142111E100B9E6AF /* Default.png in Resources */,
+				FFCFE0F0142111E100B9E6AF /* Default@2x.png in Resources */,
+				FFCFE0F1142111E100B9E6AF /* WAArticleViewController-Preview.xib in Resources */,
+				FFCFE0F2142111E100B9E6AF /* WAPreviewBadge.png in Resources */,
+				FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */,
+				FFCFE0F4142111E100B9E6AF /* WAArticleViewController-Discrete-Preview.xib in Resources */,
+				FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */,
+				FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFFDEF031421165E0083BEFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFFDEF121421165E0083BEFB /* InfoPlist.strings in Resources */,
+				FFFDEF181421165E0083BEFB /* Credits.rtf in Resources */,
+				FFFDEF1E1421165E0083BEFB /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		FFE3E8FC1416481500519BCD /* Run Script */ = {
+		FFCFE0F7142111E100B9E6AF /* IRCommitSHA */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
+			name = IRCommitSHA;
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "commitSha=$(git rev-parse HEAD | head -c 7)\ninfoPlistPath=$TARGET_BUILD_DIR/$INFOPLIST_PATH\n\n/usr/libexec/PlistBuddy -c \"Delete :IRCommitSHA\" $infoPlistPath\n/usr/libexec/PlistBuddy -c \"Add :IRCommitSHA string $commitSha\" $infoPlistPath\n";
+			shellScript = "commitSha=$(git rev-parse HEAD | head -c 7)\ninfoPlistPath=$TARGET_BUILD_DIR/$INFOPLIST_PATH\n\necho \"infoPlistPath $infoPlistPath\"\n\n/usr/libexec/PlistBuddy -c \"Delete :IRCommitSHA\" $infoPlistPath\n/usr/libexec/PlistBuddy -c \"Add :IRCommitSHA string $commitSha\" $infoPlistPath\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		FF73A53A13D6C2CC00D54EC6 /* Sources */ = {
+		FFCFE085142111E100B9E6AF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF73A54F13D6C2CD00D54EC6 /* main.m in Sources */,
-				FF73A55313D6C2CD00D54EC6 /* WAAppDelegate.m in Sources */,
-				FF73A56C13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m in Sources */,
-				FF73A56F13D6CD4100D54EC6 /* WACompositionViewController.m in Sources */,
-				FF73A5C013D6DCA400D54EC6 /* MGSplitCornersView.m in Sources */,
-				FF73A5C113D6DCA400D54EC6 /* MGSplitDividerView.m in Sources */,
-				FF73A5C213D6DCA400D54EC6 /* MGSplitViewController.m in Sources */,
-				FF03F5CF13D81B76007E168F /* WAModel.xcdatamodeld in Sources */,
-				FF97382513D821DF003D1722 /* WADataStore.m in Sources */,
-				FF97384913D8278E003D1722 /* WARemoteInterface.m in Sources */,
-				FF97386113D82B4F003D1722 /* JSONKit.m in Sources */,
-				FF269E5A13D84A420085E20A /* WAPaginationSlider.m in Sources */,
-				FF9DA0C113DFF88F00D6B28B /* WAUser.m in Sources */,
-				FF9DA0C413DFF89000D6B28B /* WAArticle.m in Sources */,
-				FF9DA0C713DFF89000D6B28B /* WAComment.m in Sources */,
-				FF9DA0CA13DFF89000D6B28B /* WAFile.m in Sources */,
-				FF4FA00A13E114F3002C627F /* WAArticleViewController.m in Sources */,
-				FF4FA01B13E13D44002C627F /* WAImageStackView.m in Sources */,
-				4B1527A213E29E72006E9737 /* WAPostsViewControllerPhone.m in Sources */,
-				FF3ACA9013E6ACFB000F608C /* WAView.m in Sources */,
-				FFF9B79E13E7D0D5002A9D7F /* WAArticleCommentsViewController.m in Sources */,
-				4B86976A13EA77FD0024125B /* WAUserSelectionViewController.m in Sources */,
-				FF24072F13F2881E000B2CAA /* WAViewController.m in Sources */,
-				FF8CDE8513F3DAB700E08F28 /* WACompositionViewPhotoCell.m in Sources */,
-				4B587BB813F4D7AE0084E671 /* WAComposeViewControllerPhone.m in Sources */,
-				4B587BBA13F4D7AE0084E671 /* WAPostViewControllerPhone.m in Sources */,
-				FF55C23813F5256B00F38861 /* WAArticleCommentsViewCell.m in Sources */,
-				FF9A17B913FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m in Sources */,
-				FF878C0813FA730100B76807 /* WAGalleryImageView.m in Sources */,
-				FF878C0913FA731200B76807 /* WAGalleryViewController.m in Sources */,
-				4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */,
-				FF7D466814024FD800C916F5 /* WAImageStreamPickerView.m in Sources */,
-				FFAA7B75140773F9006F88DC /* WAAttachedMediaListViewController.m in Sources */,
-				FF92796414079593007BEB65 /* WATableViewCell.m in Sources */,
-				FF164977140CC19900CAE824 /* WAAuthenticationRequestViewController.m in Sources */,
-				FF71D3F9140E0A0C0069B161 /* WAArticlesViewController.m in Sources */,
-				FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */,
-				4BBCADCE140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m in Sources */,
-				FFF4EAC91410EFE2007F444B /* WAOverlayBezel.m in Sources */,
-				FF890CAE14162A5300CD7D1F /* UIApplication+CrashReporting.m in Sources */,
-				FFDDB4B61418BB5900FE9CE2 /* WAPreview.m in Sources */,
-				FFDDB4B91418BB5900FE9CE2 /* WAOpenGraphElement.m in Sources */,
-				FFD2D915141F4D3600F21D22 /* WAPreviewBadge.m in Sources */,
+				FFCFE086142111E100B9E6AF /* main.m in Sources */,
+				FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */,
+				FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */,
+				FFCFE089142111E100B9E6AF /* WACompositionViewController.m in Sources */,
+				FFCFE08A142111E100B9E6AF /* MGSplitCornersView.m in Sources */,
+				FFCFE08B142111E100B9E6AF /* MGSplitDividerView.m in Sources */,
+				FFCFE08C142111E100B9E6AF /* MGSplitViewController.m in Sources */,
+				FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */,
+				FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */,
+				FFCFE090142111E100B9E6AF /* JSONKit.m in Sources */,
+				FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */,
+				FFCFE092142111E100B9E6AF /* WAUser.m in Sources */,
+				FFCFE093142111E100B9E6AF /* WAArticle.m in Sources */,
+				FFCFE094142111E100B9E6AF /* WAComment.m in Sources */,
+				FFCFE095142111E100B9E6AF /* WAFile.m in Sources */,
+				FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */,
+				FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */,
+				FFCFE098142111E100B9E6AF /* WAPostsViewControllerPhone.m in Sources */,
+				FFCFE099142111E100B9E6AF /* WAView.m in Sources */,
+				FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */,
+				FFCFE09B142111E100B9E6AF /* WAUserSelectionViewController.m in Sources */,
+				FFCFE09C142111E100B9E6AF /* WAViewController.m in Sources */,
+				FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */,
+				FFCFE09E142111E100B9E6AF /* WAComposeViewControllerPhone.m in Sources */,
+				FFCFE09F142111E100B9E6AF /* WAPostViewControllerPhone.m in Sources */,
+				FFCFE0A0142111E100B9E6AF /* WAArticleCommentsViewCell.m in Sources */,
+				FFCFE0A1142111E100B9E6AF /* WAArticleTextEmphasisLabel.m in Sources */,
+				FFCFE0A2142111E100B9E6AF /* WAGalleryImageView.m in Sources */,
+				FFCFE0A3142111E100B9E6AF /* WAGalleryViewController.m in Sources */,
+				FFCFE0A4142111E100B9E6AF /* WAPostViewCellPhone.m in Sources */,
+				FFCFE0A5142111E100B9E6AF /* WAImageStreamPickerView.m in Sources */,
+				FFCFE0A6142111E100B9E6AF /* WAAttachedMediaListViewController.m in Sources */,
+				FFCFE0A7142111E100B9E6AF /* WATableViewCell.m in Sources */,
+				FFCFE0A8142111E100B9E6AF /* WAAuthenticationRequestViewController.m in Sources */,
+				FFCFE0A9142111E100B9E6AF /* WAArticlesViewController.m in Sources */,
+				FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */,
+				FFCFE0AB142111E100B9E6AF /* WAComposeCommentViewControllerPhone.m in Sources */,
+				FFCFE0AC142111E100B9E6AF /* WAOverlayBezel.m in Sources */,
+				FFCFE0AD142111E100B9E6AF /* UIApplication+CrashReporting.m in Sources */,
+				FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */,
+				FFCFE0AF142111E100B9E6AF /* WAOpenGraphElement.m in Sources */,
+				FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */,
+				FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFFDEF011421165E0083BEFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFFDF01314211EAE0083BEFB /* WAAppDelegate.m in Sources */,
+				FFFDEF141421165E0083BEFB /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		FF666C2E140CD30D00C35CED /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRKeychain;
-			targetProxy = FF666C2D140CD30D00C35CED /* PBXContainerItemProxy */;
-		};
-		FF73A5F813D6DDE800D54EC6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRFoundationsTouch;
-			targetProxy = FF73A5F713D6DDE800D54EC6 /* PBXContainerItemProxy */;
-		};
-		FF73A5FA13D6DDE800D54EC6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRWebAPIKit;
-			targetProxy = FF73A5F913D6DDE800D54EC6 /* PBXContainerItemProxy */;
-		};
-		FF73A5FC13D6DDE800D54EC6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AQGridView;
-			targetProxy = FF73A5FB13D6DDE800D54EC6 /* PBXContainerItemProxy */;
-		};
-		FFBA66EF140E12B600BE5A1D /* PBXTargetDependency */ = {
+		FFCFE079142111E100B9E6AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRDiscreteLayoutManager;
-			targetProxy = FFBA66EE140E12B600BE5A1D /* PBXContainerItemProxy */;
+			targetProxy = FFCFE07A142111E100B9E6AF /* PBXContainerItemProxy */;
 		};
-		FFEAC69714196F2F00A25517 /* PBXTargetDependency */ = {
+		FFCFE07B142111E100B9E6AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRKeychain;
+			targetProxy = FFCFE07C142111E100B9E6AF /* PBXContainerItemProxy */;
+		};
+		FFCFE07D142111E100B9E6AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRFoundationsTouch;
+			targetProxy = FFCFE07E142111E100B9E6AF /* PBXContainerItemProxy */;
+		};
+		FFCFE07F142111E100B9E6AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRWebAPIKit;
+			targetProxy = FFCFE080142111E100B9E6AF /* PBXContainerItemProxy */;
+		};
+		FFCFE081142111E100B9E6AF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AQGridView;
+			targetProxy = FFCFE082142111E100B9E6AF /* PBXContainerItemProxy */;
+		};
+		FFCFE083142111E100B9E6AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CrashReporter-iOS";
-			targetProxy = FFEAC69614196F2F00A25517 /* PBXContainerItemProxy */;
+			targetProxy = FFCFE084142111E100B9E6AF /* PBXContainerItemProxy */;
+		};
+		FFFDEFC814211D870083BEFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UIKit;
+			targetProxy = FFFDEFC714211D870083BEFB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1209,6 +1518,30 @@
 				FF73A54C13D6C2CD00D54EC6 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FFFDEF101421165E0083BEFB /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFFDEF111421165E0083BEFB /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		FFFDEF161421165E0083BEFB /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFFDEF171421165E0083BEFB /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		FFFDEF1C1421165E0083BEFB /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FFFDEF1D1421165E0083BEFB /* en */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1268,7 +1601,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 28;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -1299,32 +1632,105 @@
 			};
 			name = Release;
 		};
-		FF73A55713D6C2CD00D54EC6 /* Debug */ = {
+		FFCFE0F9142111E100B9E6AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "wammer-iOS/wammer-iOS-Prefix.pch";
-				INFOPLIST_FILE = "wammer-iOS/wammer-iOS-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
+				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				PRODUCT_NAME = "wammer-iOS";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
 		};
-		FF73A55813D6C2CD00D54EC6 /* Release */ = {
+		FFCFE0FA142111E100B9E6AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "wammer-iOS/wammer-iOS-Prefix.pch";
-				INFOPLIST_FILE = "wammer-iOS/wammer-iOS-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
+				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				PRODUCT_NAME = "wammer-iOS";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		FFFDEF201421165E0083BEFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CODE_SIGN_IDENTITY = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wammer-OSX/wammer-OSX-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "wammer-OSX/wammer-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-framework",
+					WebKit,
+					"-framework",
+					QTKit,
+					"-framework",
+					QuartzCore,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		FFFDEF211421165E0083BEFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+				);
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "wammer-OSX/wammer-OSX-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "wammer-OSX/wammer-OSX-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-framework",
+					WebKit,
+					"-framework",
+					QTKit,
+					"-framework",
+					QuartzCore,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1332,7 +1738,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FF73A53813D6C2CC00D54EC6 /* Build configuration list for PBXProject "wammer-iOS" */ = {
+		FF73A53813D6C2CC00D54EC6 /* Build configuration list for PBXProject "wammer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF73A55413D6C2CD00D54EC6 /* Debug */,
@@ -1341,11 +1747,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF73A55613D6C2CD00D54EC6 /* Build configuration list for PBXNativeTarget "wammer2" */ = {
+		FFCFE0F8142111E100B9E6AF /* Build configuration list for PBXNativeTarget "wammer-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FF73A55713D6C2CD00D54EC6 /* Debug */,
-				FF73A55813D6C2CD00D54EC6 /* Release */,
+				FFCFE0F9142111E100B9E6AF /* Debug */,
+				FFCFE0FA142111E100B9E6AF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FFFDEF1F1421165E0083BEFB /* Build configuration list for PBXNativeTarget "wammer-OSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFFDEF201421165E0083BEFB /* Debug */,
+				FFFDEF211421165E0083BEFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
