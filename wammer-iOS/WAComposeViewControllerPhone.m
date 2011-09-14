@@ -61,10 +61,30 @@
 		
 	self.title = @"Compose";
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(handleDone:)] autorelease];
-  
-  self.navigationItem.rightBarButtonItem.enabled = false;
-  
+	
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(handleDone:)] autorelease];
+	self.navigationItem.rightBarButtonItem.enabled = NO;
+	
+	self.navigationItem.titleView = ((^ {	
+		
+		IRTransparentToolbar *centerToolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 128, 44 }] autorelease];
+		centerToolbar.usesCustomLayout = NO;
+		centerToolbar.items = [NSArray arrayWithObjects:
+			[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+			[[[UIBarButtonItem alloc] initWithTitle:@"Attachment" style:UIBarButtonItemStyleBordered target:self action:@selector(handleCameraItemTap:)] autorelease],	
+			[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		nil];
+		centerToolbar.frame = (CGRect){ (CGPoint){ 0, -1 }, centerToolbar.frame.size };
+		centerToolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+		
+		UIView *wrapper = [[[UIView alloc] initWithFrame:centerToolbar.frame] autorelease];
+		[wrapper addSubview:centerToolbar];
+		wrapper.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+		
+		return wrapper;
+		
+	})());
+	
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -133,15 +153,14 @@
 	NSLog(@"post = %@", self.post);
 
   controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
-	
-		[nrSelf.navigationController popViewControllerAnimated:YES];
-		
+		[controller dismissModalViewControllerAnimated:YES];
 	}];
 	
 	controller.headerView = self.attachmentsListViewControllerHeaderView;
-	
-  self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-  [self.navigationController pushViewController:controller animated:YES];
+	UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:controller] autorelease];
+ 
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+  [self.navigationController presentModalViewController:wrapper animated:YES];
 	
 }
 
@@ -240,6 +259,13 @@
 	self.contentTextView.text = self.post.text;
 	[self.contentTextView becomeFirstResponder];
 	
+	self.navigationItem.titleView.frame = (CGRect){
+		CGPointZero,
+		(CGSize){
+			self.navigationItem.titleView.frame.size.width,
+			self.navigationController.navigationBar.frame.size.height
+		}
+	};
 	
 	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];
 	[toolbarGradient setLinearGradientFromColor:[UIColor colorWithWhite:.95 alpha:1] anchor:irTop toColor:[UIColor colorWithWhite:.75 alpha:1] anchor:irBottom];
