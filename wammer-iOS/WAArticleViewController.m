@@ -42,12 +42,13 @@
 		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
 		[WAFullFrameImageStackArticleStyle] = @"Default",
 		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Default",
-		[WADiscretePreviewArticleStyle] = @"Preview"
+		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
+		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
 	}[aStyle])];
 
 	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
 
@@ -151,10 +152,13 @@
 
 - (void) viewDidLoad {
 
+	__block __typeof__(self) nrSelf = self;	
+	__block WAView *nrView = (WAView *)self.view;
+	
 	[super viewDidLoad];
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	
-	self.avatarView.layer.cornerRadius = 4.0f;
+	//	self.avatarView.layer.cornerRadius = 4.0f;
 	self.avatarView.layer.masksToBounds = YES;
 	
 	UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
@@ -164,15 +168,14 @@
 	[avatarContainingView addSubview:self.avatarView];
 	self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
 	avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
-	avatarContainingView.layer.shadowOpacity = 0.5f;
+	avatarContainingView.layer.shadowOpacity = 0.25f;
 	avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
-	avatarContainingView.layer.shadowRadius = 2.0f;
+	avatarContainingView.layer.shadowRadius = 1.0f;
+	avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
+	avatarContainingView.layer.borderWidth = 1.0f;
 	
-	self.imageStackView.delegate = self;
-	self.imageStackView.backgroundColor = [UIColor colorWithWhite:0.75f alpha:0.25f];
 	
-	__block __typeof__(self) nrSelf = self;
-	
+	self.imageStackView.delegate = self;	
 	[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 	
 		WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
@@ -204,117 +207,218 @@
 	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.textEmphasisView.backgroundView addSubview:bubbleView];
 	
-	((WAView *)self.view).onLayoutSubviews = ^ {
+	nrView.onLayoutSubviews = ^ {
 	
-		WAArticleTextEmphasisLabel *textLabel = nrSelf.textEmphasisView;
+		CGPoint centerOffset = CGPointZero;
 	
-		if (textLabel && !textLabel.hidden) {
+		CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 32, 64, 32 });
+		const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
+		const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
 		
-			CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
-			[textLabel sizeToFit];
+		if (usableRect.size.width > maximumTextWidth) {
+			usableRect.origin.x += roundf(0.5f * (usableRect.size.width - maximumTextWidth));
+			usableRect.size.width = maximumTextWidth;
+		}
+		usableRect.size.width = MAX(usableRect.size.width, minimumTextWidth);
+		
+		CGRect textRect = usableRect;
+		textRect.size.height = 1;
+		nrSelf.textEmphasisView.frame = textRect;
+		[nrSelf.textEmphasisView sizeToFit];
+		textRect = nrSelf.textEmphasisView.frame;
+		textRect.size.height = MIN(textRect.size.height, usableRect.size.height);
+		nrSelf.textEmphasisView.frame = textRect;
+		
+		
+		BOOL contextInfoAnchorsPlaintextBubble = NO;
+		
+		switch (nrSelf.presentationStyle) {
+		
+			case WAFullFramePlaintextArticleStyle: {
+				centerOffset.y -= 0.5f * CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 24;
+				contextInfoAnchorsPlaintextBubble = YES;
+				//	Fall through
+			}
+			case WAFullFrameImageStackArticleStyle:
+			case WAFullFramePreviewArticleStyle: {
+				nrSelf.previewBadge.minimumAcceptibleFullFrameAspectRatio = 0.01f;
+				break;
+			}
+	
+			case WADiscretePlaintextArticleStyle:
+			case WADiscreteSingleImageArticleStyle:
+			case WADiscretePreviewArticleStyle: {
 			
-			CGSize labelSize = (CGSize) {
-				MIN(CGRectGetWidth(usableRect) - 54, MAX(256, textLabel.frame.size.width)),
-				MIN(CGRectGetHeight(usableRect) - 80, MAX(80, textLabel.frame.size.height))
-			};
+				centerOffset.y -= 16;
 			
-			textLabel.frame = (CGRect){
-				(CGPoint){
-					roundf(CGRectGetMidX(usableRect) - 0.5f * labelSize.width),
-					roundf(CGRectGetMidY(usableRect) - 0.5f * labelSize.height)
-				},
-				labelSize
-			};
+				nrSelf.previewBadge.frame = UIEdgeInsetsInsetRect(nrView.bounds, (UIEdgeInsets){ 8, 8, 40, 8 });
+				nrSelf.previewBadge.backgroundView = nil;
+				
+				[nrSelf.userNameLabel sizeToFit];
+				
+				[nrSelf.relativeCreationDateLabel sizeToFit];
+				nrSelf.relativeCreationDateLabel.frame = (CGRect){
+					(CGPoint){
+						nrSelf.userNameLabel.frame.origin.x + nrSelf.userNameLabel.frame.size.width + 10,
+						nrSelf.userNameLabel.frame.origin.y + 2
+					},
+					nrSelf.relativeCreationDateLabel.frame.size
+				};
+				
+				[nrSelf.deviceDescriptionLabel sizeToFit];
+				nrSelf.deviceDescriptionLabel.frame = (CGRect){
+					(CGPoint){
+						nrSelf.relativeCreationDateLabel.frame.origin.x + nrSelf.relativeCreationDateLabel.frame.size.width + 10,
+						nrSelf.relativeCreationDateLabel.frame.origin.y - 1
+					},
+					nrSelf.deviceDescriptionLabel.frame.size
+				};
+				
+				break;
+			}
 			
+			default:
+				break;
+		}
+		
+		CGPoint center = (CGPoint){
+			roundf(CGRectGetMidX(nrView.bounds)),
+			roundf(CGRectGetMidY(nrView.bounds))
+		};
+		
+		nrSelf.textEmphasisView.center = irCGPointAddPoint(center, centerOffset);
+		nrSelf.textEmphasisView.frame = CGRectIntegral(nrSelf.textEmphasisView.frame);
+		
+		if (contextInfoAnchorsPlaintextBubble) {
 			nrSelf.contextInfoContainer.frame = (CGRect){
-				nrSelf.contextInfoContainer.frame.origin,
-				(CGSize){
-					MIN(CGRectGetWidth(usableRect) - 20, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
-					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
-				}
-			};
-			
-			nrSelf.contextInfoContainer.center = (CGPoint){
-				CGRectGetMidX(usableRect),
-				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(nrSelf.textEmphasisView.frame) + CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 10.0f
-			};			
-			
-			CGRect actualContentRect = CGRectUnion(
-				nrSelf.textEmphasisView.frame, 
-				nrSelf.contextInfoContainer.frame
-			);
-			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(nrSelf.textEmphasisView.frame);
-			nrSelf.textEmphasisView.frame = CGRectOffset(
-				nrSelf.textEmphasisView.frame, 
-				usableRect.origin.x,
-				usableRect.origin.y + delta
-			);
-			nrSelf.contextInfoContainer.frame = CGRectOffset(
-				nrSelf.contextInfoContainer.frame,
-				usableRect.origin.x,
-				usableRect.origin.y + delta
-			);
-			
-			[nrSelf.relativeCreationDateLabel sizeToFit];
-			
-			nrSelf.deviceDescriptionLabel.frame = (CGRect){
 				(CGPoint){
-					CGRectGetMaxX(nrSelf.relativeCreationDateLabel.frame) + 10,
-					nrSelf.deviceDescriptionLabel.frame.origin.y
+					CGRectGetMinX(nrSelf.textEmphasisView.frame),
+					CGRectGetMaxY(nrSelf.textEmphasisView.frame) + 32
 				},
-				nrSelf.deviceDescriptionLabel.frame.size
+				nrSelf.contextInfoContainer.frame.size
 			};
-						
-		} else {
-		
-//			switch (nrSelf.presentationStyle) {
-//				case WAArticleViewControllerPresentationFullFrame: {
-//					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-//					break;
-//				}
-//				case WAArticleViewControllerPresentationStandalone: {
-//					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-//					break;
-//				}
-//			}
-		
-			nrSelf.contextInfoContainer.frame = (CGRect){
-				(CGPoint){
-					0,
-					CGRectGetHeight(nrSelf.view.bounds) - CGRectGetHeight(nrSelf.contextInfoContainer.frame) - 8
-				},
-				(CGSize){
-					CGRectGetWidth(nrSelf.view.bounds),
-					nrSelf.contextInfoContainer.frame.size.height
-				}
-			};
-		
-			[nrSelf.relativeCreationDateLabel sizeToFit];
-			nrSelf.relativeCreationDateLabel.frame = (CGRect){
-				(CGPoint) {
-					CGRectGetWidth(
-						nrSelf.relativeCreationDateLabel.superview.frame
-					) - CGRectGetWidth(
-						nrSelf.relativeCreationDateLabel.frame
-					) - 32,
-					nrSelf.relativeCreationDateLabel.frame.origin.y
-				},
-				nrSelf.relativeCreationDateLabel.frame.size
-			};
-			
-			nrSelf.deviceDescriptionLabel.frame = (CGRect){
-				(CGPoint){
-					nrSelf.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(
-						nrSelf.deviceDescriptionLabel.frame
-					) - 10,
-					nrSelf.deviceDescriptionLabel.frame.origin.y
-				},
-				nrSelf.deviceDescriptionLabel.frame.size
-			};
-		
 		}
 		
 	};
+//	
+//	switch (self.presentationStyle) {
+//		case WADiscretePreviewArticleStyle: {
+//		}
+//		default:
+//			break;
+//	}
+	
+//	nrView.onLayoutSubviews = ^ {
+//	
+//		WAArticleTextEmphasisLabel *textLabel = nrSelf.textEmphasisView;
+//	
+//		if (textLabel && !textLabel.hidden) {
+//		
+//			CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
+//			[textLabel sizeToFit];
+//			
+//			CGSize labelSize = (CGSize) {
+//				MIN(CGRectGetWidth(usableRect) - 54, MAX(256, textLabel.frame.size.width)),
+//				MIN(CGRectGetHeight(usableRect) - 80, MAX(80, textLabel.frame.size.height))
+//			};
+//			
+//			textLabel.frame = (CGRect){
+//				(CGPoint){
+//					roundf(CGRectGetMidX(usableRect) - 0.5f * labelSize.width),
+//					roundf(CGRectGetMidY(usableRect) - 0.5f * labelSize.height)
+//				},
+//				labelSize
+//			};
+//			
+//			nrSelf.contextInfoContainer.frame = (CGRect){
+//				nrSelf.contextInfoContainer.frame.origin,
+//				(CGSize){
+//					MIN(CGRectGetWidth(usableRect) - 20, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
+//					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
+//				}
+//			};
+//			
+//			nrSelf.contextInfoContainer.center = (CGPoint){
+//				CGRectGetMidX(usableRect),
+//				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(nrSelf.textEmphasisView.frame) + CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 10.0f
+//			};			
+//			
+//			CGRect actualContentRect = CGRectUnion(
+//				nrSelf.textEmphasisView.frame, 
+//				nrSelf.contextInfoContainer.frame
+//			);
+//			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(nrSelf.textEmphasisView.frame);
+//			nrSelf.textEmphasisView.frame = CGRectOffset(
+//				nrSelf.textEmphasisView.frame, 
+//				usableRect.origin.x,
+//				usableRect.origin.y + delta
+//			);
+//			nrSelf.contextInfoContainer.frame = CGRectOffset(
+//				nrSelf.contextInfoContainer.frame,
+//				usableRect.origin.x,
+//				usableRect.origin.y + delta
+//			);
+//			
+//			[nrSelf.relativeCreationDateLabel sizeToFit];
+//			
+//			nrSelf.deviceDescriptionLabel.frame = (CGRect){
+//				(CGPoint){
+//					CGRectGetMaxX(nrSelf.relativeCreationDateLabel.frame) + 10,
+//					nrSelf.deviceDescriptionLabel.frame.origin.y
+//				},
+//				nrSelf.deviceDescriptionLabel.frame.size
+//			};
+//						
+//		} else {
+//		
+////			switch (nrSelf.presentationStyle) {
+////				case WAArticleViewControllerPresentationFullFrame: {
+////					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+////					break;
+////				}
+////				case WAArticleViewControllerPresentationStandalone: {
+////					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
+////					break;
+////				}
+////			}
+//		
+//			nrSelf.contextInfoContainer.frame = (CGRect){
+//				(CGPoint){
+//					0,
+//					CGRectGetHeight(nrSelf.view.bounds) - CGRectGetHeight(nrSelf.contextInfoContainer.frame) - 8
+//				},
+//				(CGSize){
+//					CGRectGetWidth(nrSelf.view.bounds),
+//					nrSelf.contextInfoContainer.frame.size.height
+//				}
+//			};
+//		
+//			[nrSelf.relativeCreationDateLabel sizeToFit];
+//			nrSelf.relativeCreationDateLabel.frame = (CGRect){
+//				(CGPoint) {
+//					CGRectGetWidth(
+//						nrSelf.relativeCreationDateLabel.superview.frame
+//					) - CGRectGetWidth(
+//						nrSelf.relativeCreationDateLabel.frame
+//					) - 32,
+//					nrSelf.relativeCreationDateLabel.frame.origin.y
+//				},
+//				nrSelf.relativeCreationDateLabel.frame.size
+//			};
+//			
+//			nrSelf.deviceDescriptionLabel.frame = (CGRect){
+//				(CGPoint){
+//					nrSelf.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(
+//						nrSelf.deviceDescriptionLabel.frame
+//					) - 10,
+//					nrSelf.deviceDescriptionLabel.frame.origin.y
+//				},
+//				nrSelf.deviceDescriptionLabel.frame.size
+//			};
+//		
+//		}
+		
+//	};
 	
 	[self refreshView];
 		
@@ -347,13 +451,12 @@
 	if (presentationStyle == newPresentationStyle)
 		return;
 	
+	NSParameterAssert(![self isViewLoaded]);
+	
 	[self willChangeValueForKey:@"presentationStyle"];
 	presentationStyle = newPresentationStyle;
 	[self didChangeValueForKey:@"presentationStyle"];
 	
-	if ([self isViewLoaded])
-		[self.view setNeedsLayout];
-
 }
 
 - (void) refreshView {
@@ -368,29 +471,7 @@
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 	nil]] lastObject];
 	
-	self.previewBadge.image = [UIImage imageWithContentsOfFile:anyPreview.graphElement.thumbnailFilePath];
-	self.previewBadge.link = anyPreview.graphElement.url ? [NSURL URLWithString:anyPreview.graphElement.url] : nil;
-	self.previewBadge.title = ((^ {
-		
-		NSString *graphTitle = anyPreview.graphElement.title;
-		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-			return graphTitle;
-			
-		return nil;
-		
-	})());
-	
-	self.previewBadge.text = ((^ {
-		
-		NSString *graphText = anyPreview.graphElement.text;
-		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-			return graphText;
-			
-		return nil;
-		
-	})());
-	
-	[self.previewBadge setNeedsLayout];
+	[self.previewBadge configureWithPreview:anyPreview];
 	
 	if (self.imageStackView) {
 	
@@ -453,7 +534,7 @@
 			[aView.layer addAnimation:((^ {
 				CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
 				transition.fromValue = (id)oldShadowPath;
-				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 				transition.duration = duration;
 				return transition;
 			})()) forKey:@"transition"];
