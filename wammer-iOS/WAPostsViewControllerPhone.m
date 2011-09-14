@@ -213,8 +213,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
-  cell.commentLabel.text = post.text;
+ 
+	NSMutableAttributedString *attributedString = [[[cell.commentLabel attributedStringForString:post.text] mutableCopy] autorelease];
+	
+	[attributedString beginEditing];
+	
+	[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:post.text options:0 range:(NSRange){ 0, [post.text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+	
+		[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+			result.URL, kIRTextLinkAttribute,
+		nil] range:result.range];
+		
+	}];
+	
+	[attributedString endEditing];
+	
+	cell.commentLabel.attributedText = attributedString;
+	cell.commentLabel.userInteractionEnabled = YES;
   
+	
   // For web link
   if (postHasPreview) {
 	
