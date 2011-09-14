@@ -134,7 +134,7 @@
 							</object>
 							<object class="IBUIView" id="107731654">
 								<reference key="NSNextResponder" ref="229656081"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{59, 44}, {241, 150}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
@@ -152,7 +152,6 @@
 								<string key="NSFrame">{{59, 202}, {241, 91}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -280,8 +279,8 @@
 							<reference ref="830469168"/>
 							<reference ref="1002532177"/>
 							<reference ref="701695387"/>
-							<reference ref="790361869"/>
 							<reference ref="107731654"/>
+							<reference ref="790361869"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -406,6 +405,7 @@
 							<string>dateOriginLabel</string>
 							<string>imageStackView</string>
 							<string>originLabel</string>
+							<string>previewBadge</string>
 							<string>userNicknameLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -419,6 +419,7 @@
 							<string>UILabel</string>
 							<string>WAImageStackView</string>
 							<string>UILabel</string>
+							<string>WAPreviewBadge</string>
 							<string>UILabel</string>
 						</object>
 					</object>
@@ -435,6 +436,7 @@
 							<string>dateOriginLabel</string>
 							<string>imageStackView</string>
 							<string>originLabel</string>
+							<string>previewBadge</string>
 							<string>userNicknameLabel</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -476,6 +478,10 @@
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">previewBadge</string>
+								<string key="candidateClassName">WAPreviewBadge</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">userNicknameLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
@@ -484,6 +490,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/WAPostViewCellPhone.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WAPreviewBadge</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WAPreviewBadge.h</string>
 					</object>
 				</object>
 			</object>
