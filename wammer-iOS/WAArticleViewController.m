@@ -251,7 +251,7 @@
 			
 				centerOffset.y -= 16;
 			
-				nrSelf.previewBadge.frame = UIEdgeInsetsInsetRect(nrView.bounds, (UIEdgeInsets){ 8, 8, 40, 8 });
+				nrSelf.previewBadge.frame = UIEdgeInsetsInsetRect(nrView.bounds, (UIEdgeInsets){ 0, 0, 32, 0 });
 				nrSelf.previewBadge.backgroundView = nil;
 				
 				[nrSelf.userNameLabel sizeToFit];

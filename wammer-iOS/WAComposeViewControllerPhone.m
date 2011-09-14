@@ -12,6 +12,8 @@
 #import "WADataStore.h"
 #import "WAAttachedMediaListViewController.h"
 
+#import "IRGradientView.h"
+
 
 @interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
@@ -29,6 +31,7 @@
 @synthesize contentContainerView;
 @synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
+@synthesize toolbar;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
 {
@@ -131,16 +134,15 @@
 
   controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
 	
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
 		[nrSelf.navigationController popViewControllerAnimated:YES];
 		
 	}];
 	
 	controller.headerView = self.attachmentsListViewControllerHeaderView;
 	
-  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
   self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
   [self.navigationController pushViewController:controller animated:YES];
+	
 }
 
 - (void) handleAttachmentAddFromCameraItemTap:(id)sender {
@@ -231,22 +233,56 @@
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.contentTextView.text = self.post.text;
-    [self.contentTextView becomeFirstResponder];
+- (void) viewDidLoad {
+	
+	[super viewDidLoad];
+	
+	self.contentTextView.text = self.post.text;
+	[self.contentTextView becomeFirstResponder];
+	
+	
+	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];
+	[toolbarGradient setLinearGradientFromColor:[UIColor colorWithWhite:.95 alpha:1] anchor:irTop toColor:[UIColor colorWithWhite:.75 alpha:1] anchor:irBottom];
+	toolbarGradient.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth;
+	[toolbarGradient addSubview:((^ {
+		UIView *separatorView = [[[UIView alloc] initWithFrame:(CGRect){
+			CGPointZero,
+			(CGSize){
+				CGRectGetWidth(toolbarGradient.frame),
+				1
+			}
+		}] autorelease];
+		separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+		separatorView.backgroundColor = [UIColor colorWithWhite:0.65 alpha:1];
+		return separatorView;
+	})())];
+	[toolbarGradient addSubview:((^ {
+		UIView *separatorView = [[[UIView alloc] initWithFrame:(CGRect){
+			(CGPoint){
+				0,
+				1
+			},
+			(CGSize){
+				CGRectGetWidth(toolbarGradient.frame),
+				1
+			}
+		}] autorelease];
+		separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+		separatorView.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+		return separatorView;
+	})())];
+	[self.toolbar.superview insertSubview:toolbarGradient belowSubview:self.toolbar];
 		
 }
 
-- (void)viewDidUnload
-{
+- (void) viewDidUnload {
 
-		self.contentTextView = nil;
-		self.contentContainerView = nil;
-		self.attachmentsListViewControllerHeaderView = nil;
-    [super viewDidUnload];
+	self.contentTextView = nil;
+	self.contentContainerView = nil;
+	self.attachmentsListViewControllerHeaderView = nil;
+	self.toolbar = nil;
+	[super viewDidUnload];
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -265,6 +301,7 @@
 	[contentTextView release];
 	[contentContainerView release];
 	[attachmentsListViewControllerHeaderView release];
+	[toolbar release];
 	[super dealloc];
 }
 
