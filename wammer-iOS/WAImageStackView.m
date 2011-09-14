@@ -252,6 +252,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 - (void) layoutSubviews {
 
+	[CATransaction begin];
+
 	[self sendSubviewToBack:self.activityIndicator];
 
 	if (self.gestureProcessingOngoing)
@@ -298,6 +300,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		objc_setAssociatedObject(imageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:imageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 	}];
+	
+	[CATransaction commit];
 
 }
 
