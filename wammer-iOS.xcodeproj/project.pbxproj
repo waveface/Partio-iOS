@@ -19,6 +19,7 @@
 		4BCA9EA213FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */; };
 		4BCA9EA313FCE9DC00978CE9 /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
 		FA3188F91417620100C81D53 /* libCrashReporter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iOS.a */; };
+		FAC77CA01420692500C07826 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FAC77C9F1420692500C07826 /* Icon-72.png */; };
 		FAE26ECB13E1435D00CB1E3A /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FAE26ECA13E1435D00CB1E3A /* Icon.png */; };
 		FF027C9C13F1304D009D979A /* WADefaultUserIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */; };
 		FF027CC213F13E03009D979A /* WAPatternGreenFibers.png in Resources */ = {isa = PBXBuildFile; fileRef = FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */; };
@@ -95,7 +96,6 @@
 		FFBA66E1140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
 		FFBA66F0140E12BC00BE5A1D /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFBD444813FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */; };
-		FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
 		FFC47FCA141DF97800D5FD12 /* WAArticleViewController-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */; };
 		FFC813B813EB8BA1007B0683 /* PLCameraButtonIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */; };
 		FFC813C313EB8F7E007B0683 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
@@ -309,6 +309,7 @@
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAPostViewCellPhone-Default.xib"; path = "wammer-iOS/WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPostViewCellPhone.h; path = "wammer-iOS/WAPostViewCellPhone.h"; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPostViewCellPhone.m; path = "wammer-iOS/WAPostViewCellPhone.m"; sourceTree = "<group>"; };
+		FAC77C9F1420692500C07826 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
@@ -422,7 +423,6 @@
 		FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADiscretePaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
 		FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Plaintext.xib"; path = "Resources/WAArticleViewController-Plaintext.xib"; sourceTree = "<group>"; };
-		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Preview.xib"; path = "Resources/WAArticleViewController-Preview.xib"; sourceTree = "<group>"; };
 		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -790,6 +790,7 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FAC77C9F1420692500C07826 /* Icon-72.png */,
 				FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */,
 				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
@@ -822,7 +823,6 @@
 				FF13871013E94F0700154B7D /* WACompositionBarBackground.png */,
 				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
 				FAE26ECA13E1435D00CB1E3A /* Icon.png */,
-				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
 				FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */,
 				FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */,
 			);
@@ -1044,7 +1044,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF73A54D13D6C2CD00D54EC6 /* InfoPlist.strings in Resources */,
-				FFC2E04E13DD708300816EA1 /* Icon-72.png in Resources */,
 				FF9DA0BE13DFF6BC00D6B28B /* WAMockArticlesList.json in Resources */,
 				FF4FA01213E13249002C627F /* WAArticleViewController-Default.xib in Resources */,
 				FF4FA01613E136A0002C627F /* WACapsuleLeft.png in Resources */,
@@ -1094,6 +1093,7 @@
 				FFA34019141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib in Resources */,
 				FFB81A7E141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib in Resources */,
 				FFB81A80141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib in Resources */,
+				FAC77CA01420692500C07826 /* Icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1223,7 +1223,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1268,7 +1268,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 34;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
