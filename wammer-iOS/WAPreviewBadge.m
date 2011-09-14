@@ -80,11 +80,11 @@ typedef enum {
 	
 	self.minimumAcceptibleFullFrameAspectRatio = 0.85f;
 	
-	UIView *innerBackgroundView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WAPreviewBadge"]] autorelease];
-	innerBackgroundView.layer.contentsCenter = (CGRect){ 10.0/24.0, 10.0/24.0, 4./24., 4.0/24.0 };
+	UIView *innerBackgroundView = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 })] autorelease];
+	innerBackgroundView.layer.contents = (id)[UIImage imageNamed:@"WAPreviewBadge"].CGImage;
+	innerBackgroundView.layer.contentsCenter = (CGRect){ 10.0/24.0, 10.0/24.0, 4.0/24.0, 4.0/24.0 };
 	innerBackgroundView.opaque = NO;
 	innerBackgroundView.backgroundColor = nil;
-	innerBackgroundView.frame = UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 });
 	innerBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.backgroundView addSubview:innerBackgroundView];
 
