@@ -88,14 +88,6 @@ typedef enum {
 	innerBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.backgroundView addSubview:innerBackgroundView];
 
-#if 0
-	
-	innerBackgroundView.alpha = 0.25f;
-	innerBackgroundView.layer.borderColor = [UIColor redColor].CGColor;
-	innerBackgroundView.layer.borderWidth = 2.0f;
-		
-#endif
-
 }
 
 - (void) setBackgroundView:(UIView *)newBackgroundView {
@@ -172,16 +164,6 @@ typedef enum {
 		self.label = nil;
 	}
 	
-#if 0
-	
-	self.layer.borderColor = [UIColor greenColor].CGColor;
-	self.layer.borderWidth = 2.0f;
-	
-	self.label.layer.borderColor = [UIColor redColor].CGColor;
-	self.label.layer.borderWidth = 2.0f;
-	
-#endif
-	
 	if (self.image)
 		self.imageView.image = self.image;
 	
@@ -230,9 +212,6 @@ typedef enum {
 				YES
 			);
 			
-			self.imageView.layer.borderColor = [UIColor redColor].CGColor;
-			self.imageView.layer.borderWidth = 1.0f;
-			
 			BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
 			
 			if (verticalLayout) {
@@ -258,10 +237,8 @@ typedef enum {
 			CGFloat coverageRatio = (actualImageRect.size.width * actualImageRect.size.height) / (imageRect.size.width * imageRect.size.height);
 			if (coverageRatio > self.minimumAcceptibleFullFrameAspectRatio) {
 				self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-				self.imageView.layer.borderColor = [UIColor blueColor].CGColor;
 			} else {
 				self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-				self.imageView.layer.borderColor = [UIColor greenColor].CGColor;
 				self.imageView.frame = (CGRect){
 					self.imageView.frame.origin,
 					(CGSize){

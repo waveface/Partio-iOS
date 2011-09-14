@@ -525,23 +525,34 @@
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+
 	for (UIView *aView in self.imageStackView.subviews) {
 	
 		CGPathRef oldShadowPath = aView.layer.shadowPath;
-
 		if (oldShadowPath) {
 			CFRetain(oldShadowPath);
+			[aView.layer removeAnimationForKey:@"shadowPath"];
 			[aView.layer addAnimation:((^ {
 				CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
-				transition.fromValue = (id)oldShadowPath;
+				transition.fromValue = (id)[UIBezierPath bezierPathWithRect:(CGRect){
+					CGPointZero,
+					((CALayer *)[aView.layer presentationLayer]).bounds.size
+				}].CGPath;
+				transition.toValue = (id)oldShadowPath;
 				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 				transition.duration = duration;
+				transition.removedOnCompletion = YES;
 				return transition;
 			})()) forKey:@"transition"];
+			aView.layer.shadowPath = oldShadowPath;
 			CFRelease(oldShadowPath);
 		}
 	
 	}
+	
+	[CATransaction commit];
 		
 }
 
