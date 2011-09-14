@@ -193,7 +193,7 @@ typedef enum {
 	switch (style) {
 		case WAPreviewBadgeImageAndTextStyle: {
 		
-			CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
+			CGRect usableRect = CGRectStandardize(UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 }));
 			CGRect imageRect = IRCGSizeGetCenteredInRect((CGSize){
 				CGRectGetHeight(self.bounds),
 				CGRectGetHeight(self.bounds)
