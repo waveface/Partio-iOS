@@ -300,125 +300,6 @@
 		}
 		
 	};
-//	
-//	switch (self.presentationStyle) {
-//		case WADiscretePreviewArticleStyle: {
-//		}
-//		default:
-//			break;
-//	}
-	
-//	nrView.onLayoutSubviews = ^ {
-//	
-//		WAArticleTextEmphasisLabel *textLabel = nrSelf.textEmphasisView;
-//	
-//		if (textLabel && !textLabel.hidden) {
-//		
-//			CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
-//			[textLabel sizeToFit];
-//			
-//			CGSize labelSize = (CGSize) {
-//				MIN(CGRectGetWidth(usableRect) - 54, MAX(256, textLabel.frame.size.width)),
-//				MIN(CGRectGetHeight(usableRect) - 80, MAX(80, textLabel.frame.size.height))
-//			};
-//			
-//			textLabel.frame = (CGRect){
-//				(CGPoint){
-//					roundf(CGRectGetMidX(usableRect) - 0.5f * labelSize.width),
-//					roundf(CGRectGetMidY(usableRect) - 0.5f * labelSize.height)
-//				},
-//				labelSize
-//			};
-//			
-//			nrSelf.contextInfoContainer.frame = (CGRect){
-//				nrSelf.contextInfoContainer.frame.origin,
-//				(CGSize){
-//					MIN(CGRectGetWidth(usableRect) - 20, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
-//					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
-//				}
-//			};
-//			
-//			nrSelf.contextInfoContainer.center = (CGPoint){
-//				CGRectGetMidX(usableRect),
-//				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(nrSelf.textEmphasisView.frame) + CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 10.0f
-//			};			
-//			
-//			CGRect actualContentRect = CGRectUnion(
-//				nrSelf.textEmphasisView.frame, 
-//				nrSelf.contextInfoContainer.frame
-//			);
-//			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(nrSelf.textEmphasisView.frame);
-//			nrSelf.textEmphasisView.frame = CGRectOffset(
-//				nrSelf.textEmphasisView.frame, 
-//				usableRect.origin.x,
-//				usableRect.origin.y + delta
-//			);
-//			nrSelf.contextInfoContainer.frame = CGRectOffset(
-//				nrSelf.contextInfoContainer.frame,
-//				usableRect.origin.x,
-//				usableRect.origin.y + delta
-//			);
-//			
-//			[nrSelf.relativeCreationDateLabel sizeToFit];
-//			
-//			nrSelf.deviceDescriptionLabel.frame = (CGRect){
-//				(CGPoint){
-//					CGRectGetMaxX(nrSelf.relativeCreationDateLabel.frame) + 10,
-//					nrSelf.deviceDescriptionLabel.frame.origin.y
-//				},
-//				nrSelf.deviceDescriptionLabel.frame.size
-//			};
-//						
-//		} else {
-//		
-////			switch (nrSelf.presentationStyle) {
-////				case WAArticleViewControllerPresentationFullFrame: {
-////					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-////					break;
-////				}
-////				case WAArticleViewControllerPresentationStandalone: {
-////					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-////					break;
-////				}
-////			}
-//		
-//			nrSelf.contextInfoContainer.frame = (CGRect){
-//				(CGPoint){
-//					0,
-//					CGRectGetHeight(nrSelf.view.bounds) - CGRectGetHeight(nrSelf.contextInfoContainer.frame) - 8
-//				},
-//				(CGSize){
-//					CGRectGetWidth(nrSelf.view.bounds),
-//					nrSelf.contextInfoContainer.frame.size.height
-//				}
-//			};
-//		
-//			[nrSelf.relativeCreationDateLabel sizeToFit];
-//			nrSelf.relativeCreationDateLabel.frame = (CGRect){
-//				(CGPoint) {
-//					CGRectGetWidth(
-//						nrSelf.relativeCreationDateLabel.superview.frame
-//					) - CGRectGetWidth(
-//						nrSelf.relativeCreationDateLabel.frame
-//					) - 32,
-//					nrSelf.relativeCreationDateLabel.frame.origin.y
-//				},
-//				nrSelf.relativeCreationDateLabel.frame.size
-//			};
-//			
-//			nrSelf.deviceDescriptionLabel.frame = (CGRect){
-//				(CGPoint){
-//					nrSelf.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(
-//						nrSelf.deviceDescriptionLabel.frame
-//					) - 10,
-//					nrSelf.deviceDescriptionLabel.frame.origin.y
-//				},
-//				nrSelf.deviceDescriptionLabel.frame.size
-//			};
-//		
-//		}
-		
-//	};
 	
 	[self refreshView];
 		
@@ -493,14 +374,17 @@
 			
 				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
 					
-					return [UIImage imageWithContentsOfFile:aPath];
+					UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
+					NSParameterAssert(returnedImage);
+					
+					return returnedImage;
 					
 				}];
 				
 				objc_setAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
 			
 			}
-		
+			
 		} else {
 		
 			self.imageStackView.images = nil;
