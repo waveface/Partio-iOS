@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF35C5601422065E00A9AC28 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FF35C55F1422065E00A9AC28 /* Icon.png */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
 		FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
@@ -389,6 +390,7 @@
 		FF24072E13F2881E000B2CAA /* WAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAViewController.m; sourceTree = "<group>"; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
+		FF35C55F1422065E00A9AC28 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = wammer/Resources/Icon.png; sourceTree = "<group>"; };
 		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
 		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
 		FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAOverlayBezel-Checkmark.png"; path = "Resources/WAOverlayBezel-Checkmark.png"; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				FF35C55F1422065E00A9AC28 /* Icon.png */,
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
 				FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */,
@@ -1379,6 +1382,7 @@
 				FFCFE0F4142111E100B9E6AF /* WAArticleViewController-Discrete-Preview.xib in Resources */,
 				FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */,
 				FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */,
+				FF35C5601422065E00A9AC28 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
