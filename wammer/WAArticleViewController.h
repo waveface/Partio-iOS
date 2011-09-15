@@ -15,6 +15,9 @@
 
 #import "WAPreviewBadge.h"
 
+#import "IRAlertView.h"
+#import "IRActionSheetController.h"
+
 
 @class WAImageStackView;
 
