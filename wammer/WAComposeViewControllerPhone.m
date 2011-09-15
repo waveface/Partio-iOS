@@ -12,6 +12,8 @@
 #import "WADataStore.h"
 #import "WAAttachedMediaListViewController.h"
 
+#import "IRGradientView.h"
+
 
 @interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
@@ -29,6 +31,7 @@
 @synthesize contentContainerView;
 @synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
+@synthesize toolbar;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
 {
@@ -58,10 +61,30 @@
 		
 	self.title = @"Compose";
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(handleDone:)] autorelease];
-  
-  self.navigationItem.rightBarButtonItem.enabled = false;
-  
+	
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(handleDone:)] autorelease];
+	self.navigationItem.rightBarButtonItem.enabled = NO;
+	
+	self.navigationItem.titleView = ((^ {	
+		
+		IRTransparentToolbar *centerToolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 128, 44 }] autorelease];
+		centerToolbar.usesCustomLayout = NO;
+		centerToolbar.items = [NSArray arrayWithObjects:
+			[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+			[[[UIBarButtonItem alloc] initWithTitle:@"Attachment" style:UIBarButtonItemStyleBordered target:self action:@selector(handleCameraItemTap:)] autorelease],	
+			[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		nil];
+		centerToolbar.frame = (CGRect){ (CGPoint){ 0, -1 }, centerToolbar.frame.size };
+		centerToolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+		
+		UIView *wrapper = [[[UIView alloc] initWithFrame:centerToolbar.frame] autorelease];
+		[wrapper addSubview:centerToolbar];
+		wrapper.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+		
+		return wrapper;
+		
+	})());
+	
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -130,17 +153,15 @@
 	NSLog(@"post = %@", self.post);
 
   controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
-	
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-		[nrSelf.navigationController popViewControllerAnimated:YES];
-		
+		[controller dismissModalViewControllerAnimated:YES];
 	}];
 	
 	controller.headerView = self.attachmentsListViewControllerHeaderView;
+	UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:controller] autorelease];
+ 
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
+  [self.navigationController presentModalViewController:wrapper animated:YES];
 	
-  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-  self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-  [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void) handleAttachmentAddFromCameraItemTap:(id)sender {
@@ -231,22 +252,63 @@
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    self.contentTextView.text = self.post.text;
-    [self.contentTextView becomeFirstResponder];
+- (void) viewDidLoad {
+	
+	[super viewDidLoad];
+	
+	self.contentTextView.text = self.post.text;
+	[self.contentTextView becomeFirstResponder];
+	
+	self.navigationItem.titleView.frame = (CGRect){
+		CGPointZero,
+		(CGSize){
+			self.navigationItem.titleView.frame.size.width,
+			self.navigationController.navigationBar.frame.size.height
+		}
+	};
+	
+	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];
+	[toolbarGradient setLinearGradientFromColor:[UIColor colorWithWhite:.95 alpha:1] anchor:irTop toColor:[UIColor colorWithWhite:.75 alpha:1] anchor:irBottom];
+	toolbarGradient.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth;
+	[toolbarGradient addSubview:((^ {
+		UIView *separatorView = [[[UIView alloc] initWithFrame:(CGRect){
+			CGPointZero,
+			(CGSize){
+				CGRectGetWidth(toolbarGradient.frame),
+				1
+			}
+		}] autorelease];
+		separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+		separatorView.backgroundColor = [UIColor colorWithWhite:0.65 alpha:1];
+		return separatorView;
+	})())];
+	[toolbarGradient addSubview:((^ {
+		UIView *separatorView = [[[UIView alloc] initWithFrame:(CGRect){
+			(CGPoint){
+				0,
+				1
+			},
+			(CGSize){
+				CGRectGetWidth(toolbarGradient.frame),
+				1
+			}
+		}] autorelease];
+		separatorView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+		separatorView.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+		return separatorView;
+	})())];
+	[self.toolbar.superview insertSubview:toolbarGradient belowSubview:self.toolbar];
 		
 }
 
-- (void)viewDidUnload
-{
+- (void) viewDidUnload {
 
-		self.contentTextView = nil;
-		self.contentContainerView = nil;
-		self.attachmentsListViewControllerHeaderView = nil;
-    [super viewDidUnload];
+	self.contentTextView = nil;
+	self.contentContainerView = nil;
+	self.attachmentsListViewControllerHeaderView = nil;
+	self.toolbar = nil;
+	[super viewDidUnload];
+	
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -265,6 +327,7 @@
 	[contentTextView release];
 	[contentContainerView release];
 	[attachmentsListViewControllerHeaderView release];
+	[toolbar release];
 	[super dealloc];
 }
 

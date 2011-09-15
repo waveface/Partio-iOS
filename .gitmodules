@@ -25,3 +25,6 @@
 [submodule "external/PLCrashReporter"]
 	path = external/PLCrashReporter
 	url = git://github.com/iridia/PLCrashReporter.git
+[submodule "external/Chameleon"]
+	path = external/Chameleon
+	url = git://github.com/iridia/Chameleon.git

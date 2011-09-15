@@ -157,6 +157,7 @@
 	
 	[super viewDidLoad];
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
+	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
 	//	self.avatarView.layer.cornerRadius = 4.0f;
 	self.avatarView.layer.masksToBounds = YES;
@@ -251,7 +252,7 @@
 			
 				centerOffset.y -= 16;
 			
-				nrSelf.previewBadge.frame = UIEdgeInsetsInsetRect(nrView.bounds, (UIEdgeInsets){ 8, 8, 40, 8 });
+				nrSelf.previewBadge.frame = UIEdgeInsetsInsetRect(nrView.bounds, (UIEdgeInsets){ 0, 0, 32, 0 });
 				nrSelf.previewBadge.backgroundView = nil;
 				
 				[nrSelf.userNameLabel sizeToFit];
@@ -300,125 +301,6 @@
 		}
 		
 	};
-//	
-//	switch (self.presentationStyle) {
-//		case WADiscretePreviewArticleStyle: {
-//		}
-//		default:
-//			break;
-//	}
-	
-//	nrView.onLayoutSubviews = ^ {
-//	
-//		WAArticleTextEmphasisLabel *textLabel = nrSelf.textEmphasisView;
-//	
-//		if (textLabel && !textLabel.hidden) {
-//		
-//			CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 });
-//			[textLabel sizeToFit];
-//			
-//			CGSize labelSize = (CGSize) {
-//				MIN(CGRectGetWidth(usableRect) - 54, MAX(256, textLabel.frame.size.width)),
-//				MIN(CGRectGetHeight(usableRect) - 80, MAX(80, textLabel.frame.size.height))
-//			};
-//			
-//			textLabel.frame = (CGRect){
-//				(CGPoint){
-//					roundf(CGRectGetMidX(usableRect) - 0.5f * labelSize.width),
-//					roundf(CGRectGetMidY(usableRect) - 0.5f * labelSize.height)
-//				},
-//				labelSize
-//			};
-//			
-//			nrSelf.contextInfoContainer.frame = (CGRect){
-//				nrSelf.contextInfoContainer.frame.origin,
-//				(CGSize){
-//					MIN(CGRectGetWidth(usableRect) - 20, CGRectGetWidth(nrSelf.textEmphasisView.frame)),
-//					CGRectGetHeight(nrSelf.contextInfoContainer.frame)
-//				}
-//			};
-//			
-//			nrSelf.contextInfoContainer.center = (CGPoint){
-//				CGRectGetMidX(usableRect),
-//				CGRectGetMidY(usableRect) + 0.5f * CGRectGetHeight(nrSelf.textEmphasisView.frame) + CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 10.0f
-//			};			
-//			
-//			CGRect actualContentRect = CGRectUnion(
-//				nrSelf.textEmphasisView.frame, 
-//				nrSelf.contextInfoContainer.frame
-//			);
-//			CGFloat delta = roundf(0.5f * (CGRectGetHeight(usableRect) - CGRectGetHeight(actualContentRect))) - CGRectGetMinY(nrSelf.textEmphasisView.frame);
-//			nrSelf.textEmphasisView.frame = CGRectOffset(
-//				nrSelf.textEmphasisView.frame, 
-//				usableRect.origin.x,
-//				usableRect.origin.y + delta
-//			);
-//			nrSelf.contextInfoContainer.frame = CGRectOffset(
-//				nrSelf.contextInfoContainer.frame,
-//				usableRect.origin.x,
-//				usableRect.origin.y + delta
-//			);
-//			
-//			[nrSelf.relativeCreationDateLabel sizeToFit];
-//			
-//			nrSelf.deviceDescriptionLabel.frame = (CGRect){
-//				(CGPoint){
-//					CGRectGetMaxX(nrSelf.relativeCreationDateLabel.frame) + 10,
-//					nrSelf.deviceDescriptionLabel.frame.origin.y
-//				},
-//				nrSelf.deviceDescriptionLabel.frame.size
-//			};
-//						
-//		} else {
-//		
-////			switch (nrSelf.presentationStyle) {
-////				case WAArticleViewControllerPresentationFullFrame: {
-////					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 0, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-////					break;
-////				}
-////				case WAArticleViewControllerPresentationStandalone: {
-////					nrSelf.imageStackView.frame = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 40, 0, 12 + CGRectGetHeight(nrSelf.contextInfoContainer.frame), 0 });
-////					break;
-////				}
-////			}
-//		
-//			nrSelf.contextInfoContainer.frame = (CGRect){
-//				(CGPoint){
-//					0,
-//					CGRectGetHeight(nrSelf.view.bounds) - CGRectGetHeight(nrSelf.contextInfoContainer.frame) - 8
-//				},
-//				(CGSize){
-//					CGRectGetWidth(nrSelf.view.bounds),
-//					nrSelf.contextInfoContainer.frame.size.height
-//				}
-//			};
-//		
-//			[nrSelf.relativeCreationDateLabel sizeToFit];
-//			nrSelf.relativeCreationDateLabel.frame = (CGRect){
-//				(CGPoint) {
-//					CGRectGetWidth(
-//						nrSelf.relativeCreationDateLabel.superview.frame
-//					) - CGRectGetWidth(
-//						nrSelf.relativeCreationDateLabel.frame
-//					) - 32,
-//					nrSelf.relativeCreationDateLabel.frame.origin.y
-//				},
-//				nrSelf.relativeCreationDateLabel.frame.size
-//			};
-//			
-//			nrSelf.deviceDescriptionLabel.frame = (CGRect){
-//				(CGPoint){
-//					nrSelf.relativeCreationDateLabel.frame.origin.x - CGRectGetWidth(
-//						nrSelf.deviceDescriptionLabel.frame
-//					) - 10,
-//					nrSelf.deviceDescriptionLabel.frame.origin.y
-//				},
-//				nrSelf.deviceDescriptionLabel.frame.size
-//			};
-//		
-//		}
-		
-//	};
 	
 	[self refreshView];
 		
@@ -428,6 +310,40 @@
 
 	if (self.onViewTap)
 		self.onViewTap();
+
+}
+
+- (void) handleGlobalInspect:(UILongPressGestureRecognizer *)longPressRecognizer {
+
+	static NSString * const kGlobalInspectActionSheet = @"kGlobalInspectActionSheet";
+	
+	__block __typeof__(self) nrSelf = self;
+	__block IRActionSheetController *controller = objc_getAssociatedObject(self, &kGlobalInspectActionSheet);
+	
+	if (controller)
+	if ([(UIActionSheet *)[controller managedActionSheet] isVisible])
+		return;
+	
+	controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+		
+		[IRAction actionWithTitle:@"Inspect" block: ^ {
+			
+			dispatch_async(dispatch_get_current_queue(), ^ {
+			
+				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:(
+					[NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments]
+				) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			
+				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
+			});
+			
+		}],
+		
+	nil]];
+	
+	objc_setAssociatedObject(self, &kGlobalInspectActionSheet, controller, OBJC_ASSOCIATION_RETAIN);
+	
+	[(UIActionSheet *)[controller managedActionSheet] showFromRect:self.view.bounds inView:self.view animated:YES];
 
 }
 
@@ -493,14 +409,17 @@
 			
 				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
 					
-					return [UIImage imageWithContentsOfFile:aPath];
+					UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
+					NSParameterAssert(returnedImage);
+					
+					return returnedImage;
 					
 				}];
 				
 				objc_setAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
 			
 			}
-		
+			
 		} else {
 		
 			self.imageStackView.images = nil;
