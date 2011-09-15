@@ -157,6 +157,7 @@
 	
 	[super viewDidLoad];
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
+	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
 	//	self.avatarView.layer.cornerRadius = 4.0f;
 	self.avatarView.layer.masksToBounds = YES;
@@ -309,6 +310,40 @@
 
 	if (self.onViewTap)
 		self.onViewTap();
+
+}
+
+- (void) handleGlobalInspect:(UILongPressGestureRecognizer *)longPressRecognizer {
+
+	static NSString * const kGlobalInspectActionSheet = @"kGlobalInspectActionSheet";
+	
+	__block __typeof__(self) nrSelf = self;
+	__block IRActionSheetController *controller = objc_getAssociatedObject(self, &kGlobalInspectActionSheet);
+	
+	if (controller)
+	if ([(UIActionSheet *)[controller managedActionSheet] isVisible])
+		return;
+	
+	controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+		
+		[IRAction actionWithTitle:@"Inspect" block: ^ {
+			
+			dispatch_async(dispatch_get_current_queue(), ^ {
+			
+				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:(
+					[NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments]
+				) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			
+				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
+			});
+			
+		}],
+		
+	nil]];
+	
+	objc_setAssociatedObject(self, &kGlobalInspectActionSheet, controller, OBJC_ASSOCIATION_RETAIN);
+	
+	[(UIActionSheet *)[controller managedActionSheet] showFromRect:self.view.bounds inView:self.view animated:YES];
 
 }
 
