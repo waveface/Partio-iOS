@@ -393,16 +393,22 @@
 	
 	if (self.imageStackView) {
 	
-		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewCOntrollerStackImagePaths";
+		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewControllerStackImagePaths";
 		
 		NSParameterAssert([self.article.fileOrder count] == [self.article.files count]);
 		
-		NSArray *allFilePaths = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-		
+		NSArray *allFiles = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
 			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
 				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-			}] anyObject]).resourceFilePath;
+			}] anyObject]);
+		}];
 		
+		NSArray *allFilePaths = [allFiles irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
+			return (
+				aFile.resourceFilePath ? aFile.resourceFilePath : 
+				aFile.thumbnailFilePath ? aFile.thumbnailFilePath :
+				nil
+			);
 		}];
 		
 		if ([allFilePaths count] == [self.article.files count]) {
@@ -414,12 +420,9 @@
 			if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
 			
 				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-					
 					UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
 					NSParameterAssert(returnedImage);
-					
-					return returnedImage;
-					
+					return returnedImage;					
 				}];
 				
 				objc_setAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);

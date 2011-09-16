@@ -135,8 +135,6 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
-	NSLog(@"self.window.irInterfaceBounds %@", NSStringFromCGRect(self.window.irInterfaceBounds));
-
 	self.center = (CGPoint){
 		roundf(CGRectGetMidX(self.window.irInterfaceBounds)),
 		roundf(CGRectGetMidY(self.window.irInterfaceBounds))
