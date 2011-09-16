@@ -21,12 +21,12 @@
 @property (nonatomic, retain) NSString * resourceType;
 @property (nonatomic, retain) NSString * resourceURL;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSString * thumbnailFilePath;
+@property (nonatomic, retain) NSString * thumbnailFilePath;	//	Downloaded canonical (remote) thumbnail
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
-@property (nonatomic, retain) UIImage *thumbnail;
+@property (nonatomic, retain) UIImage *thumbnail;	//	Synthesized thumbnail
 
 + (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
 + (NSOperationQueue *) remoteResourceHandlingQueue;

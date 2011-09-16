@@ -122,14 +122,21 @@
 				
 				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
 				fr.entity = [WAFile entityDescriptionForContext:context];
-				fr.predicate = [NSPredicate predicateWithFormat:@"resourceURL == %@", [representingURL absoluteString]];
+				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL == %@) || (thumbnailURL == %@)", [representingURL absoluteString], [representingURL absoluteString]];
 				
 				return fr;
 			
 			})()) error:nil];
 			
-			for (WAFile *matchingObject in matchingObjects)
-				matchingObject.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
+			for (WAFile *matchingObject in matchingObjects) {
+				
+				if ([matchingObject.resourceURL isEqualToString:[representingURL absoluteString]])
+					matchingObject.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
+					
+				if ([matchingObject.thumbnailURL isEqualToString:[representingURL absoluteString]])
+					matchingObject.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
+				
+			}
 			
 			NSError *savingError;
 			if (![context save:&savingError])
@@ -181,6 +188,35 @@
 		[self willChangeValueForKey:@"resourceFilePath"];
 		[self setPrimitiveValue:primitivePath forKey:@"resourceFilePath"];
 		[self didChangeValueForKey:@"resourceFilePath"];
+	}
+	
+	return primitivePath;
+
+}
+
+- (NSString *) thumbnailFilePath {
+
+	NSString *primitivePath = [self primitiveValueForKey:@"thumbnailFilePath"];
+	
+	if (primitivePath)
+		return primitivePath;
+	
+	if (!self.thumbnailURL)
+		return nil;
+	
+	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
+	
+	if (![thumbnailURL isFileURL]) {
+		[[[self class] sharedRemoteResourcesManager] retrieveResourceAtRemoteURL:thumbnailURL forceReload:YES];
+		return nil;
+	}
+		
+	primitivePath = [thumbnailURL path];
+	
+	if (primitivePath) {
+		[self willChangeValueForKey:@"thumbnailFilePath"];
+		[self setPrimitiveValue:primitivePath forKey:@"thumbnailFilePath"];
+		[self didChangeValueForKey:@"thumbnailFilePath"];
 	}
 	
 	return primitivePath;
