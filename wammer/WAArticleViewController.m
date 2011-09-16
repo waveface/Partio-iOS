@@ -330,9 +330,11 @@
 			
 			dispatch_async(dispatch_get_current_queue(), ^ {
 			
-				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:(
-					[NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments]
-				) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
+			
+				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				
+				NSLog(inspectionText);
 			
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
 			});
@@ -391,29 +393,36 @@
 	
 	if (self.imageStackView) {
 	
-		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewCOntrollerStackImagePaths";
+		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewControllerStackImagePaths";
 		
-		NSArray *allFilePaths = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+		NSParameterAssert([self.article.fileOrder count] == [self.article.files count]);
 		
+		NSArray *allFiles = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
 			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
 				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-			}] anyObject]).resourceFilePath;
+			}] anyObject]);
+		}];
 		
+		NSArray *allFilePaths = [allFiles irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
+			return (
+				aFile.resourceFilePath ? aFile.resourceFilePath : 
+				aFile.thumbnailFilePath ? aFile.thumbnailFilePath :
+				nil
+			);
 		}];
 		
 		if ([allFilePaths count] == [self.article.files count]) {
+		
+			//	TBD it might be totally unnecessaary to wait for all the stuff to load if we can simply show one loaded image
 		
 			NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths);
 
 			if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
 			
 				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-					
 					UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
 					NSParameterAssert(returnedImage);
-					
-					return returnedImage;
-					
+					return returnedImage;					
 				}];
 				
 				objc_setAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
