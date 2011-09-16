@@ -330,9 +330,11 @@
 			
 			dispatch_async(dispatch_get_current_queue(), ^ {
 			
-				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:(
-					[NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments]
-				) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
+			
+				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				
+				NSLog(inspectionText);
 			
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
 			});
@@ -393,6 +395,8 @@
 	
 		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewCOntrollerStackImagePaths";
 		
+		NSParameterAssert([self.article.fileOrder count] == [self.article.files count]);
+		
 		NSArray *allFilePaths = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
 		
 			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
@@ -402,6 +406,8 @@
 		}];
 		
 		if ([allFilePaths count] == [self.article.files count]) {
+		
+			//	TBD it might be totally unnecessaary to wait for all the stuff to load if we can simply show one loaded image
 		
 			NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths);
 
