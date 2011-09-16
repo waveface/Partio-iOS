@@ -152,9 +152,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 				return [anImage irDecodedImage];
 			}];
 			
-			if (![self.images isEqual:actualDecodedImages])
-				return;
-			
 			dispatch_async(dispatch_get_main_queue(), ^ {
 				[self setShownImages:actualDecodedImages withDecodingCompletion:aBlock];
 			});
@@ -200,7 +197,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.firstPhotoView = nil;
 
-	
 	IRCATransact(^{
 
 		[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
@@ -232,9 +228,10 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 			innerImageView.layer.masksToBounds = YES;
 			
-			[imageView addSubview:innerImageView];
-					
+			[imageView addSubview:innerImageView];					
 			[self insertSubview:imageView atIndex:0];		
+			
+			NSParameterAssert(innerImageView.layer.contents);
 			
 			self.activityIndicator.hidden = YES;
 			
