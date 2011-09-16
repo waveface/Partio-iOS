@@ -138,8 +138,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	images = [newImages retain];
 	[self didChangeValueForKey:@"images"];
 	
-	[self setShownImages:nil withDecodingCompletion:nil];
-	
 	self.activityIndicator.hidden = NO;
 	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
