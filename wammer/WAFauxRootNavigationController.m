@@ -15,12 +15,12 @@
 
 	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, navigationBar, item);
 	
-	//	[self.viewControllers indexOfObject:]
-
+	//	Only catch 
+	
 	return YES;
 
 }
-
+ 
 - (UIViewController *) popViewControllerAnimated:(BOOL)animated {
 
 	NSLog(@"%@ %s %x", self, __PRETTY_FUNCTION__, animated);

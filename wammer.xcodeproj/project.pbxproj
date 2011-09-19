@@ -213,6 +213,13 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = IRKeychain;
 		};
+		FF72C187142789FA00B5D838 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF72C12A142789E300B5D838;
+			remoteInfo = IRFoundationsX;
+		};
 		FF73A59C13D6DC6500D54EC6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -296,13 +303,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 05CD31620EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS";
-		};
-		FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FFFDEF7014211BCC0083BEFB;
-			remoteInfo = IRFoundations;
 		};
 		FFFDEFC514211D800083BEFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -771,7 +771,7 @@
 			isa = PBXGroup;
 			children = (
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
-				FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */,
+				FF72C188142789FA00B5D838 /* libIRFoundationsX.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1235,6 +1235,13 @@
 			remoteRef = FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FF72C188142789FA00B5D838 /* libIRFoundationsX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = IRFoundationsX.framework;
+			remoteRef = FF72C187142789FA00B5D838 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1275,13 +1282,6 @@
 			fileType = wrapper.cfbundle;
 			path = IRDiscreteLayoutTests.octest;
 			remoteRef = FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libIRFoundations.a;
-			remoteRef = FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFFDEFC614211D800083BEFB /* UIKit.framework */ = {
