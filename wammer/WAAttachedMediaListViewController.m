@@ -295,15 +295,16 @@
 	}] anyObject];
 	
 	UIImage *actualImage = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
-	NSData *data = [[NSData alloc] initWithContentsOfFile:representedFile.resourceFilePath];
-  NSLog(@"%dK",  [data length]/1024);
+	NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
+  long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
+  
   cell.imageView.image = [actualImage irScaledImageWithSize:(CGSize){
 		aTableView.rowHeight,
 		aTableView.rowHeight
 	}];
 		
 	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", actualImage.size.width, actualImage.size.height];
-  cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)[data length]/(1024.0)];
+  cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
 	
 	return cell;
 
