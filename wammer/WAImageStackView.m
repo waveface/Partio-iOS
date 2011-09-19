@@ -43,6 +43,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 @synthesize images, delegate, shownImages;
 @synthesize pinchRecognizer, rotationRecognizer, tapRecognizer, activityIndicator, firstPhotoView;
 @synthesize gestureProcessingOngoing;
+@synthesize maxNumberOfImages;
 
 - (id) initWithCoder:(NSCoder *)aDecoder {
 
@@ -72,7 +73,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) waInit {
 
+	self.maxNumberOfImages = 2;
 	self.layer.shouldRasterize = YES;
+	self.layer.rasterizationScale = [UIScreen mainScreen].scale;
 
 	self.gestureProcessingOngoing = NO;
 	self.state = WAImageStackViewInteractionNormal;
@@ -195,8 +198,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.firstPhotoView = nil;
 
-	IRCATransact(^{
-
+	IRCATransact( ^ {
+	
 		[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 			
 			return (BOOL)(aSubview.tag == kPhotoViewTag);

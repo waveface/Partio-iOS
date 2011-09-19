@@ -109,6 +109,13 @@
 	
 }
 
+- (void) prepareForReuse {
+
+	[super prepareForReuse];
+	[self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
+
+}
+
 @end
 
 
