@@ -18,6 +18,8 @@
 #import "WAOverlayBezel.h"
 #import "CALayer+IRAdditions.h"
 
+#import "WAFauxRootNavigationController.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -138,7 +140,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			backingView.layer.shadowOpacity = 0.0f;
 			[backgroundView removeFromSuperview];
 			
-			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:paginatedVC] autorelease];
+			UIViewController *emptyVC = [[[UIViewController alloc] init]  autorelease];
+			
+			WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:emptyVC] autorelease];
+			
+			[navController pushViewController:paginatedVC animated:NO];
 			
 			[self.navigationController presentModalViewController:navController animated:NO];
 		
