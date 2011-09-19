@@ -176,11 +176,11 @@
 		
 	}];
 	
-	[imagePickerController.view addSubview:((^ {
-		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
-		decorativeView.backgroundColor = [UIColor blackColor];
-		return decorativeView;
-	})())];
+	//	[imagePickerController.view addSubview:((^ {
+	//		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
+	//		decorativeView.backgroundColor = [UIColor blackColor];
+	//		return decorativeView;
+	//	})())];
 
 	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
 
