@@ -137,8 +137,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 			backingView.layer.shadowOpacity = 0.0f;
 			[backgroundView removeFromSuperview];
+			
+			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:paginatedVC] autorelease];
+			
+			[self.navigationController presentModalViewController:navController animated:NO];
 		
-			[self.navigationController pushViewController:paginatedVC animated:NO];
+			//	[self.navigationController pushViewController:paginatedVC animated:NO];
 			
 			[UIView animateWithDuration:0.35f animations: ^ {
 			
