@@ -139,9 +139,9 @@
 - (IBAction) handleCameraItemTap:(id)sender {
 
 	__block WAAttachedMediaListViewController *controller = nil;
-	__block __typeof__(self) nrSelf = self;
+	//	__block __typeof__(self) nrSelf = self;
+	//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
 	
-//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
 	NSLog(@"self.post %@", self.post);
 	
 	if ([self.post.objectID isTemporaryID]) {
@@ -176,11 +176,11 @@
 		
 	}];
 	
-	[imagePickerController.view addSubview:((^ {
-		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
-		decorativeView.backgroundColor = [UIColor blackColor];
-		return decorativeView;
-	})())];
+	//	[imagePickerController.view addSubview:((^ {
+	//		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
+	//		decorativeView.backgroundColor = [UIColor blackColor];
+	//		return decorativeView;
+	//	})())];
 
 	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
 

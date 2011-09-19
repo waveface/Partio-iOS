@@ -29,8 +29,10 @@ typedef enum {
 @property (nonatomic, readwrite, assign) IBOutlet id<WAImageStackViewDelegate> delegate;
 @property (nonatomic, readwrite, assign) WAImageStackViewInteractionState state;
 @property (nonatomic, readwrite, retain) NSArray *images;
-@property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
+@property (nonatomic, readwrite, assign) NSUInteger maxNumberOfImages;
+
 @property (nonatomic, readonly, assign) UIView *firstPhotoView;
+@property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
 
 - (void) setImages:(NSArray *)newImages asynchronously:(BOOL)async withDecodingCompletion:(void(^)(void))aBlock;
 - (void) reset;

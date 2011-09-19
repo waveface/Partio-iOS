@@ -236,19 +236,27 @@
 		switch (nrSelf.presentationStyle) {
 		
 			case WAFullFramePlaintextArticleStyle: {
+				
 				centerOffset.y -= 0.5f * CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 24;
 				contextInfoAnchorsPlaintextBubble = YES;
 				//	Fall through
+				
 			}
 			case WAFullFrameImageStackArticleStyle:
 			case WAFullFramePreviewArticleStyle: {
+				
 				nrSelf.previewBadge.minimumAcceptibleFullFrameAspectRatio = 0.01f;
+				nrSelf.imageStackView.maxNumberOfImages = 2;
+				
 				break;
+			
 			}
 	
 			case WADiscretePlaintextArticleStyle:
 			case WADiscreteSingleImageArticleStyle:
 			case WADiscretePreviewArticleStyle: {
+			
+				nrSelf.imageStackView.maxNumberOfImages = 1;
 			
 				centerOffset.y -= 16;
 			
@@ -276,6 +284,7 @@
 				};
 				
 				break;
+				
 			}
 			
 			default:
@@ -334,7 +343,7 @@
 			
 				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 				
-				NSLog(inspectionText);
+				NSLog(@"%@", inspectionText);
 			
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
 			});
@@ -393,7 +402,7 @@
 	
 	if (self.imageStackView) {
 	
-		static NSString * const waArticleViewCOntrollerStackImagePaths = @"waArticleViewControllerStackImagePaths";
+		static NSString * const waArticleViewControllerStackImagePaths = @"waArticleViewControllerStackImagePaths";
 		
 		NSParameterAssert([self.article.fileOrder count] == [self.article.files count]);
 		
@@ -411,27 +420,23 @@
 			);
 		}];
 		
-		if ([allFilePaths count] == [self.article.files count]) {
+		NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths);
+		if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
 		
-			//	TBD it might be totally unnecessaary to wait for all the stuff to load if we can simply show one loaded image
-		
-			NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths);
-
-			if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
-			
-				self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-					UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
-					NSParameterAssert(returnedImage);
-					return returnedImage;					
-				}];
+			self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
 				
-				objc_setAssociatedObject(self.imageStackView, &waArticleViewCOntrollerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
+				UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
+				NSParameterAssert(returnedImage);
+				
+				if (index >= ((self.presentationStyle == WADiscretePreviewArticleStyle) ? 0 : 1)) {
+					*stop = YES;
+				}
+				
+				return returnedImage;
+				
+			}];
 			
-			}
-			
-		} else {
-		
-			self.imageStackView.images = nil;
+			objc_setAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
 		
 		}
 	
