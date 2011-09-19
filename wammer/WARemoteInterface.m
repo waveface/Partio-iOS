@@ -229,6 +229,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 		if (!anObject) {
 			NSLog(@"Error parsing: %@", parsingError);
+			NSLog(@"Original content is %@", incomingData);
 			return (NSDictionary *)nil;
 		}
 		
