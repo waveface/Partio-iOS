@@ -334,7 +334,7 @@
 			
 				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 				
-				NSLog(inspectionText);
+				NSLog(@"%@", inspectionText);
 			
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
 			});

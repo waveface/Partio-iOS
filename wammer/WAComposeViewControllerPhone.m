@@ -139,9 +139,9 @@
 - (IBAction) handleCameraItemTap:(id)sender {
 
 	__block WAAttachedMediaListViewController *controller = nil;
-	__block __typeof__(self) nrSelf = self;
+	//	__block __typeof__(self) nrSelf = self;
+	//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
 	
-//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
 	NSLog(@"self.post %@", self.post);
 	
 	if ([self.post.objectID isTemporaryID]) {
