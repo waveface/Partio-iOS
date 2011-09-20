@@ -399,7 +399,8 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
 
 	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
-		return (self.interfaceOrientation == newOrientation);
+		return ([UIApplication sharedApplication].statusBarOrientation == newOrientation);
+		//	return (self.interfaceOrientation == newOrientation);
 		
 	if ([self.articleViewControllers count] > self.paginatedView.currentPage)
 	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView.gestureProcessingOngoing)

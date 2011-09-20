@@ -212,6 +212,16 @@
 	NSParameterAssert([NSThread isMainThread]);
 	[nrSelf remoteDataLoadingWillBeginForOperation:@"refreshData"];
 	
+	[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+	
+		NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+		
+	} onFailure: ^ (NSError *error) {
+	
+		//	Nothing, since this is implicit
+		
+	}];
+	
 	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 	
 		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {

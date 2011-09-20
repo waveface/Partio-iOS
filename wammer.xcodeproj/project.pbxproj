@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
 		FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
@@ -212,6 +213,13 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = IRKeychain;
 		};
+		FF72C187142789FA00B5D838 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF72C12A142789E300B5D838;
+			remoteInfo = IRFoundationsX;
+		};
 		FF73A59C13D6DC6500D54EC6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -295,13 +303,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 05CD31620EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS";
-		};
-		FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FFFDEF7014211BCC0083BEFB;
-			remoteInfo = IRFoundations;
 		};
 		FFFDEFC514211D800083BEFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -488,6 +489,8 @@
 		FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Preview.xib"; path = "Resources/WAArticleViewController-Preview.xib"; sourceTree = "<group>"; };
 		FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PLCameraButtonIcon.png; path = Resources/PLCameraButtonIcon.png; sourceTree = "<group>"; };
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		FFC81D0E14277F0300B41DB9 /* WAFauxRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFauxRootNavigationController.h; sourceTree = "<group>"; };
+		FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFauxRootNavigationController.m; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewBadge.m; sourceTree = "<group>"; };
@@ -722,6 +725,8 @@
 				FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */,
 				FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */,
 				FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */,
+				FFC81D0E14277F0300B41DB9 /* WAFauxRootNavigationController.h */,
+				FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */,
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
 				FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */,
@@ -766,7 +771,7 @@
 			isa = PBXGroup;
 			children = (
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
-				FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */,
+				FF72C188142789FA00B5D838 /* IRFoundationsX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1230,6 +1235,13 @@
 			remoteRef = FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		FF72C188142789FA00B5D838 /* IRFoundationsX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = IRFoundationsX.framework;
+			remoteRef = FF72C187142789FA00B5D838 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1270,13 +1282,6 @@
 			fileType = wrapper.cfbundle;
 			path = IRDiscreteLayoutTests.octest;
 			remoteRef = FFBA66EC140E12AD00BE5A1D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FFFDEFB714211D5D0083BEFB /* libIRFoundations.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libIRFoundations.a;
-			remoteRef = FFFDEFB614211D5D0083BEFB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFFDEFC614211D800083BEFB /* UIKit.framework */ = {
@@ -1459,6 +1464,7 @@
 				FFCFE0AF142111E100B9E6AF /* WAOpenGraphElement.m in Sources */,
 				FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */,
 				FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */,
+				FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1637,7 +1643,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
@@ -1652,7 +1657,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
