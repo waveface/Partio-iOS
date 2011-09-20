@@ -145,7 +145,22 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:emptyVC] autorelease];
 			[navController pushViewController:paginatedVC animated:NO];
 			[navController setOnPoppingFauxRoot: ^ {
-				[navController dismissModalViewControllerAnimated:YES];
+				
+				[CATransaction begin];
+				
+				[navController dismissModalViewControllerAnimated:NO];
+				
+				[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
+					CATransition *transition = [CATransition animation];
+					transition.type = kCATransitionFade;
+					transition.removedOnCompletion = YES;
+					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+					transition.duration = 0.3f;
+					return transition;
+				})()) forKey:kCATransition];
+
+				[CATransaction commit];
+				
 			}];
 			
 			[CATransaction begin];
@@ -157,6 +172,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				CATransition *transition = [CATransition animation];
 				transition.type = kCATransitionFade;
 				transition.removedOnCompletion = YES;
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 				transition.duration = 0.3f;
 				return transition;
 			})()) forKey:kCATransition];
