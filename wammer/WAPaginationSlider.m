@@ -93,6 +93,8 @@
 	
 	[self addSubview:self.slider];
 	[self addSubview:self.pageIndicatorLabel];
+	
+	[self setNeedsLayout];
 
 }
 
