@@ -771,7 +771,7 @@
 			isa = PBXGroup;
 			children = (
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
-				FF72C188142789FA00B5D838 /* libIRFoundationsX.a */,
+				FF72C188142789FA00B5D838 /* IRFoundationsX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1235,7 +1235,7 @@
 			remoteRef = FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF72C188142789FA00B5D838 /* libIRFoundationsX.a */ = {
+		FF72C188142789FA00B5D838 /* IRFoundationsX.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = IRFoundationsX.framework;
@@ -1643,7 +1643,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
@@ -1658,7 +1657,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
