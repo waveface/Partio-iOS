@@ -10,37 +10,31 @@
 #import "Foundation+IRAdditions.h"
 
 @implementation WAFauxRootNavigationController
+@synthesize onPoppingFauxRoot;
 
 - (BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
 
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, navigationBar, item);
+	NSUInteger indexOfItem = [[self.viewControllers irMap: ^ (UIViewController *aVC, int index, BOOL *stop) {
+		return aVC.navigationItem;
+	}] indexOfObject:item];
 	
-	//	Only catch 
+	if (indexOfItem == 1) {
+	
+		if (self.onPoppingFauxRoot)
+			self.onPoppingFauxRoot();
+			
+		return NO;
+	
+	}
 	
 	return YES;
 
 }
  
-- (UIViewController *) popViewControllerAnimated:(BOOL)animated {
+- (void) dealloc {
 
-	NSLog(@"%@ %s %x", self, __PRETTY_FUNCTION__, animated);
-	
-	return [super popViewControllerAnimated:animated];
-
-}
-
-- (NSArray *) popToViewController:(UIViewController *)viewController animated:(BOOL)animated  {
-
-	NSLog(@"%@ %s %@ %x", self, __PRETTY_FUNCTION__, viewController, animated);
-	
-	return [super popToViewController:viewController animated:animated];
-
-}
-- (NSArray *) popToRootViewControllerAnimated:(BOOL)animated {
-
-	NSLog(@"%@ %s %x", self, __PRETTY_FUNCTION__, animated);
-
-	return [super popToRootViewControllerAnimated:animated];
+	[onPoppingFauxRoot release];
+	[super dealloc];
 
 }
 

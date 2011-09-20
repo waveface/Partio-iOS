@@ -142,9 +142,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			
 			UIViewController *emptyVC = [[[UIViewController alloc] init]  autorelease];
 			
-			WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:emptyVC] autorelease];
-			
+			__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:emptyVC] autorelease];
 			[navController pushViewController:paginatedVC animated:NO];
+			[navController setOnPoppingFauxRoot: ^ {
+				[navController dismissModalViewControllerAnimated:YES];
+			}];
 			
 			[self.navigationController presentModalViewController:navController animated:NO];
 		

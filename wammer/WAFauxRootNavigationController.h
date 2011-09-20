@@ -10,4 +10,6 @@
 
 @interface WAFauxRootNavigationController : UINavigationController
 
+@property (nonatomic, readwrite, copy) void (^onPoppingFauxRoot)();
+
 @end
