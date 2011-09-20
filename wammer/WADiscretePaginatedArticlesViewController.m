@@ -148,21 +148,22 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				[navController dismissModalViewControllerAnimated:YES];
 			}];
 			
+			[CATransaction begin];
+			
+			[backingView removeFromSuperview];
 			[self.navigationController presentModalViewController:navController animated:NO];
-		
-			//	[self.navigationController pushViewController:paginatedVC animated:NO];
-			
-			[UIView animateWithDuration:0.35f animations: ^ {
-			
-				backingView.alpha = 0.0f;
-				
-			} completion: ^ (BOOL finished) {
-			
-				[backingView removeFromSuperview];
-				
-				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-				
-			}];
+
+			[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
+				CATransition *transition = [CATransition animation];
+				transition.type = kCATransitionFade;
+				transition.removedOnCompletion = YES;
+				transition.duration = 0.3f;
+				return transition;
+			})()) forKey:kCATransition];
+
+			[CATransaction commit];
+
+			[[UIApplication sharedApplication] endIgnoringInteractionEvents];		
 
 		}];
 	
