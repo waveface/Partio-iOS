@@ -43,6 +43,12 @@
 //	POST /comment
 - (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+//	GET users/latest_read_post_id
+- (void) retrieveLastReadArticleRemoteIdentifierOnSuccess:(void(^)(NSString *lastID, NSDate *modDate))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
+//	POST users/latest_read_post_id
+- (void) setLastReadArticleRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *response))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
 @end
 
 

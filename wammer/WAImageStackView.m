@@ -74,8 +74,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 - (void) waInit {
 
 	self.maxNumberOfImages = 2;
-	self.layer.shouldRasterize = YES;
-	self.layer.rasterizationScale = [UIScreen mainScreen].scale;
 
 	self.gestureProcessingOngoing = NO;
 	self.state = WAImageStackViewInteractionNormal;
