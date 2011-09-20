@@ -59,6 +59,9 @@
 	if ([inMethodName isEqualToString:@"createComment"])
 		returnedURL = [NSURL URLWithString:@"post/create_new_comment/" relativeToURL:self.baseURL];
 	
+	if ([inMethodName isEqualToString:@"lastReadArticleContext"])
+		returnedURL = [NSURL URLWithString:@"users/latest_read_post_id/" relativeToURL:self.baseURL];
+		
 	return returnedURL;
 
 }
@@ -401,9 +404,11 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	NSURL *movableFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
 	NSURL *newURL = [movableFileURL pathExtension] ? movableFileURL : [NSURL fileURLWithPath:[[[movableFileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
 
-	NSError *movingError = nil;
-	if (![[NSFileManager defaultManager] moveItemAtURL:movableFileURL toURL:newURL error:&movingError]) {
-		NSLog(@"Error moving: %@ — using the old URI.", movingError);
+	if (![[newURL absoluteString] isEqual:[movableFileURL absoluteString]]) {
+		NSError *movingError = nil;
+		if (![[NSFileManager defaultManager] moveItemAtURL:movableFileURL toURL:newURL error:&movingError]) {
+			NSLog(@"Error moving: %@ — using the old URI.", movingError);
+		}
 	}
 
 	[self.engine fireAPIRequestNamed:@"createFile" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -463,6 +468,48 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			successBlock([inResponseOrNil objectForKey:@"comment"]);
 		
 	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
+		
+	}];
+
+}
+
+- (void) retrieveLastReadArticleRemoteIdentifierOnSuccess:(void(^)(NSString *lastID, NSDate *modDate))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil objectForKey:@"latest_read_post_id"], [inResponseOrNil objectForKey:@"latest_read_post_timestamp"]);
+		
+	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (failureBlock)
+			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
+		
+	}];
+
+}
+
+- (void) setLastReadArticleRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[NSDictionary dictionaryWithObjectsAndKeys:
+	
+			anIdentifier, @"latest_read_post_id",
+		
+		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
+		
+		@"POST", kIRWebAPIEngineRequestHTTPMethod,
+	
+	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock(inResponseOrNil);
+		
+	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
