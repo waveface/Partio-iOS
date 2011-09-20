@@ -18,6 +18,8 @@
 #import "WAOverlayBezel.h"
 #import "CALayer+IRAdditions.h"
 
+#import "WAFauxRootNavigationController.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -137,20 +139,31 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 			backingView.layer.shadowOpacity = 0.0f;
 			[backgroundView removeFromSuperview];
-		
-			[self.navigationController pushViewController:paginatedVC animated:NO];
 			
-			[UIView animateWithDuration:0.35f animations: ^ {
+			UIViewController *emptyVC = [[[UIViewController alloc] init]  autorelease];
 			
-				backingView.alpha = 0.0f;
-				
-			} completion: ^ (BOOL finished) {
-			
-				[backingView removeFromSuperview];
-				
-				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-				
+			__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:emptyVC] autorelease];
+			[navController pushViewController:paginatedVC animated:NO];
+			[navController setOnPoppingFauxRoot: ^ {
+				[navController dismissModalViewControllerAnimated:YES];
 			}];
+			
+			[CATransaction begin];
+			
+			[backingView removeFromSuperview];
+			[self.navigationController presentModalViewController:navController animated:NO];
+
+			[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
+				CATransition *transition = [CATransition animation];
+				transition.type = kCATransitionFade;
+				transition.removedOnCompletion = YES;
+				transition.duration = 0.3f;
+				return transition;
+			})()) forKey:kCATransition];
+
+			[CATransaction commit];
+
+			[[UIApplication sharedApplication] endIgnoringInteractionEvents];		
 
 		}];
 	
