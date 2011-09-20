@@ -14,6 +14,7 @@
 #import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 
 #ifndef __WAPreviewBadge__
@@ -101,6 +102,21 @@ typedef enum {
 	[self addSubview:backgroundView];
 	
 	[self setNeedsLayout];
+
+}
+
+- (void) setImage:(UIImage *)newImage {
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+		UIImage *decodedImage = [newImage irDecodedImage];
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self willChangeValueForKey:@"image"];
+			[image release];
+			image = [decodedImage retain];
+			[self didChangeValueForKey:@"image"];
+			[self setNeedsLayout];
+		});
+	});
 
 }
 
