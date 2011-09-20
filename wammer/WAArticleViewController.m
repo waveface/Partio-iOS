@@ -548,7 +548,7 @@
 	
 	IRCATransact(^ {
 	
-		rootView = self.view.window.rootViewController.view;
+		rootView = self.view.window.rootViewController.modalViewController.view;
 		
 		backdropView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
 		backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -649,7 +649,7 @@
 						
 						imageStackView.firstPhotoView.alpha = 0.0f;
 						
-						rootView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+						rootView = [UIApplication sharedApplication].keyWindow.rootViewController.modalViewController.view;
 						NSParameterAssert(rootView);
 						backdropView.frame = rootView.bounds;
 						
