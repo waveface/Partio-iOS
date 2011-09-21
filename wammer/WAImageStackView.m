@@ -196,7 +196,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.firstPhotoView = nil;
 
-	IRCATransact( ^ {
+//	IRCATransact( ^ {
 	
 		[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 			
@@ -219,6 +219,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			imageView.layer.shadowRadius = 2.0f;
 			imageView.layer.shadowOpacity = 0.25f;
 			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
+			[imageView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNull null], @"shadowPath",
+			nil]];
 			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 			imageView.opaque = NO;
 			
@@ -242,13 +245,13 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		if (aBlock)
 			aBlock();
 	
-	});
+//	});
 	
 }
 	
 - (void) layoutSubviews {
 
-	[CATransaction begin];
+//	[CATransaction begin];
 
 	[self sendSubviewToBack:self.activityIndicator];
 
@@ -297,7 +300,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		
 	}];
 	
-	[CATransaction commit];
+//	[CATransaction commit];
 
 }
 
