@@ -67,23 +67,22 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
-    
-		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"];
-		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
-                                       [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
-                                       nil];
-		return returnedRequest;
-    
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
+		
+		NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+		fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+		nil];
+		
+		return fetchRequest;
+		
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
   
-  
-  NSError *error;
-	[self.fetchedResultsController performFetch:&error];
+  NSError *fetchingError;
+	if (![self.fetchedResultsController performFetch:&fetchingError])
+		NSLog(@"error fetching: %@", fetchingError);
   
 	return self;
   
@@ -161,7 +160,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	[super viewWillAppear:animated];
 	
-  [self.fetchedResultsController performFetch:nil];
   [self refreshData];
 }
 
