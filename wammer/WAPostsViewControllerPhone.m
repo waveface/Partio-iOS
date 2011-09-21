@@ -291,7 +291,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		CGRectGetWidth(tableView.frame) - 80,
 		9999.0
 	} lineBreakMode:UILineBreakModeWordWrap].height;
-	return 64 + height + ([post.files count] ? 158 : [post.previews count] ? 96 : 0);
+
+	return height + ([post.files count] ? 222 : [post.previews count] ? 164 : 64);
 	
 }
 
