@@ -382,8 +382,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
 	nil] validator: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
-	
-		return (BOOL)[[inResponseOrNil objectForKey:@"post"] isKindOfClass:[NSDictionary class]];
+    
+    return (BOOL)[[inResponseOrNil objectForKey:@"post"] isKindOfClass:[NSDictionary class]];
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
@@ -479,8 +479,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 - (void) retrieveLastReadArticleRemoteIdentifierOnSuccess:(void(^)(NSString *lastID, NSDate *modDate))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-	
-		if (successBlock)
+    if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"latest_read_post_id"], [inResponseOrNil objectForKey:@"latest_read_post_timestamp"]);
 		
 	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
@@ -498,20 +497,20 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 		[NSDictionary dictionaryWithObjectsAndKeys:
 	
-			anIdentifier, @"latest_read_post_id",
+			anIdentifier, @"post_id",
 		
-		nil], kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
+		nil], kIRWebAPIEngineRequestHTTPQueryParameters,
 		
-		@"POST", kIRWebAPIEngineRequestHTTPMethod,
+		@"GET", kIRWebAPIEngineRequestHTTPMethod,
 	
 	nil] validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-	
-		if (successBlock)
+	  
+    if (successBlock)
 			successBlock(inResponseOrNil);
 		
 	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
-		if (failureBlock)
+    if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
 		
 	}];
