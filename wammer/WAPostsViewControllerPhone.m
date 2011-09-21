@@ -155,11 +155,29 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
   [self.fetchedResultsController performFetch:nil];
   [self refreshData];
+  
+  [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+    
+		NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+		
+	} onFailure: ^ (NSError *error) {
+    
+		NSLog(@"Retrieve last read articile: %@", error);
+		
+	}];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
+  NSIndexPath *currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
+  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
+  [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
+    NSLog(@"SetLastRead: %@", response);
+  } onFailure:^(NSError *error) {
+    NSLog(@"SetLastRead failed %@", error);
+  }];
 	
 }
 
