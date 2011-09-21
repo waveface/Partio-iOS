@@ -39,6 +39,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readwrite, retain) NSIndexPath *__currentRow;
+@property (nonatomic, readwrite, retain) NSString *__lastID;
 
 - (void) refreshData;
 
@@ -51,6 +53,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
+@synthesize __currentRow, __lastID;
+
+- (void) dealloc {
+	
+	[managedObjectContext release];
+	[fetchedResultsController release];
+  [__currentRow release];
+	[super dealloc];
+  
+}
+
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   
@@ -75,7 +88,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
                                        [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
                                        nil];
-		return returnedRequest;
+    return returnedRequest;
     
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
@@ -126,15 +139,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 }
 
-
-- (void) dealloc {
-	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[super dealloc];
-  
-}
-
 - (void) viewDidUnload {
 	
 	[super viewDidUnload];
@@ -146,7 +150,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewDidLoad];
 	
 	self.tableView.separatorColor = [UIColor colorWithWhite:.96 alpha:1];
-
+  
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -156,23 +160,37 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [self.fetchedResultsController performFetch:nil];
   [self refreshData];
   
-  [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+  [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *last, NSDate *modDate) {
     
-		NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+    NSLog(@"For the current user, the last read article # is %@ at %@", self.__lastID, modDate);
+    
+    if([self __lastID]){
+      NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+      
+      for( WAArticle *post in allObjects ){
+        if ([post.identifier isEqualToString:self.__lastID]) {
+          NSIndexPath *lastReadRow = [self.fetchedResultsController indexPathForObject:post];
+          [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+          break;
+        }
+      }
+      
+      self.__lastID = nil;
+      self.__currentRow = nil;
+    }
 		
 	} onFailure: ^ (NSError *error) {
     
 		NSLog(@"Retrieve last read articile: %@", error);
 		
 	}];
-
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-  NSIndexPath *currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
-  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
+  self.__currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
+  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:self.__currentRow] identifier];
   [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
     NSLog(@"SetLastRead: %@", response);
   } onFailure:^(NSError *error) {
@@ -227,6 +245,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell.imageStackView.delegate = self;
   }
 	
+  if (post.identifier == self.__lastID) {
+    self.__currentRow = indexPath;
+  }
   // Common components
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
