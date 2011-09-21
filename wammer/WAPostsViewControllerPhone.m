@@ -39,8 +39,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, retain) NSIndexPath *__currentRow;
-@property (nonatomic, readwrite, retain) NSString *__lastID;
+@property (nonatomic, readwrite, retain) NSString *_lastID;
 
 - (void) refreshData;
 
@@ -53,13 +52,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
-@synthesize __currentRow, __lastID;
+@synthesize _lastID;
 
 - (void) dealloc {
 	
 	[managedObjectContext release];
 	[fetchedResultsController release];
-  [__currentRow release];
+  [_lastID release];
 	[super dealloc];
   
 }
@@ -160,37 +159,38 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [self.fetchedResultsController performFetch:nil];
   [self refreshData];
   
-  [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *last, NSDate *modDate) {
-    
-    NSLog(@"For the current user, the last read article # is %@ at %@", self.__lastID, modDate);
-    
-    if([self __lastID]){
-      NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+  if(!self._lastID){
+    [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
       
-      for( WAArticle *post in allObjects ){
-        if ([post.identifier isEqualToString:self.__lastID]) {
-          NSIndexPath *lastReadRow = [self.fetchedResultsController indexPathForObject:post];
-          [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionMiddle];
-          break;
+      NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+      
+      if(lastID){
+        //TODO create a NSFetchRequest to find out the target object.
+        NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+        
+        for( WAArticle *post in allObjects ){
+          if ([post.identifier isEqualToString:lastID]) {
+            NSIndexPath *lastReadRow = [self.fetchedResultsController indexPathForObject:post];
+            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+            break;
+          }
         }
       }
+      self._lastID = lastID;
       
-      self.__lastID = nil;
-      self.__currentRow = nil;
-    }
-		
-	} onFailure: ^ (NSError *error) {
-    
-		NSLog(@"Retrieve last read articile: %@", error);
-		
-	}];
+    } onFailure: ^ (NSError *error) {
+      
+      NSLog(@"Retrieve last read articile: %@", error);
+      
+    }];
+  }
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-  self.__currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
-  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:self.__currentRow] identifier];
+  NSIndexPath *currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
+  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
   [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
     NSLog(@"SetLastRead: %@", response);
   } onFailure:^(NSError *error) {
@@ -245,9 +245,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell.imageStackView.delegate = self;
   }
 	
-  if (post.identifier == self.__lastID) {
-    self.__currentRow = indexPath;
-  }
   // Common components
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
