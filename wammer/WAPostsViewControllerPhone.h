@@ -10,7 +10,8 @@
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
 #import "WAApplicationRootViewControllerDelegate.h"
+#import "IRTableViewController.h"
 
-@interface WAPostsViewControllerPhone : UITableViewController <WAApplicationRootViewController>
+@interface WAPostsViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
 
 @end

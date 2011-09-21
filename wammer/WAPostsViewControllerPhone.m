@@ -95,8 +95,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	if (savedContext == self.managedObjectContext)
 		return;
+		
+	if (![[[aNotification userInfo] objectForKey:NSInsertedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSUpdatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSDeletedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSRefreshedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
+		return;
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
+	[self.tableView performBlockOnInteractionEventsEnd: ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		
@@ -122,7 +130,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		for (NSManagedObject *aFetchedObject in allFetchedObjects)
 			[aFetchedObject.managedObjectContext refreshObject:aFetchedObject mergeChanges:YES];
 			
-	});
+	}];
   
 }
 
@@ -202,7 +210,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     identifier = textOnlyCellIdentifier;
     style = WAPostViewCellStyleDefault;
   }
-  
+	
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if (!cell) {
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
