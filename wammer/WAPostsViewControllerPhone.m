@@ -381,16 +381,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void) handleCompose:(UIBarButtonItem *)sender
-{
+- (void) handleCompose:(UIBarButtonItem *)sender {
   
   WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
-      static dispatch_once_t onceToken;
-      dispatch_once(&onceToken, ^{
-        [self refreshData];
-      });
+			//	We’ll get a save, do nothing
+			//	dispatch_async(dispatch_get_main_queue(), ^ {
+			//		[self refreshData];
+			//	});
 		} onFailure:nil];
     
 	}];
@@ -398,6 +397,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
   navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
   [self presentModalViewController:navigationController animated:YES];
+	
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
