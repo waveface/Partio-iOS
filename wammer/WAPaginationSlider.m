@@ -103,13 +103,19 @@
 	static int dotTag = 1048576;
 
 	NSMutableSet *dequeuedDots = [NSMutableSet set];
+	
+	self.slider.enabled = !!self.numberOfPages;
 
 	for (UIView *aSubview in self.subviews)
 		if (aSubview.tag == dotTag)
 			[dequeuedDots addObject:aSubview];
 
 	CGFloat usableWidth = CGRectGetWidth(self.bounds) - self.edgeInsets.left - self.edgeInsets.right;
-	NSUInteger numberOfDots = MIN(self.numberOfPages, (NSUInteger)floorf(usableWidth / (self.dotRadius + self.dotMargin)));
+	NSUInteger numberOfDots = (NSUInteger)floorf(usableWidth / (self.dotRadius + self.dotMargin));
+	
+	//	if (self.numberOfPages)
+	//		numberOfDots = MIN(numberOfDots, self.numberOfPages);
+	
 	CGFloat dotSpacing = usableWidth / (numberOfDots - 1);
 	
 	UIImage *dotImage = (( ^ (CGFloat radius, CGFloat alpha) {
