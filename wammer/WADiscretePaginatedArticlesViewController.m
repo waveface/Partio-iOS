@@ -19,6 +19,7 @@
 #import "CALayer+IRAdditions.h"
 
 #import "WAFauxRootNavigationController.h"
+#import "WAEightPartLayoutGrid.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
@@ -256,91 +257,96 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
 	
-	enqueueGridPrototypes(
-		gridWithLayoutBlocks(
-			make(2, 3, 0, 0, 1, 1),
-			make(2, 3, 0, 1, 1, 1),
-			make(2, 3, 1, 0, 1, 2),
-			make(2, 3, 0, 2, 2, 1),
-		nil),
-		gridWithLayoutBlocks(
-			make(3, 2, 0, 0, 1, 1),
-			make(3, 2, 0, 1, 1, 1),
-			make(3, 2, 1, 0, 1, 2),
-			make(3, 2, 2, 0, 1, 2),
-		nil)
-		
-	);
+	WAEightPartLayoutGrid *eightPartGrid = [WAEightPartLayoutGrid prototype];
+	eightPartGrid.validatorBlock = nil;
+	eightPartGrid.displayBlock = genericDisplayBlock;
 	
-	enqueueGridPrototypes(
-		gridWithLayoutBlocks(
-			make(2, 2, 0, 0, 2, 1),
-			make(2, 2, 0, 1, 1, 1),
-			make(2, 2, 1, 1, 1, 1), 
-		nil),
-		gridWithLayoutBlocks(
-			make(2, 2, 0, 0, 1, 2),
-			make(2, 2, 1, 0, 1, 1),
-			make(2, 2, 1, 1, 1, 1),
-		nil)
-	);
+	[enqueuedLayoutGrids addObject:eightPartGrid];
 	
-	enqueueGridPrototypes(
-		gridWithLayoutBlocks(
-			make(5, 5, 0, 0, 2, 2.5),
-			make(5, 5, 0, 2.5, 2, 2.5),
-			make(5, 5, 2, 0, 3, 1.66),
-			make(5, 5, 2, 1.66, 3, 1.66),
-			make(5, 5, 2, 3.32, 3, 1.68), 
-		nil),
-		gridWithLayoutBlocks(
-			make(5, 5, 0, 0, 2, 2.5),
-			make(5, 5, 0, 2.5, 2, 2.5),
-			make(5, 5, 2, 0, 3, 1.66),
-			make(5, 5, 2, 1.66, 3, 1.66),
-			make(5, 5, 2, 3.32, 3, 1.68),
-		nil)
-	);
+	//	enqueueGridPrototypes(
+	//		gridWithLayoutBlocks(
+	//			make(2, 3, 0, 0, 1, 1),
+	//			make(2, 3, 0, 1, 1, 1),
+	//			make(2, 3, 1, 0, 1, 2),
+	//			make(2, 3, 0, 2, 2, 1),
+	//		nil),
+	//		gridWithLayoutBlocks(
+	//			make(3, 2, 0, 0, 1, 1),
+	//			make(3, 2, 0, 1, 1, 1),
+	//			make(3, 2, 1, 0, 1, 2),
+	//			make(3, 2, 2, 0, 1, 2),
+	//		nil)		
+	//	);
+	
+	//	enqueueGridPrototypes(
+	//		gridWithLayoutBlocks(
+	//			make(2, 2, 0, 0, 2, 1),
+	//			make(2, 2, 0, 1, 1, 1),
+	//			make(2, 2, 1, 1, 1, 1), 
+	//		nil),
+	//		gridWithLayoutBlocks(
+	//			make(2, 2, 0, 0, 1, 2),
+	//			make(2, 2, 1, 0, 1, 1),
+	//			make(2, 2, 1, 1, 1, 1),
+	//		nil)
+	//	);
+	
+	//	enqueueGridPrototypes(
+	//		gridWithLayoutBlocks(
+	//			make(5, 5, 0, 0, 2, 2.5),
+	//			make(5, 5, 0, 2.5, 2, 2.5),
+	//			make(5, 5, 2, 0, 3, 1.66),
+	//			make(5, 5, 2, 1.66, 3, 1.66),
+	//			make(5, 5, 2, 3.32, 3, 1.68), 
+	//		nil),
+	//		gridWithLayoutBlocks(
+	//			make(5, 5, 0, 0, 2, 2.5),
+	//			make(5, 5, 0, 2.5, 2, 2.5),
+	//			make(5, 5, 2, 0, 3, 1.66),
+	//			make(5, 5, 2, 1.66, 3, 1.66),
+	//			make(5, 5, 2, 3.32, 3, 1.68),
+	//		nil)
+	//	);
 
-	enqueueGridPrototypes(
-		gridWithLayoutBlocks(
-			make(5, 5, 0, 0, 2.5, 3),
-			make(5, 5, 0, 3, 2.5, 2),
-			make(5, 5, 2.5, 0, 2.5, 1.5),
-			make(5, 5, 2.5, 1.5, 2.5, 1.5),
-			make(5, 5, 2.5, 3, 2.5, 0.66),
-			make(5, 5, 2.5, 3.66, 2.5, 0.66),
-			make(5, 5, 2.5, 4.33, 2.5, 0.67), 
-		nil),
-		gridWithLayoutBlocks(
-			make(5, 5, 0, 0, 2, 2),
-			make(5, 5, 0, 2, 2, 1),
-			make(5, 5, 0, 3, 2, 1),
-			make(5, 5, 0, 4, 2, 1),
-			make(5, 5, 2, 0, 3, 2),
-			make(5, 5, 2, 2, 3, 1.5),
-			make(5, 5, 2, 3.5, 3, 1.5),
-		nil)
-	);
+	//	enqueueGridPrototypes(
+	//		gridWithLayoutBlocks(
+	//			make(5, 5, 0, 0, 2.5, 3),
+	//			make(5, 5, 0, 3, 2.5, 2),
+	//			make(5, 5, 2.5, 0, 2.5, 1.5),
+	//			make(5, 5, 2.5, 1.5, 2.5, 1.5),
+	//			make(5, 5, 2.5, 3, 2.5, 0.66),
+	//			make(5, 5, 2.5, 3.66, 2.5, 0.66),
+	//			make(5, 5, 2.5, 4.33, 2.5, 0.67), 
+	//		nil),
+	//		gridWithLayoutBlocks(
+	//			make(5, 5, 0, 0, 2, 2),
+	//			make(5, 5, 0, 2, 2, 1),
+	//			make(5, 5, 0, 3, 2, 1),
+	//			make(5, 5, 0, 4, 2, 1),
+	//			make(5, 5, 2, 0, 3, 2),
+	//			make(5, 5, 2, 2, 3, 1.5),
+	//			make(5, 5, 2, 3.5, 3, 1.5),
+	//		nil)
+	//	);
 
-	enqueueGridPrototypes(
-		gridWithLayoutBlocks(
-			make(3, 3, 0, 0, 3, 1),
-			make(3, 3, 0, 1, 1.5, 1),
-			make(3, 3, 1.5, 1, 1.5, 1),
-			make(3, 3, 0, 2, 1, 1),
-			make(3, 3, 1, 2, 1, 1),
-			make(3, 3, 2, 2, 1, 1), 
-		nil),
-		gridWithLayoutBlocks(
-			make(3, 3, 0, 0, 1, 3),
-			make(3, 3, 1, 0, 1, 1.5),
-			make(3, 3, 1, 1.5, 1, 1.5),
-			make(3, 3, 2, 0, 1, 1),
-			make(3, 3, 2, 1, 1, 1),
-			make(3, 3, 2, 2, 1, 1),
-		nil)
-	);
+	//	enqueueGridPrototypes(
+	//		gridWithLayoutBlocks(
+	//			make(3, 3, 0, 0, 3, 1),
+	//			make(3, 3, 0, 1, 1.5, 1),
+	//			make(3, 3, 1.5, 1, 1.5, 1),
+	//			make(3, 3, 0, 2, 1, 1),
+	//			make(3, 3, 1, 2, 1, 1),
+	//			make(3, 3, 2, 2, 1, 1), 
+	//		nil),
+	//		gridWithLayoutBlocks(
+	//			make(3, 3, 0, 0, 1, 3),
+	//			make(3, 3, 1, 0, 1, 1.5),
+	//			make(3, 3, 1, 1.5, 1, 1.5),
+	//			make(3, 3, 2, 0, 1, 1),
+	//			make(3, 3, 2, 1, 1, 1),
+	//			make(3, 3, 2, 2, 1, 1),
+	//		nil)
+	//	);
 	
 	self.layoutGrids = enqueuedLayoutGrids;
 	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
