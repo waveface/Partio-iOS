@@ -337,6 +337,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
                              [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
       cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
       
+      cell.imageStackView.userInteractionEnabled = true;
       if (cell.imageStackView)
         objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
       
