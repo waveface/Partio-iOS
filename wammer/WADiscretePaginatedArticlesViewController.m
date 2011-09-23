@@ -257,7 +257,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
 	
-	[enqueuedLayoutGrids addObject:[WAEightPartLayoutGrid prototype]];
+	WAEightPartLayoutGrid *eightPartGrid = [WAEightPartLayoutGrid prototype];
+	eightPartGrid.validatorBlock = nil;
+	eightPartGrid.displayBlock = genericDisplayBlock;
+	
+	[enqueuedLayoutGrids addObject:eightPartGrid];
 	
 	//	enqueueGridPrototypes(
 	//		gridWithLayoutBlocks(

@@ -13,4 +13,7 @@
 
 @interface WAEightPartLayoutGrid : IRDiscreteLayoutGrid <IRDiscreteLayoutGridEngineUsing>
 
+@property (nonatomic, readwrite, copy) IRDiscreteLayoutGridAreaValidatorBlock validatorBlock;
+@property (nonatomic, readwrite, copy) IRDiscreteLayoutGridAreaDisplayBlock displayBlock;
+
 @end
