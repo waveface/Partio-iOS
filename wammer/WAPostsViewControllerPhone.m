@@ -32,6 +32,7 @@
 
 #import "WAGalleryViewController.h"
 
+#import "WAPulldownRefreshView.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -73,29 +74,28 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
-	
   self.title = @"Wammer";
-  self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
+	
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
+  self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
-    
-		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"];
-		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
-                                       [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
-                                       nil];
-    return returnedRequest;
-    
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
+		
+		NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+		fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+		nil];
+		
+		return fetchRequest;
+		
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
   
-  
-  NSError *error;
-	[self.fetchedResultsController performFetch:&error];
+  NSError *fetchingError;
+	if (![self.fetchedResultsController performFetch:&fetchingError])
+		NSLog(@"error fetching: %@", fetchingError);
   
 	return self;
   
@@ -107,8 +107,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	if (savedContext == self.managedObjectContext)
 		return;
+		
+	if (![[[aNotification userInfo] objectForKey:NSInsertedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSUpdatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSDeletedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSRefreshedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
+		return;
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
+	[self.tableView performBlockOnInteractionEventsEnd: ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		
@@ -134,7 +142,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		for (NSManagedObject *aFetchedObject in allFetchedObjects)
 			[aFetchedObject.managedObjectContext refreshObject:aFetchedObject mergeChanges:YES];
 			
-	});
+	}];
   
 }
 
@@ -149,14 +157,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewDidLoad];
 	
 	self.tableView.separatorColor = [UIColor colorWithWhite:.96 alpha:1];
-  
+	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
+	__block __typeof__(self) nrSelf = self;
+	
+	self.tableView.pullDownHeaderView = pulldownHeader;
+	self.tableView.onPullDownMove = ^ (CGFloat progress) {
+		pulldownHeader.progress = progress;	
+	};
+	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
+		if (didFinish) {
+			pulldownHeader.progress = 0;
+			[nrSelf refreshData];
+		}
+	};
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
   
 	[super viewWillAppear:animated];
 	
-  [self.fetchedResultsController performFetch:nil];
   [self refreshData];
   
   if(!self._lastID){
@@ -196,28 +216,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   } onFailure:^(NSError *error) {
     NSLog(@"SetLastRead failed %@", error);
   }];
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+		if ([self isViewLoaded])
+			[self refreshData];
+	});
 	
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-  if (!self.fetchedResultsController.fetchedObjects) {
-    return 0;
-  }
-  return 1;
+	return [[self.fetchedResultsController sections] count];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-  if(!self.fetchedResultsController.fetchedObjects)
-    return 0;
-  return [[self.fetchedResultsController.sections objectAtIndex:section] numberOfObjects];
+- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  NSParameterAssert(post);
   
   static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
   static NSString *imageCellIdentifier = @"PostCell-Stacked";
@@ -226,50 +242,39 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
   
-  NSString *identifier = nil;
-  WAPostViewCellStyle style = 0;
-  if (postHasFiles) {
-    identifier = imageCellIdentifier;
-    style = WAPostViewCellStyleImageStack;
-  } else if (postHasPreview) {
-    identifier = webLinkCellIdentifier;
-    style = WAPostViewCellStyleWebLink;
-  } else {
-    identifier = textOnlyCellIdentifier;
-    style = WAPostViewCellStyleDefault;
-  }
-  
+  NSString *identifier = postHasFiles ? imageCellIdentifier : postHasPreview ? webLinkCellIdentifier : textOnlyCellIdentifier;
+  WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : postHasPreview ? WAPostViewCellStyleWebLink : WAPostViewCellStyleDefault;
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+	
   if (!cell) {
+		
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
+		cell.commentLabel.userInteractionEnabled = YES;
+		
   }
 	
-  // Common components
 	cell.userNicknameLabel.text = post.owner.nickname;
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
  
-	NSMutableAttributedString *attributedString = [[[cell.commentLabel attributedStringForString:post.text] mutableCopy] autorelease];
+	cell.commentLabel.attributedText = ((^{
 	
-	[attributedString beginEditing];
-	
-	[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:post.text options:0 range:(NSRange){ 0, [post.text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-	
-		[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
-			result.URL, kIRTextLinkAttribute,
-		nil] range:result.range];
+		NSMutableAttributedString *attributedString = [[[cell.commentLabel attributedStringForString:post.text] mutableCopy] autorelease];
 		
-	}];
+		[attributedString beginEditing];
+		[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:post.text options:0 range:(NSRange){ 0, [post.text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+			[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+				(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+				result.URL, kIRTextLinkAttribute,
+			nil] range:result.range];		
+		}];
+		[attributedString endEditing];
+		
+		return attributedString;
+		
+	})());
 	
-	[attributedString endEditing];
-	
-	cell.commentLabel.attributedText = attributedString;
-	cell.commentLabel.userInteractionEnabled = YES;
-  
-	
-  // For web link
   if (postHasPreview) {
 	
 		WAPreview *anyPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
@@ -279,35 +284,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
   }
     
-  if (postHasFiles)
-    objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  if (postHasFiles) {
+    
+		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
-  NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-    
-		return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-			return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-		}] anyObject]).resourceFilePath;
-    
-	}];
-	
-	
-	NSArray *allImages = nil;
-	
-	if ([allFilePaths count] == [post.files count]) {
-    
-		allImages = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-			
-			return [UIImage imageWithContentsOfFile:aPath];
-			
+		NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+			return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
+				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
+			}] anyObject]).resourceFilePath;
 		}];
-    
-	} else {
-	
-    allImages = nil;
 		
-  }
+		NSArray *allImages = nil;
+		if ([allFilePaths count] == [post.files count]) {
+			allImages = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+				return [UIImage imageWithContentsOfFile:aPath];
+			}];
+		}
+		
+		[cell.imageStackView setImages:allImages asynchronously:YES withDecodingCompletion:nil];
 	
-	[cell.imageStackView setImages:allImages asynchronously:YES withDecodingCompletion:nil];
+	}
   
   return cell;
   
@@ -321,7 +317,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		CGRectGetWidth(tableView.frame) - 80,
 		9999.0
 	} lineBreakMode:UILineBreakModeWordWrap].height;
-	return 64 + height + ([post.files count] ? 158 : [post.previews count] ? 96 : 0);
+
+	return height + ([post.files count] ? 222 : [post.previews count] ? 164 : 64);
 	
 }
 
@@ -356,8 +353,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData {
   
-	[[WADataStore defaultStore] updateUsersOnSuccess:nil onFailure:nil];
-	[[WADataStore defaultStore] updateArticlesOnSuccess:nil onFailure:nil];
+	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
+
+		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+		
+			if ([self isViewLoaded])
+				[self.tableView resetPullDown];
+		
+		} onFailure:nil];
+
+	} onFailure:nil];
   
 }
 
@@ -411,16 +416,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void) handleCompose:(UIBarButtonItem *)sender
-{
+- (void) handleCompose:(UIBarButtonItem *)sender {
   
   WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
-      static dispatch_once_t onceToken;
-      dispatch_once(&onceToken, ^{
-        [self refreshData];
-      });
+			//	We’ll get a save, do nothing
+			//	dispatch_async(dispatch_get_main_queue(), ^ {
+			//		[self refreshData];
+			//	});
 		} onFailure:nil];
     
 	}];
@@ -428,6 +432,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
   navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
   [self presentModalViewController:navigationController animated:YES];
+	
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {

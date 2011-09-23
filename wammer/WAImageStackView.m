@@ -196,8 +196,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.firstPhotoView = nil;
 
-	IRCATransact( ^ {
-	
 		[[self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 			
 			return (BOOL)(aSubview.tag == kPhotoViewTag);
@@ -219,6 +217,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			imageView.layer.shadowRadius = 2.0f;
 			imageView.layer.shadowOpacity = 0.25f;
 			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
+			[imageView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
+				[NSNull null], @"shadowPath",
+			nil]];
 			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 			imageView.opaque = NO;
 			
@@ -242,13 +243,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		if (aBlock)
 			aBlock();
 	
-	});
-	
 }
 	
 - (void) layoutSubviews {
-
-	[CATransaction begin];
 
 	[self sendSubviewToBack:self.activityIndicator];
 
@@ -297,8 +294,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		
 	}];
 	
-	[CATransaction commit];
-
 }
 
 - (void) handlePinch:(UIPinchGestureRecognizer *)aPinchRecognizer {
