@@ -103,8 +103,8 @@
 		NSDictionary *patternsToTiles = [NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b11110000],
-				[NSNumber numberWithUnsignedChar:0b00001111],
+				[NSNumber numberWithUnsignedChar:0b11001100],
+				[NSNumber numberWithUnsignedChar:0b00110011],
 			nil], @"fourTiles",
 			
 			[NSArray arrayWithObjects:
