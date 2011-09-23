@@ -40,6 +40,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readwrite, retain) NSString *_lastID;
 
 - (void) refreshData;
 
@@ -52,6 +53,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
+@synthesize _lastID;
+
+- (void) dealloc {
+	
+	[managedObjectContext release];
+	[fetchedResultsController release];
+  [_lastID release];
+	[super dealloc];
+  
+}
+
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   
@@ -134,15 +146,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 }
 
-
-- (void) dealloc {
-	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[super dealloc];
-  
-}
-
 - (void) viewDidUnload {
 	
 	[super viewDidUnload];
@@ -154,7 +157,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewDidLoad];
 	
 	self.tableView.separatorColor = [UIColor colorWithWhite:.96 alpha:1];
-	
 	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
 	__block __typeof__(self) nrSelf = self;
 	
@@ -175,6 +177,45 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	[super viewWillAppear:animated];
 	
+  [self refreshData];
+  
+  if(!self._lastID){
+    [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+      
+      NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+      
+      if(lastID){
+        //TODO create a NSFetchRequest to find out the target object.
+        NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+        
+        for( WAArticle *post in allObjects ){
+          if ([post.identifier isEqualToString:lastID]) {
+            NSIndexPath *lastReadRow = [self.fetchedResultsController indexPathForObject:post];
+            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+            break;
+          }
+        }
+      }
+      self._lastID = lastID;
+      
+    } onFailure: ^ (NSError *error) {
+      
+      NSLog(@"Retrieve last read articile: %@", error);
+      
+    }];
+  }
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+  
+	[super viewWillDisappear:animated];
+  NSIndexPath *currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
+  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
+  [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
+    NSLog(@"SetLastRead: %@", response);
+  } onFailure:^(NSError *error) {
+    NSLog(@"SetLastRead failed %@", error);
+  }];
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 		if ([self isViewLoaded])
 			[self refreshData];
