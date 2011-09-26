@@ -209,13 +209,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-  NSIndexPath *currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
-  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
-  [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
-    NSLog(@"SetLastRead: %@", response);
-  } onFailure:^(NSError *error) {
-    NSLog(@"SetLastRead failed %@", error);
-  }];
+  NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
+  if ( [visibleRows count] ) {
+    NSIndexPath *currentRow = [visibleRows objectAtIndex:0 ];
+    NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
+    [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
+      NSLog(@"SetLastRead: %@", response);
+    } onFailure:^(NSError *error) {
+      NSLog(@"SetLastRead failed %@", error);
+    }];
+  }
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 		if ([self isViewLoaded])
 			[self refreshData];
