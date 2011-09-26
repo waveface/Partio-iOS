@@ -326,13 +326,13 @@ return YES;
 }
 
 - (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string{
-// string may be empty, to indicate no gallery
   assert(controller != nil);
   assert(string != nil);
   
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"APIURLString"];
   [[NSUserDefaults standardUserDefaults] synchronize];
-  
+
+  // TODO update remote interface context here. Right now the API update only works when the app is killed and restarted.
   [controller dismissModalViewControllerAnimated:YES];
 }
 
