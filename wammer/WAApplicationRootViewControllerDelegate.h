@@ -12,6 +12,7 @@
 @protocol WAApplicationRootViewController;
 @protocol WAApplicationRootViewControllerDelegate <NSObject>
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller;
+- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller;
 @end
 
 @protocol WAApplicationRootViewController
