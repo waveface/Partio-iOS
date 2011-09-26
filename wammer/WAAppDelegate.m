@@ -20,13 +20,24 @@
 #import "WAApplicationRootViewControllerDelegate.h"
 
 #import "UIApplication+CrashReporting.h"
+#import "SetupViewController.h"
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate>
+
+// private properties
+
+@property (nonatomic, copy, readwrite) NSString * APIURLString;
+
+// forward declarations
+
+- (void)presentSetupViewControllerAnimated:(BOOL)animated;
+
 @end
 
 
 @implementation WAAppDelegate
 @synthesize window = _window;
+@synthesize APIURLString;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -100,7 +111,7 @@
 		
 		if (![self hasAuthenticationData])
 			[self presentAuthenticationRequestRemovingPriorData:YES];
-		
+    
 	};
 	
 	
@@ -124,7 +135,15 @@
 		}];
 	
 	}
-		
+
+//  NSUserDefaults *userDefaults;
+//  userDefaults = [NSUserDefaults standardUserDefaults];
+//  self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
+//  if( self.APIURLString == nil) {
+//    self.APIURLString = @"http://api.waveface.com:8080/api/v1/";
+//    [self presentSetupViewControllerAnimated:YES];
+//  }
+//		
 	return YES;
 	
 }
@@ -286,6 +305,31 @@
 	}
 
 }
+
+#pragma mark -- Setup View Controller and Delegate
+
+- (void)presentSetupViewControllerAnimated:(BOOL)animated
+// Presents the setup view controller.
+{
+  __block SetupViewController *vc;
+  
+  vc = [[[SetupViewController alloc] initWithAPIURLString:self.APIURLString] autorelease];
+  assert(vc != nil);
+  
+  vc.delegate = self;
+  
+  [vc presentModallyOn:self.window.rootViewController animated:animated];
+}
+
+- (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string{
+// string may be empty, to indicate no gallery
+}
+
+- (void)setupViewControllerDidCancel:(SetupViewController *)controller{
+  
+}
+
+#pragma mark -- Network Activity
 
 static unsigned int networkActivityStackingCount = 0;
 
