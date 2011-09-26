@@ -22,7 +22,7 @@
 #import "UIApplication+CrashReporting.h"
 #import "SetupViewController.h"
 
-@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate>
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, SetupViewControllerDelegate>
 
 // private properties
 
@@ -136,15 +136,14 @@
 	
 	}
 
-//  NSUserDefaults *userDefaults;
-//  userDefaults = [NSUserDefaults standardUserDefaults];
-//  self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
-//  if( self.APIURLString == nil) {
-//    self.APIURLString = @"http://api.waveface.com:8080/api/v1/";
-//    [self presentSetupViewControllerAnimated:YES];
-//  }
-//		
-	return YES;
+  NSUserDefaults *userDefaults;
+  userDefaults = [NSUserDefaults standardUserDefaults];
+  self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
+  if( self.APIURLString == nil) {
+    [self presentSetupViewControllerAnimated:YES];
+  }
+  
+return YES;
 	
 }
 
@@ -323,10 +322,15 @@
 
 - (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string{
 // string may be empty, to indicate no gallery
+  assert(controller != nil);
+  assert(string != nil);
+  
+  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"APIURLString"];
+  [controller dismissModalViewControllerAnimated:YES];
 }
 
 - (void)setupViewControllerDidCancel:(SetupViewController *)controller{
-  
+  [controller dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -- Network Activity

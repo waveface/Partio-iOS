@@ -602,9 +602,9 @@
   navController = [[[UINavigationController alloc] initWithRootViewController:self] autorelease];
   assert(navController != nil);
   
-//  self.navigationItem.title = @"Setup";
-//  self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave   target:self action:@selector(saveAction:)  ] autorelease];
-//  self.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)] autorelease];
+  self.navigationItem.title = @"Setup";
+  self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave   target:self action:@selector(saveAction:)  ] autorelease];
+  self.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)] autorelease];
   
   [parent presentModalViewController:navController animated:animated];
 }
