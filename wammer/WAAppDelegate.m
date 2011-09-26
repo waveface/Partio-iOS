@@ -307,6 +307,11 @@ return YES;
 
 #pragma mark -- Setup View Controller and Delegate
 
+- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller
+{
+  [self presentSetupViewControllerAnimated:YES];
+}
+
 - (void)presentSetupViewControllerAnimated:(BOOL)animated
 // Presents the setup view controller.
 {
@@ -326,6 +331,8 @@ return YES;
   assert(string != nil);
   
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"APIURLString"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
   [controller dismissModalViewControllerAnimated:YES];
 }
 

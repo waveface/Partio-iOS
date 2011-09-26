@@ -28,8 +28,7 @@
 
 + (WARemoteInterfaceContext *) context {
 
-	//	NSURL *baseURL = [NSURL URLWithString:@"http://localhost/~evadne/waveface-wammer-API/v1/"];
-  NSString *api = [[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"];
+	NSString *api = [[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"];
   NSLog(@"API URL: %@", api);
 	NSURL *baseURL = [NSURL URLWithString:api];
 	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
