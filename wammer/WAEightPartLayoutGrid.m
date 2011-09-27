@@ -52,18 +52,14 @@
 		return itemHasMediaOfType(anItem, kUTTypeImage);
 	};
 	
-	BOOL (^isLinkItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return itemHasMediaOfType(anItem, kUTTypeURL);
-	};
+	//	BOOL (^isLinkItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+	//		return itemHasMediaOfType(anItem, kUTTypeURL);
+	//	};
 	
 	
 	//	Layout progress introspection helpers
 	
 	__block unsigned char tileMap = 0b00000000;
-	
-	void (^dumpTileMap)() = ^ {
-		NSLog(@"Tile map %x", tileMap);
-	};
 	
 	BOOL (^tileOccupied)(NSUInteger) = ^ (NSUInteger tileIndex) {
 		return (BOOL)(tileMap & (1 << tileIndex));
@@ -73,13 +69,13 @@
 		return (BOOL)(tileMap & bitMask);
 	};
 	
-	BOOL (^occupyTile)(NSUInteger) = ^ (NSUInteger tileToOccupy) {
-		if (tileOccupied(tileToOccupy)) {
-			return NO;
-		}
-		tileMap &= (1 << tileToOccupy);
-		return YES;
-	};
+	//	BOOL (^occupyTile)(NSUInteger) = ^ (NSUInteger tileToOccupy) {
+	//		if (tileOccupied(tileToOccupy)) {
+	//			return NO;
+	//		}
+	//		tileMap &= (1 << tileToOccupy);
+	//		return YES;
+	//	};
 	
 	IRDiscreteLayoutGrid *portraitPrototype = [IRDiscreteLayoutGrid prototype];
 	portraitPrototype.contentSize = (CGSize){ 768, 1024 };
@@ -109,18 +105,18 @@
 			
 			[NSArray arrayWithObjects:
 				[NSNumber numberWithUnsignedChar:0b11000000],
-				[NSNumber numberWithUnsignedChar:0b01100000],
+			//	[NSNumber numberWithUnsignedChar:0b01100000],
 				[NSNumber numberWithUnsignedChar:0b00110000],
 				[NSNumber numberWithUnsignedChar:0b00001100],
-				[NSNumber numberWithUnsignedChar:0b00000110],
+			//	[NSNumber numberWithUnsignedChar:0b00000110],
 				[NSNumber numberWithUnsignedChar:0b00000011],
 			nil], @"verticalCombo",
 			
 			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b10001000],
+			//	[NSNumber numberWithUnsignedChar:0b10001000],
 				[NSNumber numberWithUnsignedChar:0b01000100],
 				[NSNumber numberWithUnsignedChar:0b00100010],
-				[NSNumber numberWithUnsignedChar:0b00010001],
+			//	[NSNumber numberWithUnsignedChar:0b00010001],
 			nil], @"horizontalCombo",
 			
 			[NSArray arrayWithObjects:
@@ -155,10 +151,7 @@
 		
 		unsigned char pattern = [[actualPatterns objectAtIndex:0] unsignedCharValue];
 		
-		dumpTileMap();
-		NSLog(@"pattern for item: %x", pattern);
 		tileMap |= pattern;
-		dumpTileMap();
 		
 		NSMutableArray *unitRects = [NSMutableArray array];
 		
@@ -191,8 +184,6 @@
 		CGRect unitRect = [[unitRects lastObject] CGRectValue];
 		for (NSValue *aRectValue in unitRects)
 			unitRect = CGRectUnion(unitRect, [aRectValue CGRectValue]);
-		
-		NSLog(@"item unit rect is %@", NSStringFromCGRect(unitRect));
 		
 		NSString *layoutAreaName = [NSString stringWithFormat:@"_synthesized_%x", pattern];
 		
