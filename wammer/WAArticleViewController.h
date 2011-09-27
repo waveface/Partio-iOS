@@ -60,5 +60,6 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
 
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contextTextView;
+@property (nonatomic, readwrite, retain) IBOutlet UIImageView *mainImageView;
 
 @end

@@ -33,7 +33,7 @@
 @implementation WAArticleViewController
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView;
+@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView;
 @synthesize onPresentingViewController, onViewTap;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
@@ -121,6 +121,7 @@
 	self.userNameLabel = nil;
 	self.articleDescriptionLabel = nil;
 	self.contextTextView = nil;
+	self.mainImageView = nil;
 
 	[super viewDidUnload];
 
@@ -143,6 +144,7 @@
 	[userNameLabel release];
 	[articleDescriptionLabel release];
 	[contextTextView release];
+	[mainImageView release];
 	
 	[onViewTap release];
 	
@@ -196,6 +198,8 @@
 		});
 		
 	} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+	
+	self.mainImageView.contentMode = UIViewContentModeScaleAspectFill;
 	
 	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
 	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
@@ -400,7 +404,7 @@
 	
 	[self.previewBadge configureWithPreview:anyPreview];
 	
-	if (self.imageStackView) {
+	if (self.imageStackView || self.mainImageView) {
 	
 		static NSString * const waArticleViewControllerStackImagePaths = @"waArticleViewControllerStackImagePaths";
 		
@@ -423,7 +427,7 @@
 		NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths);
 		if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
 		
-			self.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+			NSArray *allImages = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
 				
 				UIImage *returnedImage = [UIImage imageWithContentsOfFile:aPath];
 				NSParameterAssert(returnedImage);
@@ -436,7 +440,16 @@
 				
 			}];
 			
-			objc_setAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
+			self.imageStackView.images = allImages;
+			
+			if (self.imageStackView) {
+				objc_setAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
+			}
+		
+			if ([allImages count]) {
+				NSLog(@"image view %@> %@", self.mainImageView, allImages);
+				self.mainImageView.image = [allImages objectAtIndex:0];
+			}
 		
 		}
 	

@@ -20,6 +20,7 @@
 #import "IRTransparentToolbar.h"
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
+#import "IRAction.h"
 #import "IRAlertView.h"
 
 #import "WAArticleViewController.h"
@@ -36,11 +37,12 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate>
+@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSString *_lastID;
+@property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 
 - (void) refreshData;
 
@@ -54,6 +56,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize _lastID;
+@synthesize settingsActionSheetController;
 
 - (void) dealloc {
 	
@@ -76,7 +79,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   self.title = @"Wammer";
 	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:self action:@selector(handleAccount:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(actionSettings:)] autorelease];
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
@@ -97,6 +100,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	if (![self.fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
   
+  __block __typeof__(self) nrSelf = self;
+
+  self.settingsActionSheetController = [IRActionSheetController 
+                                        actionSheetControllerWithTitle:@"Settings" 
+                                        cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil]
+                                        destructiveAction:nil 
+                                        otherActions:[ NSArray arrayWithObjects:
+                                                      [IRAction actionWithTitle:@"Sign Out" 
+                                                                          block:^{
+                                                                            [[IRAlertView alertViewWithTitle:@"Sign Out" 
+                                                                                                     message:@"Really sign out?" 
+                                                                                                cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] 
+                                                                                                otherActions:[NSArray arrayWithObjects:
+                                                                                                              [IRAction actionWithTitle:@"Sign Out" 
+                                                                                                                                  block: ^ { dispatch_async(dispatch_get_main_queue(), ^ {[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];});}], nil]
+                                                                              ] show];
+                                                                          }], [IRAction actionWithTitle:@"Change API URL" block:^ { [nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];}],
+                                                      nil ]
+                                        ];
 	return self;
   
 }
@@ -209,13 +231,16 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-  NSIndexPath *currentRow = [[self.tableView indexPathsForVisibleRows]objectAtIndex:0 ];
-  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
-  [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
-    NSLog(@"SetLastRead: %@", response);
-  } onFailure:^(NSError *error) {
-    NSLog(@"SetLastRead failed %@", error);
-  }];
+  NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
+  if ( [visibleRows count] ) {
+    NSIndexPath *currentRow = [visibleRows objectAtIndex:0 ];
+    NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
+    [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
+      NSLog(@"SetLastRead: %@", response);
+    } onFailure:^(NSError *error) {
+      NSLog(@"SetLastRead failed %@", error);
+    }];
+  }
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 		if ([self isViewLoaded])
 			[self refreshData];
@@ -322,24 +347,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (void) handleAccount:(UIBarButtonItem *)sender {
+#pragma mark -- Actions
 
-	__block __typeof__(self) nrSelf = self;
-  
-	[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-		
-		[IRAction actionWithTitle:@"Sign Out" block: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-					
-			});
+- (IBAction)actionSettings:(id)sender
+{
+  [self.settingsActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
 
-		}],
-	
-	nil]] show];
-		
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
