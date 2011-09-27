@@ -105,18 +105,18 @@
 			
 			[NSArray arrayWithObjects:
 				[NSNumber numberWithUnsignedChar:0b11000000],
-				[NSNumber numberWithUnsignedChar:0b01100000],
+			//	[NSNumber numberWithUnsignedChar:0b01100000],
 				[NSNumber numberWithUnsignedChar:0b00110000],
 				[NSNumber numberWithUnsignedChar:0b00001100],
-				[NSNumber numberWithUnsignedChar:0b00000110],
+			//	[NSNumber numberWithUnsignedChar:0b00000110],
 				[NSNumber numberWithUnsignedChar:0b00000011],
 			nil], @"verticalCombo",
 			
 			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b10001000],
+			//	[NSNumber numberWithUnsignedChar:0b10001000],
 				[NSNumber numberWithUnsignedChar:0b01000100],
 				[NSNumber numberWithUnsignedChar:0b00100010],
-				[NSNumber numberWithUnsignedChar:0b00010001],
+			//	[NSNumber numberWithUnsignedChar:0b00010001],
 			nil], @"horizontalCombo",
 			
 			[NSArray arrayWithObjects:
