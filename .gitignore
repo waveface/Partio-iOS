@@ -70,3 +70,6 @@ Releases/build-*
 *.mode1v3
 *.perspectivev3
 DerivedData/*
+
+# Automation
+wammer_ios_auto_build
