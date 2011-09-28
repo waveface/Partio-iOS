@@ -140,10 +140,11 @@
   userDefaults = [NSUserDefaults standardUserDefaults];
   self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
   if( self.APIURLString == nil) {
-    [self presentSetupViewControllerAnimated:YES];
+    self.APIURLString = @"http://api.waveface.com:8080/api/v1/";
+    [userDefaults setObject:self.APIURLString forKey:@"APIURLString"];
   }
   
-return YES;
+  return YES;
 	
 }
 
