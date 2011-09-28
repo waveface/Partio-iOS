@@ -29,10 +29,20 @@
 + (WARemoteInterfaceContext *) context {
 
 	NSString *api = [[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"];
-  NSLog(@"API URL: %@", api);
+  
+  NSUserDefaults *userDefaults;
+  
+  userDefaults = [NSUserDefaults standardUserDefaults];
+  if( api == nil) {
+    api = @"http://api.waveface.com:8080/api/v1/";
+    [userDefaults setObject:api forKey:@"APIURLString"];
+    [userDefaults synchronize];
+  }
+  
+  NSLog(@"API URL: %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"]);
+  
 	NSURL *baseURL = [NSURL URLWithString:api];
 	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
-
 }
 
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
