@@ -1,6 +1,6 @@
 [submodule "external/IRFoundations"]
 	path = external/IRFoundations
-	url = git://github.com/iridia/IRFoundations.git
+	url = git://github.com/waveface/IRFoundations.git
 [submodule "external/MGSplitViewController"]
 	path = external/MGSplitViewController
 	url = git://github.com/iridia/MGSplitViewController.git
