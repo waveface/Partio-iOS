@@ -24,10 +24,6 @@
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, SetupViewControllerDelegate>
 
-// private properties
-
-@property (nonatomic, copy, readwrite) NSString * APIURLString;
-
 // forward declarations
 
 - (void)presentSetupViewControllerAnimated:(BOOL)animated;
@@ -37,7 +33,6 @@
 
 @implementation WAAppDelegate
 @synthesize window = _window;
-@synthesize APIURLString;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -136,14 +131,7 @@
 	
 	}
 
-  NSUserDefaults *userDefaults;
-  userDefaults = [NSUserDefaults standardUserDefaults];
-  self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
-  if( self.APIURLString == nil) {
-    [self presentSetupViewControllerAnimated:YES];
-  }
-  
-return YES;
+  return YES;
 	
 }
 
@@ -317,7 +305,7 @@ return YES;
 {
   __block SetupViewController *vc;
   
-  vc = [[[SetupViewController alloc] initWithAPIURLString:self.APIURLString] autorelease];
+  vc = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"]] autorelease];
   assert(vc != nil);
   
   vc.delegate = self;
