@@ -1,10 +1,12 @@
 //
-//  IPUserSelectionViewController.m
-//  Instaphoto
+//  WAUserSelectionViewController.m
+//  Wammer
 //
 //  Created by Evadne Wu on 6/22/11.
 //  Copyright 2011 Waveface. All rights reserved.
 //
+
+#import "WADefines.h"
 
 #import "WAUserSelectionViewController.h"
 #import "WADataStore.h"
@@ -172,7 +174,7 @@
 	}
 	NSParameterAssert(representedUser);
 	
-	NSString *currentUser = [[NSUserDefaults standardUserDefaults] stringForKey:@"WhoAmI"];
+	NSString *currentUser = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
 	BOOL representedUserIsCurrentUser = [representedUser.identifier isEqualToString:currentUser];
 	
 	cell.accessoryType = representedUserIsCurrentUser ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
@@ -210,7 +212,7 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	WAUser *changeToUser = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	[[NSUserDefaults standardUserDefaults] setObject:changeToUser.identifier forKey:@"WhoAmI"];
+	[[NSUserDefaults standardUserDefaults] setObject:changeToUser.identifier forKey:kWALastAuthenticatedUserIdentifier];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	NSURL *userRep = [[(IRManagedObject *)changeToUser objectID] URIRepresentation];

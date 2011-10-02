@@ -1,6 +1,6 @@
 //
-//  IPUserSelectionViewController.h
-//  Instaphoto
+//  WAUserSelectionViewController.h
+//  Wammer
 //
 //  Created by Evadne Wu on 6/22/11.
 //  Copyright 2011 Waveface. All rights reserved.

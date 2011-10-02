@@ -6,6 +6,8 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
+
 #import "WAAppDelegate.h"
 #import "IRRemoteResourcesManager.h"
 #import "WAUserSelectionViewController.h"
@@ -35,6 +37,8 @@
 @synthesize window = _window;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	WARegisterUserDefaults();
 
 	NSDate *launchFinishDate = [NSDate date];
 
@@ -147,8 +151,8 @@
 
 - (BOOL) hasAuthenticationData {
 
-	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -177,15 +181,14 @@
 
 	if (erasesExistingAuthenticationInformation) {
 	
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserIdentifier"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	}
 
-	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -206,9 +209,8 @@
 		
 		NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:lastAuthenticatedUserTokenKeychainItem];
 		
-		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:@"WALastAuthenticatedUserTokenKeychainItem"];
-		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WALastAuthenticatedUserIdentifier"];
-		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
+		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
@@ -298,43 +300,47 @@
 
 }
 
-#pragma mark -- Setup View Controller and Delegate
+#pragma mark - Setup View Controller and Delegate
 
-- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller
-{
-  [self presentSetupViewControllerAnimated:YES];
+- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller {
+	
+	[self presentSetupViewControllerAnimated:YES];
+	
 }
 
-- (void)presentSetupViewControllerAnimated:(BOOL)animated
-// Presents the setup view controller.
-{
-  __block SetupViewController *vc;
-  
-  vc = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"]] autorelease];
-  assert(vc != nil);
-  
-  vc.delegate = self;
-  
-  [vc presentModallyOn:self.window.rootViewController animated:animated];
+- (void) presentSetupViewControllerAnimated:(BOOL)animated {
+	
+	SetupViewController *setupVC = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
+	setupVC.delegate = self;
+	[setupVC presentModallyOn:self.window.rootViewController animated:animated];
+	
 }
 
-- (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string{
-  assert(controller != nil);
-  assert(string != nil);
-  
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"APIURLString"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
+- (void) setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string {
 
-  // TODO update remote interface context here. Right now the API update only works when the app is killed and restarted.
+	NSParameterAssert(controller);
+	NSParameterAssert(string);
+  
+  [[NSUserDefaults standardUserDefaults] setObject:string forKey:kWARemoteEndpointURL];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+  //	TODO
+	//	Update remote interface context here. Right now the API update only works when the app is killed and restarted.	
+	
+	//	This will work:
+	//	[[WARemoteInterface sharedInterface].engine performSelector:@selector(setContext:) withObject:[WARemoteInterfaceContext context]];
+	
   [controller dismissModalViewControllerAnimated:YES];
 
 }
 
-- (void)setupViewControllerDidCancel:(SetupViewController *)controller{
-  [controller dismissModalViewControllerAnimated:YES];
+- (void) setupViewControllerDidCancel:(SetupViewController *)controller{
+	
+	[controller dismissModalViewControllerAnimated:YES];
+	
 }
 
-#pragma mark -- Network Activity
+#pragma mark - Network Activity
 
 static unsigned int networkActivityStackingCount = 0;
 
