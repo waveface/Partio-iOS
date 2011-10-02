@@ -6,6 +6,7 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "JSONKit.h"
 #import "WARemoteInterface.h"
 #import "IRWebAPIEngine.h"
@@ -22,21 +23,10 @@
 
 + (WARemoteInterfaceContext *) context {
 
-	NSString *api = [[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"];
-  
-  NSUserDefaults *userDefaults;
-  
-  userDefaults = [NSUserDefaults standardUserDefaults];
-  if( api == nil) {
-    api = @"http://api.waveface.com:8080/api/v1/";
-    [userDefaults setObject:api forKey:@"APIURLString"];
-    [userDefaults synchronize];
-  }
-  
-  NSLog(@"API URL: %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"]);
-  
-	NSURL *baseURL = [NSURL URLWithString:api];
+	NSString *preferredEndpointURLString = [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL];
+	NSURL *baseURL = [NSURL URLWithString:preferredEndpointURLString];
 	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
+	
 }
 
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
