@@ -52,9 +52,9 @@
 		return itemHasMediaOfType(anItem, kUTTypeImage);
 	};
 	
-	//	BOOL (^isLinkItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-	//		return itemHasMediaOfType(anItem, kUTTypeURL);
-	//	};
+	BOOL (^isLinkItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+		return itemHasMediaOfType(anItem, kUTTypeURL);
+	};
 	
 	
 	//	Layout progress introspection helpers
@@ -138,8 +138,11 @@
 		if (isImageItem(currentItem))// || isLinkItem(currentItem))
 			[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"fourTiles"] irShuffle]];
 		
-		[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"verticalCombo"] irShuffle]];
-		[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"horizontalCombo"] irShuffle]];		
+		
+		if (isImageItem(currentItem) || isLinkItem(currentItem) || (!isImageItem(currentItem) && [[currentItem representedText] length] > 32)) {
+			[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"verticalCombo"] irShuffle]];
+			[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"horizontalCombo"] irShuffle]];
+		}
 		[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"singleTile"] irShuffle]];
 		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, int index, BOOL *stop) {
