@@ -157,13 +157,18 @@
 		}
 	}
 	
-	if (lastAuthenticatedUserIdentifier)
-		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
 	
-	if (lastAuthenticatedUserTokenKeychainItem.secretString)
-		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+	if (authenticationInformationSufficient) {
 	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+		if (lastAuthenticatedUserIdentifier)
+			[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+		
+		if (lastAuthenticatedUserTokenKeychainItem.secretString)
+			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		
+	}
+	
 	return authenticationInformationSufficient;
 
 }
@@ -189,7 +194,7 @@
 		}
 	}
 	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
@@ -322,6 +327,7 @@
 
   // TODO update remote interface context here. Right now the API update only works when the app is killed and restarted.
   [controller dismissModalViewControllerAnimated:YES];
+
 }
 
 - (void)setupViewControllerDidCancel:(SetupViewController *)controller{
