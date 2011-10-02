@@ -38,6 +38,8 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+	WARegisterUserDefaults();
+
 	NSDate *launchFinishDate = [NSDate date];
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
