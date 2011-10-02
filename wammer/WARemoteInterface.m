@@ -18,12 +18,6 @@
 
 
 
-@interface WARemoteInterfaceContext : IRWebAPIContext
-
-+ (WARemoteInterfaceContext *) context;
-
-@end
-
 @implementation WARemoteInterfaceContext
 
 + (WARemoteInterfaceContext *) context {
