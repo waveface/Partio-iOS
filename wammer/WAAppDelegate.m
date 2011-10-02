@@ -179,7 +179,6 @@
 	
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserIdentifier"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WhoAmI"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	}
@@ -208,7 +207,6 @@
 		
 		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:@"WALastAuthenticatedUserTokenKeychainItem"];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WALastAuthenticatedUserIdentifier"];
-		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
