@@ -324,7 +324,12 @@
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:kWARemoteEndpointURL];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-  // TODO update remote interface context here. Right now the API update only works when the app is killed and restarted.
+  //	TODO
+	//	Update remote interface context here. Right now the API update only works when the app is killed and restarted.	
+	
+	//	This will work:
+	//	[[WARemoteInterface sharedInterface].engine performSelector:@selector(setContext:) withObject:[WARemoteInterfaceContext context]];
+	
   [controller dismissModalViewControllerAnimated:YES];
 
 }
