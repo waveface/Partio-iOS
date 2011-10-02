@@ -646,7 +646,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 	NSParameterAssert(anArticleURI);
 
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
 	
 	NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 	WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
