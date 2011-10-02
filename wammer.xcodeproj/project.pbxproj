@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4BA1630914303A7B00CC4CC0 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* SetupViewController.m */; };
+		FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
+		FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF0B2A2E1438921100309F0E /* WADefaults.plist */; };
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
 		FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
@@ -330,6 +332,9 @@
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
 		FF027CC313F1433B009D979A /* WAPatternPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternPaper.png; path = Resources/WAPatternPaper.png; sourceTree = "<group>"; };
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
+		FF0B2A2B14388FF000309F0E /* WADefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADefines.h; sourceTree = "<group>"; };
+		FF0B2A2C14388FF000309F0E /* WADefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADefines.m; sourceTree = "<group>"; };
+		FF0B2A2E1438921100309F0E /* WADefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.plist; path = Resources/WADefaults.plist; sourceTree = "<group>"; };
 		FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPulldownRefreshView.h; sourceTree = "<group>"; };
 		FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPulldownRefreshView.m; sourceTree = "<group>"; };
 		FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPulldownRefreshView.xib; sourceTree = "<group>"; };
@@ -647,6 +652,8 @@
 				FF97386213D82B55003D1722 /* JSONKit */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
+				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
+				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
@@ -697,11 +704,12 @@
 			isa = PBXGroup;
 			children = (
 				FF73A54A13D6C2CD00D54EC6 /* wammer-iOS-Info.plist */,
+				FF0B2A2B14388FF000309F0E /* WADefines.h */,
+				FF0B2A2C14388FF000309F0E /* WADefines.m */,
+				FF0B2A2E1438921100309F0E /* WADefaults.plist */,
 				FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */,
 				FF73A54E13D6C2CD00D54EC6 /* main.m */,
 				FF73A55013D6C2CD00D54EC6 /* wammer-iOS-Prefix.pch */,
-				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
-				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 			);
 			name = "Supporting Files";
 			path = wammer;
@@ -1157,6 +1165,7 @@
 				FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */,
 				FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */,
 				FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */,
+				FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1233,6 +1242,7 @@
 				FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				4BA1630914303A7B00CC4CC0 /* SetupViewController.m in Sources */,
 				FF584C4D1435CB320058E109 /* WAImageView.m in Sources */,
+				FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
