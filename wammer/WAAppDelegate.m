@@ -24,10 +24,6 @@
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, SetupViewControllerDelegate>
 
-// private properties
-
-@property (nonatomic, copy, readwrite) NSString * APIURLString;
-
 // forward declarations
 
 - (void)presentSetupViewControllerAnimated:(BOOL)animated;
@@ -37,7 +33,6 @@
 
 @implementation WAAppDelegate
 @synthesize window = _window;
-@synthesize APIURLString;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -136,14 +131,7 @@
 	
 	}
 
-  NSUserDefaults *userDefaults;
-  userDefaults = [NSUserDefaults standardUserDefaults];
-  self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
-  if( self.APIURLString == nil) {
-    [self presentSetupViewControllerAnimated:YES];
-  }
-  
-return YES;
+  return YES;
 	
 }
 
@@ -169,13 +157,18 @@ return YES;
 		}
 	}
 	
-	if (lastAuthenticatedUserIdentifier)
-		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
 	
-	if (lastAuthenticatedUserTokenKeychainItem.secretString)
-		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+	if (authenticationInformationSufficient) {
 	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+		if (lastAuthenticatedUserIdentifier)
+			[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+		
+		if (lastAuthenticatedUserTokenKeychainItem.secretString)
+			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		
+	}
+	
 	return authenticationInformationSufficient;
 
 }
@@ -201,7 +194,7 @@ return YES;
 		}
 	}
 	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
@@ -317,7 +310,7 @@ return YES;
 {
   __block SetupViewController *vc;
   
-  vc = [[[SetupViewController alloc] initWithAPIURLString:self.APIURLString] autorelease];
+  vc = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"]] autorelease];
   assert(vc != nil);
   
   vc.delegate = self;
@@ -334,6 +327,7 @@ return YES;
 
   // TODO update remote interface context here. Right now the API update only works when the app is killed and restarted.
   [controller dismissModalViewControllerAnimated:YES];
+
 }
 
 - (void)setupViewControllerDidCancel:(SetupViewController *)controller{

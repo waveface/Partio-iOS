@@ -9,8 +9,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WADataStore.h"
-
 #import "WAPreviewBadge.h"
+#import "WAImageView.h"
+
 #import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
@@ -155,7 +156,7 @@ typedef enum {
 	
 	if (needsImageView) {
 		if (!self.imageView) {
-			self.imageView = [[[UIImageView alloc] initWithImage:nil] autorelease];
+			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
 			self.imageView.backgroundColor = nil;
 			self.imageView.opaque = NO;
 			self.imageView.contentMode = UIViewContentModeScaleAspectFit;
