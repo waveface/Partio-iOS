@@ -6,6 +6,8 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
+
 #import "WAPostViewControllerPhone.h"
 #import "WAComposeViewControllerPhone.h"
 #import "WADataStore.h"
@@ -397,7 +399,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	
 	WAArticle *currentArticle = self.post;
 	NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
 	
 	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
 		

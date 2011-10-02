@@ -6,6 +6,8 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
+
 #import "WADataStore.h"
 #import "WAPaginatedArticlesViewController.h"
 #import "WAPaginationSlider.h"
@@ -529,7 +531,7 @@
 	
 	WAArticle *currentArticle = [[self.fetchedResultsController fetchedObjects] objectAtIndex:self.paginatedView.currentPage];
 	NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
 	
 	[self remoteDataLoadingWillBeginForOperation:@"createComment"];
 	
