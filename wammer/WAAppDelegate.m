@@ -298,29 +298,26 @@
 
 }
 
-#pragma mark -- Setup View Controller and Delegate
+#pragma mark - Setup View Controller and Delegate
 
-- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller
-{
-  [self presentSetupViewControllerAnimated:YES];
+- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller {
+	
+	[self presentSetupViewControllerAnimated:YES];
+	
 }
 
-- (void)presentSetupViewControllerAnimated:(BOOL)animated
-// Presents the setup view controller.
-{
-  __block SetupViewController *vc;
-  
-  vc = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:@"APIURLString"]] autorelease];
-  assert(vc != nil);
-  
-  vc.delegate = self;
-  
-  [vc presentModallyOn:self.window.rootViewController animated:animated];
+- (void) presentSetupViewControllerAnimated:(BOOL)animated {
+	
+	SetupViewController *setupVC = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
+	setupVC.delegate = self;
+	[setupVC presentModallyOn:self.window.rootViewController animated:animated];
+	
 }
 
-- (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string{
-  assert(controller != nil);
-  assert(string != nil);
+- (void) setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string {
+
+	NSParameterAssert(controller);
+	NSParameterAssert(string);
   
   [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"APIURLString"];
   [[NSUserDefaults standardUserDefaults] synchronize];
@@ -330,11 +327,13 @@
 
 }
 
-- (void)setupViewControllerDidCancel:(SetupViewController *)controller{
-  [controller dismissModalViewControllerAnimated:YES];
+- (void) setupViewControllerDidCancel:(SetupViewController *)controller{
+	
+	[controller dismissModalViewControllerAnimated:YES];
+	
 }
 
-#pragma mark -- Network Activity
+#pragma mark - Network Activity
 
 static unsigned int networkActivityStackingCount = 0;
 
