@@ -99,8 +99,8 @@
 			nil], @"verticalCombo",
 			
 			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b01000100],
-				[NSNumber numberWithUnsignedChar:0b00100010],
+				[NSNumber numberWithUnsignedChar:0b10001000],
+				[NSNumber numberWithUnsignedChar:0b00010001],
 			nil], @"horizontalCombo",
 			
 			[NSArray arrayWithObjects:
