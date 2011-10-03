@@ -51,33 +51,24 @@
 - (CGRect) unitRectForPattern:(unsigned char)aPattern {
 
 	NSParameterAssert(aPattern != 0b0);
-
+	
+	static CGRect patternToUnitRects[] = (CGRect[]){
+		(CGRect){ 0, 0, 1, 1 },	//	0b10000000 == 1 << 7
+		(CGRect){ 0, 1, 1, 1 },
+		(CGRect){ 0, 2, 1, 1 },
+		(CGRect){ 0, 3, 1, 1 },
+		(CGRect){ 1, 0, 1, 1 },
+		(CGRect){ 1, 1, 1, 1 },
+		(CGRect){ 1, 2, 1, 1 },
+		(CGRect){ 1, 3, 1, 1 }		//	0b10000000 == 1 << 0
+	};
+	
 	NSMutableArray *unitRects = [NSMutableArray array];
-		
-	if (aPattern & 0b10000000)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 0, 1, 1 }]];
 	
-	if (aPattern & 0b01000000)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 1, 1, 1 }]];
-
-	if (aPattern & 0b00100000)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 2, 1, 1 }]];
-
-	if (aPattern & 0b00010000)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 3, 1, 1 }]];
+	for (int i = 0; i < 8; i++)
+		if (aPattern & (1 << i))
+			[unitRects addObject:[NSValue valueWithCGRect:patternToUnitRects[7 - i]]];
 		
-	if (aPattern & 0b00001000)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 0, 1, 1 }]];
-	
-	if (aPattern & 0b00000100)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 1, 1, 1 }]];
-
-	if (aPattern & 0b00000010)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 2, 1, 1 }]];
-
-	if (aPattern & 0b00000001)
-		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 3, 1, 1 }]];
-			
 	CGRect unitRect = [[unitRects lastObject] CGRectValue];
 	for (NSValue *aRectValue in unitRects)
 		unitRect = CGRectUnion(unitRect, [aRectValue CGRectValue]);
