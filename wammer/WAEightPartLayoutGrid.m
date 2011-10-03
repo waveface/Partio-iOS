@@ -210,15 +210,15 @@
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
 		if (isImageItem(currentItem)) {
-			[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"fourTiles"] irShuffle]];
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
 		if (isImageItem(currentItem) || isLinkItem(currentItem) || isLongTextItem(currentItem)) {
-			[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"verticalCombo"] irShuffle]];
-			[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"horizontalCombo"] irShuffle]];
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
-		[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"singleTile"] irShuffle]];
+		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
 		
 		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, int index, BOOL *stop) {
