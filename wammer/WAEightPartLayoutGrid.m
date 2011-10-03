@@ -10,9 +10,126 @@
 #import "WAEightPartLayoutGrid.h"
 #import "Foundation+IRAdditions.h"
 
+
+@interface WAEightPartLayoutPlacementCandidate : NSObject
++ (id) candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence;
+@end
+
+@interface WAEightPartLayoutPlacementCandidate ()
+@property (nonatomic, readwrite, assign) unsigned char pattern;
+@property (nonatomic, readwrite, assign) float_t occurrence;
+@end
+
+@implementation WAEightPartLayoutPlacementCandidate
+@synthesize pattern, occurrence;
++ (id) candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence {
+	WAEightPartLayoutPlacementCandidate *returnedInstance = [[self alloc] init];
+	returnedInstance.pattern = aPattern;
+	returnedInstance.occurrence = anOccurrence;
+	return returnedInstance;
+}
+@end
+
+
+@interface WAEightPartLayoutGrid ()
+@property (nonatomic, readwrite, retain) NSDictionary *defaultTilingPatternGroups;
+- (NSArray *) patternsInGroupNamed:(NSString *)aName;
+- (CGRect) unitRectForPattern:(unsigned char)aPattern;
+@end
+
 @implementation WAEightPartLayoutGrid
 @synthesize validatorBlock;
 @synthesize displayBlock;
+@synthesize defaultTilingPatternGroups;
+
+- (NSArray *) patternsInGroupNamed:(NSString *)aName {
+
+	return [[self defaultTilingPatternGroups] objectForKey:aName];
+
+}
+
+- (CGRect) unitRectForPattern:(unsigned char)aPattern {
+
+	NSParameterAssert(aPattern != 0b0);
+
+	NSMutableArray *unitRects = [NSMutableArray array];
+		
+	if (aPattern & 0b10000000)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 0, 1, 1 }]];
+	
+	if (aPattern & 0b01000000)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 1, 1, 1 }]];
+
+	if (aPattern & 0b00100000)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 2, 1, 1 }]];
+
+	if (aPattern & 0b00010000)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 3, 1, 1 }]];
+		
+	if (aPattern & 0b00001000)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 0, 1, 1 }]];
+	
+	if (aPattern & 0b00000100)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 1, 1, 1 }]];
+
+	if (aPattern & 0b00000010)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 2, 1, 1 }]];
+
+	if (aPattern & 0b00000001)
+		[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 3, 1, 1 }]];
+			
+	CGRect unitRect = [[unitRects lastObject] CGRectValue];
+	for (NSValue *aRectValue in unitRects)
+		unitRect = CGRectUnion(unitRect, [aRectValue CGRectValue]);
+	
+	return unitRect;
+
+}
+
+- (NSDictionary *) defaultTilingPatternGroups {
+
+	if (defaultTilingPatternGroups)
+		return defaultTilingPatternGroups;
+	
+	[self willChangeValueForKey:@"defaultTilingPatternGroups"];
+	
+	defaultTilingPatternGroups = [[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			[NSArray arrayWithObjects:
+				[NSNumber numberWithUnsignedChar:0b11001100],
+				[NSNumber numberWithUnsignedChar:0b00110011],
+			nil], @"fourTiles",
+			
+			[NSArray arrayWithObjects:
+				[NSNumber numberWithUnsignedChar:0b11000000],
+				[NSNumber numberWithUnsignedChar:0b00110000],
+				[NSNumber numberWithUnsignedChar:0b00001100],
+				[NSNumber numberWithUnsignedChar:0b00000011],
+			nil], @"verticalCombo",
+			
+			[NSArray arrayWithObjects:
+				[NSNumber numberWithUnsignedChar:0b01000100],
+				[NSNumber numberWithUnsignedChar:0b00100010],
+			nil], @"horizontalCombo",
+			
+			[NSArray arrayWithObjects:
+				[NSNumber numberWithUnsignedChar:0b10000000],
+				[NSNumber numberWithUnsignedChar:0b01000000],
+				[NSNumber numberWithUnsignedChar:0b00100000],
+				[NSNumber numberWithUnsignedChar:0b00010000],
+				[NSNumber numberWithUnsignedChar:0b00001000],
+				[NSNumber numberWithUnsignedChar:0b00000100],
+				[NSNumber numberWithUnsignedChar:0b00000010],
+				[NSNumber numberWithUnsignedChar:0b00000001],
+			nil], @"singleTile",
+			
+		nil] retain];
+		
+		[self didChangeValueForKey:@"defaultTilingPatternGroups"];
+		
+		return defaultTilingPatternGroups;
+
+}
 
 - (IRDiscreteLayoutGrid *) instantiatedGridWithAvailableItems:(NSArray *)items {
 
@@ -56,27 +173,23 @@
 		return itemHasMediaOfType(anItem, kUTTypeURL);
 	};
 	
+	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+		return (BOOL)!![[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
+	};
+	
+	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 32);
+	};
+	
 	
 	//	Layout progress introspection helpers
 	
 	__block unsigned char tileMap = 0b00000000;
 	
-	BOOL (^tileOccupied)(NSUInteger) = ^ (NSUInteger tileIndex) {
-		return (BOOL)(tileMap & (1 << tileIndex));
-	};
-	
 	BOOL (^tilesOccupied)(unsigned char) = ^ (unsigned char bitMask) {
 		return (BOOL)(tileMap & bitMask);
 	};
-	
-	//	BOOL (^occupyTile)(NSUInteger) = ^ (NSUInteger tileToOccupy) {
-	//		if (tileOccupied(tileToOccupy)) {
-	//			return NO;
-	//		}
-	//		tileMap &= (1 << tileToOccupy);
-	//		return YES;
-	//	};
-	
+		
 	IRDiscreteLayoutGrid *portraitPrototype = [IRDiscreteLayoutGrid prototype];
 	portraitPrototype.contentSize = (CGSize){ 768, 1024 };
 	
@@ -94,56 +207,19 @@
 			continue;
 		}
 		
-		//	 Instead of querying, enumerate all available and usable combos…
-		
-		NSDictionary *patternsToTiles = [NSDictionary dictionaryWithObjectsAndKeys:
-		
-			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b11001100],
-				[NSNumber numberWithUnsignedChar:0b00110011],
-			nil], @"fourTiles",
-			
-			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b11000000],
-			//	[NSNumber numberWithUnsignedChar:0b01100000],
-				[NSNumber numberWithUnsignedChar:0b00110000],
-				[NSNumber numberWithUnsignedChar:0b00001100],
-			//	[NSNumber numberWithUnsignedChar:0b00000110],
-				[NSNumber numberWithUnsignedChar:0b00000011],
-			nil], @"verticalCombo",
-			
-			[NSArray arrayWithObjects:
-			//	[NSNumber numberWithUnsignedChar:0b10001000],
-				[NSNumber numberWithUnsignedChar:0b01000100],
-				[NSNumber numberWithUnsignedChar:0b00100010],
-			//	[NSNumber numberWithUnsignedChar:0b00010001],
-			nil], @"horizontalCombo",
-			
-			[NSArray arrayWithObjects:
-				[NSNumber numberWithUnsignedChar:0b10000000],
-				[NSNumber numberWithUnsignedChar:0b01000000],
-				[NSNumber numberWithUnsignedChar:0b00100000],
-				[NSNumber numberWithUnsignedChar:0b00010000],
-				[NSNumber numberWithUnsignedChar:0b00001000],
-				[NSNumber numberWithUnsignedChar:0b00000100],
-				[NSNumber numberWithUnsignedChar:0b00000010],
-				[NSNumber numberWithUnsignedChar:0b00000001],
-			nil], @"singleTile",
-			
-		nil];
-		
-		
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
-		if (isImageItem(currentItem))// || isLinkItem(currentItem))
-			[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"fourTiles"] irShuffle]];
-		
-		
-		if (isImageItem(currentItem) || isLinkItem(currentItem) || (!isImageItem(currentItem) && [[currentItem representedText] length] > 32)) {
-			[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"verticalCombo"] irShuffle]];
-			[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"horizontalCombo"] irShuffle]];
+		if (isImageItem(currentItem)) {
+			[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"fourTiles"] irShuffle]];
 		}
-		[usablePatterns addObjectsFromArray:[(NSArray *)[patternsToTiles objectForKey:@"singleTile"] irShuffle]];
+		
+		if (isImageItem(currentItem) || isLinkItem(currentItem) || isLongTextItem(currentItem)) {
+			[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"verticalCombo"] irShuffle]];
+			[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"horizontalCombo"] irShuffle]];
+		}
+		
+		[usablePatterns addObjectsFromArray:[[self patternsInGroupNamed:@"singleTile"] irShuffle]];
+		
 		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, int index, BOOL *stop) {
 			return (NSNumber *)(tilesOccupied([pattern unsignedCharValue]) ? nil : pattern);
@@ -152,41 +228,11 @@
 		if (![actualPatterns count])
 			continue;
 		
-		unsigned char pattern = [[actualPatterns objectAtIndex:0] unsignedCharValue];
 		
+		unsigned char pattern = [[actualPatterns objectAtIndex:0] unsignedCharValue];
 		tileMap |= pattern;
 		
-		NSMutableArray *unitRects = [NSMutableArray array];
-		
-		if (pattern & 0b10000000)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 0, 1, 1 }]];
-		
-		if (pattern & 0b01000000)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 1, 1, 1 }]];
-
-		if (pattern & 0b00100000)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 2, 1, 1 }]];
-
-		if (pattern & 0b00010000)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 0, 3, 1, 1 }]];
-			
-		if (pattern & 0b00001000)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 0, 1, 1 }]];
-		
-		if (pattern & 0b00000100)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 1, 1, 1 }]];
-
-		if (pattern & 0b00000010)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 2, 1, 1 }]];
-
-		if (pattern & 0b00000001)
-			[unitRects addObject:[NSValue valueWithCGRect:(CGRect){ 1, 3, 1, 1 }]];
-		
-		NSParameterAssert(pattern != 0b0);
-		
-		CGRect unitRect = [[unitRects lastObject] CGRectValue];
-		for (NSValue *aRectValue in unitRects)
-			unitRect = CGRectUnion(unitRect, [aRectValue CGRectValue]);
+		CGRect unitRect = [self unitRectForPattern:pattern];
 		
 		NSString *layoutAreaName = [NSString stringWithFormat:@"_synthesized_%x", pattern];
 		
@@ -234,6 +280,7 @@
 
 	[validatorBlock release];
 	[displayBlock release];
+	[defaultTilingPatternGroups release];
 	[super dealloc];
 
 }
