@@ -14,7 +14,13 @@
 		FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
+		FF6C298F143B36F5009735E7 /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */; };
+		FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
+		FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */; };
+		FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */; };
+		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
+		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
@@ -377,6 +383,8 @@
 		FF61636314161A61004738D3 /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = external/PLCrashReporter/CrashReporter.xcodeproj; sourceTree = "<group>"; };
 		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
 		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASettingsGlyph.png; path = Resources/WASettingsGlyph.png; sourceTree = "<group>"; };
+		FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarCompose.png; path = Resources/UIButtonBarCompose.png; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
 		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryViewController.m; sourceTree = "<group>"; };
 		FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticlesViewController.h; sourceTree = "<group>"; };
@@ -437,6 +445,11 @@
 		FF9DA0C613DFF89000D6B28B /* WAComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComment.m; sourceTree = "<group>"; };
 		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
+		FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternSoftWallpaper.png; path = Resources/WAPatternSoftWallpaper.png; sourceTree = "<group>"; };
+		FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sansus Webissimo-Italic.otf"; path = "Resources/Sansus Webissimo-Italic.otf"; sourceTree = "<group>"; };
+		FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sansus Webissimo-Regular.otf"; path = "Resources/Sansus Webissimo-Regular.otf"; sourceTree = "<group>"; };
+		FFA06554143B227B00145079 /* WANavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WANavigationBar.h; path = wammer/WANavigationBar.h; sourceTree = "<group>"; };
+		FFA06555143B227B00145079 /* WANavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WANavigationBar.m; path = wammer/WANavigationBar.m; sourceTree = "<group>"; };
 		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Preview.xib"; path = "Resources/WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = wammer/WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
@@ -621,6 +634,8 @@
 			children = (
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
+				FFA06554143B227B00145079 /* WANavigationBar.h */,
+				FFA06555143B227B00145079 /* WANavigationBar.m */,
 				FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF71D3F3140E09EF0069B161 /* Base Articles View */,
@@ -812,7 +827,11 @@
 			isa = PBXGroup;
 			children = (
 				FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */,
+				FF027CC313F1433B009D979A /* WAPatternPaper.png */,
+				FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */,
 				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
+				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
+				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -820,13 +839,10 @@
 				FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */,
 				FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
-				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
-				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
 				FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */,
 				FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */,
 				FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */,
 				FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */,
-				FF027CC313F1433B009D979A /* WAPatternPaper.png */,
 				FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */,
 				FF21C8D213E14CF9009B980D /* IPSample */,
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
@@ -842,10 +858,14 @@
 				FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */,
 				FF13871013E94F0700154B7D /* WACompositionBarBackground.png */,
 				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
+				FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */,
+				FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */,
 				FAE26ECA13E1435D00CB1E3A /* Icon.png */,
 				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
 				FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */,
 				FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */,
+				FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */,
+				FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */,
 			);
 			name = Resources;
 			path = wammer;
@@ -1190,6 +1210,11 @@
 				FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */,
 				FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */,
 				FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */,
+				FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */,
+				FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */,
+				FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */,
+				FF6C298F143B36F5009735E7 /* WASettingsGlyph.png in Resources */,
+				FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1267,6 +1292,7 @@
 				4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */,
 				FF584C4D1435CB320058E109 /* WAImageView.m in Sources */,
 				FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */,
+				FFA06556143B227B00145079 /* WANavigationBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

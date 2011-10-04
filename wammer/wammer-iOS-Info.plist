@@ -54,5 +54,10 @@
 	<array/>
 	<key>UTImportedTypeDeclarations</key>
 	<array/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Sansus Webissimo-Italic.otf</string>
+		<string>Sansus Webissimo-Regular.otf</string>
+	</array>
 </dict>
 </plist>

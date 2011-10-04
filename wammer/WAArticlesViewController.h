@@ -10,7 +10,7 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
-@interface WAArticlesViewController : UIViewController <WAApplicationRootViewController, NSFetchedResultsControllerDelegate>
+@interface WAArticlesViewController : UIViewController <WAApplicationRootViewController, NSFetchedResultsControllerDelegate, NSCoding> 
 
 @property (nonatomic, readonly, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
