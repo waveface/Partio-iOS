@@ -42,6 +42,12 @@
 @synthesize displayBlock;
 @synthesize defaultTilingPatternGroups;
 
++ (WAEightPartLayoutGrid *) prototype {
+
+	return (WAEightPartLayoutGrid *)[super prototype];
+
+}
+
 - (NSArray *) patternsInGroupNamed:(NSString *)aName {
 
 	return [[self defaultTilingPatternGroups] objectForKey:aName];
