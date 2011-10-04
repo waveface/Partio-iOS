@@ -23,6 +23,8 @@
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
+- (void) sharedInit;
+
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -42,6 +44,26 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self)
 		return nil;
+	
+	[self sharedInit];
+	
+	return self;
+
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+
+	self = [super initWithCoder:aDecoder];
+	if (!self)
+		return nil;
+	
+	[self sharedInit];
+
+	return self;
+
+}
+
+- (void) sharedInit {
 
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
