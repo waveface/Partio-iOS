@@ -6,6 +6,8 @@
 //  Copyright (c) 2011 Waveface Inc. All rights reserved.
 //
 
+#import "WADefines.h"
+
 #import "WAComposeCommentViewControllerPhone.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
@@ -86,7 +88,7 @@
   
   WAArticle *currentArticle = self.post;
   NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"WhoAmI"];
+	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
 
   [[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:self.contentTextView.text usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
 		

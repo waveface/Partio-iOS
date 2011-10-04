@@ -46,6 +46,7 @@ typedef enum {
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
 @property (nonatomic, readonly, assign) WAArticleViewControllerPresentationStyle presentationStyle;
+@property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WAArticleViewController *self, UIView *loadedView);
 @property (nonatomic, readwrite, copy) void (^onViewTap)();
 @property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
 

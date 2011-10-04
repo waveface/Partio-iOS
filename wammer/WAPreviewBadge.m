@@ -9,8 +9,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "WADataStore.h"
-
 #import "WAPreviewBadge.h"
+#import "WAImageView.h"
+
 #import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
@@ -66,9 +67,10 @@ typedef enum {
 
 - (void) waSharedInit {
 
-	self.titleFont = [UIFont boldSystemFontOfSize:18.0f];
+//	self.titleFont = [UIFont boldSystemFontOfSize:18.0f];
+	self.titleFont = [UIFont fontWithName:@"Sansus Webissimo" size:32.0f];
 	self.titleColor = [UIColor colorWithRed:0 green:0 blue:0.45f alpha:1.0f];
-	self.textFont = [UIFont systemFontOfSize:16.0f];
+	self.textFont = [UIFont fontWithName:@"Palatino" size:16.0f];
 	self.textColor = [UIColor blackColor];
 	
 	self.backgroundColor = nil;
@@ -155,7 +157,7 @@ typedef enum {
 	
 	if (needsImageView) {
 		if (!self.imageView) {
-			self.imageView = [[[UIImageView alloc] initWithImage:nil] autorelease];
+			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
 			self.imageView.backgroundColor = nil;
 			self.imageView.opaque = NO;
 			self.imageView.contentMode = UIViewContentModeScaleAspectFit;

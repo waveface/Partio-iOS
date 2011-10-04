@@ -6,6 +6,8 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
+
 #import "WAAppDelegate.h"
 #import "IRRemoteResourcesManager.h"
 #import "WAUserSelectionViewController.h"
@@ -20,13 +22,11 @@
 #import "WAApplicationRootViewControllerDelegate.h"
 
 #import "UIApplication+CrashReporting.h"
-#import "SetupViewController.h"
+#import "WASetupViewController.h"
 
-@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, SetupViewControllerDelegate>
+#import "WANavigationBar.h"
 
-// private properties
-
-@property (nonatomic, copy, readwrite) NSString * APIURLString;
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 // forward declarations
 
@@ -37,9 +37,10 @@
 
 @implementation WAAppDelegate
 @synthesize window = _window;
-@synthesize APIURLString;
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	WARegisterUserDefaults();
 
 	NSDate *launchFinishDate = [NSDate date];
 
@@ -87,13 +88,35 @@
 		
 		NSParameterAssert(rootViewControllerClassName);
 		
-		UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
+		
+		self.window.rootViewController = (( ^ {
+		
+			//	Since it is totally unsafe to modify the navigation controller, the best way to swizzle a custom subclass of the navigation bar in is to use some tricks with NSKeyedUnarchiver, by telling it to use our subclass for unarchiving when it sees any navigation bar.
+		
+			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+			NSData *navControllerData = [NSKeyedArchiver archivedDataWithRootObject:navController];
+			
+			NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:navControllerData] autorelease];
+			[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+			
+			UINavigationController *swizzledNavController = [unarchiver decodeObjectForKey:@"root"];
+			
+			swizzledNavController.navigationBar.backgroundColor = nil;
+			swizzledNavController.navigationBar.opaque = NO;
+			
+			presentedViewController = swizzledNavController.topViewController;
+			
+			return swizzledNavController;
+			
+		})());
+		
 		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 		
-		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
-		self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
-		
+		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+				
 		if (needsTransition) {
 			
 			CATransition *transition = [CATransition animation];
@@ -136,14 +159,6 @@
 	
 	}
 
-  NSUserDefaults *userDefaults;
-  userDefaults = [NSUserDefaults standardUserDefaults];
-  self.APIURLString = [userDefaults stringForKey:@"APIURLString"];
-  if( self.APIURLString == nil) {
-    self.APIURLString = @"http://api.waveface.com:8080/api/v1/";
-    [userDefaults setObject:self.APIURLString forKey:@"APIURLString"];
-  }
-  
   return YES;
 	
 }
@@ -160,8 +175,8 @@
 
 - (BOOL) hasAuthenticationData {
 
-	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -170,13 +185,18 @@
 		}
 	}
 	
-	if (lastAuthenticatedUserIdentifier)
-		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
 	
-	if (lastAuthenticatedUserTokenKeychainItem.secretString)
-		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+	if (authenticationInformationSufficient) {
 	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+		if (lastAuthenticatedUserIdentifier)
+			[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+		
+		if (lastAuthenticatedUserTokenKeychainItem.secretString)
+			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		
+	}
+	
 	return authenticationInformationSufficient;
 
 }
@@ -185,15 +205,14 @@
 
 	if (erasesExistingAuthenticationInformation) {
 	
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WALastAuthenticatedUserIdentifier"];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	}
 
-	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:@"WALastAuthenticatedUserIdentifier"];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:@"WALastAuthenticatedUserTokenKeychainItem"];
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -202,7 +221,7 @@
 		}
 	}
 	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secretString) && lastAuthenticatedUserIdentifier;
+	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
@@ -214,9 +233,8 @@
 		
 		NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:lastAuthenticatedUserTokenKeychainItem];
 		
-		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:@"WALastAuthenticatedUserTokenKeychainItem"];
-		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WALastAuthenticatedUserIdentifier"];
-		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:@"WhoAmI"];
+		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
+		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
@@ -306,42 +324,47 @@
 
 }
 
-#pragma mark -- Setup View Controller and Delegate
+#pragma mark - Setup View Controller and Delegate
 
-- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller
-{
-  [self presentSetupViewControllerAnimated:YES];
+- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller {
+	
+	[self presentSetupViewControllerAnimated:YES];
+	
 }
 
-- (void)presentSetupViewControllerAnimated:(BOOL)animated
-// Presents the setup view controller.
-{
-  __block SetupViewController *vc;
-  
-  vc = [[[SetupViewController alloc] initWithAPIURLString:self.APIURLString] autorelease];
-  assert(vc != nil);
-  
-  vc.delegate = self;
-  
-  [vc presentModallyOn:self.window.rootViewController animated:animated];
+- (void) presentSetupViewControllerAnimated:(BOOL)animated {
+	
+	WASetupViewController *setupVC = [[[WASetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
+	setupVC.delegate = self;
+	[setupVC presentModallyOn:self.window.rootViewController animated:animated];
+	
 }
 
-- (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string{
-  assert(controller != nil);
-  assert(string != nil);
-  
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:@"APIURLString"];
-  [[NSUserDefaults standardUserDefaults] synchronize];
+- (void) setupViewController:(WASetupViewController *)controller didChooseString:(NSString *)string {
 
-  // TODO update remote interface context here. Right now the API update only works when the app is killed and restarted.
+	NSParameterAssert(controller);
+	NSParameterAssert(string);
+  
+  [[NSUserDefaults standardUserDefaults] setObject:string forKey:kWARemoteEndpointURL];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+  //	TODO
+	//	Update remote interface context here. Right now the API update only works when the app is killed and restarted.	
+	
+	//	This will work:
+	//	[[WARemoteInterface sharedInterface].engine performSelector:@selector(setContext:) withObject:[WARemoteInterfaceContext context]];
+	
   [controller dismissModalViewControllerAnimated:YES];
+
 }
 
-- (void)setupViewControllerDidCancel:(SetupViewController *)controller{
-  [controller dismissModalViewControllerAnimated:YES];
+- (void) setupViewControllerDidCancel:(WASetupViewController *)controller{
+	
+	[controller dismissModalViewControllerAnimated:YES];
+	
 }
 
-#pragma mark -- Network Activity
+#pragma mark - Network Activity
 
 static unsigned int networkActivityStackingCount = 0;
 

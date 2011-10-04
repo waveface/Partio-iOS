@@ -12,6 +12,13 @@
 #import "IRWebAPIKit.h"
 #import "WADataStore.h"
 
+@interface WARemoteInterfaceContext : IRWebAPIContext
+
++ (WARemoteInterfaceContext *) context;
+
+@end
+
+
 @interface WARemoteInterface : IRWebAPIInterface
 
 + (WARemoteInterface *) sharedInterface;

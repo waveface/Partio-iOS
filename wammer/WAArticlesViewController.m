@@ -23,6 +23,8 @@
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
+- (void) sharedInit;
+
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -42,6 +44,26 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self)
 		return nil;
+	
+	[self sharedInit];
+	
+	return self;
+
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+
+	self = [super initWithCoder:aDecoder];
+	if (!self)
+		return nil;
+	
+	[self sharedInit];
+
+	return self;
+
+}
+
+- (void) sharedInit {
 
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
@@ -60,32 +82,33 @@
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
 	
-	self.navigationItem.leftBarButtonItem = ((^ {
-	
-		__block IRBarButtonItem *returnedItem = nil;
-		__block __typeof__(self) nrSelf = self;
-		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-		returnedItem.block = ^ {
-		
-			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-			
-				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^ {
-					
-						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-							
-					});
-
-				}],
-			
-			nil]] show];
-		
-		};
-		
-		return returnedItem;
-	
-	})());
+	//	self.navigationItem.leftBarButtonItem = ((^ {
+	//	
+	//		__block __typeof__(self) nrSelf = self;
+	//		__block IRBarButtonItem *returnedItem = nil;
+	//		
+	//		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+	//		returnedItem.block = ^ {
+	//		
+	//			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+	//			
+	//				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+	//				
+	//					dispatch_async(dispatch_get_main_queue(), ^ {
+	//					
+	//						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+	//							
+	//					});
+	//
+	//				}],
+	//			
+	//			nil]] show];
+	//		
+	//		};
+	//		
+	//		return returnedItem;
+	//	
+	//	})());
 		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
@@ -93,10 +116,14 @@
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSArray arrayWithObjects:
 			
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+			[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleAction:)] autorelease],
+		
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+			
+			[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarCompose"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)] autorelease],
+						
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+			
 		nil];
 		return toolbar;
 	
@@ -105,6 +132,24 @@
 	self.title = @"Articles";
 	
 	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		
+			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+			
+				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+				
+					dispatch_async(dispatch_get_main_queue(), ^ {
+					
+						[self.delegate applicationRootViewControllerDidRequestReauthentication:self];
+							
+					});
+
+				}],
+			
+			nil]] show];
+		
+		}],
 	
 		[IRAction actionWithTitle:@"Feedback" block:^ {
 		
@@ -135,8 +180,6 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
-	return self;
-
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
