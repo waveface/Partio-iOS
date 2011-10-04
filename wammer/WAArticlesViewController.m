@@ -82,32 +82,33 @@
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
 	
-	self.navigationItem.leftBarButtonItem = ((^ {
-	
-		__block IRBarButtonItem *returnedItem = nil;
-		__block __typeof__(self) nrSelf = self;
-		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-		returnedItem.block = ^ {
-		
-			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-			
-				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^ {
-					
-						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-							
-					});
-
-				}],
-			
-			nil]] show];
-		
-		};
-		
-		return returnedItem;
-	
-	})());
+	//	self.navigationItem.leftBarButtonItem = ((^ {
+	//	
+	//		__block __typeof__(self) nrSelf = self;
+	//		__block IRBarButtonItem *returnedItem = nil;
+	//		
+	//		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+	//		returnedItem.block = ^ {
+	//		
+	//			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+	//			
+	//				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+	//				
+	//					dispatch_async(dispatch_get_main_queue(), ^ {
+	//					
+	//						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+	//							
+	//					});
+	//
+	//				}],
+	//			
+	//			nil]] show];
+	//		
+	//		};
+	//		
+	//		return returnedItem;
+	//	
+	//	})());
 		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
@@ -127,6 +128,24 @@
 	self.title = @"Articles";
 	
 	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		
+			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+			
+				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+				
+					dispatch_async(dispatch_get_main_queue(), ^ {
+					
+						[self.delegate applicationRootViewControllerDidRequestReauthentication:self];
+							
+					});
+
+				}],
+			
+			nil]] show];
+		
+		}],
 	
 		[IRAction actionWithTitle:@"Feedback" block:^ {
 		
