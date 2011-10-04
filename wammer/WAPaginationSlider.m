@@ -98,6 +98,19 @@
 
 }
 
+- (void) setNumberOfPages:(NSUInteger)newNumberOfPages {
+
+	if (numberOfPages == newNumberOfPages)
+		return;
+	
+	[self willChangeValueForKey:@"numberOfPages"];
+	numberOfPages = newNumberOfPages;
+	[self didChangeValueForKey:@"numberOfPages"];
+	
+	[self setNeedsLayout];
+
+}
+
 - (void) layoutSubviews {
 
 	static int dotTag = 1048576;
@@ -214,7 +227,7 @@
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(self.bounds), -12.0f };
-
+	
 }
 
 - (void) sliderTouchDidEnd:(UISlider *)aSlider {
@@ -259,8 +272,10 @@
 	
 	if (![self.slider isTracking])
 		[self.slider setValue:[self positionForPageNumber:newPage] animated:animate];
-	
+			
 	[self didChangeValueForKey:@"currentPage"];
+	
+	[self setNeedsLayout];
 
 }
 
