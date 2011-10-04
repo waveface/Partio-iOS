@@ -116,10 +116,14 @@
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSArray arrayWithObjects:
 			
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(handleAction:)] autorelease],
+			[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleAction:)] autorelease],
+		
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease],
+			
+			[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarCompose"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)] autorelease],
+						
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+			
 		nil];
 		return toolbar;
 	
