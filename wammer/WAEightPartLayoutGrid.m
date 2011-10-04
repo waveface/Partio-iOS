@@ -42,6 +42,12 @@
 @synthesize displayBlock;
 @synthesize defaultTilingPatternGroups;
 
++ (WAEightPartLayoutGrid *) prototype {
+
+	return (WAEightPartLayoutGrid *)[super prototype];
+
+}
+
 - (NSArray *) patternsInGroupNamed:(NSString *)aName {
 
 	return [[self defaultTilingPatternGroups] objectForKey:aName];
@@ -164,9 +170,9 @@
 		return itemHasMediaOfType(anItem, kUTTypeURL);
 	};
 	
-	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)!![[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
-	};
+	//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+	//		return (BOOL)!![[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
+	//	};
 	
 	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
 		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 32);
