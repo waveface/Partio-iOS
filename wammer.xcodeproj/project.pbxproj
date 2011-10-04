@@ -322,7 +322,7 @@
 		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
 		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WASetupViewController.h; sourceTree = "<group>"; };
+		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
@@ -818,7 +818,11 @@
 			isa = PBXGroup;
 			children = (
 				FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */,
+				FF027CC313F1433B009D979A /* WAPatternPaper.png */,
+				FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */,
 				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
+				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
+				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -826,13 +830,10 @@
 				FF42567C1414DFA0005A12ED /* WAOverlayBezel-Checkmark.png */,
 				FF42567D1414DFA0005A12ED /* WAOverlayBezel-Error.png */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
-				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
-				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
 				FFC813B713EB8BA1007B0683 /* PLCameraButtonIcon.png */,
 				FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */,
 				FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */,
 				FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */,
-				FF027CC313F1433B009D979A /* WAPatternPaper.png */,
 				FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */,
 				FF21C8D213E14CF9009B980D /* IPSample */,
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
