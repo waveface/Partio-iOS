@@ -63,6 +63,44 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	self.paginatedView.frame = UIEdgeInsetsInsetRect(self.paginatedView.frame, (UIEdgeInsets){ 32, 32, 0, 32 });
 	self.paginatedView.horizontalSpacing = 32.0f;
 	
+	self.view.backgroundColor = nil;
+	self.view.opaque = NO;
+	
+	if (self.navigationItem.leftBarButtonItem) {
+	
+		UIBarButtonItem *oldItem = self.navigationItem.leftBarButtonItem;
+	
+		IRBarButtonItem *replacementItem = [IRBarButtonItem itemWithButton:((^ {
+		
+			UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
+			
+			[returnedButton setImage:[IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:oldItem.title font:nil backgroundColor:nil gradientColors:[NSArray arrayWithObjects:
+				(id)[UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1].CGColor,
+				(id)[UIColor colorWithRed:.85 green:.85 blue:.85 alpha:1].CGColor,
+			nil] innerShadow:nil border:[IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1.0f color:[UIColor colorWithWhite:.6 alpha:1]] shadow:nil] forState:UIControlStateNormal];
+			
+			[returnedButton setImage:[IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:oldItem.title font:nil backgroundColor:nil gradientColors:[NSArray arrayWithObjects:
+				(id)[UIColor colorWithRed:.85 green:.85 blue:.85 alpha:1].CGColor,
+				(id)[UIColor colorWithRed:.75 green:.75 blue:.75 alpha:1].CGColor,
+			nil] innerShadow:nil border:[IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1.0f color:[UIColor colorWithWhite:.6 alpha:1]] shadow:nil] forState:UIControlStateHighlighted];
+			
+			[returnedButton sizeToFit];
+			
+			return returnedButton;
+		
+		})()) wiredAction:nil];
+		
+		replacementItem.target = oldItem.target;
+		replacementItem.action = oldItem.action;
+		
+		if ([oldItem isKindOfClass:[IRBarButtonItem class]]) {
+			replacementItem.block = ((IRBarButtonItem *)oldItem).block;
+		}
+		
+		self.navigationItem.leftBarButtonItem = replacementItem;
+	
+	}
+		
 }
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
@@ -82,10 +120,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
-	articleViewController.view.clipsToBounds = YES;
-	articleViewController.view.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
-	articleViewController.view.layer.borderWidth = 1.0f;
-	((UIView *)articleViewController.imageStackView).userInteractionEnabled = NO;
+	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
+		loadedView.backgroundColor = nil;
+		loadedView.clipsToBounds = YES;
+		loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:1.0f].CGColor;
+		loadedView.layer.borderWidth = 1.0f;
+		((UIView *)loadedVC.imageStackView).userInteractionEnabled = NO;
+	};
 	
 	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
 	
@@ -94,6 +135,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	};
 	
 	articleViewController.onViewTap = ^ {
+	
+		NSParameterAssert(nrSelf.navigationController);
+		
+		self.view.superview.clipsToBounds = NO;
+		self.view.superview.superview.clipsToBounds = NO;
 	
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
@@ -108,31 +154,31 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		paginatedVC.view.clipsToBounds = YES;
 		
-		UIView *backgroundView = [[[UIView alloc] initWithFrame:[self.navigationController.view convertRect:self.navigationController.topViewController.view.frame fromView:self.navigationController.topViewController.view.superview]] autorelease];
+		UIView *backgroundView = [[[UIView alloc] initWithFrame:[self.navigationController.view convertRect:[self.navigationController.view.window.screen applicationFrame] fromView:nil]] autorelease];
 		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
 		
 		UIView *backingView = [[[UIView alloc] initWithFrame:[self.navigationController.view convertRect:articleViewController.view.frame fromView:articleViewController.view.superview]] autorelease];
+		
 		UIView *backingImageHolder = [[[UIView alloc] initWithFrame:backingView.bounds] autorelease];
+		backingImageHolder.opaque = NO;
 		backingImageHolder.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		[backingView addSubview:backingImageHolder];
 		
 		backingView.backgroundColor = articleViewController.view.backgroundColor;
 		backingImageHolder.layer.contents = (id)[articleViewController.view.layer irRenderedImage].CGImage;
+		backingImageHolder.layer.opaque = NO;
 		backingImageHolder.layer.contentsGravity = kCAGravityCenter;
 		
-		[self.navigationController.view addSubview:backgroundView];		
-		[self.navigationController.view addSubview:backingView];
-		//	backingView.layer.shadowRadius = 4.0f;
-		//	backingView.layer.shadowOffset = (CGSize){ 0, 2 };
-		//	backingView.layer.shadowOpacity = 0.25f;
+		[nrSelf.navigationController.view addSubview:backgroundView];		
+		[nrSelf.navigationController.view addSubview:backingView];
 		backingView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
 		
 		backgroundView.alpha = 0;
 		
 		[UIView animateWithDuration:0.5f delay:0.0f options:UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionCurveEaseInOut animations: ^ {
-			
-			backingView.frame = [self.navigationController.view convertRect:self.navigationController.topViewController.view.frame fromView:self.navigationController.topViewController.view.superview];
+		
+			backingView.frame = [nrSelf.navigationController.view convertRect:[nrSelf.navigationController.view.window.screen applicationFrame] fromView:nil];
 			backingImageHolder.alpha = 0.0f;
 			backgroundView.alpha = 1.0f;
 		
@@ -530,7 +576,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (!item)
 			return;
 	
-		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = layoutBlock(transformedGrid, item);
+		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = CGRectInset(layoutBlock(transformedGrid, item), 4, 4);
 		
 	}];
 	

@@ -24,6 +24,8 @@
 #import "UIApplication+CrashReporting.h"
 #import "WASetupViewController.h"
 
+#import "WANavigationBar.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 // forward declarations
@@ -86,13 +88,35 @@
 		
 		NSParameterAssert(rootViewControllerClassName);
 		
-		UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
+		
+		self.window.rootViewController = (( ^ {
+		
+			//	Since it is totally unsafe to modify the navigation controller, the best way to swizzle a custom subclass of the navigation bar in is to use some tricks with NSKeyedUnarchiver, by telling it to use our subclass for unarchiving when it sees any navigation bar.
+		
+			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+			NSData *navControllerData = [NSKeyedArchiver archivedDataWithRootObject:navController];
+			
+			NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:navControllerData] autorelease];
+			[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+			
+			UINavigationController *swizzledNavController = [unarchiver decodeObjectForKey:@"root"];
+			
+			swizzledNavController.navigationBar.backgroundColor = nil;
+			swizzledNavController.navigationBar.opaque = NO;
+			
+			presentedViewController = swizzledNavController.topViewController;
+			
+			return swizzledNavController;
+			
+		})());
+		
 		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 		
-		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
-		self.window.rootViewController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
-		
+		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+				
 		if (needsTransition) {
 			
 			CATransition *transition = [CATransition animation];

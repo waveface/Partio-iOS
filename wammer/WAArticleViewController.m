@@ -34,7 +34,7 @@
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
 @synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView;
-@synthesize onPresentingViewController, onViewTap;
+@synthesize onPresentingViewController, onViewDidLoad, onViewTap;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
@@ -147,6 +147,7 @@
 	[mainImageView release];
 	
 	[onViewTap release];
+	[onViewDidLoad release];
 	
 	[super dealloc];
 
@@ -316,6 +317,9 @@
 	};
 	
 	[self refreshView];
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad(self, self.view);
 		
 }
 

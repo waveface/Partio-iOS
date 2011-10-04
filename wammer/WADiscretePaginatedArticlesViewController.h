@@ -9,6 +9,7 @@
 #import "WAArticlesViewController.h"
 #import "WAPaginationSlider.h"
 #import "IRPaginatedView.h"
+#import "IRBarButtonItem.h"
 
 @interface WADiscretePaginatedArticlesViewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
