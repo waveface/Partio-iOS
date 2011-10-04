@@ -63,6 +63,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	self.paginatedView.frame = UIEdgeInsetsInsetRect(self.paginatedView.frame, (UIEdgeInsets){ 32, 32, 0, 32 });
 	self.paginatedView.horizontalSpacing = 32.0f;
 	
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+	
 }
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
@@ -82,10 +84,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
-	articleViewController.view.clipsToBounds = YES;
-	articleViewController.view.layer.borderColor = [UIColor colorWithWhite:0.9f alpha:1.0f].CGColor;
-	articleViewController.view.layer.borderWidth = 1.0f;
-	((UIView *)articleViewController.imageStackView).userInteractionEnabled = NO;
+	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
+		loadedView.backgroundColor = nil;
+		loadedView.clipsToBounds = YES;
+		loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:1.0f].CGColor;
+		loadedView.layer.borderWidth = 1.0f;
+		((UIView *)loadedVC.imageStackView).userInteractionEnabled = NO;
+	};
 	
 	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
 	
@@ -530,7 +535,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (!item)
 			return;
 	
-		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = layoutBlock(transformedGrid, item);
+		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = CGRectInset(layoutBlock(transformedGrid, item), 4, 4);
 		
 	}];
 	
