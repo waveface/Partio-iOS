@@ -16,4 +16,6 @@
 @property (nonatomic, readwrite, copy) IRDiscreteLayoutGridAreaValidatorBlock validatorBlock;
 @property (nonatomic, readwrite, copy) IRDiscreteLayoutGridAreaDisplayBlock displayBlock;
 
++ (WAEightPartLayoutGrid *) prototype;
+
 @end
