@@ -176,8 +176,6 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
-	return self;
-
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
