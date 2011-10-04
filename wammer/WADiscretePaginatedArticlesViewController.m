@@ -228,34 +228,34 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	} copy] autorelease];
 	
-	IRDiscreteLayoutGrid * (^gridWithLayoutBlocks)(IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) = ^ (IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) {
-	
-		IRDiscreteLayoutGrid *returnedPrototype = [IRDiscreteLayoutGrid prototype];
-		NSUInteger numberOfAppendedLayoutAreas = 0;
-	
-		va_list arguments;
-		va_start(arguments, aBlock);
-		for (IRDiscreteLayoutGridAreaLayoutBlock aLayoutBlock = aBlock; aLayoutBlock != nil; aLayoutBlock =	va_arg(arguments, IRDiscreteLayoutGridAreaLayoutBlock)) {
-			[returnedPrototype registerLayoutAreaNamed:[NSString stringWithFormat:@"area_%2.0i", numberOfAppendedLayoutAreas] validatorBlock:nil layoutBlock:aLayoutBlock displayBlock:genericDisplayBlock];
-			numberOfAppendedLayoutAreas++;
-		};
-		va_end(arguments);
-		return returnedPrototype;
-		
-	};
+	//	IRDiscreteLayoutGrid * (^gridWithLayoutBlocks)(IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) = ^ (IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) {
+	//	
+	//		IRDiscreteLayoutGrid *returnedPrototype = [IRDiscreteLayoutGrid prototype];
+	//		NSUInteger numberOfAppendedLayoutAreas = 0;
+	//	
+	//		va_list arguments;
+	//		va_start(arguments, aBlock);
+	//		for (IRDiscreteLayoutGridAreaLayoutBlock aLayoutBlock = aBlock; aLayoutBlock != nil; aLayoutBlock =	va_arg(arguments, IRDiscreteLayoutGridAreaLayoutBlock)) {
+	//			[returnedPrototype registerLayoutAreaNamed:[NSString stringWithFormat:@"area_%2.0i", numberOfAppendedLayoutAreas] validatorBlock:nil layoutBlock:aLayoutBlock displayBlock:genericDisplayBlock];
+	//			numberOfAppendedLayoutAreas++;
+	//		};
+	//		va_end(arguments);
+	//		return returnedPrototype;
+	//		
+	//	};
 	
 	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
 
-	void (^enqueueGridPrototypes)(IRDiscreteLayoutGrid *, IRDiscreteLayoutGrid *) = ^ (IRDiscreteLayoutGrid *aGrid, IRDiscreteLayoutGrid *anotherGrid) {
-		aGrid.contentSize = (CGSize){ 768, 1024 };
-		anotherGrid.contentSize = (CGSize){ 1024, 768 };
-		[enqueuedLayoutGrids addObject:aGrid];		
-		[aGrid enumerateLayoutAreaNamesWithBlock: ^ (NSString *anAreaName) {
-			[[aGrid class] markAreaNamed:anAreaName inGridPrototype:aGrid asEquivalentToAreaNamed:anAreaName inGridPrototype:anotherGrid];
-		}];
-	};
+	//	void (^enqueueGridPrototypes)(IRDiscreteLayoutGrid *, IRDiscreteLayoutGrid *) = ^ (IRDiscreteLayoutGrid *aGrid, IRDiscreteLayoutGrid *anotherGrid) {
+	//		aGrid.contentSize = (CGSize){ 768, 1024 };
+	//		anotherGrid.contentSize = (CGSize){ 1024, 768 };
+	//		[enqueuedLayoutGrids addObject:aGrid];		
+	//		[aGrid enumerateLayoutAreaNamesWithBlock: ^ (NSString *anAreaName) {
+	//			[[aGrid class] markAreaNamed:anAreaName inGridPrototype:aGrid asEquivalentToAreaNamed:anAreaName inGridPrototype:anotherGrid];
+	//		}];
+	//	};
 	
-	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
+	//	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
 	
 	WAEightPartLayoutGrid *eightPartGrid = [WAEightPartLayoutGrid prototype];
 	eightPartGrid.validatorBlock = nil;

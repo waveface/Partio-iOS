@@ -51,9 +51,9 @@
 
 */
 
-#import "SetupViewController.h"
+#import "WASetupViewController.h"
 
-@interface SetupViewController () <UITextFieldDelegate>
+@interface WASetupViewController () <UITextFieldDelegate>
 
 // private properties
 
@@ -71,7 +71,7 @@
 
 @end
 
-@implementation SetupViewController
+@implementation WASetupViewController
 
 + (void)resetChoices
     // See comment in header.

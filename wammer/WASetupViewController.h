@@ -53,11 +53,11 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SetupViewControllerDelegate;
+@protocol WASetupViewControllerDelegate;
 
-@interface SetupViewController : UITableViewController
+@interface WASetupViewController : UITableViewController
 {
-    id<SetupViewControllerDelegate>     _delegate;
+    id<WASetupViewControllerDelegate>     _delegate;
     NSMutableArray *                    _choices;
     BOOL                                _choicesDirty;
     NSUInteger                          _choiceIndex;
@@ -72,20 +72,20 @@
 - (id)initWithAPIURLString:(NSString *)APIURLString;
     // galleryURLString may be nil, implying that no gallery is currently selected.
 
-@property (nonatomic, assign, readwrite) id<SetupViewControllerDelegate> delegate;
+@property (nonatomic, assign, readwrite) id<WASetupViewControllerDelegate> delegate;
 
 - (void)presentModallyOn:(UIViewController *)parent animated:(BOOL)animated;
 
 @end
 
-@protocol SetupViewControllerDelegate <NSObject>
+@protocol WASetupViewControllerDelegate <NSObject>
 
 @required
 
-- (void)setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string;
+- (void)setupViewController:(WASetupViewController *)controller didChooseString:(NSString *)string;
     // string may be empty, to indicate no gallery
 
-- (void)setupViewControllerDidCancel:(SetupViewController *)controller;
+- (void)setupViewControllerDidCancel:(WASetupViewController *)controller;
 
 @end
     
