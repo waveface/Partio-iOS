@@ -319,7 +319,7 @@
 		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
 		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WASetupViewController.h; sourceTree = "<group>"; };
+		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
