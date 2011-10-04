@@ -22,9 +22,9 @@
 #import "WAApplicationRootViewControllerDelegate.h"
 
 #import "UIApplication+CrashReporting.h"
-#import "SetupViewController.h"
+#import "WASetupViewController.h"
 
-@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, SetupViewControllerDelegate>
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 // forward declarations
 
@@ -310,13 +310,13 @@
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated {
 	
-	SetupViewController *setupVC = [[[SetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
+	WASetupViewController *setupVC = [[[WASetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
 	setupVC.delegate = self;
 	[setupVC presentModallyOn:self.window.rootViewController animated:animated];
 	
 }
 
-- (void) setupViewController:(SetupViewController *)controller didChooseString:(NSString *)string {
+- (void) setupViewController:(WASetupViewController *)controller didChooseString:(NSString *)string {
 
 	NSParameterAssert(controller);
 	NSParameterAssert(string);
@@ -334,7 +334,7 @@
 
 }
 
-- (void) setupViewControllerDidCancel:(SetupViewController *)controller{
+- (void) setupViewControllerDidCancel:(WASetupViewController *)controller{
 	
 	[controller dismissModalViewControllerAnimated:YES];
 	
