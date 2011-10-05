@@ -410,57 +410,18 @@
 	
 	if (self.imageStackView || self.mainImageView) {
 	
-		static NSString * const waArticleViewControllerStackImagePaths = @"waArticleViewControllerStackImagePaths";
-		
-		NSParameterAssert([self.article.fileOrder count] == [self.article.files count]);
-		
-		NSArray *allFiles = [self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+		NSArray *allImages = [[self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
 			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
 				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
 			}] anyObject]);
+		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
+			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnail;
 		}];
 		
-		NSArray *allFilePaths = [allFiles irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-			return (
-				aFile.resourceFilePath ? aFile.resourceFilePath : 
-				aFile.thumbnailFilePath ? aFile.thumbnailFilePath :
-				nil
-			);
-		}];
+		self.imageStackView.images = allImages;
 		
-		NSArray *existingPaths = objc_getAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths);
-		if (!existingPaths || ![existingPaths isEqualToArray:allFilePaths]) {
-		
-			NSArray *allImages = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
-			
-				NSError *readingError = nil;
-				NSData *imageData = [NSData dataWithContentsOfFile:aPath options:NSDataReadingMapped error:&readingError];
-				if (!imageData) {
-					NSLog(@"Error reading image: %@", readingError);
-					return (UIImage *)nil;
-				}
-				
-				UIImage *returnedImage = [UIImage imageWithData:imageData];
-				NSParameterAssert(returnedImage);
-				
-				if (index >= ((self.presentationStyle == WADiscretePreviewArticleStyle) ? 0 : 1)) {
-					*stop = YES;
-				}
-				
-				return returnedImage;
-				
-			}];
-			
-			self.imageStackView.images = allImages;
-			
-			if (self.imageStackView) {
-				objc_setAssociatedObject(self.imageStackView, &waArticleViewControllerStackImagePaths, allFilePaths, OBJC_ASSOCIATION_RETAIN);
-			}
-		
-			if ([allImages count]) {
-				self.mainImageView.image = [allImages objectAtIndex:0];
-			}
-		
+		if ([allImages count]) {
+			self.mainImageView.image = [allImages objectAtIndex:0];
 		}
 	
 	}
