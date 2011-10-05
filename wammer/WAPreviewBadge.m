@@ -109,16 +109,15 @@ typedef enum {
 
 - (void) setImage:(UIImage *)newImage {
 
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-		UIImage *decodedImage = [newImage irDecodedImage];
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self willChangeValueForKey:@"image"];
-			[image release];
-			image = [decodedImage retain];
-			[self didChangeValueForKey:@"image"];
-			[self setNeedsLayout];
-		});
-	});
+	if (image == newImage)
+		return;
+
+	[self willChangeValueForKey:@"image"];
+	[image release];
+	image = [newImage retain];
+	[self didChangeValueForKey:@"image"];
+	
+	[self setNeedsLayout];
 
 }
 
