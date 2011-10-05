@@ -14,6 +14,9 @@
 		FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
+		FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */; };
+		FF692BA3143C791700A084A8 /* WAPageSliderThumbActive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */; };
+		FF692BA4143C791700A084A8 /* WAPageSliderThumbInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */; };
 		FF6C298F143B36F5009735E7 /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */; };
 		FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
@@ -384,6 +387,9 @@
 		FF61636314161A61004738D3 /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = external/PLCrashReporter/CrashReporter.xcodeproj; sourceTree = "<group>"; };
 		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
 		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageSliderThumb.png; path = Resources/WAPageSliderThumb.png; sourceTree = "<group>"; };
+		FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageSliderThumbActive.png; path = Resources/WAPageSliderThumbActive.png; sourceTree = "<group>"; };
+		FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageSliderThumbInactive.png; path = Resources/WAPageSliderThumbInactive.png; sourceTree = "<group>"; };
 		FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASettingsGlyph.png; path = Resources/WASettingsGlyph.png; sourceTree = "<group>"; };
 		FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarCompose.png; path = Resources/UIButtonBarCompose.png; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
@@ -862,6 +868,9 @@
 				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
 				FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */,
 				FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */,
+				FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */,
+				FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */,
+				FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */,
 				FAE26ECA13E1435D00CB1E3A /* Icon.png */,
 				FFC2E04D13DD708300816EA1 /* Icon-72.png */,
 				FF9DA0BD13DFF6BC00D6B28B /* WAMockArticlesList.json */,
@@ -1217,6 +1226,9 @@
 				FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */,
 				FF6C298F143B36F5009735E7 /* WASettingsGlyph.png in Resources */,
 				FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */,
+				FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */,
+				FF692BA3143C791700A084A8 /* WAPageSliderThumbActive.png in Resources */,
+				FF692BA4143C791700A084A8 /* WAPageSliderThumbInactive.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
