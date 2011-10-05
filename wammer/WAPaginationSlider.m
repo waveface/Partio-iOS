@@ -74,8 +74,14 @@
 	
 	self.slider = [[[UISlider alloc] initWithFrame:self.bounds] autorelease];
 	self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	
 	[self.slider setMinimumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider setMaximumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbInactive"] forState:UIControlStateDisabled];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumb"] forState:UIControlStateNormal];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbActive"] forState:UIControlStateSelected];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbActive"] forState:UIControlStateHighlighted];
+	
 	[self.slider addTarget:self action:@selector(sliderDidMove:) forControlEvents:UIControlEventValueChanged];
 	[self.slider addTarget:self action:@selector(sliderTouchDidStart:) forControlEvents:UIControlEventTouchDown];
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpInside];
@@ -207,7 +213,9 @@
 	self.pageIndicatorLabel.text = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
-	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(self.bounds), -12.0f };
+
+	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
 	
 	[UIView animateWithDuration:0.125f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionAllowUserInteraction animations: ^ {
 		
@@ -226,7 +234,9 @@
 	self.pageIndicatorLabel.text = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
-	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(self.bounds), -12.0f };
+	
+	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
 	
 }
 
