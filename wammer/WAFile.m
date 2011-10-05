@@ -28,6 +28,15 @@
 @dynamic owner;
 @dynamic thumbnail;
 
+@synthesize resourceImage;
+
+- (void) dealloc { 
+
+	[resourceImage release];
+	[super dealloc];
+
+}
+
 + (NSString *) keyPathHoldingUniqueValue {
 
 	return @"identifier";
@@ -239,6 +248,22 @@
 	
 	return self.thumbnail;
 
+}
+
+- (UIImage *) resourceImage {
+
+	if (resourceImage)
+		return resourceImage;
+	
+	if (!self.resourceFilePath)
+		return nil;
+	
+	[self willChangeValueForKey:@"resourceImage"];
+	resourceImage = [[UIImage imageWithContentsOfFile:self.resourceFilePath] retain];
+	[self didChangeValueForKey:@"resourceImage"];
+
+	return resourceImage;
+	
 }
 
 @end
