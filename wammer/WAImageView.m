@@ -33,6 +33,14 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 
 @implementation WAImageView
+@synthesize image;
+
+- (void) dealloc {
+
+	[image release];
+	[super dealloc];
+
+}
 
 + (Class) layerClass {
 
@@ -150,10 +158,21 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	
 	[super setFrame:newFrame];
 	
-	((CATiledLayer *)self.layer).tileSize = newFrame.size;
+	//	Note: changing the tile size apparently does not fade
 	
-	self.layer.contents = nil;
-	[self.layer setNeedsDisplay];
+	if (!CGSizeEqualToSize(newFrame.size, ((CATiledLayer *)self.layer).tileSize)) {
+		
+		((CATiledLayer *)self.layer).tileSize = newFrame.size;
+		
+		//		[CATransaction begin];
+		//		CATransition *transition = [CATransition animation];
+		//		transition.type = kCATransitionFade;
+		//		transition.duration = [[((CATiledLayer *)self.layer) class] fadeDuration];
+		//		transition.removedOnCompletion = YES;
+		//		[self.layer addAnimation:transition forKey:kCATransition];
+		//		[CATransaction commit];
+		
+	}
 	
 }
 
@@ -161,13 +180,25 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 	if (newImage == self.image)
 		return;
-		
-	[super setImage:newImage];
+	
+	[self willChangeValueForKey:@"image"];
+	[image release];
+	image = [newImage retain];
+	[self didChangeValueForKey:@"image"];
+	
+	objc_setAssociatedObject(self.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
 	
 	self.layer.contents = nil;
 	[self.layer setNeedsDisplay];
 	
-	objc_setAssociatedObject(self.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
+	//	NSLog(@"%@: %@ -> %@", self, self.image, newImage);
+	//	
+	//	[super setImage:newImage];
+	//	
+	//	self.layer.contents = nil;
+	//	[self.layer setNeedsDisplay];
+	//	
+	//	objc_setAssociatedObject(self.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
 
 }
 

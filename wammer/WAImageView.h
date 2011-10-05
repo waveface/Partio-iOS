@@ -10,4 +10,6 @@
 
 @interface WAImageView : UIImageView
 
+@property (nonatomic, readwrite, retain) UIImage *image;
+
 @end
