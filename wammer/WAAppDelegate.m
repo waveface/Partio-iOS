@@ -119,7 +119,7 @@
 		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 		
-		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
 				
 		if (needsTransition) {
 			
