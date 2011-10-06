@@ -178,7 +178,7 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 - (void) setImage:(UIImage *)newImage {
 
-	if (newImage == self.image)
+	if (newImage && (newImage == self.image))
 		return;
 	
 	[self willChangeValueForKey:@"image"];
