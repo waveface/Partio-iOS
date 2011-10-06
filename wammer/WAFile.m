@@ -148,6 +148,9 @@
 				
 			}
 			
+			if (![[context updatedObjects] count])
+				return;
+			
 			NSError *savingError;
 			if (![context save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
