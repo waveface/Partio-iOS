@@ -20,6 +20,7 @@
 		FF6C298F143B36F5009735E7 /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */; };
 		FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
+		FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */; };
 		FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */; };
 		FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */; };
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
@@ -432,6 +433,7 @@
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
+		FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternThickShrunkPaper.png; path = Resources/WAPatternThickShrunkPaper.png; sourceTree = "<group>"; };
 		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATableViewCell.h; sourceTree = "<group>"; };
 		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATableViewCell.m; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
@@ -838,6 +840,7 @@
 				FF890C9E141624B700CD7D1F /* WAPatternBlackPaper.png */,
 				FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */,
 				FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */,
+				FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -1227,6 +1230,7 @@
 				FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */,
 				FF692BA3143C791700A084A8 /* WAPageSliderThumbActive.png in Resources */,
 				FF692BA4143C791700A084A8 /* WAPageSliderThumbInactive.png in Resources */,
+				FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

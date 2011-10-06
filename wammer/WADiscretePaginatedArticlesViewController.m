@@ -445,7 +445,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	if (self.discreteLayoutResult) {
 		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, int index, BOOL *stop) {
-			return aGridInstance.prototype;
+			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
 		}] mutableCopy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
@@ -540,9 +540,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
 		WAArticle *representedArticle = (WAArticle *)item;
-		
-		for (WAFile *aFile in representedArticle.files)
-			[aFile resourceFilePath];
+				
+		//	for (WAFile *aFile in representedArticle.fileOrder)
+		//		[aFile resourceFilePath];
+			
+		if ([representedArticle.fileOrder count]) {
+			WAFile *firstFile = (WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]];
+			[firstFile resourceFilePath];
+			[firstFile thumbnailFilePath];
+		}
 			
 		for (WAPreview *aPreview in representedArticle.previews)
 			[aPreview.graphElement thumbnailFilePath];

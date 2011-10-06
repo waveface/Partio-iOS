@@ -30,6 +30,42 @@
 @end
 
 
+NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((NSString *[]){
+		
+		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
+		[WAFullFrameImageStackArticleStyle] = @"Default",
+		[WAFullFramePreviewArticleStyle] = @"Preview",
+		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
+		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
+		
+	}[aStyle]);
+
+}
+
+WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString) {
+
+	NSNumber *answer = [[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[NSNumber numberWithInt:WAFullFramePlaintextArticleStyle], @"Plaintext",
+		[NSNumber numberWithInt:WAFullFrameImageStackArticleStyle], @"Default",
+		[NSNumber numberWithInt:WAFullFramePreviewArticleStyle], @"Preview",
+		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete-Plaintext",
+		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete-Default",
+		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete-Preview",
+		
+	nil] objectForKey:aString];
+	
+	if (!answer)
+		return WAUnknownArticleStyle;
+	
+	return [answer intValue];
+
+}
+
+
 @implementation WAArticleViewController
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
@@ -38,16 +74,16 @@
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ((NSString *[]){
-		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
-		[WAFullFrameImageStackArticleStyle] = @"Default",
-		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
-		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
-	}[aStyle])];
-
-	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *loadedNibName = preferredClassName;
+	
+	Class loadedClass = NSClassFromString(preferredClassName);
+	if (!loadedClass)
+		loadedClass = [self class];
+	
+	//	NSLog(@"%s: using class %@", __PRETTY_FUNCTION__, NSStringFromClass(loadedClass));
+	
+	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
@@ -418,12 +454,9 @@
 	
 	if (self.imageStackView || self.mainImageView) {
 	
-		NSArray *allImages = [[self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-			}] anyObject]);
-		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage;
+		NSArray *allImages = [self.article.fileOrder irMap: ^ (NSURL *anObjectURI, int index, BOOL *stop) {
+			WAFile *aFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anObjectURI];
+			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];
 		
 		self.imageStackView.images = allImages;
