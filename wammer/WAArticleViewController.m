@@ -89,6 +89,14 @@
 	if (savedContext == self.managedObjectContext)
 		return;
 	
+	if (![[[aNotification userInfo] objectForKey:NSInsertedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSUpdatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSDeletedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSRefreshedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
+		return;
+	
 	[self retain];
 	
 	dispatch_async(dispatch_get_main_queue(), ^ {
@@ -415,7 +423,7 @@
 				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
 			}] anyObject]);
 		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnail;
+			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage;
 		}];
 		
 		self.imageStackView.images = allImages;

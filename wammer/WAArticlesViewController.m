@@ -65,6 +65,8 @@
 
 - (void) sharedInit {
 
+	__block __typeof__(self) nrSelf = self;
+
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
@@ -82,34 +84,6 @@
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
 	
-	//	self.navigationItem.leftBarButtonItem = ((^ {
-	//	
-	//		__block __typeof__(self) nrSelf = self;
-	//		__block IRBarButtonItem *returnedItem = nil;
-	//		
-	//		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-	//		returnedItem.block = ^ {
-	//		
-	//			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-	//			
-	//				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-	//				
-	//					dispatch_async(dispatch_get_main_queue(), ^ {
-	//					
-	//						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-	//							
-	//					});
-	//
-	//				}],
-	//			
-	//			nil]] show];
-	//		
-	//		};
-	//		
-	//		return returnedItem;
-	//	
-	//	})());
-		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
@@ -141,7 +115,7 @@
 				
 					dispatch_async(dispatch_get_main_queue(), ^ {
 					
-						[self.delegate applicationRootViewControllerDidRequestReauthentication:self];
+						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
 							
 					});
 
@@ -166,7 +140,7 @@
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
 			
-			[self presentModalViewController:composeViewController animated:YES];
+			[nrSelf presentModalViewController:composeViewController animated:YES];
 		
 		}],
 		
@@ -271,9 +245,9 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				if ([nrSelf isViewLoaded])
-				if (nrSelf.view.window)
-					[nrSelf reloadViewContents];
+				//	if ([nrSelf isViewLoaded])
+				//	if (nrSelf.view.window)
+				//		[nrSelf reloadViewContents];
 				
 				[nrSelf remoteDataLoadingDidEnd];
 				[nrSelf autorelease];
@@ -331,7 +305,7 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-		
+	
 	if (self.updatesViewOnControllerChangeFinish) {
 	
 		if ([self isViewLoaded]) {

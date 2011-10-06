@@ -21,6 +21,15 @@
 @dynamic type;
 @dynamic url;
 
+@synthesize thumbnail;
+
+- (void) dealloc {
+
+	[thumbnail release];
+	[super dealloc];
+
+}
+
 + (BOOL) skipsNonexistantRemoteKey {
 
 	//	Allows piecemeal data patching, by skipping code path that assigns a placeholder value for any missing value
@@ -138,6 +147,22 @@
 	}
 	
 	return primitivePath;
+
+}
+
+- (UIImage *) thumbnail {
+
+	if (thumbnail)
+		return thumbnail;
+	
+	if (!self.thumbnailFilePath)
+		return nil;
+	
+	[self willChangeValueForKey:@"thumbnail"];
+	thumbnail = [[UIImage imageWithContentsOfFile:self.thumbnailFilePath] retain];
+	[self didChangeValueForKey:@"thumbnail"];
+	
+	return thumbnail;
 
 }
 
