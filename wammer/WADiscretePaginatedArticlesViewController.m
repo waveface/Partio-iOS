@@ -100,6 +100,19 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		self.navigationItem.leftBarButtonItem = replacementItem;
 	
 	}
+	
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	[self.paginatedView irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		if (!nrSelf.paginatedView.numberOfPages)
+			return;
+	
+		NSUInteger newIndex = [inNewValue unsignedIntValue];
+		[nrSelf paginatedView:nrSelf.paginatedView didShowView:[nrSelf.paginatedView existingPageAtIndex:newIndex] atIndex:newIndex];
+		
+	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 		
 }
 
@@ -405,6 +418,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) viewDidUnload {
 
 	[self.paginationSlider irUnbind:@"currentPage"];
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 
 	self.discreteLayoutManager = nil;
 	self.discreteLayoutResult = nil;
@@ -517,6 +531,23 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[self adjustPageView:returnedView usingGridAtIndex:index];
 			
 	return returnedView;
+
+}
+
+- (void) paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
+	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
+	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+	
+		WAArticle *representedArticle = (WAArticle *)item;
+		
+		for (WAFile *aFile in representedArticle.files)
+			[aFile resourceFilePath];
+			
+		for (WAPreview *aPreview in representedArticle.previews)
+			[aPreview.graphElement thumbnailFilePath];
+	
+	}];
 
 }
 
@@ -670,6 +701,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) dealloc {
 
 	[self.paginationSlider irUnbind:@"currentPage"];
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	
 	[paginationSlider release];
 	[paginatedView release];

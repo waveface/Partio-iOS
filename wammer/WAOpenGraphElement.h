@@ -22,6 +22,8 @@
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * url;
 
+@property (nonatomic, readwrite, retain) UIImage *thumbnail;
+
 + (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
 + (NSOperationQueue *) remoteResourceHandlingQueue;
 

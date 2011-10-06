@@ -200,6 +200,9 @@
 
 - (CGFloat) positionForPageNumber:(NSUInteger)aPageNumber {
 
+	if (!aPageNumber)
+		return 0;
+
 	return (CGFloat)(1.0f * aPageNumber / (self.numberOfPages - 1));
 
 }
