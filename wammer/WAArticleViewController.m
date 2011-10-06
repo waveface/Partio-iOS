@@ -30,6 +30,42 @@
 @end
 
 
+NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((NSString *[]){
+		
+		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
+		[WAFullFrameImageStackArticleStyle] = @"Default",
+		[WAFullFramePreviewArticleStyle] = @"Preview",
+		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
+		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
+		
+	}[aStyle]);
+
+}
+
+WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString) {
+
+	NSNumber *answer = [[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[NSNumber numberWithInt:WAFullFramePlaintextArticleStyle], @"Plaintext",
+		[NSNumber numberWithInt:WAFullFrameImageStackArticleStyle], @"Default",
+		[NSNumber numberWithInt:WAFullFramePreviewArticleStyle], @"Preview",
+		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete-Plaintext",
+		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete-Default",
+		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete-Preview",
+		
+	nil] objectForKey:aString];
+	
+	if (!answer)
+		return WAUnknownArticleStyle;
+	
+	return [answer intValue];
+
+}
+
+
 @implementation WAArticleViewController
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
@@ -38,15 +74,8 @@
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ((NSString *[]){
-		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
-		[WAFullFrameImageStackArticleStyle] = @"Default",
-		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
-		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
-	}[aStyle])];
-
+	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	
 	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
