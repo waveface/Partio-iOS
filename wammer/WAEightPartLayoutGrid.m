@@ -31,6 +31,8 @@
 @end
 
 
+NSString * const kWAEightPartLayoutGridWasFullyPopulated = @"WAEightPartLayoutGridWasFullyPopulated";
+
 @interface WAEightPartLayoutGrid ()
 @property (nonatomic, readwrite, retain) NSDictionary *defaultTilingPatternGroups;
 - (NSArray *) patternsInGroupNamed:(NSString *)aName;
@@ -268,8 +270,19 @@
 		[returnedInstance setLayoutItem:associatedItem forAreaNamed:layoutAreaName];
 	}];
 	
+	BOOL fullyPopulated = (tileMap == 0b11111111);
+	objc_setAssociatedObject(portraitPrototype, &kWAEightPartLayoutGridWasFullyPopulated, fullyPopulated ? (id)kCFBooleanTrue : (id)kCFBooleanFalse, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(landscapePrototype, &kWAEightPartLayoutGridWasFullyPopulated, fullyPopulated ? (id)kCFBooleanTrue : (id)kCFBooleanFalse, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
 	cleanup();
 	return returnedInstance;
+
+}
+
+- (BOOL) isFullyPopulated {
+
+	NSParameterAssert(self.prototype);
+	return (objc_getAssociatedObject(self.prototype, &kWAEightPartLayoutGridWasFullyPopulated) == (id)kCFBooleanTrue);
 
 }
 
