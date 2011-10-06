@@ -415,7 +415,7 @@
 				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
 			}] anyObject]);
 		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnail;
+			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage;
 		}];
 		
 		self.imageStackView.images = allImages;
