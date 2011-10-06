@@ -74,9 +74,16 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *loadedNibName = preferredClassName;
 	
-	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	Class loadedClass = NSClassFromString(preferredClassName);
+	if (!loadedClass)
+		loadedClass = [self class];
+	
+	//	NSLog(@"%s: using class %@", __PRETTY_FUNCTION__, NSStringFromClass(loadedClass));
+	
+	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
@@ -447,12 +454,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 	if (self.imageStackView || self.mainImageView) {
 	
-		NSArray *allImages = [[self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-			}] anyObject]);
-		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage;
+		NSArray *allImages = [self.article.fileOrder irMap: ^ (NSURL *anObjectURI, int index, BOOL *stop) {
+			WAFile *aFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anObjectURI];
+			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];
 		
 		self.imageStackView.images = allImages;
