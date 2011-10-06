@@ -287,10 +287,7 @@
 
 - (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (id obj, BOOL *stop) {
-		return [[[obj objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:anIndex]];
-	}] anyObject];
-	
+	WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:anIndex]];
 	return representedFile;
 
 }
