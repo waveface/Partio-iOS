@@ -65,6 +65,8 @@
 
 - (void) sharedInit {
 
+	__block __typeof__(self) nrSelf = self;
+
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
@@ -113,7 +115,7 @@
 				
 					dispatch_async(dispatch_get_main_queue(), ^ {
 					
-						[self.delegate applicationRootViewControllerDidRequestReauthentication:self];
+						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
 							
 					});
 
@@ -138,7 +140,7 @@
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
 			
-			[self presentModalViewController:composeViewController animated:YES];
+			[nrSelf presentModalViewController:composeViewController animated:YES];
 		
 		}],
 		
@@ -243,9 +245,9 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				if ([nrSelf isViewLoaded])
-				if (nrSelf.view.window)
-					[nrSelf reloadViewContents];
+				//	if ([nrSelf isViewLoaded])
+				//	if (nrSelf.view.window)
+				//		[nrSelf reloadViewContents];
 				
 				[nrSelf remoteDataLoadingDidEnd];
 				[nrSelf autorelease];
@@ -303,7 +305,7 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-		
+	
 	if (self.updatesViewOnControllerChangeFinish) {
 	
 		if ([self isViewLoaded]) {
