@@ -544,8 +544,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		//	for (WAFile *aFile in representedArticle.fileOrder)
 		//		[aFile resourceFilePath];
 			
-		if ([representedArticle.fileOrder count])
-			[(WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]] resourceFilePath];
+		if ([representedArticle.fileOrder count]) {
+			WAFile *firstFile = (WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]];
+			[firstFile resourceFilePath];
+			[firstFile thumbnailFilePath];
+		}
 			
 		for (WAPreview *aPreview in representedArticle.previews)
 			[aPreview.graphElement thumbnailFilePath];
