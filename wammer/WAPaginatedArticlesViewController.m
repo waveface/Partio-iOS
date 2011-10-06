@@ -746,6 +746,8 @@
 		}]] lastObject];
 
 		if (!returnedViewController) {
+		
+			//	TBD handle empty preview objects; in that case revert to plaintext
 			
 			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:(
 				[article.fileOrder count] ? WAFullFrameImageStackArticleStyle :
