@@ -445,7 +445,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	if (self.discreteLayoutResult) {
 		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, int index, BOOL *stop) {
-			return aGridInstance.prototype;
+			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
 		}] mutableCopy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
