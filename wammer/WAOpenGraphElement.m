@@ -166,4 +166,16 @@
 
 }
 
+
+
+- (BOOL) validateForUpdate:(NSError **)error {
+
+	if (self.thumbnailURL)
+	if (![[NSURL URLWithString:self.thumbnailURL] host])
+		return NO;
+	
+	return YES;
+
+}
+
 @end
