@@ -164,14 +164,6 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 		
 		((CATiledLayer *)self.layer).tileSize = newFrame.size;
 		
-		//		[CATransaction begin];
-		//		CATransition *transition = [CATransition animation];
-		//		transition.type = kCATransitionFade;
-		//		transition.duration = [[((CATiledLayer *)self.layer) class] fadeDuration];
-		//		transition.removedOnCompletion = YES;
-		//		[self.layer addAnimation:transition forKey:kCATransition];
-		//		[CATransaction commit];
-		
 	}
 	
 }
@@ -191,15 +183,6 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	self.layer.contents = nil;
 	[self.layer setNeedsDisplay];
 	
-	//	NSLog(@"%@: %@ -> %@", self, self.image, newImage);
-	//	
-	//	[super setImage:newImage];
-	//	
-	//	self.layer.contents = nil;
-	//	[self.layer setNeedsDisplay];
-	//	
-	//	objc_setAssociatedObject(self.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
-
 }
 
 @end
