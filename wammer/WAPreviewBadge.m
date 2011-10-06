@@ -157,8 +157,6 @@ typedef enum {
 	if (needsImageView) {
 		if (!self.imageView) {
 			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
-			self.imageView.backgroundColor = nil;
-			self.imageView.opaque = NO;
 			self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 			self.imageView.clipsToBounds = YES;
 			[self addSubview:self.imageView];
@@ -283,7 +281,7 @@ typedef enum {
 
 - (void) configureWithPreview:(WAPreview *)aPreview {
 
-	self.image = [UIImage imageWithContentsOfFile:aPreview.graphElement.thumbnailFilePath];
+	self.image = aPreview.graphElement.thumbnail;
 	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
 	self.title = ((^ {
 		
