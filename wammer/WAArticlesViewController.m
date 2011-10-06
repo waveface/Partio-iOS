@@ -82,34 +82,6 @@
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
 	
-	//	self.navigationItem.leftBarButtonItem = ((^ {
-	//	
-	//		__block __typeof__(self) nrSelf = self;
-	//		__block IRBarButtonItem *returnedItem = nil;
-	//		
-	//		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-	//		returnedItem.block = ^ {
-	//		
-	//			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-	//			
-	//				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-	//				
-	//					dispatch_async(dispatch_get_main_queue(), ^ {
-	//					
-	//						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-	//							
-	//					});
-	//
-	//				}],
-	//			
-	//			nil]] show];
-	//		
-	//		};
-	//		
-	//		return returnedItem;
-	//	
-	//	})());
-		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
