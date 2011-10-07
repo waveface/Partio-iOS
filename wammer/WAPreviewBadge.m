@@ -67,7 +67,6 @@ typedef enum {
 
 - (void) waSharedInit {
 
-//	self.titleFont = [UIFont boldSystemFontOfSize:18.0f];
 	self.titleFont = [UIFont fontWithName:@"Sansus Webissimo" size:32.0f];
 	self.titleColor = [UIColor colorWithRed:0 green:0 blue:0.45f alpha:1.0f];
 	self.textFont = [UIFont fontWithName:@"Palatino" size:16.0f];
