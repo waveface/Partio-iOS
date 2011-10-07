@@ -132,11 +132,11 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
 	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
 		return;
-	
+		
 	[self retain];
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
+	void (^updateOperations)() = ^ {
+
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 		
@@ -145,7 +145,21 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 		[self autorelease];
 
-	});
+	};
+	
+	__block BOOL didPounce = NO;
+	
+	if (self.onPresentingViewController)
+		self.onPresentingViewController(^ (UIViewController<WAArticleViewControllerPresenting> *parentVC){
+			if ([parentVC respondsToSelector:@selector(enqueueInterfaceUpdate:)]) {
+				[parentVC enqueueInterfaceUpdate:updateOperations];
+				didPounce = YES;
+			}
+		});
+	
+	if (!didPounce) {
+		dispatch_async(dispatch_get_main_queue(), updateOperations);
+	}
 
 }
 

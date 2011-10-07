@@ -23,6 +23,10 @@
 
 @protocol WAArticleViewControllerPresenting
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
+
+@optional
+- (void) enqueueInterfaceUpdate:(void(^)(void))anAction;
+
 @end
 
 
