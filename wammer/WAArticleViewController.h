@@ -23,20 +23,31 @@
 
 @protocol WAArticleViewControllerPresenting
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
+
+@optional
+- (void) enqueueInterfaceUpdate:(void(^)(void))anAction;
+
 @end
 
 
 #ifndef __WAArticleViewController__
 #define __WAArticleViewController__
 
-typedef enum {
+enum {
+
+	WAUnknownArticleStyle = -1,
+
 	WAFullFramePlaintextArticleStyle = 0,
 	WAFullFrameImageStackArticleStyle,
 	WAFullFramePreviewArticleStyle,
 	WADiscretePlaintextArticleStyle,
 	WADiscreteSingleImageArticleStyle,
 	WADiscretePreviewArticleStyle
-} WAArticleViewControllerPresentationStyle;
+	
+}; typedef NSInteger WAArticleViewControllerPresentationStyle;
+
+extern NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle);
+extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString);
 
 #endif
 

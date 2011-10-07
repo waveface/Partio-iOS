@@ -28,11 +28,12 @@
 @dynamic owner;
 @dynamic thumbnail;
 
-@synthesize resourceImage;
+@synthesize resourceImage, thumbnailImage;
 
 - (void) dealloc { 
 
 	[resourceImage release];
+	[thumbnailImage release];
 	[super dealloc];
 
 }
@@ -138,7 +139,7 @@
 			})()) error:nil];
 			
 			for (WAFile *matchingObject in matchingObjects) {
-				
+			
 				if ([matchingObject.resourceURL isEqualToString:[representingURL absoluteString]])
 					matchingObject.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
 					
@@ -146,6 +147,9 @@
 					matchingObject.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
 				
 			}
+			
+			if (![[context updatedObjects] count])
+				return;
 			
 			NSError *savingError;
 			if (![context save:&savingError])
@@ -239,19 +243,18 @@
 	if (primitiveThumbnail)
 		return primitiveThumbnail;
 	
-	if (!self.resourceFilePath)
+	if (!self.resourceImage)
 		return nil;
 	
-	UIImage *resourceImage = [UIImage imageWithContentsOfFile:self.resourceFilePath];
-	
-	self.thumbnail = [resourceImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 128, 128 } }, 0.0f, YES).size];
+	primitiveThumbnail = [self.resourceImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 128, 128 } }, 0.0f, YES).size];
+	[self setPrimitiveValue:primitiveThumbnail forKey:@"thumbnail"];
 	
 	return self.thumbnail;
 
 }
 
 - (UIImage *) resourceImage {
-
+	
 	if (resourceImage)
 		return resourceImage;
 	
@@ -261,8 +264,58 @@
 	[self willChangeValueForKey:@"resourceImage"];
 	resourceImage = [[UIImage imageWithContentsOfFile:self.resourceFilePath] retain];
 	[self didChangeValueForKey:@"resourceImage"];
+	
+	if (!resourceImage) {
+		
+		if (self.resourceURL)
+		if (![[NSURL URLWithString:self.resourceURL] isFileURL])
+		if (self.resourceFilePath) {
+		
+			[[NSFileManager defaultManager] removeItemAtPath:self.resourceFilePath error:nil];
+			self.resourceFilePath = nil;
+			
+			//	Trigger reload
+			
+			[self resourceFilePath];
+		
+		}
+	
+	}
 
 	return resourceImage;
+	
+}
+
+- (UIImage *) thumbnailImage {
+	
+	if (thumbnailImage)
+		return thumbnailImage;
+	
+	if (!self.thumbnailFilePath)
+		return nil;
+	
+	[self willChangeValueForKey:@"thumbnailImage"];
+	thumbnailImage = [[UIImage imageWithContentsOfFile:self.thumbnailFilePath] retain];
+	[self didChangeValueForKey:@"thumbnailImage"];
+	
+	if (!thumbnailImage) {
+		
+		if (self.thumbnailURL)
+		if (![[NSURL URLWithString:self.thumbnailURL] isFileURL])
+		if (self.thumbnailFilePath) {
+		
+			[[NSFileManager defaultManager] removeItemAtPath:self.thumbnailFilePath error:nil];
+			self.thumbnailFilePath = nil;
+			
+			//	Trigger reload
+			
+			[self thumbnailFilePath];
+		
+		}
+	
+	}
+
+	return thumbnailImage;
 	
 }
 

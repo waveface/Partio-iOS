@@ -26,7 +26,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
 
-@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting>
+@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
@@ -52,6 +52,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	UILongPressGestureRecognizer *backgroundTouchRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTouchPresense:)] autorelease];
+	backgroundTouchRecognizer.minimumPressDuration = 0.05;
+	backgroundTouchRecognizer.delegate = self;
+	[self.view addGestureRecognizer:backgroundTouchRecognizer];
 
 	if (self.discreteLayoutResult)
 		[self.paginatedView reloadViews];
@@ -100,6 +105,19 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		self.navigationItem.leftBarButtonItem = replacementItem;
 	
 	}
+	
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	[self.paginatedView irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		if (!nrSelf.paginatedView.numberOfPages)
+			return;
+	
+		NSUInteger newIndex = [inNewValue unsignedIntValue];
+		[nrSelf paginatedView:nrSelf.paginatedView didShowView:[nrSelf.paginatedView existingPageAtIndex:newIndex] atIndex:newIndex];
+		
+	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 		
 }
 
@@ -405,6 +423,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) viewDidUnload {
 
 	[self.paginationSlider irUnbind:@"currentPage"];
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 
 	self.discreteLayoutManager = nil;
 	self.discreteLayoutResult = nil;
@@ -431,7 +450,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	if (self.discreteLayoutResult) {
 		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, int index, BOOL *stop) {
-			return aGridInstance.prototype;
+			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
 		}] mutableCopy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
@@ -517,6 +536,29 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[self adjustPageView:returnedView usingGridAtIndex:index];
 			
 	return returnedView;
+
+}
+
+- (void) paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
+	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
+	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+	
+		WAArticle *representedArticle = (WAArticle *)item;
+				
+		//	for (WAFile *aFile in representedArticle.fileOrder)
+		//		[aFile resourceFilePath];
+			
+		if ([representedArticle.fileOrder count]) {
+			WAFile *firstFile = (WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]];
+			[firstFile resourceFilePath];
+			[firstFile thumbnailFilePath];
+		}
+			
+		for (WAPreview *aPreview in representedArticle.previews)
+			[aPreview.graphElement thumbnailFilePath];
+	
+	}];
 
 }
 
@@ -667,9 +709,54 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 }
 
+- (void) handleBackgroundTouchPresense:(UILongPressGestureRecognizer *)aRecognizer {
+
+	switch (aRecognizer.state) {
+	
+		case UIGestureRecognizerStatePossible:
+			break;
+		
+		case UIGestureRecognizerStateBegan: {
+			[self beginDelayingInterfaceUpdates];
+			break;
+		}
+		
+		case UIGestureRecognizerStateChanged:
+			break;
+			
+		case UIGestureRecognizerStateEnded:
+		case UIGestureRecognizerStateCancelled:
+		case UIGestureRecognizerStateFailed: {
+			[self endDelayingInterfaceUpdates];
+			break;
+		}
+	
+	};
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+	return ![self.paginationSlider hitTest:[touch locationInView:self.paginationSlider] withEvent:nil];
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	return YES;
+
+}
+
+- (void) enqueueInterfaceUpdate:(void (^)(void))anAction {
+
+	[self performInterfaceUpdate:anAction];
+
+}
+
 - (void) dealloc {
 
 	[self.paginationSlider irUnbind:@"currentPage"];
+	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	
 	[paginationSlider release];
 	[paginatedView release];

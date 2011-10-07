@@ -67,7 +67,6 @@ typedef enum {
 
 - (void) waSharedInit {
 
-//	self.titleFont = [UIFont boldSystemFontOfSize:18.0f];
 	self.titleFont = [UIFont fontWithName:@"Sansus Webissimo" size:32.0f];
 	self.titleColor = [UIColor colorWithRed:0 green:0 blue:0.45f alpha:1.0f];
 	self.textFont = [UIFont fontWithName:@"Palatino" size:16.0f];
@@ -157,8 +156,6 @@ typedef enum {
 	if (needsImageView) {
 		if (!self.imageView) {
 			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
-			self.imageView.backgroundColor = nil;
-			self.imageView.opaque = NO;
 			self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 			self.imageView.clipsToBounds = YES;
 			[self addSubview:self.imageView];
@@ -283,7 +280,7 @@ typedef enum {
 
 - (void) configureWithPreview:(WAPreview *)aPreview {
 
-	self.image = [UIImage imageWithContentsOfFile:aPreview.graphElement.thumbnailFilePath];
+	self.image = aPreview.graphElement.thumbnail;
 	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
 	self.title = ((^ {
 		

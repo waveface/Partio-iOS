@@ -41,6 +41,8 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	WARegisterUserDefaults();
+	
+	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
 
 	NSDate *launchFinishDate = [NSDate date];
 
@@ -96,6 +98,10 @@
 			//	Since it is totally unsafe to modify the navigation controller, the best way to swizzle a custom subclass of the navigation bar in is to use some tricks with NSKeyedUnarchiver, by telling it to use our subclass for unarchiving when it sees any navigation bar.
 		
 			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+			
+			if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
+				return navController;
+			
 			NSData *navControllerData = [NSKeyedArchiver archivedDataWithRootObject:navController];
 			
 			NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:navControllerData] autorelease];
@@ -115,7 +121,7 @@
 		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 		
-		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
 				
 		if (needsTransition) {
 			

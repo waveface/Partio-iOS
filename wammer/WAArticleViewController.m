@@ -30,6 +30,42 @@
 @end
 
 
+NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((NSString *[]){
+		
+		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
+		[WAFullFrameImageStackArticleStyle] = @"Default",
+		[WAFullFramePreviewArticleStyle] = @"Preview",
+		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
+		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
+		
+	}[aStyle]);
+
+}
+
+WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString) {
+
+	NSNumber *answer = [[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[NSNumber numberWithInt:WAFullFramePlaintextArticleStyle], @"Plaintext",
+		[NSNumber numberWithInt:WAFullFrameImageStackArticleStyle], @"Default",
+		[NSNumber numberWithInt:WAFullFramePreviewArticleStyle], @"Preview",
+		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete-Plaintext",
+		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete-Default",
+		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete-Preview",
+		
+	nil] objectForKey:aString];
+	
+	if (!answer)
+		return WAUnknownArticleStyle;
+	
+	return [answer intValue];
+
+}
+
+
 @implementation WAArticleViewController
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
@@ -38,16 +74,16 @@
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSString *loadedNibName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", ((NSString *[]){
-		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
-		[WAFullFrameImageStackArticleStyle] = @"Default",
-		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
-		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
-	}[aStyle])];
-
-	WAArticleViewController *returnedController = [[[self alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *loadedNibName = preferredClassName;
+	
+	Class loadedClass = NSClassFromString(preferredClassName);
+	if (!loadedClass)
+		loadedClass = [self class];
+	
+	//	NSLog(@"%s: using class %@", __PRETTY_FUNCTION__, NSStringFromClass(loadedClass));
+	
+	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
@@ -89,10 +125,18 @@
 	if (savedContext == self.managedObjectContext)
 		return;
 	
+	if (![[[aNotification userInfo] objectForKey:NSInsertedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSUpdatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSDeletedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSRefreshedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
+	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
+		return;
+		
 	[self retain];
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
+	void (^updateOperations)() = ^ {
+
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 		
@@ -101,7 +145,21 @@
 	
 		[self autorelease];
 
-	});
+	};
+	
+	__block BOOL didPounce = NO;
+	
+	if (self.onPresentingViewController)
+		self.onPresentingViewController(^ (UIViewController<WAArticleViewControllerPresenting> *parentVC){
+			if ([parentVC respondsToSelector:@selector(enqueueInterfaceUpdate:)]) {
+				[parentVC enqueueInterfaceUpdate:updateOperations];
+				didPounce = YES;
+			}
+		});
+	
+	if (!didPounce) {
+		dispatch_async(dispatch_get_main_queue(), updateOperations);
+	}
 
 }
 
@@ -162,56 +220,67 @@
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
-	//	self.avatarView.layer.cornerRadius = 4.0f;
-	self.avatarView.layer.masksToBounds = YES;
 	
-	UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
-	avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
-	self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
-	[avatarContainingView addSubview:self.avatarView];
-	self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
-	avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
-	avatarContainingView.layer.shadowOpacity = 0.25f;
-	avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
-	avatarContainingView.layer.shadowRadius = 1.0f;
-	avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
-	avatarContainingView.layer.borderWidth = 1.0f;
+	if (self.avatarView) {
+
+		self.avatarView.layer.masksToBounds = YES;
+		UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+		avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
+		self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
+		[avatarContainingView addSubview:self.avatarView];
+		self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
+		avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
+		avatarContainingView.layer.shadowOpacity = 0.25f;
+		avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
+		avatarContainingView.layer.shadowRadius = 1.0f;
+		avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
+		avatarContainingView.layer.borderWidth = 1.0f;
+	
+	}
 	
 	
-	self.imageStackView.delegate = self;	
-	[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	if (self.imageStackView) {
 	
-		WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
-		[inNewValue getValue:&state];
+		self.imageStackView.delegate = self;	
+		[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		
-		nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-			switch (state) {
-				case WAImageStackViewInteractionNormal: {			
-					[parentViewController setContextControlsVisible:YES animated:YES];
-					break;
+			WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
+			[inNewValue getValue:&state];
+			
+			nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+				switch (state) {
+					case WAImageStackViewInteractionNormal: {			
+						[parentViewController setContextControlsVisible:YES animated:YES];
+						break;
+					}
+					case WAImageStackViewInteractionZoomInPossible: {			
+						[parentViewController setContextControlsVisible:NO animated:YES];
+						break;
+					}
 				}
-				case WAImageStackViewInteractionZoomInPossible: {			
-					[parentViewController setContextControlsVisible:NO animated:YES];
-					break;
-				}
-			}
-		});
-		
-	} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+			});
+			
+		} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+	
+	}
 	
 	self.mainImageView.contentMode = UIViewContentModeScaleAspectFill;
 	
-	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
-	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
-	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	if (self.textEmphasisView) {
 	
-	UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
-	bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
-	bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
-	bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
-	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	[self.textEmphasisView.backgroundView addSubview:bubbleView];
+		self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
+		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
+		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		
+		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
+		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
+		bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
+		bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
+		bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		[self.textEmphasisView.backgroundView addSubview:bubbleView];
+	
+	}
 	
 	nrView.onLayoutSubviews = ^ {
 	
@@ -320,7 +389,7 @@
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
-		
+	
 }
 
 - (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
@@ -410,12 +479,12 @@
 	
 	if (self.imageStackView || self.mainImageView) {
 	
-		NSArray *allImages = [[self.article.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
-			return ((WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-			}] anyObject]);
-		}] irMap: ^ (WAFile *aFile, int index, BOOL *stop) {
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnail;
+		NSArray *allImages = [self.article.fileOrder irMap: ^ (NSURL *anObjectURI, int index, BOOL *stop) {
+			if (index > 1) {
+				*stop = YES;
+			}
+			WAFile *aFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anObjectURI];
+			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];
 		
 		self.imageStackView.images = allImages;

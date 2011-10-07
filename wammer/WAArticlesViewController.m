@@ -31,6 +31,9 @@
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
+@property (nonatomic, readwrite, assign) int interfaceUpdateOperationSuppressionCount;
+@property (nonatomic, readwrite, retain) NSOperationQueue *interfaceUpdateOperationQueue;
+
 @end
 
 
@@ -38,6 +41,7 @@
 @synthesize delegate, fetchedResultsController, managedObjectContext;
 @synthesize debugActionSheetController;
 @synthesize updatesViewOnControllerChangeFinish;
+@synthesize interfaceUpdateOperationSuppressionCount, interfaceUpdateOperationQueue;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -65,6 +69,8 @@
 
 - (void) sharedInit {
 
+	__block __typeof__(self) nrSelf = self;
+
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
@@ -82,34 +88,6 @@
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
 	
-	//	self.navigationItem.leftBarButtonItem = ((^ {
-	//	
-	//		__block __typeof__(self) nrSelf = self;
-	//		__block IRBarButtonItem *returnedItem = nil;
-	//		
-	//		returnedItem = [[[IRBarButtonItem alloc] initWithTitle:@"Sign Out" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
-	//		returnedItem.block = ^ {
-	//		
-	//			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-	//			
-	//				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-	//				
-	//					dispatch_async(dispatch_get_main_queue(), ^ {
-	//					
-	//						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-	//							
-	//					});
-	//
-	//				}],
-	//			
-	//			nil]] show];
-	//		
-	//		};
-	//		
-	//		return returnedItem;
-	//	
-	//	})());
-		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
@@ -141,7 +119,7 @@
 				
 					dispatch_async(dispatch_get_main_queue(), ^ {
 					
-						[self.delegate applicationRootViewControllerDidRequestReauthentication:self];
+						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
 							
 					});
 
@@ -166,7 +144,7 @@
 			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
 			
-			[self presentModalViewController:composeViewController animated:YES];
+			[nrSelf presentModalViewController:composeViewController animated:YES];
 		
 		}],
 		
@@ -180,6 +158,9 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
+	
+	self.interfaceUpdateOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
+	
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
@@ -188,12 +169,12 @@
 	
 	if (savedContext == self.managedObjectContext)
 		return;
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
+		
+	[self performInterfaceUpdate: ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 			
-	});
+	}];
 
 }
 
@@ -204,6 +185,8 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
+	
+	[interfaceUpdateOperationQueue release];
 
 	[super dealloc];
 
@@ -271,11 +254,12 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				if ([nrSelf isViewLoaded])
-				if (nrSelf.view.window)
-					[nrSelf reloadViewContents];
+				//	if ([nrSelf isViewLoaded])
+				//	if (nrSelf.view.window)
+				//		[nrSelf reloadViewContents];
 				
 				[nrSelf remoteDataLoadingDidEnd];
+				[nrSelf reloadViewContents];
 				[nrSelf autorelease];
 				
 			});	
@@ -331,7 +315,7 @@
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-		
+	
 	if (self.updatesViewOnControllerChangeFinish) {
 	
 		if ([self isViewLoaded]) {
@@ -478,6 +462,50 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	});
 
 }
+
+
+
+
+
+- (void) performInterfaceUpdate:(void(^)(void))aBlock {
+
+	[self.interfaceUpdateOperationQueue addOperation:[NSBlockOperation blockOperationWithBlock: ^ {
+	
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			if (aBlock)
+				aBlock();
+		
+		});
+		
+	}]];
+
+}
+
+- (void) beginDelayingInterfaceUpdates {
+
+	self.interfaceUpdateOperationSuppressionCount += 1;
+	
+	if (self.interfaceUpdateOperationSuppressionCount)
+		[self.interfaceUpdateOperationQueue setSuspended:YES];
+
+}
+
+- (void) endDelayingInterfaceUpdates {
+
+	self.interfaceUpdateOperationSuppressionCount -= 1;
+	
+	if (!self.interfaceUpdateOperationSuppressionCount)
+		[self.interfaceUpdateOperationQueue setSuspended:NO];
+
+}
+
+- (BOOL) isDelayingInterfaceUpdates {
+
+	return [self.interfaceUpdateOperationQueue isSuspended];
+
+}
+
 
 
 
