@@ -31,6 +31,9 @@
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
+@property (nonatomic, readwrite, assign) int interfaceUpdateOperationSuppressionCount;
+@property (nonatomic, readwrite, retain) NSOperationQueue *interfaceUpdateOperationQueue;
+
 @end
 
 
@@ -38,6 +41,7 @@
 @synthesize delegate, fetchedResultsController, managedObjectContext;
 @synthesize debugActionSheetController;
 @synthesize updatesViewOnControllerChangeFinish;
+@synthesize interfaceUpdateOperationSuppressionCount, interfaceUpdateOperationQueue;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -154,6 +158,9 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
+	
+	self.interfaceUpdateOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
+	
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
@@ -162,12 +169,12 @@
 	
 	if (savedContext == self.managedObjectContext)
 		return;
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
+		
+	[self performInterfaceUpdate: ^ {
 	
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 			
-	});
+	}];
 
 }
 
@@ -178,6 +185,8 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
+	
+	[interfaceUpdateOperationQueue release];
 
 	[super dealloc];
 
@@ -250,6 +259,7 @@
 				//		[nrSelf reloadViewContents];
 				
 				[nrSelf remoteDataLoadingDidEnd];
+				[nrSelf reloadViewContents];
 				[nrSelf autorelease];
 				
 			});	
@@ -452,6 +462,50 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	});
 
 }
+
+
+
+
+
+- (void) performInterfaceUpdate:(void(^)(void))aBlock {
+
+	[self.interfaceUpdateOperationQueue addOperation:[NSBlockOperation blockOperationWithBlock: ^ {
+	
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			if (aBlock)
+				aBlock();
+		
+		});
+		
+	}]];
+
+}
+
+- (void) beginDelayingInterfaceUpdates {
+
+	self.interfaceUpdateOperationSuppressionCount += 1;
+	
+	if (self.interfaceUpdateOperationSuppressionCount)
+		[self.interfaceUpdateOperationQueue setSuspended:YES];
+
+}
+
+- (void) endDelayingInterfaceUpdates {
+
+	self.interfaceUpdateOperationSuppressionCount -= 1;
+	
+	if (!self.interfaceUpdateOperationSuppressionCount)
+		[self.interfaceUpdateOperationQueue setSuspended:NO];
+
+}
+
+- (BOOL) isDelayingInterfaceUpdates {
+
+	return [self.interfaceUpdateOperationQueue isSuspended];
+
+}
+
 
 
 
