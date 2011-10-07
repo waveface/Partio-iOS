@@ -13,6 +13,7 @@
 #import "WAUserSelectionViewController.h"
 #import "WADataStore.h"
 #import "WAViewController.h"
+#import "WANavigationController.h"
 
 #import "WAAuthenticationRequestViewController.h"
 
@@ -97,7 +98,7 @@
 		
 			//	Since it is totally unsafe to modify the navigation controller, the best way to swizzle a custom subclass of the navigation bar in is to use some tricks with NSKeyedUnarchiver, by telling it to use our subclass for unarchiving when it sees any navigation bar.
 		
-			UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+			UINavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
 			
 			if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
 				return navController;
@@ -108,6 +109,12 @@
 			[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
 			
 			UINavigationController *swizzledNavController = [unarchiver decodeObjectForKey:@"root"];
+			
+			((WANavigationController *)swizzledNavController).onViewDidLoad = ^ (WANavigationController *self) {
+			
+				self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
+			
+			};
 			
 			swizzledNavController.navigationBar.backgroundColor = nil;
 			swizzledNavController.navigationBar.opaque = NO;
@@ -120,8 +127,6 @@
 		
 		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
-		
-		self.window.rootViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
 				
 		if (needsTransition) {
 			
