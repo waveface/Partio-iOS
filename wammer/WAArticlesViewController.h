@@ -29,4 +29,9 @@
 - (void) remoteDataLoadingDidEnd;
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError;
 
+- (void) performInterfaceUpdate:(void(^)(void))aBlock;
+- (void) beginDelayingInterfaceUpdates;
+- (void) endDelayingInterfaceUpdates;
+- (BOOL) isDelayingInterfaceUpdates;
+
 @end

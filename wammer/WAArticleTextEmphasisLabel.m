@@ -45,7 +45,6 @@
 
 - (void) waInitialize {
 
-
 	self.font = [UIFont systemFontOfSize:20.0f];
 		
 	self.label = [[[IRLabel alloc] initWithFrame:self.bounds] autorelease];	
@@ -74,12 +73,18 @@
 }
 
 - (void) setText:(NSString *)text {
+
+	static NSDataDetector *sharedDataDetector = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+		sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
+	});
 	
 	NSMutableAttributedString *attributedString = [[[self.label attributedStringForString:text] mutableCopy] autorelease];
 	
 	[attributedString beginEditing];
 	
-	[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:text options:0 range:(NSRange){ 0, [text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+	[sharedDataDetector enumerateMatchesInString:text options:0 range:(NSRange){ 0, [text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
 	
 		[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 			(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,

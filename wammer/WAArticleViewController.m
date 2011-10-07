@@ -132,11 +132,11 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
 	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
 		return;
-	
+		
 	[self retain];
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
+	void (^updateOperations)() = ^ {
+
 		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
 		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 		
@@ -145,7 +145,21 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 		[self autorelease];
 
-	});
+	};
+	
+	__block BOOL didPounce = NO;
+	
+	if (self.onPresentingViewController)
+		self.onPresentingViewController(^ (UIViewController<WAArticleViewControllerPresenting> *parentVC){
+			if ([parentVC respondsToSelector:@selector(enqueueInterfaceUpdate:)]) {
+				[parentVC enqueueInterfaceUpdate:updateOperations];
+				didPounce = YES;
+			}
+		});
+	
+	if (!didPounce) {
+		dispatch_async(dispatch_get_main_queue(), updateOperations);
+	}
 
 }
 
@@ -206,56 +220,67 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
-	//	self.avatarView.layer.cornerRadius = 4.0f;
-	self.avatarView.layer.masksToBounds = YES;
 	
-	UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
-	avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
-	self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
-	[avatarContainingView addSubview:self.avatarView];
-	self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
-	avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
-	avatarContainingView.layer.shadowOpacity = 0.25f;
-	avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
-	avatarContainingView.layer.shadowRadius = 1.0f;
-	avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
-	avatarContainingView.layer.borderWidth = 1.0f;
+	if (self.avatarView) {
+
+		self.avatarView.layer.masksToBounds = YES;
+		UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+		avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
+		self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
+		[avatarContainingView addSubview:self.avatarView];
+		self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
+		avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
+		avatarContainingView.layer.shadowOpacity = 0.25f;
+		avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
+		avatarContainingView.layer.shadowRadius = 1.0f;
+		avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
+		avatarContainingView.layer.borderWidth = 1.0f;
+	
+	}
 	
 	
-	self.imageStackView.delegate = self;	
-	[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	if (self.imageStackView) {
 	
-		WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
-		[inNewValue getValue:&state];
+		self.imageStackView.delegate = self;	
+		[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		
-		nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-			switch (state) {
-				case WAImageStackViewInteractionNormal: {			
-					[parentViewController setContextControlsVisible:YES animated:YES];
-					break;
+			WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
+			[inNewValue getValue:&state];
+			
+			nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+				switch (state) {
+					case WAImageStackViewInteractionNormal: {			
+						[parentViewController setContextControlsVisible:YES animated:YES];
+						break;
+					}
+					case WAImageStackViewInteractionZoomInPossible: {			
+						[parentViewController setContextControlsVisible:NO animated:YES];
+						break;
+					}
 				}
-				case WAImageStackViewInteractionZoomInPossible: {			
-					[parentViewController setContextControlsVisible:NO animated:YES];
-					break;
-				}
-			}
-		});
-		
-	} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+			});
+			
+		} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
+	
+	}
 	
 	self.mainImageView.contentMode = UIViewContentModeScaleAspectFill;
 	
-	self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
-	self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
-	self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	if (self.textEmphasisView) {
 	
-	UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
-	bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
-	bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
-	bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
-	bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	[self.textEmphasisView.backgroundView addSubview:bubbleView];
+		self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
+		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
+		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		
+		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
+		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
+		bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
+		bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
+		bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		[self.textEmphasisView.backgroundView addSubview:bubbleView];
+	
+	}
 	
 	nrView.onLayoutSubviews = ^ {
 	
@@ -364,7 +389,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
-		
+	
 }
 
 - (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
@@ -455,6 +480,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (self.imageStackView || self.mainImageView) {
 	
 		NSArray *allImages = [self.article.fileOrder irMap: ^ (NSURL *anObjectURI, int index, BOOL *stop) {
+			if (index > 1) {
+				*stop = YES;
+			}
 			WAFile *aFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anObjectURI];
 			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];

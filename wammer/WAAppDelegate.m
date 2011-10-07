@@ -41,6 +41,8 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	WARegisterUserDefaults();
+	
+	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
 
 	NSDate *launchFinishDate = [NSDate date];
 

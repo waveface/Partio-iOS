@@ -26,7 +26,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
 
-@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting>
+@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
@@ -52,6 +52,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	UILongPressGestureRecognizer *backgroundTouchRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTouchPresense:)] autorelease];
+	backgroundTouchRecognizer.minimumPressDuration = 0.05;
+	backgroundTouchRecognizer.delegate = self;
+	[self.view addGestureRecognizer:backgroundTouchRecognizer];
 
 	if (self.discreteLayoutResult)
 		[self.paginatedView reloadViews];
@@ -702,6 +707,50 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	});
 	
+}
+
+- (void) handleBackgroundTouchPresense:(UILongPressGestureRecognizer *)aRecognizer {
+
+	switch (aRecognizer.state) {
+	
+		case UIGestureRecognizerStatePossible:
+			break;
+		
+		case UIGestureRecognizerStateBegan: {
+			[self beginDelayingInterfaceUpdates];
+			break;
+		}
+		
+		case UIGestureRecognizerStateChanged:
+			break;
+			
+		case UIGestureRecognizerStateEnded:
+		case UIGestureRecognizerStateCancelled:
+		case UIGestureRecognizerStateFailed: {
+			[self endDelayingInterfaceUpdates];
+			break;
+		}
+	
+	};
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+	return ![self.paginationSlider hitTest:[touch locationInView:self.paginationSlider] withEvent:nil];
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	return YES;
+
+}
+
+- (void) enqueueInterfaceUpdate:(void (^)(void))anAction {
+
+	[self performInterfaceUpdate:anAction];
+
 }
 
 - (void) dealloc {
