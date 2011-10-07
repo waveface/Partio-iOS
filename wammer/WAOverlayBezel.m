@@ -236,9 +236,10 @@
 	if (self.accessoryView) {
 		[self addSubview:self.accessoryView];
 		self.accessoryView.center = (CGPoint){
-			roundf(CGRectGetMidX(self.bounds)),
-			roundf(CGRectGetMidY(self.bounds))
+			CGRectGetMidX(self.bounds),
+			CGRectGetMidY(self.bounds)
 		};
+		self.accessoryView.frame = CGRectIntegral(self.accessoryView.frame);
 	}
 	
 	self.captionLabel.text = self.caption;
