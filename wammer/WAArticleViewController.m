@@ -487,7 +487,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
 	
-		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, int index, BOOL *stop) {
+		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
 			if (index > 1) {
 				*stop = YES;
 			}

@@ -14,7 +14,7 @@
 
 - (BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
 
-	NSUInteger indexOfItem = [[self.viewControllers irMap: ^ (UIViewController *aVC, int index, BOOL *stop) {
+	NSUInteger indexOfItem = [[self.viewControllers irMap: ^ (UIViewController *aVC, NSUInteger index, BOOL *stop) {
 		return aVC.navigationItem;
 	}] indexOfObject:item];
 	

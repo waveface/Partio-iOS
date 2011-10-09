@@ -735,7 +735,7 @@
 	
 	NSArray *oldArticleViewControllers = [[self.articleViewControllers mutableCopy] autorelease];
 	
-	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
+	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, NSUInteger index, BOOL *stop) {
 	
 		NSURL *articleURI = [[article objectID] URIRepresentation];
 		

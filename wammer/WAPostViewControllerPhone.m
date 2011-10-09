@@ -343,7 +343,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       if (cell.imageStackView)
         objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
       
-      NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, int index, BOOL *stop) {
+      NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
         
         return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
           return [[[aFile objectID] URIRepresentation] isEqual:inObject];
@@ -353,7 +353,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       
       if ([allFilePaths count] == [post.files count]) {
         
-        cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, int index, BOOL *stop) {
+        cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, NSUInteger index, BOOL *stop) {
           
           return [UIImage imageWithContentsOfFile:aPath];
           
