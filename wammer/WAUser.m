@@ -97,6 +97,9 @@
 			for (WAUser *matchingObject in matchingObjects)
 				matchingObject.avatar = [UIImage imageWithData:resourceData];
 			
+			if (![[context updatedObjects] count])
+				return;
+			
 			[context save:nil];
 			
 		}];

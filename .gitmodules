@@ -28,3 +28,6 @@
 [submodule "external/Chameleon"]
 	path = external/Chameleon
 	url = git://github.com/iridia/Chameleon.git
+[submodule "external/NSLogger"]
+	path = external/NSLogger
+	url = git://github.com/iridia/NSLogger.git

@@ -2,7 +2,7 @@
 //  main.m
 //  wammer-OSX
 //
-//  Created by Evadne Wu on 9/15/11.
+//  Created by Evadne Wu on 10/9/11.
 //  Copyright (c) 2011 Iridia Productions. All rights reserved.
 //
 

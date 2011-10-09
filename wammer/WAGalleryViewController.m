@@ -105,12 +105,12 @@
 	
 		NSUInteger oldCurrentPage = self.paginatedView.currentPage;
 		
-		[UIView transitionWithView:self.paginatedView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations: ^ {
+		//	[UIView transitionWithView:self.paginatedView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations: ^ {
 		
-			[self.paginatedView reloadViews];
-			[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
+		[self.paginatedView reloadViews];
+		[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
 		
-		} completion:nil];
+		//	} completion:nil];
 	
 	});
 
@@ -237,19 +237,9 @@
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (id obj, BOOL *stop) {
-		return [[[obj objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:index]];
-	}] anyObject];
-	
-	NSParameterAssert(representedFile);
-
-	//	WAFile *representedFile = (WAFile *)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
-	NSString *resourceFilePath = representedFile.resourceFilePath;
-	
-	//	NSString *resourceName = [NSString stringWithFormat:@"IPSample_%03i", (1 + (rand() % 48))];
-	//	NSString *resourceFilePath = [[[NSBundle mainBundle] URLForResource:resourceName withExtension:@"jpg" subdirectory:@"IPSample"] path];
-	
-	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:[UIImage imageWithContentsOfFile:resourceFilePath]];
+	WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
+	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
+	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	
 	return returnedView;
 

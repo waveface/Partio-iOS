@@ -25,6 +25,8 @@
 
 @property (nonatomic, readwrite, assign) CGFloat minimumAcceptibleFullFrameAspectRatio;
 
+@property (nonatomic, readwrite, retain) WAPreview *preview;	// also calls -configureWithPreview:
+
 - (void) configureWithPreview:(WAPreview *)aPreview; 
 
 @end

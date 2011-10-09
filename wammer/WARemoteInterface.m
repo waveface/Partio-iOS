@@ -564,7 +564,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 		context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, int index, BOOL *stop) {
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[retrievedArticleReps irMap: ^ (NSDictionary *inUserRep, NSUInteger index, BOOL *stop) {
 		
 			NSMutableDictionary *mutatedRep = [[inUserRep mutableCopy] autorelease];
 			
@@ -577,7 +577,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			NSArray *commentReps = [mutatedRep objectForKey:@"comments"];
 			if (commentReps) {
 			
-				[mutatedRep setObject:[commentReps irMap: ^ (NSDictionary *aCommentRep, int index, BOOL *stop) {
+				[mutatedRep setObject:[commentReps irMap: ^ (NSDictionary *aCommentRep, NSUInteger index, BOOL *stop) {
 				
 					NSMutableDictionary *mutatedCommentRep = [[aCommentRep mutableCopy] autorelease];
 					
