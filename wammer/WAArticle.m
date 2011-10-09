@@ -87,7 +87,7 @@
 		primitiveFileOrder = [NSArray array];
 	
 	[((NSManagedObject *)[self.files anyObject]).managedObjectContext obtainPermanentIDsForObjects:[self.files allObjects] error:nil];
-	NSArray *allFileObjectURIs = [[self.files allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
+	NSArray *allFileObjectURIs = [[self.files allObjects] irMap: ^ (NSManagedObject *inObject, NSUInteger index, BOOL *stop) {
 		return [[inObject objectID] URIRepresentation];
 	}];
 	
@@ -160,7 +160,7 @@
 
 	[((NSManagedObject *)[inObjects anyObject]).managedObjectContext obtainPermanentIDsForObjects:[inObjects allObjects] error:nil];
 	
-	NSArray *inObjectURIs = [[inObjects allObjects] irMap: ^ (NSManagedObject *inObject, int index, BOOL *stop) {
+	NSArray *inObjectURIs = [[inObjects allObjects] irMap: ^ (NSManagedObject *inObject, NSUInteger index, BOOL *stop) {
 		return [[inObject objectID] URIRepresentation];
 	}];
 	
