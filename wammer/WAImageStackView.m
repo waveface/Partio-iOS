@@ -147,7 +147,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void) {
 		
-			NSArray *actualDecodedImages = [decodedImages irMap: ^ (UIImage *anImage, int index, BOOL *stop) {
+			NSArray *actualDecodedImages = [decodedImages irMap: ^ (UIImage *anImage, NSUInteger index, BOOL *stop) {
 				return [anImage irDecodedImage];
 			}];
 			

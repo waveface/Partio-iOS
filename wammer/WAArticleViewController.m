@@ -23,7 +23,8 @@
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
-- (void) refreshView;
+- (void) disassociateBindings;
+- (void) associateBindings;
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
 
@@ -81,8 +82,6 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (!loadedClass)
 		loadedClass = [self class];
 	
-	//	NSLog(@"%s: using class %@", __PRETTY_FUNCTION__, NSStringFromClass(loadedClass));
-	
 	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
@@ -90,20 +89,10 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 }
 
-- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-	
-	return self;
-
-}
-
 - (NSManagedObjectContext *) managedObjectContext {
 
 	if (!managedObjectContext)
-		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+		self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	
 	return managedObjectContext;
 
@@ -141,7 +130,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
 		
 		if ([self isViewLoaded])
-			[self refreshView];
+			[self associateBindings];
 	
 		[self autorelease];
 
@@ -165,7 +154,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) viewDidUnload {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	[self disassociateBindings];
+
 	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 	
 	self.managedObjectContext = nil;
@@ -187,7 +177,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
+	[self disassociateBindings];
+
 	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 
 	[managedObjectContext release];
@@ -385,7 +376,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		
 	};
 	
-	[self refreshView];
+	[self associateBindings];
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
@@ -420,9 +411,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 			
 				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 				
-				NSLog(@"%@", inspectionText);
-			
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
+				
 			});
 			
 		}],
@@ -446,7 +436,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[self didChangeValueForKey:@"article"];
 	
 	if ([self isViewLoaded])
-		[self refreshView];
+		[self associateBindings];
 
 }
 
@@ -463,50 +453,119 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 }
 
-- (void) refreshView {
+- (void) associateBindings {
+
+	[self disassociateBindings];
+
+	__block __typeof__(self) nrSelf = self;
 
 	self.contextTextView.text = [self description];
-
-	self.userNameLabel.text = self.article.owner.nickname;
-	self.relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:self.article.timestamp];
-	self.articleDescriptionLabel.text = self.article.text;
 	
-	WAPreview *anyPreview = (WAPreview *)[[[self.article.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-	nil]] lastObject];
+	[self.userNameLabel irBind:@"text" toObject:self.article keyPath:@"owner.nickname" options:nil];
+	[self.relativeCreationDateLabel irBind:@"text" toObject:self.article keyPath:@"timestamp" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
+	nil]];
+	[self.articleDescriptionLabel irBind:@"text" toObject:self.article keyPath:@"text" options:nil];
 	
-	[self.previewBadge configureWithPreview:anyPreview];
+	[self.previewBadge irBind:@"preview" toObject:self.article keyPath:@"previews" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		
+			WAPreview *anyPreview = (WAPreview *)[[[inNewValue allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+				[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+			nil]] lastObject];
+			
+			return anyPreview;
+		
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
+		
+	nil]];
 	
-	if (self.imageStackView || self.mainImageView) {
 	
-		NSArray *allImages = [self.article.fileOrder irMap: ^ (NSURL *anObjectURI, int index, BOOL *stop) {
+	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
+	
+		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
 			if (index > 1) {
 				*stop = YES;
 			}
-			WAFile *aFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anObjectURI];
+			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
 			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];
-		
-		self.imageStackView.images = allImages;
-		
-		if ([allImages count]) {
-			self.mainImageView.image = [allImages objectAtIndex:0];
-		}
 	
-	}
-
+	};
 	
-	self.avatarView.image = self.article.owner.avatar;
+	[self.imageStackView irBind:@"images" toObject:self.article keyPath:@"fileOrder" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			return topImages(inNewValue);
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
+		
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+		
+	nil]];
+	
+	
+	
+	
+	[self.mainImageView irBind:@"image" toObject:self.article keyPath:@"fileOrder" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		
+			NSArray *allImages = topImages(inNewValue);
+			return [allImages count] ? [allImages objectAtIndex:0] : nil;
+			
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
+		
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+		
+	nil]];
+	
+	[self.avatarView irBind:@"image" toObject:self.article keyPath:@"owner.avatar" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		
+			return [inNewValue isEqual:[NSNull null]] ? nil : inNewValue;
+			
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
+		
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+		
+	nil]];
+	
 	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
 	
-	self.textEmphasisView.text = self.article.text;
-	self.textEmphasisView.hidden = ([self.article.files count] != 0);
+	[self.textEmphasisView irBind:@"text" toObject:self.article keyPath:@"text" options:nil];
+	[self.textEmphasisView irBind:@"hidden" toObject:self.article keyPath:@"files" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+
+			return [NSNumber numberWithBool:!![inNewValue count]];
+		
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
+		
+	nil]];
 	
-	if (!self.userNameLabel.text)
-		self.userNameLabel.text = @"A Certain User";
+	//	if (!self.userNameLabel.text)
+	//		self.userNameLabel.text = @"A Certain User";
 	
 	[self.view setNeedsLayout];
 	
+}
+
+- (void) disassociateBindings {
+
+	[self.userNameLabel irUnbind:@"text"];
+	[self.relativeCreationDateLabel irUnbind:@"text"];
+	[self.articleDescriptionLabel irUnbind:@"text"];
+	[self.previewBadge irUnbind:@"preview"];
+	[self.imageStackView irUnbind:@"images"];
+	[self.mainImageView irUnbind:@"image"];
+	[self.avatarView irUnbind:@"image"];
+	[self.textEmphasisView irUnbind:@"text"];
+	[self.textEmphasisView irUnbind:@"hidden"];
+
 }
 
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
