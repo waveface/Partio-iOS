@@ -90,20 +90,10 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 }
 
-- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-	
-	return self;
-
-}
-
 - (NSManagedObjectContext *) managedObjectContext {
 
 	if (!managedObjectContext)
-		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+		self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	
 	return managedObjectContext;
 
@@ -187,7 +177,6 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 
 	[managedObjectContext release];
