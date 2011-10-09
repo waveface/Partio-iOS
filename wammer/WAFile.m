@@ -140,11 +140,18 @@
 			
 			for (WAFile *matchingObject in matchingObjects) {
 			
+				//	Manually emit a change notification on the owning article’s files relationship
+				//	So KVO will work without much hackery in other places
+			
+				[matchingObject.article willChangeValueForKey:@"files"];
+			
 				if ([matchingObject.resourceURL isEqualToString:[representingURL absoluteString]])
 					matchingObject.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
 					
 				if ([matchingObject.thumbnailURL isEqualToString:[representingURL absoluteString]])
 					matchingObject.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
+				
+				[matchingObject.article didChangeValueForKey:@"files"];
 				
 			}
 			
