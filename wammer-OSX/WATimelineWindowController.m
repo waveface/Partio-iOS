@@ -8,9 +8,13 @@
 
 #import "WATimelineWindowController.h"
 #import "WADataStore.h"
+#import "IRLifetimeHelper.h"
+
+#import <UIKit/UIFont.h>
+
 
 @implementation WATimelineWindowController
-@synthesize tableView, managedObjectContext;
+@synthesize tableView, arrayController, managedObjectContext;
 
 + (id) sharedController {
 	
@@ -28,6 +32,7 @@
 - (void) dealloc {
 
 	[tableView release];
+	[arrayController release];
 	[managedObjectContext release];
 	
 	[super dealloc];
@@ -42,50 +47,15 @@
 	
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	
-	//	for (int i = 0; i < 1000; i++) {
-	//	
-	//		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	//	
-	//		WAArticle *newArticle = [[[WAArticle alloc] initWithEntity:[WAArticle entityDescriptionForContext:self.managedObjectContext] insertIntoManagedObjectContext:self.managedObjectContext] autorelease];
-	//		newArticle.creationDeviceName = @"Mac";
-	//		newArticle.text = @"Hi.";
-	//		newArticle.timestamp = [NSDate date];
-	//		
-	//		[pool drain];
-	//	
-	//	}
-	//	
-	//	[self.managedObjectContext save:nil];
-	
 	return self;
 
 }
 
-- (NSView *) tableView:(NSTableView *)aTableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
-
-	NSView *cell = [aTableView makeViewWithIdentifier:[tableColumn identifier] owner:self];
-	if (!cell) {
+- (CGFloat) tableView:(NSTableView *)aTableView heightOfRow:(NSInteger)row {
 	
-		static NSNib *cellNib = nil;
-		if (!cellNib)
-			cellNib = [[NSNib alloc] initWithNibNamed:@"WATimelineCellView" bundle:nil];
-		
-		NSArray *toplevelObjects = nil;
-		if (![cellNib instantiateNibWithOwner:nil topLevelObjects:&toplevelObjects])
-			return nil;
-			
-		cell = [[toplevelObjects filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-			return [evaluatedObject isKindOfClass:[NSView class]];
-		}]] lastObject];
-		
-		cell.wantsLayer = YES;
-		cell.layer.borderColor = CGColorCreateGenericRGB(1, 0, 0, 1);
-		cell.layer.borderWidth = 2.0f;
-		cell.identifier = [tableColumn identifier];
-	
-	}
-	
-	return cell;
+	WAArticle *article = (WAArticle *)[self.arrayController.arrangedObjects objectAtIndex:row];
+	return [article.text sizeWithFont:[UIFont fontWithName:[[NSFont systemFontOfSize:[NSFont systemFontSize]] familyName] size:[NSFont systemFontSize]]
+		 constrainedToSize:(CGSize){ CGRectGetWidth(NSRectToCGRect(aTableView.frame)) - 72, 2048 }].height + 47;
 
 }
 
@@ -95,6 +65,23 @@
 	
 	((NSView *)self.window.contentView).wantsLayer = YES;
 	self.tableView.superview.wantsLayer = YES;
+	
+	[self.window.contentView setPostsFrameChangedNotifications:YES];
+	
+	__block __typeof__(self.tableView) nrTV = self.tableView;
+	__block id opaqueBlock = [[[NSNotificationCenter defaultCenter] addObserverForName:NSViewFrameDidChangeNotification object:self.window.contentView queue:nil usingBlock: ^ (NSNotification *note) {
+		
+		[nrTV noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, [nrTV numberOfRows] }]];
+		
+	}] retain];
+	
+	[self irPerformOnDeallocation: ^ {
+	
+		[[NSNotificationCenter defaultCenter] removeObserver:opaqueBlock];
+		[opaqueBlock release];
+		
+	}];
+	
 	//self.tableView.intercellSpacing = NSZeroSize;
     
 }

@@ -13,6 +13,7 @@
 + (id) sharedController;
 
 @property (nonatomic, readwrite, retain) IBOutlet NSTableView *tableView;
+@property (nonatomic, readwrite, retain) IBOutlet NSArrayController *arrayController;
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
