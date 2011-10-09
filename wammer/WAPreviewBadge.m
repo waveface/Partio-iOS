@@ -45,6 +45,7 @@ typedef enum {
 @synthesize titleFont, titleColor, textFont, textColor;
 @synthesize backgroundView;
 @synthesize minimumAcceptibleFullFrameAspectRatio;
+@synthesize preview;
 
 - (id) initWithFrame:(CGRect)frame {
 	
@@ -278,6 +279,20 @@ typedef enum {
 
 }
 
+- (void) setPreview:(WAPreview *)newPreview {
+
+	if (preview == newPreview)
+		return;
+
+	[self willChangeValueForKey:@"preview"];
+	[preview release];
+	preview = [newPreview retain];
+	[self didChangeValueForKey:@"preview"];
+	
+	[self configureWithPreview:preview];
+
+}
+
 - (void) configureWithPreview:(WAPreview *)aPreview {
 
 	self.image = aPreview.graphElement.thumbnail;
@@ -308,6 +323,8 @@ typedef enum {
 }
 
 - (void) dealloc {
+
+	[preview release];
 
 	[image release];
 	[title release];
