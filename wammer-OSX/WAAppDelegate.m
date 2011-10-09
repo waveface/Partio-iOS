@@ -2,38 +2,33 @@
 //  WAAppDelegate.m
 //  wammer-OSX
 //
-//  Created by Evadne Wu on 9/15/11.
+//  Created by Evadne Wu on 10/9/11.
 //  Copyright (c) 2011 Iridia Productions. All rights reserved.
 //
 
-#import <UIKit/UIKitView.h>
 #import "WAAppDelegate.h"
+#import "WATimelineWindowController.h"
 
 @implementation WAAppDelegate
 
-@synthesize window = _window;
+- (void) applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-- (void)dealloc
-{
-    [super dealloc];
-}
+	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
+	
+	NSNib *compositionNib = [[NSNib alloc] initWithNibNamed:@"WAArticleCompositionWindow" bundle:nil];
+	NSArray *compositionObjects = nil;
+	if ([compositionNib instantiateNibWithOwner:nil topLevelObjects:&compositionObjects]) {
+	
+	[compositionObjects retain];
+	
+		[[compositionObjects filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+			return [evaluatedObject isKindOfClass:[NSWindow class]];
+		}]] enumerateObjectsUsingBlock:^(NSWindow *aWindow, NSUInteger idx, BOOL *stop) {
+			[aWindow orderFront:nil];
+		}];
+	
+	};
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-	// Insert code here to initialize your application
-	
-	UIKitView *uiView = [[[UIKitView alloc] initWithFrame:[self.window.contentView bounds]] autorelease];
-	uiView.autoresizingMask = NSViewWidthSizable|NSViewHeightSizable;
-	[self.window.contentView addSubview:uiView];
-	[uiView.UIWindow addSubview:((^{
-		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		[button setTitle:@"Hello UIKit" forState:UIControlStateNormal];
-		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		[button setContentEdgeInsets:(UIEdgeInsets){ 6, 8, 8, 8 }];
-		[button sizeToFit];
-		return button;
-	})())];
-	
 }
 
 @end
