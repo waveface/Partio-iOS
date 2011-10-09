@@ -411,9 +411,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 			
 				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 				
-				NSLog(@"%@", inspectionText);
-			
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
+				
 			});
 			
 		}],
@@ -515,7 +514,6 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		
 			NSArray *allImages = topImages(inNewValue);
-			NSLog(@"%@ allImages %@", self.article, allImages);	
 			return [allImages count] ? [allImages objectAtIndex:0] : nil;
 			
 		} copy] autorelease], kIRBindingsValueTransformerBlock,
