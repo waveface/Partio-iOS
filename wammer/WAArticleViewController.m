@@ -82,8 +82,6 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (!loadedClass)
 		loadedClass = [self class];
 	
-	//	NSLog(@"%s: using class %@", __PRETTY_FUNCTION__, NSStringFromClass(loadedClass));
-	
 	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
