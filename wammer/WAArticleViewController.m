@@ -170,6 +170,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (self.avatarView) {
 
 		self.avatarView.layer.masksToBounds = YES;
+		self.avatarView.backgroundColor = [UIColor colorWithRed:0.85f green:0.85f blue:0.85f alpha:1];
 		UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
 		avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
 		self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
