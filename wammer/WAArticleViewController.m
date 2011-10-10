@@ -455,37 +455,11 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) associateBindings {
 
-	[self disassociateBindings];
-
 	__block __typeof__(self) nrSelf = self;
-
-	self.contextTextView.text = [self description];
 	
-	[self.userNameLabel irBind:@"text" toObject:self.article keyPath:@"owner.nickname" options:nil];
-	[self.relativeCreationDateLabel irBind:@"text" toObject:self.article keyPath:@"timestamp" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-			return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
-	nil]];
-	[self.articleDescriptionLabel irBind:@"text" toObject:self.article keyPath:@"text" options:nil];
-	
-	[self.previewBadge irBind:@"preview" toObject:self.article keyPath:@"previews" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		
-			WAPreview *anyPreview = (WAPreview *)[[[inNewValue allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
-				[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-			nil]] lastObject];
-			
-			return anyPreview;
-		
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
-		
-	nil]];
-	
+	[self disassociateBindings];
 	
 	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
-	
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
 			if (index > 1) {
 				*stop = YES;
@@ -493,64 +467,51 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
 			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];
-	
 	};
-	
-	[self.imageStackView irBind:@"images" toObject:self.article keyPath:@"fileOrder" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-			return topImages(inNewValue);
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
-		
-		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-		
-	nil]];
-	
-	
-	
-	
-	[self.mainImageView irBind:@"image" toObject:self.article keyPath:@"fileOrder" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		
-			NSArray *allImages = topImages(inNewValue);
-			return [allImages count] ? [allImages objectAtIndex:0] : nil;
-			
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
-		
-		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-		
-	nil]];
-	
-	[self.avatarView irBind:@"image" toObject:self.article keyPath:@"owner.avatar" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		
-			return [inNewValue isEqual:[NSNull null]] ? nil : inNewValue;
-			
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
-		
-		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-		
-	nil]];
-	
-	self.deviceDescriptionLabel.text = [NSString stringWithFormat:@"via %@", self.article.creationDeviceName ? self.article.creationDeviceName : @"an unknown device"];
-	
-	[self.textEmphasisView irBind:@"text" toObject:self.article keyPath:@"text" options:nil];
-	[self.textEmphasisView irBind:@"hidden" toObject:self.article keyPath:@"files" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 
-			return [NSNumber numberWithBool:!![inNewValue count]];
+	void (^bind)(id, NSString *, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath, NSString *articleKeypath, IRBindingsValueTransformer transformerBlock) {
+		[object irBind:objectKeyPath toObject:self.article keyPath:articleKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+			[[transformerBlock copy] autorelease], kIRBindingsValueTransformerBlock,
+		nil]];
+	};
 		
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
-		
-	nil]];
+	bind(self.userNameLabel, @"text", @"owner.nickname", nil);
 	
-	//	if (!self.userNameLabel.text)
-	//		self.userNameLabel.text = @"A Certain User";
+	bind(self.relativeCreationDateLabel, @"text", @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
+	});
 	
-	[self.view setNeedsLayout];
+	bind(self.articleDescriptionLabel, @"text", @"text", nil);
+	
+	bind(self.previewBadge, @"preview", @"previews", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return (WAPreview *)[[[inNewValue allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+		nil]] lastObject];
+	});
+	
+	bind(self.imageStackView, @"images", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return topImages(inNewValue);
+	});
+	
+	bind(self.mainImageView, @"image", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		NSArray *allImages = topImages(inNewValue);
+		return [allImages count] ? [allImages objectAtIndex:0] : nil;
+	});
+	
+	bind(self.avatarView, @"image", @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return [inNewValue isEqual:[NSNull null]] ? nil : inNewValue;
+	});
+	
+	bind(self.deviceDescriptionLabel, @"text", @"creationDeviceName", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return inNewValue ? inNewValue : @"an unknown device";
+	});
+	
+	bind(self.textEmphasisView, @"text", @"text", nil);
+	
+	bind(self.textEmphasisView, @"hidden", @"files", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return [NSNumber numberWithBool:!![inNewValue count]];
+	});
 	
 }
 
@@ -563,6 +524,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[self.imageStackView irUnbind:@"images"];
 	[self.mainImageView irUnbind:@"image"];
 	[self.avatarView irUnbind:@"image"];
+	[self.deviceDescriptionLabel irUnbind:@"text"];
 	[self.textEmphasisView irUnbind:@"text"];
 	[self.textEmphasisView irUnbind:@"hidden"];
 
