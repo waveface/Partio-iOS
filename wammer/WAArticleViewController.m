@@ -107,51 +107,6 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 }
 
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
-	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	if (![[[aNotification userInfo] objectForKey:NSInsertedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSUpdatedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSDeletedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSRefreshedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
-		return;
-		
-	[self retain];
-	
-	void (^updateOperations)() = ^ {
-
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
-		
-		if ([self isViewLoaded])
-			[self associateBindings];
-	
-		[self autorelease];
-
-	};
-	
-	__block BOOL didPounce = NO;
-	
-	if (self.onPresentingViewController)
-		self.onPresentingViewController(^ (UIViewController<WAArticleViewControllerPresenting> *parentVC){
-			if ([parentVC respondsToSelector:@selector(enqueueInterfaceUpdate:)]) {
-				[parentVC enqueueInterfaceUpdate:updateOperations];
-				didPounce = YES;
-			}
-		});
-	
-	if (!didPounce) {
-		dispatch_async(dispatch_get_main_queue(), updateOperations);
-	}
-
-}
-
 - (void) viewDidUnload {
 
 	[self disassociateBindings];
@@ -438,19 +393,6 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if ([self isViewLoaded])
 		[self associateBindings];
 
-}
-
-- (void) setPresentationStyle:(WAArticleViewControllerPresentationStyle)newPresentationStyle {
-
-	if (presentationStyle == newPresentationStyle)
-		return;
-	
-	NSParameterAssert(![self isViewLoaded]);
-	
-	[self willChangeValueForKey:@"presentationStyle"];
-	presentationStyle = newPresentationStyle;
-	[self didChangeValueForKey:@"presentationStyle"];
-	
 }
 
 - (void) associateBindings {
