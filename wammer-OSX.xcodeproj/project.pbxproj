@@ -38,6 +38,7 @@
 		FF726AB61441D4800049F679 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF726AB51441D4800049F679 /* WARemoteInterface.m */; };
 		FF726ABA1441D4960049F679 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF726AB91441D4960049F679 /* WADefines.m */; };
 		FF726ABC1441D4A00049F679 /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF726ABB1441D4A00049F679 /* WADefaults.plist */; };
+		FF789BFB1442181A0080F210 /* WATimelineCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF789BFA1442181A0080F210 /* WATimelineCellView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,6 +230,8 @@
 		FF726AB81441D4960049F679 /* WADefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADefines.h; path = wammer/WADefines.h; sourceTree = "<group>"; };
 		FF726AB91441D4960049F679 /* WADefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADefines.m; path = wammer/WADefines.m; sourceTree = "<group>"; };
 		FF726ABB1441D4A00049F679 /* WADefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.plist; path = wammer/Resources/WADefaults.plist; sourceTree = "<group>"; };
+		FF789BF91442181A0080F210 /* WATimelineCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATimelineCellView.h; path = "wammer-OSX/WATimelineCellView.h"; sourceTree = "<group>"; };
+		FF789BFA1442181A0080F210 /* WATimelineCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATimelineCellView.m; path = "wammer-OSX/WATimelineCellView.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +262,8 @@
 				FF59A4781441D0E400BB1FDC /* WATimelineWindow.xib */,
 				FF59A4791441D0E400BB1FDC /* WATimelineWindowController.h */,
 				FF59A47A1441D0E400BB1FDC /* WATimelineWindowController.m */,
+				FF789BF91442181A0080F210 /* WATimelineCellView.h */,
+				FF789BFA1442181A0080F210 /* WATimelineCellView.m */,
 				FF59A4731441D0E400BB1FDC /* WAArticleCompositionWindow.xib */,
 				FF59A4741441D0E400BB1FDC /* WAAuthRequestWindow.xib */,
 				FF726AB31441D4750049F679 /* Model */,
@@ -633,6 +638,7 @@
 				FF726AB21441D4680049F679 /* WAPreview.m in Sources */,
 				FF726AB61441D4800049F679 /* WARemoteInterface.m in Sources */,
 				FF726ABA1441D4960049F679 /* WADefines.m in Sources */,
+				FF789BFB1442181A0080F210 /* WATimelineCellView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

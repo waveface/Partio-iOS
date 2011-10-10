@@ -21,6 +21,7 @@
 		FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
 		FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */; };
+		FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */; };
 		FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */; };
 		FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */; };
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
@@ -84,7 +85,6 @@
 		FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A5A713D6DC6A00D54EC6 /* libIRWebAPIKit.a */; };
 		FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2B140CD2B200C35CED /* libIRKeychain.a */; };
 		FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
-		FFCFE0C1142111E100B9E6AF /* libCrashReporter-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61638514161A61004738D3 /* libCrashReporter-iOS.a */; };
 		FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */; };
 		FFCFE0C4142111E100B9E6AF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF73A54B13D6C2CD00D54EC6 /* InfoPlist.strings */; };
 		FFCFE0C5142111E100B9E6AF /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC2E04D13DD708300816EA1 /* Icon-72.png */; };
@@ -266,6 +266,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
+		};
+		FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 05CD31630EE93905000FDE88;
+			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
 		FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -541,7 +548,7 @@
 				FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */,
 				FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */,
 				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
-				FFCFE0C1142111E100B9E6AF /* libCrashReporter-iOS.a in Frameworks */,
+				FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */,
 				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -632,7 +639,8 @@
 			children = (
 				FF61638114161A61004738D3 /* libCrashReporter-MacOSX-Static.a */,
 				FF61638314161A61004738D3 /* CrashReporter.framework */,
-				FF61638514161A61004738D3 /* libCrashReporter-iOS.a */,
+				FF61638514161A61004738D3 /* CrashReporter.framework */,
+				FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */,
 				FF61638B14161A61004738D3 /* plcrashutil */,
 				FF61638D14161A61004738D3 /* Tests-MacOSX.octest */,
 				FF61638F14161A61004738D3 /* Tests-iOS-Simulator.app */,
@@ -1079,10 +1087,10 @@
 			remoteRef = FF61638214161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF61638514161A61004738D3 /* libCrashReporter-iOS.a */ = {
+		FF61638514161A61004738D3 /* CrashReporter.framework */ = {
 			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libCrashReporter-iOS.a";
+			fileType = wrapper.framework;
+			path = CrashReporter.framework;
 			remoteRef = FF61638414161A61004738D3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -1182,6 +1190,13 @@
 			fileType = archive.ar;
 			path = libAQGridView.a;
 			remoteRef = FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCrashReporter-iphoneos.a";
+			remoteRef = FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */ = {
@@ -1402,8 +1417,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 45;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1432,8 +1447,8 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PROVISIONING_PROFILE = "21EB09A5-28DB-4A59-AA81-0766FC0C2D4D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "21EB09A5-28DB-4A59-AA81-0766FC0C2D4D";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos4.3;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1447,8 +1462,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 45;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1471,8 +1486,8 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PROVISIONING_PROFILE = "21EB09A5-28DB-4A59-AA81-0766FC0C2D4D";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "21EB09A5-28DB-4A59-AA81-0766FC0C2D4D";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos4.3;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";

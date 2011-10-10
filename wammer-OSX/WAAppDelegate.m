@@ -6,29 +6,43 @@
 //  Copyright (c) 2011 Iridia Productions. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "WAAppDelegate.h"
 #import "WATimelineWindowController.h"
+#import "WARemoteInterface.h"
 
 @implementation WAAppDelegate
 
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification {
 
+	WARegisterUserDefaults();
+
 	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
 	
-	NSNib *compositionNib = [[NSNib alloc] initWithNibNamed:@"WAArticleCompositionWindow" bundle:nil];
-	NSArray *compositionObjects = nil;
-	if ([compositionNib instantiateNibWithOwner:nil topLevelObjects:&compositionObjects]) {
+	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:@"evadne.wu@waveface.com" password:@"evadne" onSuccess:^(NSDictionary *userRep, NSString *token) {
 	
-	[compositionObjects retain];
-	
-		[[compositionObjects filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-			return [evaluatedObject isKindOfClass:[NSWindow class]];
-		}]] enumerateObjectsUsingBlock:^(NSWindow *aWindow, NSUInteger idx, BOOL *stop) {
-			[aWindow orderFront:nil];
+		NSLog(@"%@ %@", userRep, token);
+		
+		[[WARemoteInterface sharedInterface] setUserIdentifier:[userRep objectForKey:@"creator_id"]];
+		[[WARemoteInterface sharedInterface] setUserToken:token];
+		
+		[[WADataStore defaultStore] updateUsersOnSuccess:^{
+			NSLog(@"users refreshed");
+			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
+				NSLog(@"articles refreshed");
+			} onFailure:^{
+				NSLog(@"articles load failed");
+			}];
+		} onFailure:^{
+			NSLog(@"user load failed");
 		}];
+			
+	} onFailure: ^ (NSError *error) {
 	
-	};
-
+		NSLog(@"%@", error);
+		
+	}];
+	
 }
 
 @end
