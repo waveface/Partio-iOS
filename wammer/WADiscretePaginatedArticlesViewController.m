@@ -143,7 +143,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		loadedView.clipsToBounds = YES;
 		loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:1.0f].CGColor;
 		loadedView.layer.borderWidth = 1.0f;
-		((UIView *)loadedVC.imageStackView).userInteractionEnabled = NO;
+		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
 	};
 	
 	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
@@ -439,17 +439,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) reloadViewContents {
 
-	UIScrollView *scrollView = self.paginatedView.scrollView;
-	if (scrollView.tracking || scrollView.dragging || scrollView.decelerating) {
-		__block __typeof__(self) nrSelf = self;
-		dispatch_async(dispatch_get_current_queue(), ^ {
-			[nrSelf performSelector:_cmd];
-		});
-		return;
-	};
-	
 	if (self.discreteLayoutResult) {
-		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, int index, BOOL *stop) {
+		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
 			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
 		}] mutableCopy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}

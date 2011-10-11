@@ -249,10 +249,16 @@
 
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
 
+	__block void (^noclip)(UIView *) = ^ (UIView *aView) {
+		if (aView) {
+			aView.clipsToBounds = NO;
+			noclip(aView.superview);
+		}
+	};
+	
+	noclip(self.view);
+
 	self.navigationController.view.backgroundColor = self.paginatedView.backgroundColor;
-	self.navigationController.view.clipsToBounds = NO;
-	self.view.superview.clipsToBounds = NO;
-	self.view.superview.superview.clipsToBounds = NO;
 	
 	if (!contextControlsVisible) {
 		self.articleCommentsViewController.commentsView.hidden = YES;
@@ -405,7 +411,7 @@
 		//	return (self.interfaceOrientation == newOrientation);
 		
 	if ([self.articleViewControllers count] > self.paginatedView.currentPage)
-	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView.gestureProcessingOngoing)
+	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).view.imageStackView.gestureProcessingOngoing)
 		return (self.interfaceOrientation == newOrientation);
 	
 	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
@@ -735,7 +741,7 @@
 	
 	NSArray *oldArticleViewControllers = [[self.articleViewControllers mutableCopy] autorelease];
 	
-	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, int index, BOOL *stop) {
+	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, NSUInteger index, BOOL *stop) {
 	
 		NSURL *articleURI = [[article objectID] URIRepresentation];
 		

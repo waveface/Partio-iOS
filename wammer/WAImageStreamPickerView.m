@@ -91,7 +91,7 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 	
 	self.items = allItems;
 	
-	self.itemThumbnails = [self.items irMap: ^ (id anItem, int index, BOOL *stop) {
+	self.itemThumbnails = [self.items irMap: ^ (id anItem, NSUInteger index, BOOL *stop) {
 		return [self.delegate thumbnailForItem:anItem inImageStreamPickerView:self];
 	}];
 	

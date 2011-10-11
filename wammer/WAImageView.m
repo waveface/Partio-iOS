@@ -19,9 +19,19 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 @interface WAImageViewTiledLayer : CATiledLayer
 
+@property (nonatomic, readwrite, copy) void (^onContentsGravityChanged)(NSString *newGravity);
+
 @end
 
 @implementation WAImageViewTiledLayer
+@synthesize onContentsGravityChanged;
+
+- (void) dealloc {
+
+	[onContentsGravityChanged release];
+	[super dealloc];
+
+}
 
 + (NSTimeInterval) fadeDuration {
 
@@ -29,28 +39,26 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 }
 
+- (void) setContentsGravity:(NSString *)newGravity {
+
+	[super setContentsGravity:newGravity];
+
+	if (self.onContentsGravityChanged)
+		self.onContentsGravityChanged(newGravity);
+
+}
+
 @end
 
 
-@implementation WAImageView
-@synthesize image;
+@interface WAImageViewContentView : UIView
+@end
 
-- (void) dealloc {
-
-	[image release];
-	[super dealloc];
-
-}
+@implementation WAImageViewContentView 
 
 + (Class) layerClass {
 
 	return [WAImageViewTiledLayer class];
-
-}
-
-- (void) drawRect:(CGRect)rect {
-
-	//	NO OP
 
 }
 
@@ -168,6 +176,60 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	
 }
 
+@end
+
+
+@interface WAImageView ()
+@property (nonatomic, readwrite, retain) WAImageViewContentView *contentView;
+@end
+
+@implementation WAImageView
+@synthesize image, contentView;
+
+- (WAImageViewContentView *) contentView {
+
+	if (!contentView) {
+		
+		contentView = [[WAImageViewContentView alloc] initWithFrame:self.bounds];
+		contentView.backgroundColor = nil;
+		contentView.opaque = NO;
+		contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		
+		__block __typeof__(contentView) nrContentView = contentView;
+		
+		((WAImageViewTiledLayer *)self.layer).onContentsGravityChanged = ^ (NSString * newGravity) {
+			((WAImageViewTiledLayer *)nrContentView.layer).contentsGravity = newGravity;
+		};
+		
+		((WAImageViewTiledLayer *)nrContentView.layer).contentsGravity = self.layer.contentsGravity;		
+		
+		[self addSubview:contentView];
+	}
+	
+	return contentView;
+
+}
+
+- (void) dealloc {
+
+	[image release];
+	[contentView release];
+	[super dealloc];
+
+}
+
++ (Class) layerClass {
+
+	return [WAImageViewTiledLayer class];
+
+}
+
+- (void) drawRect:(CGRect)rect {
+
+	//	NO OP
+
+}
+
 - (void) setImage:(UIImage *)newImage {
 
 	if (newImage && (newImage == self.image))
@@ -178,10 +240,10 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	image = [newImage retain];
 	[self didChangeValueForKey:@"image"];
 	
-	objc_setAssociatedObject(self.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
+	objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
 	
 	self.layer.contents = nil;
-	[self.layer setNeedsDisplay];
+	[self.contentView.layer setNeedsDisplay];
 	
 }
 

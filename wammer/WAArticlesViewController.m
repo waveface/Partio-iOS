@@ -71,7 +71,7 @@
 
 	__block __typeof__(self) nrSelf = self;
 
-	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
@@ -156,32 +156,12 @@
 	
 	nil]];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-	
-	
 	self.interfaceUpdateOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
 	
 }
 
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
-	
-	if (savedContext == self.managedObjectContext)
-		return;
-		
-	[self performInterfaceUpdate: ^ {
-	
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-			
-	}];
-
-}
-
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
-	
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];

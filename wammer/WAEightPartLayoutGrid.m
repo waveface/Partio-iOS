@@ -220,7 +220,7 @@ NSString * const kWAEightPartLayoutGridWasFullyPopulated = @"WAEightPartLayoutGr
 		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
 		
 		
-		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, int index, BOOL *stop) {
+		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, NSUInteger index, BOOL *stop) {
 			return (NSNumber *)(tilesOccupied([pattern unsignedCharValue]) ? nil : pattern);
 		}];
 		

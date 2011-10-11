@@ -2,38 +2,129 @@
 //  WAAppDelegate.m
 //  wammer-OSX
 //
-//  Created by Evadne Wu on 9/15/11.
+//  Created by Evadne Wu on 10/9/11.
 //  Copyright (c) 2011 Iridia Productions. All rights reserved.
 //
 
-#import <UIKit/UIKitView.h>
+#import "WADefines.h"
 #import "WAAppDelegate.h"
+#import "WARemoteInterface.h"
+
+#import "WATimelineWindowController.h"
+#import "WAAuthRequestWindowController.h"
+
+
+@interface WAAppDelegate () <WAAuthRequestWindowControllerDelegate>
+
+- (void) presentTimeline;
+
+@end
+
 
 @implementation WAAppDelegate
 
-@synthesize window = _window;
+- (void) applicationDidFinishLaunching:(NSNotification *)aNotification {
 
-- (void)dealloc
-{
-    [super dealloc];
+	WARegisterUserDefaults();
+	
+	BOOL authenticated = NO;
+	
+	if (authenticated) {
+	
+		[self presentTimeline];
+	
+	} else {
+	
+		if (![NSApp isActive])
+			[NSApp requestUserAttention:NSCriticalRequest];
+			
+		[[WAAuthRequestWindowController sharedController] setDelegate:self];
+		[[[WAAuthRequestWindowController sharedController] window] makeKeyAndOrderFront:self];
+		
+	}
+	
+//	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
+	
+//	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:@"evadne.wu@waveface.com" password:@"evadne" onSuccess:^(NSDictionary *userRep, NSString *token) {
+//		
+//		[[WARemoteInterface sharedInterface] setUserIdentifier:[userRep objectForKey:@"creator_id"]];
+//		[[WARemoteInterface sharedInterface] setUserToken:token];
+//		
+//		[[WADataStore defaultStore] updateUsersOnSuccess:^{
+//			NSLog(@"users refreshed");
+//			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
+//				NSLog(@"articles refreshed");
+//			} onFailure:^{
+//				NSLog(@"articles load failed");
+//			}];
+//		} onFailure:^{
+//			NSLog(@"user load failed");
+//		}];
+//			
+//	} onFailure: ^ (NSError *error) {
+//	
+//		NSLog(@"%@", error);
+//		
+//	}];
+	
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-	// Insert code here to initialize your application
+- (void) authRequestController:(WAAuthRequestWindowController *)controller didRequestAuthenticationForUserName:(NSString *)proposedUsername password:(NSString *)proposedPassword withCallback:(void (^)(BOOL))aCallback {
+
+	NSParameterAssert(proposedUsername);
+	NSParameterAssert(proposedPassword);
 	
-	UIKitView *uiView = [[[UIKitView alloc] initWithFrame:[self.window.contentView bounds]] autorelease];
-	uiView.autoresizingMask = NSViewWidthSizable|NSViewHeightSizable;
-	[self.window.contentView addSubview:uiView];
-	[uiView.UIWindow addSubview:((^{
-		UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		[button setTitle:@"Hello UIKit" forState:UIControlStateNormal];
-		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-		[button setContentEdgeInsets:(UIEdgeInsets){ 6, 8, 8, 8 }];
-		[button sizeToFit];
-		return button;
-	})())];
+	NSParameterAssert([WARemoteInterface sharedInterface]);
+
+	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:proposedUsername password:proposedPassword onSuccess:^(NSDictionary *userRep, NSString *token) {
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			if (aCallback)
+				aCallback(YES);
+				
+			[[WARemoteInterface sharedInterface] setUserIdentifier:[userRep objectForKey:@"creator_id"]];
+			[[WARemoteInterface sharedInterface] setUserToken:token];
+			
+			[self presentTimeline];
+
+			[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
+				
+				[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+				
+					NSLog(@"everything here");
+				
+				} onFailure: ^ {
+					
+					NSLog(@"articles load failed");
+					
+				}];
+				
+			} onFailure: ^ {
+				
+				NSLog(@"user load failed");
+				
+			}];
+			
+		});
+		
+	} onFailure: ^ (NSError *error) {
 	
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			if (aCallback)
+				aCallback(NO);
+			
+		});
+		
+	}];
+
+}
+
+- (void) presentTimeline {
+
+	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
+
 }
 
 @end
