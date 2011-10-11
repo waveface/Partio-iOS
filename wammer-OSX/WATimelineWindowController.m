@@ -54,8 +54,11 @@
 - (CGFloat) tableView:(NSTableView *)aTableView heightOfRow:(NSInteger)row {
 	
 	WAArticle *article = (WAArticle *)[self.arrayController.arrangedObjects objectAtIndex:row];
-	return [article.text sizeWithFont:[UIFont fontWithName:[[NSFont systemFontOfSize:[NSFont systemFontSize]] familyName] size:[NSFont systemFontSize]]
-		 constrainedToSize:(CGSize){ CGRectGetWidth(NSRectToCGRect(aTableView.frame)) - 72, 2048 }].height + 47;
+	return MAX(
+		108,
+		([article.text sizeWithFont:[UIFont fontWithName:[[NSFont systemFontOfSize:[NSFont systemFontSize]] familyName] size:[NSFont systemFontSize]]
+		 constrainedToSize:(CGSize){ CGRectGetWidth(NSRectToCGRect(aTableView.frame)) - 72, 2048 }].height + 47)
+	);
 
 }
 

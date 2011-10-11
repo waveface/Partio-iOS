@@ -24,21 +24,32 @@
 		FF59A4A41441D17D00BB1FDC /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF59A49D1441D17D00BB1FDC /* WAFile.m */; };
 		FF59A4A51441D17D00BB1FDC /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF59A49F1441D17D00BB1FDC /* WAOpenGraphElement.m */; };
 		FF59A4A61441D17D00BB1FDC /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF59A4A11441D17D00BB1FDC /* WAUser.m */; };
-		FF59A4FC1441D1CA00BB1FDC /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4DD1441D1B500BB1FDC /* AddressBookUI.framework */; };
-		FF59A4FD1441D1CA00BB1FDC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E01441D1B500BB1FDC /* AVFoundation.framework */; };
-		FF59A4FE1441D1CA00BB1FDC /* IRFoundationsX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4B21441D1A100BB1FDC /* IRFoundationsX.framework */; };
-		FF59A4FF1441D1CA00BB1FDC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E31441D1B500BB1FDC /* MediaPlayer.framework */; };
-		FF59A5001441D1CA00BB1FDC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E61441D1B500BB1FDC /* MessageUI.framework */; };
-		FF59A5011441D1CA00BB1FDC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E91441D1B500BB1FDC /* StoreKit.framework */; };
-		FF59A5021441D1CA00BB1FDC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4EC1441D1B500BB1FDC /* UIKit.framework */; };
+		FF59A4FC1441D1CA00BB1FDC /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4DD1441D1B500BB1FDC /* AddressBookUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FF59A4FD1441D1CA00BB1FDC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E01441D1B500BB1FDC /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FF59A4FE1441D1CA00BB1FDC /* IRFoundationsX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4B21441D1A100BB1FDC /* IRFoundationsX.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FF59A4FF1441D1CA00BB1FDC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E31441D1B500BB1FDC /* MediaPlayer.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FF59A5001441D1CA00BB1FDC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E61441D1B500BB1FDC /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FF59A5011441D1CA00BB1FDC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E91441D1B500BB1FDC /* StoreKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		FF59A5021441D1CA00BB1FDC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4EC1441D1B500BB1FDC /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FF59A5141441D23600BB1FDC /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF59A5131441D23600BB1FDC /* JSONKit.m */; };
-		FF59A5171441D24000BB1FDC /* IRWebAPIKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A5111441D22E00BB1FDC /* IRWebAPIKitX.framework */; };
+		FF59A5171441D24000BB1FDC /* IRWebAPIKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A5111441D22E00BB1FDC /* IRWebAPIKitX.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FF59A51A1441D2AF00BB1FDC /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF59A5191441D2AF00BB1FDC /* WADataStore.m */; };
 		FF726AB21441D4680049F679 /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FF726AB11441D4680049F679 /* WAPreview.m */; };
 		FF726AB61441D4800049F679 /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF726AB51441D4800049F679 /* WARemoteInterface.m */; };
 		FF726ABA1441D4960049F679 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF726AB91441D4960049F679 /* WADefines.m */; };
 		FF726ABC1441D4A00049F679 /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF726ABB1441D4A00049F679 /* WADefaults.plist */; };
 		FF789BFB1442181A0080F210 /* WATimelineCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF789BFA1442181A0080F210 /* WATimelineCellView.m */; };
+		FF789D9A144301AF0080F210 /* WAAuthRequestWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF789D99144301AE0080F210 /* WAAuthRequestWindowController.m */; };
+		FF789DA21443287E0080F210 /* WANSImageFromUIImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FF789DA11443287E0080F210 /* WANSImageFromUIImageTransformer.m */; };
+		FF789DA8144329E90080F210 /* UIImage+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF789DA7144329E80080F210 /* UIImage+WAAdditions.m */; };
+		FF789DAA14432BA30080F210 /* AddressBookUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4DD1441D1B500BB1FDC /* AddressBookUI.framework */; };
+		FF789DAB14432BA30080F210 /* AVFoundation.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E01441D1B500BB1FDC /* AVFoundation.framework */; };
+		FF789DAC14432BA30080F210 /* MediaPlayer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E31441D1B500BB1FDC /* MediaPlayer.framework */; };
+		FF789DAD14432BA30080F210 /* MessageUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E61441D1B500BB1FDC /* MessageUI.framework */; };
+		FF789DAE14432BA30080F210 /* StoreKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4E91441D1B500BB1FDC /* StoreKit.framework */; };
+		FF789DAF14432BA30080F210 /* UIKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4EC1441D1B500BB1FDC /* UIKit.framework */; };
+		FF789DB014432BA30080F210 /* IRWebAPIKitX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A5111441D22E00BB1FDC /* IRWebAPIKitX.framework */; };
+		FF789DB114432BA30080F210 /* IRFoundationsX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A4B21441D1A100BB1FDC /* IRFoundationsX.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -177,6 +188,27 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		FF789DA914432B7B0080F210 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FF789DAA14432BA30080F210 /* AddressBookUI.framework in Copy Frameworks */,
+				FF789DAB14432BA30080F210 /* AVFoundation.framework in Copy Frameworks */,
+				FF789DAC14432BA30080F210 /* MediaPlayer.framework in Copy Frameworks */,
+				FF789DAD14432BA30080F210 /* MessageUI.framework in Copy Frameworks */,
+				FF789DAE14432BA30080F210 /* StoreKit.framework in Copy Frameworks */,
+				FF789DAF14432BA30080F210 /* UIKit.framework in Copy Frameworks */,
+				FF789DB014432BA30080F210 /* IRWebAPIKitX.framework in Copy Frameworks */,
+				FF789DB114432BA30080F210 /* IRFoundationsX.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		FF59A4491441D0B200BB1FDC /* wammerX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wammerX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF59A44D1441D0B200BB1FDC /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -232,6 +264,12 @@
 		FF726ABB1441D4A00049F679 /* WADefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.plist; path = wammer/Resources/WADefaults.plist; sourceTree = "<group>"; };
 		FF789BF91442181A0080F210 /* WATimelineCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WATimelineCellView.h; path = "wammer-OSX/WATimelineCellView.h"; sourceTree = "<group>"; };
 		FF789BFA1442181A0080F210 /* WATimelineCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WATimelineCellView.m; path = "wammer-OSX/WATimelineCellView.m"; sourceTree = "<group>"; };
+		FF789D98144301AE0080F210 /* WAAuthRequestWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAuthRequestWindowController.h; path = "wammer-OSX/WAAuthRequestWindowController.h"; sourceTree = "<group>"; };
+		FF789D99144301AE0080F210 /* WAAuthRequestWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAuthRequestWindowController.m; path = "wammer-OSX/WAAuthRequestWindowController.m"; sourceTree = "<group>"; };
+		FF789DA01443287E0080F210 /* WANSImageFromUIImageTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANSImageFromUIImageTransformer.h; sourceTree = "<group>"; };
+		FF789DA11443287E0080F210 /* WANSImageFromUIImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANSImageFromUIImageTransformer.m; sourceTree = "<group>"; };
+		FF789DA6144329E70080F210 /* UIImage+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+WAAdditions.h"; path = "wammer-OSX/UIImage+WAAdditions.h"; sourceTree = "<group>"; };
+		FF789DA7144329E80080F210 /* UIImage+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+WAAdditions.m"; path = "wammer-OSX/UIImage+WAAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,9 +304,13 @@
 				FF789BFA1442181A0080F210 /* WATimelineCellView.m */,
 				FF59A4731441D0E400BB1FDC /* WAArticleCompositionWindow.xib */,
 				FF59A4741441D0E400BB1FDC /* WAAuthRequestWindow.xib */,
+				FF789D98144301AE0080F210 /* WAAuthRequestWindowController.h */,
+				FF789D99144301AE0080F210 /* WAAuthRequestWindowController.m */,
 				FF726AB31441D4750049F679 /* Model */,
 				FF726AB71441D4830049F679 /* API */,
 				FF726ABD1441D4B60049F679 /* Supporting Files */,
+				FF789DA6144329E70080F210 /* UIImage+WAAdditions.h */,
+				FF789DA7144329E80080F210 /* UIImage+WAAdditions.m */,
 				FF726AAF1441D4390049F679 /* Resources */,
 				FF59A44C1441D0B200BB1FDC /* Frameworks */,
 				FF59A44A1441D0B200BB1FDC /* Products */,
@@ -423,6 +465,8 @@
 		FF726ABD1441D4B60049F679 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				FF789DA01443287E0080F210 /* WANSImageFromUIImageTransformer.h */,
+				FF789DA11443287E0080F210 /* WANSImageFromUIImageTransformer.m */,
 				FF59A4751441D0E400BB1FDC /* wammer-OSX-Info.plist */,
 				FF726AB81441D4960049F679 /* WADefines.h */,
 				FF726AB91441D4960049F679 /* WADefines.m */,
@@ -444,6 +488,7 @@
 				FF59A4451441D0B200BB1FDC /* Sources */,
 				FF59A4461441D0B200BB1FDC /* Frameworks */,
 				FF59A4471441D0B200BB1FDC /* Resources */,
+				FF789DA914432B7B0080F210 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -639,6 +684,9 @@
 				FF726AB61441D4800049F679 /* WARemoteInterface.m in Sources */,
 				FF726ABA1441D4960049F679 /* WADefines.m in Sources */,
 				FF789BFB1442181A0080F210 /* WATimelineCellView.m in Sources */,
+				FF789D9A144301AF0080F210 /* WAAuthRequestWindowController.m in Sources */,
+				FF789DA21443287E0080F210 /* WANSImageFromUIImageTransformer.m in Sources */,
+				FF789DA8144329E90080F210 /* UIImage+WAAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

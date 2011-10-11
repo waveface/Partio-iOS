@@ -78,6 +78,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 @implementation WARemoteInterface
 
 @synthesize userIdentifier, userToken, defaultBatchSize;
+@synthesize dataRetrievalBlocks, dataRetrievalInterval, nextRemoteDataRetrievalFireDate;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -111,6 +112,15 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 + (id) decodedJSONObjectFromData:(NSData *)data {
 	
 	return [[self sharedDecoder] objectWithData:data];
+
+}
+
+- (void) dealloc {
+
+	[dataRetrievalBlocks release];
+	[nextRemoteDataRetrievalFireDate release];
+	
+	[super dealloc];
 
 }
 
@@ -164,33 +174,6 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return inParsedResponse;
 	} copy] autorelease]];
 		
-//	[engine.requestTransformers setObject:[NSArray arrayWithObjects:[[ ^ (NSDictionary *inOriginalContext) {
-//	
-//		NSArray *tempURLs = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextLocalCachingTemporaryFileURLsKey];
-//		
-//		if (![tempURLs count])
-//			return inOriginalContext;
-//		
-//		NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
-//		
-//		[mutatedContext setObject:[tempURLs irMap: ^ (NSURL *anOldURL, int index, BOOL *stop) {
-//		
-//			NSURL *newURL = [NSURL fileURLWithPath:[[[anOldURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
-//			NSError *movingError = nil;
-//			
-//			if (![[NSFileManager defaultManager] moveItemAtURL:anOldURL toURL:newURL error:&movingError]) {
-//				NSLog(@"Error moving: %@ — using the old URI.", movingError);
-//				return anOldURL;
-//			}
-//			
-//			return newURL;
-//			
-//		}] forKey:kIRWebAPIEngineRequestContextLocalCachingTemporaryFileURLsKey];
-//		
-//		return mutatedContext;
-//		
-//	} copy] autorelease], nil] forKey:@"createFile"];
-	
 	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
 	
 		//	Transforms example.com?queryparam=value&… to example.com/queryparam/value/…
@@ -235,13 +218,20 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	};
 
+	self = [self initWithEngine:engine authenticator:nil];
+	if (!self)
+		return nil;
+	
 	self.defaultBatchSize = 200;
-
-	return [self initWithEngine:engine authenticator:nil];
+	
+	return self;
 
 }
 
 - (void) retrieveTokenForUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	NSParameterAssert(anIdentifier);
+	NSParameterAssert(aPassword);
 
 	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	

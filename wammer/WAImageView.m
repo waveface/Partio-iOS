@@ -191,6 +191,8 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	if (!contentView) {
 		
 		contentView = [[WAImageViewContentView alloc] initWithFrame:self.bounds];
+		contentView.backgroundColor = nil;
+		contentView.opaque = NO;
 		contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		
 		__block __typeof__(contentView) nrContentView = contentView;
