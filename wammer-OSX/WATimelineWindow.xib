@@ -340,7 +340,7 @@
 								<object class="NSTextField" id="612108369">
 									<reference key="NSNextResponder" ref="312706245"/>
 									<int key="NSvFlags">274</int>
-									<string key="NSFrame">{{65, 10}, {228, 138}}</string>
+									<string key="NSFrame">{{65, 12}, {228, 138}}</string>
 									<reference key="NSSuperview" ref="312706245"/>
 									<reference key="NSNextKeyView" ref="583803503"/>
 									<string key="NSReuseIdentifierKey">_NS:360</string>
@@ -421,6 +421,26 @@
 						</object>
 					</object>
 					<int key="connectionID">32</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: objectValue.owner.avatar</string>
+						<reference key="source" ref="448891945"/>
+						<reference key="destination" ref="312706245"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="448891945"/>
+							<reference key="NSDestination" ref="312706245"/>
+							<string key="NSLabel">value: objectValue.owner.avatar</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">objectValue.owner.avatar</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSValueTransformerName</string>
+								<string key="NS.object.0">WANSImageFromUIImageTransformer</string>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">70</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -681,7 +701,7 @@
 				<reference key="dict.values" ref="1002"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">53</int>
+			<int key="maxID">70</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
