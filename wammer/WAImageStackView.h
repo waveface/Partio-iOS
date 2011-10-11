@@ -20,7 +20,12 @@ typedef enum {
 } WAImageStackViewInteractionState;
 
 @protocol WAImageStackViewDelegate <NSObject>
+
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform;
+
+@optional
+- (void) imageStackView:(WAImageStackView *)aStackView didChangeInteractionStateToState:(WAImageStackViewInteractionState)newState;
+
 @end
 
 

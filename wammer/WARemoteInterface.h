@@ -88,6 +88,10 @@
 @property (nonatomic, readwrite, assign) NSTimeInterval dataRetrievalInterval;
 @property (nonatomic, readonly, retain) NSDate *nextRemoteDataRetrievalFireDate;
 
+- (void) beginPostponingDataRetrievalTimerFiring;
+- (void) endPostponingDataRetrievalTimerFiring;
+- (BOOL) isPostponingDataRetrievalTimerFiring;
+
 @end
 
 

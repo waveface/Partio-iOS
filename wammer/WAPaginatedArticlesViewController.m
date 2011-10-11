@@ -411,7 +411,7 @@
 		//	return (self.interfaceOrientation == newOrientation);
 		
 	if ([self.articleViewControllers count] > self.paginatedView.currentPage)
-	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).imageStackView.gestureProcessingOngoing)
+	if (((WAArticleViewController *)[self.articleViewControllers objectAtIndex:self.paginatedView.currentPage]).view.imageStackView.gestureProcessingOngoing)
 		return (self.interfaceOrientation == newOrientation);
 	
 	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
