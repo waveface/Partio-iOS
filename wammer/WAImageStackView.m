@@ -108,6 +108,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
  	[self willChangeValueForKey:@"state"];
 	state = newState;
 	[self didChangeValueForKey:@"state"];
+	
+	if ([self.delegate respondsToSelector:@selector(imageStackView:didChangeInteractionStateToState:)])
+		[self.delegate imageStackView:self didChangeInteractionStateToState:newState];
 
 }
 

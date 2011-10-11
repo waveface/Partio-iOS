@@ -27,6 +27,7 @@
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
+		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
 		FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
@@ -492,6 +493,8 @@
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
 		FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Plaintext.xib"; path = "Resources/WAArticleViewController-Plaintext.xib"; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
+		FFC350FB144434D80085BE78 /* WAArticleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleView.h; sourceTree = "<group>"; };
+		FFC350FC144434D80085BE78 /* WAArticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleView.m; sourceTree = "<group>"; };
 		FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Preview.xib"; path = "Resources/WAArticleViewController-Preview.xib"; sourceTree = "<group>"; };
 		FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAEightPartLayoutGrid.h; sourceTree = "<group>"; };
 		FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAEightPartLayoutGrid.m; sourceTree = "<group>"; };
@@ -921,6 +924,8 @@
 		FFDE86A614397055009E04D9 /* Article View */ = {
 			isa = PBXGroup;
 			children = (
+				FFC350FB144434D80085BE78 /* WAArticleView.h */,
+				FFC350FC144434D80085BE78 /* WAArticleView.m */,
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
 				FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */,
@@ -1359,6 +1364,7 @@
 				FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */,
 				FFA06556143B227B00145079 /* WANavigationBar.m in Sources */,
 				FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */,
+				FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
