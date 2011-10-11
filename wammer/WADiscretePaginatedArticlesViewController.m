@@ -143,7 +143,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		loadedView.clipsToBounds = YES;
 		loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:1.0f].CGColor;
 		loadedView.layer.borderWidth = 1.0f;
-		((UIView *)loadedVC.imageStackView).userInteractionEnabled = NO;
+		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
 	};
 	
 	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {

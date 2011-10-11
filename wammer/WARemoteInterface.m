@@ -73,12 +73,16 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 + (JSONDecoder *) sharedDecoder;
 
+@property (nonatomic, readwrite, retain) NSTimer *dataRetrievalTimer;
+@property (nonatomic, readwrite, assign) int dataRetrievalTimerPostponingCount;
+
 @end
 
 @implementation WARemoteInterface
 
 @synthesize userIdentifier, userToken, defaultBatchSize;
 @synthesize dataRetrievalBlocks, dataRetrievalInterval, nextRemoteDataRetrievalFireDate;
+@synthesize dataRetrievalTimer, dataRetrievalTimerPostponingCount;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -127,7 +131,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 - (id) init {
 
 	IRWebAPIEngine *engine = [[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] autorelease];	
-		
+	
 	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
 		return inOriginalContext;
@@ -223,6 +227,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return nil;
 	
 	self.defaultBatchSize = 200;
+	self.dataRetrievalInterval = 2;
+	
+	[self rescheduleAutomaticRemoteUpdates];
 	
 	return self;
 
@@ -297,21 +304,27 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
+	[self beginPostponingDataRetrievalTimerFiring];
+
 	[self.engine fireAPIRequestNamed:@"articles" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		[NSNumber numberWithUnsignedInteger:maximumNumberOfArticles], @"limit",
 		aContinuation, @"timestamp",
 		
 	nil] options:nil validator: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
-	
+		
 		return [[inResponseOrNil objectForKey:@"posts"] isKindOfClass:[NSArray class]];
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
+		[self endPostponingDataRetrievalTimerFiring];
+
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"posts"]);
 		
 	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		[self endPostponingDataRetrievalTimerFiring];
 		
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
@@ -321,6 +334,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *retrievedArticleRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {	
+	
 	[self.engine fireAPIRequestNamed:[@"article" stringByAppendingPathComponent:anIdentifier] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
@@ -337,13 +351,19 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSArray *retrievedComentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
+	[self beginPostponingDataRetrievalTimerFiring];
+
 	[self.engine fireAPIRequestNamed:[[@"article" stringByAppendingPathComponent:anIdentifier] stringByAppendingPathComponent:@"comments"] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
+		[self endPostponingDataRetrievalTimerFiring];
+
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"comments"]);
 		
 	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
+		[self endPostponingDataRetrievalTimerFiring];
+
 		if (failureBlock)
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
 		
@@ -499,6 +519,69 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
 		
 	}];
+
+}
+
+- (void) rescheduleAutomaticRemoteUpdates {
+
+	[self.dataRetrievalTimer invalidate];
+	self.dataRetrievalTimer = nil;
+
+	self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
+
+}
+
+- (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
+
+	NSLog(@"data retrieval timer %@ did fire", timer);
+	
+	[self.dataRetrievalBlocks irExecuteAllObjectsAsBlocks];
+	[self rescheduleAutomaticRemoteUpdates];
+
+}
+
+- (void) beginPostponingDataRetrievalTimerFiring {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+	
+	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount + 1;
+	
+	if (self.dataRetrievalTimerPostponingCount == 1) {
+		[self.dataRetrievalTimer invalidate];
+		self.dataRetrievalTimer = nil;
+	}
+
+}
+
+- (void) endPostponingDataRetrievalTimerFiring {
+	
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+
+	NSParameterAssert(self.dataRetrievalTimerPostponingCount);
+	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount - 1;
+	
+	if (!self.dataRetrievalTimerPostponingCount) {
+		[self rescheduleAutomaticRemoteUpdates];
+		[self.dataRetrievalTimer fire];
+		[self.dataRetrievalTimer invalidate];
+		[self rescheduleAutomaticRemoteUpdates];
+	}
+
+}
+
+- (BOOL) isPostponingDataRetrievalTimerFiring {
+
+	return !!(self.dataRetrievalTimerPostponingCount);
 
 }
 

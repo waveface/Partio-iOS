@@ -11,10 +11,17 @@
 #import "WADataStore.h"
 #import "WAImageStackView.h"
 #import "WAGalleryViewController.h"
-#import "IRRelativeDateFormatter.h"
 #import "IRPaginatedView.h"
+#import "IRLifetimeHelper.h"
 
 #import "WAPaginatedArticlesViewController.h"
+
+
+
+@interface WAArticleView (PrivateStuff)
+@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
+@end
+
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate, WAImageStackViewDelegate>
 
@@ -22,11 +29,6 @@
 @property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
-
-- (void) disassociateBindings;
-- (void) associateBindings;
-
-+ (IRRelativeDateFormatter *) relativeDateFormatter;
 
 @end
 
@@ -68,9 +70,11 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 
 @implementation WAArticleViewController
+
+@dynamic view;
+
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView;
 @synthesize onPresentingViewController, onViewDidLoad, onViewTap;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
@@ -82,7 +86,11 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if (!loadedClass)
 		loadedClass = [self class];
 	
-	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	NSBundle *usedBundle = [NSBundle bundleForClass:[self class]];
+	if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
+		loadedNibName = NSStringFromClass([self class]);
+	
+	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle] autorelease];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
@@ -109,22 +117,10 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) viewDidUnload {
 
-	[self disassociateBindings];
-
-	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
+//	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 	
 	self.managedObjectContext = nil;
 	self.article = nil;
-	self.contextInfoContainer = nil;
-	self.imageStackView = nil;
-	self.previewBadge = nil;
-	self.textEmphasisView = nil;
-	self.avatarView = nil;
-	self.relativeCreationDateLabel = nil;
-	self.userNameLabel = nil;
-	self.articleDescriptionLabel = nil;
-	self.contextTextView = nil;
-	self.mainImageView = nil;
 
 	[super viewDidUnload];
 
@@ -132,23 +128,11 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) dealloc {
 
-	[self disassociateBindings];
-
-	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
+	//	[self disassociateBindings];
 
 	[managedObjectContext release];
 	[article release];
 	[onPresentingViewController release];
-	[contextInfoContainer release];
-	[imageStackView release];
-	[previewBadge release];
-	[textEmphasisView release];
-	[avatarView release];
-	[relativeCreationDateLabel release];
-	[userNameLabel release];
-	[articleDescriptionLabel release];
-	[contextTextView release];
-	[mainImageView release];
 	
 	[onViewTap release];
 	[onViewDidLoad release];
@@ -159,180 +143,15 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) viewDidLoad {
 
-	__block __typeof__(self) nrSelf = self;	
-	__block WAView *nrView = (WAView *)self.view;
-	
 	[super viewDidLoad];
+	
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
+	self.view.article = self.article;
+	self.view.presentationStyle = self.presentationStyle;
 	
-	if (self.avatarView) {
-
-		self.avatarView.layer.masksToBounds = YES;
-		self.avatarView.backgroundColor = [UIColor colorWithRed:0.85f green:0.85f blue:0.85f alpha:1];
-		UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
-		avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
-		self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
-		[avatarContainingView addSubview:self.avatarView];
-		self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
-		avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
-		avatarContainingView.layer.shadowOpacity = 0.25f;
-		avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
-		avatarContainingView.layer.shadowRadius = 1.0f;
-		avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
-		avatarContainingView.layer.borderWidth = 1.0f;
-	
-	}
-	
-	
-	if (self.imageStackView) {
-	
-		self.imageStackView.delegate = self;	
-		[self.imageStackView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		
-			WAImageStackViewInteractionState state = WAImageStackViewInteractionNormal;
-			[inNewValue getValue:&state];
-			
-			nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-				switch (state) {
-					case WAImageStackViewInteractionNormal: {			
-						[parentViewController setContextControlsVisible:YES animated:YES];
-						break;
-					}
-					case WAImageStackViewInteractionZoomInPossible: {			
-						[parentViewController setContextControlsVisible:NO animated:YES];
-						break;
-					}
-				}
-			});
-			
-		} forKeyPath:@"state" options:NSKeyValueObservingOptionNew context:nil];
-	
-	}
-	
-	self.mainImageView.contentMode = UIViewContentModeScaleAspectFill;
-	
-	if (self.textEmphasisView) {
-	
-		self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
-		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
-		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		
-		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
-		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
-		bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
-		bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
-		bubbleView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		[self.textEmphasisView.backgroundView addSubview:bubbleView];
-	
-	}
-	
-	nrView.onLayoutSubviews = ^ {
-	
-		CGPoint centerOffset = CGPointZero;
-	
-		CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.view.bounds, (UIEdgeInsets){ 32, 32, 64, 32 });
-		const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
-		const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
-		
-		if (usableRect.size.width > maximumTextWidth) {
-			usableRect.origin.x += roundf(0.5f * (usableRect.size.width - maximumTextWidth));
-			usableRect.size.width = maximumTextWidth;
-		}
-		usableRect.size.width = MAX(usableRect.size.width, minimumTextWidth);
-		
-		CGRect textRect = usableRect;
-		textRect.size.height = 1;
-		nrSelf.textEmphasisView.frame = textRect;
-		[nrSelf.textEmphasisView sizeToFit];
-		textRect = nrSelf.textEmphasisView.frame;
-		textRect.size.height = MIN(textRect.size.height, usableRect.size.height);
-		nrSelf.textEmphasisView.frame = textRect;
-		
-		
-		BOOL contextInfoAnchorsPlaintextBubble = NO;
-		
-		switch (nrSelf.presentationStyle) {
-		
-			case WAFullFramePlaintextArticleStyle: {
-				
-				centerOffset.y -= 0.5f * CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 24;
-				contextInfoAnchorsPlaintextBubble = YES;
-				//	Fall through
-				
-			}
-			case WAFullFrameImageStackArticleStyle:
-			case WAFullFramePreviewArticleStyle: {
-				
-				nrSelf.previewBadge.minimumAcceptibleFullFrameAspectRatio = 0.01f;
-				nrSelf.imageStackView.maxNumberOfImages = 2;
-				
-				break;
-			
-			}
-	
-			case WADiscretePlaintextArticleStyle:
-			case WADiscreteSingleImageArticleStyle:
-			case WADiscretePreviewArticleStyle: {
-			
-				nrSelf.imageStackView.maxNumberOfImages = 1;
-			
-				centerOffset.y -= 16;
-			
-				nrSelf.previewBadge.frame = UIEdgeInsetsInsetRect(nrView.bounds, (UIEdgeInsets){ 0, 0, 32, 0 });
-				nrSelf.previewBadge.backgroundView = nil;
-				
-				[nrSelf.userNameLabel sizeToFit];
-				
-				[nrSelf.relativeCreationDateLabel sizeToFit];
-				nrSelf.relativeCreationDateLabel.frame = (CGRect){
-					(CGPoint){
-						nrSelf.userNameLabel.frame.origin.x + nrSelf.userNameLabel.frame.size.width + 10,
-						nrSelf.userNameLabel.frame.origin.y + 2
-					},
-					nrSelf.relativeCreationDateLabel.frame.size
-				};
-				
-				[nrSelf.deviceDescriptionLabel sizeToFit];
-				nrSelf.deviceDescriptionLabel.frame = (CGRect){
-					(CGPoint){
-						nrSelf.relativeCreationDateLabel.frame.origin.x + nrSelf.relativeCreationDateLabel.frame.size.width + 10,
-						nrSelf.relativeCreationDateLabel.frame.origin.y - 1
-					},
-					nrSelf.deviceDescriptionLabel.frame.size
-				};
-				
-				break;
-				
-			}
-			
-			default:
-				break;
-		}
-		
-		CGPoint center = (CGPoint){
-			roundf(CGRectGetMidX(nrView.bounds)),
-			roundf(CGRectGetMidY(nrView.bounds))
-		};
-		
-		nrSelf.textEmphasisView.center = irCGPointAddPoint(center, centerOffset);
-		nrSelf.textEmphasisView.frame = CGRectIntegral(nrSelf.textEmphasisView.frame);
-		
-		if (contextInfoAnchorsPlaintextBubble) {
-			nrSelf.contextInfoContainer.frame = (CGRect){
-				(CGPoint){
-					CGRectGetMinX(nrSelf.textEmphasisView.frame),
-					CGRectGetMaxY(nrSelf.textEmphasisView.frame) + 32
-				},
-				nrSelf.contextInfoContainer.frame.size
-			};
-		}
-		
-	};
-	
-	[self associateBindings];
+	self.view.imageStackView.delegate = self;
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
@@ -392,84 +211,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[self didChangeValueForKey:@"article"];
 	
 	if ([self isViewLoaded])
-		[self associateBindings];
-
-}
-
-- (void) associateBindings {
-
-	__block __typeof__(self) nrSelf = self;
-	
-	[self disassociateBindings];
-	
-	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
-		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-			if (index > 1) {
-				*stop = YES;
-			}
-			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
-		}];
-	};
-
-	void (^bind)(id, NSString *, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath, NSString *articleKeypath, IRBindingsValueTransformer transformerBlock) {
-		[object irBind:objectKeyPath toObject:self.article keyPath:articleKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			[[transformerBlock copy] autorelease], kIRBindingsValueTransformerBlock,
-		nil]];
-	};
-		
-	bind(self.userNameLabel, @"text", @"owner.nickname", nil);
-	
-	bind(self.relativeCreationDateLabel, @"text", @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
-	});
-	
-	bind(self.articleDescriptionLabel, @"text", @"text", nil);
-	
-	bind(self.previewBadge, @"preview", @"previews", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return (WAPreview *)[[[inNewValue allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil]] lastObject];
-	});
-	
-	bind(self.imageStackView, @"images", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return topImages(inNewValue);
-	});
-	
-	bind(self.mainImageView, @"image", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		NSArray *allImages = topImages(inNewValue);
-		return [allImages count] ? [allImages objectAtIndex:0] : nil;
-	});
-	
-	bind(self.avatarView, @"image", @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return [inNewValue isEqual:[NSNull null]] ? nil : inNewValue;
-	});
-	
-	bind(self.deviceDescriptionLabel, @"text", @"creationDeviceName", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return inNewValue ? inNewValue : @"an unknown device";
-	});
-	
-	bind(self.textEmphasisView, @"text", @"text", nil);
-	
-	bind(self.textEmphasisView, @"hidden", @"files", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return [NSNumber numberWithBool:!![inNewValue count]];
-	});
-	
-}
-
-- (void) disassociateBindings {
-
-	[self.userNameLabel irUnbind:@"text"];
-	[self.relativeCreationDateLabel irUnbind:@"text"];
-	[self.articleDescriptionLabel irUnbind:@"text"];
-	[self.previewBadge irUnbind:@"preview"];
-	[self.imageStackView irUnbind:@"images"];
-	[self.mainImageView irUnbind:@"image"];
-	[self.avatarView irUnbind:@"image"];
-	[self.deviceDescriptionLabel irUnbind:@"text"];
-	[self.textEmphasisView irUnbind:@"text"];
-	[self.textEmphasisView irUnbind:@"hidden"];
+		self.view.article = newArticle;
 
 }
 
@@ -478,7 +220,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
 
-	for (UIView *aView in self.imageStackView.subviews) {
+	for (UIView *aView in self.view.imageStackView.subviews) {
 	
 		CGPathRef oldShadowPath = aView.layer.shadowPath;
 		if (oldShadowPath) {
@@ -629,11 +371,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 				galleryViewController.onDismiss = ^ {
 				
 					[nrSelf view];
-					NSParameterAssert(imageStackView == [nrSelf imageStackView]);
-
-					NSParameterAssert(![UIApplication sharedApplication].statusBarHidden);
 					
-					NSArray *originalImages = [[imageStackView.images retain] autorelease];
+					NSArray *originalImages = [[nrSelf.view.imageStackView.images retain] autorelease];
 					NSMutableArray *tempImages = [[originalImages mutableCopy] autorelease];
 					
 					UIImage *currentImage = [galleryViewController currentImage];
@@ -658,22 +397,22 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 					[parentVC.topViewController.view setNeedsLayout];
 					[parentVC.topViewController.view layoutIfNeeded];
 					
-					NSParameterAssert(imageStackView.window);
+					NSParameterAssert(nrSelf.view.imageStackView.window);
 					
-					[imageStackView setImages:tempImages asynchronously:NO withDecodingCompletion: ^ {
+					[nrSelf.view.imageStackView setImages:tempImages asynchronously:NO withDecodingCompletion: ^ {
 						
-						NSParameterAssert(imageStackView.firstPhotoView);
+						NSParameterAssert(nrSelf.view.imageStackView.firstPhotoView);
 						
-						imageStackView.firstPhotoView.alpha = 0.0f;
+						nrSelf.view.imageStackView.firstPhotoView.alpha = 0.0f;
 						
 						rootView = [UIApplication sharedApplication].keyWindow.rootViewController.modalViewController.view;
 						NSParameterAssert(rootView);
 						backdropView.frame = rootView.bounds;
 						
-						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:imageStackView.firstPhotoView.frame fromView:imageStackView]] autorelease];
+						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:nrSelf.view.imageStackView.firstPhotoView.frame fromView:nrSelf.view.imageStackView]] autorelease];
 						NSParameterAssert(fauxView);
 						fauxView.layer.contents = (id)currentImage.CGImage;
-						fauxView.layer.transform = imageStackView.firstPhotoView.layer.transform;
+						fauxView.layer.transform = nrSelf.view.imageStackView.firstPhotoView.layer.transform;
 						fauxView.layer.contentsGravity = kCAGravityResizeAspect;
 						
 						CABasicAnimation *backdropHiding = animation(@"opacity",
@@ -709,7 +448,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 							[statusBarPaddingView autorelease];
 							[fauxView autorelease];
 							
-							imageStackView.firstPhotoView.alpha = 1.0f;
+							nrSelf.view.imageStackView.firstPhotoView.alpha = 1.0f;
 							
 							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 							
@@ -722,15 +461,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 							
 								[CATransaction begin];
 							
-								[imageStackView setImages:originalImages asynchronously:NO withDecodingCompletion:nil];
-								[imageStackView.layer addAnimation:fadeTransition forKey:@"transition"];
+								[nrSelf.view.imageStackView setImages:originalImages asynchronously:NO withDecodingCompletion:nil];
+								[nrSelf.view.imageStackView.layer addAnimation:fadeTransition forKey:@"transition"];
 
-								[CATransaction setCompletionBlock: ^ {
-								
-									//	Handle final completion stuff if appropriate and necessary
-									
-								}];
-								
 								[CATransaction commit];
 								
 							});
@@ -755,22 +488,24 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 }
 
+- (void) imageStackView:(WAImageStackView *)aStackView didChangeInteractionStateToState:(WAImageStackViewInteractionState)newState {
 
-
-
-
-+ (IRRelativeDateFormatter *) relativeDateFormatter {
-
-	static IRRelativeDateFormatter *formatter = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-
-		formatter = [[IRRelativeDateFormatter alloc] init];
-		formatter.approximationMaxTokenCount = 1;
-			
-	});
-
-	return formatter;
+	if (self.onPresentingViewController) {
+		self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+		
+			switch (newState) {
+				case WAImageStackViewInteractionNormal: {			
+					[parentViewController setContextControlsVisible:YES animated:YES];
+					break;
+				}
+				case WAImageStackViewInteractionZoomInPossible: {			
+					[parentViewController setContextControlsVisible:NO animated:YES];
+					break;
+				}
+			}
+	
+		});
+	}
 
 }
 
