@@ -348,7 +348,7 @@
 	
 	if (!finalFileURL)
 	if (!selectedAssetURI && representedAsset)
-		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullScreenImage]]) extension:@"png"];
+		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullScreenImage]], 0.95) extension:@"jpeg"];
 	
 	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 	stitchedFile.resourceType = (NSString *)kUTTypeImage;
