@@ -1,2 +1,2 @@
-ETReleaseNotes="1. First build and release from CI server."
-ETMarketingVersionNumber="0.22.1"
+ETReleaseNotes="1. Enhanced page view performance. \n 2. New cell style.(not done yet)"
+ETMarketingVersionNumber="0.22.2"
