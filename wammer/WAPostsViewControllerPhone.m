@@ -313,20 +313,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     
 		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
-		NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-			return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-				return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-			}] anyObject]).resourceFilePath;
+		NSArray *firstTwoImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+      
+      if (index > 0)
+        *stop = YES;
+      
+      WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
+      return file.thumbnailImage;
+      
 		}];
 		
-		NSArray *allImages = nil;
-		if ([allFilePaths count] == [post.files count]) {
-			allImages = [allFilePaths irMap: ^ (NSString *aPath, NSUInteger index, BOOL *stop) {
-				return [UIImage imageWithContentsOfFile:aPath];
-			}];
-		}
-		
-		[cell.imageStackView setImages:allImages asynchronously:YES withDecodingCompletion:nil];
+		[cell.imageStackView setImages:firstTwoImages asynchronously:YES withDecodingCompletion:nil];
 	
 	}
   
