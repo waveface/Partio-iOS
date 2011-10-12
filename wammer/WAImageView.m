@@ -12,6 +12,7 @@
 #import "WAImageView.h"
 #import "UIImage+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
+#import "QuartzCore+IRAdditions.h"
 
 
 static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
@@ -35,7 +36,7 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 + (NSTimeInterval) fadeDuration {
 
-	return 0.25f;
+	return 0.0f;
 
 }
 
@@ -68,93 +69,16 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	if (!ownImage)
 		return;
 	
+	CGRect rect = CGContextGetClipBoundingBox(ctx);
+	
 	CGSize imageSize = ownImage.size;
 	if (!(imageSize.width * imageSize.height))
 		return;
 	
-	CGRect layerFrame = layer.frame;
-	CGRect imageFrame = layer.bounds;
-	
-	NSString *layerGravity = layer.contentsGravity;
-	
-	CGRect (^gravitize) (CGRect, CGSize, NSString *) = ^ (CGRect enclosingRect, CGSize contentSize, NSString *gravity) {
-	
-		CGRect (^align)(IRAnchor) = ^ (IRAnchor anAnchor) {
-			return IRCGRectAlignToRect((CGRect){ CGPointZero, contentSize }, enclosingRect, anAnchor, YES);
-		};
-	
-		if ([gravity isEqualToString:kCAGravityTopLeft])
-			return align(irTopLeft);
-		
-		if ([gravity isEqualToString:kCAGravityTop])
-			return align(irTop);
-		
-		if ([gravity isEqualToString:kCAGravityTopRight])
-			return align(irTopRight);
-		
-		if ([gravity isEqualToString:kCAGravityLeft])
-			return align(irLeft);
-			
-		if ([gravity isEqualToString:kCAGravityCenter])
-			return align(irCenter);
-		
-		if ([gravity isEqualToString:kCAGravityRight])
-			return align(irRight);
-			
-		if ([gravity isEqualToString:kCAGravityBottomLeft])
-			return align(irBottomLeft);
-		
-		if ([gravity isEqualToString:kCAGravityBottom])
-			return align(irBottom);
-		
-		if ([gravity isEqualToString:kCAGravityBottomRight])
-			return align(irBottomRight);
-		
-		BOOL isAspectFit = [gravity isEqualToString:kCAGravityResizeAspect];
-		BOOL isAspectFill = [gravity isEqualToString:kCAGravityResizeAspectFill];
-		
-		if ((!isAspectFit && !isAspectFill) || (isAspectFit && isAspectFill))
-			return imageFrame;
-			
-		CGFloat imageSizeRatio = imageSize.width / imageSize.height;
-		CGFloat imageFrameRatio = imageFrame.size.width / imageFrame.size.height;
-		
-		if (imageSizeRatio == imageFrameRatio)
-			return imageFrame;
-		
-		CGSize heightFittingImageSize = (CGSize){
-			CGRectGetHeight(imageFrame) * imageSizeRatio,
-			CGRectGetHeight(imageFrame)
-		};
-		
-		CGSize widthFittingImageSize = (CGSize){
-			CGRectGetWidth(imageFrame),
-			CGRectGetWidth(imageFrame) / imageSizeRatio
-		};
-		
-		CGRect heightFittingImageFrame = (CGRect){
-			(CGPoint) { 0.5f * (imageFrame.size.width - heightFittingImageSize.width), 0 },
-			heightFittingImageSize	
-		};
-
-		CGRect widthFittingImageFrame = (CGRect){
-			(CGPoint) { 0, 0.5f * (imageFrame.size.height - widthFittingImageSize.height) },
-			widthFittingImageSize	
-		};
-		
-		if (imageSizeRatio < imageFrameRatio)
-			return isAspectFit ? heightFittingImageFrame : widthFittingImageFrame;
-		else // imageSizeRatio > imageFrameRatio
-			return isAspectFit ? widthFittingImageFrame : heightFittingImageFrame;
-		
-	};
-	
-	imageFrame = gravitize(imageFrame, imageSize, layerGravity);
-	
 	CGContextSaveGState(ctx);
-	CGContextTranslateCTM(ctx, 0, CGRectGetHeight(layerFrame));
+	CGContextTranslateCTM(ctx, 0, rect.size.height);
 	CGContextScaleCTM(ctx, 1, -1);
-	CGContextDrawImage(ctx, imageFrame, ownImage.CGImage);
+	CGContextDrawImage(ctx, rect, ownImage.CGImage);
 	CGContextRestoreGState(ctx);
 
 }
@@ -193,17 +117,10 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 		contentView = [[WAImageViewContentView alloc] initWithFrame:self.bounds];
 		contentView.backgroundColor = nil;
 		contentView.opaque = NO;
-		contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		
-		__block __typeof__(contentView) nrContentView = contentView;
-		
-		((WAImageViewTiledLayer *)self.layer).onContentsGravityChanged = ^ (NSString * newGravity) {
-			((WAImageViewTiledLayer *)nrContentView.layer).contentsGravity = newGravity;
-		};
-		
-		((WAImageViewTiledLayer *)nrContentView.layer).contentsGravity = self.layer.contentsGravity;		
-		
+		contentView.autoresizingMask = UIViewAutoresizingNone;
+				
 		[self addSubview:contentView];
+		
 	}
 	
 	return contentView;
@@ -230,6 +147,20 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 }
 
+- (void) layoutSubviews {
+
+	[super layoutSubviews];
+	
+	self.contentView.hidden = !image;
+	if (!image)
+		return;
+	
+	CGRect imageFrame = IRGravitize(self.bounds, self.image.size, self.layer.contentsGravity);
+	
+	self.contentView.frame = imageFrame;
+
+}
+
 - (void) setImage:(UIImage *)newImage {
 
 	if (newImage && (newImage == self.image))
@@ -240,11 +171,21 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	image = [newImage retain];
 	[self didChangeValueForKey:@"image"];
 	
-	objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
-	
 	self.layer.contents = nil;
-	[self.contentView.layer setNeedsDisplay];
 	
+	if (newImage) {
+	
+		self.contentView.frame = (CGRect){ CGPointZero, newImage.size };
+		objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
+	
+	} else {
+	
+		objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, nil, OBJC_ASSOCIATION_ASSIGN);
+	
+	}
+	
+	[self setNeedsLayout];
+
 }
 
 @end
