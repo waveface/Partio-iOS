@@ -82,7 +82,6 @@
 	
 	if (self.textEmphasisView) {
 	
-		self.textEmphasisView.frame = (CGRect){ 0, 0, 540, 128 };
 		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		
@@ -135,6 +134,19 @@
 			self.userNameLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
 			break;
 		}
+		
+		case WADiscretePlaintextArticleStyle: {
+			self.userNameLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:20.0f];
+			self.textEmphasisView.backgroundView = nil;
+			self.textEmphasisView.backgroundColor = nil;
+			break;
+		}
+		
+		case WADiscretePreviewArticleStyle: {
+			self.previewBadge.backgroundView = nil;
+			break;
+		}
+		
 		default:
 			break;
 		
@@ -250,7 +262,7 @@
 
 	CGPoint centerOffset = CGPointZero;
 
-	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 32, 32, 64, 32 });
+	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 20, 20, 64, 20 });
 	const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
 	const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
 	
@@ -265,7 +277,7 @@
 	textEmphasisView.frame = textRect;
 	[textEmphasisView sizeToFit];
 	textRect = nrSelf.textEmphasisView.frame;
-	textRect.size.height = MIN(textRect.size.height, usableRect.size.height);
+	textRect.size.height = MIN(textRect.size.height, usableRect.size.height - 16 );
 	textEmphasisView.frame = textRect;
 	
 	BOOL contextInfoAnchorsPlaintextBubble = NO;
@@ -289,17 +301,22 @@
 		
 		}
 
-		case WADiscretePlaintextArticleStyle:
-		case WADiscreteSingleImageArticleStyle:
-		case WADiscretePreviewArticleStyle: {
+		case WADiscretePlaintextArticleStyle: {
 		
 			nrSelf.imageStackView.maxNumberOfImages = 1;
-		
 			centerOffset.y -= 16;
 		
 			previewBadge.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 0, 0, 32, 0 });
 			previewBadge.backgroundView = nil;
+			contextInfoAnchorsPlaintextBubble = NO;
 			
+			break;
+			
+		}
+		
+		case WADiscreteSingleImageArticleStyle:
+		case WADiscretePreviewArticleStyle: {
+		
 			[userNameLabel sizeToFit];
 			[relativeCreationDateLabel sizeToFit];
 			[relativeCreationDateLabel irPlaceBehindLabel:userNameLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
