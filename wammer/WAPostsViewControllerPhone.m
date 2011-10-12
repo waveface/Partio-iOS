@@ -119,7 +119,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                                                                           }], [IRAction actionWithTitle:@"Change API URL" block:^ { [nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];}],
                                                       nil ]
                                         ];
-	return self;
+  self.tableView.backgroundColor = [[UIColor alloc] initWithRed:226.0/255.0 green:230.0/255.0 blue:232/255.0 alpha:1.0];
+	
+  return self;
   
 }
 
