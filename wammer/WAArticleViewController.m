@@ -146,6 +146,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[super viewDidLoad];
 	
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
+	[self.view addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease]];
 	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
 	self.view.article = self.article;
@@ -162,6 +163,18 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 	if (self.onViewTap)
 		self.onViewTap();
+
+}
+
+- (void) handleGlobalPinch:(UIPinchGestureRecognizer *)pinchRecognizer {
+
+	if (pinchRecognizer.state != UIGestureRecognizerStateRecognized)
+		return;
+	
+	if (pinchRecognizer.scale > 1.1f)
+	if (pinchRecognizer.velocity > 1.1f) {
+		NSLog(@"outwards pinch");
+	}
 
 }
 
