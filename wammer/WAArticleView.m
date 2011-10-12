@@ -122,6 +122,31 @@
 
 
 
+- (void) setPresentationStyle:(WAArticleViewControllerPresentationStyle)newPresentationStyle {
+
+	if (presentationStyle == newPresentationStyle)
+		return;
+	
+	presentationStyle = newPresentationStyle;
+	
+	switch (presentationStyle) {
+
+		case WADiscreteSingleImageArticleStyle: {
+			self.userNameLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
+			break;
+		}
+		default:
+			break;
+		
+	}
+
+
+}
+
+
+
+
+
 - (void) setArticle:(WAArticle *)newArticle {
 
 	if (newArticle == article)
