@@ -73,3 +73,5 @@ DerivedData/*
 
 # Automation
 wammer_ios_auto_build
+wammer_ios_auto_build_master
+testFlightCredentials
