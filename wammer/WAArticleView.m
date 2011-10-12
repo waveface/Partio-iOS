@@ -276,24 +276,10 @@
 			previewBadge.backgroundView = nil;
 			
 			[userNameLabel sizeToFit];
-			
 			[relativeCreationDateLabel sizeToFit];
-			relativeCreationDateLabel.frame = (CGRect){
-				(CGPoint){
-					userNameLabel.frame.origin.x + nrSelf.userNameLabel.frame.size.width + 10,
-					userNameLabel.frame.origin.y + 2
-				},
-				relativeCreationDateLabel.frame.size
-			};
-			
+			[relativeCreationDateLabel irPlaceBehindLabel:userNameLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
 			[deviceDescriptionLabel sizeToFit];
-			deviceDescriptionLabel.frame = (CGRect){
-				(CGPoint){
-					relativeCreationDateLabel.frame.origin.x + relativeCreationDateLabel.frame.size.width + 10,
-					relativeCreationDateLabel.frame.origin.y - 1
-				},
-				deviceDescriptionLabel.frame.size
-			};
+			[deviceDescriptionLabel irPlaceBehindLabel:relativeCreationDateLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
 			
 			break;
 			
