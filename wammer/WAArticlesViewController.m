@@ -356,7 +356,7 @@
 	if (debugActionSheetController)
 		return debugActionSheetController;
 		
-	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self debugActionsheetControllerActions]] retain];
+	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self debugActionSheetControllerActions]] retain];
 	
 	return debugActionSheetController;
 
