@@ -494,8 +494,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[galleryViewController.navigationController popViewControllerAnimated:NO];
 		
 		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    
 	};
 	
 	CATransition *transition = [CATransition animation];
