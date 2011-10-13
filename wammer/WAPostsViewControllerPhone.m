@@ -280,7 +280,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
   }
 	
-	cell.userNicknameLabel.text = post.owner.nickname;
+  cell.userNicknameLabel.text = [[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
  
