@@ -109,53 +109,6 @@
 	
 	self.title = @"Articles";
 	
-	self.debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
-	
-		[IRAction actionWithTitle:@"Sign Out" block: ^ {
-		
-			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-			
-				[IRAction actionWithTitle:@"Sign Out" block: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^ {
-					
-						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-							
-					});
-
-				}],
-			
-			nil]] show];
-		
-		}],
-	
-		[IRAction actionWithTitle:@"Feedback" block:^ {
-		
-			if (![IRMailComposeViewController canSendMail]) {
-				[[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-				return;
-			}
-			
-			__block IRMailComposeViewController *composeViewController;
-			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:@"Wammer Feedback" messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
-				[composeViewController dismissModalViewControllerAnimated:YES];
-			}];
-			
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-			
-			[nrSelf presentModalViewController:composeViewController animated:YES];
-		
-		}],
-		
-		[IRAction actionWithTitle:@"Crash" block: ^ {
-		
-			((char *)NULL)[1] = 0;
-		
-		}],
-	
-	nil]];
-	
 	self.interfaceUpdateOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
 	
 }
@@ -330,6 +283,64 @@
 
 
 
+
+- (IRActionSheetController *) debugActionSheetController {
+
+	if (debugActionSheetController)
+		return debugActionSheetController;
+		
+	__block __typeof__(self) nrSelf = self;
+	
+	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		
+			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+			
+				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+				
+					dispatch_async(dispatch_get_main_queue(), ^ {
+					
+						[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+							
+					});
+
+				}],
+			
+			nil]] show];
+		
+		}],
+	
+		[IRAction actionWithTitle:@"Feedback" block:^ {
+		
+			if (![IRMailComposeViewController canSendMail]) {
+				[[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				return;
+			}
+			
+			__block IRMailComposeViewController *composeViewController;
+			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:@"Wammer Feedback" messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+				[composeViewController dismissModalViewControllerAnimated:YES];
+			}];
+			
+			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+			
+			[nrSelf presentModalViewController:composeViewController animated:YES];
+		
+		}],
+		
+		[IRAction actionWithTitle:@"Crash" block: ^ {
+		
+			((char *)NULL)[1] = 0;
+		
+		}],
+	
+	nil]] retain];
+	
+	return debugActionSheetController;
+
+}
 
 - (void) handleAction:(UIBarButtonItem *)sender {
 
