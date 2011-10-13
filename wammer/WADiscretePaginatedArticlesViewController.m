@@ -441,9 +441,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) reloadViewContents {
 
 	if (self.discreteLayoutResult) {
-		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [[[self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
+		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
 			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
-		}] mutableCopy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		}], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	
 	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
