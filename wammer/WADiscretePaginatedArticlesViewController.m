@@ -745,6 +745,22 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 }
 
+- (NSArray *) debugActionSheetControllerActions {
+
+	__block __typeof__(self) nrSelf = self; 
+
+	return [[super debugActionsheetControllerActions] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Reflow" block: ^ {
+		
+				[nrSelf reloadViewContents];
+		
+		}],
+	
+	nil]];
+
+}
+
 - (void) dealloc {
 
 	[self.paginationSlider irUnbind:@"currentPage"];

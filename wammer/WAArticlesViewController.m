@@ -284,14 +284,11 @@
 
 
 
-- (IRActionSheetController *) debugActionSheetController {
-
-	if (debugActionSheetController)
-		return debugActionSheetController;
-		
-	__block __typeof__(self) nrSelf = self;
+- (NSArray *) debugActionSheetControllerActions {
 	
-	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	__block __typeof__(self) nrSelf = self;
+
+	return [NSArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:@"Sign Out" block: ^ {
 		
@@ -336,7 +333,16 @@
 		
 		}],
 	
-	nil]] retain];
+	nil];
+
+}
+
+- (IRActionSheetController *) debugActionSheetController {
+
+	if (debugActionSheetController)
+		return debugActionSheetController;
+		
+	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self debugActionsheetControllerActions]] retain];
 	
 	return debugActionSheetController;
 
