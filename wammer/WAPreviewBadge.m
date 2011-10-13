@@ -36,6 +36,9 @@ typedef enum {
 @property (nonatomic, readwrite, retain) UIImageView *imageView;
 @property (nonatomic, readwrite, retain) IRLabel *label;
 
+- (void) setNeedsTextUpdate;
+- (void) updateText;
+
 @end
 
 
@@ -182,29 +185,6 @@ typedef enum {
 	if (self.image)
 		self.imageView.image = self.image;
 	
-	if (self.title || self.text) {
-	
-		NSDictionary *titleAttributes = [NSAttributedString irAttributesForFont:self.titleFont color:self.titleColor];
-		NSDictionary *contentAttributes = [NSAttributedString irAttributesForFont:self.textFont color:self.textColor];
-		
-		if (self.link)
-			titleAttributes = [titleAttributes irDictionaryBySettingObject:self.link forKey:kIRTextLinkAttribute];
-		
-		NSMutableAttributedString *realContentString = [[NSMutableAttributedString alloc] initWithString:@"" attributes:nil];
-		
-		if (self.title) {
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease]];
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n \n" attributes:[NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:12.0f] color:nil]] autorelease]];
-		}
-		
-		if (self.text)
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.text attributes:contentAttributes] autorelease]];
-		
-		self.label.attributedText = realContentString;
-	
-	}
-	
-	
 	switch (style) {
 		case WAPreviewBadgeImageAndTextStyle: {
 		
@@ -300,28 +280,41 @@ typedef enum {
 	self.title = aPreview.graphElement.title;
 	self.text = aPreview.graphElement.text;
 	
-	//	self.title = ((^ {
-	//		
-	//		NSString *graphTitle = aPreview.graphElement.title;
-	//		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-	//			return graphTitle;
-	//			
-	//		return nil;
-	//		
-	//	})());
-	//	
-	//	self.text = ((^ {
-	//		
-	//		NSString *graphText = aPreview.graphElement.text;
-	//		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-	//			return graphText;
-	//			
-	//		return nil;
-	//		
-	//	})());
-	
 	[self setNeedsLayout];
-	[self.label setNeedsDisplay];
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setNeedsTextUpdate {
+
+	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateText) object:nil];
+	[self performSelector:@selector(updateText) withObject:nil afterDelay:0.0];
+
+}
+
+- (void) updateText {
+
+	if (self.title || self.text) {
+	
+		NSDictionary *titleAttributes = [NSAttributedString irAttributesForFont:self.titleFont color:self.titleColor];
+		NSDictionary *contentAttributes = [NSAttributedString irAttributesForFont:self.textFont color:self.textColor];
+		
+		if (self.link)
+			titleAttributes = [titleAttributes irDictionaryBySettingObject:self.link forKey:kIRTextLinkAttribute];
+		
+		NSMutableAttributedString *realContentString = [[NSMutableAttributedString alloc] initWithString:@"" attributes:nil];
+		
+		if (self.title) {
+			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease]];
+			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n \n" attributes:[NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:12.0f] color:nil]] autorelease]];
+		}
+		
+		if (self.text)
+			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.text attributes:contentAttributes] autorelease]];
+		
+		self.label.attributedText = realContentString;
+	
+	}
 
 }
 
