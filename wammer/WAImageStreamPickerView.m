@@ -114,22 +114,13 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 	};
 	
 	
-	//	UIView * (^thumbnailViewForItem)(id) = ^ (id anItem) {
-	//	
-	//		return [[imageThumbnailViews objectsAtIndexes:[imageThumbnailViews indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-	//			return (BOOL)(itemForThumbnailView(obj) == anItem);
-	//			
-	//		}]] lastObject];
-	//	
-	//	};
-	
-	[[[self.subviews copy] autorelease] enumerateObjectsUsingBlock:^(UIView *aSubview, NSUInteger idx, BOOL *stop) {
+	[[[self.subviews copy] autorelease] enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		if (aSubview.tag != kWAImageStreamPickerComponent)
 			return;
-			
+		
 		id item = itemForThumbnailView(aSubview);
-			
+		
 		if (![self.items containsObject:item])
 			[aSubview removeFromSuperview];
 		else
@@ -157,10 +148,9 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 		
 	}];
 	
-	CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, self.edgeInsets);
+	__block CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, self.edgeInsets);
+	__block CGFloat usableWidth = CGRectGetWidth(usableRect);
 	__block CGFloat exhaustedWidth = 0;
-	CGFloat usableWidth = CGRectGetWidth(usableRect);
-	
 	__block UIView *selectedThumbnailView = nil;
 	
 	[imageThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *thumbnailView, NSUInteger idx, BOOL *stop) {
@@ -172,21 +162,21 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 			16.0f * thumbnailView.frame.size.height
 		};
 		
-		CGRect thumbnailRect = IRCGSizeGetCenteredInRect(calculatedSize, usableRect, 0.0f, YES);
-		
-		thumbnailRect = CGRectIntegral(thumbnailRect);
+		CGRect thumbnailRect = CGRectIntegral(IRCGSizeGetCenteredInRect(calculatedSize, usableRect, 0.0f, YES));
 		thumbnailRect.origin.x = exhaustedWidth;
-		thumbnailView.frame = thumbnailRect;
 		exhaustedWidth += CGRectGetWidth(thumbnailRect);
+		
+		thumbnailView.frame = thumbnailRect;
 		
 		if (currentItemIsSelected) {
 			
-			selectedThumbnailView = thumbnailView;
 			CGRect actualThumbnailRect = IRCGSizeGetCenteredInRect(calculatedSize, usableRect, -4.0f, YES);
-			actualThumbnailRect.origin.x = roundf(
-				exhaustedWidth - CGRectGetWidth(thumbnailRect) - 0.5f * (CGRectGetWidth(actualThumbnailRect) - CGRectGetWidth(thumbnailRect))	
-			);
+			CGFloat normalThumbnailRectWidth = CGRectGetWidth(thumbnailRect), actualThumbnailRectWidth = CGRectGetWidth(actualThumbnailRect);
+			
+			actualThumbnailRect.origin.x = roundf(exhaustedWidth - normalThumbnailRectWidth - 0.5f * (actualThumbnailRectWidth - normalThumbnailRectWidth));
+			
 			thumbnailView.frame = actualThumbnailRect;
+			selectedThumbnailView = thumbnailView;
 			
 		}
 		
