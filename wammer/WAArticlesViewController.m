@@ -21,6 +21,8 @@
 #import "WAOverlayBezel.h"
 #import "UIApplication+CrashReporting.h"
 
+#import "WAView.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
 - (void) sharedInit;
@@ -87,6 +89,18 @@
 	
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
+	
+	self.navigationItem.titleView = (( ^ {
+	
+		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+		label.text = @"Wammer";
+		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
+		label.backgroundColor = nil;
+		label.opaque = NO;
+		[label sizeToFit];
+		return label;
+	
+	})());
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
@@ -284,14 +298,11 @@
 
 
 
-- (IRActionSheetController *) debugActionSheetController {
-
-	if (debugActionSheetController)
-		return debugActionSheetController;
-		
-	__block __typeof__(self) nrSelf = self;
+- (NSArray *) debugActionSheetControllerActions {
 	
-	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	__block __typeof__(self) nrSelf = self;
+
+	return [NSArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:@"Sign Out" block: ^ {
 		
@@ -336,7 +347,16 @@
 		
 		}],
 	
-	nil]] retain];
+	nil];
+
+}
+
+- (IRActionSheetController *) debugActionSheetController {
+
+	if (debugActionSheetController)
+		return debugActionSheetController;
+		
+	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self debugActionsheetControllerActions]] retain];
 	
 	return debugActionSheetController;
 
