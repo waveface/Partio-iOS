@@ -577,9 +577,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 		[galleryViewController.navigationController setNavigationBarHidden:NO animated:NO];
 		[galleryViewController.navigationController popViewControllerAnimated:NO];
 		
-		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    
+		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];    
 	};
 	
 	CATransition *transition = [CATransition animation];
