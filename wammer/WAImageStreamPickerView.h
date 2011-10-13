@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "Foundation+IRAdditions.h"
+
+//	#ifndef __WAImageStreamPickerView__
+//	#define __WAImageStreamPickerView__
+//
+//	enum {
+//		WAImageStreamPickerViewStyleDynamicSizes = 0,
+//	}; typedef NSUInteger WAImageStreamPickerViewStyle;
+//
+//	#endif
+
 
 @class WAImageStreamPickerView;
 @protocol WAImageStreamPickerViewDelegate <NSObject>
@@ -22,6 +33,10 @@
 
 
 @interface WAImageStreamPickerView : UIView
+
+@property (nonatomic, readwrite, assign) CGFloat minAspectRatio;
+@property (nonatomic, readwrite, assign) CGFloat maxAspectRatio;
+@property (nonatomic, readwrite, copy) NSString *thumbnailContentsGravity;
 
 @property (nonatomic, readwrite, assign) id<WAImageStreamPickerViewDelegate> delegate;
 @property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
