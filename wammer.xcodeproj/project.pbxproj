@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
+		4BC91A941446E3130019399B /* WASettingsGlyphWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyphWhite.png */; };
 		4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */; };
 		4BD7FC2D14458BA1002408F8 /* WARefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */; };
 		FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
@@ -405,6 +406,7 @@
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
 		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeCommentViewControllerPhone.xib; sourceTree = "<group>"; };
+		4BC91A931446E3130019399B /* WASettingsGlyphWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASettingsGlyphWhite.png; path = Resources/WASettingsGlyphWhite.png; sourceTree = "<group>"; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
@@ -1002,6 +1004,7 @@
 				FF13871013E94F0700154B7D /* WACompositionBarBackground.png */,
 				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
 				FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */,
+				4BC91A931446E3130019399B /* WASettingsGlyphWhite.png */,
 				FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */,
 				FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */,
 				FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */,
@@ -1456,6 +1459,7 @@
 				FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */,
 				4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */,
 				4BD7FC2D14458BA1002408F8 /* WARefreshArrow@2x.png in Resources */,
+				4BC91A941446E3130019399B /* WASettingsGlyphWhite.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

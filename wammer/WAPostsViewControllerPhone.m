@@ -79,7 +79,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   self.title = @"Wammer";
 	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(actionSettings:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyphWhite"] style:UIBarButtonItemStylePlain target:self action:@selector(actionSettings:)] autorelease];
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
@@ -120,8 +120,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                                                       nil ]
                                         ];
   self.tableView.backgroundColor = [[UIColor alloc] initWithRed:226.0/255.0 green:230.0/255.0 blue:232/255.0 alpha:1.0];
-	
-  return self;
+	return self;
   
 }
 
@@ -281,7 +280,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
   }
 	
-	cell.userNicknameLabel.text = post.owner.nickname;
+  cell.userNicknameLabel.text = [[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
  
@@ -495,8 +494,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[galleryViewController.navigationController popViewControllerAnimated:NO];
 		
 		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-    
 	};
 	
 	CATransition *transition = [CATransition animation];
