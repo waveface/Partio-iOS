@@ -34,4 +34,6 @@
 - (void) endDelayingInterfaceUpdates;
 - (BOOL) isDelayingInterfaceUpdates;
 
+- (NSArray *) debugActionSheetControllerActions;
+
 @end

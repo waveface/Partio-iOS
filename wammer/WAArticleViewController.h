@@ -55,6 +55,7 @@ extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentat
 
 @interface WAArticleViewController : UIViewController
 
++ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle;
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;

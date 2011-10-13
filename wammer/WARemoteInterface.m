@@ -227,7 +227,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return nil;
 	
 	self.defaultBatchSize = 200;
-	self.dataRetrievalInterval = 2;
+	self.dataRetrievalInterval = 30;
 	
 	[self rescheduleAutomaticRemoteUpdates];
 	
@@ -533,8 +533,6 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
 
-	NSLog(@"data retrieval timer %@ did fire", timer);
-	
 	[self.dataRetrievalBlocks irExecuteAllObjectsAsBlocks];
 	[self rescheduleAutomaticRemoteUpdates];
 
