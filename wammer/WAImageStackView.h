@@ -11,13 +11,19 @@
 #import <UIKit/UIKit.h>
 
 
-@class WAImageStackView;
+#ifndef __WAImageStackView__
+#define __WAImageStackView__
 
-
-typedef enum {
+enum {
   WAImageStackViewInteractionNormal = 0,
   WAImageStackViewInteractionZoomInPossible
-} WAImageStackViewInteractionState;
+}; typedef NSUInteger WAImageStackViewInteractionState;
+
+#endif
+
+
+@class WAImageStackView;
+
 
 @protocol WAImageStackViewDelegate <NSObject>
 

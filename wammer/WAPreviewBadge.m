@@ -297,25 +297,28 @@ typedef enum {
 
 	self.image = aPreview.graphElement.thumbnail;
 	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
-	self.title = ((^ {
-		
-		NSString *graphTitle = aPreview.graphElement.title;
-		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-			return graphTitle;
-			
-		return nil;
-		
-	})());
+	self.title = aPreview.graphElement.title;
+	self.text = aPreview.graphElement.text;
 	
-	self.text = ((^ {
-		
-		NSString *graphText = aPreview.graphElement.text;
-		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
-			return graphText;
-			
-		return nil;
-		
-	})());
+	//	self.title = ((^ {
+	//		
+	//		NSString *graphTitle = aPreview.graphElement.title;
+	//		if ([[graphTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+	//			return graphTitle;
+	//			
+	//		return nil;
+	//		
+	//	})());
+	//	
+	//	self.text = ((^ {
+	//		
+	//		NSString *graphText = aPreview.graphElement.text;
+	//		if ([[graphText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+	//			return graphText;
+	//			
+	//		return nil;
+	//		
+	//	})());
 	
 	[self setNeedsLayout];
 	[self.label setNeedsDisplay];

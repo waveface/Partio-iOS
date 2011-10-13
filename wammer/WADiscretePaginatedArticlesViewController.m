@@ -139,9 +139,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	}
 	
 	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
-		loadedView.backgroundColor = nil;
+		loadedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.65f];
 		loadedView.clipsToBounds = YES;
-		loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:0.1f].CGColor;
+		loadedView.layer.cornerRadius = 4.0f;
+		loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:0.35f].CGColor;
 		loadedView.layer.borderWidth = 1.0f;
 		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
 	};
