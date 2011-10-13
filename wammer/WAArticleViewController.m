@@ -77,6 +77,26 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 @synthesize managedObjectContext, article;
 @synthesize onPresentingViewController, onViewDidLoad, onViewTap;
 
++ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
+
+	//	TBD style + context might be better than mixing the context with the style as what we currently do
+	//	TBD this does not even handle single-article pages at all
+
+	if (!anArticle)
+		return WADiscretePlaintextArticleStyle;
+		
+	for (WAPreview *aPreview in anArticle.previews)
+		if (aPreview.text || aPreview.graphElement.text || aPreview.graphElement.title)
+			return WADiscretePreviewArticleStyle;
+			
+	for (WAFile *aFile in anArticle.files)
+		if (aFile.resourceURL || aFile.thumbnailURL)
+			return WADiscreteSingleImageArticleStyle;
+	
+	return WADiscretePlaintextArticleStyle;
+
+}
+
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
 	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
