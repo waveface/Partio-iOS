@@ -60,9 +60,8 @@
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
-	
-	NSLog(@"anArticleURI %@",  anArticleURI);
-	
+  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+  
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	return self;
