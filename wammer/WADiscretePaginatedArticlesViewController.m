@@ -749,7 +749,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	__block __typeof__(self) nrSelf = self; 
 
-	return [[super debugActionsheetControllerActions] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:
+	return [[super debugActionSheetControllerActions] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:@"Reflow" block: ^ {
 		
