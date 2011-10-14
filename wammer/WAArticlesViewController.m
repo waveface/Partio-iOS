@@ -187,7 +187,7 @@
 	
 	[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
 	
-		NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+		//	NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
 		
 	} onFailure: ^ (NSError *error) {
 	
