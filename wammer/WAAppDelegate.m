@@ -27,6 +27,8 @@
 
 #import "WANavigationBar.h"
 
+#import "UIView+IRAdditions.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 // forward declarations
@@ -99,22 +101,46 @@
 			//	Since it is totally unsafe to modify the navigation controller, the best way to swizzle a custom subclass of the navigation bar in is to use some tricks with NSKeyedUnarchiver, by telling it to use our subclass for unarchiving when it sees any navigation bar.
 		
 			UINavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
-      navController.navigationBar.tintColor = [UIColor colorWithRed:216.0/255.0 green:93.0/255.0 blue:3.0/255.0 alpha:1.0 ];
-      
-			if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad)
-				return navController;
 			
+			switch (UI_USER_INTERFACE_IDIOM()) {
+				
+				UIUserInterfaceIdiomPad: {
+				
+					//	NO OP
+					break;
+					
+				}
+				
+				UIUserInterfaceIdiomPhone: {
+				
+					navController.navigationBar.tintColor = [UIColor colorWithRed:216.0/255.0 green:93.0/255.0 blue:3.0/255.0 alpha:1.0];
+					return navController;
+					
+					break;
+					
+				}
+				
+				default:
+					break;
+				
+			}
+			
+						
 			NSData *navControllerData = [NSKeyedArchiver archivedDataWithRootObject:navController];
 			
 			NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:navControllerData] autorelease];
 			[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
 			
-			UINavigationController *swizzledNavController = [unarchiver decodeObjectForKey:@"root"];
+			__block UINavigationController *swizzledNavController = [unarchiver decodeObjectForKey:@"root"];
 			
 			((WANavigationController *)swizzledNavController).onViewDidLoad = ^ (WANavigationController *self) {
-			
+				
 				self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			
+				
+				self.view.onLayoutSubviews = ^ (UIView *self) {
+					//	swizzledNavController.navigationBar.frame = CGRectOffset(CGRectInset(swizzledNavController.navigationBar.frame, 0, 0), 0, 128);
+				};
+				
 			};
 			
 			swizzledNavController.navigationBar.backgroundColor = nil;
