@@ -104,14 +104,14 @@
 			
 			switch (UI_USER_INTERFACE_IDIOM()) {
 				
-				UIUserInterfaceIdiomPad: {
+				case UIUserInterfaceIdiomPad: {
 				
 					//	NO OP
 					break;
 					
 				}
 				
-				UIUserInterfaceIdiomPhone: {
+				case UIUserInterfaceIdiomPhone: {
 				
 					navController.navigationBar.tintColor = [UIColor colorWithRed:216.0/255.0 green:93.0/255.0 blue:3.0/255.0 alpha:1.0];
 					return navController;
@@ -168,7 +168,7 @@
 		
 		}
 		
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:needsTransition];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:needsTransition];
 		
 		if (![self hasAuthenticationData])
 			[self presentAuthenticationRequestRemovingPriorData:YES];

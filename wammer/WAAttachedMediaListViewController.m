@@ -297,10 +297,12 @@
 	NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
   long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
   
-  cell.imageView.image = [actualImage irScaledImageWithSize:(CGSize){
+	
+	
+  cell.imageView.image = [actualImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(actualImage.size, (CGRect){ CGPointZero, (CGSize){
 		aTableView.rowHeight,
 		aTableView.rowHeight
-	}];
+	}}, 0, YES).size];
 		
 	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", actualImage.size.width, actualImage.size.height];
   cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
