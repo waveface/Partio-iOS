@@ -118,6 +118,8 @@
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.rowHeight = 64.0f;
+  self.tableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
+  self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
 	[self.view addSubview:self.tableView];
   [self.tableView setEditing:YES animated:YES];
   
