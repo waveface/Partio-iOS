@@ -94,7 +94,10 @@
 	
 		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 		label.text = @"Wammer";
+		label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
 		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
+		label.shadowColor = [UIColor whiteColor];
+		label.shadowOffset = (CGSize){ 0, 1 };
 		label.backgroundColor = nil;
 		label.opaque = NO;
 		[label sizeToFit];
@@ -187,7 +190,7 @@
 	
 	[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
 	
-		NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
+		//	NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
 		
 	} onFailure: ^ (NSError *error) {
 	
