@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreText/CoreText.h>
 
 @class WAPreview;
 @interface WAPreviewBadge : UIView
