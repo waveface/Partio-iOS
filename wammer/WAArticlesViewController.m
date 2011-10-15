@@ -22,6 +22,7 @@
 #import "UIApplication+CrashReporting.h"
 
 #import "WAView.h"
+#import "UIImage+IRAdditions.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
@@ -107,19 +108,39 @@
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 100, 44 }] autorelease];
+		UIButton * (^buttonForImage)(UIImage *) = ^ (UIImage *anImage) {
+			UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
+			[returnedButton setImage:anImage forState:UIControlStateNormal];
+			[returnedButton setAdjustsImageWhenHighlighted:YES];
+			[returnedButton setShowsTouchWhenHighlighted:YES];
+			[returnedButton setContentEdgeInsets:(UIEdgeInsets){ 0, 5, 0, 0 }];
+			[returnedButton sizeToFit];
+			return returnedButton;
+		};
+		
+		UIImage * (^barButtonImageFromImageNamed)(NSString *) = ^ (NSString *aName) {
+			return [[UIImage imageNamed:aName] irSolidImageWithFillColor:[UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1] shadow:[IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0]];
+		};
+		
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 120, 44 }] autorelease];
+		
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSArray arrayWithObjects:
-			
-			[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleAction:)] autorelease],
 		
-			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 14.0f, 44 }] autorelease]],
-			
-			[[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UIButtonBarCompose"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)] autorelease],
-						
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+		
+			[IRBarButtonItem itemWithButton:buttonForImage(barButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+				[self performSelector:@selector(handleAction:) withObject:senderItem];
+			}],
+		
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
 			
+			[IRBarButtonItem itemWithButton:buttonForImage(barButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+				[self performSelector:@selector(handleCompose:) withObject:senderItem];
+			}],
+			
 		nil];
+		
 		return toolbar;
 	
 	})())];
