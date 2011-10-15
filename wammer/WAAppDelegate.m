@@ -137,10 +137,6 @@
 				
 				self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
 				
-				self.view.onLayoutSubviews = ^ (UIView *self) {
-					//	swizzledNavController.navigationBar.frame = CGRectOffset(CGRectInset(swizzledNavController.navigationBar.frame, 0, 0), 0, 128);
-				};
-				
 			};
 			
 			swizzledNavController.navigationBar.backgroundColor = nil;
