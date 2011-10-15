@@ -514,6 +514,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		UIView *placedSubview = (UIView *)displayBlock(viewGrid, item);
 		NSParameterAssert(placedSubview);
 		placedSubview.frame = layoutBlock(viewGrid, item);
+		placedSubview.autoresizingMask = UIViewAutoresizingNone;
 		[pageElements addObject:placedSubview];
 		[returnedView addSubview:placedSubview];
 				
