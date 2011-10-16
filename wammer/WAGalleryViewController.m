@@ -284,7 +284,7 @@
 
 - (UIImage *) thumbnailForItem:(WAFile *)aFile inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return aFile.thumbnail;
+	return aFile.thumbnailImage;
 
 }
 
