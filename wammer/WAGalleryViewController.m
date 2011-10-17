@@ -14,7 +14,7 @@
 #import "UIImage+IRAdditions.h"
 
 
-@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate>
+@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -105,13 +105,11 @@
 	
 		NSUInteger oldCurrentPage = self.paginatedView.currentPage;
 		
-		//	[UIView transitionWithView:self.paginatedView duration:0.3f options:UIViewAnimationOptionCurveEaseInOut animations: ^ {
-		
 		[self.paginatedView reloadViews];
 		[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
+		[self.streamPickerView reloadData];
+		[self.streamPickerView setNeedsLayout];
 		
-		//	} completion:nil];
-	
 	});
 
 }
@@ -133,6 +131,7 @@
 	nil];
 		
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	self.fetchedResultsController.delegate = self;
 	
 	NSError *fetchingError;
 	if (![self.fetchedResultsController performFetch:&fetchingError])
@@ -262,6 +261,7 @@
 	
 	self.streamPickerView = [[[WAImageStreamPickerView alloc] init] autorelease];
 	self.streamPickerView.delegate = self;
+	self.streamPickerView.style = WAClippedThumbnailsStyle;
 	
 	[self.streamPickerView reloadData];
 	
