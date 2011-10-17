@@ -394,8 +394,6 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	float_t hitIndex = roundf(((aPoint.x - CGRectGetMinX(shownFrame)) / CGRectGetWidth(shownFrame)) * (numberOfItems - 1));
 	hitIndex = MIN(numberOfItems - 1, MAX(0, hitIndex));
 	
-	NSLog(@"%f / %i", hitIndex, numberOfItems);
-	
 	if (numberOfItems > hitIndex)
 		return [self.items objectAtIndex:hitIndex];
 	
