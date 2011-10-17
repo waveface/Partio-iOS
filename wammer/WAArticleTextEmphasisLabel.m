@@ -74,28 +74,50 @@
 
 - (void) setText:(NSString *)text {
 
-	static NSDataDetector *sharedDataDetector = nil;
-	static dispatch_once_t onceToken = 0;
-	dispatch_once(&onceToken, ^{
-		sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
+	IRLabel *capturedLabel = self.label;
+	NSAttributedString *attributedText = [self.label attributedStringForString:text];
+	capturedLabel.attributedText = attributedText;
+	
+	dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+	
+		static NSDataDetector *sharedDataDetector = nil;
+		static dispatch_once_t onceToken = 0;
+		dispatch_once(&onceToken, ^{
+			sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
+		});
+		
+		__block BOOL hasLinks = NO;
+		
+		NSMutableAttributedString *linkedAttributedText = [[attributedText mutableCopy] autorelease];		
+		
+		[linkedAttributedText beginEditing];
+		
+		[sharedDataDetector enumerateMatchesInString:text options:0 range:(NSRange){ 0, [text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+		
+			hasLinks = YES;
+		
+			[linkedAttributedText addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+				(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+				result.URL, kIRTextLinkAttribute,
+			nil] range:result.range];
+			
+		}];
+		
+		[linkedAttributedText endEditing];
+		
+		if (!hasLinks)
+			return;
+		
+		dispatch_async(dispatch_get_current_queue(), ^ {
+		
+			if ([capturedLabel.attributedText isEqualToAttributedString:attributedText])
+				capturedLabel.attributedText = linkedAttributedText;
+		
+		});
+
 	});
 	
-	NSMutableAttributedString *attributedString = [[[self.label attributedStringForString:text] mutableCopy] autorelease];
-	
-	[attributedString beginEditing];
-	
-	[sharedDataDetector enumerateMatchesInString:text options:0 range:(NSRange){ 0, [text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-	
-		[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
-			result.URL, kIRTextLinkAttribute,
-		nil] range:result.range];
-		
-	}];
-	
-	[attributedString endEditing];
-	
-	self.label.attributedText = attributedString;
+	//	self.label.attributedText = attributedString;
 
 }
 
