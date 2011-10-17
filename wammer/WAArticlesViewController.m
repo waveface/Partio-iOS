@@ -365,11 +365,11 @@
 		
 		}],
 		
-		[IRAction actionWithTitle:@"Crash" block: ^ {
-		
-			((char *)NULL)[1] = 0;
-		
-		}],
+		//	[IRAction actionWithTitle:@"Crash" block: ^ {
+		//	
+		//		((char *)NULL)[1] = 0;
+		//	
+		//	}],
 	
 	nil];
 

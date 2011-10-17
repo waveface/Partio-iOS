@@ -7,14 +7,15 @@
 //
 
 #import "WAImageStreamPickerView.h"
-
+#import "WAImageView.h"
 
 static int kWAImageStreamPickerComponent = 24;
-static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComponentItem";
+static NSString * kWAImageStreamPickerComponentItem = @"WAImageStreamPickerComponentItem";
+static NSString * kWAImageStreamPickerComponentIndex = @"WAImageStreamPickerComponentIndex";
+static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPickerComponentThumbnail";
 
 @interface WAImageStreamPickerView ()
 @property (nonatomic, readwrite, retain) NSArray *items;
-@property (nonatomic, readwrite, retain) NSArray *itemThumbnails;
 @property (nonatomic, readwrite, retain) UITapGestureRecognizer *tapRecognizer;
 @property (nonatomic, readwrite, retain) UIPanGestureRecognizer *panRecognizer;
 
@@ -22,9 +23,10 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 @end
 
 @implementation WAImageStreamPickerView
-@synthesize items, itemThumbnails, edgeInsets, activeImageOverlay, delegate;
+@synthesize items, edgeInsets, activeImageOverlay, delegate;
 @synthesize viewForThumbnail;
 @synthesize tapRecognizer, panRecognizer, selectedItemIndex;
+@synthesize style, thumbnailSpacing, thumbnailAspectRatio;
 
 - (id) init {
 
@@ -32,11 +34,20 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 	if (!self)
 		return nil;
 	
-	self.edgeInsets = (UIEdgeInsets){ 8, 8, 8, 8 };
+	self.edgeInsets = (UIEdgeInsets){ 12, 8, 12, 8 };
 	
-	self.viewForThumbnail = ^ (UIImage *anImage) {
+	self.viewForThumbnail = ^ (UIView *aView, UIImage *anImage) {
 	
-		UIImageView *returnedView = [[[UIImageView alloc] initWithImage:anImage] autorelease];
+		UIImageView *returnedView = nil;
+		if ([aView isKindOfClass:[UIImageView class]]) {
+			returnedView = (UIImageView *)aView;
+			returnedView.image = anImage;
+		} else {			
+			returnedView = [[[UIImageView alloc] initWithImage:anImage] autorelease];
+			returnedView.contentMode = UIViewContentModeScaleAspectFill;
+			returnedView.clipsToBounds = YES;
+		}
+		
 		returnedView.layer.borderColor = [UIColor whiteColor].CGColor;
 		returnedView.layer.borderWidth = 1.0f;
 		
@@ -52,12 +63,18 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 	
 	self.selectedItemIndex = NSNotFound;
 	
+	self.thumbnailSpacing = 4.0f;
+	self.thumbnailAspectRatio = 2.0f/3.0f;
+	
 	return self;
 
 }
 
 - (void) setActiveImageOverlay:(UIView *)newActiveImageOverlay {
 
+	if (activeImageOverlay == newActiveImageOverlay)
+		return;
+	
 	[activeImageOverlay removeFromSuperview];
 	
 	[self willChangeValueForKey:@"activeImageOverlay"];
@@ -91,12 +108,39 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 	
 	self.items = allItems;
 	
-	self.itemThumbnails = [self.items irMap: ^ (id anItem, NSUInteger index, BOOL *stop) {
-		return [self.delegate thumbnailForItem:anItem inImageStreamPickerView:self];
-	}];
-	
 	self.selectedItemIndex = [self.items count] ? 0 : NSNotFound;
 	
+	[self setNeedsLayout];
+
+}
+
+- (void) setStyle:(WAImageStreamPickerViewStyle)newStyle {
+
+	if (style == newStyle)
+		return;
+	
+	style = newStyle;
+	[self setNeedsLayout];
+
+}
+
+- (void) setThumbnailSpacing:(CGFloat)newThumbnailSpacing {
+
+	if (thumbnailSpacing == newThumbnailSpacing)
+		return;
+	
+	thumbnailSpacing = newThumbnailSpacing;
+	[self setNeedsLayout];
+
+}
+
+- (void) setThumbnailAspectRatio:(CGFloat)newTumbnailAspectRatio {
+
+	NSParameterAssert(newTumbnailAspectRatio > 0);
+	if (thumbnailAspectRatio == newTumbnailAspectRatio)
+		return;
+	
+	thumbnailAspectRatio = newTumbnailAspectRatio;
 	[self setNeedsLayout];
 
 }
@@ -105,93 +149,186 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 
 	[super layoutSubviews];
 	
-	NSMutableArray *imageThumbnailViews = [[[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy] autorelease];
+	CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, self.edgeInsets);
+	CGFloat usableWidth = CGRectGetWidth(usableRect);
+	CGFloat usableHeight = CGRectGetHeight(usableRect);
+	NSUInteger numberOfItems = [self.delegate numberOfItemsInImageStreamPickerView:self];
+	NSMutableIndexSet *thumbnailedItemIndices = [NSMutableIndexSet indexSet];
+	switch (self.style) {
+		case WADynamicThumbnailsStyle: {
+			[thumbnailedItemIndices addIndexesInRange:(NSRange){ 0, numberOfItems }];
+			break;
+		}
+		case WAClippedThumbnailsStyle: {
+			NSParameterAssert(self.thumbnailAspectRatio);
+			NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
+			float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
+			for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta)
+				[thumbnailedItemIndices addIndex:roundf(i)];
+			break;
+		}
+	}
 	
-	id (^itemForThumbnailView)(UIView *) = ^ (UIView *aView) {
+	NSMutableArray *currentImageThumbnailViews = [[[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy] autorelease];
+	NSMutableSet *removedThumbnailViews = [NSMutableSet set];
 	
-		return objc_getAssociatedObject(aView, kWAImageStreamPickerComponentItem);
-	
+	id (^itemForComponent)(id) = ^ (id aComponent) {
+		return objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentItem);
 	};
 	
+	void (^setItemForCompoment)(id, id) = ^ (id aComponent, id anItem) {
+		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentItem, anItem, OBJC_ASSOCIATION_ASSIGN);
+	};
+	
+	NSUInteger (^indexForComponent)(id) = ^ (id aComponent) {
+		return (NSUInteger)objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentIndex);
+	};
+	
+	void (^setIndexForComponent)(id, NSUInteger) = ^ (id aComponent, NSUInteger anIndex) {
+		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentIndex, (id)anIndex, OBJC_ASSOCIATION_ASSIGN);
+	};
+	
+	UIImage * (^thumbnailForComponent)(id) = ^ (id aComponent) {
+		return objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentThumbnail);
+	};
+	
+	void (^setThumbnailForCompoment)(id, id) = ^ (id aComponent, UIImage *aThumbnail) {
+		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentThumbnail, aThumbnail, OBJC_ASSOCIATION_RETAIN);
+	};
 	
 	[[[self.subviews copy] autorelease] enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		if (aSubview.tag != kWAImageStreamPickerComponent)
 			return;
 		
-		id item = itemForThumbnailView(aSubview);
-		
-		if (![self.items containsObject:item])
-			[aSubview removeFromSuperview];
-		else
-			[imageThumbnailViews replaceObjectAtIndex:[self.items indexOfObject:item] withObject:aSubview];
+		[currentImageThumbnailViews replaceObjectAtIndex:indexForComponent(aSubview) withObject:aSubview];
+		[removedThumbnailViews addObject:aSubview];
 		
 	}];
-
-	[[[imageThumbnailViews copy] autorelease] enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 	
-		if (![aSubview isEqual:[NSNull null]])
-			return;
-			
+	[thumbnailedItemIndices enumerateIndexesUsingBlock: ^ (NSUInteger idx, BOOL *stop) {
+	
 		id item = [self.items objectAtIndex:idx];
 		
-		UIImage *thumbnail = [self.delegate thumbnailForItem:item inImageStreamPickerView:self];
+		UIView *thumbnailView = (idx < [currentImageThumbnailViews count] - 1) ? [currentImageThumbnailViews objectAtIndex:idx] : nil;
+		UIImage *thumbnailImage = [self.delegate thumbnailForItem:item inImageStreamPickerView:self];
 		
-		UIView *thumbnailView = self.viewForThumbnail(thumbnail);
-		objc_setAssociatedObject(thumbnailView, kWAImageStreamPickerComponentItem, item, OBJC_ASSOCIATION_ASSIGN);
-				
-		if (!thumbnailView)
-			return;
-		
+		if ([thumbnailView isKindOfClass:[UIView class]]) {
+			thumbnailView = self.viewForThumbnail(thumbnailView, thumbnailImage);
+		} else {
+			thumbnailView = self.viewForThumbnail(nil, thumbnailImage);
+			[currentImageThumbnailViews replaceObjectAtIndex:idx withObject:thumbnailView];
+		}
+			
 		thumbnailView.tag = kWAImageStreamPickerComponent;
-		[imageThumbnailViews replaceObjectAtIndex:idx withObject:thumbnailView];
+		setItemForCompoment(thumbnailView, item);
+		setIndexForComponent(thumbnailView, idx);
+		setThumbnailForCompoment(thumbnailView, thumbnailImage);
 		
 	}];
 	
-	__block CGRect usableRect = UIEdgeInsetsInsetRect(self.bounds, self.edgeInsets);
-	__block CGFloat usableWidth = CGRectGetWidth(usableRect);
 	__block CGFloat exhaustedWidth = 0;
-	__block UIView *selectedThumbnailView = nil;
 	
-	[imageThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *thumbnailView, NSUInteger idx, BOOL *stop) {
-	
-		BOOL currentItemIsSelected = (self.selectedItemIndex == idx);
-		
-		CGSize calculatedSize = (CGSize){
-			16.0f * thumbnailView.frame.size.width,
-			16.0f * thumbnailView.frame.size.height
-		};
+	CGSize (^sizeForComponent)(id) = ^ (id aComponent) {
+
+		CGSize calculatedSize;
+
+		switch (self.style) {
+			case WADynamicThumbnailsStyle: {
+				calculatedSize = thumbnailForComponent(aComponent).size;
+				calculatedSize.width *= 16;
+				calculatedSize.height *= 16;
+				break;
+			}
+			case WAClippedThumbnailsStyle: {
+				calculatedSize = (CGSize){
+					usableHeight / self.thumbnailAspectRatio,
+					usableHeight
+				};
+				break;
+			}
+		}
 		
 		CGRect thumbnailRect = CGRectIntegral(IRCGSizeGetCenteredInRect(calculatedSize, usableRect, 0.0f, YES));
-		thumbnailRect.origin.x = exhaustedWidth;
+		return thumbnailRect.size;
+	
+	};
+	
+	[thumbnailedItemIndices enumerateIndexesUsingBlock: ^ (NSUInteger idx, BOOL *stop) {
+	
+		UIView *thumbnailView = [currentImageThumbnailViews objectAtIndex:idx];
+		NSParameterAssert(thumbnailView);
+		
+		CGSize thumbnailSize = sizeForComponent(thumbnailView);
+		CGRect thumbnailRect = (CGRect){
+			(CGPoint) {
+				0,
+				usableRect.origin.y + 0.5f * (CGRectGetHeight(usableRect) - thumbnailSize.height)
+			},
+			thumbnailSize
+		};
+		
 		exhaustedWidth += CGRectGetWidth(thumbnailRect);
 		
 		thumbnailView.frame = thumbnailRect;
-		
-		if (currentItemIsSelected) {
-			
-			CGRect actualThumbnailRect = IRCGSizeGetCenteredInRect(calculatedSize, usableRect, -4.0f, YES);
-			CGFloat normalThumbnailRectWidth = CGRectGetWidth(thumbnailRect), actualThumbnailRectWidth = CGRectGetWidth(actualThumbnailRect);
-			
-			actualThumbnailRect.origin.x = roundf(exhaustedWidth - normalThumbnailRectWidth - 0.5f * (actualThumbnailRectWidth - normalThumbnailRectWidth));
-			
-			thumbnailView.frame = actualThumbnailRect;
-			selectedThumbnailView = thumbnailView;
-			
-		}
-		
-		[self addSubview:thumbnailView];		
+		[removedThumbnailViews removeObject:thumbnailView];
 		
 	}];
 	
-	CGFloat leftPadding = roundf(0.5f * (usableWidth - exhaustedWidth)) + 8;
-	if (leftPadding > 0)
-		for (UIView *aThumbnailView in imageThumbnailViews) {
-			aThumbnailView.frame = CGRectOffset(aThumbnailView.frame, leftPadding, 0);
-		}
+	__block CGFloat leftPadding = 0.5f * (usableWidth - exhaustedWidth);
 	
-	[selectedThumbnailView.superview bringSubviewToFront:selectedThumbnailView];
+	[thumbnailedItemIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+	
+		UIView *thumbnailView = [currentImageThumbnailViews objectAtIndex:idx];
+		NSParameterAssert(![removedThumbnailViews containsObject:thumbnailView]);
 		
+		thumbnailView.frame = CGRectOffset(thumbnailView.frame, leftPadding, 0);
+		leftPadding += CGRectGetWidth(thumbnailView.frame);
+		
+		[self addSubview:thumbnailView];
+		
+	}];
+	
+	[removedThumbnailViews enumerateObjectsUsingBlock: ^ (UIView *removedThumbnailView, BOOL *stop) {
+		
+		[removedThumbnailView removeFromSuperview];
+		
+	}];
+	
+	
+	if (self.selectedItemIndex != NSNotFound) {
+	
+		id item = [self.items objectAtIndex:self.selectedItemIndex];
+		UIImage *thumbnailImage = [self.delegate thumbnailForItem:item inImageStreamPickerView:self];
+	
+		if (self.activeImageOverlay)
+			self.activeImageOverlay = self.viewForThumbnail(self.activeImageOverlay, thumbnailImage);
+		else
+			self.activeImageOverlay = self.viewForThumbnail(nil, thumbnailImage);
+		
+		self.activeImageOverlay.frame = (CGRect){
+			CGPointZero,
+			sizeForComponent(self.activeImageOverlay)
+		};
+		
+		self.activeImageOverlay.center = (CGPoint){
+			0.5 * (usableHeight / self.thumbnailAspectRatio) + 0.5f * (usableWidth - exhaustedWidth) + (((exhaustedWidth - 0.5 * usableHeight) / numberOfItems) * self.selectedItemIndex),
+			CGRectGetMidY(usableRect)
+		};
+		
+		self.activeImageOverlay.frame = CGRectInset(self.activeImageOverlay.frame, -4, -4);
+				
+		if (self != self.activeImageOverlay.superview)
+			[self addSubview:self.activeImageOverlay];
+		
+		[self.activeImageOverlay.superview bringSubviewToFront:self.activeImageOverlay];
+	
+	} else {
+	
+		[self.activeImageOverlay removeFromSuperview];
+	
+	}
+			
 }
 
 - (void) handleTap:(UITapGestureRecognizer *)aTapRecognizer {
@@ -238,10 +375,27 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 
 - (id) itemAtPoint:(CGPoint)aPoint {
 
-	for (UIView *aView in self.subviews)
-		if (aView.tag == kWAImageStreamPickerComponent)
-			if ([aView pointInside:[self convertPoint:aPoint toView:aView] withEvent:nil])
-				return objc_getAssociatedObject(aView, kWAImageStreamPickerComponentItem);
+	CGRect shownFrame = CGRectNull;
+
+	for (UIView *aView in self.subviews) {
+		if (aView.tag == kWAImageStreamPickerComponent) {
+			if (CGRectEqualToRect(CGRectNull, shownFrame)) {
+				shownFrame = aView.frame;
+			} else {
+				shownFrame = CGRectUnion(shownFrame, aView.frame);
+			}
+		}
+	}
+	
+	NSUInteger numberOfItems = [self.items count];
+	if (!numberOfItems)
+		return nil;
+
+	float_t hitIndex = roundf(((aPoint.x - CGRectGetMinX(shownFrame)) / CGRectGetWidth(shownFrame)) * (numberOfItems - 1));
+	hitIndex = MIN(numberOfItems - 1, MAX(0, hitIndex));
+	
+	if (numberOfItems > hitIndex)
+		return [self.items objectAtIndex:hitIndex];
 	
 	return nil;
 
@@ -250,7 +404,6 @@ static NSString * kWAImageStreamPickerComponentItem = @"kWAImageStreamPickerComp
 - (void) dealloc {
 
 	[items release];
-	[itemThumbnails release];
 	[activeImageOverlay release];
 	
 	[viewForThumbnail release];
