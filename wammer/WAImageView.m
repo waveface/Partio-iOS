@@ -74,7 +74,7 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	CGSize imageSize = ownImage.size;
 	if (!(imageSize.width * imageSize.height))
 		return;
-	
+		
 	CGContextSaveGState(ctx);
 	CGContextTranslateCTM(ctx, 0, rect.size.height);
 	CGContextScaleCTM(ctx, 1, -1);
@@ -89,15 +89,27 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 		return;
 	
 	[super setFrame:newFrame];
-	
-	//	Note: changing the tile size apparently does not fade
-	
-	if (!CGSizeEqualToSize(newFrame.size, ((CATiledLayer *)self.layer).tileSize)) {
+	[self setNeedsLayout];
 		
-		((CATiledLayer *)self.layer).tileSize = newFrame.size;
+}
+
+- (void) layoutSubviews {
+
+	[super layoutSubviews];
+
+	if (!CGSizeEqualToSize(self.frame.size, ((CATiledLayer *)self.layer).tileSize)) {
+	
+		UIScreen *usedScreen = self.window.screen;
+		if (!usedScreen)
+			usedScreen = [UIScreen mainScreen];
+		
+		((CATiledLayer *)self.layer).tileSize = (CGSize){
+			self.frame.size.width * usedScreen.scale,
+			self.frame.size.height * usedScreen.scale
+		};
 		
 	}
-	
+
 }
 
 @end
@@ -175,8 +187,9 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	
 	if (newImage) {
 	
-		self.contentView.frame = (CGRect){ CGPointZero, newImage.size };
+		//	self.contentView.frame = (CGRect){ CGPointZero, newImage.size };
 		objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
+		[self setNeedsLayout];
 	
 	} else {
 	
