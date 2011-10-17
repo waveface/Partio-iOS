@@ -1,2 +1,2 @@
-ETReleaseNotes="1. Fixes bugs. \n 2. Enhance iPhone UI."
-ETMarketingVersionNumber="0.22.4"
+ETReleaseNotes="1. Fixes gallery scoping bar. \n 2. Discard image view captions in Overview has wrong bounds after auto-rotation. \n 3. Jagged line heights in web preview titles with Chinese and English text. \n 4. Image picker performance/responsiveness in the composition page. \n 5. Misaligned and wrongly styled bar button items in the Overview page. \n 6. Remote API responses using empty strgins for Preview URIs prevent proper solving. \n 7. URL detection in the Overview page for short/long text is now done asynchnously."
+ETMarketingVersionNumber="0.22.5"
