@@ -11,6 +11,8 @@
 #import "WADataStore.h"
 #import "WATableViewCell.h"
 
+#import "QuartzCore+IRAdditions.h"
+
 
 @interface WAAttachedMediaListViewController () <UITableViewDelegate, UITableViewDataSource>
 
@@ -117,7 +119,7 @@
 	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
-	self.tableView.rowHeight = 64.0f;
+	self.tableView.rowHeight = 65.0f; // plus 1 to get UIImageView in right size
   self.tableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
 	[self.view addSubview:self.tableView];
@@ -295,19 +297,36 @@
 		
 	}] anyObject];
 	
-	UIImage *actualImage = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
-	NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
-  long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
+	UIImage *actualImage = representedFile.resourceImage;
+  UIImage *croppedImage = nil;
   
-	
-	
-  cell.imageView.image = [actualImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(actualImage.size, (CGRect){ CGPointZero, (CGSize){
-		aTableView.rowHeight,
-		aTableView.rowHeight
-	}}, 0, YES).size];
-		
-	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", actualImage.size.width, actualImage.size.height];
-  cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+  CGRect imageRect = (CGRect){
+    CGPointZero,
+    (CGSize){ aTableView.rowHeight, aTableView.rowHeight }
+  };
+
+  //TODO fix the blur problem
+  UIGraphicsBeginImageContextWithOptions(imageRect.size, NO, 0.0);
+  CGContextRef context = UIGraphicsGetCurrentContext();
+  CGContextSaveGState(context);
+  CGContextSetShouldAntialias(context, NO);
+  CGContextSetAllowsAntialiasing(context, NO);
+  CGContextClipToRect(context, imageRect);
+  [actualImage drawInRect:IRGravitize(imageRect, actualImage.size, kCAGravityResizeAspectFill)];
+  croppedImage = UIGraphicsGetImageFromCurrentImageContext();
+  CGContextRestoreGState(context);
+  UIGraphicsEndImageContext();
+  
+  cell.imageView.image = croppedImage;
+  
+	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
+    actualImage.size.width,
+    actualImage.size.height
+  ];
+  
+  NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
+  long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
+ 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
 	
 	return cell;
 
