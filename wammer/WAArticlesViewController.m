@@ -26,8 +26,6 @@
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
-- (void) sharedInit;
-
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
@@ -52,28 +50,6 @@
 	if (!self)
 		return nil;
 	
-	[self sharedInit];
-	
-	return self;
-
-}
-
-- (id) initWithCoder:(NSCoder *)aDecoder {
-
-	self = [super initWithCoder:aDecoder];
-	if (!self)
-		return nil;
-	
-	[self sharedInit];
-
-	return self;
-
-}
-
-- (void) sharedInit {
-
-	__block __typeof__(self) nrSelf = self;
-
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
@@ -148,6 +124,8 @@
 	self.title = @"Articles";
 	
 	self.interfaceUpdateOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
+	
+	return self;
 	
 }
 
@@ -433,7 +411,8 @@
 	
 	}];
 	
-	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
+	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init] autorelease]] autorelease];
+	wrapperNC = [wrapperNC initWithRootViewController:compositionVC];
 	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
