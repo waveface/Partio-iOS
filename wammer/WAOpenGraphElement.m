@@ -171,11 +171,31 @@
 
 
 
+
+
++ (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
+
+	if ([aLocalKeyPath isEqualToString:@"thumbnailURL"])
+		return [aValue isEqualToString:@""] ? nil : aValue;
+	
+	return aValue;
+
+}
+
+
 - (BOOL) validateForUpdate:(NSError **)error {
 
 	if (self.thumbnailURL)
-	if (![[NSURL URLWithString:self.thumbnailURL] host])
+	if (![[NSURL URLWithString:self.thumbnailURL] host]) {
+		
+		*error = [NSError errorWithDomain:@"com.waveface.wammer" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Objects having a thumbnail URL should also have a host in the URL.", NSLocalizedDescriptionKey,
+			self.thumbnailURL, @"offendingThumbnailURL",
+		nil]];
+		
 		return NO;
+		
+	}
 	
 	return YES;
 
