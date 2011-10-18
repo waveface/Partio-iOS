@@ -51,7 +51,6 @@
 								<string key="NSFrameSize">{320, 416}</string>
 								<reference key="NSSuperview" ref="47957778"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:613</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="985372644">
 									<int key="NSColorSpace">1</int>
@@ -146,7 +145,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 							<bytes key="NSRGB">MC4yMDAwMDAwMDMgMC4yMDAwMDAwMDMgMC4yMDAwMDAwMDMAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="482604388"/>
-						<object class="NSCustomResource" key="IBUINormalImage" id="765748879">
+						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">PLCameraButtonIcon.png</string>
 						</object>
@@ -186,7 +185,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 							<bytes key="NSRGB">MC4yMDAwMDAwMDMgMC4yMDAwMDAwMDMgMC4yMDAwMDAwMDMAA</bytes>
 						</object>
 						<reference key="IBUINormalTitleShadowColor" ref="482604388"/>
-						<reference key="IBUINormalImage" ref="765748879"/>
 						<reference key="IBUIFontDescription" ref="92190163"/>
 						<reference key="IBUIFont" ref="102510044"/>
 					</object>
@@ -210,7 +208,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<string key="NSFrame">{{0, 44}, {320, 1}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:196</string>
 						<reference key="IBUIBackgroundColor" ref="985372644"/>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -341,8 +338,8 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="11106004"/>
 							<reference ref="402377760"/>
-							<reference ref="267765065"/>
 							<reference ref="530427165"/>
+							<reference ref="267765065"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
