@@ -13,6 +13,10 @@
 #import "IRActionSheetController.h"
 #import "IRActionSheet.h"
 #import "WACompositionViewPhotoCell.h"
+#import "WANavigationBar.h"
+#import "WANavigationController.h"
+#import "IRLifetimeHelper.h"
+#import "IRBarButtonItem.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource>
@@ -22,6 +26,7 @@
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 
 @property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
+@property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
 
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 - (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
@@ -37,6 +42,8 @@
 @synthesize imagePickerPopover;
 @synthesize noPhotoReminderView;
 @synthesize completionBlock;
+@synthesize usesTransparentBackground;
+@synthesize noPhotoReminderViewElements;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -101,6 +108,7 @@
 	[contentTextView release];
 	[noPhotoReminderView release];
 	[toolbar release];
+	[noPhotoReminderViewElements release];
 
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	
@@ -109,7 +117,7 @@
 	[imagePickerPopover release];
 	
 	[completionBlock release];
-
+	
 	[super dealloc];
 
 }
@@ -121,6 +129,7 @@
 	self.contentTextView = nil;
 	self.toolbar = nil;
 	self.imagePickerPopover = nil;
+	self.noPhotoReminderViewElements = nil;
 
 	[super viewDidUnload];
 
@@ -137,7 +146,12 @@
 	if ([[UIDevice currentDevice].name rangeOfString:@"Simulator"].location != NSNotFound)
 		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
 	
-	self.view.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
+	if (self.usesTransparentBackground) {
+		self.view.backgroundColor = nil;
+		self.view.opaque = NO;
+	} else {
+		self.view.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
+	}
 	
 	self.contentTextView.text = self.article.text;
 	
@@ -160,24 +174,33 @@
 	
 	self.noPhotoReminderView.frame = self.photosView.frame;
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
+	
+	for (UIView *aSubview in self.noPhotoReminderViewElements) {
+		if ([aSubview isKindOfClass:[UIView class]]) {
+			aSubview.layer.shadowOffset = (CGSize){ 0, 1 };
+			aSubview.layer.shadowRadius = 1;
+			aSubview.layer.shadowOpacity = 1;
+		}
+	}
+	
 	[self.view addSubview:self.noPhotoReminderView];
 	
-	UIView *photosBackgroundView = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
-	photosBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
-	photosBackgroundView.autoresizingMask = self.photosView.autoresizingMask;
-	photosBackgroundView.frame = UIEdgeInsetsInsetRect(photosBackgroundView.frame, (UIEdgeInsets){ -20, -20, -40, -20 });
-	photosBackgroundView.layer.masksToBounds = YES;
-	photosBackgroundView.userInteractionEnabled = NO;
-	[self.view insertSubview:photosBackgroundView atIndex:0];
+	//	UIView *photosBackgroundView = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
+	//	photosBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
+	//	photosBackgroundView.autoresizingMask = self.photosView.autoresizingMask;
+	//	photosBackgroundView.frame = UIEdgeInsetsInsetRect(photosBackgroundView.frame, (UIEdgeInsets){ -20, -20, -40, -20 });
+	//	photosBackgroundView.layer.masksToBounds = YES;
+	//	photosBackgroundView.userInteractionEnabled = NO;
+	//	[self.view insertSubview:photosBackgroundView atIndex:0];
 	
-	IRConcaveView *photosConcaveEdgeView = [[[IRConcaveView alloc] initWithFrame:self.photosView.frame] autorelease];
-	photosConcaveEdgeView.autoresizingMask = self.photosView.autoresizingMask;
-	photosConcaveEdgeView.backgroundColor = nil;
-	photosConcaveEdgeView.frame = UIEdgeInsetsInsetRect(photosConcaveEdgeView.frame, (UIEdgeInsets){ -20, -20, -40, -20 });
-	photosConcaveEdgeView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0.0f alpha:0.5f] offset:(CGSize){ 0.0f, -1.0f } spread:3.0f];
-	photosConcaveEdgeView.layer.masksToBounds = YES;
-	photosConcaveEdgeView.userInteractionEnabled = NO;
-	[self.view addSubview:photosConcaveEdgeView];
+	//	IRConcaveView *photosConcaveEdgeView = [[[IRConcaveView alloc] initWithFrame:self.photosView.frame] autorelease];
+	//	photosConcaveEdgeView.autoresizingMask = self.photosView.autoresizingMask;
+	//	photosConcaveEdgeView.backgroundColor = nil;
+	//	photosConcaveEdgeView.frame = UIEdgeInsetsInsetRect(photosConcaveEdgeView.frame, (UIEdgeInsets){ -20, -20, -40, -20 });
+	//	photosConcaveEdgeView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0.0f alpha:0.5f] offset:(CGSize){ 0.0f, -1.0f } spread:3.0f];
+	//	photosConcaveEdgeView.layer.masksToBounds = YES;
+	//	photosConcaveEdgeView.userInteractionEnabled = NO;
+	//	[self.view addSubview:photosConcaveEdgeView];
 	
 	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 42, 20 };
 	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -194,20 +217,30 @@
 
 	IRConcaveView *contentTextBackgroundView = [[[IRConcaveView alloc] initWithFrame:self.contentTextView.frame] autorelease];
 	contentTextBackgroundView.autoresizingMask = self.contentTextView.autoresizingMask;
-	contentTextBackgroundView.innerShadow = nil;
-	contentTextBackgroundView.frame = UIEdgeInsetsInsetRect(contentTextBackgroundView.frame, (UIEdgeInsets){ -10, -20, -20, -20 });
+	contentTextBackgroundView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25] offset:(CGSize){ 0, 2 } spread:4];
 	contentTextBackgroundView.userInteractionEnabled = NO;
 	contentTextBackgroundView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1];
+	contentTextBackgroundView.layer.cornerRadius = 4;
+	contentTextBackgroundView.layer.masksToBounds = YES;
 	[self.view insertSubview:contentTextBackgroundView atIndex:0];
-		
+	
+	UIView *contextTextShadowView = [[[UIView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	contextTextShadowView.autoresizingMask = self.contentTextView.autoresizingMask;
+	contextTextShadowView.layer.shadowOffset = (CGSize){ 0, 2 };
+	contextTextShadowView.layer.shadowRadius = 2;
+	contextTextShadowView.layer.shadowOpacity = 0.25;
+	contextTextShadowView.layer.cornerRadius = 4;
+	contextTextShadowView.layer.backgroundColor = [UIColor blackColor].CGColor;
+	[self.view insertSubview:contextTextShadowView atIndex:0];
+			
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
 
-	if (![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-		[self.contentTextView becomeFirstResponder];
+	//	if (![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+	//		[self.contentTextView becomeFirstResponder];
 
 }
 
@@ -451,6 +484,149 @@
 	
 	return YES;
 	
+}
+
+@end
+
+
+@implementation WACompositionViewController (CustomUI)
+
+- (UINavigationController *) wrappingNavigationController {
+
+	NSAssert(!self.navigationController, @"%@ must not have been put within another navigation controller when %@ is invoked.", self, NSStringFromSelector(_cmd));
+	NSAssert((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()), @"%@: %s is not supported on this device.", self, NSStringFromSelector(_cmd));
+	
+	WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init] autorelease]] autorelease];
+	
+	NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:navController]] autorelease];
+	[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+	navController = [unarchiver decodeObjectForKey:@"root"];
+	
+	static NSString * const kViewControllerActionOnPop = @"waCompositionViewController_wrappingNavigationController_viewControllerActionOnPop";
+
+	navController.willPushViewControllerAnimated = ^ (WANavigationController *self, UIViewController *pushedVC, BOOL animated) {
+		
+		if (![pushedVC isKindOfClass:[WACompositionViewController class]])
+			return;
+		
+		((WACompositionViewController *)pushedVC).usesTransparentBackground = YES;
+		
+		UIBarButtonItem *oldLeftItem = [[pushedVC.navigationItem.leftBarButtonItem retain] autorelease];
+		__block id leftTarget = oldLeftItem.target;
+		__block SEL leftAction = oldLeftItem.action;
+		NSString *leftTitle = oldLeftItem.title ? oldLeftItem.title : @"Cancel";
+		
+		UIBarButtonItem *oldRightItem = [[pushedVC.navigationItem.rightBarButtonItem retain] autorelease];
+		__block id rightTarget = oldRightItem.target;
+		__block SEL rightAction = oldRightItem.action;
+		NSString *rightTitle = oldRightItem.title ? oldRightItem.title : @"Done";
+		
+		IRBorder *border = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
+		IRShadow *innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.95] offset:CGSizeZero spread:2];
+		
+		IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.95] offset:CGSizeZero spread:2];
+		
+		UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
+		UIColor *titleColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+		IRShadow *titleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35] offset:(CGSize){ 0, 1 } spread:2];
+		
+		UIColor *normalFromColor = [UIColor colorWithRed:.85 green:.73 blue:.47 alpha:1];
+		UIColor *normalToColor = [UIColor colorWithRed:.76 green:.61 blue:.35 alpha:1];
+		UIColor *normalBackgroundColor = nil;
+		NSArray *normalGradientColors = [NSArray arrayWithObjects:(id)normalFromColor.CGColor, (id)normalToColor.CGColor, nil];
+		
+		UIColor *highlightedFromColor = [normalFromColor colorWithAlphaComponent:.95];
+		UIColor *highlightedToColor = [normalToColor colorWithAlphaComponent:.95];
+		UIColor *highlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+		NSArray *highlightedGradientColors = [NSArray arrayWithObjects:(id)highlightedFromColor.CGColor, (id)highlightedToColor.CGColor, nil];
+		
+		UIImage *leftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalBackgroundColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
+		UIImage *highlightedLeftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
+		__block IRBarButtonItem *newLeftItem = [IRBarButtonItem itemWithCustomImage:leftItemImage highlightedImage:highlightedLeftItemImage];
+		newLeftItem.block = ^ { [leftTarget performSelector:leftAction withObject:newLeftItem]; };
+		pushedVC.navigationItem.leftBarButtonItem = newLeftItem;
+		
+		UIImage *rightItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:rightTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalFromColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
+		UIImage *highlightedRightItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:rightTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
+		__block IRBarButtonItem *newRightItem = [IRBarButtonItem itemWithCustomImage:rightItemImage highlightedImage:highlightedRightItemImage];
+		newRightItem.block = ^ { [rightTarget performSelector:rightAction withObject:newRightItem]; };
+		pushedVC.navigationItem.rightBarButtonItem = newRightItem;
+
+		if (!pushedVC.navigationItem.titleView) {
+			
+			__block UILabel *titleLabel = [[[UILabel alloc] init] autorelease];
+			titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+			titleLabel.textColor = [UIColor whiteColor];
+			titleLabel.opaque = NO;
+			titleLabel.backgroundColor = nil;
+			
+			[titleLabel irBind:@"text" toObject:pushedVC keyPath:@"title" options:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				[[^ (id oldValue, id newValue, NSString *changeType) {
+					
+					titleLabel.text = newValue;
+					[titleLabel sizeToFit];
+					
+					return newValue;
+				
+				} copy] autorelease], kIRBindingsValueTransformerBlock,
+				
+				kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+			
+			nil]];
+			
+			objc_setAssociatedObject(pushedVC, &kViewControllerActionOnPop, ^ {
+			
+				[titleLabel irUnbind:@"text"];
+			
+			}, OBJC_ASSOCIATION_COPY_NONATOMIC);
+			
+			pushedVC.navigationItem.titleView = titleLabel;
+
+		}
+		
+		if (![pushedVC isViewLoaded])
+			return;
+			
+		pushedVC.view.backgroundColor = nil;
+		pushedVC.view.opaque = NO;
+		
+	};
+	
+	navController.onDismissModalViewControllerAnimated = ^ (WANavigationController *self, BOOL animated) {
+	
+		void (^action)() = objc_getAssociatedObject(self.topViewController, &kViewControllerActionOnPop);
+		if (action)
+				action();
+		
+	};
+	
+	[navController initWithRootViewController:self];
+	
+	navController.onViewDidLoad = ^ (WANavigationController *self) {
+		
+		//	((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
+		//	((WANavigationBar *)self.navigationBar).backgroundView.alpha = 0.05f;
+		
+		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
+		
+		UIColor *baseColor = [UIColor colorWithRed:.75 green:.65 blue:.52 alpha:1];
+		
+		IRGradientView *gradientView = [[[IRGradientView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(self.view.frame), 512 } }] autorelease];
+		[gradientView setLinearGradientFromColor:[baseColor colorWithAlphaComponent:1] anchor:irTop toColor:[baseColor colorWithAlphaComponent:0] anchor:irBottom];
+		
+		gradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+		
+		[self.view addSubview:gradientView];
+		[self.view sendSubviewToBack:gradientView];
+					
+	};
+	
+	if ([navController isViewLoaded])
+		navController.onViewDidLoad(navController);
+	
+	return navController;
+
 }
 
 @end

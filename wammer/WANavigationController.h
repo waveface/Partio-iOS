@@ -11,5 +11,8 @@
 @interface WANavigationController : UINavigationController
 
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WANavigationController *self);
+@property (nonatomic, readwrite, copy) void (^willPushViewControllerAnimated)(WANavigationController *self, UIViewController *pushedVC, BOOL animated);
+@property (nonatomic, readwrite, copy) void (^didPushViewControllerAnimated)(WANavigationController *self, UIViewController *pushedVC, BOOL animated);
+@property (nonatomic, readwrite, copy) void (^onDismissModalViewControllerAnimated)(WANavigationController *self, BOOL animated);
 
 @end

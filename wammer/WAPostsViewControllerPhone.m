@@ -359,11 +359,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
   
-	if ([[UIApplication sharedApplication] isIgnoringInteractionEvents])
-		return (self.interfaceOrientation == newOrientation);
-  
-	return YES;
-	
+  return newOrientation == UIInterfaceOrientationPortrait;	
 }
 
 - (void) refreshData {
@@ -530,5 +526,4 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	});
 	
 }
-
 @end
