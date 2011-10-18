@@ -11,6 +11,8 @@
 @implementation WANavigationController
 
 @synthesize onViewDidLoad;
+@synthesize willPushViewControllerAnimated, didPushViewControllerAnimated;
+@synthesize onDismissModalViewControllerAnimated;
 
 - (void) viewDidLoad {
 
@@ -21,9 +23,33 @@
 
 }
 
+- (void) pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+
+	if (self.willPushViewControllerAnimated)
+		self.willPushViewControllerAnimated(self, viewController, animated);
+		
+	[super pushViewController:viewController animated:animated];
+
+	if (self.didPushViewControllerAnimated)
+		self.didPushViewControllerAnimated(self, viewController, animated);
+
+}
+
+- (void) dismissModalViewControllerAnimated:(BOOL)animated {
+
+	[super dismissModalViewControllerAnimated:animated];
+
+	if (self.onDismissModalViewControllerAnimated)
+		self.onDismissModalViewControllerAnimated(self, animated);
+
+}
+
 - (void) dealloc {
 
 	[onViewDidLoad release];
+	[willPushViewControllerAnimated release];
+	[didPushViewControllerAnimated release];
+	[onDismissModalViewControllerAnimated release];
 	[super dealloc];
 
 }
