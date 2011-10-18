@@ -372,7 +372,8 @@
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
-	WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
+	__block __typeof__(self) nrSelf = self;
+	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 		[busyBezel show];
@@ -381,7 +382,7 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				[self refreshData];
+				[nrSelf refreshData];
 				[busyBezel dismiss];
 
 				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
