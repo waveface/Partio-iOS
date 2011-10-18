@@ -22,6 +22,15 @@
 @property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar;
 @property (nonatomic, readwrite, retain) IBOutlet UIView *noPhotoReminderView;
 
+@property (nonatomic, readwrite, retain) IBOutletCollection(id) NSArray *noPhotoReminderViewElements;
+
 - (IBAction) handleCameraItemTap:(UIButton *)sender;
+
+@end
+
+
+@interface WACompositionViewController (CustomUI)
+
+- (UINavigationController *) wrappingNavigationController; //	Returns a custom-styled nav controller suitable for presenting the view controller on an iPad.  Throws an exception if the view controller is already within another nav controller.
 
 @end

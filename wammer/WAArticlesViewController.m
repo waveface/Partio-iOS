@@ -412,8 +412,7 @@
 	
 	}];
 	
-	UINavigationController *wrapperNC = [[[UINavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init] autorelease]] autorelease];
-	wrapperNC = [wrapperNC initWithRootViewController:compositionVC];
+	UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
 	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
