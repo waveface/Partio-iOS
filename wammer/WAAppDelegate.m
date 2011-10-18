@@ -129,8 +129,7 @@
 			if ([navController isViewLoaded])
 				navController.onViewDidLoad(navController);
 			
-			navController.navigationBar.backgroundColor = nil;
-			navController.navigationBar.opaque = NO;
+			((WANavigationBar *)navController.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
 			
 			return navController;
 			

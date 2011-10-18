@@ -10,4 +10,8 @@
 
 @interface WANavigationBar : UINavigationBar
 
+@property (nonatomic, readwrite, retain) UIView *backgroundView;
+
++ (UIView *) defaultGradientBackgroundView;
+
 @end
