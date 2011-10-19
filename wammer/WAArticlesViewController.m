@@ -418,7 +418,7 @@
 	}];
 	
 	UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
-	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
+	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 

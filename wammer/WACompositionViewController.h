@@ -17,6 +17,9 @@
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
 
+@property (nonatomic, readwrite, retain) IBOutlet UIView *containerView;
+- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds;
+
 @property (nonatomic, readwrite, retain) IBOutlet AQGridView *photosView;
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView;
 @property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar;
