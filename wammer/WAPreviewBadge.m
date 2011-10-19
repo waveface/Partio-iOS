@@ -29,7 +29,9 @@ typedef enum {
 
 #endif
 
-@interface WAPreviewBadge ()
+@interface WAPreviewBadge () {
+	BOOL needsTextUpdate;
+}
 
 - (void) waSharedInit;
 
@@ -127,7 +129,7 @@ typedef enum {
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
-	
+		
 	self.backgroundView.frame = self.bounds;
 	
 	WAPreviewBadgeStyle style = WAPreviewBadgeImageAndTextStyle;
@@ -181,6 +183,10 @@ typedef enum {
 		[self.label removeFromSuperview];
 		self.label = nil;
 	}
+	
+	
+	if (needsTextUpdate)
+		[self updateText];
 	
 	if (self.image)
 		self.imageView.image = self.image;
@@ -280,19 +286,22 @@ typedef enum {
 	self.title = aPreview.graphElement.title;
 	self.text = aPreview.graphElement.text;
 	
-	[self setNeedsLayout];
 	[self setNeedsTextUpdate];
+	[self setNeedsLayout];
 
 }
 
 - (void) setNeedsTextUpdate {
 
-	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateText) object:nil];
-	[self performSelector:@selector(updateText) withObject:nil afterDelay:0.0];
+	needsTextUpdate = YES;
+
+	[self setNeedsLayout];
 
 }
 
 - (void) updateText {
+
+	needsTextUpdate = NO;
 
 	if (self.title || self.text) {
 	

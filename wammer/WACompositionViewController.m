@@ -18,8 +18,10 @@
 #import "IRLifetimeHelper.h"
 #import "IRBarButtonItem.h"
 
+#import "UIWindow+IRAdditions.h"
 
-@interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource>
+
+@interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
@@ -38,6 +40,7 @@
 
 @implementation WACompositionViewController
 @synthesize managedObjectContext, article;
+@synthesize containerView;
 @synthesize photosView, contentTextView, toolbar;
 @synthesize imagePickerPopover;
 @synthesize noPhotoReminderView;
@@ -50,7 +53,9 @@
 	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
 	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
+	
+	if (anArticleURLOrNil)
+		returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
 	
 	if (!returnedController.article) {
 		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
@@ -104,6 +109,8 @@
 
 - (void) dealloc {
 
+	[containerView release];
+	
 	[photosView release];
 	[contentTextView release];
 	[noPhotoReminderView release];
@@ -124,8 +131,11 @@
 
 - (void) viewDidUnload {
 
+	self.containerView = nil;
+	
 	self.photosView = nil;
 	self.noPhotoReminderView = nil;
+	self.contentTextView.delegate = nil;
 	self.contentTextView = nil;
 	self.toolbar = nil;
 	self.imagePickerPopover = nil;
@@ -143,8 +153,6 @@
 
 	[super viewDidLoad];
 	
-	if ([[UIDevice currentDevice].name rangeOfString:@"Simulator"].location != NSNotFound)
-		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
 	
 	if (self.usesTransparentBackground) {
 		self.view.backgroundColor = nil;
@@ -153,7 +161,12 @@
 		self.view.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
 	}
 	
+	if ([[UIDevice currentDevice].name rangeOfString:@"Simulator"].location != NSNotFound) {
+		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
+	}
+	self.contentTextView.delegate = self;
 	self.contentTextView.text = self.article.text;
+	[self textViewDidChange:self.contentTextView];
 	
 	self.toolbar.opaque = NO;
 	self.toolbar.backgroundColor = [UIColor clearColor];
@@ -177,13 +190,14 @@
 	
 	for (UIView *aSubview in self.noPhotoReminderViewElements) {
 		if ([aSubview isKindOfClass:[UIView class]]) {
+			aSubview.layer.shadowColor = [UIColor colorWithWhite:1 alpha:1].CGColor;
 			aSubview.layer.shadowOffset = (CGSize){ 0, 1 };
-			aSubview.layer.shadowRadius = 1;
-			aSubview.layer.shadowOpacity = 1;
+			aSubview.layer.shadowRadius = 0;
+			aSubview.layer.shadowOpacity = .5;
 		}
 	}
 	
-	[self.view addSubview:self.noPhotoReminderView];
+	[self.photosView.superview insertSubview:self.noPhotoReminderView aboveSubview:self.photosView];
 	
 	//	UIView *photosBackgroundView = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
 	//	photosBackgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
@@ -208,21 +222,9 @@
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.opaque = NO;
-	self.contentTextView.contentInset = (UIEdgeInsets){ 10, 0, 0, 0 };
+	self.contentTextView.contentInset = (UIEdgeInsets){ 4, 0, 0, 0 };
 	self.contentTextView.bounces = YES;
 	self.contentTextView.alwaysBounceVertical = YES;
-	
-	if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound)
-		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-
-	IRConcaveView *contentTextBackgroundView = [[[IRConcaveView alloc] initWithFrame:self.contentTextView.frame] autorelease];
-	contentTextBackgroundView.autoresizingMask = self.contentTextView.autoresizingMask;
-	contentTextBackgroundView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25] offset:(CGSize){ 0, 2 } spread:4];
-	contentTextBackgroundView.userInteractionEnabled = NO;
-	contentTextBackgroundView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1];
-	contentTextBackgroundView.layer.cornerRadius = 4;
-	contentTextBackgroundView.layer.masksToBounds = YES;
-	[self.view insertSubview:contentTextBackgroundView atIndex:0];
 	
 	UIView *contextTextShadowView = [[[UIView alloc] initWithFrame:self.contentTextView.frame] autorelease];
 	contextTextShadowView.autoresizingMask = self.contentTextView.autoresizingMask;
@@ -231,22 +233,100 @@
 	contextTextShadowView.layer.shadowOpacity = 0.25;
 	contextTextShadowView.layer.cornerRadius = 4;
 	contextTextShadowView.layer.backgroundColor = [UIColor blackColor].CGColor;
-	[self.view insertSubview:contextTextShadowView atIndex:0];
+	[self.contentTextView.superview insertSubview:contextTextShadowView belowSubview:self.contentTextView];
+	
+	IRConcaveView *contentTextBackgroundView = [[[IRConcaveView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	contentTextBackgroundView.autoresizingMask = self.contentTextView.autoresizingMask;
+	contentTextBackgroundView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25] offset:(CGSize){ 0, 2 } spread:4];
+	contentTextBackgroundView.userInteractionEnabled = NO;
+	contentTextBackgroundView.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1];
+	contentTextBackgroundView.layer.cornerRadius = 4;
+	contentTextBackgroundView.layer.masksToBounds = YES;
+	[self.contentTextView.superview insertSubview:contentTextBackgroundView belowSubview:self.contentTextView];
+	
+}
+
+
+static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandler = @"kWACompositionViewWindowInterfaceBoundsNotificationHandler";
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
+	
+		NSDictionary *userInfo = [aNotification userInfo];
+		CGRect newBounds = [[userInfo objectForKey:IRWindowInterfaceChangeNewBoundsKey] CGRectValue];
+		
+		NSDictionary *keyboardInfo = [[userInfo objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo];
+		
+		UIViewAnimationCurve animationCurve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntValue];
+		NSTimeInterval animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+		
+		UIViewAnimationOptions animationOptions = 0;
+		animationOptions |= ((^ {
+			switch (animationCurve) {
+				case UIViewAnimationCurveEaseIn: return UIViewAnimationOptionCurveEaseIn;
+				case UIViewAnimationCurveEaseOut:return UIViewAnimationOptionCurveEaseOut;
+				case UIViewAnimationCurveEaseInOut: return UIViewAnimationOptionCurveEaseInOut;
+				case UIViewAnimationCurveLinear: return UIViewAnimationOptionCurveLinear;
+				default: return 0;
+			}
+		})());
+	
+		[UIView animateWithDuration:animationDuration delay:0 options:animationOptions animations:^{
+
+			[self adjustContainerViewWithInterfaceBounds:newBounds];
 			
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-
-	[super viewWillAppear:animated];
-
-	//	if (![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-	//		[self.contentTextView becomeFirstResponder];
+		} completion:nil];
+		
+	}];
+	
+	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	id notificationObject = objc_getAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler);
+	[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
+	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, nil, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
+- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds {
+
+	if (![self isViewLoaded])
+		return;
+	
+	UIWindow *ownWindow = self.view.window;
+	if (!ownWindow) {
+		self.containerView.frame = self.view.bounds;
+		return;
+	}
+	
+	CGRect usableRectInWindow = newBounds;
+	CGRect fullViewRectInWindow = [ownWindow convertRect:self.view.bounds fromView:self.view];
+	CGRect overlappingRectInWindow = CGRectIntersection(fullViewRectInWindow, usableRectInWindow);
+	
+	CGRect usableRect = [ownWindow convertRect:overlappingRectInWindow toView:self.view];
+	self.containerView.frame = usableRect;
+
+}
 
 
 
+
+
+- (void) textViewDidChange:(UITextView *)textView {
+
+	self.navigationItem.rightBarButtonItem.enabled = (BOOL)!![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
+
+}
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
@@ -383,14 +463,13 @@
 	
 	if (self.completionBlock)
 		self.completionBlock([[self.article objectID] URIRepresentation]);
-	
-	[self dismissModalViewControllerAnimated:YES];
 
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	[self dismissModalViewControllerAnimated:YES];
+	if (self.completionBlock)
+		self.completionBlock(nil);
 
 }
 
@@ -522,16 +601,15 @@
 		NSString *rightTitle = oldRightItem.title ? oldRightItem.title : @"Done";
 		
 		IRBorder *border = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
-		IRShadow *innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.95] offset:CGSizeZero spread:2];
-		
-		IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.95] offset:CGSizeZero spread:2];
+		IRShadow *innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.55] offset:(CGSize){ 0, 1 } spread:2];
+		IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1] offset:(CGSize){ 0, 1 } spread:1];
 		
 		UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
-		UIColor *titleColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
-		IRShadow *titleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35] offset:(CGSize){ 0, 1 } spread:2];
+		UIColor *titleColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
+		IRShadow *titleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.35] offset:(CGSize){ 0, 1 } spread:0];
 		
-		UIColor *normalFromColor = [UIColor colorWithRed:.85 green:.73 blue:.47 alpha:1];
-		UIColor *normalToColor = [UIColor colorWithRed:.76 green:.61 blue:.35 alpha:1];
+		UIColor *normalFromColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
+		UIColor *normalToColor = [UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
 		UIColor *normalBackgroundColor = nil;
 		NSArray *normalGradientColors = [NSArray arrayWithObjects:(id)normalFromColor.CGColor, (id)normalToColor.CGColor, nil];
 		
@@ -555,8 +633,10 @@
 		if (!pushedVC.navigationItem.titleView) {
 			
 			__block UILabel *titleLabel = [[[UILabel alloc] init] autorelease];
-			titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-			titleLabel.textColor = [UIColor whiteColor];
+			titleLabel.textColor = [UIColor colorWithWhite:0.35 alpha:1];
+			titleLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
+			titleLabel.shadowColor = [UIColor whiteColor];
+			titleLabel.shadowOffset = (CGSize){ 0, 1 };
 			titleLabel.opaque = NO;
 			titleLabel.backgroundColor = nil;
 			
@@ -605,8 +685,7 @@
 	
 	navController.onViewDidLoad = ^ (WANavigationController *self) {
 		
-		//	((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
-		//	((WANavigationBar *)self.navigationBar).backgroundView.alpha = 0.05f;
+		((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
 		
 		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
 		

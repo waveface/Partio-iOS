@@ -375,6 +375,11 @@
 	__block __typeof__(self) nrSelf = self;
 	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
+		[compositionVC dismissModalViewControllerAnimated:YES];
+	
+		if (!anArticleURLOrNil)
+			return;
+	
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 		[busyBezel show];
 	
@@ -413,7 +418,7 @@
 	}];
 	
 	UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
-	wrapperNC.modalPresentationStyle = UIModalPresentationFullScreen;
+	wrapperNC.modalPresentationStyle = UIModalPresentationFormSheet;
 	
 	[(self.navigationController ? self.navigationController : self) presentModalViewController:wrapperNC animated:YES];
 

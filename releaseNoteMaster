@@ -1,2 +1,2 @@
-ETReleaseNotes="1. Fixes bugs. \n 2. Enhance iPhone UI."
-ETMarketingVersionNumber="0.22.4"
+ETReleaseNotes="1. Commits initial fixes on a Core Text crasher related to the single article (plain text) view in Overview. \n 2. Initial Composition styling updates. \n 3. Performance fixes."
+ETMarketingVersionNumber="0.22.6"
