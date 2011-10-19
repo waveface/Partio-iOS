@@ -253,8 +253,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 	[super viewDidAppear:animated];
 	
-	__block __typeof__(self) nrSelf = self;
-	
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
 	
 		NSDictionary *userInfo = [aNotification userInfo];
