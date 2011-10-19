@@ -375,6 +375,11 @@
 	__block __typeof__(self) nrSelf = self;
 	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
+		[compositionVC dismissModalViewControllerAnimated:YES];
+	
+		if (!anArticleURLOrNil)
+			return;
+	
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 		[busyBezel show];
 	
