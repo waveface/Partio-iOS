@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import "IRLabel.h"
+
 @interface IRLabelTestingViewController : UIViewController
+
+@property (nonatomic, readwrite, retain) IBOutletCollection(IRLabel) NSArray *testLabels;
 
 @end

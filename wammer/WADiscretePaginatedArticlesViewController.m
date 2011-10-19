@@ -754,7 +754,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 		[IRAction actionWithTitle:@"Reflow" block: ^ {
 		
-				[nrSelf reloadViewContents];
+			[nrSelf reloadViewContents];
+		
+		}],
+		
+		[IRAction actionWithTitle:@"Label Smoke" block: ^ {
+		
+			UIViewController *testingVC = [[(UIViewController *)[NSClassFromString(@"IRLabelTestingViewController") alloc] init] autorelease];
+			testingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+			[[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:testingVC animated:YES];
 		
 		}],
 	
