@@ -55,6 +55,9 @@
 	
 	[[UIApplication sharedApplication] setCrashReportRecipients:[NSArray arrayWithObjects:
 		@"Evadne Wu <evadne.wu@waveface.com>",
+		@"Vincent Huang <vincent.huang@waveface.com>",
+		@"Jamie Sa <jamie.sa@waveface.com",
+		@"Mineral <redmine@waveface.com",
 	nil]];
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
