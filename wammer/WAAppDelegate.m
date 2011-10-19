@@ -55,6 +55,9 @@
 	
 	[[UIApplication sharedApplication] setCrashReportRecipients:[NSArray arrayWithObjects:
 		@"Evadne Wu <evadne.wu@waveface.com>",
+		@"Vincent Huang <vincent.huang@waveface.com>",
+		@"Jamie Sa <jamie@waveface.com",
+		@"Mineral <redmine@waveface.com",
 	nil]];
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
@@ -433,6 +436,7 @@ static unsigned int networkActivityStackingCount = 0;
 	[self endNetworkActivity];
 
 }
+
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL {
 
 	[self endNetworkActivity];
