@@ -1,2 +1,2 @@
-ETReleaseNotes="1. Commits initial fixes on a Core Text crasher related to the single article (plain text) view in Overview. \n 2. Initial Composition styling updates. \n 3. Performance fixes."
-ETMarketingVersionNumber="0.22.6"
+ETReleaseNotes="1. Fixes more bugs related to Core Text / IRLabel \n 2. Redirects crash reporting simultaneously to Redmine, Jamie, Vincent, and Evadne \n 3. Composition view is now a modal form sheet with updated bar button styling \n 4. Fixes a bug where the image picker view will not pick up edited versions of the user’s photos \n 5. Does not waste any more cycle when a Composition view is cancelled"
+ETMarketingVersionNumber="0.23"
