@@ -253,8 +253,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 	[super viewDidAppear:animated];
 	
-	__block __typeof__(self) nrSelf = self;
-	
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
 	
 		NSDictionary *userInfo = [aNotification userInfo];
@@ -518,6 +516,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		return imagePickerPopover;
 		
 	__block __typeof__(self) nrSelf = self;
+	
+	//	If you have a lot of stuff, but only in the saved photos album — no other albums exist, we will simply show 
 		
 	IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
@@ -535,20 +535,48 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	if (selectedAssetURI || representedAsset) {
 
-		NSURL *finalFileURL = nil;
+		if ([[self.article objectID] isTemporaryID])
+			[self.article.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.article] error:nil];
 		
-		if (selectedAssetURI)
-			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+		NSURL *currentArticleURL = [[self.article objectID] URIRepresentation];
+		WAArticle *capturedArticle = self.article;
 		
-		if (!finalFileURL)
-		if (!selectedAssetURI && representedAsset)
-			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]]) extension:@"png"];
+		//	Create a new file entity, associate it, but leave NO photo in it
 		
-		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		stitchedFile.resourceType = (NSString *)kUTTypeImage;
-		stitchedFile.resourceURL = [finalFileURL absoluteString];
-		stitchedFile.resourceFilePath = [finalFileURL path];
-		stitchedFile.article = self.article;
+		dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+		
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			NSURL *finalFileURL = nil;
+				
+			if (selectedAssetURI)
+				finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+			
+			if (!finalFileURL)
+			if (!selectedAssetURI && representedAsset)
+				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]]) extension:@"png"];
+			
+			WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionary]];
+			stitchedFile.resourceType = (NSString *)kUTTypeImage;
+			stitchedFile.resourceURL = [finalFileURL absoluteString];
+			stitchedFile.resourceFilePath = [finalFileURL path];
+			
+			sleep(10);
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"Error saving stitched photo: %@", savingError);
+			
+			NSURL *savedFileURL = [[stitchedFile objectID] URIRepresentation];
+			
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				NSManagedObjectContext *context = capturedArticle.managedObjectContext;
+				WAFile *stitchedFile = [context irManagedObjectForURI:savedFileURL];
+				stitchedFile.article = capturedArticle;
+			
+			});
+
+		});
 		
 	}
 	
@@ -556,6 +584,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	if ([imagePickerPopover isPopoverVisible])
 		[imagePickerPopover dismissPopoverAnimated:YES];
+	
+	self.imagePickerPopover = nil;
 	
 }
 
