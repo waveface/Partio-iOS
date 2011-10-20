@@ -53,6 +53,18 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	[super viewDidLoad];
 	
+	__block IRPaginatedView *ownPaginatedView = self.paginatedView;
+	
+	ownPaginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	
+		CGPoint convertedPoint = [ownPaginatedView.scrollView convertPoint:aPoint fromView:ownPaginatedView];
+		if ([ownPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
+			return YES;
+		
+		return superAnswer;
+	
+	};
+	
 	UILongPressGestureRecognizer *backgroundTouchRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTouchPresense:)] autorelease];
 	backgroundTouchRecognizer.minimumPressDuration = 0.05;
 	backgroundTouchRecognizer.delegate = self;
@@ -65,7 +77,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
 	
 	self.paginatedView.backgroundColor = nil;
-	self.paginatedView.frame = UIEdgeInsetsInsetRect(self.paginatedView.frame, (UIEdgeInsets){ 32, 32, 0, 32 });
 	self.paginatedView.horizontalSpacing = 32.0f;
 	
 	self.view.backgroundColor = nil;
@@ -761,8 +772,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		[IRAction actionWithTitle:@"Label Smoke" block: ^ {
 		
 			UIViewController *testingVC = [[(UIViewController *)[NSClassFromString(@"IRLabelTestingViewController") alloc] init] autorelease];
-			testingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-			[[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:testingVC animated:YES];
+			__block UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testingVC] autorelease];
+			testingVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:@"Close" action:^{
+				[navC dismissModalViewControllerAnimated:YES];
+			}];
+			navC.modalPresentationStyle = UIModalPresentationFormSheet;
+			[[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:navC animated:YES];
 		
 		}],
 	
