@@ -206,8 +206,12 @@
 	
 	if (primitivePath) {
 		[self willChangeValueForKey:@"resourceFilePath"];
+		[self willChangeValueForKey:@"resourceImage"];
+		[self willChangeValueForKey:@"thumbnail"];
 		[self setPrimitiveValue:primitivePath forKey:@"resourceFilePath"];
 		[self didChangeValueForKey:@"resourceFilePath"];
+		[self didChangeValueForKey:@"resourceImage"];
+		[self didChangeValueForKey:@"thumbnail"];
 	}
 	
 	return primitivePath;
