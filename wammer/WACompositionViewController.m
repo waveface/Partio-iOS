@@ -560,8 +560,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			stitchedFile.resourceURL = [finalFileURL absoluteString];
 			stitchedFile.resourceFilePath = [finalFileURL path];
 			
-			sleep(10);
-			
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"Error saving stitched photo: %@", savingError);
@@ -571,7 +569,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
 				NSManagedObjectContext *context = capturedArticle.managedObjectContext;
-				WAFile *stitchedFile = [context irManagedObjectForURI:savedFileURL];
+				WAFile *stitchedFile = (WAFile *)[context irManagedObjectForURI:savedFileURL];
 				stitchedFile.article = capturedArticle;
 			
 			});
