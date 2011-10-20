@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 #import "AQGridView.h"
 #import "IRTransparentToolbar.h"
