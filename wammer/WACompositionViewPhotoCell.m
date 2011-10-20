@@ -13,10 +13,12 @@
 @interface WACompositionViewPhotoCell ()
 @property (nonatomic, readwrite, retain) UIView *imageContainer;
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
+@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation WACompositionViewPhotoCell
 @synthesize image, imageContainer, removeButton, onRemove;
+@synthesize activityIndicator;
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
@@ -63,6 +65,14 @@
 	self.removeButton.imageView.contentMode = UIViewContentModeCenter;
 	[self.contentView addSubview:self.removeButton];
 	
+	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	self.activityIndicator.center = (CGPoint){ CGRectGetMidX(self.imageContainer.bounds), CGRectGetMidY(self.imageContainer.bounds) };
+	self.activityIndicator.frame = CGRectIntegral(self.activityIndicator.frame);
+	[self.activityIndicator startAnimating];
+	[self.imageContainer addSubview:self.activityIndicator];
+	
+	[self setNeedsLayout];
+	
 	return self;
 
 }
@@ -85,14 +95,42 @@
 	[self didChangeValueForKey:@"image"];
 	
 	self.imageContainer.layer.contents = (id)newImage.CGImage;
-	self.removeButton.hidden = (BOOL)(!newImage);
-	self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:IRCGSizeGetCenteredInRect(newImage.size, self.imageContainer.bounds, 0.0f, YES)].CGPath;
 	
 	CGRect imageRect = IRCGSizeGetCenteredInRect(newImage.size, self.imageContainer.frame, 0.0f, YES);
 	self.removeButton.center = (CGPoint) {
 		CGRectGetMinX(imageRect),
 		CGRectGetMinY(imageRect)
 	};
+	
+	[self setNeedsLayout];
+
+}
+
+- (void) layoutSubviews {
+
+	[super layoutSubviews];
+	
+	if (self.image) {
+
+		self.removeButton.hidden = NO;
+		self.activityIndicator.hidden = YES;
+		self.imageContainer.backgroundColor = nil;
+		self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:IRCGSizeGetCenteredInRect(self.image.size, self.imageContainer.bounds, 0.0f, YES)].CGPath;
+	
+	} else {
+	
+		self.removeButton.hidden = YES;
+		self.activityIndicator.hidden = NO;
+		self.imageContainer.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1];
+		self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.imageContainer.bounds].CGPath;
+	
+	}
+
+}
+
+- (void) prepareForReuse {
+
+	self.image = nil;
 
 }
 
@@ -102,6 +140,7 @@
 	[imageContainer release];
 	[image release];
 	[removeButton release];
+	[activityIndicator release];
 	[super dealloc];
 
 }

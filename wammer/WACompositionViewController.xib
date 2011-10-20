@@ -50,7 +50,7 @@
 							<object class="IBUITextView" id="269628897">
 								<reference key="NSNextResponder" ref="844220895"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{8, 8}, {524, 396}}</string>
+								<string key="NSFrame">{{8, 8}, {524, 412}}</string>
 								<reference key="NSSuperview" ref="844220895"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="185500858"/>
@@ -83,7 +83,7 @@
 							<object class="IBUIScrollView" id="185500858">
 								<reference key="NSNextResponder" ref="844220895"/>
 								<int key="NSvFlags">266</int>
-								<string key="NSFrame">{{20, 412}, {500, 144}}</string>
+								<string key="NSFrame">{{0, 428}, {484, 128}}</string>
 								<reference key="NSSuperview" ref="844220895"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="250256511"/>
@@ -95,9 +95,10 @@
 							<object class="IBUIButton" id="250256511">
 								<reference key="NSNextResponder" ref="844220895"/>
 								<int key="NSvFlags">265</int>
-								<string key="NSFrame">{{480, 446}, {40, 40}}</string>
+								<string key="NSFrame">{{492, 472}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="844220895"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:184</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -183,7 +184,7 @@
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 			</object>
 			<object class="IBUIView" id="484032801">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -197,6 +198,7 @@
 								<int key="NSvFlags">298</int>
 								<string key="NSFrame">{{177, 11}, {96, 21}}</string>
 								<reference key="NSSuperview" ref="1046231578"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1036614312"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -233,6 +235,8 @@
 								<int key="NSvFlags">298</int>
 								<string key="NSFrame">{{20, 32}, {410, 21}}</string>
 								<reference key="NSSuperview" ref="1046231578"/>
+								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -259,15 +263,18 @@
 								</object>
 							</object>
 						</object>
-						<string key="NSFrame">{{0, 26}, {450, 64}}</string>
+						<string key="NSFrame">{{0, 32}, {450, 64}}</string>
 						<reference key="NSSuperview" ref="484032801"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="665308774"/>
 						<string key="NSReuseIdentifierKey">_NS:49</string>
 						<reference key="IBUIBackgroundColor" ref="604412346"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
 				</object>
-				<string key="NSFrameSize">{450, 116}</string>
+				<string key="NSFrameSize">{450, 128}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="1046231578"/>
 				<string key="NSReuseIdentifierKey">_NS:49</string>
 				<reference key="IBUIBackgroundColor" ref="604412346"/>
@@ -429,8 +436,8 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="269628897"/>
-							<reference ref="250256511"/>
 							<reference ref="185500858"/>
+							<reference ref="250256511"/>
 						</object>
 						<reference key="parent" ref="837482752"/>
 					</object>
@@ -442,6 +449,9 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
 						<reference key="object" ref="185500858"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="parent" ref="844220895"/>
 					</object>
 					<object class="IBObjectRecord">
