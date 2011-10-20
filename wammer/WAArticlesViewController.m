@@ -500,14 +500,17 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
 	[loadingBezel dismiss];
 	
-	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-	[errorBezel show];
+	//	Showing an error bezel here is inappropriate.
+	//	We might be doing an implicit thing, in that case we should NOT use a bezel at all
 	
-	double delayInSeconds = 2.0;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-    [errorBezel dismissWithAnimation:WAOverlayBezelAnimationZoom];
-	});
+	//	WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+	//	[errorBezel show];
+	//	
+	//	double delayInSeconds = 2.0;
+	//	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+	//	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+	//    [errorBezel dismissWithAnimation:WAOverlayBezelAnimationZoom];
+	//	});
 
 }
 
