@@ -171,9 +171,15 @@
 	self.toolbar.opaque = NO;
 	self.toolbar.backgroundColor = [UIColor clearColor];
 	
+	UIView *photosViewWrapper = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
+	photosViewWrapper.autoresizingMask = self.photosView.autoresizingMask;
+	[self.photosView.superview addSubview:photosViewWrapper];
+	[photosViewWrapper addSubview:self.photosView];	
+	self.photosView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.photosView.frame = self.photosView.superview.bounds;
+	
 	self.photosView.layoutDirection = AQGridViewLayoutDirectionHorizontal;
 	self.photosView.backgroundColor = nil;
-	self.photosView.layer.cornerRadius = 4.0f;
 	self.photosView.opaque = NO;
 	self.photosView.bounces = YES;
 	self.photosView.clipsToBounds = NO;
@@ -183,9 +189,24 @@
 	self.photosView.contentSizeGrowsToFillBounds = NO;
 	self.photosView.showsVerticalScrollIndicator = NO;
 	self.photosView.showsHorizontalScrollIndicator = NO;
-	self.photosView.leftContentInset = 8.0f;
+	self.photosView.leftContentInset = 56.0f;
+		
+	CAGradientLayer *rightGradientMask = [CAGradientLayer layer];
+	rightGradientMask.startPoint = irUnitPointForAnchor(irLeft, YES);
+	rightGradientMask.endPoint = irUnitPointForAnchor(irRight, YES);
+	rightGradientMask.colors = [NSArray arrayWithObjects:
+		(id)[UIColor colorWithRed:1 green:1 blue:1 alpha:1].CGColor,
+		(id)[UIColor colorWithRed:0 green:0 blue:0 alpha:0].CGColor,
+	nil];
+	rightGradientMask.locations = [NSArray arrayWithObjects:
+		[NSNumber numberWithFloat:1-(20.0f / CGRectGetWidth(self.photosView.frame))],
+		[NSNumber numberWithFloat:1],
+	nil];
+	photosViewWrapper.layer.mask = rightGradientMask;
+	photosViewWrapper.layer.mask.anchorPoint = irUnitPointForAnchor(irTopLeft, YES);
+	photosViewWrapper.layer.mask.bounds = photosViewWrapper.bounds;
 	
-	self.noPhotoReminderView.frame = self.photosView.frame;
+	self.noPhotoReminderView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, 0, 0, -32 });
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
 	
 	for (UIView *aSubview in self.noPhotoReminderViewElements) {
@@ -340,7 +361,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (CGSize) portraitGridCellSizeForGridView: (AQGridView *) gridView {
 
-	return (CGSize){ 144, 144 - 1 };
+	return (CGSize){ 144, CGRectGetHeight(gridView.frame) - 1 };
 
 }
 
@@ -369,7 +390,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				
 	}
 		
-	cell.image = [UIImage imageWithContentsOfFile:representedFile.resourceFilePath];
+	cell.image = representedFile.thumbnail;
 
 	cell.onRemove = ^ {	
 		dispatch_async(dispatch_get_main_queue(), ^ {
@@ -535,17 +556,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	if (selectedAssetURI || representedAsset) {
 
-		if ([[self.article objectID] isTemporaryID])
-			[self.article.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.article] error:nil];
-		
-		NSURL *currentArticleURL = [[self.article objectID] URIRepresentation];
 		WAArticle *capturedArticle = self.article;
+		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+		stitchedFile.article = capturedArticle;
 		
 		//	Create a new file entity, associate it, but leave NO photo in it
 		
 		dispatch_async(dispatch_get_global_queue(0, 0), ^ {
 		
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			NSURL *finalFileURL = nil;
 				
 			if (selectedAssetURI)
@@ -554,26 +572,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			if (!finalFileURL)
 			if (!selectedAssetURI && representedAsset)
 				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]]) extension:@"png"];
-			
-			WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionary]];
-			stitchedFile.resourceType = (NSString *)kUTTypeImage;
-			stitchedFile.resourceURL = [finalFileURL absoluteString];
-			stitchedFile.resourceFilePath = [finalFileURL path];
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving stitched photo: %@", savingError);
-			
-			NSURL *savedFileURL = [[stitchedFile objectID] URIRepresentation];
-			
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				NSManagedObjectContext *context = capturedArticle.managedObjectContext;
-				WAFile *stitchedFile = (WAFile *)[context irManagedObjectForURI:savedFileURL];
-				stitchedFile.article = capturedArticle;
-			
+				
+			dispatch_async(dispatch_get_main_queue(), ^ {			
+				
+				[stitchedFile.article willChangeValueForKey:@"fileOrder"];
+				
+				stitchedFile.resourceType = (NSString *)kUTTypeImage;
+				stitchedFile.resourceURL = [finalFileURL absoluteString];
+				stitchedFile.resourceFilePath = [finalFileURL path];
+				
+				[stitchedFile.article didChangeValueForKey:@"fileOrder"];
+				
 			});
-
+			
 		});
 		
 	}
