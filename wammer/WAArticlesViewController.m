@@ -343,12 +343,41 @@
 		
 		}],
 		
-		//	[IRAction actionWithTitle:@"Crash" block: ^ {
-		//	
-		//		((char *)NULL)[1] = 0;
-		//	
-		//	}],
+		[IRAction actionWithTitle:@"Simulate Crash" block: ^ {
+		
+			((char *)NULL)[1] = 0;
+		
+		}],
 	
+		[IRAction actionWithTitle:@"Import Test Photos" block: ^ {
+		
+			dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+		
+				ALAssetsLibrary *library = [[[ALAssetsLibrary alloc] init] autorelease];
+				
+				NSString *sampleDirectory = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"IPSample"];
+				
+				[[[NSFileManager defaultManager] contentsOfDirectoryAtPath:sampleDirectory error:nil] enumerateObjectsUsingBlock: ^ (NSString *aFileName, NSUInteger idx, BOOL *stop) {
+					
+					NSString *filePath = [sampleDirectory stringByAppendingPathComponent:aFileName];
+					
+					UIImage *image = [UIImage imageWithContentsOfFile:filePath];
+					
+					if (!image)
+						return;
+						
+					[library writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+					
+						NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, assetURL, error);
+						
+					}];
+									
+				}];
+			
+			});
+		
+		}],
+		
 	nil];
 
 }
