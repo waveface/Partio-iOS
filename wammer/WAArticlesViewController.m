@@ -431,6 +431,8 @@
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
+	[debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:YES];
+
 	__block __typeof__(self) nrSelf = self;
 	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
 	
