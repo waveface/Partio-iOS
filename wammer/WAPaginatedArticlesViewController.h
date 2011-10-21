@@ -7,8 +7,9 @@
 //
 
 #import "WAArticlesViewController.h"
+#import "WAArticleViewController.h"
 
-@interface WAPaginatedArticlesViewController : WAArticlesViewController
+@interface WAPaginatedArticlesViewController : WAArticlesViewController <WAArticleViewControllerPresenting>
 
 @property (nonatomic, readwrite, retain) NSDictionary *context;
 

@@ -30,7 +30,7 @@
 #import "UIView+IRAdditions.h"
 
 
-@interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate, WAArticleViewControllerPresenting>
+@interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 
