@@ -69,7 +69,7 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	if (!ownImage)
 		return;
 	
-	CGRect rect = CGContextGetClipBoundingBox(ctx);
+	CGRect rect = layer.bounds;//CGContextGetClipBoundingBox(ctx);
 	
 	CGSize imageSize = ownImage.size;
 	if (!(imageSize.width * imageSize.height))

@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAFauxRootNavigationController : UINavigationController
+#import "WANavigationController.h"
+
+@interface WAFauxRootNavigationController : WANavigationController
 
 @property (nonatomic, readwrite, copy) void (^onPoppingFauxRoot)();
 

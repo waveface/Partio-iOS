@@ -378,6 +378,36 @@
 		
 		}],
 		
+		[IRAction actionWithTitle:@"Remove Resources" block:^ {
+		
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			[[context executeFetchRequest:((^ {
+				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
+				fr.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != %@) || (thumbnailURL != %@)"];
+				return fr;
+			})()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
+			
+				if (aFile.resourceFilePath) {
+					[[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
+					aFile.resourceFilePath = nil;
+				}
+				
+				if (aFile.thumbnailFilePath) {
+					[[NSFileManager defaultManager] removeItemAtPath:aFile.thumbnailFilePath error:nil];
+					aFile.thumbnailFilePath = nil;
+				}
+				
+			}];
+			
+			NSError *savingError = nil;
+			if ([context save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+		
+		}],
+		
 	nil];
 
 }
@@ -400,6 +430,8 @@
 }
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
+
+	[debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:YES];
 
 	__block __typeof__(self) nrSelf = self;
 	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
@@ -432,7 +464,7 @@
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
 				NSLog(@"Article upload failed.  Help!");
-				[busyBezel dismiss];
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 				
 				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 				[errorBezel show];
@@ -491,14 +523,14 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	[[bezel retain] autorelease];
 	objc_setAssociatedObject(self, &kLoadingBezel, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
-	[bezel dismiss];
+	[bezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 
 }
 
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
 
-	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
-	[loadingBezel dismiss];
+	WAOverlayBezel *bezel = objc_getAssociatedObject(self, &kLoadingBezel);
+	[bezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 	
 	//	Showing an error bezel here is inappropriate.
 	//	We might be doing an implicit thing, in that case we should NOT use a bezel at all

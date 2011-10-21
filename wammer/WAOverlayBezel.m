@@ -168,24 +168,40 @@
 		return;
 	}
 
-	NSTimeInterval duration = 0.3f;
-		
+	NSTimeInterval duration = 3.0f;
+	
 	NSMutableArray *animations = [NSMutableArray array];
+	
+	id (^configureAnimation)(CAAnimation *) = ^ (CAAnimation *anAnimation){
+		anAnimation.duration = duration;
+		anAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		anAnimation.fillMode = kCAFillModeForwards;
+		anAnimation.removedOnCompletion = NO;
+		return anAnimation;
+	};
 	
 	if (anAnimation & WAOverlayBezelAnimationFade) {
 		CABasicAnimation *fadeOutAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+		fadeOutAnimation = configureAnimation(fadeOutAnimation);
 		fadeOutAnimation.fromValue = [NSNumber numberWithFloat:1.0f];
 		fadeOutAnimation.toValue = [NSNumber numberWithFloat:0.0f];
-		fadeOutAnimation.duration = duration;
 		[animations addObject:fadeOutAnimation];	
 	}
 	
 	if (anAnimation & WAOverlayBezelAnimationSlide) {
-		NSLog(@"TBD %s WAOverlayBezelAnimationSlide", __PRETTY_FUNCTION__);
+		CABasicAnimation *slideOutAnimation = [CABasicAnimation animationWithKeyPath:@"transform.y"];
+		slideOutAnimation = configureAnimation(slideOutAnimation);
+		slideOutAnimation.fromValue = [NSNumber numberWithFloat:0.0f];	
+		slideOutAnimation.toValue = [NSNumber numberWithFloat:-32.0f];
+		[animations addObject:slideOutAnimation];
 	}
 
 	if (anAnimation & WAOverlayBezelAnimationZoom) {
-		NSLog(@"TBD %s WAOverlayBezelAnimationZoom", __PRETTY_FUNCTION__);
+		CABasicAnimation *zoomInAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+		zoomInAnimation = configureAnimation(zoomInAnimation);
+		zoomInAnimation.fromValue = [NSNumber numberWithFloat:1.0f];	
+		zoomInAnimation.toValue = [NSNumber numberWithFloat:4.0f];
+		[animations addObject:zoomInAnimation];
 	}
 	
 	if (!animations) {
