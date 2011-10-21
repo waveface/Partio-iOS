@@ -464,7 +464,7 @@
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
 				NSLog(@"Article upload failed.  Help!");
-				[busyBezel dismiss];
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 				
 				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 				[errorBezel show];
@@ -523,14 +523,14 @@ NSString * const kLoadingBezel = @"loadingBezel";
 	[[bezel retain] autorelease];
 	objc_setAssociatedObject(self, &kLoadingBezel, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
-	[bezel dismiss];
+	[bezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 
 }
 
 - (void) remoteDataLoadingDidFailWithError:(NSError *)anError {
 
-	WAOverlayBezel *loadingBezel = objc_getAssociatedObject(self, &kLoadingBezel);
-	[loadingBezel dismiss];
+	WAOverlayBezel *bezel = objc_getAssociatedObject(self, &kLoadingBezel);
+	[bezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 	
 	//	Showing an error bezel here is inappropriate.
 	//	We might be doing an implicit thing, in that case we should NOT use a bezel at all
