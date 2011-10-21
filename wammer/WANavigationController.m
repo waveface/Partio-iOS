@@ -37,10 +37,14 @@
 
 - (void) dismissModalViewControllerAnimated:(BOOL)animated {
 
+	[self retain];
+
 	[super dismissModalViewControllerAnimated:animated];
 
 	if (self.onDismissModalViewControllerAnimated)
 		self.onDismissModalViewControllerAnimated(self, animated);
+	
+	[self autorelease];
 
 }
 
