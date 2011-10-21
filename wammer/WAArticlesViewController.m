@@ -378,6 +378,36 @@
 		
 		}],
 		
+		[IRAction actionWithTitle:@"Remove Resources" block:^ {
+		
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			[[context executeFetchRequest:((^ {
+				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
+				fr.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != %@) || (thumbnailURL != %@)"];
+				return fr;
+			})()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
+			
+				if (aFile.resourceFilePath) {
+					[[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
+					aFile.resourceFilePath = nil;
+				}
+				
+				if (aFile.thumbnailFilePath) {
+					[[NSFileManager defaultManager] removeItemAtPath:aFile.thumbnailFilePath error:nil];
+					aFile.thumbnailFilePath = nil;
+				}
+				
+			}];
+			
+			NSError *savingError = nil;
+			if ([context save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+		
+		}],
+		
 	nil];
 
 }
