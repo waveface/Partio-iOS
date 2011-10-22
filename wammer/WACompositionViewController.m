@@ -19,6 +19,7 @@
 #import "IRBarButtonItem.h"
 
 #import "UIWindow+IRAdditions.h"
+#import "WADefines.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate>
@@ -629,46 +630,26 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 		((WACompositionViewController *)pushedVC).usesTransparentBackground = YES;
 		
-		UIBarButtonItem *oldLeftItem = [[pushedVC.navigationItem.leftBarButtonItem retain] autorelease];
+		UIBarButtonItem *oldLeftItem = pushedVC.navigationItem.leftBarButtonItem;
+		UIBarButtonItem *oldRightItem = pushedVC.navigationItem.rightBarButtonItem;
+		
 		__block id leftTarget = oldLeftItem.target;
 		__block SEL leftAction = oldLeftItem.action;
-		NSString *leftTitle = oldLeftItem.title ? oldLeftItem.title : @"Cancel";
 		
-		UIBarButtonItem *oldRightItem = [[pushedVC.navigationItem.rightBarButtonItem retain] autorelease];
 		__block id rightTarget = oldRightItem.target;
 		__block SEL rightAction = oldRightItem.action;
-		NSString *rightTitle = oldRightItem.title ? oldRightItem.title : @"Done";
 		
-		IRBorder *border = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
-		IRShadow *innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.55] offset:(CGSize){ 0, 1 } spread:2];
-		IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1] offset:(CGSize){ 0, 1 } spread:1];
+		__block IRBarButtonItem *newLeftItem = WABackBarButtonItem(@"Cancel", ^{
+			[leftTarget performSelector:leftAction withObject:newLeftItem];
+		});
 		
-		UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
-		UIColor *titleColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
-		IRShadow *titleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.35] offset:(CGSize){ 0, 1 } spread:0];
+		__block IRBarButtonItem *newRightItem = WAStandardBarButtonItem(@"Done", ^{
+			[rightTarget performSelector:rightAction withObject:newRightItem];
+		});
 		
-		UIColor *normalFromColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
-		UIColor *normalToColor = [UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
-		UIColor *normalBackgroundColor = nil;
-		NSArray *normalGradientColors = [NSArray arrayWithObjects:(id)normalFromColor.CGColor, (id)normalToColor.CGColor, nil];
-		
-		UIColor *highlightedFromColor = [normalFromColor colorWithAlphaComponent:.95];
-		UIColor *highlightedToColor = [normalToColor colorWithAlphaComponent:.95];
-		UIColor *highlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
-		NSArray *highlightedGradientColors = [NSArray arrayWithObjects:(id)highlightedFromColor.CGColor, (id)highlightedToColor.CGColor, nil];
-		
-		UIImage *leftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalBackgroundColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
-		UIImage *highlightedLeftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
-		__block IRBarButtonItem *newLeftItem = [IRBarButtonItem itemWithCustomImage:leftItemImage highlightedImage:highlightedLeftItemImage];
-		newLeftItem.block = ^ { [leftTarget performSelector:leftAction withObject:newLeftItem]; };
-		pushedVC.navigationItem.leftBarButtonItem = newLeftItem;
-		
-		UIImage *rightItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:rightTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalFromColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
-		UIImage *highlightedRightItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:rightTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
-		__block IRBarButtonItem *newRightItem = [IRBarButtonItem itemWithCustomImage:rightItemImage highlightedImage:highlightedRightItemImage];
-		newRightItem.block = ^ { [rightTarget performSelector:rightAction withObject:newRightItem]; };
+		pushedVC.navigationItem.leftBarButtonItem = newLeftItem;		
 		pushedVC.navigationItem.rightBarButtonItem = newRightItem;
-
+		
 		if (!pushedVC.navigationItem.titleView) {
 			
 			__block UILabel *titleLabel = [[[UILabel alloc] init] autorelease];
