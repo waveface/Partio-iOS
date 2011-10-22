@@ -172,9 +172,9 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	NSMutableArray *currentImageThumbnailViews = [[[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy] autorelease];
 	NSMutableSet *removedThumbnailViews = [NSMutableSet set];
 	
-	id (^itemForComponent)(id) = ^ (id aComponent) {
-		return objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentItem);
-	};
+	//	id (^itemForComponent)(id) = ^ (id aComponent) {
+	//		return objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentItem);
+	//	};
 	
 	void (^setItemForCompoment)(id, id) = ^ (id aComponent, id anItem) {
 		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentItem, anItem, OBJC_ASSOCIATION_ASSIGN);
