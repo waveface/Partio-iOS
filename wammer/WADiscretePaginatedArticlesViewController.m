@@ -294,7 +294,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		[self.navigationController presentModalViewController:enqueuedNavController animated:NO];
 		[enqueuedPaginatedVC setContextControlsVisible:NO animated:NO];
 		
-		CGRect fullsizeArticleViewRectInWindow = [containingWindow convertRect:enqueuedNavController.view.bounds fromView:enqueuedNavController.view];
+		//	CGRect fullsizeArticleViewRectInWindow = [containingWindow convertRect:enqueuedNavController.view.bounds fromView:enqueuedNavController.view];
 		UIImage *fullsizeArticleViewSnapshot = [enqueuedNavController.view.layer irRenderedImage];
 		UIView *fullsizeArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 		fullsizeArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
