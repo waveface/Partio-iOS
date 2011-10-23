@@ -21,6 +21,8 @@
 #import "UIWindow+IRAdditions.h"
 #import "WADefines.h"
 
+#import "AssetsLibrary+IRAdditions.h"
+
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate>
 
@@ -174,6 +176,7 @@
 	
 	UIView *photosViewWrapper = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
 	photosViewWrapper.autoresizingMask = self.photosView.autoresizingMask;
+	photosViewWrapper.clipsToBounds = NO;
 	[self.photosView.superview addSubview:photosViewWrapper];
 	[photosViewWrapper addSubview:self.photosView];	
 	self.photosView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -571,8 +574,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
 			
 			if (!finalFileURL)
-			if (!selectedAssetURI && representedAsset)
-				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImagePNGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage]]) extension:@"png"];
+			if (!selectedAssetURI && representedAsset) {
+			
+				UIImage *fullImage = [[representedAsset defaultRepresentation] irImage];
+				NSData *fullImageData = UIImagePNGRepresentation(fullImage);
+				
+				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
+				
+			}
 				
 			dispatch_async(dispatch_get_main_queue(), ^ {			
 				

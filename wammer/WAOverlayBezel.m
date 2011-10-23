@@ -168,7 +168,7 @@
 		return;
 	}
 
-	NSTimeInterval duration = 3.0f;
+	NSTimeInterval duration = 0.5f;
 	
 	NSMutableArray *animations = [NSMutableArray array];
 	
