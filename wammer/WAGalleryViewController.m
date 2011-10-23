@@ -145,6 +145,8 @@
 
 - (void) loadView {
 
+	NSParameterAssert(self.article);
+
 	__block __typeof__(self) nrSelf = self;
 
 	self.view = [[[WAView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
@@ -153,7 +155,12 @@
 		[nrSelf waSubviewWillLayout];
 	};
 	
-	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] isEqualToString:@""] ? @"Article" : self.article.text)] autorelease];
+	NSString *articleTitle = self.article.text;
+	if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+		articleTitle = @"Post";
+	
+	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:articleTitle] autorelease];
+	self.previousNavigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:articleTitle style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 	
 	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.horizontalSpacing = 24.0f;
@@ -164,6 +171,10 @@
 	self.navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationBar.delegate = self;
+	
+	NSParameterAssert(self.previousNavigationItem);
+	NSParameterAssert(self.navigationItem);
+	
 	[self.navigationBar pushNavigationItem:self.previousNavigationItem animated:NO];
 	[self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 	
@@ -191,7 +202,7 @@
 	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		nrSelf.streamPickerView.selectedItemIndex = [inNewValue unsignedIntValue];
 	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
-
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
