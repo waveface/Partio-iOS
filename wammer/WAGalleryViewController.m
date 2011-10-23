@@ -77,37 +77,14 @@
 
 }
 
-- (void) setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext {
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
-	if (newManagedObjectContext == managedObjectContext)
-		return;
-		
-	[self willChangeValueForKey:@"managedObjectContext"];
-	[managedObjectContext release];
-	managedObjectContext = [newManagedObjectContext retain];
-	[self didChangeValueForKey:@"managedObjectContext"];
-
-}
-
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	NSUInteger oldCurrentPage = self.paginatedView.currentPage;
 	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		NSUInteger oldCurrentPage = self.paginatedView.currentPage;
-		
-		[self.paginatedView reloadViews];
-		[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
-		[self.streamPickerView reloadData];
-		[self.streamPickerView setNeedsLayout];
-		
-	});
+	[self.paginatedView reloadViews];
+	[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
+	[self.streamPickerView reloadData];
+	[self.streamPickerView setNeedsLayout];
 
 }
 
