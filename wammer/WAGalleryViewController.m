@@ -47,7 +47,7 @@
 
 	WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
 	
-	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURI];
 	
 	return returnedController;
@@ -57,10 +57,7 @@
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	
 	self.wantsFullScreenLayout = YES;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	return self;
 
@@ -80,37 +77,14 @@
 
 }
 
-- (void) setManagedObjectContext:(NSManagedObjectContext *)newManagedObjectContext {
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
-	if (newManagedObjectContext == managedObjectContext)
-		return;
-		
-	[self willChangeValueForKey:@"managedObjectContext"];
-	[managedObjectContext release];
-	managedObjectContext = [newManagedObjectContext retain];
-	[self didChangeValueForKey:@"managedObjectContext"];
-
-}
-
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+	NSUInteger oldCurrentPage = self.paginatedView.currentPage;
 	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		NSUInteger oldCurrentPage = self.paginatedView.currentPage;
-		
-		[self.paginatedView reloadViews];
-		[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
-		[self.streamPickerView reloadData];
-		[self.streamPickerView setNeedsLayout];
-		
-	});
+	[self.paginatedView reloadViews];
+	[self.paginatedView scrollToPageAtIndex:oldCurrentPage animated:NO];
+	[self.streamPickerView reloadData];
+	[self.streamPickerView setNeedsLayout];
 
 }
 
@@ -145,6 +119,8 @@
 
 - (void) loadView {
 
+	NSParameterAssert(self.article);
+
 	__block __typeof__(self) nrSelf = self;
 
 	self.view = [[[WAView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
@@ -153,7 +129,12 @@
 		[nrSelf waSubviewWillLayout];
 	};
 	
-	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] isEqualToString:@""] ? @"Article" : self.article.text)] autorelease];
+	NSString *articleTitle = self.article.text;
+	if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+		articleTitle = @"Post";
+	
+	self.previousNavigationItem = [[[UINavigationItem alloc] initWithTitle:articleTitle] autorelease];
+	self.previousNavigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:articleTitle style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
 	
 	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:self.view.bounds] autorelease];
 	self.paginatedView.horizontalSpacing = 24.0f;
@@ -164,6 +145,10 @@
 	self.navigationBar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 	self.navigationBar.delegate = self;
+	
+	NSParameterAssert(self.previousNavigationItem);
+	NSParameterAssert(self.navigationItem);
+	
 	[self.navigationBar pushNavigationItem:self.previousNavigationItem animated:NO];
 	[self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 	
@@ -191,7 +176,7 @@
 	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		nrSelf.streamPickerView.selectedItemIndex = [inNewValue unsignedIntValue];
 	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
-
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -230,13 +215,13 @@
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return [self.article.files count];
+	return [[self.fetchedResultsController fetchedObjects] count];
 
 }
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
+	WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
 	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	
@@ -403,8 +388,6 @@
 
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	self.view.onLayoutSubviews = nil;
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[fetchedResultsController release];
