@@ -386,7 +386,7 @@
 			[[context executeFetchRequest:((^ {
 				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
 				fr.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
-				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != %@) || (thumbnailURL != %@)"];
+				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != nil) || (thumbnailURL != nil)"];
 				return fr;
 			})()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
 			
