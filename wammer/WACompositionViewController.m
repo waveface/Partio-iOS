@@ -176,6 +176,7 @@
 	
 	UIView *photosViewWrapper = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
 	photosViewWrapper.autoresizingMask = self.photosView.autoresizingMask;
+	photosViewWrapper.clipsToBounds = NO;
 	[self.photosView.superview addSubview:photosViewWrapper];
 	[photosViewWrapper addSubview:self.photosView];	
 	self.photosView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
