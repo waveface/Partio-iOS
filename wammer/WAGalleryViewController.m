@@ -238,13 +238,13 @@
 
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
-	return [self.article.files count];
+	return [[self.fetchedResultsController fetchedObjects] count];
 
 }
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
+	WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
 	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	
