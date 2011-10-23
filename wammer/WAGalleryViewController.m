@@ -47,7 +47,7 @@
 
 	WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
 	
-	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURI];
 	
 	return returnedController;
@@ -57,10 +57,7 @@
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	
 	self.wantsFullScreenLayout = YES;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
 	return self;
 
@@ -414,8 +411,6 @@
 
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 	self.view.onLayoutSubviews = nil;
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSManagedObjectContextDidSaveNotification object:nil];
 
 	[managedObjectContext release];
 	[fetchedResultsController release];
