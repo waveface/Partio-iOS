@@ -45,7 +45,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 
 - (void) refreshData;
-- (void) updateLastRead:(NSIndexPath *)indexPath;
+- (void) syncLastRead:(NSIndexPath *)indexPath;
 + (IRRelativeDateFormatter *) relativeDateFormatter;
 
 @end
@@ -208,7 +208,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillDisappear:animated];
   NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
   if ( [visibleRows count] ) {
-    [self updateLastRead:[visibleRows objectAtIndex:0]];
+    [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 		if ([self isViewLoaded])
@@ -217,7 +217,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (void) updateLastRead:(NSIndexPath *)indexPath {
+/* sync last read pointer with remote */
+- (void) syncLastRead:(NSIndexPath *)indexPath {
   NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
   [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
   } onFailure:^(NSError *error) {
@@ -355,7 +356,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
                 break;
               }
             }
-            NSLog(@"%@", lastReadRow);
             [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
           }
           self._lastID = lastID;
@@ -415,7 +415,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  [self updateLastRead:indexPath];
+  [self syncLastRead:indexPath];
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
   
