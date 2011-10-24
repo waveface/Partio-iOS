@@ -353,6 +353,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		}];
 	
 	};
+	
+	articleViewController.onViewPinch = ^ (UIGestureRecognizerState state, CGFloat scale, CGFloat velocity) {
+	
+		if (state != UIGestureRecognizerStateChanged)
+			return;
+		
+		if (scale > 1.05f)
+		if (velocity > 1.05f)
+			articleViewController.onViewTap();
+	
+	};
 
 	return articleViewController.view;
 	
