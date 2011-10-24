@@ -454,31 +454,99 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 					return ![toValue containsObject:evaluatedObject];
 				}]];
 				
+				NSIndexSet *removedObjectIndices = [fromValue indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+					return [removedObjects containsObject:obj];
+				}];
+				
 				NSArray *insertedObjects = [toValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
 					return ![fromValue containsObject:evaluatedObject];
 				}]];
 				
-				CGPoint oldOffset = self.photosView.contentOffset;
-
-				[self.photosView reloadData];
+				BOOL hasCellNumberChanges = ([insertedObjects count] || [removedObjects count]);
 				
-				[self adjustPhotos];
+				CGPoint oldOffset = self.photosView.contentOffset;
+				
+				NSIndexSet *oldShownCellIndices = [self.photosView visibleCellIndices];
+				NSMutableArray *oldShownCellRects = [NSMutableArray array];
+				[oldShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+						[oldShownCellRects addObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]]];
+				}];
+				
+				void (^reload)() = ^ {
+					[self.photosView reloadData];
+					[self adjustPhotos];
+				};
+				
+				if (!hasCellNumberChanges) {
+					reload();
+					[self.photosView setContentOffset:oldOffset animated:NO];
+					return;
+				}
+				
+				NSMutableDictionary *oldFileURIsToCellRects = [NSMutableDictionary dictionary];
+				[oldShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+					[oldFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[fromValue objectAtIndex:idx]];
+				}];
+				
+				reload();
+				
+				NSUInteger shownCenterItemIndex = (self.photosView.numberOfItems - 1);
+				shownCenterItemIndex = (unsigned int)fabsf(ceilf(((float_t)self.photosView.numberOfItems / (float_t)2)));
+				
+				if ([removedObjectIndices count])
+					shownCenterItemIndex = [removedObjectIndices firstIndex];
+				
+				if ([insertedObjects count])
+					shownCenterItemIndex = (self.photosView.numberOfItems - 1);
+				
+				shownCenterItemIndex = MIN(self.photosView.numberOfItems, shownCenterItemIndex);
 				
 				CGRect newLastItemRect = (CGRect) {
-					[self.photosView rectForItemAtIndex:(self.photosView.numberOfItems - 1)].origin,
+					[self.photosView rectForItemAtIndex:shownCenterItemIndex].origin,
 					[self portraitGridCellSizeForGridView:self.photosView]
 				};
 				
 				[self.photosView scrollRectToVisible:newLastItemRect animated:NO];
-				
 				CGPoint newOffset = self.photosView.contentOffset;
+				
+				NSMutableArray *animationBlocks = [NSMutableArray array];
+				[animationBlocks irEnqueueBlock:^{
+					[self.photosView setContentOffset:newOffset animated:NO];;
+				}];
+				
+				NSIndexSet *newShownCellIndices = [self.photosView visibleCellIndices];
+				NSMutableDictionary *newFileURIsToCellRects = [NSMutableDictionary dictionary];
+				[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+					[newFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[toValue objectAtIndex:idx]];
+				}];
+				
+				[animationBlocks irEnqueueBlock:^{
+					
+					[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+						
+						NSValue *oldRectValue = [oldFileURIsToCellRects objectForKey:[toValue objectAtIndex:idx]];
+						if (!oldRectValue)
+							return;
+						
+						AQGridViewCell *cell = [self.photosView cellForItemAtIndex:idx];
+						if (!cell)
+							return;
+						
+						CGRect cellFrame = cell.frame;
+						
+						[self.photosView cellForItemAtIndex:idx].layer.frame = [oldRectValue CGRectValue];
+						cell.frame = cellFrame;
+						
+					}];
+					
+				}];
 				
 				[self.photosView setContentOffset:oldOffset animated:NO];
 				
-				[UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
-				
-					[self.photosView setContentOffset:newOffset animated:NO];
+				[UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 					
+					[animationBlocks irExecuteAllObjectsAsBlocks];
+									
 				} completion:nil];
 					
 			});
