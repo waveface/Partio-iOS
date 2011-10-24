@@ -508,7 +508,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	NSMutableArray *availableActions = [NSMutableArray arrayWithObject:[IRAction actionWithTitle:@"Photo Library" block: ^ {
 		
-		nrSelf.imagePickerPopover = nil;
+		//	nrSelf.imagePickerPopover = nil;
 		[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
 		
 	}]];
