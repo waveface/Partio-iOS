@@ -30,7 +30,7 @@
 #import "UIView+IRAdditions.h"
 
 
-@interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate, WAArticleViewControllerPresenting>
+@interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 
@@ -154,6 +154,10 @@
 	UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentViewPan:)] autorelease];
 	panGestureRecognizer.delegate = self;
 	[self.view addGestureRecognizer:panGestureRecognizer];
+	
+	UIPinchGestureRecognizer *pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
+	pinchRecognizer.delegate = self;
+	[self.view addGestureRecognizer:pinchRecognizer];
 	
 }
 
@@ -607,11 +611,20 @@
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)panGestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
+	if (![panGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
+		return YES;
+
 	BOOL touchInsideTab = [self.articleCommentsViewController.commentsRevealingActionContainerView pointInside:[touch locationInView:self.articleCommentsViewController.commentsRevealingActionContainerView] withEvent:nil];
 	
 	BOOL hasRepresentedArticle = (self.articleCommentsViewController.representedArticleURI != nil);
 	
 	return touchInsideTab && hasRepresentedArticle;
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	return YES;
 
 }
 
@@ -704,6 +717,17 @@
 		}
 	
 	};
+	
+}
+
+- (void) handlePinch:(UIPinchGestureRecognizer *)pinchRecognizer {
+
+	if (pinchRecognizer.state != UIGestureRecognizerStateChanged)
+		return;
+	
+	if (pinchRecognizer.scale <= 0.9)
+	if (pinchRecognizer.velocity <= -1)
+		((IRBarButtonItem *)self.navigationItem.leftBarButtonItem).block();
 	
 }
 

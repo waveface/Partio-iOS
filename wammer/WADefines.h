@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#ifndef __Wammer_Defines__
-#define __Wammer_Defines__
-
-extern void WARegisterUserDefaults (void);
+@class IRBarButtonItem, IRBorder;
 
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
 
-#endif
+extern void WARegisterUserDefaults (void);
+
+extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
+extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
