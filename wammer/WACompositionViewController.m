@@ -399,24 +399,36 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		};
 				
 	}
+	
+	cell.alpha = 1;
 		
 	cell.image = representedFile.thumbnail;
 
-	cell.onRemove = ^ {	
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[representedFile.article removeFilesObject:representedFile];
-		});
+	cell.onRemove = ^ {
+	
+		[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		
+			cell.alpha = 0;
+		
+		} completion: ^ (BOOL finished) {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				
+				[representedFile.article removeFilesObject:representedFile];
+				
+			});
+			
+		}];
+	
 	};
 	
 	return cell;
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind {
 
-	NSLog(@"did change from %@ to %@ with kind %@", fromValue, toValue, changeKind);
-	
-	//	The idea is to animate removals and insertions using AQGridView’s own animation if possible
+	NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
@@ -437,16 +449,38 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
     } @finally {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
-		
+			
+				NSArray *removedObjects = [fromValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+					return ![toValue containsObject:evaluatedObject];
+				}]];
+				
+				NSArray *insertedObjects = [toValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+					return ![fromValue containsObject:evaluatedObject];
+				}]];
+				
+				CGPoint oldOffset = self.photosView.contentOffset;
+
 				[self.photosView reloadData];
 				
 				[self adjustPhotos];
-								
-				CGRect cellRect = [self.photosView rectForItemAtIndex:(self.photosView.numberOfItems - 1)];
-				cellRect.size = [self portraitGridCellSizeForGridView:self.photosView];
 				
-				[self.photosView scrollRectToVisible:cellRect animated:YES];
-			
+				CGRect newLastItemRect = (CGRect) {
+					[self.photosView rectForItemAtIndex:(self.photosView.numberOfItems - 1)].origin,
+					[self portraitGridCellSizeForGridView:self.photosView]
+				};
+				
+				[self.photosView scrollRectToVisible:newLastItemRect animated:NO];
+				
+				CGPoint newOffset = self.photosView.contentOffset;
+				
+				[self.photosView setContentOffset:oldOffset animated:NO];
+				
+				[UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState animations:^{
+				
+					[self.photosView setContentOffset:newOffset animated:NO];
+					
+				} completion:nil];
+					
 			});
 		
 		}
