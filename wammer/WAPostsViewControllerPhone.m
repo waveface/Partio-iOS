@@ -45,7 +45,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 
 - (void) refreshData;
-
+- (void) syncLastRead:(NSIndexPath *)indexPath;
 + (IRRelativeDateFormatter *) relativeDateFormatter;
 
 @end
@@ -199,37 +199,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewWillAppear:(BOOL)animated {
   
 	[super viewWillAppear:animated];
-	
   [self refreshData];
-  
-  if (!self._lastID) {
-    
-		[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-      
-      //	NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
-      
-      if(lastID){
-        //TODO create a NSFetchRequest to find out the target object.
-        NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
-        
-        for( WAArticle *post in allObjects ){
-          if ([post.identifier isEqualToString:lastID]) {
-            NSIndexPath *lastReadRow = [self.fetchedResultsController indexPathForObject:post];
-            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionMiddle];
-            break;
-          }
-        }
-      }
-      
-			self._lastID = lastID;
-      
-    } onFailure: ^ (NSError *error) {
-      
-      NSLog(@"Retrieve last read articile: %@", error);
-      
-    }];
-		
-  }
 	
 }
 
@@ -238,19 +208,22 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillDisappear:animated];
   NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
   if ( [visibleRows count] ) {
-    NSIndexPath *currentRow = [visibleRows objectAtIndex:0 ];
-    NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:currentRow] identifier];
-    [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
-      NSLog(@"SetLastRead: %@", response);
-    } onFailure:^(NSError *error) {
-      NSLog(@"SetLastRead failed %@", error);
-    }];
+    [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 		if ([self isViewLoaded])
 			[self refreshData];
 	});
 	
+}
+
+/* sync last read pointer with remote */
+- (void) syncLastRead:(NSIndexPath *)indexPath {
+  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
+  [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
+  } onFailure:^(NSError *error) {
+    NSLog(@"SetLastRead failed %@", error);
+  }];
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -370,6 +343,27 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 			if ([self isViewLoaded])
 				[self.tableView resetPullDown];
+      
+      if (!self._lastID) {
+        [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+          if(lastID){
+            NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+            // If last read is not reachable in currect posts, move to latest.
+            NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
+            for( WAArticle *post in allObjects ){
+              if ([post.identifier isEqualToString:lastID]) {
+                lastReadRow = [self.fetchedResultsController indexPathForObject:post];
+                break;
+              }
+            }
+            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
+          }
+          self._lastID = lastID;
+        } onFailure: ^ (NSError *error) {
+          NSLog(@"Retrieve last read articile: %@", error);
+        }];
+        
+      }
 		
 		} onFailure:nil];
 
@@ -421,6 +415,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  [self syncLastRead:indexPath];
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
   
