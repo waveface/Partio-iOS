@@ -712,7 +712,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if ([imagePickerPopover isPopoverVisible])
 		[imagePickerPopover dismissPopoverAnimated:YES];
 	
-	self.imagePickerPopover = nil;
+	//	self.imagePickerPopover = nil;
 	
 }
 
