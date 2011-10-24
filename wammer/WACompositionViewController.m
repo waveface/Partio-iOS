@@ -308,7 +308,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	}];
 	
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
+	
+		[self.contentTextView becomeFirstResponder];
+	
+	});
+	
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
