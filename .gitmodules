@@ -31,3 +31,6 @@
 [submodule "external/NSLogger"]
 	path = external/NSLogger
 	url = git://github.com/iridia/NSLogger.git
+[submodule "external/SSToolkit"]
+	path = external/SSToolkit
+	url = git://github.com/iridia/sstoolkit.git
