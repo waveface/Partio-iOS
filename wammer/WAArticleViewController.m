@@ -75,7 +75,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize onPresentingViewController, onViewDidLoad, onViewTap;
+@synthesize onPresentingViewController, onViewDidLoad, onViewTap, onViewPinch;
 
 + (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
 
@@ -156,6 +156,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 	[onViewTap release];
 	[onViewDidLoad release];
+	[onViewPinch release];
 	
 	[super dealloc];
 
@@ -188,13 +189,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) handleGlobalPinch:(UIPinchGestureRecognizer *)pinchRecognizer {
 
-	if (pinchRecognizer.state != UIGestureRecognizerStateRecognized)
-		return;
-	
-	if (pinchRecognizer.scale > 1.1f)
-	if (pinchRecognizer.velocity > 1.1f) {
-		NSLog(@"outwards pinch");
-	}
+	if (self.onViewPinch)
+		self.onViewPinch(pinchRecognizer.state, pinchRecognizer.scale, pinchRecognizer.velocity);
 
 }
 
