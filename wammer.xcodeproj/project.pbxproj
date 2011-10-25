@@ -190,6 +190,8 @@
 		FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */; };
 		FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */; };
 		FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */; };
+		FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF556B41456A1270077DFFB /* WARefreshGlyph.png */; };
+		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
 		FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -607,6 +609,9 @@
 		FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockUsersList.json; path = Resources/WAMockUsersList.json; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
 		FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOverlayBezel.m; sourceTree = "<group>"; };
+		FFF556B41456A1270077DFFB /* WARefreshGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshGlyph.png; path = Resources/WARefreshGlyph.png; sourceTree = "<group>"; };
+		FFF556B61456A64A0077DFFB /* WARefreshActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARefreshActionView.h; sourceTree = "<group>"; };
+		FFF556B71456A64A0077DFFB /* WARefreshActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARefreshActionView.m; sourceTree = "<group>"; };
 		FFF9B79C13E7D0D5002A9D7F /* WAArticleCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewController.h; sourceTree = "<group>"; };
 		FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleCommentsViewController.m; sourceTree = "<group>"; };
 		FFF9B79F13E7D8E5002A9D7F /* WACapsuleLeftPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeftPressed.png; path = Resources/WACapsuleLeftPressed.png; sourceTree = "<group>"; };
@@ -773,6 +778,8 @@
 			children = (
 				FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */,
 				FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */,
+				FFF556B61456A64A0077DFFB /* WARefreshActionView.h */,
+				FFF556B71456A64A0077DFFB /* WARefreshActionView.m */,
 			);
 			name = "Base Articles View";
 			path = wammer;
@@ -980,6 +987,7 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FFF556B41456A1270077DFFB /* WARefreshGlyph.png */,
 				FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */,
 				FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */,
 				FF027CC313F1433B009D979A /* WAPatternPaper.png */,
@@ -1473,6 +1481,7 @@
 				4BC91A941446E3130019399B /* WASettingsGlyphWhite.png in Resources */,
 				FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */,
 				FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */,
+				FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1593,6 +1602,7 @@
 				FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */,
 				FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */,
 				FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */,
+				FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -75,6 +75,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 @property (nonatomic, readwrite, retain) NSTimer *dataRetrievalTimer;
 @property (nonatomic, readwrite, assign) int dataRetrievalTimerPostponingCount;
+@property (nonatomic, readwrite, assign) int automaticRemoteUpdatesPerformingCount;
 
 @end
 
@@ -83,6 +84,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 @synthesize userIdentifier, userToken, defaultBatchSize;
 @synthesize dataRetrievalBlocks, dataRetrievalInterval, nextRemoteDataRetrievalFireDate;
 @synthesize dataRetrievalTimer, dataRetrievalTimerPostponingCount;
+@synthesize performingAutomaticRemoteUpdates, automaticRemoteUpdatesPerformingCount;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -556,7 +558,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		return;
 	}
 	
+	[self willChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
 	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount + 1;
+	[self didChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
 	
 	if (self.dataRetrievalTimerPostponingCount == 1) {
 		[self.dataRetrievalTimer invalidate];
@@ -575,7 +579,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	}
 
 	NSParameterAssert(self.dataRetrievalTimerPostponingCount);
+	[self willChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
 	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount - 1;
+	[self didChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
 	
 	if (!self.dataRetrievalTimerPostponingCount) {
 		[self rescheduleAutomaticRemoteUpdates];
@@ -589,6 +595,44 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 }
 
+- (void) beginPerformingAutomaticRemoteUpdates {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+	
+	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+	self.automaticRemoteUpdatesPerformingCount = self.automaticRemoteUpdatesPerformingCount + 1;
+	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+
+}
+
+- (void) endPerformingAutomaticRemoteUpdates {
+
+	if (![NSThread isMainThread]) {
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[self performSelector:_cmd];
+		});
+		return;
+	}
+
+	NSParameterAssert(self.dataRetrievalTimerPostponingCount);
+	
+	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+	self.automaticRemoteUpdatesPerformingCount = self.automaticRemoteUpdatesPerformingCount - 1;
+	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+	
+}
+
+- (BOOL) isPerformingAutomaticRemoteUpdates {
+
+	return !!(self.automaticRemoteUpdatesPerformingCount);
+
+}
+
 - (NSArray *) defaultDataRetrievalBlocks {
 
 	__block __typeof__(self) nrSelf = self;
@@ -596,7 +640,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	return [NSArray arrayWithObjects:
 	
 		[[ ^ {
-		
+
+			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
 		
 			[nrSelf retrieveLastReadArticleRemoteIdentifierOnSuccess: ^ (NSString *lastID, NSDate *modDate) {
@@ -605,22 +650,26 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 				
 					[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
 					
+						[nrSelf endPerformingAutomaticRemoteUpdates];		
 						[nrSelf endPostponingDataRetrievalTimerFiring];
 					
 					} onFailure: ^ {
 					
+						[nrSelf endPerformingAutomaticRemoteUpdates];		
 						[nrSelf endPostponingDataRetrievalTimerFiring];
 					
 					}];
 				
 				} onFailure: ^ {
 				
+					[nrSelf endPerformingAutomaticRemoteUpdates];		
 					[nrSelf endPostponingDataRetrievalTimerFiring];
 				
 				}];
 		
 			} onFailure: ^ (NSError *error) {
 			
+				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
 			
 			}];
