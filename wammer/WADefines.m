@@ -133,3 +133,22 @@ IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^aBlock)(void))
 	return item;
 
 }
+
+UIButton * WAButtonForImage (UIImage *anImage) {
+
+	NSParameterAssert(anImage);
+	UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	[returnedButton setImage:anImage forState:UIControlStateNormal];
+	[returnedButton setAdjustsImageWhenHighlighted:YES];
+	[returnedButton setShowsTouchWhenHighlighted:YES];
+	[returnedButton setContentEdgeInsets:(UIEdgeInsets){ 0, 5, 0, 0 }];
+	[returnedButton sizeToFit];
+	return returnedButton;
+	
+}
+
+UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
+
+	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:[UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1] shadow:[IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0]];
+
+}

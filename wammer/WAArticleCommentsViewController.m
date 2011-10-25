@@ -548,11 +548,25 @@
 	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (!cell)
 		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
+	
+	static NSString * const kWAArticleCommentsViewController_CellDateFormatter = @"kWAArticleCommentsViewController_CellDateFormatter";
+	
+	NSMutableDictionary *currentThreadDictionary = [[NSThread currentThread] threadDictionary];
+	IRRelativeDateFormatter *formatter = [currentThreadDictionary objectForKey:kWAArticleCommentsViewController_CellDateFormatter];
+	
+	if (!formatter) {
+	
+		formatter = [[[IRRelativeDateFormatter alloc] init] autorelease];
+		formatter.approximationMaxTokenCount = 1;
+		
+		[currentThreadDictionary setObject:formatter forKey:kWAArticleCommentsViewController_CellDateFormatter];	
+	
+	}
 		
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
 	cell.contentTextLabel.text = representedComment.text;
-	cell.dateLabel.text = [representedComment.timestamp description];
+	cell.dateLabel.text = [formatter stringFromDate:representedComment.timestamp];
 	cell.originLabel.text = representedComment.creationDeviceName;
 	
 	return cell;

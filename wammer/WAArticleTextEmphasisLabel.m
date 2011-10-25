@@ -116,8 +116,6 @@
 		});
 
 	});
-	
-	//	self.label.attributedText = attributedString;
 
 }
 

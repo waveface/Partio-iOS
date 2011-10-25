@@ -101,7 +101,7 @@
 	[self.avatarView.superview addSubview:avatarWrapper];
 	[avatarWrapper addSubview:self.avatarView];
 	self.avatarView.frame = avatarWrapper.bounds;
-	
+  
 	self.previewBadge.titleFont = [UIFont systemFontOfSize:14.0f];
 	self.previewBadge.textFont = [UIFont systemFontOfSize:14.0f];
   
@@ -113,7 +113,8 @@
 
 	[super prepareForReuse];
 	[self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
-
+  [self.imageView setImage:nil];
+  
 }
 
 @end

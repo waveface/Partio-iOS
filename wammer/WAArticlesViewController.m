@@ -24,6 +24,8 @@
 #import "WAView.h"
 #import "UIImage+IRAdditions.h"
 
+#import "WARefreshActionView.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -81,23 +83,21 @@
 		return label;
 	
 	})());
+		
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+	
+		UIView *wrapperView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 32, 24 }] autorelease];
+		WARefreshActionView *actionView = [[[WARefreshActionView alloc] initWithRemoteInterface:[WARemoteInterface sharedInterface]] autorelease];
+		
+		[wrapperView addSubview:actionView];
+		actionView.frame = IRCGRectAlignToRect(actionView.frame, wrapperView.bounds, irRight, YES);
+		
+		return wrapperView;
+	
+	})())];
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
-		UIButton * (^buttonForImage)(UIImage *) = ^ (UIImage *anImage) {
-			UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			[returnedButton setImage:anImage forState:UIControlStateNormal];
-			[returnedButton setAdjustsImageWhenHighlighted:YES];
-			[returnedButton setShowsTouchWhenHighlighted:YES];
-			[returnedButton setContentEdgeInsets:(UIEdgeInsets){ 0, 5, 0, 0 }];
-			[returnedButton sizeToFit];
-			return returnedButton;
-		};
-		
-		UIImage * (^barButtonImageFromImageNamed)(NSString *) = ^ (NSString *aName) {
-			return [[UIImage imageNamed:aName] irSolidImageWithFillColor:[UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1] shadow:[IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0]];
-		};
-		
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 120, 44 }] autorelease];
 		
 		toolbar.usesCustomLayout = NO;
@@ -105,13 +105,13 @@
 		
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
-			[IRBarButtonItem itemWithButton:buttonForImage(barButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 				[self performSelector:@selector(handleAction:) withObject:senderItem];
 			}],
 		
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
 			
-			[IRBarButtonItem itemWithButton:buttonForImage(barButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 				[self performSelector:@selector(handleCompose:) withObject:senderItem];
 			}],
 			
@@ -180,61 +180,7 @@
 
 - (void) refreshData {
 
-	__block __typeof__(self) nrSelf = self;
-	
-	[nrSelf retain];
-
-	NSParameterAssert([NSThread isMainThread]);
-	[nrSelf remoteDataLoadingWillBeginForOperation:@"refreshData"];
-	
-	[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-	
-		//	NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
-		
-	} onFailure: ^ (NSError *error) {
-	
-		//	Nothing, since this is implicit
-		
-	}];
-	
-	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-	
-		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				//	if ([nrSelf isViewLoaded])
-				//	if (nrSelf.view.window)
-				//		[nrSelf reloadViewContents];
-				
-				[nrSelf remoteDataLoadingDidEnd];
-				[nrSelf reloadViewContents];
-				[nrSelf autorelease];
-				
-			});	
-			
-		} onFailure: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				[nrSelf remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
-				[nrSelf autorelease];
-				
-			});
-			
-		}];
-	
-	} onFailure: ^ {
-		
-		dispatch_async(dispatch_get_main_queue(), ^ {
-		
-			[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
-
-			[self autorelease];
-			
-		});
-		
-	}];
+	[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
 
 }
 

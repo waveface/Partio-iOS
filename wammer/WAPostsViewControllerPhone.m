@@ -260,23 +260,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   cell.userNicknameLabel.text = [[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
+	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
  
-	cell.commentLabel.attributedText = ((^{
-	
-		NSMutableAttributedString *attributedString = [[[cell.commentLabel attributedStringForString:post.text] mutableCopy] autorelease];
-		
-		[attributedString beginEditing];
-		[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:post.text options:0 range:(NSRange){ 0, [post.text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-			[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-				(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
-				result.URL, kIRTextLinkAttribute,
-			nil] range:result.range];		
-		}];
-		[attributedString endEditing];
-		
-		return attributedString;
-		
-	})());
+	//	cell.commentLabel.attributedText = ((^{
+	//	
+	//		NSMutableAttributedString *attributedString = [[[cell.commentLabel attributedStringForString:post.text] mutableCopy] autorelease];
+	//		
+	//		[attributedString beginEditing];
+	//		[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:post.text options:0 range:(NSRange){ 0, [post.text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+	//			[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+	//				(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+	//				result.URL, kIRTextLinkAttribute,
+	//			nil] range:result.range];		
+	//		}];
+	//		[attributedString endEditing];
+	//		
+	//		return attributedString;
+	//		
+	//	})());
 	
   if (postHasPreview) {
 	

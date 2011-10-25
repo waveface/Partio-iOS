@@ -321,7 +321,6 @@
 					<string>3.IBPluginDependency</string>
 					<string>39.CustomClassName</string>
 					<string>39.IBPluginDependency</string>
-					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
 					<string>41.CustomClassName</string>
 					<string>41.IBPluginDependency</string>
@@ -337,7 +336,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>IRLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>WAImageView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WAPreviewBadge</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
