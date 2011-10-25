@@ -89,7 +89,11 @@
 - (void) rescheduleAutomaticRemoteUpdates;
 - (void) performAutomaticRemoteUpdatesNow;	// Also reschedules, great for manual refreshing
 
-@property (nonatomic, readonly, assign, getter=isPerformingAutomaticRemoteUpdates) BOOL performingAutomaticRemoteUpdates;	//	KVO-able for manual refreshing buttonsxz
+- (void) beginPerformingAutomaticRemoteUpdates;
+- (void) endPerformingAutomaticRemoteUpdates;
+- (BOOL) isPerformingAutomaticRemoteUpdates;
+
+@property (nonatomic, readonly, assign, getter=isPerformingAutomaticRemoteUpdates) BOOL performingAutomaticRemoteUpdates;	//	KVO-able for manual refreshing buttons
 
 @property (nonatomic, readwrite, assign) NSTimeInterval dataRetrievalInterval;
 @property (nonatomic, readonly, retain) NSDate *nextRemoteDataRetrievalFireDate;
