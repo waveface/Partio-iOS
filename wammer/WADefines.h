@@ -18,3 +18,6 @@ extern void WARegisterUserDefaults (void);
 
 extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
 extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
+
+extern UIButton * WAButtonForImage (UIImage *anImage);
+extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);

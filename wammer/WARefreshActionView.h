@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class WARemoteInterface;
 @interface WARefreshActionView : UIView
+
+- (id) initWithRemoteInterface:(WARemoteInterface *)interface;
 
 @end
