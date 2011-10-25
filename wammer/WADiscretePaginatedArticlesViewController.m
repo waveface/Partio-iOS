@@ -84,7 +84,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	self.view.backgroundColor = nil;
 	self.view.opaque = NO;
 	
-	if (self.navigationItem.leftBarButtonItem) {
+	if (self.navigationItem.leftBarButtonItem)
+	if (!self.navigationItem.leftBarButtonItem.customView) {
 	
 		UIBarButtonItem *oldItem = self.navigationItem.leftBarButtonItem;
 	
