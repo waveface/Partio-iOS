@@ -274,6 +274,7 @@
 	
 	[self willChangeValueForKey:@"resourceImage"];
 	resourceImage = [[UIImage imageWithContentsOfFile:self.resourceFilePath] retain];
+	resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	[self didChangeValueForKey:@"resourceImage"];
 	
 	if (!resourceImage) {
@@ -307,6 +308,7 @@
 	
 	[self willChangeValueForKey:@"thumbnailImage"];
 	thumbnailImage = [[UIImage imageWithContentsOfFile:self.thumbnailFilePath] retain];
+	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	[self didChangeValueForKey:@"thumbnailImage"];
 	
 	if (!thumbnailImage) {
