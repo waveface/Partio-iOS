@@ -13,6 +13,8 @@
 #import "QuartzCore+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
+#import "WAImageView.h"
+
 
 
 
@@ -212,8 +214,9 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		[shownImages enumerateObjectsUsingBlock: ^ (UIImage *anImage, NSUInteger idx, BOOL *stop) {
 		
 			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
 			imageView.tag = kPhotoViewTag;
+			imageView.layer.backgroundColor = [UIColor whiteColor].CGColor;
 			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
 			imageView.layer.borderWidth = 4.0f;
 			imageView.layer.shadowOffset = (CGSize){ 0, 2 };
@@ -226,8 +229,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 			imageView.opaque = NO;
 			
-			UIView *innerImageView = [[[UIView alloc] initWithFrame:imageView.bounds] autorelease];
-			innerImageView.layer.contents = (id)((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).CGImage;
+			WAImageView *innerImageView = [[[WAImageView alloc] initWithFrame:imageView.bounds] autorelease];
+			innerImageView.image = (UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage);
 			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 			innerImageView.layer.masksToBounds = YES;
 			
