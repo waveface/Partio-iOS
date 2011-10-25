@@ -1,3 +1,3 @@
-ETReleaseNotes="Renew provisioning profile for Rex's iPhone4."
+ETReleaseNotes="- Creates a manual refresh button for the Base Articles View (iPad). \n - Remote response loading is fully automated and no longer explicitly triggered by the Base Articles View. \n - Article Inspection (iPad) now presents a form sheet instead of an alert view if appropriate. \n - The Image Stack View (iPad; iPhone) is now implicitly asynchronous by default. \n - Link Detection (iPhone) is temporarily disabled."
 
-ETMarketingVersionNumber="0.27.1"
+ETMarketingVersionNumber="0.28"
