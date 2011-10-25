@@ -214,7 +214,12 @@
 	if (self.updatesViewOnControllerChangeFinish) {
 	
 		if ([self isViewLoaded]) {
-			[self reloadViewContents];
+		
+			[[NSRunLoop mainRunLoop] cancelPerformSelector:@selector(reloadViewContents) target:self argument:nil];
+			[[NSRunLoop mainRunLoop] performSelector:@selector(reloadViewContents) target:self argument:nil order:0 modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, nil]];
+		
+			//	[self reloadViewContents];
+			
 		}
 	}
 		
