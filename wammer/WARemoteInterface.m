@@ -229,6 +229,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	self.defaultBatchSize = 200;
 	self.dataRetrievalInterval = 30;
 	
+	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];
 	
 	return self;
@@ -531,6 +532,14 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 }
 
+- (void) performAutomaticRemoteUpdatesNow {
+
+	[self.dataRetrievalTimer fire];
+	[self.dataRetrievalTimer invalidate];
+	[self rescheduleAutomaticRemoteUpdates];
+
+}
+
 - (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
 
 	[self.dataRetrievalBlocks irExecuteAllObjectsAsBlocks];
@@ -570,9 +579,6 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	if (!self.dataRetrievalTimerPostponingCount) {
 		[self rescheduleAutomaticRemoteUpdates];
-		[self.dataRetrievalTimer fire];
-		[self.dataRetrievalTimer invalidate];
-		[self rescheduleAutomaticRemoteUpdates];
 	}
 
 }
@@ -580,6 +586,61 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 - (BOOL) isPostponingDataRetrievalTimerFiring {
 
 	return !!(self.dataRetrievalTimerPostponingCount);
+
+}
+
+- (NSArray *) defaultDataRetrievalBlocks {
+
+	__block __typeof__(self) nrSelf = self;
+
+	return [NSArray arrayWithObjects:
+	
+		[[ ^ {
+		
+			[nrSelf beginPostponingDataRetrievalTimerFiring];
+		
+			[nrSelf retrieveLastReadArticleRemoteIdentifierOnSuccess: ^ (NSString *lastID, NSDate *modDate) {
+				
+				[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
+				
+					[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+					
+						[nrSelf endPostponingDataRetrievalTimerFiring];
+					
+					} onFailure: ^ {
+					
+						[nrSelf endPostponingDataRetrievalTimerFiring];
+					
+					}];
+				
+				} onFailure: ^ {
+				
+					[nrSelf endPostponingDataRetrievalTimerFiring];
+				
+				}];
+		
+			} onFailure: ^ (NSError *error) {
+			
+				[nrSelf endPostponingDataRetrievalTimerFiring];
+			
+			}];
+	
+		} copy] autorelease],
+	
+	nil];
+
+}
+
+- (void) addRepeatingDataRetrievalBlock:(void(^)(void))aBlock {
+
+	[[self mutableArrayValueForKey:@"dataRetrievalBlocks"] irEnqueueBlock:aBlock];
+
+}
+
+- (void) addRepeatingDataRetrievalBlocks:(NSArray *)blocks{
+
+	for (void(^aBlock)(void) in blocks)
+		[self addRepeatingDataRetrievalBlock:aBlock];
 
 }
 

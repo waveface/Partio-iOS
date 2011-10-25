@@ -180,61 +180,7 @@
 
 - (void) refreshData {
 
-	__block __typeof__(self) nrSelf = self;
-	
-	[nrSelf retain];
-
-	NSParameterAssert([NSThread isMainThread]);
-	[nrSelf remoteDataLoadingWillBeginForOperation:@"refreshData"];
-	
-	[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-	
-		//	NSLog(@"For the current user, the last read article # is %@ at %@", lastID, modDate);
-		
-	} onFailure: ^ (NSError *error) {
-	
-		//	Nothing, since this is implicit
-		
-	}];
-	
-	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-	
-		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				//	if ([nrSelf isViewLoaded])
-				//	if (nrSelf.view.window)
-				//		[nrSelf reloadViewContents];
-				
-				[nrSelf remoteDataLoadingDidEnd];
-				[nrSelf reloadViewContents];
-				[nrSelf autorelease];
-				
-			});	
-			
-		} onFailure: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				[nrSelf remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
-				[nrSelf autorelease];
-				
-			});
-			
-		}];
-	
-	} onFailure: ^ {
-		
-		dispatch_async(dispatch_get_main_queue(), ^ {
-		
-			[self remoteDataLoadingDidFailWithError:[NSError errorWithDomain:@"waveface.wammer" code:0 userInfo:nil]];
-
-			[self autorelease];
-			
-		});
-		
-	}];
+	[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
 
 }
 

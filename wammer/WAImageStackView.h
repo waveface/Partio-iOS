@@ -45,6 +45,11 @@ enum {
 @property (nonatomic, readonly, assign) UIView *firstPhotoView;
 @property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing;
 
+//	Actually implement these so the iPhone app can use square images:
+//	@property (nonatomic, readwrite, assign) float_t minAspectRatio;
+//	@property (nonatomic, readwrite, assign) float_t maxAspectRatio;
+//	@property (nonatomic, readwrite, assign) NSString *clippingContentGravity;
+
 - (void) setImages:(NSArray *)newImages asynchronously:(BOOL)async withDecodingCompletion:(void(^)(void))aBlock;
 - (void) reset;
 
