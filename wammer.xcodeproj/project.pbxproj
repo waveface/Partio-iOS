@@ -1698,8 +1698,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 71;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1728,8 +1728,8 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
 				SDKROOT = iphoneos4.3;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1743,8 +1743,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Vincent Huang (KU4DADA9ZN)";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 71;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1767,8 +1767,8 @@
 					"-ObjC",
 					"-all_load",
 				);
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
 				SDKROOT = iphoneos4.3;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
