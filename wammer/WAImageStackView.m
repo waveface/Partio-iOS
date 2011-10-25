@@ -136,6 +136,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 - (void) setImages:(NSArray *)newImages asynchronously:(BOOL)async withDecodingCompletion:(void (^)(void))aBlock {
 
+	async = NO;
+
 	if (images == newImages)
 		return;
 
@@ -216,7 +218,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
 			imageView.tag = kPhotoViewTag;
-			imageView.layer.backgroundColor = [UIColor whiteColor].CGColor;
+			imageView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
 			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
 			imageView.layer.borderWidth = 4.0f;
 			imageView.layer.shadowOffset = (CGSize){ 0, 2 };
