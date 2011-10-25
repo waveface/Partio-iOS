@@ -63,7 +63,7 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 }
 
-- (void) drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx {
+- (void) drawLayer:(CATiledLayer *)layer inContext:(CGContextRef)ctx {
 
 	UIImage *ownImage = objc_getAssociatedObject(layer, &kWAImageView_storedImage);
 	if (!ownImage)
@@ -75,6 +75,8 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	if (!(imageSize.width * imageSize.height))
 		return;
 		
+	CGContextScaleCTM(ctx, layer.contentsScale, layer.contentsScale);
+	
 	CGContextSaveGState(ctx);
 	CGContextTranslateCTM(ctx, 0, rect.size.height);
 	CGContextScaleCTM(ctx, 1, -1);
@@ -97,15 +99,15 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 	[super layoutSubviews];
 
-	if (!CGSizeEqualToSize(self.frame.size, ((CATiledLayer *)self.layer).tileSize)) {
+	if (!CGSizeEqualToSize(self.bounds.size, ((CATiledLayer *)self.layer).tileSize)) {
 	
 		UIScreen *usedScreen = self.window.screen;
 		if (!usedScreen)
 			usedScreen = [UIScreen mainScreen];
 		
 		((CATiledLayer *)self.layer).tileSize = (CGSize){
-			self.frame.size.width * usedScreen.scale,
-			self.frame.size.height * usedScreen.scale
+			self.bounds.size.width * usedScreen.scale,
+			self.bounds.size.height * usedScreen.scale
 		};
 		
 	}
@@ -166,10 +168,30 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	self.contentView.hidden = !image;
 	if (!image)
 		return;
-	
+		
 	CGRect imageFrame = IRGravitize(self.bounds, self.image.size, self.layer.contentsGravity);
 	
-	self.contentView.frame = imageFrame;
+	self.contentView.bounds = (CGRect){
+		(CGPoint){
+			0, 0 //CGRectGetMidX(self.bounds) - 0.5f * self.image.size.width,
+			//CGRectGetMidY(self.bounds) - 0.5f * self.image.size.height
+		},
+		self.image.size
+	};
+	
+	self.contentView.center = (CGPoint){
+		CGRectGetMidX(self.bounds),
+		CGRectGetMidY(self.bounds)
+	};
+	
+	self.contentView.layer.transform = CATransform3DMakeScale(
+		imageFrame.size.width / self.image.size.width,
+		imageFrame.size.height / self.image.size.height,
+		1
+	);
+	
+	
+	//imageFrame;
 
 }
 
