@@ -13,7 +13,9 @@
 #import "WAGalleryViewController.h"
 #import "IRPaginatedView.h"
 #import "IRLifetimeHelper.h"
+#import "IRActionSheet.h"
 
+#import "WAViewController.h"
 #import "WAPaginatedArticlesViewController.h"
 
 
@@ -212,8 +214,44 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 			dispatch_async(dispatch_get_current_queue(), ^ {
 			
 				NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
+				
+				if (nrSelf.onPresentingViewController) {
+
+					WAViewController *shownViewController = [[[WAViewController alloc] init] autorelease];
+					
+					shownViewController.onLoadview = ^ (WAViewController *self) {
+						self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+						UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+						textView.text = inspectionText;
+						textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+						textView.editable = NO;
+						[self.view addSubview:textView];
+					};
+					
+					shownViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+						return YES;
+					};
+					
+					__block UINavigationController *shownNavController = [[[UINavigationController alloc] initWithRootViewController:shownViewController] autorelease];
+					shownNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+					
+					shownViewController.title = @"Inspect";
+					
+					shownViewController.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+					
+						[shownNavController dismissModalViewControllerAnimated:YES];
+						
+					}];
+					
+					nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+						[parentViewController presentModalViewController:shownNavController animated:YES];
+					});
+				
+				} else {
 			
-				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+					[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				
+				}
 				
 				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
 				
@@ -225,7 +263,15 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 	objc_setAssociatedObject(self, &kGlobalInspectActionSheet, controller, OBJC_ASSOCIATION_RETAIN);
 	
-	[(UIActionSheet *)[controller managedActionSheet] showFromRect:self.view.bounds inView:self.view animated:YES];
+	[(UIActionSheet *)[controller managedActionSheet] showFromRect:(CGRect){
+		(CGPoint){
+			CGRectGetMidX(self.view.bounds),
+			CGRectGetMidY(self.view.bounds)
+		},
+		(CGSize){ 2, 2 }
+	} inView:self.view animated:YES];
+	
+	((IRActionSheet *)[controller managedActionSheet]).dismissesOnOrientationChange = YES;
 
 }
 

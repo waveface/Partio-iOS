@@ -17,6 +17,7 @@
 
 #import "IRAlertView.h"
 #import "IRActionSheetController.h"
+#import "IRBarButtonItem.h"
 
 #import "WAArticleView.h"
 
