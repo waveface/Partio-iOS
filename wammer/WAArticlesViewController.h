@@ -8,6 +8,7 @@
 
 //	The WAArticlesViewController is now refactored as a shared superclass used by both the root view controller for the iPhone and the iPad — it only works with Core Data, and provides persistence layer support for different view controllers to use.  It does not manage any view hierarchy on its own.
 
+#import "WADefines.h"
 #import "WAApplicationRootViewControllerDelegate.h"
 
 @interface WAArticlesViewController : UIViewController <WAApplicationRootViewController, NSFetchedResultsControllerDelegate> 
