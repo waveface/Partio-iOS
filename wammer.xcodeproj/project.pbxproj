@@ -1740,7 +1740,7 @@
 				);
 				PROVISIONING_PROFILE = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
-				SDKROOT = iphoneos4.3;
+				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1779,7 +1779,7 @@
 				);
 				PROVISIONING_PROFILE = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9FD11D9F-ACA6-4AB4-A1A3-3DC5461D671F";
-				SDKROOT = iphoneos4.3;
+				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1852,6 +1852,7 @@
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
@@ -1866,6 +1867,7 @@
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
