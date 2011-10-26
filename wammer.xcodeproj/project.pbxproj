@@ -25,6 +25,8 @@
 		4BC91A941446E3130019399B /* WASettingsGlyphWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyphWhite.png */; };
 		4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */; };
 		4BD7FC2D14458BA1002408F8 /* WARefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */; };
+		FA259F451457E96300F79C8F /* WASettingsGlyphWhiteAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F431457E96300F79C8F /* WASettingsGlyphWhiteAlt.png */; };
+		FA259F461457E96300F79C8F /* WASettingsGlyphWhiteAlt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F441457E96300F79C8F /* WASettingsGlyphWhiteAlt@2x.png */; };
 		FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
 		FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF0B2A2E1438921100309F0E /* WADefaults.plist */; };
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
@@ -417,6 +419,8 @@
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
 		4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshArrow.png; path = Resources/WARefreshArrow.png; sourceTree = "<group>"; };
 		4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WARefreshArrow@2x.png"; path = "Resources/WARefreshArrow@2x.png"; sourceTree = "<group>"; };
+		FA259F431457E96300F79C8F /* WASettingsGlyphWhiteAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = WASettingsGlyphWhiteAlt.png; sourceTree = "<group>"; };
+		FA259F441457E96300F79C8F /* WASettingsGlyphWhiteAlt@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WASettingsGlyphWhiteAlt@2x.png"; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
@@ -987,6 +991,8 @@
 		FFC2E04C13DD706600816EA1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FA259F431457E96300F79C8F /* WASettingsGlyphWhiteAlt.png */,
+				FA259F441457E96300F79C8F /* WASettingsGlyphWhiteAlt@2x.png */,
 				FFF556B41456A1270077DFFB /* WARefreshGlyph.png */,
 				FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */,
 				FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */,
@@ -1482,6 +1488,8 @@
 				FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */,
 				FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */,
 				FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */,
+				FA259F451457E96300F79C8F /* WASettingsGlyphWhiteAlt.png in Resources */,
+				FA259F461457E96300F79C8F /* WASettingsGlyphWhiteAlt@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
