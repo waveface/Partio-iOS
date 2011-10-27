@@ -138,7 +138,7 @@ IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^aBlock)(void))
 
 UIButton * WAButtonForImage (UIImage *anImage) {
 
-	NSParameterAssert(anImage);
+	//NSParameterAssert(anImage);
 	UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[returnedButton setImage:anImage forState:UIControlStateNormal];
 	[returnedButton setAdjustsImageWhenHighlighted:YES];

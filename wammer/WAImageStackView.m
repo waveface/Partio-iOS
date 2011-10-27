@@ -239,7 +239,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			[imageView addSubview:innerImageView];					
 			[self insertSubview:imageView atIndex:0];		
 			
-			NSParameterAssert(innerImageView.layer.contents);
+			//NSParameterAssert(innerImageView.layer.contents);
 			
 			self.activityIndicator.hidden = YES;
 			
