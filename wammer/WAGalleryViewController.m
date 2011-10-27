@@ -347,13 +347,16 @@
 
 - (void) handleBackgroundDoubleTap:(UITapGestureRecognizer *)tapRecognizer {
 
-	if (self.paginatedView.numberOfPages > 0) {
+	if (!self.paginatedView.numberOfPages)
+		return;
 
-		WAGalleryImageView *currentPage = [self.paginatedView existingPageAtIndex:self.paginatedView.currentPage];
-		[currentPage handleDoubleTap:tapRecognizer];
+	WAGalleryImageView *currentPage = (WAGalleryImageView *)[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage];
 	
-	}
-
+	if (![currentPage isKindOfClass:[WAGalleryImageView class]])
+		return;
+		
+	[currentPage handleDoubleTap:tapRecognizer];
+	
 }
 
 - (void) handleBackgroundTap:(UITapGestureRecognizer *)tapRecognizer {
