@@ -12,6 +12,8 @@
 #import "IRShadow.h"
 #import "IRBarButtonItem.h"
 
+#import "UIImage+IRAdditions.h"
+
 NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
