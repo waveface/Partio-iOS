@@ -14,7 +14,7 @@
 #import "UIImage+IRAdditions.h"
 
 
-@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate>
+@interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -173,8 +173,21 @@
 	tapRecognizer.delegate = self;
 	[self.view addGestureRecognizer:tapRecognizer];
 	
+	UITapGestureRecognizer *doubleTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundDoubleTap:)] autorelease];
+	doubleTapRecognizer.numberOfTapsRequired = 2;
+	[tapRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
+	[self.view addGestureRecognizer:doubleTapRecognizer];
+	
 	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		nrSelf.streamPickerView.selectedItemIndex = [inNewValue unsignedIntValue];
+
+		NSUInteger oldIndex = [inOldValue unsignedIntValue];	
+		NSUInteger newIndex = [inNewValue unsignedIntValue];
+		
+		if (oldIndex == newIndex)
+			return;
+		
+		[nrSelf paginatedView:nrSelf.paginatedView didShowView:[nrSelf.paginatedView existingPageAtIndex:newIndex] atIndex:newIndex];
+	
 	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
 }
@@ -204,6 +217,30 @@
 
 
 
+- (void) paginatedView:(IRPaginatedView *)aPaginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
+	self.streamPickerView.selectedItemIndex = index;
+	
+	[self.paginatedView.scrollView.subviews enumerateObjectsUsingBlock: ^ (WAGalleryImageView *aPage, NSUInteger idx, BOOL *stop) {
+	
+		if (![aPage isKindOfClass:[WAGalleryImageView class]])
+			return;
+		
+		if (aPage == aView)
+			return;
+		
+		[aPage reset];
+		
+	}];
+	
+}
+
+- (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView {
+
+	[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
+
+}
+
 - (BOOL) navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item {
 
 	if (self.onDismiss)
@@ -224,6 +261,7 @@
 	WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
 	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
+	returnedView.delegate = self;
 	
 	return returnedView;
 
@@ -247,6 +285,7 @@
 	self.streamPickerView = [[[WAImageStreamPickerView alloc] init] autorelease];
 	self.streamPickerView.delegate = self;
 	self.streamPickerView.style = WAClippedThumbnailsStyle;
+	self.streamPickerView.exclusiveTouch = YES;
 	
 	[self.streamPickerView reloadData];
 	
@@ -306,6 +345,20 @@
 
 }
 
+- (void) handleBackgroundDoubleTap:(UITapGestureRecognizer *)tapRecognizer {
+
+	if (!self.paginatedView.numberOfPages)
+		return;
+
+	WAGalleryImageView *currentPage = (WAGalleryImageView *)[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage];
+	
+	if (![currentPage isKindOfClass:[WAGalleryImageView class]])
+		return;
+		
+	[currentPage handleDoubleTap:tapRecognizer];
+	
+}
+
 - (void) handleBackgroundTap:(UITapGestureRecognizer *)tapRecognizer {
 
 	[self setContextControlsHidden:self.contextControlsShown animated:YES completion:nil];
@@ -338,7 +391,12 @@
 	[self.view setNeedsLayout];
 	[self.view layoutSubviews];
 	
-	[UIView animateWithDuration:animationDuration delay:0.0f options:(barringInteraction ? 0 : UIViewAnimationOptionAllowUserInteraction) animations:^(void) {
+	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
+	
+	if (!barringInteraction)
+		animationOptions |= UIViewAnimationOptionAllowUserInteraction;
+	
+	[UIView animateWithDuration:animationDuration delay:0.0f options:animationOptions animations:^(void) {
 	
 		self.navigationBar.alpha = (willHide ? 0.0f : 1.0f);
 		self.toolbar.alpha = (willHide ? 0.0f : 1.0f);
