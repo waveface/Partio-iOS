@@ -1,3 +1,3 @@
-ETReleaseNotes="- Adds 2x gear icon for retina.(iPhone) \n - Project now based on new SDK."
+ETReleaseNotes="- Gallery (iPad) photos now support panning and zooming. Double tapping on the photo toggles the zoom level."
 
-ETMarketingVersionNumber="0.28.1"
+ETMarketingVersionNumber="0.28.2"
