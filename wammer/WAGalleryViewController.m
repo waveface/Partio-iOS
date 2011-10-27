@@ -390,7 +390,7 @@
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 	
-	if (barringInteraction)
+	if (!barringInteraction)
 		animationOptions |= UIViewAnimationOptionAllowUserInteraction;
 	
 	[UIView animateWithDuration:animationDuration delay:0.0f options:animationOptions animations:^(void) {
