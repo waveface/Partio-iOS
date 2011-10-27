@@ -9,13 +9,24 @@
 #import <UIKit/UIKit.h>
 
 
-//	This is a very simple wrapper around an activity indicator and a zoomable image view
+@class WAGalleryImageView;
+@protocol WAGalleryImageViewDelegate <NSObject>
+
+- (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView;
+
+@end
+
 
 @interface WAGalleryImageView : UIView
 
 + (WAGalleryImageView *) viewForImage:(UIImage *)image;
 
+@property (nonatomic, readwrite, assign) id<WAGalleryImageViewDelegate> delegate;
+
 @property (nonatomic, readwrite, retain) UIImage *image;
 - (void) setImage:(UIImage *)newImage animated:(BOOL)animate;
+
+- (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer;
+- (void) reset;
 
 @end

@@ -12,6 +12,8 @@
 #import "IRShadow.h"
 #import "IRBarButtonItem.h"
 
+#import "UIImage+IRAdditions.h"
+
 NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
@@ -136,7 +138,7 @@ IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^aBlock)(void))
 
 UIButton * WAButtonForImage (UIImage *anImage) {
 
-	NSParameterAssert(anImage);
+	//NSParameterAssert(anImage);
 	UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[returnedButton setImage:anImage forState:UIControlStateNormal];
 	[returnedButton setAdjustsImageWhenHighlighted:YES];
