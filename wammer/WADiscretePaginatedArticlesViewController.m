@@ -564,6 +564,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	if (self.paginatedView.numberOfPages)
+		[self adjustPageView:[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage] usingGridAtIndex:self.paginatedView.currentPage];
+	
+}
+
 - (void) reloadViewContents {
 
 	if (self.discreteLayoutResult) {
@@ -705,7 +714,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSSet *allDestinations = [currentPageGrid allTransformablePrototypeDestinations];
 	NSSet *allIntrospectedGrids = [allDestinations setByAddingObject:currentPageGrid];
 	IRDiscreteLayoutGrid *bestGrid = nil;
-	CGFloat currentAspectRatio = CGRectGetWidth(self.paginatedView.frame) / CGRectGetHeight(self.paginatedView.frame);
+	
+	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+	CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform([keyWindow.screen applicationFrame], ((UIView *)[keyWindow.subviews objectAtIndex:0]).transform);
+	CGFloat currentAspectRatio = CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
 	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
 		
 		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
