@@ -123,15 +123,25 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	[self.paginatedView irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	((WAView *)self.view).onLayoutSubviews = ^ {
 	
 		if (!nrSelf.paginatedView.numberOfPages)
 			return;
+		NSUInteger currentPage = nrSelf.paginatedView.currentPage;
+		UIView *pageView = [nrSelf.paginatedView existingPageAtIndex:currentPage];
+		[nrSelf adjustPageView:pageView usingGridAtIndex:currentPage];
 	
-		NSUInteger newIndex = [inNewValue unsignedIntValue];
-		[nrSelf paginatedView:nrSelf.paginatedView didShowView:[nrSelf.paginatedView existingPageAtIndex:newIndex] atIndex:newIndex];
-		
-	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
+	};
+
+//	[self.paginatedView irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+//	
+//		if (!nrSelf.paginatedView.numberOfPages)
+//			return;
+//	
+//		NSUInteger newIndex = [inNewValue unsignedIntValue];
+//		[nrSelf paginatedView:nrSelf.paginatedView didShowView:[nrSelf.paginatedView existingPageAtIndex:newIndex] atIndex:newIndex];
+//		
+//	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 		
 }
 
@@ -329,21 +339,22 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			
 		} completion: ^ (BOOL finished) {
 		
-			[transitionContainerView removeFromSuperview];
 			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 			
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
 				[CATransaction begin];
-				
+				[CATransaction setDisableActions:YES];
+
+				[transitionContainerView removeFromSuperview];
 				[enqueuedPaginatedVC setContextControlsVisible:YES animated:NO];
-			
+				
 				[enqueuedPaginatedVC.view.window.layer addAnimation:((^{
 					CATransition *transition = [CATransition animation];
 					transition.type = kCATransitionFade;
 					transition.removedOnCompletion = YES;
 					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-					transition.duration = 0.3f;
+					transition.duration = 0.35f;
 					return transition;
 				})()) forKey:kCATransition];
 
