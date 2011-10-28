@@ -275,12 +275,12 @@
 			self.navigationController.navigationBar.alpha = 1;
 			self.paginationSlider.alpha = 1;
 			self.articleCommentsViewController.commentsRevealingActionContainerView.alpha = 1;
-			//	self.articleCommentsViewController.view.alpha = 1;
+			self.articleCommentsViewController.view.alpha = 1;
 		} else {
 			self.navigationController.navigationBar.alpha = 0.01f;
 			self.paginationSlider.alpha = 0.01f;
 			self.articleCommentsViewController.commentsRevealingActionContainerView.alpha = 0;
-			//	self.articleCommentsViewController.view.alpha = 0.01f;
+			self.articleCommentsViewController.view.alpha = 0;
 		}
 		
 	} completion: ^ (BOOL finished) {

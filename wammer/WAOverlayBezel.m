@@ -200,7 +200,7 @@
 		CABasicAnimation *zoomInAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
 		zoomInAnimation = configureAnimation(zoomInAnimation);
 		zoomInAnimation.fromValue = [NSNumber numberWithFloat:1.0f];	
-		zoomInAnimation.toValue = [NSNumber numberWithFloat:4.0f];
+		zoomInAnimation.toValue = [NSNumber numberWithFloat:0.25f];
 		[animations addObject:zoomInAnimation];
 	}
 	

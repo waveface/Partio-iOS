@@ -346,15 +346,10 @@
 					aFile.resourceFilePath = nil;
 				}
 				
-				if (aFile.thumbnailFilePath) {
-					[[NSFileManager defaultManager] removeItemAtPath:aFile.thumbnailFilePath error:nil];
-					aFile.thumbnailFilePath = nil;
-				}
-				
 			}];
 			
 			NSError *savingError = nil;
-			if ([context save:&savingError])
+			if (![context save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 		
 		}],
@@ -405,7 +400,7 @@
 				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
 				[doneBezel show];
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-					[doneBezel dismiss];
+					[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				});
 				
 			});		

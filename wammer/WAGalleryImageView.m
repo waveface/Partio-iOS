@@ -217,7 +217,7 @@
 		self.needsOffsetAdjustmentOnLayout = NO;
 		self.needsInsetAdjustmentOnLayout = YES;
 		
-		if (scale >= self.scrollView.maximumZoomScale) {
+		if (scale > 1) {
 			
 			CGPoint oldOffset = self.scrollView.contentOffset;
 			[self.scrollView setZoomScale:1 animated:NO];
@@ -239,6 +239,9 @@
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
+	
+	if (!self.image)
+		return;
 	
 	id currentDelegate = self.delegate;
 	delegate = nil;
@@ -264,10 +267,6 @@
 		};
 		
 		CGSize newScrollViewContentSize = self.imageView.bounds.size;
-		
-		NSLog(@"image view bounds %@ -> %@", NSStringFromCGRect(oldImageViewBounds), NSStringFromCGRect(newImageViewBounds));
-		NSLog(@"image view center %@ -> %@", NSStringFromCGPoint(oldImageViewCenter), NSStringFromCGPoint(newImageViewCenter));
-		NSLog(@"scroll view content size %@ -> %@", NSStringFromCGSize(oldScrollViewContentSize), NSStringFromCGSize(newScrollViewContentSize));
 		
 		if (!CGRectEqualToRect(oldImageViewBounds, newImageViewBounds))
 			self.imageView.bounds = newImageViewBounds;
