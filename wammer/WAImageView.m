@@ -85,13 +85,13 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 }
 
-- (void) setFrame:(CGRect)newFrame {
+- (void) setBounds:(CGRect)newBounds {
 
-	if (CGRectEqualToRect(newFrame, self.frame))
-		return;
+	CGRect oldBounds = self.bounds;
+	[super setBounds:newBounds];
 	
-	[super setFrame:newFrame];
-	[self setNeedsLayout];
+	if (!CGRectEqualToRect(oldBounds, newBounds))
+		[self setNeedsLayout];
 		
 }
 
@@ -99,15 +99,21 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 	[super layoutSubviews];
 
-	if (!CGSizeEqualToSize(self.bounds.size, ((CATiledLayer *)self.layer).tileSize)) {
+	UIImage *ownImage = objc_getAssociatedObject(self.layer, &kWAImageView_storedImage);
+	if (!ownImage)
+		return;
+
+	if (!CGSizeEqualToSize(ownImage.size, ((CATiledLayer *)self.layer).tileSize)) {
 	
 		UIScreen *usedScreen = self.window.screen;
 		if (!usedScreen)
 			usedScreen = [UIScreen mainScreen];
 		
 		((CATiledLayer *)self.layer).tileSize = (CGSize){
-			self.bounds.size.width * usedScreen.scale,
-			self.bounds.size.height * usedScreen.scale
+		
+			ownImage.size.width,
+			ownImage.size.height
+		
 		};
 		
 	}
@@ -165,19 +171,11 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 	[super layoutSubviews];
 	
-	self.contentView.hidden = !image;
+	//	self.contentView.hidden = !image;
 	if (!image)
 		return;
 		
 	CGRect imageFrame = IRGravitize(self.bounds, self.image.size, self.layer.contentsGravity);
-	
-	self.contentView.bounds = (CGRect){
-		(CGPoint){
-			0, 0 //CGRectGetMidX(self.bounds) - 0.5f * self.image.size.width,
-			//CGRectGetMidY(self.bounds) - 0.5f * self.image.size.height
-		},
-		self.image.size
-	};
 	
 	self.contentView.center = (CGPoint){
 		CGRectGetMidX(self.bounds),
@@ -190,9 +188,6 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 		1
 	);
 	
-	
-	//imageFrame;
-
 }
 
 - (void) setImage:(UIImage *)newImage {
@@ -209,7 +204,11 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 	
 	if (newImage) {
 	
-		//	self.contentView.frame = (CGRect){ CGPointZero, newImage.size };
+		self.contentView.bounds = (CGRect){
+			CGPointZero,
+			self.image.size
+		};
+		
 		objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
 		[self setNeedsLayout];
 	
