@@ -346,15 +346,10 @@
 					aFile.resourceFilePath = nil;
 				}
 				
-				if (aFile.thumbnailFilePath) {
-					[[NSFileManager defaultManager] removeItemAtPath:aFile.thumbnailFilePath error:nil];
-					aFile.thumbnailFilePath = nil;
-				}
-				
 			}];
 			
 			NSError *savingError = nil;
-			if ([context save:&savingError])
+			if (![context save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 		
 		}],
