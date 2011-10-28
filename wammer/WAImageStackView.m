@@ -187,7 +187,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		return;
 	}
 	
-	if (newShownImages == shownImages) {
+	if ([newShownImages isEqualToArray:shownImages]) {
 		if (aBlock)
 			aBlock();
 		return;

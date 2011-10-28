@@ -79,7 +79,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   self.title = @"Wammer";
 	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyphWhite"] style:UIBarButtonItemStylePlain target:self action:@selector(actionSettings:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyphWhiteAlt"] style:UIBarButtonItemStylePlain target:self action:@selector(actionSettings:)] autorelease];
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
