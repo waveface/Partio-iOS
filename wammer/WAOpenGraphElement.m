@@ -62,68 +62,6 @@
 
 }
 
-+ (IRRemoteResourcesManager *) sharedRemoteResourcesManager {
-
-	static IRRemoteResourcesManager *sharedManager = nil;
-	static dispatch_once_t onceToken;
-	
-	dispatch_once(&onceToken, ^{
-    
-		sharedManager = [IRRemoteResourcesManager sharedManager];
-		sharedManager.delegate = (id<IRRemoteResourcesManagerDelegate>)[UIApplication sharedApplication].delegate;
-		
-		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:kIRRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
-		
-			NSURL *representingURL = (NSURL *)[aNotification object];
-			NSData *resourceData = [sharedManager resourceAtRemoteURL:representingURL skippingUncachedFile:NO];
-			
-			if (![resourceData length])
-			return;
-			
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			NSArray *matchingObjects = [context executeFetchRequest:((^ {
-				
-				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
-				fr.entity = [WAOpenGraphElement entityDescriptionForContext:context];
-				fr.predicate = [NSPredicate predicateWithFormat:@"thumbnailURL == %@", [representingURL absoluteString]];
-				
-				return fr;
-			
-			})()) error:nil];
-			
-			for (WAOpenGraphElement *matchingObject in matchingObjects)
-				matchingObject.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
-			
-			if (![[context updatedObjects] count])
-				return;
-			
-			NSError *savingError;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
-			
-		}];
-		
-		objc_setAssociatedObject(sharedManager, @"boundNotificationObject", notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC); 
-
-	});
-	
-	return sharedManager;
-
-}
-
-+ (NSOperationQueue *) remoteResourceHandlingQueue {
-
-	static NSOperationQueue *returnedQueue = nil;
-	static dispatch_once_t onceToken;
-	
-	dispatch_once(&onceToken, ^{
-		returnedQueue = [[NSOperationQueue alloc] init];
-	});
-	
-	return returnedQueue;
-
-}
-
 - (NSString *) thumbnailFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:@"thumbnailFilePath"];
@@ -137,8 +75,28 @@
 	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
 	
 	if (![thumbnailURL isFileURL]) {
-		[[[self class] sharedRemoteResourcesManager] retrieveResourceAtRemoteURL:thumbnailURL forceReload:YES];
+
+		NSURL *ownURL = [[self objectID] URIRepresentation];
+		
+		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:thumbnailURL withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+			
+			if (!tempFileURLOrNil)
+				return;
+					
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			WAOpenGraphElement *foundGraphElement = (WAOpenGraphElement *)[context irManagedObjectForURI:ownURL];
+			foundGraphElement.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+		}];
+		
 		return nil;
+
 	}
 	
 	primitivePath = [thumbnailURL path];

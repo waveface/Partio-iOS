@@ -674,13 +674,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 		WAArticle *representedArticle = (WAArticle *)item;
 				
-		//	for (WAFile *aFile in representedArticle.fileOrder)
-		//		[aFile resourceFilePath];
-			
 		if ([representedArticle.fileOrder count]) {
 			WAFile *firstFile = (WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]];
-			[firstFile resourceFilePath];
-			[firstFile thumbnailFilePath];
+			
+			if (firstFile.thumbnailURL)
+			if (![firstFile primitiveValueForKey:@"thumbnailFilePath"])
+				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.thumbnailURL] usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:nil];
+			
+			if (firstFile.resourceURL)
+			if (![firstFile primitiveValueForKey:@"resourceFilePath"])
+				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.resourceURL] usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:nil];
+			
 		}
 			
 		for (WAPreview *aPreview in representedArticle.previews)

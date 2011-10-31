@@ -45,6 +45,7 @@
 
 	WARegisterUserDefaults();
 	
+	[IRRemoteResourcesManager sharedManager].delegate = self;
 	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
 
 	NSDate *launchFinishDate = [NSDate date];

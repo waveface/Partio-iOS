@@ -31,7 +31,4 @@
 @property (nonatomic, readwrite, retain) UIImage *resourceImage;
 @property (nonatomic, readwrite, retain) UIImage *thumbnailImage;
 
-+ (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
-+ (NSOperationQueue *) remoteResourceHandlingQueue;
-
 @end

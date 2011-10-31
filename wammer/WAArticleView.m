@@ -180,6 +180,7 @@
 	[self disassociateBindings];
 	
 	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
+		NSParameterAssert([NSThread isMainThread]);
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
 			if (index > 1) {
 				*stop = YES;
