@@ -34,7 +34,7 @@
 	[originLabel release];	
 	[commentLabel release];
 	[commentBackground release];
-  [contentTextView release];
+    [contentTextView release];
 	[previewBadge release];
 	[super dealloc];
 	
@@ -90,7 +90,7 @@
 	
 	self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
 	
-  self.avatarView.layer.cornerRadius = 4.0;
+    self.avatarView.layer.cornerRadius = 4.0;
 	self.avatarView.layer.masksToBounds = YES;
 	
 	UIView *avatarWrapper = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
@@ -113,7 +113,7 @@
 
 	[super prepareForReuse];
 	[self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
-  [self.imageView setImage:nil];
+    [self.imageView setImage:nil];
   
 }
 
