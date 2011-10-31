@@ -155,9 +155,9 @@
 	panGestureRecognizer.delegate = self;
 	[self.view addGestureRecognizer:panGestureRecognizer];
 	
-	UIPinchGestureRecognizer *pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
-	pinchRecognizer.delegate = self;
-	[self.view addGestureRecognizer:pinchRecognizer];
+	//	UIPinchGestureRecognizer *pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
+	//	pinchRecognizer.delegate = self;
+	//	[self.view addGestureRecognizer:pinchRecognizer];
 	
 }
 
