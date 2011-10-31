@@ -60,6 +60,8 @@ extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentat
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
+@property (nonatomic, readonly, retain) WAArticle *article;
+
 @property (nonatomic, readonly, assign) WAArticleViewControllerPresentationStyle presentationStyle;
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WAArticleViewController *self, UIView *loadedView);
 @property (nonatomic, readwrite, copy) void (^onViewTap)();

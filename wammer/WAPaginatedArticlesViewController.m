@@ -155,9 +155,9 @@
 	panGestureRecognizer.delegate = self;
 	[self.view addGestureRecognizer:panGestureRecognizer];
 	
-	UIPinchGestureRecognizer *pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
-	pinchRecognizer.delegate = self;
-	[self.view addGestureRecognizer:pinchRecognizer];
+	//	UIPinchGestureRecognizer *pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
+	//	pinchRecognizer.delegate = self;
+	//	[self.view addGestureRecognizer:pinchRecognizer];
 	
 }
 
@@ -764,38 +764,40 @@
 	__block __typeof__(self) nrSelf = self;
 	
 	NSArray *oldArticleViewControllers = [[self.articleViewControllers mutableCopy] autorelease];
+	NSArray *oldArticleObjectIDs = [oldArticleViewControllers irMap: ^ (WAArticleViewController *aVC, NSUInteger index, BOOL *stop) {
+		return [aVC.article objectID];
+	}];
 	
 	self.articleViewControllers = [[self.fetchedResultsController fetchedObjects] irMap: ^ (WAArticle *article, NSUInteger index, BOOL *stop) {
 	
-		NSURL *articleURI = [[article objectID] URIRepresentation];
+		WAArticleViewController *articleVC = nil;
+		NSManagedObjectID *articleID = [article objectID];
 		
-		WAArticleViewController *returnedViewController = [[oldArticleViewControllers objectsAtIndexes:[oldArticleViewControllers indexesOfObjectsPassingTest: ^ (WAArticleViewController *articleViewController, NSUInteger idx, BOOL *stop) {
+		if (oldArticleViewControllers) {
+			NSUInteger reusableArticleVCIndex = [oldArticleObjectIDs indexOfObject:articleID];
+			if (reusableArticleVCIndex != NSNotFound)
+				articleVC = [oldArticleViewControllers objectAtIndex:reusableArticleVCIndex];
+		}
 		
-			return [[[articleViewController representedObjectURI] absoluteString] isEqual:[articleURI absoluteString]];
+		if (!articleVC) {
 			
-		}]] lastObject];
-
-		if (!returnedViewController) {
-		
-			//	TBD handle empty preview objects; in that case revert to plaintext
+			NSURL *articleURI = [[article objectID] URIRepresentation];
 			
-			returnedViewController = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:(
+			articleVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:(
 				[article.fileOrder count] ? WAFullFrameImageStackArticleStyle :
 				[article.previews count] ? WAFullFramePreviewArticleStyle : 
 				WAFullFramePlaintextArticleStyle
 			)];
-			NSParameterAssert([[returnedViewController.representedObjectURI absoluteString] isEqualToString:[articleURI absoluteString]]);
-				
+
+			articleVC.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
+				if (action)
+					action(nrSelf);
+			};
+
 		}
 			
-		returnedViewController.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
 		
-			if (action)
-				action(nrSelf);
-		
-		};
-		
-		return returnedViewController;
+		return articleVC;
 		
 	}];
 		
