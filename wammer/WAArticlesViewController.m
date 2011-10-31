@@ -180,7 +180,12 @@
 
 - (void) refreshData {
 
-	[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
+	BOOL hasExistingData = !![self.fetchedResultsController.fetchedObjects count];
+	
+	if (hasExistingData)
+		[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
+	else
+		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 
 }
 
