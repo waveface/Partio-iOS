@@ -40,14 +40,33 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
 
+@property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
+
 @end
 
 @implementation WADiscretePaginatedArticlesViewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
+@synthesize paginatedArticlesViewController;
+
+- (WAPaginatedArticlesViewController *) paginatedArticlesViewController {
+
+	if (paginatedArticlesViewController)
+		return paginatedArticlesViewController;
+	
+	paginatedArticlesViewController = [[WAPaginatedArticlesViewController alloc] init];
+	return paginatedArticlesViewController;
+
+}
 
 - (id) init {
 
-	return [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
+	self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
+	if (!self)
+		return nil;
+	
+	[self paginatedArticlesViewController];
+	
+	return self;
 
 }
 
@@ -179,190 +198,213 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	articleViewController.onViewTap = ^ {
 	
+		__block UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+		[spinner startAnimating];
+		[spinner setCenter:(CGPoint){
+			CGRectGetMidX(articleViewController.view.bounds),
+			CGRectGetMidY(articleViewController.view.bounds)
+		}];
+		[articleViewController.view addSubview:spinner];
+	
 		NSParameterAssert(nrSelf.navigationController);
 		
 		self.view.superview.clipsToBounds = NO;
 		self.view.superview.superview.clipsToBounds = NO;
-	
+		
 		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 		
-		__block WAPaginatedArticlesViewController *enqueuedPaginatedVC = nil;
-		WAFauxRootNavigationController *enqueuedNavController = ((^ {
-	
-			enqueuedPaginatedVC = [[[WAPaginatedArticlesViewController alloc] init] autorelease];
-			enqueuedPaginatedVC.navigationItem.leftBarButtonItem = nil;
-			enqueuedPaginatedVC.navigationItem.hidesBackButton = NO;
-			enqueuedPaginatedVC.context = [NSDictionary dictionaryWithObjectsAndKeys:
-				objectURI, @"lastVisitedObjectURI",		
-			nil];
+		double delayInSeconds = 0.01;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), ^ {
+		
+		//		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			[spinner removeFromSuperview];
 			
-			__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init]  autorelease]] autorelease];
-			
-			NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:navController]] autorelease];
-			[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
-			navController = [unarchiver decodeObjectForKey:@"root"];
-			
-			[navController initWithRootViewController:enqueuedPaginatedVC];
-			
-			[navController setOnViewDidLoad: ^ (WANavigationController *self) {
-				((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
-			}];
-			
-			if ([navController isViewLoaded])
-			if (navController.onViewDidLoad)
-				navController.onViewDidLoad(navController);
+			__block WAPaginatedArticlesViewController *enqueuedPaginatedVC = nil;
+			WAFauxRootNavigationController *enqueuedNavController = ((^ {
+		
+				//	enqueuedPaginatedVC = [[[WAPaginatedArticlesViewController alloc] init] autorelease];
+				enqueuedPaginatedVC = nrSelf.paginatedArticlesViewController;
+				enqueuedPaginatedVC.navigationItem.leftBarButtonItem = nil;
+				enqueuedPaginatedVC.navigationItem.hidesBackButton = NO;
+				enqueuedPaginatedVC.context = [NSDictionary dictionaryWithObjectsAndKeys:
+					objectURI, @"lastVisitedObjectURI",		
+				nil];
 				
-			NSString *leftTitle = @"Back";
-			
-			IRBorder *border = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
-			IRShadow *innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.55] offset:(CGSize){ 0, 1 } spread:2];
-			IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1] offset:(CGSize){ 0, 1 } spread:1];
-			
-			UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
-			UIColor *titleColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
-			IRShadow *titleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.35] offset:(CGSize){ 0, 1 } spread:0];
-			
-			UIColor *normalFromColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
-			UIColor *normalToColor = [UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
-			UIColor *normalBackgroundColor = nil;
-			NSArray *normalGradientColors = [NSArray arrayWithObjects:(id)normalFromColor.CGColor, (id)normalToColor.CGColor, nil];
-			
-			UIColor *highlightedFromColor = [normalFromColor colorWithAlphaComponent:.95];
-			UIColor *highlightedToColor = [normalToColor colorWithAlphaComponent:.95];
-			UIColor *highlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
-			NSArray *highlightedGradientColors = [NSArray arrayWithObjects:(id)highlightedFromColor.CGColor, (id)highlightedToColor.CGColor, nil];
-			
-			UIImage *leftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalBackgroundColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
-			UIImage *highlightedLeftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
-			__block IRBarButtonItem *newLeftItem = [IRBarButtonItem itemWithCustomImage:leftItemImage highlightedImage:highlightedLeftItemImage];
-			enqueuedPaginatedVC.navigationItem.leftBarButtonItem = newLeftItem;
-			
-			newLeftItem.block = ^ {
+				__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init]  autorelease]] autorelease];
+				
+				NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:navController]] autorelease];
+				[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+				navController = [unarchiver decodeObjectForKey:@"root"];
+				
+				[navController initWithRootViewController:enqueuedPaginatedVC];
+				
+				[navController setOnViewDidLoad: ^ (WANavigationController *self) {
+					((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
+				}];
+				
+				if ([navController isViewLoaded])
+				if (navController.onViewDidLoad)
+					navController.onViewDidLoad(navController);
 					
-				[CATransaction begin];
+				NSString *leftTitle = @"Back";
 				
-				[navController dismissModalViewControllerAnimated:NO];
+				IRBorder *border = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
+				IRShadow *innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.55] offset:(CGSize){ 0, 1 } spread:2];
+				IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:1] offset:(CGSize){ 0, 1 } spread:1];
 				
-				[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
-					CATransition *transition = [CATransition animation];
-					transition.type = kCATransitionFade;
-					transition.removedOnCompletion = YES;
-					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-					transition.duration = 0.3f;
-					return transition;
-				})()) forKey:kCATransition];
+				UIFont *titleFont = [UIFont boldSystemFontOfSize:12];
+				UIColor *titleColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
+				IRShadow *titleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.35] offset:(CGSize){ 0, 1 } spread:0];
+				
+				UIColor *normalFromColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
+				UIColor *normalToColor = [UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
+				UIColor *normalBackgroundColor = nil;
+				NSArray *normalGradientColors = [NSArray arrayWithObjects:(id)normalFromColor.CGColor, (id)normalToColor.CGColor, nil];
+				
+				UIColor *highlightedFromColor = [normalFromColor colorWithAlphaComponent:.95];
+				UIColor *highlightedToColor = [normalToColor colorWithAlphaComponent:.95];
+				UIColor *highlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+				NSArray *highlightedGradientColors = [NSArray arrayWithObjects:(id)highlightedFromColor.CGColor, (id)highlightedToColor.CGColor, nil];
+				
+				UIImage *leftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalBackgroundColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
+				UIImage *highlightedLeftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
+				__block IRBarButtonItem *newLeftItem = [IRBarButtonItem itemWithCustomImage:leftItemImage highlightedImage:highlightedLeftItemImage];
+				enqueuedPaginatedVC.navigationItem.leftBarButtonItem = newLeftItem;
+				
+				newLeftItem.block = ^ {
+						
+					[CATransaction begin];
+					
+					[navController dismissModalViewControllerAnimated:NO];
+					
+					[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.removedOnCompletion = YES;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.duration = 0.3f;
+						return transition;
+					})()) forKey:kCATransition];
 
-				[CATransaction commit];
+					[CATransaction commit];
+					
+				};
 				
+				return navController;
+			
+			})());
+			
+			[CATransaction begin];
+			
+			UIWindow *containingWindow = self.navigationController.view.window;
+			CGAffineTransform containerTransform = containingWindow.rootViewController.view.transform;
+			CGRect actualRect = CGRectApplyAffineTransform(containingWindow.bounds, containerTransform);
+			UIView *transitionContainerView = [[[UIView alloc] initWithFrame:actualRect] autorelease];
+			transitionContainerView.center = (CGPoint){
+				CGRectGetMidX(containingWindow.bounds),
+				CGRectGetMidY(containingWindow.bounds)
 			};
+			transitionContainerView.transform = containerTransform;
 			
-			return navController;
-		
-		})());
-		
-		UIWindow *containingWindow = self.navigationController.view.window;
-		CGAffineTransform containerTransform = containingWindow.rootViewController.view.transform;
-		CGRect actualRect = CGRectApplyAffineTransform(containingWindow.bounds, containerTransform);
-		UIView *transitionContainerView = [[[UIView alloc] initWithFrame:actualRect] autorelease];
-		transitionContainerView.center = (CGPoint){
-			CGRectGetMidX(containingWindow.bounds),
-			CGRectGetMidY(containingWindow.bounds)
-		};
-		transitionContainerView.transform = containerTransform;
-		
-		UIEdgeInsets navBarSnapshotEdgeInsets = (UIEdgeInsets){ 0, 0, -12, 0 };
-		CGRect navBarBounds = self.navigationController.navigationBar.bounds;
-		navBarBounds = UIEdgeInsetsInsetRect(navBarBounds, navBarSnapshotEdgeInsets);
-		CGRect navBarRectInWindow = [containingWindow convertRect:navBarBounds fromView:self.navigationController.navigationBar];
-		UIImage *navBarSnapshot = [self.navigationController.navigationBar.layer irRenderedImageWithEdgeInsets:navBarSnapshotEdgeInsets];
-		UIView *navBarSnapshotHolderView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, navBarSnapshot.size }] autorelease];
-		navBarSnapshotHolderView.layer.contents = (id)navBarSnapshot.CGImage;
-		
-		self.navigationController.navigationBar.layer.opacity = 0;
-		
-		UIImage *initialStateSnapshot = [self.navigationController.view.layer irRenderedImage];
-		transitionContainerView.layer.contents = (id)initialStateSnapshot.CGImage;
-		transitionContainerView.layer.contentsGravity = kCAGravityResizeAspectFill;
-		
-		self.navigationController.navigationBar.layer.opacity = 1;
-		
-		UIView *backgroundView = [[[UIView alloc] initWithFrame:transitionContainerView.bounds] autorelease];
-		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-		[transitionContainerView addSubview:backgroundView];
-		
-		UIView *scalingHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		[transitionContainerView addSubview:scalingHolderView];
-		
-		CGRect discreteArticleViewRectInWindow = [containingWindow convertRect:articleViewController.view.bounds fromView:articleViewController.view];
-		UIImage *discreteArticleViewSnapshot = [articleViewController.view.layer irRenderedImage];
-		UIView *discreteArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		discreteArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, discreteArticleViewSnapshot.size };
-		discreteArticleSnapshotHolderView.layer.contents = (id)discreteArticleViewSnapshot.CGImage;
-		discreteArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
-		[scalingHolderView addSubview:discreteArticleSnapshotHolderView];
-		
-		[self.navigationController presentModalViewController:enqueuedNavController animated:NO];
-		[enqueuedPaginatedVC setContextControlsVisible:NO animated:NO];
-		
-		//	CGRect fullsizeArticleViewRectInWindow = [containingWindow convertRect:enqueuedNavController.view.bounds fromView:enqueuedNavController.view];
-		UIImage *fullsizeArticleViewSnapshot = [enqueuedNavController.view.layer irRenderedImage];
-		UIView *fullsizeArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		fullsizeArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
-		fullsizeArticleSnapshotHolderView.layer.contents = (id)fullsizeArticleViewSnapshot.CGImage;
-		fullsizeArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
-		[scalingHolderView addSubview:fullsizeArticleSnapshotHolderView];
-		
-		discreteArticleSnapshotHolderView.frame = scalingHolderView.bounds;
-		discreteArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		fullsizeArticleSnapshotHolderView.frame = scalingHolderView.bounds;
-		fullsizeArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		
-		[containingWindow addSubview:transitionContainerView];
-		
-		[transitionContainerView addSubview:navBarSnapshotHolderView];
-		navBarSnapshotHolderView.frame = [containingWindow convertRect:navBarRectInWindow toView:navBarSnapshotHolderView.superview];
-		
-		backgroundView.alpha = 0;
-		discreteArticleSnapshotHolderView.alpha = 1;
-		fullsizeArticleSnapshotHolderView.alpha = 0;
-		scalingHolderView.frame = [containingWindow convertRect:discreteArticleViewRectInWindow toView:scalingHolderView.superview];
-		
-		UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
-		
-		[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations: ^ {
-		
-			backgroundView.alpha = 1;
-			discreteArticleSnapshotHolderView.alpha = 0;
-			fullsizeArticleSnapshotHolderView.alpha = 1;
-			scalingHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
+			UIEdgeInsets navBarSnapshotEdgeInsets = (UIEdgeInsets){ 0, 0, -12, 0 };
+			CGRect navBarBounds = self.navigationController.navigationBar.bounds;
+			navBarBounds = UIEdgeInsetsInsetRect(navBarBounds, navBarSnapshotEdgeInsets);
+			CGRect navBarRectInWindow = [containingWindow convertRect:navBarBounds fromView:self.navigationController.navigationBar];
+			UIImage *navBarSnapshot = [self.navigationController.navigationBar.layer irRenderedImageWithEdgeInsets:navBarSnapshotEdgeInsets];
+			UIView *navBarSnapshotHolderView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, navBarSnapshot.size }] autorelease];
+			navBarSnapshotHolderView.layer.contents = (id)navBarSnapshot.CGImage;
 			
-		} completion: ^ (BOOL finished) {
-		
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+			self.navigationController.navigationBar.layer.opacity = 0;
 			
-			dispatch_async(dispatch_get_main_queue(), ^ {
+			UIImage *initialStateSnapshot = [self.navigationController.view.layer irRenderedImage];
+			transitionContainerView.layer.contents = (id)initialStateSnapshot.CGImage;
+			transitionContainerView.layer.contentsGravity = kCAGravityResizeAspectFill;
 			
-				[CATransaction begin];
-				[CATransaction setDisableActions:YES];
-
-				[transitionContainerView removeFromSuperview];
-				[enqueuedPaginatedVC setContextControlsVisible:YES animated:NO];
+			self.navigationController.navigationBar.layer.opacity = 1;
+			
+			UIView *backgroundView = [[[UIView alloc] initWithFrame:transitionContainerView.bounds] autorelease];
+			backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+			[transitionContainerView addSubview:backgroundView];
+			
+			UIView *scalingHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+			[transitionContainerView addSubview:scalingHolderView];
+			
+			CGRect discreteArticleViewRectInWindow = [containingWindow convertRect:articleViewController.view.bounds fromView:articleViewController.view];
+			UIImage *discreteArticleViewSnapshot = [articleViewController.view.layer irRenderedImage];
+			UIView *discreteArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+			discreteArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, discreteArticleViewSnapshot.size };
+			discreteArticleSnapshotHolderView.layer.contents = (id)discreteArticleViewSnapshot.CGImage;
+			discreteArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
+			[scalingHolderView addSubview:discreteArticleSnapshotHolderView];
+			
+			[self.navigationController presentModalViewController:enqueuedNavController animated:NO];
+			[enqueuedPaginatedVC setContextControlsVisible:NO animated:NO];
+			
+			//	CGRect fullsizeArticleViewRectInWindow = [containingWindow convertRect:enqueuedNavController.view.bounds fromView:enqueuedNavController.view];
+			UIImage *fullsizeArticleViewSnapshot = [enqueuedNavController.view.layer irRenderedImage];
+			UIView *fullsizeArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+			fullsizeArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
+			fullsizeArticleSnapshotHolderView.layer.contents = (id)fullsizeArticleViewSnapshot.CGImage;
+			fullsizeArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
+			[scalingHolderView addSubview:fullsizeArticleSnapshotHolderView];
+			
+			discreteArticleSnapshotHolderView.frame = scalingHolderView.bounds;
+			discreteArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			fullsizeArticleSnapshotHolderView.frame = scalingHolderView.bounds;
+			fullsizeArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			
+			[containingWindow addSubview:transitionContainerView];
+			
+			[transitionContainerView addSubview:navBarSnapshotHolderView];
+			navBarSnapshotHolderView.frame = [containingWindow convertRect:navBarRectInWindow toView:navBarSnapshotHolderView.superview];
+			
+			backgroundView.alpha = 0;
+			discreteArticleSnapshotHolderView.alpha = 1;
+			fullsizeArticleSnapshotHolderView.alpha = 0;
+			scalingHolderView.frame = [containingWindow convertRect:discreteArticleViewRectInWindow toView:scalingHolderView.superview];
+			
+			[CATransaction commit];
+			
+			UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
+			
+			[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations: ^ {
+			
+				backgroundView.alpha = 1;
+				discreteArticleSnapshotHolderView.alpha = 0;
+				fullsizeArticleSnapshotHolderView.alpha = 1;
+				scalingHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
 				
-				[enqueuedPaginatedVC.view.window.layer addAnimation:((^{
-					CATransition *transition = [CATransition animation];
-					transition.type = kCATransitionFade;
-					transition.removedOnCompletion = YES;
-					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-					transition.duration = 0.35f;
-					return transition;
-				})()) forKey:kCATransition];
-
-				[CATransaction commit];
-
-			});
+			} completion: ^ (BOOL finished) {
 			
-		}];
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+				
+				//	dispatch_async(dispatch_get_main_queue(), ^ {
+				
+					[CATransaction begin];
+					[CATransaction setDisableActions:YES];
+
+					[transitionContainerView removeFromSuperview];
+					[enqueuedPaginatedVC setContextControlsVisible:YES animated:NO];
+					
+					[enqueuedPaginatedVC.view.window.layer addAnimation:((^{
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.removedOnCompletion = YES;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.duration = 0.35f;
+						return transition;
+					})()) forKey:kCATransition];
+
+					[CATransaction commit];
+
+				//	});
+				
+			}];
+		
+		});
 	
 	};
 	
@@ -688,7 +730,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		}
 			
 		for (WAPreview *aPreview in representedArticle.previews)
-			[aPreview.graphElement thumbnailFilePath];
+			if (aPreview.graphElement.thumbnailURL)
+			if (![aPreview.graphElement primitiveValueForKey:@"thumbnailFilePath"])
+				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:aPreview.graphElement.thumbnailURL] usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:nil];
 	
 	}];
 
@@ -926,6 +970,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[discreteLayoutManager release];
 	[discreteLayoutResult release];
 	[layoutGrids release];
+	
+	[paginatedArticlesViewController release];
 
 	[super dealloc];
 
