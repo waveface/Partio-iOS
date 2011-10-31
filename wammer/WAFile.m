@@ -109,82 +109,6 @@
 
 
 
-+ (IRRemoteResourcesManager *) sharedRemoteResourcesManager {
-
-	static IRRemoteResourcesManager *sharedManager = nil;
-	static dispatch_once_t onceToken;
-	
-	dispatch_once(&onceToken, ^{
-    
-		sharedManager = [IRRemoteResourcesManager sharedManager];
-		sharedManager.delegate = (id<IRRemoteResourcesManagerDelegate>)[UIApplication sharedApplication].delegate;
-		
-		id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:kIRRemoteResourcesManagerDidRetrieveResourceNotification object:nil queue:[self remoteResourceHandlingQueue] usingBlock:^(NSNotification *aNotification) {
-		
-			NSURL *representingURL = (NSURL *)[aNotification object];
-			NSData *resourceData = [sharedManager resourceAtRemoteURL:representingURL skippingUncachedFile:NO];
-			
-			if (![resourceData length])
-				return;
-			
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			NSArray *matchingObjects = [context executeFetchRequest:((^ {
-				
-				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
-				fr.entity = [WAFile entityDescriptionForContext:context];
-				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL == %@) || (thumbnailURL == %@)", [representingURL absoluteString], [representingURL absoluteString]];
-				
-				return fr;
-			
-			})()) error:nil];
-			
-			for (WAFile *matchingObject in matchingObjects) {
-			
-				//	Manually emit a change notification on the owning article’s files relationship
-				//	So KVO will work without much hackery in other places
-			
-				[matchingObject.article willChangeValueForKey:@"files"];
-			
-				if ([matchingObject.resourceURL isEqualToString:[representingURL absoluteString]])
-					matchingObject.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
-					
-				if ([matchingObject.thumbnailURL isEqualToString:[representingURL absoluteString]])
-					matchingObject.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForData:resourceData] path];
-				
-				[matchingObject.article didChangeValueForKey:@"files"];
-				
-			}
-			
-			if (![[context updatedObjects] count])
-				return;
-			
-			NSError *savingError;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
-			
-		}];
-		
-		objc_setAssociatedObject(sharedManager, @"boundNotificationObject", notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC); 
-
-	});
-	
-	return sharedManager;
-
-}
-
-+ (NSOperationQueue *) remoteResourceHandlingQueue {
-
-	static NSOperationQueue *returnedQueue = nil;
-	static dispatch_once_t onceToken;
-	
-	dispatch_once(&onceToken, ^{
-		returnedQueue = [[NSOperationQueue alloc] init];
-	});
-	
-	return returnedQueue;
-
-}
-
 - (NSString *) resourceFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:@"resourceFilePath"];
@@ -198,8 +122,36 @@
 	NSURL *resourceURL = [NSURL URLWithString:self.resourceURL];
 	
 	if (![resourceURL isFileURL]) {
-		[[[self class] sharedRemoteResourcesManager] retrieveResourceAtRemoteURL:resourceURL forceReload:YES];
+		
+		NSURL *ownURL = [[self objectID] URIRepresentation];
+		
+		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+			
+			if (!tempFileURLOrNil)
+				return;
+					
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
+			if (![foundFile.resourceURL isEqualToString:[resourceURL absoluteString]])
+				return;
+			
+			[foundFile.article willChangeValueForKey:@"fileOrder"];
+			foundFile.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
+			[foundFile.article didChangeValueForKey:@"fileOrder"];
+			
+			NSError *savingError = nil;
+			BOOL didSave = [context save:&savingError];
+			if (!didSave) {
+				NSLog(@"Error saving: %@", savingError);
+				NSParameterAssert(didSave);
+			}
+			
+		}];
+		
 		return nil;
+
 	}
 	
 	primitivePath = [resourceURL path];
@@ -231,8 +183,28 @@
 	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
 	
 	if (![thumbnailURL isFileURL]) {
-		[[[self class] sharedRemoteResourcesManager] retrieveResourceAtRemoteURL:thumbnailURL forceReload:YES];
+		
+		NSURL *ownURL = [[self objectID] URIRepresentation];
+		
+		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:thumbnailURL usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+			
+			if (!tempFileURLOrNil)
+				return;
+					
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
+			foundFile.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+		}];
+		
 		return nil;
+		
 	}
 		
 	primitivePath = [thumbnailURL path];
