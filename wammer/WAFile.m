@@ -125,7 +125,7 @@
 		
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 		
-		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 			
 			if (!tempFileURLOrNil)
 				return;
@@ -186,7 +186,7 @@
 		
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 		
-		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:thumbnailURL withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:thumbnailURL usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 			
 			if (!tempFileURLOrNil)
 				return;
