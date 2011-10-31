@@ -23,9 +23,6 @@
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
 
-+ (IRRemoteResourcesManager *) sharedRemoteResourcesManager;
-+ (NSOperationQueue *) remoteResourceHandlingQueue;
-
 @end
 
 @interface WAUser (CoreDataGeneratedAccessors)
