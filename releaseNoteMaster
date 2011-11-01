@@ -1,3 +1,3 @@
-ETReleaseNotes="- Updates the Remote Resources Manager (Shared) so it supports prioritized resource loading and would cancel existing blob downloads in anticipation of enqueued items with higher priorities.\n- Removes local resource cache pool for the Remote Resources Manager (Shared).\n- Disables a shortcut in the Single Article (iPad) page where pinching out exits to the Overview (iPad) page.\n- Adds an activity indicator on highlighted and selected article views in the Overview (iPad) page before the presenting animation runs.\n- Fixes a bug where swiping the Overview (iPad) page, after the first authentication success, may trigger an out-of-bounds exception (IRFoundations/IRPaginatedView).\n- Fixes a bug where the Overview (iPad) page is not automatically populated immediately after the first authentication success.\n- Partially resolves a performance issue where presenting a Single Article (iPad) page from the Overview (iPad) page is not performant."
+ETReleaseNotes="- Interstitial Remote Resources Manager (Shared) update fixing various crashers happening in the field."
 
-ETMarketingVersionNumber="0.29"
+ETMarketingVersionNumber="0.30"
