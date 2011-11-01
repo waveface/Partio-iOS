@@ -1,3 +1,3 @@
-ETReleaseNotes="- Fixes bugs."
+ETReleaseNotes="- Interstitial Remote Resources Manager (Shared) update fixing various crashers happening in the field."
 
-ETMarketingVersionNumber="0.28.3"
+ETMarketingVersionNumber="0.30"

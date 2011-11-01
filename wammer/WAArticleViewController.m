@@ -198,6 +198,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 - (void) handleGlobalInspect:(UILongPressGestureRecognizer *)longPressRecognizer {
 
+	if (longPressRecognizer.state != UIGestureRecognizerStateRecognized)
+		return;
+
 	static NSString * const kGlobalInspectActionSheet = @"kGlobalInspectActionSheet";
 	
 	__block __typeof__(self) nrSelf = self;
