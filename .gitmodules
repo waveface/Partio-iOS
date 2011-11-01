@@ -34,3 +34,6 @@
 [submodule "external/SSToolkit"]
 	path = external/SSToolkit
 	url = git://github.com/iridia/sstoolkit.git
+[submodule "external/IRTextAttributor"]
+	path = external/IRTextAttributor
+	url = git://github.com/iridia/IRTextAttributor.git
