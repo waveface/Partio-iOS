@@ -192,6 +192,8 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 
 - (void) setImage:(UIImage *)newImage {
 
+	NSParameterAssert([NSThread isMainThread]);
+
 	if (newImage && (newImage == self.image))
 		return;
 	
@@ -210,11 +212,13 @@ static NSString * const kWAImageView_storedImage = @"kWAImageView_storedImage";
 		};
 		
 		objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, newImage, OBJC_ASSOCIATION_RETAIN);
+		[self.contentView.layer setNeedsDisplay];
 		[self setNeedsLayout];
 	
 	} else {
 	
 		objc_setAssociatedObject(self.contentView.layer, &kWAImageView_storedImage, nil, OBJC_ASSOCIATION_ASSIGN);
+		[self.contentView.layer setNeedsDisplay];
 	
 	}
 	
