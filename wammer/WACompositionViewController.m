@@ -428,8 +428,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind {
 
-	NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
-
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		if (![self isViewLoaded])
@@ -559,11 +557,11 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) adjustPhotos {
 
-		UIEdgeInsets insets = [objc_getAssociatedObject(self.photosView, @"defaultInsets") UIEdgeInsetsValue];
-		CGFloat addedPadding = roundf(0.5f * MAX(0, CGRectGetWidth(self.photosView.frame) - insets.left - insets.right - self.photosView.contentSize.width));
-		insets.left += addedPadding;
-		
-		self.photosView.contentInset = insets;
+	UIEdgeInsets insets = [objc_getAssociatedObject(self.photosView, @"defaultInsets") UIEdgeInsetsValue];
+	CGFloat addedPadding = roundf(0.5f * MAX(0, CGRectGetWidth(self.photosView.frame) - insets.left - insets.right - self.photosView.contentSize.width));
+	insets.left += addedPadding;
+	
+	self.photosView.contentInset = insets;
 
 }
 
