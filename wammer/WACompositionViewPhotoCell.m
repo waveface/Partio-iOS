@@ -8,6 +8,7 @@
 
 #import "WAView.h"
 #import "WACompositionViewPhotoCell.h"
+#import "QuartzCore+IRAdditions.h"
 
 
 @interface WACompositionViewPhotoCell ()
@@ -49,12 +50,15 @@
 	self.selectionStyle = AQGridViewCellSelectionStyleNone;
 	self.contentView.layer.shouldRasterize = YES;
 	
+	self.contentView.clipsToBounds = NO;
+	
 	self.imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
-	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;//kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
 	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
 	self.imageContainer.layer.shadowOpacity = 0.5f;
 	self.imageContainer.layer.shadowRadius = 2.0f;
+	self.imageContainer.layer.masksToBounds = YES;
 	[self.contentView addSubview:self.imageContainer];
 	
 	self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -96,11 +100,15 @@
 	
 	self.imageContainer.layer.contents = (id)newImage.CGImage;
 	
-	CGRect imageRect = IRCGSizeGetCenteredInRect(newImage.size, self.imageContainer.frame, 0.0f, YES);
-	self.removeButton.center = (CGPoint) {
-		CGRectGetMinX(imageRect),
-		CGRectGetMinY(imageRect)
-	};
+	if (newImage) {
+	
+		CGRect imageRect = IRGravitize(self.imageContainer.frame, newImage.size, kCAGravityResizeAspect);
+		self.removeButton.center = (CGPoint) {
+			CGRectGetMinX(imageRect) + 8,
+			CGRectGetMinY(imageRect) + 8
+		};
+	
+	}
 	
 	[self setNeedsLayout];
 
