@@ -340,28 +340,17 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
       
       cell.imageStackView.userInteractionEnabled = true;
+      
       if (cell.imageStackView)
         objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
       
-      NSArray *allFilePaths = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-        
-        return ((WAFile *)[[post.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {		
-          return [[[aFile objectID] URIRepresentation] isEqual:inObject];
-        }] anyObject]).resourceFilePath;
-        
+      NSArray *allImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+        WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
+        return  file.thumbnailImage;
       }];
       
-      if ([allFilePaths count] == [post.files count]) {
-        
-        cell.imageStackView.images = [allFilePaths irMap: ^ (NSString *aPath, NSUInteger index, BOOL *stop) {
-          
-          return [UIImage imageWithContentsOfFile:aPath];
-          
-        }];
-        
-      } else {
-        cell.imageStackView.images = nil;
-      }
+      
+      cell.imageStackView.images = allImages;
       
       return cell;
     }
