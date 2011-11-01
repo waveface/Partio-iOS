@@ -24,6 +24,10 @@
 #import "AssetsLibrary+IRAdditions.h"
 #import "IRTextAttributor.h"
 
+#import "UIView+IRAdditions.h"
+
+#import "WAViewController.h"
+
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate>
 
@@ -41,6 +45,8 @@
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
 @property (nonatomic, readwrite, retain) NSMutableAttributedString *backingContentText;
 
+@property (nonatomic, readwrite, assign) BOOL deniesOrientationChanges;
+
 @end
 
 
@@ -57,6 +63,8 @@
 
 @synthesize textAttributor;
 @synthesize backingContentText;
+
+@synthesize deniesOrientationChanges;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -165,7 +173,6 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	
 	
 	if (self.usesTransparentBackground) {
 		self.view.backgroundColor = nil;
@@ -288,10 +295,10 @@
 
 static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandler = @"kWACompositionViewWindowInterfaceBoundsNotificationHandler";
 
-- (void) viewDidAppear:(BOOL)animated {
+- (void) viewWillAppear:(BOOL)animated {
 
-	[super viewDidAppear:animated];
-	
+	[super viewWillAppear:animated];
+
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
 	
 		NSDictionary *userInfo = [aNotification userInfo];
@@ -323,21 +330,24 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		[self.contentTextView becomeFirstResponder];
-	
-	});
-	
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	[self.contentTextView becomeFirstResponder];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	[super viewWillDisappear:animated];
-	
 	id notificationObject = objc_getAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler);
 	[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, nil, OBJC_ASSOCIATION_ASSIGN);
+	
+	[self.contentTextView resignFirstResponder];
+	
+	[super viewWillDisappear:animated];
 
 }
 
@@ -348,7 +358,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	UIWindow *ownWindow = self.view.window;
 	if (!ownWindow) {
-		self.containerView.frame = self.view.bounds;
+		if (!CGRectEqualToRect(self.containerView.frame, self.view.bounds))
+			self.containerView.frame = self.view.bounds;
 		return;
 	}
 	
@@ -357,7 +368,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	CGRect overlappingRectInWindow = CGRectIntersection(fullViewRectInWindow, usableRectInWindow);
 	
 	CGRect usableRect = [ownWindow convertRect:overlappingRectInWindow toView:self.view];
-	self.containerView.frame = usableRect;
+	
+	if (!CGRectEqualToRect(self.containerView.frame, usableRect))
+		self.containerView.frame = usableRect;
 
 }
 
@@ -415,9 +428,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	}
 	
 	cell.alpha = 1;
-		
 	cell.image = representedFile.thumbnail;
-
+	cell.clipsToBounds = NO;
+	
 	cell.onRemove = ^ {
 	
 		[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
@@ -555,7 +568,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				
 				[self.photosView setContentOffset:oldOffset animated:NO];
 				
-				[UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+				[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
 					
 					[animationBlocks irExecuteAllObjectsAsBlocks];
 									
@@ -620,12 +633,34 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	NSMutableArray *availableActions = [NSMutableArray arrayWithObject:[IRAction actionWithTitle:@"Photo Library" block: ^ {
+	NSMutableArray *availableActions = [NSMutableArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Photo Library" block: ^ {
+			[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+		}],
 		
-		//	nrSelf.imagePickerPopover = nil;
-		[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+		#if 0
 		
-	}]];
+			[IRAction actionWithTitle:@"Faux View Controller" block:^ {
+			
+				WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
+				testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
+					return YES;
+				};
+				testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
+					[nrSelf dismissModalViewControllerAnimated:YES];
+				}];
+				
+				UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
+				navC.modalPresentationStyle = UIModalPresentationFullScreen;
+				
+				[self presentModalViewController:navC animated:YES];
+				
+			}],
+		
+		#endif
+		
+	nil];
 	
 	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
 	
@@ -634,7 +669,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			[nrSelf presentModalViewController:[IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
 			}] animated:YES];
-			
+						
 		}]];
 		
 	}
@@ -719,19 +754,93 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 	}
 	
-	[self.modalViewController dismissModalViewControllerAnimated:YES];
+	if (self.modalViewController)
+		[self dismissModalViewControllerAnimated:YES];
 	
 	if ([imagePickerPopover isPopoverVisible])
 		[imagePickerPopover dismissPopoverAnimated:YES];
 	
-	//	self.imagePickerPopover = nil;
-	
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	
+
+	if (deniesOrientationChanges) {
+	if (interfaceOrientation != self.interfaceOrientation)
+		return NO;
+
 	return YES;
 	
+}
+
+- (void) presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated {
+
+	if (!animated || (modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
+		[super presentModalViewController:modalViewController animated:animated];
+		return;
+	}
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	void (^dismissalAnimation)() = ^ {
+
+		CATransition *pushTransition = [CATransition animation];
+		pushTransition.type = kCATransitionMoveIn;
+		pushTransition.duration = 0.3;
+		pushTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+		pushTransition.subtype = ((NSString * []){
+			[UIInterfaceOrientationPortrait] = kCATransitionFromTop,
+			[UIInterfaceOrientationPortraitUpsideDown] = kCATransitionFromBottom,
+			[UIInterfaceOrientationLandscapeLeft] = kCATransitionFromRight,
+			[UIInterfaceOrientationLandscapeRight] = kCATransitionFromLeft
+		})[[UIApplication sharedApplication].statusBarOrientation];
+					
+		[nrSelf presentModalViewController:modalViewController animated:NO];
+		
+		[[UIApplication sharedApplication].keyWindow.layer addAnimation:pushTransition forKey:kCATransition];
+		
+	};
+			
+	UIView *firstResponder = [nrSelf.view irFirstResponderInView];
+
+	if (firstResponder) {
+	
+		[firstResponder resignFirstResponder];
+		double delayInSeconds = 0.15;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+		dispatch_after(popTime, dispatch_get_main_queue(), dismissalAnimation);
+		
+	} else {
+	
+		dismissalAnimation();
+		
+	}
+
+}
+
+- (void) dismissModalViewControllerAnimated:(BOOL)animated {
+
+	__block __typeof__(self) nrSelf = self;
+	
+	if (!animated || !self.modalViewController || (self.modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
+		[super dismissModalViewControllerAnimated:animated];
+		return;
+	}
+
+	CATransition *popTransition = [CATransition animation];
+	popTransition.type = kCATransitionReveal;
+	popTransition.duration = 0.3;
+	popTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+	popTransition.subtype = ((NSString * []){
+		[UIInterfaceOrientationPortrait] = kCATransitionFromBottom,
+		[UIInterfaceOrientationPortraitUpsideDown] = kCATransitionFromTop,
+		[UIInterfaceOrientationLandscapeLeft] = kCATransitionFromLeft,
+		[UIInterfaceOrientationLandscapeRight] = kCATransitionFromRight,
+	})[[UIApplication sharedApplication].statusBarOrientation];
+	
+	[nrSelf dismissModalViewControllerAnimated:NO];
+	
+	[[UIApplication sharedApplication].keyWindow.layer addAnimation:popTransition forKey:kCATransition];
+
 }
 
 @end
