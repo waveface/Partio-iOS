@@ -48,6 +48,7 @@
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
+		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
 		FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */; };
 		FFC648401445E8D700593E5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FFC6483E1445E8D700593E5E /* InfoPlist.strings */; };
@@ -338,6 +339,20 @@
 			remoteGlobalIDString = 05CD31630EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
+		FFB3C176145E9A6600ED7A56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FFF22380143774C3001B6773;
+			remoteInfo = IRTextAttributorTouch;
+		};
+		FFB3C178145E9A6F00ED7A56 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FFF2237F143774C3001B6773;
+			remoteInfo = IRTextAttributorTouch;
+		};
 		FFBA66EA140E12AD00BE5A1D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
@@ -555,6 +570,7 @@
 		FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IRLabelTestingViewController.xib; sourceTree = "<group>"; };
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAttachedMediaListViewController.h; sourceTree = "<group>"; };
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAttachedMediaListViewController.m; sourceTree = "<group>"; };
+		FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRTextAttributor.xcodeproj; path = external/IRTextAttributor/IRTextAttributor.xcodeproj; sourceTree = "<group>"; };
 		FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Plaintext.xib"; path = "Resources/WAArticleViewController-Discrete-Plaintext.xib"; sourceTree = "<group>"; };
@@ -662,6 +678,7 @@
 				FFCFE0BF142111E100B9E6AF /* libIRKeychain.a in Frameworks */,
 				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
 				FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */,
+				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -834,6 +851,7 @@
 				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
+				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 			);
@@ -977,6 +995,14 @@
 			);
 			name = "Attached Media";
 			path = wammer;
+			sourceTree = "<group>";
+		};
+		FFB3C170145E9A6600ED7A56 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FFBA66E3140E12AD00BE5A1D /* Products */ = {
@@ -1184,6 +1210,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
 				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07B142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
@@ -1235,6 +1262,10 @@
 				{
 					ProductGroup = FF666C24140CD2B200C35CED /* Products */;
 					ProjectRef = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+				},
+				{
+					ProductGroup = FFB3C170145E9A6600ED7A56 /* Products */;
+					ProjectRef = FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */;
 				},
 				{
 					ProductGroup = FF73A59F13D6DC6A00D54EC6 /* Products */;
@@ -1382,6 +1413,14 @@
 			fileType = archive.ar;
 			path = "libCrashReporter-iphoneos.a";
 			remoteRef = FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			name = libIRTextAttributor.a;
+			path = libIRTextAttributorTouch.a;
+			remoteRef = FFB3C176145E9A6600ED7A56 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */ = {
@@ -1622,6 +1661,11 @@
 			target = FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */;
 			targetProxy = FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */;
 		};
+		FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRTextAttributorTouch;
+			targetProxy = FFB3C178145E9A6F00ED7A56 /* PBXContainerItemProxy */;
+		};
 		FFCFE079142111E100B9E6AF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRDiscreteLayoutManager;
@@ -1737,6 +1781,7 @@
 					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
 					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
 					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
@@ -1775,6 +1820,7 @@
 					"\"$(PROJECT_DIR)/external/AQGridView/Classes\"",
 					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
 					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
+					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
