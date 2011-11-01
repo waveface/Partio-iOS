@@ -8,6 +8,8 @@
 
 #import "WACompositionViewController.h"
 
-@interface WACompositionViewController_CustomUI : WACompositionViewController
+@interface WACompositionViewController (CustomUI)
+
+- (UINavigationController *) wrappingNavigationController; //	Returns a custom-styled nav controller suitable for presenting the view controller on an iPad.  Throws an exception if the view controller is already within another nav controller.
 
 @end

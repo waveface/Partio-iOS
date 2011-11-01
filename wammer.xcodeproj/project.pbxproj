@@ -45,6 +45,7 @@
 		FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */; };
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
+		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
@@ -560,6 +561,8 @@
 		FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sansus Webissimo-Regular.otf"; path = "Resources/Sansus Webissimo-Regular.otf"; sourceTree = "<group>"; };
 		FFA06554143B227B00145079 /* WANavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationBar.h; sourceTree = "<group>"; };
 		FFA06555143B227B00145079 /* WANavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationBar.m; sourceTree = "<group>"; };
+		FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+CustomUI.h"; sourceTree = "<group>"; };
+		FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACompositionViewController+CustomUI.m"; sourceTree = "<group>"; };
 		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Preview.xib"; path = "Resources/WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = wammer/WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
@@ -1139,6 +1142,8 @@
 			children = (
 				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */,
+				FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */,
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
@@ -1650,6 +1655,7 @@
 				FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */,
 				FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */,
 				FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */,
+				FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
