@@ -13,6 +13,7 @@
 @synthesize onViewDidLoad;
 @synthesize willPushViewControllerAnimated, didPushViewControllerAnimated;
 @synthesize onDismissModalViewControllerAnimated;
+@synthesize disablesAutomaticKeyboardDismissal;
 
 - (void) viewDidLoad {
 

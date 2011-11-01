@@ -10,6 +10,7 @@
 #import "WADataStore.h"
 #import "WARemoteInterface.h"
 #import "WACompositionViewController.h"
+#import "WACompositionViewController+CustomUI.h"
 
 #import "IRBarButtonItem.h"
 #import "IRTransparentToolbar.h"
