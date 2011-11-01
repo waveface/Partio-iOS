@@ -22,6 +22,7 @@
 #import "WADefines.h"
 
 #import "AssetsLibrary+IRAdditions.h"
+#import "IRTextAttributor.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate>
@@ -38,10 +39,14 @@
 
 - (void) adjustPhotos;
 
+@property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
+@property (nonatomic, readwrite, retain) NSMutableAttributedString *backingContentText;
+
 @end
 
 
 @implementation WACompositionViewController
+
 @synthesize managedObjectContext, article;
 @synthesize containerView;
 @synthesize photosView, contentTextView, toolbar;
@@ -50,6 +55,9 @@
 @synthesize completionBlock;
 @synthesize usesTransparentBackground;
 @synthesize noPhotoReminderViewElements;
+
+@synthesize textAttributor;
+@synthesize backingContentText;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -127,6 +135,9 @@
 	[imagePickerPopover release];
 	
 	[completionBlock release];
+	
+	[textAttributor release];
+	[backingContentText release];
 	
 	[super dealloc];
 
