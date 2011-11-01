@@ -767,6 +767,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (deniesOrientationChanges) {
 	if (interfaceOrientation != self.interfaceOrientation)
 		return NO;
+	}
 
 	return YES;
 	
