@@ -218,7 +218,11 @@
 	nil];
 	photosViewWrapper.layer.mask = rightGradientMask;
 	photosViewWrapper.layer.mask.anchorPoint = irUnitPointForAnchor(irTopLeft, YES);
-	photosViewWrapper.layer.mask.bounds = photosViewWrapper.bounds;
+	photosViewWrapper.layer.mask.bounds = UIEdgeInsetsInsetRect(photosViewWrapper.bounds, (UIEdgeInsets){ -32, 0, 0, 0 });
+	photosViewWrapper.layer.mask.position = (CGPoint){
+		photosViewWrapper.layer.mask.position.x,
+		photosViewWrapper.layer.mask.position.y - 32
+	};
 	
 	self.noPhotoReminderView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, 0, 0, -32 });
 	self.noPhotoReminderView.autoresizingMask = self.photosView.autoresizingMask;
