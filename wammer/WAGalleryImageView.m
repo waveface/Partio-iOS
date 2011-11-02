@@ -210,6 +210,10 @@
 
 - (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer {
 
+  CGPoint doubleTapCenter = [aRecognizer locationInView:self.imageView];
+  CGPoint anchorPoint = CGPointMake(doubleTapCenter.x/self.imageView.frame.size.width, doubleTapCenter.y/self.imageView.frame.size.height);
+  NSLog(@"anchorPoint (%f, %f)", anchorPoint.x, anchorPoint.y);
+  
 	[UIView animateWithDuration:0.3 animations:^{
 		
 		CGFloat scale = self.scrollView.zoomScale;
@@ -217,19 +221,21 @@
 		self.needsOffsetAdjustmentOnLayout = NO;
 		self.needsInsetAdjustmentOnLayout = YES;
 		
-		if (scale > 1) {
-			
+		if (scale > 1) { // Zoom back to normal
+      
 			CGPoint oldOffset = self.scrollView.contentOffset;
-			[self.scrollView setZoomScale:1 animated:NO];
+      [self.scrollView setZoomScale:1 animated:NO];
 			[self.scrollView setContentOffset:oldOffset animated:NO];
-			
+      
+      self.imageView.layer.anchorPoint = CGPointMake(0.5, 0.5);
 			self.needsOffsetAdjustmentOnLayout = YES;
 			[self layoutSubviews];
 			
-		} else {
+		} else { // Zoom In
 			
-			[self.scrollView setZoomScale:self.scrollView.maximumZoomScale animated:NO];
-			
+      self.imageView.layer.anchorPoint = anchorPoint;
+      [self.scrollView setZoomScale:self.scrollView.maximumZoomScale animated:YES];
+      
 		}
 		
 	}];
