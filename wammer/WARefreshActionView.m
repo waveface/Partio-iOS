@@ -6,9 +6,15 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "WARefreshActionView.h"
 #import "WADefines.h"
 #import "WARemoteInterface.h"
+
+#import "FIFactory.h"
+#import "FISoundEngine.h"
+#import "FISound.h"
 
 @interface WARefreshActionView ()
 
@@ -18,11 +24,24 @@
 @property (nonatomic, readwrite, retain) UIButton *actionButton;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicatorView;
 
+@property (nonatomic, readwrite, assign) BOOL currentlyBusy;
+@property (nonatomic, readwrite, assign) BOOL requiresSoundEffectOnSessionEnd;
+
+@property (nonatomic, readwrite, retain) FIFactory *soundFactory;
+@property (nonatomic, readwrite, retain) FISoundEngine *soundEngine;
+@property (nonatomic, readwrite, retain) FISound *refreshStartSound;
+@property (nonatomic, readwrite, retain) FISound *refreshEndSound;
+
+- (void) playRefreshStartSoundEffect;
+- (void) playRefreshEndSoundEffect;
+
 @end
 
 
 @implementation WARefreshActionView
 @synthesize interface, actionButton, activityIndicatorView;
+@synthesize currentlyBusy, requiresSoundEffectOnSessionEnd;
+@synthesize soundFactory, soundEngine, refreshStartSound, refreshEndSound;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -45,6 +64,8 @@
 	
 	[self.interface addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	
+	[self soundEngine];
+	
 	return self;
 
 }
@@ -56,6 +77,9 @@
 	[interface release];
 	[actionButton release];
 	[activityIndicatorView release];
+	
+	[soundFactory release];
+	[soundEngine release];
 	
 	[super dealloc];
 
@@ -69,7 +93,7 @@
 	actionButton = [WAButtonForImage(WABarButtonImageFromImageNamed(@"WARefreshGlyph")) retain];
 
 	actionButton.contentEdgeInsets = UIEdgeInsetsZero;
-	actionButton.imageEdgeInsets = (UIEdgeInsets){ 0, 0, 0, 2 };
+	actionButton.imageEdgeInsets = (UIEdgeInsets){ 0, -2, 0, 2 };
 
 	[actionButton addTarget:self action:@selector(handleActionButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 	
@@ -95,6 +119,8 @@
 - (void) handleActionButtonTap:(UIButton *)sender {
 
 	[self.interface performAutomaticRemoteUpdatesNow];
+	[self playRefreshStartSoundEffect];
+	[self setRequiresSoundEffectOnSessionEnd:YES];
 	[self updateStateAnimated:YES];
 
 }
@@ -118,6 +144,8 @@
 
 		if (self.interface.performingAutomaticRemoteUpdates) {
 		
+			self.currentlyBusy = YES;
+		
 			self.actionButton.alpha = 0;
 			self.actionButton.transform = CGAffineTransformConcat(
 				CGAffineTransformMakeRotation(30 * (2 * M_PI / 360.0f)),
@@ -126,6 +154,8 @@
 		
 		} else {
 
+			self.currentlyBusy = NO;
+			
 			self.actionButton.alpha = 1;
 			self.actionButton.transform = CGAffineTransformIdentity;
 			self.activityIndicatorView.alpha = 0;
@@ -144,6 +174,78 @@
 	
 	}
 
+}
+
+- (void) setCurrentlyBusy:(BOOL)newCurrentlyBusy {
+
+	if (currentlyBusy == newCurrentlyBusy)
+		return;
+	
+	if (currentlyBusy && !newCurrentlyBusy)
+	if (requiresSoundEffectOnSessionEnd) {
+		self.requiresSoundEffectOnSessionEnd = NO;
+		[self playRefreshEndSoundEffect];
+	}
+	
+	currentlyBusy = newCurrentlyBusy;
+
+}
+
+- (FIFactory *) soundFactory {
+
+	if (soundFactory)
+		return soundFactory;
+		
+	soundFactory = [[FIFactory alloc] init];
+	return soundFactory;
+
+}
+
+- (FISoundEngine *) soundEngine {
+
+	if (soundEngine)
+		return soundEngine;
+	
+	soundEngine = [[self.soundFactory buildSoundEngine] retain];
+	[soundEngine activateAudioSessionWithCategory:AVAudioSessionCategoryAmbient];
+	[soundEngine openAudioDevice];
+		
+	return soundEngine;
+
+}
+
+- (FISound *) refreshStartSound {
+
+	if (refreshStartSound)
+		return refreshStartSound;
+	
+	refreshStartSound = [[self.soundFactory loadSoundNamed:@"WASoundRefreshStarted.caf"] retain];
+	return refreshStartSound;
+
+}
+
+- (FISound *) refreshEndSound {
+
+	if (refreshEndSound)
+		return refreshEndSound;
+	
+	refreshEndSound = [[self.soundFactory loadSoundNamed:@"WASoundRefreshEnded.caf"] retain];	
+	return refreshEndSound;
+
+}
+
+- (void) playRefreshStartSoundEffect {
+
+	[self soundEngine];
+	[self.refreshStartSound play];
+	
+}
+
+- (void) playRefreshEndSoundEffect {
+
+	[self soundEngine];
+	[self.refreshEndSound play];
+	
 }
 
 @end

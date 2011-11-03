@@ -31,6 +31,13 @@
 		FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF0B2A2E1438921100309F0E /* WADefaults.plist */; };
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
 		FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */; };
+		FF1A10571462AD54004FD00D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10561462AD54004FD00D /* AVFoundation.framework */; };
+		FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10511462ACDB004FD00D /* libFinch.a */; };
+		FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10591462B0F0004FD00D /* CoreAudio.framework */; };
+		FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A105B1462B100004FD00D /* AudioToolbox.framework */; };
+		FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A105D1462B10C004FD00D /* OpenAL.framework */; };
+		FF1A10651462D8CC004FD00D /* WASoundRefreshEnded.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */; };
+		FF1A10661462D8CC004FD00D /* WASoundRefreshStarted.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
 		FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */; };
@@ -200,6 +207,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FF1A10501462ACDB004FD00D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D2AA93E14174FA000F4071B;
+			remoteInfo = Finch;
+		};
+		FF1A10521462ACDB004FD00D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D1BA656141A45B6004A5A9F;
+			remoteInfo = Tests;
+		};
+		FF1A10541462ACDB004FD00D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D2AA971141750F700F4071B;
+			remoteInfo = "Finch Demo";
+		};
 		FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A53513D6C2CC00D54EC6 /* Project object */;
@@ -454,6 +482,13 @@
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
 		FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAuthenticationRequestViewController.h; sourceTree = "<group>"; };
 		FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAuthenticationRequestViewController.m; sourceTree = "<group>"; };
+		FF1A10461462ACDB004FD00D /* Finch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Finch.xcodeproj; path = external/Finch/Finch.xcodeproj; sourceTree = "<group>"; };
+		FF1A10561462AD54004FD00D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		FF1A10591462B0F0004FD00D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		FF1A105B1462B100004FD00D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		FF1A105D1462B10C004FD00D /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshEnded.caf; path = Resources/WASoundRefreshEnded.caf; sourceTree = "<group>"; };
+		FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshStarted.caf; path = Resources/WASoundRefreshStarted.caf; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternCarbonFibre.png; path = Resources/WAPatternCarbonFibre.png; sourceTree = "<group>"; };
@@ -665,6 +700,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
+				FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */,
+				FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */,
+				FF1A10571462AD54004FD00D /* AVFoundation.framework in Frameworks */,
 				FFCFE0B2142111E100B9E6AF /* MessageUI.framework in Frameworks */,
 				FFCFE0B3142111E100B9E6AF /* Security.framework in Frameworks */,
 				FFCFE0B4142111E100B9E6AF /* AssetsLibrary.framework in Frameworks */,
@@ -675,6 +714,7 @@
 				FFCFE0B9142111E100B9E6AF /* QuartzCore.framework in Frameworks */,
 				FFCFE0BA142111E100B9E6AF /* CoreData.framework in Frameworks */,
 				FFCFE0BB142111E100B9E6AF /* CoreText.framework in Frameworks */,
+				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
 				FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */,
 				FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */,
 				FFCFE0BE142111E100B9E6AF /* libIRWebAPIKit.a in Frameworks */,
@@ -682,7 +722,7 @@
 				FFCFE0C0142111E100B9E6AF /* libIRDiscreteLayoutManager.a in Frameworks */,
 				FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */,
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
-				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
+				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -715,6 +755,16 @@
 			);
 			name = iPhone;
 			path = wammer;
+			sourceTree = "<group>";
+		};
+		FF1A10471462ACDB004FD00D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF1A10511462ACDB004FD00D /* libFinch.a */,
+				FF1A10531462ACDB004FD00D /* Tests.octest */,
+				FF1A10551462ACDB004FD00D /* Finch Demo.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
@@ -857,6 +907,7 @@
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
+				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1071,6 +1122,8 @@
 				FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */,
 				4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */,
 				4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */,
+				FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */,
+				FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */,
 			);
 			name = Resources;
 			path = wammer;
@@ -1177,6 +1230,10 @@
 				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
 				FF666C2F140CD31C00C35CED /* Security.framework */,
 				FF61635E141618BD004738D3 /* MessageUI.framework */,
+				FF1A10561462AD54004FD00D /* AVFoundation.framework */,
+				FF1A105D1462B10C004FD00D /* OpenAL.framework */,
+				FF1A105B1462B100004FD00D /* AudioToolbox.framework */,
+				FF1A10591462B0F0004FD00D /* CoreAudio.framework */,
 				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 			);
 			name = iOS;
@@ -1257,6 +1314,10 @@
 					ProjectRef = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
 				},
 				{
+					ProductGroup = FF1A10471462ACDB004FD00D /* Products */;
+					ProjectRef = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
+				},
+				{
 					ProductGroup = FFBA66E3140E12AD00BE5A1D /* Products */;
 					ProjectRef = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
 				},
@@ -1287,6 +1348,27 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FF1A10511462ACDB004FD00D /* libFinch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFinch.a;
+			remoteRef = FF1A10501462ACDB004FD00D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF1A10531462ACDB004FD00D /* Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = Tests.octest;
+			remoteRef = FF1A10521462ACDB004FD00D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF1A10551462ACDB004FD00D /* Finch Demo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Finch Demo.app";
+			remoteRef = FF1A10541462ACDB004FD00D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1534,6 +1616,8 @@
 				FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */,
 				FA259F451457E96300F79C8F /* WASettingsGlyphWhiteAlt.png in Resources */,
 				FA259F461457E96300F79C8F /* WASettingsGlyphWhiteAlt@2x.png in Resources */,
+				FF1A10651462D8CC004FD00D /* WASoundRefreshEnded.caf in Resources */,
+				FF1A10661462D8CC004FD00D /* WASoundRefreshStarted.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1767,7 +1851,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 80;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1789,6 +1873,8 @@
 					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
 					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
+					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
+					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -1813,7 +1899,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 79;
+				CURRENT_PROJECT_VERSION = 80;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -1828,6 +1914,8 @@
 					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
 					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
+					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
+					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
