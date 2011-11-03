@@ -37,3 +37,6 @@
 [submodule "external/IRTextAttributor"]
 	path = external/IRTextAttributor
 	url = git://github.com/iridia/IRTextAttributor.git
+[submodule "external/Finch"]
+	path = external/Finch
+	url = git://github.com/iridia/Finch.git
