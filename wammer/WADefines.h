@@ -11,10 +11,13 @@
 @class IRBarButtonItem, IRBorder;
 
 extern NSString * const kWARemoteEndpointURL;
+extern NSString * const kWARemoteEndpointVersion;
+extern NSString * const kWARemoteEndpointCurrentVersion;
 extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
 
 extern void WARegisterUserDefaults (void);
+extern NSDictionary * WAPresetDefaults (void);
 
 extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
 extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));

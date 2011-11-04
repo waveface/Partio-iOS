@@ -38,6 +38,9 @@
 		FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A105D1462B10C004FD00D /* OpenAL.framework */; };
 		FF1A10651462D8CC004FD00D /* WASoundRefreshEnded.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */; };
 		FF1A10661462D8CC004FD00D /* WASoundRefreshStarted.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */; };
+		FF22283B1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */; };
+		FF22283E1463D2BE00541E31 /* WARemoteInterfaceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */; };
+		FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
 		FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */; };
@@ -491,6 +494,12 @@
 		FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshStarted.caf; path = Resources/WASoundRefreshStarted.caf; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
+		FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADataStore+WARemoteInterfaceAdditions.h"; sourceTree = "<group>"; };
+		FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADataStore+WARemoteInterfaceAdditions.m"; sourceTree = "<group>"; };
+		FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceContext.h; sourceTree = "<group>"; };
+		FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceContext.m; sourceTree = "<group>"; };
+		FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+ScheduledDataRetrieval.h"; sourceTree = "<group>"; };
+		FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+ScheduledDataRetrieval.m"; sourceTree = "<group>"; };
 		FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternCarbonFibre.png; path = Resources/WAPatternCarbonFibre.png; sourceTree = "<group>"; };
 		FF24072D13F2881E000B2CAA /* WAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAViewController.h; sourceTree = "<group>"; };
 		FF24072E13F2881E000B2CAA /* WAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAViewController.m; sourceTree = "<group>"; };
@@ -1027,6 +1036,12 @@
 			children = (
 				FF97384713D8278E003D1722 /* WARemoteInterface.h */,
 				FF97384813D8278E003D1722 /* WARemoteInterface.m */,
+				FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */,
+				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
+				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
+				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
+				FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */,
+				FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */,
 			);
 			name = API;
 			path = wammer;
@@ -1740,6 +1755,9 @@
 				FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */,
 				FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */,
 				FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */,
+				FF22283B1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m in Sources */,
+				FF22283E1463D2BE00541E31 /* WARemoteInterfaceContext.m in Sources */,
+				FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

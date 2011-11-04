@@ -11,6 +11,7 @@
 #import "WARefreshActionView.h"
 #import "WADefines.h"
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 
 #import "FIFactory.h"
 #import "FISoundEngine.h"
@@ -91,9 +92,11 @@
 		return actionButton;
 	
 	actionButton = [WAButtonForImage(WABarButtonImageFromImageNamed(@"WARefreshGlyph")) retain];
+	actionButton.frame = (CGRect){ CGPointZero, (CGSize){ 25, 25 }};
 
 	actionButton.contentEdgeInsets = UIEdgeInsetsZero;
-	actionButton.imageEdgeInsets = (UIEdgeInsets){ 0, -2, 0, 2 };
+	actionButton.imageEdgeInsets = (UIEdgeInsets){ 0, -1, 0, 0 };
+	actionButton.imageView.contentMode = UIViewContentModeTopLeft;
 
 	[actionButton addTarget:self action:@selector(handleActionButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 	
