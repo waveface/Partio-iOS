@@ -8,6 +8,7 @@
 
 #import "WAAuthenticationRequestViewController.h"
 #import "WARemoteInterface.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAOverlayBezel.h"
 
