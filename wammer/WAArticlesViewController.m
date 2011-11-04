@@ -9,6 +9,7 @@
 #import "WAArticlesViewController.h"
 #import "WADataStore.h"
 #import "WARemoteInterface.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WACompositionViewController.h"
 #import "WACompositionViewController+CustomUI.h"
 

@@ -9,9 +9,10 @@
 #import "WADefines.h"
 
 #import "WAUserSelectionViewController.h"
-#import "WADataStore.h"
-#import "WAUser.h"
 #import "WARemoteInterface.h"
+#import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WAUser.h"
 
 @interface WAUserSelectionViewController ()
 

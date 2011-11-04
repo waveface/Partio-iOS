@@ -14,6 +14,7 @@
 #import "WAPaginationSlider.h"
 
 #import "WARemoteInterface.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "IRPaginatedView.h"
 #import "IRBarButtonItem.h"
