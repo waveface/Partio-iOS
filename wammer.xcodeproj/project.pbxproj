@@ -2009,12 +2009,10 @@
 		FFCFE0F9142111E100B9E6AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
-				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
@@ -2024,12 +2022,10 @@
 		FFCFE0FA142111E100B9E6AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
-				SDKROOT = iphoneos4.3;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
