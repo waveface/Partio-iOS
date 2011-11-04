@@ -9,6 +9,12 @@
 #import "WADefines.h"
 #import "WARemoteInterfaceContext.h"
 
+@interface WARemoteInterfaceContext ()
+
++ (NSDictionary *) methodMap;
+
+@end
+
 @implementation WARemoteInterfaceContext
 
 + (WARemoteInterfaceContext *) context {
@@ -19,33 +25,40 @@
 	
 }
 
++ (NSDictionary *) methodMap {
+
+	static NSDictionary *map = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+   
+		map = [[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			@"auth/login/", @"authenticate",
+			@"posts/fetch_all/", @"articles",
+			@"users/fetch_all/", @"users",
+			@"post/create_new_post/", @"createArticle",
+			@"file/upload_file/", @"createFile",
+			@"post/create_new_comment/", @"createComment",
+			@"users/latest_read_post_id/", @"lastReadArticleContext",
+			
+		nil] retain];
+		
+	});
+
+	return map;
+
+}
+
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
 
 	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];
+	NSString *mappedPath = nil;
 	
-	if ([inMethodName isEqualToString:@"authenticate"])
-		returnedURL = [NSURL URLWithString:@"auth/login/" relativeToURL:self.baseURL];
+	if ((mappedPath = [[[self class] methodMap] objectForKey:inMethodName]))
+		return [NSURL URLWithString:mappedPath relativeToURL:self.baseURL];
 	
-	if ([inMethodName isEqualToString:@"articles"])
-		returnedURL = [NSURL URLWithString:@"posts/fetch_all/" relativeToURL:self.baseURL];
-	
-	if ([inMethodName isEqualToString:@"users"])
-		returnedURL = [NSURL URLWithString:@"users/fetch_all/" relativeToURL:self.baseURL];
-		
-	if ([inMethodName isEqualToString:@"createArticle"])
-		returnedURL = [NSURL URLWithString:@"post/create_new_post/" relativeToURL:self.baseURL];
-		
-	if ([inMethodName isEqualToString:@"createFile"])
-		returnedURL = [NSURL URLWithString:@"file/upload_file/" relativeToURL:self.baseURL];
-		
-	if ([inMethodName isEqualToString:@"createComment"])
-		returnedURL = [NSURL URLWithString:@"post/create_new_comment/" relativeToURL:self.baseURL];
-	
-	if ([inMethodName isEqualToString:@"lastReadArticleContext"])
-		returnedURL = [NSURL URLWithString:@"users/latest_read_post_id/" relativeToURL:self.baseURL];
-		
 	return returnedURL;
-
+	
 }
 
 @end
