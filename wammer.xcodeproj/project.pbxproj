@@ -231,6 +231,13 @@
 			remoteGlobalIDString = 0D2AA971141750F700F4071B;
 			remoteInfo = "Finch Demo";
 		};
+		FF22290F1463FF9B00541E31 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0D2AA93D14174FA000F4071B;
+			remoteInfo = Finch;
+		};
 		FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A53513D6C2CC00D54EC6 /* Project object */;
@@ -1287,6 +1294,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FF2229101463FF9B00541E31 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
 				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07B142111E100B9E6AF /* PBXTargetDependency */,
@@ -1764,6 +1772,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FF2229101463FF9B00541E31 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Finch;
+			targetProxy = FF22290F1463FF9B00541E31 /* PBXContainerItemProxy */;
+		};
 		FF335A3F1445F12B00E60C14 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */;
@@ -2009,12 +2022,10 @@
 		FFCFE0F9142111E100B9E6AF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
@@ -2024,12 +2035,10 @@
 		FFCFE0FA142111E100B9E6AF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				PRODUCT_NAME = "wammer-iOS";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WRAPPER_EXTENSION = app;
