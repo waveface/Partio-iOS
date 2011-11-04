@@ -17,16 +17,13 @@
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WARemoteInterfaceContext.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 
 static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 @interface WARemoteInterface ()
 
 + (JSONDecoder *) sharedDecoder;
-
-@property (nonatomic, readwrite, retain) NSTimer *dataRetrievalTimer;
-@property (nonatomic, readwrite, assign) int dataRetrievalTimerPostponingCount;
-@property (nonatomic, readwrite, assign) int automaticRemoteUpdatesPerformingCount;
 
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer;
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer;
@@ -36,9 +33,6 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 @implementation WARemoteInterface
 
 @synthesize userIdentifier, userToken, defaultBatchSize;
-@synthesize dataRetrievalBlocks, dataRetrievalInterval, nextRemoteDataRetrievalFireDate;
-@synthesize dataRetrievalTimer, dataRetrievalTimerPostponingCount;
-@synthesize performingAutomaticRemoteUpdates, automaticRemoteUpdatesPerformingCount;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -94,10 +88,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) dealloc {
-
-	[dataRetrievalBlocks release];
-	[nextRemoteDataRetrievalFireDate release];
-	
+		
 	[super dealloc];
 
 }
@@ -487,174 +478,6 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
 		
 	}];
-
-}
-
-- (void) rescheduleAutomaticRemoteUpdates {
-
-	[self.dataRetrievalTimer invalidate];
-	self.dataRetrievalTimer = nil;
-
-	self.dataRetrievalTimer = [NSTimer scheduledTimerWithTimeInterval:self.dataRetrievalInterval target:self selector:@selector(handleDataRetrievalTimerDidFire:) userInfo:nil repeats:NO];
-
-}
-
-- (void) performAutomaticRemoteUpdatesNow {
-
-	[self.dataRetrievalTimer fire];
-	[self.dataRetrievalTimer invalidate];
-	[self rescheduleAutomaticRemoteUpdates];
-
-}
-
-- (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
-
-	[self.dataRetrievalBlocks irExecuteAllObjectsAsBlocks];
-	[self rescheduleAutomaticRemoteUpdates];
-
-}
-
-- (void) beginPostponingDataRetrievalTimerFiring {
-
-	if (![NSThread isMainThread]) {
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
-		});
-		return;
-	}
-	
-	[self willChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
-	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount + 1;
-	[self didChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
-	
-	if (self.dataRetrievalTimerPostponingCount == 1) {
-		[self.dataRetrievalTimer invalidate];
-		self.dataRetrievalTimer = nil;
-	}
-
-}
-
-- (void) endPostponingDataRetrievalTimerFiring {
-	
-	if (![NSThread isMainThread]) {
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
-		});
-		return;
-	}
-
-	NSParameterAssert(self.dataRetrievalTimerPostponingCount);
-	[self willChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
-	self.dataRetrievalTimerPostponingCount = self.dataRetrievalTimerPostponingCount - 1;
-	[self didChangeValueForKey:@"isPostponingDataRetrievalTimerFiring"];
-	
-	if (!self.dataRetrievalTimerPostponingCount) {
-		[self rescheduleAutomaticRemoteUpdates];
-	}
-
-}
-
-- (BOOL) isPostponingDataRetrievalTimerFiring {
-
-	return !!(self.dataRetrievalTimerPostponingCount);
-
-}
-
-- (void) beginPerformingAutomaticRemoteUpdates {
-
-	if (![NSThread isMainThread]) {
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
-		});
-		return;
-	}
-	
-	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
-	self.automaticRemoteUpdatesPerformingCount = self.automaticRemoteUpdatesPerformingCount + 1;
-	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
-
-}
-
-- (void) endPerformingAutomaticRemoteUpdates {
-
-	if (![NSThread isMainThread]) {
-		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
-		});
-		return;
-	}
-
-	NSParameterAssert(self.dataRetrievalTimerPostponingCount);
-	
-	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
-	self.automaticRemoteUpdatesPerformingCount = self.automaticRemoteUpdatesPerformingCount - 1;
-	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
-	
-}
-
-- (BOOL) isPerformingAutomaticRemoteUpdates {
-
-	return !!(self.automaticRemoteUpdatesPerformingCount);
-
-}
-
-- (NSArray *) defaultDataRetrievalBlocks {
-
-	__block __typeof__(self) nrSelf = self;
-
-	return [NSArray arrayWithObjects:
-	
-		[[ ^ {
-
-			[nrSelf beginPerformingAutomaticRemoteUpdates];		
-			[nrSelf beginPostponingDataRetrievalTimerFiring];
-		
-			[nrSelf retrieveLastReadArticleRemoteIdentifierOnSuccess: ^ (NSString *lastID, NSDate *modDate) {
-				
-				[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-				
-					[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-					
-						[nrSelf endPerformingAutomaticRemoteUpdates];		
-						[nrSelf endPostponingDataRetrievalTimerFiring];
-					
-					} onFailure: ^ {
-					
-						[nrSelf endPerformingAutomaticRemoteUpdates];		
-						[nrSelf endPostponingDataRetrievalTimerFiring];
-					
-					}];
-				
-				} onFailure: ^ {
-				
-					[nrSelf endPerformingAutomaticRemoteUpdates];		
-					[nrSelf endPostponingDataRetrievalTimerFiring];
-				
-				}];
-		
-			} onFailure: ^ (NSError *error) {
-			
-				[nrSelf endPerformingAutomaticRemoteUpdates];		
-				[nrSelf endPostponingDataRetrievalTimerFiring];
-			
-			}];
-	
-		} copy] autorelease],
-	
-	nil];
-
-}
-
-- (void) addRepeatingDataRetrievalBlock:(void(^)(void))aBlock {
-
-	[[self mutableArrayValueForKey:@"dataRetrievalBlocks"] irEnqueueBlock:aBlock];
-
-}
-
-- (void) addRepeatingDataRetrievalBlocks:(NSArray *)blocks{
-
-	for (void(^aBlock)(void) in blocks)
-		[self addRepeatingDataRetrievalBlock:aBlock];
 
 }
 

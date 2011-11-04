@@ -11,6 +11,7 @@
 #import "WARefreshActionView.h"
 #import "WADefines.h"
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 
 #import "FIFactory.h"
 #import "FISoundEngine.h"
