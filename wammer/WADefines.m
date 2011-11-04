@@ -15,6 +15,8 @@
 #import "UIImage+IRAdditions.h"
 
 NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
+NSString * const kWARemoteEndpointVersion = @"WARemoteEndpointVersion";
+NSString * const kWARemoteEndpointCurrentVersion = @"WARemoteEndpointCurrentVersion";
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 
@@ -93,11 +95,17 @@ void kWADefaultBarButtonInitialize (void) {
 
 void WARegisterUserDefaults () {
 
+	[[NSUserDefaults standardUserDefaults] registerDefaults:WAPresetDefaults()];
+
+}
+
+NSDictionary * WAPresetDefaults () {
+
 	NSURL *defaultsURL = [[NSBundle mainBundle] URLForResource:@"WADefaults" withExtension:@"plist"];
 	NSData *defaultsData = [NSData dataWithContentsOfMappedFile:[defaultsURL path]];
 	NSDictionary *defaultsObject = [NSPropertyListSerialization propertyListFromData:defaultsData mutabilityOption:NSPropertyListImmutable format:nil errorDescription:nil];
 	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:defaultsObject];
+	return defaultsObject;
 
 }
 
