@@ -24,9 +24,14 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 @interface WARemoteInterface ()
 
 + (JSONDecoder *) sharedDecoder;
++ (id) decodedJSONObjectFromData:(NSData *)data;
++ (IRWebAPIResponseParser) defaultParser;
 
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer;
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer;
+
+- (IRWebAPIRequestContextTransformer) defaultV1AuthenticationSignatureBlock DEPRECATED_ATTRIBUTE;
+- (IRWebAPIRequestContextTransformer) defaultV1QueryHack DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -69,6 +74,27 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 }
 
++ (IRWebAPIResponseParser) defaultParser {
+
+	__block __typeof__(self) nrSelf = self;
+
+	return [[ ^ (NSData *incomingData) {
+	
+		NSError *parsingError = nil;
+		id anObject = [[nrSelf sharedDecoder] objectWithData:incomingData error:&parsingError];
+		
+		if (!anObject) {
+			NSLog(@"Error parsing: %@", parsingError);
+			NSLog(@"Original content is %@", incomingData);
+			return (NSDictionary *)nil;
+		}
+		
+		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
+	
+	} copy] autorelease];
+
+}
+
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer {
 
 	return [[ ^ (NSDictionary *inOriginalContext) {
@@ -93,16 +119,13 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 }
 
-- (id) init {
+- (IRWebAPIRequestContextTransformer) defaultV1AuthenticationSignatureBlock {
 
-	IRWebAPIEngine *engine = [[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] autorelease];	
+	__block __typeof__(self) nrSelf = self;
 	
-	[engine.globalRequestPreTransformers addObject:[[self class] defaultBeginNetworkActivityTransformer]];
-	[engine.globalResponsePostTransformers addObject:[[self class] defaultEndNetworkActivityTransformer]];
-		
-	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
+	return [[ ^ (NSDictionary *inOriginalContext) {
 			
-		if (self.userToken && self.userIdentifier) {
+		if (nrSelf.userToken && nrSelf.userIdentifier) {
 
 				NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
 				NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
@@ -111,8 +134,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 				
 					NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
 					[mutatedContext setObject:mutatedFormMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
-					[mutatedFormMultipartFields setObject:self.userIdentifier forKey:@"creator_id"];
-					[mutatedFormMultipartFields setObject:self.userToken forKey:@"token"];
+					[mutatedFormMultipartFields setObject:nrSelf.userIdentifier forKey:@"creator_id"];
+					[mutatedFormMultipartFields setObject:nrSelf.userToken forKey:@"token"];
 					
 				} else {
 				
@@ -123,8 +146,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 							mutatedQueryParams = [NSMutableDictionary dictionary];
 					
 					[mutatedContext setObject:mutatedQueryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
-					[mutatedQueryParams setObject:self.userIdentifier forKey:@"creator_id"];
-					[mutatedQueryParams setObject:self.userToken forKey:@"token"];
+					[mutatedQueryParams setObject:nrSelf.userIdentifier forKey:@"creator_id"];
+					[mutatedQueryParams setObject:nrSelf.userToken forKey:@"token"];
 				
 				}
 				
@@ -134,16 +157,22 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 		return inOriginalContext;
 	
-	} copy] autorelease]];
+	} copy] autorelease];
+
+}
+
+- (IRWebAPIRequestContextTransformer) defaultV1QueryHack {
+
+	__block __typeof__(self) nrSelf = self;
 	
-	[engine.globalRequestPreTransformers addObject:[[ ^ (NSDictionary *inOriginalContext) {
+	return [[ ^ (NSDictionary *inOriginalContext) {
 	
 		//	Transforms example.com?queryparam=value&… to example.com/queryparam/value/…
 	
 		NSDictionary *queryParameters = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
 		NSURL *requestURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
 		
-		if (![[requestURL host] isEqual:[engine.context.baseURL host]])
+		if (![[requestURL host] isEqual:[nrSelf.engine.context.baseURL host]])
 			return inOriginalContext;
 		
 		if (![[inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPMethod] isEqual:@"GET"])
@@ -160,27 +189,13 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 		
 		return returnedContext;
 	
-	} copy] autorelease]];
+	} copy] autorelease];
 	
-	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
-	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
-	
-	engine.parser = ^ (NSData *incomingData) {
-	
-		NSError *parsingError = nil;
-		id anObject = [[WARemoteInterface sharedDecoder] objectWithData:incomingData error:&parsingError];
-		
-		if (!anObject) {
-			NSLog(@"Error parsing: %@", parsingError);
-			NSLog(@"Original content is %@", incomingData);
-			return (NSDictionary *)nil;
-		}
-		
-		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
-	
-	};
+}
 
-	self = [self initWithEngine:engine authenticator:nil];
+- (id) init {
+
+	self = [self initWithEngine:[[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] autorelease] authenticator:nil];
 	if (!self)
 		return nil;
 	
@@ -189,6 +204,27 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];
+	
+	return self;
+
+}
+
+- (id) initWithEngine:(IRWebAPIEngine *)engine authenticator:(IRWebAPIAuthenticator *)inAuthenticator {
+
+	self = [super initWithEngine:engine authenticator:inAuthenticator];
+	if (!self)
+		return nil;
+
+	[engine.globalRequestPreTransformers addObject:[[self class] defaultBeginNetworkActivityTransformer]];
+	[engine.globalResponsePostTransformers addObject:[[self class] defaultEndNetworkActivityTransformer]];
+		
+	[engine.globalRequestPreTransformers addObject:[self defaultV1AuthenticationSignatureBlock]];
+	[engine.globalRequestPreTransformers addObject:[self defaultV1QueryHack]];
+
+	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
+	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
+	
+	engine.parser = [[self class] defaultParser];
 	
 	return self;
 
@@ -239,8 +275,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	[self.engine fireAPIRequestNamed:@"users" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
-	nil] options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	[self.engine fireAPIRequestNamed:@"users" withArguments:nil options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 		
 		NSArray *userReps = [inResponseOrNil objectForKey:@"users"];
 		return [userReps isKindOfClass:[NSArray class]];
