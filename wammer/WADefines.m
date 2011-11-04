@@ -16,6 +16,7 @@
 
 NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
 NSString * const kWARemoteEndpointVersion = @"WARemoteEndpointVersion";
+NSString * const kWARemoteEndpointCurrentVersion = @"WARemoteEndpointCurrentVersion";
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 

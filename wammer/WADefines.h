@@ -12,6 +12,7 @@
 
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWARemoteEndpointVersion;
+extern NSString * const kWARemoteEndpointCurrentVersion;
 extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
 

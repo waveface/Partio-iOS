@@ -19,7 +19,28 @@
 
 + (WARemoteInterfaceContext *) context {
 
-	NSString *preferredEndpointURLString = [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+	NSString *preferredEndpointURLString = [defaults stringForKey:kWARemoteEndpointURL];
+	float_t preferredEndpointVersion = [defaults floatForKey:kWARemoteEndpointVersion];
+	float_t allowedEndpointVersion = [defaults floatForKey:kWARemoteEndpointCurrentVersion];
+	
+	if (preferredEndpointVersion < allowedEndpointVersion) {
+	
+		[defaults removeObjectForKey:kWARemoteEndpointURL];
+		preferredEndpointURLString = [defaults stringForKey:kWARemoteEndpointURL];
+		
+		[defaults removeObjectForKey:kWARemoteEndpointVersion];
+		preferredEndpointVersion = allowedEndpointVersion;
+		
+		[defaults setFloat:preferredEndpointVersion forKey:kWARemoteEndpointVersion];
+		
+		[defaults synchronize];
+
+	}
+	
+	//	Talk with defaults
+	
 	NSURL *baseURL = [NSURL URLWithString:preferredEndpointURLString];
 	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
 	
