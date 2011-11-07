@@ -20,6 +20,8 @@ NSString * const kWARemoteEndpointCurrentVersion = @"WARemoteEndpointCurrentVers
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 
+NSString * const kWARemoteEndpointApplicationKey = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
+
 static IRBorder *kWADefaultBarButtonBorder;
 static IRShadow *kWADefaultBarButtonInnerShadow;
 static IRShadow *kWADefaultBarButtonShadow;
