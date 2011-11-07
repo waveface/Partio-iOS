@@ -20,6 +20,14 @@
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
 
 static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
+void WARemoteInterface_finishPorting (void);
+
+void WARemoteInterface_finishPorting (void) {
+
+	[NSException raise:NSObjectNotAvailableException format:@"%s has not been modified to use v.2 API methods.  Returning immediately."];
+
+}
+
 
 @interface WARemoteInterface ()
 
@@ -329,6 +337,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
+	WARemoteInterface_finishPorting();
+
 	[self.engine fireAPIRequestNamed:@"users" withArguments:nil options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 		
 		NSArray *userReps = [inResponseOrNil objectForKey:@"users"];
@@ -351,6 +361,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	WARemoteInterface_finishPorting();
 
 	[self beginPostponingDataRetrievalTimerFiring];
 
@@ -382,6 +394,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *retrievedArticleRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {	
+
+	WARemoteInterface_finishPorting();
 	
 	[self.engine fireAPIRequestNamed:[@"article" stringByAppendingPathComponent:anIdentifier] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
@@ -398,6 +412,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSArray *retrievedComentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	WARemoteInterface_finishPorting();
 
 	[self beginPostponingDataRetrievalTimerFiring];
 
@@ -420,6 +436,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	WARemoteInterface_finishPorting();
 
 	[self.engine fireAPIRequestNamed:@"createArticle" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -453,6 +471,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void(^)(NSDictionary *uploadedFileRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	WARemoteInterface_finishPorting();
 
 	NSURL *movableFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
 	NSURL *newURL = [movableFileURL pathExtension] ? movableFileURL : [NSURL fileURLWithPath:[[[movableFileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
@@ -502,6 +522,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
+	WARemoteInterface_finishPorting();
+
 	[self.engine fireAPIRequestNamed:@"createComment" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 		[NSDictionary dictionaryWithObjectsAndKeys:
@@ -531,6 +553,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 - (void) retrieveLastReadArticleRemoteIdentifierOnSuccess:(void(^)(NSString *lastID, NSDate *modDate))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
+	WARemoteInterface_finishPorting();
+
 	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
     if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"latest_read_post_id"], [inResponseOrNil objectForKey:@"latest_read_post_timestamp"]);
@@ -545,6 +569,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) setLastReadArticleRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	WARemoteInterface_finishPorting();
 
 	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
