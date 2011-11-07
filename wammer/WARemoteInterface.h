@@ -17,9 +17,9 @@
 + (WARemoteInterface *) sharedInterface;
 
 @property (nonatomic, readwrite, assign) NSUInteger defaultBatchSize;
+@property (nonatomic, readwrite, retain) NSString *apiKey;
 @property (nonatomic, readwrite, retain) NSString *userIdentifier;
 @property (nonatomic, readwrite, retain) NSString *userToken;
-
 
 # pragma mark - Users
 

@@ -31,6 +31,8 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer;
 
 - (IRWebAPIRequestContextTransformer) defaultV1AuthenticationSignatureBlock DEPRECATED_ATTRIBUTE;
+- (IRWebAPIRequestContextTransformer) defaultV2AuthenticationSignatureBlock;
+
 - (IRWebAPIRequestContextTransformer) defaultV1QueryHack DEPRECATED_ATTRIBUTE;
 
 @end
@@ -38,6 +40,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 @implementation WARemoteInterface
 
 @synthesize userIdentifier, userToken, defaultBatchSize;
+@synthesize apiKey;
 
 + (WARemoteInterface *) sharedInterface {
 
@@ -114,6 +117,11 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 }
 
 - (void) dealloc {
+
+	[apiKey release];
+	
+	[userIdentifier release];
+	[userToken release];
 		
 	[super dealloc];
 
@@ -161,6 +169,50 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 
 }
 
+- (IRWebAPIRequestContextTransformer) defaultV2AuthenticationSignatureBlock {
+
+	__block __typeof__(self) nrSelf = self;
+	
+	return [[ ^ (NSDictionary *inOriginalContext) {
+			
+		NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
+		NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
+		
+		if (originalFormMultipartFields) {
+		
+			NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
+			[mutatedContext setObject:mutatedFormMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
+			
+			if (nrSelf.apiKey)
+				[mutatedFormMultipartFields setObject:nrSelf.apiKey forKey:@"apikey"];
+			
+			if (nrSelf.userToken)
+				[mutatedFormMultipartFields setObject:nrSelf.userToken forKey:@"session_token"];
+			
+		} else {
+		
+			NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+			NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
+			
+			if (!mutatedQueryParams)
+					mutatedQueryParams = [NSMutableDictionary dictionary];
+			
+			[mutatedContext setObject:mutatedQueryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+			
+			if (nrSelf.apiKey)
+				[mutatedQueryParams setObject:nrSelf.apiKey forKey:@"apikey"];
+			
+			if (nrSelf.userToken)
+				[mutatedQueryParams setObject:nrSelf.userToken forKey:@"session_token"];
+		
+		}
+		
+		return (NSDictionary *)mutatedContext;
+	
+	} copy] autorelease];
+
+}
+
 - (IRWebAPIRequestContextTransformer) defaultV1QueryHack {
 
 	__block __typeof__(self) nrSelf = self;
@@ -201,6 +253,7 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	
 	self.defaultBatchSize = 200;
 	self.dataRetrievalInterval = 30;
+	self.apiKey = kWARemoteEndpointApplicationKey;
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];
@@ -218,8 +271,9 @@ static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
 	[engine.globalRequestPreTransformers addObject:[[self class] defaultBeginNetworkActivityTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[self class] defaultEndNetworkActivityTransformer]];
 		
-	[engine.globalRequestPreTransformers addObject:[self defaultV1AuthenticationSignatureBlock]];
-	[engine.globalRequestPreTransformers addObject:[self defaultV1QueryHack]];
+	[engine.globalRequestPreTransformers addObject:[self defaultV2AuthenticationSignatureBlock]];
+	//	[engine.globalRequestPreTransformers addObject:[self defaultV1AuthenticationSignatureBlock]];
+	//	[engine.globalRequestPreTransformers addObject:[self defaultV1QueryHack]];
 
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
