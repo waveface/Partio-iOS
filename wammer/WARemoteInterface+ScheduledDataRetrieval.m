@@ -140,6 +140,9 @@
 	return [NSArray arrayWithObjects:
 	
 		[[ ^ {
+		
+			if (!nrSelf.userToken)
+				return;
 
 			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
