@@ -330,6 +330,28 @@ void WARemoteInterface_finishPorting (void) {
 
 }
 
+- (void) registerUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	[self.engine fireAPIRequestNamed:@"auth/signup" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"email",
+		IRWebAPIKitRFC3986EncodedStringMake(aPassword), @"password",
+		IRWebAPIKitRFC3986EncodedStringMake(aNickname), @"nickname",
+	
+	nil] successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (successBlock)
+			successBlock([inResponseOrNil valueForKeyPath:@"user"]);
+		
+	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+		if (failureBlock)
+			failureBlock([inResponseContext objectForKey:kIRWebAPIEngineUnderlyingError]);
+		
+	}];
+
+}
+
 - (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	WARemoteInterface_finishPorting();
