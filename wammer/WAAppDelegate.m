@@ -279,7 +279,7 @@
 	
 	if (!authenticationInformationSufficient) {
 	
-		__block UIViewController *userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self) {
+		__block UIViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
 		
 				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken);
 		
@@ -301,8 +301,8 @@
 			
 		}];
 		
-		UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
-		userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+		UINavigationController *authRequestWrappingVC = [[[UINavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -329,7 +329,7 @@
 				})())];
 				
 				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
-				[fullscreenBaseVC presentModalViewController:userSelectionWrappingVC animated:YES];
+				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
 				
 				break;
 			
@@ -338,7 +338,7 @@
 			case UIUserInterfaceIdiomPhone:
 			default: {
 			
-				[self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
+				[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:NO];
 				break;
 				
 			}
