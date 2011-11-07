@@ -299,29 +299,24 @@ void WARemoteInterface_finishPorting (void) {
 
 	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-		IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"userid",
+		IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"email",
 		IRWebAPIKitRFC3986EncodedStringMake(aPassword), @"password",
 	
 	nil] options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
-		if (![[inResponseOrNil objectForKey:@"token"] isKindOfClass:[NSString class]])
-			return NO;
-		
-		if (![[inResponseOrNil objectForKey:@"creator_id"] isKindOfClass:[NSString class]])
+		if (![[inResponseOrNil objectForKey:@"session_token"] isKindOfClass:[NSString class]])
 			return NO;
 		
 		return YES;
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
-		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"token"];
-		NSString *incomingIdentifier = (NSString *)[inResponseOrNil objectForKey:@"creator_id"];
+		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
+		//	NSString *incomingIdentifier = (NSString *)[inResponseOrNil objectForKey:@"creator_id"];
 		
 		if (successBlock) {
-			successBlock(			
-				[NSDictionary dictionaryWithObjectsAndKeys:
-					incomingIdentifier, @"creator_id",
-				nil], 
+			successBlock(
+				[inResponseOrNil valueForKeyPath:@"user"],
 				incomingToken
 			);
 		}
