@@ -8,12 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+//	Error reasons which can be found within the error sent to the controller’s completion block
+extern NSString * kWAAuthenticationRequestUserFailure;
+
+@class WAAuthenticationRequestViewController;
+typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationRequestViewController *self, NSError *error);
+
 @interface WAAuthenticationRequestViewController : UITableViewController
 
-+ (WAAuthenticationRequestViewController *) controllerWithCompletion:(void(^)(WAAuthenticationRequestViewController *self))aBlock;
++ (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock;
 
-@property (nonatomic, readonly, retain) UITextField *usernameField;
-@property (nonatomic, readonly, retain) UITextField *passwordField;
+@property (nonatomic, readonly, retain) NSString *username;
+@property (nonatomic, readonly, retain) NSString *password;
 @property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
 @end

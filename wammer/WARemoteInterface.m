@@ -6,12 +6,17 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#include <AvailabilityMacros.h>
+#import "WADataStore.h"
+
 #import "WADefines.h"
+
 #import "JSONKit.h"
 #import "WARemoteInterface.h"
 #import "IRWebAPIEngine.h"
 #import "IRWebAPIEngine+FormMultipart.h"
 #import "IRWebAPIEngine+LocalCaching.h"
+#import "IRWebAPIEngine+FormURLEncoding.h"
 
 #import "WAAppDelegate.h"
 
@@ -19,14 +24,50 @@
 #import "WARemoteInterfaceContext.h"
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
 
-static NSString *waErrorDomain = @"com.waveface.wammer.remoteInterface.error";
-void WARemoteInterface_finishPorting (void);
+NSString *kWARemoteInterfaceDomain = @"com.waveface.wammer.remoteInterface";
+NSString *kWARemoteInterfaceUnderlyingError = @"WARemoteInterfaceUnderlyingError";
+NSString *kWARemoteInterfaceUnderlyingContext = @"WARemoteInterfaceUnderlyingContext";
+NSString *kWARemoteInterfaceRemoteErrorCode = @"WARemoteInterfaceRemoteErrorCode";
 
-void WARemoteInterface_finishPorting (void) {
+void WARemoteInterfaceNotPorted (void) {
 
 	[NSException raise:NSObjectNotAvailableException format:@"%s has not been modified to use v.2 API methods.  Returning immediately."];
 
 }
+
+NSUInteger WARemoteInterfaceEndpointReturnCode (NSDictionary *response) {
+
+	return [[response valueForKeyPath:@"api_ret_code"] unsignedIntValue];
+
+};
+
+NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context) {
+
+	NSMutableDictionary *errorUserInfo = [NSMutableDictionary dictionary];
+	
+	[errorUserInfo setObject:[NSNumber numberWithUnsignedInt:WARemoteInterfaceEndpointReturnCode(response)] forKey:kWARemoteInterfaceRemoteErrorCode];
+	
+	if ([context objectForKey:kIRWebAPIEngineUnderlyingError])
+		[errorUserInfo setObject:[context objectForKey:kIRWebAPIEngineUnderlyingError] forKey:kWARemoteInterfaceUnderlyingError];
+	
+	if (context)
+		[errorUserInfo setObject:context forKey:kWARemoteInterfaceUnderlyingContext];
+
+	return [NSError errorWithDomain:kWARemoteInterfaceDomain code:0 userInfo:errorUserInfo];
+
+}
+
+IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NSError *)) {
+
+	if (!aFailureBlock)
+		return (IRWebAPICallback)nil;
+	
+	return [[ ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		aFailureBlock(WARemoteInterfaceGenericError(inResponseOrNil, inResponseContext));
+		
+	} copy] autorelease];
+
+};
 
 
 @interface WARemoteInterface ()
@@ -185,6 +226,7 @@ void WARemoteInterface_finishPorting (void) {
 			
 		NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
 		NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
+		NSMutableDictionary *originalFormURLEncodedFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
 		
 		if (originalFormMultipartFields) {
 		
@@ -197,6 +239,17 @@ void WARemoteInterface_finishPorting (void) {
 			if (nrSelf.userToken)
 				[mutatedFormMultipartFields setObject:nrSelf.userToken forKey:@"session_token"];
 			
+		} else if (originalFormURLEncodedFields) {
+		
+			NSMutableDictionary *mutatedFormURLEncodedFields = [[originalFormURLEncodedFields mutableCopy] autorelease];
+			[mutatedContext setObject:mutatedFormURLEncodedFields forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
+			
+			if (nrSelf.apiKey)
+				[mutatedFormURLEncodedFields setObject:nrSelf.apiKey forKey:@"apikey"];
+			
+			if (nrSelf.userToken)
+				[mutatedFormURLEncodedFields setObject:nrSelf.userToken forKey:@"session_token"];
+		
 		} else {
 		
 			NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
@@ -284,6 +337,7 @@ void WARemoteInterface_finishPorting (void) {
 	//	[engine.globalRequestPreTransformers addObject:[self defaultV1QueryHack]];
 
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
+	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormURLEncodingTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
 	
 	engine.parser = [[self class] defaultParser];
@@ -298,11 +352,22 @@ void WARemoteInterface_finishPorting (void) {
 	NSParameterAssert(aPassword);
 
 	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+
+		//	anIdentifier, @"email",
+		//	aPassword, @"password",
 	
-		IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"email",
-		IRWebAPIKitRFC3986EncodedStringMake(aPassword), @"password",
+	nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-	nil] options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+		[NSMutableDictionary dictionaryWithObjectsAndKeys:
+	
+			IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"email",
+			IRWebAPIKitRFC3986EncodedStringMake(aPassword), @"password",
+
+		nil], kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey,
+	
+		@"POST", kIRWebAPIEngineRequestHTTPMethod,
+	
+	nil] validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
 		if (![[inResponseOrNil objectForKey:@"session_token"] isKindOfClass:[NSString class]])
 			return NO;
@@ -321,12 +386,7 @@ void WARemoteInterface_finishPorting (void) {
 			);
 		}
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-
-		if (failureBlock)
-			failureBlock([inResponseContext objectForKey:kIRWebAPIEngineUnderlyingError]);
-		
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 
@@ -343,18 +403,13 @@ void WARemoteInterface_finishPorting (void) {
 		if (successBlock)
 			successBlock([inResponseOrNil valueForKeyPath:@"user"]);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-	
-		if (failureBlock)
-			failureBlock([inResponseContext objectForKey:kIRWebAPIEngineUnderlyingError]);
-		
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 
 - (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self.engine fireAPIRequestNamed:@"users" withArguments:nil options:nil validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 		
@@ -368,18 +423,13 @@ void WARemoteInterface_finishPorting (void) {
 		if (successBlock)
 			successBlock(userReps);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
-		if (failureBlock)
-			failureBlock(nil);
-
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 
 - (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self beginPostponingDataRetrievalTimerFiring];
 
@@ -399,38 +449,33 @@ void WARemoteInterface_finishPorting (void) {
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"posts"]);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
+	
 		[self endPostponingDataRetrievalTimerFiring];
-		
+	
 		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
-	}];
+			failureBlock(anError);
+	
+	})];
 
 }
 
 - (void) retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *retrievedArticleRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {	
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 	
 	[self.engine fireAPIRequestNamed:[@"article" stringByAppendingPathComponent:anIdentifier] withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"post"]);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
-		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
-	}];	
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];	
 
 }
 
 - (void) retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSArray *retrievedComentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self beginPostponingDataRetrievalTimerFiring];
 
@@ -441,20 +486,20 @@ void WARemoteInterface_finishPorting (void) {
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"comments"]);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
+	
 		[self endPostponingDataRetrievalTimerFiring];
-
+	
 		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
-	}];
+			failureBlock(anError);
+	
+	})];
 
 }
 
 - (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self.engine fireAPIRequestNamed:@"createArticle" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -478,18 +523,13 @@ void WARemoteInterface_finishPorting (void) {
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"post"]);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
-		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseContext]);
-		
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 	
 }
 
 - (void) uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void(^)(NSDictionary *uploadedFileRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	NSURL *movableFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
 	NSURL *newURL = [movableFileURL pathExtension] ? movableFileURL : [NSURL fileURLWithPath:[[[movableFileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
@@ -526,20 +566,20 @@ void WARemoteInterface_finishPorting (void) {
 		
 		[[NSFileManager defaultManager] removeItemAtURL:newURL error:nil];
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(^ (NSError *anError){
+	
 		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
+			failureBlock(anError);
+			
 		[[NSFileManager defaultManager] removeItemAtURL:newURL error:nil];
-		
-	}];
+	
+	})];
 	
 }
 
 - (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self.engine fireAPIRequestNamed:@"createComment" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
@@ -559,35 +599,31 @@ void WARemoteInterface_finishPorting (void) {
 		if (successBlock)
 			successBlock([inResponseOrNil objectForKey:@"comment"]);
 		
-	} failureHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
-		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 
 - (void) retrieveLastReadArticleRemoteIdentifierOnSuccess:(void(^)(NSString *lastID, NSDate *modDate))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:nil validator:nil successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-    if (successBlock)
-			successBlock([inResponseOrNil objectForKey:@"latest_read_post_id"], [inResponseOrNil objectForKey:@"latest_read_post_timestamp"]);
 		
-	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		if (!successBlock)
+			return;
+			
+		successBlock(
+			[inResponseOrNil objectForKey:@"latest_read_post_id"],
+			[inResponseOrNil objectForKey:@"latest_read_post_timestamp"]
+		);
 		
-		if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 
 - (void) setLastReadArticleRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
-	WARemoteInterface_finishPorting();
+	WARemoteInterfaceNotPorted();
 
 	[self.engine fireAPIRequestNamed:@"lastReadArticleContext" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
@@ -604,12 +640,7 @@ void WARemoteInterface_finishPorting (void) {
     if (successBlock)
 			successBlock(inResponseOrNil);
 		
-	} failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
-		
-    if (failureBlock)
-			failureBlock([NSError errorWithDomain:waErrorDomain code:0 userInfo:inResponseOrNil]);
-		
-	}];
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
 

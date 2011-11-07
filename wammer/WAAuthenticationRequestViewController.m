@@ -15,9 +15,12 @@
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
+@property (nonatomic, readwrite, retain) NSString *username;
+@property (nonatomic, readwrite, retain) NSString *password;
 @property (nonatomic, readwrite, retain) UITextField *usernameField;
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
-@property (nonatomic, readwrite, copy) void(^completionBlock)(WAAuthenticationRequestViewController *self);
+
+@property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
 
 - (void) authenticate;
 
@@ -26,9 +29,10 @@
 
 @implementation WAAuthenticationRequestViewController
 @synthesize labelWidth;
-@synthesize usernameField, passwordField, completionBlock;
+@synthesize usernameField, passwordField;
+@synthesize username, password, completionBlock;
 
-+ (WAAuthenticationRequestViewController *) controllerWithCompletion:(void(^)(WAAuthenticationRequestViewController *self))aBlock {
++ (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
 	WAAuthenticationRequestViewController *returnedVC = [[[self alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 	returnedVC.completionBlock = aBlock;
@@ -61,12 +65,25 @@
 
 }
 
+- (void) dealloc {
+
+	[username release];
+	[usernameField release];
+	
+	[password release];
+	[passwordField release];
+
+	[super dealloc];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
 	self.usernameField.placeholder = @"Username";
+	self.usernameField.text = self.username;
 	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	self.usernameField.returnKeyType = UIReturnKeyNext;
@@ -77,6 +94,7 @@
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
 	self.passwordField.placeholder = @"Password";
+	self.passwordField.text = self.password;
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	self.passwordField.returnKeyType = UIReturnKeyGo;
@@ -89,13 +107,14 @@
 
 - (void) viewDidUnload {
 
-	[super viewDidUnload];
 	self.usernameField = nil;
 	self.passwordField = nil;
 	
+	[super viewDidUnload];
+	
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
 
 	if (textField == self.usernameField) {
 		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
@@ -115,7 +134,8 @@
 				[self authenticate];
 			});
 		}
-		return shouldReturn;
+		return shouldReturn; 
+		
 	}
 	
 	return NO;
@@ -192,36 +212,53 @@
 		
 		//	Hook this up with Keychain services
 		
-		[[WADataStore defaultStore] updateUsersOnSuccess: ^  {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				
-				if (self.completionBlock)
-					self.completionBlock(self);
-				
-				self.view.userInteractionEnabled = YES;
-				
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-			});
+		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-		} onFailure: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-		 
-				self.view.userInteractionEnabled = YES;
-				
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-				[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:@"Authentication failed.  Unable to retrieve all the users." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			if (self.completionBlock)
+				self.completionBlock(self, nil);
 			
-			});
+			self.view.userInteractionEnabled = YES;
 			
-		}];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			
+		});
+
+
+//		[[WADataStore defaultStore] updateUsersOnSuccess: ^  {
+//		
+//			dispatch_async(dispatch_get_main_queue(), ^ {
+//				
+//				if (self.completionBlock)
+//					self.completionBlock(self, nil);
+//				
+//				self.view.userInteractionEnabled = YES;
+//				
+//				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+//				
+//			});
+//			
+//		} onFailure: ^ {
+//		
+//			dispatch_async(dispatch_get_main_queue(), ^ {
+//		 
+//				self.view.userInteractionEnabled = YES;
+//				
+//				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+//				
+//				[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:@"Authentication failed.  Unable to retrieve all the users." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+//			
+//			});
+//			
+//		}];
 		
-	} onFailure:^(NSError *error) {
+	} onFailure: ^ (NSError *error) {
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			//	What happened?
+			
+			NSLog(@"Error: %@", error);
+			
 		
 			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 			errorBezel.caption = [[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey];

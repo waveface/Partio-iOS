@@ -7,10 +7,18 @@
 //
 //  https://gist.github.com/46e424e637d6634979d3
 
-#include <AvailabilityMacros.h>
-
 #import "IRWebAPIKit.h"
-#import "WADataStore.h"
+#import "WARemoteInterfaceDefines.h"
+
+extern NSString *kWARemoteInterfaceDomain;
+extern void WARemoteInterfaceNotPorted (void);
+extern NSUInteger WARemoteInterfaceEndpointReturnCode (NSDictionary *response);
+extern NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context);
+extern IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NSError *));
+
+extern NSString *kWARemoteInterfaceUnderlyingError;	//	Populated error from IRWebAPIEngine context
+extern NSString *kWARemoteInterfaceUnderlyingContext;	//	The IRWebAPIEngine context where the aforementioned error 
+extern NSString *kWARemoteInterfaceRemoteErrorCode;	//	Populated error from WFCloud defined in WARemoteInterfaceDefines
 
 @interface WARemoteInterface : IRWebAPIInterface
 
