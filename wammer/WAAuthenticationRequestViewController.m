@@ -210,8 +210,6 @@
 		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"creator_id"];
 		[WARemoteInterface sharedInterface].userToken = token;
 		
-		//	Hook this up with Keychain services
-		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
 			if (self.completionBlock)
@@ -223,34 +221,6 @@
 			
 		});
 
-
-//		[[WADataStore defaultStore] updateUsersOnSuccess: ^  {
-//		
-//			dispatch_async(dispatch_get_main_queue(), ^ {
-//				
-//				if (self.completionBlock)
-//					self.completionBlock(self, nil);
-//				
-//				self.view.userInteractionEnabled = YES;
-//				
-//				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-//				
-//			});
-//			
-//		} onFailure: ^ {
-//		
-//			dispatch_async(dispatch_get_main_queue(), ^ {
-//		 
-//				self.view.userInteractionEnabled = YES;
-//				
-//				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-//				
-//				[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:@"Authentication failed.  Unable to retrieve all the users." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-//			
-//			});
-//			
-//		}];
-		
 	} onFailure: ^ (NSError *error) {
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
@@ -259,7 +229,6 @@
 			
 			NSLog(@"Error: %@", error);
 			
-		
 			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 			errorBezel.caption = [[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey];
 			
