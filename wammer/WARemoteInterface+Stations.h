@@ -17,9 +17,9 @@
 - (void) registerStation:(NSString *)anIdentifier withURL:(NSURL *)anURL onSuccess:(void(^)(NSDictionary *stationRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	POST stations/logOn
-- (void) activateStation:(NSString *)anIdentifier withURL:(NSURL *)anURL onSuccess:(void(^)(NSDictionary *stationRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) activateStation:(NSString *)anIdentifier withURL:(NSURL *)anURL onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	POST stations/logOff
-- (void) deactivateStation:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *stationRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) deactivateStation:(NSString *)anIdentifier onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 @end
