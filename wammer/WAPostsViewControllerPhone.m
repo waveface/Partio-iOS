@@ -26,7 +26,6 @@
 
 #import "WAArticleViewController.h"
 #import "WAPostViewControllerPhone.h"
-#import "WAUserSelectionViewController.h"
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"

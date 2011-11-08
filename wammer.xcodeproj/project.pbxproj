@@ -114,7 +114,6 @@
 		FFCFE098142111E100B9E6AF /* WAPostsViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */; };
 		FFCFE099142111E100B9E6AF /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
 		FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
-		FFCFE09B142111E100B9E6AF /* WAUserSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */; };
 		FFCFE09C142111E100B9E6AF /* WAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF24072E13F2881E000B2CAA /* WAViewController.m */; };
 		FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
 		FFCFE09E142111E100B9E6AF /* WAComposeViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */; };
@@ -459,8 +458,6 @@
 		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeViewControllerPhone.xib; sourceTree = "<group>"; };
 		4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewControllerPhone.h; sourceTree = "<group>"; };
 		4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewControllerPhone.m; sourceTree = "<group>"; };
-		4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserSelectionViewController.h; sourceTree = "<group>"; };
-		4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserSelectionViewController.m; sourceTree = "<group>"; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
@@ -1032,8 +1029,6 @@
 				FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
-				4B86976813EA77FD0024125B /* WAUserSelectionViewController.h */,
-				4B86976913EA77FD0024125B /* WAUserSelectionViewController.m */,
 			);
 			name = Model;
 			path = wammer;
@@ -1729,7 +1724,6 @@
 				FFCFE098142111E100B9E6AF /* WAPostsViewControllerPhone.m in Sources */,
 				FFCFE099142111E100B9E6AF /* WAView.m in Sources */,
 				FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */,
-				FFCFE09B142111E100B9E6AF /* WAUserSelectionViewController.m in Sources */,
 				FFCFE09C142111E100B9E6AF /* WAViewController.m in Sources */,
 				FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */,
 				FFCFE09E142111E100B9E6AF /* WAComposeViewControllerPhone.m in Sources */,

@@ -10,7 +10,6 @@
 
 #import "WAAppDelegate.h"
 #import "IRRemoteResourcesManager.h"
-#import "WAUserSelectionViewController.h"
 #import "WADataStore.h"
 #import "WAViewController.h"
 #import "WANavigationController.h"
