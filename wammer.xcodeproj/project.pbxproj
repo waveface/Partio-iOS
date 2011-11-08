@@ -49,6 +49,16 @@
 		FF6C298F143B36F5009735E7 /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C298E143B36F5009735E7 /* WASettingsGlyph.png */; };
 		FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
+		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
+		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
+		FF8F4626146908B700D65864 /* WARemoteInterface+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */; };
+		FF8F4629146909AD00D65864 /* WARemoteInterface+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */; };
+		FF8F462C146909DC00D65864 /* WARemoteInterface+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */; };
+		FF8F462F146909E300D65864 /* WARemoteInterface+Stations.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */; };
+		FF8F4632146909E900D65864 /* WARemoteInterface+Groups.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */; };
+		FF8F463514690A1E00D65864 /* WARemoteInterface+Attachments.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463414690A1E00D65864 /* WARemoteInterface+Attachments.m */; };
+		FF8F463814690A2300D65864 /* WARemoteInterface+Previews.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */; };
+		FF8F463B14690A2A00D65864 /* WARemoteInterface+Footprints.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */; };
 		FF8F463F14691A7D00D65864 /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */; };
 		FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */; };
@@ -577,6 +587,9 @@
 		FF7D466614024FD800C916F5 /* WAImageStreamPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStreamPickerView.h; sourceTree = "<group>"; };
 		FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStreamPickerView.m; sourceTree = "<group>"; };
 		FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceDefines.h; sourceTree = "<group>"; };
+		FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceDefines.m; sourceTree = "<group>"; };
+		FF7EB68F1467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+DeprecatedNonfunctional.h"; sourceTree = "<group>"; };
+		FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+DeprecatedNonfunctional.m"; sourceTree = "<group>"; };
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
 		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageView.m; sourceTree = "<group>"; };
@@ -586,6 +599,22 @@
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
+		FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Authentication.h"; sourceTree = "<group>"; };
+		FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Authentication.m"; sourceTree = "<group>"; };
+		FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Users.h"; sourceTree = "<group>"; };
+		FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Users.m"; sourceTree = "<group>"; };
+		FF8F462A146909DC00D65864 /* WARemoteInterface+Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Posts.h"; sourceTree = "<group>"; };
+		FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Posts.m"; sourceTree = "<group>"; };
+		FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Stations.h"; sourceTree = "<group>"; };
+		FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Stations.m"; sourceTree = "<group>"; };
+		FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Groups.h"; sourceTree = "<group>"; };
+		FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Groups.m"; sourceTree = "<group>"; };
+		FF8F463314690A1D00D65864 /* WARemoteInterface+Attachments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Attachments.h"; sourceTree = "<group>"; };
+		FF8F463414690A1E00D65864 /* WARemoteInterface+Attachments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Attachments.m"; sourceTree = "<group>"; };
+		FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Previews.h"; sourceTree = "<group>"; };
+		FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Previews.m"; sourceTree = "<group>"; };
+		FF8F463914690A2A00D65864 /* WARemoteInterface+Footprints.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Footprints.h"; sourceTree = "<group>"; };
+		FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Footprints.m"; sourceTree = "<group>"; };
 		FF8F463C14691A1B00D65864 /* WAModel 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 5.xcdatamodel"; sourceTree = "<group>"; };
 		FF8F463D14691A7D00D65864 /* WAGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGroup.h; sourceTree = "<group>"; };
 		FF8F463E14691A7D00D65864 /* WAGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGroup.m; sourceTree = "<group>"; };
@@ -1044,8 +1073,27 @@
 			isa = PBXGroup;
 			children = (
 				FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */,
+				FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */,
 				FF97384713D8278E003D1722 /* WARemoteInterface.h */,
 				FF97384813D8278E003D1722 /* WARemoteInterface.m */,
+				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
+				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
+				FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */,
+				FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */,
+				FF8F462A146909DC00D65864 /* WARemoteInterface+Posts.h */,
+				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
+				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
+				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
+				FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */,
+				FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */,
+				FF8F463314690A1D00D65864 /* WARemoteInterface+Attachments.h */,
+				FF8F463414690A1E00D65864 /* WARemoteInterface+Attachments.m */,
+				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
+				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF8F463914690A2A00D65864 /* WARemoteInterface+Footprints.h */,
+				FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */,
+				FF7EB68F1467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.h */,
+				FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */,
 				FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */,
 				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
 				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
@@ -1768,6 +1816,16 @@
 				FF22283B1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m in Sources */,
 				FF22283E1463D2BE00541E31 /* WARemoteInterfaceContext.m in Sources */,
 				FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */,
+				FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */,
+				FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */,
+				FF8F4626146908B700D65864 /* WARemoteInterface+Authentication.m in Sources */,
+				FF8F4629146909AD00D65864 /* WARemoteInterface+Users.m in Sources */,
+				FF8F462C146909DC00D65864 /* WARemoteInterface+Posts.m in Sources */,
+				FF8F462F146909E300D65864 /* WARemoteInterface+Stations.m in Sources */,
+				FF8F4632146909E900D65864 /* WARemoteInterface+Groups.m in Sources */,
+				FF8F463514690A1E00D65864 /* WARemoteInterface+Attachments.m in Sources */,
+				FF8F463814690A2300D65864 /* WARemoteInterface+Previews.m in Sources */,
+				FF8F463B14690A2A00D65864 /* WARemoteInterface+Footprints.m in Sources */,
 				FF8F463F14691A7D00D65864 /* WAGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

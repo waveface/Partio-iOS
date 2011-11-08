@@ -140,43 +140,43 @@
 	return [NSArray arrayWithObjects:
 	
 		[[ ^ {
-		
-			if (!nrSelf.userToken)
-				return;
 
 			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
 		
-			[nrSelf retrieveLastReadArticleRemoteIdentifierOnSuccess: ^ (NSString *lastID, NSDate *modDate) {
-				
-				[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-				
-					[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-					
-						[nrSelf endPerformingAutomaticRemoteUpdates];		
-						[nrSelf endPostponingDataRetrievalTimerFiring];
-					
-					} onFailure: ^ {
-					
-						[nrSelf endPerformingAutomaticRemoteUpdates];		
-						[nrSelf endPostponingDataRetrievalTimerFiring];
-					
-					}];
-				
-				} onFailure: ^ {
-				
-					[nrSelf endPerformingAutomaticRemoteUpdates];		
-					[nrSelf endPostponingDataRetrievalTimerFiring];
-				
-				}];
-		
-			} onFailure: ^ (NSError *error) {
-			
-				[nrSelf endPerformingAutomaticRemoteUpdates];		
-				[nrSelf endPostponingDataRetrievalTimerFiring];
-			
-			}];
+			//	[nrSelf retrieveLastReadArticleRemoteIdentifierOnSuccess: ^ (NSString *lastID, NSDate *modDate) {
+			//		
+			//		[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
+			//		
+			//			[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+			//			
+			//				[nrSelf endPerformingAutomaticRemoteUpdates];		
+			//				[nrSelf endPostponingDataRetrievalTimerFiring];
+			//			
+			//			} onFailure: ^ {
+			//			
+			//				[nrSelf endPerformingAutomaticRemoteUpdates];		
+			//				[nrSelf endPostponingDataRetrievalTimerFiring];
+			//			
+			//			}];
+			//		
+			//		} onFailure: ^ {
+			//		
+			//			[nrSelf endPerformingAutomaticRemoteUpdates];		
+			//			[nrSelf endPostponingDataRetrievalTimerFiring];
+			//		
+			//		}];
+			//
+			//	} onFailure: ^ (NSError *error) {
+			//	
+			//		[nrSelf endPerformingAutomaticRemoteUpdates];		
+			//		[nrSelf endPostponingDataRetrievalTimerFiring];
+			//	
+			//	}];
 	
+			[nrSelf endPerformingAutomaticRemoteUpdates];		
+			[nrSelf endPostponingDataRetrievalTimerFiring];
+
 		} copy] autorelease],
 	
 	nil];

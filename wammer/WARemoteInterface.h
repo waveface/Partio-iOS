@@ -9,69 +9,43 @@
 
 #import "IRWebAPIKit.h"
 #import "WARemoteInterfaceDefines.h"
-
-extern NSString *kWARemoteInterfaceDomain;
-extern void WARemoteInterfaceNotPorted (void);
-extern NSUInteger WARemoteInterfaceEndpointReturnCode (NSDictionary *response);
-extern NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context);
-extern IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NSError *));
-
-extern NSString *kWARemoteInterfaceUnderlyingError;	//	Populated error from IRWebAPIEngine context
-extern NSString *kWARemoteInterfaceUnderlyingContext;	//	The IRWebAPIEngine context where the aforementioned error 
-extern NSString *kWARemoteInterfaceRemoteErrorCode;	//	Populated error from WFCloud defined in WARemoteInterfaceDefines
+#import "JSONKit.h"
 
 @interface WARemoteInterface : IRWebAPIInterface
 
 + (WARemoteInterface *) sharedInterface;
+
++ (JSONDecoder *) sharedDecoder;
++ (id) decodedJSONObjectFromData:(NSData *)data;
 
 @property (nonatomic, readwrite, assign) NSUInteger defaultBatchSize;
 @property (nonatomic, readwrite, retain) NSString *apiKey;
 @property (nonatomic, readwrite, retain) NSString *userIdentifier;
 @property (nonatomic, readwrite, retain) NSString *userToken;
 
-# pragma mark - Users
-
-- (void) retrieveTokenForUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-- (void) registerUserWithIdentifier:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-//	GET /users
-- (void) retrieveAvailableUsersOnSuccess:(void(^)(NSArray *retrievedUserReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-
-# pragma mark - Articles
-
-//	GET /articles
-- (void) retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void(^)(NSArray *retrievedArticleReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-//	GET /article/#
-- (void) retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *retrievedArticleRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-//	GET /article/#/comments
-- (void) retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSArray *retrievedComentReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-//	POST /article
-- (void) createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-
-# pragma mark - Files
-
-//	POST /file
-- (void) uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void(^)(NSDictionary *uploadedFileRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-
-# pragma mark - Comments
-
-//	POST /comment
-- (void) createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void(^)(NSDictionary *createdCommentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-
-# pragma mark - Progress Sync
-
-//	GET users/latest_read_post_id
-- (void) retrieveLastReadArticleRemoteIdentifierOnSuccess:(void(^)(NSString *lastID, NSDate *modDate))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
-//	POST users/latest_read_post_id
-- (void) setLastReadArticleRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *response))successBlock onFailure:(void(^)(NSError *error))failureBlock;
-
 @end
+
+#import "WARemoteInterface+Authentication.h"
+#import "WARemoteInterface+Users.h"
+#import "WARemoteInterface+Posts.h"
+#import "WARemoteInterface+Stations.h"
+#import "WARemoteInterface+Groups.h"
+#import "WARemoteInterface+Attachments.h"
+#import "WARemoteInterface+Previews.h"
+#import "WARemoteInterface+Footprints.h"
+#import "WARemoteInterface+DeprecatedNonfunctional.h"
+
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
