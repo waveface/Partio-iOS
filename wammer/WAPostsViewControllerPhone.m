@@ -14,6 +14,7 @@
 #import "WAPaginationSlider.h"
 
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "IRPaginatedView.h"
@@ -482,6 +483,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
   
+  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
   WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
@@ -490,13 +492,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			//		[self refreshData];
 			//	});
 		} onFailure:nil];
-    
+    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 	}];
   
   UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
   navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
   [self presentModalViewController:navigationController animated:YES];
-	
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
