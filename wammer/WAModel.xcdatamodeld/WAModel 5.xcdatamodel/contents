@@ -9,7 +9,7 @@
         <attribute name="timestamp" optional="YES" attributeType="Date"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAFile" inverseName="article" inverseEntity="WAFile"/>
-        <relationship name="group" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="articles" inverseEntity="WAGroup" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="articles" inverseEntity="WAGroup" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="articles" inverseEntity="WAUser"/>
         <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="article" inverseEntity="WAPreview" syncable="YES"/>
     </entity>
@@ -39,6 +39,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="group" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAUser" inverseName="groups" inverseEntity="WAUser" syncable="YES"/>
     </entity>
     <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
         <attribute name="providerName" optional="YES" attributeType="String" syncable="YES"/>
@@ -69,6 +70,7 @@
         <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="owner" inverseEntity="WAArticle"/>
         <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAComment" inverseName="owner" inverseEntity="WAComment"/>
         <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="owner" inverseEntity="WAFile"/>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="users" inverseEntity="WAGroup" syncable="YES"/>
         <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="owner" inverseEntity="WAPreview" syncable="YES"/>
     </entity>
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="draft == 0"/>
@@ -78,9 +80,9 @@
         <element name="WAArticle" positionX="72" positionY="0" width="128" height="210"/>
         <element name="WAComment" positionX="286" positionY="144" width="128" height="135"/>
         <element name="WAFile" positionX="-146" positionY="-36" width="128" height="210"/>
+        <element name="WAGroup" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAOpenGraphElement" positionX="-360" positionY="216" width="128" height="180"/>
         <element name="WAPreview" positionX="-144" positionY="252" width="128" height="150"/>
-        <element name="WAUser" positionX="106" positionY="324" width="128" height="165"/>
-        <element name="WAGroup" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="WAUser" positionX="106" positionY="324" width="128" height="195"/>
     </elements>
 </model>
