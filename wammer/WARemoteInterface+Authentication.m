@@ -93,12 +93,20 @@
 		if (![[inResponseOrNil objectForKey:@"session_token"] isKindOfClass:[NSString class]])
 			return NO;
 		
+		if (![[inResponseOrNil objectForKey:@"user"] isKindOfClass:[NSDictionary class]])
+			return NO;
+			
 		return YES;
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
-		//	NSString *incomingIdentifier = (NSString *)[inResponseOrNil objectForKey:@"creator_id"];
+		NSMutableDictionary *userEntity = [[[inResponseOrNil valueForKeyPath:@"user"] mutableCopy] autorelease];
+		
+		if (!userEntity)
+			userEntity = [NSMutableDictionary dictionary];
+		
+		[userEntity setObject:[inResponseOrNil valueForKeyPath:@"groups"] forKey:@"groups"];
 		
 		if (successBlock) {
 			successBlock(
