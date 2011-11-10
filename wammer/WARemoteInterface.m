@@ -34,7 +34,7 @@
 
 @implementation WARemoteInterface
 
-@synthesize userIdentifier, userToken, defaultBatchSize;
+@synthesize userIdentifier, userToken, primaryGroupIdentifier, defaultBatchSize;
 @synthesize apiKey;
 
 + (WARemoteInterface *) sharedInterface {
@@ -117,6 +117,7 @@
 	
 	[userIdentifier release];
 	[userToken release];
+	[primaryGroupIdentifier release];
 		
 	[super dealloc];
 

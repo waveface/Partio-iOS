@@ -11,6 +11,7 @@
 #import "WARemoteInterfaceDefines.h"
 #import "JSONKit.h"
 
+
 @interface WARemoteInterface : IRWebAPIInterface
 
 + (WARemoteInterface *) sharedInterface;
@@ -22,6 +23,7 @@
 @property (nonatomic, readwrite, retain) NSString *apiKey;
 @property (nonatomic, readwrite, retain) NSString *userIdentifier;
 @property (nonatomic, readwrite, retain) NSString *userToken;
+@property (nonatomic, readwrite, retain) NSString *primaryGroupIdentifier;
 
 @end
 
