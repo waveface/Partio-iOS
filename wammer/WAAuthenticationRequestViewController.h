@@ -18,8 +18,8 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock;
 
-@property (nonatomic, readonly, retain) NSString *username;
-@property (nonatomic, readonly, retain) NSString *password;
+@property (nonatomic, readwrite, retain) NSString *username;
+@property (nonatomic, readwrite, retain) NSString *password;
 @property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
 @end

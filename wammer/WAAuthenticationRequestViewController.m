@@ -15,13 +15,12 @@
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
-@property (nonatomic, readwrite, retain) NSString *username;
-@property (nonatomic, readwrite, retain) NSString *password;
 @property (nonatomic, readwrite, retain) UITextField *usernameField;
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
 
 @property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
 
+- (void) update;
 - (void) authenticate;
 
 @end
@@ -142,10 +141,21 @@
 
 }
 
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+
+	[self update];
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
+	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
-	[self.usernameField becomeFirstResponder];
+
+	if (!self.usernameField.text)
+		[self.usernameField becomeFirstResponder];
+	else
+		[self.passwordField becomeFirstResponder];
 	
 }
 
@@ -197,6 +207,13 @@
 
 
 
+- (void) update {
+
+	self.username = self.usernameField.text;
+	self.password = self.passwordField.text;
+
+}
+
 - (void) authenticate {
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
@@ -205,7 +222,7 @@
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 
-	[[WARemoteInterface sharedInterface] retrieveTokenForUser:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
+	[[WARemoteInterface sharedInterface] retrieveTokenForUser:self.username password:self.password onSuccess:^(NSDictionary *userRep, NSString *token) {
 		
 		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"user_id"];
 		[WARemoteInterface sharedInterface].userToken = token;
@@ -220,7 +237,6 @@
 				self.completionBlock(self, nil);
 			
 			self.view.userInteractionEnabled = YES;
-			
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
 		});
@@ -229,25 +245,12 @@
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
-			//	What happened?
+			if (self.completionBlock)
+				self.completionBlock(self, error);
 			
-			NSLog(@"Error: %@", error);
+			self.view.userInteractionEnabled = YES;
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			errorBezel.caption = [[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey];
-			
-			[CATransaction begin];
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			[CATransaction commit];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			
-				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				self.view.userInteractionEnabled = YES;			
-				
-			});
-						
 		});
 			
 	}];		
