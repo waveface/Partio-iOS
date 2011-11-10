@@ -19,6 +19,7 @@
 @dynamic htmlSynopsis;
 @dynamic identifier;
 @dynamic text;
+@dynamic url;
 @dynamic article;
 @dynamic graphElement;
 @dynamic owner;

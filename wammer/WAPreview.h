@@ -19,6 +19,7 @@
 @property (nonatomic, retain) NSString * htmlSynopsis;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAOpenGraphElement *graphElement;
 @property (nonatomic, retain) WAUser *owner;
