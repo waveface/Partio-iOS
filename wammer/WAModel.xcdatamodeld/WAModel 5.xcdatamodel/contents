@@ -57,6 +57,7 @@
         <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="previews" inverseEntity="WAArticle" syncable="YES"/>
         <relationship name="graphElement" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="WAOpenGraphElement" inverseName="preview" inverseEntity="WAOpenGraphElement" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="previews" inverseEntity="WAUser" syncable="YES"/>
@@ -82,7 +83,7 @@
         <element name="WAFile" positionX="-146" positionY="-36" width="128" height="210"/>
         <element name="WAGroup" positionX="160" positionY="192" width="128" height="120"/>
         <element name="WAOpenGraphElement" positionX="-360" positionY="216" width="128" height="180"/>
-        <element name="WAPreview" positionX="-144" positionY="252" width="128" height="150"/>
+        <element name="WAPreview" positionX="-144" positionY="252" width="128" height="165"/>
         <element name="WAUser" positionX="106" positionY="324" width="128" height="195"/>
     </elements>
 </model>
