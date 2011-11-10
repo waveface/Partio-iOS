@@ -7,16 +7,13 @@
 //
 
 #import "WADataStore.h"
+#import "WARemoteInterfaceEntitySyncing.h"
+#import "WAArticle+WARemoteInterfaceEntitySyncing.h"
+#import "WAFile+WARemoteInterfaceEntitySyncing.h"
 
 @interface WADataStore (WARemoteInterfaceAdditions)
 
-- (void) updateUsersOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock DEPRECATED_ATTRIBUTE;
-- (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock DEPRECATED_ATTRIBUTE;
-
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock DEPRECATED_ATTRIBUTE;
-
-- (void) updateUsersWithCompletion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;
-- (void) updateArticlesWithCompletion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;
-- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;
+- (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
+- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 
 @end
