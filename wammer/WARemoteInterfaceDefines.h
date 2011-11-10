@@ -11,6 +11,7 @@
 extern NSString *kWARemoteInterfaceDomain;
 extern void WARemoteInterfaceNotPorted (void);
 extern NSUInteger WARemoteInterfaceEndpointReturnCode (NSDictionary *response);
+extern NSString * WARemoteInterfaceEndpointReturnMessage (NSDictionary *response);
 extern NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context);
 extern IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NSError *));
 extern IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator (void);

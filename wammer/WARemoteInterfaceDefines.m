@@ -27,6 +27,12 @@ NSUInteger WARemoteInterfaceEndpointReturnCode (NSDictionary *response) {
 
 };
 
+NSString * WARemoteInterfaceEndpointReturnMessage (NSDictionary *response) {
+
+	return IRWebAPIKitStringValue([response valueForKeyPath:@"api_ret_message"]);
+
+};
+
 NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context) {
 
 	NSMutableDictionary *errorUserInfo = [NSMutableDictionary dictionary];
