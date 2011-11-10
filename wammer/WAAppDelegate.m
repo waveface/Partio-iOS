@@ -201,6 +201,7 @@
 
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -219,6 +220,9 @@
 		if (lastAuthenticatedUserTokenKeychainItem.secretString)
 			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
 		
+		if (lastAuthenticatedUserPrimaryGroupIdentifier)
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
+		
 	}
 	
 	return authenticationInformationSufficient;
@@ -231,12 +235,14 @@
 	
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	}
 
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -250,7 +256,7 @@
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
 	
-	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken) = ^ (NSString *userIdentifier, NSString *userToken) {
+	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 	
 		lastAuthenticatedUserTokenKeychainItem.secretString = userToken;
 		[lastAuthenticatedUserTokenKeychainItem synchronize];
@@ -259,10 +265,12 @@
 		
 		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
+		[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
 		[WARemoteInterface sharedInterface].userToken = userToken;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = primaryGroupIdentifier;
 	
 	};
 	
@@ -271,6 +279,7 @@
 	
 		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
 		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
 		
 		//	We don’t have to validate this again since the token never expires
 	
@@ -280,7 +289,7 @@
 	
 		__block UIViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
 		
-				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken);
+				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
 		
 				[self dismissModalViewControllerAnimated:YES];
 				
