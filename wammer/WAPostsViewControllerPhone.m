@@ -394,36 +394,32 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData {
   
-	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-
-		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+	[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+	
+		if ([self isViewLoaded])
+			[self.tableView resetPullDown];
 		
-			if ([self isViewLoaded])
-				[self.tableView resetPullDown];
-      
-      if (!self._lastID) {
-        [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-          if(lastID){
-            NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
-            // If last read is not reachable in currect posts, move to latest.
-            NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
-            for( WAArticle *post in allObjects ){
-              if ([post.identifier isEqualToString:lastID]) {
-                lastReadRow = [self.fetchedResultsController indexPathForObject:post];
-                break;
-              }
-            }
-            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
-          }
-          self._lastID = lastID;
-        } onFailure: ^ (NSError *error) {
-          NSLog(@"Retrieve last read articile: %@", error);
-        }];
-        
-      }
-		
-		} onFailure:nil];
-
+		if (!self._lastID) {
+			[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+				if(lastID){
+					NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+					// If last read is not reachable in currect posts, move to latest.
+					NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
+					for( WAArticle *post in allObjects ){
+						if ([post.identifier isEqualToString:lastID]) {
+							lastReadRow = [self.fetchedResultsController indexPathForObject:post];
+							break;
+						}
+					}
+					[self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
+				}
+				self._lastID = lastID;
+			} onFailure: ^ (NSError *error) {
+				NSLog(@"Retrieve last read articile: %@", error);
+			}];
+			
+		}
+	
 	} onFailure:nil];
   
 }
