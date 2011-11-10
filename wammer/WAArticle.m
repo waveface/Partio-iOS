@@ -20,6 +20,7 @@
 @dynamic comments;
 @dynamic files;
 @dynamic previews;
+@dynamic group;
 @dynamic owner;
 @dynamic fileOrder;
 @dynamic draft;
