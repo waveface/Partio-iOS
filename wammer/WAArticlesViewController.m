@@ -60,7 +60,7 @@
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(self != nil) AND (draft == NO)"];	//	 AND (files.@count > 1) tests image gallery animations
+		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(draft == NO)"];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil];
@@ -193,45 +193,18 @@
 }
 
 
-- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-	
-	//	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, [NSThread currentThread], controller);
-	
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-	
-	switch (type) {
-		
-		case NSFetchedResultsChangeDelete:
-		case NSFetchedResultsChangeInsert:
-		case NSFetchedResultsChangeMove: {
-			self.updatesViewOnControllerChangeFinish = YES;
-			break;
-		}
-		
-		case NSFetchedResultsChangeUpdate:
-			break;
-		
-	};
-
-}
-
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
-	if (self.updatesViewOnControllerChangeFinish) {
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
 	
-		if ([self isViewLoaded]) {
+	if ([self isViewLoaded]) {
+	
+		NSLog(@"Merging scheduled");
 		
-			[[NSRunLoop mainRunLoop] cancelPerformSelector:@selector(reloadViewContents) target:self argument:nil];
-			[[NSRunLoop mainRunLoop] performSelector:@selector(reloadViewContents) target:self argument:nil order:0 modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, nil]];
+		[[NSRunLoop mainRunLoop] cancelPerformSelector:@selector(reloadViewContents) target:self argument:nil];
+		[[NSRunLoop mainRunLoop] performSelector:@selector(reloadViewContents) target:self argument:nil order:0 modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, nil]];
 		
-			//	[self reloadViewContents];
-			
-		}
 	}
-		
-	self.updatesViewOnControllerChangeFinish = NO;
 	
 }
 
@@ -402,7 +375,6 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				[nrSelf refreshData];
 				[busyBezel dismiss];
 
 				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
