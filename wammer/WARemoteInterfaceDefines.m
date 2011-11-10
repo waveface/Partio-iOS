@@ -59,7 +59,14 @@ IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator () {
 
 	return [[ ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
-		return (BOOL)[[inResponseOrNil valueForKey:@"api_ret_code"] isEqual:[NSNumber numberWithInt:WASuccess]];
+		BOOL answer = [[inResponseOrNil valueForKey:@"api_ret_code"] isEqual:[NSNumber numberWithInt:WASuccess]];
+		answer &= ([((NSHTTPURLResponse *)[inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponseName]) statusCode] == 200);
+		
+		if (!answer) {
+			NSLog(@"Error: %@", inResponseOrNil);		
+		}
+		
+		return answer;
 	
 	} copy] autorelease];
 
