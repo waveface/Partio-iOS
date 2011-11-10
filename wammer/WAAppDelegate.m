@@ -15,6 +15,7 @@
 #import "WANavigationController.h"
 
 #import "WAAuthenticationRequestViewController.h"
+#import "WARegisterRequestViewController.h"
 
 #import "WARemoteInterface.h"
 #import "IRKeychainManager.h"
@@ -27,6 +28,9 @@
 #import "WANavigationBar.h"
 
 #import "UIView+IRAdditions.h"
+
+#import "IRAlertView.h"
+#import "IRAction.h"
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
@@ -287,7 +291,76 @@
 	
 	if (!authenticationInformationSufficient) {
 	
-		__block UIViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
+		[WARemoteInterface sharedInterface].userIdentifier = nil;
+		[WARemoteInterface sharedInterface].userToken = nil;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
+	
+		__block WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
+		
+				if (anError) {
+				
+					//	Help
+					
+					NSString *alertTitle = @"Can’t authenticate";
+					NSString *alertText = [NSString stringWithFormat:
+						@"Wammer has trouble authenticating your account: “%@”. \n\n You can reset your password, or register a new account.",
+						[anError localizedDescription]
+					];
+					
+					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:@"Cancel" block:^{
+						
+					}] otherActions:[NSArray arrayWithObjects:
+					
+						[IRAction actionWithTitle:@"Reset Password" block: ^ {
+						
+							//	?
+						
+						}],
+						
+						[IRAction actionWithTitle:@"Register" block: ^ {
+						
+							__block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+							
+								if (error) {
+									
+									NSString *alertTitle = @"Error Registering Account";
+									NSString *alertText = [NSString stringWithFormat:
+										@"Wammer has trouble registering your account: “%@”. \n\n Please try registrating later.",
+										[error localizedDescription]
+									];
+									
+									[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+									
+										[IRAction actionWithTitle:@"OK" block:nil],
+									
+									nil]] show];
+									
+									return;
+								
+								}
+							
+								authRequestVC.username = self.username;
+								authRequestVC.password = self.password;
+								[authRequestVC.tableView reloadData];
+								[authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
+
+								
+							}];
+						
+							registerRequestVC.username = authRequestVC.username;
+							registerRequestVC.password = authRequestVC.password;
+							
+							[authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
+						
+						}],
+					
+					nil]];
+					
+					[alertView show];
+					
+					return;
+				
+				}
 		
 				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
 		
@@ -309,8 +382,9 @@
 			
 		}];
 		
-		UINavigationController *authRequestWrappingVC = [[[UINavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = YES;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
 		

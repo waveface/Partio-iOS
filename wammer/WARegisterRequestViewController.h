@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WARegisterRequestViewController : UIViewController
+//	Error reasons which can be found within the error sent to the controller’s completion block
+extern NSString * kWARegisterRequestUserFailure;
+
+@class WARegisterRequestViewController;
+typedef void (^WARegisterRequestViewControllerCallback) (WARegisterRequestViewController *self, NSError *error);
+
+@interface WARegisterRequestViewController : UITableViewController
+
++ (WARegisterRequestViewController *) controllerWithCompletion:(WARegisterRequestViewControllerCallback)aBlock;
+
+@property (nonatomic, readwrite, retain) NSString *username;
+@property (nonatomic, readwrite, retain) NSString *nickname;
+@property (nonatomic, readwrite, retain) NSString *password;
+@property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
 @end
