@@ -72,23 +72,12 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
 
-	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	
+		anIdentifier, @"email",
+		aPassword, @"password",
 
-		//	anIdentifier, @"email",
-		//	aPassword, @"password",
-	
-	nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
-	
-		[NSMutableDictionary dictionaryWithObjectsAndKeys:
-	
-			IRWebAPIKitRFC3986EncodedStringMake(anIdentifier), @"email",
-			IRWebAPIKitRFC3986EncodedStringMake(aPassword), @"password",
-
-		nil], kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey,
-	
-		@"POST", kIRWebAPIEngineRequestHTTPMethod,
-	
-	nil] validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
 		if (![[inResponseOrNil objectForKey:@"session_token"] isKindOfClass:[NSString class]])
 			return NO;
@@ -106,13 +95,14 @@
 		if (!userEntity)
 			userEntity = [NSMutableDictionary dictionary];
 		
-		[userEntity setObject:[inResponseOrNil valueForKeyPath:@"groups"] forKey:@"groups"];
+		if ([inResponseOrNil valueForKeyPath:@"groups"])
+			[userEntity setObject:[inResponseOrNil valueForKeyPath:@"groups"] forKey:@"groups"];
+			
+		if ([inResponseOrNil valueForKeyPath:@"stations"])
+			[userEntity setObject:[inResponseOrNil valueForKeyPath:@"stations"] forKey:@"stations"];
 		
 		if (successBlock) {
-			successBlock(
-				[inResponseOrNil valueForKeyPath:@"user"],
-				incomingToken
-			);
+			successBlock(userEntity, incomingToken);
 		}
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
