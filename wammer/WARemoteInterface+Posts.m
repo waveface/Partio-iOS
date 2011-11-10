@@ -71,13 +71,15 @@
 }
 
 - (void) retrieveLatestPostsInGroup:(NSString *)aGroupIdentifier withBatchLimit:(NSUInteger)maxNumberOfReturnedPosts onSuccess:(void (^)(NSArray *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	NSParameterAssert(aGroupIdentifier);
 	
-	[self.engine fireAPIRequestNamed:@"posts/getLatest" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"posts/getLatest" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		aGroupIdentifier, @"group_id",
 		[NSNumber numberWithUnsignedInt:maxNumberOfReturnedPosts], @"limit",
 	
-	nil] validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (!successBlock)
 			return;
