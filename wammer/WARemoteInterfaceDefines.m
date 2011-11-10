@@ -36,6 +36,7 @@ NSString * WARemoteInterfaceEndpointReturnMessage (NSDictionary *response) {
 NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context) {
 
 	NSMutableDictionary *errorUserInfo = [NSMutableDictionary dictionary];
+	NSUInteger errorCode = WARemoteInterfaceEndpointReturnCode(response);
 	
 	[errorUserInfo setObject:[NSNumber numberWithUnsignedInt:WARemoteInterfaceEndpointReturnCode(response)] forKey:kWARemoteInterfaceRemoteErrorCode];
 	
@@ -44,8 +45,10 @@ NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *c
 	
 	if (context)
 		[errorUserInfo setObject:context forKey:kWARemoteInterfaceUnderlyingContext];
+		
+	[errorUserInfo setObject:WARemoteInterfaceEndpointReturnMessage(response) forKey:NSLocalizedDescriptionKey];
 
-	return [NSError errorWithDomain:kWARemoteInterfaceDomain code:0 userInfo:errorUserInfo];
+	return [NSError errorWithDomain:kWARemoteInterfaceDomain code:errorCode userInfo:errorUserInfo];
 
 }
 
