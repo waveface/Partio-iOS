@@ -205,10 +205,14 @@
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 
-	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
+	[[WARemoteInterface sharedInterface] retrieveTokenForUser:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
 		
-		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"creator_id"];
+		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"user_id"];
 		[WARemoteInterface sharedInterface].userToken = token;
+		
+		NSArray *allGroups = [userRep objectForKey:@"groups"];
+		if ([allGroups count])
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = [[allGroups objectAtIndex:0] valueForKeyPath:@"group_id"];
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
