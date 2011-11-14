@@ -35,11 +35,11 @@
 
 	NSParameterAssert(anIdentifier);
 	
-	[self.engine fireAPIRequestNamed:@"users/get" withArguments:WARemoteInterfaceRFC3986EncodedDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"users/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 		anIdentifier, @"user_id",
 				
-	nil]) options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (!successBlock)
 			return;

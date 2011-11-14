@@ -96,7 +96,6 @@ NSDictionary *WARemoteInterfaceRFC3986EncodedDictionary (NSDictionary *encodedDi
 NSDictionary *WARemoteInterfaceEnginePostFormEncodedOptionsDictionary (NSDictionary *parameters, NSDictionary *mergedOtherOptionsOrNil) {
 
 	NSMutableDictionary *returnedDictionary = [NSMutableDictionary dictionary];
-	parameters = WARemoteInterfaceRFC3986EncodedDictionary(parameters);
 	
 	if (parameters)
 		[returnedDictionary setObject:parameters forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
