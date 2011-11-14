@@ -9,7 +9,12 @@
 #import "WADefines.h"
 
 #import "WAAppDelegate.h"
+
 #import "IRRemoteResourcesManager.h"
+#import "IRRemoteResourceDownloadOperation.h"
+
+#import "IRWebAPIEngine+ExternalTransforms.h"
+
 #import "WADataStore.h"
 #import "WAViewController.h"
 #import "WANavigationController.h"
@@ -34,9 +39,8 @@
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
-// forward declarations
-
-- (void)presentSetupViewControllerAnimated:(BOOL)animated;
+- (void) presentSetupViewControllerAnimated:(BOOL)animated;
+- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
 
 @end
 
@@ -46,10 +50,15 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+	__block __typeof__(self) nrSelf = self;
+
 	WARegisterUserDefaults();
 	
 	[IRRemoteResourcesManager sharedManager].delegate = self;
 	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
+	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
+		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
+	};
 
 	NSDate *launchFinishDate = [NSDate date];
 
@@ -523,6 +532,50 @@ static unsigned int networkActivityStackingCount = 0;
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL {
 
 	[self endNetworkActivity];
+
+}
+
+- (NSURL *) remoteResourcesManager:(IRRemoteResourcesManager *)manager invokedURLForResourceAtURL:(NSURL *)givenURL {
+
+	if ([[givenURL host] isEqualToString:@"invalid.local"]) {
+	
+		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
+		NSString *replacementHost = [currentBaseURL host];
+		NSString *replacementPort = [currentBaseURL port];
+		
+		NSString *constructedURLString = [[NSArray arrayWithObjects:
+			
+			[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"]: @"",
+			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
+			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
+			[givenURL path] ? [givenURL path] : @"",
+			[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+			[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+			
+		nil] componentsJoinedByString:@""];
+		
+		NSURL *constructedURL = [NSURL URLWithString:constructedURLString];
+		
+		return constructedURL;
+		
+	}
+	
+	return givenURL;
+
+}
+
+- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
+
+	NSURLConnection *originalConnection = [anOperation underlyingConnection];
+	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
+	
+	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
+		
+	originalRequest.URL = transformedRequest.URL;
+	originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
+	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
+	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
+	originalRequest.HTTPBody = transformedRequest.HTTPBody;
 
 }
 
