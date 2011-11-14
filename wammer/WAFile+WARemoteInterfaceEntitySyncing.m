@@ -88,6 +88,11 @@
 		
 	}
 	
+	if ([aLocalKeyPath isEqualToString:@"resourceURL"] || [aLocalKeyPath isEqualToString:@"thumbnailURL"]) {
+		NSString *usedPath = [aValue hasPrefix:@"/"] ? aValue : [@"/" stringByAppendingString:aValue];
+		return [[NSURL URLWithString:usedPath relativeToURL:[NSURL URLWithString:@"http://invalid.local"]] absoluteString];
+	}
+	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
 }
