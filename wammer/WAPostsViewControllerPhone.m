@@ -203,7 +203,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	[super viewWillAppear:animated];
   [self refreshData];
-	
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -479,6 +479,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
   
   [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void) handleComposeWithURLString:(NSURL *)url {
+  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+  WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithWebPost:url completion:^(NSURL *aPostURLOrNil) {
+    
+		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
+			//	We’ll get a save, do nothing
+			//	dispatch_async(dispatch_get_main_queue(), ^ {
+			//		[self refreshData];
+			//	});
+		} onFailure:nil];
+    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+	}];
+  
+  UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
+  navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+  [self presentModalViewController:navigationController animated:YES];
 }
 
 - (void) handleCompose:(UIBarButtonItem *)sender {

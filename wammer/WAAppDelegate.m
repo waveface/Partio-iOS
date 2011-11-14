@@ -29,11 +29,17 @@
 
 #import "UIView+IRAdditions.h"
 
-@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
+#import "WAPostsViewControllerPhone.h"
+
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>{
+  NSURL *urlFromPasteboard;
+  __block UIViewController *presentedViewController;
+}
 
 // forward declarations
 
 - (void)presentSetupViewControllerAnimated:(BOOL)animated;
+- (BOOL) validateUrl: (NSString *) candidate;
 
 @end
 
@@ -97,7 +103,7 @@
 		
 		NSParameterAssert(rootViewControllerClassName);
 		
-		__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
 		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
 		
 		self.window.rootViewController = (( ^ {
@@ -139,7 +145,7 @@
 			
 		})());
 		
-		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+    if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 				
 		if (needsTransition) {
@@ -186,6 +192,36 @@
 
   return YES;
 	
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+  if( UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPhone ){
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    
+    urlFromPasteboard = pasteboard.URL;
+    if (!urlFromPasteboard)
+      if ( [self validateUrl: pasteboard.string] )
+        urlFromPasteboard = [NSURL URLWithString:pasteboard.string];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[NSString stringWithFormat:@"Compose a web post from %@", [urlFromPasteboard description]] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Compose", nil];
+    
+    [alertView show]; // leak here
+    [urlFromPasteboard retain];
+  }
+}
+
+- (BOOL) validateUrl: (NSString *) candidate {
+  NSString *urlRegEx =
+  @"(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+";
+  NSPredicate *urlTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegEx]; 
+  return [urlTest evaluateWithObject:candidate];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+  NSLog(@"button at %d", buttonIndex);
+  if (buttonIndex == 1) {
+    [(WAPostsViewControllerPhone*) presentedViewController handleComposeWithURLString:[urlFromPasteboard description]];
+  }
 }
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {

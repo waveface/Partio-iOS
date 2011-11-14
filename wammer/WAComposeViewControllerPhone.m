@@ -41,12 +41,25 @@
     
     if (!returnedController.post) {
         returnedController.post = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-        returnedController.post.draft = [NSNumber numberWithBool:YES];                           
+        returnedController.post.draft = [NSNumber numberWithBool:YES]; 
     }
     returnedController.completionBlock = aBlock;
     
     return returnedController;
 }
++ (WAComposeViewControllerPhone *) controllerWithWebPost:(NSURL *) anURLOrNil completion:(void(^)(NSURL *anURLOrNil))aBlock
+{
+  WAComposeViewControllerPhone *returnedController = [[[self alloc] init] autorelease];
+  returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+  returnedController.post = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:nil];
+  
+  if (!returnedController.post) {
+    returnedController.post = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+    returnedController.post.draft = [NSNumber numberWithBool:YES]; 
+  }
+  returnedController.completionBlock = aBlock;
+  returnedController.post.text = [anURLOrNil description];
+  return returnedController;}
 
 - (id)init
 {
@@ -256,7 +269,7 @@
 	
 	[super viewDidLoad];
 	
-	self.contentTextView.text = self.post.text;
+  self.contentTextView.text = self.post.text;
 	[self.contentTextView becomeFirstResponder];
 	
 	self.navigationItem.titleView.frame = (CGRect){
