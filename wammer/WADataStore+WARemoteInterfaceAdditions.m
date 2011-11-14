@@ -47,19 +47,29 @@
 
 - (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 
-	[(WAArticle *)[[self disposableMOC] irManagedObjectForURI:anArticleURI] synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
+	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
+	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
+	
+	void (^cleanup)() = ^ {
+		[context autorelease];
+	};
+	
+	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
 	
 		if (!didFinish) {
 			failureBlock();
+			cleanup();
 			return;
 		}
 		
 		if (![temporalContext save:nil]) {
 			failureBlock();
+			cleanup();
 			return;
 		}
 		
 		successBlock();
+		cleanup();
 		
 	}];
 	
