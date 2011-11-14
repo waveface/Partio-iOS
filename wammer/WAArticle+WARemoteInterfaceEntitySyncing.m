@@ -97,6 +97,7 @@
 		@"WAComment", @"comments",
 		@"WAUser", @"owner",
 		@"WAPreview", @"previews",
+		@"WAFile", @"attachments",
 	
 	nil];
 
@@ -179,6 +180,7 @@
 	
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 	
+		__block NSManagedObjectContext *context = [self.managedObjectContext retain];
 		__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
 		__block NSMutableDictionary *resultsDictionary = [[NSMutableDictionary dictionary] retain];
 		
@@ -193,6 +195,7 @@
 		void (^cleanup)() = ^ {
 			[operationQueue release];
 			[resultsDictionary release];
+			[context autorelease];
 		};
 		
 		[operationQueue setSuspended:YES];
@@ -231,6 +234,10 @@
 			if (!representedFile)
 				return;
 			
+			[representedFile resourceURL];
+			
+			NSLog(@"ADDING file %@", representedFile);
+			
 			[operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 				
 				[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
@@ -246,6 +253,11 @@
 				}];
 				
 			} completionBlock:^(id results) {
+			
+				if (!results) {
+					NSLog(@"Error injecting file.");
+					return;
+				}
 			
 				NSMutableArray *fileIdentifiers = [resultsDictionary objectForKey:@"fileIdentifiers"];
 				if (!fileIdentifiers) {
@@ -285,11 +297,12 @@
 //				
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:ownURL];
 				savedPost.draft = (id)kCFBooleanFalse;
-				[savedPost configureWithRemoteDictionary:results];
+				
+				[savedPost.managedObjectContext deleteObject:savedPost];
+				
+				//	[savedPost configureWithRemoteDictionary:results];
 				
 				NSArray *touchedPosts = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-				
-				NSParameterAssert(savedPost.group);
 				
 				NSLog(@"savedPost %@", savedPost);
 				NSLog(@"touchedPosts %@", touchedPosts);
