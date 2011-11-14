@@ -12,6 +12,8 @@
 
 #import "WAOverlayBezel.h"
 
+#import "WADefines.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -201,6 +203,12 @@
 
 	return cell;
 	
+}
+
+- (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+
+	return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+
 }
 
 
