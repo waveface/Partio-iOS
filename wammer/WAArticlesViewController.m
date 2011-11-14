@@ -195,14 +195,10 @@
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
-	
 	if ([self isViewLoaded]) {
 	
-		NSLog(@"Merging scheduled");
-		
-		[[NSRunLoop mainRunLoop] cancelPerformSelector:@selector(reloadViewContents) target:self argument:nil];
-		[[NSRunLoop mainRunLoop] performSelector:@selector(reloadViewContents) target:self argument:nil order:0 modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, nil]];
+		[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadViewContents) object:nil];
+		[self performSelector:@selector(reloadViewContents) withObject:nil afterDelay:0.01];
 		
 	}
 	
