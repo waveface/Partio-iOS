@@ -105,14 +105,28 @@
 
 - (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
 
+	NSParameterAssert(self.managedObjectContext);
+
+	[self.managedObjectContext refreshObject:self mergeChanges:YES];
+	
+	[self.managedObjectContext executeFetchRequest:((^ {
+		NSFetchRequest *fr = [[[NSFetchRequest alloc] initWithEntityName:self.entity.name] autorelease];
+		//	fr.predicate = [NSPredicate predicateWithFormat:@"self == %@", self];
+		fr.returnsObjectsAsFaults = NO;
+		return fr;
+	})()) error:nil];
+
+	NSLog(@"self %@, resource url %@", self, self.resourceURL);
+	
 	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	NSURL *ownURL = [[self objectID] URIRepresentation];
-
-	if (!(self.resourceURL) && (self.resourceFilePath)) {
 	
-		[ri createAttachmentWithFileAtURL:[NSURL fileURLWithPath:self.resourceURL] inGroup:ri.primaryGroupIdentifier representingImageURL:nil withTitle:self.text description:nil replacingAttachment:nil asType:nil onSuccess:^(NSString *attachmentIdentifier) {
+
+	if (([[NSURL URLWithString:self.resourceURL] isFileURL] || !self.resourceURL) && (self.resourceFilePath)) {
+	
+		[ri createAttachmentWithFileAtURL:[NSURL URLWithString:self.resourceURL] inGroup:ri.primaryGroupIdentifier representingImageURL:nil withTitle:self.text description:nil replacingAttachment:nil asType:nil onSuccess:^(NSString *attachmentIdentifier) {
 		
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
