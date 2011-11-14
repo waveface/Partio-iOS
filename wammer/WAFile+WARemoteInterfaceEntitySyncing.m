@@ -33,12 +33,25 @@
 	dispatch_once(&onceToken, ^{
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-			@"identifier", @"id",
-			@"text", @"text",
+		
+			//	@"article", @"article",
+			@"codeName", @"code_name",
+			//	@"owner", @"owner",
+			@"text", @"description",
+			@"creationDeviceIdentifier", @"device_id",
+			@"remoteFileName", @"file_name",
+			@"remoteFileSize", @"file_size",
+			//	@"group", @"group",
+			@"remoteRepresentedImage", @"image",
+			@"remoteResourceHash", @"md5",
+			@"resourceType", @"mime_type",
+			@"identifier", @"object_id",
+			@"title", @"title",
+			@"remoteResourceType", @"type",
 			@"thumbnailURL", @"thumbnail_url",
 			@"resourceURL", @"url",
-			@"resourceType", @"type",
 			@"timestamp", @"timestamp",
+			
 		nil];
 		
 		[mapping retain];
