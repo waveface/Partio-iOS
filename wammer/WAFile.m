@@ -38,77 +38,6 @@
 
 }
 
-+ (NSString *) keyPathHoldingUniqueValue {
-
-	return @"identifier";
-
-}
-
-+ (BOOL) skipsNonexistantRemoteKey {
-
-	//	Allows piecemeal data patching, by skipping code path that assigns a placeholder value for any missing value
-	//	that -configureWithRemoteDictionary: gets
-	return YES;
-	
-}
-
-+ (NSDictionary *) remoteDictionaryConfigurationMapping {
-
-	static NSDictionary *mapping = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    
-		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-			@"identifier", @"id",
-			@"text", @"text",
-			@"thumbnailURL", @"thumbnail_url",
-			@"resourceURL", @"url",
-			@"resourceType", @"type",
-			@"timestamp", @"timestamp",
-		nil];
-		
-		[mapping retain];
-		
-	});
-
-	return mapping;
-
-}
-
-+ (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
-
-	if ([aLocalKeyPath isEqualToString:@"timestamp"])
-		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
-	
-	if ([aLocalKeyPath isEqualToString:@"identifier"])
-		return IRWebAPIKitStringValue(aValue);
-		
-	if ([aLocalKeyPath isEqualToString:@"resourceType"]) {
-	
-		if (UTTypeConformsTo((CFStringRef)aValue, kUTTypeItem))
-			return aValue;
-		
-		id returnedValue = IRWebAPIKitStringValue(aValue);
-		
-		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
-		
-		if (CFArrayGetCount(possibleTypes) > 0) {
-			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
-			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
-		}
-	
-		return returnedValue;
-		
-	}
-	
-	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
-
-}
-
-
-
-
-
 - (NSString *) resourceFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:@"resourceFilePath"];
@@ -212,9 +141,11 @@
 		
 		return nil;
 		
-	}
+	} else {
 		
-	primitivePath = [thumbnailURL path];
+		primitivePath = [thumbnailURL path];
+	
+	}
 	
 	if (primitivePath) {
 		[self willChangeValueForKey:@"thumbnailFilePath"];

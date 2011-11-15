@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAArticle *post;
 @property (nonatomic, copy) void (^completionBlock)(NSURL *returnedURI);
+@property (nonatomic, retain) NSURL *urlForPreview;
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset;
 
@@ -32,6 +33,7 @@
 @synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
 @synthesize toolbar;
+@synthesize urlForPreview;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
 {
@@ -41,11 +43,26 @@
     
     if (!returnedController.post) {
         returnedController.post = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-        returnedController.post.draft = [NSNumber numberWithBool:YES];                           
+        returnedController.post.draft = [NSNumber numberWithBool:YES]; 
     }
     returnedController.completionBlock = aBlock;
     
     return returnedController;
+}
++ (WAComposeViewControllerPhone *) controllerWithWebPost:(NSURL *) anURLOrNil completion:(void(^)(NSURL *anURLOrNil))aBlock
+{
+  WAComposeViewControllerPhone *returnedController = [[[self alloc] init] autorelease];
+  returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+  returnedController.post = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:nil];
+  
+  if (!returnedController.post) {
+    returnedController.post = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+    returnedController.post.draft = [NSNumber numberWithBool:YES]; 
+  }
+  returnedController.completionBlock = aBlock;
+  returnedController.post.text = [anURLOrNil description];
+  returnedController.urlForPreview = anURLOrNil;
+  return returnedController;
 }
 
 - (id)init
@@ -255,16 +272,23 @@
 - (void) viewDidLoad {
 	
 	[super viewDidLoad];
+  
+  NSLog(@"Trigger preview API and display it later.");
 	
-	self.contentTextView.text = self.post.text;
+  self.contentTextView.text = self.post.text;
 	[self.contentTextView becomeFirstResponder];
 	
-	self.navigationItem.titleView.frame = (CGRect){
+	self.navigationItem.titleView.bounds = (CGRect){
 		CGPointZero,
 		(CGSize){
 			self.navigationItem.titleView.frame.size.width,
 			self.navigationController.navigationBar.frame.size.height
 		}
+	};
+	
+	self.navigationItem.titleView.center = (CGPoint){
+		CGRectGetMidX(self.navigationController.navigationBar.bounds),
+		CGRectGetMidY(self.navigationController.navigationBar.bounds)
 	};
 	
 	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];
@@ -328,12 +352,9 @@
 	[contentContainerView release];
 	[attachmentsListViewControllerHeaderView release];
 	[toolbar release];
+	[urlForPreview release];
 	[super dealloc];
 }
-
-
-
-
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
 	
@@ -342,14 +363,29 @@
 		return;
 
 	NSURL *finalFileURL = nil;
-	
-	if (selectedAssetURI)
-		finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+	NSLog(@"%@", selectedAssetURI);
+	if (selectedAssetURI){
+    UIImage *image = [UIImage imageWithData:(NSData *)[NSData dataWithContentsOfURL:selectedAssetURI]];
+    CGSize imageSize = [image size];
+    CGSize thumbSize;
+    if (imageSize.height > imageSize.width) {
+      thumbSize = CGSizeMake(360.0, 480.0);
+    } else {
+      thumbSize = CGSizeMake(480.0, 360.0);
+    }
+    UIGraphicsBeginImageContext(thumbSize);
+    [image drawInRect:CGRectMake(0, 0, thumbSize.width, thumbSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:
+                    UIImageJPEGRepresentation(newImage, 0.95) extension:@"jpeg"];
+  }
 	
 	if (!finalFileURL)
 	if (!selectedAssetURI && representedAsset)
 		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullScreenImage]], 0.95) extension:@"jpeg"];
 	
+  
 	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 	stitchedFile.resourceType = (NSString *)kUTTypeImage;
 	stitchedFile.resourceURL = [finalFileURL absoluteString];

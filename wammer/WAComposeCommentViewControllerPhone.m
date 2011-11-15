@@ -11,6 +11,7 @@
 #import "WAComposeCommentViewControllerPhone.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 @interface WAComposeCommentViewControllerPhone ()
 
@@ -73,65 +74,9 @@
 
 - (void) handleDone:(UIBarButtonItem *)sender {
   
-	//	Deleting all the changed stuff and saving is like throwing all the stuff away
-	//	In that sense just don’t do anything.
-  
-	//	TBD save a draft
-	
-//	NSError *savingError = nil;
-//	if (![self.managedObjectContext save:&savingError])
-//		NSLog(@"Error saving: %@", savingError);
-//	
-//	if (self.completionBlock)
-//		self.completionBlock([[self.post objectID] URIRepresentation]);
-//	
-  
   WAArticle *currentArticle = self.post;
-  NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
 
-  [[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:self.contentTextView.text usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
-		
-		NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
-		disposableContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-		
-		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
-		
-		if ([createdCommentRep objectForKey:@"creator_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [createdCommentRep objectForKey:@"creator_id"], @"id",
-                                    nil] forKey:@"owner"];
-		}
-		
-		if ([createdCommentRep objectForKey:@"post_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [createdCommentRep objectForKey:@"post_id"], @"id",
-                                    nil] forKey:@"article"];
-		}
-		
-		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:disposableContext 
-                                                          withRemoteResponse:[NSArray arrayWithObjects: mutatedCommentRep, nil] 
-                                                                usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                              @"WAFile", @"files",
-                                                                              @"WAArticle", @"article",
-                                                                              @"WAUser", @"owner",
-                                                                              nil] options:0];
-		
-		for (WAComment *aComment in insertedComments)
-			if (!aComment.timestamp)
-				aComment.timestamp = [NSDate date];
-		
-		NSError *savingError = nil;
-		if (![disposableContext save:&savingError])
-			NSLog(@"Error saving: %@", savingError);
- 				
-	} onFailure:^(NSError *error) {
-		
-		NSLog(@"Error: %@", error);
-		
-	}];
-	
-  
+	[[WADataStore defaultStore] addComment:self.contentTextView.text onArticle:[[currentArticle objectID] URIRepresentation] onSuccess:nil onFailure:nil];
 	[self.navigationController popViewControllerAnimated:YES];
   
 }	
