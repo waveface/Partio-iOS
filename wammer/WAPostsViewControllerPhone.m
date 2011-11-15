@@ -211,10 +211,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if ( [visibleRows count] ) {
     [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-		if ([self isViewLoaded])
-			[self refreshData];
-	});
 	
 }
 
