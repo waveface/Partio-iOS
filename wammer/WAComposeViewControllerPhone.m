@@ -259,12 +259,17 @@
 	self.contentTextView.text = self.post.text;
 	[self.contentTextView becomeFirstResponder];
 	
-	self.navigationItem.titleView.frame = (CGRect){
+	self.navigationItem.titleView.bounds = (CGRect){
 		CGPointZero,
 		(CGSize){
 			self.navigationItem.titleView.frame.size.width,
 			self.navigationController.navigationBar.frame.size.height
 		}
+	};
+	
+	self.navigationItem.titleView.center = (CGPoint){
+		CGRectGetMidX(self.navigationController.navigationBar.bounds),
+		CGRectGetMidY(self.navigationController.navigationBar.bounds)
 	};
 	
 	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];

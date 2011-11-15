@@ -192,7 +192,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
 		if (didFinish) {
 			pulldownHeader.progress = 0;
-			[nrSelf refreshData];
+			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 		}
 	};
 	
@@ -203,16 +203,29 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
   [self refreshData];
 	
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-  NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates"];
+ 
+	NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
   if ( [visibleRows count] ) {
     [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
 	
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	if (object == [WARemoteInterface sharedInterface])
+	if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse])
+	if ([self isViewLoaded])
+		[self.tableView resetPullDown];
+
 }
 
 /* sync last read pointer with remote */
@@ -390,35 +403,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) refreshData {
-  
-	[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-	
-		if ([self isViewLoaded])
-			[self.tableView resetPullDown];
-		
-		if (!self._lastID) {
-			[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-				if(lastID){
-					NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
-					// If last read is not reachable in currect posts, move to latest.
-					NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
-					for( WAArticle *post in allObjects ){
-						if ([post.identifier isEqualToString:lastID]) {
-							lastReadRow = [self.fetchedResultsController indexPathForObject:post];
-							break;
-						}
-					}
-					[self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
-				}
-				self._lastID = lastID;
-			} onFailure: ^ (NSError *error) {
-				NSLog(@"Retrieve last read articile: %@", error);
-			}];
-			
-		}
-	
-	} onFailure:nil];
-  
+
+	[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
+
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
