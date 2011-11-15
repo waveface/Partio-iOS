@@ -51,7 +51,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		returnedView.layer.borderColor = [UIColor whiteColor].CGColor;
 		returnedView.layer.borderWidth = 1.0f;
 		
-		return returnedView;
+    return returnedView;
 	
 	};
 	
@@ -161,10 +161,11 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		}
 		case WAClippedThumbnailsStyle: {
 			NSParameterAssert(self.thumbnailAspectRatio);
-			NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
+      NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
 			float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
-			for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta)
-				[thumbnailedItemIndices addIndex:roundf(i)];
+			for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta){
+      	[thumbnailedItemIndices addIndex:roundf(i)];
+      }
 			break;
 		}
 	}
@@ -277,7 +278,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	
 	__block CGFloat leftPadding = 0.5f * (usableWidth - exhaustedWidth);
 	
-	[thumbnailedItemIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+  [thumbnailedItemIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 	
 		UIView *thumbnailView = [currentImageThumbnailViews objectAtIndex:idx];
 		NSParameterAssert(![removedThumbnailViews containsObject:thumbnailView]);
@@ -312,11 +313,13 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		};
 		
 		self.activeImageOverlay.center = (CGPoint){
-			0.5 * (usableHeight / self.thumbnailAspectRatio) + 0.5f * (usableWidth - exhaustedWidth) + (((exhaustedWidth - 0.5 * usableHeight) / numberOfItems) * self.selectedItemIndex),
+			0.5 * (usableHeight / self.thumbnailAspectRatio) + 
+      0.5f * (usableWidth - exhaustedWidth) +
+      (((exhaustedWidth - 0.5 * usableHeight / self.thumbnailAspectRatio) / numberOfItems + 1.0) * self.selectedItemIndex) + 4.0,
 			CGRectGetMidY(usableRect)
 		};
-		
-		self.activeImageOverlay.frame = CGRectInset(self.activeImageOverlay.frame, -4, -4);
+    
+    self.activeImageOverlay.frame = CGRectInset(self.activeImageOverlay.frame, -4, -4);
 				
 		if (self != self.activeImageOverlay.superview)
 			[self addSubview:self.activeImageOverlay];
