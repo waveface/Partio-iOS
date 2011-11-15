@@ -141,9 +141,11 @@
 		
 		return nil;
 		
-	}
+	} else {
 		
-	primitivePath = [thumbnailURL path];
+		primitivePath = [thumbnailURL path];
+	
+	}
 	
 	if (primitivePath) {
 		[self willChangeValueForKey:@"thumbnailFilePath"];
