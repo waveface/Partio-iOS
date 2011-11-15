@@ -18,7 +18,10 @@ NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
 NSString * const kWARemoteEndpointVersion = @"WARemoteEndpointVersion";
 NSString * const kWARemoteEndpointCurrentVersion = @"WARemoteEndpointCurrentVersion";
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
+NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthenticatedUserPrimaryGroupIdentifier";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
+
+NSString * const kWARemoteEndpointApplicationKey = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 
 static IRBorder *kWADefaultBarButtonBorder;
 static IRShadow *kWADefaultBarButtonInnerShadow;

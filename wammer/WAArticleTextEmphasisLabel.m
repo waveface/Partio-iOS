@@ -78,6 +78,9 @@
 	NSAttributedString *attributedText = [self.label attributedStringForString:text];
 	capturedLabel.attributedText = attributedText;
 	
+	if (!text)
+		return;
+	
 	dispatch_async(dispatch_get_global_queue(0, 0), ^ {
 	
 		static NSDataDetector *sharedDataDetector = nil;

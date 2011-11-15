@@ -26,7 +26,6 @@
 
 #import "WAArticleViewController.h"
 #import "WAPostViewControllerPhone.h"
-#import "WAUserSelectionViewController.h"
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
@@ -212,10 +211,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if ( [visibleRows count] ) {
     [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-		if ([self isViewLoaded])
-			[self refreshData];
-	});
 	
 }
 
@@ -395,36 +390,32 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData {
   
-	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-
-		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+	[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+	
+		if ([self isViewLoaded])
+			[self.tableView resetPullDown];
 		
-			if ([self isViewLoaded])
-				[self.tableView resetPullDown];
-      
-      if (!self._lastID) {
-        [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-          if(lastID){
-            NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
-            // If last read is not reachable in currect posts, move to latest.
-            NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
-            for( WAArticle *post in allObjects ){
-              if ([post.identifier isEqualToString:lastID]) {
-                lastReadRow = [self.fetchedResultsController indexPathForObject:post];
-                break;
-              }
-            }
-            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
-          }
-          self._lastID = lastID;
-        } onFailure: ^ (NSError *error) {
-          NSLog(@"Retrieve last read articile: %@", error);
-        }];
-        
-      }
-		
-		} onFailure:nil];
-
+		if (!self._lastID) {
+			[[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
+				if(lastID){
+					NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
+					// If last read is not reachable in currect posts, move to latest.
+					NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
+					for( WAArticle *post in allObjects ){
+						if ([post.identifier isEqualToString:lastID]) {
+							lastReadRow = [self.fetchedResultsController indexPathForObject:post];
+							break;
+						}
+					}
+					[self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
+				}
+				self._lastID = lastID;
+			} onFailure: ^ (NSError *error) {
+				NSLog(@"Retrieve last read articile: %@", error);
+			}];
+			
+		}
+	
 	} onFailure:nil];
   
 }

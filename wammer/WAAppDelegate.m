@@ -9,13 +9,18 @@
 #import "WADefines.h"
 
 #import "WAAppDelegate.h"
+
 #import "IRRemoteResourcesManager.h"
-#import "WAUserSelectionViewController.h"
+#import "IRRemoteResourceDownloadOperation.h"
+
+#import "IRWebAPIEngine+ExternalTransforms.h"
+
 #import "WADataStore.h"
 #import "WAViewController.h"
 #import "WANavigationController.h"
 
 #import "WAAuthenticationRequestViewController.h"
+#import "WARegisterRequestViewController.h"
 
 #import "WARemoteInterface.h"
 #import "IRKeychainManager.h"
@@ -29,11 +34,13 @@
 
 #import "UIView+IRAdditions.h"
 
+#import "IRAlertView.h"
+#import "IRAction.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
-// forward declarations
-
-- (void)presentSetupViewControllerAnimated:(BOOL)animated;
+- (void) presentSetupViewControllerAnimated:(BOOL)animated;
+- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
 
 @end
 
@@ -43,10 +50,15 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+	__block __typeof__(self) nrSelf = self;
+
 	WARegisterUserDefaults();
 	
 	[IRRemoteResourcesManager sharedManager].delegate = self;
 	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
+	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
+		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
+	};
 
 	NSDate *launchFinishDate = [NSDate date];
 
@@ -202,6 +214,7 @@
 
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -220,6 +233,9 @@
 		if (lastAuthenticatedUserTokenKeychainItem.secretString)
 			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
 		
+		if (lastAuthenticatedUserPrimaryGroupIdentifier)
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
+		
 	}
 	
 	return authenticationInformationSufficient;
@@ -232,12 +248,14 @@
 	
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	
 	}
 
 	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
 	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
 	
 	if (!lastAuthenticatedUserTokenKeychainItem) {
@@ -251,7 +269,7 @@
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
 	
-	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken) = ^ (NSString *userIdentifier, NSString *userToken) {
+	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 	
 		lastAuthenticatedUserTokenKeychainItem.secretString = userToken;
 		[lastAuthenticatedUserTokenKeychainItem synchronize];
@@ -260,10 +278,12 @@
 		
 		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
+		[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
 		[WARemoteInterface sharedInterface].userToken = userToken;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = primaryGroupIdentifier;
 	
 	};
 	
@@ -272,6 +292,7 @@
 	
 		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
 		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
 		
 		//	We don’t have to validate this again since the token never expires
 	
@@ -279,9 +300,78 @@
 	
 	if (!authenticationInformationSufficient) {
 	
-		__block UIViewController *userSelectionVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self) {
+		[WARemoteInterface sharedInterface].userIdentifier = nil;
+		[WARemoteInterface sharedInterface].userToken = nil;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
+	
+		__block WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
 		
-				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken);
+				if (anError) {
+				
+					//	Help
+					
+					NSString *alertTitle = @"Can’t authenticate";
+					NSString *alertText = [NSString stringWithFormat:
+						@"Wammer has trouble authenticating your account: “%@”. \n\n You can reset your password, or register a new account.",
+						[anError localizedDescription]
+					];
+					
+					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:@"Cancel" block:^{
+						
+					}] otherActions:[NSArray arrayWithObjects:
+					
+						[IRAction actionWithTitle:@"Reset Password" block: ^ {
+						
+							//	?
+						
+						}],
+						
+						[IRAction actionWithTitle:@"Register" block: ^ {
+						
+							__block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+							
+								if (error) {
+									
+									NSString *alertTitle = @"Error Registering Account";
+									NSString *alertText = [NSString stringWithFormat:
+										@"Wammer has trouble registering your account: “%@”. \n\n Please try registrating later.",
+										[error localizedDescription]
+									];
+									
+									[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+									
+										[IRAction actionWithTitle:@"OK" block:nil],
+									
+									nil]] show];
+									
+									return;
+								
+								}
+							
+								authRequestVC.username = self.username;
+								authRequestVC.password = self.password;
+								[authRequestVC.tableView reloadData];
+								[authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
+
+								
+							}];
+						
+							registerRequestVC.username = authRequestVC.username;
+							registerRequestVC.password = authRequestVC.password;
+							
+							[authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
+						
+						}],
+					
+					nil]];
+					
+					[alertView show];
+					
+					return;
+				
+				}
+		
+				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
 		
 				[self dismissModalViewControllerAnimated:YES];
 				
@@ -301,8 +391,9 @@
 			
 		}];
 		
-		UINavigationController *userSelectionWrappingVC = [[[UINavigationController alloc] initWithRootViewController:userSelectionVC] autorelease];
-		userSelectionWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = YES;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -329,7 +420,7 @@
 				})())];
 				
 				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
-				[fullscreenBaseVC presentModalViewController:userSelectionWrappingVC animated:YES];
+				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
 				
 				break;
 			
@@ -338,7 +429,7 @@
 			case UIUserInterfaceIdiomPhone:
 			default: {
 			
-				[self.window.rootViewController presentModalViewController:userSelectionWrappingVC animated:NO];
+				[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:NO];
 				break;
 				
 			}
@@ -441,6 +532,50 @@ static unsigned int networkActivityStackingCount = 0;
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL {
 
 	[self endNetworkActivity];
+
+}
+
+- (NSURL *) remoteResourcesManager:(IRRemoteResourcesManager *)manager invokedURLForResourceAtURL:(NSURL *)givenURL {
+
+	if ([[givenURL host] isEqualToString:@"invalid.local"]) {
+	
+		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
+		NSString *replacementHost = [currentBaseURL host];
+		NSString *replacementPort = [currentBaseURL port];
+		
+		NSString *constructedURLString = [[NSArray arrayWithObjects:
+			
+			[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"]: @"",
+			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
+			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
+			[givenURL path] ? [givenURL path] : @"",
+			[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+			[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+			
+		nil] componentsJoinedByString:@""];
+		
+		NSURL *constructedURL = [NSURL URLWithString:constructedURLString];
+		
+		return constructedURL;
+		
+	}
+	
+	return givenURL;
+
+}
+
+- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
+
+	NSURLConnection *originalConnection = [anOperation underlyingConnection];
+	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
+	
+	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
+		
+	originalRequest.URL = transformedRequest.URL;
+	originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
+	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
+	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
+	originalRequest.HTTPBody = transformedRequest.HTTPBody;
 
 }
 

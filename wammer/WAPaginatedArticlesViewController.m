@@ -25,8 +25,6 @@
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
 
-#import "WAUserSelectionViewController.h"
-
 #import "UIView+IRAdditions.h"
 
 
@@ -45,8 +43,6 @@
 - (BOOL) inferredArticleCommentsVisible;
 - (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments;
 
-@property (nonatomic, readwrite, retain) UIPopoverController *userSelectionPopoverController;
-
 @end
 
 
@@ -57,7 +53,6 @@
 @synthesize articleViewControllers;
 @synthesize articleCommentsViewController;
 @synthesize articleCommentsDismissalButton;
-@synthesize userSelectionPopoverController;
 @synthesize context;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -84,7 +79,6 @@
 	
 	[articleCommentsDismissalButton release];
 	[articleCommentsViewController release];
-	[userSelectionPopoverController release];
 	
 	[context release];
 	
@@ -177,8 +171,6 @@
 	
 	self.articleCommentsDismissalButton = nil;
 	self.articleCommentsViewController = nil;
-	
-	self.userSelectionPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -834,32 +826,6 @@
 - (void) reloadViewContents {
 
 	[self refreshPaginatedViewPages];
-
-}
-
-
-
-
-
-- (UIPopoverController *) userSelectionPopoverController {
-
-	if (userSelectionPopoverController)
-		return userSelectionPopoverController;
-		
-	__block __typeof__(self) nrSelf = self;
-	
-	WAUserSelectionViewController *userSelectionViewController = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
-	
-		[nrSelf.userSelectionPopoverController dismissPopoverAnimated:YES];
-		
-	}];
-	
-	
-	UINavigationController *userSelectionNavigationController = [[[UINavigationController alloc] initWithRootViewController:userSelectionViewController] autorelease];
-	userSelectionViewController.title = @"Accounts";
-	
-	self.userSelectionPopoverController = [[[UIPopoverController alloc] initWithContentViewController:userSelectionNavigationController] autorelease];
-	return self.userSelectionPopoverController;
 
 }
 

@@ -88,9 +88,11 @@
   
   WAArticle *currentArticle = self.post;
   NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
+	//	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
+	
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 
-  [[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:self.contentTextView.text usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
+  [ri createCommentForPost:currentArticleIdentifier inGroup:ri.primaryGroupIdentifier withContentText:self.contentTextView.text onSuccess:^(NSDictionary *createdCommentRep) {
 		
 		NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
 		disposableContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;

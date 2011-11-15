@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
-@class WAUser;
+@class WAUser, WAGroup;
 
 @interface WAArticle : IRManagedObject
 
@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
 @property (nonatomic, retain) NSSet *previews;
+@property (nonatomic, retain) WAGroup *group;
 @property (nonatomic, retain) WAUser *owner;
 
 @property (nonatomic, retain) NSArray *fileOrder;
@@ -39,5 +40,10 @@
 - (void)removeFilesObject:(NSManagedObject *)value;
 - (void)addFiles:(NSSet *)values;
 - (void)removeFiles:(NSSet *)values;
+
+- (void)addPreviewsObject:(NSManagedObject *)value;
+- (void)removePreviewsObject:(NSManagedObject *)value;
+- (void)addPrevies:(NSSet *)values;
+- (void)removePreviews:(NSSet *)values;
 
 @end
