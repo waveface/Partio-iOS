@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAArticle *post;
 @property (nonatomic, copy) void (^completionBlock)(NSURL *returnedURI);
+@property (nonatomic, retain) NSURL *urlForPreview;
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset;
 
@@ -59,7 +60,9 @@
   }
   returnedController.completionBlock = aBlock;
   returnedController.post.text = [anURLOrNil description];
-  return returnedController;}
+  returnedController.urlForPreview = anURLOrNil;
+  return returnedController;
+}
 
 - (id)init
 {
@@ -268,6 +271,8 @@
 - (void) viewDidLoad {
 	
 	[super viewDidLoad];
+  
+  NSLog(@"Trigger preview API and display it later.");
 	
   self.contentTextView.text = self.post.text;
 	[self.contentTextView becomeFirstResponder];
