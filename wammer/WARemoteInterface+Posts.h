@@ -23,6 +23,6 @@
 - (void) createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil preview:(NSDictionary *)aPreviewRep onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	POST posts/newComment
-- (void) createCommentForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil onSuccess:(void(^)(NSDictionary *commentRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;;
+- (void) createCommentForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil onSuccess:(void(^)(NSDictionary *updatedPostRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;;
 
 @end

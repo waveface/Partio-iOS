@@ -16,4 +16,6 @@
 - (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 - (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 
+- (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
+
 @end

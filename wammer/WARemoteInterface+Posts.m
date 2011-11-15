@@ -137,7 +137,7 @@
 		if (!successBlock)
 			return;
 		
-		successBlock(nil);
+		successBlock([inResponseOrNil objectForKey:@"post"]);
 
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 

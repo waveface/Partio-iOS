@@ -44,6 +44,7 @@
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
+		FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */; };
 		FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */; };
 		FF692BA3143C791700A084A8 /* WAPageSliderThumbActive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */; };
 		FF692BA4143C791700A084A8 /* WAPageSliderThumbInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */; };
@@ -556,6 +557,8 @@
 		FF61636314161A61004738D3 /* CrashReporter.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CrashReporter.xcodeproj; path = external/PLCrashReporter/CrashReporter.xcodeproj; sourceTree = "<group>"; };
 		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
 		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAComment+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
+		FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAComment+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageSliderThumb.png; path = Resources/WAPageSliderThumb.png; sourceTree = "<group>"; };
 		FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageSliderThumbActive.png; path = Resources/WAPageSliderThumbActive.png; sourceTree = "<group>"; };
 		FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageSliderThumbInactive.png; path = Resources/WAPageSliderThumbInactive.png; sourceTree = "<group>"; };
@@ -1121,6 +1124,8 @@
 				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
 				FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */,
 				FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */,
+				FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */,
+				FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */,
 				FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */,
 				FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */,
 				FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */,
@@ -1857,6 +1862,7 @@
 				FF897D35146A69A600DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */,
+				FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
