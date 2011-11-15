@@ -130,4 +130,37 @@
 
 }
 
+- (void) updateCurrentUserOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
+
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	NSString *userIdentifier = ri.userIdentifier;
+	NSParameterAssert(userIdentifier);
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep, NSArray *groupReps) {
+	
+		NSManagedObjectContext *context = [nrSelf disposableMOC];
+		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		
+		[WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+		
+		NSError *savingError = nil;
+		if (![context save:&savingError])
+			NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
+			
+		if (successBlock)
+			successBlock();
+		
+	} onFailure:^(NSError *error) {
+	
+		NSLog(@"%@: %@", NSStringFromSelector(_cmd), error);
+		
+		if (failureBlock)
+			failureBlock();
+		
+	}];
+
+}
+
 @end
