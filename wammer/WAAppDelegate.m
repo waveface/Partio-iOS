@@ -16,6 +16,8 @@
 #import "IRWebAPIEngine+ExternalTransforms.h"
 
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+
 #import "WAViewController.h"
 #import "WANavigationController.h"
 
@@ -372,23 +374,43 @@
 				}
 		
 				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
-		
-				[self dismissModalViewControllerAnimated:YES];
 				
-				void (^operations)() = ^ {
+				[[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
+
+					dispatch_async(dispatch_get_main_queue(), ^{
 						
-						CATransition *transition = [CATransition animation];
-						transition.type = kCATransitionFade;
-						transition.duration = 0.3f;
-						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-						transition.removedOnCompletion = YES;
-						[[UIApplication sharedApplication].keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
-						[[UIApplication sharedApplication].keyWindow.layer addAnimation:transition forKey:@"transition"];
+						[self dismissModalViewControllerAnimated:YES];
 						
-				};
+						void (^operations)() = ^ {
+								
+								CATransition *transition = [CATransition animation];
+								transition.type = kCATransitionFade;
+								transition.duration = 0.3f;
+								transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+								transition.removedOnCompletion = YES;
+								[[UIApplication sharedApplication].keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
+								[[UIApplication sharedApplication].keyWindow.layer addAnimation:transition forKey:@"transition"];
+								
+						};
+						
+						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
+					
+					});
+					
+				} onFailure: ^ {
 				
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
-			
+					dispatch_async(dispatch_get_main_queue(), ^{
+
+						[IRAlertView alertViewWithTitle:@"Error Retrieving User Information" message:@"Unable to retrieve user metadata." cancelAction:nil otherActions:[NSArray arrayWithObjects:
+						
+							[IRAction actionWithTitle:@"Okay" block:nil],
+						
+						nil]];
+					
+					});
+					
+				}];
+				
 		}];
 		
 		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
