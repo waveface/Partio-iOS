@@ -541,7 +541,7 @@ static unsigned int networkActivityStackingCount = 0;
 	
 		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
 		NSString *replacementHost = [currentBaseURL host];
-		NSString *replacementPort = [currentBaseURL port];
+		NSNumber *replacementPort = [currentBaseURL port];
 		
 		NSString *constructedURLString = [[NSArray arrayWithObjects:
 			
