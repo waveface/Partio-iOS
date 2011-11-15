@@ -62,6 +62,20 @@
 
 }
 
++ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
+
+	NSMutableDictionary *returnedDictionary = [[incomingRepresentation mutableCopy] autorelease];
+	
+	NSString *mediumImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.medium.url"];
+	if (![mediumImageRepURLString isKindOfClass:[NSString class]])
+		return returnedDictionary;
+	
+	[returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
+	
+	return returnedDictionary; 
+
+}
+
 + (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
 
 	if ([aLocalKeyPath isEqualToString:@"timestamp"])
