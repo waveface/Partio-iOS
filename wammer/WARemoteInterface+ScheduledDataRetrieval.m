@@ -140,40 +140,25 @@
 	return [NSArray arrayWithObjects:
 	
 		[[ ^ {
+		
+			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
+				return;
 
 			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
-		
-			[nrSelf retrieveLastReadArticleRemoteIdentifierOnSuccess: ^ (NSString *lastID, NSDate *modDate) {
+			
+			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
+
+				[nrSelf endPerformingAutomaticRemoteUpdates];		
+				[nrSelf endPostponingDataRetrievalTimerFiring];
 				
-				[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-				
-					[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-					
-						[nrSelf endPerformingAutomaticRemoteUpdates];		
-						[nrSelf endPostponingDataRetrievalTimerFiring];
-					
-					} onFailure: ^ {
-					
-						[nrSelf endPerformingAutomaticRemoteUpdates];		
-						[nrSelf endPostponingDataRetrievalTimerFiring];
-					
-					}];
-				
-				} onFailure: ^ {
-				
-					[nrSelf endPerformingAutomaticRemoteUpdates];		
-					[nrSelf endPostponingDataRetrievalTimerFiring];
-				
-				}];
-		
-			} onFailure: ^ (NSError *error) {
+			} onFailure: ^ {
 			
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
-			
+				
 			}];
-	
+		
 		} copy] autorelease],
 	
 	nil];

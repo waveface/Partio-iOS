@@ -12,13 +12,17 @@
 
 #import "WAOverlayBezel.h"
 
+#import "WADefines.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
 @property (nonatomic, readwrite, retain) UITextField *usernameField;
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
-@property (nonatomic, readwrite, copy) void(^completionBlock)(WAAuthenticationRequestViewController *self);
 
+@property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
+
+- (void) update;
 - (void) authenticate;
 
 @end
@@ -26,9 +30,10 @@
 
 @implementation WAAuthenticationRequestViewController
 @synthesize labelWidth;
-@synthesize usernameField, passwordField, completionBlock;
+@synthesize usernameField, passwordField;
+@synthesize username, password, completionBlock;
 
-+ (WAAuthenticationRequestViewController *) controllerWithCompletion:(void(^)(WAAuthenticationRequestViewController *self))aBlock {
++ (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
 	WAAuthenticationRequestViewController *returnedVC = [[[self alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 	returnedVC.completionBlock = aBlock;
@@ -61,12 +66,25 @@
 
 }
 
+- (void) dealloc {
+
+	[username release];
+	[usernameField release];
+	
+	[password release];
+	[passwordField release];
+
+	[super dealloc];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
 	self.usernameField.placeholder = @"Username";
+	self.usernameField.text = self.username;
 	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	self.usernameField.returnKeyType = UIReturnKeyNext;
@@ -77,6 +95,7 @@
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
 	self.passwordField.placeholder = @"Password";
+	self.passwordField.text = self.password;
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	self.passwordField.returnKeyType = UIReturnKeyGo;
@@ -89,13 +108,14 @@
 
 - (void) viewDidUnload {
 
-	[super viewDidUnload];
 	self.usernameField = nil;
 	self.passwordField = nil;
 	
+	[super viewDidUnload];
+	
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
 
 	if (textField == self.usernameField) {
 		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
@@ -115,30 +135,30 @@
 				[self authenticate];
 			});
 		}
-		return shouldReturn;
+		return shouldReturn; 
+		
 	}
 	
 	return NO;
 
 }
 
+- (void) textFieldDidEndEditing:(UITextField *)textField {
+
+	[self update];
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
+	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
-	[self.usernameField becomeFirstResponder];
+
+	if (!self.usernameField.text)
+		[self.usernameField becomeFirstResponder];
+	else
+		[self.passwordField becomeFirstResponder];
 	
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-}
-
-- (void) viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -185,9 +205,22 @@
 	
 }
 
+- (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+
+	return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+
+}
 
 
 
+
+
+- (void) update {
+
+	self.username = self.usernameField.text;
+	self.password = self.passwordField.text;
+
+}
 
 - (void) authenticate {
 
@@ -197,59 +230,35 @@
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 
-	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:self.usernameField.text password:self.passwordField.text onSuccess:^(NSDictionary *userRep, NSString *token) {
+	[[WARemoteInterface sharedInterface] retrieveTokenForUser:self.username password:self.password onSuccess:^(NSDictionary *userRep, NSString *token) {
 		
-		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"creator_id"];
+		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"user_id"];
 		[WARemoteInterface sharedInterface].userToken = token;
 		
-		//	Hook this up with Keychain services
+		NSArray *allGroups = [userRep objectForKey:@"groups"];
+		if ([allGroups count])
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = [[allGroups objectAtIndex:0] valueForKeyPath:@"group_id"];
 		
-		[[WADataStore defaultStore] updateUsersOnSuccess: ^  {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				
-				if (self.completionBlock)
-					self.completionBlock(self);
-				
-				self.view.userInteractionEnabled = YES;
-				
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-			});
+		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-		} onFailure: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-		 
-				self.view.userInteractionEnabled = YES;
-				
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-				[[[[UIAlertView alloc] initWithTitle:@"Authentication Failure" message:@"Authentication failed.  Unable to retrieve all the users." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			if (self.completionBlock)
+				self.completionBlock(self, nil);
 			
-			});
+			self.view.userInteractionEnabled = YES;
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-		}];
-		
-	} onFailure:^(NSError *error) {
+		});
+
+	} onFailure: ^ (NSError *error) {
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
-			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			errorBezel.caption = [[error userInfo] objectForKey:NSLocalizedFailureReasonErrorKey];
+			if (self.completionBlock)
+				self.completionBlock(self, error);
 			
-			[CATransaction begin];
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			[CATransaction commit];
+			self.view.userInteractionEnabled = YES;
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			
-				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				self.view.userInteractionEnabled = YES;			
-				
-			});
-						
 		});
 			
 	}];		

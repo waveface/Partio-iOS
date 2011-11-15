@@ -25,9 +25,9 @@
 #import "WAArticleViewController.h"
 #import "WAArticleCommentsViewController.h"
 
-#import "WAUserSelectionViewController.h"
-
 #import "UIView+IRAdditions.h"
+
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 
 @interface WAPaginatedArticlesViewController () <IRPaginatedViewDelegate, WAPaginationSliderDelegate, WAArticleCommentsViewControllerDelegate, UIGestureRecognizerDelegate>
@@ -45,8 +45,6 @@
 - (BOOL) inferredArticleCommentsVisible;
 - (void) updateLayoutForCommentsVisible:(BOOL)showingDetailedComments;
 
-@property (nonatomic, readwrite, retain) UIPopoverController *userSelectionPopoverController;
-
 @end
 
 
@@ -57,7 +55,6 @@
 @synthesize articleViewControllers;
 @synthesize articleCommentsViewController;
 @synthesize articleCommentsDismissalButton;
-@synthesize userSelectionPopoverController;
 @synthesize context;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -84,7 +81,6 @@
 	
 	[articleCommentsDismissalButton release];
 	[articleCommentsViewController release];
-	[userSelectionPopoverController release];
 	
 	[context release];
 	
@@ -177,8 +173,6 @@
 	
 	self.articleCommentsDismissalButton = nil;
 	self.articleCommentsViewController = nil;
-	
-	self.userSelectionPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -540,50 +534,11 @@
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 	
 	WAArticle *currentArticle = [[self.fetchedResultsController fetchedObjects] objectAtIndex:self.paginatedView.currentPage];
-	NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
 	
 	[self remoteDataLoadingWillBeginForOperation:@"createComment"];
 	
-	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
-		
-		NSManagedObjectContext *disposableContext = [[WADataStore defaultStore] disposableMOC];
-		disposableContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-		
-		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
-		
-		if ([createdCommentRep objectForKey:@"creator_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-				[createdCommentRep objectForKey:@"creator_id"], @"id",
-			nil] forKey:@"owner"];
-		}
-		
-		if ([createdCommentRep objectForKey:@"post_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-				[createdCommentRep objectForKey:@"post_id"], @"id",
-			nil] forKey:@"article"];
-		}
-		
-		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:disposableContext withRemoteResponse:[NSArray arrayWithObjects:
+	[[WADataStore defaultStore] addComment:commentText onArticle:[[currentArticle objectID] URIRepresentation] onSuccess:^{
 
-			mutatedCommentRep,
-				
-		nil] usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-			@"WAFile", @"files",
-			@"WAArticle", @"article",
-			@"WAUser", @"owner",
-		
-		nil] options:0];
-		
-		for (WAComment *aComment in insertedComments)
-			if (!aComment.timestamp)
-				aComment.timestamp = [NSDate date];
-		
-		NSError *savingError = nil;
-		if (![disposableContext save:&savingError])
-			NSLog(@"Error saving: %@", savingError);
-			
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			@try {
@@ -592,7 +547,7 @@
 				
 			} @catch (NSException *e) {
 				
-				//	Duh
+				//	?
 				
 			}
 			
@@ -600,10 +555,9 @@
 		
 		});
 		
-	} onFailure:^(NSError *error) {
+	} onFailure: ^ {
 		
-		NSLog(@"Error: %@", error);
-		[self remoteDataLoadingDidFailWithError:error];
+		[self remoteDataLoadingDidFailWithError:nil];
 		
 	}];
 	
@@ -834,32 +788,6 @@
 - (void) reloadViewContents {
 
 	[self refreshPaginatedViewPages];
-
-}
-
-
-
-
-
-- (UIPopoverController *) userSelectionPopoverController {
-
-	if (userSelectionPopoverController)
-		return userSelectionPopoverController;
-		
-	__block __typeof__(self) nrSelf = self;
-	
-	WAUserSelectionViewController *userSelectionViewController = [WAUserSelectionViewController controllerWithElectibleUsers:nil onSelection:^(NSURL *pickedUser) {
-	
-		[nrSelf.userSelectionPopoverController dismissPopoverAnimated:YES];
-		
-	}];
-	
-	
-	UINavigationController *userSelectionNavigationController = [[[UINavigationController alloc] initWithRootViewController:userSelectionViewController] autorelease];
-	userSelectionViewController.title = @"Accounts";
-	
-	self.userSelectionPopoverController = [[[UIPopoverController alloc] initWithContentViewController:userSelectionNavigationController] autorelease];
-	return self.userSelectionPopoverController;
 
 }
 

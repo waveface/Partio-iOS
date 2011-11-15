@@ -8,12 +8,15 @@
 
 #import <objc/runtime.h>
 
+#import "WADefines.h"
+
 #import "WADataStore.h"
 #import "WAPostsViewControllerPhone.h"
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 
 #import "WARemoteInterface.h"
+#import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "IRPaginatedView.h"
@@ -26,7 +29,6 @@
 
 #import "WAArticleViewController.h"
 #import "WAPostViewControllerPhone.h"
-#import "WAUserSelectionViewController.h"
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
@@ -49,6 +51,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) syncLastRead:(NSIndexPath *)indexPath;
 - (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize FromImage:(UIImage *)sourceImage;
 + (IRRelativeDateFormatter *) relativeDateFormatter;
+
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL;
 
 @end
 
@@ -192,7 +196,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
 		if (didFinish) {
 			pulldownHeader.progress = 0;
-			[nrSelf refreshData];
+			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 		}
 	};
 	
@@ -203,20 +207,40 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
   [self refreshData];
 	
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-  NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates"];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
+ 
+	NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
   if ( [visibleRows count] ) {
     [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-		if ([self isViewLoaded])
-			[self refreshData];
-	});
 	
+}
+
+- (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
+
+	NSString *content = [[incomingNotification userInfo] objectForKey:@"content"];
+	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
+	
+	[self beginCompositionSessionWithURL:contentURL];
+	
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	if (object == [WARemoteInterface sharedInterface])
+	if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse])
+	if ([self isViewLoaded])
+		[self.tableView resetPullDown];
+
 }
 
 /* sync last read pointer with remote */
@@ -394,39 +418,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) refreshData {
-  
-	[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
 
-		[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-		
-			if ([self isViewLoaded])
-				[self.tableView resetPullDown];
-      
-      if (!self._lastID) {
-        [[WARemoteInterface sharedInterface] retrieveLastReadArticleRemoteIdentifierOnSuccess:^(NSString *lastID, NSDate *modDate) {
-          if(lastID){
-            NSArray *allObjects = [self.fetchedResultsController fetchedObjects];
-            // If last read is not reachable in currect posts, move to latest.
-            NSIndexPath *lastReadRow = [NSIndexPath indexPathForRow:0 inSection:0];
-            for( WAArticle *post in allObjects ){
-              if ([post.identifier isEqualToString:lastID]) {
-                lastReadRow = [self.fetchedResultsController indexPathForObject:post];
-                break;
-              }
-            }
-            [self.tableView selectRowAtIndexPath:lastReadRow animated:YES scrollPosition:UITableViewScrollPositionTop];
-          }
-          self._lastID = lastID;
-        } onFailure: ^ (NSError *error) {
-          NSLog(@"Retrieve last read articile: %@", error);
-        }];
-        
-      }
-		
-		} onFailure:nil];
+	[[WARemoteInterface sharedInterface] rescheduleAutomaticRemoteUpdates];
 
-	} onFailure:nil];
-  
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -480,8 +474,28 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL {
+
+  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+  WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithWebPost:anURL completion:^(NSURL *aPostURLOrNil) {
+    
+		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
+			//	We’ll get a save, do nothing
+			//	dispatch_async(dispatch_get_main_queue(), ^ {
+			//		[self refreshData];
+			//	});
+		} onFailure:nil];
+    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+	}];
+  
+  UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
+  navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+  [self presentModalViewController:navigationController animated:YES];
+}
+
 - (void) handleCompose:(UIBarButtonItem *)sender {
   
+  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
   WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
@@ -490,13 +504,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			//		[self refreshData];
 			//	});
 		} onFailure:nil];
-    
+    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 	}];
   
   UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
   navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
   [self presentModalViewController:navigationController animated:YES];
-	
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {

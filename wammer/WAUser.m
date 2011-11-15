@@ -43,7 +43,7 @@
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 			@"avatarURL", @"avatar_url",
-			@"identifier", @"id",
+			@"identifier", @"user_id",
 			@"nickname", @"nickname",
 			@"email", @"email",
 		nil];
