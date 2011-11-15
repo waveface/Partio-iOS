@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "UIWindow+IRAdditions.h"
 
-@interface WAAppDelegate : UIResponder <UIApplicationDelegate>
+@interface WAAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, readwrite, retain) UIWindow *window;
 

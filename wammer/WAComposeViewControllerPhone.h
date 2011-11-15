@@ -23,5 +23,5 @@
 - (IBAction) handleAttachmentAddFromPhotosLibraryItemTap:(id)sender;
 
 + (WAComposeViewControllerPhone *) controllerWithPost:(NSURL *) aPostURLOrNil completion:(void(^)(NSURL *aPostURLOrNil))aBlock;
-
++ (WAComposeViewControllerPhone *) controllerWithWebPost:(NSURL *) anURLOrNil completion:(void(^)(NSURL *anURLOrNil))aBlock;
 @end

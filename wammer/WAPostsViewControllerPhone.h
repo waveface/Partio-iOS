@@ -14,4 +14,6 @@
 
 @interface WAPostsViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
 
+- (void) handleComposeWithURLString:(NSString *)urlString;
+
 @end
