@@ -21,6 +21,8 @@ NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticat
 NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthenticatedUserPrimaryGroupIdentifier";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 
+NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
+
 NSString * const kWARemoteEndpointApplicationKey = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 
 static IRBorder *kWADefaultBarButtonBorder;

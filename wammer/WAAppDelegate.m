@@ -39,6 +39,8 @@
 #import "IRAlertView.h"
 #import "IRAction.h"
 
+#import "WAPostsViewControllerPhone.h"
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
@@ -112,6 +114,7 @@
 		NSParameterAssert(rootViewControllerClassName);
 		
 		__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+		
 		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
 		
 		self.window.rootViewController = (( ^ {
@@ -153,7 +156,7 @@
 			
 		})());
 		
-		if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+    if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 				
 		if (needsTransition) {
@@ -199,6 +202,65 @@
 	}
 
   return YES;
+	
+}
+
+- (void) applicationDidBecomeActive:(UIApplication *)application {
+  
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+	
+		NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+	
+		UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+		NSURL *pastedURL = pasteboard.URL;
+		BOOL pasteboardHasURL = (BOOL)!!pastedURL;
+		
+		if (!pasteboardHasURL) {
+		
+			NSString *pasteboardString = pasteboard.string;
+			
+			if (pasteboardString) {
+				
+				NSRange pasteboardStringFullRange = (NSRange){ 0, [pasteboard.string length] };
+				NSArray *allLinkMatches = [linkDetector matchesInString:pasteboardString options:0 range:pasteboardStringFullRange];
+				
+				pasteboardHasURL = (BOOL)!![linkDetector numberOfMatchesInString:pasteboardString options:0 range:pasteboardStringFullRange];
+				
+				if ([allLinkMatches count]) {
+					NSTextCheckingResult *result = [allLinkMatches objectAtIndex:0];
+					pastedURL = result.URL;
+				}
+				
+			}
+			
+		}
+		
+		pasteboardHasURL = (BOOL)!!pastedURL;
+		
+		if (!pasteboardHasURL)
+			return;
+		
+		NSString *alertTitle = @"Found Link";
+		NSString *alertText = [NSString stringWithFormat:@"Would you like to compose a Web post with %@?", pastedURL];
+		
+		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+		
+			[IRAction actionWithTitle:@"OK" block:^{
+			
+				[[NSNotificationCenter defaultCenter] postNotificationName:kWACompositionSessionRequestedNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+					pasteboard.string, @"content",
+					pastedURL, @"foundURL",
+				
+				nil]];
+			
+			}],
+		
+		nil]];
+		
+		[alertView show];
+
+  }
 	
 }
 

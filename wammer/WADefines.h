@@ -17,6 +17,8 @@ extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
 
+extern NSString * const kWACompositionSessionRequestedNotification;
+
 extern NSString * const kWARemoteEndpointApplicationKey;
 
 extern void WARegisterUserDefaults (void);

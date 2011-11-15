@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAArticle *post;
 @property (nonatomic, copy) void (^completionBlock)(NSURL *returnedURI);
+@property (nonatomic, retain) NSURL *urlForPreview;
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset;
 
@@ -32,6 +33,7 @@
 @synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
 @synthesize toolbar;
+@synthesize urlForPreview;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
 {
@@ -41,11 +43,26 @@
     
     if (!returnedController.post) {
         returnedController.post = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-        returnedController.post.draft = [NSNumber numberWithBool:YES];                           
+        returnedController.post.draft = [NSNumber numberWithBool:YES]; 
     }
     returnedController.completionBlock = aBlock;
     
     return returnedController;
+}
++ (WAComposeViewControllerPhone *) controllerWithWebPost:(NSURL *) anURLOrNil completion:(void(^)(NSURL *anURLOrNil))aBlock
+{
+  WAComposeViewControllerPhone *returnedController = [[[self alloc] init] autorelease];
+  returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+  returnedController.post = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:nil];
+  
+  if (!returnedController.post) {
+    returnedController.post = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+    returnedController.post.draft = [NSNumber numberWithBool:YES]; 
+  }
+  returnedController.completionBlock = aBlock;
+  returnedController.post.text = [anURLOrNil description];
+  returnedController.urlForPreview = anURLOrNil;
+  return returnedController;
 }
 
 - (id)init
@@ -255,8 +272,10 @@
 - (void) viewDidLoad {
 	
 	[super viewDidLoad];
+  
+  NSLog(@"Trigger preview API and display it later.");
 	
-	self.contentTextView.text = self.post.text;
+  self.contentTextView.text = self.post.text;
 	[self.contentTextView becomeFirstResponder];
 	
 	self.navigationItem.titleView.bounds = (CGRect){
@@ -333,6 +352,7 @@
 	[contentContainerView release];
 	[attachmentsListViewControllerHeaderView release];
 	[toolbar release];
+	[urlForPreview release];
 	[super dealloc];
 }
 

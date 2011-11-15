@@ -8,6 +8,8 @@
 
 #import <objc/runtime.h>
 
+#import "WADefines.h"
+
 #import "WADataStore.h"
 #import "WAPostsViewControllerPhone.h"
 #import "WACompositionViewController.h"
@@ -49,6 +51,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) syncLastRead:(NSIndexPath *)indexPath;
 - (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize FromImage:(UIImage *)sourceImage;
 + (IRRelativeDateFormatter *) relativeDateFormatter;
+
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL;
 
 @end
 
@@ -204,6 +208,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   [self refreshData];
 	
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
 
 }
 
@@ -211,11 +216,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	[super viewWillDisappear:animated];
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates"];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
  
 	NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
   if ( [visibleRows count] ) {
     [self syncLastRead:[visibleRows objectAtIndex:0]];
   }
+	
+}
+
+- (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
+
+	NSString *content = [[incomingNotification userInfo] objectForKey:@"content"];
+	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
+	
+	[self beginCompositionSessionWithURL:contentURL];
 	
 }
 
@@ -457,6 +472,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
   
   [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL {
+
+  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+  WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithWebPost:anURL completion:^(NSURL *aPostURLOrNil) {
+    
+		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
+			//	We’ll get a save, do nothing
+			//	dispatch_async(dispatch_get_main_queue(), ^ {
+			//		[self refreshData];
+			//	});
+		} onFailure:nil];
+    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+	}];
+  
+  UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
+  navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+  [self presentModalViewController:navigationController animated:YES];
 }
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
