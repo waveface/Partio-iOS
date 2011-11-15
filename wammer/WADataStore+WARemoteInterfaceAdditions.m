@@ -24,16 +24,19 @@
 	[WAArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
 		if (!didFinish) {
-			failureBlock();
+			if (failureBlock)
+				failureBlock();
 			return;
 		}
 		
 		if (![temporalContext save:nil]) {
-			failureBlock();
+			if (failureBlock)
+				failureBlock();
 			return;
 		}
 		
-		successBlock();
+		if (successBlock)
+			successBlock();
 		
 	}];
 	
@@ -57,18 +60,28 @@
 	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
 	
 		if (!didFinish) {
-			failureBlock();
+			
+			if (failureBlock)
+				failureBlock();
+			
 			cleanup();
 			return;
+			
 		}
 		
 		if (![temporalContext save:nil]) {
-			failureBlock();
+			
+			if (failureBlock)
+				failureBlock();
+			
 			cleanup();
 			return;
+			
 		}
 		
-		successBlock();
+		if (successBlock)
+			successBlock();
+		
 		cleanup();
 		
 	}];
