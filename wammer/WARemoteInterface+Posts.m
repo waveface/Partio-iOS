@@ -96,9 +96,12 @@
 
 	NSParameterAssert(aGroupIdentifier);
 	
+	NSString *usedType =  [attachmentIdentifiersOrNil count] ? @"image" : @"text";
+	
 	NSMutableDictionary *sentData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 	
 		aGroupIdentifier, @"group_id",
+		usedType, @"type",
 	
 	nil];
 	

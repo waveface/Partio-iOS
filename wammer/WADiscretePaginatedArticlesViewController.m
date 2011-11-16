@@ -317,12 +317,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			navBarSnapshotHolderView.layer.contents = (id)navBarSnapshot.CGImage;
 			
 			self.navigationController.navigationBar.layer.opacity = 0;
+			articleViewController.view.hidden = YES;
 			
 			UIImage *initialStateSnapshot = [self.navigationController.view.layer irRenderedImage];
 			transitionContainerView.layer.contents = (id)initialStateSnapshot.CGImage;
 			transitionContainerView.layer.contentsGravity = kCAGravityResizeAspectFill;
 			
 			self.navigationController.navigationBar.layer.opacity = 1;
+			articleViewController.view.hidden = NO;
 			
 			UIView *backgroundView = [[[UIView alloc] initWithFrame:transitionContainerView.bounds] autorelease];
 			backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -365,7 +367,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			discreteArticleSnapshotHolderView.alpha = 1;
 			fullsizeArticleSnapshotHolderView.alpha = 0;
 			scalingHolderView.frame = [containingWindow convertRect:discreteArticleViewRectInWindow toView:scalingHolderView.superview];
-			
+						
 			[CATransaction commit];
 			
 			UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
@@ -373,7 +375,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations: ^ {
 			
 				backgroundView.alpha = 1;
-				discreteArticleSnapshotHolderView.alpha = 0;
+				//	discreteArticleSnapshotHolderView.alpha = 0;
 				fullsizeArticleSnapshotHolderView.alpha = 1;
 				scalingHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
 				
@@ -385,7 +387,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				
 					[CATransaction begin];
 					[CATransaction setDisableActions:YES];
-
+					
 					[transitionContainerView removeFromSuperview];
 					[enqueuedPaginatedVC setContextControlsVisible:YES animated:NO];
 					
