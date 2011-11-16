@@ -43,7 +43,7 @@
 
 - (void)addPreviewsObject:(NSManagedObject *)value;
 - (void)removePreviewsObject:(NSManagedObject *)value;
-- (void)addPrevies:(NSSet *)values;
+- (void)addPreviews:(NSSet *)values;
 - (void)removePreviews:(NSSet *)values;
 
 @end

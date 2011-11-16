@@ -28,8 +28,12 @@
 
 #import "WAViewController.h"
 
+#import "WARemoteInterface.h"
 
-@interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate>
+#import "WAPreviewBadge.h"
+
+
+@interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate, IRTextAttributorDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
@@ -46,6 +50,9 @@
 @property (nonatomic, readwrite, retain) NSMutableAttributedString *backingContentText;
 
 @property (nonatomic, readwrite, assign) BOOL deniesOrientationChanges;
+
+@property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 
 @end
 
@@ -65,6 +72,8 @@
 @synthesize backingContentText;
 
 @synthesize deniesOrientationChanges;
+
+@synthesize previewBadge;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -117,6 +126,9 @@
 	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
+	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	[article release];
 	article = [newArticle retain];
@@ -136,6 +148,7 @@
 	[noPhotoReminderViewElements release];
 
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
+	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[managedObjectContext release];
 	[article release];
@@ -145,6 +158,8 @@
 	
 	[textAttributor release];
 	[backingContentText release];
+	
+	[previewBadge release];
 	
 	[super dealloc];
 
@@ -161,6 +176,8 @@
 	self.toolbar = nil;
 	self.imagePickerPopover = nil;
 	self.noPhotoReminderViewElements = nil;
+	
+	self.previewBadge = nil;
 
 	[super viewDidUnload];
 
@@ -290,6 +307,12 @@
 	contentTextBackgroundView.layer.masksToBounds = YES;
 	[self.contentTextView.superview insertSubview:contentTextBackgroundView belowSubview:self.contentTextView];
 	
+	self.previewBadge = [[[WAPreviewBadge alloc] initWithFrame:photosViewWrapper.frame] autorelease];
+	self.previewBadge.autoresizingMask = photosViewWrapper.autoresizingMask;
+	self.previewBadge.frame = UIEdgeInsetsInsetRect(self.previewBadge.frame, (UIEdgeInsets){ 0, 8, 8, -48 });
+	self.previewBadge.alpha = 0;
+	[photosViewWrapper.superview addSubview:self.previewBadge];
+	
 }
 
 
@@ -378,9 +401,98 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 
 
+- (IRTextAttributor *) textAttributor {
+
+	if (textAttributor)
+		return textAttributor;
+	
+	self.textAttributor = [[[IRTextAttributor alloc] init] autorelease];
+	self.textAttributor.delegate = self;
+	self.textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
+	self.textAttributor.attributionBlock = ^ (NSString *attributedString, IRTextAttributorAttributionCallback callback) {
+	
+		if (!attributedString) {
+			callback(nil);
+			return;
+		}
+	
+		NSURL *url = [NSURL URLWithString:attributedString];
+		if (!url) {
+			callback(nil);
+			return;
+		}
+		
+		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {
+		
+			NSLog(@"aPreviewRep %@", aPreviewRep);
+			callback(aPreviewRep);
+			
+		} onFailure:^(NSError *error) {
+		
+			callback(nil);
+			
+		}];
+	
+	};
+	
+	return textAttributor;
+
+}
+
 - (void) textViewDidChange:(UITextView *)textView {
 
 	self.navigationItem.rightBarButtonItem.enabled = (BOOL)!![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
+	
+	NSString *capturedText = textView.text;
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+	
+		if ([textView.text isEqualToString:capturedText])
+			[self updateTextAttributorContentWithString:capturedText];
+			
+	});
+	
+}
+
+- (void) updateTextAttributorContentWithString:(NSString *)aString {
+
+	[self.article removePreviews:self.article.previews];
+	
+	self.textAttributor.attributedContent = [[[NSMutableAttributedString alloc] initWithString:aString] autorelease];
+
+}
+
+- (void) textAttributor:(IRTextAttributor *)attributor willUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
+
+	//	NSLog(@"%s %@ %@ %@ %@ %@", __PRETTY_FUNCTION__, attributor, attributedString, aToken, NSStringFromRange(tokenRange), newAttribute);	
+
+}
+
+- (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
+
+	NSArray *insertedPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:[NSArray arrayWithObjects:
+		[NSDictionary dictionaryWithObjectsAndKeys:
+			newAttribute, @"og",
+			[newAttribute valueForKeyPath:@"url"], @"id",
+		nil],
+	nil] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+	
+	[self.article addPreviews:[NSSet setWithArray:insertedPreviews]];
+
+}
+
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+	
+	WAPreview *usedPreview = [self.article.previews anyObject];
+	self.previewBadge.preview = usedPreview;
+	
+	BOOL badgeShown = (BOOL)!!usedPreview;	
+	
+	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+
+		self.previewBadge.alpha = badgeShown ? 1 : 0;
+		
+	} completion:nil];
 
 }
 
@@ -603,6 +715,12 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 
 
+
+- (void) handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSString *)changeKind {
+
+	NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
+
+}
 
 //	Deleting all the changed stuff and saving is like throwing all the stuff away
 //	In that sense just don’t do anything.

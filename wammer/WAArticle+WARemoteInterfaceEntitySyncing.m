@@ -64,7 +64,7 @@
 			@"text", @"content",
 			@"comments", @"comments",
 			@"files", @"attachments",
-			@"previews", @"preview",
+			@"previews", @"previews",
 			
 		nil];
 		
@@ -143,6 +143,23 @@
 	
 	}
 	
+	NSDictionary *preview = [incomingRepresentation objectForKey:@"preview"];
+	
+	if ([preview count]) {
+	
+		[returnedDictionary setObject:[NSArray arrayWithObjects:
+		
+			[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				preview, @"og",
+				[preview valueForKeyPath:@"url"], @"id",
+			
+			nil],
+		
+		nil] forKey:@"previews"];
+	
+	}
+	
 	return returnedDictionary;
 
 }
@@ -176,7 +193,7 @@
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	
-	if ([self.draft isEqualToNumber:(id)kCFBooleanTrue]) {
+	if ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier) {
 	
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 	
@@ -203,7 +220,10 @@
 		operationQueue.maxConcurrentOperationCount = 1;
 	
 		WAPreview *aPreview = [self.previews anyObject];
-		NSURL *previewURL = [NSURL URLWithString:aPreview.url];
+		NSURL *previewURL = [NSURL URLWithString:(aPreview.url ? aPreview.url : aPreview.graphElement.url)];
+		
+		
+		
 		if (previewURL) {
 		
 			//	If preview, fetch it and carry on
@@ -294,18 +314,13 @@
 			
 				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-//				
+				
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:ownURL];
 				savedPost.draft = (id)kCFBooleanFalse;
 				
 				[savedPost.managedObjectContext deleteObject:savedPost];
 				
-				//	[savedPost configureWithRemoteDictionary:results];
-				
 				NSArray *touchedPosts = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-				
-				NSLog(@"savedPost %@", savedPost);
-				NSLog(@"touchedPosts %@", touchedPosts);
 				
 				completionBlock(YES, context, savedPost, nil);
 			

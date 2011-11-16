@@ -39,20 +39,20 @@
 	
 }
 
-- (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
-
-	[super configureWithRemoteDictionary:inDictionary];
-	
-	NSDictionary *graphRep = [inDictionary objectForKey:@"og"];
-	
-	if (graphRep) {
-		if (!self.graphElement)
-			self.graphElement = [WAOpenGraphElement objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:graphRep];
-		else
-			[self.graphElement configureWithRemoteDictionary:graphRep];
-	}
-	
-}
+//	- (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
+//
+//		[super configureWithRemoteDictionary:inDictionary];
+//		
+//		NSDictionary *graphRep = [inDictionary objectForKey:@"og"];
+//		
+//		if (graphRep) {
+//			if (!self.graphElement)
+//				self.graphElement = [WAOpenGraphElement objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:graphRep];
+//			else
+//				[self.graphElement configureWithRemoteDictionary:graphRep];
+//		}
+//		
+//	}
 
 + (NSDictionary *) remoteDictionaryConfigurationMapping {
 
@@ -65,6 +65,7 @@
 			@"htmlSynopsis", @"soul",
 			@"timestamp", @"timestamp",
 			@"text", @"text",
+			@"graphElement", @"og",
 		nil];
 		
 		[mapping retain];
@@ -73,6 +74,24 @@
 
 	return mapping;
 
+}
+
++ (NSDictionary *) defaultHierarchicalEntityMapping {
+
+	static NSDictionary *mapping = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"WAOpenGraphElement", @"og",
+		nil];
+		
+		[mapping retain];
+		
+	});
+
+	return mapping;
+	
 }
 
 + (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {

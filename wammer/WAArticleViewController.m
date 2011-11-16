@@ -18,6 +18,9 @@
 #import "WAViewController.h"
 #import "WAPaginatedArticlesViewController.h"
 
+#import "UIApplication+CrashReporting.h"
+#import "IRMailComposeViewController.h"
+
 
 
 @interface WAArticleView (PrivateStuff)
@@ -239,6 +242,42 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 					shownNavController.modalPresentationStyle = UIModalPresentationFormSheet;
 					
 					shownViewController.title = @"Inspect";
+					
+					shownViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Email" action:^{
+					
+						NSArray *mailRecipients = [[UIApplication sharedApplication] crashReportRecipients];
+						
+						NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
+						NSString *versionString = [NSString stringWithFormat:@"%@ %@ (%@) Commit %@", [bundleInfo objectForKey:(id)kCFBundleNameKey], [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
+						
+						NSString *mailSubject = [NSString stringWithFormat:@"Inspected Article — %@", versionString];
+						
+						__block IRMailComposeViewController *mailComposeController = [IRMailComposeViewController controllerWithMessageToRecipients:mailRecipients withSubject:mailSubject messageBody:inspectionText inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+							
+							SEL presentingVCSelector = [mailComposeController respondsToSelector:@selector(presentingViewController)] ? @selector(presentingViewController) : @selector(parentViewController);
+							UIViewController *presentingVC = [mailComposeController performSelector:presentingVCSelector];
+							
+							[presentingVC dismissModalViewControllerAnimated:YES];
+							
+						}];
+						
+						mailComposeController.modalPresentationStyle = UIModalPresentationFormSheet;
+						
+						[CATransaction begin];
+						
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.duration = 0.3f;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.fillMode = kCAFillModeForwards;
+						transition.removedOnCompletion = YES;
+						
+						[shownViewController.navigationController presentModalViewController:mailComposeController animated:NO];
+						[shownViewController.navigationController.view.window.layer addAnimation:transition forKey:kCATransition];
+						
+						[CATransaction commit];
+						
+					}];
 					
 					shownViewController.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 					
