@@ -111,7 +111,7 @@
 		if (!hasLinks)
 			return;
 		
-		dispatch_async(dispatch_get_current_queue(), ^ {
+		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			if ([capturedLabel.attributedText isEqualToAttributedString:attributedText])
 				capturedLabel.attributedText = linkedAttributedText;

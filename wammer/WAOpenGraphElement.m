@@ -38,6 +38,12 @@
 	
 }
 
++ (NSString *) keyPathHoldingUniqueValue {
+
+	return @"url";
+
+}
+
 + (NSDictionary *) remoteDictionaryConfigurationMapping {
 
 	static NSDictionary *mapping = nil;
