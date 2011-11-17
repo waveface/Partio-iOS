@@ -750,6 +750,10 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
   
   if ([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
   
+    IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
+    if (actionSheetController)
+      return;
+  
     IRAction *cancelAction = [IRAction actionWithTitle:@"Discard" block:^{
       
       if (self.completionBlock)
@@ -768,13 +772,22 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
     
     }];
   
-    IRActionSheetController *actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:cancelAction otherActions:[NSArray arrayWithObjects:
-    
+    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:cancelAction otherActions:[NSArray arrayWithObjects:
       saveAsDraftAction,
-    
     nil]];
     
-    [[actionSheetController singleUseActionSheet] showFromBarButtonItem:sender animated:YES];
+    IRActionSheet *actionSheet = [actionSheetController managedActionSheet];
+    [actionSheet showFromBarButtonItem:sender animated:YES];
+    
+    objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
+    
+    actionSheetController.onActionSheetCancel = ^ {
+      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+    };
+    
+    actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+    };
   
     return;
   
