@@ -33,7 +33,7 @@
   NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
   
   fr.sortDescriptors = [NSArray arrayWithObjects:
-    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
   nil];
   
   fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
