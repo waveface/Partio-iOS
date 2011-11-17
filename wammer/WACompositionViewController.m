@@ -51,6 +51,8 @@
 
 @property (nonatomic, readwrite, assign) BOOL deniesOrientationChanges;
 
+- (void) updateTextAttributorContentWithString:(NSString *)aString;
+
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 
