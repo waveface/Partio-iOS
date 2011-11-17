@@ -13,6 +13,24 @@
 
 @implementation WADataStore (WARemoteInterfaceAdditions)
 
+- (BOOL) hasDraftArticles {
+
+  NSManagedObjectContext *context = [self disposableMOC];
+ 
+  NSFetchRequest *fr = [[self managedObjectModel] fetchRequestTemplateForName:@"WAFRArticleDrafts"];
+  
+  NSError *fetchingError = nil;
+  NSArray *fetchedDrafts = [context executeFetchRequest:fr error:&fetchingError];
+  
+  if (!fetchedDrafts)
+    NSLog(@"Error fetching: %@", fetchingError);
+  
+  NSLog(@"fetchedDrafts %@", fetchedDrafts);
+  
+  return (BOOL)!![fetchedDrafts count];
+
+}
+
 - (void) updateArticlesWithCompletion:(void(^)(void))aBlock {
 
 	[self updateArticlesOnSuccess:aBlock onFailure:aBlock];
