@@ -732,6 +732,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	//	TBD save a draft
 	
 	self.article.text = self.contentTextView.text;
+  self.article.timestamp = [NSDate date];
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
@@ -743,6 +744,54 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
+
+  self.article.text = self.contentTextView.text;
+  self.article.timestamp = [NSDate date];
+  
+  if ([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
+  
+    IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
+    if (actionSheetController)
+      return;
+  
+    IRAction *cancelAction = [IRAction actionWithTitle:@"Discard" block:^{
+      
+      if (self.completionBlock)
+        self.completionBlock(nil);
+      
+    }];
+    
+    IRAction *saveAsDraftAction = [IRAction actionWithTitle:@"Save Draft" block:^{
+    
+      NSError *savingError = nil;
+      if (![self.managedObjectContext save:&savingError])
+        NSLog(@"Error saving: %@", savingError);
+      
+      if (self.completionBlock)
+        self.completionBlock(nil);
+    
+    }];
+  
+    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:cancelAction otherActions:[NSArray arrayWithObjects:
+      saveAsDraftAction,
+    nil]];
+    
+    IRActionSheet *actionSheet = [actionSheetController managedActionSheet];
+    [actionSheet showFromBarButtonItem:sender animated:YES];
+    
+    objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
+    
+    actionSheetController.onActionSheetCancel = ^ {
+      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+    };
+    
+    actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+    };
+  
+    return;
+  
+  }
 
 	if (self.completionBlock)
 		self.completionBlock(nil);
