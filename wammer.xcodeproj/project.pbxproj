@@ -946,6 +946,7 @@
 				FF73A53F13D6C2CC00D54EC6 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		FF73A53F13D6C2CC00D54EC6 /* Products */ = {
 			isa = PBXGroup;
