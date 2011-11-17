@@ -1,3 +1,2 @@
-ETReleaseNotes="- Enhances the Composition view (iPad) so Web Previews are dynamically inspected and shown in the view.\n- Fixes potential thread scheduling bug that intermittently crashes.\n- Fixes up the Remote Interface’s Data Store Additions (Shared) so Web Preview entities are imported correctly and shown correctly in the application."
-
-ETMarketingVersionNumber="0.4.3"
+ETReleaseNotes="- Updates the Data Store (Shared) and fixes a bug where if the remote endpoint does not yet have the image fully uploaded, the retrieved file entity will not get imported and the respective articles will not show.\n- Updates the Gallery view (Shared) and fixes a bug with double-tap-to-zoom not always working correctly and as intended.\n- Fixes up the Comments view controller (iPhone) and resolves a crasher when comments are submitted."
+ETMarketingVersionNumber="0.4.5"
