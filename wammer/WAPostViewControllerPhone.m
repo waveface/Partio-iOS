@@ -22,6 +22,8 @@
 #import "IRShapeView.h"
 #import "IRTableView.h"
 
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
 static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbove";
 
@@ -177,63 +179,9 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
     
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
-}
-
 - (void)showCompose:(UIBarButtonItem *)sender
 {
   [self.navigationController pushViewController:[[WAComposeCommentViewControllerPhone alloc] init] animated:YES];
-}
-
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-		[self.tableView setNeedsLayout];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	[self.tableView layoutSubviews];
-	[self.tableView setNeedsLayout];
-  [super viewWillAppear:animated];
-  [self refreshData];
-	[self.tableView layoutSubviews];
-	[self.tableView setNeedsLayout];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -383,116 +331,14 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   [self.navigationController pushViewController:ccvc animated:YES];
 }
 
-- (void) didFinishComposingComment:(NSString *)commentText 
-{
-	
+- (void) didFinishComposingComment:(NSString *)commentText {
+
 	WAArticle *currentArticle = self.post;
 	NSString *currentArticleIdentifier = currentArticle.identifier;
 	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
-	
-	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
-		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-		
-		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
-		
-		if ([createdCommentRep objectForKey:@"creator_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [createdCommentRep objectForKey:@"creator_id"], @"id",
-                                    nil] forKey:@"owner"];
-		}
-		
-		if ([createdCommentRep objectForKey:@"post_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [createdCommentRep objectForKey:@"post_id"], @"id",
-                                    nil] forKey:@"article"];
-		}
-		
-		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context 
-                                                          withRemoteResponse:[NSArray arrayWithObjects:
-                                                                              mutatedCommentRep,
-                                                                              nil] 
-                                                                usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                              @"WAFile", @"files",
-                                                                              @"WAArticle", @"article",
-                                                                              @"WAUser", @"owner",
-                                                                              nil] 
-                                                                     options:0];
-		
-		for (WAComment *aComment in insertedComments)
-			if (!aComment.timestamp)
-				aComment.timestamp = [NSDate date];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Error saving: %@", savingError);
-		
-	} onFailure:^(NSError *error) {
-		
-		NSLog(@"Error: %@", error);
-		
-	}];
-	
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-- (void) refreshData {
+  NSURL *ownPostURL = [[self.post objectID] URIRepresentation];
+  [[WADataStore defaultStore] addComment:commentText onArticle:ownPostURL onSuccess:nil onFailure:nil];
   
- NSLog(@"%s TBD", __PRETTY_FUNCTION__);
-
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
