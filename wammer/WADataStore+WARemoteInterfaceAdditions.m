@@ -25,8 +25,6 @@
   if (!fetchedDrafts)
     NSLog(@"Error fetching: %@", fetchingError);
   
-  NSLog(@"fetchedDrafts %@", fetchedDrafts);
-  
   return (BOOL)!![fetchedDrafts count];
 
 }
