@@ -22,6 +22,8 @@
 #import "IRShapeView.h"
 #import "IRTableView.h"
 
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
 static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbove";
 
@@ -329,59 +331,15 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   [self.navigationController pushViewController:ccvc animated:YES];
 }
 
-- (void) didFinishComposingComment:(NSString *)commentText 
-{
-	
+- (void) didFinishComposingComment:(NSString *)commentText {
+
 	WAArticle *currentArticle = self.post;
 	NSString *currentArticleIdentifier = currentArticle.identifier;
 	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
-	
-	[[WARemoteInterface sharedInterface] createCommentAsUser:currentUserIdentifier forArticle:currentArticleIdentifier withText:commentText usingDevice:[UIDevice currentDevice].model onSuccess:^(NSDictionary *createdCommentRep) {
-		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-		
-		NSMutableDictionary *mutatedCommentRep = [[createdCommentRep mutableCopy] autorelease];
-		
-		if ([createdCommentRep objectForKey:@"creator_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [createdCommentRep objectForKey:@"creator_id"], @"id",
-                                    nil] forKey:@"owner"];
-		}
-		
-		if ([createdCommentRep objectForKey:@"post_id"]) {
-			[mutatedCommentRep setObject:[NSDictionary dictionaryWithObjectsAndKeys:
-                                    [createdCommentRep objectForKey:@"post_id"], @"id",
-                                    nil] forKey:@"article"];
-		}
-		
-		NSArray *insertedComments = [WAComment insertOrUpdateObjectsUsingContext:context 
-                                                          withRemoteResponse:[NSArray arrayWithObjects:
-                                                                              mutatedCommentRep,
-                                                                              nil] 
-                                                                usingMapping:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                                              @"WAFile", @"files",
-                                                                              @"WAArticle", @"article",
-                                                                              @"WAUser", @"owner",
-                                                                              nil] 
-                                                                     options:0];
-		
-		for (WAComment *aComment in insertedComments)
-			if (!aComment.timestamp)
-				aComment.timestamp = [NSDate date];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Error saving: %@", savingError);
-		
-	} onFailure:^(NSError *error) {
-		
-		NSLog(@"Error: %@", error);
-		
-	}];
-	
+  NSURL *ownPostURL = [[self.post objectID] URIRepresentation];
+  [[WADataStore defaultStore] addComment:commentText onArticle:ownPostURL onSuccess:nil onFailure:nil];
+  
 }
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
