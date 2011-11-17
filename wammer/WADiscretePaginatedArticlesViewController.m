@@ -940,12 +940,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	return [[super debugActionSheetControllerActions] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:
 	
+    #if 0
+		
 		[IRAction actionWithTitle:@"Reflow" block: ^ {
 		
 			[nrSelf reloadViewContents];
 		
 		}],
-		
+    
 		[IRAction actionWithTitle:@"Label Smoke" block: ^ {
 		
 			UIViewController *testingVC = [[(UIViewController *)[NSClassFromString(@"IRLabelTestingViewController") alloc] init] autorelease];
@@ -957,6 +959,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			[[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:navC animated:YES];
 		
 		}],
+    
+    #endif
 	
 	nil]];
 
