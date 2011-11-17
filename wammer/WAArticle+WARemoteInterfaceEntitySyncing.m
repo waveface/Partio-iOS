@@ -320,7 +320,7 @@
 				
 				[savedPost.managedObjectContext deleteObject:savedPost];
 				
-				NSArray *touchedPosts = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
 				completionBlock(YES, context, savedPost, nil);
 			

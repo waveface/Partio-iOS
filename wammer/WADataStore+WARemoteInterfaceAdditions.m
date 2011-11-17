@@ -111,7 +111,7 @@
 		NSManagedObjectContext *context = [self disposableMOC];
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
-		NSArray *touchedPosts = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
 		NSError *savingError = nil;
