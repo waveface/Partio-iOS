@@ -131,19 +131,6 @@
 
 - (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
 
-	NSParameterAssert(self.managedObjectContext);
-
-	[self.managedObjectContext refreshObject:self mergeChanges:YES];
-	
-	[self.managedObjectContext executeFetchRequest:((^ {
-		NSFetchRequest *fr = [[[NSFetchRequest alloc] initWithEntityName:self.entity.name] autorelease];
-		//	fr.predicate = [NSPredicate predicateWithFormat:@"self == %@", self];
-		fr.returnsObjectsAsFaults = NO;
-		return fr;
-	})()) error:nil];
-
-	NSLog(@"self %@, resource url %@", self, self.resourceURL);
-	
 	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];

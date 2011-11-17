@@ -11,6 +11,7 @@
 @implementation WAViewController
 
 @synthesize onShouldAutorotateToInterfaceOrientation, onLoadview;
+@synthesize onViewWillAppear, onViewDidAppear, onViewWillDisappear, onViewDidDisappear;
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 
@@ -30,10 +31,52 @@
 
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+  
+  [super viewWillAppear:animated];
+  
+  if (self.onViewWillAppear)
+    self.onViewWillAppear(self);
+    
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+  [super viewDidAppear:animated];
+  
+  if (self.onViewDidAppear)
+    self.onViewDidAppear(self);
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+  [super viewWillDisappear:animated];
+  
+  if (self.onViewWillDisappear)
+    self.onViewWillDisappear(self);
+
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+
+  [super viewDidDisappear:animated];
+  
+  if (self.onViewDidDisappear)
+    self.onViewDidDisappear(self);
+
+}
+
 - (void) dealloc {
 
 	[onShouldAutorotateToInterfaceOrientation release];
 	[onLoadview release];
+  
+  [onViewWillAppear release];
+  [onViewDidAppear release];
+  [onViewWillDisappear release];
+  [onViewDidDisappear release];
+  
 	[super dealloc];
 
 }
