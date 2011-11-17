@@ -209,36 +209,66 @@
 }
 
 - (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer {
-
-  CGPoint doubleTapCenter = [aRecognizer locationInView:self.imageView];
-  CGPoint anchorPoint = CGPointMake(doubleTapCenter.x/self.imageView.frame.size.width, doubleTapCenter.y/self.imageView.frame.size.height);
-  NSLog(@"anchorPoint (%f, %f)", anchorPoint.x, anchorPoint.y);
   
-	[UIView animateWithDuration:0.3 animations:^{
+	CGPoint locationInView = [aRecognizer locationInView:self];
+	CGPoint offsetFromCenter = (CGPoint) {
+		locationInView.x - CGRectGetMidX(self.bounds),
+		locationInView.y - CGRectGetMidY(self.bounds)
+	};
+
+	CGFloat scale = self.scrollView.zoomScale;
+	
+  __block CGFloat newScale = scale;
+  
+	[UIView animateWithDuration:0.3f animations: ^ {
+  
+    CGRect oldScrollViewBounds = self.scrollView.layer.bounds;
+     
+		if (scale < 1) {
+      newScale = 1;
+    } else if (scale >= self.scrollView.maximumZoomScale) {
+      newScale = 1;
+		} else {
+      newScale = self.scrollView.maximumZoomScale;
+    }
 		
-		CGFloat scale = self.scrollView.zoomScale;
-		self.needsContentAdjustmentOnLayout = NO;
-		self.needsOffsetAdjustmentOnLayout = NO;
-		self.needsInsetAdjustmentOnLayout = YES;
-		
-		if (scale > 1) { // Zoom back to normal
+    [self.scrollView setZoomScale:newScale animated:NO];
+    
+    self.needsInsetAdjustmentOnLayout = YES;
+    
+    if (newScale > 1) {
+    
+      newScale = MIN(newScale, 2);
       
-			CGPoint oldOffset = self.scrollView.contentOffset;
-      [self.scrollView setZoomScale:1 animated:NO];
-			[self.scrollView setContentOffset:oldOffset animated:NO];
+      CGPoint newOffsetFromCenter = (CGPoint){
+        offsetFromCenter.x * (newScale / scale),
+        offsetFromCenter.y * (newScale / scale)
+      };
       
-      self.imageView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-			self.needsOffsetAdjustmentOnLayout = YES;
-			[self layoutSubviews];
-			
-		} else { // Zoom In
-			
-      self.imageView.layer.anchorPoint = anchorPoint;
-      [self.scrollView setZoomScale:self.scrollView.maximumZoomScale animated:YES];
+      CGPoint newContentOffset = (CGPoint){
+        self.scrollView.contentOffset.x + newOffsetFromCenter.x,
+        self.scrollView.contentOffset.y + newOffsetFromCenter.y
+      };
       
-		}
-		
-	}];
+      self.scrollView.layer.bounds = oldScrollViewBounds;
+      [self.scrollView.layer removeAnimationForKey:@"bounds"];
+      
+      [self.scrollView setContentOffset:newContentOffset animated:NO];
+
+    } else {
+
+      self.scrollView.layer.bounds = oldScrollViewBounds;
+      [self.scrollView.layer removeAnimationForKey:@"bounds"];
+
+      [self layoutSubviews];
+ 
+    }
+
+	} completion: ^ (BOOL finished) {
+  
+    //  ?
+    
+  }];
 
 }
 
@@ -306,7 +336,6 @@
 		}
 		
 		if (!UIEdgeInsetsEqualToEdgeInsets(oldContentInset, newContentInset)) {
-			NSLog(@"content inset %@ -> %@", NSStringFromUIEdgeInsets(oldContentInset), NSStringFromUIEdgeInsets(newContentInset));
 			self.scrollView.contentInset = newContentInset;
 		}
 		
