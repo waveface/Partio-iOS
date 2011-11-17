@@ -257,6 +257,9 @@
 
     } else {
 
+      self.needsContentAdjustmentOnLayout = YES;
+      self.needsOffsetAdjustmentOnLayout = YES;
+      
       self.scrollView.layer.bounds = oldScrollViewBounds;
       [self.scrollView.layer removeAnimationForKey:@"bounds"];
 
