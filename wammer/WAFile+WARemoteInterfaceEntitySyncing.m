@@ -78,6 +78,18 @@
 
 + (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
 
+  if ([aLocalKeyPath isEqualToString:@"remoteFileSize"]) {
+    
+    if ([aValue isEqual:@""])
+      return nil;
+  
+    if ([aValue isKindOfClass:[NSNumber class]])
+      return aValue;
+    
+    return [NSNumber numberWithUnsignedInt:[aValue unsignedIntValue]];
+    
+  }
+  
 	if ([aLocalKeyPath isEqualToString:@"timestamp"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
 	
