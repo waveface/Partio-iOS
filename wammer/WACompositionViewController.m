@@ -744,6 +744,40 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
+  self.article.text = self.contentTextView.text;
+  
+  if ([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
+  
+    IRAction *cancelAction = [IRAction actionWithTitle:@"Discard" block:^{
+      
+      if (self.completionBlock)
+        self.completionBlock(nil);
+      
+    }];
+    
+    IRAction *saveAsDraftAction = [IRAction actionWithTitle:@"Save Draft" block:^{
+    
+      NSError *savingError = nil;
+      if (![self.managedObjectContext save:&savingError])
+        NSLog(@"Error saving: %@", savingError);
+      
+      if (self.completionBlock)
+        self.completionBlock(nil);
+    
+    }];
+  
+    IRActionSheetController *actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:cancelAction otherActions:[NSArray arrayWithObjects:
+    
+      saveAsDraftAction,
+    
+    nil]];
+    
+    [[actionSheetController singleUseActionSheet] showFromBarButtonItem:sender animated:YES];
+  
+    return;
+  
+  }
+
 	if (self.completionBlock)
 		self.completionBlock(nil);
 
