@@ -32,6 +32,10 @@
 
 #import "WAPreviewBadge.h"
 
+#import "UIViewController+IRAdditions.h"
+
+#import "UIApplication+IRAdditions.h"
+
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate, IRTextAttributorDelegate>
 
@@ -56,6 +60,8 @@
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 
+@property (nonatomic, readwrite, assign) BOOL delaysKeyboardPresentationOnViewDidAppear;
+
 @end
 
 
@@ -76,6 +82,8 @@
 @synthesize deniesOrientationChanges;
 
 @synthesize previewBadge;
+
+@synthesize delaysKeyboardPresentationOnViewDidAppear;
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
@@ -321,9 +329,9 @@
 static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandler = @"kWACompositionViewWindowInterfaceBoundsNotificationHandler";
 
 - (void) viewWillAppear:(BOOL)animated {
-
-	[super viewWillAppear:animated];
-
+    
+  [super viewWillAppear:animated];
+  
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
 	
 		NSDictionary *userInfo = [aNotification userInfo];
@@ -360,8 +368,21 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (void) viewDidAppear:(BOOL)animated {
 
 	[super viewDidAppear:animated];
-	[self.contentTextView becomeFirstResponder];
-
+  
+  if (delaysKeyboardPresentationOnViewDidAppear) {
+  
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+    
+      [self.contentTextView becomeFirstResponder];
+    
+    });
+  
+  } else {
+  
+    [self.contentTextView becomeFirstResponder];
+  
+  }
+  
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -819,6 +840,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
 					[nrSelf dismissModalViewControllerAnimated:YES];
 				}];
+        
+        testVC.onViewWillAppear = ^ (WAViewController *self) {
+          [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        };
+        
+        testVC.onViewWillDisappear = ^ (WAViewController *self) {
+          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        };
 				
 				UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
 				navC.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -932,7 +961,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-
+  
 	if (deniesOrientationChanges) {
 	if (interfaceOrientation != self.interfaceOrientation)
 		return NO;
@@ -964,6 +993,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			[UIInterfaceOrientationLandscapeRight] = kCATransitionFromLeft
 		})[[UIApplication sharedApplication].statusBarOrientation];
 					
+    [[UIApplication sharedApplication] irBeginIgnoringStatusBarAppearanceRequests];
+          
 		[nrSelf presentModalViewController:modalViewController animated:NO];
 		
 		[[UIApplication sharedApplication].keyWindow.layer addAnimation:pushTransition forKey:kCATransition];
@@ -995,8 +1026,10 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		[super dismissModalViewControllerAnimated:animated];
 		return;
 	}
-
-	CATransition *popTransition = [CATransition animation];
+  
+  [CATransaction begin];
+  
+  CATransition *popTransition = [CATransition animation];
 	popTransition.type = kCATransitionReveal;
 	popTransition.duration = 0.3;
 	popTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -1008,9 +1041,22 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	})[[UIApplication sharedApplication].statusBarOrientation];
 	
 	[nrSelf dismissModalViewControllerAnimated:NO];
-	
-	[[UIApplication sharedApplication].keyWindow.layer addAnimation:popTransition forKey:kCATransition];
+  
+  [[UIApplication sharedApplication] irEndIgnoringStatusBarAppearanceRequests];
 
+  //  ((^{
+  //    [UIView setAnimationsEnabled:NO];
+  //    NSObject *viewControllerClass = (NSObject *)[UIViewController class];
+  //    if ([viewControllerClass respondsToSelector:@selector(attemptRotationToDeviceOrientation)]) {
+  //      [viewControllerClass performSelector:@selector(attemptRotationToDeviceOrientation)];
+  //    }
+  //    [UIView setAnimationsEnabled:YES];
+  //  })());
+
+	[[UIApplication sharedApplication].keyWindow.layer addAnimation:popTransition forKey:kCATransition];
+  
+  [CATransaction commit];
+    
 }
 
 @end
