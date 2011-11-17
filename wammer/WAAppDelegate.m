@@ -650,7 +650,6 @@ static unsigned int networkActivityStackingCount = 0;
 
 - (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
 
-	NSURLConnection *originalConnection = [anOperation underlyingConnection];
 	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
 	
 	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];

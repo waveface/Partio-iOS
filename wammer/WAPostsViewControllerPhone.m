@@ -83,10 +83,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
-  self.title = @"Wammer";
+	self.title = @"Wammer";
 	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyphWhiteAlt"] style:UIBarButtonItemStylePlain target:self action:@selector(actionSettings:)] autorelease];
-  self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(actionSettings:)] autorelease];
+	
+	self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
@@ -227,9 +228,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
 
-	NSString *content = [[incomingNotification userInfo] objectForKey:@"content"];
 	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
-	
 	[self beginCompositionSessionWithURL:contentURL];
 	
 }
