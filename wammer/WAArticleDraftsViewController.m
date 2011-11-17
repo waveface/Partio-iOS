@@ -110,12 +110,14 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
    
-  cell.textLabel.text = representedDraft.text;
-  if (!cell.textLabel.text)
+  if (representedDraft.text)
+    cell.textLabel.text = representedDraft.text;
+  else
     cell.textLabel.text = @"(No Content)";
   
-  cell.detailTextLabel.text = [representedDraft.timestamp description];
-  if (!cell.detailTextLabel.text)
+  if (representedDraft.timestamp)
+    cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedDraft.timestamp];
+  else
     cell.detailTextLabel.text = @"(No Timestamp)";
   
   return cell;
