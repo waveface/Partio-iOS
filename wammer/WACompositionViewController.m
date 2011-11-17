@@ -732,6 +732,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	//	TBD save a draft
 	
 	self.article.text = self.contentTextView.text;
+  self.article.timestamp = [NSDate date];
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
@@ -745,6 +746,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
   self.article.text = self.contentTextView.text;
+  self.article.timestamp = [NSDate date];
   
   if ([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
   
