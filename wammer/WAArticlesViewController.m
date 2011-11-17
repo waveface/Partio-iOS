@@ -29,7 +29,9 @@
 
 #import "WARefreshActionView.h"
 
-@interface WAArticlesViewController () <NSFetchedResultsControllerDelegate>
+#import "WAArticleDraftsViewController.h"
+
+@interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -39,6 +41,8 @@
 
 @property (nonatomic, readwrite, assign) int interfaceUpdateOperationSuppressionCount;
 @property (nonatomic, readwrite, retain) NSOperationQueue *interfaceUpdateOperationQueue;
+
+- (void) beginCompositionSessionForArticle:(NSURL *)anObjectURI;
 
 @end
 
@@ -354,11 +358,46 @@
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
+  BOOL hasDrafts = [[WADataStore defaultStore] hasDraftArticles];
+    
+  if (hasDrafts) {
+  
+    UIPopoverController *draftsPopover = objc_getAssociatedObject(self, _cmd);
+    
+    if ([draftsPopover isPopoverVisible])
+      return;
+      
+    WAArticleDraftsViewController *draftsVC = [[[WAArticleDraftsViewController alloc] init] autorelease];
+    draftsVC.delegate = self;
+    UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:draftsVC] autorelease];
+    draftsPopover = [[[UIPopoverController alloc] initWithContentViewController:navC] autorelease];
+    objc_setAssociatedObject(self, _cmd, draftsPopover, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:YES];
+    [draftsPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    
+    return;
+    
+  }
+
 	[debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:YES];
 
-	//  __block __typeof__(self) nrSelf = self;
+  [self beginCompositionSessionForArticle:nil];
   
-	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:nil completion:^(NSURL *anArticleURLOrNil) {
+}
+
+- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
+
+  UIPopoverController *draftsPopover = objc_getAssociatedObject(self, @selector(handleCompose:));
+  [draftsPopover dismissPopoverAnimated:YES];
+  
+  [self beginCompositionSessionForArticle:anObjectURIOrNil];
+
+}
+
+- (void) beginCompositionSessionForArticle:(NSURL *)anURI {
+
+	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:anURI completion:^(NSURL *anArticleURLOrNil) {
 	
 		[compositionVC dismissModalViewControllerAnimated:YES];
 	
