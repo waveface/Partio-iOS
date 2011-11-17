@@ -255,6 +255,8 @@
 			nil]] show];
 		
 		}],
+    
+    #if 0
 	
 		[IRAction actionWithTitle:@"Feedback" block:^ {
 		
@@ -334,6 +336,8 @@
 				NSLog(@"Error saving: %@", savingError);
 		
 		}],
+    
+    #endif
 		
 	nil];
 

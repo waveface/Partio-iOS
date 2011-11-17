@@ -12,5 +12,9 @@
 
 @property (nonatomic, readwrite, copy) BOOL (^onShouldAutorotateToInterfaceOrientation)(UIInterfaceOrientation toOrientation);
 @property (nonatomic, readwrite, copy) void (^onLoadview)(WAViewController *self);
+@property (nonatomic, readwrite, copy) void (^onViewWillAppear)(WAViewController *self);
+@property (nonatomic, readwrite, copy) void (^onViewDidAppear)(WAViewController *self);
+@property (nonatomic, readwrite, copy) void (^onViewWillDisappear)(WAViewController *self);
+@property (nonatomic, readwrite, copy) void (^onViewDidDisappear)(WAViewController *self);
 
 @end
