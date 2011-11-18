@@ -32,6 +32,7 @@
 @synthesize labelWidth;
 @synthesize usernameField, passwordField;
 @synthesize username, password, completionBlock;
+@synthesize performsAuthenticationOnViewDidAppear;
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
@@ -91,6 +92,7 @@
 	self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
+  self.usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
@@ -103,6 +105,7 @@
 	self.passwordField.secureTextEntry = YES;
 	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
+  self.passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 		
 }
 
@@ -159,6 +162,17 @@
 	else
 		[self.passwordField becomeFirstResponder];
 	
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+  [super viewDidAppear:animated];
+  
+  if (self.performsAuthenticationOnViewDidAppear) {
+    self.performsAuthenticationOnViewDidAppear = NO;
+    [self authenticate];
+  }
+
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -223,6 +237,8 @@
 }
 
 - (void) authenticate {
+
+  [self update];
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = @"Processing";
