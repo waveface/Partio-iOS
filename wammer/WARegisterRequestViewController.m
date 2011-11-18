@@ -92,7 +92,8 @@
 	self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
-	
+  self.usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+
 	self.nicknameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.nicknameField.delegate = self;
 	self.nicknameField.placeholder = @"Nickname";
@@ -103,6 +104,7 @@
 	self.nicknameField.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.nicknameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.nicknameField.keyboardType = UIKeyboardTypeASCIICapable;
+  self.nicknameField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
@@ -115,6 +117,7 @@
 	self.passwordField.secureTextEntry = YES;
 	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
+  self.passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
 	self.passwordConfirmationField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordConfirmationField.delegate = self;
@@ -127,6 +130,7 @@
 	self.passwordConfirmationField.secureTextEntry = YES;
 	self.passwordConfirmationField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.passwordConfirmationField.keyboardType = UIKeyboardTypeASCIICapable;
+  self.passwordConfirmationField.clearButtonMode = UITextFieldViewModeWhileEditing;
 		
 }
 
@@ -278,6 +282,8 @@
 }
 
 - (void) register {
+
+  [self update];
 
 	if (!self.username)
 		return;

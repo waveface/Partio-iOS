@@ -22,4 +22,6 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 @property (nonatomic, readwrite, retain) NSString *password;
 @property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
+@property (nonatomic, readwrite, assign) BOOL performsAuthenticationOnViewDidAppear;
+
 @end
