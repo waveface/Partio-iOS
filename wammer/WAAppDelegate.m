@@ -414,10 +414,11 @@
 							
 								authRequestVC.username = self.username;
 								authRequestVC.password = self.password;
+								authRequestVC.performsAuthenticationOnViewDidAppear = YES;
+
 								[authRequestVC.tableView reloadData];
 								[authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
 
-								
 							}];
 						
 							registerRequestVC.username = authRequestVC.username;
