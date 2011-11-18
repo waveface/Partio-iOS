@@ -511,7 +511,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	BOOL badgeShown = (BOOL)!!usedPreview;	
 	
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
 
 		self.previewBadge.alpha = badgeShown ? 1 : 0;
 		
