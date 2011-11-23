@@ -184,20 +184,32 @@
 	
 	if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
 	
+    //  Never send crash reports thru the Simulator since it won’t actually matter
+
 		initializeInterface();
 	
 	} else {
+  
+    if (WAAdvancedFeaturesEnabled()) {
+    
+      //  Only enable crash reporting as an advanced feature
 	
-		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
-					initializeInterface();
-				}];
-			} else {
-				initializeInterface();
-			}
-		}];
+      [[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
+        if ([[UIApplication sharedApplication] crashReportingEnabled]) {
+          [[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
+            [[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
+            initializeInterface();
+          }];
+        } else {
+          initializeInterface();
+        }
+      }];
+    
+    } else {
+    
+      initializeInterface();
+    
+    }
 	
 	}
 
@@ -625,12 +637,16 @@ static unsigned int networkActivityStackingCount = 0;
 	if ([[givenURL host] isEqualToString:@"invalid.local"]) {
 	
 		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
+    NSString *replacementScheme = [currentBaseURL scheme];
+    if (!replacementScheme)
+      replacementScheme = @"http";
+    
 		NSString *replacementHost = [currentBaseURL host];
-		NSNumber *replacementPort = [currentBaseURL port];
+		NSNumber *replacementPort = [currentBaseURL port];    
 		
 		NSString *constructedURLString = [[NSArray arrayWithObjects:
 			
-			[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"]: @"",
+			[replacementScheme stringByAppendingString:@"://"],
 			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
 			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
 			[givenURL path] ? [givenURL path] : @"",

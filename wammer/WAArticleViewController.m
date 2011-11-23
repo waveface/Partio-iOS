@@ -173,7 +173,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
 	[self.view addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease]];
-	[self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
+  
+  if (WAAdvancedFeaturesEnabled())
+    [self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
 	
 	self.view.article = self.article;
 	self.view.presentationStyle = self.presentationStyle;

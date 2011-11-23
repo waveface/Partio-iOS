@@ -221,7 +221,10 @@
 
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
-	return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+  if (WAAdvancedFeaturesEnabled())
+    return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+  
+  return nil;
 
 }
 
