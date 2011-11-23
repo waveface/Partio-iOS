@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>WARemoteEndpointURL</key>
-	<string>https://api.waveface.com/</string>
+	<string>https://api.waveface.com/v2/</string>
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WAAdvancedFeaturesEnabled</key>
