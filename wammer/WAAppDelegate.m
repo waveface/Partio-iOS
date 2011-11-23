@@ -637,12 +637,16 @@ static unsigned int networkActivityStackingCount = 0;
 	if ([[givenURL host] isEqualToString:@"invalid.local"]) {
 	
 		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
+    NSString *replacementScheme = [currentBaseURL scheme];
+    if (!replacementScheme)
+      replacementScheme = @"http";
+    
 		NSString *replacementHost = [currentBaseURL host];
-		NSNumber *replacementPort = [currentBaseURL port];
+		NSNumber *replacementPort = [currentBaseURL port];    
 		
 		NSString *constructedURLString = [[NSArray arrayWithObjects:
 			
-			[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"]: @"",
+			[replacementScheme stringByAppendingString:@"://"],
 			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
 			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
 			[givenURL path] ? [givenURL path] : @"",

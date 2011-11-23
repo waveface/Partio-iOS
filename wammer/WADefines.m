@@ -15,7 +15,11 @@
 #import "UIImage+IRAdditions.h"
 
 NSString * const kWAAdvancedFeaturesEnabled = @"WAAdvancedFeaturesEnabled";
-extern BOOL WAAdvancedFeaturesEnabled (void);
+
+BOOL WAAdvancedFeaturesEnabled (void) {
+  return [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+};
+
 
 NSString * const kWARemoteEndpointURL = @"WARemoteEndpointURL";
 NSString * const kWARemoteEndpointVersion = @"WARemoteEndpointVersion";
