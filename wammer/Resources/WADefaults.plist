@@ -6,5 +6,7 @@
 	<string>https://api.waveface.com/</string>
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
+	<key>WAAdvancedFeaturesEnabled</key>
+	<false/>
 </dict>
 </plist>

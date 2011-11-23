@@ -10,6 +10,14 @@
 
 @class IRBarButtonItem, IRBorder;
 
+extern NSString * const kWAAdvancedFeaturesEnabled;
+
+BOOL WAAdvancedFeaturesEnabled (void) {
+
+  return [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+
+};
+
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWARemoteEndpointVersion;
 extern NSString * const kWARemoteEndpointCurrentVersion;
