@@ -184,20 +184,32 @@
 	
 	if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
 	
+    //  Never send crash reports thru the Simulator since it won’t actually matter
+
 		initializeInterface();
 	
 	} else {
+  
+    if (WAAdvancedFeaturesEnabled()) {
+    
+      //  Only enable crash reporting as an advanced feature
 	
-		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
-					initializeInterface();
-				}];
-			} else {
-				initializeInterface();
-			}
-		}];
+      [[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
+        if ([[UIApplication sharedApplication] crashReportingEnabled]) {
+          [[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
+            [[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
+            initializeInterface();
+          }];
+        } else {
+          initializeInterface();
+        }
+      }];
+    
+    } else {
+    
+      initializeInterface();
+    
+    }
 	
 	}
 
