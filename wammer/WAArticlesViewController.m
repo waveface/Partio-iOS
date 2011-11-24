@@ -79,7 +79,7 @@
 	self.navigationItem.titleView = (( ^ {
 	
 		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-		label.text = @"Wammer";
+		label.text = @"Waveface";
 		label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
 		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
 		label.shadowColor = [UIColor whiteColor];
@@ -104,6 +104,8 @@
 	})())];
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+  
+    __block __typeof__(self) nrSelf = self;
 	
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 120, 44 }] autorelease];
 		
@@ -113,13 +115,13 @@
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
 			[IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-				[self performSelector:@selector(handleAction:) withObject:senderItem];
+				[nrSelf performSelector:@selector(handleAction:) withObject:senderItem];
 			}],
 		
 			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
 			
 			[IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-				[self performSelector:@selector(handleCompose:) withObject:senderItem];
+				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
 			}],
 			
 		nil];
