@@ -40,7 +40,7 @@
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.waveface.wammer2</string>
+	<string>com.waveface</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -57,6 +57,11 @@
 	<string>${CURRENT_PROJECT_VERSION}</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Sansus Webissimo-Italic.otf</string>
+		<string>Sansus Webissimo-Regular.otf</string>
+	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -79,10 +84,5 @@
 	<array/>
 	<key>UTImportedTypeDeclarations</key>
 	<array/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Sansus Webissimo-Italic.otf</string>
-		<string>Sansus Webissimo-Regular.otf</string>
-	</array>
 </dict>
 </plist>
