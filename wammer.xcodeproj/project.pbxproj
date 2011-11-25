@@ -73,6 +73,8 @@
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
+		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
+		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
@@ -668,6 +670,10 @@
 		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Preview.xib"; path = "Resources/WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = wammer/WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
+		FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReachabilityDetector.h; sourceTree = "<group>"; };
+		FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReachabilityDetector.m; sourceTree = "<group>"; };
+		FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Reachability.h"; sourceTree = "<group>"; };
+		FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Reachability.m"; sourceTree = "<group>"; };
 		FFA87D02143F01450074AAE4 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
 		FFA87D03143F01450074AAE4 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
 		FFA9C95F144E967F0001BA25 /* IRLabelTestingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLabelTestingViewController.h; sourceTree = "<group>"; };
@@ -1101,6 +1107,56 @@
 			children = (
 				FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */,
 				FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */,
+				FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */,
+				FFA69454147F6F9E00F46347 /* Data Store Additions */,
+				FFA69453147F6F9500F46347 /* Reachability */,
+			);
+			name = API;
+			path = wammer;
+			sourceTree = "<group>";
+		};
+		FF97386213D82B55003D1722 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				FF97385F13D82B4F003D1722 /* JSONKit.h */,
+				FF97386013D82B4F003D1722 /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		FFA69453147F6F9500F46347 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */,
+				FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */,
+				FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */,
+				FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		FFA69454147F6F9E00F46347 /* Data Store Additions */ = {
+			isa = PBXGroup;
+			children = (
+				FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */,
+				FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */,
+				FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */,
+				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
+				FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */,
+				FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */,
+				FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */,
+				FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */,
+				FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */,
+				FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */,
+				FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */,
+				FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */,
+			);
+			name = "Data Store Additions";
+			sourceTree = "<group>";
+		};
+		FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */ = {
+			isa = PBXGroup;
+			children = (
 				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
 				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
 				FF97384713D8278E003D1722 /* WARemoteInterface.h */,
@@ -1125,30 +1181,8 @@
 				FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */,
 				FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */,
 				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
-				FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */,
-				FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */,
-				FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */,
-				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
-				FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */,
-				FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */,
-				FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */,
-				FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */,
-				FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */,
-				FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */,
-				FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */,
-				FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */,
 			);
-			name = API;
-			path = wammer;
-			sourceTree = "<group>";
-		};
-		FF97386213D82B55003D1722 /* JSONKit */ = {
-			isa = PBXGroup;
-			children = (
-				FF97385F13D82B4F003D1722 /* JSONKit.h */,
-				FF97386013D82B4F003D1722 /* JSONKit.m */,
-			);
-			name = JSONKit;
+			name = "Base API Endpoint Interfacing";
 			sourceTree = "<group>";
 		};
 		FFA9512714077BE800BD3302 /* Attached Media */ = {
@@ -1871,6 +1905,8 @@
 				FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */,
 				FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF0D45F01475688100340287 /* WAArticleDraftsViewController.m in Sources */,
+				FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */,
+				FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
