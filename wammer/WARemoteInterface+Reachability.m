@@ -9,6 +9,9 @@
 #import <objc/runtime.h>
 
 #import "WARemoteInterface+Reachability.h"
+#import "WAReachabilityDetector.h"
+
+#import "Foundation+IRAdditions.h"
 
 
 @interface WARemoteInterface (Reachability_Private)
@@ -31,17 +34,40 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
 
 	objc_setAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	
-	//	Note: Update monitoredHostsToReachabilityDetectors, remove monitors for old hosts no longer in the array and add new ones
+  
+  [(NSDictionary *)[[self.monitoredHostsToReachabilityDetectors copy] autorelease] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
+  
+    if (![newAvailableHosts containsObject:anURL])
+      [self.monitoredHostsToReachabilityDetectors removeObjectForKey:anURL];
+    
+  }];
+  
+  [newAvailableHosts enumerateObjectsUsingBlock: ^ (NSURL *aHostURL, NSUInteger idx, BOOL *stop) {
+  
+    if (![[self.monitoredHostsToReachabilityDetectors allKeys] containsObject:aHostURL])
+      [self.monitoredHostsToReachabilityDetectors setObject:[WAReachabilityDetector detectorForURL:aHostURL] forKey:aHostURL];
+    
+  }];
+  
+  NSLog(@"monitoredHostsToReachabilityDetectors %@", self.monitoredHostsToReachabilityDetectors);
 
 }
 
 - (BOOL) canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName {
 
-	return YES;
-	
-	//	TBD: business logic here
-
+  NSString *cloudHost = [self.engine.context.baseURL host];
+ 
+  if ([aRequestName hasPrefix:@"auth/"])
+    return ([[aHost host] isEqualToString:cloudHost]);
+  
+  WAReachabilityDetector *detectorForHost = [self.monitoredHostsToReachabilityDetectors objectForKey:aHost];
+  
+  if (!detectorForHost)
+    if ([[aHost host] isEqualToString:cloudHost])
+      return YES; //  heh
+  
+  return (detectorForHost.state == WAReachabilityStateAvailable);
+  
 }
 
 - (NSURL *) bestHostForRequestNamed:(NSString *)aRequestName {
@@ -51,10 +77,79 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   if (![self.monitoredHosts count])
     return self.engine.context.baseURL;
   
-  
-  //  Determine…
+  NSArray *usableHosts = [self.monitoredHosts filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSURL *aHost, NSDictionary *bindings) {
+    return [self canHost:aHost handleRequestNamed:aRequestName];
+  }]];
 
-  return [[NSSet setWithArray:[self monitoredHosts]] anyObject];
+  NSURL *bestHost = [usableHosts lastObject];
+  
+  if (bestHost)
+    return bestHost;
+  
+  return self.engine.context.baseURL;
+
+}
+
+- (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock {
+
+  __block __typeof__(self) nrSelf = self;
+
+  return [[ ^ {
+  
+    if (!nrSelf.userToken)
+      return;
+  
+    [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
+    
+      [nrSelf retain];
+    
+      dispatch_async(dispatch_get_main_queue(), ^ {
+      
+        [nrSelf autorelease];
+        
+        nrSelf.monitoredHosts = [[NSArray arrayWithObject:nrSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+        
+          NSString *stationStatus = [aStationRep valueForKeyPath:@"status"];
+          if (![stationStatus isEqual:@"connected"])
+            return (id)nil;
+        
+          NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
+          if (!stationURLString)
+            return (id)nil;
+          
+          NSURL *baseURL = nrSelf.engine.context.baseURL;
+          
+          NSURL *givenURL = [NSURL URLWithString:stationURLString];
+          if (!givenURL)
+            return (id)nil;
+            
+          NSString *baseURLString = [[NSArray arrayWithObjects:
+		
+            [baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"]: @"",
+            [baseURL host] ? [givenURL host] : @"",
+            [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
+              [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
+            [baseURL path] ? [baseURL path] : @"",
+            //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+            //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+          
+          nil] componentsJoinedByString:@""];
+          
+          //  only take the location (host) + port, nothing else
+          
+          return (id)[NSURL URLWithString:baseURLString];
+          
+        }]];
+      
+      });
+    
+    } onFailure:^(NSError *error) {
+    
+      NSLog(@"Error retrieving associated stations for current user: %@", nrSelf.userIdentifier);
+      
+    }];
+  
+  } copy] autorelease];
 
 }
 
@@ -70,6 +165,9 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     //  Authentication methods never get bypassed or sidelined to stations
     if ([originalMethodName hasPrefix:@"auth/"])
+      return inOriginalContext;
+    
+    if ([originalMethodName hasPrefix:@"reachability"])
       return inOriginalContext;
     
     NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];

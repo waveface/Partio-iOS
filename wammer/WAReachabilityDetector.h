@@ -29,12 +29,16 @@ enum WAReachabilityState {
 @end
 
 
+@class IRRecurrenceMachine;
 @interface WAReachabilityDetector : NSObject
 
 + (id) detectorForURL:(NSURL *)aHostURL;
+- (id) initWithURL:(NSURL *)aHostURL;
+
 @property (nonatomic, readonly, retain) NSURL *hostURL;
 @property (nonatomic, readonly, assign) WAReachabilityState state;
 @property (nonatomic, readonly, assign) id delegate;
+@property (nonatomic, readonly, retain) IRRecurrenceMachine *recurrenceMachine;
 
 - (void) beginMonitoringReachability;
 - (void) endMonitoringReachability;

@@ -17,6 +17,7 @@
 - (BOOL) canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName;
 - (NSURL *) bestHostForRequestNamed:(NSString *)aRequestName;
 
+- (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock;
 - (IRWebAPIRequestContextTransformer) defaultHostSwizzlingTransformer;
 
 @end
