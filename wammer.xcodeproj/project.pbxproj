@@ -78,6 +78,7 @@
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
+		FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
 		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
 		FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
@@ -397,6 +398,20 @@
 			remoteGlobalIDString = 05CD31630EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
+		FFA69460147F800400F46347 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF2228291463C77300541E31;
+			remoteInfo = IRRecurrenceMachine;
+		};
+		FFB117C4147F8B34002094E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF2228281463C77300541E31;
+			remoteInfo = IRRecurrenceMachine;
+		};
 		FFB3C176145E9A6600ED7A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */;
@@ -674,6 +689,7 @@
 		FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReachabilityDetector.m; sourceTree = "<group>"; };
 		FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Reachability.h"; sourceTree = "<group>"; };
 		FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Reachability.m"; sourceTree = "<group>"; };
+		FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRRecurrenceMachine.xcodeproj; path = external/IRRecurrenceMachine/IRRecurrenceMachine.xcodeproj; sourceTree = "<group>"; };
 		FFA87D02143F01450074AAE4 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
 		FFA87D03143F01450074AAE4 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
 		FFA9C95F144E967F0001BA25 /* IRLabelTestingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLabelTestingViewController.h; sourceTree = "<group>"; };
@@ -775,6 +791,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
 				FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */,
 				FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */,
@@ -986,6 +1003,7 @@
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
+				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1183,6 +1201,14 @@
 				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
 			);
 			name = "Base API Endpoint Interfacing";
+			sourceTree = "<group>";
+		};
+		FFA6945A147F800300F46347 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FFA9512714077BE800BD3302 /* Attached Media */ = {
@@ -1416,6 +1442,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FF2229101463FF9B00541E31 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
 				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
@@ -1473,6 +1500,10 @@
 				{
 					ProductGroup = FF666C24140CD2B200C35CED /* Products */;
 					ProjectRef = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+				},
+				{
+					ProductGroup = FFA6945A147F800300F46347 /* Products */;
+					ProjectRef = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
 				},
 				{
 					ProductGroup = FFB3C170145E9A6600ED7A56 /* Products */;
@@ -1645,6 +1676,13 @@
 			fileType = archive.ar;
 			path = "libCrashReporter-iphoneos.a";
 			remoteRef = FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRRecurrenceMachine.a;
+			remoteRef = FFA69460147F800400F46347 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */ = {
@@ -1923,6 +1961,11 @@
 			target = FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */;
 			targetProxy = FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */;
 		};
+		FFB117C5147F8B34002094E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRRecurrenceMachine;
+			targetProxy = FFB117C4147F8B34002094E5 /* PBXContainerItemProxy */;
+		};
 		FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRTextAttributorTouch;
@@ -2046,6 +2089,7 @@
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -2085,6 +2129,7 @@
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
