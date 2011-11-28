@@ -54,7 +54,6 @@
    
 		map = [[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			@"auth/login/", @"authenticate",
 			@"posts/fetch_all/", @"articles",
 			@"users/fetch_all/", @"users",
 			@"post/create_new_post/", @"createArticle",

@@ -156,6 +156,8 @@
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormURLEncodingTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
+  
+  [engine.globalRequestPreTransformers addObject:[self defaultHostSwizzlingTransformer]];
 	
 	engine.parser = [[self class] defaultParser];
 	

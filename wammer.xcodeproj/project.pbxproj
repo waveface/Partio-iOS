@@ -73,9 +73,13 @@
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
+		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
+		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
+		FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
+		FFB117C9147F9051002094E5 /* NSBlockOperation+NSCopying.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */; };
 		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
 		FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
@@ -395,6 +399,20 @@
 			remoteGlobalIDString = 05CD31630EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
+		FFA69460147F800400F46347 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF2228291463C77300541E31;
+			remoteInfo = IRRecurrenceMachine;
+		};
+		FFB117C4147F8B34002094E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF2228281463C77300541E31;
+			remoteInfo = IRRecurrenceMachine;
+		};
 		FFB3C176145E9A6600ED7A56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */;
@@ -668,6 +686,11 @@
 		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Preview.xib"; path = "Resources/WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = wammer/WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
+		FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReachabilityDetector.h; sourceTree = "<group>"; };
+		FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReachabilityDetector.m; sourceTree = "<group>"; };
+		FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Reachability.h"; sourceTree = "<group>"; };
+		FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Reachability.m"; sourceTree = "<group>"; };
+		FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRRecurrenceMachine.xcodeproj; path = external/IRRecurrenceMachine/IRRecurrenceMachine.xcodeproj; sourceTree = "<group>"; };
 		FFA87D02143F01450074AAE4 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
 		FFA87D03143F01450074AAE4 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
 		FFA9C95F144E967F0001BA25 /* IRLabelTestingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLabelTestingViewController.h; sourceTree = "<group>"; };
@@ -675,6 +698,8 @@
 		FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IRLabelTestingViewController.xib; sourceTree = "<group>"; };
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAttachedMediaListViewController.h; sourceTree = "<group>"; };
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAttachedMediaListViewController.m; sourceTree = "<group>"; };
+		FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBlockOperation+NSCopying.h"; sourceTree = "<group>"; };
+		FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBlockOperation+NSCopying.m"; sourceTree = "<group>"; };
 		FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRTextAttributor.xcodeproj; path = external/IRTextAttributor/IRTextAttributor.xcodeproj; sourceTree = "<group>"; };
 		FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -769,6 +794,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
 				FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */,
 				FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */,
@@ -980,6 +1006,7 @@
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
+				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1101,6 +1128,56 @@
 			children = (
 				FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */,
 				FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */,
+				FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */,
+				FFA69454147F6F9E00F46347 /* Data Store Additions */,
+				FFA69453147F6F9500F46347 /* Reachability */,
+			);
+			name = API;
+			path = wammer;
+			sourceTree = "<group>";
+		};
+		FF97386213D82B55003D1722 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				FF97385F13D82B4F003D1722 /* JSONKit.h */,
+				FF97386013D82B4F003D1722 /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		FFA69453147F6F9500F46347 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */,
+				FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */,
+				FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */,
+				FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		FFA69454147F6F9E00F46347 /* Data Store Additions */ = {
+			isa = PBXGroup;
+			children = (
+				FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */,
+				FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */,
+				FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */,
+				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
+				FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */,
+				FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */,
+				FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */,
+				FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */,
+				FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */,
+				FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */,
+				FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */,
+				FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */,
+			);
+			name = "Data Store Additions";
+			sourceTree = "<group>";
+		};
+		FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */ = {
+			isa = PBXGroup;
+			children = (
 				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
 				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
 				FF97384713D8278E003D1722 /* WARemoteInterface.h */,
@@ -1125,30 +1202,16 @@
 				FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */,
 				FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */,
 				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
-				FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */,
-				FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */,
-				FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */,
-				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
-				FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */,
-				FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */,
-				FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */,
-				FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */,
-				FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */,
-				FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */,
-				FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */,
-				FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */,
 			);
-			name = API;
-			path = wammer;
+			name = "Base API Endpoint Interfacing";
 			sourceTree = "<group>";
 		};
-		FF97386213D82B55003D1722 /* JSONKit */ = {
+		FFA6945A147F800300F46347 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FF97385F13D82B4F003D1722 /* JSONKit.h */,
-				FF97386013D82B4F003D1722 /* JSONKit.m */,
+				FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */,
 			);
-			name = JSONKit;
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FFA9512714077BE800BD3302 /* Attached Media */ = {
@@ -1329,6 +1392,8 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
+				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
 				FFB67956141E345C006F84E3 /* CoreText.framework */,
 				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
@@ -1382,6 +1447,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
 				FF2229101463FF9B00541E31 /* PBXTargetDependency */,
 				FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */,
 				FFCFE079142111E100B9E6AF /* PBXTargetDependency */,
@@ -1439,6 +1505,10 @@
 				{
 					ProductGroup = FF666C24140CD2B200C35CED /* Products */;
 					ProjectRef = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+				},
+				{
+					ProductGroup = FFA6945A147F800300F46347 /* Products */;
+					ProjectRef = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
 				},
 				{
 					ProductGroup = FFB3C170145E9A6600ED7A56 /* Products */;
@@ -1611,6 +1681,13 @@
 			fileType = archive.ar;
 			path = "libCrashReporter-iphoneos.a";
 			remoteRef = FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRRecurrenceMachine.a;
+			remoteRef = FFA69460147F800400F46347 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */ = {
@@ -1871,6 +1948,9 @@
 				FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */,
 				FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF0D45F01475688100340287 /* WAArticleDraftsViewController.m in Sources */,
+				FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */,
+				FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */,
+				FFB117C9147F9051002094E5 /* NSBlockOperation+NSCopying.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1886,6 +1966,11 @@
 			isa = PBXTargetDependency;
 			target = FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */;
 			targetProxy = FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */;
+		};
+		FFB117C5147F8B34002094E5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRRecurrenceMachine;
+			targetProxy = FFB117C4147F8B34002094E5 /* PBXContainerItemProxy */;
 		};
 		FFB3C179145E9A6F00ED7A56 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2010,6 +2095,7 @@
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -2049,6 +2135,7 @@
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
+					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

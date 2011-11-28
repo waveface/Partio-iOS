@@ -38,6 +38,7 @@
 #import "WARemoteInterface+DeprecatedNonfunctional.h"
 
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
+#import "WARemoteInterface+Reachability.h"
 
 
 
