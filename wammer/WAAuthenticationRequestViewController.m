@@ -49,7 +49,7 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
-	self.title = @"Welcome";
+	self.title = NSLocalizedString(@"WAAuthRequestTitle", @"Title for the auth request controller");
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -84,7 +84,7 @@
 	[super viewDidLoad];
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
-	self.usernameField.placeholder = @"Username";
+	self.usernameField.placeholder = NSLocalizedString(@"WANounUsername", @"Noun for Username");
 	self.usernameField.text = self.username;
 	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -96,7 +96,7 @@
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
-	self.passwordField.placeholder = @"Password";
+	self.passwordField.placeholder = NSLocalizedString(@"WANounPassword", @"Noun for Password");
 	self.passwordField.text = self.password;
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -198,10 +198,10 @@
 	}
 
 	if (indexPath.row == 0) {
-		cell.textLabel.text = @"Username";
+		cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
 		cell.accessoryView = self.usernameField;
 	} else if (indexPath.row == 1) {
-		cell.textLabel.text = @"Password";
+		cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
 		cell.accessoryView = self.passwordField;
 	} else {
 		cell.accessoryView = nil;
@@ -244,7 +244,7 @@
   [self update];
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	busyBezel.caption = @"Processing";
+	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");
 	
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;

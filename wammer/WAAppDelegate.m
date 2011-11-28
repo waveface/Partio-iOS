@@ -256,8 +256,8 @@
 		NSString *alertText = [NSString stringWithFormat:@"Would you like to compose a Web post with %@?", pastedURL];
 		
 		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-		
-			[IRAction actionWithTitle:@"OK" block:^{
+    
+			[IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", @"Action title for accepting what happened") block:^{
 			
 				[[NSNotificationCenter defaultCenter] postNotificationName:kWACompositionSessionRequestedNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
 				
@@ -386,34 +386,37 @@
 				
 					//	Help
 					
-					NSString *alertTitle = @"Can’t authenticate";
-					NSString *alertText = [NSString stringWithFormat:
-						@"Wammer has trouble authenticating your account: “%@”. \n\n You can reset your password, or register a new account.",
-						[anError localizedDescription]
-					];
+					NSString *alertTitle = NSLocalizedString(@"WAErrorAuthenticationFailedTitle", @"Title for authentication failure");
+					NSString *alertText = [[NSArray arrayWithObjects:
+            NSLocalizedString(@"WAErrorAuthenticationFailedDescription", @"Description for authentication failure"),
+            [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
+            NSLocalizedString(@"WAErrorAuthenticationFailedRecoveryNotion", @"Recovery notion for authentication failure recovery"),
+          nil] componentsJoinedByString:@""];
 					
-					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:@"Cancel" block:^{
+					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
 						
 					}] otherActions:[NSArray arrayWithObjects:
 					
-						[IRAction actionWithTitle:@"Reset Password" block: ^ {
+						[IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
 						
 							//	?
 						
 						}],
 						
-						[IRAction actionWithTitle:@"Register" block: ^ {
+						[IRAction actionWithTitle:NSLocalizedString(@"WAActionRegisterUser", @"Action title for registering") block: ^ {
 						
 							__block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
 							
 								if (error) {
 									
-									NSString *alertTitle = @"Error Registering Account";
-									NSString *alertText = [NSString stringWithFormat:
-										@"Wammer has trouble registering your account: “%@”. \n\n Please try registrating later.",
-										[error localizedDescription]
-									];
-									
+									NSString *alertTitle = NSLocalizedString(@"WAErrorUserRegistrationFailedTitle", @"Title for registration failure");
+                  
+                  NSString *alertText = [[NSArray arrayWithObjects:
+                    NSLocalizedString(@"WAErrorUserRegistrationFailedDescription", @"Description for registration failure"),
+                    [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
+                    NSLocalizedString(@"WAErrorUserRegistrationFailedRecoveryNotion", @"Recovery notion for registration failure recovery"),
+                  nil] componentsJoinedByString:@""];
+
 									[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
 									
 										[IRAction actionWithTitle:@"OK" block:nil],
@@ -478,7 +481,7 @@
 
 						[IRAlertView alertViewWithTitle:@"Error Retrieving User Information" message:@"Unable to retrieve user metadata." cancelAction:nil otherActions:[NSArray arrayWithObjects:
 						
-							[IRAction actionWithTitle:@"Okay" block:nil],
+							[IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", @"Action title for accepting what happened reluctantly") block:nil],
 						
 						nil]];
 					
