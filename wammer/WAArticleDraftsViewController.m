@@ -27,7 +27,7 @@
   if (!self)
     return nil;
   
-  self.title = @"Drafts";
+  self.title = NSLocalizedString(@"WAPluralNounDrafts", @"Plural noun for draft objects");
   
   NSFetchRequest *fr = [[[WADataStore defaultStore] managedObjectModel] fetchRequestFromTemplateWithName:@"WAFRArticleDrafts" substitutionVariables:[NSDictionary dictionary]];
   NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
