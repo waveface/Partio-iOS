@@ -118,7 +118,7 @@
 	if (!self)
 		return nil;
 	
-	self.title = @"Compose";
+	self.title = NSLocalizedString(@"WACompositionTitle", @"Title for the composition view");
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
 	
@@ -780,15 +780,15 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
     IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
     if (actionSheetController)
       return;
-  
-    IRAction *cancelAction = [IRAction actionWithTitle:@"Discard" block:^{
+    
+    IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionDiscard", @"Action title for discarding a draft") block:^{
       
       if (self.completionBlock)
         self.completionBlock(nil);
       
     }];
     
-    IRAction *saveAsDraftAction = [IRAction actionWithTitle:@"Save Draft" block:^{
+    IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSaveDraft", @"Action title for saving a draft") block:^{
     
       NSError *savingError = nil;
       if (![self.managedObjectContext save:&savingError])

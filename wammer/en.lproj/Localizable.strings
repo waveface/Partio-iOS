@@ -10,6 +10,7 @@
 "WAFeedbackCompositionTitle" = "Waveface Feedback";
 "WAAuthRequestTitle" = "Welcome";
 "WARegisterRequestTitle" = "Register";
+"WACompositionTitle" = "Compose";
 
 "WAActionSignOut" = "Sign Out";
 "WAActionCancel" = "Cancel";
@@ -25,15 +26,27 @@
 "WANounPassword" = "Password";
 "WANounPasswordConfirmation" = "Confirm Password";
 
+"WANounAction" = "Action";
+"WAPluralNounDrafts" = "Drafts";
+
 "WASignOutConfirmation" = "Really sign out?";
 
 "WACompositionNoPhotoReminderTitle" = "No Photos";
 "WACompositionNoPhotoReminderDescription" = "Add some photos to this post.";
 
 "WAErrorUserRegistrationFailedTitle" = "Can’t Register";
-"WAErrorUserRegistrationFailedDescription" = "Wammer had trouble registering your account";
+"WAErrorUserRegistrationFailedDescription" = "Waveface had trouble registering your account";
 "WAErrorUserRegistrationFailedRecoveryNotion" = "Please try registrating later.";
 
 "WAErrorAuthenticationFailedTitle" = "Can’t Authenticate";
-"WAErrorAuthenticationFailedDescription" = "Wammer has trouble authenticating your account: ";
+"WAErrorAuthenticationFailedDescription" = "Waveface has trouble authenticating your account: ";
 "WAErrorAuthenticationFailedRecoveryNotion" = "You can reset your password, or register a new account.";
+
+
+"WAActionNewPost" = "New Post";
+
+"WAActionSaveDraft" = "Save Draft";
+"WAActionDiscard" = "Discard";
+
+"WADraftStateNoContent" = "(No Content)";
+"WADraftStateNoTimestamp" = "(No Timestamp)";
