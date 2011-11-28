@@ -160,6 +160,8 @@
 			}];
 		
 		} copy] autorelease],
+    
+    [self defaultScheduledMonitoredHostsUpdatingBlock],
 	
 	nil];
 

@@ -72,7 +72,7 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
 
-	[self.engine fireAPIRequestNamed:@"authenticate" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"auth/login" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
 		anIdentifier, @"email",
 		aPassword, @"password",

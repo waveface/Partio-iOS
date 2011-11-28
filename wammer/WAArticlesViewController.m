@@ -79,7 +79,7 @@
 	self.navigationItem.titleView = (( ^ {
 	
 		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-		label.text = @"Waveface";
+		label.text = NSLocalizedString(@"WAAppTitle", @"Application Title");
 		label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
 		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
 		label.shadowColor = [UIColor whiteColor];
@@ -240,11 +240,11 @@
 
 	return [NSArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
 		
-			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+			[[IRAlertView alertViewWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") message:NSLocalizedString(@"WASignOutConfirmation", @"Confirmation text for Signing Out") cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for Cancelling") block:nil] otherActions:[NSArray arrayWithObjects:
 			
-				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+				[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
 				
 					dispatch_async(dispatch_get_main_queue(), ^ {
 					
@@ -260,7 +260,7 @@
     
     #if 0
 	
-		[IRAction actionWithTitle:@"Feedback" block:^ {
+		[IRAction actionWithTitle:NSLocalizedString(@"WAActionFeedback", @"Action title for feedback composition") block:^ {
 		
 			if (![IRMailComposeViewController canSendMail]) {
 				[[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
@@ -268,7 +268,7 @@
 			}
 			
 			__block IRMailComposeViewController *composeViewController;
-			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:@"Wammer Feedback" messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"WAFeedbackCompositionTitle", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
 				[composeViewController dismissModalViewControllerAnimated:YES];
 			}];
 			
