@@ -79,7 +79,7 @@
 	self.navigationItem.titleView = (( ^ {
 	
 		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-		label.text = @"Waveface";
+		label.text = NSLocalizedString(@"WAAppTitle", @"Application Title");
 		label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
 		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
 		label.shadowColor = [UIColor whiteColor];
