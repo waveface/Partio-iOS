@@ -7,3 +7,33 @@
 */
 
 "WAAppTitle" = "Waveface";
+"WAFeedbackCompositionTitle" = "Waveface 問題回報";
+"WAAuthRequestTitle" = "歡迎";
+"WARegisterRequestTitle" = "註冊";
+
+"WAActionSignOut" = "登出";
+"WAActionCancel" = "取消";
+"WAActionDone" = "完成";
+"WAActionFeedback" = "問題回報";
+"WAActionProcessing" = "運作中";
+"WAActionOkay" = "確認";
+"WAActionResetPassword" = "重設密碼";
+"WAActionRegisterUser" = "註冊";
+
+"WANounUsername" = "帳號";
+"WANounNickname" = "暱稱";
+"WANounPassword" = "密碼";
+"WANounPasswordConfirmation" = "確認密碼";
+
+"WASignOutConfirmation" = "確定登出？";
+
+"WACompositionNoPhotoReminderTitle" = "沒有照片";
+"WACompositionNoPhotoReminderDescription" = "加入照片";
+
+"WAErrorUserRegistrationFailedTitle" = "無法登錄";
+"WAErrorUserRegistrationFailedDescription" = "Waveface現在無法登錄您的帳號";
+"WAErrorUserRegistrationFailedRecoveryNotion" = "請稍候再嘗試登錄";
+
+"WAErrorAuthenticationFailedTitle" = "無法認證";
+"WAErrorAuthenticationFailedDescription" = "Waveface目前無法認證您的帳號資料：";
+"WAErrorAuthenticationFailedRecoveryNotion" = "您可以重設密碼或新增一個帳號";

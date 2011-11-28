@@ -31,9 +31,9 @@
 "WACompositionNoPhotoReminderDescription" = "Add some photos to this post.";
 
 "WAErrorUserRegistrationFailedTitle" = "Can’t Register";
-"WAErrorUserRegistrationFailedDescription" = "Wammer had trouble registering your account";
+"WAErrorUserRegistrationFailedDescription" = "Waveface had trouble registering your account";
 "WAErrorUserRegistrationFailedRecoveryNotion" = "Please try registrating later.";
 
 "WAErrorAuthenticationFailedTitle" = "Can’t Authenticate";
-"WAErrorAuthenticationFailedDescription" = "Wammer has trouble authenticating your account: ";
+"WAErrorAuthenticationFailedDescription" = "Waveface has trouble authenticating your account: ";
 "WAErrorAuthenticationFailedRecoveryNotion" = "You can reset your password, or register a new account.";
