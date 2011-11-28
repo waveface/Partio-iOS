@@ -40,7 +40,4 @@ enum WAReachabilityState {
 @property (nonatomic, readonly, assign) id delegate;
 @property (nonatomic, readonly, retain) IRRecurrenceMachine *recurrenceMachine;
 
-- (void) beginMonitoringReachability;
-- (void) endMonitoringReachability;
-
 @end

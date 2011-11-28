@@ -9,6 +9,7 @@
 #import "WAReachabilityDetector.h"
 #import "IRRecurrenceMachine.h"
 #import "WARemoteInterface.h"
+#import "NSBlockOperation+NSCopying.h"
 
 
 @interface WAReachabilityDetector ()
