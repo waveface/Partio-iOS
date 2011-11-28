@@ -76,7 +76,7 @@
 	if (!self)
 		return nil;
 		
-	self.title = @"Compose";
+	self.title = NSLocalizedString(@"WACompositionTitle", @"Title for the composition view");
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
 	
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStyleBordered target:self action:@selector(handleDone:)] autorelease];

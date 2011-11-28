@@ -10,6 +10,7 @@
 "WAFeedbackCompositionTitle" = "Waveface 問題回報";
 "WAAuthRequestTitle" = "歡迎";
 "WARegisterRequestTitle" = "註冊";
+"WACompositionTitle" = "題字";
 
 "WAActionSignOut" = "登出";
 "WAActionCancel" = "取消";
@@ -25,6 +26,9 @@
 "WANounPassword" = "密碼";
 "WANounPasswordConfirmation" = "確認密碼";
 
+"WANounAction" = "動作";
+"WAPluralNounDrafts" = "以前的草稿";
+
 "WASignOutConfirmation" = "確定登出？";
 
 "WACompositionNoPhotoReminderTitle" = "沒有照片";
@@ -37,3 +41,11 @@
 "WAErrorAuthenticationFailedTitle" = "無法認證";
 "WAErrorAuthenticationFailedDescription" = "Waveface目前無法認證您的帳號資料：";
 "WAErrorAuthenticationFailedRecoveryNotion" = "您可以重設密碼或新增一個帳號";
+
+"WAActionNewPost" = "寫新的";
+
+"WAActionSaveDraft" = "存成草稿";
+"WAActionDiscard" = "銷毀";
+
+"WADraftStateNoContent" = "（沒有內文）";
+"WADraftStateNoTimestamp" = "（沒有時間戳記）";

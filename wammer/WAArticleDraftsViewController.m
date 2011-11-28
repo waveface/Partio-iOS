@@ -93,7 +93,7 @@
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = @"Create New Post";
+    cell.textLabel.text = NSLocalizedString(@"WAActionNewPost", @"Action title for creating a new post");
     
     return cell;
   
@@ -113,12 +113,12 @@
   if (representedDraft.text)
     cell.textLabel.text = representedDraft.text;
   else
-    cell.textLabel.text = @"(No Content)";
+    cell.textLabel.text = NSLocalizedString(@"WADraftStateNoContent", @"State for drafts without content text");
   
   if (representedDraft.timestamp)
     cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedDraft.timestamp];
   else
-    cell.detailTextLabel.text = @"(No Timestamp)";
+    cell.detailTextLabel.text = NSLocalizedString(@"WADraftStateNoTimestamp", @"State for drafts without a timestamp");
   
   return cell;
   
@@ -136,10 +136,10 @@
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 
   if (section == 0)
-    return @"Action";
+    return NSLocalizedString(@"WANounAction", @"Singluar noun for action objects");
   
   if (section == 1)
-    return @"Drafts";
+    return NSLocalizedString(@"WAPluralNounDrafts", @"Plural noun for draft objects");
   
   return nil;
 
