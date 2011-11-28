@@ -322,6 +322,12 @@
 	self.previewBadge.frame = UIEdgeInsetsInsetRect(self.previewBadge.frame, (UIEdgeInsets){ 0, 8, 8, -48 });
 	self.previewBadge.alpha = 0;
 	[photosViewWrapper.superview addSubview:self.previewBadge];
+  
+  [self.noPhotoReminderViewElements enumerateObjectsUsingBlock: ^ (UILabel *aLabel, NSUInteger idx, BOOL *stop) {
+  
+    aLabel.text = NSLocalizedString(aLabel.text, nil);
+    
+  }];
 	
 }
 
