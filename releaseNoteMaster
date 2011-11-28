@@ -1,2 +1,2 @@
 ETReleaseNotes="- Initial Cloud / Station reachability code that dynamically determines the endpoint to use for each Waveface API request\n- Initial Traditional Chinese (zh-Hant) localization support"
-ETMarketingVersionNumber="0.7.5"
+ETMarketingVersionNumber="0.7.7"
