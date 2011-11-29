@@ -27,8 +27,11 @@ NSString * const kWARemoteEndpointCurrentVersion = @"WARemoteEndpointCurrentVers
 NSString * const kWALastAuthenticatedUserTokenKeychainItem = @"WALastAuthenticatedUserTokenKeychainItem";
 NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthenticatedUserPrimaryGroupIdentifier";
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
+NSString * const kWAUserRegistrationUsesWebVersion = @"WAUserRegistrationUsesWebVersion";
+NSString * const kWAUserRegistrationEndpointURL = @"WAUserRegistrationEndpointURL";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
+NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
 
 NSString * const kWARemoteEndpointApplicationKey = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 

@@ -24,4 +24,6 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 
 @property (nonatomic, readwrite, assign) BOOL performsAuthenticationOnViewDidAppear;
 
+@property (nonatomic, readwrite, retain) NSArray *actions;  //  Use IRAction objects
+
 @end
