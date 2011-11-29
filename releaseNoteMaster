@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial Web-based Registration with locale information\n- Application now emits device information in HTTP header field named x-origin-device available for all outgoing connections thru the Remote Interface\n- Application now responds to waveface:// URI schemes"
-ETMarketingVersionNumber="0.7.9"
+ETReleaseNotes="- Initial iPhone skinning"
+ETMarketingVersionNumber="0.8.1"
