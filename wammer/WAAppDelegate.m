@@ -503,9 +503,10 @@
       
     nil];
 		
+    
 		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = YES;
+		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
 		
