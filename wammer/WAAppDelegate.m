@@ -694,4 +694,18 @@ static unsigned int networkActivityStackingCount = 0;
 
 }
 
+- (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+  
+    url, @"url",
+    sourceApplication, @"sourceApplication",
+    annotation, @"annotation",
+  
+  nil]];
+
+  return YES;
+
+}
+
 @end
