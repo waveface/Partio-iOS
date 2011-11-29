@@ -81,7 +81,6 @@
 	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
-	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
 	
 	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
@@ -121,12 +120,6 @@
 		
 			__block WANavigationController *navController = [WANavigationController alloc];
 			
-			if (UIUserInterfaceIdiomPhone == UI_USER_INTERFACE_IDIOM()) {
-					navController = [[navController initWithRootViewController:presentedViewController] autorelease];
-					navController.navigationBar.tintColor = [UIColor colorWithRed:216.0/255.0 green:93.0/255.0 blue:3.0/255.0 alpha:1.0];
-					return navController;
-			}
-			
 			navController = [[((^ {
 				
 				NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:
@@ -142,15 +135,23 @@
 				
 			})()) decodeObjectForKey:@"root"] initWithRootViewController:presentedViewController];
 			
-			
-			navController.onViewDidLoad = ^ (WANavigationController *self) {
+      navController.onViewDidLoad = ^ (WANavigationController *self) {
 				self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
 			};
 			
 			if ([navController isViewLoaded])
 				navController.onViewDidLoad(navController);
-			
-			((WANavigationBar *)navController.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
+        
+			((WANavigationBar *)(navController.navigationBar)).backgroundView = ((^ {
+        switch (UI_USER_INTERFACE_IDIOM()) {
+          case UIUserInterfaceIdiomPhone: {
+            return [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WANavigationBarBackdrop"]] autorelease];
+          }
+          default: {
+            return (UIView *)[WANavigationBar defaultGradientBackgroundView];
+          }
+        }
+      })());
 			
 			return navController;
 			
