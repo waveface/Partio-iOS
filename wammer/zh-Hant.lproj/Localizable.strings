@@ -10,7 +10,7 @@
 "WAFeedbackCompositionTitle" = "Waveface 問題回報";
 "WAAuthRequestTitle" = "歡迎";
 "WARegisterRequestTitle" = "註冊";
-"WACompositionTitle" = "題字";
+"WACompositionTitle" = "編輯";
 
 "WAActionSignOut" = "登出";
 "WAActionCancel" = "取消";
@@ -45,7 +45,7 @@
 "WAActionNewPost" = "寫新的";
 
 "WAActionSaveDraft" = "存成草稿";
-"WAActionDiscard" = "銷毀";
+"WAActionDiscard" = "丟棄";
 
 "WADraftStateNoContent" = "（沒有內文）";
 "WADraftStateNoTimestamp" = "（沒有時間戳記）";

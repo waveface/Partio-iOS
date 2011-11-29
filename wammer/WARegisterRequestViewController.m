@@ -9,8 +9,10 @@
 #import "WARegisterRequestViewController.h"
 #import "WARemoteInterface.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
-
 #import "WAOverlayBezel.h"
+#import "WADefines.h"
+
+#import "WARegisterRequestWebViewController.h"
 
 
 @interface WARegisterRequestViewController () <UITextFieldDelegate>
@@ -35,7 +37,14 @@
 
 + (WARegisterRequestViewController *) controllerWithCompletion:(WARegisterRequestViewControllerCallback)aBlock {
 
-	WARegisterRequestViewController *returnedVC = [[[self alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+  Class usedClass;
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUserRegistrationUsesWebVersion])
+    usedClass = [WARegisterRequestWebViewController class]; 
+  else
+    usedClass = self;
+
+	WARegisterRequestViewController *returnedVC = [[(WARegisterRequestViewController *)[usedClass alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 	returnedVC.completionBlock = aBlock;
 	return returnedVC;
 
@@ -268,6 +277,42 @@
 
 
 
+
+- (void) setUsername:(NSString *)newUsername {
+
+  if (username == newUsername)
+    return;
+  
+  [username release];
+  username = [newUsername retain];
+  
+  self.usernameField.text = username;
+
+}
+
+- (void) setPassword:(NSString *)newPassword {
+
+  if (password == newPassword)
+    return;
+  
+  [password release];
+  password = [newPassword retain];
+  
+  self.passwordField.text = password;
+
+}
+
+- (void) setNickname:(NSString *)newNickname {
+
+  if (nickname == newNickname)
+    return;
+  
+  [nickname release];
+  nickname = [newNickname retain];
+  
+  self.nicknameField.text = nickname;
+
+}
 
 - (void) update {
 
