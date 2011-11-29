@@ -269,6 +269,42 @@
 
 
 
+- (void) setUsername:(NSString *)newUsername {
+
+  if (username == newUsername)
+    return;
+  
+  [username release];
+  username = [newUsername retain];
+  
+  self.usernameField.text = username;
+
+}
+
+- (void) setPassword:(NSString *)newPassword {
+
+  if (password == newPassword)
+    return;
+  
+  [password release];
+  password = [newPassword retain];
+  
+  self.passwordField.text = password;
+
+}
+
+- (void) setNickname:(NSString *)newNickname {
+
+  if (nickname == newNickname)
+    return;
+  
+  [nickname release];
+  nickname = [newNickname retain];
+  
+  self.nicknameField.text = nickname;
+
+}
+
 - (void) update {
 
 	self.username = self.usernameField.text;
