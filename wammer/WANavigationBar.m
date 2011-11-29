@@ -90,6 +90,14 @@
 
 }
 
+- (void) layoutSubviews {
+
+  [super layoutSubviews];
+  
+  [self.backgroundView.superview sendSubviewToBack:self.backgroundView];
+
+}
+
 + (UIView *) defaultGradientBackgroundView {
 
 	UIView *returnedView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 512, 44 }}] autorelease]; 
