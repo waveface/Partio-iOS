@@ -14,6 +14,8 @@
 
 #import "WADefines.h"
 
+#import "IRAction.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -33,6 +35,7 @@
 @synthesize usernameField, passwordField;
 @synthesize username, password, completionBlock;
 @synthesize performsAuthenticationOnViewDidAppear;
+@synthesize actions;
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
@@ -74,6 +77,8 @@
 	
 	[password release];
 	[passwordField release];
+  
+  [actions release];
 
 	[super dealloc];
 
@@ -157,10 +162,11 @@
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 
-	if (!self.usernameField.text)
+	if (!self.usernameField.text) {
 		[self.usernameField becomeFirstResponder];
-	else
+	} else if (!self.passwordField.text) {
 		[self.passwordField becomeFirstResponder];
+  }
 	
 }
 
@@ -180,11 +186,15 @@
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+
+  return [self.actions count] ? 2 : 1;
+  
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 2;
+
+	return (section == 0) ? 2 : [self.actions count];
+  
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -194,18 +204,33 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
+  
+  if (indexPath.section == 0) {
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-	if (indexPath.row == 0) {
-		cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
-		cell.accessoryView = self.usernameField;
-	} else if (indexPath.row == 1) {
-		cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
-		cell.accessoryView = self.passwordField;
-	} else {
-		cell.accessoryView = nil;
-	}
+    if (indexPath.row == 0) {
+      cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
+      cell.accessoryView = self.usernameField;
+    } else if (indexPath.row == 1) {
+      cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
+      cell.accessoryView = self.passwordField;
+    } else {
+      cell.accessoryView = nil;
+    }
+  
+    cell.textLabel.textAlignment = UITextAlignmentLeft;
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
+  } else {
+  
+    IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+    cell.textLabel.text = representedAction.title;
+    cell.textLabel.textAlignment = UITextAlignmentCenter;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  
+  }
 		
 	cell.accessoryView.frame = (CGRect){
 		CGPointZero,
@@ -228,9 +253,43 @@
 
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  if (indexPath.section != 1)
+    return;
+
+  IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+  [representedAction invoke];
+
+}
 
 
 
+
+
+- (void) setUsername:(NSString *)newUsername {
+
+  if (username == newUsername)
+    return;
+  
+  [username release];
+  username = [newUsername retain];
+  
+  self.usernameField.text = username;
+
+}
+
+- (void) setPassword:(NSString *)newPassword {
+
+  if (password == newPassword)
+    return;
+  
+  [password release];
+  password = [newPassword retain];
+  
+  self.passwordField.text = password;
+
+}
 
 - (void) update {
 

@@ -379,8 +379,57 @@
 		[WARemoteInterface sharedInterface].userIdentifier = nil;
 		[WARemoteInterface sharedInterface].userToken = nil;
 		[WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
-	
-		__block WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
+    
+    
+    __block WAAuthenticationRequestViewController *authRequestVC;
+    
+    IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
+    
+      //	?
+    
+    }];
+  
+    IRAction *registerUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionRegisterUser", @"Action title for registering") block: ^ {
+    
+      __block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+      
+        if (error) {
+          
+          NSString *alertTitle = NSLocalizedString(@"WAErrorUserRegistrationFailedTitle", @"Title for registration failure");
+          
+          NSString *alertText = [[NSArray arrayWithObjects:
+            NSLocalizedString(@"WAErrorUserRegistrationFailedDescription", @"Description for registration failure"),
+            [NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
+            NSLocalizedString(@"WAErrorUserRegistrationFailedRecoveryNotion", @"Recovery notion for registration failure recovery"),
+          nil] componentsJoinedByString:@""];
+
+          [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+          
+            [IRAction actionWithTitle:@"OK" block:nil],
+          
+          nil]] show];
+          
+          return;
+        
+        }
+        
+        authRequestVC.username = self.username;
+        authRequestVC.password = self.password;
+        authRequestVC.performsAuthenticationOnViewDidAppear = YES;
+
+        [authRequestVC.tableView reloadData];
+        [authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
+
+      }];
+    
+      registerRequestVC.username = authRequestVC.username;
+      registerRequestVC.password = authRequestVC.password;
+      
+      [authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
+    
+    }];
+    
+		authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
 		
 				if (anError) {
 				
@@ -397,51 +446,8 @@
 						
 					}] otherActions:[NSArray arrayWithObjects:
 					
-						[IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
-						
-							//	?
-						
-						}],
-						
-						[IRAction actionWithTitle:NSLocalizedString(@"WAActionRegisterUser", @"Action title for registering") block: ^ {
-						
-							__block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
-							
-								if (error) {
-									
-									NSString *alertTitle = NSLocalizedString(@"WAErrorUserRegistrationFailedTitle", @"Title for registration failure");
-                  
-                  NSString *alertText = [[NSArray arrayWithObjects:
-                    NSLocalizedString(@"WAErrorUserRegistrationFailedDescription", @"Description for registration failure"),
-                    [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
-                    NSLocalizedString(@"WAErrorUserRegistrationFailedRecoveryNotion", @"Recovery notion for registration failure recovery"),
-                  nil] componentsJoinedByString:@""];
-
-									[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
-									
-										[IRAction actionWithTitle:@"OK" block:nil],
-									
-									nil]] show];
-									
-									return;
-								
-								}
-							
-								authRequestVC.username = self.username;
-								authRequestVC.password = self.password;
-								authRequestVC.performsAuthenticationOnViewDidAppear = YES;
-
-								[authRequestVC.tableView reloadData];
-								[authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
-
-							}];
-						
-							registerRequestVC.username = authRequestVC.username;
-							registerRequestVC.password = authRequestVC.password;
-							
-							[authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
-						
-						}],
+						resetPasswordAction,
+            registerUserAction,
 					
 					nil]];
 					
@@ -490,10 +496,17 @@
 				}];
 				
 		}];
+    
+    authRequestVC.actions = [NSArray arrayWithObjects:
+      
+      registerUserAction,
+      
+    nil];
 		
+    
 		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = YES;
+		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -679,6 +692,20 @@ static unsigned int networkActivityStackingCount = 0;
 	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
 	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
 	originalRequest.HTTPBody = transformedRequest.HTTPBody;
+
+}
+
+- (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+
+  [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+  
+    url, @"url",
+    sourceApplication, @"sourceApplication",
+    annotation, @"annotation",
+  
+  nil]];
+
+  return YES;
 
 }
 
