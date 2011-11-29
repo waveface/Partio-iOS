@@ -45,7 +45,7 @@
   [[self view] setDelegate:self];
   
   NSDictionary *registrationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
-    @"en-US", @"locale",
+    [[NSLocale currentLocale] localeIdentifier], @"locale",
     @"ios", @"device",
     @"waveface://x-callback-url/didFinishUserRegistration?username=%(email)s&password=%(password)s", @"xurl",
   nil];
