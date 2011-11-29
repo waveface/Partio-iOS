@@ -29,6 +29,8 @@
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer;
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer;
 
++ (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer;
+
 @end
 
 
@@ -111,6 +113,34 @@
 
 }
 
++ (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer {
+
+  return [[ ^ (NSDictionary *incomingContext) {
+  
+    NSMutableDictionary *returnedContext = [[incomingContext mutableCopy] autorelease];
+    
+    NSMutableDictionary *headerFields = [[[returnedContext objectForKey:kIRWebAPIEngineRequestHTTPHeaderFields] mutableCopy] autorelease];
+    
+    if (!headerFields) {
+     headerFields = [NSMutableDictionary dictionary];
+     [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
+    }
+    
+    UIDevice *device = [UIDevice currentDevice];
+    [headerFields setObject:[[NSDictionary dictionaryWithObjectsAndKeys:
+      @"iOS", @"deviceType",
+      device.name, @"deviceName",
+      device.model, @"deviceModel",
+      device.systemName, @"deviceSystemName",
+      device.systemVersion, @"deviceSystemVersion",
+    nil] JSONString] forKey:@"x-origin-device"];
+    
+    return returnedContext;
+  
+  } copy] autorelease];
+
+}
+
 - (void) dealloc {
 
 	[apiKey release];
@@ -158,6 +188,7 @@
 	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
   
   [engine.globalRequestPreTransformers addObject:[self defaultHostSwizzlingTransformer]];
+  [engine.globalRequestPreTransformers addObject:[[self class] defaultDeviceInformationProvidingTransformer]];
 	
 	engine.parser = [[self class] defaultParser];
 	

@@ -19,8 +19,11 @@ extern NSString * const kWARemoteEndpointCurrentVersion;
 extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
+extern NSString * const kWAUserRegistrationUsesWebVersion;
+extern NSString * const kWAUserRegistrationEndpointURL;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
+extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
 
 extern NSString * const kWARemoteEndpointApplicationKey;
 
