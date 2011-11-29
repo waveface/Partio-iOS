@@ -9,8 +9,10 @@
 #import "WARegisterRequestViewController.h"
 #import "WARemoteInterface.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
-
 #import "WAOverlayBezel.h"
+#import "WADefines.h"
+
+#import "WARegisterRequestWebViewController.h"
 
 
 @interface WARegisterRequestViewController () <UITextFieldDelegate>
@@ -35,7 +37,14 @@
 
 + (WARegisterRequestViewController *) controllerWithCompletion:(WARegisterRequestViewControllerCallback)aBlock {
 
-	WARegisterRequestViewController *returnedVC = [[[self alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+  Class usedClass;
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUserRegistrationUsesWebVersion])
+    usedClass = [WARegisterRequestWebViewController class]; 
+  else
+    usedClass = self;
+
+	WARegisterRequestViewController *returnedVC = [[(WARegisterRequestViewController *)[usedClass alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
 	returnedVC.completionBlock = aBlock;
 	return returnedVC;
 

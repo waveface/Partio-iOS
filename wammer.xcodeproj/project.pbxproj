@@ -53,6 +53,7 @@
 		FF692BA4143C791700A084A8 /* WAPageSliderThumbInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */; };
 		FF6C29FE143B39E6009735E7 /* UIButtonBarCompose.png in Resources */ = {isa = PBXBuildFile; fileRef = FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
+		FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */; };
 		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
 		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
@@ -619,6 +620,8 @@
 		FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF73A69713D6E08100D54EC6 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FF73A69913D6E08800D54EC6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterRequestWebViewController.h; sourceTree = "<group>"; };
+		FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterRequestWebViewController.m; sourceTree = "<group>"; };
 		FF7D466614024FD800C916F5 /* WAImageStreamPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStreamPickerView.h; sourceTree = "<group>"; };
 		FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStreamPickerView.m; sourceTree = "<group>"; };
 		FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceDefines.h; sourceTree = "<group>"; };
@@ -1092,6 +1095,8 @@
 				FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */,
 				FFBACA75146BCF8B007DF1E5 /* WARegisterRequestViewController.h */,
 				FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */,
+				FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */,
+				FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */,
 				4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */,
 				4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */,
 			);
@@ -1957,6 +1962,7 @@
 				FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */,
 				FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */,
 				FFB117C9147F9051002094E5 /* NSBlockOperation+NSCopying.m in Sources */,
+				FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
