@@ -162,10 +162,11 @@
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 
-	if (!self.usernameField.text)
+	if (!self.usernameField.text) {
 		[self.usernameField becomeFirstResponder];
-	else
+	} else if (!self.passwordField.text) {
 		[self.passwordField becomeFirstResponder];
+  }
 	
 }
 
