@@ -41,10 +41,15 @@
 
 #import "WAPostsViewControllerPhone.h"
 
+#import "WAStationDiscoveryFeedbackViewController.h"
+
+
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
 - (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
+
+- (BOOL) removeAuthenticationData;
 
 @end
 
@@ -319,14 +324,20 @@
 
 }
 
+- (BOOL) removeAuthenticationData {
+
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+  return [[NSUserDefaults standardUserDefaults] synchronize];
+
+}
+
 - (void) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation {
 
 	if (erasesExistingAuthenticationInformation) {
-	
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+  
+    [self removeAuthenticationData];
 	
 	}
 
@@ -436,6 +447,8 @@
       
     }];
     
+    __block __typeof__(self) nrAppDelegate = self;
+    
 		authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
 		
 				if (anError) {
@@ -479,8 +492,128 @@
 								transition.duration = 0.3f;
 								transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 								transition.removedOnCompletion = YES;
-								[[UIApplication sharedApplication].keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
-								[[UIApplication sharedApplication].keyWindow.layer addAnimation:transition forKey:@"transition"];
+                
+                UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+                UIViewController *rootVC = keyWindow.rootViewController;
+                UIView *rootView = rootVC.view;
+                
+                __block UIView *overlayView = ((^ {
+                
+                  UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+                  returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+                  
+                  UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+                  
+                  spinner.center = (CGPoint){
+                    CGRectGetMidX(returnedView.bounds),
+                    CGRectGetMidY(returnedView.bounds)
+                  };
+                  
+                  spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+                  
+                  [spinner startAnimating];
+                  
+                  [returnedView addSubview:spinner];
+                  returnedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
+                
+                  return returnedView;
+                
+                })());
+                
+                void (^removeOverlayView)(BOOL) = ^ (BOOL animated) {
+                  
+                  [UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:0 animations:^{
+                  
+                    overlayView.alpha = 0.0f;
+                    
+                  } completion:^(BOOL finished) {
+                  
+                    [overlayView removeFromSuperview];
+                    
+                  }];
+                  
+                };
+                
+                [rootView addSubview:overlayView];
+                
+								[keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
+								[keyWindow.layer addAnimation:transition forKey:@"transition"];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                
+                  [[WARemoteInterface sharedInterface] retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
+                  
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                    
+                      if ([stationReps count]) {
+                      
+                        removeOverlayView(YES);
+                      
+                      } else {
+                      
+                        //  Remove prior auth data since the user does NOT have a station installed
+                        [nrAppDelegate removeAuthenticationData];
+                      
+                        WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
+                        UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
+                        stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for signing the user out") block:^{
+                          
+                          removeOverlayView(NO);
+                          [stationDiscoveryNavC dismissModalViewControllerAnimated:NO];
+                          [nrAppDelegate applicationRootViewControllerDidRequestReauthentication:nil];
+                          
+                        }];
+                        
+                        [rootVC presentModalViewController:stationDiscoveryNavC animated:YES];
+                        
+                        __block id notificationListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+                        
+                          WARemoteInterface *interface = [note object];
+                          
+                          if ([interface.monitoredHosts count] <= 1) {
+                          
+                            return;
+                          
+                            //  Damned shabby check
+                            //  Should refactor
+                          
+                          }
+                          
+                          [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
+                          
+                          double delayInSeconds = 2.0;
+                          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                            removeOverlayView(YES);
+                          });
+                          
+                          dispatch_async(dispatch_get_main_queue(), ^{
+                          
+                            [[NSNotificationCenter defaultCenter] removeObserver:notificationListener];
+                            objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, nil, OBJC_ASSOCIATION_ASSIGN);
+                            
+                          });
+                          
+                        }];
+                      
+                        objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, notificationListener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                      
+                      }
+                    
+                    });
+                    
+                  } onFailure:^(NSError *error) {
+                  
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                  
+                      NSLog(@"Error retrieving associated stations: %@", error);  //  FAIL
+                      removeOverlayView(YES);
+                    
+                    });
+                    
+                  }];
+                  
+                });
 								
 						};
 						
