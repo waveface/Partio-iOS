@@ -25,7 +25,6 @@
 @property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
 
 - (void) update;
-- (void) authenticate;
 
 @end
 
@@ -260,6 +259,8 @@
 
   IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
   [representedAction invoke];
+  
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 
@@ -301,6 +302,9 @@
 - (void) authenticate {
 
   [self update];
+  
+  if (![self.username length] || ![self.password length])
+    return; //  TBD maybe return NO
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");

@@ -430,6 +430,12 @@
     
     }];
     
+    IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignIn", @"Action title for signing in") block:^{
+      
+      [authRequestVC authenticate];
+      
+    }];
+    
 		authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
 		
 				if (anError) {
@@ -500,6 +506,7 @@
     
     authRequestVC.actions = [NSArray arrayWithObjects:
       
+      signInUserAction,
       registerUserAction,
       
     nil];
