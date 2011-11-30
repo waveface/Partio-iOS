@@ -165,13 +165,17 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
-  
+  	
+}
+
+- (void) assignFirstResponderStatusToBestMatchingField {
+
 	if (![self.usernameField.text length]) {
 		[self.usernameField becomeFirstResponder];
 	} else if (![self.passwordField.text length]) {
 		[self.passwordField becomeFirstResponder];
   }
-	
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
