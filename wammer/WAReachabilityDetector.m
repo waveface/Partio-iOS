@@ -51,10 +51,14 @@
   NSBlockOperation *refreshOperation = [NSBlockOperation blockOperationWithBlock: ^ {
   
     [nrRecurrenceMachine beginPostponingOperations];
-  
-    [[WARemoteInterface sharedInterface].engine fireAPIRequestNamed:@"reachability" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
     
-      hostURL, kIRWebAPIEngineRequestHTTPBaseURL,
+    [[WARemoteInterface sharedInterface].engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+    
+      [WARemoteInterface sharedInterface].userIdentifier, @"user_id",
+    
+    nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
+    
+      [NSURL URLWithString:@"users/get" relativeToURL:hostURL], kIRWebAPIEngineRequestHTTPBaseURL,
       IRWebAPIResponseDefaultParserMake(), kIRWebAPIEngineParser,
     
     nil] validator:nil successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
