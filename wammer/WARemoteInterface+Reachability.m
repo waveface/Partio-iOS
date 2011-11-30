@@ -13,6 +13,8 @@
 
 #import "Foundation+IRAdditions.h"
 
+#import "WADefines.h"
+
 
 @interface WARemoteInterface (Reachability_Private)
 
@@ -49,8 +51,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
   }];
   
-  NSLog(@"monitoredHostsToReachabilityDetectors %@", self.monitoredHostsToReachabilityDetectors);
-
+  [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceReachableHostsDidChangeNotification object:self userInfo:nil];
+  
 }
 
 - (BOOL) canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName {
