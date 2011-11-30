@@ -29,6 +29,7 @@ NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthen
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 NSString * const kWAUserRegistrationUsesWebVersion = @"WAUserRegistrationUsesWebVersion";
 NSString * const kWAUserRegistrationEndpointURL = @"WAUserRegistrationEndpointURL";
+NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthentication";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";

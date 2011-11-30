@@ -319,6 +319,9 @@
 			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
 		
 	}
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUserRequiresReauthentication])
+    authenticationInformationSufficient = NO;
 	
 	return authenticationInformationSufficient;
 
@@ -367,6 +370,7 @@
 		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
 		[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
@@ -552,7 +556,8 @@
                       } else {
                       
                         //  Remove prior auth data since the user does NOT have a station installed
-                        [nrAppDelegate removeAuthenticationData];
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                       
                         WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
                         UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
@@ -578,6 +583,9 @@
                             //  Should refactor
                           
                           }
+                          
+                          [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+                          [[NSUserDefaults standardUserDefaults] synchronize];
                           
                           [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
                           
