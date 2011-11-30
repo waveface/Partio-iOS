@@ -12,6 +12,7 @@
 "WARegisterRequestTitle" = "Register";
 "WACompositionTitle" = "Compose";
 
+"WAActionSignIn" = "Sign In";
 "WAActionSignOut" = "Sign Out";
 "WAActionCancel" = "Cancel";
 "WAActionDone" = "Done";
@@ -21,7 +22,7 @@
 "WAActionResetPassword" = "Reset Password";
 "WAActionRegisterUser" = "Register";
 
-"WANounUsername" = "Username";
+"WANounUsername" = "Email";
 "WANounNickname" = "Nickname";
 "WANounPassword" = "Password";
 "WANounPasswordConfirmation" = "Confirm Password";
