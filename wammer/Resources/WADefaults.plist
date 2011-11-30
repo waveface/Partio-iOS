@@ -7,7 +7,7 @@
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WAAdvancedFeaturesEnabled</key>
-	<false/>
+	<true/>
 	<key>WAUserRegistrationUsesWebVersion</key>
 	<true/>
 	<key>WAUserRegistrationEndpointURL</key>
