@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="11C74" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="878" systemVersion="11C74" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="WAArticle" representedClassName="WAArticle">
         <attribute name="creationDeviceName" optional="YES" attributeType="String"/>
         <attribute name="draft" attributeType="Boolean" defaultValueString="NO"/>
@@ -85,7 +85,7 @@
     <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
-    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
+    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <elements>
         <element name="WAArticle" positionX="72" positionY="0" width="128" height="210"/>
         <element name="WAComment" positionX="286" positionY="144" width="128" height="135"/>
