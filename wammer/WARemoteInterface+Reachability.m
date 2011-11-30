@@ -15,6 +15,8 @@
 
 #import "WADefines.h"
 
+#import "WAAppDelegate.h"
+
 
 @interface WARemoteInterface (Reachability_Private)
 
@@ -105,6 +107,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       return;
       
     [nrSelf beginPostponingDataRetrievalTimerFiring];
+    [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
     [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
     
@@ -149,6 +152,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
         }]];
         
         [nrSelf endPostponingDataRetrievalTimerFiring];
+        
+        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
       
       });
     
@@ -159,6 +164,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       dispatch_async(dispatch_get_main_queue(), ^ {
       
         [nrSelf endPostponingDataRetrievalTimerFiring];
+
+        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
       
       });
         
