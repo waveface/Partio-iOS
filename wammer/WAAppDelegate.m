@@ -150,7 +150,7 @@
 			((WANavigationBar *)(navController.navigationBar)).backgroundView = ((^ {
         switch (UI_USER_INTERFACE_IDIOM()) {
           case UIUserInterfaceIdiomPhone: {
-            return [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WANavigationBarBackdrop"]] autorelease];
+            return (UIView *)[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WANavigationBarBackdrop"]] autorelease];
           }
           default: {
             return (UIView *)[WANavigationBar defaultGradientBackgroundView];
@@ -356,7 +356,7 @@
 	}
 	
 	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
-	
+  
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
 	
