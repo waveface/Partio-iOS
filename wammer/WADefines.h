@@ -24,6 +24,7 @@ extern NSString * const kWAUserRegistrationEndpointURL;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
+extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 
 extern NSString * const kWARemoteEndpointApplicationKey;
 
