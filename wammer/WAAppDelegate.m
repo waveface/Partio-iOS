@@ -401,6 +401,8 @@
     
     IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
     
+      authRequestVC.password = nil;
+      [authRequestVC assignFirstResponderStatusToBestMatchingField];
       
       [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
     
@@ -468,6 +470,9 @@
           nil] componentsJoinedByString:@""];
 					
 					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
+          
+            authRequestVC.password = nil;
+            [authRequestVC assignFirstResponderStatusToBestMatchingField];
 						
 					}] otherActions:[NSArray arrayWithObjects:
 					
