@@ -501,7 +501,7 @@
                 UIViewController *rootVC = keyWindow.rootViewController;
                 UIView *rootView = rootVC.view;
                 
-                __block UIView *overlayView = ((^ {
+                UIView *overlayView = ((^ {
                 
                   UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
                   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
