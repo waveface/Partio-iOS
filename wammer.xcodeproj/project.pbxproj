@@ -571,6 +571,7 @@
 		FF24072B13F27F4A000B2CAA /* WAPatternCarbonFibre.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternCarbonFibre.png; path = Resources/WAPatternCarbonFibre.png; sourceTree = "<group>"; };
 		FF24072D13F2881E000B2CAA /* WAViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAViewController.h; sourceTree = "<group>"; };
 		FF24072E13F2881E000B2CAA /* WAViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAViewController.m; sourceTree = "<group>"; };
+		FF2614B61486A00D004AC5A3 /* WAModel 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 7.xcdatamodel"; sourceTree = "<group>"; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAGroup+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -2357,6 +2358,7 @@
 		FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FF2614B61486A00D004AC5A3 /* WAModel 7.xcdatamodel */,
 				FF0D45ED1475678B00340287 /* WAModel 6.xcdatamodel */,
 				FF8F463C14691A1B00D65864 /* WAModel 5.xcdatamodel */,
 				FF0DD00F142A492E0037FC4A /* WAModel 4.xcdatamodel */,
@@ -2364,7 +2366,7 @@
 				FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */,
 				FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF0D45ED1475678B00340287 /* WAModel 6.xcdatamodel */;
+			currentVersion = FF2614B61486A00D004AC5A3 /* WAModel 7.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

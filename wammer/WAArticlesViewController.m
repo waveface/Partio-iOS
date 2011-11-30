@@ -358,6 +358,10 @@
 
 - (void) handleAction:(UIBarButtonItem *)sender {
 
+  UIPopoverController *draftsPopoverC = objc_getAssociatedObject(self, @selector(handleCompose:));
+  if ([draftsPopoverC isPopoverVisible])
+    [draftsPopoverC dismissPopoverAnimated:YES];
+
 	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
 
 }

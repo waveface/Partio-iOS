@@ -22,6 +22,7 @@ extern NSString * const kWALastAuthenticatedUserIdentifier;
 extern NSString * const kWAUserRegistrationUsesWebVersion;
 extern NSString * const kWAUserRegistrationEndpointURL;
 extern NSString * const kWAUserRequiresReauthentication;
+extern NSString * const kWAUserPasswordResetEndpointURL;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
