@@ -178,7 +178,7 @@
 		
 		}
 		
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:needsTransition];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:needsTransition];
 		
 		if (![self hasAuthenticationData])
 			[self presentAuthenticationRequestRemovingPriorData:YES];
