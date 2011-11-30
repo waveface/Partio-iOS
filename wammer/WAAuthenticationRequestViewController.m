@@ -228,6 +228,7 @@
     cell.textLabel.text = representedAction.title;
     cell.textLabel.textAlignment = UITextAlignmentCenter;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView = nil;
   
   }
 		
@@ -243,9 +244,21 @@
 	
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+
+  if (section == 0)
+    return tableView.sectionHeaderHeight;
+  
+  return 12;
+
+}
+
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
-  if (WAAdvancedFeaturesEnabled())
+  if (!WAAdvancedFeaturesEnabled())
+    return nil;
+  
+  if (section == 0)
     return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
   
   return nil;
