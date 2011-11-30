@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial iPhone skinning"
-ETMarketingVersionNumber="0.8.1"
+ETReleaseNotes="- Initial implementation handling circumstance where the authenticated user does not have an associated Waveface Station"
+ETMarketingVersionNumber="0.8.3"
