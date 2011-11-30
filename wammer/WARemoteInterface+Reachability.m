@@ -98,6 +98,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   
     if (!nrSelf.userToken)
       return;
+      
+    [nrSelf beginPostponingDataRetrievalTimerFiring];
   
     [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
     
@@ -140,6 +142,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
           return (id)[NSURL URLWithString:baseURLString];
           
         }]];
+        
+        [nrSelf endPostponingDataRetrievalTimerFiring];
       
       });
     
@@ -147,6 +151,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
       NSLog(@"Error retrieving associated stations for current user: %@", nrSelf.userIdentifier);
       
+      dispatch_async(dispatch_get_main_queue(), ^ {
+      
+        [nrSelf endPostponingDataRetrievalTimerFiring];
+      
+      });
+        
     }];
   
   } copy] autorelease];
@@ -163,12 +173,17 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     NSURL *originalURL = [returnedContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
     NSString *originalMethodName = [returnedContext objectForKey:kIRWebAPIEngineIncomingMethodName];
     
+    NSLog(@"Transforming %@", inOriginalContext);
+    [NSThread irLogCallStackSymbols];
+    
+    NSParameterAssert(originalMethodName);
+    
     //  Authentication methods never get bypassed or sidelined to stations
     if ([originalMethodName hasPrefix:@"auth/"])
       return inOriginalContext;
     
-    if ([originalMethodName hasPrefix:@"reachability"])
-      return inOriginalContext;
+    //  if ([originalMethodName hasPrefix:@"reachability"])
+    //    return inOriginalContext;
     
     NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
     NSParameterAssert(bestHostURL);
