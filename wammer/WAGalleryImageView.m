@@ -134,12 +134,19 @@
 		return;
 
 	void (^operations)() = ^ {
-		[self willChangeValueForKey:@"image"];
+		
+    [self willChangeValueForKey:@"image"];
 		self.imageView.image = newImage;
 		self.imageView.bounds = (CGRect) { CGPointZero, newImage.size } ;
-		self.scrollView.contentSize = newImage.size;
 		self.activityIndicator.hidden = !!(newImage);
+    
+    self.needsContentAdjustmentOnLayout = YES;
+    self.needsInsetAdjustmentOnLayout = YES;
+    self.needsOffsetAdjustmentOnLayout = YES;
+    [self setNeedsLayout];
+    
 		[self didChangeValueForKey:@"image"];
+    
 	};
 
 	if (animate) {
@@ -305,7 +312,7 @@
 			CGRectGetMidY(newImageViewBounds)
 		};
 		
-		CGSize newScrollViewContentSize = self.imageView.bounds.size;
+		CGSize newScrollViewContentSize = newImageViewBounds.size;
 		
 		if (!CGRectEqualToRect(oldImageViewBounds, newImageViewBounds))
 			self.imageView.bounds = newImageViewBounds;
