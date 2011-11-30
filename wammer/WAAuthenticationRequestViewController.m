@@ -16,6 +16,8 @@
 
 #import "IRAction.h"
 
+#import "UIView+IRAdditions.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -86,6 +88,9 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+  
+  self.tableView.sectionHeaderHeight = 32;
+  
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
 	self.usernameField.placeholder = NSLocalizedString(@"WANounUsername", @"Noun for Username");
@@ -160,10 +165,10 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
-
-	if (!self.usernameField.text) {
+  
+	if (![self.usernameField.text length]) {
 		[self.usernameField becomeFirstResponder];
-	} else if (!self.passwordField.text) {
+	} else if (![self.passwordField.text length]) {
 		[self.passwordField becomeFirstResponder];
   }
 	
@@ -177,6 +182,15 @@
     self.performsAuthenticationOnViewDidAppear = NO;
     [self authenticate];
   }
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+  [super viewWillDisappear:animated];
+  
+  [self.usernameField resignFirstResponder];
+  [self.passwordField resignFirstResponder];
 
 }
 
@@ -210,12 +224,29 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     if (indexPath.row == 0) {
+    
       cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
+      
+      if ([self.usernameField isFirstResponder])
+      if (![self.usernameField isDescendantOfView:cell]) {
+        [self.usernameField resignFirstResponder];
+      }
+      
       cell.accessoryView = self.usernameField;
+      
     } else if (indexPath.row == 1) {
+    
       cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
+      
+      if ([self.passwordField isFirstResponder])
+      if (![self.passwordField isDescendantOfView:cell]) {
+        [self.passwordField resignFirstResponder];        
+      }
+      
       cell.accessoryView = self.passwordField;
+      
     } else {
+    
       cell.accessoryView = nil;
     }
   
