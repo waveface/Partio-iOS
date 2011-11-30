@@ -173,9 +173,23 @@
 
 }
 
-- (void) scrollViewDidZoom:(UIScrollView *)scrollView {
+- (void) scrollViewDidZoom:(UIScrollView *)aScrollView {
 
 	[self.delegate galleryImageViewDidBeginInteraction:self];
+  
+  UIPinchGestureRecognizer *svPinchGestureRecognizer = ((^ {
+  
+    if ([aScrollView respondsToSelector:@selector(pinchGestureRecognizer)])
+      return [aScrollView pinchGestureRecognizer];
+    
+    return (UIPinchGestureRecognizer *)[[aScrollView.gestureRecognizers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+      return [evaluatedObject isKindOfClass:[UIPinchGestureRecognizer class]];
+    }]] lastObject];
+  
+  })());
+  
+  CGPoint centroid = [svPinchGestureRecognizer locationInView:aScrollView];
+  self.imageView.center = centroid;
 
 }
 
@@ -204,10 +218,17 @@
 			[self layoutSubviews];
 			
 		} else {
+    
+      CGRect oldScrollViewBounds = self.scrollView.layer.bounds;
 		
 			self.needsContentAdjustmentOnLayout = YES;
 			[aScrollView setZoomScale:1 animated:NO];
 			[self layoutSubviews];
+      
+      self.scrollView.layer.bounds = oldScrollViewBounds;
+      [self.scrollView.layer removeAnimationForKey:@"bounds"];
+      
+      [self layoutSubviews];
 		
 		}
 
