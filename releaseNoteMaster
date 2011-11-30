@@ -1,2 +1,2 @@
-ETReleaseNotes="- Revises handling of status bar styles on the iPhone\n- Fixes crashers that happen when scrolling the Auth Request View (Shared)"
-ETMarketingVersionNumber="0.8.7"
+ETReleaseNotes="- Fixes another crashes that happen when scrolling the Auth Request View (Shared) after dismissing the Web Registeration View (Shared) which has caused a memory warning"
+ETMarketingVersionNumber="0.8.8"
