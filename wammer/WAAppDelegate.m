@@ -43,6 +43,8 @@
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
+#import "IRLifetimeHelper.h"
+
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
@@ -651,15 +653,22 @@
 				
 		}];
     
+    [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
+      (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+    nil]];
+		
     authRequestVC.actions = [NSArray arrayWithObjects:
       
       signInUserAction,
       registerUserAction,
       
     nil];
-		
     
-		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+    [authRequestVC irPerformOnDeallocation:^{
+      [signInUserAction irUnbind:@"enabled"];
+    }];
+    
+		__block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
         

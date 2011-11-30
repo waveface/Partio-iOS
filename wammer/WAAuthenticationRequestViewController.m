@@ -25,6 +25,7 @@
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
 
 @property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
+@property (nonatomic, readwrite, assign) BOOL validForAuthentication;
 
 - (void) update;
 
@@ -37,6 +38,7 @@
 @synthesize username, password, completionBlock;
 @synthesize performsAuthenticationOnViewDidAppear;
 @synthesize actions;
+@synthesize validForAuthentication;
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
@@ -155,6 +157,16 @@
 
 }
 
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+  self.validForAuthentication = ((textField == self.usernameField) ? YES : (BOOL)!![self.usernameField.text length])
+    && ((textField == self.passwordField) ? YES : (BOOL)!![self.passwordField.text length])
+    && (BOOL)!![[textField.text stringByReplacingCharactersInRange:range withString:string] length];
+  
+  return YES;
+  
+}
+
 - (void) textFieldDidEndEditing:(UITextField *)textField {
 
 	[self update];
@@ -223,10 +235,11 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 	}
   
+  cell.textLabel.textColor = [UIColor blackColor];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
   if (indexPath.section == 0) {
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
     if (indexPath.row == 0) {
     
       cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
@@ -262,8 +275,18 @@
     IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
     cell.textLabel.text = representedAction.title;
     cell.textLabel.textAlignment = UITextAlignmentCenter;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.accessoryView = nil;
+    
+    if (representedAction.enabled) {
+
+      cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    
+    } else {
+
+      cell.textLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1];
+    
+    }
   
   }
 		
@@ -297,6 +320,19 @@
     return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
   
   return nil;
+
+}
+
+- (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  if (indexPath.section != 1)
+    return indexPath;
+  
+  IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+  if (!representedAction.enabled)
+    return nil;
+  
+  return indexPath;
 
 }
 
@@ -344,6 +380,8 @@
 
 	self.username = self.usernameField.text;
 	self.password = self.passwordField.text;
+  
+  self.validForAuthentication = [self.username length] && [self.password length];
 
 }
 
@@ -351,8 +389,8 @@
 
   [self update];
   
-  if (![self.username length] || ![self.password length])
-    return; //  TBD maybe return NO
+  if (!self.validForAuthentication)
+    return;
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");
@@ -392,6 +430,44 @@
 		});
 			
 	}];		
+
+}
+
+
+
+
+
+
+- (void) setActions:(NSArray *)newActions {
+
+  if (actions == newActions)
+    return;
+  
+  for (IRAction *anAction in actions)
+    [anAction removeObserver:self forKeyPath:@"enabled"];
+  
+  for (IRAction *anAction in newActions)
+    [anAction addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:nil];
+  
+  [actions release];
+  actions = [newActions retain];
+
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+  if ([object isKindOfClass:[IRAction class]])
+  if ([self.actions containsObject:object]) {
+  
+    IRAction *anAction = (IRAction *)object;
+    
+    if ([self isViewLoaded]) {
+      [self.tableView beginUpdates];
+      [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.actions indexOfObject:anAction] inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+      [self.tableView endUpdates];
+    }
+  
+  }
 
 }
 

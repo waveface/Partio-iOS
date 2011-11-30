@@ -30,4 +30,6 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 
 - (void) assignFirstResponderStatusToBestMatchingField;
 
+@property (nonatomic, readonly, assign) BOOL validForAuthentication;
+
 @end
