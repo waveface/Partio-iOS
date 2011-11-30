@@ -68,6 +68,10 @@
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
 		FF897D32146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
 		FF897D35146A69A600DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */; };
+		FF8CADA61485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CADA41485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m */; };
+		FF8CADA71485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8CADA51485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iPhone.xib */; };
+		FF8CADA91485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8CADA81485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib */; };
+		FF8CADF11486217B00C8BF04 /* WAStationNotFoundGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8CADF01486217B00C8BF04 /* WAStationNotFoundGlyph.png */; };
 		FF8F4626146908B700D65864 /* WARemoteInterface+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */; };
 		FF8F4629146909AD00D65864 /* WARemoteInterface+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */; };
 		FF8F462C146909DC00D65864 /* WARemoteInterface+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */; };
@@ -658,6 +662,11 @@
 		FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		FF8CADA31485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStationDiscoveryFeedbackViewController.h; sourceTree = "<group>"; };
+		FF8CADA41485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStationDiscoveryFeedbackViewController.m; sourceTree = "<group>"; };
+		FF8CADA51485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAStationDiscoveryFeedbackViewController~iPhone.xib"; sourceTree = "<group>"; };
+		FF8CADA81485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAStationDiscoveryFeedbackViewController.xib; sourceTree = "<group>"; };
+		FF8CADF01486217B00C8BF04 /* WAStationNotFoundGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAStationNotFoundGlyph.png; path = Resources/WAStationNotFoundGlyph.png; sourceTree = "<group>"; };
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAButtonSpringBoardRemove.png; path = Resources/WAButtonSpringBoardRemove.png; sourceTree = "<group>"; };
@@ -969,6 +978,10 @@
 		FF71D3F3140E09EF0069B161 /* Base Articles View */ = {
 			isa = PBXGroup;
 			children = (
+				FF8CADA31485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.h */,
+				FF8CADA41485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m */,
+				FF8CADA51485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iPhone.xib */,
+				FF8CADA81485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib */,
 				FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */,
 				FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */,
 				FF0D45EE1475688100340287 /* WAArticleDraftsViewController.h */,
@@ -1333,6 +1346,7 @@
 				4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */,
 				FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */,
 				FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */,
+				FF8CADF01486217B00C8BF04 /* WAStationNotFoundGlyph.png */,
 			);
 			name = Resources;
 			path = wammer;
@@ -1853,6 +1867,9 @@
 				4BFAE5EB1484C33B002CDE07 /* WAPhoto@2x.png in Resources */,
 				4BFAE5EC1484C33B002CDE07 /* WASend.png in Resources */,
 				4BFAE5ED1484C33B002CDE07 /* WASend@2x.png in Resources */,
+				FF8CADA71485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iPhone.xib in Resources */,
+				FF8CADA91485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib in Resources */,
+				FF8CADF11486217B00C8BF04 /* WAStationNotFoundGlyph.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1999,6 +2016,7 @@
 				FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */,
 				FFB117C9147F9051002094E5 /* NSBlockOperation+NSCopying.m in Sources */,
 				FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */,
+				FF8CADA61485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

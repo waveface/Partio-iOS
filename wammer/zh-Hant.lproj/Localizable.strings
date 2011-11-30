@@ -50,3 +50,6 @@
 
 "WADraftStateNoContent" = "（沒有內文）";
 "WADraftStateNoTimestamp" = "（沒有時間戳記）";
+
+"WAErrorNoStationFoundTitle" = "找無 Waveface Station";
+"WAErrorNoStationFoundDescription" = "找無 Waveface Station。\n請到 http://waveface.com 下載 Windows 版。";
