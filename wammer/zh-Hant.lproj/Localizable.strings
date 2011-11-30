@@ -12,6 +12,7 @@
 "WARegisterRequestTitle" = "註冊";
 "WACompositionTitle" = "編輯";
 
+"WAActionSignIn" = "登入";
 "WAActionSignOut" = "登出";
 "WAActionCancel" = "取消";
 "WAActionDone" = "完成";
@@ -21,7 +22,7 @@
 "WAActionResetPassword" = "重設密碼";
 "WAActionRegisterUser" = "註冊";
 
-"WANounUsername" = "帳號";
+"WANounUsername" = "電子郵件";
 "WANounNickname" = "暱稱";
 "WANounPassword" = "密碼";
 "WANounPasswordConfirmation" = "確認密碼";
@@ -35,11 +36,11 @@
 "WACompositionNoPhotoReminderDescription" = "加入照片";
 
 "WAErrorUserRegistrationFailedTitle" = "無法登錄";
-"WAErrorUserRegistrationFailedDescription" = "Waveface現在無法登錄您的帳號";
+"WAErrorUserRegistrationFailedDescription" = "Waveface 現在無法登錄您的帳號";
 "WAErrorUserRegistrationFailedRecoveryNotion" = "請稍候再嘗試登錄";
 
 "WAErrorAuthenticationFailedTitle" = "無法認證";
-"WAErrorAuthenticationFailedDescription" = "Waveface目前無法認證您的帳號資料：";
+"WAErrorAuthenticationFailedDescription" = "Waveface 目前無法認證您的帳號資料：";
 "WAErrorAuthenticationFailedRecoveryNotion" = "您可以重設密碼或新增一個帳號";
 
 "WAActionNewPost" = "寫新的";
@@ -49,3 +50,6 @@
 
 "WADraftStateNoContent" = "（沒有內文）";
 "WADraftStateNoTimestamp" = "（沒有時間戳記）";
+
+"WAErrorNoStationFoundTitle" = "找無 Waveface Station";
+"WAErrorNoStationFoundDescription" = "找無 Waveface Station。\n請到 http://waveface.com 下載 Windows 版。";

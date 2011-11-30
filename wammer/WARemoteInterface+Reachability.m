@@ -13,6 +13,8 @@
 
 #import "Foundation+IRAdditions.h"
 
+#import "WADefines.h"
+
 
 @interface WARemoteInterface (Reachability_Private)
 
@@ -33,6 +35,9 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
 
+  if (self.monitoredHosts == newAvailableHosts)
+    return;
+
 	objc_setAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
   [(NSDictionary *)[[self.monitoredHostsToReachabilityDetectors copy] autorelease] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
@@ -49,8 +54,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
   }];
   
-  NSLog(@"monitoredHostsToReachabilityDetectors %@", self.monitoredHostsToReachabilityDetectors);
-
+  [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceReachableHostsDidChangeNotification object:self userInfo:nil];
+  
 }
 
 - (BOOL) canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName {
@@ -98,6 +103,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   
     if (!nrSelf.userToken)
       return;
+      
+    [nrSelf beginPostponingDataRetrievalTimerFiring];
   
     [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
     
@@ -140,6 +147,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
           return (id)[NSURL URLWithString:baseURLString];
           
         }]];
+        
+        [nrSelf endPostponingDataRetrievalTimerFiring];
       
       });
     
@@ -147,6 +156,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
       NSLog(@"Error retrieving associated stations for current user: %@", nrSelf.userIdentifier);
       
+      dispatch_async(dispatch_get_main_queue(), ^ {
+      
+        [nrSelf endPostponingDataRetrievalTimerFiring];
+      
+      });
+        
     }];
   
   } copy] autorelease];
@@ -163,12 +178,17 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     NSURL *originalURL = [returnedContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
     NSString *originalMethodName = [returnedContext objectForKey:kIRWebAPIEngineIncomingMethodName];
     
+    NSLog(@"Transforming %@", inOriginalContext);
+    [NSThread irLogCallStackSymbols];
+    
+    NSParameterAssert(originalMethodName);
+    
     //  Authentication methods never get bypassed or sidelined to stations
     if ([originalMethodName hasPrefix:@"auth/"])
       return inOriginalContext;
     
-    if ([originalMethodName hasPrefix:@"reachability"])
-      return inOriginalContext;
+    //  if ([originalMethodName hasPrefix:@"reachability"])
+    //    return inOriginalContext;
     
     NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
     NSParameterAssert(bestHostURL);
