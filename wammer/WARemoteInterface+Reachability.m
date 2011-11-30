@@ -35,6 +35,9 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
 
+  if (self.monitoredHosts == newAvailableHosts)
+    return;
+
 	objc_setAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
   [(NSDictionary *)[[self.monitoredHostsToReachabilityDetectors copy] autorelease] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
