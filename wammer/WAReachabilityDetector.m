@@ -48,7 +48,7 @@
   __block __typeof__(recurrenceMachine) nrRecurrenceMachine = recurrenceMachine;
   __block __typeof__(self) nrSelf = self;
   
-  NSBlockOperation *refreshOperation = [NSBlockOperation blockOperationWithBlock: ^ {
+  __block NSBlockOperation *refreshOperation = [NSBlockOperation blockOperationWithBlock: ^ {
   
     [nrRecurrenceMachine beginPostponingOperations];
     

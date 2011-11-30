@@ -7,10 +7,12 @@
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WAAdvancedFeaturesEnabled</key>
-	<false/>
+	<true/>
 	<key>WAUserRegistrationUsesWebVersion</key>
 	<true/>
 	<key>WAUserRegistrationEndpointURL</key>
 	<string>http://develop.waveface.com:4343/signup</string>
+	<key>WAUserRequiresReauthentication</key>
+	<false/>
 </dict>
 </plist>
