@@ -15,6 +15,8 @@
 
 #import "WADefines.h"
 
+#import "WAAppDelegate.h"
+
 
 @interface WARemoteInterface (Reachability_Private)
 
@@ -105,6 +107,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       return;
       
     [nrSelf beginPostponingDataRetrievalTimerFiring];
+    [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
     [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
     
@@ -135,7 +138,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
             [baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"]: @"",
             [baseURL host] ? [givenURL host] : @"",
             [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
-              [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
+            [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
             [baseURL path] ? [baseURL path] : @"",
             //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
             //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
@@ -149,6 +152,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
         }]];
         
         [nrSelf endPostponingDataRetrievalTimerFiring];
+        
+        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
       
       });
     
@@ -159,6 +164,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       dispatch_async(dispatch_get_main_queue(), ^ {
       
         [nrSelf endPostponingDataRetrievalTimerFiring];
+
+        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
       
       });
         
@@ -178,11 +185,6 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     NSURL *originalURL = [returnedContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
     NSString *originalMethodName = [returnedContext objectForKey:kIRWebAPIEngineIncomingMethodName];
     
-    NSLog(@"Transforming %@", inOriginalContext);
-    [NSThread irLogCallStackSymbols];
-    
-    NSParameterAssert(originalMethodName);
-    
     //  Authentication methods never get bypassed or sidelined to stations
     if ([originalMethodName hasPrefix:@"auth/"])
       return inOriginalContext;
@@ -193,9 +195,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
     NSParameterAssert(bestHostURL);
     
-    NSLog(@"Probably swizzle host url for original url %@ + method %@", originalURL, originalMethodName);
-    NSLog(@"Best URL is %@", bestHostURL);
-		
+    //  bestHostURL shall be used, instead of the old URL
+    
 		return returnedContext;
 	
 	} copy] autorelease];
