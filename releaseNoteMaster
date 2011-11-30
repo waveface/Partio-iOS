@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial implementation handling circumstance where the authenticated user does not have an associated Waveface Station\n- Fixes bug for iPhones not showing the correct XIB for Station Discovery\n- Fixes bug where Station Reachability code is crashy\n- Fixes case where when the user ends the application without a station associated, the user was not asked to authenticate again\n- Fixes case where for an user whose station has been found after the initial discovery state, the user was asked to authenticate again despite being in good standing"
-ETMarketingVersionNumber="0.8.5"
+ETReleaseNotes="- Revises handling of status bar styles on the iPhone\n- Fixes crashers that happen when scrolling the Auth Request View (Shared)"
+ETMarketingVersionNumber="0.8.7"
