@@ -52,5 +52,5 @@
 "WADraftStateNoContent" = "(No Content)";
 "WADraftStateNoTimestamp" = "(No Timestamp)";
 
-"WAErrorNoStationFoundTitle" = "Could not locate your Waveface Station";
-"WAErrorNoStationFoundDescription" = "Could not locate your Waveface Station.\nIf you haven't installed one. Download Waveface Station for Windows at http://waveface.com.";
+"WAErrorNoStationFoundTitle" = "No Station";	/* Short */
+"WAErrorNoStationFoundDescription" = "Could not locate your Waveface Station.\nIf you haven’t installed one. Download Waveface Station for Windows at http://waveface.com.";
