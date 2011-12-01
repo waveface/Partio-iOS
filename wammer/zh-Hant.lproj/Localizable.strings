@@ -51,5 +51,5 @@
 "WADraftStateNoContent" = "（沒有內文）";
 "WADraftStateNoTimestamp" = "（沒有時間戳記）";
 
-"WAErrorNoStationFoundTitle" = "找無 Waveface Station";
-"WAErrorNoStationFoundDescription" = "找無 Waveface Station。\n請到 http://waveface.com 下載 Windows 版。";
+"WAErrorNoStationFoundTitle" = "無法連接 Station";	/* Short */
+"WAErrorNoStationFoundDescription" = "無法連接您的 Waveface Station。\n如您還未安裝，請到 http://waveface.com 下載 Windows 版。";
