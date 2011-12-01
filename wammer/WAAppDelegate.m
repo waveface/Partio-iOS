@@ -43,6 +43,8 @@
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
+#import "IRLifetimeHelper.h"
+
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
@@ -401,7 +403,10 @@
     
     IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
     
-      //	?
+      authRequestVC.password = nil;
+      [authRequestVC assignFirstResponderStatusToBestMatchingField];
+      
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
     
     }];
   
@@ -467,6 +472,9 @@
           nil] componentsJoinedByString:@""];
 					
 					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
+          
+            authRequestVC.password = nil;
+            [authRequestVC assignFirstResponderStatusToBestMatchingField];
 						
 					}] otherActions:[NSArray arrayWithObjects:
 					
@@ -501,7 +509,7 @@
                 UIViewController *rootVC = keyWindow.rootViewController;
                 UIView *rootView = rootVC.view;
                 
-                __block UIView *overlayView = ((^ {
+                UIView *overlayView = ((^ {
                 
                   UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
                   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -645,15 +653,22 @@
 				
 		}];
     
+    [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
+      (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+    nil]];
+		
     authRequestVC.actions = [NSArray arrayWithObjects:
       
       signInUserAction,
       registerUserAction,
       
     nil];
-		
     
-		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+    [authRequestVC irPerformOnDeallocation:^{
+      [signInUserAction irUnbind:@"enabled"];
+    }];
+    
+		__block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
         
