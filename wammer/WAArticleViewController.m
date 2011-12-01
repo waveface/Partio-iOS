@@ -495,17 +495,23 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 					NSMutableArray *tempImages = [[originalImages mutableCopy] autorelease];
 					
 					UIImage *currentImage = [galleryViewController currentImage];
-					
-					if (![tempImages containsObject:currentImage]) {
-						if ([tempImages count] > 0) {
-							[tempImages replaceObjectAtIndex:0 withObject:currentImage];
-						} else {
-							[tempImages insertObject:currentImage atIndex:0];
-						}
-					} else {
-						[tempImages removeObject:currentImage];
-						[tempImages insertObject:currentImage atIndex:0];
-					}
+          
+          if (!currentImage)
+          if ([tempImages count] > 0)
+            currentImage = [tempImages objectAtIndex:0];
+          
+          if (currentImage) {					
+            if (![tempImages containsObject:currentImage]) {
+              if ([tempImages count] > 0) {
+                [tempImages replaceObjectAtIndex:0 withObject:currentImage];
+              } else {
+                [tempImages insertObject:currentImage atIndex:0];
+              }
+            } else {
+              [tempImages removeObject:currentImage];
+              [tempImages insertObject:currentImage atIndex:0];
+            }
+          }
 										
 					UINavigationController *parentVC = (UINavigationController *)galleryViewController.parentViewController;
 					[galleryViewController dismissModalViewControllerAnimated:NO];

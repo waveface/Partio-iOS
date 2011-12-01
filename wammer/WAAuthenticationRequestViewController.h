@@ -28,4 +28,8 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 
 @property (nonatomic, readwrite, retain) NSArray *actions;  //  Use IRAction objects
 
+- (void) assignFirstResponderStatusToBestMatchingField;
+
+@property (nonatomic, readonly, assign) BOOL validForAuthentication;
+
 @end

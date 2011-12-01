@@ -14,5 +14,7 @@
 	<string>http://develop.waveface.com:4343/signup</string>
 	<key>WAUserRequiresReauthentication</key>
 	<false/>
+	<key>WAUserPasswordResetEndpointURL</key>
+	<string>http://develop.waveface.com:4343/user/password/forget/html</string>
 </dict>
 </plist>
