@@ -14,6 +14,4 @@
 
 @interface WAPostsViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
 
-- (void) beginCompositionSessionWithContentText:(NSString *)urlString;
-
 @end

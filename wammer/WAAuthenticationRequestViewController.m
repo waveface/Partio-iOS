@@ -16,6 +16,8 @@
 
 #import "IRAction.h"
 
+#import "UIView+IRAdditions.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -23,6 +25,7 @@
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
 
 @property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
+@property (nonatomic, readwrite, assign) BOOL validForAuthentication;
 
 - (void) update;
 
@@ -35,6 +38,7 @@
 @synthesize username, password, completionBlock;
 @synthesize performsAuthenticationOnViewDidAppear;
 @synthesize actions;
+@synthesize validForAuthentication;
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
@@ -86,6 +90,9 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+  
+  self.tableView.sectionHeaderHeight = 32;
+  
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
 	self.usernameField.placeholder = NSLocalizedString(@"WANounUsername", @"Noun for Username");
@@ -150,6 +157,16 @@
 
 }
 
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+  self.validForAuthentication = ((textField == self.usernameField) ? YES : (BOOL)!![self.usernameField.text length])
+    && ((textField == self.passwordField) ? YES : (BOOL)!![self.passwordField.text length])
+    && (BOOL)!![[textField.text stringByReplacingCharactersInRange:range withString:string] length];
+  
+  return YES;
+  
+}
+
 - (void) textFieldDidEndEditing:(UITextField *)textField {
 
 	[self update];
@@ -160,13 +177,17 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+  	
+}
 
-	if (!self.usernameField.text) {
+- (void) assignFirstResponderStatusToBestMatchingField {
+
+	if (![self.usernameField.text length]) {
 		[self.usernameField becomeFirstResponder];
-	} else if (!self.passwordField.text) {
+	} else if (![self.passwordField.text length]) {
 		[self.passwordField becomeFirstResponder];
   }
-	
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -177,6 +198,15 @@
     self.performsAuthenticationOnViewDidAppear = NO;
     [self authenticate];
   }
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+  [super viewWillDisappear:animated];
+  
+  [self.usernameField resignFirstResponder];
+  [self.passwordField resignFirstResponder];
 
 }
 
@@ -205,17 +235,35 @@
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 	}
   
+  cell.textLabel.textColor = [UIColor blackColor];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
   if (indexPath.section == 0) {
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
     if (indexPath.row == 0) {
+    
       cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
+      
+      if ([self.usernameField isFirstResponder])
+      if (![self.usernameField isDescendantOfView:cell]) {
+        [self.usernameField resignFirstResponder];
+      }
+      
       cell.accessoryView = self.usernameField;
+      
     } else if (indexPath.row == 1) {
+    
       cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
+      
+      if ([self.passwordField isFirstResponder])
+      if (![self.passwordField isDescendantOfView:cell]) {
+        [self.passwordField resignFirstResponder];        
+      }
+      
       cell.accessoryView = self.passwordField;
+      
     } else {
+    
       cell.accessoryView = nil;
     }
   
@@ -227,7 +275,18 @@
     IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
     cell.textLabel.text = representedAction.title;
     cell.textLabel.textAlignment = UITextAlignmentCenter;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView = nil;
+    
+    if (representedAction.enabled) {
+
+      cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    
+    } else {
+
+      cell.textLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1];
+    
+    }
   
   }
 		
@@ -243,12 +302,37 @@
 	
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+
+  if (section == 0)
+    return tableView.sectionHeaderHeight;
+  
+  return 12;
+
+}
+
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
-  if (WAAdvancedFeaturesEnabled())
+  if (!WAAdvancedFeaturesEnabled())
+    return nil;
+  
+  if (section == 0)
     return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
   
   return nil;
+
+}
+
+- (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  if (indexPath.section != 1)
+    return indexPath;
+  
+  IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+  if (!representedAction.enabled)
+    return nil;
+  
+  return indexPath;
 
 }
 
@@ -296,6 +380,8 @@
 
 	self.username = self.usernameField.text;
 	self.password = self.passwordField.text;
+  
+  self.validForAuthentication = [self.username length] && [self.password length];
 
 }
 
@@ -303,8 +389,8 @@
 
   [self update];
   
-  if (![self.username length] || ![self.password length])
-    return; //  TBD maybe return NO
+  if (!self.validForAuthentication)
+    return;
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");
@@ -344,6 +430,44 @@
 		});
 			
 	}];		
+
+}
+
+
+
+
+
+
+- (void) setActions:(NSArray *)newActions {
+
+  if (actions == newActions)
+    return;
+  
+  for (IRAction *anAction in actions)
+    [anAction removeObserver:self forKeyPath:@"enabled"];
+  
+  for (IRAction *anAction in newActions)
+    [anAction addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:nil];
+  
+  [actions release];
+  actions = [newActions retain];
+
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+  if ([object isKindOfClass:[IRAction class]])
+  if ([self.actions containsObject:object]) {
+  
+    IRAction *anAction = (IRAction *)object;
+    
+    if ([self isViewLoaded]) {
+      [self.tableView beginUpdates];
+      [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.actions indexOfObject:anAction] inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+      [self.tableView endUpdates];
+    }
+  
+  }
 
 }
 

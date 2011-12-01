@@ -83,7 +83,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
-	self.title = @"Wammer";
+	self.title = NSLocalizedString(@"WAAppTitle", @"Title for application");
 	
 	__block __typeof__(self) nrSelf = self;
 	

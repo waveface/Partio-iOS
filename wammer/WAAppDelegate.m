@@ -43,6 +43,8 @@
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
+#import "IRLifetimeHelper.h"
+
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
@@ -150,7 +152,7 @@
 			((WANavigationBar *)(navController.navigationBar)).backgroundView = ((^ {
         switch (UI_USER_INTERFACE_IDIOM()) {
           case UIUserInterfaceIdiomPhone: {
-            return [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WANavigationBarBackdrop"]] autorelease];
+            return (UIView *)[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WANavigationBarBackdrop"]] autorelease];
           }
           default: {
             return (UIView *)[WANavigationBar defaultGradientBackgroundView];
@@ -178,7 +180,7 @@
 		
 		}
 		
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:needsTransition];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:needsTransition];
 		
 		if (![self hasAuthenticationData])
 			[self presentAuthenticationRequestRemovingPriorData:YES];
@@ -319,6 +321,9 @@
 			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
 		
 	}
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUserRequiresReauthentication])
+    authenticationInformationSufficient = NO;
 	
 	return authenticationInformationSufficient;
 
@@ -353,7 +358,7 @@
 	}
 	
 	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
-	
+  
 	if (!lastAuthenticatedUserTokenKeychainItem)
 		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
 	
@@ -367,6 +372,7 @@
 		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
 		[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
@@ -397,7 +403,10 @@
     
     IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
     
-      //	?
+      authRequestVC.password = nil;
+      [authRequestVC assignFirstResponderStatusToBestMatchingField];
+      
+      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
     
     }];
   
@@ -463,6 +472,9 @@
           nil] componentsJoinedByString:@""];
 					
 					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
+          
+            authRequestVC.password = nil;
+            [authRequestVC assignFirstResponderStatusToBestMatchingField];
 						
 					}] otherActions:[NSArray arrayWithObjects:
 					
@@ -497,7 +509,7 @@
                 UIViewController *rootVC = keyWindow.rootViewController;
                 UIView *rootView = rootVC.view;
                 
-                __block UIView *overlayView = ((^ {
+                UIView *overlayView = ((^ {
                 
                   UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
                   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -552,7 +564,8 @@
                       } else {
                       
                         //  Remove prior auth data since the user does NOT have a station installed
-                        [nrAppDelegate removeAuthenticationData];
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
                       
                         WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
                         UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
@@ -578,6 +591,9 @@
                             //  Should refactor
                           
                           }
+                          
+                          [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+                          [[NSUserDefaults standardUserDefaults] synchronize];
                           
                           [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
                           
@@ -637,15 +653,22 @@
 				
 		}];
     
+    [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
+      (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+    nil]];
+		
     authRequestVC.actions = [NSArray arrayWithObjects:
       
       signInUserAction,
       registerUserAction,
       
     nil];
-		
     
-		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+    [authRequestVC irPerformOnDeallocation:^{
+      [signInUserAction irUnbind:@"enabled"];
+    }];
+    
+		__block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
         
