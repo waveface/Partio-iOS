@@ -61,6 +61,7 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
   
   recurrenceMachine = [[IRRecurrenceMachine alloc] init];
   hostURL = [aHostURL retain];
+  state = WAReachabilityStateUnknown;
   
   __block __typeof__(recurrenceMachine) nrRecurrenceMachine = recurrenceMachine;
   __block __typeof__(self) nrSelf = self;
