@@ -18,6 +18,8 @@ enum WAReachabilityState {
   WAReachabilityStateNotAvailable
 }; typedef NSUInteger WAReachabilityState;
 
+extern NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState);
+
 #endif
 
 
