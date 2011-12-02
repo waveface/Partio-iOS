@@ -12,6 +12,23 @@
 #import "NSBlockOperation+NSCopying.h"
 
 
+NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReachabilityDetectorDidUpdateStatusNotification";
+
+NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState) {
+
+  switch (aState) {
+    case WAReachabilityStateUnknown:
+      return NSLocalizedString(@"WAReachabilityStateUnknown", @"WAReachabilityStateUnknown");
+    case WAReachabilityStateAvailable:
+      return NSLocalizedString(@"WAReachabilityStateAvailable", @"WAReachabilityStateAvailable");
+    case WAReachabilityStateNotAvailable:
+      return NSLocalizedString(@"WAReachabilityStateNotAvailable", @"WAReachabilityStateNotAvailable");
+    default:
+      return [NSString stringWithFormat:@"%x", aState];
+  };
+
+}
+
 @interface WAReachabilityDetector ()
 
 @property (nonatomic, readwrite, retain) NSURL *hostURL;
@@ -99,6 +116,7 @@
   [self didChangeValueForKey:@"state"];
   
   [self.delegate reachabilityDetectorDidUpdate:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kWAReachabilityDetectorDidUpdateStatusNotification object:self];
 
 }
 

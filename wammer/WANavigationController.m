@@ -28,6 +28,8 @@
 
 	if (self.willPushViewControllerAnimated)
 		self.willPushViewControllerAnimated(self, viewController, animated);
+    
+  self.contentSizeForViewInPopover = viewController.contentSizeForViewInPopover;
 		
 	[super pushViewController:viewController animated:animated];
 

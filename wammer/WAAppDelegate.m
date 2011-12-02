@@ -226,6 +226,8 @@
 }
 
 - (void) applicationDidBecomeActive:(UIApplication *)application {
+
+  #if 0
   
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
 	
@@ -281,6 +283,8 @@
 		[alertView show];
 
   }
+  
+  #endif
 	
 }
 
