@@ -86,6 +86,7 @@
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
+    <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $identifier"/>
     <elements>
         <element name="WAArticle" positionX="72" positionY="0" width="128" height="210"/>
         <element name="WAComment" positionX="286" positionY="144" width="128" height="135"/>
