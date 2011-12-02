@@ -55,7 +55,9 @@
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
 		FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */; };
 		FF4570511488A79D005B5905 /* WAUserInfoHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4570501488A79D005B5905 /* WAUserInfoHeaderCell.xib */; };
+		FF4570E11488E7E3005B5905 /* WAArticleFilesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */; };
 		FF4570E41488F362005B5905 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4570E31488F362005B5905 /* QuickLook.framework */; };
+		FF4570E81488F381005B5905 /* WAFile+QuickLook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4570E71488F381005B5905 /* WAFile+QuickLook.m */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
@@ -590,8 +592,12 @@
 		FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoHeaderCell.m; sourceTree = "<group>"; };
 		FF4570501488A79D005B5905 /* WAUserInfoHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAUserInfoHeaderCell.xib; sourceTree = "<group>"; };
 		FF4570521488BACE005B5905 /* WAModel 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 8.xcdatamodel"; sourceTree = "<group>"; };
+		FF4570DF1488E7E3005B5905 /* WAArticleFilesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleFilesListViewController.h; sourceTree = "<group>"; };
+		FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleFilesListViewController.m; sourceTree = "<group>"; };
 		FF4570E21488F0D7005B5905 /* WAModel 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 9.xcdatamodel"; sourceTree = "<group>"; };
 		FF4570E31488F362005B5905 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		FF4570E61488F381005B5905 /* WAFile+QuickLook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+QuickLook.h"; sourceTree = "<group>"; };
+		FF4570E71488F381005B5905 /* WAFile+QuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+QuickLook.m"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Default.xib"; path = "Resources/WAArticleViewController-Default.xib"; sourceTree = "<group>"; };
@@ -943,6 +949,18 @@
 			path = wammer;
 			sourceTree = "<group>";
 		};
+		FF4570E51488F371005B5905 /* Attachments */ = {
+			isa = PBXGroup;
+			children = (
+				FF4570DF1488E7E3005B5905 /* WAArticleFilesListViewController.h */,
+				FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */,
+				FF4570E61488F381005B5905 /* WAFile+QuickLook.h */,
+				FF4570E71488F381005B5905 /* WAFile+QuickLook.m */,
+			);
+			name = Attachments;
+			path = wammer;
+			sourceTree = "<group>";
+		};
 		FF55C23513F5251D00F38861 /* Gallery */ = {
 			isa = PBXGroup;
 			children = (
@@ -1017,6 +1035,7 @@
 				FF761AEC14876222003C11D2 /* Station Discovery */,
 				FFFC76391487761700247099 /* User Info */,
 				FF71D3F3140E09EF0069B161 /* Base Articles View */,
+				FF4570E51488F371005B5905 /* Attachments */,
 				FF73A54813D6C2CC00D54EC6 /* iPad */,
 				4B1527A313E29E8D006E9737 /* iPhone */,
 				FF55C23513F5251D00F38861 /* Gallery */,
@@ -2066,6 +2085,8 @@
 				FF8CADA61485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m in Sources */,
 				FFFC763C1487762D00247099 /* WAUserInfoViewController.m in Sources */,
 				FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */,
+				FF4570E11488E7E3005B5905 /* WAArticleFilesListViewController.m in Sources */,
+				FF4570E81488F381005B5905 /* WAFile+QuickLook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,8 @@
 //
 
 #import "WAFile.h"
+#import <QuickLook/QuickLook.h>
 
-@interface WAFile (QuickLook)
+@interface WAFile (QuickLook) <QLPreviewItem>
 
 @end

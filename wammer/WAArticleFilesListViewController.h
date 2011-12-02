@@ -10,4 +10,6 @@
 
 @interface WAArticleFilesListViewController : UITableViewController
 
++ (id) controllerWithArticle:(NSURL *)anURI;
+
 @end

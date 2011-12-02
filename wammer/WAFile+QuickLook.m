@@ -10,4 +10,16 @@
 
 @implementation WAFile (QuickLook)
 
+- (NSString *) previewItemTitle {
+
+  return @"File";
+
+}
+
+- (NSURL *) previewItemURL {
+
+  return self.resourceFilePath ? [NSURL fileURLWithPath:self.resourceFilePath] : nil;
+
+}
+
 @end
