@@ -188,8 +188,14 @@
   
   })());
   
-  CGPoint centroid = [svPinchGestureRecognizer locationInView:aScrollView];
-  self.imageView.center = centroid;
+  if (svPinchGestureRecognizer)
+  if (svPinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+  if (aScrollView.zoomScale < 1) {
+  
+    CGPoint centroid = [svPinchGestureRecognizer locationInView:aScrollView];
+    self.imageView.center = centroid;
+  
+  }
 
 }
 
