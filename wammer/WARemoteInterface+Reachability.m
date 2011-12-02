@@ -119,9 +119,10 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
         
         nrSelf.monitoredHosts = [[NSArray arrayWithObject:nrSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
         
-          NSString *stationStatus = [aStationRep valueForKeyPath:@"status"];
-          if (![stationStatus isEqual:@"connected"])
-            return (id)nil;
+          //  Even if the station is not connected as reported by Cloud, we want to track it anyway
+          //  NSString *stationStatus = [aStationRep valueForKeyPath:@"status"];
+          //  if (![stationStatus isEqual:@"connected"])
+          //    return (id)nil;
         
           NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
           if (!stationURLString)
@@ -200,6 +201,14 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 		return returnedContext;
 	
 	} copy] autorelease];
+
+}
+
+- (WAReachabilityState) reachabilityStateForHost:(NSURL *)aBaseURL {
+
+  WAReachabilityDetector *detector = [self.monitoredHostsToReachabilityDetectors objectForKey:aBaseURL];
+  
+  return detector ? detector.state : WAReachabilityStateUnknown;
 
 }
 
