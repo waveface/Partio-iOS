@@ -78,6 +78,7 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
     
       [NSURL URLWithString:@"users/get" relativeToURL:hostURL], kIRWebAPIEngineRequestHTTPBaseURL,
       IRWebAPIResponseDefaultParserMake(), kIRWebAPIEngineParser,
+      [NSNumber numberWithDouble:10.0f], kIRWebAPIRequestTimeout,
     
     nil] validator:nil successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 
