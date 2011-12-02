@@ -211,7 +211,14 @@
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+
+  switch ([UIDevice currentDevice].userInterfaceIdiom) {
+    case UIUserInterfaceIdiomPad:
+      return YES;
+    default:
+      return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+  }
+  
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
@@ -289,7 +296,7 @@
     }
   
   }
-		
+  
 	cell.accessoryView.frame = (CGRect){
 		CGPointZero,
 		(CGSize){

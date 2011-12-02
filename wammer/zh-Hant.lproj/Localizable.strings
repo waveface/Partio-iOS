@@ -11,6 +11,7 @@
 "WAAuthRequestTitle" = "歡迎";
 "WARegisterRequestTitle" = "註冊";
 "WACompositionTitle" = "編輯";
+"WAUserInformationTitle" = "帳戶";
 
 "WAActionSignIn" = "登入";
 "WAActionSignOut" = "登出";
@@ -29,6 +30,7 @@
 
 "WANounAction" = "動作";
 "WAPluralNounDrafts" = "以前的草稿";
+"WANounPluralEndpoints" = "API 端點";
 
 "WASignOutConfirmation" = "確定登出？";
 
@@ -53,3 +55,7 @@
 
 "WAErrorNoStationFoundTitle" = "無法連接 Station";	/* Short */
 "WAErrorNoStationFoundDescription" = "無法連接您的 Waveface Station。\n如您還未安裝，請到 http://waveface.com 下載 Windows 版。";
+
+"WAReachabilityStateUnknown," = "狀態未知";
+"WAReachabilityStateAvailable" = "可用";
+"WAReachabilityStateNotAvailable" = "不可用";

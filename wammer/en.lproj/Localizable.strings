@@ -11,6 +11,7 @@
 "WAAuthRequestTitle" = "Welcome";
 "WARegisterRequestTitle" = "Register";
 "WACompositionTitle" = "Compose";
+"WAUserInformationTitle" = "Account";
 
 "WAActionSignIn" = "Sign In";
 "WAActionSignOut" = "Sign Out";
@@ -29,6 +30,7 @@
 
 "WANounAction" = "Action";
 "WAPluralNounDrafts" = "Drafts";
+"WANounPluralEndpoints" = "Endpoints";
 
 "WASignOutConfirmation" = "Really sign out?";
 
@@ -54,3 +56,7 @@
 
 "WAErrorNoStationFoundTitle" = "No Station";	/* Short */
 "WAErrorNoStationFoundDescription" = "Could not locate your Waveface Station.\nIf you haven’t installed one. Download Waveface Station for Windows at http://waveface.com.";
+
+"WAReachabilityStateUnknown" = "Unknown Availablity";
+"WAReachabilityStateAvailable" = "Available";
+"WAReachabilityStateNotAvailable" = "Not Available";
