@@ -242,6 +242,8 @@
 		FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */; };
 		FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF556B41456A1270077DFFB /* WARefreshGlyph.png */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
+		FFFC76371487760F00247099 /* WAUserGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFFC76351487760F00247099 /* WAUserGlyph.png */; };
+		FFFC76381487760F00247099 /* WAUserGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFFC76361487760F00247099 /* WAUserGlyph@2x.png */; };
 		FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -807,6 +809,8 @@
 		FFF9B7A313E7D8E5002A9D7F /* WATinyArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowDown.png; path = Resources/WATinyArrowDown.png; sourceTree = "<group>"; };
 		FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WATinyArrowUp.png; path = Resources/WATinyArrowUp.png; sourceTree = "<group>"; };
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
+		FFFC76351487760F00247099 /* WAUserGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAUserGlyph.png; path = Resources/WAUserGlyph.png; sourceTree = "<group>"; };
+		FFFC76361487760F00247099 /* WAUserGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAUserGlyph@2x.png"; path = "Resources/WAUserGlyph@2x.png"; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1348,6 +1352,8 @@
 				FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */,
 				FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */,
 				FF8CADF01486217B00C8BF04 /* WAStationNotFoundGlyph.png */,
+				FFFC76351487760F00247099 /* WAUserGlyph.png */,
+				FFFC76361487760F00247099 /* WAUserGlyph@2x.png */,
 			);
 			name = Resources;
 			path = wammer;
@@ -1871,6 +1877,8 @@
 				FF8CADA71485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iphone.xib in Resources */,
 				FF8CADA91485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib in Resources */,
 				FF8CADF11486217B00C8BF04 /* WAStationNotFoundGlyph.png in Resources */,
+				FFFC76371487760F00247099 /* WAUserGlyph.png in Resources */,
+				FFFC76381487760F00247099 /* WAUserGlyph@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
