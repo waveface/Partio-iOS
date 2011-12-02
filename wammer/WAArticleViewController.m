@@ -21,6 +21,8 @@
 #import "UIApplication+CrashReporting.h"
 #import "IRMailComposeViewController.h"
 
+#import "WAArticleFilesListViewController.h"
+
 
 
 @interface WAArticleView (PrivateStuff)
@@ -222,10 +224,12 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 			dispatch_async(dispatch_get_current_queue(), ^ {
 			
 				NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
+        NSURL *articleURI = [[self.article objectID] URIRepresentation];
+        BOOL articleHasFiles = !![self.article.fileOrder count];
 				
 				if (nrSelf.onPresentingViewController) {
 
-					WAViewController *shownViewController = [[[WAViewController alloc] init] autorelease];
+					__block WAViewController *shownViewController = [[[WAViewController alloc] init] autorelease];
 					
 					shownViewController.onLoadview = ^ (WAViewController *self) {
 						self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -245,47 +249,67 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 					
 					shownViewController.title = @"Inspect";
 					
-					shownViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Email" action:^{
-					
-						NSArray *mailRecipients = [[UIApplication sharedApplication] crashReportRecipients];
-						
-						NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
-						NSString *versionString = [NSString stringWithFormat:@"%@ %@ (%@) Commit %@", [bundleInfo objectForKey:(id)kCFBundleNameKey], [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
-						
-						NSString *mailSubject = [NSString stringWithFormat:@"Inspected Article — %@", versionString];
-						
-						__block IRMailComposeViewController *mailComposeController = [IRMailComposeViewController controllerWithMessageToRecipients:mailRecipients withSubject:mailSubject messageBody:inspectionText inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
-							
-							SEL presentingVCSelector = [mailComposeController respondsToSelector:@selector(presentingViewController)] ? @selector(presentingViewController) : @selector(parentViewController);
-							UIViewController *presentingVC = [mailComposeController performSelector:presentingVCSelector];
-							
-							[presentingVC dismissModalViewControllerAnimated:YES];
-							
-						}];
-						
-						mailComposeController.modalPresentationStyle = UIModalPresentationFormSheet;
-						
-						[CATransaction begin];
-						
-						CATransition *transition = [CATransition animation];
-						transition.type = kCATransitionFade;
-						transition.duration = 0.3f;
-						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-						transition.fillMode = kCAFillModeForwards;
-						transition.removedOnCompletion = YES;
-						
-						[shownViewController.navigationController presentModalViewController:mailComposeController animated:NO];
-						[shownViewController.navigationController.view.window.layer addAnimation:transition forKey:kCATransition];
-						
-						[CATransaction commit];
-						
-					}];
-					
-					shownViewController.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+					shownViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 					
 						[shownNavController dismissModalViewControllerAnimated:YES];
 						
 					}];
+          
+          shownViewController.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+          
+            IRAction *emailAction = [IRAction actionWithTitle:@"Email" block:^{
+					
+              NSArray *mailRecipients = [[UIApplication sharedApplication] crashReportRecipients];
+              
+              NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
+              NSString *versionString = [NSString stringWithFormat:@"%@ %@ (%@) Commit %@", [bundleInfo objectForKey:(id)kCFBundleNameKey], [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
+              
+              NSString *mailSubject = [NSString stringWithFormat:@"Inspected Article — %@", versionString];
+              
+              __block IRMailComposeViewController *mailComposeController = [IRMailComposeViewController controllerWithMessageToRecipients:mailRecipients withSubject:mailSubject messageBody:inspectionText inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+                
+                SEL presentingVCSelector = [mailComposeController respondsToSelector:@selector(presentingViewController)] ? @selector(presentingViewController) : @selector(parentViewController);
+                UIViewController *presentingVC = [mailComposeController performSelector:presentingVCSelector];
+                
+                [presentingVC dismissModalViewControllerAnimated:YES];
+                
+              }];
+              
+              mailComposeController.modalPresentationStyle = UIModalPresentationFormSheet;
+              
+              [CATransaction begin];
+              
+              CATransition *transition = [CATransition animation];
+              transition.type = kCATransitionFade;
+              transition.duration = 0.3f;
+              transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+              transition.fillMode = kCAFillModeForwards;
+              transition.removedOnCompletion = YES;
+              
+              [shownViewController.navigationController presentModalViewController:mailComposeController animated:NO];
+              [shownViewController.navigationController.view.window.layer addAnimation:transition forKey:kCATransition];
+              
+              [CATransaction commit];
+              
+            }];
+            
+            IRActionSheetController *actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:((^ {
+              
+              NSMutableArray *availableActions = [NSMutableArray arrayWithObject:emailAction];
+              
+              if (articleHasFiles) {
+                [availableActions addObject:[IRAction actionWithTitle:@"Files" block:^{
+                  [shownViewController.navigationController pushViewController:[WAArticleFilesListViewController controllerWithArticle:articleURI] animated:YES];
+                }]];
+              }
+              
+              return availableActions;
+              
+            })())];
+            
+            [[actionSheetController managedActionSheet] showFromBarButtonItem:senderItem animated:NO];
+            
+          }];
 					
 					nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
 						[parentViewController presentModalViewController:shownNavController animated:YES];

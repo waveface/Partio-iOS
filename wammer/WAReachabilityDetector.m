@@ -61,6 +61,7 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
   
   recurrenceMachine = [[IRRecurrenceMachine alloc] init];
   hostURL = [aHostURL retain];
+  state = WAReachabilityStateUnknown;
   
   __block __typeof__(recurrenceMachine) nrRecurrenceMachine = recurrenceMachine;
   __block __typeof__(self) nrSelf = self;
@@ -77,6 +78,7 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
     
       [NSURL URLWithString:@"users/get" relativeToURL:hostURL], kIRWebAPIEngineRequestHTTPBaseURL,
       IRWebAPIResponseDefaultParserMake(), kIRWebAPIEngineParser,
+      [NSNumber numberWithDouble:10.0f], kIRWebAPIRequestTimeout,
     
     nil] validator:nil successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 
