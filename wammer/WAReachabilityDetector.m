@@ -99,6 +99,7 @@
   [self didChangeValueForKey:@"state"];
   
   [self.delegate reachabilityDetectorDidUpdate:self];
+  [[NSNotificationCenter defaultCenter] postNotificationName:kWAReachabilityDetectorDidUpdateStatusNotification object:self];
 
 }
 

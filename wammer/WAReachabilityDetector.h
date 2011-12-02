@@ -21,6 +21,9 @@ enum WAReachabilityState {
 #endif
 
 
+extern NSString * const kWAReachabilityDetectorDidUpdateStatusNotification;
+
+
 @class WAReachabilityDetector;
 @protocol WAReachabilityDetectorDelegate <NSObject>
 
