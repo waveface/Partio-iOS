@@ -10,4 +10,10 @@
 
 @interface WAUserInfoHeaderCell : UITableViewCell
 
++ (WAUserInfoHeaderCell *) cellFromNib;
+
+@property (retain, nonatomic) IBOutlet UIImageView *avatarView;
+@property (retain, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (retain, nonatomic) IBOutlet UILabel *userEmailLabel;
+
 @end

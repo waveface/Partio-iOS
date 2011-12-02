@@ -11,6 +11,7 @@
 "WAAuthRequestTitle" = "Welcome";
 "WARegisterRequestTitle" = "Register";
 "WACompositionTitle" = "Compose";
+"WAUserInformationTitle" = "Account";
 
 "WAActionSignIn" = "Sign In";
 "WAActionSignOut" = "Sign Out";
@@ -29,6 +30,7 @@
 
 "WANounAction" = "Action";
 "WAPluralNounDrafts" = "Drafts";
+"WANounPluralEndpoints" = "Endpoints";
 
 "WASignOutConfirmation" = "Really sign out?";
 
