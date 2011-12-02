@@ -13,7 +13,7 @@
 #define __WAReachabilityDetector__
 
 enum WAReachabilityState {
-  WAReachabilityStateUnknown,
+  WAReachabilityStateUnknown = 0,
   WAReachabilityStateAvailable,
   WAReachabilityStateNotAvailable
 }; typedef NSUInteger WAReachabilityState;
