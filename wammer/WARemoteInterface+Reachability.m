@@ -203,6 +203,14 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 }
 
+- (WAReachabilityState) reachabilityStateForHost:(NSURL *)aBaseURL {
+
+  WAReachabilityDetector *detector = [self.monitoredHostsToReachabilityDetectors objectForKey:aBaseURL];
+  
+  return detector ? detector.state : WAReachabilityStateUnknown;
+
+}
+
 @end
 
 

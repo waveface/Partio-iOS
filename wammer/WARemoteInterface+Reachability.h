@@ -8,6 +8,7 @@
 
 #import "WARemoteInterface.h"
 #import "IRWebAPIKitDefines.h"
+#import "WAReachabilityDetector.h"
 
 @class WAReachabilityDetector;
 @interface WARemoteInterface (Reachability)
@@ -19,5 +20,7 @@
 
 - (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock;
 - (IRWebAPIRequestContextTransformer) defaultHostSwizzlingTransformer;
+
+- (WAReachabilityState) reachabilityStateForHost:(NSURL *)aBaseURL;
 
 @end
