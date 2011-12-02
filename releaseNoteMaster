@@ -1,2 +1,2 @@
-ETReleaseNotes="- Suppresses Automatic Link Detection (iPhone) temporarily pending Composition (Shared) refactoring\n- Implements User Information (iPad) which shows reachability status for monitored endpoints\n- Fixes various bugs in the Gallery (iPad)\n- Constrains accepted interface orientations for the Authentication Request Controller (Shared) to portrait on the iPhone\n- Fixes bug with Foundations (Shared) where bar button images are erroneously horizontally flipped"
-ETMarketingVersionNumber="0.9.1"
+ETReleaseNotes="- Enhances Reachability so the endpoints are discovered faster\n- Initial Quick Look integration hidden in the application\n- Various tweaks"
+ETMarketingVersionNumber="0.9.2"

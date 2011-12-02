@@ -13,6 +13,8 @@
 #import "UIImage+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 
 @interface WAFile ()
 
@@ -71,7 +73,18 @@
 	if (![resourceURL isFileURL]) {
 		
 		NSURL *ownURL = [[self objectID] URIRepresentation];
-		
+    NSString *preferredExtension = nil;
+    
+    if (self.resourceType) {
+    
+      preferredExtension = (NSString *)UTTypeCopyPreferredTagWithClass((CFStringRef)self.resourceType, kUTTagClassFilenameExtension);
+      [[preferredExtension retain] autorelease];
+      
+      if (preferredExtension)
+        CFRelease((CFStringRef)preferredExtension);
+      
+    }
+      
 		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 			
 			if (!tempFileURLOrNil)
@@ -86,9 +99,29 @@
         NSString *foundResourceFilePath = [foundFile primitiveValueForKey:@"resourceFilePath"];
         if (foundResourceFilePath || ![foundFile.resourceURL isEqualToString:[resourceURL absoluteString]])
           return;
-          
+        
         [foundFile.article willChangeValueForKey:@"fileOrder"];
-        foundFile.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
+        
+        NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil];
+        
+        if (preferredExtension) {
+          
+          NSURL *newFileURL = [NSURL fileURLWithPath:[[[fileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:preferredExtension]];
+          NSError *movingError = nil;
+          
+          if (![[NSFileManager defaultManager] moveItemAtURL:fileURL toURL:newFileURL error:&movingError]) {
+            
+            NSLog(@"Error moving to new URL: %@", movingError);
+            
+          } else {
+          
+            fileURL = newFileURL;
+          
+          }
+          
+        }
+        
+        foundFile.resourceFilePath = [fileURL path];
         [foundFile.article didChangeValueForKey:@"fileOrder"];
         
         NSError *savingError = nil;

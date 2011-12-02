@@ -141,6 +141,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
             [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
             [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
             [baseURL path] ? [baseURL path] : @"",
+              @"/", //  path needs trailing slash
+            
             //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
             //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
           
