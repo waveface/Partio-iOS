@@ -1,2 +1,2 @@
-ETReleaseNotes="- Enhances Reachability so the endpoints are discovered faster\n- Initial Quick Look integration hidden in the application\n- Various tweaks"
-ETMarketingVersionNumber="0.9.2"
+ETReleaseNotes="This version changes the data store.  Please zap the old application before installing, otherwise old documents might not show up correctly.\n- Initial Quick Look view with Remote Resources Manager loading progress integration"
+ETMarketingVersionNumber="0.9.3"
