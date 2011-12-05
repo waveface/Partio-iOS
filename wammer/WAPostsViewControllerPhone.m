@@ -97,7 +97,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.navigationItem.titleView = ((^ {
 		
-		UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"waveface"]] autorelease];
+		UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
 		logotype.contentMode = UIViewContentModeScaleAspectFit;
 		logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
