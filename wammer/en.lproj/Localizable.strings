@@ -1,0 +1,62 @@
+/* 
+  Localizable.strings
+  wammer
+
+  Created by Evadne Wu on 11/28/11.
+  Copyright (c) 2011 Waveface. All rights reserved.
+*/
+
+"WAAppTitle" = "Waveface";
+"WAFeedbackCompositionTitle" = "Waveface Feedback";
+"WAAuthRequestTitle" = "Welcome";
+"WARegisterRequestTitle" = "Register";
+"WACompositionTitle" = "Compose";
+"WAUserInformationTitle" = "Account";
+
+"WAActionSignIn" = "Sign In";
+"WAActionSignOut" = "Sign Out";
+"WAActionCancel" = "Cancel";
+"WAActionDone" = "Done";
+"WAActionFeedback" = "Feedback";
+"WAActionProcessing" = "Processing";
+"WAActionOkay" = "Okay";
+"WAActionResetPassword" = "Reset Password";
+"WAActionRegisterUser" = "Register";
+
+"WANounUsername" = "Email";
+"WANounNickname" = "Nickname";
+"WANounPassword" = "Password";
+"WANounPasswordConfirmation" = "Confirm Password";
+
+"WANounAction" = "Action";
+"WAPluralNounDrafts" = "Drafts";
+"WANounPluralEndpoints" = "Endpoints";
+
+"WASignOutConfirmation" = "Really sign out?";
+
+"WACompositionNoPhotoReminderTitle" = "No Photos";
+"WACompositionNoPhotoReminderDescription" = "Add some photos to this post.";
+
+"WAErrorUserRegistrationFailedTitle" = "Can’t Register";
+"WAErrorUserRegistrationFailedDescription" = "Waveface had trouble registering your account";
+"WAErrorUserRegistrationFailedRecoveryNotion" = "Please try registrating later.";
+
+"WAErrorAuthenticationFailedTitle" = "Can’t Authenticate";
+"WAErrorAuthenticationFailedDescription" = "Waveface has trouble authenticating your account: ";
+"WAErrorAuthenticationFailedRecoveryNotion" = "You can reset your password, or register a new account.";
+
+
+"WAActionNewPost" = "New Post";
+
+"WAActionSaveDraft" = "Save Draft";
+"WAActionDiscard" = "Discard";
+
+"WADraftStateNoContent" = "(No Content)";
+"WADraftStateNoTimestamp" = "(No Timestamp)";
+
+"WAErrorNoStationFoundTitle" = "No Station";	/* Short */
+"WAErrorNoStationFoundDescription" = "Could not locate your Waveface Station.\nIf you haven’t installed one. Download Waveface Station for Windows at http://waveface.com.";
+
+"WAReachabilityStateUnknown" = "Unknown Availablity";
+"WAReachabilityStateAvailable" = "Available";
+"WAReachabilityStateNotAvailable" = "Not Available";

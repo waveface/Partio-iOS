@@ -28,6 +28,8 @@
 
 - (void) waSubviewWillLayout;
 
+- (WAFile *) representedFileAtIndex:(NSUInteger)anIndex;
+
 @property (nonatomic, readwrite, assign) BOOL contextControlsShown;
 
 @end
@@ -88,20 +90,27 @@
 
 }
 
+- (WAFile *) representedFileAtIndex:(NSUInteger)anIndex {
+
+  return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
+    return [self.article.managedObjectContext irManagedObjectForURI:anURI];
+  }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
+
+}
+
 - (NSFetchedResultsController *) fetchedResultsController {
 
 	if (fetchedResultsController)
 		return fetchedResultsController;
 		
-	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImagesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
 		self.article, @"Article",
 	nil]];
 	
 	fetchRequest.returnsObjectsAsFaults = NO;
 	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"resourceURL" ascending:YES],
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+		[NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES],
 	nil];
 		
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
@@ -110,7 +119,7 @@
 	NSError *fetchingError;
 	if (![self.fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"Error fetching: %@", fetchingError);
-		
+  
 	self.previousNavigationItem.title = self.article.text;
 	
 	return fetchedResultsController;
@@ -258,7 +267,8 @@
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
+	//  WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
+  WAFile *representedFile = [self representedFileAtIndex:index];
 	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	returnedView.delegate = self;
@@ -301,7 +311,10 @@
 
 - (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:anIndex]];
+  WAFile *representedFile = [self representedFileAtIndex:anIndex];
+
+	//  WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:anIndex]];
+  
 	return representedFile;
 
 }

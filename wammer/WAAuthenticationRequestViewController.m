@@ -14,6 +14,10 @@
 
 #import "WADefines.h"
 
+#import "IRAction.h"
+
+#import "UIView+IRAdditions.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -21,9 +25,9 @@
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
 
 @property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
+@property (nonatomic, readwrite, assign) BOOL validForAuthentication;
 
 - (void) update;
-- (void) authenticate;
 
 @end
 
@@ -33,6 +37,8 @@
 @synthesize usernameField, passwordField;
 @synthesize username, password, completionBlock;
 @synthesize performsAuthenticationOnViewDidAppear;
+@synthesize actions;
+@synthesize validForAuthentication;
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
@@ -49,7 +55,7 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
-	self.title = @"Welcome";
+	self.title = NSLocalizedString(@"WAAuthRequestTitle", @"Title for the auth request controller");
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -74,6 +80,8 @@
 	
 	[password release];
 	[passwordField release];
+  
+  [actions release];
 
 	[super dealloc];
 
@@ -82,9 +90,12 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+  
+  self.tableView.sectionHeaderHeight = 32;
+  
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
-	self.usernameField.placeholder = @"Username";
+	self.usernameField.placeholder = NSLocalizedString(@"WANounUsername", @"Noun for Username");
 	self.usernameField.text = self.username;
 	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -96,7 +107,7 @@
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
-	self.passwordField.placeholder = @"Password";
+	self.passwordField.placeholder = NSLocalizedString(@"WANounPassword", @"Noun for Password");
 	self.passwordField.text = self.password;
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -146,6 +157,16 @@
 
 }
 
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+  self.validForAuthentication = ((textField == self.usernameField) ? YES : (BOOL)!![self.usernameField.text length])
+    && ((textField == self.passwordField) ? YES : (BOOL)!![self.passwordField.text length])
+    && (BOOL)!![[textField.text stringByReplacingCharactersInRange:range withString:string] length];
+  
+  return YES;
+  
+}
+
 - (void) textFieldDidEndEditing:(UITextField *)textField {
 
 	[self update];
@@ -156,12 +177,17 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+  	
+}
 
-	if (!self.usernameField.text)
+- (void) assignFirstResponderStatusToBestMatchingField {
+
+	if (![self.usernameField.text length]) {
 		[self.usernameField becomeFirstResponder];
-	else
+	} else if (![self.passwordField.text length]) {
 		[self.passwordField becomeFirstResponder];
-	
+  }
+
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -175,16 +201,36 @@
 
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+
+  [super viewWillDisappear:animated];
+  
+  [self.usernameField resignFirstResponder];
+  [self.passwordField resignFirstResponder];
+
+}
+
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+
+  switch ([UIDevice currentDevice].userInterfaceIdiom) {
+    case UIUserInterfaceIdiomPad:
+      return YES;
+    default:
+      return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+  }
+  
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+
+  return [self.actions count] ? 2 : 1;
+  
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 2;
+
+	return (section == 0) ? 2 : [self.actions count];
+  
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -194,19 +240,63 @@
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
+  
+  cell.textLabel.textColor = [UIColor blackColor];
+  cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-	if (indexPath.row == 0) {
-		cell.textLabel.text = @"Username";
-		cell.accessoryView = self.usernameField;
-	} else if (indexPath.row == 1) {
-		cell.textLabel.text = @"Password";
-		cell.accessoryView = self.passwordField;
-	} else {
-		cell.accessoryView = nil;
-	}
-		
+  if (indexPath.section == 0) {
+    
+    if (indexPath.row == 0) {
+    
+      cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
+      
+      if ([self.usernameField isFirstResponder])
+      if (![self.usernameField isDescendantOfView:cell]) {
+        [self.usernameField resignFirstResponder];
+      }
+      
+      cell.accessoryView = self.usernameField;
+      
+    } else if (indexPath.row == 1) {
+    
+      cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
+      
+      if ([self.passwordField isFirstResponder])
+      if (![self.passwordField isDescendantOfView:cell]) {
+        [self.passwordField resignFirstResponder];        
+      }
+      
+      cell.accessoryView = self.passwordField;
+      
+    } else {
+    
+      cell.accessoryView = nil;
+    }
+  
+    cell.textLabel.textAlignment = UITextAlignmentLeft;
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
+  } else {
+  
+    IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+    cell.textLabel.text = representedAction.title;
+    cell.textLabel.textAlignment = UITextAlignmentCenter;
+    //  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryView = nil;
+    
+    if (representedAction.enabled) {
+
+      cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    
+    } else {
+
+      cell.textLabel.textColor = [UIColor colorWithWhite:0.3 alpha:1];
+    
+    }
+  
+  }
+  
 	cell.accessoryView.frame = (CGRect){
 		CGPointZero,
 		(CGSize){
@@ -219,9 +309,49 @@
 	
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+
+  if (section == 0)
+    return tableView.sectionHeaderHeight;
+  
+  return 12;
+
+}
+
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
-	return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+  if (!WAAdvancedFeaturesEnabled())
+    return nil;
+  
+  if (section == 0)
+    return [NSString stringWithFormat:@"Using Endpoint %@", [[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+  
+  return nil;
+
+}
+
+- (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  if (indexPath.section != 1)
+    return indexPath;
+  
+  IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+  if (!representedAction.enabled)
+    return nil;
+  
+  return indexPath;
+
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+  if (indexPath.section != 1)
+    return;
+
+  IRAction *representedAction = (IRAction *)[self.actions objectAtIndex:indexPath.row];
+  [representedAction invoke];
+  
+  [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 }
 
@@ -229,19 +359,48 @@
 
 
 
+- (void) setUsername:(NSString *)newUsername {
+
+  if (username == newUsername)
+    return;
+  
+  [username release];
+  username = [newUsername retain];
+  
+  self.usernameField.text = username;
+
+}
+
+- (void) setPassword:(NSString *)newPassword {
+
+  if (password == newPassword)
+    return;
+  
+  [password release];
+  password = [newPassword retain];
+  
+  self.passwordField.text = password;
+
+}
+
 - (void) update {
 
 	self.username = self.usernameField.text;
 	self.password = self.passwordField.text;
+  
+  self.validForAuthentication = [self.username length] && [self.password length];
 
 }
 
 - (void) authenticate {
 
   [self update];
+  
+  if (!self.validForAuthentication)
+    return;
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	busyBezel.caption = @"Processing";
+	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");
 	
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
@@ -278,6 +437,44 @@
 		});
 			
 	}];		
+
+}
+
+
+
+
+
+
+- (void) setActions:(NSArray *)newActions {
+
+  if (actions == newActions)
+    return;
+  
+  for (IRAction *anAction in actions)
+    [anAction removeObserver:self forKeyPath:@"enabled"];
+  
+  for (IRAction *anAction in newActions)
+    [anAction addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:nil];
+  
+  [actions release];
+  actions = [newActions retain];
+
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+  if ([object isKindOfClass:[IRAction class]])
+  if ([self.actions containsObject:object]) {
+  
+    IRAction *anAction = (IRAction *)object;
+    
+    if ([self isViewLoaded]) {
+      [self.tableView beginUpdates];
+      [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self.actions indexOfObject:anAction] inSection:1]] withRowAnimation:UITableViewRowAnimationNone];
+      [self.tableView endUpdates];
+    }
+  
+  }
 
 }
 

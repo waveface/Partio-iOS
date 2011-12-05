@@ -13,6 +13,14 @@
 #import "UIImage+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
+
+@interface WAFile ()
+
++ (dispatch_queue_t) sharedResourceHandlingQueue;
+
+@end
 
 @implementation WAFile
 
@@ -29,6 +37,18 @@
 @dynamic thumbnail;
 
 @synthesize resourceImage, thumbnailImage;
+
++ (dispatch_queue_t) sharedResourceHandlingQueue {
+
+  static dispatch_queue_t queue = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+      queue = dispatch_queue_create("come.waveface.wammer.WAFile.resourceHandlingQueue", DISPATCH_QUEUE_SERIAL);
+  });
+  
+  return queue;
+
+}
 
 - (void) dealloc { 
 
@@ -53,31 +73,66 @@
 	if (![resourceURL isFileURL]) {
 		
 		NSURL *ownURL = [[self objectID] URIRepresentation];
-		
+    NSString *preferredExtension = nil;
+    
+    if (self.resourceType) {
+    
+      preferredExtension = (NSString *)UTTypeCopyPreferredTagWithClass((CFStringRef)self.resourceType, kUTTagClassFilenameExtension);
+      [[preferredExtension retain] autorelease];
+      
+      if (preferredExtension)
+        CFRelease((CFStringRef)preferredExtension);
+      
+    }
+      
 		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 			
 			if (!tempFileURLOrNil)
 				return;
-					
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
-			WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
-			NSString *foundResourceFilePath = [foundFile primitiveValueForKey:@"resourceFilePath"];
-			if (foundResourceFilePath || ![foundFile.resourceURL isEqualToString:[resourceURL absoluteString]])
-				return;
-				
-			[foundFile.article willChangeValueForKey:@"fileOrder"];
-			foundFile.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
-			[foundFile.article didChangeValueForKey:@"fileOrder"];
-			
-			NSError *savingError = nil;
-			BOOL didSave = [context save:&savingError];
-			if (!didSave) {
-				NSLog(@"Error saving: %@", savingError);
-				NSParameterAssert(didSave);
-			}
-			
+      
+      dispatch_async([[self class] sharedResourceHandlingQueue], ^{
+
+        NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        
+        WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
+        NSString *foundResourceFilePath = [foundFile primitiveValueForKey:@"resourceFilePath"];
+        if (foundResourceFilePath || ![foundFile.resourceURL isEqualToString:[resourceURL absoluteString]])
+          return;
+        
+        [foundFile.article willChangeValueForKey:@"fileOrder"];
+        
+        NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil];
+        
+        if (preferredExtension) {
+          
+          NSURL *newFileURL = [NSURL fileURLWithPath:[[[fileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:preferredExtension]];
+          NSError *movingError = nil;
+          
+          if (![[NSFileManager defaultManager] moveItemAtURL:fileURL toURL:newFileURL error:&movingError]) {
+            
+            NSLog(@"Error moving to new URL: %@", movingError);
+            
+          } else {
+          
+            fileURL = newFileURL;
+          
+          }
+          
+        }
+        
+        foundFile.resourceFilePath = [fileURL path];
+        [foundFile.article didChangeValueForKey:@"fileOrder"];
+        
+        NSError *savingError = nil;
+        BOOL didSave = [context save:&savingError];
+        if (!didSave) {
+          NSLog(@"Error saving: %@", savingError);
+          NSParameterAssert(didSave);
+        }
+        
+      });
+      
 		}];
 		
 		return nil;
@@ -121,21 +176,25 @@
 			if (!tempFileURLOrNil)
 				return;
 			
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
-			WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
-			NSString *foundThumbnailFilePath = [foundFile primitiveValueForKey:@"thumbnailFilePath"];
-			if (foundThumbnailFilePath || ![foundFile.thumbnailURL isEqualToString:[thumbnailURL absoluteString]])
-				return;
-			
-			[foundFile.article willChangeValueForKey:@"fileOrder"];
-			foundFile.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
-			[foundFile.article didChangeValueForKey:@"fileOrder"];
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
+      dispatch_async([[self class] sharedResourceHandlingQueue], ^{
+
+        NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        
+        WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
+        NSString *foundThumbnailFilePath = [foundFile primitiveValueForKey:@"thumbnailFilePath"];
+        if (foundThumbnailFilePath || ![foundFile.thumbnailURL isEqualToString:[thumbnailURL absoluteString]])
+          return;
+        
+        [foundFile.article willChangeValueForKey:@"fileOrder"];
+        foundFile.thumbnailFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
+        [foundFile.article didChangeValueForKey:@"fileOrder"];
+        
+        NSError *savingError = nil;
+        if (![context save:&savingError])
+          NSLog(@"Error saving: %@", savingError);
+        
+      });
 			
 		}];
 		
@@ -183,49 +242,60 @@
 
 	if (!resourceFilePath)
 		return nil;
+  
+  UIImage *prospectiveResourceImage = [UIImage imageWithContentsOfFile:resourceFilePath];
+  
+  if (prospectiveResourceImage) {
 	
-	[self willChangeValueForKey:@"resourceImage"];
-	resourceImage = [[UIImage imageWithContentsOfFile:self.resourceFilePath] retain];
-	resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
-	[self didChangeValueForKey:@"resourceImage"];
-	
-	if (self.resourceURL && !resourceImage)
-	if (![[NSURL URLWithString:self.resourceURL] isFileURL])
-	if (resourceFilePath) {
-			
-		NSURL *ownURL = [[self objectID] URIRepresentation];
-		NSString *capturedResourceFileURL = self.resourceURL;
-		NSString *capturedResourceFilePath = resourceFilePath;
-		
-		dispatch_async(dispatch_get_global_queue(0, 0), ^ {
-		
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
-			WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
-			if (!foundFile)
-				return;
-			
-			NSString *resourceFilePath = [foundFile primitiveValueForKey:@"resourceFilePath"];
-			
-			if (![foundFile.resourceURL isEqualToString:capturedResourceFileURL])
-				return;
-				
-			if (![resourceFilePath isEqualToString:capturedResourceFilePath])
-				return;
-			
-			[[NSFileManager defaultManager] removeItemAtPath:resourceFilePath error:nil];
-			foundFile.resourceFilePath = nil;
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError]) {
-				NSLog(@"Error saving: %@", savingError);
-				return;
-			}
-		
-		});
+    [self willChangeValueForKey:@"resourceImage"];
+    resourceImage = [prospectiveResourceImage retain];
+    resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
+    [self didChangeValueForKey:@"resourceImage"];
 
-	}
+  } else {
+  
+    //  RESOURCE image is bad
+  
+  
+  }
+	
+//	if (self.resourceURL && !resourceImage)
+//	if (![[NSURL URLWithString:self.resourceURL] isFileURL])
+//	if (resourceFilePath) {
+//			
+//		NSURL *ownURL = [[self objectID] URIRepresentation];
+//		NSString *capturedResourceFileURL = self.resourceURL;
+//		NSString *capturedResourceFilePath = resourceFilePath;
+//    
+//    dispatch_async([[self class] sharedResourceHandlingQueue], ^{
+//		
+//			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+//			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+//			
+//			WAFile *foundFile = (WAFile *)[context irManagedObjectForURI:ownURL];
+//			if (!foundFile)
+//				return;
+//			
+//			NSString *resourceFilePath = [foundFile primitiveValueForKey:@"resourceFilePath"];
+//			
+//			if (![foundFile.resourceURL isEqualToString:capturedResourceFileURL])
+//				return;
+//				
+//			if (![resourceFilePath isEqualToString:capturedResourceFilePath])
+//				return;
+//			
+//			[[NSFileManager defaultManager] removeItemAtPath:resourceFilePath error:nil];
+//			foundFile.resourceFilePath = nil;
+//			
+//			NSError *savingError = nil;
+//			if (![context save:&savingError]) {
+//				NSLog(@"Error saving: %@", savingError);
+//				return;
+//			}
+//		
+//		});
+//
+//	}
 	
 	return resourceImage;
 	
@@ -256,7 +326,7 @@
 		NSString *capturedThumbnailFileURL = self.thumbnailURL;
 		NSString *capturedThumbnailFilePath = thumbnailFilePath;
 		
-		dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+    dispatch_async([[self class] sharedResourceHandlingQueue], ^{
 		
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;

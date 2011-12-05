@@ -10,6 +10,8 @@
 #import "WARemoteInterface+ScheduledDataRetrieval.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
+#import "WAAppDelegate.h"
+
 @interface WARemoteInterface (ScheduledDataRetrieval_Private)
 
 @property (nonatomic, readonly, assign, getter=isPerformingAutomaticRemoteUpdates) BOOL performingAutomaticRemoteUpdates;	//	KVO-able for manual refreshing buttons
@@ -143,6 +145,8 @@
 		
 			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
 				return;
+        
+      [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
 
 			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
@@ -151,15 +155,21 @@
 
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
+
+        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
 				
 			} onFailure: ^ {
 			
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
+        
+        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
 				
 			}];
 		
 		} copy] autorelease],
+    
+    [self defaultScheduledMonitoredHostsUpdatingBlock],
 	
 	nil];
 

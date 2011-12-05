@@ -31,11 +31,17 @@
 
 #import "WAArticleDraftsViewController.h"
 
+#import "WAUserInfoViewController.h"
+
+#import "WANavigationController.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
+@property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
+@property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -44,12 +50,20 @@
 
 - (void) beginCompositionSessionForArticle:(NSURL *)anObjectURI;
 
+- (void) dismissAuxiliaryControlsAnimated:(BOOL)animate;
+
+- (void) handleUserInfoItemTap:(id)sender;
+- (void) handleActionItemTap:(id)sender;
+- (void) handleComposeItemTap:(id)sender;
+
 @end
 
 
 @implementation WAArticlesViewController
 @synthesize delegate, fetchedResultsController, managedObjectContext;
 @synthesize debugActionSheetController;
+@synthesize draftsPopoverController;
+@synthesize userInfoPopoverController;
 @synthesize updatesViewOnControllerChangeFinish;
 @synthesize interfaceUpdateOperationSuppressionCount, interfaceUpdateOperationQueue;
 
@@ -79,7 +93,7 @@
 	self.navigationItem.titleView = (( ^ {
 	
 		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-		label.text = @"Wammer";
+		label.text = NSLocalizedString(@"WAAppTitle", @"Application Title");
 		label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
 		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
 		label.shadowColor = [UIColor whiteColor];
@@ -104,22 +118,41 @@
 	})())];
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+  
+    __block __typeof__(self) nrSelf = self;
 	
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 120, 44 }] autorelease];
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 170, 44 }] autorelease];
+    
+    UIButton * (^sizedButtonForImageNamed)(NSString *) = ^ (NSString *anImageName) {
+      UIButton *button = WAButtonForImage(WABarButtonImageFromImageNamed(anImageName));
+      button.bounds = (CGRect){ CGPointZero, (CGSize){ 44, 44 }};
+      //  button.contentEdgeInsets = UIEdgeInsetsZero;
+      return button;
+    };
 		
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSArray arrayWithObjects:
 		
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
-		
-			[IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-				[self performSelector:@selector(handleAction:) withObject:senderItem];
+			[IRBarButtonItem itemWithButton:sizedButtonForImageNamed(@"WAUserGlyph") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+				
+        [nrSelf handleUserInfoItemTap:senderItem];
+        
+			}],
+      
+			//  [IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+      
+			[IRBarButtonItem itemWithButton:sizedButtonForImageNamed(@"WASettingsGlyph") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+        
+        [nrSelf handleActionItemTap:senderItem];
+        
 			}],
 		
-			[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
+			//  [IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
 			
-			[IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-				[self performSelector:@selector(handleCompose:) withObject:senderItem];
+			[IRBarButtonItem itemWithButton:sizedButtonForImageNamed(@"UIButtonBarCompose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+      
+        [nrSelf handleComposeItemTap:senderItem];
+      
 			}],
 			
 		nil];
@@ -141,6 +174,7 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
+  [draftsPopoverController release];
 	
 	[interfaceUpdateOperationQueue release];
 
@@ -171,15 +205,15 @@
 - (void) viewWillDisappear:(BOOL)animated {
 
 	[super viewWillDisappear:animated];
-
-	if (self.debugActionSheetController.managedActionSheet.visible)
-		[self.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:self.debugActionSheetController.managedActionSheet.cancelButtonIndex animated:animated];
+  [self dismissAuxiliaryControlsAnimated:NO];
 
 }
 
 - (void) viewDidUnload {
 
 	self.debugActionSheetController = nil;
+  self.draftsPopoverController = nil;
+  self.userInfoPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -232,17 +266,64 @@
 
 
 
+- (void) dismissAuxiliaryControlsAnimated:(BOOL)animate {
+
+  if ([userInfoPopoverController isPopoverVisible])
+    [userInfoPopoverController dismissPopoverAnimated:animate];
+  
+  if ([draftsPopoverController isPopoverVisible])
+    [draftsPopoverController dismissPopoverAnimated:animate];
+  
+  if (debugActionSheetController)
+    [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:animate];
+
+}
+
+- (UIPopoverController *) userInfoPopoverController {
+
+  if (userInfoPopoverController)
+    return userInfoPopoverController;
+    
+  __block __typeof__(self) nrSelf = self;
+  __block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
+  __block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+  
+  userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+    
+    if ([nrSelf.debugActionSheetController.managedActionSheet isVisible])
+      [nrSelf.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:0 animated:NO];
+    
+    [nrSelf.debugActionSheetController.managedActionSheet showInView:userInfoVC.view];
+    
+  }];
+    
+  userInfoPopoverController = [[UIPopoverController alloc] initWithContentViewController:wrappingNavC];
+  return userInfoPopoverController;
+
+}
+
+- (void) handleUserInfoItemTap:(UIBarButtonItem *)sender {
+
+  [self dismissAuxiliaryControlsAnimated:NO];
+  [self.userInfoPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
+
+}
+
+
+
+
+
 - (NSArray *) debugActionSheetControllerActions {
 	
 	__block __typeof__(self) nrSelf = self;
 
 	return [NSArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:@"Sign Out" block: ^ {
+		[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
 		
-			[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
+			[[IRAlertView alertViewWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") message:NSLocalizedString(@"WASignOutConfirmation", @"Confirmation text for Signing Out") cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for Cancelling") block:nil] otherActions:[NSArray arrayWithObjects:
 			
-				[IRAction actionWithTitle:@"Sign Out" block: ^ {
+				[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
 				
 					dispatch_async(dispatch_get_main_queue(), ^ {
 					
@@ -258,7 +339,7 @@
     
     #if 0
 	
-		[IRAction actionWithTitle:@"Feedback" block:^ {
+		[IRAction actionWithTitle:NSLocalizedString(@"WAActionFeedback", @"Action title for feedback composition") block:^ {
 		
 			if (![IRMailComposeViewController canSendMail]) {
 				[[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
@@ -266,7 +347,7 @@
 			}
 			
 			__block IRMailComposeViewController *composeViewController;
-			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:@"Wammer Feedback" messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"WAFeedbackCompositionTitle", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
 				[composeViewController dismissModalViewControllerAnimated:YES];
 			}];
 			
@@ -348,53 +429,61 @@
 	if (debugActionSheetController)
 		return debugActionSheetController;
 		
-	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self debugActionSheetControllerActions]] retain];
+	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Cancel.") block:nil] destructiveAction:nil otherActions:[self debugActionSheetControllerActions]] retain];
 	
 	return debugActionSheetController;
 
 }
 
-- (void) handleAction:(UIBarButtonItem *)sender {
+- (void) handleActionItemTap:(UIBarButtonItem *)sender {
 
-	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
+  [self dismissAuxiliaryControlsAnimated:NO];
+	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:NO];
 
 }
 
-- (void) handleCompose:(UIBarButtonItem *)sender {
+
+
+
+
+- (UIPopoverController *) draftsPopoverController {
+
+  if (draftsPopoverController)
+    return draftsPopoverController;
+
+  WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
+  draftsVC.delegate = self;
+  UINavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:draftsVC] autorelease];
+  draftsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
+  
+  return draftsPopoverController;
+
+}
+
+- (void) handleComposeItemTap:(UIBarButtonItem *)sender {
 
   BOOL hasDrafts = [[WADataStore defaultStore] hasDraftArticles];
     
   if (hasDrafts) {
   
-    UIPopoverController *draftsPopover = objc_getAssociatedObject(self, _cmd);
-    
-    if ([draftsPopover isPopoverVisible])
+    if ([draftsPopoverController isPopoverVisible])
       return;
-      
-    WAArticleDraftsViewController *draftsVC = [[[WAArticleDraftsViewController alloc] init] autorelease];
-    draftsVC.delegate = self;
-    UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:draftsVC] autorelease];
-    draftsPopover = [[[UIPopoverController alloc] initWithContentViewController:navC] autorelease];
-    objc_setAssociatedObject(self, _cmd, draftsPopover, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
-    [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:YES];
-    [draftsPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    [self dismissAuxiliaryControlsAnimated:NO];
+    [self.draftsPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
     
     return;
     
   }
-
-	[debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:YES];
-
+  
+  [self dismissAuxiliaryControlsAnimated:NO];
   [self beginCompositionSessionForArticle:nil];
   
 }
 
 - (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
 
-  UIPopoverController *draftsPopover = objc_getAssociatedObject(self, @selector(handleCompose:));
-  [draftsPopover dismissPopoverAnimated:YES];
-  
+  [self dismissAuxiliaryControlsAnimated:NO];
   [self beginCompositionSessionForArticle:anObjectURIOrNil];
 
 }

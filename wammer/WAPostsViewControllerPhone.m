@@ -83,11 +83,32 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
-	self.title = @"Wammer";
+	self.title = NSLocalizedString(@"WAAppTitle", @"Title for application");
 	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(actionSettings:)] autorelease];
+	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage([UIImage imageNamed:@"WAFilter"]) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
+	}];
+	
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage([UIImage imageNamed:@"WACompose"]) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+		[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
+	}];
+	
+	self.navigationItem.titleView = ((^ {
+		
+		UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"waveface"]] autorelease];
+		logotype.contentMode = UIViewContentModeScaleAspectFit;
+		logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
+		
+		UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){	CGPointZero, (CGSize){ 128, 44 }}];
+		logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
+		[containerView addSubview:logotype];
+		
+		return containerView;
+		
+	})());
   
 	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
@@ -107,7 +128,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	if (![self.fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
   
-  __block __typeof__(self) nrSelf = self;
+ //		__block __typeof__(self) nrSelf = self;
 
   self.settingsActionSheetController = [IRActionSheetController 
                                         actionSheetControllerWithTitle:@"Settings" 
@@ -201,6 +222,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}
 	};
 	
+	
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -208,7 +231,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
   [self refreshData];
 	
-	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
 
 }
@@ -216,7 +238,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewWillDisappear:(BOOL)animated {
   
 	[super viewWillDisappear:animated];
-	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates"];
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
  
 	NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];

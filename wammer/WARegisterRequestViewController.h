@@ -23,4 +23,6 @@ typedef void (^WARegisterRequestViewControllerCallback) (WARegisterRequestViewCo
 @property (nonatomic, readwrite, retain) NSString *password;
 @property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
+@property (nonatomic, readonly, copy) WARegisterRequestViewControllerCallback completionBlock;
+
 @end

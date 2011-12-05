@@ -29,6 +29,11 @@
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer;
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer;
 
++ (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer;
+
++ (IRWebAPIResponseContextTransformer) defaultRemoteAuthorizationStatusCheckingTransformer;
+
+
 @end
 
 
@@ -111,6 +116,60 @@
 
 }
 
++ (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer {
+
+  return [[ ^ (NSDictionary *incomingContext) {
+  
+    NSMutableDictionary *returnedContext = [[incomingContext mutableCopy] autorelease];
+    
+    NSMutableDictionary *headerFields = [[[returnedContext objectForKey:kIRWebAPIEngineRequestHTTPHeaderFields] mutableCopy] autorelease];
+    
+    if (!headerFields) {
+     headerFields = [NSMutableDictionary dictionary];
+     [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
+    }
+    
+    UIDevice *device = [UIDevice currentDevice];
+    [headerFields setObject:[[NSDictionary dictionaryWithObjectsAndKeys:
+      @"iOS", @"deviceType",
+      device.name, @"deviceName",
+      device.model, @"deviceModel",
+      device.systemName, @"deviceSystemName",
+      device.systemVersion, @"deviceSystemVersion",
+    nil] JSONString] forKey:@"x-origin-device"];
+    
+    return returnedContext;
+  
+  } copy] autorelease];
+
+}
+
++ (IRWebAPIResponseContextTransformer) defaultRemoteAuthorizationStatusCheckingTransformer {
+
+	return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+  
+    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponseName];
+    
+    if (response.statusCode == 401) {
+    
+      //  Something went wrong!
+      
+      
+    
+    }
+		
+    dispatch_async(dispatch_get_main_queue(), ^ {
+    
+      
+      
+    });
+    
+		return inParsedResponse;
+    
+	} copy] autorelease];
+
+}
+
 - (void) dealloc {
 
 	[apiKey release];
@@ -135,6 +194,9 @@
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];
+  
+  if (!self.monitoredHosts)
+    self.monitoredHosts = [NSArray arrayWithObject:self.engine.context.baseURL];
 	
 	return self;
 
@@ -156,6 +218,9 @@
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormURLEncodingTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[engine class] defaultCleanUpTemporaryFilesResponseTransformer]];
+  
+  [engine.globalRequestPreTransformers addObject:[self defaultHostSwizzlingTransformer]];
+  [engine.globalRequestPreTransformers addObject:[[self class] defaultDeviceInformationProvidingTransformer]];
 	
 	engine.parser = [[self class] defaultParser];
 	

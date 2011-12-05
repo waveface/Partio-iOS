@@ -18,10 +18,18 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock;
 
+- (void) authenticate;
+
 @property (nonatomic, readwrite, retain) NSString *username;
 @property (nonatomic, readwrite, retain) NSString *password;
 @property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
 @property (nonatomic, readwrite, assign) BOOL performsAuthenticationOnViewDidAppear;
+
+@property (nonatomic, readwrite, retain) NSArray *actions;  //  Use IRAction objects
+
+- (void) assignFirstResponderStatusToBestMatchingField;
+
+@property (nonatomic, readonly, assign) BOOL validForAuthentication;
 
 @end

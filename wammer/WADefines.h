@@ -10,14 +10,23 @@
 
 @class IRBarButtonItem, IRBorder;
 
+extern NSString * const kWAAdvancedFeaturesEnabled;
+extern BOOL WAAdvancedFeaturesEnabled (void);
+
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWARemoteEndpointVersion;
 extern NSString * const kWARemoteEndpointCurrentVersion;
 extern NSString * const kWALastAuthenticatedUserTokenKeychainItem;
 extern NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
+extern NSString * const kWAUserRegistrationUsesWebVersion;
+extern NSString * const kWAUserRegistrationEndpointURL;
+extern NSString * const kWAUserRequiresReauthentication;
+extern NSString * const kWAUserPasswordResetEndpointURL;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
+extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
+extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 
 extern NSString * const kWARemoteEndpointApplicationKey;
 

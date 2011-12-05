@@ -134,12 +134,19 @@
 		return;
 
 	void (^operations)() = ^ {
-		[self willChangeValueForKey:@"image"];
+		
+    [self willChangeValueForKey:@"image"];
 		self.imageView.image = newImage;
 		self.imageView.bounds = (CGRect) { CGPointZero, newImage.size } ;
-		self.scrollView.contentSize = newImage.size;
 		self.activityIndicator.hidden = !!(newImage);
+    
+    self.needsContentAdjustmentOnLayout = YES;
+    self.needsInsetAdjustmentOnLayout = YES;
+    self.needsOffsetAdjustmentOnLayout = YES;
+    [self setNeedsLayout];
+    
 		[self didChangeValueForKey:@"image"];
+    
 	};
 
 	if (animate) {
@@ -166,9 +173,29 @@
 
 }
 
-- (void) scrollViewDidZoom:(UIScrollView *)scrollView {
+- (void) scrollViewDidZoom:(UIScrollView *)aScrollView {
 
 	[self.delegate galleryImageViewDidBeginInteraction:self];
+  
+  UIPinchGestureRecognizer *svPinchGestureRecognizer = ((^ {
+  
+    if ([aScrollView respondsToSelector:@selector(pinchGestureRecognizer)])
+      return [aScrollView pinchGestureRecognizer];
+    
+    return (UIPinchGestureRecognizer *)[[aScrollView.gestureRecognizers filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+      return [evaluatedObject isKindOfClass:[UIPinchGestureRecognizer class]];
+    }]] lastObject];
+  
+  })());
+  
+  if (svPinchGestureRecognizer)
+  if (svPinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+  if (aScrollView.zoomScale < 1) {
+  
+    CGPoint centroid = [svPinchGestureRecognizer locationInView:aScrollView];
+    self.imageView.center = centroid;
+  
+  }
 
 }
 
@@ -197,10 +224,17 @@
 			[self layoutSubviews];
 			
 		} else {
+    
+      CGRect oldScrollViewBounds = self.scrollView.layer.bounds;
 		
 			self.needsContentAdjustmentOnLayout = YES;
 			[aScrollView setZoomScale:1 animated:NO];
 			[self layoutSubviews];
+      
+      self.scrollView.layer.bounds = oldScrollViewBounds;
+      [self.scrollView.layer removeAnimationForKey:@"bounds"];
+      
+      [self layoutSubviews];
 		
 		}
 
@@ -305,7 +339,7 @@
 			CGRectGetMidY(newImageViewBounds)
 		};
 		
-		CGSize newScrollViewContentSize = self.imageView.bounds.size;
+		CGSize newScrollViewContentSize = newImageViewBounds.size;
 		
 		if (!CGRectEqualToRect(oldImageViewBounds, newImageViewBounds))
 			self.imageView.bounds = newImageViewBounds;
