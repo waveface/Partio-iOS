@@ -1559,6 +1559,7 @@
 				FFCFE0B1142111E100B9E6AF /* Frameworks */,
 				FFCFE0C3142111E100B9E6AF /* Resources */,
 				FFCFE0F7142111E100B9E6AF /* IRCommitSHA */,
+				4BE0FFB6148CA87300BA74DB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1946,6 +1947,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4BE0FFB6148CA87300BA74DB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "KEYWORDS=\"TODO:|FIXME:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
 		FF335A401445F12E00E60C14 /* Build Chameleon */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
