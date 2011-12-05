@@ -9,8 +9,7 @@
 #import "WAArticleFilesListViewController.h"
 #import "WADataStore.h"
 
-#import <QuickLook/QuickLook.h>
-#import "WAFile+QuickLook.h"
+#import "WASingleFileViewController.h"
 
 @interface WAArticleFilesListViewController () <NSFetchedResultsControllerDelegate, QLPreviewControllerDataSource>
 
@@ -75,12 +74,14 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:indexPath.row]]);
-  //  BOOL previewable = [QLPreviewController canPreviewItem:representedFile];
+  NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
+  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:fileURI]);
   
-  QLPreviewController *previewController = [[[QLPreviewController alloc] init] autorelease];
-  previewController.dataSource = self;
-  [previewController reloadData];
+  //  Nudge the file
+  [representedFile resourceFilePath];
+  
+  __block WASingleFileViewController *previewController = [WASingleFileViewController controllerForFile:fileURI];
+  previewController.onFinishLoad = [[previewController class] defaultQuickLookFinishLoadHandler];
   
   [self.navigationController pushViewController:previewController animated:YES];
 
