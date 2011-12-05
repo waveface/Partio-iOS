@@ -60,3 +60,7 @@
 "WAReachabilityStateUnknown" = "Unknown Availablity";
 "WAReachabilityStateAvailable" = "Available";
 "WAReachabilityStateNotAvailable" = "Not Available";
+
+"WAStateLoadingSingleFile" = "Loading File…" ;
+"WAStateLoadingSingleDocument" = "Loading Document…" ;
+"WAStateLoadingSingleDocumentProgress" = "%1 of %2" ;	//	e.g. 512KB of 30MB

@@ -25,6 +25,7 @@
 		4BC91A941446E3130019399B /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyph.png */; };
 		4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */; };
 		4BD7FC2D14458BA1002408F8 /* WARefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */; };
+		4BE0FFB5148CA4E000BA74DB /* WALogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE0FFB4148CA4E000BA74DB /* WALogo.png */; };
 		4BFAE5E61484C33B002CDE07 /* WACompose.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5DE1484C33B002CDE07 /* WACompose.png */; };
 		4BFAE5E71484C33B002CDE07 /* WACompose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */; };
 		4BFAE5E81484C33B002CDE07 /* WAFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5E01484C33B002CDE07 /* WAFilter.png */; };
@@ -101,6 +102,9 @@
 		FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
 		FFB117C9147F9051002094E5 /* NSBlockOperation+NSCopying.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */; };
 		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
+		FFB81F42148C8AA000FB11B1 /* WASingleFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */; };
+		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
+		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
 		FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
 		FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */; };
@@ -529,6 +533,7 @@
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
 		4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshArrow.png; path = Resources/WARefreshArrow.png; sourceTree = "<group>"; };
 		4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WARefreshArrow@2x.png"; path = "Resources/WARefreshArrow@2x.png"; sourceTree = "<group>"; };
+		4BE0FFB4148CA4E000BA74DB /* WALogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALogo.png; path = Resources/WALogo.png; sourceTree = "<group>"; };
 		4BFAE5DE1484C33B002CDE07 /* WACompose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompose.png; path = Resources/WACompose.png; sourceTree = "<group>"; };
 		4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompose@2x.png"; path = "Resources/WACompose@2x.png"; sourceTree = "<group>"; };
 		4BFAE5E01484C33B002CDE07 /* WAFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAFilter.png; path = Resources/WAFilter.png; sourceTree = "<group>"; };
@@ -537,8 +542,8 @@
 		4BFAE5E31484C33B002CDE07 /* WAPhoto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPhoto@2x.png"; path = "Resources/WAPhoto@2x.png"; sourceTree = "<group>"; };
 		4BFAE5E41484C33B002CDE07 /* WASend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASend.png; path = Resources/WASend.png; sourceTree = "<group>"; };
 		4BFAE5E51484C33B002CDE07 /* WASend@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASend@2x.png"; path = "Resources/WASend@2x.png"; sourceTree = "<group>"; };
-		FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WASettingsGlyph~iphone.png"; sourceTree = "<group>"; };
-		FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "WASettingsGlyph@2x~iphone.png"; sourceTree = "<group>"; };
+		FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph~iphone.png"; path = "Resources/WASettingsGlyph~iphone.png"; sourceTree = "<group>"; };
+		FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph@2x~iphone.png"; path = "Resources/WASettingsGlyph@2x~iphone.png"; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
@@ -600,7 +605,7 @@
 		FF4570E71488F381005B5905 /* WAFile+QuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+QuickLook.m"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
-		FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Default.xib"; path = "Resources/WAArticleViewController-Default.xib"; sourceTree = "<group>"; };
+		FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Default.xib"; sourceTree = "<group>"; };
 		FF4FA01313E136A0002C627F /* WACapsuleLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeft.png; path = Resources/WACapsuleLeft.png; sourceTree = "<group>"; };
 		FF4FA01413E136A0002C627F /* WACapsuleRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleRight.png; path = Resources/WACapsuleRight.png; sourceTree = "<group>"; };
 		FF4FA01513E136A0002C627F /* WACapsuleSingle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleSingle.png; path = Resources/WACapsuleSingle.png; sourceTree = "<group>"; };
@@ -735,7 +740,7 @@
 		FFA06555143B227B00145079 /* WANavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationBar.m; sourceTree = "<group>"; };
 		FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+CustomUI.h"; sourceTree = "<group>"; };
 		FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACompositionViewController+CustomUI.m"; sourceTree = "<group>"; };
-		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Preview.xib"; path = "Resources/WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
+		FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Discrete-Preview.xib"; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAApplicationRootViewControllerDelegate.h; path = wammer/WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPhotoQueueBackground.png; path = Resources/WAPhotoQueueBackground.png; sourceTree = "<group>"; };
 		FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReachabilityDetector.h; sourceTree = "<group>"; };
@@ -750,23 +755,27 @@
 		FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IRLabelTestingViewController.xib; sourceTree = "<group>"; };
 		FFAA7B72140773F9006F88DC /* WAAttachedMediaListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAttachedMediaListViewController.h; sourceTree = "<group>"; };
 		FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAttachedMediaListViewController.m; sourceTree = "<group>"; };
-		FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBlockOperation+NSCopying.h"; sourceTree = "<group>"; };
-		FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBlockOperation+NSCopying.m"; sourceTree = "<group>"; };
+		FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBlockOperation+NSCopying.h"; path = "wammer/NSBlockOperation+NSCopying.h"; sourceTree = "<group>"; };
+		FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBlockOperation+NSCopying.m"; path = "wammer/NSBlockOperation+NSCopying.m"; sourceTree = "<group>"; };
 		FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRTextAttributor.xcodeproj; path = external/IRTextAttributor/IRTextAttributor.xcodeproj; sourceTree = "<group>"; };
 		FFB4DEC8141A1A3400186FCD /* WAModel 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 3.xcdatamodel"; sourceTree = "<group>"; };
 		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Plaintext.xib"; path = "Resources/WAArticleViewController-Discrete-Plaintext.xib"; sourceTree = "<group>"; };
-		FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Discrete-Default.xib"; path = "Resources/WAArticleViewController-Discrete-Default.xib"; sourceTree = "<group>"; };
+		FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Discrete-Plaintext.xib"; sourceTree = "<group>"; };
+		FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Discrete-Default.xib"; sourceTree = "<group>"; };
+		FFB81F3F148C8AA000FB11B1 /* WASingleFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASingleFileViewController.h; sourceTree = "<group>"; };
+		FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASingleFileViewController.m; sourceTree = "<group>"; };
+		FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASingleFileViewController.xib; sourceTree = "<group>"; };
+		FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WASingleFileViewController~iphone.xib"; sourceTree = "<group>"; };
 		FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADiscretePaginatedArticlesViewController.h; sourceTree = "<group>"; };
 		FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADiscretePaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRDiscreteLayoutManager.xcodeproj; path = external/IRDiscreteLayoutManager/IRDiscreteLayoutManager.xcodeproj; sourceTree = "<group>"; };
 		FFBACA75146BCF8B007DF1E5 /* WARegisterRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterRequestViewController.h; sourceTree = "<group>"; };
 		FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterRequestViewController.m; sourceTree = "<group>"; };
-		FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Plaintext.xib"; path = "Resources/WAArticleViewController-Plaintext.xib"; sourceTree = "<group>"; };
+		FFBD444713FDA6E000F535D2 /* WAArticleViewController-Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Plaintext.xib"; sourceTree = "<group>"; };
 		FFC2E04D13DD708300816EA1 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Resources/Icon-72.png"; sourceTree = "<group>"; };
 		FFC350FB144434D80085BE78 /* WAArticleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleView.h; sourceTree = "<group>"; };
 		FFC350FC144434D80085BE78 /* WAArticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleView.m; sourceTree = "<group>"; };
-		FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WAArticleViewController-Preview.xib"; path = "Resources/WAArticleViewController-Preview.xib"; sourceTree = "<group>"; };
+		FFC47FC9141DF97800D5FD12 /* WAArticleViewController-Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Preview.xib"; sourceTree = "<group>"; };
 		FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAEightPartLayoutGrid.h; sourceTree = "<group>"; };
 		FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAEightPartLayoutGrid.m; sourceTree = "<group>"; };
 		FFC648001445D5CE00593E5E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
@@ -956,6 +965,10 @@
 				FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */,
 				FF4570E61488F381005B5905 /* WAFile+QuickLook.h */,
 				FF4570E71488F381005B5905 /* WAFile+QuickLook.m */,
+				FFB81F3F148C8AA000FB11B1 /* WASingleFileViewController.h */,
+				FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */,
+				FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */,
+				FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */,
 			);
 			name = Attachments;
 			path = wammer;
@@ -1331,6 +1344,7 @@
 			isa = PBXGroup;
 			children = (
 				FF51509C14835A030073386D /* Localizable.strings */,
+				4BE0FFB4148CA4E000BA74DB /* WALogo.png */,
 				4BFAE5DE1484C33B002CDE07 /* WACompose.png */,
 				4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */,
 				4BFAE5E01484C33B002CDE07 /* WAFilter.png */,
@@ -1556,6 +1570,7 @@
 				FFCFE0B1142111E100B9E6AF /* Frameworks */,
 				FFCFE0C3142111E100B9E6AF /* Resources */,
 				FFCFE0F7142111E100B9E6AF /* IRCommitSHA */,
+				4BE0FFB6148CA87300BA74DB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1936,12 +1951,28 @@
 				FFFC76371487760F00247099 /* WAUserGlyph.png in Resources */,
 				FFFC76381487760F00247099 /* WAUserGlyph@2x.png in Resources */,
 				FF4570511488A79D005B5905 /* WAUserInfoHeaderCell.xib in Resources */,
+				FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */,
+				FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */,
+				4BE0FFB5148CA4E000BA74DB /* WALogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4BE0FFB6148CA87300BA74DB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "KEYWORDS=\"TODO:|FIXME:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($KEYWORDS).*\\$\" | perl -p -e \"s/($KEYWORDS)/ warning: \\$1/\"";
+		};
 		FF335A401445F12E00E60C14 /* Build Chameleon */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2087,6 +2118,7 @@
 				FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */,
 				FF4570E11488E7E3005B5905 /* WAArticleFilesListViewController.m in Sources */,
 				FF4570E81488F381005B5905 /* WAFile+QuickLook.m in Sources */,
+				FFB81F42148C8AA000FB11B1 /* WASingleFileViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

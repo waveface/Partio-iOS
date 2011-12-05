@@ -59,3 +59,7 @@
 "WAReachabilityStateUnknown," = "狀態未知";
 "WAReachabilityStateAvailable" = "可用";
 "WAReachabilityStateNotAvailable" = "不可用";
+
+"WAStateLoadingSingleFile" = "正在載入檔案…" ;
+"WAStateLoadingSingleDocument" = "正在載入文件…" ;
+"WAStateLoadingSingleDocumentProgress" = "%1 / %2" ;	//	e.g. 512KB of 30MB
