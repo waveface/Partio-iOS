@@ -12,6 +12,26 @@
 
 @implementation WAFile (WARemoteInterfaceEntitySyncing)
 
+- (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
+
+  [super configureWithRemoteDictionary:inDictionary];
+  
+  if (!self.resourceType) {
+    
+    NSString *pathExtension = [self.remoteFileName pathExtension];
+    if (pathExtension) {
+      
+      CFStringRef preferredUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, NULL);
+      [NSMakeCollectable(preferredUTI) autorelease];
+      
+      self.resourceType = (NSString *)preferredUTI;
+
+    }
+    
+  }
+
+}
+
 + (NSString *) keyPathHoldingUniqueValue {
 
 	return @"identifier";
@@ -100,7 +120,7 @@
 	
 		if (UTTypeConformsTo((CFStringRef)aValue, kUTTypeItem))
 			return aValue;
-		
+		 
 		id returnedValue = IRWebAPIKitStringValue(aValue);
 		
 		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
@@ -109,7 +129,12 @@
 			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
 			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
 		}
-	
+    
+    //  Incoming stuff is moot (“application/unknown”)
+    
+    if ([returnedValue hasPrefix:@"dyn."])
+      return nil;
+    
 		return returnedValue;
 		
 	}

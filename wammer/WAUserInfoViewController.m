@@ -81,7 +81,8 @@
   [super viewWillAppear:animated];
   
   self.monitoredHosts = nil;
-
+  [self.tableView reloadData];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachableHostsDidChange:) name:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil];  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachabilityDetectorDidUpdate:) name:kWAReachabilityDetectorDidUpdateStatusNotification object:nil];
   
@@ -89,38 +90,42 @@
 
 - (void) handleReachableHostsDidChange:(NSNotification *)aNotification {
 
-  dispatch_async(dispatch_get_main_queue(), ^ {
+  NSParameterAssert([NSThread isMainThread]);
   
-    self.monitoredHosts = ((WARemoteInterface *)aNotification.object).monitoredHosts;
-    
-    if (![self isViewLoaded])
-      return;
-    
-    [self.tableView beginUpdates];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade]; 
-    [self.tableView endUpdates];
+  self.monitoredHosts = ((WARemoteInterface *)aNotification.object).monitoredHosts;
   
-  });
+  if (![self isViewLoaded])
+    return;
+  
+  [self.tableView beginUpdates];
+  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade]; 
+  [self.tableView endUpdates];
 
 }
 
 - (void) handleReachabilityDetectorDidUpdate:(NSNotification *)aNotification {
 
-  dispatch_async(dispatch_get_main_queue(), ^ {
+  NSParameterAssert([NSThread isMainThread]);
 
-    WAReachabilityDetector *targetDetector = aNotification.object;
-    NSURL *updatedHost = targetDetector.hostURL;
-    
-    NSUInteger displayIndexOfHost = [self.monitoredHosts indexOfObject:updatedHost];
+  WAReachabilityDetector *targetDetector = aNotification.object;
+  NSURL *updatedHost = targetDetector.hostURL;
+  
+  @try {
+  
+    NSUInteger displayIndexOfHost = [monitoredHosts indexOfObject:updatedHost]; //  USE OLD STUFF
     if (displayIndexOfHost == NSNotFound)
       return;
     
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:displayIndexOfHost inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
-  
-  });
+    [self.tableView endUpdates];   
 
+  } @catch (NSException *exception) {
+
+    [self.tableView reloadData];
+    
+  }
+  
 }
 
 - (void) viewWillDisappear:(BOOL)animated {

@@ -1,2 +1,2 @@
-ETReleaseNotes="- Enhances Reachability so the endpoints are discovered faster\n- Initial Quick Look integration hidden in the application\n- Various tweaks"
-ETMarketingVersionNumber="0.9.2"
+ETReleaseNotes="- Initial API endpoint swizzling hooked up with network reachability status introspection\n- Hooks up Single Document View (Apple Mobile QuickLook™ integration) for the iPhone as well\n- Various bug fixes and threading prioritization stuff"
+ETMarketingVersionNumber="0.9.4"

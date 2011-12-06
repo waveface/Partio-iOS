@@ -56,6 +56,10 @@
 "WAErrorNoStationFoundTitle" = "無法連接 Station";	/* Short */
 "WAErrorNoStationFoundDescription" = "無法連接您的 Waveface Station。\n如您還未安裝，請到 http://waveface.com 下載 Windows 版。";
 
-"WAReachabilityStateUnknown," = "狀態未知";
+"WAReachabilityStateUnknown" = "狀態未知";
 "WAReachabilityStateAvailable" = "可用";
 "WAReachabilityStateNotAvailable" = "不可用";
+
+"WAStateLoadingSingleFile" = "正在載入檔案…" ;
+"WAStateLoadingSingleDocument" = "正在載入文件…" ;
+"WAStateLoadingSingleDocumentProgress" = "%1 / %2" ;	//	e.g. 512KB of 30MB
