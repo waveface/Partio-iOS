@@ -7,16 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
+
+//  Only use the state and delegate of the detector
+//  Other stuff might be refactored away
 
 
 #ifndef __WAReachabilityDetector__
 #define __WAReachabilityDetector__
 
 enum WAReachabilityState {
-  WAReachabilityStateUnknown = 0,
-  WAReachabilityStateAvailable,
-  WAReachabilityStateNotAvailable
-}; typedef NSUInteger WAReachabilityState;
+  WAReachabilityStateUnknown = -1,
+  WAReachabilityStateNotAvailable = 0,
+  WAReachabilityStateAvailable = 1024
+}; typedef NSInteger WAReachabilityState;
 
 extern NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState);
 
@@ -41,8 +45,18 @@ extern NSString * const kWAReachabilityDetectorDidUpdateStatusNotification;
 - (id) initWithURL:(NSURL *)aHostURL;
 
 @property (nonatomic, readonly, retain) NSURL *hostURL;
-@property (nonatomic, readonly, assign) WAReachabilityState state;
-@property (nonatomic, readonly, assign) id delegate;
+
+@property (nonatomic, readonly, assign) WAReachabilityState state;  //  If available, application layer and networking layer are both up
+@property (nonatomic, readonly, assign) SCNetworkReachabilityFlags networkStateFlags; //  stuff from the SystemConfiguration framework
+
+@property (nonatomic, readwrite, assign) id<WAReachabilityDetectorDelegate> delegate;
 @property (nonatomic, readonly, retain) IRRecurrenceMachine *recurrenceMachine;
 
 @end
+
+
+extern BOOL WASCNetworkRequiresConnection (SCNetworkReachabilityFlags flags);
+extern BOOL WASCNetworkReachable (SCNetworkReachabilityFlags flags);
+extern BOOL WASCNetworkReachableDirectly (SCNetworkReachabilityFlags flags);
+extern BOOL WASCNetworkReachableViaWifi (SCNetworkReachabilityFlags flags);
+extern BOOL WASCNetworkReachableViaWWAN (SCNetworkReachabilityFlags flags);

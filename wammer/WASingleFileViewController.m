@@ -197,6 +197,23 @@
 
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+
+  //  http://www.openradar.me/10431759
+  //  We have the eat the exception any way.  It was assumed that the exception was shoddily eaten in Apple’s code too.
+  
+  @try {
+
+    [super viewDidDisappear:animated];
+
+  } @catch (NSException *exception) {
+  
+    NSLog(@"Exception: %@", exception);
+    
+  }
+
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
   if (object == file)
@@ -230,6 +247,16 @@
 
   NSParameterAssert(progress >= 0);
   NSParameterAssert(progress <= 1);
+  
+  if (progress == 1) {
+
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+  
+  } else {
+  
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+  
+  }
   
   self.progressView.progress = progress;
   
