@@ -42,6 +42,7 @@
 @dynamic timestamp;
 @dynamic article;
 @dynamic owner;
+@dynamic title;
 
 @synthesize resourceImage, thumbnailImage;
 

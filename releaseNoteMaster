@@ -1,2 +1,2 @@
-ETReleaseNotes="This version changes the data store.  Please zap the old application before installing, otherwise old documents might not show up correctly.\n- Initial Quick Look view with Remote Resources Manager loading progress integration"
-ETMarketingVersionNumber="0.9.3"
+ETReleaseNotes="- Initial API endpoint swizzling hooked up with network reachability status introspection\n- Hooks up Single Document View (Apple Mobile QuickLook™ integration) for the iPhone as well\n- Various bug fixes and threading prioritization stuff"
+ETMarketingVersionNumber="0.9.4"
