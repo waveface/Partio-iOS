@@ -42,6 +42,7 @@
 		FF0D4634147576AD00340287 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0D4633147576AD00340287 /* Icon@2x.png */; };
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
 		FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */; };
+		FF154658148E06D600352428 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
 		FF1A10571462AD54004FD00D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10561462AD54004FD00D /* AVFoundation.framework */; };
 		FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10511462ACDB004FD00D /* libFinch.a */; };
 		FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10591462B0F0004FD00D /* CoreAudio.framework */; };
@@ -563,6 +564,7 @@
 		FF13871013E94F0700154B7D /* WACompositionBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBarBackground.png; path = Resources/WACompositionBarBackground.png; sourceTree = "<group>"; };
 		FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionTextWellBackground.png; path = Resources/WACompositionTextWellBackground.png; sourceTree = "<group>"; };
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
+		FF154657148E06D600352428 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAuthenticationRequestViewController.h; sourceTree = "<group>"; };
 		FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAuthenticationRequestViewController.m; sourceTree = "<group>"; };
 		FF1A10461462ACDB004FD00D /* Finch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Finch.xcodeproj; path = external/Finch/Finch.xcodeproj; sourceTree = "<group>"; };
@@ -859,7 +861,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
 				FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */,
 				FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */,
@@ -875,6 +876,7 @@
 				FFCFE0BA142111E100B9E6AF /* CoreData.framework in Frameworks */,
 				FFCFE0BB142111E100B9E6AF /* CoreText.framework in Frameworks */,
 				FF4570E41488F362005B5905 /* QuickLook.framework in Frameworks */,
+				FF154658148E06D600352428 /* SystemConfiguration.framework in Frameworks */,
 				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
 				FFCFE0BC142111E100B9E6AF /* libAQGridView.a in Frameworks */,
 				FFCFE0BD142111E100B9E6AF /* libIRFoundationsTouch.a in Frameworks */,
@@ -884,6 +886,7 @@
 				FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */,
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
+				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1041,6 +1044,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				FF154657148E06D600352428 /* SystemConfiguration.framework */,
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
 				FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */,
