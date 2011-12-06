@@ -159,6 +159,10 @@
           }
         }
       })());
+      
+      if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        navController.navigationBar.tintColor = [UIColor brownColor];
+      }
 			
 			return navController;
 			
