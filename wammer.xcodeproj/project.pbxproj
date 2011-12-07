@@ -1044,7 +1044,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				FF154657148E06D600352428 /* SystemConfiguration.framework */,
 				FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */,
 				FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */,
 				FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */,
@@ -1524,6 +1523,7 @@
 			children = (
 				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
 				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
+				FF154657148E06D600352428 /* SystemConfiguration.framework */,
 				FF4570E31488F362005B5905 /* QuickLook.framework */,
 				FFB67956141E345C006F84E3 /* CoreText.framework */,
 				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
