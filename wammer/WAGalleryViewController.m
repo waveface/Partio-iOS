@@ -305,7 +305,7 @@
 
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return [self.article.fileOrder count];
+	return [self.fetchedResultsController.fetchedObjects count];
 
 }
 

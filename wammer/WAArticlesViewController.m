@@ -317,7 +317,7 @@
 	
 	__block __typeof__(self) nrSelf = self;
 
-	return [NSArray arrayWithObjects:
+	NSMutableArray *returnedArray = [NSMutableArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
 		
@@ -336,92 +336,98 @@
 			nil]] show];
 		
 		}],
+  
+  nil];
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled]) {
+  
+    [returnedArray addObjectsFromArray:[NSArray arrayWithObjects:
+      
+      [IRAction actionWithTitle:NSLocalizedString(@"WAActionFeedback", @"Action title for feedback composition") block:^ {
+      
+        if (![IRMailComposeViewController canSendMail]) {
+          [[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+          return;
+        }
+        
+        __block IRMailComposeViewController *composeViewController;
+        composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"WAFeedbackCompositionTitle", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+          [composeViewController dismissModalViewControllerAnimated:YES];
+        }];
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+          composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        [nrSelf presentModalViewController:composeViewController animated:YES];
+      
+      }],
+      
+      [IRAction actionWithTitle:@"Simulate Crash" block: ^ {
+      
+        ((char *)NULL)[1] = 0;
+      
+      }],
     
-    #if 0
-	
-		[IRAction actionWithTitle:NSLocalizedString(@"WAActionFeedback", @"Action title for feedback composition") block:^ {
-		
-			if (![IRMailComposeViewController canSendMail]) {
-				[[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-				return;
-			}
-			
-			__block IRMailComposeViewController *composeViewController;
-			composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"WAFeedbackCompositionTitle", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
-				[composeViewController dismissModalViewControllerAnimated:YES];
-			}];
-			
-			if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-				composeViewController.modalPresentationStyle = UIModalPresentationFormSheet;
-			
-			[nrSelf presentModalViewController:composeViewController animated:YES];
-		
-		}],
-		
-		[IRAction actionWithTitle:@"Simulate Crash" block: ^ {
-		
-			((char *)NULL)[1] = 0;
-		
-		}],
-	
-		[IRAction actionWithTitle:@"Import Test Photos" block: ^ {
-		
-			dispatch_async(dispatch_get_global_queue(0, 0), ^ {
-		
-				ALAssetsLibrary *library = [[[ALAssetsLibrary alloc] init] autorelease];
-				
-				NSString *sampleDirectory = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"IPSample"];
-				
-				[[[NSFileManager defaultManager] contentsOfDirectoryAtPath:sampleDirectory error:nil] enumerateObjectsUsingBlock: ^ (NSString *aFileName, NSUInteger idx, BOOL *stop) {
-					
-					NSString *filePath = [sampleDirectory stringByAppendingPathComponent:aFileName];
-					
-					UIImage *image = [UIImage imageWithContentsOfFile:filePath];
-					
-					if (!image)
-						return;
-						
-					[library writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
-					
-						NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, assetURL, error);
-						
-					}];
-									
-				}];
-			
-			});
-		
-		}],
-		
-		[IRAction actionWithTitle:@"Remove Resources" block:^ {
-		
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
-			[[context executeFetchRequest:((^ {
-				NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
-				fr.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
-				fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != nil) || (thumbnailURL != nil)"];
-				return fr;
-			})()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
-			
-				if (aFile.resourceFilePath) {
-					[[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
-					aFile.resourceFilePath = nil;
-				}
-				
-			}];
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
-		
-		}],
+      [IRAction actionWithTitle:@"Import Test Photos" block: ^ {
+      
+        dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+      
+          ALAssetsLibrary *library = [[[ALAssetsLibrary alloc] init] autorelease];
+          
+          NSString *sampleDirectory = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"IPSample"];
+          
+          [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:sampleDirectory error:nil] enumerateObjectsUsingBlock: ^ (NSString *aFileName, NSUInteger idx, BOOL *stop) {
+            
+            NSString *filePath = [sampleDirectory stringByAppendingPathComponent:aFileName];
+            
+            UIImage *image = [UIImage imageWithContentsOfFile:filePath];
+            
+            if (!image)
+              return;
+              
+            [library writeImageToSavedPhotosAlbum:image.CGImage metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
+            
+              NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, assetURL, error);
+              
+            }];
+                    
+          }];
+        
+        });
+      
+      }],
+      
+      [IRAction actionWithTitle:@"Remove Resources" block:^ {
+      
+        NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+        context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        
+        [[context executeFetchRequest:((^ {
+          NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
+          fr.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
+          fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != nil) || (thumbnailURL != nil)"];
+          return fr;
+        })()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
+        
+          if (aFile.resourceFilePath) {
+            [[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
+            aFile.resourceFilePath = nil;
+          }
+          
+        }];
+        
+        NSError *savingError = nil;
+        if (![context save:&savingError])
+          NSLog(@"Error saving: %@", savingError);
+      
+      }],
     
-    #endif
+    nil]];
+  
+  }
+  
+  return returnedArray;
 		
-	nil];
-
 }
 
 - (IRActionSheetController *) debugActionSheetController {

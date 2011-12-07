@@ -43,9 +43,12 @@ enum {
 	WAFullFramePlaintextArticleStyle = 0,
 	WAFullFrameImageStackArticleStyle,
 	WAFullFramePreviewArticleStyle,
+  WAFullFrameDocumentArticleStyle,
+  
 	WADiscretePlaintextArticleStyle,
 	WADiscreteSingleImageArticleStyle,
-	WADiscretePreviewArticleStyle
+	WADiscretePreviewArticleStyle,
+  WADiscreteDocumentArticleStyle = WADiscreteSingleImageArticleStyle
 	
 }; typedef NSInteger WAArticleViewControllerPresentationStyle;
 

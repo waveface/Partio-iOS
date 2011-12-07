@@ -11,7 +11,7 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 
-@interface WAArticleDraftsViewController ()
+@interface WAArticleDraftsViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 
@@ -30,13 +30,14 @@
   self.title = NSLocalizedString(@"WAPluralNounDrafts", @"Plural noun for draft objects");
   
   NSFetchRequest *fr = [[[WADataStore defaultStore] managedObjectModel] fetchRequestFromTemplateWithName:@"WAFRArticleDrafts" substitutionVariables:[NSDictionary dictionary]];
-  NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+  NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   
   fr.sortDescriptors = [NSArray arrayWithObjects:
     [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
   nil];
   
   fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
+  fetchedResultsController.delegate = self;
   
   return self;
   
@@ -62,8 +63,25 @@
 
 }
 
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+  if ([self isViewLoaded])
+    [self.tableView reloadData];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+  [super viewWillAppear:animated];
+  
+  [self.tableView reloadData];
+
+}
+
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+  
   return YES;
+  
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
