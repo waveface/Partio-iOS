@@ -271,8 +271,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       return inOriginalContext;
 
     if ([originalMethodName hasPrefix:@"loadedResource"]) {
-      if (![[originalURL host] isEqualToString:@"invalid.local"])
+      if (![[originalURL host] isEqualToString:[[WARemoteInterface sharedInterface].engine.context.baseURL host]])
         return inOriginalContext;
+      
+      if ([[inOriginalContext objectForKey:@"target"] isEqual:@"image"])
+        return inOriginalContext;
+      
     }
     
     NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
