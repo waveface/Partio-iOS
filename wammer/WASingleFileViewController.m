@@ -252,8 +252,9 @@
   NSParameterAssert(progress <= 1);
   
   if (progress == 1) {
-
-    self.navigationItem.rightBarButtonItem.enabled = YES;
+  
+    if ([self.dataSource numberOfPreviewItemsInPreviewController:self])
+      self.navigationItem.rightBarButtonItem.enabled = [self.class canPreviewItem:[self.dataSource previewController:self previewItemAtIndex:0]];
   
   } else {
   
@@ -262,10 +263,6 @@
   }
   
   self.progressView.progress = progress;
-  
-//  self.fileLoadingProgressLabel.text = [NSString stringWithFormat:NSLocalizedString(@"", @"Localized string for loading progress indication"),
-//  
-//  ];
   
 }
 
