@@ -220,6 +220,9 @@
   if ([keyPath isEqualToString:@"resourceFilePath"]) {
   
     NSString * newPath = [change objectForKey:NSKeyValueChangeNewKey];
+    if (![newPath isKindOfClass:[NSString class]])
+      newPath = nil;
+    
     [self updateInterfaceWithFilePath:newPath];
     
   }
