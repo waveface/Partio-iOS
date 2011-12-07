@@ -35,13 +35,13 @@
     
   }
   
-  if ([self.remoteResourceType isEqualToString:@"doc"])
   if (!self.thumbnailURL)
-  if (self.remoteRepresentedImage) {
+  if (self.remoteRepresentedImage)
+    self.thumbnailURL = [[self class] transformedValue:self.remoteRepresentedImage fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];        
   
-    self.thumbnailURL = [[self class] transformedValue:self.remoteRepresentedImage fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
-    
-  }
+  if (!self.resourceURL)
+  if (self.identifier)
+    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
 
 }
 

@@ -93,7 +93,13 @@
 - (WAFile *) representedFileAtIndex:(NSUInteger)anIndex {
 
   return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
-    return [self.article.managedObjectContext irManagedObjectForURI:anURI];
+  
+    WAFile *returnedObject = [self.article.managedObjectContext irManagedObjectForURI:anURI];
+    if (![self.fetchedResultsController.fetchedObjects containsObject:returnedObject])
+      return nil;
+    
+    return returnedObject;
+      
   }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
 
 }
