@@ -350,6 +350,8 @@
 
 	if (erasesExistingAuthenticationInformation) {
   
+    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
     [self removeAuthenticationData];
 	
 	}
@@ -704,6 +706,9 @@
 					return spinner;
 				})())];
 				
+        if (self.window.rootViewController.modalViewController)
+          [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+        
 				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
 				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
 				

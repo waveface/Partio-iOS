@@ -54,6 +54,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return paginatedArticlesViewController;
 	
 	paginatedArticlesViewController = [[WAPaginatedArticlesViewController alloc] init];
+  paginatedArticlesViewController.delegate = self.delegate;
+  
 	return paginatedArticlesViewController;
 
 }
@@ -63,8 +65,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
 	if (!self)
 		return nil;
-	
-	[self paginatedArticlesViewController];
 	
 	return self;
 
