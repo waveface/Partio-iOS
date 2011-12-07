@@ -288,6 +288,8 @@
     [self refreshCurrentPreviewItem];
     
     self.overlayView.hidden = YES;
+    
+    self.onFinishLoad = nil;
   
   } copy] autorelease];
 
