@@ -318,7 +318,9 @@
 
 	if (!thumbnailFilePath)
 		return nil;
-		
+    
+  NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:self.thumbnailFilePath]);
+  
 	[self willChangeValueForKey:@"thumbnailImage"];
 	thumbnailImage = [[UIImage imageWithContentsOfFile:thumbnailFilePath] retain];
 	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
