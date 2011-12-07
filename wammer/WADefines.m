@@ -31,6 +31,8 @@ NSString * const kWAUserRegistrationUsesWebVersion = @"WAUserRegistrationUsesWeb
 NSString * const kWAUserRegistrationEndpointURL = @"WAUserRegistrationEndpointURL";
 NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthentication";
 NSString * const kWAUserPasswordResetEndpointURL = @"WAUserPasswordResetEndpointURL";
+NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpensiveRemoteOperations";
+NSString * const kWAAlwaysDenyExpensiveRemoteOperations = @"WAAlwaysDenyExpensiveRemoteOperations";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
