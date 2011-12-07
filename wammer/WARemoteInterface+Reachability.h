@@ -22,5 +22,6 @@
 - (IRWebAPIRequestContextTransformer) defaultHostSwizzlingTransformer;
 
 - (WAReachabilityState) reachabilityStateForHost:(NSURL *)aBaseURL;
+- (WAReachabilityDetector *) reachabilityDetectorForHost:(NSURL *)aBaseURL;
 
 @end

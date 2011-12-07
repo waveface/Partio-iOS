@@ -23,6 +23,8 @@
 
 #import "WANavigationBar.h"
 
+#import "WARemoteInterface.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -54,6 +56,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return paginatedArticlesViewController;
 	
 	paginatedArticlesViewController = [[WAPaginatedArticlesViewController alloc] init];
+  paginatedArticlesViewController.delegate = self.delegate;
+  
 	return paginatedArticlesViewController;
 
 }
@@ -63,8 +67,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
 	if (!self)
 		return nil;
-	
-	[self paginatedArticlesViewController];
 	
 	return self;
 
@@ -724,10 +726,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			if (firstFile.thumbnailURL)
 			if (![firstFile primitiveValueForKey:@"thumbnailFilePath"])
 				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.thumbnailURL] usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:nil];
+        
+      if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed]) {
 			
-			if (firstFile.resourceURL)
-			if (![firstFile primitiveValueForKey:@"resourceFilePath"])
-				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.resourceURL] usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:nil];
+        //  No non-on-demand resource downloading by default
+        //  TBD: Maybe just move it into syncing
+        
+        if (firstFile.resourceURL)
+        if (![firstFile primitiveValueForKey:@"resourceFilePath"])
+          [[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.resourceURL] usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:nil];
+      
+      }
 			
 		}
 			

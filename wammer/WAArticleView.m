@@ -186,7 +186,7 @@
 				*stop = YES;
 			}
 			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			return aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil;
+			return /* aFile.resourceImage ? aFile.resourceImage : */ aFile.thumbnailImage ? aFile.thumbnailImage : nil;
 		}];
 	};
 

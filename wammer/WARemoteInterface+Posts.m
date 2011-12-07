@@ -146,4 +146,89 @@
 
 }
 
+- (void) retrievePostsInGroup:(NSString *)aGroupIdentifier usingFilter:(id)aFilter onSuccess:(void(^)(NSArray *postReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+  NSParameterAssert(aGroupIdentifier);
+  NSParameterAssert(aFilter);
+  
+  NSMutableDictionary *arguments = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+    aGroupIdentifier, @"group_id",
+  nil];
+
+  if ([aFilter isKindOfClass:[NSString class]]) {
+    [arguments setObject:aFilter forKey:@"filter_id"];
+  } else if ([aFilter isKindOfClass:[NSDictionary class]]) {
+    [arguments setObject:[(NSDictionary *)aFilter JSONString] forKey:@"filter_entity"];
+  }
+  
+  [self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:arguments options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+  
+    if (!successBlock)
+      return;
+    
+    successBlock([inResponseOrNil objectForKey:@"posts"]);
+    
+  } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) createSharableSnapshotForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSString *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+  NSParameterAssert(aPostIdentifier);
+  NSParameterAssert(aGroupIdentifier);
+
+	[self.engine fireAPIRequestNamed:@"posts/takeSnapshot" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	
+		aGroupIdentifier, @"group_id",
+		aPostIdentifier, @"post_id",
+	
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (!successBlock)
+			return;
+		
+		successBlock([inResponseOrNil objectForKey:@"access_token"]);
+
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) retrieveSharableSnapshotForPost:(NSString *)aPostIdentifier usingToken:(NSString *)aToken onSuccess:(void(^)(NSDictionary *aPostRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+  NSParameterAssert(aPostIdentifier);
+  NSParameterAssert(aToken);
+  
+  [self.engine fireAPIRequestNamed:@"posts/getSnapshot" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+  
+    aPostIdentifier, @"post_id",
+    aToken, @"access_token",
+  
+  nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+  
+    if (!successBlock)
+      return;
+    
+    successBlock([inResponseOrNil objectForKey:@"post"]);
+    
+  } failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) configurePost:(NSString *)aPostIdentifier withVisibilityStatus:(BOOL)willBeVisible onSuccess:(void (^)(void))aSuccessBlock onFailure:(void (^)(NSError *))failureBlock {
+
+  NSString *methodName = willBeVisible ? @"posts/hide" : @"posts/unhide";
+
+	[self.engine fireAPIRequestNamed:methodName withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	
+		aPostIdentifier, @"post_id",
+	
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (aSuccessBlock)
+      aSuccessBlock();
+
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
 @end
