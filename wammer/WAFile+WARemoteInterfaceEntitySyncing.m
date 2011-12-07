@@ -14,6 +14,11 @@
 
 - (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
 
+  NSMutableDictionary *usedDictionary = [[inDictionary mutableCopy] autorelease];
+  
+  if ([[usedDictionary objectForKey:@"url"] isEqualToString:@""])
+    [usedDictionary removeObjectForKey:@"url"];
+
   [super configureWithRemoteDictionary:inDictionary];
   
   if (!self.resourceType) {
@@ -27,6 +32,14 @@
       self.resourceType = (NSString *)preferredUTI;
 
     }
+    
+  }
+  
+  if ([self.remoteResourceType isEqualToString:@"doc"])
+  if (!self.thumbnailURL)
+  if (self.remoteRepresentedImage) {
+  
+    self.thumbnailURL = [[self class] transformedValue:self.remoteRepresentedImage fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
     
   }
 
