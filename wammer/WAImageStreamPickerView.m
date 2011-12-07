@@ -154,21 +154,24 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	CGFloat usableHeight = CGRectGetHeight(usableRect);
 	NSUInteger numberOfItems = [self.delegate numberOfItemsInImageStreamPickerView:self];
 	NSMutableIndexSet *thumbnailedItemIndices = [NSMutableIndexSet indexSet];
-	switch (self.style) {
-		case WADynamicThumbnailsStyle: {
-			[thumbnailedItemIndices addIndexesInRange:(NSRange){ 0, numberOfItems }];
-			break;
-		}
-		case WAClippedThumbnailsStyle: {
-			NSParameterAssert(self.thumbnailAspectRatio);
-      NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
-			float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
-			for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta){
-      	[thumbnailedItemIndices addIndex:roundf(i)];
+  
+  if (numberOfItems > 0) {
+    switch (self.style) {
+      case WADynamicThumbnailsStyle: {
+        [thumbnailedItemIndices addIndexesInRange:(NSRange){ 0, numberOfItems }];
+        break;
       }
-			break;
-		}
-	}
+      case WAClippedThumbnailsStyle: {
+        NSParameterAssert(self.thumbnailAspectRatio);
+        NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
+        float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
+        for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta){
+          [thumbnailedItemIndices addIndex:roundf(i)];
+        }
+        break;
+      }
+    }
+  }
 	
 	NSMutableArray *currentImageThumbnailViews = [[[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy] autorelease];
 	NSMutableSet *removedThumbnailViews = [NSMutableSet set];

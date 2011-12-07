@@ -265,11 +265,16 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 	return [[ ^ (NSDictionary *inOriginalContext) {
 	
     NSString *originalMethodName = [inOriginalContext objectForKey:kIRWebAPIEngineIncomingMethodName];
+    NSURL *originalURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
+
     if ([originalMethodName hasPrefix:@"reachability"])
       return inOriginalContext;
 
-    NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
-    NSURL *originalURL = [returnedContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
+    if ([originalMethodName hasPrefix:@"loadedResource"]) {
+      if (![[originalURL host] isEqualToString:@"invalid.local"])
+        return inOriginalContext;
+    }
+    
     NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
     NSParameterAssert(bestHostURL);
     
@@ -285,8 +290,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     nil] componentsJoinedByString:@""]];
     
-    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];
-    
+    NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
+    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];    
 		return returnedContext;
 	
 	} copy] autorelease];
@@ -295,15 +300,15 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (WAReachabilityState) reachabilityStateForHost:(NSURL *)aBaseURL {
 
-  WAReachabilityDetector *detector = [self.monitoredHostsToReachabilityDetectors objectForKey:aBaseURL];
-  
+  WAReachabilityDetector *detector = [self reachabilityDetectorForHost:aBaseURL];
   return detector ? detector.state : WAReachabilityStateUnknown;
 
 }
 
-- (void) reachabilityDetectorDidUpdate:(WAReachabilityDetector *)aDetector {
+- (WAReachabilityDetector *) reachabilityDetectorForHost:(NSURL *)aBaseURL {
 
-  //  NSLog(@"Updated: %@", aDetector);
+  WAReachabilityDetector *detector = [self.monitoredHostsToReachabilityDetectors objectForKey:aBaseURL];
+  return detector;
 
 }
 
@@ -324,6 +329,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 	}
 	
 	return returnedDictionary;
+
+}
+
+- (void) reachabilityDetectorDidUpdate:(WAReachabilityDetector *)aDetector {
+
+  //  NSLog(@"Updated: %@", aDetector);
 
 }
 

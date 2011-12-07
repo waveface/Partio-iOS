@@ -116,6 +116,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	NSBundle *usedBundle = [NSBundle bundleForClass:[self class]];
 	if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
 		loadedNibName = NSStringFromClass([self class]);
+  
+  if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
+    loadedNibName = nil;
 	
 	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle] autorelease];
 	returnedController.presentationStyle = aStyle;
@@ -554,7 +557,12 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 						
 						nrSelf.view.imageStackView.firstPhotoView.alpha = 0.0f;
 						
-						rootView = [UIApplication sharedApplication].keyWindow.rootViewController.modalViewController.view;
+            UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+            if (rootVC.modalViewController)
+              rootView = rootVC.modalViewController.view;
+            else
+              rootView = rootVC.view;
+            
 						NSParameterAssert(rootView);
 						backdropView.frame = rootView.bounds;
 						

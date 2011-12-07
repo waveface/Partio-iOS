@@ -10,6 +10,7 @@
 #import "WADataStore.h"
 
 #import "WASingleFileViewController.h"
+#import "WAFile+QuickLook.h"
 
 @interface WAArticleFilesListViewController () <NSFetchedResultsControllerDelegate, QLPreviewControllerDataSource>
 
@@ -76,10 +77,7 @@
 
   NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
   WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:fileURI]);
-  
-  //  Nudge the file
-  [representedFile resourceFilePath];
-  
+    
   __block WASingleFileViewController *previewController = [WASingleFileViewController controllerForFile:fileURI];
   previewController.onFinishLoad = [[previewController class] defaultQuickLookFinishLoadHandler];
   
@@ -93,7 +91,7 @@
 
 }
 
-- (id <QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index {
+- (id <QLPreviewItem>) previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index {
 
   WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]]);
   return representedFile;
