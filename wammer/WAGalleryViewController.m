@@ -94,11 +94,11 @@
 
   return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
   
-    WAFile *returnedObject = [self.article.managedObjectContext irManagedObjectForURI:anURI];
+    WAFile *returnedObject = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anURI];
     if (![self.fetchedResultsController.fetchedObjects containsObject:returnedObject])
-      return nil;
+      return (id)nil;
     
-    return returnedObject;
+    return (id)returnedObject;
       
   }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
 
