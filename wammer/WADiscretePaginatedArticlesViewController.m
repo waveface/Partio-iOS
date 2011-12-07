@@ -23,6 +23,8 @@
 
 #import "WANavigationBar.h"
 
+#import "WARemoteInterface.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
