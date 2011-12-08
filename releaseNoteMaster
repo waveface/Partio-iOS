@@ -1,2 +1,2 @@
-ETReleaseNotes="- Renew provisioning profile for Greener."
-ETMarketingVersionNumber="0.9.7"
+ETReleaseNotes="- Adds initial Document Slides implementation in the Data Store.\n- Fixes several bugs and crashers"
+ETMarketingVersionNumber="0.9.8"
