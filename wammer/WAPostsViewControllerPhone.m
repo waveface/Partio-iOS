@@ -222,8 +222,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}
 	};
 	
-	self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WABackground"]];
-	
 	self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
 	self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WABackground"]];
 }
