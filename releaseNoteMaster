@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes issue where the Station won’t return any thumbnail generated for PDF documents by temporarily not swizzling resource endpoints for specific types of thumbnails\n- Fixes bug in the Single File Inspector where the document will be reloaded after a finish event if any\n- Fixes issue where redirection may render the download progress bar useless"
-ETMarketingVersionNumber="0.9.7"
+ETReleaseNotes="- Adds initial Document Slides implementation in the Data Store.\n- Fixes several bugs and crashers"
+ETMarketingVersionNumber="0.9.8"
