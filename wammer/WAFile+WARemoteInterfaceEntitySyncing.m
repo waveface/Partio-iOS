@@ -42,6 +42,12 @@
   if (!self.resourceURL)
   if (self.identifier)
     self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+  
+  if ([self.remoteResourceType isEqualToString:@"doc"]) {
+  
+    NSLog(@"document entity %@", self);
+  
+  }
 
 }
 
@@ -84,6 +90,8 @@
 			@"thumbnailURL", @"thumbnail_url",
 			@"resourceURL", @"url",
 			@"timestamp", @"timestamp",
+      
+      @"pageElements", @"pageElements",
 			
 		nil];
 		
@@ -95,16 +103,80 @@
 
 }
 
++ (NSDictionary *) defaultHierarchicalEntityMapping {
+
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		
+		@"WAFilePageElement", @"pageElements",
+	
+	nil];
+
+}
+
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
 	NSMutableDictionary *returnedDictionary = [[incomingRepresentation mutableCopy] autorelease];
 	
 	NSString *mediumImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.medium.url"];
-	if (![mediumImageRepURLString isKindOfClass:[NSString class]])
-		return returnedDictionary;
+	if ([mediumImageRepURLString isKindOfClass:[NSString class]])
+    [returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
+  
+  NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
+  
+  if ([incomingFileType isEqualToString:@"image"]) {
+  
+    //  ?
+  
+  } else if ([incomingFileType isEqualToString:@"doc"]) {
+  
+    NSLog(@"Is document — create phantom entities for slides");
+    
+    //  NSDictionary *documentMeta = [incomingRepresentation valueForKeyPath:@"doc_meta"];
+    NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.pages"];
+    
+    if (pagesValue) {
+    
+      NSUInteger numberOfPages = [pagesValue unsignedIntegerValue];
+      
+      [returnedDictionary setObject:((^ {
+      
+        NSMutableArray *returnedArray = [NSMutableArray array];
+        NSString *ownObjectID = [incomingRepresentation valueForKeyPath:@"object_id"];
+        
+        for (NSUInteger i = 0; i < numberOfPages; i++) {
+        
+          [returnedArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+          
+            [IRWebAPIRequestURLWithQueryParameters(
+              
+              [[NSURL URLWithString:@"http://invalid.local"] URLByAppendingPathComponent:@"v2/attachments/view"],
+              
+              [NSDictionary dictionaryWithObjectsAndKeys:
+                ownObjectID, @"object_id",
+                @"slide", @"target",
+                [NSNumber numberWithUnsignedInt:(i + 1)], @"page",
+              nil]
+              
+            ) absoluteString], @"thumbnailURL",
+          
+          nil]];
+        
+        }
+        
+        return returnedArray;
+      
+      })()) forKey:@"pageElements"];
+    
+    }
+  
+  } else if ([incomingFileType isEqualToString:@"text"]) {
+    
+    // ?
+      
+  }
 	
-	[returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
-	
+  NSLog(@"returnedDictionary %@", returnedDictionary);
+  
 	return returnedDictionary; 
 
 }
