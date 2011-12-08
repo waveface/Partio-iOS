@@ -207,7 +207,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	[super viewDidLoad];
 	
-	self.tableView.separatorColor = [UIColor colorWithWhite:.96 alpha:1];
+	self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:.1];
 	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
 	__block __typeof__(self) nrSelf = self;
 	
@@ -222,8 +222,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		}
 	};
 	
+	self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WABackground"]];
 	
-	
+	self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
+	self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WABackground"]];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -233,6 +235,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
 
+	
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
