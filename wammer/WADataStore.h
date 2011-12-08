@@ -15,6 +15,7 @@
 #import "WAUser.h"
 #import "WAPreview.h"
 #import "WAOpenGraphElement.h"
+#import "WAFilePageElement.h"
 
 @interface WADataStore : IRDataStore
 

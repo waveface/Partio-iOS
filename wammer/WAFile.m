@@ -43,6 +43,8 @@
 @dynamic article;
 @dynamic owner;
 @dynamic title;
+@dynamic pageElements;
+@dynamic pageElementOrder;
 
 @synthesize resourceImage, thumbnailImage;
 
@@ -63,6 +65,32 @@
 	[resourceImage release];
 	[thumbnailImage release];
 	[super dealloc];
+
+}
+
+- (void) awakeFromFetch {
+
+  [super awakeFromFetch];
+  
+  [self irReconcileObjectOrderWithKey:@"pageElements" usingArrayKeyed:@"pageElementOrder"];
+
+}
+
+- (NSArray *) pageElementOrder {
+
+  return [self irBackingOrderArrayKeyed:@"pageElementOrder"];
+
+}
+
+- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
+
+  [super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
+  
+  if ([inKey isEqualToString:@"pageElements"]) {
+    
+    [self irUpdateObjects:inObjects withRelationshipKey:@"pageElements" usingOrderArray:@"pageElementOrder" withSetMutation:inMutationKind];
+    
+  }
 
 }
 
