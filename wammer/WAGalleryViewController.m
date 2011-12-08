@@ -93,7 +93,13 @@
 - (WAFile *) representedFileAtIndex:(NSUInteger)anIndex {
 
   return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
-    return [self.article.managedObjectContext irManagedObjectForURI:anURI];
+  
+    WAFile *returnedObject = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anURI];
+    if (![self.fetchedResultsController.fetchedObjects containsObject:returnedObject])
+      return (id)nil;
+    
+    return (id)returnedObject;
+      
   }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
 
 }
@@ -305,7 +311,7 @@
 
 - (NSUInteger) numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
-	return [self.article.fileOrder count];
+	return [self.fetchedResultsController.fetchedObjects count];
 
 }
 

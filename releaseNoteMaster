@@ -1,2 +1,2 @@
-ETReleaseNotes="- Enhances Reachability so the endpoints are discovered faster\n- Initial Quick Look integration hidden in the application\n- Various tweaks"
-ETMarketingVersionNumber="0.9.2"
+ETReleaseNotes="- Fixes issue where the Station won’t return any thumbnail generated for PDF documents by temporarily not swizzling resource endpoints for specific types of thumbnails\n- Fixes bug in the Single File Inspector where the document will be reloaded after a finish event if any\n- Fixes issue where redirection may render the download progress bar useless"
+ETMarketingVersionNumber="0.9.7"

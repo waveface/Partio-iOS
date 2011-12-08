@@ -24,6 +24,8 @@
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
+#import "WASingleFileViewController.h"
+
 static NSString * const WAPostViewControllerPhone_RepresentedObjectURI = @"WAPostViewControllerPhone_RepresentedObjectURI";
 static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbove";
 
@@ -69,6 +71,26 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   
   return self;
 
+}
+
+- (void) handleDownload:(UIBarButtonItem *)sender {
+  //preview document
+  __block WASingleFileViewController *previewController = [WASingleFileViewController controllerForFile:[post.fileOrder objectAtIndex:0 ]];
+  previewController.onFinishLoad = [[previewController class] defaultQuickLookFinishLoadHandler];
+  
+  [self.navigationController pushViewController:previewController animated:YES];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+  
+  [super viewWillAppear:animated];
+  
+  // the first attachment is a PDF
+  if( [self.post.fileOrder count] >=1 && [[[[self.post.files allObjects] objectAtIndex:0] resourceType] isEqualToString:@"com.adobe.pdf"]){
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleDownload:)]autorelease];
+  } else {
+    self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
+  }
 }
 
 - (void) loadView {

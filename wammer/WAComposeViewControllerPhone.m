@@ -338,6 +338,9 @@
 - (void) viewDidAppear:(BOOL)animated {
 
 	[super viewDidAppear:animated];
+  
+  UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+  // TODO: Check if the URL is ready and put it into compose view
 
 }
 

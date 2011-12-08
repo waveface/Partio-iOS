@@ -24,17 +24,25 @@
 
 @implementation WAFile
 
+@dynamic codeName;
+@dynamic creationDeviceIdentifier;
 @dynamic identifier;
+@dynamic remoteFileName;
+@dynamic remoteFileSize;
+@dynamic remoteRepresentedImage;
+@dynamic remoteResourceHash;
+@dynamic remoteResourceType;
 @dynamic resourceFilePath;
 @dynamic resourceType;
 @dynamic resourceURL;
 @dynamic text;
+@dynamic thumbnail;
 @dynamic thumbnailFilePath;
 @dynamic thumbnailURL;
 @dynamic timestamp;
 @dynamic article;
 @dynamic owner;
-@dynamic thumbnail;
+@dynamic title;
 
 @synthesize resourceImage, thumbnailImage;
 
@@ -310,7 +318,9 @@
 
 	if (!thumbnailFilePath)
 		return nil;
-		
+    
+  NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:self.thumbnailFilePath]);
+  
 	[self willChangeValueForKey:@"thumbnailImage"];
 	thumbnailImage = [[UIImage imageWithContentsOfFile:thumbnailFilePath] retain];
 	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];

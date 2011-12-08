@@ -12,6 +12,39 @@
 
 @implementation WAFile (WARemoteInterfaceEntitySyncing)
 
+- (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
+
+  NSMutableDictionary *usedDictionary = [[inDictionary mutableCopy] autorelease];
+  
+  if ([[usedDictionary objectForKey:@"url"] isEqualToString:@""])
+    [usedDictionary removeObjectForKey:@"url"];
+
+  [super configureWithRemoteDictionary:inDictionary];
+  
+  if (!self.resourceType) {
+    
+    NSString *pathExtension = [self.remoteFileName pathExtension];
+    if (pathExtension) {
+      
+      CFStringRef preferredUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, NULL);
+      [NSMakeCollectable(preferredUTI) autorelease];
+      
+      self.resourceType = (NSString *)preferredUTI;
+
+    }
+    
+  }
+  
+  if (!self.thumbnailURL)
+  if (self.remoteRepresentedImage)
+    self.thumbnailURL = [[self class] transformedValue:self.remoteRepresentedImage fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];        
+  
+  if (!self.resourceURL)
+  if (self.identifier)
+    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+
+}
+
 + (NSString *) keyPathHoldingUniqueValue {
 
 	return @"identifier";
@@ -100,7 +133,7 @@
 	
 		if (UTTypeConformsTo((CFStringRef)aValue, kUTTypeItem))
 			return aValue;
-		
+		 
 		id returnedValue = IRWebAPIKitStringValue(aValue);
 		
 		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
@@ -109,7 +142,12 @@
 			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
 			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
 		}
-	
+    
+    //  Incoming stuff is moot (“application/unknown”)
+    
+    if ([returnedValue hasPrefix:@"dyn."])
+      return nil;
+    
 		return returnedValue;
 		
 	}
