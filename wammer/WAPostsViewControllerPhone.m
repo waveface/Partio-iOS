@@ -69,6 +69,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[managedObjectContext release];
 	[fetchedResultsController release];
   [_lastID release];
+	
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
 	[super dealloc];
   
 }
@@ -200,6 +203,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewDidUnload {
 	
 	[super viewDidUnload];
+
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
   
 }
 
@@ -209,21 +214,48 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:.1];
 	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
-	__block __typeof__(self) nrSelf = self;
+	
+	UIView *pulldownHeaderBackground = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(pulldownHeader.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })] autorelease];
+	pulldownHeaderBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	
+	IRGradientView *pulldownHeaderBackgroundShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(
+		pulldownHeader.bounds,
+		(CGSize){ CGRectGetWidth(pulldownHeader.bounds), 3 },
+		kCAGravityBottom
+	)] autorelease];
+	
+	UIColor *fromColor = [UIColor colorWithWhite:0 alpha:0];
+	UIColor *toColor = [UIColor colorWithWhite:0 alpha:0.125];
+	
+	[pulldownHeaderBackgroundShadow setLinearGradientFromColor:fromColor anchor:irTop toColor:toColor anchor:irBottom];
+	
+	[pulldownHeader addSubview:pulldownHeaderBackground];
+	[pulldownHeader addSubview:pulldownHeaderBackgroundShadow];
+	[pulldownHeader sendSubviewToBack:pulldownHeaderBackgroundShadow];
+	[pulldownHeader sendSubviewToBack:pulldownHeaderBackground];
+	
+	//	__block __typeof__(self) nrSelf = self;
 	
 	self.tableView.pullDownHeaderView = pulldownHeader;
 	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		pulldownHeader.progress = progress;	
+		[pulldownHeader setProgress:progress animated:YES];	
 	};
 	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
 		if (didFinish) {
 			pulldownHeader.progress = 0;
+			[pulldownHeader setBusy:YES animated:YES];
 			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 		}
+	};
+	self.tableView.onPullDownReset = ^ {
+		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
 	self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
 	self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WABackground"]];
+	
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -516,7 +548,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
   
-  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+//  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
   WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
@@ -525,7 +557,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			//		[self refreshData];
 			//	});
 		} onFailure:nil];
-    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+//    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 	}];
   
   UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
