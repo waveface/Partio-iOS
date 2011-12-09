@@ -16,6 +16,7 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize backgroundImageView;
 @synthesize contentTextView;
 @synthesize commentLabel;
 @synthesize commentBackground;
@@ -36,6 +37,7 @@
 	[commentBackground release];
     [contentTextView release];
 	[previewBadge release];
+  [backgroundImageView release];
 	[super dealloc];
 	
 }
@@ -72,19 +74,11 @@
 	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
     
+  self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
+    
 	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-	self.backgroundView.backgroundColor = [UIColor whiteColor];
-	[self.backgroundView addSubview:((^ {
-		CGRect ownBounds = self.backgroundView.bounds;
-		IRGradientView *gradientView = [[[IRGradientView alloc] initWithFrame:(CGRect){
-			(CGPoint){ 0, CGRectGetHeight(ownBounds) - 24 }, 
-			(CGSize){ CGRectGetWidth(ownBounds), 24 }
-		}] autorelease];
-		[gradientView setLinearGradientFromColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:.95] anchor:irTop toColor:[UIColor colorWithRed:.97 green:.97 blue:.97 alpha:1] anchor:irBottom];
-		gradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-		return gradientView;
-	})())];
-	
+	self.backgroundView.backgroundColor = [UIColor clearColor];
+  	
 	self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
 	self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
 	
