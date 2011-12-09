@@ -1,2 +1,2 @@
-ETReleaseNotes="- Adds initial Document Slides implementation in the Data Store.\n- Fixes several bugs and crashers"
+ETReleaseNotes="- Uses SSL in all places."
 ETMarketingVersionNumber="0.9.8"
