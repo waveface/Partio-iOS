@@ -9,7 +9,7 @@
 #import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
 
 @implementation WAApplicationDidReceiveReadingProgressUpdateNotificationView
-@synthesize localizableLabels, onAction;
+@synthesize localizableLabels, onAction, onClear;
 
 + (UIView *) viewFromNib {
 
@@ -61,6 +61,7 @@
 	
 	[localizableLabels release];
 	[onAction release];
+  [onClear release];
 	[super dealloc];
 	
 }
@@ -69,6 +70,42 @@
 
 	if (self.onAction)
 		self.onAction();
+}
+
+- (IBAction)handleClear:(id)sender {
+
+  if (self.onClear)
+    self.onClear();
+
+}
+
+- (void) enqueueAnimationForVisibility:(BOOL)willBeVisible completion:(void(^)(BOOL didFinish))aBlock {
+
+  CGPoint oldCenter = self.center;
+  CGPoint newCenter = oldCenter;
+
+  if (willBeVisible) {
+    oldCenter.y -= CGRectGetHeight(self.bounds);
+  } else {
+    newCenter.y -= CGRectGetHeight(self.bounds);
+  }
+  
+  self.center = oldCenter;
+  self.hidden = NO;
+
+  [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+
+    self.center = newCenter;
+    
+  } completion: ^ (BOOL finished) {
+    
+    if (aBlock)
+      aBlock(finished);
+    
+    self.hidden = !willBeVisible;
+    
+  }];
+
 }
 
 @end
