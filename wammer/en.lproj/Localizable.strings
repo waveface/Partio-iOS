@@ -64,3 +64,5 @@
 "WAStateLoadingSingleFile" = "Loading File…" ;
 "WAStateLoadingSingleDocument" = "Loading Document…" ;
 "WAStateLoadingSingleDocumentProgress" = "%1 of %2" ;	//	e.g. 512KB of 30MB
+
+"WAStatusDidReceiveReadingProgressUpdate" = "Found new Reading Position";

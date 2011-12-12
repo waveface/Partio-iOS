@@ -85,6 +85,8 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   
   [super viewWillAppear:animated];
   
+  [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+  
   // the first attachment is a PDF
   if( [self.post.fileOrder count] >=1 && [[[[self.post.files allObjects] objectAtIndex:0] resourceType] isEqualToString:@"com.adobe.pdf"]){
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleDownload:)]autorelease];

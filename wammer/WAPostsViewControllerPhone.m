@@ -38,9 +38,18 @@
 
 #import "WAPulldownRefreshView.h"
 
+#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
+#import "IRTableView.h"
+
+
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate>
+
+- (UIView *) defaultTitleView;
+- (WAPulldownRefreshView *) defaultPulldownRefreshView;
+
+@property (nonatomic, readwrite, retain) WAApplicationDidReceiveReadingProgressUpdateNotificationView *readingProgressUpdateNotificationView;
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -54,6 +63,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL;
 
+- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback;
+- (void) retrieveLastScannedObjectWithCompletion:(void(^)(WAArticle *anArticleOrNil))callback;
+
 @end
 
 
@@ -63,16 +75,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize managedObjectContext;
 @synthesize _lastID;
 @synthesize settingsActionSheetController;
+@synthesize readingProgressUpdateNotificationView;
 
 - (void) dealloc {
 	
 	[managedObjectContext release];
 	[fetchedResultsController release];
   [_lastID release];
+	[readingProgressUpdateNotificationView release];
+	
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
 	[super dealloc];
   
 }
-
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   
@@ -81,37 +97,94 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	if (!self)
 		return nil;
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-  
 	self.title = NSLocalizedString(@"WAAppTitle", @"Title for application");
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage([UIImage imageNamed:@"WAFilter"]) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WAFilter")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
 	}];
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage([UIImage imageNamed:@"WACompose"]) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 		[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
 	}];
 	
-	self.navigationItem.titleView = ((^ {
-		
-		UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
-		logotype.contentMode = UIViewContentModeScaleAspectFit;
-		logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
-		
-		UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){	CGPointZero, (CGSize){ 128, 44 }}];
-		logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
-		[containerView addSubview:logotype];
-		
-		return containerView;
-		
-	})());
+	self.navigationItem.titleView = [self defaultTitleView];
+	
+	return self;
   
-	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
+}
+
+- (UIView *) defaultTitleView {
+
+	UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
+	logotype.contentMode = UIViewContentModeScaleAspectFit;
+	logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
+	
+	UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){	CGPointZero, (CGSize){ 128, 44 }}];
+	logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
+	[containerView addSubview:logotype];
+	
+	return containerView;
+
+}
+
+- (IRActionSheetController *) settingsActionSheetController {
+
+	if (settingsActionSheetController)
+		return settingsActionSheetController;
+	
+	__block __typeof(self) nrSelf = self;
+	
+	settingsActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:@"Settings"
+		cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil]
+		destructiveAction:nil 
+		otherActions:[NSArray arrayWithObjects:
+			
+			[IRAction actionWithTitle:@"Sign Out" block:^{
+			
+				[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:
+					
+					[NSArray arrayWithObjects:
+						[IRAction actionWithTitle:@"Sign Out" block: ^ {
+							[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
+						}],
+					nil]
+					
+				] show];
+			
+			}], 
+			
+			[IRAction actionWithTitle:@"Change API URL" block:^ {
+				
+				[nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];
+				
+			}],
+			
+	nil]] retain];
+
+	return settingsActionSheetController;
+
+}
+
+- (NSManagedObjectContext *) managedObjectContext {
+
+	if (managedObjectContext)
+		return managedObjectContext;
+	
+	managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+
+	return managedObjectContext;
+
+}
+
+- (NSFetchedResultsController *) fetchedResultsController {
+
+	if (fetchedResultsController)
+		return fetchedResultsController;
+
+	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
 		
 		NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 		fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
@@ -120,110 +193,162 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		return fetchRequest;
 		
-	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
-	self.fetchedResultsController.delegate = self;
+	fetchedResultsController.delegate = self;
   
   NSError *fetchingError;
-	if (![self.fetchedResultsController performFetch:&fetchingError])
+	if (![fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
-  
- //		__block __typeof__(self) nrSelf = self;
-
-  self.settingsActionSheetController = [IRActionSheetController 
-                                        actionSheetControllerWithTitle:@"Settings" 
-                                        cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil]
-                                        destructiveAction:nil 
-                                        otherActions:[ NSArray arrayWithObjects:
-                                                      [IRAction actionWithTitle:@"Sign Out" 
-                                                                          block:^{
-                                                                            [[IRAlertView alertViewWithTitle:@"Sign Out" 
-                                                                                                     message:@"Really sign out?" 
-                                                                                                cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] 
-                                                                                                otherActions:[NSArray arrayWithObjects:
-                                                                                                              [IRAction actionWithTitle:@"Sign Out" 
-                                                                                                                                  block: ^ { dispatch_async(dispatch_get_main_queue(), ^ {[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];});}], nil]
-                                                                              ] show];
-                                                                          }], [IRAction actionWithTitle:@"Change API URL" block:^ { [nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];}],
-                                                      nil ]
-                                        ];
-  self.tableView.backgroundColor = [[UIColor alloc] initWithRed:226.0/255.0 green:230.0/255.0 blue:232/255.0 alpha:1.0];
-	return self;
-  
-}
-
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-  
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
+		
+	return fetchedResultsController;
 	
-	if (savedContext == self.managedObjectContext)
-		return;
-		
-	if (![[[aNotification userInfo] objectForKey:NSInsertedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSUpdatedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSDeletedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSRefreshedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSInvalidatedObjectsKey] count])
-	if (![[[aNotification userInfo] objectForKey:NSInvalidatedAllObjectsKey] count])
-		return;
-	
-	[self.tableView performBlockOnInteractionEventsEnd: ^ {
-	
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		
-		/*
-		
-			Asynchronous file loading in WAFile works this way:
-		
-			1.	-[WAFile resourceFilePath] is accessed.
-			2.	Primitive value for the path is not found, and the primitive value for `resourceURL` is not a file URL.
-			3.	That infers the resource URL is a HTTP resource URL.
-			4.	The shared remote resources manager is triggered and a download is enqueued.
-			5.	On download completion, a disposable managed object context is created, and all managed objects in that context holding the eligible resource URLs are updated.
-			6.	The disposed managed object context is saved.  At this moment the notification is sent and this method is invoked.  However,
-			7.	The class conforms to <NSFetchedResultsControllerDelegate> and will only reload on -controllerDidChangeContent:.
-			8.	The method is not implicitly invoked because the fetched results controller’s fetch request latches on WAArticle
-			9.	So, trigger a forced refresh by refreshing all the fetched objects in the fetched results controller’s results
-			10.	This seems to work around a Core Data bug where changes on a managed object’s related entity’s attributes do not always trigger a change.
-		
-		*/
-		
-		NSArray *allFetchedObjects = [self.fetchedResultsController fetchedObjects];
-		
-		for (NSManagedObject *aFetchedObject in allFetchedObjects)
-			[aFetchedObject.managedObjectContext refreshObject:aFetchedObject mergeChanges:YES];
-			
-	}];
-  
 }
 
 - (void) viewDidUnload {
 	
-	[super viewDidUnload];
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
+	self.readingProgressUpdateNotificationView = nil;
   
+	[super viewDidUnload];
+	
+}
+
+- (WAPulldownRefreshView *) defaultPulldownRefreshView {
+
+	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
+	
+	UIView *pulldownHeaderBackground = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(pulldownHeader.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })] autorelease];
+	pulldownHeaderBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	
+	IRGradientView *pulldownHeaderBackgroundShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(
+		pulldownHeader.bounds,
+		(CGSize){ CGRectGetWidth(pulldownHeader.bounds), 3 },
+		kCAGravityBottom
+	)] autorelease];
+	
+	UIColor *fromColor = [UIColor colorWithWhite:0 alpha:0];
+	UIColor *toColor = [UIColor colorWithWhite:0 alpha:0.125];
+	
+	[pulldownHeaderBackgroundShadow setLinearGradientFromColor:fromColor anchor:irTop toColor:toColor anchor:irBottom];
+	
+	[pulldownHeader addSubview:pulldownHeaderBackground];
+	[pulldownHeader addSubview:pulldownHeaderBackgroundShadow];
+	[pulldownHeader sendSubviewToBack:pulldownHeaderBackgroundShadow];
+	[pulldownHeader sendSubviewToBack:pulldownHeaderBackground];
+	
+	return pulldownHeader;
+		
+}
+
+- (WAApplicationDidReceiveReadingProgressUpdateNotificationView *) readingProgressUpdateNotificationView {
+
+	if (readingProgressUpdateNotificationView)
+		return readingProgressUpdateNotificationView;
+		
+	readingProgressUpdateNotificationView = [[WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib] retain];
+	readingProgressUpdateNotificationView.alpha = 0;
+	
+	return readingProgressUpdateNotificationView;
+
 }
 
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	
-	self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:.1];
-	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
 	__block __typeof__(self) nrSelf = self;
+	
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	self.tableView.backgroundColor = nil;
+	self.tableView.opaque = NO;
+	
+	
+	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
 	
 	self.tableView.pullDownHeaderView = pulldownHeader;
 	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		pulldownHeader.progress = progress;	
+		[pulldownHeader setProgress:progress animated:YES];	
 	};
 	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
 		if (didFinish) {
 			pulldownHeader.progress = 0;
+			[pulldownHeader setBusy:YES animated:YES];
 			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
 		}
 	};
+	self.tableView.onPullDownReset = ^ {
+		[pulldownHeader setBusy:NO animated:YES];
+	};
 	
-	self.tableView.backgroundView = [[[UIView alloc] initWithFrame:self.tableView.bounds] autorelease];
-	self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WABackground"]];
+	
+	__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	self.tableView.backgroundView = backgroundView;
+	
+	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
+	CGSize backgroundImageSize = backgroundImage.size;
+	backgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+		
+	
+	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
+	
+	progressUpdateNotification.bounds = (CGRect){
+		CGPointZero,
+		(CGSize){
+			CGRectGetWidth(self.tableView.bounds),
+			progressUpdateNotification.bounds.size.height
+		}
+	};
+	
+	[self.tableView addSubview:progressUpdateNotification];
+	
+	
+	self.tableView.onLayoutSubviews = ^ {
+	
+		CGRect tableViewBounds = nrSelf.tableView.bounds;
+		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
+		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
+		
+		backgroundView.bounds = (CGRect){
+			CGPointZero,
+			(CGSize){
+				CGRectGetWidth(tableViewBounds),
+				backgroundImageSize.height * ceilf((2 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
+			}
+		};
+		
+		backgroundView.center = (CGPoint){
+			0.5 * CGRectGetWidth(tableViewBounds),
+			backgroundImageSize.height * ceilf(tableViewContentOffset.y / backgroundImageSize.height)
+		};
+		
+		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
+			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
+			//	-1 * tableViewContentInset.top + 
+			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
+		};
+		
+		//	[nrSelf.progressUpdateNotification.superview bringSubviewToFront:nrSelf.progressUpdateNotification];
+		
+		NSLog(@"tableViewContentOffset %@", NSStringFromCGPoint(tableViewContentOffset));
+		NSLog(@"tableViewContentInset %@", NSStringFromUIEdgeInsets(tableViewContentInset));
+		NSLog(@"readingProgressUpdateNotificationView.bounds %@", NSStringFromCGRect(nrSelf.readingProgressUpdateNotificationView.bounds));
+		NSLog(@"readingProgressUpdateNotificationView.center %@", NSStringFromCGPoint(nrSelf.readingProgressUpdateNotificationView.center));
+		
+	};
+	
+	
+	//	self.tableView.onScroll = ^ {
+	//	
+	//		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+	//			
+	//			self.readingProgressUpdateNotificationView.alpha = 0;
+	//			
+	//		} completion:nil];
+	//	
+	//	};
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -231,27 +356,68 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super viewWillAppear:animated];
   [self refreshData];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
-
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
+		
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
+	
+	
+	//	?
+	
+	[self retrieveLastScannedObjectWithCompletion: ^ (WAArticle *anArticleOrNil) {
+	
+		if (![self isViewLoaded])
+			return;
+			
+		__block __typeof__(self) nrSelf = self;
+		__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
+		
+		self.readingProgressUpdateNotificationView.onAction = ^ {
+		
+			[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+				
+				nrSelf.readingProgressUpdateNotificationView.alpha = 0;
+				
+			} completion:nil];
+			
+			NSIndexPath *objectIndexPath = [self.fetchedResultsController indexPathForObject:anArticleOrNil];
+			
+			if (objectIndexPath)
+				[nrSelf.tableView scrollToRowAtIndexPath:objectIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		
+			nrNotificationView.onAction = nil;
+		
+		};
+	
+		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+			
+			self.readingProgressUpdateNotificationView.alpha = 1;
+			
+		} completion:nil];
+		
+	}];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-  
-	[super viewWillDisappear:animated];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
- 
-	NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
-  if ( [visibleRows count] ) {
-    [self syncLastRead:[visibleRows objectAtIndex:0]];
-  }
+
+	WAArticle *bottomMostArticle = [[[self.tableView indexPathsForVisibleRows] irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
 	
-}
-
-- (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
-
-	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
-	[self beginCompositionSessionWithURL:contentURL];
+		return [self.fetchedResultsController objectAtIndexPath:anIndexPath];
+		
+	}] lastObject];
+	
+	[self setLastScannedObject:bottomMostArticle completion:^(BOOL didFinish) {
+	
+		NSLog(@"setLastScannedObject -> %x", didFinish);
+		
+	}];
+  
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
+	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
+	[super viewWillDisappear:animated];
 	
 }
 
@@ -264,9 +430,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-/* sync last read pointer with remote */
+- (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
+
+	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
+	[self beginCompositionSessionWithURL:contentURL];
+	
+}
+
 - (void) syncLastRead:(NSIndexPath *)indexPath {
-  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
+  
+	NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
+	
+	
+	
   [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
   } onFailure:^(NSError *error) {
     NSLog(@"SetLastRead failed %@", error);
@@ -292,124 +468,67 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
   
-  NSString *identifier = postHasFiles ? imageCellIdentifier : postHasPreview ? webLinkCellIdentifier : textOnlyCellIdentifier;
-  WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : postHasPreview ? WAPostViewCellStyleWebLink : WAPostViewCellStyleDefault;
-  WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+  NSString *identifier = 
+		postHasFiles ? imageCellIdentifier : 
+		postHasPreview ? webLinkCellIdentifier : 
+		textOnlyCellIdentifier;
 	
+  WAPostViewCellStyle style = 
+		postHasFiles ? WAPostViewCellStyleImageStack : 
+		postHasPreview ? WAPostViewCellStyleWebLink : 
+		WAPostViewCellStyleDefault;
+	
+  WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if (!cell) {
 		
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
 		cell.commentLabel.userInteractionEnabled = YES;
+		cell.backgroundColor = nil;
+		cell.opaque = NO;
 		
   }
 	
-  cell.userNicknameLabel.text = [[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
+  cell.userNicknameLabel.text = post.owner.nickname;//[[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
 	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
  
-	//	cell.commentLabel.attributedText = ((^{
-	//	
-	//		NSMutableAttributedString *attributedString = [[[cell.commentLabel attributedStringForString:post.text] mutableCopy] autorelease];
-	//		
-	//		[attributedString beginEditing];
-	//		[[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] enumerateMatchesInString:post.text options:0 range:(NSRange){ 0, [post.text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-	//			[attributedString addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-	//				(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
-	//				result.URL, kIRTextLinkAttribute,
-	//			nil] range:result.range];		
-	//		}];
-	//		[attributedString endEditing];
-	//		
-	//		return attributedString;
-	//		
-	//	})());
-	
   if (postHasPreview) {
 	
-		WAPreview *anyPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil]] lastObject];	
-		[cell.previewBadge configureWithPreview:anyPreview];
 		
-  }
+		[cell.previewBadge configureWithPreview:latestPreview];
+		
+  } else {
+	
+		[cell.previewBadge configureWithPreview:nil];	//	?
+	
+	}
     
   if (postHasFiles) {
     
 		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
-		NSArray *firstTwoImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-      
-      if (index > 0)
-        *stop = YES;
-      
+		NSArray *allImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
       WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
-      return [self imageByScalingAndCroppingForSize:CGSizeMake(150, 150) FromImage:file.thumbnailImage];
-      
+			return file.thumbnailImage;
 		}];
 		
-		[cell.imageStackView setImages:firstTwoImages asynchronously:YES withDecodingCompletion:nil];
+		NSArray *firstTwoImages = [allImages subarrayWithRange:(NSRange){ 0, MIN(2, [allImages count] )}];
+		
+		[cell.imageStackView setImages:firstTwoImages asynchronously:YES withDecodingCompletion:nil];	//	?
+	
+	} else {
+	
+		[cell.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
 	
 	}
   
   return cell;
   
-}
-
-- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize FromImage:(UIImage *)sourceImage
-{
-  UIImage *newImage = nil;        
-  CGSize imageSize = sourceImage.size;
-  CGFloat width = imageSize.width;
-  CGFloat height = imageSize.height;
-  CGFloat targetWidth = targetSize.width;
-  CGFloat targetHeight = targetSize.height;
-  CGFloat scaleFactor = 0.0;
-  CGFloat scaledWidth = targetWidth;
-  CGFloat scaledHeight = targetHeight;
-  CGPoint thumbnailPoint = CGPointMake(0.0,0.0);
-  
-  if (CGSizeEqualToSize(imageSize, targetSize) == NO) 
-    {
-    CGFloat widthFactor = targetWidth / width;
-    CGFloat heightFactor = targetHeight / height;
-    
-    if (widthFactor > heightFactor) 
-      scaleFactor = widthFactor; // scale to fit height
-    else
-      scaleFactor = heightFactor; // scale to fit width
-    scaledWidth  = width * scaleFactor;
-    scaledHeight = height * scaleFactor;
-    
-    // center the image
-    if (widthFactor > heightFactor)
-      {
-      thumbnailPoint.y = (targetHeight - scaledHeight) * 0.5; 
-      }
-    else 
-      if (widthFactor < heightFactor)
-        {
-        thumbnailPoint.x = (targetWidth - scaledWidth) * 0.5;
-        }
-    }       
-  
-  UIGraphicsBeginImageContext(targetSize); // this will crop
-  
-  CGRect thumbnailRect = CGRectZero;
-  thumbnailRect.origin = thumbnailPoint;
-  thumbnailRect.size.width  = scaledWidth;
-  thumbnailRect.size.height = scaledHeight;
-  
-  [sourceImage drawInRect:thumbnailRect];
-  
-  newImage = UIGraphicsGetImageFromCurrentImageContext();
-  if(newImage == nil) 
-    NSLog(@"could not scale image");
-  
-  //pop the context to get back to the default
-  UIGraphicsEndImageContext();
-  return newImage;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -425,10 +544,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-#pragma mark -- Actions
+- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize FromImage:(UIImage *)sourceImage {
 
-- (IBAction)actionSettings:(id)sender
-{
+	return [sourceImage irScaledImageWithSize:targetSize];
+
+}
+
+- (IBAction) actionSettings:(id)sender {
+
   [self.settingsActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
 
 }
@@ -436,6 +559,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
   
   return newOrientation == UIInterfaceOrientationPortrait;	
+	
 }
 
 - (void) refreshData {
@@ -486,18 +610,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-  [self syncLastRead:indexPath];
-  WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
-  
-  [self.navigationController pushViewController:controller animated:YES];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	[self syncLastRead:indexPath];
+	
+	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
+
+	[self.navigationController pushViewController:controller animated:YES];
+	
 }
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
 
-  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
   WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithWebPost:anURL completion:^(NSURL *aPostURLOrNil) {
     
 		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
@@ -506,45 +631,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			//		[self refreshData];
 			//	});
 		} onFailure:nil];
-    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
 	}];
   
   UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
   navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
   [self presentModalViewController:navigationController animated:YES];
+	
 }
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
+
+	[self beginCompositionSessionWithURL:nil];
   
-  [[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
-  WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithPost:nil completion:^(NSURL *aPostURLOrNil) {
-    
-		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
-			//	We’ll get a save, do nothing
-			//	dispatch_async(dispatch_get_main_queue(), ^ {
-			//		[self refreshData];
-			//	});
-		} onFailure:nil];
-    [[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-	}];
-  
-  UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
-  navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-  [self presentModalViewController:navigationController animated:YES];
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
   
-	static IRRelativeDateFormatter *formatter = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    
-		formatter = [[IRRelativeDateFormatter alloc] init];
-		formatter.approximationMaxTokenCount = 1;
-    
-	});
-  
-	return formatter;
+	return [IRRelativeDateFormatter sharedFormatter];
   
 }
 
@@ -613,4 +717,54 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	});
 	
 }
+
+- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback {
+
+	[[WARemoteInterface sharedInterface] updateLastScannedPostInGroup:anArticle.group.identifier withPost:anArticle.identifier onSuccess: ^ {
+	
+		if (callback)
+			callback(YES);
+		 
+ } onFailure: ^ (NSError *error) {
+ 
+		if (callback)
+		callback(NO);
+	 
+ }];
+
+}
+
+- (void) retrieveLastScannedObjectWithCompletion:(void(^)(WAArticle *anArticleOrNil))callback {
+
+	NSString * aGroupIdentifier = [[NSSet setWithArray:[self.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
+		
+		return anArticle.group.identifier;
+		
+	}]] anyObject];
+	
+	__block __typeof__(self) nrSelf = self;
+
+	[[WARemoteInterface sharedInterface] retrieveLastScannedPostInGroup:aGroupIdentifier onSuccess:^(NSString *lastScannedPostIdentifier) {
+	
+		WAArticle *matchingArticle = [[nrSelf.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
+		
+			if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
+				return anArticle;
+			
+			return nil;
+			
+		}] lastObject];
+		
+		if (callback)
+			callback(matchingArticle);
+		
+	} onFailure:^(NSError *error) {
+	
+		if (callback)
+			callback(nil);
+		
+	}];
+
+}
+
 @end

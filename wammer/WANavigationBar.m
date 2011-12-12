@@ -84,6 +84,8 @@
 	
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = self.bounds;
+  
+  backgroundView.userInteractionEnabled = NO;
 	
 	[self addSubview:backgroundView];
 	[self sendSubviewToBack:backgroundView];
@@ -95,7 +97,7 @@
   [super layoutSubviews];
   
   [self.backgroundView.superview sendSubviewToBack:self.backgroundView];
-
+  
 }
 
 + (UIView *) defaultGradientBackgroundView {
