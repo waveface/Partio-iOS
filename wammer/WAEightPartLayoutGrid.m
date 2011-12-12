@@ -206,7 +206,7 @@
 		
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
-		if (isImageItem(currentItem)) {
+		if (isImageItem(currentItem) && arc4random_uniform(1) ) { // 50% chance
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
