@@ -264,7 +264,7 @@
 		FFFC763C1487762D00247099 /* WAUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFC763B1487762D00247099 /* WAUserInfoViewController.m */; };
 		FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */; };
-		FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib */; };
+		FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -863,7 +863,7 @@
 		FFFC763B1487762D00247099 /* WAUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoViewController.m; sourceTree = "<group>"; };
 		FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.h; sourceTree = "<group>"; };
 		FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.m; sourceTree = "<group>"; };
-		FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib"; sourceTree = "<group>"; };
+		FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1062,7 +1062,7 @@
 				FFF556B71456A64A0077DFFB /* WARefreshActionView.m */,
 				FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */,
 				FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */,
-				FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib */,
+				FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */,
 			);
 			name = "Base Articles View";
 			path = wammer;
@@ -1999,7 +1999,7 @@
 				4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */,
 				FF88247814921D0B00747A6D /* WANavigationBarBackdrop.png in Resources */,
 				FF88247914921D0B00747A6D /* WANavigationBarBackdrop@2x.png in Resources */,
-				FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib in Resources */,
+				FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2299,7 +2299,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 127;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2346,7 +2346,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 127;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
