@@ -83,9 +83,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[fetchedResultsController release];
   [_lastID release];
 	[readingProgressUpdateNotificationView release];
-	
-	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
-	
+		
 	[super dealloc];
   
 }
@@ -206,9 +204,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) viewDidUnload {
-	
-	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
-	
+		
 	self.readingProgressUpdateNotificationView = nil;
   
 	[super viewDidUnload];
