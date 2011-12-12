@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
+
 #import "WAApplicationRootViewControllerDelegate.h"
-#import "IRTableViewController.h"
+#import "UIKit+IRAdditions.h"
 
 @interface WAPostsViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
 
