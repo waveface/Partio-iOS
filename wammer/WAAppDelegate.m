@@ -152,10 +152,43 @@
 			((WANavigationBar *)(navController.navigationBar)).backgroundView = ((^ {
         switch (UI_USER_INTERFACE_IDIOM()) {
           case UIUserInterfaceIdiomPhone: {
-            return (UIView *)[[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WANavigationBarBackdrop"]] autorelease];
+            
+            UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
+            UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+            
+            returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
+            returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+            
+            
+            UIView *topGlare = [[[UIView alloc] initWithFrame:(CGRect){
+              (CGPoint){ 0, 0 },
+              (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
+            }] autorelease];
+            
+            topGlare.backgroundColor = [UIColor colorWithWhite:1 alpha:0.25];
+            topGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+            
+            [returnedView addSubview:topGlare];
+            
+            
+            UIView *bottomGlare = [[[UIView alloc] initWithFrame:(CGRect){
+              (CGPoint){ 0, CGRectGetHeight(returnedView.bounds) - 1 },
+              (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
+            }] autorelease];
+            
+            bottomGlare.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
+            bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+            
+            [returnedView addSubview:bottomGlare];
+            
+            return (UIView *)returnedView;
+            
           }
+          
           default: {
+          
             return (UIView *)[WANavigationBar defaultGradientBackgroundView];
+            
           }
         }
       })());
@@ -350,6 +383,8 @@
 
 	if (erasesExistingAuthenticationInformation) {
   
+    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    
     [self removeAuthenticationData];
 	
 	}
@@ -704,6 +739,9 @@
 					return spinner;
 				})())];
 				
+        if (self.window.rootViewController.modalViewController)
+          [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+        
 				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
 				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
 				

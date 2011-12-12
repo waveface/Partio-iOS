@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>WARemoteEndpointURL</key>
-	<string>http://develop.waveface.com:8080/v2/</string>
+	<string>https://develop.waveface.com/v2/</string>
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WAAdvancedFeaturesEnabled</key>
@@ -15,6 +15,10 @@
 	<key>WAUserRequiresReauthentication</key>
 	<false/>
 	<key>WAUserPasswordResetEndpointURL</key>
-	<string>http://develop.waveface.com:4343/user/password/forget/html</string>
+	<string>http://develop.waveface.com:4343/user/password/forgot/html</string>
+	<key>WAAlwaysAllowExpensiveRemoteOperations</key>
+	<false/>
+	<key>WAAlwaysDenyExpensiveRemoteOperations</key>
+	<true/>
 </dict>
 </plist>

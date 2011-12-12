@@ -31,6 +31,8 @@ NSString * const kWAUserRegistrationUsesWebVersion = @"WAUserRegistrationUsesWeb
 NSString * const kWAUserRegistrationEndpointURL = @"WAUserRegistrationEndpointURL";
 NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthentication";
 NSString * const kWAUserPasswordResetEndpointURL = @"WAUserPasswordResetEndpointURL";
+NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpensiveRemoteOperations";
+NSString * const kWAAlwaysDenyExpensiveRemoteOperations = @"WAAlwaysDenyExpensiveRemoteOperations";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
@@ -177,6 +179,24 @@ UIButton * WAButtonForImage (UIImage *anImage) {
 
 UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
 
-	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:[UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1] shadow:[IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0]];
+  UIColor *fillColor;
+  IRShadow *shadow;
+  
+  switch ([UIDevice currentDevice].userInterfaceIdiom) {
+    
+    case UIUserInterfaceIdiomPhone: {
+      fillColor = [UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1];      
+      shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.35f] offset:(CGSize){ 0, 1 } spread:0];
+      break;
+    }
+
+    default: {
+      fillColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
+      shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0];
+      break;
+    }
+  }
+  
+	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
 
 }

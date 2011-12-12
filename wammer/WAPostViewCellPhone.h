@@ -34,6 +34,7 @@ enum {
 @property (nonatomic, retain) IBOutlet IRLabel *commentLabel;
 @property (nonatomic, retain) IBOutlet UIImageView *commentBackground;
 @property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge;
+@property (retain, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 @end
 

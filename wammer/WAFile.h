@@ -34,6 +34,9 @@
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
 
+@property (nonatomic, retain) NSSet *pageElements;
+@property (nonatomic, retain) NSArray *pageElementOrder;
+
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
 

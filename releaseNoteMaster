@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial API endpoint swizzling hooked up with network reachability status introspection\n- Hooks up Single Document View (Apple Mobile QuickLook™ integration) for the iPhone as well\n- Various bug fixes and threading prioritization stuff"
-ETMarketingVersionNumber="0.9.4"
+ETReleaseNotes="- Initial Reading Progress indication for the iPhone."
+ETMarketingVersionNumber="0.9.8"
