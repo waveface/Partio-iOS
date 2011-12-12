@@ -13,6 +13,12 @@
 + (id) viewFromNib;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *arrowView;
+@property (nonatomic, readwrite, retain) IBOutlet UIActivityIndicatorView *spinner;
+
 @property (nonatomic, readwrite, assign) CGFloat progress;
+- (void) setProgress:(CGFloat)newProgress animated:(BOOL)animate;
+
+@property (nonatomic, readwrite, assign, getter=isBusy, setter=setBusy:) BOOL busy;
+- (void) setBusy:(BOOL)flag animated:(BOOL)animate;
 
 @end
