@@ -38,12 +38,18 @@
 
 #import "WAPulldownRefreshView.h"
 
+#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
+#import "IRTableView.h"
+
+
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate>
 
 - (UIView *) defaultTitleView;
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
+
+@property (nonatomic, readwrite, retain) WAApplicationDidReceiveReadingProgressUpdateNotificationView *readingProgressUpdateNotificationView;
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -57,6 +63,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL;
 
+- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback;
+- (void) retrieveLastScannedObjectWithCompletion:(void(^)(WAArticle *anArticleOrNil))callback;
+
 @end
 
 
@@ -66,12 +75,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize managedObjectContext;
 @synthesize _lastID;
 @synthesize settingsActionSheetController;
+@synthesize readingProgressUpdateNotificationView;
 
 - (void) dealloc {
 	
 	[managedObjectContext release];
 	[fetchedResultsController release];
   [_lastID release];
+	[readingProgressUpdateNotificationView release];
 	
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
 	
@@ -123,6 +134,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	if (settingsActionSheetController)
 		return settingsActionSheetController;
+	
+	__block __typeof(self) nrSelf = self;
 	
 	settingsActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:@"Settings"
 		cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil]
@@ -194,10 +207,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) viewDidUnload {
 	
-	[super viewDidUnload];
-
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
+	self.readingProgressUpdateNotificationView = nil;
   
+	[super viewDidUnload];
+	
 }
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView {
@@ -225,6 +240,18 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	return pulldownHeader;
 		
+}
+
+- (WAApplicationDidReceiveReadingProgressUpdateNotificationView *) readingProgressUpdateNotificationView {
+
+	if (readingProgressUpdateNotificationView)
+		return readingProgressUpdateNotificationView;
+		
+	readingProgressUpdateNotificationView = [[WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib] retain];
+	readingProgressUpdateNotificationView.alpha = 0;
+	
+	return readingProgressUpdateNotificationView;
+
 }
 
 - (void) viewDidLoad {
@@ -262,11 +289,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
 	CGSize backgroundImageSize = backgroundImage.size;
 	backgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
+		
+	
+	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
+	
+	progressUpdateNotification.bounds = (CGRect){
+		CGPointZero,
+		(CGSize){
+			CGRectGetWidth(self.tableView.bounds),
+			progressUpdateNotification.bounds.size.height
+		}
+	};
+	
+	[self.tableView addSubview:progressUpdateNotification];
+	
 	
 	self.tableView.onLayoutSubviews = ^ {
 	
 		CGRect tableViewBounds = nrSelf.tableView.bounds;
 		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
+		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
 		
 		backgroundView.bounds = (CGRect){
 			CGPointZero,
@@ -281,7 +323,31 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			backgroundImageSize.height * ceilf(tableViewContentOffset.y / backgroundImageSize.height)
 		};
 		
+		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
+			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
+			//	-1 * tableViewContentInset.top + 
+			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
+		};
+		
+		//	[nrSelf.progressUpdateNotification.superview bringSubviewToFront:nrSelf.progressUpdateNotification];
+		
+		NSLog(@"tableViewContentOffset %@", NSStringFromCGPoint(tableViewContentOffset));
+		NSLog(@"tableViewContentInset %@", NSStringFromUIEdgeInsets(tableViewContentInset));
+		NSLog(@"readingProgressUpdateNotificationView.bounds %@", NSStringFromCGRect(nrSelf.readingProgressUpdateNotificationView.bounds));
+		NSLog(@"readingProgressUpdateNotificationView.center %@", NSStringFromCGPoint(nrSelf.readingProgressUpdateNotificationView.center));
+		
 	};
+	
+	
+	//	self.tableView.onScroll = ^ {
+	//	
+	//		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+	//			
+	//			self.readingProgressUpdateNotificationView.alpha = 0;
+	//			
+	//		} completion:nil];
+	//	
+	//	};
 	
 }
 
@@ -295,16 +361,59 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
 		
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
+	
+	
+	//	?
+	
+	[self retrieveLastScannedObjectWithCompletion: ^ (WAArticle *anArticleOrNil) {
+	
+		if (![self isViewLoaded])
+			return;
+			
+		__block __typeof__(self) nrSelf = self;
+		__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
+		
+		self.readingProgressUpdateNotificationView.onAction = ^ {
+		
+			[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+				
+				nrSelf.readingProgressUpdateNotificationView.alpha = 0;
+				
+			} completion:nil];
+			
+			NSIndexPath *objectIndexPath = [self.fetchedResultsController indexPathForObject:anArticleOrNil];
+			
+			if (objectIndexPath)
+				[nrSelf.tableView scrollToRowAtIndexPath:objectIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		
+			nrNotificationView.onAction = nil;
+		
+		};
+	
+		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+			
+			self.readingProgressUpdateNotificationView.alpha = 1;
+			
+		} completion:nil];
+		
+	}];
 
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-  
-	NSArray * visibleRows = [self.tableView indexPathsForVisibleRows];
-  if ( [visibleRows count] ) {
-    [self syncLastRead:[visibleRows objectAtIndex:0]];
-  }
+
+	WAArticle *bottomMostArticle = [[[self.tableView indexPathsForVisibleRows] irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
 	
+		return [self.fetchedResultsController objectAtIndexPath:anIndexPath];
+		
+	}] lastObject];
+	
+	[self setLastScannedObject:bottomMostArticle completion:^(BOOL didFinish) {
+	
+		NSLog(@"setLastScannedObject -> %x", didFinish);
+		
+	}];
+  
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
 	
@@ -328,9 +437,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-/* sync last read pointer with remote */
 - (void) syncLastRead:(NSIndexPath *)indexPath {
-  NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
+  
+	NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
+	
+	
+	
   [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
   } onFailure:^(NSError *error) {
     NSLog(@"SetLastRead failed %@", error);
@@ -605,4 +717,54 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	});
 	
 }
+
+- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback {
+
+	[[WARemoteInterface sharedInterface] updateLastScannedPostInGroup:anArticle.group.identifier withPost:anArticle.identifier onSuccess: ^ {
+	
+		if (callback)
+			callback(YES);
+		 
+ } onFailure: ^ (NSError *error) {
+ 
+		if (callback)
+		callback(NO);
+	 
+ }];
+
+}
+
+- (void) retrieveLastScannedObjectWithCompletion:(void(^)(WAArticle *anArticleOrNil))callback {
+
+	NSString * aGroupIdentifier = [[NSSet setWithArray:[self.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
+		
+		return anArticle.group.identifier;
+		
+	}]] anyObject];
+	
+	__block __typeof__(self) nrSelf = self;
+
+	[[WARemoteInterface sharedInterface] retrieveLastScannedPostInGroup:aGroupIdentifier onSuccess:^(NSString *lastScannedPostIdentifier) {
+	
+		WAArticle *matchingArticle = [[nrSelf.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
+		
+			if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
+				return anArticle;
+			
+			return nil;
+			
+		}] lastObject];
+		
+		if (callback)
+			callback(matchingArticle);
+		
+	} onFailure:^(NSError *error) {
+	
+		if (callback)
+			callback(nil);
+		
+	}];
+
+}
+
 @end

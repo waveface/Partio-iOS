@@ -63,3 +63,5 @@
 "WAStateLoadingSingleFile" = "正在載入檔案…" ;
 "WAStateLoadingSingleDocument" = "正在載入文件…" ;
 "WAStateLoadingSingleDocumentProgress" = "%1 / %2" ;	//	e.g. 512KB of 30MB
+
+"WAStatusDidReceiveReadingProgressUpdate" = "找到新的閱讀斷點";

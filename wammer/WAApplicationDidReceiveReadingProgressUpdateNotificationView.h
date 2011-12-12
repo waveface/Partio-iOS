@@ -10,4 +10,12 @@
 
 @interface WAApplicationDidReceiveReadingProgressUpdateNotificationView : UIView
 
++ (WAApplicationDidReceiveReadingProgressUpdateNotificationView *) viewFromNib;
+
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *localizableLabels;
+
+- (IBAction) handleAction:(id)sender;
+
+@property (nonatomic, readwrite, copy) void (^onAction)();
+
 @end
