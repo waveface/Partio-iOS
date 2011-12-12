@@ -43,12 +43,6 @@
   if (self.identifier)
     self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
   
-  if ([self.remoteResourceType isEqualToString:@"doc"]) {
-  
-    NSLog(@"document entity %@", self);
-  
-  }
-
 }
 
 + (NSString *) keyPathHoldingUniqueValue {
@@ -129,9 +123,6 @@
   
   } else if ([incomingFileType isEqualToString:@"doc"]) {
   
-    NSLog(@"Is document — create phantom entities for slides");
-    
-    //  NSDictionary *documentMeta = [incomingRepresentation valueForKeyPath:@"doc_meta"];
     NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.pages"];
     
     if (pagesValue) {
@@ -175,8 +166,6 @@
       
   }
 	
-  NSLog(@"returnedDictionary %@", returnedDictionary);
-  
 	return returnedDictionary; 
 
 }
