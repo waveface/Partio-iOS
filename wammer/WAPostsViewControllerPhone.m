@@ -271,9 +271,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	__block __typeof__(self) nrSelf = self;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	self.tableView.backgroundColor = nil;
-	self.tableView.opaque = NO;
-	
 	
 	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
 	
@@ -343,7 +340,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
 			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
-			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)			
+			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
 		};
 		
 	};
@@ -357,50 +354,85 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 	
-	//	?
+	self.readingProgressUpdateNotificationView.hidden = YES;
 	
+	//	?
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	self.readingProgressUpdateNotificationView.onAction = nil;
+	self.readingProgressUpdateNotificationView.onClear = nil;
+
+	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
+		
 	[self retrieveLastScannedObjectWithCompletion: ^ (WAArticle *anArticleOrNil) {
 	
-		if (![self isViewLoaded])
+		if (![nrSelf isViewLoaded])
 			return;
-			
-		__block __typeof__(self) nrSelf = self;
-		__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
 		
-		self.readingProgressUpdateNotificationView.onAction = ^ {
+		if (!anArticleOrNil)
+			return;
 		
-			nrNotificationView.onAction = nil;
+		nrNotificationView.onAction = ^ {
+		
+			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
+				
+				UIEdgeInsets newInsets = self.tableView.contentInset;
+				newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
+				self.tableView.contentInset = newInsets;
+				[nrSelf.tableView layoutSubviews];
+				
+			} completion:nil];
 			
-			[nrNotificationView enqueueAnimationForVisibility:NO completion:^(BOOL didFinish) {
-			
-				//	nil
-			
-			}];
-			
-			NSIndexPath *objectIndexPath = [self.fetchedResultsController indexPathForObject:anArticleOrNil];
+			NSIndexPath *objectIndexPath = [nrSelf.fetchedResultsController indexPathForObject:anArticleOrNil];
 			
 			if (objectIndexPath)
 				[nrSelf.tableView scrollToRowAtIndexPath:objectIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 				
+			nrNotificationView.onAction = nil;
+			
 		};
 		
-		self.readingProgressUpdateNotificationView.onClear = ^ {
+		nrNotificationView.onClear = ^ {
 		
-			[nrNotificationView enqueueAnimationForVisibility:NO completion:^(BOOL didFinish) {
+			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
 				
-				//	nil
+				UIEdgeInsets newInsets = nrSelf.tableView.contentInset;
+				newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
+				nrSelf.tableView.contentInset = newInsets;
+				[nrSelf.tableView layoutSubviews];
+				
+			} completion:nil];
+			
+			nrNotificationView.onClear = nil;
+			
+		};
+		
+			
+		if (YES) {
+		
+			[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+			
+			nrNotificationView.hidden = NO;
+			
+			[nrNotificationView enqueueAnimationForVisibility:YES withAdditionalAnimation:^{
+			
+				UIEdgeInsets newInsets = self.tableView.contentInset;
+				newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
+				self.tableView.contentInset = newInsets;
+							
+			} completion: ^ (BOOL didFinish) {
+
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 				
 			}];
 		
-		};
-		
-		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-		
-		[self.readingProgressUpdateNotificationView enqueueAnimationForVisibility:YES completion:^(BOOL didFinish) {
-
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-			
-		}];
+		}
 			
 	}];
 
@@ -419,7 +451,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		NSLog(@"setLastScannedObject -> %x", didFinish);
 		
 	}];
-  	
+	
+	self.readingProgressUpdateNotificationView.onAction = nil;
+	self.readingProgressUpdateNotificationView.onClear = nil;
+	self.tableView.contentInset = UIEdgeInsetsZero;
+	
 	[super viewWillDisappear:animated];
 	
 }
@@ -458,7 +494,33 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	
 	return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+	
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	
+	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	
+	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+
+	return 4;
+
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+
+	return 4;
+
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -488,9 +550,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
 		cell.commentLabel.userInteractionEnabled = YES;
-		cell.backgroundColor = nil;
-		cell.opaque = NO;
-		
+				
   }
 	
   cell.userNicknameLabel.text = post.owner.nickname;//[[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
