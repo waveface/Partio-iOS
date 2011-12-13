@@ -13,5 +13,6 @@
 @property (nonatomic, readwrite, retain) UIView *backgroundView;
 
 + (UIView *) defaultGradientBackgroundView;
++ (UIView *) defaultPatternBackgroundView;
 
 @end
