@@ -133,6 +133,8 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
   [self.recurrenceMachine addRecurringOperation:refreshOperation];
   self.recurrenceMachine.recurrenceInterval = 30;
   
+  [self.recurrenceMachine scheduleOperationsNow];
+  
   return self;
 
 }
