@@ -21,6 +21,9 @@
     UIImage *decodedImage = [image irDecodedImage];
     dispatch_async(dispatch_get_main_queue(), ^{
     
+      if (self.image != decodedImage)
+        return;
+    
       [super setImage:decodedImage];
       [self.delegate imageViewDidUpdate:self];
       
