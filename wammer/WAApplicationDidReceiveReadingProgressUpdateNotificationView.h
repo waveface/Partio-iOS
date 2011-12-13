@@ -14,6 +14,8 @@
 
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *localizableLabels;
 
+@property (retain, nonatomic) IBOutlet UIView *wrapperView;
+
 - (IBAction) handleAction:(id)sender;
 - (IBAction) handleClear:(id)sender;
 
@@ -21,5 +23,6 @@
 @property (nonatomic, readwrite, copy) void (^onClear)();
 
 - (void) enqueueAnimationForVisibility:(BOOL)willBeVisible completion:(void(^)(BOOL didFinish))aBlock;
+- (void) enqueueAnimationForVisibility:(BOOL)willBeVisible withAdditionalAnimation:(void(^)(void))additionalStuff completion:(void(^)(BOOL didFinish))aBlock;
 
 @end

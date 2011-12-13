@@ -7,8 +7,10 @@
 //
 
 #import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
+#import "IRGradientView.h"
 
 @implementation WAApplicationDidReceiveReadingProgressUpdateNotificationView
+@synthesize wrapperView;
 @synthesize localizableLabels, onAction, onClear;
 
 + (UIView *) viewFromNib {
@@ -37,7 +39,7 @@
       for (UILabel *aLabel in self.localizableLabels)
         aLabel.textColor = [UIColor whiteColor];
       
-      self.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
+      self.wrapperView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
       
       UIView *bottomGlare = [[[UIView alloc] initWithFrame:(CGRect){
         (CGPoint){ 0, CGRectGetHeight(self.bounds) - 2 },
@@ -47,7 +49,25 @@
       bottomGlare.backgroundColor = [UIColor colorWithWhite:1 alpha:0.25];
       bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
       
-      [self addSubview:bottomGlare];
+      [self.wrapperView addSubview:bottomGlare];
+      
+      
+      IRGradientView *backgroundShadowView = [[[IRGradientView alloc] initWithFrame:(CGRect){
+        (CGPoint){
+          CGRectGetMinX(self.wrapperView.bounds),
+          CGRectGetMaxY(self.wrapperView.bounds) },
+        (CGSize){
+          CGRectGetWidth(self.wrapperView.bounds),
+          3
+        }
+      }] autorelease];
+      
+      backgroundShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+      
+      [backgroundShadowView setLinearGradientFromColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.35f] anchor:irTop toColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] anchor:irBottom];
+      
+      [self.wrapperView addSubview:backgroundShadowView];
+
       
       break;
       
@@ -62,6 +82,7 @@
 	[localizableLabels release];
 	[onAction release];
   [onClear release];
+  [wrapperView release];
 	[super dealloc];
 	
 }
@@ -70,6 +91,7 @@
 
 	if (self.onAction)
 		self.onAction();
+  
 }
 
 - (IBAction)handleClear:(id)sender {
@@ -81,23 +103,39 @@
 
 - (void) enqueueAnimationForVisibility:(BOOL)willBeVisible completion:(void(^)(BOOL didFinish))aBlock {
 
-  CGPoint oldCenter = self.center;
-  CGPoint newCenter = oldCenter;
+  [self enqueueAnimationForVisibility:willBeVisible withAdditionalAnimation:nil completion:aBlock];
+
+}
+
+- (void) enqueueAnimationForVisibility:(BOOL)willBeVisible withAdditionalAnimation:(void(^)(void))additionalStuff completion:(void(^)(BOOL didFinish))aBlock {
+
+  CGPoint center = (CGPoint){
+    CGRectGetMidX(wrapperView.superview.bounds),
+    CGRectGetMidY(wrapperView.superview.bounds)
+  };
+
+  CGPoint oldCenter = center;
+  CGPoint newCenter = center;
 
   if (willBeVisible) {
-    oldCenter.y -= CGRectGetHeight(self.bounds);
+    oldCenter.y -= CGRectGetHeight(wrapperView.bounds);
   } else {
-    newCenter.y -= CGRectGetHeight(self.bounds);
+    newCenter.y -= CGRectGetHeight(wrapperView.bounds);
   }
   
-  self.center = oldCenter;
+  wrapperView.center = oldCenter;
   self.hidden = NO;
 
   [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
-
-    self.center = newCenter;
+  
+    wrapperView.center = newCenter;
     
+    if (additionalStuff)
+      additionalStuff();
+
   } completion: ^ (BOOL finished) {
+    
+    //  wrapperView.center = oldCenter;
     
     if (aBlock)
       aBlock(finished);
