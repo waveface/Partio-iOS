@@ -278,6 +278,8 @@
 	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	returnedView.delegate = self;
+  
+  [returnedView reset];
 	
 	return returnedView;
 

@@ -125,7 +125,7 @@
   
     NSNumber *pagesValue = [incomingRepresentation valueForKeyPath:@"doc_meta.pages"];
     
-    if (pagesValue) {
+    if ([pagesValue isKindOfClass:[NSNumber class]]) {
     
       NSUInteger numberOfPages = [pagesValue unsignedIntegerValue];
       
