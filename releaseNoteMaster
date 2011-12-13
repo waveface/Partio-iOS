@@ -1,2 +1,2 @@
-ETReleaseNotes="- Enhances Refresh + Continuous Reading Update Notification Header integration for the iPhone\n- Fixes bug where the iPhone timeline will restore with the wrong content offset\n- Various performance fixes"
+ETReleaseNotes="- Fixes a bug where the application will superimpose the URI scheme of the Cloud endpoint on any stations it attempts to connect to\n- Fixes up navigation controller tomfoolery (Shared)\n- Adds the user info view controller for the iPhone"
 ETMarketingVersionNumber="0.9.8"
