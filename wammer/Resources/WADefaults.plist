@@ -20,5 +20,9 @@
 	<false/>
 	<key>WAAlwaysDenyExpensiveRemoteOperations</key>
 	<true/>
+	<key>WADebugAutologinUserIdentifier</key>
+	<string>haskell@master.waveface.com</string>
+	<key>WADebugAutologinUserPassword</key>
+	<string>haskell</string>
 </dict>
 </plist>

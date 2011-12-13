@@ -7,6 +7,7 @@
 //
 
 #import "WANavigationController.h"
+#import "WANavigationBar.h"
 
 @implementation WANavigationController
 
@@ -15,6 +16,41 @@
 @synthesize onDismissModalViewControllerAnimated;
 @synthesize disablesAutomaticKeyboardDismissal;
 
++ (id) alloc {
+
+  UIViewController *fauxVC = [[[UIViewController alloc] init] autorelease];
+  WANavigationController *fauxNavController = [super alloc];
+  fauxNavController = [[fauxNavController initWithRootViewController:fauxVC] autorelease];
+  
+  NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
+  NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData] autorelease];
+  [unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+
+  return [[unarchiver decodeObjectForKey:@"root"] retain];
+    
+}
+
+//- (id) initWithRootViewController:(UIViewController *)presentedViewController {
+//
+//  WANavigationController *navController = [[((^ {
+//    
+//    NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:
+//      [NSKeyedArchiver archivedDataWithRootObject:
+//        [[super initWithRootViewController:
+//          [[[UIViewController alloc] init] autorelease]
+//        ] autorelease]
+//      ]] autorelease];
+//    
+//    [unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+//    
+//    return unarchiver;
+//    
+//  })()) decodeObjectForKey:@"root"] initWithRootViewController:presentedViewController];
+//  
+//  return navController;
+//
+//}
+//
 - (void) viewDidLoad {
 
 	[super viewDidLoad];

@@ -33,6 +33,8 @@ NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthenticat
 NSString * const kWAUserPasswordResetEndpointURL = @"WAUserPasswordResetEndpointURL";
 NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpensiveRemoteOperations";
 NSString * const kWAAlwaysDenyExpensiveRemoteOperations = @"WAAlwaysDenyExpensiveRemoteOperations";
+NSString * const kWADebugAutologinUserIdentifier = @"WADebugAutologinUserIdentifier";
+NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
@@ -175,6 +177,15 @@ UIButton * WAButtonForImage (UIImage *anImage) {
 	[returnedButton sizeToFit];
 	return returnedButton;
 	
+}
+
+UIButton * WAToolbarButtonForImage (UIImage *anImage) {
+
+  UIButton *button = WAButtonForImage(anImage);
+  button.bounds = (CGRect){ CGPointZero, (CGSize){ 44, 44 }};
+  
+  return button;
+  
 }
 
 UIImage * WABarButtonImageFromImageNamed (NSString *aName) {

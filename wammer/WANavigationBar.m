@@ -18,6 +18,7 @@
 
 @implementation WANavigationBar
 @synthesize backgroundView;
+@synthesize suppressesDefaultAppearance;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -55,6 +56,7 @@
 
 	self.backgroundColor = nil;
 	self.opaque = NO;
+  self.suppressesDefaultAppearance = NO;
 
 }
 
@@ -66,8 +68,14 @@
 }
 
 - (void) drawRect:(CGRect)rect {
-		
-	//	Nope.
+  
+  if (self.suppressesDefaultAppearance) {
+  
+  } else {
+  
+    [super drawRect:rect];
+  
+  }
 		
 }
 
@@ -90,6 +98,8 @@
 	[self addSubview:backgroundView];
 	[self sendSubviewToBack:backgroundView];
 
+  self.suppressesDefaultAppearance = (BOOL)!!(backgroundView);
+
 }
 
 - (void) layoutSubviews {
@@ -98,6 +108,14 @@
   
   [self.backgroundView.superview sendSubviewToBack:self.backgroundView];
   
+}
+
+- (void) setSuppressesDefaultAppearance:(BOOL)flag {
+
+  suppressesDefaultAppearance = flag;
+  
+  [self setNeedsDisplay];
+
 }
 
 + (UIView *) defaultGradientBackgroundView {
@@ -125,8 +143,44 @@
 	[returnedView addSubview:backgroundShadowView];
 	[returnedView addSubview:backgroundGradientView];
 	[returnedView addSubview:backgroundGlareView];
+  
+  returnedView.userInteractionEnabled = NO;
 
 	return returnedView;
+
+}
+
++ (UIView *) defaultPatternBackgroundView {
+
+  UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
+  UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+  
+  returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
+  returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+  
+  
+  UIView *topGlare = [[[UIView alloc] initWithFrame:(CGRect){
+    (CGPoint){ 0, 0 },
+    (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
+  }] autorelease];
+  
+  topGlare.backgroundColor = [UIColor colorWithWhite:1 alpha:0.25];
+  topGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+  
+  [returnedView addSubview:topGlare];
+  
+  
+  UIView *bottomGlare = [[[UIView alloc] initWithFrame:(CGRect){
+    (CGPoint){ 0, CGRectGetHeight(returnedView.bounds) - 1 },
+    (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
+  }] autorelease];
+  
+  bottomGlare.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
+  bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+  
+  [returnedView addSubview:bottomGlare];
+  
+  return (UIView *)returnedView;
 
 }
 
