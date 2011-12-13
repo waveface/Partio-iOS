@@ -22,7 +22,7 @@
 "WAActionOkay" = "Okay";
 "WAActionResetPassword" = "Reset Password";
 "WAActionRegisterUser" = "Register";
-"WAActionGoToLastReadPosition" = "Jump to where I left";
+"WAActionGoToLastReadPosition" = "Jump to Furthest Post";
 
 "WANounUsername" = "Email";
 "WANounNickname" = "Nickname";
