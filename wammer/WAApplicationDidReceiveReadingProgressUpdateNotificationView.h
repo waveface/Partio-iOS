@@ -24,5 +24,6 @@
 
 - (void) enqueueAnimationForVisibility:(BOOL)willBeVisible completion:(void(^)(BOOL didFinish))aBlock;
 - (void) enqueueAnimationForVisibility:(BOOL)willBeVisible withAdditionalAnimation:(void(^)(void))additionalStuff completion:(void(^)(BOOL didFinish))aBlock;
+- (void) enqueueAnimationForVisibility:(BOOL)willBeVisible withDuration:(NSTimeInterval)duration additionalAnimation:(void(^)(void))additionalStuff completion:(void(^)(BOOL didFinish))aBlock;
 
 @end
