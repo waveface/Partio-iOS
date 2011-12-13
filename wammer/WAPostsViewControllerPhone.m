@@ -167,6 +167,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				
 			}],
 			
+			[IRAction actionWithTitle:@"Rebound" block:^{
+			
+				[nrSelf persistState];
+				[nrSelf restoreState];
+			
+			}],
+			
 	nil]] retain];
 
 	return settingsActionSheetController;
