@@ -12,10 +12,9 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBUITableViewCell</string>
-			<string>IBUIImageView</string>
-			<string>IBUILabel</string>
 			<string>IBProxyObject</string>
+			<string>IBUILabel</string>
+			<string>IBUITableViewCell</string>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -45,22 +44,6 @@
 						<int key="NSvFlags">256</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="446410923">
-								<reference key="NSNextResponder" ref="229656081"/>
-								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{10, 8}, {300, 174}}</string>
-								<reference key="NSSuperview" ref="229656081"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
-								<string key="NSReuseIdentifierKey">_NS:569</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MC43NDIwMjgwNjEyIDAuNzQyMDI4MDYxMiAwLjc0MjAyODA2MTIAA</bytes>
-								</object>
-								<int key="IBUIContentMode">3</int>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
 							<object class="IBUILabel" id="701695387">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">290</int>
@@ -147,6 +130,7 @@
 								<string key="NSFrame">{{60, 43}, {240, 126}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -179,7 +163,7 @@
 						<string key="NSFrameSize">{320, 189}</string>
 						<reference key="NSSuperview" ref="102746709"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="446410923"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:314</string>
 						<reference key="IBUIBackgroundColor" ref="510789719"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -227,14 +211,6 @@
 					</object>
 					<int key="connectionID">33</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">backgroundImageView</string>
-						<reference key="source" ref="102746709"/>
-						<reference key="destination" ref="446410923"/>
-					</object>
-					<int key="connectionID">35</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -266,7 +242,6 @@
 							<reference ref="1002532177"/>
 							<reference ref="701695387"/>
 							<reference ref="1062622976"/>
-							<reference ref="446410923"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -285,11 +260,6 @@
 						<reference key="object" ref="1062622976"/>
 						<reference key="parent" ref="102746709"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">34</int>
-						<reference key="object" ref="446410923"/>
-						<reference key="parent" ref="102746709"/>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -303,7 +273,6 @@
 					<string>3.IBPluginDependency</string>
 					<string>32.CustomClassName</string>
 					<string>32.IBPluginDependency</string>
-					<string>34.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
 					<string>9.IBPluginDependency</string>
 				</object>
@@ -315,7 +284,6 @@
 					<string>WAPostViewCellPhone</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>IRLabel</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>

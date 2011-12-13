@@ -22,6 +22,7 @@
 "WAActionOkay" = "確認";
 "WAActionResetPassword" = "重設密碼";
 "WAActionRegisterUser" = "註冊";
+"WAActionGoToLastReadPosition" = "回到上次的閱讀斷點";
 
 "WANounUsername" = "電子郵件";
 "WANounNickname" = "暱稱";
