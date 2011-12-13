@@ -320,6 +320,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 		CGRect tableViewBounds = nrSelf.tableView.bounds;
 		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
+		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
 		
 		actualBackgroundView.bounds = (CGRect){
 			CGPointZero,
@@ -330,12 +331,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		};
 		
 		actualBackgroundView.center = (CGPoint){
-			0.5 * CGRectGetWidth(tableViewBounds),
 			
-			0.5 * (CGRectGetHeight(actualBackgroundView.bounds) - CGRectGetHeight(tableViewBounds)) + 
-			-1 * remainderf(tableViewContentOffset.y, backgroundImageSize.height) + 
-			0 * fmodf(
-				backgroundImageSize.height - fmodf(tableViewContentOffset.y, backgroundImageSize.height) - CGRectGetHeight(tableViewBounds),
+			0.5 * CGRectGetWidth(tableViewBounds),
+
+			backgroundImageSize.height + remainderf(
+				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
 				backgroundImageSize.height
 			)
 			
