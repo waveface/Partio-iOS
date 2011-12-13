@@ -7,8 +7,10 @@
 //
 
 #import "WATiledImageView.h"
+#import "WAAyncImageView.h"
 
 @implementation WAImageView
+@synthesize delegate;
 
 + (id) alloc {
 
@@ -30,7 +32,7 @@
 
 + (Class) preferredClusterClass {
 
-  return [UIImageView class];
+  return [WAAyncImageView class];
 
 }
 
