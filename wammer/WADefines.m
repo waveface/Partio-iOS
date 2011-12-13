@@ -33,6 +33,8 @@ NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthenticat
 NSString * const kWAUserPasswordResetEndpointURL = @"WAUserPasswordResetEndpointURL";
 NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpensiveRemoteOperations";
 NSString * const kWAAlwaysDenyExpensiveRemoteOperations = @"WAAlwaysDenyExpensiveRemoteOperations";
+NSString * const kWADebugAutologinUserIdentifier = @"WADebugAutologinUserIdentifier";
+NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";

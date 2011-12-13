@@ -447,6 +447,7 @@
       
     }];
     
+    
     __block __typeof__(self) nrAppDelegate = self;
     
 		authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
@@ -468,11 +469,9 @@
             [authRequestVC assignFirstResponderStatusToBestMatchingField];
 						
 					}] otherActions:[NSArray arrayWithObjects:
-					
-						resetPasswordAction,
+            resetPasswordAction,
             registerUserAction,
-					
-					nil]];
+          nil]];
 					
 					[alertView show];
 					
@@ -647,13 +646,27 @@
     [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
       (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
     nil]];
-		
-    authRequestVC.actions = [NSArray arrayWithObjects:
+    
+    NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
       
       signInUserAction,
       registerUserAction,
       
     nil];
+
+    if (WAAdvancedFeaturesEnabled()) {
+      
+      [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
+        
+        authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+        authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
+        [authRequestVC authenticate];
+        
+      }]];
+      
+    }
+		
+    authRequestVC.actions = authRequestActions;
     
     [authRequestVC irPerformOnDeallocation:^{
       [signInUserAction irUnbind:@"enabled"];
