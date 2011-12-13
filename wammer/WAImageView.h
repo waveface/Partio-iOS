@@ -10,6 +10,6 @@
 
 @interface WAImageView : UIImageView
 
-@property (nonatomic, readwrite, retain) UIImage *image;
++ (Class) preferredClusterClass;
 
 @end
