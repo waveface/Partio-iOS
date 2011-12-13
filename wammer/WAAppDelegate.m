@@ -64,6 +64,8 @@
 	__block __typeof__(self) nrSelf = self;
 
 	WARegisterUserDefaults();
+  
+  [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
 	
 	[IRRemoteResourcesManager sharedManager].delegate = self;
 	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
@@ -125,22 +127,7 @@
 		
 		self.window.rootViewController = (( ^ {
 		
-			__block WANavigationController *navController = [WANavigationController alloc];
-			
-			navController = [[((^ {
-				
-				NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:
-					[NSKeyedArchiver archivedDataWithRootObject:
-						[[navController initWithRootViewController:
-							[[[UIViewController alloc] init] autorelease]
-						] autorelease]
-					]] autorelease];
-				
-				[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
-				
-				return unarchiver;
-				
-			})()) decodeObjectForKey:@"root"] initWithRootViewController:presentedViewController];
+			__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
 			
       navController.onViewDidLoad = ^ (WANavigationController *self) {
 				self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
@@ -149,52 +136,13 @@
 			if ([navController isViewLoaded])
 				navController.onViewDidLoad(navController);
         
-			((WANavigationBar *)(navController.navigationBar)).backgroundView = ((^ {
-        switch (UI_USER_INTERFACE_IDIOM()) {
-          case UIUserInterfaceIdiomPhone: {
-            
-            UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
-            UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-            
-            returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
-            returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-            
-            
-            UIView *topGlare = [[[UIView alloc] initWithFrame:(CGRect){
-              (CGPoint){ 0, 0 },
-              (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
-            }] autorelease];
-            
-            topGlare.backgroundColor = [UIColor colorWithWhite:1 alpha:0.25];
-            topGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-            
-            [returnedView addSubview:topGlare];
-            
-            
-            UIView *bottomGlare = [[[UIView alloc] initWithFrame:(CGRect){
-              (CGPoint){ 0, CGRectGetHeight(returnedView.bounds) - 1 },
-              (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
-            }] autorelease];
-            
-            bottomGlare.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
-            bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-            
-            [returnedView addSubview:bottomGlare];
-            
-            return (UIView *)returnedView;
-            
-          }
-          
-          default: {
-          
-            return (UIView *)[WANavigationBar defaultGradientBackgroundView];
-            
-          }
-        }
-      })());
+      WANavigationBar *navBar = ((WANavigationBar *)(navController.navigationBar));
       
       if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        navController.navigationBar.tintColor = [UIColor brownColor];
+        navBar.tintColor = [UIColor brownColor];
+        navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
+      } else {
+        navBar.backgroundView = [WANavigationBar defaultGradientBackgroundView];
       }
 			
 			return navController;
@@ -499,6 +447,7 @@
       
     }];
     
+    
     __block __typeof__(self) nrAppDelegate = self;
     
 		authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
@@ -520,11 +469,9 @@
             [authRequestVC assignFirstResponderStatusToBestMatchingField];
 						
 					}] otherActions:[NSArray arrayWithObjects:
-					
-						resetPasswordAction,
+            resetPasswordAction,
             registerUserAction,
-					
-					nil]];
+          nil]];
 					
 					[alertView show];
 					
@@ -699,13 +646,27 @@
     [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
       (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
     nil]];
-		
-    authRequestVC.actions = [NSArray arrayWithObjects:
+    
+    NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
       
       signInUserAction,
       registerUserAction,
       
     nil];
+
+    if (WAAdvancedFeaturesEnabled()) {
+      
+      [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
+        
+        authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+        authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
+        [authRequestVC authenticate];
+        
+      }]];
+      
+    }
+		
+    authRequestVC.actions = authRequestActions;
     
     [authRequestVC irPerformOnDeallocation:^{
       [signInUserAction irUnbind:@"enabled"];
