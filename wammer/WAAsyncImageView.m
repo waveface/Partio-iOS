@@ -26,6 +26,13 @@
   
   lastImagePtr = image;
 
+  if (!image) {
+  
+    [super setImage:nil];
+    return;
+  
+  }  
+
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^ {
 
     UIImage *decodedImage = [image irDecodedImage];
