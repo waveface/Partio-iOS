@@ -179,6 +179,15 @@ UIButton * WAButtonForImage (UIImage *anImage) {
 	
 }
 
+UIButton * WAToolbarButtonForImage (UIImage *anImage) {
+
+  UIButton *button = WAButtonForImage(anImage);
+  button.bounds = (CGRect){ CGPointZero, (CGSize){ 44, 44 }};
+  
+  return button;
+  
+}
+
 UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
 
   UIColor *fillColor;

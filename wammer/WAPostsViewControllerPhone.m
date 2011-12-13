@@ -100,9 +100,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
 	}];
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-		[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
-	}];
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+  
+    __block __typeof__(self) nrSelf = self;
+	
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 54, 44 }] autorelease];
+    
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSArray arrayWithObjects:
+		
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+				
+				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
+        
+			}],
+      			
+		nil];
+		
+		return toolbar;
+	
+	})())];
 	
 	self.navigationItem.titleView = [self defaultTitleView];
 	

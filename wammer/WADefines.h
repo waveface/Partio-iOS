@@ -41,4 +41,5 @@ extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^blo
 extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
 
 extern UIButton * WAButtonForImage (UIImage *anImage);
+extern UIButton * WAToolbarButtonForImage (UIImage *anImage);
 extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
