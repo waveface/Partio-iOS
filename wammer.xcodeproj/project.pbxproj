@@ -149,6 +149,12 @@
 		FFC648911445EC4500593E5E /* IRFoundationsX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF72C188142789FA00B5D838 /* IRFoundationsX.framework */; };
 		FFC648921445EC4500593E5E /* IRWebAPIKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */; };
 		FFC648931445ECB500593E5E /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97386013D82B4F003D1722 /* JSONKit.m */; };
+		FFC937DC149649EE009E5708 /* UITextFieldClearButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937D8149649EE009E5708 /* UITextFieldClearButton.png */; };
+		FFC937DD149649EE009E5708 /* UITextFieldClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937D9149649EE009E5708 /* UITextFieldClearButton@2x.png */; };
+		FFC937DE149649EE009E5708 /* UITextFieldClearButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937DA149649EE009E5708 /* UITextFieldClearButtonPressed.png */; };
+		FFC937DF149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */; };
+		FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */; };
+		FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
 		FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
@@ -264,7 +270,7 @@
 		FFFC763C1487762D00247099 /* WAUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFC763B1487762D00247099 /* WAUserInfoViewController.m */; };
 		FFFDEF6A14211AF10083BEFB /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FF03F5CD13D81B76007E168F /* WAModel.xcdatamodeld */; };
 		FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */; };
-		FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib */; };
+		FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -828,6 +834,12 @@
 		FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		FFC81D0E14277F0300B41DB9 /* WAFauxRootNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFauxRootNavigationController.h; sourceTree = "<group>"; };
 		FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFauxRootNavigationController.m; sourceTree = "<group>"; };
+		FFC937D8149649EE009E5708 /* UITextFieldClearButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UITextFieldClearButton.png; path = Resources/UITextFieldClearButton.png; sourceTree = "<group>"; };
+		FFC937D9149649EE009E5708 /* UITextFieldClearButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldClearButton@2x.png"; path = "Resources/UITextFieldClearButton@2x.png"; sourceTree = "<group>"; };
+		FFC937DA149649EE009E5708 /* UITextFieldClearButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UITextFieldClearButtonPressed.png; path = Resources/UITextFieldClearButtonPressed.png; sourceTree = "<group>"; };
+		FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldClearButtonPressed@2x.png"; path = "Resources/UITextFieldClearButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UITextFieldInvertedClearButton.png; path = Resources/UITextFieldInvertedClearButton.png; sourceTree = "<group>"; };
+		FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldInvertedClearButton@2x.png"; path = "Resources/UITextFieldInvertedClearButton@2x.png"; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewBadge.m; sourceTree = "<group>"; };
@@ -863,7 +875,7 @@
 		FFFC763B1487762D00247099 /* WAUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoViewController.m; sourceTree = "<group>"; };
 		FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.h; sourceTree = "<group>"; };
 		FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.m; sourceTree = "<group>"; };
-		FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib"; sourceTree = "<group>"; };
+		FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1062,7 +1074,7 @@
 				FFF556B71456A64A0077DFFB /* WARefreshActionView.m */,
 				FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */,
 				FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */,
-				FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib */,
+				FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */,
 			);
 			name = "Base Articles View";
 			path = wammer;
@@ -1449,6 +1461,12 @@
 				FF8CADF01486217B00C8BF04 /* WAStationNotFoundGlyph.png */,
 				FFFC76351487760F00247099 /* WAUserGlyph.png */,
 				FFFC76361487760F00247099 /* WAUserGlyph@2x.png */,
+				FFC937D8149649EE009E5708 /* UITextFieldClearButton.png */,
+				FFC937D9149649EE009E5708 /* UITextFieldClearButton@2x.png */,
+				FFC937DA149649EE009E5708 /* UITextFieldClearButtonPressed.png */,
+				FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */,
+				FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */,
+				FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */,
 			);
 			name = Resources;
 			path = wammer;
@@ -1999,7 +2017,13 @@
 				4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */,
 				FF88247814921D0B00747A6D /* WANavigationBarBackdrop.png in Resources */,
 				FF88247914921D0B00747A6D /* WANavigationBarBackdrop@2x.png in Resources */,
-				FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView~iphone.xib in Resources */,
+				FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */,
+				FFC937DC149649EE009E5708 /* UITextFieldClearButton.png in Resources */,
+				FFC937DD149649EE009E5708 /* UITextFieldClearButton@2x.png in Resources */,
+				FFC937DE149649EE009E5708 /* UITextFieldClearButtonPressed.png in Resources */,
+				FFC937DF149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png in Resources */,
+				FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */,
+				FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2299,7 +2323,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 131;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2346,7 +2370,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 125;
+				CURRENT_PROJECT_VERSION = 131;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;

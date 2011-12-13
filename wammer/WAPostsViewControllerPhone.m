@@ -83,9 +83,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[fetchedResultsController release];
   [_lastID release];
 	[readingProgressUpdateNotificationView release];
-	
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
-	
+		
 	[super dealloc];
   
 }
@@ -96,6 +97,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	if (!self)
 		return nil;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
+		
+	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
   
 	self.title = NSLocalizedString(@"WAAppTitle", @"Title for application");
 	
@@ -162,6 +167,13 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				
 			}],
 			
+			[IRAction actionWithTitle:@"Rebound" block:^{
+			
+				[nrSelf persistState];
+				[nrSelf restoreState];
+			
+			}],
+			
 	nil]] retain];
 
 	return settingsActionSheetController;
@@ -206,11 +218,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (void) viewDidUnload {
-	
-	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
-	
+		
 	self.readingProgressUpdateNotificationView = nil;
-  
+	
 	[super viewDidUnload];
 	
 }
@@ -248,7 +258,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		return readingProgressUpdateNotificationView;
 		
 	readingProgressUpdateNotificationView = [[WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib] retain];
-	readingProgressUpdateNotificationView.alpha = 0;
+	readingProgressUpdateNotificationView.hidden = YES;
 	
 	return readingProgressUpdateNotificationView;
 
@@ -257,13 +267,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	
+		
 	__block __typeof__(self) nrSelf = self;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	self.tableView.backgroundColor = nil;
-	self.tableView.opaque = NO;
-	
 	
 	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
 	
@@ -286,10 +293,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	self.tableView.backgroundView = backgroundView;
 	
+	__block UIView *actualBackgroundView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+	[backgroundView addSubview:actualBackgroundView];
 	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
 	CGSize backgroundImageSize = backgroundImage.size;
-	backgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
-		
+	actualBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	actualBackgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
 	
 	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
 	
@@ -310,44 +319,31 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
 		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
 		
-		backgroundView.bounds = (CGRect){
+		actualBackgroundView.bounds = (CGRect){
 			CGPointZero,
 			(CGSize){
 				CGRectGetWidth(tableViewBounds),
-				backgroundImageSize.height * ceilf((2 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
+				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
 			}
 		};
 		
-		backgroundView.center = (CGPoint){
+		actualBackgroundView.center = (CGPoint){
+			
 			0.5 * CGRectGetWidth(tableViewBounds),
-			backgroundImageSize.height * ceilf(tableViewContentOffset.y / backgroundImageSize.height)
+
+			backgroundImageSize.height + remainderf(
+				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
+				backgroundImageSize.height
+			)
+			
 		};
 		
 		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
 			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
-			//	-1 * tableViewContentInset.top + 
 			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
 		};
 		
-		//	[nrSelf.progressUpdateNotification.superview bringSubviewToFront:nrSelf.progressUpdateNotification];
-		
-		NSLog(@"tableViewContentOffset %@", NSStringFromCGPoint(tableViewContentOffset));
-		NSLog(@"tableViewContentInset %@", NSStringFromUIEdgeInsets(tableViewContentInset));
-		NSLog(@"readingProgressUpdateNotificationView.bounds %@", NSStringFromCGRect(nrSelf.readingProgressUpdateNotificationView.bounds));
-		NSLog(@"readingProgressUpdateNotificationView.center %@", NSStringFromCGPoint(nrSelf.readingProgressUpdateNotificationView.center));
-		
 	};
-	
-	
-	//	self.tableView.onScroll = ^ {
-	//	
-	//		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
-	//			
-	//			self.readingProgressUpdateNotificationView.alpha = 0;
-	//			
-	//		} completion:nil];
-	//	
-	//	};
 	
 }
 
@@ -358,44 +354,86 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleCompositionSessionRequest:) name:kWACompositionSessionRequestedNotification object:nil];
-		
-	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
-	
+	self.readingProgressUpdateNotificationView.hidden = YES;
 	
 	//	?
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
 	
+	self.readingProgressUpdateNotificationView.onAction = nil;
+	self.readingProgressUpdateNotificationView.onClear = nil;
+
+	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
+		
 	[self retrieveLastScannedObjectWithCompletion: ^ (WAArticle *anArticleOrNil) {
 	
-		if (![self isViewLoaded])
+		if (![nrSelf isViewLoaded])
 			return;
-			
-		__block __typeof__(self) nrSelf = self;
-		__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
 		
-		self.readingProgressUpdateNotificationView.onAction = ^ {
+		if (!anArticleOrNil)
+			return;
 		
-			[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+		nrNotificationView.onAction = ^ {
+		
+			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
 				
-				nrSelf.readingProgressUpdateNotificationView.alpha = 0;
+				UIEdgeInsets newInsets = self.tableView.contentInset;
+				newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
+				self.tableView.contentInset = newInsets;
+				[nrSelf.tableView layoutSubviews];
 				
 			} completion:nil];
 			
-			NSIndexPath *objectIndexPath = [self.fetchedResultsController indexPathForObject:anArticleOrNil];
+			NSIndexPath *objectIndexPath = [nrSelf.fetchedResultsController indexPathForObject:anArticleOrNil];
 			
 			if (objectIndexPath)
 				[nrSelf.tableView scrollToRowAtIndexPath:objectIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-		
+				
 			nrNotificationView.onAction = nil;
-		
+			
 		};
-	
-		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
-			
-			self.readingProgressUpdateNotificationView.alpha = 1;
-			
-		} completion:nil];
 		
+		nrNotificationView.onClear = ^ {
+		
+			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
+				
+				UIEdgeInsets newInsets = nrSelf.tableView.contentInset;
+				newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
+				nrSelf.tableView.contentInset = newInsets;
+				[nrSelf.tableView layoutSubviews];
+				
+			} completion:nil];
+			
+			nrNotificationView.onClear = nil;
+			
+		};
+		
+			
+		if (YES) {
+		
+			[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+			
+			nrNotificationView.hidden = NO;
+			
+			[nrNotificationView enqueueAnimationForVisibility:YES withAdditionalAnimation:^{
+			
+				UIEdgeInsets newInsets = self.tableView.contentInset;
+				newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
+				self.tableView.contentInset = newInsets;
+							
+			} completion: ^ (BOOL didFinish) {
+
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+				
+			}];
+		
+		}
+			
 	}];
 
 }
@@ -413,9 +451,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		NSLog(@"setLastScannedObject -> %x", didFinish);
 		
 	}];
-  
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
-	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
+	
+	self.readingProgressUpdateNotificationView.onAction = nil;
+	self.readingProgressUpdateNotificationView.onClear = nil;
+	self.tableView.contentInset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
 	
@@ -423,14 +462,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
+	if ([self isViewLoaded])
 	if (object == [WARemoteInterface sharedInterface])
 	if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse])
-	if ([self isViewLoaded])
 		[self.tableView resetPullDown];
 
 }
 
 - (void) handleCompositionSessionRequest:(NSNotification *)incomingNotification {
+
+	if (![self isViewLoaded])
+		return;
 
 	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
 	[self beginCompositionSessionWithURL:contentURL];
@@ -440,8 +482,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) syncLastRead:(NSIndexPath *)indexPath {
   
 	NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
-	
-	
 	
   [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
   } onFailure:^(NSError *error) {
@@ -454,7 +494,33 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	
 	return [(id<NSFetchedResultsSectionInfo>)[[self.fetchedResultsController sections] objectAtIndex:section] numberOfObjects];
+	
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	
+	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+
+}
+
+- (UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	
+	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+
+	return 4;
+
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+
+	return 4;
+
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -484,9 +550,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
     cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
     cell.imageStackView.delegate = self;
 		cell.commentLabel.userInteractionEnabled = YES;
-		cell.backgroundColor = nil;
-		cell.opaque = NO;
-		
+				
   }
 	
   cell.userNicknameLabel.text = post.owner.nickname;//[[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
@@ -568,45 +632,47 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-
-	if (![self isViewLoaded])
-		return;
-	
-	[self.tableView beginUpdates];
-	
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-
-	switch (type) {
-		case NSFetchedResultsChangeInsert: {
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-			break;
-		}
-		case NSFetchedResultsChangeDelete: {
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-			break;
-		}
-		case NSFetchedResultsChangeMove: {
-			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-			break;
-		}
-		case NSFetchedResultsChangeUpdate: {
-			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-			break;
-		}
-	}
-
-}
+//- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+//
+//	if (![self isViewLoaded])
+//		return;
+//	
+//	[self.tableView beginUpdates];
+//	
+//}
+//
+//- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+//
+//	switch (type) {
+//		case NSFetchedResultsChangeInsert: {
+//			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			break;
+//		}
+//		case NSFetchedResultsChangeDelete: {
+//			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			break;
+//		}
+//		case NSFetchedResultsChangeMove: {
+//			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			break;
+//		}
+//		case NSFetchedResultsChangeUpdate: {
+//			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//			break;
+//		}
+//	}
+//
+//}
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 		
 	if (![self isViewLoaded])
 		return;
-
-	[self.tableView endUpdates];
+		
+	[self persistState];
+	[self.tableView reloadData];
+	[self restoreState];
 		
 }
 
@@ -746,22 +812,30 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	[[WARemoteInterface sharedInterface] retrieveLastScannedPostInGroup:aGroupIdentifier onSuccess:^(NSString *lastScannedPostIdentifier) {
 	
-		WAArticle *matchingArticle = [[nrSelf.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
-		
-			if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
-				return anArticle;
+		dispatch_async(dispatch_get_main_queue(), ^{
 			
-			return nil;
+			WAArticle *matchingArticle = [[nrSelf.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
 			
-		}] lastObject];
+				if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
+					return anArticle;
+				
+				return nil;
+				
+			}] lastObject];
+			
+			if (callback)
+				callback(matchingArticle);
 		
-		if (callback)
-			callback(matchingArticle);
-		
+		});
+
 	} onFailure:^(NSError *error) {
 	
-		if (callback)
-			callback(nil);
+		dispatch_async(dispatch_get_main_queue(), ^{
+
+			if (callback)
+				callback(nil);
+			
+		});
 		
 	}];
 

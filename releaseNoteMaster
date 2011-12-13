@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial Reading Progress indication for the iPhone."
+ETReleaseNotes="- Initial Pull to Refresh + Continuous Reading Update Notification Header integration for the iPhone\n- Fixes several crashers and serious bugs that show on the iPhone\n- Initial iPhone timeline design refresh\n- Other fixes"
 ETMarketingVersionNumber="0.9.8"
