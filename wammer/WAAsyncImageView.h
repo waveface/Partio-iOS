@@ -1,5 +1,5 @@
 //
-//  WAAyncImageView.h
+//  WAAsyncImageView.h
 //  wammer
 //
 //  Created by Evadne Wu on 12/13/11.
@@ -8,6 +8,6 @@
 
 #import "WAImageView.h"
 
-@interface WAAyncImageView : WAImageView
+@interface WAAsyncImageView : WAImageView
 
 @end

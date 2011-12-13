@@ -7,7 +7,7 @@
 //
 
 #import "WATiledImageView.h"
-#import "WAAyncImageView.h"
+#import "WAAsyncImageView.h"
 
 @implementation WAImageView
 @synthesize delegate;
@@ -32,7 +32,7 @@
 
 + (Class) preferredClusterClass {
 
-  return [WAAyncImageView class];
+  return [WAAsyncImageView class];
 
 }
 
