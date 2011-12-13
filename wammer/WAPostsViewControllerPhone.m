@@ -432,13 +432,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	WAArticle *bottomMostArticle = [[[self.tableView indexPathsForVisibleRows] irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+	NSArray *shownArticles = [[self.tableView indexPathsForVisibleRows] irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
 	
 		return [self.fetchedResultsController objectAtIndexPath:anIndexPath];
 		
-	}] lastObject];
+	}];
 	
-	[self setLastScannedObject:bottomMostArticle completion:^(BOOL didFinish) {
+	WAArticle *sentArticle = [shownArticles count] ? [shownArticles objectAtIndex:0] : nil;
+	
+	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 	
 		NSLog(@"setLastScannedObject -> %x", didFinish);
 		
