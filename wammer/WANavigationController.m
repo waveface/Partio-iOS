@@ -30,27 +30,17 @@
     
 }
 
-//- (id) initWithRootViewController:(UIViewController *)presentedViewController {
-//
-//  WANavigationController *navController = [[((^ {
-//    
-//    NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:
-//      [NSKeyedArchiver archivedDataWithRootObject:
-//        [[super initWithRootViewController:
-//          [[[UIViewController alloc] init] autorelease]
-//        ] autorelease]
-//      ]] autorelease];
-//    
-//    [unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
-//    
-//    return unarchiver;
-//    
-//  })()) decodeObjectForKey:@"root"] initWithRootViewController:presentedViewController];
-//  
-//  return navController;
-//
-//}
-//
+- (id) initWithRootViewController:(UIViewController *)presentedViewController {
+
+  self = [super initWithRootViewController:presentedViewController];
+  if (!self)
+    return nil;
+  
+  [self setViewControllers:[NSArray arrayWithObject:presentedViewController]];
+  return self;
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
