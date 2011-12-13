@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial Reading Progress indication for the iPhone.\n- Fixes a crashing case for the application running on an iPad masquerading as an iPhone only application\n- Initial eight-cell layout grid fixes changing the priorities of cells"
+ETReleaseNotes="- Initial Pull to Refresh + Continuous Reading Update Notification Header integration for the iPhone\n- Fixes several crashers and serious bugs that show on the iPhone\n- Initial iPhone timeline design refresh\n- Other fixes"
 ETMarketingVersionNumber="0.9.8"
