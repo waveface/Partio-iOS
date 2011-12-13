@@ -31,6 +31,9 @@
 
 #import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
 
+#import "WAUserInfoViewController.h"
+#import "WANavigationController.h"
+
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -104,11 +107,27 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
     __block __typeof__(self) nrSelf = self;
 	
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 54, 44 }] autorelease];
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 88, 44 }] autorelease];
     
-		toolbar.usesCustomLayout = NO;
+		toolbar.usesCustomLayout = YES;
+		toolbar.itemPadding = -8;
 		toolbar.items = [NSArray arrayWithObjects:
 		
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+				
+				//	[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
+				
+				__block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
+				__block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+				
+				userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+					[wrappingNavC dismissModalViewControllerAnimated:YES];
+				}];
+				
+				[nrSelf presentModalViewController:wrappingNavC animated:YES];
+        
+			}],
+			
 			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 				
 				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
@@ -782,6 +801,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		return anArticle.group.identifier;
 		
 	}]] anyObject];
+
+	if (!aGroupIdentifier)
+		aGroupIdentifier = [WARemoteInterface sharedInterface].primaryGroupIdentifier;
 	
 	__block __typeof__(self) nrSelf = self;
 
