@@ -52,6 +52,8 @@
 		FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A105D1462B10C004FD00D /* OpenAL.framework */; };
 		FF1A10651462D8CC004FD00D /* WASoundRefreshEnded.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */; };
 		FF1A10661462D8CC004FD00D /* WASoundRefreshStarted.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */; };
+		FF1FAA81149732200020DA48 /* WALogotype.png in Resources */ = {isa = PBXBuildFile; fileRef = FF1FAA7F149732200020DA48 /* WALogotype.png */; };
+		FF1FAA82149732200020DA48 /* WALogotype@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF1FAA80149732200020DA48 /* WALogotype@2x.png */; };
 		FF22283B1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */; };
 		FF22283E1463D2BE00541E31 /* WARemoteInterfaceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */; };
 		FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */; };
@@ -591,6 +593,8 @@
 		FF1A105D1462B10C004FD00D /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshEnded.caf; path = Resources/WASoundRefreshEnded.caf; sourceTree = "<group>"; };
 		FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshStarted.caf; path = Resources/WASoundRefreshStarted.caf; sourceTree = "<group>"; };
+		FF1FAA7F149732200020DA48 /* WALogotype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALogotype.png; path = Resources/WALogotype.png; sourceTree = "<group>"; };
+		FF1FAA80149732200020DA48 /* WALogotype@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WALogotype@2x.png"; path = "Resources/WALogotype@2x.png"; sourceTree = "<group>"; };
 		FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FF21C8D213E14CF9009B980D /* IPSample */ = {isa = PBXFileReference; lastKnownFileType = folder; name = IPSample; path = Resources/IPSample; sourceTree = "<group>"; };
 		FF2228391463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADataStore+WARemoteInterfaceAdditions.h"; sourceTree = "<group>"; };
@@ -1467,6 +1471,8 @@
 				FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */,
 				FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */,
 				FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */,
+				FF1FAA7F149732200020DA48 /* WALogotype.png */,
+				FF1FAA80149732200020DA48 /* WALogotype@2x.png */,
 			);
 			name = Resources;
 			path = wammer;
@@ -2024,6 +2030,8 @@
 				FFC937DF149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png in Resources */,
 				FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */,
 				FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */,
+				FF1FAA81149732200020DA48 /* WALogotype.png in Resources */,
+				FF1FAA82149732200020DA48 /* WALogotype@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2323,7 +2331,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 135;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2370,7 +2378,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 131;
+				CURRENT_PROJECT_VERSION = 135;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
