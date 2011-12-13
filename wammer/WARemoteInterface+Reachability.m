@@ -213,10 +213,11 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
           NSURL *givenURL = [NSURL URLWithString:stationURLString];
           if (!givenURL)
             return (id)nil;
-            
+          
           NSString *baseURLString = [[NSArray arrayWithObjects:
 		
-            [baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"]: @"",
+            [givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+              [baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
             [baseURL host] ? [givenURL host] : @"",
             [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
             [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",

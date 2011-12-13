@@ -99,7 +99,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WAFilter")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
 	}];
 	
