@@ -432,13 +432,33 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	NSArray *shownArticles = [[self.tableView indexPathsForVisibleRows] irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
-	
+	NSArray *shownArticleIndexPaths = [self.tableView indexPathsForVisibleRows];
+
+	NSArray *shownArticles = [shownArticleIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
 		return [self.fetchedResultsController objectAtIndexPath:anIndexPath];
-		
 	}];
 	
-	WAArticle *sentArticle = [shownArticles count] ? [shownArticles objectAtIndex:0] : nil;
+	NSArray *shownRowRects = [shownArticleIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+		return [NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:anIndexPath]];
+	}];
+	
+	__block WAArticle *sentArticle = [shownArticles count] ? [shownArticles objectAtIndex:0] : nil;
+	
+	if (shownRowRects > 1) {
+	
+		//	If more than one rows were shown, find the first row that was fully visible
+	
+		[shownRowRects enumerateObjectsUsingBlock: ^ (NSValue *rectValue, NSUInteger idx, BOOL *stop) {
+		
+			CGRect rect = [rectValue CGRectValue];
+			if (CGRectContainsRect(self.tableView.bounds, rect)) {
+				sentArticle = [shownArticles objectAtIndex:idx];
+				*stop = YES;
+			}
+			
+		}];
+	
+	}
 	
 	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 	
@@ -448,7 +468,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.readingProgressUpdateNotificationView.onAction = nil;
 	self.readingProgressUpdateNotificationView.onClear = nil;
-	//	self.tableView.contentInset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
 	
