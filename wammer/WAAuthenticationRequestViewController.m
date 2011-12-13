@@ -56,6 +56,7 @@
 	
 	self.labelWidth = 128.0f;
 	self.title = NSLocalizedString(@"WAAuthRequestTitle", @"Title for the auth request controller");
+  self.navigationItem.hidesBackButton = YES;
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		
