@@ -1,10 +1,10 @@
-  //
-  //  WAArticlesViewController.m
-  //  wammer-iOS
-  //
-  //  Created by Evadne Wu on 7/20/11.
-  //  Copyright 2011 Waveface. All rights reserved.
-  //
+//
+//  WAArticlesViewController.m
+//  wammer-iOS
+//
+//  Created by Evadne Wu on 7/20/11.
+//  Copyright 2011 Waveface. All rights reserved.
+//
 
 #import <objc/runtime.h>
 
@@ -16,16 +16,8 @@
 #import "WAPaginationSlider.h"
 
 #import "WARemoteInterface.h"
-#import "WARemoteInterface+ScheduledDataRetrieval.h"
-#import "WADataStore+WARemoteInterfaceAdditions.h"
 
-#import "IRPaginatedView.h"
-#import "IRBarButtonItem.h"
-#import "IRTransparentToolbar.h"
-#import "IRActionSheetController.h"
-#import "IRActionSheet.h"
-#import "IRAction.h"
-#import "IRAlertView.h"
+#import "UIKit+IRAdditions.h"
 
 #import "WAArticleViewController.h"
 #import "WAPostViewControllerPhone.h"
@@ -35,11 +27,9 @@
 #import "WAComposeViewControllerPhone.h"
 
 #import "WAGalleryViewController.h"
-
 #import "WAPulldownRefreshView.h"
 
 #import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
-#import "IRTableView.h"
 
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -53,16 +43,15 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, retain) NSString *_lastID;
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 
 - (void) refreshData;
-- (void) syncLastRead:(NSIndexPath *)indexPath;
-- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize FromImage:(UIImage *)sourceImage;
 + (IRRelativeDateFormatter *) relativeDateFormatter;
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL;
 
+@property (nonatomic, readwrite, retain) NSString *lastScannedObjectIdentifier;
+@property (nonatomic, readwrite, retain) NSString *lastUserReactedScannedObjectIdentifier;
 - (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback;
 - (void) retrieveLastScannedObjectWithCompletion:(void(^)(WAArticle *anArticleOrNil))callback;
 
@@ -73,16 +62,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
-@synthesize _lastID;
 @synthesize settingsActionSheetController;
 @synthesize readingProgressUpdateNotificationView;
+@synthesize lastScannedObjectIdentifier, lastUserReactedScannedObjectIdentifier;
 
 - (void) dealloc {
 	
 	[managedObjectContext release];
 	[fetchedResultsController release];
-  [_lastID release];
 	[readingProgressUpdateNotificationView release];
+  [lastScannedObjectIdentifier release];
+	[lastUserReactedScannedObjectIdentifier release];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
@@ -110,9 +100,26 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
 	}];
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-		[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
-	}];
+	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+  
+    __block __typeof__(self) nrSelf = self;
+	
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 54, 44 }] autorelease];
+    
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSArray arrayWithObjects:
+		
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+				
+				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
+        
+			}],
+      			
+		nil];
+		
+		return toolbar;
+	
+	})())];
 	
 	self.navigationItem.titleView = [self defaultTitleView];
 	
@@ -355,6 +362,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
 	
 	self.readingProgressUpdateNotificationView.hidden = YES;
+	self.tableView.contentInset = UIEdgeInsetsZero;
 	
 	//	?
 
@@ -425,6 +433,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				UIEdgeInsets newInsets = self.tableView.contentInset;
 				newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
 				self.tableView.contentInset = newInsets;
+				[nrSelf.tableView layoutSubviews];
 							
 			} completion: ^ (BOOL didFinish) {
 
@@ -440,13 +449,35 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	WAArticle *bottomMostArticle = [[[self.tableView indexPathsForVisibleRows] irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
-	
+	NSArray *shownArticleIndexPaths = [self.tableView indexPathsForVisibleRows];
+
+	NSArray *shownArticles = [shownArticleIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
 		return [self.fetchedResultsController objectAtIndexPath:anIndexPath];
-		
-	}] lastObject];
+	}];
 	
-	[self setLastScannedObject:bottomMostArticle completion:^(BOOL didFinish) {
+	NSArray *shownRowRects = [shownArticleIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+		return [NSValue valueWithCGRect:[self.tableView rectForRowAtIndexPath:anIndexPath]];
+	}];
+	
+	__block WAArticle *sentArticle = [shownArticles count] ? [shownArticles objectAtIndex:0] : nil;
+	
+	if (shownRowRects > 1) {
+	
+		//	If more than one rows were shown, find the first row that was fully visible
+	
+		[shownRowRects enumerateObjectsUsingBlock: ^ (NSValue *rectValue, NSUInteger idx, BOOL *stop) {
+		
+			CGRect rect = [rectValue CGRectValue];
+			if (CGRectContainsRect(self.tableView.bounds, rect)) {
+				sentArticle = [shownArticles objectAtIndex:idx];
+				*stop = YES;
+			}
+			
+		}];
+	
+	}
+	
+	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 	
 		NSLog(@"setLastScannedObject -> %x", didFinish);
 		
@@ -454,7 +485,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.readingProgressUpdateNotificationView.onAction = nil;
 	self.readingProgressUpdateNotificationView.onClear = nil;
-	self.tableView.contentInset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
 	
@@ -479,18 +509,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (void) syncLastRead:(NSIndexPath *)indexPath {
-  
-	NSString *currentRowIdentifier = [[self.fetchedResultsController objectAtIndexPath:indexPath] identifier];
-	
-  [[WARemoteInterface sharedInterface] setLastReadArticleRemoteIdentifier:currentRowIdentifier  onSuccess:^(NSDictionary *response) {
-  } onFailure:^(NSError *error) {
-    NSLog(@"SetLastRead failed %@", error);
-  }];
-}
-
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
+
 	return [[self.fetchedResultsController sections] count];
+	
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -555,7 +577,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
   cell.userNicknameLabel.text = post.owner.nickname;//[[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
   cell.avatarView.image = post.owner.avatar;
-  cell.dateLabel.text = [[[[self class] relativeDateFormatter] stringFromDate:post.timestamp] lowercaseString];
+  cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
  
   if (postHasPreview) {
@@ -608,12 +630,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 }
 
-- (UIImage*)imageByScalingAndCroppingForSize:(CGSize)targetSize FromImage:(UIImage *)sourceImage {
-
-	return [sourceImage irScaledImageWithSize:targetSize];
-
-}
-
 - (IBAction) actionSettings:(id)sender {
 
   [self.settingsActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:YES];
@@ -632,39 +648,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-//- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-//
-//	if (![self isViewLoaded])
-//		return;
-//	
-//	[self.tableView beginUpdates];
-//	
-//}
-//
-//- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-//
-//	switch (type) {
-//		case NSFetchedResultsChangeInsert: {
-//			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//			break;
-//		}
-//		case NSFetchedResultsChangeDelete: {
-//			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//			break;
-//		}
-//		case NSFetchedResultsChangeMove: {
-//			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//			break;
-//		}
-//		case NSFetchedResultsChangeUpdate: {
-//			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//			break;
-//		}
-//	}
-//
-//}
-
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 		
 	if (![self isViewLoaded])
@@ -678,8 +661,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	[self syncLastRead:indexPath];
-	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
 
@@ -709,12 +690,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
 	[self beginCompositionSessionWithURL:nil];
-  
-}
-
-+ (IRRelativeDateFormatter *) relativeDateFormatter {
-  
-	return [IRRelativeDateFormatter sharedFormatter];
   
 }
 

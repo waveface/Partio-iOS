@@ -109,6 +109,12 @@
 
 - (void) enqueueAnimationForVisibility:(BOOL)willBeVisible withAdditionalAnimation:(void(^)(void))additionalStuff completion:(void(^)(BOOL didFinish))aBlock {
 
+  [self enqueueAnimationForVisibility:willBeVisible withDuration:0.3 additionalAnimation:additionalStuff completion:aBlock];
+
+}
+
+- (void) enqueueAnimationForVisibility:(BOOL)willBeVisible withDuration:(NSTimeInterval)duration additionalAnimation:(void(^)(void))additionalStuff completion:(void(^)(BOOL didFinish))aBlock {
+
   CGPoint center = (CGPoint){
     CGRectGetMidX(wrapperView.superview.bounds),
     CGRectGetMidY(wrapperView.superview.bounds)
@@ -126,7 +132,7 @@
   wrapperView.center = oldCenter;
   self.hidden = NO;
 
-  [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+  [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
   
     wrapperView.center = newCenter;
     

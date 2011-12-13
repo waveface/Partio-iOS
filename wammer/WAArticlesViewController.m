@@ -123,33 +123,22 @@
 	
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 170, 44 }] autorelease];
     
-    UIButton * (^sizedButtonForImageNamed)(NSString *) = ^ (NSString *anImageName) {
-      UIButton *button = WAButtonForImage(WABarButtonImageFromImageNamed(anImageName));
-      button.bounds = (CGRect){ CGPointZero, (CGSize){ 44, 44 }};
-      //  button.contentEdgeInsets = UIEdgeInsetsZero;
-      return button;
-    };
-		
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSArray arrayWithObjects:
 		
-			[IRBarButtonItem itemWithButton:sizedButtonForImageNamed(@"WAUserGlyph") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 				
         [nrSelf handleUserInfoItemTap:senderItem];
         
 			}],
       
-			//  [IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
-      
-			[IRBarButtonItem itemWithButton:sizedButtonForImageNamed(@"WASettingsGlyph") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
         
         [nrSelf handleActionItemTap:senderItem];
         
 			}],
 		
-			//  [IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 8.0f, 44 }] autorelease]],
-			
-			[IRBarButtonItem itemWithButton:sizedButtonForImageNamed(@"UIButtonBarCompose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
       
         [nrSelf handleComposeItemTap:senderItem];
       
