@@ -8,8 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+
+@class WAImageView;
+@protocol WAImageViewDelegate 
+
+- (void) imageViewDidUpdate:(WAImageView *)anImageView;
+
+@end
+
+
 @interface WAImageView : UIImageView
 
-@property (nonatomic, readwrite, retain) UIImage *image;
++ (Class) preferredClusterClass;
+
+@property (nonatomic, readwrite, assign) id<WAImageViewDelegate> delegate;
 
 @end

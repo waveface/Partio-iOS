@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "IRTableViewController.h"
 
-@interface WAUserInfoViewController : UITableViewController
+@interface WAUserInfoViewController : IRTableViewController
 
 @end
