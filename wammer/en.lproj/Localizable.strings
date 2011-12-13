@@ -22,6 +22,7 @@
 "WAActionOkay" = "Okay";
 "WAActionResetPassword" = "Reset Password";
 "WAActionRegisterUser" = "Register";
+"WAActionGoToLastReadPosition" = "Jump to where I left";
 
 "WANounUsername" = "Email";
 "WANounNickname" = "Nickname";

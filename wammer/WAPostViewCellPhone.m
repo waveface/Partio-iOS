@@ -16,10 +16,8 @@
 
 
 @implementation WAPostViewCellPhone
-@synthesize backgroundImageView;
 @synthesize contentTextView;
 @synthesize commentLabel;
-@synthesize commentBackground;
 @synthesize postViewCellStyle;
 @dynamic reuseIdentifier;
 @synthesize imageStackView, avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel, previewBadge;
@@ -34,10 +32,8 @@
 	[dateLabel release];
 	[originLabel release];	
 	[commentLabel release];
-	[commentBackground release];
-    [contentTextView release];
+  [contentTextView release];
 	[previewBadge release];
-  [backgroundImageView release];
 	[super dealloc];
 	
 }
@@ -73,18 +69,40 @@
 	
 	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
-    
-  self.backgroundImageView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
-    
+  
 	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
 	self.backgroundView.backgroundColor = [UIColor clearColor];
-  	
+  
+  [self.backgroundView addSubview:((^ {
+    
+    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.backgroundView.bounds, 8, 4)] autorelease];
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
+    returnedView.layer.borderWidth = 1.0f;
+    returnedView.layer.borderColor = [UIColor colorWithWhite:1 alpha:1].CGColor;
+    returnedView.layer.masksToBounds = YES;
+    returnedView.layer.cornerRadius = 4.0f;
+    
+    return returnedView;
+  
+  })())];
+  
 	self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-	self.selectedBackgroundView.backgroundColor = [UIColor colorWithWhite:0.95 alpha:1];
+	self.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+  
+  [self.selectedBackgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.selectedBackgroundView.bounds, 8, 4)] autorelease];
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    returnedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
+    returnedView.layer.masksToBounds = YES;
+    returnedView.layer.cornerRadius = 4.0f;
+    
+    return returnedView;
+    
+  })())];
 	
-	self.commentBackground.image = [self.commentBackground.image stretchableImageWithLeftCapWidth:24.0f topCapHeight:0];
-	
-    self.avatarView.layer.cornerRadius = 4.0;
+  self.avatarView.layer.cornerRadius = 4.0;
 	self.avatarView.layer.masksToBounds = YES;
 	
 	UIView *avatarWrapper = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
@@ -107,8 +125,36 @@
 
 	[super prepareForReuse];
 	[self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
-    [self.imageView setImage:nil];
+  [self.imageView setImage:nil];
   
+}
+
+- (void) setSelected:(BOOL)selected animated:(BOOL)animated {
+
+  //  Default behavior is undesirable
+
+}
+
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+
+  //  Default behavior is undesirable
+
+  if (highlighted) {
+  
+    if (self.backgroundView)
+    if (self.selectedBackgroundView) {
+
+      self.selectedBackgroundView.frame = self.bounds;
+      [self insertSubview:self.selectedBackgroundView aboveSubview:self.backgroundView];
+    
+    }
+  
+  } else {
+  
+    [self.selectedBackgroundView removeFromSuperview];
+  
+  }
+
 }
 
 @end
