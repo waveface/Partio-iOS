@@ -18,6 +18,7 @@
 
 @implementation WANavigationBar
 @synthesize backgroundView;
+@synthesize suppressesDefaultAppearance;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -55,6 +56,7 @@
 
 	self.backgroundColor = nil;
 	self.opaque = NO;
+  self.suppressesDefaultAppearance = NO;
 
 }
 
@@ -66,8 +68,14 @@
 }
 
 - (void) drawRect:(CGRect)rect {
-		
-	//	Nope.
+  
+  if (self.suppressesDefaultAppearance) {
+  
+  } else {
+  
+    [super drawRect:rect];
+  
+  }
 		
 }
 
@@ -90,6 +98,8 @@
 	[self addSubview:backgroundView];
 	[self sendSubviewToBack:backgroundView];
 
+  self.suppressesDefaultAppearance = (BOOL)!!(backgroundView);
+
 }
 
 - (void) layoutSubviews {
@@ -98,6 +108,14 @@
   
   [self.backgroundView.superview sendSubviewToBack:self.backgroundView];
   
+}
+
+- (void) setSuppressesDefaultAppearance:(BOOL)flag {
+
+  suppressesDefaultAppearance = flag;
+  
+  [self setNeedsDisplay];
+
 }
 
 + (UIView *) defaultGradientBackgroundView {
