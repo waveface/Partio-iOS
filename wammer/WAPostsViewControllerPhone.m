@@ -522,7 +522,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__block WAArticle *sentArticle = [shownArticles count] ? [shownArticles objectAtIndex:0] : nil;
 	
-	if (shownRowRects > 1) {
+	if ([shownRowRects count] > 1) {
 	
 		//	If more than one rows were shown, find the first row that was fully visible
 	
