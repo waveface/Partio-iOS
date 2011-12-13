@@ -411,16 +411,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 	[self retrieveLastScannedObjectWithCompletion: ^ (WAArticle *anArticleOrNil) {
 	
+		NSString *incomingIdentifier = anArticleOrNil.identifier;
+	
+		self.lastScannedObjectIdentifier = anArticleOrNil.identifier;
+	
 		if (![nrSelf isViewLoaded])
 			return;
 		
 		if (!anArticleOrNil)
 			return;
 		
+		if ([self.lastUserReactedScannedObjectIdentifier isEqualToString:self.lastScannedObjectIdentifier])
+			return;
+		
 		CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
 		CFTimeInterval elapsedTime = (currentTime - beforeLastScannedObjectRetrieval);
 		
 		nrNotificationView.onAction = ^ {
+		
+			nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
 		
 			if (!nrNotificationView.hidden) {
 
@@ -464,6 +473,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		nrNotificationView.onClear = ^ {
 		
+			nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
+			
 			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
 				
 				UIEdgeInsets newInsets = nrSelf.tableView.contentInset;
@@ -538,9 +549,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	}
 	
-	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
+	NSString *newLastScannedObjectIdentifier = sentArticle.identifier;
 	
-		NSLog(@"setLastScannedObject -> %x", didFinish);
+	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
+		
+		//	Don’t go back to what we have said
+		self.lastUserReactedScannedObjectIdentifier = newLastScannedObjectIdentifier;
 		
 	}];
 	
