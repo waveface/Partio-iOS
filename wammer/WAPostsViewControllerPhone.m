@@ -146,6 +146,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 }
 
+- (void) irConfigure {
+
+	[super irConfigure];
+	
+	self.persistsContentInset = NO;
+
+}
+
 - (UIView *) defaultTitleView {
 
 	UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
@@ -382,8 +390,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.readingProgressUpdateNotificationView.hidden = YES;
 	self.tableView.contentInset = UIEdgeInsetsZero;
-	
-	//	?
 
 }
 
@@ -391,6 +397,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	[super viewDidAppear:animated];
 	
+	self.tableView.contentInset = UIEdgeInsetsZero;
 	self.readingProgressUpdateNotificationView.onAction = nil;
 	self.readingProgressUpdateNotificationView.onClear = nil;
 
@@ -504,6 +511,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.readingProgressUpdateNotificationView.onAction = nil;
 	self.readingProgressUpdateNotificationView.onClear = nil;
+	
+	[self.tableView resetPullDown];
+	//	self.tableView.contentOffset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
 	
