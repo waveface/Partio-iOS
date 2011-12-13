@@ -394,7 +394,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	static IRRelativeDateFormatter *formatter = nil;
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-        
+    
 		formatter = [[IRRelativeDateFormatter alloc] init];
 		formatter.approximationMaxTokenCount = 1;
         
