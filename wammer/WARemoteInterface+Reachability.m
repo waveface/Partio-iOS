@@ -284,10 +284,14 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     NSURL *swizzledURL = [NSURL URLWithString:[[NSArray arrayWithObjects:
 
-      [originalURL scheme] ? [[originalURL scheme] stringByAppendingString:@"://"]: @"",
+      [bestHostURL scheme] ? [[bestHostURL scheme] stringByAppendingString:@"://"] :
+        [originalURL scheme] ? [[originalURL scheme] stringByAppendingString:@"://"] : @"",
+      
       [originalURL host] ? [bestHostURL host] : @"",
+      
       [bestHostURL port] ? [@":" stringByAppendingString:[[bestHostURL port] stringValue]] : 
         [originalURL port] ? [@":" stringByAppendingString:[[originalURL port] stringValue]] : @"",
+      
       [originalURL path] ? [originalURL path] : @"/",
       [originalURL query] ? [@"?" stringByAppendingString:[originalURL query]] : @"",
       [originalURL fragment] ? [@"#" stringByAppendingString:[originalURL fragment]] : @"",
