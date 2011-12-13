@@ -13,10 +13,10 @@
 #import "QuartzCore+IRAdditions.h"
 
 
-@interface WAGalleryImageView () <UIScrollViewDelegate>
+@interface WAGalleryImageView () <UIScrollViewDelegate, WAImageViewDelegate>
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, readwrite, retain) UIScrollView *scrollView;
-@property (nonatomic, readwrite, retain) UIImageView *imageView;
+@property (nonatomic, readwrite, retain) WAImageView *imageView;
 
 @property (nonatomic, readwrite, assign) BOOL needsContentAdjustmentOnLayout;
 @property (nonatomic, readwrite, assign) BOOL needsInsetAdjustmentOnLayout;
@@ -69,6 +69,7 @@
 	self.imageView.center = CGPointZero;
 	self.imageView.autoresizingMask = UIViewAutoresizingNone;
 	self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+  self.imageView.delegate = self;
 	[self.scrollView addSubview:self.imageView];
 	
 	#if 0
@@ -93,6 +94,13 @@
 	
 	self.exclusiveTouch = YES;
 	
+}
+
+- (void) imageViewDidUpdate:(WAImageView *)anImageView {
+
+  [self layoutSubviews];
+  [self setNeedsLayout];
+
 }
 
 - (void) setBounds:(CGRect)newBounds {
