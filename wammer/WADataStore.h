@@ -25,3 +25,5 @@
 - (NSDate *) dateFromISO8601String:(NSString *)aString;
 
 @end
+
+#import "WADataStore+FetchingConveniences.h"

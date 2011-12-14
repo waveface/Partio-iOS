@@ -229,11 +229,23 @@
 
 + (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
 
-	NSParameterAssert(NO);
+  [self synchronizeWithOptions:nil completion:completionBlock];
+  
+}
 
++ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
+
+  [NSException raise:NSInternalInconsistencyException format:@"%@ does not support %@.", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
+  
 }
 
 - (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+
+  [self synchronizeWithOptions:nil completion:completionBlock];
+  
+}
+
+- (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
 
 	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));
 

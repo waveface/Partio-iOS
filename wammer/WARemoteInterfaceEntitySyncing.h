@@ -17,6 +17,9 @@
 + (void) synchronizeWithCompletion:(void(^)(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError))completionBlock;	//	Syncs all the entities in “the world”
 - (void) synchronizeWithCompletion:(void(^)(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError))completionBlock;	//	Syncs the actual entity
 
++ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError))completionBlock;
+- (void) synchronizeWithOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError))completionBlock;
+
 @end
 
 //	This is provided for individual object implementations to be called within -synchronizeWithCompletion:

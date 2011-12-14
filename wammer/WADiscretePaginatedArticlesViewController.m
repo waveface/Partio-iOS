@@ -945,7 +945,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (NSArray *) debugActionSheetControllerActions {
 
-	__block __typeof__(self) nrSelf = self; 
+	//  __block __typeof__(self) nrSelf = self; 
 
 	return [[super debugActionSheetControllerActions] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:
 	
