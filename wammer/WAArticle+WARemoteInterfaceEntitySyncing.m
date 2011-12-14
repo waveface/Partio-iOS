@@ -192,7 +192,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   WARemoteInterface *ri = [WARemoteInterface sharedInterface];
   WADataStore *ds = [WADataStore defaultStore];
   NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
-  NSUInteger usedBatchLimit = 5;
+  NSUInteger usedBatchLimit = 50;
   
   if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
   
@@ -217,8 +217,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
   } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
   
-    NSLog(@"%s: Strategy is kWAArticleSyncFullyFetchOnlyStrategy, options = %@", __PRETTY_FUNCTION__, options);
-    
     NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
     
     if (!sessionInfo)
@@ -316,6 +314,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 - (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
 
+  [self synchronizeWithOptions:nil completion:completionBlock];
+
+}
+
+- (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	
 	if ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier) {
@@ -380,8 +384,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			
 			[representedFile resourceURL];
-			
-			NSLog(@"ADDING file %@", representedFile);
 			
 			[operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 				
