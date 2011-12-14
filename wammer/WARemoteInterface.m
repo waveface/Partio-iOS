@@ -126,17 +126,26 @@
     
     if (!headerFields) {
      headerFields = [NSMutableDictionary dictionary];
-     [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
     }
     
+   [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
+   
     UIDevice *device = [UIDevice currentDevice];
+    NSBundle *bundle = [NSBundle mainBundle];
+    
     [headerFields setObject:[[NSDictionary dictionaryWithObjectsAndKeys:
+      
       @"iOS", @"deviceType",
       device.name, @"deviceName",
       device.model, @"deviceModel",
       device.systemName, @"deviceSystemName",
       device.systemVersion, @"deviceSystemVersion",
-    nil] JSONString] forKey:@"x-origin-device"];
+
+      [[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey], @"bundleVersion",
+      [[bundle infoDictionary] objectForKey:(id)kCFBundleNameKey], @"bundleName",
+      [[bundle infoDictionary] objectForKey:@"IRCommitSHA"], @"bundleCommit",
+
+    nil] JSONString] forKey:@"x-wf-origin"];
     
     return returnedContext;
   
