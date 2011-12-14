@@ -743,15 +743,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if (postHasFiles) {
     
 		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-		NSArray *allImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+		
+		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 2) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
       WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
 			return file.thumbnailImage;
-		}];
-		
-		NSArray *firstTwoImages = [allImages subarrayWithRange:(NSRange){ 0, MIN(2, [allImages count] )}];
-		
-		[cell.imageStackView setImages:firstTwoImages asynchronously:YES withDecodingCompletion:nil];	//	?
+		}] asynchronously:YES withDecodingCompletion:nil];
 	
 	} else {
 	
