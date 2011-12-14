@@ -81,34 +81,34 @@
 	if (!text || ![text length])
 		return;
 	
-  NSString *kThreadOwnDataDetector = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@_threadOwnedDataDetector", NSStringFromSelector(_cmd)];
-
 	dispatch_async(dispatch_get_global_queue(0, 0), ^ {
   
-    NSMutableDictionary *threadDictionary = [[NSThread currentThread] threadDictionary];
-		NSDataDetector *sharedDataDetector = [threadDictionary objectForKey:kThreadOwnDataDetector];
-    if (!sharedDataDetector) {
-      sharedDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
-      [threadDictionary setObject:sharedDataDetector forKey:kThreadOwnDataDetector];
-    }
-		
+    static NSDataDetector *sharedDataDetector = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+      sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
+    });
+  
 		__block BOOL hasLinks = NO;
 		
 		NSMutableAttributedString *linkedAttributedText = [[attributedText mutableCopy] autorelease];		
 		
 		[linkedAttributedText beginEditing];
-		
-		[sharedDataDetector enumerateMatchesInString:text options:0 range:(NSRange){ 0, [text length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-		
-			hasLinks = YES;
-		
-			[linkedAttributedText addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-				(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
-				result.URL, kIRTextLinkAttribute,
-			nil] range:result.range];
-			
-		}];
-		
+    
+    NSString *matchedText = [[text copy] autorelease];
+    matchedText = [matchedText stringByReplacingOccurrencesOfString:@"\n" withString:@" "];  //  iOS 4.3 Crasher
+    
+    [sharedDataDetector enumerateMatchesInString:matchedText options:0 range:(NSRange){ 0, [matchedText length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+    
+      hasLinks = YES;
+    
+      [linkedAttributedText addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+        (id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+        result.URL, kIRTextLinkAttribute,
+      nil] range:result.range];
+      
+    }];
+    
 		[linkedAttributedText endEditing];
 		
 		if (!hasLinks)
