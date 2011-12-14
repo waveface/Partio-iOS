@@ -790,15 +790,88 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-		
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
 	if (![self isViewLoaded])
 		return;
-	
+		
 	[self persistState];
-	[self.tableView reloadData];
-	[self.tableView layoutSubviews];
+	[self.tableView beginUpdates];
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	switch (type) {
+		case NSFetchedResultsChangeDelete: {
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeInsert: {
+			[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		default: {
+			NSParameterAssert(NO);
+		}
+	}
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	NSParameterAssert([NSThread isMainThread]);
+
+	switch (type) {
+		case NSFetchedResultsChangeDelete: {
+			NSParameterAssert(indexPath && !newIndexPath);
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeInsert: {
+			NSParameterAssert(!indexPath && newIndexPath);
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeMove: {
+		
+			if (indexPath && newIndexPath) {
+		
+				NSParameterAssert(indexPath && newIndexPath);
+				if ([self.tableView respondsToSelector:@selector(moveRowAtIndexPath:toIndexPath:)]) {
+					[self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+				} else {
+					[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+					[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+				}
+			
+			} else {
+			
+				NSParameterAssert(!indexPath && newIndexPath);
+				[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			
+			}
+			break;
+		}
+		case NSFetchedResultsChangeUpdate: {
+			NSParameterAssert(indexPath && !newIndexPath);
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		
+	}
+
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	if (![self isViewLoaded])
+		return;
+		
+	[self.tableView endUpdates];
 	[self restoreState];
+	
+	[self.tableView layoutSubviews];
 		
 }
 
