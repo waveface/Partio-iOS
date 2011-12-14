@@ -78,16 +78,19 @@
 	NSAttributedString *attributedText = [self.label attributedStringForString:text];
 	capturedLabel.attributedText = attributedText;
 	
-	if (!text)
+	if (!text || ![text length])
 		return;
 	
+  NSString *kThreadOwnDataDetector = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@_threadOwnedDataDetector", NSStringFromSelector(_cmd)];
+
 	dispatch_async(dispatch_get_global_queue(0, 0), ^ {
-	
-		static NSDataDetector *sharedDataDetector = nil;
-		static dispatch_once_t onceToken = 0;
-		dispatch_once(&onceToken, ^{
-			sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
-		});
+  
+    NSMutableDictionary *threadDictionary = [[NSThread currentThread] threadDictionary];
+		NSDataDetector *sharedDataDetector = [threadDictionary objectForKey:kThreadOwnDataDetector];
+    if (!sharedDataDetector) {
+      sharedDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+      [threadDictionary setObject:sharedDataDetector forKey:kThreadOwnDataDetector];
+    }
 		
 		__block BOOL hasLinks = NO;
 		

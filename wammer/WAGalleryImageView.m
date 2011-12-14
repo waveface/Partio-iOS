@@ -461,6 +461,8 @@
 
 - (void) dealloc {
 
+  imageView.delegate = nil;
+
 	[activityIndicator release];
 	[imageView release];
 	[scrollView release];
