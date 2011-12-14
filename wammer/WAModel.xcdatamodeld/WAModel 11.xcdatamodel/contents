@@ -89,6 +89,7 @@
         <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="users" inverseEntity="WAGroup" syncable="YES"/>
         <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="owner" inverseEntity="WAPreview" syncable="YES"/>
     </entity>
+    <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>
     <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
