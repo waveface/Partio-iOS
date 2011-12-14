@@ -227,12 +227,6 @@
 
 }
 
-+ (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
-
-	NSParameterAssert(NO);
-
-}
-
 - (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
 
 	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));

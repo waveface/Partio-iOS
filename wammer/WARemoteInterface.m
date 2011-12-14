@@ -210,10 +210,8 @@
 
 	[engine.globalRequestPreTransformers addObject:[[self class] defaultBeginNetworkActivityTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[self class] defaultEndNetworkActivityTransformer]];
-		
+  
 	[engine.globalRequestPreTransformers addObject:[self defaultV2AuthenticationSignatureBlock]];
-	//	[engine.globalRequestPreTransformers addObject:[self defaultV1AuthenticationSignatureBlock]];
-	//	[engine.globalRequestPreTransformers addObject:[self defaultV1QueryHack]];
 
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormURLEncodingTransformer]];

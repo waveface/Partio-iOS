@@ -34,6 +34,8 @@
 #import "WAUserInfoViewController.h"
 #import "WANavigationController.h"
 
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -49,7 +51,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
 
 - (void) refreshData;
-+ (IRRelativeDateFormatter *) relativeDateFormatter;
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL;
 

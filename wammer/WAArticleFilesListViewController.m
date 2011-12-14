@@ -76,7 +76,7 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
-  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:fileURI]);
+  //  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:fileURI]);
     
   __block WASingleFileViewController *previewController = [WASingleFileViewController controllerForFile:fileURI];
   previewController.onFinishLoad = [[previewController class] defaultQuickLookFinishLoadHandler];

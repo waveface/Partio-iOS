@@ -37,10 +37,6 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) didFinishComposingComment:(NSString *)commentText;
 - (void) cellViewWithDecoration:(WAPostViewCellPhone *)cell;
-- (void) refreshData;
-
-+ (IRRelativeDateFormatter *) relativeDateFormatter;
-
 
 @end
 
@@ -357,9 +353,9 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) didFinishComposingComment:(NSString *)commentText {
 
-	WAArticle *currentArticle = self.post;
-	NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
+	//  WAArticle *currentArticle = self.post;
+	//  NSString *currentArticleIdentifier = currentArticle.identifier;
+	//  NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
   NSURL *ownPostURL = [[self.post objectID] URIRepresentation];
   [[WADataStore defaultStore] addComment:commentText onArticle:ownPostURL onSuccess:nil onFailure:nil];
   
