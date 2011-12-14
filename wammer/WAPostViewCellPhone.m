@@ -121,14 +121,6 @@
 	
 }
 
-- (void) prepareForReuse {
-
-	[super prepareForReuse];
-	//  [self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
-  //  [self.imageView setImage:nil];
-  
-}
-
 - (void) setSelected:(BOOL)selected animated:(BOOL)animated {
 
   //  Default behavior is undesirable
