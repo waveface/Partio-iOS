@@ -40,6 +40,7 @@
 		FA259F461457E96300F79C8F /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */; };
 		FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
 		FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF0B2A2E1438921100309F0E /* WADefaults.plist */; };
+		FF0C7ABA14987FCA00632EF3 /* WADataStore+FetchingConveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */; };
 		FF0D45F01475688100340287 /* WAArticleDraftsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0D45EF1475688100340287 /* WAArticleDraftsViewController.m */; };
 		FF0D4634147576AD00340287 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0D4633147576AD00340287 /* Icon@2x.png */; };
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
@@ -576,6 +577,8 @@
 		FF0B2A2B14388FF000309F0E /* WADefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADefines.h; sourceTree = "<group>"; };
 		FF0B2A2C14388FF000309F0E /* WADefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADefines.m; sourceTree = "<group>"; };
 		FF0B2A2E1438921100309F0E /* WADefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = WADefaults.plist; path = Resources/WADefaults.plist; sourceTree = "<group>"; };
+		FF0C7AB814987FCA00632EF3 /* WADataStore+FetchingConveniences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADataStore+FetchingConveniences.h"; sourceTree = "<group>"; };
+		FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADataStore+FetchingConveniences.m"; sourceTree = "<group>"; };
 		FF0D45ED1475678B00340287 /* WAModel 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 6.xcdatamodel"; sourceTree = "<group>"; };
 		FF0D45EE1475688100340287 /* WAArticleDraftsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleDraftsViewController.h; sourceTree = "<group>"; };
 		FF0D45EF1475688100340287 /* WAArticleDraftsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleDraftsViewController.m; sourceTree = "<group>"; };
@@ -1279,6 +1282,8 @@
 				FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */,
 				FF97382313D821DF003D1722 /* WADataStore.h */,
 				FF97382413D821DF003D1722 /* WADataStore.m */,
+				FF0C7AB814987FCA00632EF3 /* WADataStore+FetchingConveniences.h */,
+				FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */,
 			);
 			name = Model;
 			path = wammer;
@@ -2222,6 +2227,7 @@
 				FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */,
 				FF14886014977E4500D8B0AD /* WATiledImageView.m in Sources */,
 				FF14886714978C5800D8B0AD /* WAAsyncImageView.m in Sources */,
+				FF0C7ABA14987FCA00632EF3 /* WADataStore+FetchingConveniences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
