@@ -19,14 +19,14 @@
 @implementation WAAsyncImageView
 @synthesize lastImagePtr;
 
-- (void) setImage:(UIImage *)image {
+- (void) setImage:(UIImage *)newImage {
 
-  if (self.image == image)
+  if (self.image == newImage)
     return;
   
-  lastImagePtr = image;
+  lastImagePtr = newImage;
 
-  if (!image) {
+  if (!newImage) {
   
     [super setImage:nil];
     return;
@@ -35,7 +35,7 @@
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^ {
 
-    UIImage *decodedImage = [image irDecodedImage];
+    UIImage *decodedImage = [newImage irDecodedImage];
     dispatch_async(dispatch_get_main_queue(), ^{
     
       if (self.lastImagePtr != decodedImage)
