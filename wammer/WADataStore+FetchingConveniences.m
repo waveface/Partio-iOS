@@ -48,9 +48,11 @@
   if (!callback)
     return;
 
-  NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+  NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
   
-  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"identifier == %@", anArticleIdentifier];  //  FIXME: use a new fetch request template
+    anArticleIdentifier, @"Identifier",
+  
+  nil]];
   
   fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
     [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
