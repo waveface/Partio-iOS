@@ -124,8 +124,8 @@
 - (void) prepareForReuse {
 
 	[super prepareForReuse];
-	[self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
-  [self.imageView setImage:nil];
+	//  [self.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
+  //  [self.imageView setImage:nil];
   
 }
 

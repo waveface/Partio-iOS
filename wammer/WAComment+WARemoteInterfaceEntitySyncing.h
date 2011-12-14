@@ -10,6 +10,6 @@
 #import "WAComment.h"
 #import "WARemoteInterfaceEntitySyncing.h"
 
-@interface WAComment (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>
+@interface WAComment (WARemoteInterfaceEntitySyncing)
 
 @end
