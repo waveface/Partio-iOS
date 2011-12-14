@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes a bug where the application will superimpose the URI scheme of the Cloud endpoint on any stations it attempts to connect to\n- Fixes up navigation controller tomfoolery (Shared)\n- Adds the user info view controller for the iPhone"
+ETReleaseNotes="- Fixes a potential crasher in the Gallery (Shared) when the user exits the gallery before an asynchronous image update is completed\n- Fixes a crasher in async text attribution where a non-thread-safe object was shared among threads accidentally"
 ETMarketingVersionNumber="0.9.8"

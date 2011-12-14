@@ -75,13 +75,15 @@
   
   [self.backgroundView addSubview:((^ {
     
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.backgroundView.bounds, 10, 4)] autorelease];
+    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.backgroundView.bounds, 1, 0)] autorelease];
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
-    returnedView.layer.borderWidth = 1.0f;
-    returnedView.layer.borderColor = [UIColor colorWithWhite:1 alpha:1].CGColor;
-    returnedView.layer.masksToBounds = YES;
-    returnedView.layer.cornerRadius = 4.0f;
+    returnedView.layer.contents = (id)[UIImage imageNamed:@"WASquarePanelBackdrop"].CGImage;
+    returnedView.layer.contentsCenter = (CGRect){ 12.0/32.0f, 12.0/32.0f, 8.0/32.0f, 8.0/32.0f };
+    
+    UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 11, 11)] autorelease];
+    paperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternPaper"]];
+    [returnedView addSubview:paperView];
     
     return returnedView;
   
@@ -92,11 +94,9 @@
   
   [self.selectedBackgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.selectedBackgroundView.bounds, 10, 4)] autorelease];
+    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.selectedBackgroundView.bounds, 10, 10)] autorelease];
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
-    returnedView.layer.masksToBounds = YES;
-    returnedView.layer.cornerRadius = 4.0f;
     
     return returnedView;
     

@@ -146,6 +146,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 }
 
+- (void) irConfigure {
+
+	[super irConfigure];
+	
+	self.persistsContentInset = NO;
+
+}
+
 - (UIView *) defaultTitleView {
 
 	UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
@@ -345,6 +353,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
 		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
 		
+		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
+		
 		actualBackgroundView.bounds = (CGRect){
 			CGPointZero,
 			(CGSize){
@@ -382,8 +392,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.readingProgressUpdateNotificationView.hidden = YES;
 	self.tableView.contentInset = UIEdgeInsetsZero;
-	
-	//	?
 
 }
 
@@ -391,13 +399,21 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	[super viewDidAppear:animated];
 	
+	self.tableView.contentInset = UIEdgeInsetsZero;
+	self.readingProgressUpdateNotificationView.hidden = YES;
 	self.readingProgressUpdateNotificationView.onAction = nil;
 	self.readingProgressUpdateNotificationView.onClear = nil;
 
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
+	
+	CFAbsoluteTime beforeLastScannedObjectRetrieval = CFAbsoluteTimeGetCurrent();
 		
 	[self retrieveLastScannedObjectWithCompletion: ^ (WAArticle *anArticleOrNil) {
+	
+		NSString *incomingIdentifier = anArticleOrNil.identifier;
+	
+		self.lastScannedObjectIdentifier = anArticleOrNil.identifier;
 	
 		if (![nrSelf isViewLoaded])
 			return;
@@ -405,21 +421,51 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		if (!anArticleOrNil)
 			return;
 		
+		if ([self.lastUserReactedScannedObjectIdentifier isEqualToString:self.lastScannedObjectIdentifier])
+			return;
+		
+		CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
+		CFTimeInterval elapsedTime = (currentTime - beforeLastScannedObjectRetrieval);
+		
 		nrNotificationView.onAction = ^ {
 		
-			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
-				
-				UIEdgeInsets newInsets = self.tableView.contentInset;
-				newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
-				self.tableView.contentInset = newInsets;
-				[nrSelf.tableView layoutSubviews];
-				
-			} completion:nil];
+			nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
+		
+			if (!nrNotificationView.hidden) {
+
+				[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
+					
+					UIEdgeInsets newInsets = self.tableView.contentInset;
+					newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
+					self.tableView.contentInset = newInsets;
+					[nrSelf.tableView layoutSubviews];
+					
+				} completion:nil];
 			
+			}
+				
 			NSIndexPath *objectIndexPath = [nrSelf.fetchedResultsController indexPathForObject:anArticleOrNil];
 			
-			if (objectIndexPath)
-				[nrSelf.tableView scrollToRowAtIndexPath:objectIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+			if (objectIndexPath) {
+			
+				//	[UIView animateWithDuration:0.3 animations:^{
+					
+					CGRect objectRect = [nrSelf.tableView rectForRowAtIndexPath:objectIndexPath];
+					
+					if (CGRectEqualToRect(CGRectIntersection(objectRect, nrSelf.tableView.bounds), CGRectNull)) {
+					
+						//	Only scroll if the cell is not already shown
+					
+						[nrSelf.tableView setContentOffset:(CGPoint){
+							nrSelf.tableView.contentOffset.x,
+							MAX(0, objectRect.origin.y - 24)
+						} animated:YES];
+					
+					}
+					
+				//	}];
+				
+			}
 				
 			nrNotificationView.onAction = nil;
 			
@@ -427,6 +473,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		nrNotificationView.onClear = ^ {
 		
+			nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
+			
 			[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
 				
 				UIEdgeInsets newInsets = nrSelf.tableView.contentInset;
@@ -440,8 +488,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 		};
 		
-			
-		if (YES) {
+		
+		if (elapsedTime > 3) {
 		
 			[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 			
@@ -459,6 +507,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 				
 			}];
+		
+		} else {
+		
+			if (nrNotificationView.onAction)
+				nrNotificationView.onAction();
 		
 		}
 			
@@ -480,7 +533,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__block WAArticle *sentArticle = [shownArticles count] ? [shownArticles objectAtIndex:0] : nil;
 	
-	if (shownRowRects > 1) {
+	if ([shownRowRects count] > 1) {
 	
 		//	If more than one rows were shown, find the first row that was fully visible
 	
@@ -496,14 +549,20 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	}
 	
-	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
+	NSString *newLastScannedObjectIdentifier = sentArticle.identifier;
 	
-		NSLog(@"setLastScannedObject -> %x", didFinish);
+	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
+		
+		//	Don’t go back to what we have said
+		self.lastUserReactedScannedObjectIdentifier = newLastScannedObjectIdentifier;
 		
 	}];
 	
 	self.readingProgressUpdateNotificationView.onAction = nil;
 	self.readingProgressUpdateNotificationView.onClear = nil;
+	
+	[self.tableView resetPullDown];
+	//	self.tableView.contentOffset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
 	
@@ -671,9 +730,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 	if (![self isViewLoaded])
 		return;
-		
+	
 	[self persistState];
 	[self.tableView reloadData];
+	[self.tableView layoutSubviews];
 	[self restoreState];
 		
 }

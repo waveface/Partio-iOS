@@ -38,29 +38,24 @@
 @synthesize managedObjectContext;
 
 
-- (id) init {
+- (void) irConfigure {
 
-  return [self initWithStyle:UITableViewStyleGrouped];
-
-}
-
-- (id) initWithStyle:(UITableViewStyle)style {
-  
-  self = [super initWithStyle:style];
-  if (!self)
-    return nil;
+  [super irConfigure];
   
   [self updateDisplayTitleWithPotentialTitle:nil];
   
+	self.tableViewStyle = UITableViewStyleGrouped;
   self.contentSizeForViewInPopover = (CGSize){ 320, 416 };
-  
-  return self;
-  
+  self.persistsStateWhenViewWillDisappear = NO;
+  self.restoresStateWhenViewDidAppear = NO;
+
 }
 
 - (void) viewDidLoad {
 
   [super viewDidLoad];
+  
+  __block UITableView *nrTV = self.tableView;
   
   self.tableView.tableHeaderView = ((^ {
   
@@ -73,6 +68,21 @@
   })());
   
   self.tableView.rowHeight = 54.0f;
+  
+  self.tableView.onLayoutSubviews = ^ {
+  
+    UIView *tableHeaderView = nrTV.tableHeaderView;
+    CGPoint contentOffset = nrTV.contentOffset;
+    
+    nrTV.tableHeaderView.center = (CGPoint) {
+      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
+      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
+    };
+    
+    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
+      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
+  
+  };
 
 }
 
@@ -221,24 +231,6 @@
   }
   
   return cell;
-
-}
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-
-  if (scrollView == self.tableView) {
-  
-    UIView *tableHeaderView = self.tableView.tableHeaderView;
-    CGPoint contentOffset = self.tableView.contentOffset;
-    
-    self.tableView.tableHeaderView.center = (CGPoint) {
-      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
-      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
-    };
-    
-     [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
-  
-  }
 
 }
 
