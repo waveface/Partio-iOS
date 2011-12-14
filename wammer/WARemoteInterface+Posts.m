@@ -15,12 +15,12 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aGroupIdentifier);
 	
-	[self.engine fireAPIRequestNamed:@"posts/getSingle" withArguments:WARemoteInterfaceRFC3986EncodedDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"posts/getSingle" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 		aGroupIdentifier, @"group_id",
 		anIdentifier, @"post_id",
 				
-	nil]) options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (!successBlock)
 			return;
@@ -50,20 +50,25 @@
 	
 	}
 	
-	[self.engine fireAPIRequestNamed:@"posts/getSingle" withArguments:WARemoteInterfaceRFC3986EncodedDictionary([NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"posts/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 		aGroupIdentifier, @"group_id",
 		datum, @"datum",
-		[NSNumber numberWithInt:positiveOrNegativeNumberOfPostsToExpandSearching], @"limit",
+    
+                [NSString stringWithFormat:@"%@%lu", 
+                  (positiveOrNegativeNumberOfPostsToExpandSearching > 0) ? @"+" : @"",
+                  positiveOrNegativeNumberOfPostsToExpandSearching
+                ], @"limit",
+                
 		@"", @"filter",
 				
-	nil]) options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (!successBlock)
 			return;
 			
 		successBlock(
-			[inResponseOrNil valueForKeyPath:@"post"]
+			[inResponseOrNil valueForKeyPath:@"posts"]
 		);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];

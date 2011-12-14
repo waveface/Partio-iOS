@@ -331,7 +331,7 @@
 
 	if (erasesExistingAuthenticationInformation) {
   
-    UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
+    //  UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
     
     [self removeAuthenticationData];
 	

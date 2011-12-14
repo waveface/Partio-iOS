@@ -47,16 +47,4 @@
 
 }
 
-+ (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
-
-  [NSException raise:NSInternalInconsistencyException format:@"%s defunct.", __PRETTY_FUNCTION__];
-
-}
-
-- (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
-
-  [NSException raise:NSInternalInconsistencyException format:@"%s defunct.", __PRETTY_FUNCTION__];
-
-}
-
 @end
