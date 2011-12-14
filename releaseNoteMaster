@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes a potential crasher in the Gallery (Shared) when the user exits the gallery before an asynchronous image update is completed\n- Fixes a crasher in async text attribution where a non-thread-safe object was shared among threads accidentally"
+ETReleaseNotes="- Hotfix: Fixes a crasher on iOS 4.3 related to NSDataDetector :/"
 ETMarketingVersionNumber="0.9.8"
