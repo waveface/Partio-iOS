@@ -37,7 +37,12 @@
 
 - (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 
-	[WAArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
+	[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+  
+    //  kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
+    kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+  
+  nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
 		if (!didFinish) {
 			if (failureBlock)

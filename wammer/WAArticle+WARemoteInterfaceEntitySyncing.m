@@ -13,6 +13,17 @@
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 
+
+NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
+NSString * const kWAArticleSyncDefaultStrategy = @"WAArticleSyncMergeLastBatchStrategy";
+NSString * const kWAArticleSyncFullyFetchOnlyStrategy = @"WAArticleSyncFullyFetchOnlyStrategy";
+NSString * const kWAArticleSyncMergeLastBatchStrategy = @"WAArticleSyncMergeLastBatchStrategy";
+
+NSString * const kWAArticleSyncRangeStart = @"WAArticleSyncRangeStart";
+NSString * const kWAArticleSyncRangeEnd = @"WAArticleSyncRangeEnd";
+
+NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
+
 @implementation WAArticle (WARemoteInterfaceEntitySyncing)
 
 + (NSString *) keyPathHoldingUniqueValue {
@@ -166,27 +177,141 @@
 
 + (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
 
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	
-	[ri retrieveLatestPostsInGroup:ri.primaryGroupIdentifier withBatchLimit:25 onSuccess:^(NSArray *postReps) {
-	
-		if (!completionBlock)
-			return;
-		
-		NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-		context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
-		
-		NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		
-		completionBlock(YES, context, touchedObjects, nil);
-	
-	} onFailure:^(NSError *error) {
-		
-		if (completionBlock)
-			completionBlock(NO, nil, nil, error);
-		
-	}];
+  [self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+  
+    kWAArticleSyncMergeLastBatchStrategy, kWAArticleSyncStrategy,
+  
+  nil] completion:completionBlock];
 
+}
+
++ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
+
+  WAArticleSyncStrategy syncStrategy = [options objectForKey:kWAArticleSyncStrategy];
+  
+  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+  WADataStore *ds = [WADataStore defaultStore];
+  NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
+  NSUInteger usedBatchLimit = 5;
+  
+  if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
+  
+    //  Merging the last batch only, don’t care about the vaccum at all — this is less expensive but has the potential to leave lots of vacuum in the application
+    
+    [ri retrieveLatestPostsInGroup:usedGroupIdentifier withBatchLimit:usedBatchLimit onSuccess:^(NSArray *postReps) {
+    
+      NSManagedObjectContext *context = [ds disposableMOC];
+      context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
+
+      NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+
+      if (completionBlock)
+        completionBlock(YES, context, touchedObjects, nil);
+      
+    } onFailure:^(NSError *error) {
+    
+      if (completionBlock)
+        completionBlock(NO, nil, nil, error);
+    
+    }];
+    
+  } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
+  
+    NSLog(@"%s: Strategy is kWAArticleSyncFullyFetchOnlyStrategy, options = %@", __PRETTY_FUNCTION__, options);
+    
+    NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
+    
+    if (!sessionInfo)
+      sessionInfo = [NSMutableDictionary dictionary];
+      
+    NSMutableDictionary *optionsContinuation = [[options mutableCopy] autorelease];
+    [optionsContinuation setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
+    
+    dispatch_queue_t sessionQueue = ((^ {
+      
+      dispatch_queue_t returnedQueue = [[sessionInfo objectForKey:@"sessionQueue"] pointerValue];
+      if (!returnedQueue) {
+        returnedQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@.%@.temporaryQueue",NSStringFromClass([self class]), NSStringFromSelector(_cmd)] UTF8String], DISPATCH_QUEUE_SERIAL);
+        [sessionInfo setObject:[NSValue valueWithPointer:returnedQueue] forKey:@"sessionQueue"];
+      }
+      
+      return returnedQueue;
+      
+    })());
+    
+    dispatch_async(sessionQueue, ^{
+    
+      NSManagedObjectContext *usedContext = [sessionInfo objectForKey:@"context"];
+      
+      if (!usedContext) {
+        usedContext = [ds disposableMOC];
+        [sessionInfo setObject:usedContext forKey:@"context"];
+      }
+      
+      NSMutableArray *usedObjects = [sessionInfo objectForKey:@"objects"];
+      
+      if (!usedObjects) {
+        usedObjects = [NSMutableArray array];
+        [sessionInfo setObject:usedObjects forKey:@"objects"];
+      }
+    
+      [ds fetchLatestArticleInGroup:usedGroupIdentifier usingContext:usedContext onSuccess:^(NSString *identifier, WAArticle *article) {
+      
+        NSString *referencedPostIdentifier = identifier;
+        NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
+        
+        if (article.timestamp) {
+          referencedPostDate = [article.timestamp dateByAddingTimeInterval:1];
+          referencedPostIdentifier = nil;
+        }
+        
+        [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
+        
+          dispatch_async(sessionQueue, ^{
+          
+            if (![postReps count]) {
+            
+              if (completionBlock)
+                completionBlock(YES, usedContext, usedObjects, nil);
+              
+              dispatch_release(sessionQueue);
+              
+              return;
+            
+            }
+            
+            NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+            [usedObjects addObject:touchedObjects];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+              
+              [self synchronizeWithOptions:optionsContinuation completion:completionBlock];
+              
+            });
+            
+            return;
+            
+          });
+        
+        } onFailure:^(NSError *error) {
+        
+          if (completionBlock)
+            completionBlock(NO, nil, nil, error);
+            
+          dispatch_release(sessionQueue);
+          
+        }];
+
+      }];
+      
+    });
+      
+  } else {
+  
+    NSParameterAssert(NO);
+  
+  }
+  
 }
 
 - (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
