@@ -697,12 +697,14 @@
           [keyWindow.layer addAnimation:transition forKey:@"transition"];
           
           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-          
-            [[WARemoteInterface sharedInterface] retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
-            
+					
+						[[WARemoteInterface sharedInterface] retrieveUser:[WARemoteInterface sharedInterface].userIdentifier onSuccess:^(NSDictionary *userRep, NSArray *groupReps) {
+							
+							BOOL userNeedsStation = [[userRep valueForKeyPath:@"state"] isEqual:@"station_required"];
+							
               dispatch_async(dispatch_get_main_queue(), ^ {
               
-                if ([stationReps count]) {
+                if (!userNeedsStation) {
                 
                   removeOverlayView(YES);
                 
@@ -767,7 +769,7 @@
             
               dispatch_async(dispatch_get_main_queue(), ^ {
             
-                NSLog(@"Error retrieving associated stations: %@", error);  //  FAIL
+                NSLog(@"Error retrieving user information: %@", error);  //  FAIL
                 removeOverlayView(YES);
               
               });
