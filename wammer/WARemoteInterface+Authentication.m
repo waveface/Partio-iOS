@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "WARemoteInterface+Authentication.h"
 #import "IRWebAPIEngine+FormURLEncoding.h"
 
@@ -67,6 +68,42 @@
 
 }
 
+- (IRWebAPIResponseContextTransformer) defaultV2AuthenticationListeningBlock {
+
+  __block __typeof__(self) nrSelf = self;
+
+  return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+  
+    NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
+    
+    if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
+    
+      //  ?
+      
+      if (urlResponse.statusCode == 401) {
+      
+        if (nrSelf.userToken) {
+        
+          //  Token is failing right now
+          
+          NSLog(@"Token failure");
+          
+          //  ?
+          
+          [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self];
+        
+        }
+      
+      }
+    
+    }
+    
+    return inParsedResponse;
+    
+  } copy] autorelease];
+
+}
+
 - (void) retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSParameterAssert(anIdentifier);
@@ -79,7 +116,8 @@
 		anIdentifier, @"email",
 		aPassword, @"password",
     aDevice, @"device_name",
-    [[UIDevice currentDevice] uniqueIdentifier], @"device_id",  // TODO, use MAC address to create device specific UDID.
+    
+    WADeviceIdentifier(), @"device_id",
 
 	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	

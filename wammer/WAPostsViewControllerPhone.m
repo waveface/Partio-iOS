@@ -534,7 +534,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		} completion:nil];
 		
 		[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-			
+		
+			//	Fixme: MOMENTARILY HIGHLGIGHT THE CELL
+		
 			[nrSelf scrollToArticle:article];
 			
 		}];
@@ -761,15 +763,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   if (postHasFiles) {
     
 		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-  
-		NSArray *allImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+		
+		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 2) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
       WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
 			return file.thumbnailImage;
-		}];
-		
-		NSArray *firstTwoImages = [allImages subarrayWithRange:(NSRange){ 0, MIN(2, [allImages count] )}];
-		
-		[cell.imageStackView setImages:firstTwoImages asynchronously:YES withDecodingCompletion:nil];	//	?
+		}] asynchronously:YES withDecodingCompletion:nil];
 	
 	} else {
 	
@@ -812,15 +810,92 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-		
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
 	if (![self isViewLoaded])
 		return;
+		
+	[UIView setAnimationsEnabled:NO];
 	
 	[self persistState];
-	[self.tableView reloadData];
-	[self.tableView layoutSubviews];
+	[self.tableView beginUpdates];
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	switch (type) {
+		case NSFetchedResultsChangeDelete: {
+			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeInsert: {
+			[self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		default: {
+			NSParameterAssert(NO);
+		}
+	}
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	NSParameterAssert([NSThread isMainThread]);
+
+	switch (type) {
+		case NSFetchedResultsChangeDelete: {
+			NSParameterAssert(indexPath && !newIndexPath);
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeInsert: {
+			NSParameterAssert(!indexPath && newIndexPath);
+			[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		case NSFetchedResultsChangeMove: {
+		
+			if (indexPath && newIndexPath) {
+		
+				NSParameterAssert(indexPath && newIndexPath);
+				if ([self.tableView respondsToSelector:@selector(moveRowAtIndexPath:toIndexPath:)]) {
+					[self.tableView moveRowAtIndexPath:indexPath toIndexPath:newIndexPath];
+				} else {
+					[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+					[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+				}
+			
+			} else {
+			
+				NSParameterAssert(!indexPath && newIndexPath);
+				[self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+			
+			}
+			break;
+		}
+		case NSFetchedResultsChangeUpdate: {
+			NSParameterAssert(indexPath && !newIndexPath);
+			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+			break;
+		}
+		
+	}
+
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	if (![self isViewLoaded])
+		return;
+		
+	[self.tableView endUpdates];
 	[self restoreState];
+	
+	[UIView setAnimationsEnabled:YES];
+	
+	//	[self.tableView layoutSubviews];//?
 		
 }
 
