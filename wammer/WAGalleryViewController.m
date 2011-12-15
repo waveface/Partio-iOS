@@ -472,6 +472,7 @@
 	[fetchedResultsController release];
 	[article release];
 	
+	[paginatedView removeFromSuperview];	//	Also triggers page deallocation
 	[paginatedView release];
 	[navigationBar release];
 	[toolbar release];
