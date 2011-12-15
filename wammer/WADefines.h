@@ -44,3 +44,7 @@ extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(
 extern UIButton * WAButtonForImage (UIImage *anImage);
 extern UIButton * WAToolbarButtonForImage (UIImage *anImage);
 extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
+
+extern NSString * const kWACurrentGeneratedDeviceIdentifier;
+BOOL WADeviceIdentifierReset (void);
+NSString * WADeviceIdentifier (void);

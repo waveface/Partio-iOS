@@ -212,3 +212,34 @@ UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
 	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
 
 }
+
+NSString * const kWACurrentGeneratedDeviceIdentifier = @"WACurrentGeneratedDeviceIdentifier";
+
+BOOL WADeviceIdentifierReset (void) {
+
+	CFUUIDRef uuidRef = CFUUIDCreate(kCFAllocatorDefault);
+	if (!uuidRef)
+    return NO;
+	
+	NSString *uuid = [NSMakeCollectable(CFUUIDCreateString(kCFAllocatorDefault, uuidRef)) autorelease];
+	CFRelease(uuidRef);
+
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWACurrentGeneratedDeviceIdentifier];
+  [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:kWACurrentGeneratedDeviceIdentifier];
+  
+  return [[NSUserDefaults standardUserDefaults] synchronize];
+
+}
+
+NSString * WADeviceIdentifier (void) {
+
+  NSString *returnedString = [[NSUserDefaults standardUserDefaults] stringForKey:kWACurrentGeneratedDeviceIdentifier];
+  if (returnedString)
+    return returnedString;
+
+  if (WADeviceIdentifierReset())
+    return WADeviceIdentifier();
+
+  return nil;
+
+}
