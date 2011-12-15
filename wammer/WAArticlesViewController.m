@@ -94,20 +94,7 @@
 	self.fetchedResultsController.delegate = self;
 	[self.fetchedResultsController performFetch:nil];
 	
-	self.navigationItem.titleView = (( ^ {
-	
-		UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-		label.text = NSLocalizedString(@"WAAppTitle", @"Application Title");
-		label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
-		label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
-		label.shadowColor = [UIColor whiteColor];
-		label.shadowOffset = (CGSize){ 0, 1 };
-		label.backgroundColor = nil;
-		label.opaque = NO;
-		[label sizeToFit];
-		return label;
-	
-	})());
+	self.navigationItem.titleView = WAStandardTitleView();
 		
 	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	

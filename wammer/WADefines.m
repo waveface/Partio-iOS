@@ -193,25 +193,55 @@ UIButton * WAToolbarButtonForImage (UIImage *anImage) {
 
 UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
 
-  UIColor *fillColor;
-  IRShadow *shadow;
+  UIColor *fillColor = [UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1];      
+  IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.35f] offset:(CGSize){ 0, 1 } spread:0];
   
-  switch ([UIDevice currentDevice].userInterfaceIdiom) {
-    
-    case UIUserInterfaceIdiomPhone: {
-      fillColor = [UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1];      
-      shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.35f] offset:(CGSize){ 0, 1 } spread:0];
-      break;
-    }
-
-    default: {
-      fillColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
-      shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0];
-      break;
-    }
-  }
+	//  switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	//    
+	//    case UIUserInterfaceIdiomPhone: {
+	//      fillColor = [UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1];      
+	//      shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.35f] offset:(CGSize){ 0, 1 } spread:0];
+	//      break;
+	//    }
+	//
+	//    default: {
+	//      fillColor = [UIColor colorWithRed:.3 green:.3 blue:.3 alpha:1];
+	//      shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.75f] offset:(CGSize){ 0, 1 } spread:0];
+	//      break;
+	//    }
+	//  }
   
 	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
+
+}
+
+UIView * WAStandardTitleView (void) {
+
+	UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
+	logotype.contentMode = UIViewContentModeScaleAspectFit;
+	logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
+	
+	UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){	CGPointZero, (CGSize){ 128, 44 }}];
+	logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
+	[containerView addSubview:logotype];
+	
+	return containerView;
+
+}
+
+UIView * WAStandardTitleLabel (void) {
+
+	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	label.text = NSLocalizedString(@"WAAppTitle", @"Application Title");
+	label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
+	label.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
+	label.shadowColor = [UIColor whiteColor];
+	label.shadowOffset = (CGSize){ 0, 1 };
+	label.backgroundColor = nil;
+	label.opaque = NO;
+	[label sizeToFit];
+	return label;
 
 }
 

@@ -157,15 +157,17 @@
 			
 			if ([navController isViewLoaded])
 				navController.onViewDidLoad(navController);
-        
+			
       WANavigationBar *navBar = ((WANavigationBar *)(navController.navigationBar));
-      
-      if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        navBar.tintColor = [UIColor brownColor];
-        navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
-      } else {
-        navBar.backgroundView = [WANavigationBar defaultGradientBackgroundView];
-      }
+      navBar.tintColor = [UIColor brownColor];
+			navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			
+			//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+			//		navBar.tintColor = [UIColor brownColor];
+			//		navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			//	} else {
+			//		navBar.backgroundView = [WANavigationBar defaultGradientBackgroundView];
+			//	}
 			
 			return navController;
 			
