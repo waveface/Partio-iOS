@@ -43,7 +43,6 @@
 		4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */; };
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
-		4B733BBB14987EDF005CAE8D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BBA14987EDF005CAE8D /* Settings.bundle */; };
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
 		4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD0D941490C97D00EAE3E1 /* WABackground.png */; };
 		4BC91A941446E3130019399B /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyph.png */; };
@@ -97,6 +96,7 @@
 		FF4CCE4B149A00180049B83C /* WAPatternSoftWallpaper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE44149A00180049B83C /* WAPatternSoftWallpaper@2x.png */; };
 		FF4CCE4C149A00180049B83C /* WAPatternThickShrunkPaper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE45149A00180049B83C /* WAPatternThickShrunkPaper@2x.png */; };
 		FF4CCE4D149A00180049B83C /* WAPatternWoodTexture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */; };
+		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
@@ -610,7 +610,6 @@
 		4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSTextFieldSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
-		4B733BBA14987EDF005CAE8D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
@@ -711,6 +710,7 @@
 		FF4CCE44149A00180049B83C /* WAPatternSoftWallpaper@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPatternSoftWallpaper@2x.png"; path = "Resources/WAPatternSoftWallpaper@2x.png"; sourceTree = "<group>"; };
 		FF4CCE45149A00180049B83C /* WAPatternThickShrunkPaper@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPatternThickShrunkPaper@2x.png"; path = "Resources/WAPatternThickShrunkPaper@2x.png"; sourceTree = "<group>"; };
 		FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPatternWoodTexture@2x.png"; path = "Resources/WAPatternWoodTexture@2x.png"; sourceTree = "<group>"; };
+		FF4CCE94149A07B30049B83C /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01113E13249002C627F /* WAArticleViewController-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleViewController-Default.xib"; sourceTree = "<group>"; };
@@ -1326,7 +1326,7 @@
 		FF73A54913D6C2CD00D54EC6 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4B733BBA14987EDF005CAE8D /* Settings.bundle */,
+				FF4CCE94149A07B30049B83C /* InAppSettings.bundle */,
 				FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */,
 				FFA9C95F144E967F0001BA25 /* IRLabelTestingViewController.h */,
 				FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */,
@@ -2230,7 +2230,7 @@
 				4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */,
 				4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */,
 				4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */,
-				4B733BBB14987EDF005CAE8D /* Settings.bundle in Resources */,
+				FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
