@@ -30,7 +30,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
 
-@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate>
+@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
@@ -97,13 +97,16 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		[self.paginatedView reloadViews];
 		
 	self.paginationSlider.backgroundColor = nil;
+	self.paginationSlider.instantaneousCallbacks = YES;
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
 	
 	self.paginatedView.backgroundColor = nil;
 	self.paginatedView.horizontalSpacing = 32.0f;
+	self.paginatedView.clipsToBounds = NO;
+	self.paginatedView.scrollView.clipsToBounds = NO;
 	
-	self.view.backgroundColor = nil;
-	self.view.opaque = NO;
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
+	self.view.opaque = YES;
 	
 	if (self.navigationItem.leftBarButtonItem)
 	if (!self.navigationItem.leftBarButtonItem.customView) {
@@ -243,7 +246,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				[navController initWithRootViewController:enqueuedPaginatedVC];
 				
 				[navController setOnViewDidLoad: ^ (WANavigationController *self) {
-					((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
+					((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
 				}];
 				
 				if ([navController isViewLoaded])
@@ -273,7 +276,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				UIImage *leftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:normalBackgroundColor gradientColors:normalGradientColors innerShadow:innerShadow border:border shadow:shadow];
 				UIImage *highlightedLeftItemImage = [IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBack withTitle:leftTitle font:titleFont color:titleColor shadow:titleShadow backgroundColor:highlightedBackgroundColor gradientColors:highlightedGradientColors innerShadow:innerShadow border:border shadow:shadow];
 				__block IRBarButtonItem *newLeftItem = [IRBarButtonItem itemWithCustomImage:leftItemImage highlightedImage:highlightedLeftItemImage];
-				enqueuedPaginatedVC.navigationItem.leftBarButtonItem = newLeftItem;
 				
 				newLeftItem.block = ^ {
 						
@@ -293,6 +295,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					[CATransaction commit];
 					
 				};
+				
+				enqueuedPaginatedVC.navigationItem.leftBarButtonItem = newLeftItem;
 				
 				return navController;
 			
@@ -678,7 +682,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	UIView *returnedView = [[[UIView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
+	returnedView.clipsToBounds = NO;
 	returnedView.layer.shouldRasterize = YES;
+	
+	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
+	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	backdropView.backgroundColor = [UIColor whiteColor];
+	[returnedView addSubview:backdropView];
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
 	
@@ -808,7 +818,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (!item)
 			return;
 	
-		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = CGRectInset(layoutBlock(transformedGrid, item), 4, 4);
+		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = CGRectInset(layoutBlock(transformedGrid, item), 8, 8);
 		
 	}];
 	
@@ -871,6 +881,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	if (self.paginatedView.currentPage == destinationPage)
 		return;
+	
+	if ([slider.slider isTracking]) {
+		UIViewAnimationOptions options = UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction;
+		[UIView animateWithDuration:0.3 delay:0 options:options animations:^{
+			[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];			
+		} completion:nil];
+		return;
+	}
 	
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
