@@ -40,7 +40,8 @@ NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSes
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
 NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification = @"WARemoteInterfaceReachableHostsDidChangeNotification";
 
-NSString * const kWARemoteEndpointApplicationKey = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
+NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c1-a6c2cbf9977c";
+NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 
 static IRBorder *kWADefaultBarButtonBorder;
 static IRShadow *kWADefaultBarButtonInnerShadow;
