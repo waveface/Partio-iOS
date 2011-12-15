@@ -33,6 +33,7 @@
 
 #import "WAUserInfoViewController.h"
 #import "WANavigationController.h"
+#import "IASKAppSettingsViewController.h"
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
@@ -59,7 +60,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback;
 - (void) retrieveLastScannedObjectWithCompletion:(void(^)(NSString *articleIdentifier, WAArticle *anArticleOrNil))callback;
 
-- (void) handleIncomingLastScannedObjectIdentifier:(NSString *)anIdentifier;
+- (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)anIdentifier;
 - (void) scrollToArticle:(WAArticle *)anArticle;
 
 @end
@@ -103,8 +104,25 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
+//	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+//		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
+//	}];
+	
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction:^(UIButton *senderButton, IRBarButtonItem *senderItem) {
+		
+		__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+		appSettingsViewController.delegate = self;
+		appSettingsViewController.showDoneButton = NO;
+		appSettingsViewController.showCreditsFooter = NO;
+		
+		__block UINavigationController *wrapperNavController = [[UINavigationController alloc] initWithRootViewController:appSettingsViewController];
+		appSettingsViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+			[wrapperNavController dismissModalViewControllerAnimated:YES];
+			NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"toggleSwitch"]); // It works.
+		}];
+		
+		[nrSelf presentModalViewController:wrapperNavController animated:YES];
+		
 	}];
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
@@ -128,6 +146,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 					[wrappingNavC dismissModalViewControllerAnimated:YES];
 				}];
 				
+				userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+					[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+				}];
+				
 				[nrSelf presentModalViewController:wrappingNavC animated:YES];
         
 			}],
@@ -137,7 +159,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
         
 			}],
-      			
+			
 		nil];
 		
 		return toolbar;
@@ -199,6 +221,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 			}], 
 			
+			#if 0
+			
 			[IRAction actionWithTitle:@"Change API URL" block:^ {
 				
 				[nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];
@@ -211,6 +235,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				[nrSelf restoreState];
 			
 			}],
+			
+			#endif
 			
 	nil]] retain];
 
@@ -409,6 +435,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	self.readingProgressUpdateNotificationView.onClear = nil;
 
 	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
 	
 	CFAbsoluteTime beforeLastScannedObjectRetrieval = CFAbsoluteTimeGetCurrent();
 	
@@ -417,24 +444,52 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
 		CFTimeInterval elapsedTime = (currentTime - beforeLastScannedObjectRetrieval);
 		
+		if (![nrSelf handleIncomingLastScannedObjectIdentifier:incomingIdentifier])
+			return;
+			
 		if (elapsedTime <= 3) {
 		
-			nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-			
-			[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
+			if (![nrSelf.lastUserReactedScannedObjectIdentifier isEqualToString:incomingIdentifier]) {
+		
+				NSLog(@"autoscroll, nrSelf.lastUserReactedScannedObjectIdentifier -> %@", incomingIdentifier);
+				
+				nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
+				
+				[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
 
-				[nrSelf.fetchedResultsController performFetch:nil];
-				[nrSelf.tableView reloadData];
-				
-				[nrSelf scrollToArticle:article];
-				
-			}];
+					[nrSelf.fetchedResultsController performFetch:nil];
+					[nrSelf.tableView reloadData];
+					
+					[nrSelf scrollToArticle:article];
+					
+				}];
+			
+			}
 			
 			return;
 			
-		}
+		} else {
 		
-		[nrSelf handleIncomingLastScannedObjectIdentifier:incomingIdentifier];
+			if (nrNotificationView.hidden) {
+			
+				[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+				
+				[nrNotificationView enqueueAnimationForVisibility:YES withAdditionalAnimation:^{
+				
+					UIEdgeInsets newInsets = self.tableView.contentInset;
+					newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
+					self.tableView.contentInset = newInsets;
+					[nrSelf.tableView layoutSubviews];
+								
+				} completion: ^ (BOOL didFinish) {
+
+					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+					
+				}];
+			
+			}
+		
+		}
 		
 	};
 	
@@ -494,16 +549,17 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
-- (void) handleIncomingLastScannedObjectIdentifier:(NSString *)incomingIdentifier {
+- (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)incomingIdentifier {
 
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
-			
+	
 	if ([self.lastUserReactedScannedObjectIdentifier isEqualToString:self.lastScannedObjectIdentifier])
-		return;
+		return NO;
 	
 	nrNotificationView.onAction = ^ {
 	
+		NSLog(@"self.lastUserReactedScannedObjectIdentifier -> %@", nrSelf.lastUserReactedScannedObjectIdentifier);
 		nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
 	
 		[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
@@ -529,6 +585,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	nrNotificationView.onClear = ^ {
 	
+		NSLog(@"self.lastUserReactedScannedObjectIdentifier -> %@", nrSelf.lastUserReactedScannedObjectIdentifier);
 		nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
 		
 		[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
@@ -544,24 +601,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 	};
 	
-	if (nrNotificationView.hidden) {
-	
-		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-		
-		[nrNotificationView enqueueAnimationForVisibility:YES withAdditionalAnimation:^{
-		
-			UIEdgeInsets newInsets = self.tableView.contentInset;
-			newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
-			self.tableView.contentInset = newInsets;
-			[nrSelf.tableView layoutSubviews];
-						
-		} completion: ^ (BOOL didFinish) {
-
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-			
-		}];
-	
-	}
+	return YES;
 	
 }
 
@@ -624,7 +664,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 		
 		//	Don’t go back to what we have said
-		self.lastUserReactedScannedObjectIdentifier = newLastScannedObjectIdentifier;
+		//	self.lastScannedObjectIdentifier = newLastScannedObjectIdentifier;
+		//	self.lastUserReactedScannedObjectIdentifier = newLastScannedObjectIdentifier;
 		
 	}];
 	

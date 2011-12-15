@@ -56,11 +56,14 @@
 
 - (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
 
+@property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
+
 @end
 
 
 @implementation WAAppDelegate
 @synthesize window = _window;
+@synthesize alreadyRequestingAuthentication;
 
 - (id) init {
 
@@ -311,7 +314,7 @@
 
   dispatch_async(dispatch_get_main_queue(), ^{
 
-		[self presentAuthenticationRequestRemovingPriorData:NO clearingNavigationHierarchy:NO runningOnboardingProcess:NO];
+		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO runningOnboardingProcess:NO];
 
   });
   
@@ -389,14 +392,28 @@
 
 - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
-  BOOL alreadyRequestingAuthentication = NO;  //  FIXME
-  if (alreadyRequestingAuthentication)
-    return NO;
+  [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:eraseAuthInfo clearingNavigationHierarchy:zapEverything runningOnboardingProcess:shouldRunOnboardingChecksIfUserUnchanged];
+
+}
+
+- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+
+  @synchronized (self) {
+    
+    if (self.alreadyRequestingAuthentication)
+      return NO;
+    
+    self.alreadyRequestingAuthentication = YES;
   
+  }
+    
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
     return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
   };
+  
+  if (allowsCancellation)
+    NSParameterAssert(!eraseAuthInfo);
 
 	if (eraseAuthInfo)
     [self removeAuthenticationData];
@@ -422,182 +439,198 @@
 	};
 	
   
-    __block WAAuthenticationRequestViewController *authRequestVC;
+  __block WAAuthenticationRequestViewController *authRequestVC;
+  
+  IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
+  
+    authRequestVC.password = nil;
+    [authRequestVC assignFirstResponderStatusToBestMatchingField];
     
-    IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
+  
+  }];
+
+  IRAction *registerUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionRegisterUser", @"Action title for registering") block: ^ {
+  
+    __block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
     
-      authRequestVC.password = nil;
-      [authRequestVC assignFirstResponderStatusToBestMatchingField];
+      if (error) {
+        
+        NSString *alertTitle = NSLocalizedString(@"WAErrorUserRegistrationFailedTitle", @"Title for registration failure");
+        
+        NSString *alertText = [[NSArray arrayWithObjects:
+          NSLocalizedString(@"WAErrorUserRegistrationFailedDescription", @"Description for registration failure"),
+          [NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
+          NSLocalizedString(@"WAErrorUserRegistrationFailedRecoveryNotion", @"Recovery notion for registration failure recovery"),
+        nil] componentsJoinedByString:@""];
+
+        [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+        
+          [IRAction actionWithTitle:@"OK" block:nil],
+        
+        nil]] show];
+        
+        return;
       
-      [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
-    
+      }
+      
+      authRequestVC.username = self.username;
+      authRequestVC.password = self.password;
+      authRequestVC.performsAuthenticationOnViewDidAppear = YES;
+
+      [authRequestVC.tableView reloadData];
+      [authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
+
     }];
   
-    IRAction *registerUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionRegisterUser", @"Action title for registering") block: ^ {
+    registerRequestVC.username = authRequestVC.username;
+    registerRequestVC.password = authRequestVC.password;
     
-      __block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+    [authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
+  
+  }];
+  
+  IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignIn", @"Action title for signing in") block:^{
+    
+    [authRequestVC authenticate];
+    
+  }];
+  
+  
+  __block __typeof__(self) nrAppDelegate = self;
+  
+  authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
+  
+      if (anError) {
       
-        if (error) {
-          
-          NSString *alertTitle = NSLocalizedString(@"WAErrorUserRegistrationFailedTitle", @"Title for registration failure");
-          
-          NSString *alertText = [[NSArray arrayWithObjects:
-            NSLocalizedString(@"WAErrorUserRegistrationFailedDescription", @"Description for registration failure"),
-            [NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
-            NSLocalizedString(@"WAErrorUserRegistrationFailedRecoveryNotion", @"Recovery notion for registration failure recovery"),
-          nil] componentsJoinedByString:@""];
-
-          [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
-          
-            [IRAction actionWithTitle:@"OK" block:nil],
-          
-          nil]] show];
-          
-          return;
+        NSString *alertTitle = NSLocalizedString(@"WAErrorAuthenticationFailedTitle", @"Title for authentication failure");
+        NSString *alertText = [[NSArray arrayWithObjects:
+          NSLocalizedString(@"WAErrorAuthenticationFailedDescription", @"Description for authentication failure"),
+          [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
+          NSLocalizedString(@"WAErrorAuthenticationFailedRecoveryNotion", @"Recovery notion for authentication failure recovery"),
+        nil] componentsJoinedByString:@""];
         
-        }
+        [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
         
-        authRequestVC.username = self.username;
-        authRequestVC.password = self.password;
-        authRequestVC.performsAuthenticationOnViewDidAppear = YES;
-
-        [authRequestVC.tableView reloadData];
-        [authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
-
-      }];
-    
-      registerRequestVC.username = authRequestVC.username;
-      registerRequestVC.password = authRequestVC.password;
+          authRequestVC.password = nil;
+          [authRequestVC assignFirstResponderStatusToBestMatchingField];
+          
+        }] otherActions:[NSArray arrayWithObjects:
+          
+          resetPasswordAction,
+          registerUserAction,
+          
+        nil]] show];
+        
+        return;
       
-      [authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
-    
+      }
+  
+      writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
+      
+      //  If running onboarding stuff
+      
+      if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged) {
+        [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
+      } else {
+        [self dismissModalViewControllerAnimated:YES];
+      }
+      
+      nrAppDelegate.alreadyRequestingAuthentication = NO;
+      
+  }];
+  
+  if (aReason)
+    authRequestVC.navigationItem.prompt = aReason;
+  
+  if (allowsCancellation) {
+    authRequestVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+      [authRequestVC.navigationController dismissModalViewControllerAnimated:YES];
     }];
+  }
+  
+  [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
+    (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+  nil]];
+  [authRequestVC irPerformOnDeallocation:^{
+    [signInUserAction irUnbind:@"enabled"];
+  }];
+  
+  NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
     
-    IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignIn", @"Action title for signing in") block:^{
+    signInUserAction,
+    registerUserAction,
+    
+  nil];
+
+  if (WAAdvancedFeaturesEnabled()) {
+    
+    [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
       
+      authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+      authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
       [authRequestVC authenticate];
       
-    }];
+    }]];
     
-    
-    __block __typeof__(self) nrAppDelegate = self;
-    
-		authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
-		
-				if (anError) {
-				
-					NSString *alertTitle = NSLocalizedString(@"WAErrorAuthenticationFailedTitle", @"Title for authentication failure");
-					NSString *alertText = [[NSArray arrayWithObjects:
-            NSLocalizedString(@"WAErrorAuthenticationFailedDescription", @"Description for authentication failure"),
-            [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
-            NSLocalizedString(@"WAErrorAuthenticationFailedRecoveryNotion", @"Recovery notion for authentication failure recovery"),
-          nil] componentsJoinedByString:@""];
-					
-					[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
-          
-            authRequestVC.password = nil;
-            [authRequestVC assignFirstResponderStatusToBestMatchingField];
-						
-					}] otherActions:[NSArray arrayWithObjects:
-            
-            resetPasswordAction,
-            registerUserAction,
-            
-          nil]] show];
-					
-					return;
-				
-				}
-		
-				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
-        
-        //  If running onboarding stuff
-        
-        if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged)
-          [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
-        
-				
-		}];
-    
-    [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
-      (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-    nil]];
-    [authRequestVC irPerformOnDeallocation:^{
-      [signInUserAction irUnbind:@"enabled"];
-    }];
-    
-    NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
+  }
+  
+  authRequestVC.actions = authRequestActions;
+  
+  
+  __block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
+  authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+  authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
       
-      signInUserAction,
-      registerUserAction,
+  switch (UI_USER_INTERFACE_IDIOM()) {
+  
+    //  FIXME: Move this in a CustomUI category
+  
+    case UIUserInterfaceIdiomPad: {
+    
+      WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
+      fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+        return YES;
+      };
+      fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
+      fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];	//	was		WAPatternCarbonFibre
       
-    nil];
-
-    if (WAAdvancedFeaturesEnabled()) {
+      [fullscreenBaseVC.view addSubview:((^ {
+        UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+        spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+        spinner.center = (CGPoint){
+          roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
+          roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
+        };
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+          [spinner startAnimating];							
+        });
+        return spinner;
+      })())];
       
-      [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
-        
-        authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
-        authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
-        [authRequestVC authenticate];
-        
-      }]];
+      if (self.window.rootViewController.modalViewController)
+        [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+      
+      [self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
+      [fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
+      
+      break;
+    
+    }
+    
+    case UIUserInterfaceIdiomPhone:
+    default: {
+    
+      if (self.window.rootViewController.modalViewController)
+        [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+      
+      [self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:NO];
+      break;
       
     }
-		
-    authRequestVC.actions = authRequestActions;
-    
-    
-		__block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
-		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
-        
-		switch (UI_USER_INTERFACE_IDIOM()) {
-    
-      //  FIXME: Move this in a CustomUI category
-		
-			case UIUserInterfaceIdiomPad: {
-			
-				WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
-				fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-					return YES;
-				};
-				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
-				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];	//	was		WAPatternCarbonFibre
-				
-				[fullscreenBaseVC.view addSubview:((^ {
-					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-					spinner.center = (CGPoint){
-						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
-						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
-					};
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-						[spinner startAnimating];							
-					});
-					return spinner;
-				})())];
-				
-        if (self.window.rootViewController.modalViewController)
-          [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
-        
-				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
-				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
-				
-				break;
-			
-			}
-			
-			case UIUserInterfaceIdiomPhone:
-			default: {
-			
-				[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:NO];
-				break;
-				
-			}
-		
-		}
-	
+  
+  }
+  	
   return YES;
 
 }

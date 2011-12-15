@@ -1,2 +1,2 @@
-ETReleaseNotes="- Revises the Remote Interface so the application now presents the Authentication Request View correctly and on demand\n- Uses separate API keys for the iPhone and the iPad\n- Integrates generated device identifiers\n- Application now sends header named x-wf-origin which contains diagnostics\n- Revises the Timeline (iPhone) and fixes an issue where on first run, the cells will animate in instead of appearing without any animation\n- Fixes several underlying issues\n- General renovation"
+ETReleaseNotes="- Fixes a bug in the app where repeated authentication requests are not resisted properly\n- Fixes bug where some patterns are not showing up correctly on an iPhone\n- Initial Settings Controller integration"
 ETMarketingVersionNumber="0.9.8"

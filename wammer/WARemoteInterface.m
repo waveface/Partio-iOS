@@ -31,9 +31,6 @@
 
 + (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer;
 
-+ (IRWebAPIResponseContextTransformer) defaultRemoteAuthorizationStatusCheckingTransformer;
-
-
 @end
 
 
@@ -150,30 +147,6 @@
     return returnedContext;
   
   } copy] autorelease];
-
-}
-
-+ (IRWebAPIResponseContextTransformer) defaultRemoteAuthorizationStatusCheckingTransformer {
-
-	return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
-  
-    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
-    
-    if (response.statusCode == 401) {
-    
-      //  Something went wrong!
-    
-    }
-		
-    dispatch_async(dispatch_get_main_queue(), ^ {
-    
-      
-      
-    });
-    
-		return inParsedResponse;
-    
-	} copy] autorelease];
 
 }
 
