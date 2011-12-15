@@ -199,6 +199,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 			}], 
 			
+			#if 0
+			
 			[IRAction actionWithTitle:@"Change API URL" block:^ {
 				
 				[nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];
@@ -211,6 +213,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 				[nrSelf restoreState];
 			
 			}],
+			
+			#endif
 			
 	nil]] retain];
 
