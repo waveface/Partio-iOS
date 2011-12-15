@@ -71,11 +71,15 @@
 
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
-
+  
+  NSString *aDevice = ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )? @"iPad": @"iPhone";
+  
 	[self.engine fireAPIRequestNamed:@"auth/login" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
 		anIdentifier, @"email",
 		aPassword, @"password",
+    aDevice, @"device_name",
+    [[UIDevice currentDevice] uniqueIdentifier], @"device_id",  // TODO, use MAC address to create device specific UDID.
 
 	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
