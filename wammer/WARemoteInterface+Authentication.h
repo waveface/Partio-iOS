@@ -11,6 +11,7 @@
 @interface WARemoteInterface (Authentication)
 
 - (IRWebAPIRequestContextTransformer) defaultV2AuthenticationSignatureBlock;
+- (IRWebAPIResponseContextTransformer) defaultV2AuthenticationListeningBlock;
 
 //	POST auth/login
 - (void) retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock;
