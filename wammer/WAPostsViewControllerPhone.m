@@ -146,6 +146,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 					[wrappingNavC dismissModalViewControllerAnimated:YES];
 				}];
 				
+				userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+					[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+				}];
+				
 				[nrSelf presentModalViewController:wrappingNavC animated:YES];
         
 			}],
