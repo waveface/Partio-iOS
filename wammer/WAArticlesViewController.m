@@ -124,31 +124,30 @@
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
   
     __block __typeof__(self) nrSelf = self;
-	
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 170, 44 }] autorelease];
-    
-		toolbar.usesCustomLayout = NO;
-		toolbar.items = [NSArray arrayWithObjects:
+		
+    IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 170, 44 }] autorelease];
+    NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
 		
 			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-				
         [nrSelf handleUserInfoItemTap:senderItem];
-        
 			}],
       
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        
-        [nrSelf handleActionItemTap:senderItem];
-        
-			}],
-		
 			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-      
         [nrSelf handleComposeItemTap:senderItem];
-      
 			}],
 			
 		nil];
+    
+    if (WAAdvancedFeaturesEnabled()) {
+    
+      [toolbarItems insertObject:[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+        [nrSelf handleActionItemTap:senderItem];
+			}] atIndex:0];
+    
+    }
+    
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = toolbarItems;
 		
 		return toolbar;
 	
