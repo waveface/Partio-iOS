@@ -79,7 +79,8 @@
 		anIdentifier, @"email",
 		aPassword, @"password",
     aDevice, @"device_name",
-    [[UIDevice currentDevice] uniqueIdentifier], @"device_id",  // TODO, use MAC address to create device specific UDID.
+    
+    WADeviceIdentifier(), @"device_id",
 
 	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
