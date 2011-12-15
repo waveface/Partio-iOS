@@ -86,10 +86,6 @@
         
           //  Token is failing right now
           
-          NSLog(@"Token failure");
-          
-          //  ?
-          
           [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self];
         
         }
