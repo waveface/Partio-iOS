@@ -36,4 +36,8 @@
 - (void) sliderDidMove:(UISlider *)aSlider;
 - (void) sliderTouchDidEnd:(UISlider *)aSlider;
 
+@property (nonatomic, readwrite, assign) BOOL instantaneousCallbacks; //	If YES, sends -paginationSlider:didMoveToPage: continuously
+
+@property (nonatomic, readonly, retain) UISlider *slider; //	Don’t do evil
+
 @end

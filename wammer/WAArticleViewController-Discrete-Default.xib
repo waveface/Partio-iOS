@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1072</int>
+		<int key="IBDocument.SystemTarget">1280</int>
 		<string key="IBDocument.SystemVersion">11C74</string>
-		<string key="IBDocument.InterfaceBuilderVersion">1938</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2148</string>
 		<string key="IBDocument.AppKitVersion">1138.23</string>
 		<string key="IBDocument.HIToolboxVersion">567.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">933</string>
+			<string key="NS.object.0">1145</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBUIImageView</string>
@@ -48,6 +48,7 @@
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC43NzA0MzcgMC43ODM5MTMgMC43NzgyOTkAA</bytes>
 						</object>
+						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -97,7 +98,6 @@
 											<reference key="NSCustomColorSpace" ref="941210834"/>
 										</object>
 										<nil key="IBUIHighlightedColor"/>
-										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 										<float key="IBUIMinimumFontSize">16</float>
 										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<string key="name">SansusWebissimo</string>
@@ -131,7 +131,6 @@
 											<reference key="NSCustomColorSpace" ref="941210834"/>
 										</object>
 										<nil key="IBUIHighlightedColor"/>
-										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 										<float key="IBUIMinimumFontSize">16</float>
 										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<string key="name">Helvetica</string>
@@ -151,7 +150,6 @@
 										<string key="NSFrame">{{154, 9}, {84, 14}}</string>
 										<reference key="NSSuperview" ref="228681309"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:120</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -161,7 +159,6 @@
 										<string key="IBUIText">30 minutes ago</string>
 										<reference key="IBUITextColor" ref="281861946"/>
 										<nil key="IBUIHighlightedColor"/>
-										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 										<float key="IBUIMinimumFontSize">11</float>
 										<object class="IBUIFontDescription" key="IBUIFontDescription">
 											<string key="name">Helvetica-Oblique</string>
@@ -522,7 +519,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1072" key="NS.object.0"/>
+			<real value="1280" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
@@ -530,6 +527,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">933</string>
+		<string key="IBCocoaTouchPluginVersion">1145</string>
 	</data>
 </archive>

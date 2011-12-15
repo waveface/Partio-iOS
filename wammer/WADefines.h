@@ -27,6 +27,7 @@ extern NSString * const kWAAlwaysAllowExpensiveRemoteOperations;
 extern NSString * const kWAAlwaysDenyExpensiveRemoteOperations;
 extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
+extern NSString * const kWACrashReportRecipients;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
@@ -45,6 +46,9 @@ extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(
 extern UIButton * WAButtonForImage (UIImage *anImage);
 extern UIButton * WAToolbarButtonForImage (UIImage *anImage);
 extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
+
+extern UIView * WAStandardTitleView (void);
+extern UIView * WAStandardTitleLabel (void);
 
 extern NSString * const kWACurrentGeneratedDeviceIdentifier;
 BOOL WADeviceIdentifierReset (void);

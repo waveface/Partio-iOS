@@ -149,7 +149,7 @@
 		
 			self.currentlyBusy = YES;
 		
-			self.actionButton.alpha = 0;
+			self.actionButton.alpha = 0.0f;
 			self.actionButton.transform = CGAffineTransformConcat(
 				CGAffineTransformMakeRotation(30 * (2 * M_PI / 360.0f)),
 				CGAffineTransformMakeScale(0.1, 0.1));
@@ -159,7 +159,7 @@
 
 			self.currentlyBusy = NO;
 			
-			self.actionButton.alpha = 1;
+			self.actionButton.alpha = 1.0f;
 			self.actionButton.transform = CGAffineTransformIdentity;
 			self.activityIndicatorView.alpha = 0;
 			
@@ -169,7 +169,7 @@
 	
 	if (animate) {
 	
-		[UIView animateWithDuration:0.25 animations:animations];
+		[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:animations completion:nil];
 	
 	} else {
 	
