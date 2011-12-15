@@ -516,7 +516,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		} completion:nil];
 		
 		[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-			
+		
+			//	Fixme: MOMENTARILY HIGHLGIGHT THE CELL
+		
 			[nrSelf scrollToArticle:article];
 			
 		}];
@@ -795,6 +797,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	if (![self isViewLoaded])
 		return;
 		
+	[UIView setAnimationsEnabled:NO];
+	
 	[self persistState];
 	[self.tableView beginUpdates];
 
@@ -871,7 +875,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[self.tableView endUpdates];
 	[self restoreState];
 	
-	[self.tableView layoutSubviews];
+	[UIView setAnimationsEnabled:YES];
+	
+	//	[self.tableView layoutSubviews];//?
 		
 }
 
