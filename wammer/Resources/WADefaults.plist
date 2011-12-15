@@ -24,5 +24,12 @@
 	<string>haskell@master.waveface.com</string>
 	<key>WADebugAutologinUserPassword</key>
 	<string>haskell</string>
+	<key>WACrashReportRecipients</key>
+	<array>
+		<string>Evadne Wu &lt;evadne.wu@waveface.com&gt;</string>
+		<string>Vincent Huang &lt;vincent.huang@waveface.com&gt;</string>
+		<string>Jamie Sa &lt;jamie@waveface.com&gt;</string>
+		<string>Mineral &lt;redmine@waveface.com&gt;</string>
+	</array>
 </dict>
 </plist>

@@ -166,7 +166,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	})())];
 	
-	self.navigationItem.titleView = [self defaultTitleView];
+	self.navigationItem.titleView = WAStandardTitleView();
 	
 	return self;
   
@@ -177,21 +177,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[super irConfigure];
 	
 	self.persistsContentInset = NO;
-
-}
-
-- (UIView *) defaultTitleView {
-
-	UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
-	logotype.contentMode = UIViewContentModeScaleAspectFit;
-	logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
-	
-	UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){	CGPointZero, (CGSize){ 128, 44 }}];
-	logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
-	[containerView addSubview:logotype];
-	
-	return containerView;
 
 }
 

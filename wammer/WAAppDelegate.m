@@ -105,13 +105,8 @@
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
-	
-	[[UIApplication sharedApplication] setCrashReportRecipients:[NSArray arrayWithObjects:
-		@"Evadne Wu <evadne.wu@waveface.com>",
-		@"Vincent Huang <vincent.huang@waveface.com>",
-		@"Jamie Sa <jamie@waveface.com",
-		@"Mineral <redmine@waveface.com",
-	nil]];  //  FIXME: Move to WADefaults.plist
+  
+	[[UIApplication sharedApplication] setCrashReportRecipients:[[NSUserDefaults standardUserDefaults] arrayForKey:kWACrashReportRecipients]];
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 	self.window.backgroundColor = [UIColor blackColor];
@@ -162,15 +157,17 @@
 			
 			if ([navController isViewLoaded])
 				navController.onViewDidLoad(navController);
-        
+			
       WANavigationBar *navBar = ((WANavigationBar *)(navController.navigationBar));
-      
-      if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        navBar.tintColor = [UIColor brownColor];
-        navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
-      } else {
-        navBar.backgroundView = [WANavigationBar defaultGradientBackgroundView];
-      }
+      navBar.tintColor = [UIColor brownColor];
+			navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			
+			//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+			//		navBar.tintColor = [UIColor brownColor];
+			//		navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			//	} else {
+			//		navBar.backgroundView = [WANavigationBar defaultGradientBackgroundView];
+			//	}
 			
 			return navController;
 			
@@ -392,7 +389,7 @@
 
 - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
-  [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:eraseAuthInfo clearingNavigationHierarchy:zapEverything runningOnboardingProcess:shouldRunOnboardingChecksIfUserUnchanged];
+  return [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:eraseAuthInfo clearingNavigationHierarchy:zapEverything runningOnboardingProcess:shouldRunOnboardingChecksIfUserUnchanged];
 
 }
 
