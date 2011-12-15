@@ -51,6 +51,7 @@
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
 - (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
 
+- (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
 - (BOOL) removeAuthenticationData;
 
 @end
@@ -58,6 +59,27 @@
 
 @implementation WAAppDelegate
 @synthesize window = _window;
+
+- (id) init {
+
+  self = [super init];
+  if (!self)
+    return nil;
+
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
+  
+  return self;
+
+}
+
+- (void) dealloc {
+
+  //  This is so not going to happen
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  [super dealloc];
+
+}
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
@@ -281,6 +303,16 @@
 			
 	});
 
+}
+
+- (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    
+    [self presentAuthenticationRequestRemovingPriorData:NO];
+
+  });
+  
 }
 
 - (BOOL) hasAuthenticationData {
