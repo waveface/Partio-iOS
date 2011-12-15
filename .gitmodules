@@ -43,3 +43,6 @@
 [submodule "external/IRRecurrenceMachine"]
 	path = external/IRRecurrenceMachine
 	url = git://github.com/iridia/IRRecurrenceMachine.git
+[submodule "external/InAppSettingsKit"]
+	path = external/InAppSettingsKit
+	url = https://github.com/futuretap/InAppSettingsKit

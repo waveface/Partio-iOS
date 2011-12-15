@@ -74,10 +74,11 @@
 	self.backgroundView.backgroundColor = [UIColor clearColor];
   
   [self.backgroundView addSubview:((^ {
-    
+  
     UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.backgroundView.bounds, 1, 0)] autorelease];
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WASquarePanelBackdrop"].CGImage;
+    returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
     returnedView.layer.contentsCenter = (CGRect){ 12.0/32.0f, 12.0/32.0f, 8.0/32.0f, 8.0/32.0f };
     
     UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 11, 11)] autorelease];
