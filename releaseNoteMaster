@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes a bug in the app where repeated authentication requests are not resisted properly\n- Fixes bug where some patterns are not showing up correctly on an iPhone\n- Initial Settings Controller integration"
+ETReleaseNotes="- Refreshes styling of the Overview (iPad)\n- Revises the Pagination Slider and adds feature to continuously update the Overview’s Paginated View (iPad) when the user interacts with the slider\n- Revises Settings so it is only visible for Debug mode users\n- Overview and Single View now uses updated navigation bar styling"
 ETMarketingVersionNumber="0.9.8"

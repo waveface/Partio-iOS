@@ -21,6 +21,7 @@
 @synthesize slider;
 @synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
 @synthesize pageIndicatorLabel;
+@synthesize instantaneousCallbacks;
 
 + (UIImage *) transparentImage {
 
@@ -240,6 +241,9 @@
 	
 	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
 	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
+	
+	if (instantaneousCallbacks)
+		[self.delegate paginationSlider:self didMoveToPage:currentPage];
 	
 }
 
