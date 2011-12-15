@@ -54,6 +54,8 @@
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
 - (BOOL) removeAuthenticationData;
 
+- (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
+
 @end
 
 
@@ -106,7 +108,7 @@
 		@"Vincent Huang <vincent.huang@waveface.com>",
 		@"Jamie Sa <jamie@waveface.com",
 		@"Mineral <redmine@waveface.com",
-	nil]];
+	nil]];  //  FIXME: Move to WADefaults.plist
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 	self.window.backgroundColor = [UIColor blackColor];
@@ -190,7 +192,7 @@
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:needsTransition];
 		
 		if (![self hasAuthenticationData])
-			[self presentAuthenticationRequestRemovingPriorData:YES];
+			[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
     
 	};
 	
@@ -299,7 +301,7 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestRemovingPriorData:YES];
+		[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
 			
 	});
 
@@ -308,8 +310,8 @@
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
   dispatch_async(dispatch_get_main_queue(), ^{
-    
-    [self presentAuthenticationRequestRemovingPriorData:NO];
+
+		[self presentAuthenticationRequestRemovingPriorData:NO clearingNavigationHierarchy:NO runningOnboardingProcess:NO];
 
   });
   
@@ -355,42 +357,57 @@
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-  return [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  [WARemoteInterface sharedInterface].userIdentifier = nil;
+  [WARemoteInterface sharedInterface].userToken = nil;
+  [WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
+  
+  BOOL didEraseAuthData = [[NSUserDefaults standardUserDefaults] synchronize];
+  BOOL didResetDeviceIdentifier = WADeviceIdentifierReset();
+  
+  return didEraseAuthData && didResetDeviceIdentifier;
 
 }
 
-- (void) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation {
+- (IRKeychainAbstractItem *) currentKeychainItem {
 
-	if (erasesExistingAuthenticationInformation) {
+  IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
+
+  if (!lastAuthenticatedUserTokenKeychainItem) {
+    NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+    if (lastAuthenticatedUserTokenKeychainItemData)
+      lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
+  }
   
-    //  UIViewController *rootVC = [UIApplication sharedApplication].keyWindow.rootViewController;
-    
+  if (!lastAuthenticatedUserTokenKeychainItem) {
+    lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
+  }
+
+  return lastAuthenticatedUserTokenKeychainItem;
+  
+}
+
+- (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+
+  BOOL alreadyRequestingAuthentication = NO;  //  FIXME
+  if (alreadyRequestingAuthentication)
+    return NO;
+  
+  NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
+  BOOL (^userIdentifierChanged)() = ^ {
+    return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
+  };
+
+	if (eraseAuthInfo)
     [self removeAuthenticationData];
-	
-	}
 
-	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
-	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
-	
-	if (!lastAuthenticatedUserTokenKeychainItem) {
-		if (lastAuthenticatedUserTokenKeychainItemData) {
-			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
-		}
-	}
-	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
-  
-	if (!lastAuthenticatedUserTokenKeychainItem)
-		lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
-	
 	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-	
-		lastAuthenticatedUserTokenKeychainItem.secretString = userToken;
-		[lastAuthenticatedUserTokenKeychainItem synchronize];
+  
+    IRKeychainAbstractItem *keychainItem = [self currentKeychainItem];
+		keychainItem.secretString = userToken;
+		[keychainItem synchronize];
 		
-		NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:lastAuthenticatedUserTokenKeychainItem];
+		NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:keychainItem];
 		
 		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
 		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
@@ -404,24 +421,7 @@
 	
 	};
 	
-	
-	if (authenticationInformationSufficient) {
-	
-		[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
-		[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
-		[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
-		
-		//	We don’t have to validate this again since the token never expires
-	
-	}
-	
-	if (!authenticationInformationSufficient) {
-	
-		[WARemoteInterface sharedInterface].userIdentifier = nil;
-		[WARemoteInterface sharedInterface].userToken = nil;
-		[WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
-    
-    
+  
     __block WAAuthenticationRequestViewController *authRequestVC;
     
     IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
@@ -486,8 +486,6 @@
 		
 				if (anError) {
 				
-					//	Help
-					
 					NSString *alertTitle = NSLocalizedString(@"WAErrorAuthenticationFailedTitle", @"Title for authentication failure");
 					NSString *alertText = [[NSArray arrayWithObjects:
             NSLocalizedString(@"WAErrorAuthenticationFailedDescription", @"Description for authentication failure"),
@@ -495,189 +493,38 @@
             NSLocalizedString(@"WAErrorAuthenticationFailedRecoveryNotion", @"Recovery notion for authentication failure recovery"),
           nil] componentsJoinedByString:@""];
 					
-					IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
+					[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
           
             authRequestVC.password = nil;
             [authRequestVC assignFirstResponderStatusToBestMatchingField];
 						
 					}] otherActions:[NSArray arrayWithObjects:
+            
             resetPasswordAction,
             registerUserAction,
-          nil]];
-					
-					[alertView show];
+            
+          nil]] show];
 					
 					return;
 				
 				}
 		
 				writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
-				
-				[[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
-
-					dispatch_async(dispatch_get_main_queue(), ^{
-						
-						[self dismissModalViewControllerAnimated:YES];
-						
-						void (^operations)() = ^ {
-								
-								CATransition *transition = [CATransition animation];
-								transition.type = kCATransitionFade;
-								transition.duration = 0.3f;
-								transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-								transition.removedOnCompletion = YES;
-                
-                UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-                UIViewController *rootVC = keyWindow.rootViewController;
-                UIView *rootView = rootVC.view;
-                
-                UIView *overlayView = ((^ {
-                
-                  UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
-                  returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-                  
-                  UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-                  
-                  spinner.center = (CGPoint){
-                    CGRectGetMidX(returnedView.bounds),
-                    CGRectGetMidY(returnedView.bounds)
-                  };
-                  
-                  spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-                  
-                  [spinner startAnimating];
-                  
-                  [returnedView addSubview:spinner];
-                  returnedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
-                
-                  return returnedView;
-                
-                })());
-                
-                void (^removeOverlayView)(BOOL) = ^ (BOOL animated) {
-                  
-                  [UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:0 animations:^{
-                  
-                    overlayView.alpha = 0.0f;
-                    
-                  } completion:^(BOOL finished) {
-                  
-                    [overlayView removeFromSuperview];
-                    
-                  }];
-                  
-                };
-                
-                [rootView addSubview:overlayView];
-                
-								[keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
-								[keyWindow.layer addAnimation:transition forKey:@"transition"];
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-                
-                  [[WARemoteInterface sharedInterface] retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
-                  
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                      if ([stationReps count]) {
-                      
-                        removeOverlayView(YES);
-                      
-                      } else {
-                      
-                        //  Remove prior auth data since the user does NOT have a station installed
-                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
-                        [[NSUserDefaults standardUserDefaults] synchronize];
-                      
-                        WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
-                        UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
-                        stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for signing the user out") block:^{
-                          
-                          removeOverlayView(NO);
-                          [stationDiscoveryNavC dismissModalViewControllerAnimated:NO];
-                          [nrAppDelegate applicationRootViewControllerDidRequestReauthentication:nil];
-                          
-                        }];
-                        
-                        [rootVC presentModalViewController:stationDiscoveryNavC animated:YES];
-                        
-                        __block id notificationListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-                        
-                          WARemoteInterface *interface = [note object];
-                          
-                          if ([interface.monitoredHosts count] <= 1) {
-                          
-                            return;
-                          
-                            //  Damned shabby check
-                            //  Should refactor
-                          
-                          }
-                          
-                          [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
-                          [[NSUserDefaults standardUserDefaults] synchronize];
-                          
-                          [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
-                          
-                          double delayInSeconds = 2.0;
-                          dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                          dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                            removeOverlayView(YES);
-                          });
-                          
-                          dispatch_async(dispatch_get_main_queue(), ^{
-                          
-                            [[NSNotificationCenter defaultCenter] removeObserver:notificationListener];
-                            objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, nil, OBJC_ASSOCIATION_ASSIGN);
-                            
-                          });
-                          
-                        }];
-                      
-                        objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, notificationListener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                      
-                      }
-                    
-                    });
-                    
-                  } onFailure:^(NSError *error) {
-                  
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                  
-                      NSLog(@"Error retrieving associated stations: %@", error);  //  FAIL
-                      removeOverlayView(YES);
-                    
-                    });
-                    
-                  }];
-                  
-                });
-								
-						};
-						
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
-					
-					});
-					
-				} onFailure: ^ {
-				
-					dispatch_async(dispatch_get_main_queue(), ^{
-
-						[IRAlertView alertViewWithTitle:@"Error Retrieving User Information" message:@"Unable to retrieve user metadata." cancelAction:nil otherActions:[NSArray arrayWithObjects:
-						
-							[IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", @"Action title for accepting what happened reluctantly") block:nil],
-						
-						nil]];
-					
-					});
-					
-				}];
+        
+        //  If running onboarding stuff
+        
+        if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged)
+          [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
+        
 				
 		}];
     
     [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
       (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
     nil]];
+    [authRequestVC irPerformOnDeallocation:^{
+      [signInUserAction irUnbind:@"enabled"];
+    }];
     
     NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
       
@@ -700,15 +547,14 @@
 		
     authRequestVC.actions = authRequestActions;
     
-    [authRequestVC irPerformOnDeallocation:^{
-      [signInUserAction irUnbind:@"enabled"];
-    }];
     
 		__block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
         
 		switch (UI_USER_INTERFACE_IDIOM()) {
+    
+      //  FIXME: Move this in a CustomUI category
 		
 			case UIUserInterfaceIdiomPad: {
 			
@@ -752,7 +598,173 @@
 		
 		}
 	
-	}
+  return YES;
+
+}
+
+- (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)authVC {
+
+    __block __typeof__(self) nrAppDelegate = self;
+
+  [[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+      
+      [authVC dismissModalViewControllerAnimated:YES];
+      
+      void (^operations)() = ^ {
+          
+          CATransition *transition = [CATransition animation];
+          transition.type = kCATransitionFade;
+          transition.duration = 0.3f;
+          transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+          transition.removedOnCompletion = YES;
+          
+          UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+          UIViewController *rootVC = keyWindow.rootViewController;
+          UIView *rootView = rootVC.view;
+          
+          UIView *overlayView = ((^ {
+          
+            UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+            returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+            
+            UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+            
+            spinner.center = (CGPoint){
+              CGRectGetMidX(returnedView.bounds),
+              CGRectGetMidY(returnedView.bounds)
+            };
+            
+            spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+            
+            [spinner startAnimating];
+            
+            [returnedView addSubview:spinner];
+            returnedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
+          
+            return returnedView;
+          
+          })());
+          
+          void (^removeOverlayView)(BOOL) = ^ (BOOL animated) {
+            
+            [UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:0 animations:^{
+            
+              overlayView.alpha = 0.0f;
+              
+            } completion:^(BOOL finished) {
+            
+              [overlayView removeFromSuperview];
+              
+            }];
+            
+          };
+          
+          [rootView addSubview:overlayView];
+          
+          [keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
+          [keyWindow.layer addAnimation:transition forKey:@"transition"];
+          
+          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+          
+            [[WARemoteInterface sharedInterface] retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
+            
+              dispatch_async(dispatch_get_main_queue(), ^ {
+              
+                if ([stationReps count]) {
+                
+                  removeOverlayView(YES);
+                
+                } else {
+                
+                  //  Remove prior auth data since the user does NOT have a station installed
+                  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
+                  [[NSUserDefaults standardUserDefaults] synchronize];
+                
+                  WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
+                  UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
+                  stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for signing the user out") block:^{
+                    
+                    removeOverlayView(NO);
+                    [stationDiscoveryNavC dismissModalViewControllerAnimated:NO];
+                    [nrAppDelegate applicationRootViewControllerDidRequestReauthentication:nil];
+                    
+                  }];
+                  
+                  [rootVC presentModalViewController:stationDiscoveryNavC animated:YES];
+                  
+                  __block id notificationListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+                  
+                    WARemoteInterface *interface = [note object];
+                    
+                    if ([interface.monitoredHosts count] <= 1) {
+                    
+                      return;
+                    
+                      //  Damned shabby check
+                      //  Should refactor
+                    
+                    }
+                    
+                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
+                    
+                    double delayInSeconds = 2.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                      removeOverlayView(YES);
+                    });
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                    
+                      [[NSNotificationCenter defaultCenter] removeObserver:notificationListener];
+                      objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, nil, OBJC_ASSOCIATION_ASSIGN);
+                      
+                    });
+                    
+                  }];
+                
+                  objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, notificationListener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+                
+                }
+              
+              });
+              
+            } onFailure:^(NSError *error) {
+            
+              dispatch_async(dispatch_get_main_queue(), ^ {
+            
+                NSLog(@"Error retrieving associated stations: %@", error);  //  FAIL
+                removeOverlayView(YES);
+              
+              });
+              
+            }];
+            
+          });
+          
+      };
+      
+      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
+    
+    });
+    
+  } onFailure: ^ {
+  
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+      [IRAlertView alertViewWithTitle:@"Error Retrieving User Information" message:@"Unable to retrieve user metadata." cancelAction:nil otherActions:[NSArray arrayWithObjects:
+      
+        [IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", @"Action title for accepting what happened reluctantly") block:nil],
+      
+      nil]];
+    
+    });
+    
+  }];
 
 }
 

@@ -20,6 +20,14 @@
 - (void) endNetworkActivity;
 
 - (BOOL) hasAuthenticationData;
-- (void) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation;
+
+- (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged;
+//  
+//	Method will return immediately if an auth request view contorller has been presented
+//  if erasesExistingAuthenticationInformation, removes stuff in the remote interface and nils currently stored user token as well
+//  if zapEverything, removes all on-screen view controllers
+//  if shouldRunOnboardingChecksIfUserUnchanged, runs onboarding checks such as station discovery if the newly authenticated user has a different identifier
+
+//  - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation DEPRECATED_ATTRIBUTE;
 
 @end
