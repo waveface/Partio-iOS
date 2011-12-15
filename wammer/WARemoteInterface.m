@@ -157,13 +157,11 @@
 
 	return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
   
-    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponseName];
+    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
     
     if (response.statusCode == 401) {
     
       //  Something went wrong!
-      
-      
     
     }
 		
