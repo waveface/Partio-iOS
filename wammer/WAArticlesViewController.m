@@ -35,6 +35,8 @@
 
 #import "WANavigationController.h"
 
+#import "IASKAppSettingsViewController.h"
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
@@ -42,6 +44,7 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
 @property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
+@property (nonatomic, readwrite, retain) UIPopoverController *settingsPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -64,6 +67,7 @@
 @synthesize debugActionSheetController;
 @synthesize draftsPopoverController;
 @synthesize userInfoPopoverController;
+@synthesize settingsPopoverController;
 @synthesize updatesViewOnControllerChangeFinish;
 @synthesize interfaceUpdateOperationSuppressionCount, interfaceUpdateOperationQueue;
 
@@ -163,7 +167,9 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
+  [userInfoPopoverController release];
   [draftsPopoverController release];
+  [settingsPopoverController release];
 	
 	[interfaceUpdateOperationQueue release];
 
@@ -203,6 +209,7 @@
 	self.debugActionSheetController = nil;
   self.draftsPopoverController = nil;
   self.userInfoPopoverController = nil;
+  self.settingsPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -262,8 +269,11 @@
   
   if ([draftsPopoverController isPopoverVisible])
     [draftsPopoverController dismissPopoverAnimated:animate];
+    
+  if ([settingsPopoverController isPopoverVisible])
+    [settingsPopoverController dismissPopoverAnimated:animate];
   
-  if (debugActionSheetController)
+  if ([debugActionSheetController.managedActionSheet isVisible])
     [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:animate];
 
 }
@@ -430,10 +440,33 @@
 
 }
 
+
+
+
+
+- (UIPopoverController *) settingsPopoverController {
+
+  if (settingsPopoverController)
+    return settingsPopoverController;
+  
+  IASKAppSettingsViewController *settingsVC = [[[IASKAppSettingsViewController alloc] init] autorelease];
+  settingsVC.showCreditsFooter = NO;
+  settingsVC.showDoneButton = NO;
+  
+  UINavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:settingsVC] autorelease];
+  settingsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
+  
+  return settingsPopoverController;
+
+}
+
 - (void) handleActionItemTap:(UIBarButtonItem *)sender {
 
+  if ([self.settingsPopoverController isPopoverVisible])
+    return;
+
   [self dismissAuxiliaryControlsAnimated:NO];
-	[self.debugActionSheetController.managedActionSheet showFromBarButtonItem:sender animated:NO];
+  [self.settingsPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
 
 }
 
@@ -446,7 +479,7 @@
   if (draftsPopoverController)
     return draftsPopoverController;
 
-  WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
+  WAArticleDraftsViewController *draftsVC = [[[WAArticleDraftsViewController alloc] init] autorelease];
   draftsVC.delegate = self;
   UINavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:draftsVC] autorelease];
   draftsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
