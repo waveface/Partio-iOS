@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "WARemoteInterface+Authentication.h"
 #import "IRWebAPIEngine+FormURLEncoding.h"
 
@@ -64,6 +65,42 @@
 		return (NSDictionary *)mutatedContext;
 	
 	} copy] autorelease];
+
+}
+
+- (IRWebAPIResponseContextTransformer) defaultV2AuthenticationListeningBlock {
+
+  __block __typeof__(self) nrSelf = self;
+
+  return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+  
+    NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
+    
+    if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
+    
+      //  ?
+      
+      if (urlResponse.statusCode == 401) {
+      
+        if (nrSelf.userToken) {
+        
+          //  Token is failing right now
+          
+          NSLog(@"Token failure");
+          
+          //  ?
+          
+          [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self];
+        
+        }
+      
+      }
+    
+    }
+    
+    return inParsedResponse;
+    
+  } copy] autorelease];
 
 }
 

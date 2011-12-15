@@ -157,13 +157,11 @@
 
 	return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
   
-    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponseName];
+    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
     
     if (response.statusCode == 401) {
     
       //  Something went wrong!
-      
-      
     
     }
 		
@@ -221,6 +219,7 @@
 	[engine.globalResponsePostTransformers addObject:[[self class] defaultEndNetworkActivityTransformer]];
   
 	[engine.globalRequestPreTransformers addObject:[self defaultV2AuthenticationSignatureBlock]];
+	[engine.globalResponsePreTransformers addObject:[self defaultV2AuthenticationListeningBlock]];
 
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormURLEncodingTransformer]];

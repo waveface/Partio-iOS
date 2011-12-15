@@ -31,6 +31,7 @@ extern NSString * const kWADebugAutologinUserPassword;
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
 extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
+extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;
