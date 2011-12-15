@@ -31,8 +31,10 @@ extern NSString * const kWADebugAutologinUserPassword;
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
 extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
+extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 
-extern NSString * const kWARemoteEndpointApplicationKey;
+extern NSString * const kWARemoteEndpointApplicationKeyPhone;
+extern NSString * const kWARemoteEndpointApplicationKeyPad;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);
@@ -43,3 +45,7 @@ extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(
 extern UIButton * WAButtonForImage (UIImage *anImage);
 extern UIButton * WAToolbarButtonForImage (UIImage *anImage);
 extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
+
+extern NSString * const kWACurrentGeneratedDeviceIdentifier;
+BOOL WADeviceIdentifierReset (void);
+NSString * WADeviceIdentifier (void);
