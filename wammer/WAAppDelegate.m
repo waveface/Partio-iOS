@@ -56,11 +56,14 @@
 
 - (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
 
+@property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
+
 @end
 
 
 @implementation WAAppDelegate
 @synthesize window = _window;
+@synthesize alreadyRequestingAuthentication;
 
 - (id) init {
 
@@ -395,10 +398,15 @@
 
 - (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
-  BOOL alreadyRequestingAuthentication = NO;  //  FIXME
-  if (alreadyRequestingAuthentication)
-    return NO;
+  @synchronized (self) {
+    
+    if (self.alreadyRequestingAuthentication)
+      return NO;
+    
+    self.alreadyRequestingAuthentication = YES;
   
+  }
+    
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
     return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
@@ -528,6 +536,8 @@
         [self dismissModalViewControllerAnimated:YES];
       }
       
+      nrAppDelegate.alreadyRequestingAuthentication = NO;
+      
   }];
   
   if (aReason)
@@ -611,6 +621,9 @@
     case UIUserInterfaceIdiomPhone:
     default: {
     
+      if (self.window.rootViewController.modalViewController)
+        [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+      
       [self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:NO];
       break;
       
