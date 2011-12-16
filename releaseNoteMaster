@@ -1,2 +1,2 @@
-ETReleaseNotes="- The Overview now correctly updates the Last Scanned position on entering any article and would skip erroneous updates (due to chronology)\n- For-debug overlay bezels\n- Version information in Settings"
+ETReleaseNotes="- WIP: Onboarding process revision\n- Fixes bug where the application shares a single Persistent Data Store across multiple accounts\n- Various Timeline positioning bugs fixed"
 ETMarketingVersionNumber="0.9.8"
