@@ -44,6 +44,7 @@
 #import "WAStationDiscoveryFeedbackViewController.h"
 
 #import "IRLifetimeHelper.h"
+#import "WAOverlayBezel.h"
 
 
 @interface WAAppDelegate () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
@@ -670,6 +671,16 @@
 		
 	};
 	
+	
+	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+	
+	
+	//	Always request reauth beyond this point
+	
+	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 	[[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
 
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -679,7 +690,7 @@
 					addOverlayView();	
           [keyWindow.rootViewController dismissModalViewControllerAnimated:YES];
           
-          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 					
 						[[WARemoteInterface sharedInterface] retrieveUser:[WARemoteInterface sharedInterface].userIdentifier onSuccess:^(NSDictionary *userRep, NSArray *groupReps) {
 							
@@ -689,13 +700,13 @@
               
                 if (!userNeedsStation) {
                 
+                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+                  [[NSUserDefaults standardUserDefaults] synchronize];
+
                   removeOverlayView(YES);
+									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
                 
                 } else {
-                
-                  //  Remove prior auth data since the user does NOT have a station installed
-                  [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
-                  [[NSUserDefaults standardUserDefaults] synchronize];
                 
                   WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
                   UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
@@ -706,7 +717,30 @@
                     [nrAppDelegate applicationRootViewControllerDidRequestReauthentication:nil];
                     
                   }];
+									
+									void (^finalizeOnboarding)(void) = ^ {
+									
+										[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+                      removeOverlayView(YES);
+                    });
+									
+									};
+									
+									if (WAAdvancedFeaturesEnabled()) {
+									
+										//	Alright!
+										
+										stationDiscoveryFeedbackVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"I don’t care" action:^{
+											finalizeOnboarding();
+										}];
+										
+									}
                   
+									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
                   [rootVC presentModalViewController:stationDiscoveryNavC animated:YES];
                   
                   __block id notificationListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
@@ -722,16 +756,7 @@
                     
                     }
                     
-                    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    
-                    [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
-                    
-                    double delayInSeconds = 2.0;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                      removeOverlayView(YES);
-                    });
+                   finalizeOnboarding();
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
                     
@@ -754,6 +779,7 @@
             
                 NSLog(@"Error retrieving user information: %@", error);  //  FAIL
                 removeOverlayView(YES);
+								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
               
               });
               
@@ -777,6 +803,8 @@
       
       nil]];
     
+			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			
     });
     
   }];
