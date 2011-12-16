@@ -12,8 +12,10 @@
 @interface WAPaginationSlider ()
 @property (nonatomic, readwrite, retain) UISlider *slider; 
 @property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel; 
+@property (nonatomic, readwrite, retain) NSArray *annotations;
 + (UIImage *) transparentImage;
 - (void) sharedInit;
+- (NSMutableArray *) mutableAnnotations;
 @end
 
 
@@ -23,6 +25,7 @@
 @synthesize pageIndicatorLabel;
 @synthesize instantaneousCallbacks;
 @synthesize layoutStrategy;
+@synthesize annotations;
 
 + (UIImage *) transparentImage {
 
@@ -40,6 +43,15 @@
 	});
 
 	return returnedImage;
+
+}
+
+- (void) dealloc {
+
+	[slider release];
+	[annotations release];
+	
+	[super dealloc];
 
 }
 
@@ -65,6 +77,8 @@
 }
 
 - (void) sharedInit {
+
+	self.annotations = [NSArray array];
 
 	self.dotRadius = 4.0f;
 	self.dotMargin = 12.0f;
@@ -310,11 +324,39 @@
 
 }
 
-- (void) dealloc {
+- (NSMutableArray *) mutableAnnotations {
 
-	[slider release];
-	
-	[super dealloc];
+	return [self mutableArrayValueForKey:@"annotations"];
+
+}
+
+- (void) addAnnotations:(NSSet *)annotations {
+
+	[[self mutableAnnotations] addObjectsFromArray:[annotations allObjects]];
+
+}
+
+- (void) addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
+
+	[[self mutableAnnotations] addObject:anAnnotation];
+
+}
+
+- (void) removeAnnotations:(NSSet *)annotations {
+
+	[[self mutableAnnotations] removeObjectsInArray:[annotations allObjects]];
+
+}
+
+- (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes {
+
+	[[self mutableAnnotations] removeObjectsAtIndexes:indexes];
+
+}
+
+- (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
+
+	[[self mutableAnnotations] removeObject:anAnnotation];
 
 }
 

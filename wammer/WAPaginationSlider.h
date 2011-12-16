@@ -25,10 +25,14 @@ enum WAPaginationSliderLayoutStrategy {
 
 
 @class WAPaginationSlider;
+@class WAPaginationSliderAnnotation;
 
 @protocol WAPaginationSliderDelegate <NSObject>
 
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage;
+
+@optional
+- (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider;
 
 @end
 
@@ -55,4 +59,23 @@ enum WAPaginationSliderLayoutStrategy {
 @property (nonatomic, readonly, retain) UISlider *slider; //	Don’t do evil
 
 @property (nonatomic, readwrite, assign) WAPaginationSliderLayoutStrategy layoutStrategy;
+@property (nonatomic, readonly, retain) NSArray *annotations;
+
+- (void) addAnnotations:(NSSet *)annotations;
+- (void) addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation;
+- (void) removeAnnotations:(NSSet *)annotations;
+- (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes;
+- (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation;
+
+@end
+
+
+
+
+
+@interface WAPaginationSliderAnnotation : NSObject
+
+@property (nonatomic, readwrite, retain) NSString *title;
+@property (nonatomic, readwrite, assign) NSUInteger pageIndex;
+
 @end
