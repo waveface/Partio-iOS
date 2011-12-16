@@ -57,22 +57,29 @@
 	switch (aStyle) {
 	
 		case WAActivityIndicatorBezelStyle: {
-			
 			UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
 			[spinner startAnimating];
-			
 			self.accessoryView = spinner;;
-		
 			break;
-		
 		}
-		
 		case WACheckmarkBezelStyle: {
 			self.image = [UIImage imageNamed:@"WAOverlayBezel-Checkmark"];
 			break;
 		}
+		case WACloudBezelStyle: {
+			self.image = [UIImage imageNamed:@"WAOverlayBezel-Cloud"];
+			break;
+		}
+		case WAConnectionBezelStyle: {
+			self.image = [UIImage imageNamed:@"WAOverlayBezel-Connection"];
+			break;
+		}
 		case WAErrorBezelStyle: {
 			self.image = [UIImage imageNamed:@"WAOverlayBezel-Error"];
+			break;
+		}
+		case WARestrictedBezelStyle: {
+			self.image = [UIImage imageNamed:@"WAOverlayBezel-Restricted"];
 			break;
 		}
 	
