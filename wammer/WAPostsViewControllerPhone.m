@@ -180,6 +180,105 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 }
 
+
+
+
+
+- (NSString *) persistenceIdentifier {
+
+	return NSStringFromClass([self class]);
+
+}
+
+
+
+
+
+NSString * const kWAPostsViewControllerLastVisibleObjectURIs = @"WAPostsViewControllerLastVisiblePostURIs";
+NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControllerLastVisibleRects";
+
+- (NSMutableDictionary *) persistenceRepresentation {
+
+	NSMutableDictionary *answer = [super persistenceRepresentation];
+	NSLog(@"%s: %@", __PRETTY_FUNCTION__, answer);
+	
+	if ([self isViewLoaded]) {
+	
+		NSArray *currentIndexPaths = [self.tableView indexPathsForVisibleRows];
+		
+		[answer setObject:[currentIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+			
+			NSManagedObject *rowObject = [self.fetchedResultsController objectAtIndexPath:anIndexPath];
+			return [[[rowObject objectID] URIRepresentation] absoluteString];
+			
+		}] forKey:kWAPostsViewControllerLastVisibleObjectURIs];
+		
+		[answer setObject:[currentIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+		
+			return NSStringFromCGRect([self.tableView rectForRowAtIndexPath:anIndexPath]);
+			
+		}] forKey:kWAPostsViewControllerLastVisibleRects];
+	
+	}
+	
+	return answer;
+
+}
+
+- (void) restoreFromPersistenceRepresentation:(NSDictionary *)inPersistenceRepresentation {
+
+	[super restoreFromPersistenceRepresentation:inPersistenceRepresentation];
+	
+	if ([self isViewLoaded]) {
+	
+		NSArray *oldVisibleObjectURIs = [[inPersistenceRepresentation objectForKey:kWAPostsViewControllerLastVisibleObjectURIs] irMap: ^ (NSString *aString, NSUInteger index, BOOL *stop) {
+			return [NSURL URLWithString:aString];
+		}];
+		NSArray *oldVisibleRects = [inPersistenceRepresentation objectForKey:kWAPostsViewControllerLastVisibleRects];
+		
+		if (oldVisibleObjectURIs && oldVisibleRects)
+		if ([oldVisibleObjectURIs count] == [oldVisibleRects count]) {
+		
+			NSArray *newVisibleRects = [oldVisibleObjectURIs irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
+				NSIndexPath *newIndexPath = [self.fetchedResultsController indexPathForObject:[self.managedObjectContext irManagedObjectForURI:anObjectURI]];
+				if (newIndexPath) {
+					return NSStringFromCGRect([self.tableView rectForRowAtIndexPath:newIndexPath]);
+				} else {
+					return [NSNull null];
+				}
+			}];
+			
+			NSIndexSet *stillListedObjectIndexes = [oldVisibleObjectURIs indexesOfObjectsPassingTest: ^ (NSURL *anURI, NSUInteger idx, BOOL *stop) {
+				return (BOOL)!![[newVisibleRects objectAtIndex:idx] isKindOfClass:[NSString class]];
+			}];
+			
+			if ([stillListedObjectIndexes count]) {
+				
+				NSUInteger index = [stillListedObjectIndexes firstIndex];
+				CGRect oldRect = CGRectFromString([oldVisibleRects objectAtIndex:index]);
+				CGRect newRect = CGRectFromString([newVisibleRects objectAtIndex:index]);
+				
+				CGFloat deltaY = CGRectGetMinY(newRect) - CGRectGetMinY(oldRect);
+				
+				CGPoint oldContentOffset = self.tableView.contentOffset;
+				CGPoint newContentOffset = oldContentOffset;
+				newContentOffset.y += deltaY;
+				
+				if (deltaY != 0)
+					[self.tableView setContentOffset:newContentOffset animated:NO];
+				
+			}
+		
+		}
+	
+	}
+
+}
+
+
+
+
+
 - (IRActionSheetController *) settingsActionSheetController {
 
 	if (settingsActionSheetController)
@@ -278,25 +377,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
 	
-	UIView *pulldownHeaderBackground = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(pulldownHeader.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })] autorelease];
-	pulldownHeaderBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
-	
-	IRGradientView *pulldownHeaderBackgroundShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(
-		pulldownHeader.bounds,
-		(CGSize){ CGRectGetWidth(pulldownHeader.bounds), 3 },
-		kCAGravityBottom
-	)] autorelease];
-	
-	UIColor *fromColor = [UIColor colorWithWhite:0 alpha:0];
-	UIColor *toColor = [UIColor colorWithWhite:0 alpha:0.125];
-	
-	[pulldownHeaderBackgroundShadow setLinearGradientFromColor:fromColor anchor:irTop toColor:toColor anchor:irBottom];
-	
-	[pulldownHeader addSubview:pulldownHeaderBackground];
-	[pulldownHeader addSubview:pulldownHeaderBackgroundShadow];
-	[pulldownHeader sendSubviewToBack:pulldownHeaderBackgroundShadow];
-	[pulldownHeader sendSubviewToBack:pulldownHeaderBackground];
-	
 	return pulldownHeader;
 		
 }
@@ -320,7 +400,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	__block __typeof__(self) nrSelf = self;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
+		
 	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
 	
 	self.tableView.pullDownHeaderView = pulldownHeader;
@@ -669,7 +749,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	if ([self isViewLoaded])
 	if (object == [WARemoteInterface sharedInterface])
 	if ([[change objectForKey:NSKeyValueChangeNewKey] isEqual:(id)kCFBooleanFalse])
-		[self.tableView resetPullDown];
+		[self.tableView performSelector:@selector(resetPullDown) withObject:nil afterDelay:2];
 
 }
 
@@ -902,8 +982,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[self restoreState];
 	
 	[UIView setAnimationsEnabled:YES];
-	
-	//	[self.tableView layoutSubviews];//?
 		
 }
 
