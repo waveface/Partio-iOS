@@ -24,11 +24,14 @@
 #import "WANavigationBar.h"
 
 #import "WARemoteInterface.h"
+#import "WAArticle.h"
+#import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
+
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
 
@@ -44,11 +47,20 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
 
+
+- (void) retrieveLatestReadingProgress;
+
+@property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier;
+@property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
+@property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView;
+
 @end
+
 
 @implementation WADiscretePaginatedArticlesViewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize paginatedArticlesViewController;
+@synthesize lastReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
 
 - (WAPaginatedArticlesViewController *) paginatedArticlesViewController {
 
@@ -98,6 +110,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 	self.paginationSlider.backgroundColor = nil;
 	self.paginationSlider.instantaneousCallbacks = YES;
+	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
+	
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
 	
 	self.paginatedView.backgroundColor = nil;
@@ -157,16 +171,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	};
 
-//	[self.paginatedView irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-//	
-//		if (!nrSelf.paginatedView.numberOfPages)
-//			return;
-//	
-//		NSUInteger newIndex = [inNewValue unsignedIntValue];
-//		[nrSelf paginatedView:nrSelf.paginatedView didShowView:[nrSelf.paginatedView existingPageAtIndex:newIndex] atIndex:newIndex];
-//		
-//	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
-		
 }
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
@@ -187,11 +191,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	}
 	
 	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
-		//	loadedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.65f];
-		//	loadedView.clipsToBounds = YES;
-		//	loadedView.layer.cornerRadius = 4.0f;
-		//	loadedView.layer.borderColor = [UIColor colorWithWhite:0.5f alpha:0.35f].CGColor;
-		//	loadedView.layer.borderWidth = 1.0f;
 		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
 	};
 	
@@ -221,8 +220,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		double delayInSeconds = 0.01;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 		dispatch_after(popTime, dispatch_get_main_queue(), ^ {
-		
-		//		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			[spinner removeFromSuperview];
 			
@@ -389,8 +386,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			
 				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 				
-				//	dispatch_async(dispatch_get_main_queue(), ^ {
-				
 					[CATransaction begin];
 					[CATransaction setDisableActions:YES];
 					
@@ -408,8 +403,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 					[CATransaction commit];
 
-				//	});
-				
 			}];
 		
 		});
@@ -426,6 +419,18 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			articleViewController.onViewTap();
 	
 	};
+	
+	NSString *identifier = articleViewController.article.identifier;
+	articleViewController.additionalDebugActions = [NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"Make Last Read" block:^{
+		
+			nrSelf.lastReadObjectIdentifier = identifier;
+			[nrSelf updateLastReadingProgressAnnotation];
+		
+		}],
+	
+	nil];
 
 	return articleViewController.view;
 	
@@ -621,6 +626,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (self.paginatedView.numberOfPages)
 		[self adjustPageView:[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage] usingGridAtIndex:self.paginatedView.currentPage];
 	
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	[self retrieveLatestReadingProgress];	//	?
+
 }
 
 - (void) reloadViewContents {
@@ -877,6 +890,91 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 }
 
+- (void) updateLastReadingProgressAnnotation {
+
+	WAPaginationSliderAnnotation *annotation = self.lastReadingProgressAnnotation;
+	if (annotation) {
+		[self.paginationSlider addAnnotationsObject:annotation];
+	} else {
+		[self.paginationSlider removeAnnotations:[NSSet setWithArray:self.paginationSlider.annotations]];
+	}
+
+}
+
+- (NSUInteger) gridIndexOfLastReadArticle {
+
+	__block WAArticle *lastReadArticle = nil;
+	
+	[[WADataStore defaultStore] fetchArticleWithIdentifier:self.lastReadObjectIdentifier usingContext:self.fetchedResultsController.managedObjectContext onSuccess: ^ (NSString *identifier, WAArticle *article) {
+	
+		lastReadArticle = article;
+		
+	}];
+	
+	if (!lastReadArticle)
+		return nil;
+	
+	__block NSUInteger containingGridIndex = NSNotFound;
+
+	IRDiscreteLayoutResult *lastLayoutResult = self.discreteLayoutResult;
+	[lastLayoutResult.grids enumerateObjectsUsingBlock:^(IRDiscreteLayoutGrid *aGridInstance, NSUInteger gridIndex, BOOL *stop) {
+	
+		__block BOOL canStop = NO;
+		
+		[aGridInstance enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
+			
+			if ([item isEqual:lastReadArticle]) {
+				containingGridIndex = gridIndex;
+				*stop = YES;
+				canStop = YES;
+			}
+			
+		}];
+		
+		*stop = canStop;
+		
+	}];
+	
+	return containingGridIndex;
+
+}
+
+- (WAPaginationSliderAnnotation *) lastReadingProgressAnnotation {
+
+	NSUInteger gridIndex = [self gridIndexOfLastReadArticle];
+	
+	if (gridIndex == NSNotFound)
+		return nil;
+	
+	if (!lastReadingProgressAnnotation) {
+		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
+	}
+	lastReadingProgressAnnotation.pageIndex = gridIndex;
+	return lastReadingProgressAnnotation;
+
+}
+
+- (UIView *) lastReadingProgressAnnotationView {
+
+	if (lastReadingProgressAnnotationView)
+		return lastReadingProgressAnnotationView;
+	
+	lastReadingProgressAnnotationView = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 24, 24 }}];
+	lastReadingProgressAnnotationView.backgroundColor = [UIColor redColor];
+	
+	return lastReadingProgressAnnotationView;
+
+}
+
+- (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider {
+
+	if (anAnnotation == lastReadingProgressAnnotation)
+		return self.lastReadingProgressAnnotationView;
+	
+	return nil;
+
+}
+
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
 	NSParameterAssert(destinationPage >= 0);
@@ -996,6 +1094,114 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 }
 
+- (void) setLastReadObjectIdentifier:(NSString *)newLastReadObjectIdentifier {
+
+	NSLog(@"newLastReadObjectIdentifier %@ -> %@", lastReadObjectIdentifier, newLastReadObjectIdentifier);
+	
+	if (lastReadObjectIdentifier == newLastReadObjectIdentifier)
+		return;
+	
+	[lastReadObjectIdentifier release];
+	lastReadObjectIdentifier = [newLastReadObjectIdentifier retain];
+	
+	[self updateLastReadingProgressAnnotation];	//	?
+
+}
+
+- (void) retrieveLatestReadingProgress {
+
+	BOOL showsBezel = YES;
+	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
+	
+	__block __typeof__(self) nrSelf = self;
+
+	@synchronized (self) {
+
+		if (objc_getAssociatedObject(self, &_cmd))
+			return;
+		
+		objc_setAssociatedObject(self, &_cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	}
+	
+	void (^cleanup)() = ^ {
+	
+		objc_setAssociatedObject(self, &_cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	};
+	
+	
+	//	WAOverlayBezel *bezel = [WAOverlayBezel bezelWithstyle:WAActivityIndicatorBezelStyle];
+	//	if (showsBezel)
+	//		[bezel showWithAnimation:WAOverlayBezelAnimationFade];
+	
+	
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	WADataStore *ds = [WADataStore defaultStore];
+	
+	
+	//	Retrieve the last scanned post in the primary group
+	//	Before anything happens at all
+	
+	[ri retrieveLastScannedPostInGroup:ri.primaryGroupIdentifier onSuccess: ^ (NSString *lastScannedPostIdentifier) {
+	
+		dispatch_async(dispatch_get_main_queue(), ^{
+		
+			//	On retrieval completion, set it on the main queue
+			//	Then ensure the object exists locally
+			
+			[ds fetchArticleWithIdentifier:lastScannedPostIdentifier usingContext:self.fetchedResultsController.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
+			
+				//	If the object exists locally, go on, things are merry
+
+				if (article) {
+					nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
+					cleanup();
+					return;
+				}
+				
+				//	Otherwise, fetch stuff until things are tidy again
+				
+				[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+					
+					kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
+					
+				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
+				
+					if (!didFinish) {
+						dispatch_async(dispatch_get_main_queue(), ^ {
+							cleanup();
+						});
+						return;
+					}
+				
+					NSError *savingError = nil;
+					if (![temporalContext save:&savingError])
+						NSLog(@"Error saving: %@", savingError);
+						
+					dispatch_async(dispatch_get_main_queue(), ^{
+						nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
+					});
+					
+					cleanup();
+					return;
+					
+				}];
+				
+			}];
+		
+		});
+	
+	} onFailure: ^ (NSError *error) {
+	
+		//	?
+		
+		cleanup();
+		
+	}];
+
+}
+
 - (void) dealloc {
 
 	[self.paginationSlider irUnbind:@"currentPage"];
@@ -1008,6 +1214,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[layoutGrids release];
 	
 	[paginatedArticlesViewController release];
+	
+	[lastReadingProgressAnnotation release];
+	[lastReadingProgressAnnotationView release];
 
 	[super dealloc];
 
