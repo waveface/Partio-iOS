@@ -6,14 +6,19 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import <objc/runtime.h>
+
 #import "WAPaginationSlider.h"
 
 
 @interface WAPaginationSlider ()
 @property (nonatomic, readwrite, retain) UISlider *slider; 
 @property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel; 
+@property (nonatomic, readwrite, retain) NSArray *annotations;
 + (UIImage *) transparentImage;
 - (void) sharedInit;
+- (NSMutableArray *) mutableAnnotations;
+@property (nonatomic, readwrite, assign) BOOL needsAnnotationsLayout;
 @end
 
 
@@ -22,6 +27,8 @@
 @synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
 @synthesize pageIndicatorLabel;
 @synthesize instantaneousCallbacks;
+@synthesize layoutStrategy;
+@synthesize annotations, needsAnnotationsLayout;
 
 + (UIImage *) transparentImage {
 
@@ -39,6 +46,15 @@
 	});
 
 	return returnedImage;
+
+}
+
+- (void) dealloc {
+
+	[slider release];
+	[annotations release];
+	
+	[super dealloc];
 
 }
 
@@ -65,7 +81,9 @@
 
 - (void) sharedInit {
 
-	self.dotRadius = 4.0f;
+	self.annotations = [NSArray array];
+
+	self.dotRadius = 3.0f;
 	self.dotMargin = 12.0f;
 	self.edgeInsets = (UIEdgeInsets){ 0, 12, 0, 12 };
 	
@@ -118,10 +136,25 @@
 
 }
 
+- (void) setBounds:(CGRect)bounds {
+
+	self.needsAnnotationsLayout = YES;
+	[super setBounds:bounds];
+
+}
+
+- (void) setFrame:(CGRect)frame {
+
+	self.needsAnnotationsLayout = YES;
+	[super setFrame:frame];
+
+}
+
 - (void) layoutSubviews {
 
 	static int dotTag = 1048576;
-
+	static int annotationViewTag = 2097152;
+	
 	NSMutableSet *dequeuedDots = [NSMutableSet set];
 	
 	self.slider.enabled = !!self.numberOfPages;
@@ -133,8 +166,21 @@
 	CGFloat usableWidth = CGRectGetWidth(self.bounds) - self.edgeInsets.left - self.edgeInsets.right;
 	NSUInteger numberOfDots = (NSUInteger)floorf(usableWidth / (self.dotRadius + self.dotMargin));
 	
-	//	if (self.numberOfPages)
-	//		numberOfDots = MIN(numberOfDots, self.numberOfPages);
+	switch (self.layoutStrategy) {
+		
+		case WAPaginationSliderFillWithDotsLayoutStrategy: {
+			break;
+		}
+		
+		case WAPaginationSliderLessDotsLayoutStrategy: {
+		
+			if (self.numberOfPages)
+				numberOfDots = MIN(numberOfDots, self.numberOfPages);
+		
+			break;
+		}
+		
+	}
 	
 	CGFloat dotSpacing = usableWidth / (numberOfDots - 1);
 	
@@ -170,7 +216,7 @@
 		[dequeuedDots removeObject:dotView];
 		
 		dotView.frame = (CGRect){ roundf(offsetX), roundf(offsetY), self.dotRadius, self.dotRadius }; 
-		[self addSubview:dotView];
+		[self insertSubview:dotView belowSubview:slider];
 		
 		offsetX += dotSpacing;
 		
@@ -180,6 +226,49 @@
 		[unusedDotView removeFromSuperview];
 	
 	[self bringSubviewToFront:self.slider];
+	
+	NSString * const kWAPaginationSliderAnnotationView_HostAnnotation = @"WAPaginationSliderAnnotationView_HostAnnotation";
+	
+	for (UIView *aSubview in self.subviews) {
+		if (aSubview.tag == annotationViewTag) {
+			if (![self.annotations containsObject:objc_getAssociatedObject(aSubview, kWAPaginationSliderAnnotationView_HostAnnotation)]) {
+				[aSubview removeFromSuperview];
+			}
+		}
+	}
+	
+	for (WAPaginationSliderAnnotation *anAnnotation in self.annotations) {
+		
+		NSArray *allFittingAnnotationViews = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock: ^ (UIView *anAnnotationView, NSDictionary *bindings) {
+			
+			if (anAnnotationView.tag != annotationViewTag)
+				return NO;
+			
+			if (anAnnotation == objc_getAssociatedObject(anAnnotationView, kWAPaginationSliderAnnotationView_HostAnnotation))
+				return YES;
+			
+			return NO;
+			
+		}]];
+		
+		NSParameterAssert([allFittingAnnotationViews count] <= 1);
+		
+		UIView *annotationView = [allFittingAnnotationViews lastObject];
+		
+		if (!annotationView)
+			annotationView = [self.delegate viewForAnnotation:anAnnotation inPaginationSlider:self];
+		
+		NSParameterAssert(annotationView);
+		
+		annotationView.center = (CGPoint){
+			anAnnotation.centerOffset.x + self.edgeInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
+			anAnnotation.centerOffset.y + roundf(0.5f * CGRectGetHeight(self.bounds))
+		};
+		
+		if (annotationView.superview != self)
+			[self insertSubview:annotationView belowSubview:slider];
+		
+	}
 
 }
 
@@ -296,10 +385,59 @@
 
 }
 
+- (NSMutableArray *) mutableAnnotations {
+
+	return [self mutableArrayValueForKey:@"annotations"];
+
+}
+
+- (void) addAnnotations:(NSSet *)insertedAnnotations {
+
+	[[self mutableAnnotations] addObjectsFromArray:[insertedAnnotations allObjects]];
+	[self setNeedsLayout];
+
+}
+
+- (void) addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
+
+	[[self mutableAnnotations] addObject:anAnnotation];
+	[self setNeedsLayout];
+
+}
+
+- (void) removeAnnotations:(NSSet *)removedAnnotations {
+
+	[[self mutableAnnotations] removeObjectsInArray:[removedAnnotations allObjects]];
+	[self setNeedsLayout];
+
+}
+
+- (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes {
+
+	[[self mutableAnnotations] removeObjectsAtIndexes:indexes];
+	[self setNeedsLayout];
+
+}
+
+- (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
+
+	[[self mutableAnnotations] removeObject:anAnnotation];
+	[self setNeedsLayout];
+
+}
+
+@end
+
+
+
+
+
+@implementation WAPaginationSliderAnnotation : NSObject
+@synthesize title, pageIndex, centerOffset;
+
 - (void) dealloc {
 
-	[slider release];
-	
+	[title release];
 	[super dealloc];
 
 }

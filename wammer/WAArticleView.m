@@ -179,10 +179,10 @@
 	
 	[self disassociateBindings];
 	
-	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
+	NSArray * (^topImages)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
 		NSParameterAssert([NSThread isMainThread]);
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-			if (index > 1) {
+			if (index >= maxNumberOfPickedImages) {
 				*stop = YES;
 			}
 			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
@@ -212,12 +212,11 @@
 	});
 	
 	bind(self.imageStackView, @"images", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return topImages(inNewValue);
+		return topImages(inNewValue, 2);
 	});
 	
 	bind(self.mainImageView, @"image", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		NSArray *allImages = topImages(inNewValue);
-		return [allImages count] ? [allImages objectAtIndex:0] : nil;
+		return [topImages(inNewValue, 1) lastObject];
 	});
 	
 	bind(self.avatarView, @"image", @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
