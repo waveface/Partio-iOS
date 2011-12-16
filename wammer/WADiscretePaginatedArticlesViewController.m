@@ -1294,9 +1294,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 						nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
 						
+						cleanup();
+						
 					});
 					
-					cleanup();
 					return;
 					
 				}];
