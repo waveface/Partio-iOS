@@ -73,4 +73,6 @@ extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentat
 
 @property (nonatomic, retain) WAArticleView *view;
 
+@property (nonatomic, readwrite, retain) NSArray *additionalDebugActions;
+
 @end
