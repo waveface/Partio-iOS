@@ -47,6 +47,12 @@
 
   if (!callback)
     return;
+	
+	if (!anArticleIdentifier) {
+		if (callback)
+			callback(nil, nil);
+		return;
+	}
 
   NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
   
