@@ -58,6 +58,9 @@
 
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
 
+- (void) clearViewHierarchy;
+- (void) recreateViewHierarchy;
+
 @end
 
 
@@ -89,7 +92,7 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	__block __typeof__(self) nrSelf = self;
-
+	
 	WARegisterUserDefaults();
   
   [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
@@ -100,99 +103,35 @@
 		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
 	};
 
-	NSDate *launchFinishDate = [NSDate date];
-
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
   
 	[[UIApplication sharedApplication] setCrashReportRecipients:[[NSUserDefaults standardUserDefaults] arrayForKey:kWACrashReportRecipients]];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+	
 	
 	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
-	
-	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
-	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-		return YES;
-	};
-	bottomMostViewController.onLoadview = ^ (WAViewController *self) {
-		self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }] autorelease];
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
-	};
-	
-	self.window.rootViewController = bottomMostViewController;
-	
+			
 	void (^initializeInterface)() = ^ {
 		
-		NSString *rootViewControllerClassName = nil;
+		if (![self hasAuthenticationData]) {
 		
-		switch (UI_USER_INTERFACE_IDIOM()) {
-			case UIUserInterfaceIdiomPad: {
-				rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
-				break;
-			}
-			default:
-			case UIUserInterfaceIdiomPhone: {
-				rootViewControllerClassName = @"WAPostsViewControllerPhone";
-				break;
-			}
+			[self applicationRootViewControllerDidRequestReauthentication:nil];
+						
+		} else {
+		
+			NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+			
+			if (lastAuthenticatedUserIdentifier)
+				[WADataStore defaultStore].persistentStoreName = [lastAuthenticatedUserIdentifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+			
+			[self recreateViewHierarchy];
+			
 		}
-		
-		NSParameterAssert(rootViewControllerClassName);
-		
-		__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
-		
-		BOOL needsTransition = !!self.window.rootViewController && ([[NSDate date] timeIntervalSinceDate:launchFinishDate] > 2);
-		
-		self.window.rootViewController = (( ^ {
-		
-			__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
-			
-      navController.onViewDidLoad = ^ (WANavigationController *self) {
-				self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			};
-			
-			if ([navController isViewLoaded])
-				navController.onViewDidLoad(navController);
-			
-      WANavigationBar *navBar = ((WANavigationBar *)(navController.navigationBar));
-      navBar.tintColor = [UIColor brownColor];
-			navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
-			
-			//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-			//		navBar.tintColor = [UIColor brownColor];
-			//		navBar.backgroundView = [WANavigationBar defaultPatternBackgroundView];
-			//	} else {
-			//		navBar.backgroundView = [WANavigationBar defaultGradientBackgroundView];
-			//	}
-			
-			return navController;
-			
-		})());
-		
-    if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
-			[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
-				
-		if (needsTransition) {
-			
-			CATransition *transition = [CATransition animation];
-			transition.type = kCATransitionFade;
-			transition.duration = 0.3f;
-			transition.fillMode = kCAFillModeForwards;
-			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-			transition.removedOnCompletion = YES;
-			
-			[self.window.layer addAnimation:transition forKey:kCATransition];
-		
-		}
-		
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:needsTransition];
-		
-		if (![self hasAuthenticationData])
-			[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
     
 	};
 	
@@ -229,84 +168,116 @@
     }
 	
 	}
-
-	NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
-	NSString *versionString = [NSString stringWithFormat:@"%@ (%@) #%@",  [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	[userDefaults setValue:versionString forKey:@"version"];
 	
   return YES;
 	
 }
 
-- (void) applicationDidBecomeActive:(UIApplication *)application {
+- (void) clearViewHierarchy {
 
-  #if 0
-  
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+	__block void (^dismissModal)(UIViewController *aVC);
+	dismissModal = ^ (UIViewController *aVC) {
+		
+		if (aVC.modalViewController)
+			dismissModal(aVC.modalViewController);
+		else
+			[aVC dismissModalViewControllerAnimated:NO];
 	
-		NSDataDetector *linkDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
+	};
 	
-		UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-		NSURL *pastedURL = pasteboard.URL;
-		BOOL pasteboardHasURL = (BOOL)!!pastedURL;
-		
-		if (!pasteboardHasURL) {
-		
-			NSString *pasteboardString = pasteboard.string;
-			
-			if (pasteboardString) {
-				
-				NSRange pasteboardStringFullRange = (NSRange){ 0, [pasteboard.string length] };
-				NSArray *allLinkMatches = [linkDetector matchesInString:pasteboardString options:0 range:pasteboardStringFullRange];
-				
-				pasteboardHasURL = (BOOL)!![linkDetector numberOfMatchesInString:pasteboardString options:0 range:pasteboardStringFullRange];
-				
-				if ([allLinkMatches count]) {
-					NSTextCheckingResult *result = [allLinkMatches objectAtIndex:0];
-					pastedURL = result.URL;
-				}
-				
-			}
-			
-		}
-		
-		pasteboardHasURL = (BOOL)!!pastedURL;
-		
-		if (!pasteboardHasURL)
-			return;
-		
-		NSString *alertTitle = @"Found Link";
-		NSString *alertText = [NSString stringWithFormat:@"Would you like to compose a Web post with %@?", pastedURL];
-		
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:[NSArray arrayWithObjects:
-    
-			[IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", @"Action title for accepting what happened") block:^{
-			
-				[[NSNotificationCenter defaultCenter] postNotificationName:kWACompositionSessionRequestedNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-					pasteboard.string, @"content",
-					pastedURL, @"foundURL",
-				
-				nil]];
-			
-			}],
-		
-		nil]];
-		
-		[alertView show];
+	dismissModal(self.window.rootViewController);
+	
+	
+	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
+	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+		return YES;
+	};
+	bottomMostViewController.onLoadview = ^ (WAViewController *self) {
+		self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }] autorelease];
+		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
+	};
+	
+	self.window.rootViewController = bottomMostViewController;
 
-  }
-  
-  #endif
-	
 }
+
+- (void) recreateViewHierarchy {
+
+	NSString *rootViewControllerClassName = nil;
+		
+	switch (UI_USER_INTERFACE_IDIOM()) {
+		case UIUserInterfaceIdiomPad: {
+			rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
+			break;
+		}
+		default:
+		case UIUserInterfaceIdiomPhone: {
+			rootViewControllerClassName = @"WAPostsViewControllerPhone";
+			break;
+		}
+	}
+	
+	NSParameterAssert(rootViewControllerClassName);
+	
+	__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+	
+	self.window.rootViewController = (( ^ {
+	
+		__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+		
+		navController.onViewDidLoad = ^ (WANavigationController *self) {
+			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
+			((WANavigationBar *)self.navigationBar).tintColor = [UIColor brownColor];
+			((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
+		};
+		
+		if ([navController isViewLoaded])
+			navController.onViewDidLoad(navController);
+		
+		return navController;
+		
+	})());
+	
+	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
+			
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+
+}
+
+
+
+
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
+		//	[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
+		
+		void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		
+			IRKeychainAbstractItem *keychainItem = [self currentKeychainItem];
+			keychainItem.secretString = userToken;
+			[keychainItem synchronize];
+			
+			NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:keychainItem];
+			
+			[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
+			[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
+			[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		
+		};
+
+		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		
+			writeCredentials(userIdentifier, userToken, primaryGroupIdentifier);
+			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			//	HECKLING ?
+			
+		} runningOnboardingProcess:YES];
 			
 	});
 
@@ -321,6 +292,10 @@
   });
   
 }
+
+
+
+
 
 - (BOOL) hasAuthenticationData {
 
@@ -400,6 +375,12 @@
 
 - (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
+	return [self presentAuthenticationRequestWithReason:aReason allowingCancellation:allowsCancellation removingPriorData:eraseAuthInfo clearingNavigationHierarchy:zapEverything onAuthSuccess:nil runningOnboardingProcess:shouldRunOnboardingChecksIfUserUnchanged];
+
+}
+
+- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void (^)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
+
   @synchronized (self) {
     
     if (self.alreadyRequestingAuthentication)
@@ -408,7 +389,7 @@
     self.alreadyRequestingAuthentication = YES;
   
   }
-    
+	
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
     return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
@@ -419,29 +400,72 @@
 
 	if (eraseAuthInfo)
     [self removeAuthenticationData];
+	
+	if (zapEverything)
+		[self clearViewHierarchy];
 
-	void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-  
-    IRKeychainAbstractItem *keychainItem = [self currentKeychainItem];
-		keychainItem.secretString = userToken;
-		[keychainItem synchronize];
+	
+  __block WAAuthenticationRequestViewController *authRequestVC;
+	
+	void (^presentWrappedAuthRequestVC)(WAAuthenticationRequestViewController *authVC, BOOL animated) = ^ (WAAuthenticationRequestViewController *authVC, BOOL animated) {
+	
+		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authVC] autorelease];
+		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
+	
+		[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:animated];
+		return;
+	
+		switch (UI_USER_INTERFACE_IDIOM()) {
 		
-		NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:keychainItem];
+			//  FIXME: Move this in a CustomUI category
 		
-		[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
-		[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
-		[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+			case UIUserInterfaceIdiomPad: {
+			
+				WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
+				fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+					return YES;
+				};
+				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
+				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];	//	was		WAPatternCarbonFibre
+				
+				[fullscreenBaseVC.view addSubview:((^ {
+					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+					spinner.center = (CGPoint){
+						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
+						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
+					};
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+						[spinner startAnimating];							
+					});
+					return spinner;
+				})())];
+				
+				if (self.window.rootViewController.modalViewController)
+					[self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+				
+				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
+				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:animated];
+				
+				break;
+			
+			}
+			
+			case UIUserInterfaceIdiomPhone:
+			default: {
+			
+				if (self.window.rootViewController.modalViewController)
+					[self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
+				
+				[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:animated];
+				break;
+				
+			}
 		
-		[WARemoteInterface sharedInterface].userIdentifier = userIdentifier;
-		[WARemoteInterface sharedInterface].userToken = userToken;
-		[WARemoteInterface sharedInterface].primaryGroupIdentifier = primaryGroupIdentifier;
+		}
 	
 	};
-	
-  
-  __block WAAuthenticationRequestViewController *authRequestVC;
   
   IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
   
@@ -527,11 +551,19 @@
         return;
       
       }
+			
+			WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+			
+			if (successBlock)
+				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+			
+			if (zapEverything) {
+				UINavigationController *navC = [self.navigationController retain];
+				[self dismissModalViewControllerAnimated:NO];
+				[nrAppDelegate recreateViewHierarchy];
+				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
+			}
   
-      writeCredentials([WARemoteInterface sharedInterface].userIdentifier, [WARemoteInterface sharedInterface].userToken, [WARemoteInterface sharedInterface].primaryGroupIdentifier);
-      
-      //  If running onboarding stuff
-      
       if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged) {
         [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
       } else {
@@ -574,134 +606,80 @@
       [authRequestVC authenticate];
       
     }]];
-    
+		
   }
   
   authRequestVC.actions = authRequestActions;
-  
-  
-  __block WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authRequestVC] autorelease];
-  authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-  authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
-      
-  switch (UI_USER_INTERFACE_IDIOM()) {
-  
-    //  FIXME: Move this in a CustomUI category
-  
-    case UIUserInterfaceIdiomPad: {
-    
-      WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
-      fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-        return YES;
-      };
-      fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
-      fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];	//	was		WAPatternCarbonFibre
-      
-      [fullscreenBaseVC.view addSubview:((^ {
-        UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-        spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-        spinner.center = (CGPoint){
-          roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
-          roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
-        };
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-          [spinner startAnimating];							
-        });
-        return spinner;
-      })())];
-      
-      if (self.window.rootViewController.modalViewController)
-        [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
-      
-      [self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
-      [fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:YES];
-      
-      break;
-    
-    }
-    
-    case UIUserInterfaceIdiomPhone:
-    default: {
-    
-      if (self.window.rootViewController.modalViewController)
-        [self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
-      
-      [self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:NO];
-      break;
-      
-    }
-  
-  }
-  	
+	
+	presentWrappedAuthRequestVC(authRequestVC, NO);
+	
   return YES;
 
 }
 
 - (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)authVC {
 
-    __block __typeof__(self) nrAppDelegate = self;
+	NSParameterAssert([NSThread isMainThread]);
 
-  [[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
+	__block __typeof__(self) nrAppDelegate = self;
+
+	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+	UIViewController *rootVC = keyWindow.rootViewController;
+	UIView *rootView = rootVC.view;
+	
+	UIView *overlayView = ((^ {
+	
+		UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		
+		UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+		
+		spinner.center = (CGPoint){
+			CGRectGetMidX(returnedView.bounds),
+			CGRectGetMidY(returnedView.bounds)
+		};
+		
+		spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+		
+		[spinner startAnimating];
+		
+		[returnedView addSubview:spinner];
+		returnedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
+	
+		return returnedView;
+	
+	})());
+	
+	void (^addOverlayView)(void) = ^ {
+	
+		[rootVC.view addSubview:overlayView];	
+	
+	};
+	
+	void (^removeOverlayView)(BOOL) = ^ (BOOL animated) {
+		
+		[UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:0 animations:^{
+		
+			overlayView.alpha = 0.0f;
+			
+		} completion:^(BOOL finished) {
+		
+			[overlayView removeFromSuperview];
+			
+		}];
+		
+	};
+	
+	[[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
 
     dispatch_async(dispatch_get_main_queue(), ^{
-      
-      [authVC dismissModalViewControllerAnimated:YES];
-      
+            
       void (^operations)() = ^ {
           
-          CATransition *transition = [CATransition animation];
-          transition.type = kCATransitionFade;
-          transition.duration = 0.3f;
-          transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-          transition.removedOnCompletion = YES;
+					addOverlayView();	
+          [keyWindow.rootViewController dismissModalViewControllerAnimated:YES];
           
-          UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-          UIViewController *rootVC = keyWindow.rootViewController;
-          UIView *rootView = rootVC.view;
-          
-          UIView *overlayView = ((^ {
-          
-            UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
-            returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-            
-            UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-            
-            spinner.center = (CGPoint){
-              CGRectGetMidX(returnedView.bounds),
-              CGRectGetMidY(returnedView.bounds)
-            };
-            
-            spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-            
-            [spinner startAnimating];
-            
-            [returnedView addSubview:spinner];
-            returnedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
-          
-            return returnedView;
-          
-          })());
-          
-          void (^removeOverlayView)(BOOL) = ^ (BOOL animated) {
-            
-            [UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:0 animations:^{
-            
-              overlayView.alpha = 0.0f;
-              
-            } completion:^(BOOL finished) {
-            
-              [overlayView removeFromSuperview];
-              
-            }];
-            
-          };
-          
-          [rootView addSubview:overlayView];
-          
-          [keyWindow.rootViewController dismissModalViewControllerAnimated:NO];
-          [keyWindow.layer addAnimation:transition forKey:@"transition"];
-          
-          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10 * 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 					
 						[[WARemoteInterface sharedInterface] retrieveUser:[WARemoteInterface sharedInterface].userIdentifier onSuccess:^(NSDictionary *userRep, NSArray *groupReps) {
 							
