@@ -18,6 +18,7 @@
 + (UIImage *) transparentImage;
 - (void) sharedInit;
 - (NSMutableArray *) mutableAnnotations;
+- (CGFloat) positionForPageNumber:(NSUInteger)aPageNumber;
 @property (nonatomic, readwrite, assign) BOOL needsAnnotationsLayout;
 @end
 
