@@ -83,7 +83,7 @@
 
 	self.annotations = [NSArray array];
 
-	self.dotRadius = 4.0f;
+	self.dotRadius = 3.0f;
 	self.dotMargin = 12.0f;
 	self.edgeInsets = (UIEdgeInsets){ 0, 12, 0, 12 };
 	
@@ -216,7 +216,7 @@
 		[dequeuedDots removeObject:dotView];
 		
 		dotView.frame = (CGRect){ roundf(offsetX), roundf(offsetY), self.dotRadius, self.dotRadius }; 
-		[self addSubview:dotView];
+		[self insertSubview:dotView belowSubview:slider];
 		
 		offsetX += dotSpacing;
 		
@@ -261,8 +261,8 @@
 		NSParameterAssert(annotationView);
 		
 		annotationView.center = (CGPoint){
-			self.edgeInsets.left + usableWidth * [self positionForPageNumber:anAnnotation.pageIndex],
-			roundf(0.5f * CGRectGetHeight(self.bounds))
+			anAnnotation.centerOffset.x + self.edgeInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
+			anAnnotation.centerOffset.y + roundf(0.5f * CGRectGetHeight(self.bounds))
 		};
 		
 		if (annotationView.superview != self)
@@ -433,7 +433,7 @@
 
 
 @implementation WAPaginationSliderAnnotation : NSObject
-@synthesize title, pageIndex;
+@synthesize title, pageIndex, centerOffset;
 
 - (void) dealloc {
 

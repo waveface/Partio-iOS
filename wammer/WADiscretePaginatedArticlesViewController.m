@@ -950,6 +950,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
 	}
 	lastReadingProgressAnnotation.pageIndex = gridIndex;
+	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, -0.5f };
 	return lastReadingProgressAnnotation;
 
 }
@@ -959,8 +960,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (lastReadingProgressAnnotationView)
 		return lastReadingProgressAnnotationView;
 	
-	lastReadingProgressAnnotationView = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 24, 24 }}];
-	lastReadingProgressAnnotationView.backgroundColor = [UIColor redColor];
+	lastReadingProgressAnnotationView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALastReadIndicator"]];
+	[lastReadingProgressAnnotationView sizeToFit];
 	
 	return lastReadingProgressAnnotationView;
 

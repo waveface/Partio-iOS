@@ -77,5 +77,6 @@ enum WAPaginationSliderLayoutStrategy {
 
 @property (nonatomic, readwrite, copy) NSString *title;
 @property (nonatomic, readwrite, assign) NSUInteger pageIndex;
+@property (nonatomic, readwrite, assign) CGPoint centerOffset;
 
 @end
