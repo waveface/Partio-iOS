@@ -22,6 +22,7 @@
 @synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
 @synthesize pageIndicatorLabel;
 @synthesize instantaneousCallbacks;
+@synthesize layoutStrategy;
 
 + (UIImage *) transparentImage {
 
@@ -133,8 +134,21 @@
 	CGFloat usableWidth = CGRectGetWidth(self.bounds) - self.edgeInsets.left - self.edgeInsets.right;
 	NSUInteger numberOfDots = (NSUInteger)floorf(usableWidth / (self.dotRadius + self.dotMargin));
 	
-	//	if (self.numberOfPages)
-	//		numberOfDots = MIN(numberOfDots, self.numberOfPages);
+	switch (self.layoutStrategy) {
+		
+		case WAPaginationSliderFillWithDotsLayoutStrategy: {
+			break;
+		}
+		
+		case WAPaginationSliderLessDotsLayoutStrategy: {
+		
+			if (self.numberOfPages)
+				numberOfDots = MIN(numberOfDots, self.numberOfPages);
+		
+			break;
+		}
+		
+	}
 	
 	CGFloat dotSpacing = usableWidth / (numberOfDots - 1);
 	

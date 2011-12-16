@@ -10,6 +10,20 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+#ifndef __WAPaginationSlider__
+#define __WAPaginationSlider__
+
+enum WAPaginationSliderLayoutStrategy {
+  
+	WAPaginationSliderDefaultLayoutStrategy = 0,
+	WAPaginationSliderFillWithDotsLayoutStrategy = 0,
+	WAPaginationSliderLessDotsLayoutStrategy
+	
+}; typedef NSUInteger WAPaginationSliderLayoutStrategy;
+
+#endif
+
+
 @class WAPaginationSlider;
 
 @protocol WAPaginationSliderDelegate <NSObject>
@@ -40,4 +54,5 @@
 
 @property (nonatomic, readonly, retain) UISlider *slider; //	Don’t do evil
 
+@property (nonatomic, readwrite, assign) WAPaginationSliderLayoutStrategy layoutStrategy;
 @end
