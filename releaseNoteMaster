@@ -1,2 +1,2 @@
-ETReleaseNotes="- WIP: Onboarding process revision\n- Fixes bug where the application shares a single Persistent Data Store across multiple accounts\n- Various Timeline positioning bugs fixed"
+ETReleaseNotes="- Onboarding process finalizd\n- Data Store bugfixes\n- Adds a debug only “I don’t care” button on the Station Discovery Feedback view controller"
 ETMarketingVersionNumber="0.9.8"
