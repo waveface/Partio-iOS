@@ -133,6 +133,8 @@
 	numberOfPages = newNumberOfPages;
 	[self didChangeValueForKey:@"numberOfPages"];
 	
+	[self.slider setValue:[self positionForPageNumber:self.currentPage] animated:YES];
+	
 	[self setNeedsLayout];
 
 }
