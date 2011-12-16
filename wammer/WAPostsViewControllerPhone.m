@@ -42,7 +42,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 @interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate>
 
-- (UIView *) defaultTitleView;
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
 @property (nonatomic, readwrite, retain) WAApplicationDidReceiveReadingProgressUpdateNotificationView *readingProgressUpdateNotificationView;
@@ -242,9 +241,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			NSArray *newVisibleRects = [oldVisibleObjectURIs irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
 				NSIndexPath *newIndexPath = [self.fetchedResultsController indexPathForObject:[self.managedObjectContext irManagedObjectForURI:anObjectURI]];
 				if (newIndexPath) {
-					return NSStringFromCGRect([self.tableView rectForRowAtIndexPath:newIndexPath]);
+					return (id)NSStringFromCGRect([self.tableView rectForRowAtIndexPath:newIndexPath]);
 				} else {
-					return [NSNull null];
+					return (id)[NSNull null];
 				}
 			}];
 			
