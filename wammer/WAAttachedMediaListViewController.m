@@ -164,16 +164,9 @@
 
 - (void) viewDidUnload {
 
-	self.headerView = nil;
-	
 	[super viewDidUnload];
 
 }
-
-
-
-
-
 - (void) setHeaderView:(UIView *)newHeaderView {
 
 	if (headerView == newHeaderView)
@@ -196,10 +189,6 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
-
-
-
-
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
