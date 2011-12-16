@@ -230,6 +230,11 @@
 	
 	}
 
+	NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
+	NSString *versionString = [NSString stringWithFormat:@"%@ (%@) #%@",  [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	[userDefaults setValue:versionString forKey:@"version"];
+	
   return YES;
 	
 }
