@@ -192,6 +192,7 @@
 		FFC937DF149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */; };
 		FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */; };
 		FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */; };
+		FFCEDA1D149B3F34000F2B20 /* WALastReadIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
 		FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
@@ -933,6 +934,7 @@
 		FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldClearButtonPressed@2x.png"; path = "Resources/UITextFieldClearButtonPressed@2x.png"; sourceTree = "<group>"; };
 		FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UITextFieldInvertedClearButton.png; path = Resources/UITextFieldInvertedClearButton.png; sourceTree = "<group>"; };
 		FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldInvertedClearButton@2x.png"; path = "Resources/UITextFieldInvertedClearButton@2x.png"; sourceTree = "<group>"; };
+		FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALastReadIndicator.png; path = Resources/WALastReadIndicator.png; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewBadge.m; sourceTree = "<group>"; };
@@ -1656,6 +1658,7 @@
 				FF1488611497861F00D8B0AD /* WASquarePanelBackdrop.png */,
 				FF1488621497861F00D8B0AD /* WASquarePanelBackdrop@2x.png */,
 				FF1E09B2149A365400D14D62 /* WAPatternLinedWood.png */,
+				FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */,
 			);
 			name = Resources;
 			path = wammer;
@@ -2235,6 +2238,7 @@
 				4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */,
 				FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */,
 				FF1E09B3149A365400D14D62 /* WAPatternLinedWood.png in Resources */,
+				FFCEDA1D149B3F34000F2B20 /* WALastReadIndicator.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2552,7 +2556,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 147;
+				CURRENT_PROJECT_VERSION = 148;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2599,7 +2603,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 147;
+				CURRENT_PROJECT_VERSION = 148;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
