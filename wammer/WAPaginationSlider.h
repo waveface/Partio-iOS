@@ -75,7 +75,7 @@ enum WAPaginationSliderLayoutStrategy {
 
 @interface WAPaginationSliderAnnotation : NSObject
 
-@property (nonatomic, readwrite, retain) NSString *title;
+@property (nonatomic, readwrite, copy) NSString *title;
 @property (nonatomic, readwrite, assign) NSUInteger pageIndex;
 
 @end
