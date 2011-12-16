@@ -15,7 +15,10 @@
 typedef enum {
 	WAActivityIndicatorBezelStyle = 0,
 	WACheckmarkBezelStyle,
+	WACloudBezelStyle,
+	WAConnectionBezelStyle,
 	WAErrorBezelStyle,
+	WARestrictedBezelStyle,
 	WADefaultBezelStyle = WAActivityIndicatorBezelStyle
 } WAOverlayBezelStyle;
 

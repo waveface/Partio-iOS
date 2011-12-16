@@ -35,7 +35,19 @@
 		aGroupIdentifier, @"group_id",
 		aPostIdentifier, @"post_id",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	
+		BOOL generallyFine = (WARemoteInterfaceGenericNoErrorValidator())(inResponseOrNil, inResponseContext);
+		if (!generallyFine)
+			return NO;
+		
+		if ([[inResponseOrNil valueForKeyPath:@"last_scan.post_id"] isEqual:aPostIdentifier])
+		if ([[inResponseOrNil valueForKeyPath:@"last_scan.group_id"] isEqual:aGroupIdentifier])
+			return YES;
+		
+		return NO;
+		
+	} successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		if (successBlock)
 			successBlock();
