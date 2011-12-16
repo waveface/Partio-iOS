@@ -76,9 +76,11 @@
     gradient(returnedView, [UIColor colorWithWhite:.95 alpha:1], [UIColor colorWithWhite:.8 alpha:1]);
     
     topShadow.frame = CGRectOffset(topShadow.frame, 0, -1 * CGRectGetHeight(topShadow.bounds));
+    topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
     gradient(topShadow, [UIColor colorWithWhite:0 alpha:0], [UIColor colorWithWhite:0 alpha:.125]);
     
     bottomShadow.frame = CGRectOffset(bottomShadow.frame, 0, CGRectGetHeight(bottomShadow.bounds));
+    bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
     gradient(bottomShadow, [UIColor colorWithWhite:0 alpha:.25], [UIColor colorWithWhite:0 alpha:0]);
     
     topGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
