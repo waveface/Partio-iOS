@@ -60,7 +60,11 @@
   self.tableView.tableHeaderView = ((^ {
   
     UITableViewCell *cell = [self headerCell];
+		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
     UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
     [returnedView addSubview:cell];
     
     return returnedView;
