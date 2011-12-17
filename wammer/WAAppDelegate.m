@@ -14,10 +14,22 @@
 
 
 #import "WAAppDelegate.h"
+#import "WADefines.h"
+#import "WARemoteInterface.h"
+#import "IRKeychainManager.h"
+#import "IRRelativeDateFormatter.h"
+
+#import "IRRemoteResourcesManager.h"
+#import "IRRemoteResourceDownloadOperation.h"
+#import "IRWebAPIEngine+ExternalTransforms.h"
 
 
-@interface WAAppDelegate ()
+@interface WAAppDelegate () <IRRemoteResourcesManagerDelegate>
+
 + (Class) preferredClusterClass;
+- (IRKeychainInternetPasswordItem *) currentKeychainItem;
+- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
+
 @end
 
 
@@ -51,15 +63,197 @@
 
 }
 
+- (void) bootstrap {
+
+	__block __typeof__(self) nrSelf = self;
+	
+	WARegisterUserDefaults();
+  
+  [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
+	
+	[IRRemoteResourcesManager sharedManager].delegate = self;
+	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
+	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
+		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
+	};
+
+}
+
+- (BOOL) hasAuthenticationData {
+
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
+	
+	if (!lastAuthenticatedUserTokenKeychainItem) {
+		if (lastAuthenticatedUserTokenKeychainItemData) {
+			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
+		}
+	}
+	
+	BOOL authenticationInformationSufficient = ([lastAuthenticatedUserTokenKeychainItem.secret length]) && lastAuthenticatedUserIdentifier;
+	
+	if (authenticationInformationSufficient) {
+	
+		if (![lastAuthenticatedUserIdentifier isEqualToString:@""])
+			[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
+		
+		if (lastAuthenticatedUserTokenKeychainItem.secretString)
+			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
+		
+		if (lastAuthenticatedUserPrimaryGroupIdentifier)
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
+		
+	}
+  
+  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUserRequiresReauthentication])
+    authenticationInformationSufficient = NO;
+	
+	return authenticationInformationSufficient;
+
+}
+
+- (BOOL) removeAuthenticationData {
+
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
+  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+  
+  [WARemoteInterface sharedInterface].userIdentifier = nil;
+  [WARemoteInterface sharedInterface].userToken = nil;
+  [WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
+  
+  BOOL didEraseAuthData = [[NSUserDefaults standardUserDefaults] synchronize];
+  BOOL didResetDeviceIdentifier = WADeviceIdentifierReset();
+  
+  return didEraseAuthData && didResetDeviceIdentifier;
+
+}
+
+- (IRKeychainInternetPasswordItem *) currentKeychainItem {
+
+  IRKeychainInternetPasswordItem *lastAuthenticatedUserTokenKeychainItem = nil;
+
+  if (!lastAuthenticatedUserTokenKeychainItem) {
+    NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
+    if (lastAuthenticatedUserTokenKeychainItemData)
+      lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
+  }
+  
+  if (!lastAuthenticatedUserTokenKeychainItem)
+    lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
+	
+	if (!lastAuthenticatedUserTokenKeychainItem.serverAddress)
+		lastAuthenticatedUserTokenKeychainItem.serverAddress = [[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] host];
+  
+  return lastAuthenticatedUserTokenKeychainItem;
+  
+}
+
+- (void) updateCurrentCredentialsWithUserIdentifier:(NSString *)userIdentifier token:(NSString *)userToken primaryGroup:(NSString *)primaryGroupIdentifier {
+
+	IRKeychainInternetPasswordItem *keychainItem = [self currentKeychainItem];
+	keychainItem.associatedAccountName = userIdentifier;
+	keychainItem.secretString = userToken;
+	
+	if (![keychainItem synchronize])
+		NSLog(@"Did not sync!");
+	
+	NSParameterAssert(keychainItem.persistentReference);
+	
+	NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:keychainItem];
+	
+	[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
+	[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
+	[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+}
+
+- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
+
+	[self beginNetworkActivity];
+
+}
+
+- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFinishDownloadingResourceAtURL:(NSURL *)anURL {
+
+	[self endNetworkActivity];
+
+}
+
+- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL {
+
+	[self endNetworkActivity];
+
+}
+
+- (NSURL *) remoteResourcesManager:(IRRemoteResourcesManager *)manager invokedURLForResourceAtURL:(NSURL *)givenURL {
+
+	if ([[givenURL host] isEqualToString:@"invalid.local"]) {
+	
+		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
+    NSString *replacementScheme = [currentBaseURL scheme];
+    if (!replacementScheme)
+      replacementScheme = @"http";
+    
+		NSString *replacementHost = [currentBaseURL host];
+		NSNumber *replacementPort = [currentBaseURL port];    
+		
+		NSString *constructedURLString = [[NSArray arrayWithObjects:
+			
+			[replacementScheme stringByAppendingString:@"://"],
+			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
+			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
+			[givenURL path] ? [givenURL path] : @"",
+			[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
+			[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
+			
+		nil] componentsJoinedByString:@""];
+		
+		NSURL *constructedURL = [NSURL URLWithString:constructedURLString];
+		
+		return constructedURL;
+		
+	}
+	
+	return givenURL;
+
+}
+
+- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
+
+	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
+	
+	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
+		
+	originalRequest.URL = transformedRequest.URL;
+	originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
+	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
+	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
+	originalRequest.HTTPBody = transformedRequest.HTTPBody;
+
+}
+
+@end
+
+
+
+
+
+@implementation WAAppDelegate (SubclassResponsibility)
+
 - (void) beginNetworkActivity {
 
-	//	Nothing
+	[NSException raise:NSInternalInconsistencyException format:@"Subclass shall implement %s", __PRETTY_FUNCTION__];
 
 }
 
 - (void) endNetworkActivity {
 
-	//	Nothing
+	[NSException raise:NSInternalInconsistencyException format:@"Subclass shall implement %s", __PRETTY_FUNCTION__];
 
 }
 

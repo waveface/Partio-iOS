@@ -12,11 +12,6 @@
 
 #import "WAAppDelegate.h"
 
-#import "IRRemoteResourcesManager.h"
-#import "IRRemoteResourceDownloadOperation.h"
-
-#import "IRWebAPIEngine+ExternalTransforms.h"
-
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
@@ -27,7 +22,6 @@
 #import "WARegisterRequestViewController.h"
 
 #import "WARemoteInterface.h"
-#import "IRKeychainManager.h"
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
@@ -48,14 +42,14 @@
 #import "IRLifetimeHelper.h"
 #import "WAOverlayBezel.h"
 
+#import "UIWindow+IRAdditions.h"
 
-@interface WAAppDelegate_iOS () <IRRemoteResourcesManagerDelegate, WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
+
+@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
-- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation;
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
-- (BOOL) removeAuthenticationData;
 
 - (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
 
@@ -94,17 +88,7 @@
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
-	__block __typeof__(self) nrSelf = self;
-	
-	WARegisterUserDefaults();
-  
-  [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
-	
-	[IRRemoteResourcesManager sharedManager].delegate = self;
-	[IRRemoteResourcesManager sharedManager].queue.maxConcurrentOperationCount = 4;
-	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
-		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
-	};
+	[self bootstrap];
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
@@ -262,17 +246,7 @@
 		
 		void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
-			IRKeychainAbstractItem *keychainItem = [self currentKeychainItem];
-			keychainItem.secretString = userToken;
-			[keychainItem synchronize];
-			
-			NSData *archivedItemData = [NSKeyedArchiver archivedDataWithRootObject:keychainItem];
-			
-			[[NSUserDefaults standardUserDefaults] setObject:archivedItemData forKey:kWALastAuthenticatedUserTokenKeychainItem];
-			[[NSUserDefaults standardUserDefaults] setObject:userIdentifier forKey:kWALastAuthenticatedUserIdentifier];
-			[[NSUserDefaults standardUserDefaults] setObject:primaryGroupIdentifier forKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 		
 		};
 
@@ -298,79 +272,6 @@
   
 }
 
-
-
-
-
-- (BOOL) hasAuthenticationData {
-
-	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
-	NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
-	NSString *lastAuthenticatedUserPrimaryGroupIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-	IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
-	
-	if (!lastAuthenticatedUserTokenKeychainItem) {
-		if (lastAuthenticatedUserTokenKeychainItemData) {
-			lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
-		}
-	}
-	
-	BOOL authenticationInformationSufficient = (lastAuthenticatedUserTokenKeychainItem.secret) && lastAuthenticatedUserIdentifier;
-	
-	if (authenticationInformationSufficient) {
-	
-		if (lastAuthenticatedUserIdentifier)
-			[WARemoteInterface sharedInterface].userIdentifier = lastAuthenticatedUserIdentifier;
-		
-		if (lastAuthenticatedUserTokenKeychainItem.secretString)
-			[WARemoteInterface sharedInterface].userToken = lastAuthenticatedUserTokenKeychainItem.secretString;
-		
-		if (lastAuthenticatedUserPrimaryGroupIdentifier)
-			[WARemoteInterface sharedInterface].primaryGroupIdentifier = lastAuthenticatedUserPrimaryGroupIdentifier;
-		
-	}
-  
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUserRequiresReauthentication])
-    authenticationInformationSufficient = NO;
-	
-	return authenticationInformationSufficient;
-
-}
-
-- (BOOL) removeAuthenticationData {
-
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-  
-  [WARemoteInterface sharedInterface].userIdentifier = nil;
-  [WARemoteInterface sharedInterface].userToken = nil;
-  [WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
-  
-  BOOL didEraseAuthData = [[NSUserDefaults standardUserDefaults] synchronize];
-  BOOL didResetDeviceIdentifier = WADeviceIdentifierReset();
-  
-  return didEraseAuthData && didResetDeviceIdentifier;
-
-}
-
-- (IRKeychainAbstractItem *) currentKeychainItem {
-
-  IRKeychainAbstractItem *lastAuthenticatedUserTokenKeychainItem = nil;
-
-  if (!lastAuthenticatedUserTokenKeychainItem) {
-    NSData *lastAuthenticatedUserTokenKeychainItemData = [[NSUserDefaults standardUserDefaults] dataForKey:kWALastAuthenticatedUserTokenKeychainItem];
-    if (lastAuthenticatedUserTokenKeychainItemData)
-      lastAuthenticatedUserTokenKeychainItem = [NSKeyedUnarchiver unarchiveObjectWithData:lastAuthenticatedUserTokenKeychainItemData];
-  }
-  
-  if (!lastAuthenticatedUserTokenKeychainItem) {
-    lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
-  }
-
-  return lastAuthenticatedUserTokenKeychainItem;
-  
-}
 
 - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
@@ -815,8 +716,6 @@
 
 }
 
-#pragma mark - Setup View Controller and Delegate
-
 - (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller {
 	
 	[self presentSetupViewControllerAnimated:YES];
@@ -889,71 +788,6 @@ static unsigned int networkActivityStackingCount = 0;
 	
 	if (networkActivityStackingCount == 0)
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-}
-
-- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
-
-	[self beginNetworkActivity];
-
-}
-
-- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFinishDownloadingResourceAtURL:(NSURL *)anURL {
-
-	[self endNetworkActivity];
-
-}
-
-- (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL {
-
-	[self endNetworkActivity];
-
-}
-
-- (NSURL *) remoteResourcesManager:(IRRemoteResourcesManager *)manager invokedURLForResourceAtURL:(NSURL *)givenURL {
-
-	if ([[givenURL host] isEqualToString:@"invalid.local"]) {
-	
-		NSURL *currentBaseURL = [WARemoteInterface sharedInterface].engine.context.baseURL;
-    NSString *replacementScheme = [currentBaseURL scheme];
-    if (!replacementScheme)
-      replacementScheme = @"http";
-    
-		NSString *replacementHost = [currentBaseURL host];
-		NSNumber *replacementPort = [currentBaseURL port];    
-		
-		NSString *constructedURLString = [[NSArray arrayWithObjects:
-			
-			[replacementScheme stringByAppendingString:@"://"],
-			replacementHost,	//	[givenURL host] ? [givenURL host] : @"",
-			replacementPort ? [@":" stringByAppendingString:[replacementPort stringValue]] : @"",
-			[givenURL path] ? [givenURL path] : @"",
-			[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
-			[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
-			
-		nil] componentsJoinedByString:@""];
-		
-		NSURL *constructedURL = [NSURL URLWithString:constructedURLString];
-		
-		return constructedURL;
-		
-	}
-	
-	return givenURL;
-
-}
-
-- (void) configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation {
-
-	NSMutableURLRequest *originalRequest = [anOperation underlyingRequest];
-	
-	NSURLRequest *transformedRequest = [[WARemoteInterface sharedInterface].engine transformedRequestWithRequest:originalRequest usingMethodName:@"loadedResource"];
-		
-	originalRequest.URL = transformedRequest.URL;
-	originalRequest.allHTTPHeaderFields = transformedRequest.allHTTPHeaderFields;
-	originalRequest.HTTPMethod = transformedRequest.HTTPMethod;
-	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
-	originalRequest.HTTPBody = transformedRequest.HTTPBody;
 
 }
 
