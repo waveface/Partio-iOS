@@ -1,2 +1,2 @@
-ETReleaseNotes="- On-boarding process finalized\n- Data Store bugs fixed\n- Adds a debug only “I don’t care” button on the Station Discovery Feedback view controller\n- Hotfix: Pagination Slider Knob not updating on number of pages changed\n- Hotfix: Crash Reporting does not work for Debug users"
+ETReleaseNotes="- On-boarding process finalized\n- Data Store bugs fixed\n- Adds a debug only “I don’t care” button on the Station Discovery Feedback view controller\n- Hotfix: Pagination Slider Knob not updating on number of pages changed\n- Hotfix: Crash Reporting does not work for Debug users\n- Hotfix: Disables use of full-resolution images in the Gallery for now"
 ETMarketingVersionNumber="0.9.8"
