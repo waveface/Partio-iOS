@@ -193,6 +193,9 @@
 		
 	}];
 	
+	imagePickerController.usesAssetsLibrary = NO;
+	imagePickerController.savesCameraImageCapturesToSavedPhotos = YES;
+	
 	//	[imagePickerController.view addSubview:((^ {
 	//		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
 	//		decorativeView.backgroundColor = [UIColor blackColor];
