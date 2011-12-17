@@ -275,7 +275,7 @@
 
 	//  WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
   WAFile *representedFile = [self representedFileAtIndex:index];
-	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
+	UIImage *representedImage = representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	returnedView.delegate = self;
   
