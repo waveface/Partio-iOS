@@ -10,6 +10,8 @@
 #import "WADataStore.h"
 #import "IRLifetimeHelper.h"
 
+#import "WARemoteInterface.h"
+
 #import <UIKit/UIFont.h>
 
 
@@ -87,6 +89,12 @@
 	
 	//self.tableView.intercellSpacing = NSZeroSize;
     
+}
+
+- (void) windowDidBecomeKey:(NSNotification *)notification {
+
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+
 }
 
 @end
