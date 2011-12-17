@@ -139,7 +139,9 @@
 	
 	//	UIApplication+CrashReporter shall only be used on a real device for now
 	
-	if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
+	BOOL reportsCrashOnSimulator = NO;
+	
+	if (!reportsCrashOnSimulator && ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound)) {
 	
     //  Never send crash reports thru the Simulator since it won’t actually matter
 
@@ -148,6 +150,8 @@
 	} else {
   
     if (WAAdvancedFeaturesEnabled()) {
+		
+			[self clearViewHierarchy];
     
       //  Only enable crash reporting as an advanced feature
 	
@@ -163,9 +167,7 @@
       }];
     
     } else {
-    
       initializeInterface();
-    
     }
 	
 	}
