@@ -108,6 +108,7 @@
 		FF460D3E149CFA8800DB7F0B /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
 		FF460D3F149CFA8800DB7F0B /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF460D41149CFA8F00DB7F0B /* WADataStore+FetchingConveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */; };
+		FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */; };
 		FF4CCE47149A00180049B83C /* WAPatternBlackPaper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE40149A00180049B83C /* WAPatternBlackPaper@2x.png */; };
 		FF4CCE48149A00180049B83C /* WAPatternCarbonFibre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE41149A00180049B83C /* WAPatternCarbonFibre@2x.png */; };
 		FF4CCE49149A00180049B83C /* WAPatternGreenFibers@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE42149A00180049B83C /* WAPatternGreenFibers@2x.png */; };
@@ -416,6 +417,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = FF59A3991441C94500BB1FDC;
 			remoteInfo = IRWebAPIKitX;
+		};
+		FF460D7E149CFC0600DB7F0B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF460D48149CFBFD00DB7F0B;
+			remoteInfo = IRKeychainX;
+		};
+		FF460DAF149CFC3B00DB7F0B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF460D47149CFBFD00DB7F0B;
+			remoteInfo = IRKeychainX;
 		};
 		FF59A3AC1441C97000BB1FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1068,6 +1083,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */,
 				FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */,
 				FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */,
 				FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */,
@@ -1328,6 +1344,7 @@
 			isa = PBXGroup;
 			children = (
 				FF666C2B140CD2B200C35CED /* libIRKeychain.a */,
+				FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1929,6 +1946,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FF460DB0149CFC3B00DB7F0B /* PBXTargetDependency */,
 				FF460D30149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D32149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D2B149CF8DA00DB7F0B /* PBXTargetDependency */,
@@ -2064,6 +2082,13 @@
 			fileType = wrapper.framework;
 			path = IRRecurrenceMachineX.framework;
 			remoteRef = FF460D2D149CF8DA00DB7F0B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = IRKeychainX.framework;
+			remoteRef = FF460D7E149CFC0600DB7F0B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */ = {
@@ -2628,6 +2653,11 @@
 			isa = PBXTargetDependency;
 			name = IRWebAPIKitX;
 			targetProxy = FF460D31149CF8DF00DB7F0B /* PBXContainerItemProxy */;
+		};
+		FF460DB0149CFC3B00DB7F0B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRKeychainX;
+			targetProxy = FF460DAF149CFC3B00DB7F0B /* PBXContainerItemProxy */;
 		};
 		FFB117C5147F8B34002094E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
