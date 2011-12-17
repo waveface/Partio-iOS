@@ -35,6 +35,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
 
+- (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification;
+- (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification;
+
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
@@ -48,11 +51,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
 
 
+- (NSUInteger) gridIndexOfLastReadArticle;
+- (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
+
+- (void) performReadingProgressSync;	//	will transition and stuff
 - (void) retrieveLatestReadingProgress;
 - (void) retrieveLatestReadingProgressWithCompletion:(void(^)(NSTimeInterval timeTaken))aBlock;
 - (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier;
+- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock;
 
 @property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier;
+@property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier;
 @property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
 @property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView;
 
@@ -62,13 +71,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @implementation WADiscretePaginatedArticlesViewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize paginatedArticlesViewController;
-@synthesize lastReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
+@synthesize lastReadObjectIdentifier, lastHandledReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
 
 - (WAPaginatedArticlesViewController *) paginatedArticlesViewController {
 
 	if (paginatedArticlesViewController)
 		return paginatedArticlesViewController;
-	
+		
 	paginatedArticlesViewController = [[WAPaginatedArticlesViewController alloc] init];
   paginatedArticlesViewController.delegate = self.delegate;
   
@@ -82,8 +91,44 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (!self)
 		return nil;
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	
 	return self;
 
+}
+
+- (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification {
+
+	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
+	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
+
+}
+
+- (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification {
+
+	if (![self isViewLoaded])
+		return;
+
+	IRDiscreteLayoutGrid *grid = [self.discreteLayoutResult.grids objectAtIndex:self.paginatedView.currentPage];
+	NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
+	
+	if (!lastArticleID)
+		return;
+	
+	__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+	taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+	
+		//	?
+		
+	}];
+
+	[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
+	
+		[[UIApplication sharedApplication] endBackgroundTask:taskID];
+		
+	}];
+	
 }
 
 - (void) viewDidLoad {
@@ -636,11 +681,20 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	[super viewDidAppear:animated];
 	
+	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
+	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
+	
+}
+
+- (void) performReadingProgressSync {
+
+	NSString *capturedLastReadObjectID = self.lastReadObjectIdentifier;
+	
 	[self retrieveLatestReadingProgressWithCompletion:^(NSTimeInterval timeTaken) {
 	
 		if (![self isViewLoaded])
 			return;
-	
+		
 		if (timeTaken > 3)
 			return;
 		
@@ -648,9 +702,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (currentIndex == NSNotFound)
 			return;
 		
-		[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
-		
-	}];
+		if (![self.lastHandledReadObjectIdentifier isEqualToString:capturedLastReadObjectID]) {
+			[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
+			self.lastHandledReadObjectIdentifier = self.lastReadObjectIdentifier;
+		}
+			
+	}];	
 
 }
 
@@ -916,6 +973,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	} else {
 		[self.paginationSlider removeAnnotations:[NSSet setWithArray:self.paginationSlider.annotations]];
 	}
+	
+	[self.paginationSlider setNeedsAnnotationsLayout];
+	[self.paginationSlider layoutSubviews];
+	[self.paginationSlider setNeedsLayout];
 
 }
 
@@ -932,6 +993,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (!lastReadArticle)
 		return nil;
 	
+	return [self gridIndexOfArticle:lastReadArticle];
+
+}
+
+- (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle {
+
 	__block NSUInteger containingGridIndex = NSNotFound;
 
 	IRDiscreteLayoutResult *lastLayoutResult = self.discreteLayoutResult;
@@ -941,7 +1008,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		[aGridInstance enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
 			
-			if ([item isEqual:lastReadArticle]) {
+			if ([item isEqual:anArticle]) {
 				containingGridIndex = gridIndex;
 				*stop = YES;
 				canStop = YES;
@@ -1115,8 +1182,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) setLastReadObjectIdentifier:(NSString *)newLastReadObjectIdentifier {
 
-	NSLog(@"newLastReadObjectIdentifier %@ -> %@", lastReadObjectIdentifier, newLastReadObjectIdentifier);
-	
 	if (lastReadObjectIdentifier == newLastReadObjectIdentifier)
 		return;
 	
@@ -1129,8 +1194,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier {
 
-	NSLog(@"updateLatestReadingProgressWithIdentifier -> %@", anIdentifier);
-	
+	[self updateLatestReadingProgressWithIdentifier:anIdentifier completion:nil];
+
+}
+
+- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock {
+
 	__block __typeof__(self) nrSelf = self;
 	__block WAOverlayBezel *nrBezel = nil;
 	
@@ -1151,6 +1220,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			nrSelf.lastReadObjectIdentifier = anIdentifier;	//	Heh
 			[nrSelf autorelease];
 			
+			if (aBlock)
+				aBlock(YES);
 			
 			if (usesBezel) {
 				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
@@ -1169,6 +1240,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			
 			[nrSelf autorelease];
 			
+			if (aBlock)
+				aBlock(NO);
 			
 			if (usesBezel) {
 				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
@@ -1196,19 +1269,19 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
-	@synchronized (self) {
-
-		if (objc_getAssociatedObject(self, &_cmd))
-			return;
-		
-		objc_setAssociatedObject(self, &_cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	
-	}
+//	@synchronized (self) {
+//
+//		if (objc_getAssociatedObject(self, &_cmd))
+//			return;
+//		
+//		objc_setAssociatedObject(self, &_cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//	
+//	}
 	
 	void (^cleanup)() = ^ {
 	
 		NSParameterAssert([NSThread isMainThread]);
-		objc_setAssociatedObject(self, &_cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//		objc_setAssociatedObject(self, &_cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		if (aBlock)
 			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
@@ -1363,6 +1436,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	[lastReadingProgressAnnotation release];
 	[lastReadingProgressAnnotationView release];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super dealloc];
 
