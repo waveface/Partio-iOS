@@ -27,6 +27,8 @@
 #import "WAArticle.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
+#import "IRConcaveView.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -154,12 +156,28 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	if (self.discreteLayoutResult)
 		[self.paginatedView reloadViews];
-		
+	
+	self.paginationSlider.edgeInsets = (UIEdgeInsets){ 0, 16, 0, 16 };
 	self.paginationSlider.backgroundColor = nil;
 	self.paginationSlider.instantaneousCallbacks = YES;
 	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
 	
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
+	
+	IRConcaveView *sliderSlot = [[[IRConcaveView alloc] initWithFrame:IRGravitize(
+		self.view.bounds,
+		(CGSize){ CGRectGetWidth(self.view.bounds), 20 },
+		kCAGravityBottom
+	)] autorelease];
+	
+	sliderSlot.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	sliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
+	sliderSlot.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth;
+	sliderSlot.frame = CGRectInset(CGRectOffset(sliderSlot.frame, 0, -10), 64, 0);
+	sliderSlot.layer.cornerRadius = 4.0f;
+	sliderSlot.layer.masksToBounds = YES;
+	[self.view insertSubview:sliderSlot belowSubview:self.paginationSlider];
+	
 	
 	self.paginatedView.backgroundColor = nil;
 	self.paginatedView.horizontalSpacing = 32.0f;
@@ -283,13 +301,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					objectURI, @"lastVisitedObjectURI",		
 				nil];
 				
-				__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init]  autorelease]] autorelease];
-				
-				NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:navController]] autorelease];
-				[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
-				navController = [unarchiver decodeObjectForKey:@"root"];
-				
-				[navController initWithRootViewController:enqueuedPaginatedVC];
+				__block WAFauxRootNavigationController *navController = [WAFauxRootNavigationController alloc];
+				navController = [navController initWithRootViewController:enqueuedPaginatedVC];
+				navController = [navController autorelease];
 				
 				[navController setOnViewDidLoad: ^ (WANavigationController *self) {
 					((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
@@ -464,8 +478,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			return;
 		
 		if (scale > 1.05f)
-		if (velocity > 1.05f)
+		if (velocity > 1.05f) {
+		
+			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
+				gestureRecognizer.enabled = NO;
+		
 			articleViewController.onViewTap();
+			
+			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
+				gestureRecognizer.enabled = YES;
+			
+		}
 	
 	};
 	
@@ -776,6 +799,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backdropView.backgroundColor = [UIColor whiteColor];
+	backdropView.layer.shadowOpacity = 0.35;
+	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
 	[returnedView addSubview:backdropView];
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
@@ -1035,7 +1060,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
 	}
 	lastReadingProgressAnnotation.pageIndex = gridIndex;
-	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, -0.5f };
+	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, 0 };
 	return lastReadingProgressAnnotation;
 
 }
