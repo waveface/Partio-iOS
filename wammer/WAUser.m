@@ -80,7 +80,7 @@
 	if (![actualAvatarURL isFileURL]) {
 	
 		NSURL *ownURL = [[self objectID] URIRepresentation];
-		[[IRRemoteResourcesManager sharedManager] retrieveImageAtURL:actualAvatarURL forced:NO withCompletionBlock: ^ (UIImage *tempImageOrNil) {
+		[[IRRemoteResourcesManager sharedManager] retrieveImageAtURL:actualAvatarURL forced:NO withCompletionBlock: ^ (IRRemoteResourcesManagerImage *tempImageOrNil) {
 		
 			if (!tempImageOrNil)
 				return;

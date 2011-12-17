@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface WATimelineWindowController : NSWindowController <NSTableViewDelegate>
+@interface WATimelineWindowController : NSWindowController <NSTableViewDelegate, NSWindowDelegate>
 
 + (id) sharedController;
 

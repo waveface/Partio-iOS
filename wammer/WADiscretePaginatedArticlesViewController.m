@@ -1016,7 +1016,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	}];
 	
 	if (!lastReadArticle)
-		return nil;
+		return NSNotFound;
 	
 	return [self gridIndexOfArticle:lastReadArticle];
 

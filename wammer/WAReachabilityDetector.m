@@ -274,9 +274,17 @@ BOOL WASCNetworkReachableViaWifi (SCNetworkReachabilityFlags flags) {
 
 BOOL WASCNetworkReachableViaWWAN (SCNetworkReachabilityFlags flags) {
 
+#if (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
+
   if (!WASCNetworkReachable(flags))
     return NO;
   
   return (BOOL)!!(flags & kSCNetworkReachabilityFlagsIsWWAN);
+
+#else
+	
+		return NO;
+
+#endif
 
 }

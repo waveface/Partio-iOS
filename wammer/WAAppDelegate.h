@@ -6,32 +6,26 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "UIWindow+IRAdditions.h"
+#import <Foundation/Foundation.h>
 
-@interface WAAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
+@interface WAAppDelegate : NSObject
 
-@property (nonatomic, readwrite, retain) UIWindow *window;
+- (void) bootstrap;	//	Call for app initialization
+
+- (BOOL) hasAuthenticationData;
+- (BOOL) removeAuthenticationData;
+
+- (void) updateCurrentCredentialsWithUserIdentifier:(NSString *)anIdentifier token:(NSString *)aToken primaryGroup:(NSString *)aGroupID;
+
+@end
+
+
+@interface WAAppDelegate (SubclassResponsibility)
 
 //	Network activity indications.
 //	Stackable.  Not thread safe.  Must invoke on main thread.
 
 - (void) beginNetworkActivity;
 - (void) endNetworkActivity;
-
-- (BOOL) hasAuthenticationData;
-
-- (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged;
-
-- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged;
-
-- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void(^)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged;
-//  
-//	Method will return immediately if an auth request view contorller has been presented
-//  if erasesExistingAuthenticationInformation, removes stuff in the remote interface and nils currently stored user token as well
-//  if zapEverything, removes all on-screen view controllers
-//  if shouldRunOnboardingChecksIfUserUnchanged, runs onboarding checks such as station discovery if the newly authenticated user has a different identifier
-
-//  - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)erasesExistingAuthenticationInformation DEPRECATED_ATTRIBUTE;
 
 @end
