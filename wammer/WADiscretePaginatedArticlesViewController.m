@@ -27,6 +27,8 @@
 #import "WAArticle.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
+#import "IRConcaveView.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -34,6 +36,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
+
+- (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification;
+- (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification;
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
@@ -48,11 +53,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
 
 
+- (NSUInteger) gridIndexOfLastReadArticle;
+- (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
+
+- (void) performReadingProgressSync;	//	will transition and stuff
 - (void) retrieveLatestReadingProgress;
 - (void) retrieveLatestReadingProgressWithCompletion:(void(^)(NSTimeInterval timeTaken))aBlock;
 - (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier;
+- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock;
 
 @property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier;
+@property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier;
 @property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
 @property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView;
 
@@ -62,13 +73,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @implementation WADiscretePaginatedArticlesViewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize paginatedArticlesViewController;
-@synthesize lastReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
+@synthesize lastReadObjectIdentifier, lastHandledReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
 
 - (WAPaginatedArticlesViewController *) paginatedArticlesViewController {
 
 	if (paginatedArticlesViewController)
 		return paginatedArticlesViewController;
-	
+		
 	paginatedArticlesViewController = [[WAPaginatedArticlesViewController alloc] init];
   paginatedArticlesViewController.delegate = self.delegate;
   
@@ -82,8 +93,44 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (!self)
 		return nil;
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	
 	return self;
 
+}
+
+- (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification {
+
+	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
+	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
+
+}
+
+- (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification {
+
+	if (![self isViewLoaded])
+		return;
+
+	IRDiscreteLayoutGrid *grid = [self.discreteLayoutResult.grids objectAtIndex:self.paginatedView.currentPage];
+	NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
+	
+	if (!lastArticleID)
+		return;
+	
+	__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+	taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+	
+		//	?
+		
+	}];
+
+	[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
+	
+		[[UIApplication sharedApplication] endBackgroundTask:taskID];
+		
+	}];
+	
 }
 
 - (void) viewDidLoad {
@@ -109,12 +156,28 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	if (self.discreteLayoutResult)
 		[self.paginatedView reloadViews];
-		
+	
+	self.paginationSlider.edgeInsets = (UIEdgeInsets){ 0, 16, 0, 16 };
 	self.paginationSlider.backgroundColor = nil;
 	self.paginationSlider.instantaneousCallbacks = YES;
 	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
 	
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
+	
+	IRConcaveView *sliderSlot = [[[IRConcaveView alloc] initWithFrame:IRGravitize(
+		self.view.bounds,
+		(CGSize){ CGRectGetWidth(self.view.bounds), 20 },
+		kCAGravityBottom
+	)] autorelease];
+	
+	sliderSlot.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	sliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
+	sliderSlot.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth;
+	sliderSlot.frame = CGRectInset(CGRectOffset(sliderSlot.frame, 0, -10), 64, 0);
+	sliderSlot.layer.cornerRadius = 4.0f;
+	sliderSlot.layer.masksToBounds = YES;
+	[self.view insertSubview:sliderSlot belowSubview:self.paginationSlider];
+	
 	
 	self.paginatedView.backgroundColor = nil;
 	self.paginatedView.horizontalSpacing = 32.0f;
@@ -238,13 +301,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					objectURI, @"lastVisitedObjectURI",		
 				nil];
 				
-				__block WAFauxRootNavigationController *navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init]  autorelease]] autorelease];
-				
-				NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:navController]] autorelease];
-				[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
-				navController = [unarchiver decodeObjectForKey:@"root"];
-				
-				[navController initWithRootViewController:enqueuedPaginatedVC];
+				__block WAFauxRootNavigationController *navController = [WAFauxRootNavigationController alloc];
+				navController = [navController initWithRootViewController:enqueuedPaginatedVC];
+				navController = [navController autorelease];
 				
 				[navController setOnViewDidLoad: ^ (WANavigationController *self) {
 					((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
@@ -419,8 +478,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			return;
 		
 		if (scale > 1.05f)
-		if (velocity > 1.05f)
+		if (velocity > 1.05f) {
+		
+			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
+				gestureRecognizer.enabled = NO;
+		
 			articleViewController.onViewTap();
+			
+			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
+				gestureRecognizer.enabled = YES;
+			
+		}
 	
 	};
 	
@@ -636,11 +704,20 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	[super viewDidAppear:animated];
 	
+	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
+	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
+	
+}
+
+- (void) performReadingProgressSync {
+
+	NSString *capturedLastReadObjectID = self.lastReadObjectIdentifier;
+	
 	[self retrieveLatestReadingProgressWithCompletion:^(NSTimeInterval timeTaken) {
 	
 		if (![self isViewLoaded])
 			return;
-	
+		
 		if (timeTaken > 3)
 			return;
 		
@@ -648,9 +725,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (currentIndex == NSNotFound)
 			return;
 		
-		[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
-		
-	}];
+		if (![self.lastHandledReadObjectIdentifier isEqualToString:capturedLastReadObjectID]) {
+			[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
+			self.lastHandledReadObjectIdentifier = self.lastReadObjectIdentifier;
+		}
+			
+	}];	
 
 }
 
@@ -719,6 +799,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backdropView.backgroundColor = [UIColor whiteColor];
+	backdropView.layer.shadowOpacity = 0.35;
+	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
 	[returnedView addSubview:backdropView];
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
@@ -916,6 +998,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	} else {
 		[self.paginationSlider removeAnnotations:[NSSet setWithArray:self.paginationSlider.annotations]];
 	}
+	
+	[self.paginationSlider setNeedsAnnotationsLayout];
+	[self.paginationSlider layoutSubviews];
+	[self.paginationSlider setNeedsLayout];
 
 }
 
@@ -932,6 +1018,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (!lastReadArticle)
 		return nil;
 	
+	return [self gridIndexOfArticle:lastReadArticle];
+
+}
+
+- (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle {
+
 	__block NSUInteger containingGridIndex = NSNotFound;
 
 	IRDiscreteLayoutResult *lastLayoutResult = self.discreteLayoutResult;
@@ -941,7 +1033,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		[aGridInstance enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
 			
-			if ([item isEqual:lastReadArticle]) {
+			if ([item isEqual:anArticle]) {
 				containingGridIndex = gridIndex;
 				*stop = YES;
 				canStop = YES;
@@ -968,7 +1060,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
 	}
 	lastReadingProgressAnnotation.pageIndex = gridIndex;
-	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, -0.5f };
+	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, 0 };
 	return lastReadingProgressAnnotation;
 
 }
@@ -1115,8 +1207,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) setLastReadObjectIdentifier:(NSString *)newLastReadObjectIdentifier {
 
-	NSLog(@"newLastReadObjectIdentifier %@ -> %@", lastReadObjectIdentifier, newLastReadObjectIdentifier);
-	
 	if (lastReadObjectIdentifier == newLastReadObjectIdentifier)
 		return;
 	
@@ -1129,12 +1219,21 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier {
 
-	NSLog(@"updateLatestReadingProgressWithIdentifier -> %@", anIdentifier);
-	
+	[self updateLatestReadingProgressWithIdentifier:anIdentifier completion:nil];
+
+}
+
+- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock {
+
 	__block __typeof__(self) nrSelf = self;
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	nrBezel.caption = @"Set Last Scan";
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	__block WAOverlayBezel *nrBezel = nil;
+	
+	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
+	if (usesBezel) {
+		nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		nrBezel.caption = @"Set Last Scan";
+		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
 	
 	[nrSelf retain];
 	
@@ -1146,14 +1245,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			nrSelf.lastReadObjectIdentifier = anIdentifier;	//	Heh
 			[nrSelf autorelease];
 			
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			if (aBlock)
+				aBlock(YES);
 			
-			nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			});
+			if (usesBezel) {
+				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+				nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				});
+			}
 			
 		});
 		
@@ -1162,18 +1264,19 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			[nrSelf autorelease];
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			nrBezel.caption = @"Can’t Set";
+			if (aBlock)
+				aBlock(NO);
 			
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				
+			if (usesBezel) {
 				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-			});
+				nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+				nrBezel.caption = @"Can’t Set";
+				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				});
+			}
 		
 		});
 		
@@ -1191,29 +1294,37 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
-	@synchronized (self) {
-
-		if (objc_getAssociatedObject(self, &_cmd))
-			return;
-		
-		objc_setAssociatedObject(self, &_cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	
-	}
+//	@synchronized (self) {
+//
+//		if (objc_getAssociatedObject(self, &_cmd))
+//			return;
+//		
+//		objc_setAssociatedObject(self, &_cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//	
+//	}
 	
 	void (^cleanup)() = ^ {
 	
 		NSParameterAssert([NSThread isMainThread]);
-		objc_setAssociatedObject(self, &_cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//		objc_setAssociatedObject(self, &_cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		if (aBlock)
 			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
 	
 	};
 	
+	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
+	
 	__block __typeof__(self) nrSelf = self;
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	nrBezel.caption = @"Get Last Scan";
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];	
+	
+	
+	__block WAOverlayBezel *nrBezel = nil;
+	
+	if (usesBezel) {
+		nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		nrBezel.caption = @"Get Last Scan";
+		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
 	
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	WADataStore *ds = [WADataStore defaultStore];
@@ -1237,22 +1348,26 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 					nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
 					
-					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-					nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-					[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					});
+					if (usesBezel) {
+						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+						nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+						[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+						});
+					}
 					
 					cleanup();
 					return;
 					
 				}
 				
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-				nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-				nrBezel.caption = @"Loading";
-				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				if (usesBezel) {
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+					nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+					nrBezel.caption = @"Loading";
+					[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				}
 				
 				//	Otherwise, fetch stuff until things are tidy again
 				
@@ -1263,20 +1378,25 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 				
 					if (!didFinish) {
+						
 						dispatch_async(dispatch_get_main_queue(), ^ {
 
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-							nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-							nrBezel.caption = @"Load Failed";
-							[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-							});
+							if (usesBezel) {
+								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+								nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+								nrBezel.caption = @"Load Failed";
+								[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+								dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+								});
+							}
 
 							cleanup();
 							
 						});
+						
 						return;
+						
 					}
 				
 					NSError *savingError = nil;
@@ -1285,12 +1405,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 					dispatch_async(dispatch_get_main_queue(), ^{
 
-						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-						nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-						[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						});
+						if (usesBezel) {
+							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+							nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+							[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+							});
+						}
 
 						nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
 						
@@ -1339,6 +1461,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	[lastReadingProgressAnnotation release];
 	[lastReadingProgressAnnotationView release];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super dealloc];
 
