@@ -42,6 +42,7 @@ enum WAPaginationSliderLayoutStrategy {
 @property (nonatomic, readwrite, assign) CGFloat dotRadius;
 @property (nonatomic, readwrite, assign) CGFloat dotMargin;
 @property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
+@property (nonatomic, readwrite, assign) UIEdgeInsets sliderInsets;
 
 @property (nonatomic, readwrite, assign) NSUInteger numberOfPages;
 @property (nonatomic, readwrite, assign) NSUInteger currentPage;
@@ -66,6 +67,8 @@ enum WAPaginationSliderLayoutStrategy {
 - (void) removeAnnotations:(NSSet *)annotations;
 - (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes;
 - (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation;
+
+- (void) setNeedsAnnotationsLayout;
 
 @end
 

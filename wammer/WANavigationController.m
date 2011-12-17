@@ -32,6 +32,8 @@
 
 - (id) initWithRootViewController:(UIViewController *)presentedViewController {
 
+	NSParameterAssert(!presentedViewController.navigationController);
+
   self = [super initWithRootViewController:presentedViewController];
   if (!self)
     return nil;
