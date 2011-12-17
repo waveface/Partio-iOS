@@ -101,6 +101,9 @@
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
+		FF60153C149C8E1E00D8A50F /* WASliderKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = FF601539149C8E1E00D8A50F /* WASliderKnob.png */; };
+		FF60153D149C8E1E00D8A50F /* WASliderKnobDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FF60153A149C8E1E00D8A50F /* WASliderKnobDisabled.png */; };
+		FF60153E149C8E1E00D8A50F /* WASliderKnobPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FF60153B149C8E1E00D8A50F /* WASliderKnobPressed.png */; };
 		FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */; };
 		FF692BA2143C791700A084A8 /* WAPageSliderThumb.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */; };
 		FF692BA3143C791700A084A8 /* WAPageSliderThumbActive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */; };
@@ -741,6 +744,9 @@
 		FF59F87B14419581005508FC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FF59F87C14419581005508FC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADiscretePaginatedArticlesViewController.xib; sourceTree = "<group>"; };
+		FF601539149C8E1E00D8A50F /* WASliderKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnob.png; path = Resources/WASliderKnob.png; sourceTree = "<group>"; };
+		FF60153A149C8E1E00D8A50F /* WASliderKnobDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobDisabled.png; path = Resources/WASliderKnobDisabled.png; sourceTree = "<group>"; };
+		FF60153B149C8E1E00D8A50F /* WASliderKnobPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobPressed.png; path = Resources/WASliderKnobPressed.png; sourceTree = "<group>"; };
 		FF60694A1498C8CD00F65CF2 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		FF615EAC13EBBF98004A2CA6 /* PLEmptyCameraRoll-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyCameraRoll-Large~ipad.png"; path = "Resources/PLEmptyCameraRoll-Large~ipad.png"; sourceTree = "<group>"; };
 		FF615EAE13EBC05C004A2CA6 /* PLEmptyPhotoAlbum-Large~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PLEmptyPhotoAlbum-Large~ipad.png"; path = "Resources/PLEmptyPhotoAlbum-Large~ipad.png"; sourceTree = "<group>"; };
@@ -1683,6 +1689,9 @@
 				FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */,
 				FFFC76351487760F00247099 /* WAUserGlyph.png */,
 				FFFC76361487760F00247099 /* WAUserGlyph@2x.png */,
+				FF601539149C8E1E00D8A50F /* WASliderKnob.png */,
+				FF60153A149C8E1E00D8A50F /* WASliderKnobDisabled.png */,
+				FF60153B149C8E1E00D8A50F /* WASliderKnobPressed.png */,
 			);
 			name = Resources;
 			path = wammer;
@@ -2271,6 +2280,9 @@
 				FFCEDABB149B6698000F2B20 /* WAOverlayBezel-Error@2x.png in Resources */,
 				FFCEDABC149B6698000F2B20 /* WAOverlayBezel-Restricted.png in Resources */,
 				FFCEDABD149B6698000F2B20 /* WAOverlayBezel-Restricted@2x.png in Resources */,
+				FF60153C149C8E1E00D8A50F /* WASliderKnob.png in Resources */,
+				FF60153D149C8E1E00D8A50F /* WASliderKnobDisabled.png in Resources */,
+				FF60153E149C8E1E00D8A50F /* WASliderKnobPressed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2588,7 +2600,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 155;
+				CURRENT_PROJECT_VERSION = 156;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2635,7 +2647,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 155;
+				CURRENT_PROJECT_VERSION = 156;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;

@@ -24,7 +24,7 @@
 
 
 @implementation WAPaginationSlider
-@synthesize slider;
+@synthesize slider, sliderInsets;
 @synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
 @synthesize pageIndicatorLabel;
 @synthesize instantaneousCallbacks;
@@ -82,6 +82,7 @@
 
 - (void) sharedInit {
 
+	self.sliderInsets = UIEdgeInsetsZero;
 	self.annotations = [NSArray array];
 
 	self.dotRadius = 3.0f;
@@ -97,10 +98,11 @@
 	
 	[self.slider setMinimumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider setMaximumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbInactive"] forState:UIControlStateDisabled];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumb"] forState:UIControlStateNormal];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbActive"] forState:UIControlStateSelected];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbActive"] forState:UIControlStateHighlighted];
+	
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnob"] forState:UIControlStateNormal];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnobDisabled"] forState:UIControlStateDisabled];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnobPressed"] forState:UIControlStateSelected];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnobPressed"] forState:UIControlStateHighlighted];
 	
 	[self.slider addTarget:self action:@selector(sliderDidMove:) forControlEvents:UIControlEventValueChanged];
 	[self.slider addTarget:self action:@selector(sliderTouchDidStart:) forControlEvents:UIControlEventTouchDown];
@@ -155,10 +157,13 @@
 
 - (void) layoutSubviews {
 
+	self.slider.frame = UIEdgeInsetsInsetRect(self.bounds, self.sliderInsets);
+
 	static int dotTag = 1048576;
 	static int annotationViewTag = 2097152;
 	
 	NSMutableSet *dequeuedDots = [NSMutableSet set];
+	NSMutableSet *currentDots = [NSMutableSet set];
 	
 	self.slider.enabled = !!self.numberOfPages;
 
@@ -219,6 +224,7 @@
 		[dequeuedDots removeObject:dotView];
 		
 		dotView.frame = (CGRect){ roundf(offsetX), roundf(offsetY), self.dotRadius, self.dotRadius }; 
+		[currentDots addObject:dotView];
 		[self insertSubview:dotView belowSubview:slider];
 		
 		offsetX += dotSpacing;
@@ -267,6 +273,9 @@
 			anAnnotation.centerOffset.x + self.edgeInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
 			anAnnotation.centerOffset.y + roundf(0.5f * CGRectGetHeight(self.bounds))
 		};
+		
+		for (UIView *aDotView in currentDots)
+			aDotView.hidden = !CGRectEqualToRect(CGRectNull, CGRectIntersection(aDotView.frame, annotationView.frame));
 		
 		if (annotationView.superview != self)
 			[self insertSubview:annotationView belowSubview:slider];
@@ -334,6 +343,8 @@
 	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
 	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
 	
+	self.pageIndicatorLabel.frame = CGRectIntegral(self.pageIndicatorLabel.frame);
+	
 	if (instantaneousCallbacks)
 		[self.delegate paginationSlider:self didMoveToPage:currentPage];
 	
@@ -397,34 +408,41 @@
 - (void) addAnnotations:(NSSet *)insertedAnnotations {
 
 	[[self mutableAnnotations] addObjectsFromArray:[insertedAnnotations allObjects]];
-	[self setNeedsLayout];
+	[self setNeedsAnnotationsLayout];
 
 }
 
 - (void) addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
 
 	[[self mutableAnnotations] addObject:anAnnotation];
-	[self setNeedsLayout];
+	[self setNeedsAnnotationsLayout];
 
 }
 
 - (void) removeAnnotations:(NSSet *)removedAnnotations {
 
 	[[self mutableAnnotations] removeObjectsInArray:[removedAnnotations allObjects]];
-	[self setNeedsLayout];
+	[self setNeedsAnnotationsLayout];
 
 }
 
 - (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes {
 
 	[[self mutableAnnotations] removeObjectsAtIndexes:indexes];
-	[self setNeedsLayout];
+	[self setNeedsAnnotationsLayout];
 
 }
 
 - (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
 
 	[[self mutableAnnotations] removeObject:anAnnotation];
+	[self setNeedsAnnotationsLayout];
+
+}
+
+- (void) setNeedsAnnotationsLayout {
+
+	self.needsAnnotationsLayout = YES;
 	[self setNeedsLayout];
 
 }

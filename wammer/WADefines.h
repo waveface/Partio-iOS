@@ -28,6 +28,7 @@ extern NSString * const kWAAlwaysDenyExpensiveRemoteOperations;
 extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
 extern NSString * const kWACrashReportRecipients;
+extern NSString * const kWADebugLastScanSyncBezelsVisible;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
