@@ -179,6 +179,16 @@
   bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
   
   [returnedView addSubview:bottomGlare];
+	
+	
+	IRGradientView *bottomShadow = [[[IRGradientView alloc] initWithFrame:(CGRect){
+		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) },
+		(CGSize){ CGRectGetWidth(returnedView.bounds), 3 }
+	}] autorelease];
+	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+	[bottomShadow setLinearGradientFromColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] anchor:irTop toColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] anchor:irBottom];
+	
+	[returnedView addSubview:bottomShadow];
   
   return (UIView *)returnedView;
 
