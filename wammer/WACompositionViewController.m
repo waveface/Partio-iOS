@@ -869,10 +869,15 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
 	
 		[availableActions addObject:[IRAction actionWithTitle:@"Take Photo" block: ^ {
-			
-			[nrSelf presentModalViewController:[IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+		
+			IRImagePickerController *pickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-			}] animated:YES];
+			}];
+			
+			pickerController.usesAssetsLibrary = NO;
+			pickerController.savesCameraImageCapturesToSavedPhotos = YES;
+			
+			[nrSelf presentModalViewController:pickerController animated:YES];
 						
 		}]];
 		
