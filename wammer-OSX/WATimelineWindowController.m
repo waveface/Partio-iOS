@@ -53,13 +53,44 @@
 
 }
 
+- (NSView *) tableView:(NSTableView *)aTV viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+
+	return [aTV makeViewWithIdentifier:@"articleCell" owner:nil];
+
+}
+
 - (CGFloat) tableView:(NSTableView *)aTableView heightOfRow:(NSInteger)row {
 	
+	static NSString * const kPrototypeCell = @"Prototype";
+	NSView *prototypeView = objc_getAssociatedObject(self, &kPrototypeCell);
+	if (!prototypeView) {
+		prototypeView = [self.tableView makeViewWithIdentifier:@"articleCell" owner:nil];
+		objc_setAssociatedObject(self, &kPrototypeCell, prototypeView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	
+	
 	WAArticle *article = (WAArticle *)[self.arrayController.arrangedObjects objectAtIndex:row];
+	
+	NSTextField *mainTextField = [prototypeView viewWithTag:24];
+	NSParameterAssert(mainTextField);
+	
+	CGRect oldFrame = mainTextField.frame;
+	mainTextField.frame = (NSRect){ NSZeroPoint, (NSSize){ mainTextField.frame.size.width, 0 }};
+	[mainTextField setStringValue:article.text];
+	[mainTextField sizeToFit];
+	CGRect newFrame = mainTextField.frame;
+	mainTextField.frame = oldFrame;
+	
+	//	float_t heightDelta = newFrame.size.height - oldFrame.size.height;
+	float_t heightDelta = [mainTextField.cell cellSizeForBounds:(NSRect){ NSZeroPoint, (NSSize){ mainTextField.frame.size.width, 768 } }].height - oldFrame.size.height;
+	
+	return prototypeView.frame.size.height + heightDelta;
+	
+
 	return MAX(
 		108,
 		([article.text sizeWithFont:[UIFont fontWithName:[[NSFont systemFontOfSize:[NSFont systemFontSize]] familyName] size:[NSFont systemFontSize]]
-		 constrainedToSize:(CGSize){ CGRectGetWidth(NSRectToCGRect(aTableView.frame)) - 72, 2048 }].height + 47)
+		 constrainedToSize:(CGSize){ CGRectGetWidth(NSRectToCGRect(aTableView.frame)) - 20, 2048 }].height + 47 + 4)
 	);
 
 }
@@ -67,9 +98,6 @@
 - (void) windowDidLoad {
 	
 	[super windowDidLoad];
-	
-	((NSView *)self.window.contentView).wantsLayer = YES;
-	self.tableView.superview.wantsLayer = YES;
 	
 	[self.window.contentView setPostsFrameChangedNotifications:YES];
 	
