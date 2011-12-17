@@ -723,7 +723,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	}
 	
-	NSString *newLastScannedObjectIdentifier = sentArticle.identifier;
+	//	NSString *newLastScannedObjectIdentifier = sentArticle.identifier;
 	
 	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 		

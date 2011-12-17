@@ -12,9 +12,19 @@
 
 #import "IRWebAPIKit.h"
 
+#ifndef __WAUser__
+#define __WAUser__
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	#define WAUserImage UIImage
+#else
+	#define WAUserImage NSImage
+#endif
+#endif
+
+
 @interface WAUser : IRManagedObject
 
-@property (nonatomic, retain) UIImage * avatar;
+@property (nonatomic, retain) WAUserImage * avatar;
 @property (nonatomic, retain) NSString * avatarURL;
 @property (nonatomic, retain) NSString * email;
 @property (nonatomic, retain) NSString * identifier;

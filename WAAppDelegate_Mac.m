@@ -1,10 +1,12 @@
 //
-//  WAAppDelegate.m
-//  wammer-OSX
+//  WAAppDelegate_Mac.m
+//  wammer
 //
-//  Created by Evadne Wu on 10/9/11.
-//  Copyright (c) 2011 Iridia Productions. All rights reserved.
+//  Created by Evadne Wu on 12/17/11.
+//  Copyright (c) 2011 Waveface. All rights reserved.
 //
+
+#import "WAAppDelegate_Mac.h"
 
 #import "WADefines.h"
 #import "WAAppDelegate.h"
@@ -14,14 +16,14 @@
 #import "WAAuthRequestWindowController.h"
 
 
-@interface WAAppDelegate () <WAAuthRequestWindowControllerDelegate>
+@interface WAAppDelegate_Mac () <WAAuthRequestWindowControllerDelegate>
 
 - (void) presentTimeline;
 
 @end
 
 
-@implementation WAAppDelegate
+@implementation WAAppDelegate_Mac
 
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification {
 
@@ -43,7 +45,7 @@
 		
 	}
 	
-//	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
+	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
 	
 //	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:@"evadne.wu@waveface.com" password:@"evadne" onSuccess:^(NSDictionary *userRep, NSString *token) {
 //		
@@ -76,48 +78,48 @@
 	
 	NSParameterAssert([WARemoteInterface sharedInterface]);
 
-	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:proposedUsername password:proposedPassword onSuccess:^(NSDictionary *userRep, NSString *token) {
-		
-		dispatch_async(dispatch_get_main_queue(), ^ {
-		
-			if (aCallback)
-				aCallback(YES);
-				
-			[[WARemoteInterface sharedInterface] setUserIdentifier:[userRep objectForKey:@"creator_id"]];
-			[[WARemoteInterface sharedInterface] setUserToken:token];
-			
-			[self presentTimeline];
-
-			[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
-				
-				[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
-				
-					NSLog(@"everything here");
-				
-				} onFailure: ^ {
-					
-					NSLog(@"articles load failed");
-					
-				}];
-				
-			} onFailure: ^ {
-				
-				NSLog(@"user load failed");
-				
-			}];
-			
-		});
-		
-	} onFailure: ^ (NSError *error) {
-	
-		dispatch_async(dispatch_get_main_queue(), ^ {
-		
-			if (aCallback)
-				aCallback(NO);
-			
-		});
-		
-	}];
+//	[[WARemoteInterface sharedInterface] retrieveTokenForUserWithIdentifier:proposedUsername password:proposedPassword onSuccess:^(NSDictionary *userRep, NSString *token) {
+//		
+//		dispatch_async(dispatch_get_main_queue(), ^ {
+//		
+//			if (aCallback)
+//				aCallback(YES);
+//				
+//			[[WARemoteInterface sharedInterface] setUserIdentifier:[userRep objectForKey:@"creator_id"]];
+//			[[WARemoteInterface sharedInterface] setUserToken:token];
+//			
+//			[self presentTimeline];
+//
+//			[[WADataStore defaultStore] updateUsersOnSuccess: ^ {
+//				
+//				[[WADataStore defaultStore] updateArticlesOnSuccess: ^ {
+//				
+//					NSLog(@"everything here");
+//				
+//				} onFailure: ^ {
+//					
+//					NSLog(@"articles load failed");
+//					
+//				}];
+//				
+//			} onFailure: ^ {
+//				
+//				NSLog(@"user load failed");
+//				
+//			}];
+//			
+//		});
+//		
+//	} onFailure: ^ (NSError *error) {
+//	
+//		dispatch_async(dispatch_get_main_queue(), ^ {
+//		
+//			if (aCallback)
+//				aCallback(NO);
+//			
+//		});
+//		
+//	}];
 
 }
 

@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class IRBarButtonItem, IRBorder;
+#import <UIKit/UIKit.h>
 
 extern NSString * const kWAAdvancedFeaturesEnabled;
 extern BOOL WAAdvancedFeaturesEnabled (void);
@@ -41,16 +40,12 @@ extern NSString * const kWARemoteEndpointApplicationKeyPad;
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);
 
-extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
-extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
-
-extern UIButton * WAButtonForImage (UIImage *anImage);
-extern UIButton * WAToolbarButtonForImage (UIImage *anImage);
-extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
-
-extern UIView * WAStandardTitleView (void);
-extern UIView * WAStandardTitleLabel (void);
-
 extern NSString * const kWACurrentGeneratedDeviceIdentifier;
 BOOL WADeviceIdentifierReset (void);
 NSString * WADeviceIdentifier (void);
+
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	#import "WADefines+iOS.h"
+#else
+	#import "WADefines+Mac.h"
+#endif
