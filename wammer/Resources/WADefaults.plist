@@ -31,5 +31,7 @@
 		<string>Jamie Sa &lt;jamie@waveface.com&gt;</string>
 		<string>Mineral &lt;redmine@waveface.com&gt;</string>
 	</array>
+	<key>WADebugLastScanSyncBezelsVisible</key>
+	<false/>
 </dict>
 </plist>

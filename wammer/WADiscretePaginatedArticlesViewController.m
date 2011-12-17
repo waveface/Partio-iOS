@@ -1132,9 +1132,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSLog(@"updateLatestReadingProgressWithIdentifier -> %@", anIdentifier);
 	
 	__block __typeof__(self) nrSelf = self;
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	nrBezel.caption = @"Set Last Scan";
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	__block WAOverlayBezel *nrBezel = nil;
+	
+	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
+	if (usesBezel) {
+		nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		nrBezel.caption = @"Set Last Scan";
+		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
 	
 	[nrSelf retain];
 	
@@ -1146,14 +1151,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			nrSelf.lastReadObjectIdentifier = anIdentifier;	//	Heh
 			[nrSelf autorelease];
 			
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
-			nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			});
+			if (usesBezel) {
+				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+				nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				});
+			}
 			
 		});
 		
@@ -1162,18 +1168,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			[nrSelf autorelease];
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			nrBezel.caption = @"Can’t Set";
 			
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				
+			if (usesBezel) {
 				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-			});
+				nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+				nrBezel.caption = @"Can’t Set";
+				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				});
+			}
 		
 		});
 		
@@ -1210,10 +1215,18 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	};
 	
+	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
+	
 	__block __typeof__(self) nrSelf = self;
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	nrBezel.caption = @"Get Last Scan";
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];	
+	
+	
+	__block WAOverlayBezel *nrBezel = nil;
+	
+	if (usesBezel) {
+		nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		nrBezel.caption = @"Get Last Scan";
+		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
 	
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	WADataStore *ds = [WADataStore defaultStore];
@@ -1237,22 +1250,26 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 					nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
 					
-					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-					nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-					[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					});
+					if (usesBezel) {
+						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+						nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+						[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+						});
+					}
 					
 					cleanup();
 					return;
 					
 				}
 				
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-				nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-				nrBezel.caption = @"Loading";
-				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				if (usesBezel) {
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+					nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+					nrBezel.caption = @"Loading";
+					[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				}
 				
 				//	Otherwise, fetch stuff until things are tidy again
 				
@@ -1263,20 +1280,25 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 				
 					if (!didFinish) {
+						
 						dispatch_async(dispatch_get_main_queue(), ^ {
 
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-							nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-							nrBezel.caption = @"Load Failed";
-							[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-							});
+							if (usesBezel) {
+								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+								nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+								nrBezel.caption = @"Load Failed";
+								[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+								dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+								});
+							}
 
 							cleanup();
 							
 						});
+						
 						return;
+						
 					}
 				
 					NSError *savingError = nil;
@@ -1285,12 +1307,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 					dispatch_async(dispatch_get_main_queue(), ^{
 
-						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-						nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-						[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						});
+						if (usesBezel) {
+							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+							nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+							[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+							});
+						}
 
 						nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
 						
