@@ -157,6 +157,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (self.discreteLayoutResult)
 		[self.paginatedView reloadViews];
 	
+	self.paginationSlider.dotMargin = 32;
 	self.paginationSlider.edgeInsets = (UIEdgeInsets){ 0, 16, 0, 16 };
 	self.paginationSlider.backgroundColor = nil;
 	self.paginationSlider.instantaneousCallbacks = YES;
