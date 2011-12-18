@@ -7,6 +7,7 @@
 //
 
 #import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
 
 #import "WAPaginationSlider.h"
 
@@ -157,8 +158,6 @@
 
 - (void) layoutSubviews {
 
-	self.slider.frame = UIEdgeInsetsInsetRect(self.bounds, self.sliderInsets);
-
 	static int dotTag = 1048576;
 	static int annotationViewTag = 2097152;
 	
@@ -170,8 +169,10 @@
 	for (UIView *aSubview in self.subviews)
 		if (aSubview.tag == dotTag)
 			[dequeuedDots addObject:aSubview];
-
-	CGFloat usableWidth = CGRectGetWidth(self.bounds) - self.edgeInsets.left - self.edgeInsets.right;
+	
+	UIEdgeInsets usedSliderInsets = self.sliderInsets;
+	UIEdgeInsets usedInsets = self.edgeInsets;
+	CGFloat usableWidth = CGRectGetWidth(self.bounds) - usedInsets.left - usedInsets.right;
 	NSUInteger numberOfDots = (NSUInteger)floorf(usableWidth / (self.dotRadius + self.dotMargin));
 	
 	switch (self.layoutStrategy) {
@@ -184,12 +185,28 @@
 		
 			if (self.numberOfPages)
 				numberOfDots = MIN(numberOfDots, self.numberOfPages);
+			
+			CGFloat minWidth = (numberOfDots - 1) * dotMargin;
+			
+			if (minWidth < usableWidth) {
+				
+				CGFloat endowment = roundf(0.5 * (usableWidth - minWidth));
+				usedInsets.left += endowment;
+				usedInsets.right += endowment; 
+				usableWidth = minWidth;
+				
+				usedSliderInsets.left += endowment;
+				usedSliderInsets.right += endowment;
+				
+			}
 		
 			break;
 		}
 		
 	}
 	
+	self.slider.frame = UIEdgeInsetsInsetRect(self.bounds, usedSliderInsets);
+
 	CGFloat dotSpacing = usableWidth / (numberOfDots - 1);
 	
 	UIImage *dotImage = (( ^ (CGFloat radius, CGFloat alpha) {
@@ -215,7 +232,7 @@
 		[dequeuedDots addObject:dotView];
 	}
 	
-	CGFloat offsetX = self.edgeInsets.left - 0.5 * self.dotRadius;
+	CGFloat offsetX = usedInsets.left - 0.5 * self.dotRadius;
 	CGFloat offsetY = roundf(0.5f * (CGRectGetHeight(self.bounds) - self.dotRadius));
 
 	int i; for (i = 0; i < numberOfDots; i++) {
@@ -270,12 +287,16 @@
 		NSParameterAssert(annotationView);
 		
 		annotationView.center = (CGPoint){
-			anAnnotation.centerOffset.x + self.edgeInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
+			anAnnotation.centerOffset.x + usedInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
 			anAnnotation.centerOffset.y + roundf(0.5f * CGRectGetHeight(self.bounds))
 		};
 		
-		for (UIView *aDotView in currentDots)
-			aDotView.hidden = !CGRectEqualToRect(CGRectNull, CGRectIntersection(aDotView.frame, annotationView.frame));
+		annotationView.frame = CGRectIntegral(annotationView.frame);
+		
+		for (UIView *aDotView in currentDots) {
+			BOOL dotOverlapsAnnotation = !CGRectEqualToRect(CGRectNull, CGRectIntersection(aDotView.frame, annotationView.frame));
+			aDotView.hidden = dotOverlapsAnnotation;
+		}
 		
 		if (annotationView.superview != self)
 			[self insertSubview:annotationView belowSubview:slider];
@@ -309,6 +330,17 @@
 
 }
 
+- (CGRect) currentSliderThumbRect {
+
+	CGRect sliderBounds = self.slider.bounds;
+	CGRect sliderTrackRect = [self.slider trackRectForBounds:sliderBounds];
+	CGFloat sliderValue = self.slider.value;
+	
+	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:sliderBounds trackRect:sliderTrackRect value:sliderValue];
+	return [self convertRect:prospectiveThumbRect fromView:self.slider];
+
+}
+
 - (void) sliderTouchDidStart:(UISlider *)aSlider {
 
 	[self willChangeValueForKey:@"currentPage"];
@@ -319,8 +351,7 @@
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 
-	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
-	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX([self currentSliderThumbRect]), -12.0f };
 	
 	[UIView animateWithDuration:0.125f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionAllowUserInteraction animations: ^ {
 		
@@ -340,8 +371,7 @@
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 	
-	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
-	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX([self currentSliderThumbRect]), -12.0f };
 	
 	self.pageIndicatorLabel.frame = CGRectIntegral(self.pageIndicatorLabel.frame);
 	

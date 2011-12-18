@@ -832,7 +832,17 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	NSMutableArray *availableActions = [NSMutableArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:@"Photo Library" block: ^ {
-			[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+		
+			@try {
+
+				[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+    
+			} @catch (NSException *exception) {
+
+				[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			
+			}
+		
 		}],
 		
 	nil];

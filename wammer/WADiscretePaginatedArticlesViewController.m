@@ -711,6 +711,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) performReadingProgressSync {
 
+	NSUInteger lastPage = NSNotFound;
+	if ([self isViewLoaded])
+		lastPage = self.paginatedView.currentPage;
+	
 	NSString *capturedLastReadObjectID = self.lastReadObjectIdentifier;
 	
 	[self retrieveLatestReadingProgressWithCompletion:^(NSTimeInterval timeTaken) {
@@ -723,6 +727,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		NSInteger currentIndex = [self gridIndexOfLastReadArticle];
 		if (currentIndex == NSNotFound)
+			return;
+		
+		if (self.paginatedView.currentPage != lastPage)
 			return;
 		
 		if (![self.lastHandledReadObjectIdentifier isEqualToString:capturedLastReadObjectID]) {
@@ -897,9 +904,26 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSSet *allIntrospectedGrids = [allDestinations setByAddingObject:currentPageGrid];
 	IRDiscreteLayoutGrid *bestGrid = nil;
 	
-	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-	CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform([keyWindow.screen applicationFrame], ((UIView *)[keyWindow.subviews objectAtIndex:0]).transform);
-	CGFloat currentAspectRatio = CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
+	CGFloat currentAspectRatio = ((^ {
+	
+		//	FIXME: Save this somewhere to avoid recalculating stuff again and again?
+
+		CGAffineTransform orientationsToTransforms[] = {
+			[UIInterfaceOrientationPortrait] = CGAffineTransformMakeRotation(0),
+			[UIInterfaceOrientationPortraitUpsideDown] = CGAffineTransformMakeRotation(M_PI),
+			[UIInterfaceOrientationLandscapeLeft] = CGAffineTransformMakeRotation(-0.5 * M_PI),
+			[UIInterfaceOrientationLandscapeRight] = CGAffineTransformMakeRotation(0.5 * M_PI)
+		};
+		
+		CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform(
+			[[UIApplication sharedApplication].keyWindow.screen applicationFrame],
+			orientationsToTransforms[[UIApplication sharedApplication].statusBarOrientation]
+		);
+		
+		return CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
+
+	})());
+	
 	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
 		
 		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
@@ -1060,7 +1084,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
 	}
 	lastReadingProgressAnnotation.pageIndex = gridIndex;
-	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, 0 };
+	//	lastReadingProgressAnnotation.centerOffset = (CGPoint){, 0 };
 	return lastReadingProgressAnnotation;
 
 }
