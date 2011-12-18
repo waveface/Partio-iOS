@@ -42,6 +42,8 @@
 - (void) bootstrap {
 
 	[super bootstrap];
+	
+	[NSApp setNextResponder:self];
 
 	[IRKeychainManager sharedManager].defaultAccessGroupName = @"waveface";
 
@@ -107,7 +109,17 @@
 
 	NSParameterAssert([self hasAuthenticationData]);
 
-	[[[WATimelineWindowController sharedController] window] makeKeyAndOrderFront:self];
+	WATimelineWindowController *timelineWC = [WATimelineWindowController sharedController];
+	
+	timelineWC.nextResponder = self;
+
+	[[timelineWC window] makeKeyAndOrderFront:self];
+
+}
+
+- (BOOL) applicationOpenUntitledFile:(NSApplication *)sender {
+
+	return NO;
 
 }
 
