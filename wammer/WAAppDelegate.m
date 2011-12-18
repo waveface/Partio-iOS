@@ -68,7 +68,7 @@
 	__block __typeof__(self) nrSelf = self;
 	
 	WARegisterUserDefaults();
-  
+	
   [IRRelativeDateFormatter sharedFormatter].approximationMaxTokenCount = 1;
 	
 	[IRRemoteResourcesManager sharedManager].delegate = self;
