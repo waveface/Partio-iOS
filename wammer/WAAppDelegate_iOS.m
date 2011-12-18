@@ -86,14 +86,26 @@
 
 }
 
-- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (void) bootstrap {
+	
+	[super bootstrap];
 
-	[self bootstrap];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
+	else {
+		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPhone;
+	}
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
-  
+
+}
+
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	[self bootstrap];
+
 	[[UIApplication sharedApplication] setCrashReportRecipients:[[NSUserDefaults standardUserDefaults] arrayForKey:kWACrashReportRecipients]];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	

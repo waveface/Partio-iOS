@@ -170,7 +170,6 @@
 	
 	self.defaultBatchSize = 200;
 	self.dataRetrievalInterval = 30;
-	self.apiKey = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)? kWARemoteEndpointApplicationKeyPad : kWARemoteEndpointApplicationKeyPhone;
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];

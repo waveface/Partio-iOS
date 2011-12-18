@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class WARemoteInterface;
 @interface WATimelineWindowController : NSWindowController <NSTableViewDelegate, NSWindowDelegate>
 
 + (id) sharedController;
@@ -16,5 +17,11 @@
 @property (nonatomic, readwrite, retain) IBOutlet NSArrayController *arrayController;
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+
+- (NSArray *) sortDescriptors;
+- (WARemoteInterface *) remoteInterface;
+
+- (IBAction) handleRefresh:(id)sender;
+- (IBAction) handleList:(id)sender;
 
 @end

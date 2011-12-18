@@ -36,6 +36,7 @@ extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotific
 
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;
+extern NSString * const kWARemoteEndpointApplicationKeyMac;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);

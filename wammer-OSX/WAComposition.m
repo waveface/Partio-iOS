@@ -7,29 +7,60 @@
 //
 
 #import "WAComposition.h"
+#import "WARemoteInterface.h"
+#import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WAProgressIndicatorWindow.h"
+
+@interface WAComposition ()
+@property (nonatomic, readwrite, retain) WAArticle *article;
+@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
+@end
 
 @implementation WAComposition
+@synthesize managedObjectContext;
+@synthesize article;
+@synthesize textView;
+@synthesize spinner;
+@synthesize collectionView;
 
-- (id)init
-{
-    self = [super init];
-    if (self) {
-        // Add your subclass-specific initialization here.
-    }
-    return self;
+- (id) init {
+	
+	self = [super init];
+	
+	if (!self)
+		return nil;
+	
+	self.article = [WAArticle objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:nil];
+	self.article.draft = (NSNumber *)kCFBooleanTrue;
+	
+	return self;
+	
 }
 
-- (NSString *)windowNibName
-{
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
-    return @"WAComposition";
+- (NSManagedObjectContext *) managedObjectContext {
+
+	if (managedObjectContext)
+		return managedObjectContext;
+	
+	managedObjectContext = [[[WADataStore defaultStore] disposableMOC] retain];
+	managedObjectContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
+	return managedObjectContext;
+
 }
 
-- (void)windowControllerDidLoadNib:(NSWindowController *)aController
-{
-    [super windowControllerDidLoadNib:aController];
-    // Add any code here that needs to be executed once the windowController has loaded the document's window.
+- (NSString *) windowNibName {
+	
+	return @"WAComposition";
+	
+}
+
+- (void) windowControllerDidLoadNib:(NSWindowController *)aController {
+	
+	[super windowControllerDidLoadNib:aController];
+	
+	//	?
+	
 }
 
 - (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
@@ -53,9 +84,50 @@
     return YES;
 }
 
-+ (BOOL)autosavesInPlace
-{
-    return YES;
++ (BOOL) autosavesInPlace {
+	return NO;
+}
+
+- (IBAction)handleSend:(id)sender {
+
+	NSLog(@"Should Send");
+	
+	NSTextStorage *textStorage = [self.textView textStorage];
+	NSRange wantedRange = (NSRange){ 0, [textStorage length] };
+	NSDictionary *wantedAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+		NSHTMLTextDocumentType, NSDocumentTypeDocumentAttribute,
+		[NSArray arrayWithObjects:@"doctype", @"html", @"head", @"body", @"xml", nil], NSExcludedElementsDocumentAttribute,
+	nil];
+	
+	NSData *htmlData = [textStorage dataFromRange:wantedRange documentAttributes:wantedAttrs error:nil];
+	NSLog(@"htmlData %@", htmlData);
+	
+	self.article.text = [textStorage string];
+	
+	WAProgressIndicatorWindow *busyWindow = [[WAProgressIndicatorWindow fromNib] retain];
+	[NSApp beginSheet:busyWindow modalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:nil contextInfo:nil];
+	
+	[self.managedObjectContext save:nil];
+		
+	NSURL *articleURI = [[self.article objectID] URIRepresentation];
+	[[WADataStore defaultStore] uploadArticle:articleURI onSuccess: ^ {
+	
+		self.article.draft = kCFBooleanFalse;
+		
+		NSError *savingError = nil;
+		if (![self.managedObjectContext save:&savingError])
+			NSLog(@"Error saving: %@", savingError);
+		
+		[NSApp endSheet:busyWindow];
+		
+		[self close];
+	
+	} onFailure: ^ {
+	
+		[NSApp endSheet:busyWindow];
+	
+	}];
+	
 }
 
 @end
