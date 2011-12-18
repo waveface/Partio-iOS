@@ -82,7 +82,7 @@
 	mainTextField.frame = oldFrame;
 	
 	//	float_t heightDelta = newFrame.size.height - oldFrame.size.height;
-	float_t heightDelta = [mainTextField.cell cellSizeForBounds:(NSRect){ NSZeroPoint, (NSSize){ mainTextField.frame.size.width, 768 } }].height - oldFrame.size.height;
+	float_t heightDelta = [mainTextField.cell cellSizeForBounds:(NSRect){ NSZeroPoint, (NSSize){ (aTableView.frame.size.width - prototypeView.frame.size.width) + mainTextField.frame.size.width, 768 } }].height - oldFrame.size.height;
 	
 	return prototypeView.frame.size.height + heightDelta;
 	
@@ -114,14 +114,18 @@
 		[opaqueBlock release];
 		
 	}];
-	
-	//self.tableView.intercellSpacing = NSZeroSize;
     
 }
 
 - (void) windowDidBecomeKey:(NSNotification *)notification {
 
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+
+}
+
+- (NSIndexSet *) tableView:(NSTableView *)tableView selectionIndexesForProposedSelection:(NSIndexSet *)proposedSelectionIndexes {
+
+	return [NSIndexSet indexSet];
 
 }
 

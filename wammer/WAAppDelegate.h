@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface WAAppDelegate : NSObject
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	#import <UIKit/UIKit.h>
+	#define WAAppDelegateRootClass UIResponder
+#else
+	#import <Cocoa/Cocoa.h>
+	#define WAAppDelegateRootClass NSResponder
+#endif
+
+@interface WAAppDelegate : WAAppDelegateRootClass
 
 - (void) bootstrap;	//	Call for app initialization
 
