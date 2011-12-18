@@ -47,12 +47,16 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUILabel" id="701695387">
 								<reference key="NSNextResponder" ref="229656081"/>
-								<int key="NSvFlags">290</int>
-								<string key="NSFrame">{{59, 14}, {241, 21}}</string>
+								<int key="NSvFlags">289</int>
+								<string key="NSFrame">{{253, -2}, {48, 21}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="107731654"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
+								<object class="NSColor" key="IBUIBackgroundColor">
+									<int key="NSColorSpace">1</int>
+									<bytes key="NSRGB">MSAwLjYgMC4yAA</bytes>
+								</object>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
@@ -85,7 +89,7 @@
 							<object class="IBUIView" id="107731654">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">288</int>
-								<string key="NSFrame">{{60, 44}, {150, 150}}</string>
+								<string key="NSFrame">{{20, 20}, {280, 179}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="790361869"/>
@@ -103,9 +107,10 @@
 							<object class="IBUILabel" id="790361869">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{60, 202}, {240, 91}}</string>
+								<string key="NSFrame">{{20, 202}, {280, 91}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -138,7 +143,7 @@
 						<string key="NSFrameSize">{320, 312}</string>
 						<reference key="NSSuperview" ref="102746709"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="701695387"/>
 						<string key="NSReuseIdentifierKey">_NS:314</string>
 						<reference key="IBUIBackgroundColor" ref="510789719"/>
 						<bool key="IBUIOpaque">NO</bool>
@@ -217,9 +222,9 @@
 						<reference key="object" ref="102746709"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="701695387"/>
 							<reference ref="790361869"/>
 							<reference ref="107731654"/>
+							<reference ref="701695387"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -322,8 +327,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>avatarView</string>
-							<string>backgroundImageView</string>
-							<string>commentBackground</string>
 							<string>commentLabel</string>
 							<string>contentDescriptionLabel</string>
 							<string>contentTextView</string>
@@ -336,8 +339,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>UIImageView</string>
-							<string>UIImageView</string>
 							<string>UIImageView</string>
 							<string>IRLabel</string>
 							<string>UILabel</string>
@@ -355,8 +356,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>avatarView</string>
-							<string>backgroundImageView</string>
-							<string>commentBackground</string>
 							<string>commentLabel</string>
 							<string>contentDescriptionLabel</string>
 							<string>contentTextView</string>
@@ -371,14 +370,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
 								<string key="name">avatarView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">backgroundImageView</string>
-								<string key="candidateClassName">UIImageView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">commentBackground</string>
 								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
