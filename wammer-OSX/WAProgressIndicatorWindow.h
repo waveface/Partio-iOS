@@ -10,4 +10,8 @@
 
 @interface WAProgressIndicatorWindow : NSWindow
 
++ (id) fromNib;
+
+@property (assign) IBOutlet NSProgressIndicator *progressIndicator;
+
 @end
