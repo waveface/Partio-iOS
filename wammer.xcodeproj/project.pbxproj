@@ -355,6 +355,7 @@
 		FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */; };
 		FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */; };
 		FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */; };
+		FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */; };
 		FFF7F512149E689F004EFB1B /* WAProgressIndicatorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */; };
 		FFFC76371487760F00247099 /* WAUserGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFFC76351487760F00247099 /* WAUserGlyph.png */; };
 		FFFC76381487760F00247099 /* WAUserGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFFC76361487760F00247099 /* WAUserGlyph@2x.png */; };
@@ -1091,6 +1092,7 @@
 		FFF556B41456A1270077DFFB /* WARefreshGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshGlyph.png; path = Resources/WARefreshGlyph.png; sourceTree = "<group>"; };
 		FFF556B61456A64A0077DFFB /* WARefreshActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARefreshActionView.h; sourceTree = "<group>"; };
 		FFF556B71456A64A0077DFFB /* WARefreshActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARefreshActionView.m; sourceTree = "<group>"; };
+		FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAUserInfoView.xib; sourceTree = "<group>"; };
 		FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAProgressIndicatorWindow.xib; sourceTree = "<group>"; };
 		FFF9B79C13E7D0D5002A9D7F /* WAArticleCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewController.h; sourceTree = "<group>"; };
 		FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleCommentsViewController.m; sourceTree = "<group>"; };
@@ -1861,6 +1863,7 @@
 				FF61CCAF149D40E000A6EB0B /* WAComposition.m */,
 				FF61CCB0149D40E000A6EB0B /* WAComposition.xib */,
 				FFC6484A1445E8D700593E5E /* MainMenu.xib */,
+				FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */,
 				FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */,
 				FFC6483C1445E8D700593E5E /* Supporting Files */,
 			);
@@ -2311,6 +2314,7 @@
 				FFC6487A1445E99000593E5E /* WATimelineWindow.xib in Resources */,
 				FF460DB8149D15F100DB7F0B /* wammer-OSX-Entitlements.plist in Resources */,
 				FF61CCB4149D40EB00A6EB0B /* WAComposition.xib in Resources */,
+				FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */,
 				FFF7F512149E689F004EFB1B /* WAProgressIndicatorWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
