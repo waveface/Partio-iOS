@@ -53,6 +53,14 @@
 
 }
 
+- (NSArray *) sortDescriptors {
+
+	return [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+	nil];
+
+}
+
 - (NSView *) tableView:(NSTableView *)aTV viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
 
 	return [aTV makeViewWithIdentifier:@"articleCell" owner:nil];

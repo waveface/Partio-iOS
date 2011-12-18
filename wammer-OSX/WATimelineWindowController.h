@@ -17,4 +17,6 @@
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 
+- (NSArray *) sortDescriptors;
+
 @end
