@@ -1084,7 +1084,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
 	}
 	lastReadingProgressAnnotation.pageIndex = gridIndex;
-	lastReadingProgressAnnotation.centerOffset = (CGPoint){ -0.5f, 0 };
+	//	lastReadingProgressAnnotation.centerOffset = (CGPoint){, 0 };
 	return lastReadingProgressAnnotation;
 
 }
