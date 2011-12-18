@@ -396,6 +396,12 @@
 - (void) authenticate {
 
   [self update];
+	
+	if (WAAdvancedFeaturesEnabled()) {
+		[[NSUserDefaults standardUserDefaults] setObject:self.username forKey:kWADebugAutologinUserIdentifier];
+		[[NSUserDefaults standardUserDefaults] setObject:self.password forKey:kWADebugAutologinUserPassword];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
   
   if (!self.validForAuthentication)
     return;
