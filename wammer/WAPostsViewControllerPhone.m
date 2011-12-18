@@ -866,14 +866,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   
-  WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	
 	UIFont *baseFont = [UIFont fontWithName:@"Helvetica" size:14.0];
   CGFloat height = [post.text sizeWithFont:baseFont constrainedToSize:(CGSize){
 		CGRectGetWidth(tableView.frame) - 80,
 		9999.0
 	} lineBreakMode:UILineBreakModeWordWrap].height;
 
-	return height + ([post.files count] ? 222 : [post.previews count] ? 164 : 64);
+	return height + ([post.files count] ? 222 : [post.previews count] ? 164 : 40);
 	
 }
 
