@@ -1001,10 +1001,10 @@
 		FFC6200A149CF0310097C377 /* WADefines+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADefines+Mac.m"; sourceTree = "<group>"; };
 		FFC6200C149CF03A0097C377 /* WADefines+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADefines+iOS.h"; sourceTree = "<group>"; };
 		FFC6200D149CF03A0097C377 /* WADefines+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADefines+iOS.m"; sourceTree = "<group>"; };
-		FFC6201A149CF31E0097C377 /* WAAppDelegate_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAppDelegate_iOS.h; path = ../WAAppDelegate_iOS.h; sourceTree = "<group>"; };
-		FFC6201B149CF31F0097C377 /* WAAppDelegate_iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAppDelegate_iOS.m; path = ../WAAppDelegate_iOS.m; sourceTree = "<group>"; };
-		FFC6201D149CF35E0097C377 /* WAAppDelegate_Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAppDelegate_Mac.h; path = ../WAAppDelegate_Mac.h; sourceTree = "<group>"; };
-		FFC6201E149CF35E0097C377 /* WAAppDelegate_Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAppDelegate_Mac.m; path = ../WAAppDelegate_Mac.m; sourceTree = "<group>"; };
+		FFC6201A149CF31E0097C377 /* WAAppDelegate_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAppDelegate_iOS.h; sourceTree = "<group>"; };
+		FFC6201B149CF31F0097C377 /* WAAppDelegate_iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAppDelegate_iOS.m; sourceTree = "<group>"; };
+		FFC6201D149CF35E0097C377 /* WAAppDelegate_Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAAppDelegate_Mac.h; path = "../wammer-OSX/WAAppDelegate_Mac.h"; sourceTree = "<group>"; };
+		FFC6201E149CF35E0097C377 /* WAAppDelegate_Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAAppDelegate_Mac.m; path = "../wammer-OSX/WAAppDelegate_Mac.m"; sourceTree = "<group>"; };
 		FFC648331445E8D700593E5E /* wammer-OSX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-OSX.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFC6483D1445E8D700593E5E /* wammer-OSX-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "wammer-OSX-Info.plist"; path = "wammer-OSX/wammer-OSX-Info.plist"; sourceTree = SOURCE_ROOT; };
 		FFC6483F1445E8D700593E5E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
