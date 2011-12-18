@@ -103,26 +103,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__block __typeof__(self) nrSelf = self;
 	
-//	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-//		[nrSelf performSelector:@selector(actionSettings:) withObject:senderItem];
-//	}];
-	
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction:^(UIButton *senderButton, IRBarButtonItem *senderItem) {
-		
-		__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
-		appSettingsViewController.delegate = self;
-		appSettingsViewController.showDoneButton = NO;
-		appSettingsViewController.showCreditsFooter = NO;
-		
-		__block UINavigationController *wrapperNavController = [[UINavigationController alloc] initWithRootViewController:appSettingsViewController];
-		appSettingsViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
-			[wrapperNavController dismissModalViewControllerAnimated:YES];
-			NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"toggleSwitch"]); // It works.
+	if (WAAdvancedFeaturesEnabled()) {
+		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction:^(UIButton *senderButton, IRBarButtonItem *senderItem) {
+			
+			__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+			appSettingsViewController.delegate = self;
+			appSettingsViewController.showDoneButton = NO;
+			appSettingsViewController.showCreditsFooter = NO;
+			
+			__block UINavigationController *wrapperNavController = [[UINavigationController alloc] initWithRootViewController:appSettingsViewController];
+			appSettingsViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+				[wrapperNavController dismissModalViewControllerAnimated:YES];
+				NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"toggleSwitch"]); // It works.
+			}];
+			
+			[nrSelf presentModalViewController:wrapperNavController animated:YES];
+			
 		}];
-		
-		[nrSelf presentModalViewController:wrapperNavController animated:YES];
-		
-	}];
+	}
 	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
   

@@ -559,6 +559,7 @@
 	void (^addOverlayView)(void) = ^ {
 	
 		[rootVC.view addSubview:overlayView];	
+		overlayView.frame = rootVC.view.bounds;
 	
 	};
 	
