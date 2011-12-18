@@ -112,8 +112,10 @@
   
     __block __typeof__(self) nrSelf = self;
 		
-    IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 170, 44 }] autorelease];
+    IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }] autorelease];
     NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
+		
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
 			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
         [nrSelf handleUserInfoItemTap:senderItem];
@@ -129,14 +131,18 @@
     
       [toolbarItems insertObject:[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
         [nrSelf handleActionItemTap:senderItem];
-			}] atIndex:0];
+			}] atIndex:1];
     
     }
     
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = toolbarItems;
 		
-		return toolbar;
+		UIView *returnedView = [[[UIView alloc] initWithFrame:toolbar.bounds] autorelease];
+		[returnedView addSubview:toolbar];
+		toolbar.frame = CGRectOffset(toolbar.frame, 10, 0);
+		
+		return returnedView;
 	
 	})())];
 	
