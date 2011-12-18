@@ -835,44 +835,49 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
 		}],
 		
-		#if 0
-		
-			[IRAction actionWithTitle:@"Faux View Controller" block:^ {
-			
-				WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
-				testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
-					return YES;
-				};
-				testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
-					[nrSelf dismissModalViewControllerAnimated:YES];
-				}];
-        
-        testVC.onViewWillAppear = ^ (WAViewController *self) {
-          [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-        };
-        
-        testVC.onViewWillDisappear = ^ (WAViewController *self) {
-          [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-        };
-				
-				UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
-				navC.modalPresentationStyle = UIModalPresentationFullScreen;
-				
-				[self presentModalViewController:navC animated:YES];
-				
-			}],
-		
-		#endif
-		
 	nil];
+	
+	if (WAAdvancedFeaturesEnabled()) {
+	
+		[availableActions addObject:[IRAction actionWithTitle:@"Faux View Controller" block:^ {
+		
+			WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
+			testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
+				return YES;
+			};
+			testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
+				[nrSelf dismissModalViewControllerAnimated:YES];
+			}];
+			
+			testVC.onViewWillAppear = ^ (WAViewController *self) {
+				[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+			};
+			
+			testVC.onViewWillDisappear = ^ (WAViewController *self) {
+				[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+			};
+			
+			UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
+			navC.modalPresentationStyle = UIModalPresentationFullScreen;
+			
+			[self presentModalViewController:navC animated:YES];
+			
+		}]];
+	
+	}
 	
 	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
 	
 		[availableActions addObject:[IRAction actionWithTitle:@"Take Photo" block: ^ {
-			
-			[nrSelf presentModalViewController:[IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+		
+			IRImagePickerController *pickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-			}] animated:YES];
+			}];
+			
+			pickerController.usesAssetsLibrary = NO;
+			pickerController.savesCameraImageCapturesToSavedPhotos = YES;
+			
+			[nrSelf presentModalViewController:pickerController animated:YES];
 						
 		}]];
 		
@@ -1050,14 +1055,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
   
   [[UIApplication sharedApplication] irEndIgnoringStatusBarAppearanceRequests];
 
-  //  ((^{
-  //    [UIView setAnimationsEnabled:NO];
-  //    NSObject *viewControllerClass = (NSObject *)[UIViewController class];
-  //    if ([viewControllerClass respondsToSelector:@selector(attemptRotationToDeviceOrientation)]) {
-  //      [viewControllerClass performSelector:@selector(attemptRotationToDeviceOrientation)];
-  //    }
-  //    [UIView setAnimationsEnabled:YES];
-  //  })());
+  ((^{
+    [UIView setAnimationsEnabled:NO];
+    NSObject *viewControllerClass = (NSObject *)[UIViewController class];
+    if ([viewControllerClass respondsToSelector:@selector(attemptRotationToDeviceOrientation)]) {
+      [viewControllerClass performSelector:@selector(attemptRotationToDeviceOrientation)];
+    }
+    [UIView setAnimationsEnabled:YES];
+  })());
 
 	[[UIApplication sharedApplication].keyWindow.layer addAnimation:popTransition forKey:kCATransition];
   

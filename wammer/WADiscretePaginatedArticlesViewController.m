@@ -1016,7 +1016,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	}];
 	
 	if (!lastReadArticle)
-		return nil;
+		return NSNotFound;
 	
 	return [self gridIndexOfArticle:lastReadArticle];
 
@@ -1430,17 +1430,21 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	} onFailure: ^ (NSError *error) {
 	
-		[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-		nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-		nrBezel.caption = @"Fetch Failed";
-		[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-		});
+		dispatch_async(dispatch_get_main_queue(), ^{
 
-		//	?
+			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+			nrBezel.caption = @"Fetch Failed";
+			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			});
+
+			//	?
+			
+			cleanup();
 		
-		cleanup();
+		});
 		
 	}];
 

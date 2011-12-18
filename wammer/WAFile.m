@@ -13,7 +13,12 @@
 #import "UIImage+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#import <UIKit/UIDevice.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#else
+#import <CoreServices/CoreServices.h>
+#endif
 
 
 @interface WAFile ()

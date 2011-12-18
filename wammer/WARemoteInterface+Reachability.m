@@ -104,7 +104,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     return [self canHost:aHost handleRequestNamed:aRequestName];
     
-  }]] sortedArrayUsingComparator: ^ (NSURL *lhsHost, NSURL *rhsHost) {
+  }]] sortedArrayUsingComparator: (NSComparator) ^ (NSURL *lhsHost, NSURL *rhsHost) {
     
     WAReachabilityDetector *lhsReachabilityDetector = [self.monitoredHostsToReachabilityDetectors objectForKey:lhsHost];
     WAReachabilityDetector *rhsReachabilityDetector = [self.monitoredHostsToReachabilityDetectors objectForKey:rhsHost];
@@ -236,8 +236,8 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
         }]];
         
         [nrSelf endPostponingDataRetrievalTimerFiring];
-        
-        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+				
+				[AppDelegate() endNetworkActivity];
       
       });
     
@@ -249,7 +249,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       
         [nrSelf endPostponingDataRetrievalTimerFiring];
 
-        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+        [AppDelegate() endNetworkActivity];
       
       });
         
