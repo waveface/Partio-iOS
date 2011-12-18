@@ -7,6 +7,7 @@
 //
 
 #import "WAPostViewCellPhone.h"
+#import "QuartzCore+IRAdditions.h"
 
 
 @interface WAPostViewCellPhone ()
@@ -122,7 +123,7 @@
 	
 }
 
-- (void) setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void) setSelected:(BOOL)selecte animated:(BOOL)animated {
 
   //  Default behavior is undesirable
 
@@ -148,6 +149,16 @@
   
   }
 
+}
+
+- (void) layoutSubviews {
+	
+	[super layoutSubviews];
+	
+	CGRect dateRect = self.dateLabel.frame;
+	[self.dateLabel sizeToFit];
+	self.dateLabel.frame = IRGravitize(dateRect, self.dateLabel.frame.size, kCAGravityTopRight);
+	
 }
 
 @end
