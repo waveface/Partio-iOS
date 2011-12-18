@@ -73,6 +73,9 @@
 	
 	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
+	
+	
+	static UIEdgeInsets const backgroundViewPatternInsets = (UIEdgeInsets){ 8, 0, 0, 0 };
   
 	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
 	self.backgroundView.backgroundColor = [UIColor clearColor];
@@ -84,6 +87,8 @@
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WASquarePanelBackdrop"].CGImage;
     returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
     returnedView.layer.contentsCenter = (CGRect){ 12.0/32.0f, 12.0/32.0f, 8.0/32.0f, 8.0/32.0f };
+		
+		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, backgroundViewPatternInsets);
     
     UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 11, 11)] autorelease];
     paperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -103,6 +108,8 @@
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
     
+		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, backgroundViewPatternInsets);
+		
     return returnedView;
     
   })())];
@@ -141,10 +148,12 @@
 			}
 		}] autorelease];
 		
-		actualView.layer.contents = (id)[UIImage imageNamed:@"WADateBadgeBackdrop"].CGImage;
+		UIImage *dateBadgeBackdrop = [UIImage imageNamed:@"WADateBadgeBackdrop"];
+		actualView.layer.contents = (id)dateBadgeBackdrop.CGImage;
+		actualView.layer.contentsScale = dateBadgeBackdrop.scale;
 		actualView.layer.contentsCenter = (CGRect){ 8.0f/18.0f, 12.0f/36.0f, 2.0f/18.0f, 12.0f/36.0f };
 		actualView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		actualView.frame = UIEdgeInsetsInsetRect(actualView.frame, (UIEdgeInsets){ 0, -8, 0, -8 });
+		actualView.frame = UIEdgeInsetsInsetRect(actualView.frame, (UIEdgeInsets){ 0, -10, 0, -10 });
 		
 		return actualView;
 		
