@@ -40,7 +40,7 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate>
+@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate>
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
@@ -276,6 +276,22 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 
 
+- (void) settingsViewControllerDidEnd:(IASKAppSettingsViewController *)sender {
+
+	//	Do nothing
+
+}
+
+- (void) settingsViewController:(IASKAppSettingsViewController *)sender buttonTappedForKey:(NSString *)key {
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:kWASettingsDidRequestActionNotification object:sender userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		key, @"key",
+	
+	nil]];
+
+}
+
 - (IRActionSheetController *) settingsActionSheetController {
 
 	if (settingsActionSheetController)
@@ -283,43 +299,25 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	__block __typeof(self) nrSelf = self;
 	
-	settingsActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:@"Settings"
-		cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil]
-		destructiveAction:nil 
-		otherActions:[NSArray arrayWithObjects:
+	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
+	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", nil) block:^{
+	
+		NSString *alertTitle = NSLocalizedString(@"WAActionSignOut", nil);
+		NSString *alertText = NSLocalizedString(@"WASignOutConfirmation", nil);
+		
+		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
 			
-			[IRAction actionWithTitle:@"Sign Out" block:^{
-			
-				[[IRAlertView alertViewWithTitle:@"Sign Out" message:@"Really sign out?" cancelAction:[IRAction actionWithTitle:@"Cancel" block:nil] otherActions:
-					
-					[NSArray arrayWithObjects:
-						[IRAction actionWithTitle:@"Sign Out" block: ^ {
-							[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nrSelf];
-						}],
-					nil]
-					
-				] show];
-			
-			}], 
-			
-			#if 0
-			
-			[IRAction actionWithTitle:@"Change API URL" block:^ {
+			[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", nil) block: ^ {
 				
-				[nrSelf.delegate applicationRootViewControllerDidRequestChangeAPIURL:nrSelf];
+				[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				
 			}],
 			
-			[IRAction actionWithTitle:@"Rebound" block:^{
-			
-				[nrSelf persistState];
-				[nrSelf restoreState];
-			
-			}],
-			
-			#endif
-			
-	nil]] retain];
+		nil]] show];
+		
+	}];
+	
+	settingsActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil] retain];
 
 	return settingsActionSheetController;
 

@@ -23,6 +23,10 @@
 "WAActionResetPassword" = "Reset Password";
 "WAActionRegisterUser" = "Register";
 "WAActionGoToLastReadPosition" = "Jump to Furthest Post";
+"WAActionLater" = "Later";
+"WAActionReset" = "Reset";
+
+"WAActionResetDefaults" = "Reset Defaults";
 
 "WANounUsername" = "Email";
 "WANounNickname" = "Nickname";
@@ -67,3 +71,15 @@
 "WAStateLoadingSingleDocumentProgress" = "%1 of %2" ;	//	e.g. 512KB of 30MB
 
 "WAStatusDidReceiveReadingProgressUpdate" = "Found new Reading Position";
+
+"WAAdvancedFeaturesEnabledTitle" = "Advanced Features Enabled";
+"WAAdvancedFeaturesEnabledDescription" = "Advanced features are now enabled.  Sign in again to make changes populate.";
+
+"WAAdvancedFeaturesDisabledTitle" = "Advanced Features Disabled";
+"WAAdvancedFeaturesDisabledDescription" = "Advanced features are now disabled.  Sign in again to make changes populate.";
+
+"WAResetSettingsConfirmationTitle" = "Reset Settings?";
+"WAResetSettingsConfirmationDescription" = "All settings will be reset.  Unsaved changes will be lost.";
+
+"WARemoteEndpointURLChangeConfirmationTitle" = "Change Remote Endpoint URL?";
+"WARemoteEndpointURLChangeConfirmationDescription" = "Change it from %@ to %@?  Sign in again to make changes populate.";
