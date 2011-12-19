@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WAArticleController_PlaintextCell : UITableViewCell
+@interface WAArticleTextStackCell : UITableViewCell
+
++ (id) cellFromNib;
+
+- (CGSize) sizeThatFits:(CGSize)size;
+@property (nonatomic, readwrite, copy) CGSize (^onSizeThatFits)(CGSize proposedSize, CGSize superAnswer);
 
 @end

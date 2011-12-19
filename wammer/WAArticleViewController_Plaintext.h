@@ -1,5 +1,5 @@
 //
-//  WAArticleViewController-Plaintext.h
+//  WAArticleViewController_Plaintext.h
 //  wammer
 //
 //  Created by Evadne Wu on 12/19/11.
@@ -8,6 +8,8 @@
 
 #import "WAArticleViewController.h"
 
-@interface WAArticleViewController_Plaintext : WAArticleViewController
+@interface WAArticleViewController_Plaintext : WAArticleViewController <UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, readwrite, retain) IBOutlet UITableView *tableView;
 
 @end

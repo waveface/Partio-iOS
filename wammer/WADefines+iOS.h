@@ -20,3 +20,8 @@ extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
 
 extern UIView * WAStandardTitleView (void);
 extern UIView * WAStandardTitleLabel (void);
+
+extern UIView * WAStandardPostCellBackgroundView (void);
+extern UIView * WAStandardPostCellSelectedBackgroundView (void);
+
+extern UIView * WAStandardArticleStackCellBackgroundView (void);

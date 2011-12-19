@@ -287,7 +287,7 @@
 		case WAFullFramePlaintextArticleStyle: {
 			
 			centerOffset.y -= 0.5f * CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 24;
-			contextInfoAnchorsPlaintextBubble = YES;
+			contextInfoAnchorsPlaintextBubble = NO;
 			//	Fall through
 			
 		}
