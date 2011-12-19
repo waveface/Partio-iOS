@@ -11,6 +11,8 @@ extern WAAppDelegate * AppDelegate (void);
 
 @class IRBarButtonItem;
 
+extern BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary **outParams);
+
 extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
 extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
 

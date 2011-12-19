@@ -23,6 +23,10 @@
 "WAActionResetPassword" = "重設密碼";
 "WAActionRegisterUser" = "註冊";
 "WAActionGoToLastReadPosition" = "回到上次的閱讀斷點";
+"WAActionLater" = "稍後再做";
+"WAActionReset" = "重設";
+
+"WAActionResetDefaults" = "清除設定";
 
 "WANounUsername" = "電子郵件";
 "WANounNickname" = "暱稱";
@@ -66,3 +70,15 @@
 "WAStateLoadingSingleDocumentProgress" = "%1 / %2" ;	//	e.g. 512KB of 30MB
 
 "WAStatusDidReceiveReadingProgressUpdate" = "找到新的閱讀斷點";
+
+"WAAdvancedFeaturesEnabledTitle" = "已啟用進階功能";
+"WAAdvancedFeaturesEnabledDescription" = "啓用進階功能後，請重新登入。";
+
+"WAAdvancedFeaturesEnabledTitle" = "已禁用進階功能";
+"WAAdvancedFeaturesEnabledDescription" = "禁用進階功能後，請重新登入。";
+
+"WAResetSettingsConfirmationTitle" = "清除設定？";
+"WAResetSettingsConfirmationDescription" = "是否要清除所有設定？";
+
+"WARemoteEndpointURLChangeConfirmationTitle" = "更改 API 端點位置？";
+"WARemoteEndpointURLChangeConfirmationDescription" = "是否要將端點位置從 %@ 改成 %@ ？更改後須重新登入。";
