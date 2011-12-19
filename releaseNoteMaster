@@ -1,2 +1,2 @@
-ETReleaseNotes="- - In Overview, fixes bug where when Advanced features are disabled the toolbar items will not look aligned\n- In Overview, adjusts dot spacing in the pagination slider"
+ETReleaseNotes="- Fixes underlying bug with authentication not working if the user has logged out and in again using the same credentials\n- Handles other spiffy edge cases\n- Adds debug hooks for various incoming waveface:// URLs"
 ETMarketingVersionNumber="0.9.8"
