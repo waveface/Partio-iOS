@@ -36,10 +36,17 @@ NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSes
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
 NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification = @"WARemoteInterfaceReachableHostsDidChangeNotification";
 NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification = @"WARemoteInterfaceDidObserveAuthenticationFailureNotification";
+NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
 
 NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c1-a6c2cbf9977c";
 NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";	//	FIXME: Announce the Mac version when it matures and use the correct key
+
+NSString * const kWACallbackActionDidFinishUserRegistration = @"didFinishUserRegistration";
+NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"setAdvancedFeaturesEnabled";
+NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";
+NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
+NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
 
 void WARegisterUserDefaults () {

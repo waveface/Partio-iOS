@@ -33,10 +33,17 @@ extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
 extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
+extern NSString * const kWASettingsDidRequestActionNotification;
 
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;
 extern NSString * const kWARemoteEndpointApplicationKeyMac;
+
+extern NSString * const kWACallbackActionDidFinishUserRegistration;
+extern NSString * const kWACallbackActionSetAdvancedFeaturesEnabled;
+extern NSString * const kWACallbackActionSetRemoteEndpointURL;
+extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
+extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);
