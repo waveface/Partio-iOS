@@ -7,6 +7,7 @@
 //
 
 #import "WADefines.h"
+#import <sys/sysctl.h>
 
 NSString * const kWAAdvancedFeaturesEnabled = @"WAAdvancedFeaturesEnabled";
 
@@ -55,6 +56,32 @@ NSDictionary * WAPresetDefaults () {
 	NSDictionary *defaultsObject = [NSPropertyListSerialization propertyListFromData:defaultsData mutabilityOption:NSPropertyListImmutable format:nil errorDescription:nil];
 	
 	return defaultsObject;
+
+}
+
+
+BOOL WAApplicationHasDebuggerAttached (void) {
+
+	int mib[4];
+	size_t bufSize = 0;
+	int local_error = 0;
+	struct kinfo_proc kp;
+
+	mib[0] = CTL_KERN;
+	mib[1] = KERN_PROC;
+	mib[2] = KERN_PROC_PID;
+	mib[3] = getpid();
+
+	bufSize = sizeof (kp);
+	if ((local_error = sysctl(mib, 4, &kp, &bufSize, NULL, 0)) < 0) {
+		NSLog(@"Failure calling sysctl");
+		return NO;
+	}
+	
+	if (kp.kp_proc.p_flag & P_TRACED)
+		return YES;
+			
+	return NO;
 
 }
 
