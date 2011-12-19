@@ -42,16 +42,17 @@
 - (void) bootstrap {
 
 	[super bootstrap];
-	
-	[NSApp setNextResponder:self];
 
 	[IRKeychainManager sharedManager].defaultAccessGroupName = @"waveface";
+	[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyMac;
 
 }
 
 - (void) applicationDidFinishLaunching:(NSNotification *)aNotification {
 
 	[self bootstrap];
+	
+	[NSApp setNextResponder:self];
 	
 	BOOL authenticated = NO;
 	

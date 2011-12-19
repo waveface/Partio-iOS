@@ -44,12 +44,17 @@
 
 #import "UIWindow+IRAdditions.h"
 
+#import "IASKSettingsReader.h"
+
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
+- (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification;
+- (void) handleIASKSettingsChanged:(NSNotification *)aNotification;
+- (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification;
 
 - (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
 
@@ -72,7 +77,10 @@
     return nil;
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
-  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
+	
   return self;
 
 }
@@ -86,14 +94,26 @@
 
 }
 
-- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (void) bootstrap {
+	
+	[super bootstrap];
 
-	[self bootstrap];
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
+	else {
+		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPhone;
+	}
 
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
-  
+
+}
+
+- (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+	[self bootstrap];
+
 	[[UIApplication sharedApplication] setCrashReportRecipients:[[NSUserDefaults standardUserDefaults] arrayForKey:kWACrashReportRecipients]];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
@@ -272,6 +292,206 @@
   
 }
 
+- (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification {
+	
+	NSString *command = nil;
+	NSDictionary *params = nil;
+	
+	if (!WAIsXCallbackURL([[aNotification userInfo] objectForKey:@"url"], &command, &params))
+		return;
+	
+	if ([command isEqualToString:kWACallbackActionSetAdvancedFeaturesEnabled]) {
+		
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		if ([defaults boolForKey:kWAAdvancedFeaturesEnabled])
+			return;
+		
+		[defaults setBool:YES forKey:kWAAdvancedFeaturesEnabled];
+		
+		if (![defaults synchronize])
+			return;
+		
+		[self handleDebugModeToggled];
+		
+		return;
+		
+	}
+	
+	void (^confirmURLChange)(NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) = ^ (NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) {
+	
+		if (!newString)
+			return;
+		
+		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:defaultsKey]];
+		NSURL *newURL = [NSURL URLWithString:newString];
+		
+		__block __typeof__(self) nrSelf = self;
+		
+		void (^zapAndRequestReauthentication)() = ^ {
+
+			if (self.alreadyRequestingAuthentication) {
+				nrSelf.alreadyRequestingAuthentication = NO;
+				[nrSelf clearViewHierarchy];
+			}
+			
+			[nrSelf applicationRootViewControllerDidRequestReauthentication:nil];
+			
+		};
+		
+		NSString *alertTitle = NSLocalizedString(alertTitleKey, nil);
+		NSString *alertText = [NSString stringWithFormat:
+			NSLocalizedString(alertTextKey, nil),
+			[oldURL absoluteString],
+			[newURL absoluteString]
+		];
+		
+		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
+		IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionReset", nil) block:zapAndRequestReauthentication];
+		
+		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
+			signOutAction,
+		nil]] show];
+	
+	};
+	
+	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
+	
+		confirmURLChange(
+			kWARemoteEndpointURL,
+			[params objectForKey:@"url"],
+			@"WARemoteEndpointURLChangeConfirmationTitle",
+			@"WARemoteEndpointURLChangeConfirmationDescription"
+		);
+	
+	} else if ([command isEqualToString:kWACallbackActionSetUserRegistrationEndpointURL]) {
+	
+		confirmURLChange(
+			kWAUserRegistrationEndpointURL,
+			[params objectForKey:@"url"],
+			@"WAUserRegistrationEndpointURLChangeConfirmationTitle",
+			@"WAUserRegistrationEndpointURLChangeConfirmationDescription"
+		);
+	
+	} else if ([command isEqualToString:kWACallbackActionSetUserPasswordResetEndpointURL]) {
+
+		confirmURLChange(
+			kWAUserPasswordResetEndpointURL,
+			[params objectForKey:@"url"],
+			@"WAUserPasswordResetEndpointURLChangeConfirmationTitle",
+			@"WAUserPasswordResetEndpointURLChangeConfirmationDescription"
+		);
+	
+	}
+	
+}
+
+- (void) handleIASKSettingsChanged:(NSNotification *)aNotification {
+
+	if ([[[aNotification userInfo] allKeys] containsObject:kWAAdvancedFeaturesEnabled])
+		[self handleDebugModeToggled];
+
+}
+
+- (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification {
+
+	NSString *action = [[aNotification userInfo] objectForKey:@"key"];
+	
+	if ([action isEqualToString:@"WASettingsActionResetDefaults"]) {
+	
+		__block __typeof__(self) nrSelf = self;
+		
+		NSString *alertTitle = NSLocalizedString(@"WAResetSettingsConfirmationTitle", nil);
+		NSString *alertText = NSLocalizedString(@"WAResetSettingsConfirmationDescription", nil);
+	
+		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
+		IRAction *resetAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionReset", nil) block: ^ {
+		
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+			for (NSString *key in [[defaults dictionaryRepresentation] allKeys])
+				[defaults removeObjectForKey:key];
+				
+			[defaults synchronize];
+			
+			[nrSelf clearViewHierarchy];
+			[nrSelf recreateViewHierarchy];
+		
+		}];
+		
+		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
+			
+			resetAction,
+			
+		nil]];
+		
+		[alertView show];
+	
+	}
+
+}
+
+- (void) handleDebugModeToggled {
+
+	__block __typeof__(self) nrSelf = self;
+	
+	BOOL isNowEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+	
+	NSString *alertTitle;
+	NSString *alertText;
+	IRAlertView *alertView = nil;
+	
+	void (^zapAndRequestReauthentication)() = ^ {
+
+		if (self.alreadyRequestingAuthentication) {
+			nrSelf.alreadyRequestingAuthentication = NO;
+			[nrSelf clearViewHierarchy];
+		}
+		
+		[nrSelf applicationRootViewControllerDidRequestReauthentication:nil];
+		
+	};
+	
+	if (isNowEnabled) {
+		alertTitle = NSLocalizedString(@"WAAdvancedFeaturesEnabledTitle", nil);
+		alertText = NSLocalizedString(@"WAAdvancedFeaturesEnabledDescription", nil);
+	} else {
+		alertTitle = NSLocalizedString(@"WAAdvancedFeaturesDisabledTitle", nil);
+		alertText = NSLocalizedString(@"WAAdvancedFeaturesDisabledDescription", nil);
+	}
+
+	IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", nil) block:nil];
+	IRAction *okayAndZapAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", nil) block:zapAndRequestReauthentication];
+	IRAction *laterAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionLater", nil) block:nil];
+	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", nil) block:zapAndRequestReauthentication];
+	
+	if (self.alreadyRequestingAuthentication) {
+		
+		//	User is not authenticated, and also we’re already at the auth view
+		//	Can zap
+		
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+			okayAndZapAction,
+		nil]];
+	
+	} else if (![self hasAuthenticationData]) {
+	
+		//	In the middle of an active auth session, not safe to zap
+		
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:okayAction otherActions:nil];
+	
+	} else {
+	
+		//	Can zap
+	
+		alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:laterAction otherActions:[NSArray arrayWithObjects:
+			signOutAction,
+		nil]];
+	
+	}
+	
+	[alertView show];
+
+}
 
 - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 

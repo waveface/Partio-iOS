@@ -97,7 +97,7 @@
 		FF460D0B149CF84700DB7F0B /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
 		FF460D0C149CF84700DB7F0B /* WARemoteInterface+Environment.m in Sources */ = {isa = PBXBuildFile; fileRef = FFADFDB5148F5E4C00292D93 /* WARemoteInterface+Environment.m */; };
 		FF460D0E149CF86400DB7F0B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D0D149CF86400DB7F0B /* SystemConfiguration.framework */; };
-		FF460D33149CF8E400DB7F0B /* IRRecurrenceMachineX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */; };
+		FF460D33149CF8E400DB7F0B /* IRRecurrenceMachineX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FF460D37149CFA5B00DB7F0B /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
 		FF460D38149CFA6600DB7F0B /* WADataStore+WARemoteInterfaceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */; };
 		FF460D39149CFA6600DB7F0B /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
@@ -138,6 +138,8 @@
 		FF7997AC1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997AB1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m */; };
 		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
 		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
+		FF80504C149E1157000AE0F3 /* WADateBadgeBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */; };
+		FF80504D149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */; };
 		FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA49149CF46D00B8207A /* Cocoa.framework */; };
 		FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4A149CF46D00B8207A /* CoreAudio.framework */; };
 		FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4B149CF46D00B8207A /* CoreData.framework */; };
@@ -346,9 +348,16 @@
 		FFCFE0F4142111E100B9E6AF /* WAArticleViewController-Discrete-Preview.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA34018141FD31E00C6F683 /* WAArticleViewController-Discrete-Preview.xib */; };
 		FFCFE0F5142111E100B9E6AF /* WAArticleViewController-Discrete-Plaintext.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7D141FDCDF00F2710E /* WAArticleViewController-Discrete-Plaintext.xib */; };
 		FFCFE0F6142111E100B9E6AF /* WAArticleViewController-Discrete-Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81A7F141FDD0600F2710E /* WAArticleViewController-Discrete-Default.xib */; };
+		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
 		FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */; };
 		FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF556B41456A1270077DFFB /* WARefreshGlyph.png */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
+		FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF72C188142789FA00B5D838 /* IRFoundationsX.framework */; };
+		FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */; };
+		FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */; };
+		FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */; };
+		FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */; };
+		FFF7F512149E689F004EFB1B /* WAProgressIndicatorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */; };
 		FFFC76371487760F00247099 /* WAUserGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFFC76351487760F00247099 /* WAUserGlyph.png */; };
 		FFFC76381487760F00247099 /* WAUserGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFFC76361487760F00247099 /* WAUserGlyph@2x.png */; };
 		FFFC763C1487762D00247099 /* WAUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFC763B1487762D00247099 /* WAUserInfoViewController.m */; };
@@ -654,6 +663,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		FFF7F504149E5586004EFB1B /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */,
+				FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */,
+				FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */,
+				FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostsViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostsViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
@@ -882,6 +908,8 @@
 		FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceDefines.m; sourceTree = "<group>"; };
 		FF7EB68F1467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+DeprecatedNonfunctional.h"; sourceTree = "<group>"; };
 		FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+DeprecatedNonfunctional.m"; sourceTree = "<group>"; };
+		FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADateBadgeBackdrop.png; path = Resources/WADateBadgeBackdrop.png; sourceTree = "<group>"; };
+		FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WADateBadgeBackdrop@2x.png"; path = "Resources/WADateBadgeBackdrop@2x.png"; sourceTree = "<group>"; };
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
 		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageView.m; sourceTree = "<group>"; };
@@ -1058,6 +1086,8 @@
 		FFE3E8F5141647D600519BCD /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
 		FFE3E8F6141647D600519BCD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
 		FFE3E8F7141647D600519BCD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
+		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
+		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
 		FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternWoodTexture.png; path = Resources/WAPatternWoodTexture.png; sourceTree = "<group>"; };
 		FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockUsersList.json; path = Resources/WAMockUsersList.json; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -1065,6 +1095,8 @@
 		FFF556B41456A1270077DFFB /* WARefreshGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshGlyph.png; path = Resources/WARefreshGlyph.png; sourceTree = "<group>"; };
 		FFF556B61456A64A0077DFFB /* WARefreshActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARefreshActionView.h; sourceTree = "<group>"; };
 		FFF556B71456A64A0077DFFB /* WARefreshActionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARefreshActionView.m; sourceTree = "<group>"; };
+		FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAUserInfoView.xib; sourceTree = "<group>"; };
+		FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAProgressIndicatorWindow.xib; sourceTree = "<group>"; };
 		FFF9B79C13E7D0D5002A9D7F /* WAArticleCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewController.h; sourceTree = "<group>"; };
 		FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleCommentsViewController.m; sourceTree = "<group>"; };
 		FFF9B79F13E7D8E5002A9D7F /* WACapsuleLeftPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeftPressed.png; path = Resources/WACapsuleLeftPressed.png; sourceTree = "<group>"; };
@@ -1089,7 +1121,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */,
 				FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */,
 				FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */,
 				FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */,
@@ -1097,6 +1128,7 @@
 				FF87FA52149CF46D00B8207A /* Foundation.framework in Frameworks */,
 				FF460D0E149CF86400DB7F0B /* SystemConfiguration.framework in Frameworks */,
 				FFC648911445EC4500593E5E /* IRFoundationsX.framework in Frameworks */,
+				FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */,
 				FFC648921445EC4500593E5E /* IRWebAPIKitX.framework in Frameworks */,
 				FF460D33149CF8E400DB7F0B /* IRRecurrenceMachineX.framework in Frameworks */,
 			);
@@ -1781,6 +1813,8 @@
 				FF601539149C8E1E00D8A50F /* WASliderKnob.png */,
 				FF60153A149C8E1E00D8A50F /* WASliderKnobDisabled.png */,
 				FF60153B149C8E1E00D8A50F /* WASliderKnobPressed.png */,
+				FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */,
+				FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */,
 			);
 			name = "iOS Resources";
 			path = wammer;
@@ -1832,6 +1866,10 @@
 				FF61CCAF149D40E000A6EB0B /* WAComposition.m */,
 				FF61CCB0149D40E000A6EB0B /* WAComposition.xib */,
 				FFC6484A1445E8D700593E5E /* MainMenu.xib */,
+				FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */,
+				FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */,
+				FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */,
+				FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */,
 				FFC6483C1445E8D700593E5E /* Supporting Files */,
 			);
 			name = Mac;
@@ -1950,7 +1988,10 @@
 			buildPhases = (
 				FFC6482F1445E8D700593E5E /* Sources */,
 				FFC648301445E8D700593E5E /* Frameworks */,
+				FFF7F504149E5586004EFB1B /* Copy Frameworks */,
 				FFC648311445E8D700593E5E /* Resources */,
+				FFF7F500149E5463004EFB1B /* Copy Chameleon Frameworks */,
+				FFF7F50E149E5B27004EFB1B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2278,6 +2319,8 @@
 				FFC6487A1445E99000593E5E /* WATimelineWindow.xib in Resources */,
 				FF460DB8149D15F100DB7F0B /* wammer-OSX-Entitlements.plist in Resources */,
 				FF61CCB4149D40EB00A6EB0B /* WAComposition.xib in Resources */,
+				FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */,
+				FFF7F512149E689F004EFB1B /* WAProgressIndicatorWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2417,6 +2460,8 @@
 				FF60153C149C8E1E00D8A50F /* WASliderKnob.png in Resources */,
 				FF60153D149C8E1E00D8A50F /* WASliderKnobDisabled.png in Resources */,
 				FF60153E149C8E1E00D8A50F /* WASliderKnobPressed.png in Resources */,
+				FF80504C149E1157000AE0F3 /* WADateBadgeBackdrop.png in Resources */,
+				FF80504D149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2463,6 +2508,33 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "commitSha=$(git rev-parse HEAD | head -c 7)\ninfoPlistPath=$TARGET_BUILD_DIR/$INFOPLIST_PATH\n\necho \"infoPlistPath $infoPlistPath\"\n\n/usr/libexec/PlistBuddy -c \"Delete :IRCommitSHA\" $infoPlistPath\n/usr/libexec/PlistBuddy -c \"Add :IRCommitSHA string $commitSha\" $infoPlistPath\n";
+		};
+		FFF7F500149E5463004EFB1B /* Copy Chameleon Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Chameleon Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $CONFIGURATION_BUILD_DIR/UIKit.framework;\ncpio -pmadv $CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH";
+		};
+		FFF7F50E149E5B27004EFB1B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "codesign -f -s \"Waveface Apple Platforms Development\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2517,6 +2589,7 @@
 				FF460D41149CFA8F00DB7F0B /* WADataStore+FetchingConveniences.m in Sources */,
 				FF460DB6149D001200DB7F0B /* NSBlockOperation+NSCopying.m in Sources */,
 				FF61CCB3149D40E500A6EB0B /* WAComposition.m in Sources */,
+				FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2874,6 +2947,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2904,6 +2978,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(DEVELOPER_FRAMEWORKS_DIR)\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
