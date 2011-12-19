@@ -50,6 +50,7 @@
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
+- (void) handleObservedDebugMode:(NSNotification *)aNotification;
 
 - (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
 
@@ -72,7 +73,8 @@
     return nil;
 
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
-  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedDebugMode:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
+	
   return self;
 
 }
@@ -284,6 +286,15 @@
   
 }
 
+- (void)handleObservedDebugMode:(NSNotification *)aNotification {
+	
+	NSURL *aUrl = (NSURL *)[[aNotification userInfo] objectForKey:@"url"];
+	
+	if ( [[aUrl absoluteString] isEqualToString:@"waveface://showmethemoney"] ) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAAdvancedFeaturesEnabled];
+	}
+	
+}
 
 - (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
