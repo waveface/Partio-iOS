@@ -42,6 +42,8 @@ extern NSString * const kWARemoteEndpointApplicationKeyMac;
 extern NSString * const kWACallbackActionDidFinishUserRegistration;
 extern NSString * const kWACallbackActionSetAdvancedFeaturesEnabled;
 extern NSString * const kWACallbackActionSetRemoteEndpointURL;
+extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
+extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);

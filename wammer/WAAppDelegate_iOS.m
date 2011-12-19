@@ -313,14 +313,17 @@
 		
 		[self handleDebugModeToggled];
 		
-	} else if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
+		return;
+		
+	}
 	
-		NSString *urlString = [params objectForKey:@"url"];
-		if (!urlString)
+	void (^confirmURLChange)(NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) = ^ (NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) {
+	
+		if (!newString)
 			return;
 		
-		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
-		NSURL *newURL = [NSURL URLWithString:urlString];
+		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:defaultsKey]];
+		NSURL *newURL = [NSURL URLWithString:newString];
 		
 		__block __typeof__(self) nrSelf = self;
 		
@@ -335,9 +338,9 @@
 			
 		};
 		
-		NSString *alertTitle = NSLocalizedString(@"WARemoteEndpointURLChangeConfirmationTitle", nil);
+		NSString *alertTitle = NSLocalizedString(alertTitleKey, nil);
 		NSString *alertText = [NSString stringWithFormat:
-			NSLocalizedString(@"WARemoteEndpointURLChangeConfirmationDescription", nil),
+			NSLocalizedString(alertTextKey, nil),
 			[oldURL absoluteString],
 			[newURL absoluteString]
 		];
@@ -348,6 +351,35 @@
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
 			signOutAction,
 		nil]] show];
+	
+	};
+	
+	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
+	
+		confirmURLChange(
+			kWARemoteEndpointURL,
+			[params objectForKey:@"url"],
+			@"WARemoteEndpointURLChangeConfirmationTitle",
+			@"WARemoteEndpointURLChangeConfirmationDescription"
+		);
+	
+	} else if ([command isEqualToString:kWACallbackActionSetUserRegistrationEndpointURL]) {
+	
+		confirmURLChange(
+			kWAUserRegistrationEndpointURL,
+			[params objectForKey:@"url"],
+			@"WAUserRegistrationEndpointURLChangeConfirmationTitle",
+			@"WAUserRegistrationEndpointURLChangeConfirmationDescription"
+		);
+	
+	} else if ([command isEqualToString:kWACallbackActionSetUserPasswordResetEndpointURL]) {
+
+		confirmURLChange(
+			kWAUserPasswordResetEndpointURL,
+			[params objectForKey:@"url"],
+			@"WAUserPasswordResetEndpointURLChangeConfirmationTitle",
+			@"WAUserPasswordResetEndpointURLChangeConfirmationDescription"
+		);
 	
 	}
 	

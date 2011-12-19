@@ -45,6 +45,8 @@ NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-
 NSString * const kWACallbackActionDidFinishUserRegistration = @"didFinishUserRegistration";
 NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"setAdvancedFeaturesEnabled";
 NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";
+NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
+NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
 
 void WARegisterUserDefaults () {

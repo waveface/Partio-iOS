@@ -9,6 +9,12 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Title</key>
+			<string>Goodies</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
@@ -28,9 +34,37 @@
 			<key>Type</key>
 			<string>PSTextFieldSpecifier</string>
 			<key>Title</key>
-			<string>URL</string>
+			<string>API</string>
 			<key>Key</key>
 			<string>WARemoteEndpointURL</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>KeyboardType</key>
+			<string>URL</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Registration</string>
+			<key>Key</key>
+			<string>WAUserRegistrationEndpointURL</string>
+			<key>AutocorrectionType</key>
+			<string>No</string>
+			<key>AutocapitalizationType</key>
+			<string>None</string>
+			<key>KeyboardType</key>
+			<string>URL</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
+			<key>Title</key>
+			<string>Password Reset</string>
+			<key>Key</key>
+			<string>WAUserPasswordResetEndpointURL</string>
 			<key>AutocorrectionType</key>
 			<string>No</string>
 			<key>AutocapitalizationType</key>
@@ -76,7 +110,49 @@
 		</dict>
 		<dict>
 			<key>Title</key>
-			<string> </string>
+			<string>Expensive Operations</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Always Allow</string>
+			<key>Key</key>
+			<string>WAAlwaysAllowExpensiveRemoteOperations</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Always Deny</string>
+			<key>Key</key>
+			<string>WAAlwaysDenyExpensiveRemoteOperations</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Reading Position Sync</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Bezels</string>
+			<key>Key</key>
+			<string>WADebugLastScanSyncBezelsVisible</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Title</key>
+			<string>Actions</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

@@ -83,3 +83,9 @@
 
 "WARemoteEndpointURLChangeConfirmationTitle" = "Change Remote Endpoint URL?";
 "WARemoteEndpointURLChangeConfirmationDescription" = "Change it from %@ to %@?  Sign in again to make changes populate.";
+
+"WAUserRegistrationEndpointURLChangeConfirmationTitle" = "Change User Registration URL?";
+"WAUserRegistrationEndpointURLChangeConfirmationDescription" = "Change it from %@ to %@?  Sign in again to make changes populate.";
+
+"WAUserPasswordResetEndpointURLChangeConfirmationTitle" = "Change User Password Reset URL?";
+"WAUserPasswordResetEndpointURLChangeConfirmationDescription" = "Change it from %@ to %@?  Sign in again to make changes populate.";
