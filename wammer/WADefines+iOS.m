@@ -18,12 +18,37 @@
 
 #import "WAAppDelegate_iOS.h"
 
+#import "IRWebAPIHelpers.h"
+
 
 WAAppDelegate * AppDelegate (void) {
 
 	return (WAAppDelegate_iOS *)[UIApplication sharedApplication].delegate;
 
 }
+
+
+
+
+BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary **outParams) {
+
+	if (![[anURL host] isEqualToString:@"x-callback-url"])
+		return NO;
+	
+	if (outCommand) {
+		*outCommand = [[anURL path] stringByReplacingOccurrencesOfString:@"/" withString:@"" options:0 range:(NSRange){ 0, 1 }];
+	}
+
+	if (outParams)
+		*outParams = IRQueryParametersFromString([anURL query]);
+	
+	return YES;
+
+}
+
+
+
+
 
 static IRBorder *kWADefaultBarButtonBorder;
 static IRShadow *kWADefaultBarButtonInnerShadow;
