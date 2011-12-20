@@ -43,7 +43,7 @@ NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";	//	FIXME: Announce the Mac version when it matures and use the correct key
 
 NSString * const kWACallbackActionDidFinishUserRegistration = @"didFinishUserRegistration";
-NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"setAdvancedFeaturesEnabled";
+NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"showMeTheMoney";
 NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
