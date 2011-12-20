@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes underlying bug with authentication not working if the user has logged out and in again using the same credentials\n- Handles other spiffy edge cases\n- Adds debug hooks for various incoming waveface:// URLs"
+ETReleaseNotes="- Fixes bug that canceling an auth request causes future sign-outs to fail"
 ETMarketingVersionNumber="0.9.8"
