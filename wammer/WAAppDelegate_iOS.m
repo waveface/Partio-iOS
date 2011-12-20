@@ -326,6 +326,9 @@
 		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:defaultsKey]];
 		NSURL *newURL = [NSURL URLWithString:newString];
 		
+		[[NSUserDefaults standardUserDefaults] setObject:newString forKey:defaultsKey];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		
 		__block __typeof__(self) nrSelf = self;
 		
 		void (^zapAndRequestReauthentication)() = ^ {
