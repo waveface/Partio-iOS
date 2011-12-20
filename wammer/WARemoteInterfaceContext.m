@@ -85,8 +85,10 @@
 
 - (void) handleUserDefaultsDidChange:(NSNotification *)aNotification {
 
-	NSURL *newBaseURL = [NSURL URLWithString:kWARemoteEndpointURL];
-	NSLog(@"%s %@; %@ -> %@", __PRETTY_FUNCTION__, aNotification, self.baseURL, newBaseURL);
+	NSURL *newBaseURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+	
+	if ([self.baseURL isEqual:newBaseURL])
+		return;
 	
 	self.baseURL = newBaseURL;
 
