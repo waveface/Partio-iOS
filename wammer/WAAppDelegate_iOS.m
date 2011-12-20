@@ -62,6 +62,7 @@
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
+- (void) handleDebugModeToggled;
 
 @end
 
@@ -326,6 +327,9 @@
 		
 		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:defaultsKey]];
 		NSURL *newURL = [NSURL URLWithString:newString];
+		
+		[[NSUserDefaults standardUserDefaults] setObject:newString forKey:defaultsKey];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		__block __typeof__(self) nrSelf = self;
 		
@@ -707,7 +711,11 @@
   
   if (allowsCancellation) {
     authRequestVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+		
       [authRequestVC.navigationController dismissModalViewControllerAnimated:YES];
+			
+			nrAppDelegate.alreadyRequestingAuthentication = NO;
+			
     }];
   }
   
