@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes bug that canceling an auth request causes future sign-outs to fail"
+ETReleaseNotes="- Fixes bug where URI registrations will not be saved and reflected immediately"
 ETMarketingVersionNumber="0.9.8"
