@@ -62,6 +62,7 @@
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
+- (void) handleDebugModeToggled;
 
 @end
 
