@@ -705,7 +705,11 @@
   
   if (allowsCancellation) {
     authRequestVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+		
       [authRequestVC.navigationController dismissModalViewControllerAnimated:YES];
+			
+			nrAppDelegate.alreadyRequestingAuthentication = NO;
+			
     }];
   }
   
