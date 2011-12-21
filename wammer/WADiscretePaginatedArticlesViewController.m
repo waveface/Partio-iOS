@@ -111,25 +111,30 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	if (![self isViewLoaded])
 		return;
-
-	IRDiscreteLayoutGrid *grid = [self.discreteLayoutResult.grids objectAtIndex:self.paginatedView.currentPage];
-	NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
-	
-	if (!lastArticleID)
-		return;
-	
-	__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
-	taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-	
-		//	?
 		
-	}];
+	NSArray *allGrids = self.discreteLayoutResult.grids;
+	if ([allGrids count]) {
 
-	[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
-	
-		[[UIApplication sharedApplication] endBackgroundTask:taskID];
+		IRDiscreteLayoutGrid *grid = [allGrids objectAtIndex:self.paginatedView.currentPage];
+		NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
 		
-	}];
+		if (!lastArticleID)
+			return;
+		
+		__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+		taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+		
+			//	?
+			
+		}];
+
+		[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
+		
+			[[UIApplication sharedApplication] endBackgroundTask:taskID];
+			
+		}];
+	
+	}
 	
 }
 

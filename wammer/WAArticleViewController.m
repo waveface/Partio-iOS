@@ -208,11 +208,21 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 	[super viewDidLoad];
 	
-	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
-	[self.view addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease]];
+	UITapGestureRecognizer *globalTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease];
+	
+	UIPinchGestureRecognizer *globalPinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease];
+	
+	UILongPressGestureRecognizer *globalInspectRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease];
+	
+	globalTapRecognizer.delegate = self;
+	globalPinchRecognizer.delegate = self;
+	globalInspectRecognizer.delegate = self;
+	
+	[self.view addGestureRecognizer:globalTapRecognizer];
+	[self.view addGestureRecognizer:globalPinchRecognizer];
   
   if (WAAdvancedFeaturesEnabled())
-    [self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
+    [self.view addGestureRecognizer:globalInspectRecognizer];
 	
 	self.view.article = self.article;
 	
@@ -224,6 +234,15 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+	if ([touch.view isKindOfClass:[UIButton class]])
+		return NO;
+	
+	return YES;
+
 }
 
 - (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {

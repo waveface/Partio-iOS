@@ -146,6 +146,7 @@
 		FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */; };
 		FF7997A91490A23C000CE08D /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
 		FF7997AC1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997AB1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m */; };
+		FF7BB4B314A1B26B00F6B76C /* WAStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7BB4B214A1B26B00F6B76C /* WAStackView.m */; };
 		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
 		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
 		FF80504C149E1157000AE0F3 /* WADateBadgeBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */; };
@@ -766,7 +767,7 @@
 		FF0AC0C7149F7A8B00AA5611 /* WAArticleViewController_Discrete_Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_Discrete_Plaintext.xib; sourceTree = "<group>"; };
 		FF0AC0C8149F7A8B00AA5611 /* WAArticleViewController_Discrete_Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_Discrete_Preview.xib; sourceTree = "<group>"; };
 		FF0AC0C9149F7A8B00AA5611 /* WAArticleViewController_Preview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_Preview.xib; sourceTree = "<group>"; };
-		FF0AC0CF149F860300AA5611 /* WAArticleTextStackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WAArticleTextStackCell.h; sourceTree = "<group>"; };
+		FF0AC0CF149F860300AA5611 /* WAArticleTextStackCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTextStackCell.h; sourceTree = "<group>"; };
 		FF0AC0D0149F860300AA5611 /* WAArticleTextStackCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextStackCell.m; sourceTree = "<group>"; };
 		FF0AC0D2149F865E00AA5611 /* WAArticleTextStackCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleTextStackCell.xib; sourceTree = "<group>"; };
 		FF0B2A2B14388FF000309F0E /* WADefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADefines.h; sourceTree = "<group>"; };
@@ -917,6 +918,8 @@
 		FF7997A81490A23C000CE08D /* WAFilePageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFilePageElement.m; sourceTree = "<group>"; };
 		FF7997AA1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFilePageElement+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF7997AB1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFilePageElement+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		FF7BB4B114A1B26B00F6B76C /* WAStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStackView.h; sourceTree = "<group>"; };
+		FF7BB4B214A1B26B00F6B76C /* WAStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStackView.m; sourceTree = "<group>"; };
 		FF7D466614024FD800C916F5 /* WAImageStreamPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStreamPickerView.h; sourceTree = "<group>"; };
 		FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStreamPickerView.m; sourceTree = "<group>"; };
 		FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceDefines.h; sourceTree = "<group>"; };
@@ -1296,6 +1299,8 @@
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FF7BB4B114A1B26B00F6B76C /* WAStackView.h */,
+				FF7BB4B214A1B26B00F6B76C /* WAStackView.m */,
 				FFA06554143B227B00145079 /* WANavigationBar.h */,
 				FFA06555143B227B00145079 /* WANavigationBar.m */,
 				FFC81D0E14277F0300B41DB9 /* WAFauxRootNavigationController.h */,
@@ -2726,6 +2731,7 @@
 				FFC6201C149CF31F0097C377 /* WAAppDelegate_iOS.m in Sources */,
 				FF0AC0C4149F734600AA5611 /* WAArticleViewController_Plaintext.m in Sources */,
 				FF0AC0D1149F860300AA5611 /* WAArticleTextStackCell.m in Sources */,
+				FF7BB4B314A1B26B00F6B76C /* WAStackView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

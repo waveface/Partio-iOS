@@ -309,3 +309,69 @@ UIView * WAStandardArticleStackCellBackgroundView (void) {
 	return backgroundView;	
 
 }
+
+UIView * WAStandardArticleStackCellTopBackgroundView (void) {
+
+	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	backgroundView.backgroundColor = [UIColor clearColor];
+  
+  [backgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
+    returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
+		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 0.0/128.0, 384.0/384.0, 48.0/128.0 };
+		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 40.0/48.0, 128.0/384.0, 8.0/48.0 };
+		
+    return returnedView;
+  
+  })())];
+	
+	return backgroundView;
+
+}
+
+UIView * WAStandardArticleStackCellCenterBackgroundView (void) {
+
+	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	backgroundView.backgroundColor = [UIColor clearColor];
+  
+  [backgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
+    returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
+		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 48.0/128.0, 384.0/384.0, 32.0/128.0 };
+		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 0.0/32.0, 128.0/384.0, 32.0/32.0 };
+		
+    return returnedView;
+  
+  })())];
+	
+	return backgroundView;	
+
+}
+
+UIView * WAStandardArticleStackCellBottomBackgroundView (void) {
+
+	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	backgroundView.backgroundColor = [UIColor clearColor];
+  
+  [backgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+    returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
+    returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
+		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 80.0/128.0, 384.0/384.0, 48.0/128.0 };
+		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 0.0/48.0, 128.0/384.0, 8.0/48.0 };
+		
+    return returnedView;
+  
+  })())];
+	
+	return backgroundView;
+
+}

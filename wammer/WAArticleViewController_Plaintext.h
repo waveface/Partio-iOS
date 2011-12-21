@@ -7,9 +7,10 @@
 //
 
 #import "WAArticleViewController.h"
+#import "WAStackView.h"
 
-@interface WAArticleViewController_Plaintext : WAArticleViewController <UITableViewDelegate, UITableViewDataSource>
+@interface WAArticleViewController_Plaintext : WAArticleViewController <UITableViewDelegate, UITableViewDataSource, WAStackViewDelegate>
 
-@property (nonatomic, readwrite, retain) IBOutlet UITableView *tableView;
+@property (nonatomic, readwrite, retain) IBOutlet WAStackView *stackView;
 
 @end
