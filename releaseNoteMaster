@@ -1,2 +1,2 @@
-ETReleaseNotes="- Initial Single Post revision for Text Posts\n- Application uses Develop"
+ETReleaseNotes="- Fixes bug where the revised single-article view does not work well with the paginated view"
 ETMarketingVersionNumber="0.9.8"
