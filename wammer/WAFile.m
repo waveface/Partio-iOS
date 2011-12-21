@@ -352,7 +352,12 @@
 	if (!thumbnailFilePath)
 		return nil;
     
-  NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:self.thumbnailFilePath]);
+	if (![[NSFileManager defaultManager] fileExistsAtPath:self.thumbnailFilePath]) {
+	
+		NSLog(@"%@ has invalid thumbnail file path", self);
+		self.thumbnailFilePath = nil;
+	
+	}
   
 	[self willChangeValueForKey:@"thumbnailImage"];
 	thumbnailImage = [[UIImage imageWithContentsOfFile:thumbnailFilePath] retain];
@@ -386,7 +391,6 @@
 			if (![thumbnailFilePath isEqualToString:capturedThumbnailFilePath])
 				return;
 			
-			[[NSFileManager defaultManager] removeItemAtPath:thumbnailFilePath error:nil];
 			foundFile.thumbnailFilePath = nil;
 			
 			NSError *savingError = nil;
@@ -394,6 +398,8 @@
 				NSLog(@"Error saving: %@", savingError);
 				return;
 			}
+			
+			[[NSFileManager defaultManager] removeItemAtPath:thumbnailFilePath error:nil];
 			
 		});
 		

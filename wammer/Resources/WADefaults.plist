@@ -33,5 +33,7 @@
 	</array>
 	<key>WADebugLastScanSyncBezelsVisible</key>
 	<false/>
+	<key>WADebugUsesDiscreteArticleFlip</key>
+	<false/>
 </dict>
 </plist>

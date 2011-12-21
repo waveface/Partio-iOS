@@ -8,6 +8,7 @@
 
 #import "WAPostViewCellPhone.h"
 #import "QuartzCore+IRAdditions.h"
+#import "WADefines.h"
 
 
 @interface WAPostViewCellPhone ()
@@ -73,46 +74,9 @@
 	
 	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
-	
-	
-	static UIEdgeInsets const backgroundViewPatternInsets = (UIEdgeInsets){ 8, 0, 0, 0 };
-  
-	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-	self.backgroundView.backgroundColor = [UIColor clearColor];
-  
-  [self.backgroundView addSubview:((^ {
-  
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.backgroundView.bounds, 1, 0)] autorelease];
-    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    returnedView.layer.contents = (id)[UIImage imageNamed:@"WASquarePanelBackdrop"].CGImage;
-    returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
-    returnedView.layer.contentsCenter = (CGRect){ 12.0/32.0f, 12.0/32.0f, 8.0/32.0f, 8.0/32.0f };
-		
-		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, backgroundViewPatternInsets);
-    
-    UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 11, 11)] autorelease];
-    paperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternPaper"]];
-    [returnedView addSubview:paperView];
-    
-    return returnedView;
-  
-  })())];
-  
-	self.selectedBackgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
-	self.selectedBackgroundView.backgroundColor = [UIColor clearColor];
-  
-  [self.selectedBackgroundView addSubview:((^ {
-  
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(self.selectedBackgroundView.bounds, 10, 10)] autorelease];
-    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    returnedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
-    
-		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, backgroundViewPatternInsets);
-		
-    return returnedView;
-    
-  })())];
+	  
+	self.backgroundView = WAStandardPostCellBackgroundView();  	
+	self.selectedBackgroundView = WAStandardPostCellSelectedBackgroundView();  
 	
   self.avatarView.layer.cornerRadius = 4.0;
 	self.avatarView.layer.masksToBounds = YES;
