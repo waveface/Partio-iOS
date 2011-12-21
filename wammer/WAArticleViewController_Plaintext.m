@@ -247,8 +247,16 @@
 
 - (void) adjustStackViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds {
 
-	CGRect convertedRect = [self.view.window convertRect:newInterfaceBounds toView:self.view];
-	CGRect intersection = CGRectIntersection(convertedRect, self.view.bounds);
+	if (!self.view.window)
+		return;
+
+	CGRect ownRectInWindow = [self.view.window convertRect:self.stackView.frame fromView:self.stackView.superview];
+	CGRect intersection = CGRectIntersection(ownRectInWindow, self.view.bounds);
+	
+	if (CGRectEqualToRect(CGRectNull, intersection) || CGRectIsInfinite(intersection))
+		return;
+	
+	intersection = [self.view.window convertRect:intersection toView:self.stackView.superview];
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 	
@@ -264,6 +272,8 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	self.stackView.frame = self.view.bounds;
 	
 	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
 	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
@@ -318,7 +328,16 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	[self.view.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
+	@try {
+		
+		[self.view.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
+		
+	} @catch (NSException *exception) {
+	
+		if (![exception.name isEqual:NSRangeException])
+			@throw exception;
+		
+	}
 
 	[super viewWillDisappear:animated];
 	[self.commentsVC viewWillDisappear:animated];
@@ -338,11 +357,7 @@
 	if (object == self.view.window)
 	if ([keyPath isEqualToString:@"irInterfaceBounds"]) {
 		
-		[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-
-			[self adjustStackViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
-			
-		} completion:nil];
+		[self adjustStackViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
 	
 	}
 
