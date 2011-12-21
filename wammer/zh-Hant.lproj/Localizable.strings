@@ -74,8 +74,8 @@
 "WAAdvancedFeaturesEnabledTitle" = "已啟用進階功能";
 "WAAdvancedFeaturesEnabledDescription" = "啓用進階功能後，請重新登入。";
 
-"WAAdvancedFeaturesEnabledTitle" = "已禁用進階功能";
-"WAAdvancedFeaturesEnabledDescription" = "禁用進階功能後，請重新登入。";
+"WAAdvancedFeaturesDisabledTitle" = "已禁用進階功能";
+"WAAdvancedFeaturesDisabledDescription" = "禁用進階功能後，請重新登入。";
 
 "WAResetSettingsConfirmationTitle" = "清除設定？";
 "WAResetSettingsConfirmationDescription" = "是否要清除所有設定？";
