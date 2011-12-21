@@ -144,11 +144,13 @@
 	};
 	
 	
-	//	UIApplication+CrashReporter shall only be used on a real device for now
+	if (WAApplicationHasDebuggerAttached()) {
 	
-	BOOL reportsCrashOnSimulator = NO;
+    //  Disable for GDB / LLDB
+		
+		initializeInterface();
 	
-	if (!reportsCrashOnSimulator && ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound)) {
+	} else if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
 	
     //  Never send crash reports thru the Simulator since it won’t actually matter
 

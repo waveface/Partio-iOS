@@ -14,4 +14,6 @@
 @property (nonatomic, readwrite, copy) BOOL (^onPointInsideWithEvent)(CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer);
 @property (nonatomic, readwrite, copy) void (^onLayoutSubviews)();
 
+@property (nonatomic, readwrite, copy) CGSize (^onSizeThatFits)(CGSize proposedSize, CGSize superAnswer);
+
 @end

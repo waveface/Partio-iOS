@@ -23,10 +23,17 @@ typedef enum {
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void(^)(void))aCompletionBlock;
 - (BOOL) articleCommentsViewController:(WAArticleCommentsViewController *)controller canSendComment:(NSString *)commentText;
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText;
+
+@optional
+- (void) articleCommentsViewControllerDidBeginComposition:(WAArticleCommentsViewController *)controller;
+- (void) articleCommentsViewControllerDidFinishComposition:(WAArticleCommentsViewController *)controller;
+
+- (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didChangeContentSize:(CGSize)newSize;
+
 @end
 
 
-@interface WAArticleCommentsViewController : UIViewController
+@interface WAArticleCommentsViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
 
@@ -45,10 +52,17 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
 
 @property (nonatomic, readwrite, retain) IBOutlet WAView *compositionAccessoryView;
+@property (nonatomic, readonly, retain) WAView *compositionAccessoryTextWellBackgroundView;
+@property (nonatomic, readonly, retain) WAView *compositionAccessoryBackgroundView;
+
 @property (nonatomic, readwrite, retain) IBOutlet WAView *commentsRevealingActionContainerView;
 
 - (IBAction) handleCommentReveal:(id)sender;
 - (IBAction) handleCommentPost:(id)sender;
 - (IBAction) handleCommentClose:(id)sender;
+
+- (CGRect) rectForComposition;
+
+@property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
 
 @end

@@ -23,6 +23,10 @@
 
 #import "WAArticleFilesListViewController.h"
 
+#import "WANavigationController.h"
+
+#import "WANavigationBar.h"
+
 
 
 @interface WAArticleView (PrivateStuff)
@@ -47,9 +51,9 @@ NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewCo
 		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
 		[WAFullFrameImageStackArticleStyle] = @"Default",
 		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
-		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
+		[WADiscretePlaintextArticleStyle] = @"Discrete_Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Discrete_Default",
+		[WADiscretePreviewArticleStyle] = @"Discrete_Preview"
 		
 	}[aStyle]);
 
@@ -62,9 +66,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		[NSNumber numberWithInt:WAFullFramePlaintextArticleStyle], @"Plaintext",
 		[NSNumber numberWithInt:WAFullFrameImageStackArticleStyle], @"Default",
 		[NSNumber numberWithInt:WAFullFramePreviewArticleStyle], @"Preview",
-		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete-Plaintext",
-		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete-Default",
-		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete-Preview",
+		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete_Plaintext",
+		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete_Default",
+		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete_Preview",
 		
 	nil] objectForKey:aString];
 	
@@ -72,6 +76,28 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		return WAUnknownArticleStyle;
 	
 	return [answer intValue];
+
+}
+
+WAArticleViewControllerPresentationStyle WAFullFrameArticleStyleFromDiscreteStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((WAArticleViewControllerPresentationStyle[]){
+		[WADiscretePlaintextArticleStyle] = WAFullFramePlaintextArticleStyle,
+		[WADiscreteSingleImageArticleStyle] = WAFullFrameImageStackArticleStyle,
+		[WADiscretePreviewArticleStyle] = WAFullFramePreviewArticleStyle,
+		[WADiscreteDocumentArticleStyle] = WAFullFrameDocumentArticleStyle
+	})[aStyle];
+
+}
+
+WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((WAArticleViewControllerPresentationStyle[]){
+		[WAFullFramePlaintextArticleStyle] = WADiscretePlaintextArticleStyle,
+		[WAFullFrameImageStackArticleStyle] = WADiscreteSingleImageArticleStyle,
+		[WAFullFramePreviewArticleStyle] = WADiscretePreviewArticleStyle,
+		[WAFullFrameDocumentArticleStyle] = WADiscreteDocumentArticleStyle
+	})[aStyle];
 
 }
 
@@ -85,10 +111,7 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 @synthesize onPresentingViewController, onViewDidLoad, onViewTap, onViewPinch;
 @synthesize additionalDebugActions;
 
-+ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
-
-	//	TBD style + context might be better than mixing the context with the style as what we currently do
-	//	TBD this does not even handle single-article pages at all
++ (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle {
 
 	if (!anArticle)
 		return WADiscretePlaintextArticleStyle;
@@ -105,9 +128,15 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 }
 
++ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
+
+	return [self suggestedDiscreteStyleForArticle:anArticle];
+
+}
+
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
 	NSString *loadedNibName = preferredClassName;
 	
 	Class loadedClass = NSClassFromString(preferredClassName);
@@ -179,20 +208,41 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 	[super viewDidLoad];
 	
-	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
-	[self.view addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease]];
+	UITapGestureRecognizer *globalTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease];
+	
+	UIPinchGestureRecognizer *globalPinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease];
+	
+	UILongPressGestureRecognizer *globalInspectRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease];
+	
+	globalTapRecognizer.delegate = self;
+	globalPinchRecognizer.delegate = self;
+	globalInspectRecognizer.delegate = self;
+	
+	[self.view addGestureRecognizer:globalTapRecognizer];
+	[self.view addGestureRecognizer:globalPinchRecognizer];
   
   if (WAAdvancedFeaturesEnabled())
-    [self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
+    [self.view addGestureRecognizer:globalInspectRecognizer];
 	
 	self.view.article = self.article;
-	self.view.presentationStyle = self.presentationStyle;
+	
+	if ([self.view isKindOfClass:[WAArticleView class]])
+		((WAArticleView *)self.view).presentationStyle = self.presentationStyle;
 	
 	self.view.imageStackView.delegate = self;
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+	if ([touch.view isKindOfClass:[UIButton class]])
+		return NO;
+	
+	return YES;
+
 }
 
 - (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
@@ -463,6 +513,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 		rootView = self.view.window.rootViewController.modalViewController.view;
 		
+		if (!rootView)
+			rootView = self.view.window.rootViewController.view;
+		
 		backdropView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
 		backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		backdropView.backgroundColor = [UIColor blackColor];
@@ -671,6 +724,36 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 		});
 	}
+
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+
+	return YES;
+
+}
+
+
+
+
+
+- (WANavigationController *) wrappingNavController {
+
+	NSParameterAssert(!self.navigationController);
+	WANavigationController *controller = [[[WANavigationController alloc] initWithRootViewController:self] autorelease];
+	
+	return controller;
+
+}
+
+- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
+
+	if ([self.navigationController topViewController] != self)
+		return;
+	
+	WANavigationBar *navBar = (WANavigationBar *)self.navigationController.navigationBar;
+	if ([navBar isKindOfClass:[WANavigationBar class]])
+		navBar.alpha = contextControlsVisible ? 1 : 0.03;
 
 }
 

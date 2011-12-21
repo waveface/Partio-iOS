@@ -12,6 +12,8 @@
 extern NSString * const kWAAdvancedFeaturesEnabled;
 extern BOOL WAAdvancedFeaturesEnabled (void);
 
+extern BOOL WAApplicationHasDebuggerAttached (void);
+
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWARemoteEndpointVersion;
 extern NSString * const kWARemoteEndpointCurrentVersion;
@@ -27,7 +29,9 @@ extern NSString * const kWAAlwaysDenyExpensiveRemoteOperations;
 extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
 extern NSString * const kWACrashReportRecipients;
+
 extern NSString * const kWADebugLastScanSyncBezelsVisible;
+extern NSString * const kWADebugUsesDiscreteArticleFlip;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
