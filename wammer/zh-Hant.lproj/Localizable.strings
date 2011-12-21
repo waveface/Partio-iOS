@@ -58,8 +58,8 @@
 "WADraftStateNoContent" = "（沒有內文）";
 "WADraftStateNoTimestamp" = "（沒有時間戳記）";
 
-"WAErrorNoStationFoundTitle" = "無法連接 Station";	/* Short */
-"WAErrorNoStationFoundDescription" = "無法連接您的 Waveface Station。\n如您還未安裝，請到 http://waveface.com 下載 Windows 版。";
+"WAErrorNoStationFoundTitle" = "尚未安裝主程式";	/* Short */
+"WAErrorNoStationFoundDescription" = "請到 http://waveface.com 下載 Windows Waveface 主程式，完成安裝與登入後，即可使用行動版本。";
 
 "WAReachabilityStateUnknown" = "狀態未知";
 "WAReachabilityStateAvailable" = "可用";
