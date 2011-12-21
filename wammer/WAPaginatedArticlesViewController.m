@@ -416,9 +416,6 @@
 		return (self.interfaceOrientation == newOrientation);
 
 	return YES;
-
-
-	return YES;
 	
 }
 

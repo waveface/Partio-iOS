@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>WARemoteEndpointURL</key>
-	<string>https://api.waveface.com/v2/</string>
+	<string>https://develop.waveface.com/v2/</string>
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WAAdvancedFeaturesEnabled</key>
@@ -11,11 +11,11 @@
 	<key>WAUserRegistrationUsesWebVersion</key>
 	<true/>
 	<key>WAUserRegistrationEndpointURL</key>
-	<string>https://waveface.com/signup</string>
+	<string>http://develop.waveface.com:4343/signup</string>
 	<key>WAUserRequiresReauthentication</key>
 	<false/>
 	<key>WAUserPasswordResetEndpointURL</key>
-	<string>https://waveface.com/password/forgot</string>
+	<string>http://develop.waveface.com:4343/user/password/forgot/html</string>
 	<key>WAAlwaysAllowExpensiveRemoteOperations</key>
 	<false/>
 	<key>WAAlwaysDenyExpensiveRemoteOperations</key>
@@ -32,6 +32,8 @@
 		<string>Mineral &lt;redmine@waveface.com&gt;</string>
 	</array>
 	<key>WADebugLastScanSyncBezelsVisible</key>
+	<false/>
+	<key>WADebugUsesDiscreteArticleFlip</key>
 	<false/>
 </dict>
 </plist>

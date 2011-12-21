@@ -7,6 +7,7 @@
 //
 
 #import "WADefines.h"
+#import <sys/sysctl.h>
 
 NSString * const kWAAdvancedFeaturesEnabled = @"WAAdvancedFeaturesEnabled";
 
@@ -30,7 +31,9 @@ NSString * const kWAAlwaysDenyExpensiveRemoteOperations = @"WAAlwaysDenyExpensiv
 NSString * const kWADebugAutologinUserIdentifier = @"WADebugAutologinUserIdentifier";
 NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword";
 NSString * const kWACrashReportRecipients = @"WACrashReportRecipients";
+
 NSString * const kWADebugLastScanSyncBezelsVisible = @"WADebugLastScanSyncBezelsVisible";
+NSString * const kWADebugUsesDiscreteArticleFlip = @"WADebugUsesDiscreteArticleFlip";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
@@ -43,7 +46,7 @@ NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";	//	FIXME: Announce the Mac version when it matures and use the correct key
 
 NSString * const kWACallbackActionDidFinishUserRegistration = @"didFinishUserRegistration";
-NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"setAdvancedFeaturesEnabled";
+NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"showMeTheMoney";
 NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
@@ -62,6 +65,32 @@ NSDictionary * WAPresetDefaults () {
 	NSDictionary *defaultsObject = [NSPropertyListSerialization propertyListFromData:defaultsData mutabilityOption:NSPropertyListImmutable format:nil errorDescription:nil];
 	
 	return defaultsObject;
+
+}
+
+
+BOOL WAApplicationHasDebuggerAttached (void) {
+
+	int mib[4];
+	size_t bufSize = 0;
+	int local_error = 0;
+	struct kinfo_proc kp;
+
+	mib[0] = CTL_KERN;
+	mib[1] = KERN_PROC;
+	mib[2] = KERN_PROC_PID;
+	mib[3] = getpid();
+
+	bufSize = sizeof (kp);
+	if ((local_error = sysctl(mib, 4, &kp, &bufSize, NULL, 0)) < 0) {
+		NSLog(@"Failure calling sysctl");
+		return NO;
+	}
+	
+	if (kp.kp_proc.p_flag & P_TRACED)
+		return YES;
+			
+	return NO;
 
 }
 
