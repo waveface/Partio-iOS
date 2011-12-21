@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes bug where URI registrations will not be saved and reflected immediately"
+ETReleaseNotes="- Initial Single Post revision for Text Posts\n- Application uses Develop"
 ETMarketingVersionNumber="0.9.8"
