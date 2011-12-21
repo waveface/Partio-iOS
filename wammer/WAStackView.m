@@ -15,6 +15,7 @@
 
 @property (nonatomic, readonly, retain) NSArray *stackElements;
 - (NSMutableArray *) mutableStackElements; 
+- (CGSize) sizeThatFitsElement:(UIView *)anElement;
 
 @end
 
