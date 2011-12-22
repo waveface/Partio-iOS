@@ -103,6 +103,29 @@
 
 }
 
+- (void) setFrame:(CGRect)newFrame {
+
+	BOOL frameChanged = !CGRectEqualToRect(self.frame, newFrame);
+
+	[super setFrame:newFrame];
+	
+	if (frameChanged) {
+	
+		self.needsContentAdjustmentOnLayout = YES;
+		self.needsInsetAdjustmentOnLayout = YES;
+		self.needsOffsetAdjustmentOnLayout = YES;
+
+		//	[self.scrollView setZoomScale:1 animated:NO];
+		//	[self layoutSubviews];
+		
+		CGPoint oldOffset = self.scrollView.contentOffset;
+		[self.scrollView setZoomScale:1 animated:NO];
+		[self.scrollView setContentOffset:oldOffset animated:NO];
+	
+	}
+
+}
+
 - (void) setBounds:(CGRect)newBounds {
 
 	BOOL boundsChanged = !CGRectEqualToRect(self.bounds, newBounds);
@@ -122,10 +145,6 @@
 		[self.scrollView setZoomScale:1 animated:NO];
 		[self.scrollView setContentOffset:oldOffset animated:NO];
 
-		[self layoutSubviews];
-		
-		//	[self setNeedsLayout];
-	
 	}
 
 }
