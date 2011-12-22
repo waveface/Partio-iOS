@@ -95,4 +95,6 @@
 "WAUserStorageInformationHeader" = "Account Information";
 
 "WAStorageQuotaAllObjects" = "All Objects";
+"WAStorageQuotaAllImages" = "All Photos";
 "WAStorageQuotaIntervalStartDate" = "Start Date";
+"WAStorageQuotaIntervalEndDate" = "End Date";
