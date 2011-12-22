@@ -540,6 +540,13 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	[self.commentsView reloadData];
+	
+	if (![controller.sections count])
+		return;
+	
+	NSIndexPath *lastObjectIndexPath = [NSIndexPath indexPathForRow:([(id<NSFetchedResultsSectionInfo>)[controller.sections lastObject] numberOfObjects] - 1) inSection:([controller.sections count] - 1)];
+	
+	[self.commentsView scrollToRowAtIndexPath:lastObjectIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 
 }
 
