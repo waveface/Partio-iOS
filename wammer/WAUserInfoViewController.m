@@ -195,7 +195,7 @@
       return [self.monitoredHosts count];
 			
 		case 1:
-			return 2;
+			return 4;
   
     default:
       return 0;
@@ -266,26 +266,39 @@
 		switch ([indexPath row]) {
 			
 			case 0: {
-				
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllObjects", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ of %@",
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
 					[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"],
 					[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"]
 				];
-				
 				break;
-				
 			}
 			
 			case 1: {
-			
-				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalStartDate", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.quota_starting_time"] doubleValue]]];
-				
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllImages", nil);
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
+					[storageInfo valueForKeyPath:@"waveface.usage.month_image_objects"],
+					[storageInfo valueForKeyPath:@"waveface.quota.month_image_objects"]
+				];
 				break;
+			}
 			
+			case 2: {
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalStartDate", nil);
+				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
+					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_begin"] doubleValue]]
+				];
+				break;
 			}
 				
+			case 3: {
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalEndDate", nil);
+				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
+					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]]
+				];
+				break;
+			}
+			
 			default:
 				break;
 			
