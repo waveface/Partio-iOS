@@ -36,6 +36,7 @@
 "WANounAction" = "Action";
 "WAPluralNounDrafts" = "Drafts";
 "WANounPluralEndpoints" = "Endpoints";
+"WANounStorageQuota" = "Storage Quota";
 
 "WASignOutConfirmation" = "Really sign out?";
 
@@ -89,3 +90,9 @@
 
 "WAUserPasswordResetEndpointURLChangeConfirmationTitle" = "Change User Password Reset URL?";
 "WAUserPasswordResetEndpointURLChangeConfirmationDescription" = "Change it from %@ to %@?  Sign in again to make changes populate.";
+
+"WAUsedAndRemainingForThisMonth" = "%1$d Used | %2$d Remaining for this month";
+"WAUserStorageInformationHeader" = "Account Information";
+
+"WAStorageQuotaAllObjects" = "All Objects";
+"WAStorageQuotaIntervalStartDate" = "Start Date";
