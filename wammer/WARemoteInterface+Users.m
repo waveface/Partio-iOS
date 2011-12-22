@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import "WADefines.h"
 #import "WARemoteInterface+Users.h"
 #import "IRWebAPIEngine+FormURLEncoding.h"
 
@@ -49,6 +50,9 @@
 			[inResponseOrNil valueForKeyPath:@"groups"]
 		);
 		
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		[userDefaults setValue:[inResponseOrNil valueForKeyPath:@"storages"] forKeyPath:kWAUserStorageInfo];
+		[userDefaults synchronize];
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }

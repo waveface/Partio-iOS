@@ -177,7 +177,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-  return 1;
+  return 2;
 
 }
 
@@ -187,6 +187,9 @@
   
     case 0:
       return [self.monitoredHosts count];
+			
+		case 1:
+			return 5;
   
     default:
       return 0;
@@ -208,6 +211,9 @@
 
   if (section == 0)
     return NSLocalizedString(@"WANounPluralEndpoints", @"Plural noun for remote endpoints");
+  
+	if (section == 1)
+    return NSLocalizedString(@"WAUserStorageInformationHeader", @"User storage information here.");
   
   return nil;
 
@@ -234,6 +240,50 @@
     
   }
   
+	if (indexPath.section == 1) {
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		NSDictionary *storageInfo = (NSDictionary *)[userDefaults valueForKeyPath:kWAUserStorageInfo];
+		switch ([indexPath row]) {
+			case 0:
+				cell.textLabel.text = @"User Name";
+				cell.detailTextLabel.text = @"John Doe";
+				break;
+				
+			case 1:
+				cell.textLabel.text = @"Email";
+				cell.detailTextLabel.text = @"John Doe";
+				break;
+				
+			case 2:
+				cell.textLabel.text = @"Device Name";
+				cell.detailTextLabel.text = @"John Doe";
+				break;
+				
+			case 3:
+				cell.textLabel.text = @"Waveface Station Status";
+				cell.detailTextLabel.text = @"John Doe";
+				break;
+				
+			case 4: {
+				// TODO put an ugly usage bar here.
+				// https://www.yammer.com/waveface.com/api/v1/uploaded_files/3533775/version/2290596/download
+				NSInteger used  = [(NSNumber *)[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"] integerValue];
+				NSInteger quota = [(NSNumber *)[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"] integerValue];
+				
+				cell.textLabel.text = @"Waveface Cloud Storage";
+				cell.detailTextLabel.text = [NSString stringWithFormat: 
+					NSLocalizedString(@"WAUsedAndRemainingForThisMonth", @"usage used vs. remaining"),
+					used,
+					quota - used
+				];
+				break;
+			}
+			default:
+				break;
+		}
+		
+	}
+	
   return cell;
 
 }
