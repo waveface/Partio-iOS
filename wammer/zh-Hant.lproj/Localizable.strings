@@ -88,4 +88,6 @@
 "WAUserStorageInformationHeader" = "Account Information";
 
 "WAStorageQuotaAllObjects" = "所有物件";
+"WAStorageQuotaAllImages" = "照片";
 "WAStorageQuotaIntervalStartDate" = "起算日期";
+"WAStorageQuotaIntervalEndDate" = "結算日期";
