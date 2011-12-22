@@ -100,6 +100,14 @@ class LocalizedFile():
 
             merged.strings.append(string)
             merged.strings_d[string.key] = string
+        
+        for string in self.strings:
+            if not new.strings_d.has_key(string.key):
+                new_string = copy(self.strings_d[string.key])
+                new_string.comments = string.comments
+                string = new_string
+                merged.strings.append(string)
+                merged.strings_d[string.key] = string
 
         return merged
 
