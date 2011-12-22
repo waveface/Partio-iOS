@@ -184,9 +184,10 @@
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
 			if (index >= maxNumberOfPickedImages) {
 				*stop = YES;
+				return (id)nil;
 			}
 			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			return /* aFile.resourceImage ? aFile.resourceImage : */ aFile.thumbnailImage ? aFile.thumbnailImage : nil;
+			return (id)(/* aFile.resourceImage ? aFile.resourceImage : */ aFile.thumbnailImage ? aFile.thumbnailImage : nil);
 		}];
 	};
 

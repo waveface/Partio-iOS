@@ -1462,9 +1462,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			
 			shownArticleVC = ((^ {
 			
-				BOOL usesNew = articleViewController.presentationStyle == WADiscretePlaintextArticleStyle;
+				BOOL showsStandalone = YES;	//	articleViewController.presentationStyle == WADiscretePlaintextArticleStyle;
 				
-				if (usesNew) {
+				if (showsStandalone) {
 			
 					__block WAArticleViewController *presentedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle(articleViewController.presentationStyle)];
 					

@@ -27,6 +27,8 @@
 
 #import "WANavigationBar.h"
 
+#import "WAArticleViewController+Subclasses.h"
+
 
 
 @interface WAArticleView (PrivateStuff)
@@ -238,7 +240,26 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
+	__block __typeof__(self) nrSelf = self;
+	__block BOOL (^wrappedIn)(UIView *, Class) = ^ (UIView *aView, Class aClass) {
+	
+		if ([aView isKindOfClass:aClass])
+			return YES;
+		
+		if (!aView.superview)
+			return NO;
+		
+		if (aView == nrSelf.view)
+			return NO;
+		
+		return wrappedIn(aView.superview, aClass);
+		
+	};
+
 	if ([touch.view isKindOfClass:[UIButton class]])
+		return NO;
+	
+	if (wrappedIn(touch.view, [UIScrollView class]))
 		return NO;
 	
 	return YES;
