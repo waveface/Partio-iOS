@@ -859,6 +859,7 @@
 		FF55C23613F5256B00F38861 /* WAArticleCommentsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewCell.h; sourceTree = "<group>"; };
 		FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleCommentsViewCell.m; sourceTree = "<group>"; };
 		FF55C23913F5270500F38861 /* WAArticleCommentsViewCell-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAArticleCommentsViewCell-Default.xib"; sourceTree = "<group>"; };
+		FF577B8E14A3109100B25E74 /* WAArticleViewController+Subclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticleViewController+Subclasses.h"; sourceTree = "<group>"; };
 		FF584C4B1435CB320058E109 /* WAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageView.h; sourceTree = "<group>"; };
 		FF584C4C1435CB320058E109 /* WAImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageView.m; sourceTree = "<group>"; };
 		FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADiscretePaginatedArticlesViewController.xib; sourceTree = "<group>"; };
@@ -1915,6 +1916,7 @@
 				FFC350FC144434D80085BE78 /* WAArticleView.m */,
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
+				FF577B8E14A3109100B25E74 /* WAArticleViewController+Subclasses.h */,
 				FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_Default.xib */,
 				FFBD444713FDA6E000F535D2 /* WAArticleViewController_Plaintext.xib */,
 				FF0AC0C9149F7A8B00AA5611 /* WAArticleViewController_Preview.xib */,

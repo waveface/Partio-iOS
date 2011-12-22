@@ -27,6 +27,8 @@
 
 #import "WANavigationBar.h"
 
+#import "WAArticleViewController+Subclasses.h"
+
 
 
 @interface WAArticleView (PrivateStuff)
