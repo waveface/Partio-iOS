@@ -55,38 +55,44 @@
 
   [super viewDidLoad];
   
-//  __block UITableView *nrTV = self.tableView;
-//  
-//  self.tableView.tableHeaderView = ((^ {
-//  
-//    UITableViewCell *cell = [self headerCell];
-//		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//		
-//    UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
-//		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//		
-//    [returnedView addSubview:cell];
-//    
-//    return returnedView;
-//    
-//  })());
-//  
-//  self.tableView.rowHeight = 54.0f;
-//  
-//  self.tableView.onLayoutSubviews = ^ {
-//  
-//    UIView *tableHeaderView = nrTV.tableHeaderView;
-//    CGPoint contentOffset = nrTV.contentOffset;
-//    
-//    nrTV.tableHeaderView.center = (CGPoint) {
-//      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
-//      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
-//    };
-//    
-//    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
-//      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
-//  
-//  };
+  __block UITableView *nrTV = self.tableView;
+  
+  self.tableView.tableHeaderView = ((^ {
+  
+    UITableViewCell *cell = [self headerCell];
+		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
+    UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		
+    [returnedView addSubview:cell];
+    
+    return returnedView;
+    
+  })());
+	
+	
+	self.tableView.scrollIndicatorInsets = (UIEdgeInsets){
+		CGRectGetHeight(self.tableView.tableHeaderView.bounds),		
+		0, 
+		0, 
+		0
+	};
+  
+  self.tableView.onLayoutSubviews = ^ {
+  
+    UIView *tableHeaderView = nrTV.tableHeaderView;
+    CGPoint contentOffset = nrTV.contentOffset;
+    
+    nrTV.tableHeaderView.center = (CGPoint) {
+      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
+      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
+    };
+    
+    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
+      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
+  
+  };
 
 }
 
@@ -189,7 +195,7 @@
       return [self.monitoredHosts count];
 			
 		case 1:
-			return 5;
+			return 2;
   
     default:
       return 0;
@@ -204,13 +210,22 @@
 	
 }
 
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	if (indexPath.section != 0)
+		return tableView.rowHeight;
+	
+	return 56;
+
+}
+
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 
   if (section == 0)
     return NSLocalizedString(@"WANounPluralEndpoints", @"Plural noun for remote endpoints");
   
 	if (section == 1)
-    return NSLocalizedString(@"WAUserStorageInformationHeader", @"User storage information here.");
+    return NSLocalizedString(@"WANounStorageQuota", @"Noun for storage quota.");
   
   return nil;
 
@@ -218,15 +233,17 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  NSString * const kIdentifier = @"Cell";
-  
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
-  if (!cell) {
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kIdentifier] autorelease];
-  }
-  
+	UITableViewCell *cell = nil;
+
   if (indexPath.section == 0) {
     
+		NSString * const kTopBottomIdentifier = @"TopBottom";
+		
+		cell = [tableView dequeueReusableCellWithIdentifier:kTopBottomIdentifier];
+		if (!cell) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTopBottomIdentifier] autorelease];
+		}
+		
     NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
     cell.textLabel.text = [hostURL host];
     
@@ -235,57 +252,43 @@
       [hostURL absoluteString]
     ];
     
-  }
-  
-	if (indexPath.section == 1) {
-		NSError *fetchingError = nil;
-		NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-    [WARemoteInterface sharedInterface].userIdentifier, @"identifier", nil]] error:&fetchingError];
-  
-		if (!fetchedUser)
-			NSLog(@"Fetching failed: %@", fetchingError);
-  
-		WAUser *user = [fetchedUser lastObject];
-  
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		NSDictionary *storageInfo = (NSDictionary *)[userDefaults valueForKeyPath:kWAUserStorageInfo];
+  } else if (indexPath.section == 1) {
+	
+		NSString * const kLeftRightIdentifier = @"LeftRight";
+		
+		cell = [tableView dequeueReusableCellWithIdentifier:kLeftRightIdentifier];
+		if (!cell) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kLeftRightIdentifier] autorelease];
+		}
+		  
+		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
+		
 		switch ([indexPath row]) {
-			case 0:
-				cell.textLabel.text = @"User Name";
-				cell.detailTextLabel.text = user.nickname;
-				break;
+			
+			case 0: {
 				
-			case 1:
-				cell.textLabel.text = @"Email";
-				cell.detailTextLabel.text = user.email;
-				break;
-				
-			case 2:
-				cell.textLabel.text = @"Device Name";
-				cell.detailTextLabel.text = [[UIDevice currentDevice]name];
-				break;
-				
-			case 3:
-				cell.textLabel.text = @"Waveface Station Status";
-				cell.accessoryType = UITableViewCellAccessoryCheckmark;
-				break;
-				
-			case 4: {
-				// TODO put an ugly usage bar here.
-				// https://www.yammer.com/waveface.com/api/v1/uploaded_files/3533775/version/2290596/download
-				NSInteger used  = [(NSNumber *)[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"] integerValue];
-				NSInteger quota = [(NSNumber *)[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"] integerValue];
-				
-				cell.textLabel.text = @"Waveface Cloud Storage";
-				cell.detailTextLabel.text = [NSString stringWithFormat: 
-					NSLocalizedString(@"WAUsedAndRemainingForThisMonth", @"usage used vs. remaining"),
-					used,
-					quota - used
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllObjects", nil);
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ of %@",
+					[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"],
+					[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"]
 				];
+				
 				break;
+				
 			}
+			
+			case 1: {
+			
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalStartDate", nil);
+				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.quota_starting_time"] doubleValue]]];
+				
+				break;
+			
+			}
+				
 			default:
 				break;
+			
 		}
 		
 	}
