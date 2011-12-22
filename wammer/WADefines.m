@@ -51,6 +51,7 @@ NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL"
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
 
+NSString * const kWAUserStorageInfo = @"UserStoragesInfo";
 
 void WARegisterUserDefaults () {
 

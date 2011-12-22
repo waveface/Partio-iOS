@@ -82,3 +82,6 @@
 
 "WARemoteEndpointURLChangeConfirmationTitle" = "更改 API 端點位置？";
 "WARemoteEndpointURLChangeConfirmationDescription" = "是否要將端點位置從 %@ 改成 %@ ？更改後須重新登入。";
+
+"WAUsedAndRemainingForThisMonth" = "%1$d Used | %2$d Remaining for this month";
+"WAUserStorageInformationHeader" = "Account Information";
