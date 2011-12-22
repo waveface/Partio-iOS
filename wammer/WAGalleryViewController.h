@@ -10,9 +10,12 @@
 #import <CoreData/CoreData.h>
 #import "WAView.h"
 
+extern NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI;
+
 @interface WAGalleryViewController : UIViewController
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI;
++ (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI context:(NSDictionary *)context;
 
 @property (nonatomic, readwrite, retain) WAView *view;
 @property (nonatomic, readonly, assign) BOOL contextControlsShown;

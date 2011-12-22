@@ -96,6 +96,7 @@
 	
 	self.slider = [[[UISlider alloc] initWithFrame:self.bounds] autorelease];
 	self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.slider.value = 0;
 	
 	[self.slider setMinimumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider setMaximumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
@@ -189,14 +190,17 @@
 			CGFloat minWidth = (numberOfDots - 1) * dotMargin;
 			
 			if (minWidth < usableWidth) {
-				
+			
 				CGFloat endowment = roundf(0.5 * (usableWidth - minWidth));
+				CGFloat sliderEndowment = MIN(roundf(0.5 * (usableWidth - MAX(2, minWidth))), endowment);
+				
 				usedInsets.left += endowment;
 				usedInsets.right += endowment; 
-				usableWidth = minWidth;
 				
-				usedSliderInsets.left += endowment;
-				usedSliderInsets.right += endowment;
+				usedSliderInsets.left += sliderEndowment;
+				usedSliderInsets.right += sliderEndowment;
+				
+				usableWidth = minWidth;
 				
 			}
 		
@@ -325,8 +329,11 @@
 
 	if (!aPageNumber)
 		return 0;
-
-	return (CGFloat)(1.0f * aPageNumber / (self.numberOfPages - 1));
+	
+	CGFloat returnedValue = (CGFloat)(1.0f * aPageNumber / (self.numberOfPages - 1));
+	NSLog(@"%s %i -> %f", __PRETTY_FUNCTION__, aPageNumber, returnedValue);
+	
+	return returnedValue;
 
 }
 
@@ -395,11 +402,17 @@
 	NSUInteger capturedCurrentPage = self.currentPage;
 	dispatch_async(dispatch_get_current_queue(), ^ {
 	
-		CGFloat inferredSliderSnappingValue = [self positionForPageNumber:capturedCurrentPage];
 		[self.delegate paginationSlider:self didMoveToPage:capturedCurrentPage];
 		
-		if (self.snapsToPages)
+		if (self.snapsToPages) {
+			
+			CGFloat inferredSliderSnappingValue = [self positionForPageNumber:capturedCurrentPage];
+			if (self.numberOfPages == 1)
+				inferredSliderSnappingValue = 0.5;	//	Really?
+				
 			[aSlider setValue:inferredSliderSnappingValue animated:YES];
+			
+		}
 		
 	});
 

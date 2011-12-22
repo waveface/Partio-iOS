@@ -540,6 +540,13 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	[self.commentsView reloadData];
+	
+	if (![controller.sections count])
+		return;
+	
+	NSIndexPath *lastObjectIndexPath = [NSIndexPath indexPathForRow:([(id<NSFetchedResultsSectionInfo>)[controller.sections lastObject] numberOfObjects] - 1) inSection:([controller.sections count] - 1)];
+	
+	[self.commentsView scrollToRowAtIndexPath:lastObjectIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 
 }
 
@@ -629,8 +636,11 @@
 	if (object == self.commentsView)
 	if ([keyPath isEqualToString:@"contentSize"]) {
 
-		//	CGSize oldSize = [[change objectForKey:NSKeyValueChangeOldKey] CGSizeValue];	
+		CGSize oldSize = [[change objectForKey:NSKeyValueChangeOldKey] CGSizeValue];	
 		CGSize newSize = [[change objectForKey:NSKeyValueChangeNewKey] CGSizeValue];
+		
+		if (CGSizeEqualToSize(oldSize, newSize))
+			return;
 		
 		if ([self.delegate respondsToSelector:@selector(articleCommentsViewController:didChangeContentSize:)])
 			[self.delegate articleCommentsViewController:self didChangeContentSize:newSize];
