@@ -2053,6 +2053,7 @@
 				FFCFE0C3142111E100B9E6AF /* Resources */,
 				FFCFE0F7142111E100B9E6AF /* IRCommitSHA */,
 				4BE0FFB6148CA87300BA74DB /* ShellScript */,
+				4B59AB5A14A3BBB700891F99 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2508,6 +2509,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4B59AB5A14A3BBB700891F99 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "cd ${SRCROOT}/wammer\npython2.6 ${SRCROOT}/Scripts/localize.py";
+		};
 		4BE0FFB6148CA87300BA74DB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
