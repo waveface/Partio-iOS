@@ -80,9 +80,6 @@
 	gridView.delegate = self;
 	gridView.dataSource = self;
 	
-	gridView.layer.borderColor = [UIColor redColor].CGColor;
-	gridView.layer.borderWidth = 2;
-	
 	gridView.bounces = YES;
 	gridView.alwaysBounceVertical = YES;
 	gridView.alwaysBounceHorizontal = NO;
