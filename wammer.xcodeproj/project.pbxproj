@@ -178,6 +178,7 @@
 		FF8F463F14691A7D00D65864 /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */; };
 		FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */; };
+		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */; };
 		FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */; };
 		FFA06550143B13ED00145079 /* Sansus Webissimo-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */; };
@@ -999,6 +1000,8 @@
 		FF9DA0C613DFF89000D6B28B /* WAComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComment.m; sourceTree = "<group>"; };
 		FF9DA0C813DFF89000D6B28B /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF9DA0C913DFF89000D6B28B /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
+		FF9E136E14A3018500524CA0 /* WAStackedArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStackedArticleViewController.h; sourceTree = "<group>"; };
+		FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStackedArticleViewController.m; sourceTree = "<group>"; };
 		FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternSoftWallpaper.png; path = Resources/WAPatternSoftWallpaper.png; sourceTree = "<group>"; };
 		FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sansus Webissimo-Italic.otf"; path = "Resources/Sansus Webissimo-Italic.otf"; sourceTree = "<group>"; };
 		FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Sansus Webissimo-Regular.otf"; path = "Resources/Sansus Webissimo-Regular.otf"; sourceTree = "<group>"; };
@@ -1923,6 +1926,8 @@
 				FF0AC0C6149F7A8B00AA5611 /* WAArticleViewController_Discrete_Default.xib */,
 				FF0AC0C7149F7A8B00AA5611 /* WAArticleViewController_Discrete_Plaintext.xib */,
 				FF0AC0C8149F7A8B00AA5611 /* WAArticleViewController_Discrete_Preview.xib */,
+				FF9E136E14A3018500524CA0 /* WAStackedArticleViewController.h */,
+				FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */,
 				FF0AC0C2149F734600AA5611 /* WAArticleViewController_Plaintext.h */,
 				FF0AC0C3149F734600AA5611 /* WAArticleViewController_Plaintext.m */,
 				FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */,
@@ -2742,6 +2747,7 @@
 				FF0AC0D1149F860300AA5611 /* WAArticleTextStackCell.m in Sources */,
 				FF7BB4B314A1B26B00F6B76C /* WAStackView.m in Sources */,
 				FF73351214A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */,
+				FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
