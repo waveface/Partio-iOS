@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes bug where the Overview might accidentally show the second image attached to the article\n- Fixes bug where dragging the Pagination Slider around in the Overview could crash the app if the number of pages is 1\n- Initial revised Photo Post interface with grid view\n- Shows Quota usage"
+ETReleaseNotes="- Fixes bug where after autorotation, the Gallery no longer shows photos centered and zoomed out at the correct position\n- Fixes bug with Attachments list not always working on the iPhone\n- Fixes up Quota display; adds start and end dates"
 ETMarketingVersionNumber="0.9.8"
