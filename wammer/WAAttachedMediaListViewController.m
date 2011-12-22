@@ -122,7 +122,6 @@
   self.tableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
 	[self.view addSubview:self.tableView];
-  [self.tableView setEditing:YES animated:YES];
   
 	__block __typeof__(self) nrSelf = self;
 	
@@ -159,6 +158,13 @@
 		//	Relocate table view
 	
 	};
+
+}
+
+- (void) viewDidLoad {
+
+	[super viewDidLoad];	
+	[self.tableView setEditing:YES animated:NO];
 
 }
 
