@@ -55,38 +55,38 @@
 
   [super viewDidLoad];
   
-  __block UITableView *nrTV = self.tableView;
-  
-  self.tableView.tableHeaderView = ((^ {
-  
-    UITableViewCell *cell = [self headerCell];
-		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		
-    UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
-		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		
-    [returnedView addSubview:cell];
-    
-    return returnedView;
-    
-  })());
-  
-  self.tableView.rowHeight = 54.0f;
-  
-  self.tableView.onLayoutSubviews = ^ {
-  
-    UIView *tableHeaderView = nrTV.tableHeaderView;
-    CGPoint contentOffset = nrTV.contentOffset;
-    
-    nrTV.tableHeaderView.center = (CGPoint) {
-      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
-      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
-    };
-    
-    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
-      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
-  
-  };
+//  __block UITableView *nrTV = self.tableView;
+//  
+//  self.tableView.tableHeaderView = ((^ {
+//  
+//    UITableViewCell *cell = [self headerCell];
+//		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		
+//    UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+//		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		
+//    [returnedView addSubview:cell];
+//    
+//    return returnedView;
+//    
+//  })());
+//  
+//  self.tableView.rowHeight = 54.0f;
+//  
+//  self.tableView.onLayoutSubviews = ^ {
+//  
+//    UIView *tableHeaderView = nrTV.tableHeaderView;
+//    CGPoint contentOffset = nrTV.contentOffset;
+//    
+//    nrTV.tableHeaderView.center = (CGPoint) {
+//      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
+//      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
+//    };
+//    
+//    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
+//      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
+//  
+//  };
 
 }
 
@@ -241,27 +241,36 @@
   }
   
 	if (indexPath.section == 1) {
+		NSError *fetchingError = nil;
+		NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+    [WARemoteInterface sharedInterface].userIdentifier, @"identifier", nil]] error:&fetchingError];
+  
+		if (!fetchedUser)
+			NSLog(@"Fetching failed: %@", fetchingError);
+  
+		WAUser *user = [fetchedUser lastObject];
+  
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		NSDictionary *storageInfo = (NSDictionary *)[userDefaults valueForKeyPath:kWAUserStorageInfo];
 		switch ([indexPath row]) {
 			case 0:
 				cell.textLabel.text = @"User Name";
-				cell.detailTextLabel.text = @"John Doe";
+				cell.detailTextLabel.text = user.nickname;
 				break;
 				
 			case 1:
 				cell.textLabel.text = @"Email";
-				cell.detailTextLabel.text = @"John Doe";
+				cell.detailTextLabel.text = user.email;
 				break;
 				
 			case 2:
 				cell.textLabel.text = @"Device Name";
-				cell.detailTextLabel.text = @"John Doe";
+				cell.detailTextLabel.text = @"iPhone4S";
 				break;
 				
 			case 3:
 				cell.textLabel.text = @"Waveface Station Status";
-				cell.detailTextLabel.text = @"John Doe";
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 				
 			case 4: {
