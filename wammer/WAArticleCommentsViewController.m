@@ -636,8 +636,11 @@
 	if (object == self.commentsView)
 	if ([keyPath isEqualToString:@"contentSize"]) {
 
-		//	CGSize oldSize = [[change objectForKey:NSKeyValueChangeOldKey] CGSizeValue];	
+		CGSize oldSize = [[change objectForKey:NSKeyValueChangeOldKey] CGSizeValue];	
 		CGSize newSize = [[change objectForKey:NSKeyValueChangeNewKey] CGSizeValue];
+		
+		if (CGSizeEqualToSize(oldSize, newSize))
+			return;
 		
 		if ([self.delegate respondsToSelector:@selector(articleCommentsViewController:didChangeContentSize:)])
 			[self.delegate articleCommentsViewController:self didChangeContentSize:newSize];
