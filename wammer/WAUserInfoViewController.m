@@ -262,7 +262,7 @@
 				
 			case 2:
 				cell.textLabel.text = @"Device Name";
-				cell.detailTextLabel.text = @"iPhone4S";
+				cell.detailTextLabel.text = [[UIDevice currentDevice]name];
 				break;
 				
 			case 3:

@@ -53,6 +53,7 @@
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		[userDefaults setValue:[inResponseOrNil valueForKeyPath:@"storages"] forKeyPath:kWAUserStorageInfo];
 		[userDefaults synchronize];
+		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
 }
