@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes bug where the revised single-article view does not work well with the paginated view"
+ETReleaseNotes="- Fixes bug where the Overview might accidentally show the second image attached to the article\n- Fixes bug where dragging the Pagination Slider around in the Overview could crash the app if the number of pages is 1\n- Initial revised Photo Post interface with grid view\n- Shows Quota usage"
 ETMarketingVersionNumber="0.9.8"

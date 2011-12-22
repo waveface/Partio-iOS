@@ -16,4 +16,6 @@
 @property (nonatomic, readwrite, retain) UIImage *image;
 @property (nonatomic, readwrite, copy) void (^onRemove)();
 
+@property (nonatomic, readwrite, assign) BOOL canRemove;	//	Default is YES
+
 @end

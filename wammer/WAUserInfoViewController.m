@@ -70,8 +70,14 @@
     return returnedView;
     
   })());
-  
-  self.tableView.rowHeight = 54.0f;
+	
+	
+	self.tableView.scrollIndicatorInsets = (UIEdgeInsets){
+		CGRectGetHeight(self.tableView.tableHeaderView.bounds),		
+		0, 
+		0, 
+		0
+	};
   
   self.tableView.onLayoutSubviews = ^ {
   
@@ -177,7 +183,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-  return 1;
+  return 2;
 
 }
 
@@ -187,6 +193,9 @@
   
     case 0:
       return [self.monitoredHosts count];
+			
+		case 1:
+			return 2;
   
     default:
       return 0;
@@ -197,10 +206,16 @@
 
 - (CGFloat) tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section {
 
-  if (section == 0)
-    return 48;
-  
-  return aTableView.sectionHeaderHeight;
+  return 48;
+	
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	if (indexPath.section != 0)
+		return tableView.rowHeight;
+	
+	return 56;
 
 }
 
@@ -209,21 +224,26 @@
   if (section == 0)
     return NSLocalizedString(@"WANounPluralEndpoints", @"Plural noun for remote endpoints");
   
+	if (section == 1)
+    return NSLocalizedString(@"WANounStorageQuota", @"Noun for storage quota.");
+  
   return nil;
 
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  NSString * const kIdentifier = @"Cell";
-  
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kIdentifier];
-  if (!cell) {
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kIdentifier] autorelease];
-  }
-  
+	UITableViewCell *cell = nil;
+
   if (indexPath.section == 0) {
     
+		NSString * const kTopBottomIdentifier = @"TopBottom";
+		
+		cell = [tableView dequeueReusableCellWithIdentifier:kTopBottomIdentifier];
+		if (!cell) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTopBottomIdentifier] autorelease];
+		}
+		
     NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
     cell.textLabel.text = [hostURL host];
     
@@ -232,8 +252,47 @@
       [hostURL absoluteString]
     ];
     
-  }
-  
+  } else if (indexPath.section == 1) {
+	
+		NSString * const kLeftRightIdentifier = @"LeftRight";
+		
+		cell = [tableView dequeueReusableCellWithIdentifier:kLeftRightIdentifier];
+		if (!cell) {
+			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kLeftRightIdentifier] autorelease];
+		}
+		  
+		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
+		
+		switch ([indexPath row]) {
+			
+			case 0: {
+				
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllObjects", nil);
+				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ of %@",
+					[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"],
+					[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"]
+				];
+				
+				break;
+				
+			}
+			
+			case 1: {
+			
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalStartDate", nil);
+				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.quota_starting_time"] doubleValue]]];
+				
+				break;
+			
+			}
+				
+			default:
+				break;
+			
+		}
+		
+	}
+	
   return cell;
 
 }

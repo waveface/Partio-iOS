@@ -13,6 +13,8 @@
 #import "WAImageStreamPickerView.h"
 #import "UIImage+IRAdditions.h"
 
+NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
+
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate>
 
@@ -25,6 +27,8 @@
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
 @property (nonatomic, readwrite, retain) UINavigationItem *previousNavigationItem;
 @property (nonatomic, readwrite, retain) WAImageStreamPickerView *streamPickerView;
+
+@property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
 
 - (void) waSubviewWillLayout;
 
@@ -43,14 +47,36 @@
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
 @synthesize onDismiss;
+@synthesize onViewDidLoad;
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
 
-	WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
+	return [self controllerRepresentingArticleAtURI:anArticleURI context:nil];
+
+}
+
++ (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI context:(NSDictionary *)context {
+
+	__block WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
 	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURI];
+	
+	
+	NSURL *preferredObjectURI = [context objectForKey:kWAGalleryViewControllerContextPreferredFileObjectURI];
+	
+	returnedController.onViewDidLoad = ^ {
+	
+		if (preferredObjectURI) {
+		
+			NSUInteger fileIndex = [returnedController.article.fileOrder indexOfObject:preferredObjectURI];
+			if (fileIndex != NSNotFound)
+				[returnedController.paginatedView scrollToPageAtIndex:fileIndex animated:NO];
+		
+		}
+	
+	};
 	
 	return returnedController;
 
@@ -205,6 +231,15 @@
 	
 	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
+}
+
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -480,6 +515,8 @@
 	[streamPickerView release];
 		
 	[onDismiss release];
+	
+	[onViewDidLoad release];
 	
 	[super dealloc];
 

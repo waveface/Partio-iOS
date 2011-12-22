@@ -35,6 +35,7 @@
 #import "WARemoteInterface+Attachments.h"
 #import "WARemoteInterface+Previews.h"
 #import "WARemoteInterface+Footprints.h"
+#import "WARemoteInterface+Storages.h"
 #import "WARemoteInterface+DeprecatedNonfunctional.h"
 
 #import "WARemoteInterface+ScheduledDataRetrieval.h"

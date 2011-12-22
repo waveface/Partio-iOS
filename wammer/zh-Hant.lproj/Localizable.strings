@@ -36,6 +36,7 @@
 "WANounAction" = "動作";
 "WAPluralNounDrafts" = "以前的草稿";
 "WANounPluralEndpoints" = "API 端點";
+"WANounStorageQuota" = "配給空間";
 
 "WASignOutConfirmation" = "確定登出？";
 
@@ -82,3 +83,9 @@
 
 "WARemoteEndpointURLChangeConfirmationTitle" = "更改 API 端點位置？";
 "WARemoteEndpointURLChangeConfirmationDescription" = "是否要將端點位置從 %@ 改成 %@ ？更改後須重新登入。";
+
+"WAUsedAndRemainingForThisMonth" = "%1$d Used | %2$d Remaining for this month";
+"WAUserStorageInformationHeader" = "Account Information";
+
+"WAStorageQuotaAllObjects" = "所有物件";
+"WAStorageQuotaIntervalStartDate" = "起算日期";

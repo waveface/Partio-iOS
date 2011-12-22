@@ -44,13 +44,40 @@
 
 }
 
+- (void) setFrame:(CGRect)newFrame {
+
+	if (CGRectEqualToRect(newFrame, self.frame))
+		return;
+	
+	[super setFrame:newFrame];
+
+}
+
+- (void) setBounds:(CGRect)newBounds {
+
+	if (CGRectEqualToRect(newBounds, self.bounds))
+		return;
+	
+	[super setBounds:newBounds];
+
+}
+
+- (void) setCenter:(CGPoint)newCenter {
+
+	if (CGPointEqualToPoint(newCenter, self.center))
+		return;
+	
+	[super setCenter:newCenter];
+
+}
+
 - (void) waInit {
 
 	stackElements = [[NSArray array] retain];	
 	
-	self.bounces = YES;
-	self.alwaysBounceHorizontal = NO;
-	self.alwaysBounceVertical = NO;
+	//	self.bounces = YES;
+	//	self.alwaysBounceHorizontal = NO;
+	//	self.alwaysBounceVertical = NO;
 
 }
 
@@ -114,6 +141,8 @@
 	__block CGPoint nextOffset = CGPointZero;
 	__block CGRect contentRect = CGRectZero;
 	
+	CGFloat usableHeight = CGRectGetHeight(self.bounds);
+	
 	for (UIView *anElement in self.stackElements) {
 	
 		CGSize fitSize = [self sizeThatFitsElement:anElement];
@@ -122,8 +151,8 @@
 			fitSize
 		};
 	
-		//	if (!CGRectEqualToRect(anElement.frame, fitFrame))
-		anElement.frame = fitFrame;
+		if (!CGRectEqualToRect(anElement.frame, fitFrame))
+			anElement.frame = fitFrame;
 		
 		if (anElement.superview != self)
 			[self addSubview:anElement];
@@ -141,10 +170,49 @@
 	
 	NSParameterAssert(CGPointEqualToPoint(CGPointZero, contentRect.origin));
 	
+	if (CGRectGetHeight(contentRect) < usableHeight) {
+	
+		//	Find stretchable stuff
+		
+		__block CGFloat additionalOffset = 0;
+		__block CGFloat availableOffset = usableHeight - CGRectGetHeight(contentRect);
+		
+		NSMutableArray *stretchableElements = [NSMutableArray array];
+		
+		for (UIView *anElement in self.stackElements)
+			if ([self.delegate stackView:self shouldStretchElement:anElement])
+				[stretchableElements addObject:anElement];
+		
+		if ([stretchableElements count]) {
+		
+			[self.stackElements enumerateObjectsUsingBlock: ^ (UIView *anElement, NSUInteger idx, BOOL *stop) {
+				
+				anElement.frame = CGRectOffset(anElement.frame, 0, additionalOffset);
+				
+				if (![stretchableElements containsObject:anElement])
+					return;
+				
+				CGFloat consumedHeight = ([stretchableElements lastObject] == anElement) ? availableOffset : roundf(availableOffset / [stretchableElements count]);
+				CGRect newElementFrame = anElement.frame;
+				newElementFrame.size.height += consumedHeight;
+				anElement.frame = newElementFrame;
+				
+				availableOffset -= consumedHeight;
+				additionalOffset += consumedHeight;
+				
+			}];
+		
+		}
+		
+		contentRect.size.height = usableHeight;
+		
+	}
+	
 	//	Stretching implementation point
 	
-	if (!CGSizeEqualToSize(self.contentSize, contentRect.size))
+	if (!CGSizeEqualToSize(self.contentSize, contentRect.size)) {
 		self.contentSize = contentRect.size;
+	}
 
 }
 
