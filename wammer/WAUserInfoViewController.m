@@ -200,11 +200,8 @@
 
 - (CGFloat) tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section {
 
-  if (section == 0)
-    return 48;
-  
-  return aTableView.sectionHeaderHeight;
-
+  return 48;
+	
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
