@@ -44,13 +44,40 @@
 
 }
 
+- (void) setFrame:(CGRect)newFrame {
+
+	if (CGRectEqualToRect(newFrame, self.frame))
+		return;
+	
+	[super setFrame:newFrame];
+
+}
+
+- (void) setBounds:(CGRect)newBounds {
+
+	if (CGRectEqualToRect(newBounds, self.bounds))
+		return;
+	
+	[super setBounds:newBounds];
+
+}
+
+- (void) setCenter:(CGPoint)newCenter {
+
+	if (CGPointEqualToPoint(newCenter, self.center))
+		return;
+	
+	[super setCenter:newCenter];
+
+}
+
 - (void) waInit {
 
 	stackElements = [[NSArray array] retain];	
 	
-	self.bounces = YES;
-	self.alwaysBounceHorizontal = NO;
-	self.alwaysBounceVertical = NO;
+	//	self.bounces = YES;
+	//	self.alwaysBounceHorizontal = NO;
+	//	self.alwaysBounceVertical = NO;
 
 }
 
@@ -122,8 +149,8 @@
 			fitSize
 		};
 	
-		//	if (!CGRectEqualToRect(anElement.frame, fitFrame))
-		anElement.frame = fitFrame;
+		if (!CGRectEqualToRect(anElement.frame, fitFrame))
+			anElement.frame = fitFrame;
 		
 		if (anElement.superview != self)
 			[self addSubview:anElement];
