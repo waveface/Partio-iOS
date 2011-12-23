@@ -1,2 +1,2 @@
-ETReleaseNotes="- Renew provisioning profile for Ev's all new shinny iPhone 4S"
+ETReleaseNotes="- Revises Gallery.  Uses tentative backdrop, makes the actual gallery show the tapped photo.  Fixes up grid view updating so cells reload immediately."
 ETMarketingVersionNumber="0.9.8"
