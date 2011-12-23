@@ -150,7 +150,7 @@
 			nextOffset,
 			fitSize
 		};
-	
+
 		if (!CGRectEqualToRect(anElement.frame, fitFrame))
 			anElement.frame = fitFrame;
 		
