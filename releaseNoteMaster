@@ -1,2 +1,2 @@
-ETReleaseNotes="- Renew provisioning profile for Ev's all new shinny iPhone 4S"
+ETReleaseNotes="- Revises behavior for plain-text comments; no longer double-scrolls the comments list\n- Fixes bug where for extra long posts, the cell background view may not get resized properly\n- New splash screens"
 ETMarketingVersionNumber="0.9.8"
