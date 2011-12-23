@@ -47,6 +47,10 @@
 	UIView *gridViewWrapper = [[[UIView alloc] initWithFrame:self.gridView.bounds] autorelease];
 	gridViewWrapper.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
 	
+	self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.gridView.frame = CGRectInset(self.gridView.frame, 0, 16);
+	[gridViewWrapper addSubview:self.gridView];
+	
 	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		6
@@ -62,11 +66,7 @@
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.25] anchor:irBottom];
 	[gridViewWrapper addSubview:bottomShadow];
-	
-	self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.gridView.frame = CGRectInset(self.gridView.frame, 0, 16);
-	[gridViewWrapper addSubview:self.gridView];
-	
+		
 	self.gridView.clipsToBounds = NO;
 	gridViewWrapper.clipsToBounds = YES;
 	
@@ -74,6 +74,23 @@
 	[gridView setNeedsLayout];
 	
 	[self.stackView addStackElementsObject:gridViewWrapper];
+	
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
+
+		[self.stackView layoutSubviews];
+		NSLog(@"stack view sub %@", [self.stackView performSelector:@selector(recursiveDescription)]);
+		
+	} completion:^(BOOL finished) {
+	
+		//	?
+		
+	}];
 	
 }
 

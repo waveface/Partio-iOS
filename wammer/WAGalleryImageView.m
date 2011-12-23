@@ -422,7 +422,6 @@
 		}
 		
 		if (!CGPointEqualToPoint(oldContentOffset, newContentOffset)) {
-			NSLog(@"content offset %@ -> %@", NSStringFromCGPoint(oldContentOffset), NSStringFromCGPoint(newContentOffset));
 			self.scrollView.contentOffset = newContentOffset;
 		}
 	

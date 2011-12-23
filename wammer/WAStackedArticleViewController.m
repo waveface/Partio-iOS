@@ -52,7 +52,7 @@
 	textStackCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 	
 	__block WAArticleTextEmphasisLabel *cellLabel = self.textStackCellLabel;
-	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 0, 88, 0, 88 }; 
+	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 16, 80, 0, 80 }; 
 	
 	cellLabel.frame = UIEdgeInsetsInsetRect(textStackCell.contentView.bounds, cellLabelInsets);
 	cellLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -232,13 +232,22 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didChangeContentSize:(CGSize)newSize {
 
-	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
+	[self.stackView setNeedsLayout];
 	
-	[UIView animateWithDuration:0.3 delay:0 options:animationOptions animations:^{
+	if ([self isViewLoaded] && self.view.window) {
+
+		UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;	
+		[UIView animateWithDuration:0.3 delay:0 options:animationOptions animations:^{		
 		
-		[self.stackView layoutSubviews];
-		
-	} completion:nil];
+			[self.stackView layoutSubviews];
+			
+		} completion:^(BOOL finished) {
+			
+			[self.stackView setNeedsLayout];
+			
+		}];
+	
+	}
 
 }
 
