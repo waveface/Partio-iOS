@@ -106,6 +106,7 @@
 		
 		nrCommentsVC.commentsRevealingActionContainerView.hidden = YES;
 		nrCommentsVC.commentsView.backgroundColor = nil;
+		nrCommentsVC.commentsView.bounces = NO;
 		nrCommentsVC.commentsView.opaque = NO;
 		nrCommentsVC.commentsView.frame = CGRectInset(nrCommentsVC.commentsView.frame, 64, 0);
 		
@@ -119,9 +120,16 @@
 		
 		UIView *backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		backgroundView.frame = nrCommentsVC.view.bounds;
 		
-		[nrCommentsVC.view addSubview:backgroundView];
+		UIView *backgroundWrapperView = [[[UIView alloc] initWithFrame:nrCommentsVC.commentsView.bounds] autorelease];
+		backgroundWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		backgroundView.frame = CGRectInset(backgroundWrapperView.bounds, -64, 0);
+		[backgroundWrapperView addSubview:backgroundView];
+		
+		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
+		nrCommentsVC.commentsView.clipsToBounds = NO;
+		
+//		[nrCommentsVC.view addSubview:backgroundView];
 		[backgroundView.superview sendSubviewToBack:backgroundView]; 
 		
 	};
@@ -150,7 +158,7 @@
 	CGFloat preferredHeight = roundf(elementAnswer.height);
 	
 	if (anElement == self.commentsVC.view)
-		preferredHeight = MIN(320, preferredHeight);
+		preferredHeight = MAX(144, preferredHeight);
 	
 	return (CGSize){
 		CGRectGetWidth(aStackView.bounds),
@@ -271,9 +279,14 @@
 	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
 	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
 	topCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
+	
+	WAArticleTextStackCell *separatorCell = [WAArticleTextStackCell cellFromNib];
+	separatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
+	separatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 24 }};
 
 	[self.stackView addStackElementsObject:topCell];	
 	[self.stackView addStackElementsObject:self.textStackCell];	
+	[self.stackView addStackElementsObject:separatorCell];	
 	[self.stackView addStackElementsObject:self.commentsVC.view];
 
 	WAArticleTextStackCell *bottomCell = [WAArticleTextStackCell cellFromNib];
@@ -307,6 +320,12 @@
 
 	[super viewWillAppear:animated];
 	[self.commentsVC viewWillAppear:animated];
+	
+	//	dispatch_async(dispatch_get_main_queue(), ^{
+	
+		[self.stackView layoutSubviews];
+		
+	//	});
 
 }
 
@@ -316,7 +335,7 @@
 	[self.commentsVC viewDidAppear:animated];
 	
 	[self.view.window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
-
+	
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
