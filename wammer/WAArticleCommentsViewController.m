@@ -39,6 +39,7 @@
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize cellPrototype;
 @synthesize onViewDidLoad;
+@synthesize scrollsToLastRowOnChange;
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -546,7 +547,8 @@
 	
 	NSIndexPath *lastObjectIndexPath = [NSIndexPath indexPathForRow:([(id<NSFetchedResultsSectionInfo>)[controller.sections lastObject] numberOfObjects] - 1) inSection:([controller.sections count] - 1)];
 	
-	[self.commentsView scrollToRowAtIndexPath:lastObjectIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	if (self.scrollsToLastRowOnChange)
+		[self.commentsView scrollToRowAtIndexPath:lastObjectIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 
 }
 
