@@ -75,3 +75,7 @@ DerivedData/*
 wammer_ios_auto_build
 wammer_ios_auto_build_master
 testFlightCredentials
+
+# localize.py
+*.strings.new
+*.strings.old
