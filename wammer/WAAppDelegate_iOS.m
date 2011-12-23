@@ -115,7 +115,6 @@
 
 	[self bootstrap];
 
-	[[UIApplication sharedApplication] setCrashReportRecipients:[[NSUserDefaults standardUserDefaults] arrayForKey:kWACrashReportRecipients]];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
 	
@@ -158,27 +157,21 @@
 	
 	} else {
   
-    if (WAAdvancedFeaturesEnabled()) {
-		
-			[self clearViewHierarchy];
-    
-      //  Only enable crash reporting as an advanced feature
+		[self clearViewHierarchy];
 	
-      [[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-        if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-          [[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-            [[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
-            initializeInterface();
-          }];
-        } else {
-          initializeInterface();
-        }
-      }];
+		//  Only enable crash reporting as an advanced feature
+
+		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
+			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
+				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
+					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
+					initializeInterface();
+				}];
+			} else {
+				initializeInterface();
+			}
+		}];
     
-    } else {
-      initializeInterface();
-    }
-	
 	}
 	
   return YES;

@@ -24,13 +24,12 @@
 	<string>haskell@master.waveface.com</string>
 	<key>WADebugAutologinUserPassword</key>
 	<string>haskell</string>
-	<key>WACrashReportRecipients</key>
+	<key>IRCrashReportRecipients</key>
 	<array>
-		<string>Evadne Wu &lt;evadne.wu@waveface.com&gt;</string>
-		<string>Vincent Huang &lt;vincent.huang@waveface.com&gt;</string>
-		<string>Jamie Sa &lt;jamie@waveface.com&gt;</string>
-		<string>Mineral &lt;redmine@waveface.com&gt;</string>
+		<string>Waveface &lt;redmine@waveface.com&gt;</string>
 	</array>
+	<key>IRCrashReportingEnabled</key>
+	<true/>
 	<key>WADebugLastScanSyncBezelsVisible</key>
 	<false/>
 	<key>WADebugUsesDiscreteArticleFlip</key>
