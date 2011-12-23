@@ -30,7 +30,6 @@ NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpens
 NSString * const kWAAlwaysDenyExpensiveRemoteOperations = @"WAAlwaysDenyExpensiveRemoteOperations";
 NSString * const kWADebugAutologinUserIdentifier = @"WADebugAutologinUserIdentifier";
 NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword";
-NSString * const kWACrashReportRecipients = @"WACrashReportRecipients";
 
 NSString * const kWADebugLastScanSyncBezelsVisible = @"WADebugLastScanSyncBezelsVisible";
 NSString * const kWADebugUsesDiscreteArticleFlip = @"WADebugUsesDiscreteArticleFlip";
