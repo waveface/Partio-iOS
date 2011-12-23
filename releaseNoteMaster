@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes bug where after autorotation, the Gallery no longer shows photos centered and zoomed out at the correct position\n- Fixes bug with Attachments list not always working on the iPhone\n- Fixes up Quota display; adds start and end dates"
+ETReleaseNotes="- Renew provisioning profile for Ev's all new shinny iPhone 4S"
 ETMarketingVersionNumber="0.9.8"

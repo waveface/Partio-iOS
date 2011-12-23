@@ -2048,11 +2048,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FFCFE0F8142111E100B9E6AF /* Build configuration list for PBXNativeTarget "wammer-iOS" */;
 			buildPhases = (
+				4B59AB5A14A3BBB700891F99 /* Run Localize Script */,
 				FFCFE085142111E100B9E6AF /* Sources */,
 				FFCFE0B1142111E100B9E6AF /* Frameworks */,
 				FFCFE0C3142111E100B9E6AF /* Resources */,
 				FFCFE0F7142111E100B9E6AF /* IRCommitSHA */,
-				4BE0FFB6148CA87300BA74DB /* ShellScript */,
+				4BE0FFB6148CA87300BA74DB /* Run Remember TODO Script */,
 			);
 			buildRules = (
 			);
@@ -2508,13 +2509,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4BE0FFB6148CA87300BA74DB /* ShellScript */ = {
+		4B59AB5A14A3BBB700891F99 /* Run Localize Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Localize Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "cd ${SRCROOT}/wammer\npython2.6 ${SRCROOT}/Scripts/localize.py";
+		};
+		4BE0FFB6148CA87300BA74DB /* Run Remember TODO Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Remember TODO Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2903,7 +2919,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 170;
+				CURRENT_PROJECT_VERSION = 172;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2950,7 +2966,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 170;
+				CURRENT_PROJECT_VERSION = 172;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
