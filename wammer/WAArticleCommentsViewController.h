@@ -65,4 +65,6 @@ typedef enum {
 
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
 
+@property (nonatomic, readwrite, assign) BOOL scrollsToLastRowOnChange;
+
 @end

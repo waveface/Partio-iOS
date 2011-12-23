@@ -1,2 +1,2 @@
-ETReleaseNotes="- Revises Gallery.  Uses tentative backdrop, makes the actual gallery show the tapped photo.  Fixes up grid view updating so cells reload immediately."
+ETReleaseNotes="- Fixes bug in Gallery where tapping a photo from the article does not trigger correct photo layout\n- Fixes bug where autorotation causes undesired animation in the background view of the Stacked Article View\n- Fixes up performance issues with the Stacked Article View\n- Fixes up scrolling animation for added comments in the Stacked Article View\n- Revises text spacing in the Stacked Article View"
 ETMarketingVersionNumber="0.9.8"
