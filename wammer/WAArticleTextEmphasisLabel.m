@@ -56,6 +56,17 @@
 	self.label.opaque = NO;
 	self.label.backgroundColor = nil;
 	self.label.userInteractionEnabled = YES;
+	
+#if 0
+	
+	self.layer.borderColor = [UIColor redColor].CGColor;
+	self.layer.borderWidth = 1;
+	
+	self.label.layer.borderColor = [UIColor blueColor].CGColor;
+	self.label.layer.borderWidth = 2;
+
+#endif
+	
 	[self addSubview:self.label];
 	
 }

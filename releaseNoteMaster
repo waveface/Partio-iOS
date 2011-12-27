@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes bug in Gallery where tapping a photo from the article does not trigger correct photo layout\n- Fixes bug where autorotation causes undesired animation in the background view of the Stacked Article View\n- Fixes up performance issues with the Stacked Article View\n- Fixes up scrolling animation for added comments in the Stacked Article View\n- Revises text spacing in the Stacked Article View"
+ETReleaseNotes="- Minor fixes to the Gallery view\n- Updates application icons for the iPhone\n- Fixes bug where multilingual rich-text labels do not align by baseline"
 ETMarketingVersionNumber="0.9.8"
