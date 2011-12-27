@@ -20,6 +20,7 @@
 @implementation WACompositionViewPhotoCell
 @synthesize image, imageContainer, removeButton, onRemove;
 @synthesize activityIndicator;
+@synthesize canRemove;
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
@@ -58,7 +59,7 @@
 	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
 	self.imageContainer.layer.shadowOpacity = 0.5f;
 	self.imageContainer.layer.shadowRadius = 2.0f;
-	self.imageContainer.layer.masksToBounds = YES;
+	//	self.imageContainer.layer.masksToBounds = YES;
 	[self.contentView addSubview:self.imageContainer];
 	
 	self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -74,6 +75,8 @@
 	self.activityIndicator.frame = CGRectIntegral(self.activityIndicator.frame);
 	[self.activityIndicator startAnimating];
 	[self.imageContainer addSubview:self.activityIndicator];
+	
+	self.canRemove = YES;
 	
 	[self setNeedsLayout];
 	
@@ -118,17 +121,25 @@
 
 	[super layoutSubviews];
 	
+	if (canRemove) {
+		self.removeButton.alpha = 1;
+		self.removeButton.enabled = YES;
+	} else {
+		self.removeButton.alpha = 0;
+		self.removeButton.enabled = NO;
+	}
+	
 	if (self.image) {
 
 		self.removeButton.hidden = NO;
-		self.activityIndicator.hidden = YES;
+		self.activityIndicator.alpha = 0;
 		self.imageContainer.backgroundColor = nil;
 		self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:IRCGSizeGetCenteredInRect(self.image.size, self.imageContainer.bounds, 0.0f, YES)].CGPath;
 	
 	} else {
 	
 		self.removeButton.hidden = YES;
-		self.activityIndicator.hidden = NO;
+		self.activityIndicator.alpha = 1;
 		self.imageContainer.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1];
 		self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.imageContainer.bounds].CGPath;
 	

@@ -13,6 +13,8 @@
 #import "WAImageStreamPickerView.h"
 #import "UIImage+IRAdditions.h"
 
+NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
+
 
 @interface WAGalleryViewController () <IRPaginatedViewDelegate, UIGestureRecognizerDelegate, UINavigationBarDelegate, WAImageStreamPickerViewDelegate, NSFetchedResultsControllerDelegate, WAGalleryImageViewDelegate>
 
@@ -25,6 +27,8 @@
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
 @property (nonatomic, readwrite, retain) UINavigationItem *previousNavigationItem;
 @property (nonatomic, readwrite, retain) WAImageStreamPickerView *streamPickerView;
+
+@property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
 
 - (void) waSubviewWillLayout;
 
@@ -43,14 +47,47 @@
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
 @synthesize onDismiss;
+@synthesize onViewDidLoad;
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
 
-	WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
+	return [self controllerRepresentingArticleAtURI:anArticleURI context:nil];
+
+}
+
++ (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI context:(NSDictionary *)context {
+
+	__block WAGalleryViewController *returnedController = [[[self alloc] init] autorelease];
 	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURI];
+	
+	
+	NSURL *preferredObjectURI = [context objectForKey:kWAGalleryViewControllerContextPreferredFileObjectURI];
+	
+	returnedController.onViewDidLoad = ^ {
+	
+		if (preferredObjectURI) {
+		
+			NSUInteger fileIndex = [returnedController.article.fileOrder indexOfObject:preferredObjectURI];
+			if (fileIndex != NSNotFound) {
+			
+				//	FIXME: Actually fix IRPaginatedView.  We have copied this hack.
+
+				[returnedController.paginatedView layoutSubviews];
+				[returnedController.paginatedView scrollToPageAtIndex:fileIndex animated:NO];
+				[returnedController.paginatedView layoutSubviews];
+				[returnedController.paginatedView setNeedsLayout];
+
+			}
+		
+		}
+	
+	};
+	
+	if ([returnedController isViewLoaded])
+		returnedController.onViewDidLoad();
 	
 	return returnedController;
 
@@ -207,6 +244,15 @@
 	
 }
 
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
@@ -275,7 +321,7 @@
 
 	//  WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
   WAFile *representedFile = [self representedFileAtIndex:index];
-	UIImage *representedImage = representedFile.resourceImage ? representedFile.resourceImage : representedFile.thumbnailImage;
+	UIImage *representedImage = representedFile.thumbnailImage;
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
 	returnedView.delegate = self;
   
@@ -472,6 +518,7 @@
 	[fetchedResultsController release];
 	[article release];
 	
+	[paginatedView removeFromSuperview];	//	Also triggers page deallocation
 	[paginatedView release];
 	[navigationBar release];
 	[toolbar release];
@@ -479,6 +526,8 @@
 	[streamPickerView release];
 		
 	[onDismiss release];
+	
+	[onViewDidLoad release];
 	
 	[super dealloc];
 

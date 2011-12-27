@@ -23,6 +23,8 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewCell *cellPrototype;
+@property (nonatomic, readwrite, retain) WAView *compositionAccessoryTextWellBackgroundView;
+@property (nonatomic, readwrite, retain) WAView *compositionAccessoryBackgroundView;
 
 - (void) refreshView;
 
@@ -32,9 +34,12 @@
 @implementation WAArticleCommentsViewController
 @dynamic view;
 @synthesize commentsView, commentRevealButton, commentPostButton, commentCloseButton, compositionContentField, compositionSendButton, compositionAccessoryView, commentsRevealingActionContainerView;
+@synthesize compositionAccessoryTextWellBackgroundView, compositionAccessoryBackgroundView;
 @synthesize delegate, state;
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize cellPrototype;
+@synthesize onViewDidLoad;
+@synthesize scrollsToLastRowOnChange;
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -118,15 +123,26 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
 	[self.view insertSubview:self.commentsRevealingActionContainerView atIndex:0];
 	[self.view addSubview:self.compositionAccessoryView];
 	
+	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self.view) nrView = self.view;
 	__block __typeof__(self.commentsView) nrCommentsView = self.commentsView;
 	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
 	__block __typeof__(self.commentRevealButton) nrCommentRevealButton = self.commentRevealButton;
 	__block __typeof__(self.commentCloseButton) nrCommentCloseButton = self.commentCloseButton;
 	__block __typeof__(self.compositionAccessoryView) nrCompositionAccessoryView = self.compositionAccessoryView;
+	
+	self.view.onSizeThatFits = ^ (CGSize proposedSize, CGSize superAnswer) {
+	
+		return (CGSize){
+			nrSelf.commentsView.contentSize.width,
+			MAX(128, MAX(48, nrSelf.commentsView.contentSize.height) + CGRectGetHeight(nrCompositionAccessoryView.bounds))
+		};
+	
+	};
 	
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;	
 	self.view.backgroundColor = [UIColor clearColor];
@@ -136,10 +152,14 @@
 	
 	self.commentsView.layer.cornerRadius = 4.0f;
 	self.commentsView.layer.masksToBounds = YES;
+
+#if 0
 	self.commentsView.layer.backgroundColor = [UIColor whiteColor].CGColor;
 	self.commentsView.contentInset = (UIEdgeInsets){ 20, 0, CGRectGetHeight(self.compositionAccessoryView.frame), 0 };
 	self.commentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, CGRectGetHeight(self.compositionAccessoryView.frame), 0 };
-	self.commentsView.frame = UIEdgeInsetsInsetRect(self.commentsView.frame, (UIEdgeInsets){ -20.0f, 0.0f, 0.0f, 0.0f });
+	self.commentsView.frame = UIEdgeInsetsInsetRect(self.commentsView.frame, (UIEdgeInsets){ -20, 0, 0, 0 };
+#endif	
+	
 	self.commentsView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.commentsView.dataSource = self;
 	self.commentsView.delegate = self;
@@ -171,14 +191,23 @@
 	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -4, 0, 0, 0 });
-	[self.compositionAccessoryView insertSubview:backgroundView atIndex:0];
+	
+	self.compositionAccessoryTextWellBackgroundView = [[[WAView alloc] initWithFrame:textWellBackgroundView.bounds] autorelease];
+	self.compositionAccessoryTextWellBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[self.compositionAccessoryTextWellBackgroundView addSubview:textWellBackgroundView];
+	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
+	
+	self.compositionAccessoryBackgroundView = [[[WAView alloc] initWithFrame:backgroundView.bounds] autorelease];
+	self.compositionAccessoryBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[self.compositionAccessoryBackgroundView addSubview:backgroundView];
+	[self.compositionAccessoryView insertSubview:compositionAccessoryBackgroundView atIndex:0];
 	
 	[self.compositionAccessoryView.superview bringSubviewToFront:self.compositionAccessoryView];
 	
 	
 	self.view.onLayoutSubviews = ^ {
 		
-		nrView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrView.bounds].CGPath;
+		//	nrView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrView.bounds].CGPath;
 		
 		static CGFloat inactiveAccessoryViewHeight = 64.0f;
 		static CGFloat activeAccessoryViewHeight = 128.0f;
@@ -189,14 +218,26 @@
 		CGRect accessoryViewFrame, nullRect;
 		CGRectDivide(nrView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
 		
-		nrCommentsView.contentInset = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
-		nrCommentsView.scrollIndicatorInsets = (UIEdgeInsets){ 20, 0, accessoryViewHeight, 0 };
+		UIEdgeInsets commentsViewContentInset = nrCommentsView.contentInset;
+		commentsViewContentInset.bottom = accessoryViewHeight;
+		
+		UIEdgeInsets commentsViewScrollIndicatorInsets = nrCommentsView.scrollIndicatorInsets;
+		commentsViewScrollIndicatorInsets.bottom = accessoryViewHeight;
+		
+		nrCommentsView.contentInset = commentsViewContentInset;
+		nrCommentsView.scrollIndicatorInsets = commentsViewScrollIndicatorInsets;
+		
+		accessoryViewFrame.origin.x = nrCompositionAccessoryView.frame.origin.x;
+		accessoryViewFrame.size.width = nrCompositionAccessoryView.frame.size.width;
 		
 		if (nrView.bounds.size.height == 0) {
 			
 			//	OMG, this case happens when the app launches in landscape.  Since the text field does not have flexible top / bottom margins, a zero enclosing superview height makes the text field taller than the enclosing superview, and subsequent restoration of the height won’t help anyway: the metrics were already destructed. x_x
 			
-			accessoryViewFrame.size.height = MIN(activeAccessoryViewHeight, MAX(inactiveAccessoryViewHeight, accessoryViewFrame.size.height));
+			CGFloat newHeight = MIN(activeAccessoryViewHeight, MAX(inactiveAccessoryViewHeight, accessoryViewFrame.size.height));
+			//	OFFSET origin.y ?
+			
+			accessoryViewFrame.size.height = newHeight;
 			
 		}
 		
@@ -277,11 +318,11 @@
 	
 	self.compositionAccessoryView.frame = (CGRect){
 		(CGPoint){
-			0,
+			self.compositionAccessoryView.frame.origin.x,
 			CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
 		},
 		(CGSize){
-			CGRectGetWidth(self.view.bounds),
+			self.compositionAccessoryView.frame.size.width,
 			CGRectGetHeight(self.compositionAccessoryView.frame)	
 		}
 	};
@@ -297,9 +338,16 @@
 	if (self.article)
 		[self refreshView];
 	
+	[self.commentsView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
+	
 }
 
 - (void) viewDidUnload {
+
+	[self.commentsView removeObserver:self forKeyPath:@"contentSize"];
 
 	self.commentsView = nil;
 	self.commentRevealButton = nil;
@@ -312,7 +360,10 @@
 	self.compositionAccessoryView = nil;
 	self.commentsRevealingActionContainerView = nil;
 	self.cellPrototype = nil;
-
+	
+	self.compositionAccessoryTextWellBackgroundView = nil;
+	self.compositionAccessoryBackgroundView = nil;
+	
 	[super viewDidUnload];
 
 }
@@ -412,11 +463,8 @@
 
 - (void) handleCommentPost:(id)sender {
 	
-	if (![self.delegate articleCommentsViewController:self canSendComment:self.compositionContentField.text]) {
-		
+	if (![self.delegate articleCommentsViewController:self canSendComment:self.compositionContentField.text])
 		return;
-		
-	}
 	
 	[self.delegate articleCommentsViewController:self didFinishComposingComment:self.compositionContentField.text];
 	
@@ -493,6 +541,14 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	[self.commentsView reloadData];
+	
+	if (![controller.sections count])
+		return;
+	
+	NSIndexPath *lastObjectIndexPath = [NSIndexPath indexPathForRow:([(id<NSFetchedResultsSectionInfo>)[controller.sections lastObject] numberOfObjects] - 1) inSection:([controller.sections count] - 1)];
+	
+	if (self.scrollsToLastRowOnChange)
+		[self.commentsView scrollToRowAtIndexPath:lastObjectIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 
 }
 
@@ -518,7 +574,7 @@
 	self.cellPrototype.frame = (CGRect){
 		CGPointZero,
 		(CGSize){
-			tableView.frame.size.width,
+			CGRectGetWidth(tableView.bounds),
 			tableView.rowHeight
 		}
 	};
@@ -546,27 +602,15 @@
 	WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:indexPath];
 	
 	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (!cell)
+	if (!cell) {
 		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-	
-	static NSString * const kWAArticleCommentsViewController_CellDateFormatter = @"kWAArticleCommentsViewController_CellDateFormatter";
-	
-	NSMutableDictionary *currentThreadDictionary = [[NSThread currentThread] threadDictionary];
-	IRRelativeDateFormatter *formatter = [currentThreadDictionary objectForKey:kWAArticleCommentsViewController_CellDateFormatter];
-	
-	if (!formatter) {
-	
-		formatter = [[[IRRelativeDateFormatter alloc] init] autorelease];
-		formatter.approximationMaxTokenCount = 1;
-		
-		[currentThreadDictionary setObject:formatter forKey:kWAArticleCommentsViewController_CellDateFormatter];	
-	
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
-		
+	
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
 	cell.contentTextLabel.text = representedComment.text;
-	cell.dateLabel.text = [formatter stringFromDate:representedComment.timestamp];
+	cell.dateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedComment.timestamp];
 	cell.originLabel.text = representedComment.creationDeviceName;
 	
 	return cell;
@@ -577,25 +621,67 @@
 
 
 
-- (void) textViewDidBeginEditing:(UITextView *)textView {
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
-	[UIView animateWithDuration:0.3f animations: ^ {
-		[self.view setNeedsLayout];
-		[self.view layoutIfNeeded];
-	}];
+	if (object == self.commentsView)
+	if ([keyPath isEqualToString:@"contentSize"]) {
+
+		CGSize oldSize = [[change objectForKey:NSKeyValueChangeOldKey] CGSizeValue];	
+		CGSize newSize = [[change objectForKey:NSKeyValueChangeNewKey] CGSizeValue];
+		
+		if (CGSizeEqualToSize(oldSize, newSize))
+			return;
+		
+		if ([self.delegate respondsToSelector:@selector(articleCommentsViewController:didChangeContentSize:)])
+			[self.delegate articleCommentsViewController:self didChangeContentSize:newSize];
+	
+	}
 
 }
 
-- (void) textViewDidEndEditing:(UITextView *)textView {
 
-	[UIView animateWithDuration:0.3f animations: ^ {
-		[self.view setNeedsLayout];
-		[self.view layoutIfNeeded];
+
+
+
+- (void) textViewDidBeginEditing:(UITextView *)textView {
+
+	[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations: ^ {
+		
+		[self.view layoutSubviews];
+
+		if ([self.delegate respondsToSelector:@selector(articleCommentsViewControllerDidBeginComposition:)])
+			[self.delegate articleCommentsViewControllerDidBeginComposition:self];
+		
+	} completion:^(BOOL finished) {
+		
 	}];
 	
 }
 
+- (void) textViewDidEndEditing:(UITextView *)textView {
+
+	[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations: ^ {
+		
+		[self.view layoutSubviews];
+		
+		if ([self.delegate respondsToSelector:@selector(articleCommentsViewControllerDidFinishComposition:)])
+			[self.delegate articleCommentsViewControllerDidFinishComposition:self];
+
+	} completion:^(BOOL finished) {
+		
+	}];
+		
+}
+
+- (CGRect) rectForComposition {
+
+	return [self.view convertRect:self.compositionAccessoryView.frame fromView:self.view];
+
+}
+
 - (void) dealloc {
+
+	[commentsView removeObserver:self forKeyPath:@"contentSize"];
 
 	[commentsView release];
 	[commentRevealButton release];
@@ -611,6 +697,8 @@
 	[managedObjectContext release];
 	[fetchedResultsController release];
 	[article release];
+	
+	[onViewDidLoad release];
 	
 	[super dealloc];
 

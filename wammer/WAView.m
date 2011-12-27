@@ -10,7 +10,7 @@
 
 @implementation WAView
 
-@synthesize onHitTestWithEvent, onPointInsideWithEvent, onLayoutSubviews;
+@synthesize onHitTestWithEvent, onPointInsideWithEvent, onLayoutSubviews, onSizeThatFits;
 
 - (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
 
@@ -46,11 +46,23 @@
 
 }
 
+- (CGSize) sizeThatFits:(CGSize)size {
+
+	CGSize superSize = [super sizeThatFits:size];
+	if (self.onSizeThatFits)
+		return self.onSizeThatFits(size, superSize);
+	
+	return superSize;
+
+}
+
 - (void) dealloc {
 
 	[onHitTestWithEvent release];
 	[onPointInsideWithEvent release];
 	[onLayoutSubviews release];
+	[onSizeThatFits release];
+	
 	[super dealloc];
 
 }

@@ -69,6 +69,38 @@
 
 }
 
+- (id) initWithBaseURL:(NSURL *)inBaseURL {
+
+	//	?
+	
+	self = [super initWithBaseURL:inBaseURL];
+	if (!self)
+		return nil;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUserDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) handleUserDefaultsDidChange:(NSNotification *)aNotification {
+
+	NSURL *newBaseURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
+	
+	if ([self.baseURL isEqual:newBaseURL])
+		return;
+	
+	self.baseURL = newBaseURL;
+
+}
+
+- (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super dealloc];
+
+}
+
 - (NSURL *) baseURLForMethodNamed:(NSString *)inMethodName {
 
 	NSURL *returnedURL = [super baseURLForMethodNamed:inMethodName];

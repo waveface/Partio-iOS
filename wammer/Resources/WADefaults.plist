@@ -7,7 +7,7 @@
 	<key>WARemoteEndpointCurrentVersion</key>
 	<integer>2</integer>
 	<key>WAAdvancedFeaturesEnabled</key>
-	<true/>
+	<false/>
 	<key>WAUserRegistrationUsesWebVersion</key>
 	<true/>
 	<key>WAUserRegistrationEndpointURL</key>
@@ -24,5 +24,15 @@
 	<string>haskell@master.waveface.com</string>
 	<key>WADebugAutologinUserPassword</key>
 	<string>haskell</string>
+	<key>IRCrashReportRecipients</key>
+	<array>
+		<string>Waveface &lt;redmine@waveface.com&gt;</string>
+	</array>
+	<key>IRCrashReportingEnabled</key>
+	<true/>
+	<key>WADebugLastScanSyncBezelsVisible</key>
+	<false/>
+	<key>WADebugUsesDiscreteArticleFlip</key>
+	<false/>
 </dict>
 </plist>

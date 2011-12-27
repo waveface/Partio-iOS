@@ -11,6 +11,7 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAAppDelegate.h"
+#import "WADefines.h"
 
 @interface WARemoteInterface (ScheduledDataRetrieval_Private)
 
@@ -146,7 +147,7 @@
 			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
 				return;
         
-      [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
+      [AppDelegate() beginNetworkActivity];
 
 			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
@@ -156,14 +157,14 @@
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
 
-        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+        [AppDelegate() endNetworkActivity];
 				
 			} onFailure: ^ {
 			
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
         
-        [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity];
+        [AppDelegate() endNetworkActivity];
 				
 			}];
 		

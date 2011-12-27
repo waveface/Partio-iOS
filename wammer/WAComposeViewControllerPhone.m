@@ -193,6 +193,9 @@
 		
 	}];
 	
+	imagePickerController.usesAssetsLibrary = NO;
+	imagePickerController.savesCameraImageCapturesToSavedPhotos = YES;
+	
 	//	[imagePickerController.view addSubview:((^ {
 	//		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
 	//		decorativeView.backgroundColor = [UIColor blackColor];
@@ -335,18 +338,10 @@
 	
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 
-	[super viewDidAppear:animated];
+  return YES;
   
-  UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-  // TODO: Check if the URL is ready and put it into compose view
-
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 - (void)dealloc {

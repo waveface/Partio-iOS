@@ -37,10 +37,6 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) didFinishComposingComment:(NSString *)commentText;
 - (void) cellViewWithDecoration:(WAPostViewCellPhone *)cell;
-- (void) refreshData;
-
-+ (IRRelativeDateFormatter *) relativeDateFormatter;
-
 
 @end
 
@@ -307,7 +303,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       cell.avatarView.image = post.owner.avatar;
       cell.commentLabel.text = post.text;
       cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                             [[[self class] relativeDateFormatter] stringFromDate:post.timestamp], 
+                             [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp], 
                              [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
       cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
       
@@ -338,7 +334,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
 	cell.commentLabel.text = representedComment.text;
-	cell.dateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:post.timestamp];
+	cell.dateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp];
 
     [representedComment.timestamp description];
 	cell.originLabel.text = representedComment.creationDeviceName;
@@ -357,9 +353,9 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) didFinishComposingComment:(NSString *)commentText {
 
-	WAArticle *currentArticle = self.post;
-	NSString *currentArticleIdentifier = currentArticle.identifier;
-	NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
+	//  WAArticle *currentArticle = self.post;
+	//  NSString *currentArticleIdentifier = currentArticle.identifier;
+	//  NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
   NSURL *ownPostURL = [[self.post objectID] URIRepresentation];
   [[WADataStore defaultStore] addComment:commentText onArticle:ownPostURL onSuccess:nil onFailure:nil];
   
@@ -387,21 +383,6 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   height += [text sizeWithFont:[UIFont fontWithName:@"Helvetica" size:14.0] constrainedToSize:CGSizeMake(240.0, 9999.0) lineBreakMode:UILineBreakModeWordWrap].height;
   
   return MAX(height,100);
-}
-
-+ (IRRelativeDateFormatter *) relativeDateFormatter {
-    
-	static IRRelativeDateFormatter *formatter = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    
-		formatter = [[IRRelativeDateFormatter alloc] init];
-		formatter.approximationMaxTokenCount = 1;
-        
-	});
-    
-	return formatter;
-    
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {

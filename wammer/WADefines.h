@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@class IRBarButtonItem, IRBorder;
+#import <UIKit/UIKit.h>
 
 extern NSString * const kWAAdvancedFeaturesEnabled;
 extern BOOL WAAdvancedFeaturesEnabled (void);
+
+extern BOOL WAApplicationHasDebuggerAttached (void);
 
 extern NSString * const kWARemoteEndpointURL;
 extern NSString * const kWARemoteEndpointVersion;
@@ -28,18 +29,36 @@ extern NSString * const kWAAlwaysDenyExpensiveRemoteOperations;
 extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
 
+extern NSString * const kWADebugLastScanSyncBezelsVisible;
+extern NSString * const kWADebugUsesDiscreteArticleFlip;
+
 extern NSString * const kWACompositionSessionRequestedNotification;
 extern NSString * const kWAApplicationDidReceiveRemoteURLNotification;
 extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
+extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
+extern NSString * const kWASettingsDidRequestActionNotification;
 
-extern NSString * const kWARemoteEndpointApplicationKey;
+extern NSString * const kWARemoteEndpointApplicationKeyPhone;
+extern NSString * const kWARemoteEndpointApplicationKeyPad;
+extern NSString * const kWARemoteEndpointApplicationKeyMac;
+
+extern NSString * const kWACallbackActionDidFinishUserRegistration;
+extern NSString * const kWACallbackActionSetAdvancedFeaturesEnabled;
+extern NSString * const kWACallbackActionSetRemoteEndpointURL;
+extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
+extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
+
+extern NSString * const kWAUserStorageInfo;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);
 
-extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
-extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
+extern NSString * const kWACurrentGeneratedDeviceIdentifier;
+BOOL WADeviceIdentifierReset (void);
+NSString * WADeviceIdentifier (void);
 
-extern UIButton * WAButtonForImage (UIImage *anImage);
-extern UIButton * WAToolbarButtonForImage (UIImage *anImage);
-extern UIImage * WABarButtonImageFromImageNamed (NSString *anImageName);
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+	#import "WADefines+iOS.h"
+#else
+	#import "WADefines+Mac.h"
+#endif

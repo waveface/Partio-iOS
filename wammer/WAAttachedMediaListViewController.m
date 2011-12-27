@@ -122,7 +122,6 @@
   self.tableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
   self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
 	[self.view addSubview:self.tableView];
-  [self.tableView setEditing:YES animated:YES];
   
 	__block __typeof__(self) nrSelf = self;
 	
@@ -162,18 +161,18 @@
 
 }
 
-- (void) viewDidUnload {
+- (void) viewDidLoad {
 
-	self.headerView = nil;
-	
-	[super viewDidUnload];
+	[super viewDidLoad];	
+	[self.tableView setEditing:YES animated:NO];
 
 }
 
+- (void) viewDidUnload {
 
+	[super viewDidUnload];
 
-
-
+}
 - (void) setHeaderView:(UIView *)newHeaderView {
 
 	if (headerView == newHeaderView)
@@ -196,10 +195,6 @@
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
-
-
-
-
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 

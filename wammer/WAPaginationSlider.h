@@ -10,11 +10,29 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+#ifndef __WAPaginationSlider__
+#define __WAPaginationSlider__
+
+enum WAPaginationSliderLayoutStrategy {
+  
+	WAPaginationSliderDefaultLayoutStrategy = 0,
+	WAPaginationSliderFillWithDotsLayoutStrategy = 0,
+	WAPaginationSliderLessDotsLayoutStrategy
+	
+}; typedef NSUInteger WAPaginationSliderLayoutStrategy;
+
+#endif
+
+
 @class WAPaginationSlider;
+@class WAPaginationSliderAnnotation;
 
 @protocol WAPaginationSliderDelegate <NSObject>
 
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage;
+
+@optional
+- (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider;
 
 @end
 
@@ -24,6 +42,7 @@
 @property (nonatomic, readwrite, assign) CGFloat dotRadius;
 @property (nonatomic, readwrite, assign) CGFloat dotMargin;
 @property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets;
+@property (nonatomic, readwrite, assign) UIEdgeInsets sliderInsets;
 
 @property (nonatomic, readwrite, assign) NSUInteger numberOfPages;
 @property (nonatomic, readwrite, assign) NSUInteger currentPage;
@@ -35,5 +54,32 @@
 - (void) sliderTouchDidStart:(UISlider *)aSlider;
 - (void) sliderDidMove:(UISlider *)aSlider;
 - (void) sliderTouchDidEnd:(UISlider *)aSlider;
+
+@property (nonatomic, readwrite, assign) BOOL instantaneousCallbacks; //	If YES, sends -paginationSlider:didMoveToPage: continuously
+
+@property (nonatomic, readonly, retain) UISlider *slider; //	Don’t do evil
+
+@property (nonatomic, readwrite, assign) WAPaginationSliderLayoutStrategy layoutStrategy;
+@property (nonatomic, readonly, retain) NSArray *annotations;
+
+- (void) addAnnotations:(NSSet *)annotations;
+- (void) addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation;
+- (void) removeAnnotations:(NSSet *)annotations;
+- (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes;
+- (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation;
+
+- (void) setNeedsAnnotationsLayout;
+
+@end
+
+
+
+
+
+@interface WAPaginationSliderAnnotation : NSObject
+
+@property (nonatomic, readwrite, copy) NSString *title;
+@property (nonatomic, readwrite, assign) NSUInteger pageIndex;
+@property (nonatomic, readwrite, assign) CGPoint centerOffset;
 
 @end

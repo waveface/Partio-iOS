@@ -11,20 +11,6 @@
 
 @implementation WAComment (WARemoteInterfaceEntitySyncing)
 
-+ (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
-
-	completionBlock(NO, nil, nil, [NSError errorWithDomain:nil code:0 userInfo:nil]);
-	return;
-
-}
-
-- (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
-
-	completionBlock(NO, nil, nil, [NSError errorWithDomain:nil code:0 userInfo:nil]);
-	return;
-
-}
-
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
 	NSMutableDictionary *transformedRepresentation = [[incomingRepresentation mutableCopy] autorelease];

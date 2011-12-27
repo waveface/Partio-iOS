@@ -48,18 +48,24 @@ enum {
 	WADiscretePlaintextArticleStyle,
 	WADiscreteSingleImageArticleStyle,
 	WADiscretePreviewArticleStyle,
-  WADiscreteDocumentArticleStyle = WADiscreteSingleImageArticleStyle
+  WADiscreteDocumentArticleStyle
 	
 }; typedef NSInteger WAArticleViewControllerPresentationStyle;
 
 extern NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle);
 extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString);
 
+extern WAArticleViewControllerPresentationStyle WAFullFrameArticleStyleFromDiscreteStyle (WAArticleViewControllerPresentationStyle aStyle);
+extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyle (WAArticleViewControllerPresentationStyle aStyle);
+
 #endif
 
-@interface WAArticleViewController : UIViewController
+@class WANavigationController;
+@interface WAArticleViewController : UIViewController <WAArticleViewControllerPresenting>
 
-+ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle;
++ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle DEPRECATED_ATTRIBUTE;
++ (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle;
+
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
@@ -71,6 +77,10 @@ extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentat
 @property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
 @property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
 
-@property (nonatomic, retain) WAArticleView *view;
+@property (nonatomic, retain) UIView<WAArticleView> *view;
+
+@property (nonatomic, readwrite, retain) NSArray *additionalDebugActions;
+
+- (WANavigationController *) wrappingNavController;
 
 @end

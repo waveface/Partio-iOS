@@ -23,6 +23,12 @@
 
 #import "WAArticleFilesListViewController.h"
 
+#import "WANavigationController.h"
+
+#import "WANavigationBar.h"
+
+#import "WAArticleViewController+Subclasses.h"
+
 
 
 @interface WAArticleView (PrivateStuff)
@@ -47,9 +53,9 @@ NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewCo
 		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
 		[WAFullFrameImageStackArticleStyle] = @"Default",
 		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Discrete-Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Discrete-Default",
-		[WADiscretePreviewArticleStyle] = @"Discrete-Preview"
+		[WADiscretePlaintextArticleStyle] = @"Discrete_Plaintext",
+		[WADiscreteSingleImageArticleStyle] = @"Discrete_Default",
+		[WADiscretePreviewArticleStyle] = @"Discrete_Preview"
 		
 	}[aStyle]);
 
@@ -62,9 +68,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		[NSNumber numberWithInt:WAFullFramePlaintextArticleStyle], @"Plaintext",
 		[NSNumber numberWithInt:WAFullFrameImageStackArticleStyle], @"Default",
 		[NSNumber numberWithInt:WAFullFramePreviewArticleStyle], @"Preview",
-		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete-Plaintext",
-		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete-Default",
-		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete-Preview",
+		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete_Plaintext",
+		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete_Default",
+		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete_Preview",
 		
 	nil] objectForKey:aString];
 	
@@ -72,6 +78,28 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 		return WAUnknownArticleStyle;
 	
 	return [answer intValue];
+
+}
+
+WAArticleViewControllerPresentationStyle WAFullFrameArticleStyleFromDiscreteStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((WAArticleViewControllerPresentationStyle[]){
+		[WADiscretePlaintextArticleStyle] = WAFullFramePlaintextArticleStyle,
+		[WADiscreteSingleImageArticleStyle] = WAFullFrameImageStackArticleStyle,
+		[WADiscretePreviewArticleStyle] = WAFullFramePreviewArticleStyle,
+		[WADiscreteDocumentArticleStyle] = WAFullFrameDocumentArticleStyle
+	})[aStyle];
+
+}
+
+WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyle (WAArticleViewControllerPresentationStyle aStyle) {
+
+	return ((WAArticleViewControllerPresentationStyle[]){
+		[WAFullFramePlaintextArticleStyle] = WADiscretePlaintextArticleStyle,
+		[WAFullFrameImageStackArticleStyle] = WADiscreteSingleImageArticleStyle,
+		[WAFullFramePreviewArticleStyle] = WADiscretePreviewArticleStyle,
+		[WAFullFrameDocumentArticleStyle] = WADiscreteDocumentArticleStyle
+	})[aStyle];
 
 }
 
@@ -83,11 +111,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
 @synthesize onPresentingViewController, onViewDidLoad, onViewTap, onViewPinch;
+@synthesize additionalDebugActions;
 
-+ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
-
-	//	TBD style + context might be better than mixing the context with the style as what we currently do
-	//	TBD this does not even handle single-article pages at all
++ (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle {
 
 	if (!anArticle)
 		return WADiscretePlaintextArticleStyle;
@@ -104,9 +130,15 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 }
 
++ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
+
+	return [self suggestedDiscreteStyleForArticle:anArticle];
+
+}
+
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
 
-	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"-%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
 	NSString *loadedNibName = preferredClassName;
 	
 	Class loadedClass = NSClassFromString(preferredClassName);
@@ -168,6 +200,8 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	[onViewDidLoad release];
 	[onViewPinch release];
 	
+	[additionalDebugActions release];
+	
 	[super dealloc];
 
 }
@@ -176,20 +210,60 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 
 	[super viewDidLoad];
 	
-	[self.view addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease]];
-	[self.view addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease]];
+	UITapGestureRecognizer *globalTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease];
+	
+	UIPinchGestureRecognizer *globalPinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease];
+	
+	UILongPressGestureRecognizer *globalInspectRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease];
+	
+	globalTapRecognizer.delegate = self;
+	globalPinchRecognizer.delegate = self;
+	globalInspectRecognizer.delegate = self;
+	
+	[self.view addGestureRecognizer:globalTapRecognizer];
+	[self.view addGestureRecognizer:globalPinchRecognizer];
   
   if (WAAdvancedFeaturesEnabled())
-    [self.view addGestureRecognizer:[[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease]];
+    [self.view addGestureRecognizer:globalInspectRecognizer];
 	
 	self.view.article = self.article;
-	self.view.presentationStyle = self.presentationStyle;
+	
+	if ([self.view isKindOfClass:[WAArticleView class]])
+		((WAArticleView *)self.view).presentationStyle = self.presentationStyle;
 	
 	self.view.imageStackView.delegate = self;
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+	__block __typeof__(self) nrSelf = self;
+	__block BOOL (^wrappedIn)(UIView *, Class) = ^ (UIView *aView, Class aClass) {
+	
+		if ([aView isKindOfClass:aClass])
+			return YES;
+		
+		if (!aView.superview)
+			return NO;
+		
+		if (aView == nrSelf.view)
+			return NO;
+		
+		return wrappedIn(aView.superview, aClass);
+		
+	};
+
+	if ([touch.view isKindOfClass:[UIButton class]])
+		return NO;
+	
+	if (wrappedIn(touch.view, [UIScrollView class]))
+		return NO;
+	
+	return YES;
+
 }
 
 - (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
@@ -220,118 +294,123 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	if ([(UIActionSheet *)[controller managedActionSheet] isVisible])
 		return;
 	
-	controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObjects:
+	IRAction *inspectAction = [IRAction actionWithTitle:@"Inspect" block: ^ {
 		
-		[IRAction actionWithTitle:@"Inspect" block: ^ {
+		dispatch_async(dispatch_get_current_queue(), ^ {
+		
+			NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
+			NSURL *articleURI = [[self.article objectID] URIRepresentation];
+			BOOL articleHasFiles = !![self.article.fileOrder count];
 			
-			dispatch_async(dispatch_get_current_queue(), ^ {
-			
-				NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
-        NSURL *articleURI = [[self.article objectID] URIRepresentation];
-        BOOL articleHasFiles = !![self.article.fileOrder count];
-				
-				if (nrSelf.onPresentingViewController) {
+			if (nrSelf.onPresentingViewController) {
 
-					__block WAViewController *shownViewController = [[[WAViewController alloc] init] autorelease];
+				__block WAViewController *shownViewController = [[[WAViewController alloc] init] autorelease];
+				
+				shownViewController.onLoadview = ^ (WAViewController *self) {
+					self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+					textView.text = inspectionText;
+					textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+					textView.editable = NO;
+					[self.view addSubview:textView];
+				};
+				
+				shownViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+					return YES;
+				};
+				
+				__block UINavigationController *shownNavController = [[[UINavigationController alloc] initWithRootViewController:shownViewController] autorelease];
+				shownNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+				
+				shownViewController.title = @"Inspect";
+				
+				shownViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+				
+					[shownNavController dismissModalViewControllerAnimated:YES];
 					
-					shownViewController.onLoadview = ^ (WAViewController *self) {
-						self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-						UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
-						textView.text = inspectionText;
-						textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-						textView.editable = NO;
-						[self.view addSubview:textView];
-					};
-					
-					shownViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-						return YES;
-					};
-					
-					__block UINavigationController *shownNavController = [[[UINavigationController alloc] initWithRootViewController:shownViewController] autorelease];
-					shownNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-					
-					shownViewController.title = @"Inspect";
-					
-					shownViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
-					
-						[shownNavController dismissModalViewControllerAnimated:YES];
+				}];
+				
+				shownViewController.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+				
+					IRAction *emailAction = [IRAction actionWithTitle:@"Email" block:^{
+				
+						NSArray *mailRecipients = [[UIApplication sharedApplication] crashReportRecipients];
+						
+						NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
+						NSString *versionString = [NSString stringWithFormat:@"%@ %@ (%@) Commit %@", [bundleInfo objectForKey:(id)kCFBundleNameKey], [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
+						
+						NSString *mailSubject = [NSString stringWithFormat:@"Inspected Article — %@", versionString];
+						
+						__block IRMailComposeViewController *mailComposeController = [IRMailComposeViewController controllerWithMessageToRecipients:mailRecipients withSubject:mailSubject messageBody:inspectionText inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+							
+							SEL presentingVCSelector = [mailComposeController respondsToSelector:@selector(presentingViewController)] ? @selector(presentingViewController) : @selector(parentViewController);
+							UIViewController *presentingVC = [mailComposeController performSelector:presentingVCSelector];
+							
+							[presentingVC dismissModalViewControllerAnimated:YES];
+							
+						}];
+						
+						mailComposeController.modalPresentationStyle = UIModalPresentationFormSheet;
+						
+						[CATransaction begin];
+						
+						CATransition *transition = [CATransition animation];
+						transition.type = kCATransitionFade;
+						transition.duration = 0.3f;
+						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+						transition.fillMode = kCAFillModeForwards;
+						transition.removedOnCompletion = YES;
+						
+						[shownViewController.navigationController presentModalViewController:mailComposeController animated:NO];
+						[shownViewController.navigationController.view.window.layer addAnimation:transition forKey:kCATransition];
+						
+						[CATransaction commit];
 						
 					}];
-          
-          shownViewController.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
-          
-            IRAction *emailAction = [IRAction actionWithTitle:@"Email" block:^{
 					
-              NSArray *mailRecipients = [[UIApplication sharedApplication] crashReportRecipients];
-              
-              NSDictionary *bundleInfo = [[NSBundle mainBundle] infoDictionary];
-              NSString *versionString = [NSString stringWithFormat:@"%@ %@ (%@) Commit %@", [bundleInfo objectForKey:(id)kCFBundleNameKey], [bundleInfo objectForKey:@"CFBundleShortVersionString"], [bundleInfo objectForKey:(id)kCFBundleVersionKey], [bundleInfo objectForKey:@"IRCommitSHA"]];
-              
-              NSString *mailSubject = [NSString stringWithFormat:@"Inspected Article — %@", versionString];
-              
-              __block IRMailComposeViewController *mailComposeController = [IRMailComposeViewController controllerWithMessageToRecipients:mailRecipients withSubject:mailSubject messageBody:inspectionText inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
-                
-                SEL presentingVCSelector = [mailComposeController respondsToSelector:@selector(presentingViewController)] ? @selector(presentingViewController) : @selector(parentViewController);
-                UIViewController *presentingVC = [mailComposeController performSelector:presentingVCSelector];
-                
-                [presentingVC dismissModalViewControllerAnimated:YES];
-                
-              }];
-              
-              mailComposeController.modalPresentationStyle = UIModalPresentationFormSheet;
-              
-              [CATransaction begin];
-              
-              CATransition *transition = [CATransition animation];
-              transition.type = kCATransitionFade;
-              transition.duration = 0.3f;
-              transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-              transition.fillMode = kCAFillModeForwards;
-              transition.removedOnCompletion = YES;
-              
-              [shownViewController.navigationController presentModalViewController:mailComposeController animated:NO];
-              [shownViewController.navigationController.view.window.layer addAnimation:transition forKey:kCATransition];
-              
-              [CATransaction commit];
-              
-            }];
-            
-            IRActionSheetController *actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:((^ {
-              
-              NSMutableArray *availableActions = [NSMutableArray arrayWithObject:emailAction];
-              
-              if (articleHasFiles) {
-                [availableActions addObject:[IRAction actionWithTitle:@"Files" block:^{
-                  [shownViewController.navigationController pushViewController:[WAArticleFilesListViewController controllerWithArticle:articleURI] animated:YES];
-                }]];
-              }
-              
-              return availableActions;
-              
-            })())];
-            
-            [[actionSheetController managedActionSheet] showFromBarButtonItem:senderItem animated:NO];
-            
-          }];
+					IRActionSheetController *actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:((^ {
+						
+						NSMutableArray *availableActions = [NSMutableArray arrayWithObject:emailAction];
+						
+						if (articleHasFiles) {
+							[availableActions addObject:[IRAction actionWithTitle:@"Files" block:^{
+								[shownViewController.navigationController pushViewController:[WAArticleFilesListViewController controllerWithArticle:articleURI] animated:YES];
+							}]];
+						}
+						
+						return availableActions;
+						
+					})())];
 					
-					nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-						[parentViewController presentModalViewController:shownNavController animated:YES];
-					});
+					[[actionSheetController managedActionSheet] showFromBarButtonItem:senderItem animated:NO];
+					
+				}];
 				
-				} else {
+				nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+					[parentViewController presentModalViewController:shownNavController animated:YES];
+				});
 			
-					[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-				
-				}
-				
-				objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
-				
-			});
-			
-		}],
+			} else {
 		
-	nil]];
+				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+			
+			}
+			
+			objc_setAssociatedObject(nrSelf, &kGlobalInspectActionSheet, nil, OBJC_ASSOCIATION_ASSIGN);
+			
+		});
+		
+	}];
 	
+	NSMutableArray *allActions = [NSMutableArray arrayWithObjects:
+		inspectAction,
+	nil];
+	
+	if (self.additionalDebugActions)
+		[allActions addObjectsFromArray:self.additionalDebugActions];
+	
+	controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:allActions];
+
 	objc_setAssociatedObject(self, &kGlobalInspectActionSheet, controller, OBJC_ASSOCIATION_RETAIN);
 	
 	[(UIActionSheet *)[controller managedActionSheet] showFromRect:(CGRect){
@@ -454,6 +533,9 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	IRCATransact(^ {
 	
 		rootView = self.view.window.rootViewController.modalViewController.view;
+		
+		if (!rootView)
+			rootView = self.view.window.rootViewController.view;
 		
 		backdropView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
 		backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -663,6 +745,36 @@ WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyl
 	
 		});
 	}
+
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+
+	return YES;
+
+}
+
+
+
+
+
+- (WANavigationController *) wrappingNavController {
+
+	NSParameterAssert(!self.navigationController);
+	WANavigationController *controller = [[[WANavigationController alloc] initWithRootViewController:self] autorelease];
+	
+	return controller;
+
+}
+
+- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
+
+	if ([self.navigationController topViewController] != self)
+		return;
+	
+	WANavigationBar *navBar = (WANavigationBar *)self.navigationController.navigationBar;
+	if ([navBar isKindOfClass:[WANavigationBar class]])
+		navBar.alpha = contextControlsVisible ? 1 : 0.03;
 
 }
 

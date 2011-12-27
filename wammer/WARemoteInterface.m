@@ -31,9 +31,6 @@
 
 + (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer;
 
-+ (IRWebAPIResponseContextTransformer) defaultRemoteAuthorizationStatusCheckingTransformer;
-
-
 @end
 
 
@@ -126,47 +123,30 @@
     
     if (!headerFields) {
      headerFields = [NSMutableDictionary dictionary];
-     [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
     }
     
+   [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
+   
     UIDevice *device = [UIDevice currentDevice];
+    NSBundle *bundle = [NSBundle mainBundle];
+    
     [headerFields setObject:[[NSDictionary dictionaryWithObjectsAndKeys:
+      
       @"iOS", @"deviceType",
       device.name, @"deviceName",
       device.model, @"deviceModel",
       device.systemName, @"deviceSystemName",
       device.systemVersion, @"deviceSystemVersion",
-    nil] JSONString] forKey:@"x-origin-device"];
+
+      [[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey], @"bundleVersion",
+      [[bundle infoDictionary] objectForKey:(id)kCFBundleNameKey], @"bundleName",
+      [[bundle infoDictionary] objectForKey:@"IRCommitSHA"], @"bundleCommit",
+
+    nil] JSONString] forKey:@"x-wf-origin"];
     
     return returnedContext;
   
   } copy] autorelease];
-
-}
-
-+ (IRWebAPIResponseContextTransformer) defaultRemoteAuthorizationStatusCheckingTransformer {
-
-	return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
-  
-    NSHTTPURLResponse *response = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponseName];
-    
-    if (response.statusCode == 401) {
-    
-      //  Something went wrong!
-      
-      
-    
-    }
-		
-    dispatch_async(dispatch_get_main_queue(), ^ {
-    
-      
-      
-    });
-    
-		return inParsedResponse;
-    
-	} copy] autorelease];
 
 }
 
@@ -190,7 +170,6 @@
 	
 	self.defaultBatchSize = 200;
 	self.dataRetrievalInterval = 30;
-	self.apiKey = kWARemoteEndpointApplicationKey;
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];
@@ -210,10 +189,9 @@
 
 	[engine.globalRequestPreTransformers addObject:[[self class] defaultBeginNetworkActivityTransformer]];
 	[engine.globalResponsePostTransformers addObject:[[self class] defaultEndNetworkActivityTransformer]];
-		
+  
 	[engine.globalRequestPreTransformers addObject:[self defaultV2AuthenticationSignatureBlock]];
-	//	[engine.globalRequestPreTransformers addObject:[self defaultV1AuthenticationSignatureBlock]];
-	//	[engine.globalRequestPreTransformers addObject:[self defaultV1QueryHack]];
+	[engine.globalResponsePreTransformers addObject:[self defaultV2AuthenticationListeningBlock]];
 
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormMultipartTransformer]];
 	[engine.globalRequestPreTransformers addObject:[[engine class] defaultFormURLEncodingTransformer]];

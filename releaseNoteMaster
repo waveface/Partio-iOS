@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes a potential crasher in the Gallery (Shared) when the user exits the gallery before an asynchronous image update is completed\n- Fixes a crasher in async text attribution where a non-thread-safe object was shared among threads accidentally"
+ETReleaseNotes="- Fixes bug in Gallery where tapping a photo from the article does not trigger correct photo layout\n- Fixes bug where autorotation causes undesired animation in the background view of the Stacked Article View\n- Fixes up performance issues with the Stacked Article View\n- Fixes up scrolling animation for added comments in the Stacked Article View\n- Revises text spacing in the Stacked Article View"
 ETMarketingVersionNumber="0.9.8"

@@ -9,6 +9,6 @@
 #import "WARemoteInterfaceEntitySyncing.h"
 #import "WAGroup.h"
 
-@interface WAGroup (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>
+@interface WAGroup (WARemoteInterfaceEntitySyncing)
 
 @end

@@ -179,14 +179,15 @@
 	
 	[self disassociateBindings];
 	
-	NSArray * (^topImages)(NSArray *) = ^ (NSArray *fileOrderArray) {
+	NSArray * (^topImages)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
 		NSParameterAssert([NSThread isMainThread]);
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-			if (index > 1) {
+			if (index >= maxNumberOfPickedImages) {
 				*stop = YES;
+				return (id)nil;
 			}
 			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			return /* aFile.resourceImage ? aFile.resourceImage : */ aFile.thumbnailImage ? aFile.thumbnailImage : nil;
+			return (id)(/* aFile.resourceImage ? aFile.resourceImage : */ aFile.thumbnailImage ? aFile.thumbnailImage : nil);
 		}];
 	};
 
@@ -212,12 +213,11 @@
 	});
 	
 	bind(self.imageStackView, @"images", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return topImages(inNewValue);
+		return topImages(inNewValue, 2);
 	});
 	
 	bind(self.mainImageView, @"image", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		NSArray *allImages = topImages(inNewValue);
-		return [allImages count] ? [allImages objectAtIndex:0] : nil;
+		return [topImages(inNewValue, 1) lastObject];
 	});
 	
 	bind(self.avatarView, @"image", @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
@@ -288,7 +288,7 @@
 		case WAFullFramePlaintextArticleStyle: {
 			
 			centerOffset.y -= 0.5f * CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 24;
-			contextInfoAnchorsPlaintextBubble = YES;
+			contextInfoAnchorsPlaintextBubble = NO;
 			//	Fall through
 			
 		}

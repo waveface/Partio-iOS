@@ -13,7 +13,12 @@
 #import "UIImage+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 
+#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
+#import <UIKit/UIDevice.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#else
+#import <CoreServices/CoreServices.h>
+#endif
 
 
 @interface WAFile ()
@@ -347,7 +352,12 @@
 	if (!thumbnailFilePath)
 		return nil;
     
-  NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:self.thumbnailFilePath]);
+	if (![[NSFileManager defaultManager] fileExistsAtPath:self.thumbnailFilePath]) {
+	
+		NSLog(@"%@ has invalid thumbnail file path", self);
+		self.thumbnailFilePath = nil;
+	
+	}
   
 	[self willChangeValueForKey:@"thumbnailImage"];
 	thumbnailImage = [[UIImage imageWithContentsOfFile:thumbnailFilePath] retain];
@@ -381,7 +391,6 @@
 			if (![thumbnailFilePath isEqualToString:capturedThumbnailFilePath])
 				return;
 			
-			[[NSFileManager defaultManager] removeItemAtPath:thumbnailFilePath error:nil];
 			foundFile.thumbnailFilePath = nil;
 			
 			NSError *savingError = nil;
@@ -389,6 +398,8 @@
 				NSLog(@"Error saving: %@", savingError);
 				return;
 			}
+			
+			[[NSFileManager defaultManager] removeItemAtPath:thumbnailFilePath error:nil];
 			
 		});
 		

@@ -6,21 +6,31 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
+#import <objc/runtime.h>
+#import <QuartzCore/QuartzCore.h>
+
 #import "WAPaginationSlider.h"
 
 
 @interface WAPaginationSlider ()
 @property (nonatomic, readwrite, retain) UISlider *slider; 
 @property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel; 
+@property (nonatomic, readwrite, retain) NSArray *annotations;
 + (UIImage *) transparentImage;
 - (void) sharedInit;
+- (NSMutableArray *) mutableAnnotations;
+- (CGFloat) positionForPageNumber:(NSUInteger)aPageNumber;
+@property (nonatomic, readwrite, assign) BOOL needsAnnotationsLayout;
 @end
 
 
 @implementation WAPaginationSlider
-@synthesize slider;
+@synthesize slider, sliderInsets;
 @synthesize dotRadius, dotMargin, edgeInsets, numberOfPages, currentPage, snapsToPages, delegate;
 @synthesize pageIndicatorLabel;
+@synthesize instantaneousCallbacks;
+@synthesize layoutStrategy;
+@synthesize annotations, needsAnnotationsLayout;
 
 + (UIImage *) transparentImage {
 
@@ -38,6 +48,15 @@
 	});
 
 	return returnedImage;
+
+}
+
+- (void) dealloc {
+
+	[slider release];
+	[annotations release];
+	
+	[super dealloc];
 
 }
 
@@ -64,7 +83,10 @@
 
 - (void) sharedInit {
 
-	self.dotRadius = 4.0f;
+	self.sliderInsets = UIEdgeInsetsZero;
+	self.annotations = [NSArray array];
+
+	self.dotRadius = 3.0f;
 	self.dotMargin = 12.0f;
 	self.edgeInsets = (UIEdgeInsets){ 0, 12, 0, 12 };
 	
@@ -74,13 +96,15 @@
 	
 	self.slider = [[[UISlider alloc] initWithFrame:self.bounds] autorelease];
 	self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.slider.value = 0;
 	
 	[self.slider setMinimumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
 	[self.slider setMaximumTrackImage:[[self class] transparentImage] forState:UIControlStateNormal];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbInactive"] forState:UIControlStateDisabled];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumb"] forState:UIControlStateNormal];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbActive"] forState:UIControlStateSelected];
-	[self.slider setThumbImage:[UIImage imageNamed:@"WAPageSliderThumbActive"] forState:UIControlStateHighlighted];
+	
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnob"] forState:UIControlStateNormal];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnobDisabled"] forState:UIControlStateDisabled];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnobPressed"] forState:UIControlStateSelected];
+	[self.slider setThumbImage:[UIImage imageNamed:@"WASliderKnobPressed"] forState:UIControlStateHighlighted];
 	
 	[self.slider addTarget:self action:@selector(sliderDidMove:) forControlEvents:UIControlEventValueChanged];
 	[self.slider addTarget:self action:@selector(sliderTouchDidStart:) forControlEvents:UIControlEventTouchDown];
@@ -113,28 +137,80 @@
 	numberOfPages = newNumberOfPages;
 	[self didChangeValueForKey:@"numberOfPages"];
 	
+	[self.slider setValue:[self positionForPageNumber:self.currentPage] animated:YES];
+	
 	[self setNeedsLayout];
+
+}
+
+- (void) setBounds:(CGRect)bounds {
+
+	self.needsAnnotationsLayout = YES;
+	[super setBounds:bounds];
+
+}
+
+- (void) setFrame:(CGRect)frame {
+
+	self.needsAnnotationsLayout = YES;
+	[super setFrame:frame];
 
 }
 
 - (void) layoutSubviews {
 
 	static int dotTag = 1048576;
-
+	static int annotationViewTag = 2097152;
+	
 	NSMutableSet *dequeuedDots = [NSMutableSet set];
+	NSMutableSet *currentDots = [NSMutableSet set];
 	
 	self.slider.enabled = !!self.numberOfPages;
 
 	for (UIView *aSubview in self.subviews)
 		if (aSubview.tag == dotTag)
 			[dequeuedDots addObject:aSubview];
-
-	CGFloat usableWidth = CGRectGetWidth(self.bounds) - self.edgeInsets.left - self.edgeInsets.right;
+	
+	UIEdgeInsets usedSliderInsets = self.sliderInsets;
+	UIEdgeInsets usedInsets = self.edgeInsets;
+	CGFloat usableWidth = CGRectGetWidth(self.bounds) - usedInsets.left - usedInsets.right;
 	NSUInteger numberOfDots = (NSUInteger)floorf(usableWidth / (self.dotRadius + self.dotMargin));
 	
-	//	if (self.numberOfPages)
-	//		numberOfDots = MIN(numberOfDots, self.numberOfPages);
+	switch (self.layoutStrategy) {
+		
+		case WAPaginationSliderFillWithDotsLayoutStrategy: {
+			break;
+		}
+		
+		case WAPaginationSliderLessDotsLayoutStrategy: {
+		
+			if (self.numberOfPages)
+				numberOfDots = MIN(numberOfDots, self.numberOfPages);
+			
+			CGFloat minWidth = (numberOfDots - 1) * dotMargin;
+			
+			if (minWidth < usableWidth) {
+			
+				CGFloat endowment = roundf(0.5 * (usableWidth - minWidth));
+				CGFloat sliderEndowment = MIN(roundf(0.5 * (usableWidth - MAX(2, minWidth))), endowment);
+				
+				usedInsets.left += endowment;
+				usedInsets.right += endowment; 
+				
+				usedSliderInsets.left += sliderEndowment;
+				usedSliderInsets.right += sliderEndowment;
+				
+				usableWidth = minWidth;
+				
+			}
+		
+			break;
+		}
+		
+	}
 	
+	self.slider.frame = UIEdgeInsetsInsetRect(self.bounds, usedSliderInsets);
+
 	CGFloat dotSpacing = usableWidth / (numberOfDots - 1);
 	
 	UIImage *dotImage = (( ^ (CGFloat radius, CGFloat alpha) {
@@ -160,7 +236,7 @@
 		[dequeuedDots addObject:dotView];
 	}
 	
-	CGFloat offsetX = self.edgeInsets.left - 0.5 * self.dotRadius;
+	CGFloat offsetX = usedInsets.left - 0.5 * self.dotRadius;
 	CGFloat offsetY = roundf(0.5f * (CGRectGetHeight(self.bounds) - self.dotRadius));
 
 	int i; for (i = 0; i < numberOfDots; i++) {
@@ -169,7 +245,8 @@
 		[dequeuedDots removeObject:dotView];
 		
 		dotView.frame = (CGRect){ roundf(offsetX), roundf(offsetY), self.dotRadius, self.dotRadius }; 
-		[self addSubview:dotView];
+		[currentDots addObject:dotView];
+		[self insertSubview:dotView belowSubview:slider];
 		
 		offsetX += dotSpacing;
 		
@@ -179,6 +256,56 @@
 		[unusedDotView removeFromSuperview];
 	
 	[self bringSubviewToFront:self.slider];
+	
+	NSString * const kWAPaginationSliderAnnotationView_HostAnnotation = @"WAPaginationSliderAnnotationView_HostAnnotation";
+	
+	for (UIView *aSubview in self.subviews) {
+		if (aSubview.tag == annotationViewTag) {
+			if (![self.annotations containsObject:objc_getAssociatedObject(aSubview, kWAPaginationSliderAnnotationView_HostAnnotation)]) {
+				[aSubview removeFromSuperview];
+			}
+		}
+	}
+	
+	for (WAPaginationSliderAnnotation *anAnnotation in self.annotations) {
+		
+		NSArray *allFittingAnnotationViews = [self.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock: ^ (UIView *anAnnotationView, NSDictionary *bindings) {
+			
+			if (anAnnotationView.tag != annotationViewTag)
+				return NO;
+			
+			if (anAnnotation == objc_getAssociatedObject(anAnnotationView, kWAPaginationSliderAnnotationView_HostAnnotation))
+				return YES;
+			
+			return NO;
+			
+		}]];
+		
+		NSParameterAssert([allFittingAnnotationViews count] <= 1);
+		
+		UIView *annotationView = [allFittingAnnotationViews lastObject];
+		
+		if (!annotationView)
+			annotationView = [self.delegate viewForAnnotation:anAnnotation inPaginationSlider:self];
+		
+		NSParameterAssert(annotationView);
+		
+		annotationView.center = (CGPoint){
+			anAnnotation.centerOffset.x + usedInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
+			anAnnotation.centerOffset.y + roundf(0.5f * CGRectGetHeight(self.bounds))
+		};
+		
+		annotationView.frame = CGRectIntegral(annotationView.frame);
+		
+		for (UIView *aDotView in currentDots) {
+			BOOL dotOverlapsAnnotation = !CGRectEqualToRect(CGRectNull, CGRectIntersection(aDotView.frame, annotationView.frame));
+			aDotView.hidden = dotOverlapsAnnotation;
+		}
+		
+		if (annotationView.superview != self)
+			[self insertSubview:annotationView belowSubview:slider];
+		
+	}
 
 }
 
@@ -202,8 +329,22 @@
 
 	if (!aPageNumber)
 		return 0;
+	
+	CGFloat returnedValue = (CGFloat)(1.0f * aPageNumber / (self.numberOfPages - 1));
+	NSLog(@"%s %i -> %f", __PRETTY_FUNCTION__, aPageNumber, returnedValue);
+	
+	return returnedValue;
 
-	return (CGFloat)(1.0f * aPageNumber / (self.numberOfPages - 1));
+}
+
+- (CGRect) currentSliderThumbRect {
+
+	CGRect sliderBounds = self.slider.bounds;
+	CGRect sliderTrackRect = [self.slider trackRectForBounds:sliderBounds];
+	CGFloat sliderValue = self.slider.value;
+	
+	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:sliderBounds trackRect:sliderTrackRect value:sliderValue];
+	return [self convertRect:prospectiveThumbRect fromView:self.slider];
 
 }
 
@@ -217,8 +358,7 @@
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 
-	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
-	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX([self currentSliderThumbRect]), -12.0f };
 	
 	[UIView animateWithDuration:0.125f delay:0.0f options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionLayoutSubviews|UIViewAnimationOptionAllowUserInteraction animations: ^ {
 		
@@ -238,8 +378,12 @@
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 	
-	CGRect prospectiveThumbRect = [self.slider thumbRectForBounds:self.slider.bounds trackRect:[self.slider trackRectForBounds:self.slider.bounds] value:self.slider.value];
-	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX(prospectiveThumbRect), -12.0f };
+	self.pageIndicatorLabel.center = (CGPoint){ CGRectGetMidX([self currentSliderThumbRect]), -12.0f };
+	
+	self.pageIndicatorLabel.frame = CGRectIntegral(self.pageIndicatorLabel.frame);
+	
+	if (instantaneousCallbacks)
+		[self.delegate paginationSlider:self didMoveToPage:currentPage];
 	
 }
 
@@ -258,11 +402,17 @@
 	NSUInteger capturedCurrentPage = self.currentPage;
 	dispatch_async(dispatch_get_current_queue(), ^ {
 	
-		CGFloat inferredSliderSnappingValue = [self positionForPageNumber:capturedCurrentPage];
 		[self.delegate paginationSlider:self didMoveToPage:capturedCurrentPage];
 		
-		if (self.snapsToPages)
+		if (self.snapsToPages) {
+			
+			CGFloat inferredSliderSnappingValue = [self positionForPageNumber:capturedCurrentPage];
+			if (self.numberOfPages == 1)
+				inferredSliderSnappingValue = 0.5;	//	Really?
+				
 			[aSlider setValue:inferredSliderSnappingValue animated:YES];
+			
+		}
 		
 	});
 
@@ -292,10 +442,66 @@
 
 }
 
+- (NSMutableArray *) mutableAnnotations {
+
+	return [self mutableArrayValueForKey:@"annotations"];
+
+}
+
+- (void) addAnnotations:(NSSet *)insertedAnnotations {
+
+	[[self mutableAnnotations] addObjectsFromArray:[insertedAnnotations allObjects]];
+	[self setNeedsAnnotationsLayout];
+
+}
+
+- (void) addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
+
+	[[self mutableAnnotations] addObject:anAnnotation];
+	[self setNeedsAnnotationsLayout];
+
+}
+
+- (void) removeAnnotations:(NSSet *)removedAnnotations {
+
+	[[self mutableAnnotations] removeObjectsInArray:[removedAnnotations allObjects]];
+	[self setNeedsAnnotationsLayout];
+
+}
+
+- (void) removeAnnotationsAtIndexes:(NSIndexSet *)indexes {
+
+	[[self mutableAnnotations] removeObjectsAtIndexes:indexes];
+	[self setNeedsAnnotationsLayout];
+
+}
+
+- (void) removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation {
+
+	[[self mutableAnnotations] removeObject:anAnnotation];
+	[self setNeedsAnnotationsLayout];
+
+}
+
+- (void) setNeedsAnnotationsLayout {
+
+	self.needsAnnotationsLayout = YES;
+	[self setNeedsLayout];
+
+}
+
+@end
+
+
+
+
+
+@implementation WAPaginationSliderAnnotation : NSObject
+@synthesize title, pageIndex, centerOffset;
+
 - (void) dealloc {
 
-	[slider release];
-	
+	[title release];
 	[super dealloc];
 
 }
