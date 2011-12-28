@@ -1,2 +1,2 @@
-ETReleaseNotes="- Minor fixes to the Gallery view\n- Updates application icons for the iPhone\n- Fixes bug where multilingual rich-text labels do not align by baseline"
+ETReleaseNotes="- Hotfix: Fixes bug where text in labels are underlined"
 ETMarketingVersionNumber="0.9.8"
