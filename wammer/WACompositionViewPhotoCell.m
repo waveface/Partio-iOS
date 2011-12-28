@@ -54,6 +54,7 @@
 	self.contentView.clipsToBounds = NO;
 	
 	self.imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
+	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;//kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
 	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
@@ -63,6 +64,7 @@
 	[self.contentView addSubview:self.imageContainer];
 	
 	self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	self.removeButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 	[self.removeButton addTarget:self action:@selector(handleRemove:) forControlEvents:UIControlEventTouchUpInside];
 	[self.removeButton setImage:[UIImage imageNamed:@"WAButtonSpringBoardRemove"] forState:UIControlStateNormal];
 	[self.removeButton sizeToFit];
@@ -71,6 +73,7 @@
 	[self.contentView addSubview:self.removeButton];
 	
 	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	self.activityIndicator.center = (CGPoint){ CGRectGetMidX(self.imageContainer.bounds), CGRectGetMidY(self.imageContainer.bounds) };
 	self.activityIndicator.frame = CGRectIntegral(self.activityIndicator.frame);
 	[self.activityIndicator startAnimating];
