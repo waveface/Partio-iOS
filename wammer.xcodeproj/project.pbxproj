@@ -178,6 +178,7 @@
 		FF8F463B14690A2A00D65864 /* WARemoteInterface+Footprints.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */; };
 		FF8F463F14691A7D00D65864 /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */; };
+		FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF91960C14AB09C400352E4D /* WADimmingView.m */; };
 		FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */; };
@@ -984,6 +985,8 @@
 		FF8F463D14691A7D00D65864 /* WAGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGroup.h; sourceTree = "<group>"; };
 		FF8F463E14691A7D00D65864 /* WAGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGroup.m; sourceTree = "<group>"; };
 		FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternThickShrunkPaper.png; path = Resources/WAPatternThickShrunkPaper.png; sourceTree = "<group>"; };
+		FF91960B14AB09C400352E4D /* WADimmingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADimmingView.h; sourceTree = "<group>"; };
+		FF91960C14AB09C400352E4D /* WADimmingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADimmingView.m; sourceTree = "<group>"; };
 		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATableViewCell.h; sourceTree = "<group>"; };
 		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATableViewCell.m; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
@@ -1310,6 +1313,8 @@
 		FF3ACA9113E6AD1C000F608C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FF91960B14AB09C400352E4D /* WADimmingView.h */,
+				FF91960C14AB09C400352E4D /* WADimmingView.m */,
 				FF7BB4B114A1B26B00F6B76C /* WAStackView.h */,
 				FF7BB4B214A1B26B00F6B76C /* WAStackView.m */,
 				FFA06554143B227B00145079 /* WANavigationBar.h */,
@@ -2770,6 +2775,7 @@
 				FF73351214A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */,
 				FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */,
 				FF3AEEF814A30EEB00FC4E19 /* WAArticleViewController_Default.m in Sources */,
+				FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
