@@ -26,6 +26,10 @@ extern NSString * const kWAArticleSyncRangeStart;
 extern NSString * const kWAArticleSyncRangeEnd;
 //  Same, but only older than this identifier
 
+extern NSString * const kWAArticleSyncProgressCallback;
+typedef void (^WAArticleSyncProgressCallback)(BOOL hasDoneWork, NSManagedObjectContext *usedMOC, NSArray *currentObjects, NSError *error);
+//	If set, invoked intermittently for kWAArticleSyncFullyFetchOnlyStrategy
+
 #endif
 
 
