@@ -21,7 +21,7 @@
 
 
 @implementation WAArticleTextEmphasisLabel
-@synthesize textView, label, backgroundView, font;
+@synthesize textView, label, backgroundView, font, text, placeholder;
 
 - (id) initWithFrame:(CGRect)aFrame {
 
@@ -69,6 +69,8 @@
 	
 	[self addSubview:self.label];
 	
+	[self updateText];
+	
 }
 
 - (void) setBackgroundView:(UIView *)newBackgroundView {
@@ -83,63 +85,95 @@
 
 }
 
-- (void) setText:(NSString *)text {
+- (void) setText:(NSString *)newText {
 
-	IRLabel *capturedLabel = self.label;
-	NSAttributedString *attributedText = [self.label attributedStringForString:text];
-	capturedLabel.attributedText = attributedText;
-	
-	if (!text || ![text length])
+	if (text == newText)
 		return;
 	
-	dispatch_async(dispatch_get_global_queue(0, 0), ^ {
-  
-    static NSDataDetector *sharedDataDetector = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-      sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
-    });
-  
-		__block BOOL hasLinks = NO;
-		
-		NSMutableAttributedString *linkedAttributedText = [[attributedText mutableCopy] autorelease];		
-		
-		[linkedAttributedText beginEditing];
-    
-    NSString *matchedText = [[text copy] autorelease];
-    matchedText = [matchedText stringByReplacingOccurrencesOfString:@"\n" withString:@" "];  //  iOS 4.3 Crasher
-    
-    [sharedDataDetector enumerateMatchesInString:matchedText options:0 range:(NSRange){ 0, [matchedText length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
-    
-      hasLinks = YES;
-    
-      [linkedAttributedText addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-        (id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
-        result.URL, kIRTextLinkAttribute,
-      nil] range:result.range];
-      
-    }];
-    
-		[linkedAttributedText endEditing];
-		
-		if (!hasLinks)
-			return;
-		
-		dispatch_async(dispatch_get_main_queue(), ^ {
-		
-			if ([capturedLabel.attributedText isEqualToAttributedString:attributedText])
-				capturedLabel.attributedText = linkedAttributedText;
-		
-		});
-
-	});
+	[text release];
+	text = [newText copy];
+	
+	[self updateText];
 
 }
 
-- (NSString *) text {
+- (void) setPlaceholder:(NSString *)newPlaceholder {
 
-	return (NSString *)self.label.text;
+	if (placeholder == newPlaceholder)
+		return;
+	
+	[placeholder release];
+	placeholder = [newPlaceholder copy];
+	
+	[self updateText];
+	
+}
 
+- (void) updateText {
+
+	BOOL usesPlaceholder = YES;
+
+	IRLabel *capturedLabel = self.label;
+	NSString *capturedText = self.text;
+	
+	NSAttributedString *attributedText = [capturedLabel attributedStringForString:capturedText];
+	capturedLabel.attributedText = attributedText;
+	
+	if ([capturedText length])
+		usesPlaceholder = NO;
+	
+	if (!usesPlaceholder) {
+	
+		dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+		
+			static NSDataDetector *sharedDataDetector = nil;
+			static dispatch_once_t onceToken;
+			dispatch_once(&onceToken, ^{
+				sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
+			});
+		
+			__block BOOL hasLinks = NO;
+			
+			NSMutableAttributedString *linkedAttributedText = [[attributedText mutableCopy] autorelease];		
+			
+			[linkedAttributedText beginEditing];
+			
+			NSString *matchedText = [[capturedText copy] autorelease];
+			matchedText = [matchedText stringByReplacingOccurrencesOfString:@"\n" withString:@" "];  //  iOS 4.3 Crasher
+			
+			[sharedDataDetector enumerateMatchesInString:matchedText options:0 range:(NSRange){ 0, [matchedText length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+			
+				hasLinks = YES;
+			
+				[linkedAttributedText addAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+					(id)[UIColor colorWithRed:0 green:0 blue:0.5 alpha:1].CGColor, kCTForegroundColorAttributeName,
+					result.URL, kIRTextLinkAttribute,
+				nil] range:result.range];
+				
+			}];
+			
+			[linkedAttributedText endEditing];
+			
+			if (!hasLinks)
+				return;
+			
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				if ([capturedLabel.attributedText isEqualToAttributedString:attributedText])
+					capturedLabel.attributedText = linkedAttributedText;
+			
+			});
+
+		});
+	
+	}
+	
+	if (usesPlaceholder && self.placeholder) {
+		
+		self.label.attributedText = [self.label attributedStringForString:self.placeholder font:self.font color:[UIColor colorWithWhite:0.5 alpha:1]];
+	
+	}
+	
 }
 
 - (CGSize) sizeThatFits:(CGSize)size {
@@ -150,9 +184,13 @@
 
 - (void) dealloc {
 
+	[text release];
+	[placeholder release];
+	
 	[font release];
 	[label release];
 	[backgroundView release];
+	
 	[super dealloc];
 
 }
