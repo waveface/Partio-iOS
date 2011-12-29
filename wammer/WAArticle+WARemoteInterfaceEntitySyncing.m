@@ -22,6 +22,8 @@ NSString * const kWAArticleSyncMergeLastBatchStrategy = @"WAArticleSyncMergeLast
 NSString * const kWAArticleSyncRangeStart = @"WAArticleSyncRangeStart";
 NSString * const kWAArticleSyncRangeEnd = @"WAArticleSyncRangeEnd";
 
+NSString * const kWAArticleSyncProgressCallback = @"WAArticleSyncProgressCallback";
+
 NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 @implementation WAArticle (WARemoteInterfaceEntitySyncing)
@@ -192,7 +194,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   WARemoteInterface *ri = [WARemoteInterface sharedInterface];
   WADataStore *ds = [WADataStore defaultStore];
   NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
-  NSUInteger usedBatchLimit = 50;
+  NSUInteger usedBatchLimit = ri.defaultBatchSize;
   
   if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
   
@@ -216,8 +218,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     }];
     
   } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
+	
+		WAArticleSyncProgressCallback progressCallback = [[[options objectForKey:kWAArticleSyncProgressCallback] copy] autorelease];
   
     NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
+		NSLog(@"Session started with continuation %@", sessionInfo);
     
     if (!sessionInfo)
       sessionInfo = [NSMutableDictionary dictionary];
@@ -243,6 +248,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
       if (!usedContext) {
         usedContext = [ds disposableMOC];
+				usedContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         [sessionInfo setObject:usedContext forKey:@"context"];
       }
       
@@ -252,8 +258,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         usedObjects = [NSMutableArray array];
         [sessionInfo setObject:usedObjects forKey:@"objects"];
       }
-    
+			
       [ds fetchLatestArticleInGroup:usedGroupIdentifier usingContext:usedContext onSuccess:^(NSString *identifier, WAArticle *article) {
+			
+				
       
         NSString *referencedPostIdentifier = identifier;
         NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
@@ -264,10 +272,16 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         }
         
         [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
+				
+					NSLog(@"got posts: %@", [postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
+						return [aPost valueForKeyPath:@"post_id"];
+					}]);
         
           dispatch_async(sessionQueue, ^{
           
             if (![postReps count]) {
+						
+							NSLog(@"No newer stuff, things have ended");
             
               if (completionBlock)
                 completionBlock(YES, usedContext, usedObjects, nil);
@@ -280,6 +294,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
             
             NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
             [usedObjects addObject:touchedObjects];
+						
+						if (progressCallback)
+							progressCallback(NO, usedContext, usedObjects, nil);
             
             dispatch_async(dispatch_get_main_queue(), ^{
               
@@ -292,6 +309,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
           });
         
         } onFailure:^(NSError *error) {
+				
+					NSLog(@"Retrieval failed %@", error);
         
           if (completionBlock)
             completionBlock(NO, nil, nil, error);

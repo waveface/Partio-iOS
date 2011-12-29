@@ -15,6 +15,7 @@
 @interface WAArticleTextEmphasisLabel : UIView
 
 @property (nonatomic, readwrite, copy) NSString *text;
+@property (nonatomic, readwrite, copy) NSString *placeholder;	//	Defaults to nil; if exists, draws at 50% gray
 @property (nonatomic, readwrite, retain) UIFont *font;
 @property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
 
