@@ -489,6 +489,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 }
 
+- (void) refreshData {
+
+	//	Explicitly do nothing as otherwise it interferes with global entity syncing
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
@@ -515,10 +521,16 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	NSString *capturedLastReadObjectID = self.lastReadObjectIdentifier;
 	
+	[[WARemoteInterface sharedInterface] beginPerformingAutomaticRemoteUpdates];
+	
 	[self retrieveLatestReadingProgressWithCompletion:^(NSTimeInterval timeTaken) {
+	
+		[[WARemoteInterface sharedInterface] endPerformingAutomaticRemoteUpdates];
 	
 		if (![self isViewLoaded])
 			return;
+			
+		//	FIXME if (!self.hasReceivedUserInteraction)
 		
 		if (timeTaken > 3)
 			return;
@@ -1116,19 +1128,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
-//	@synchronized (self) {
-//
-//		if (objc_getAssociatedObject(self, &_cmd))
-//			return;
-//		
-//		objc_setAssociatedObject(self, &_cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//	
-//	}
-	
 	void (^cleanup)() = ^ {
 	
 		NSParameterAssert([NSThread isMainThread]);
-//		objc_setAssociatedObject(self, &_cmd, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		if (aBlock)
 			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
@@ -1184,12 +1186,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 				}
 				
-				if (usesBezel) {
-					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-					nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-					nrBezel.caption = @"Loading";
-					[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-				}
+				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+				nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+				nrBezel.caption = @"Loading";
+				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
 				
 				//	Otherwise, fetch stuff until things are tidy again
 				
@@ -1197,14 +1197,29 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 					kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
 					
+					[[^ (BOOL hasDoneWorking, NSManagedObjectContext *temporalContext, NSArray *usedObjects, NSError *anError) {
+					
+						NSParameterAssert(!hasDoneWorking);
+						
+						NSError *savingError = nil;
+						if (![temporalContext save:&savingError]) {
+							NSLog(@"Error saving: %@", savingError);
+							NSParameterAssert(NO);
+						}
+						
+						//	Save would trigger UI update
+					
+					} copy] autorelease], kWAArticleSyncProgressCallback,
+					
 				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 				
 					if (!didFinish) {
 						
 						dispatch_async(dispatch_get_main_queue(), ^ {
 
+							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+							
 							if (usesBezel) {
-								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 								nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 								nrBezel.caption = @"Load Failed";
 								[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
@@ -1222,13 +1237,16 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					}
 				
 					NSError *savingError = nil;
-					if (![temporalContext save:&savingError])
+					if (![temporalContext save:&savingError]) {
 						NSLog(@"Error saving: %@", savingError);
+						NSParameterAssert(NO);
+					}
 						
 					dispatch_async(dispatch_get_main_queue(), ^{
 
+						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+						
 						if (usesBezel) {
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 							nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
 							[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
 							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
@@ -1437,15 +1455,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	} else {
 	
-		__block UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-		[spinner startAnimating];
-		[spinner setCenter:(CGPoint){
-			CGRectGetMidX(articleViewController.view.bounds),
-			CGRectGetMidY(articleViewController.view.bounds)
-		}];
-		[articleViewController.view addSubview:spinner];
+//		__block UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+//		[spinner startAnimating];
+//		[spinner setCenter:(CGPoint){
+//			CGRectGetMidX(articleViewController.view.bounds),
+//			CGRectGetMidY(articleViewController.view.bounds)
+//		}];
+//		[articleViewController.view addSubview:spinner];
 
-		NSParameterAssert(nrSelf.navigationController);
+//	NSParameterAssert(nrSelf.navigationController);
 		
 		self.view.superview.clipsToBounds = NO;
 		self.view.superview.superview.clipsToBounds = NO;
@@ -1456,7 +1474,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
 		dispatch_after(popTime, dispatch_get_main_queue(), ^ {
 		
-			[spinner removeFromSuperview];
+//			[spinner removeFromSuperview];
 			
 			__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = nil;
 			
