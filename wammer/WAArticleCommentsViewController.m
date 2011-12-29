@@ -40,6 +40,7 @@
 @synthesize cellPrototype;
 @synthesize onViewDidLoad;
 @synthesize scrollsToLastRowOnChange;
+@synthesize coachmarkOverlay;
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
@@ -242,6 +243,28 @@
 		}
 		
 		nrCompositionAccessoryView.frame = accessoryViewFrame;
+		
+		if (nrSelf.coachmarkOverlay) {
+		
+			if (![nrSelf.fetchedResultsController.fetchedObjects count]) {
+			
+				nrSelf.coachmarkOverlay.frame = UIEdgeInsetsInsetRect(
+					[nrSelf.view convertRect:nrSelf.commentsView.frame fromView:nrSelf.commentsView.superview],
+					commentsViewContentInset
+				);
+				
+				if (nrSelf.coachmarkOverlay.superview != nrSelf.view)
+					[nrSelf.view addSubview:nrSelf.coachmarkOverlay];
+				else
+					[nrSelf.view bringSubviewToFront:nrSelf.coachmarkOverlay];
+			
+			} else {
+			
+				[nrSelf.coachmarkOverlay removeFromSuperview];
+			
+			}
+		
+		}
 				
 	};
 	
@@ -699,6 +722,8 @@
 	[article release];
 	
 	[onViewDidLoad release];
+	
+	[coachmarkOverlay release];
 	
 	[super dealloc];
 
