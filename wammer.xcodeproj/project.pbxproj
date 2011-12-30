@@ -3091,7 +3091,6 @@
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
@@ -3111,7 +3110,6 @@
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
