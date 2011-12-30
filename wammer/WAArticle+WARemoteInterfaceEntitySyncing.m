@@ -105,7 +105,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 		
-		@"WAFile", @"files",
+		//	@"WAFile", @"files",
 		@"WAGroup", @"group",
 		@"WAComment", @"comments",
 		@"WAUser", @"owner",
@@ -422,6 +422,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					}
 					
 					WAFile *savedFile = (WAFile *)prospectiveUnsavedObject;
+					NSParameterAssert(savedFile.article);
+					
 					aCallback(savedFile.identifier);
 					
 				}];
@@ -472,9 +474,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:ownURL];
 				savedPost.draft = (id)kCFBooleanFalse;
 				
+				NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
+				
+				//	This would recursively delete the files too
+				NSArray *oldFileOrder = [[savedPost.fileOrder retain] autorelease];
+				NSSet *oldFiles = [[savedPost.files retain] autorelease];
 				[savedPost.managedObjectContext deleteObject:savedPost];
 				
-				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				
+				NSParameterAssert([touchedObjects count]);
+				
+				savedPost = (WAArticle *)[touchedObjects lastObject];
+				savedPost.files = oldFiles;
+				savedPost.fileOrder = oldFileOrder;
 				
 				completionBlock(YES, context, savedPost, nil);
 			
