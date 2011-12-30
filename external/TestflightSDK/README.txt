@@ -36,7 +36,7 @@ Information gathered by the SDK is sent to the website in real time. When an app
 This SDK can be run from both the iPhone Simulator and Device and has been tested using Xcode 4.0.
 
 3. How do I integrate the SDK into my project?
-
+	
 
 1. Add the files to your project: File -> Add Files to "<your project name>" 
 
