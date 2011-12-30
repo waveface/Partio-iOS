@@ -14,12 +14,16 @@
 
 - (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
 
-  NSMutableDictionary *usedDictionary = [[inDictionary mutableCopy] autorelease];
+	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, self, inDictionary);
+ 
+	NSMutableDictionary *usedDictionary = [[inDictionary mutableCopy] autorelease];
   
   if ([[usedDictionary objectForKey:@"url"] isEqualToString:@""])
     [usedDictionary removeObjectForKey:@"url"];
+	
+	NSLog(@"Using %@", usedDictionary);
 
-  [super configureWithRemoteDictionary:inDictionary];
+  [super configureWithRemoteDictionary:usedDictionary];
   
   if (!self.resourceType) {
     
@@ -255,7 +259,7 @@
 
 	if (([[NSURL URLWithString:self.resourceURL] isFileURL] || !self.resourceURL) && (self.resourceFilePath)) {
 	
-		[ri createAttachmentWithFileAtURL:[NSURL URLWithString:self.resourceURL] inGroup:ri.primaryGroupIdentifier representingImageURL:nil withTitle:self.text description:nil replacingAttachment:nil asType:nil onSuccess:^(NSString *attachmentIdentifier) {
+		[ri createAttachmentWithFileAtURL:[NSURL URLWithString:self.resourceURL] inGroup:ri.primaryGroupIdentifier representingImageURL:nil withTitle:self.text description:nil replacingAttachment:nil asType:WARemoteAttachmentUnknownType onSuccess:^(NSString *attachmentIdentifier) {
 		
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
