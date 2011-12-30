@@ -394,6 +394,9 @@
 }
 
 - (void) authenticate {
+	
+	// Set a testflight checkpoint: SignIn
+	[TestFlight passCheckpoint:@"SignIn"];
 
   [self update];
 	
