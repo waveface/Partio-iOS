@@ -358,6 +358,12 @@
         ((char *)NULL)[1] = 0;
       
       }],
+			
+			[IRAction actionWithTitle:@"Trigger Token Expiry" block:^{
+			
+				[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
+			
+			}],
     
       [IRAction actionWithTitle:@"Import Test Photos" block: ^ {
       
