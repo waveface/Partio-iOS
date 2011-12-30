@@ -59,6 +59,9 @@
 		4BFAE5ED1484C33B002CDE07 /* WASend@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5E51484C33B002CDE07 /* WASend@2x.png */; };
 		FA259F451457E96300F79C8F /* WASettingsGlyph~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */; };
 		FA259F461457E96300F79C8F /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */; };
+		FACF18AB14AD9AC70026F065 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FACF18A714AD9AC70026F065 /* libTestFlight.a */; };
+		FACF18AC14AD9AC70026F065 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = FACF18A814AD9AC70026F065 /* README.txt */; };
+		FACF18AD14AD9AC70026F065 /* release_notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = FACF18A914AD9AC70026F065 /* release_notes.txt */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_Plaintext.m */; };
 		FF0AC0CA149F7A8C00AA5611 /* WAArticleViewController_Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_Default.xib */; };
 		FF0AC0CB149F7A8C00AA5611 /* WAArticleViewController_Discrete_Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C6149F7A8B00AA5611 /* WAArticleViewController_Discrete_Default.xib */; };
@@ -760,6 +763,10 @@
 		4BFAE5E51484C33B002CDE07 /* WASend@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASend@2x.png"; path = "Resources/WASend@2x.png"; sourceTree = "<group>"; };
 		FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph~iphone.png"; path = "Resources/WASettingsGlyph~iphone.png"; sourceTree = "<group>"; };
 		FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph@2x~iphone.png"; path = "Resources/WASettingsGlyph@2x~iphone.png"; sourceTree = "<group>"; };
+		FACF18A714AD9AC70026F065 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		FACF18A814AD9AC70026F065 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		FACF18A914AD9AC70026F065 /* release_notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
+		FACF18AA14AD9AC70026F065 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
@@ -1190,6 +1197,7 @@
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
+				FACF18AB14AD9AC70026F065 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1298,6 +1306,17 @@
 				4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */,
 			);
 			path = Xibs;
+			sourceTree = "<group>";
+		};
+		FACF18A614AD9AC70026F065 /* TestFlightSDK0.8.2 */ = {
+			isa = PBXGroup;
+			children = (
+				FACF18A714AD9AC70026F065 /* libTestFlight.a */,
+				FACF18A814AD9AC70026F065 /* README.txt */,
+				FACF18A914AD9AC70026F065 /* release_notes.txt */,
+				FACF18AA14AD9AC70026F065 /* TestFlight.h */,
+			);
+			path = TestFlightSDK0.8.2;
 			sourceTree = "<group>";
 		};
 		FF1A10471462ACDB004FD00D /* Products */ = {
@@ -1437,6 +1456,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				FACF18A614AD9AC70026F065 /* TestFlightSDK0.8.2 */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF761AEC14876222003C11D2 /* Station Discovery */,
@@ -2508,6 +2528,8 @@
 				FF0AC0D3149F865E00AA5611 /* WAArticleTextStackCell.xib in Resources */,
 				FF5EE1AE149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop.png in Resources */,
 				FF5EE1AF149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop@2x.png in Resources */,
+				FACF18AC14AD9AC70026F065 /* README.txt in Resources */,
+				FACF18AD14AD9AC70026F065 /* release_notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3073,6 +3095,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3088,6 +3114,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
