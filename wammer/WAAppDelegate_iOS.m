@@ -114,6 +114,10 @@
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	[self bootstrap];
+	
+	// Testflight takeOff
+	// TODO: Move testflight team token to somewhere for security and easy setup
+	[TestFlight takeOff:@"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg"];
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
