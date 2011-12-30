@@ -264,19 +264,10 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		//	[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
-		
-		void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-		
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-		
-		};
-
 		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
-			writeCredentials(userIdentifier, userToken, primaryGroupIdentifier);
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
-			//	HECKLING ?
 			
 		} runningOnboardingProcess:YES];
 			
@@ -288,7 +279,12 @@
 
   dispatch_async(dispatch_get_main_queue(), ^{
 
-		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO runningOnboardingProcess:NO];
+		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+			
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			
+		} runningOnboardingProcess:NO];
 
   });
   
@@ -523,7 +519,14 @@
 	
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
-    return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
+	
+		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
+	
+		NSLog(@"Old ID: %@", capturedCurrentUserIdentifier);
+		NSLog(@"New ID: %@", currentID);
+		
+    return (BOOL)![currentID isEqualToString:capturedCurrentUserIdentifier];
+		
   };
   
   if (allowsCancellation)
@@ -687,15 +690,19 @@
 			
 			if (successBlock)
 				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+				
+			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
-			if (zapEverything) {
+			NSLog(@"current user ID %@", ri.userIdentifier);
+			
+			if (userIdentifierHasChanged || zapEverything) {
 				UINavigationController *navC = [self.navigationController retain];
 				[self dismissModalViewControllerAnimated:NO];
 				[nrAppDelegate recreateViewHierarchy];
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
 			}
   
-      if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged) {
+      if (userIdentifierHasChanged || shouldRunOnboardingChecksIfUserUnchanged) {
         [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
       } else {
         [self dismissModalViewControllerAnimated:YES];
