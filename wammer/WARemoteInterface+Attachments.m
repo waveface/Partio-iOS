@@ -6,44 +6,104 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "WARemoteInterface+Attachments.h"
 #import "WADataStore.h"
 
+NSString * const kWARemoteAttachmentType = @"WARemoteAttachmentType";
+NSString * const kWARemoteAttachmentTitle = @"WARemoteAttachmentTitle";
+NSString * const kWARemoteAttachmentDescription = @"WARemoteAttachmentDescription";
+NSString * const kWARemoteAttachmentRepresentingImageURL = @"WARemoteAttachmentRepresentingImageURL";
+NSString * const kWARemoteAttachmentUpdatedObjectIdentifier = @"WARemoteAttachmentUpdatedObjectIdentifier";
+NSString * const kWARemoteAttachmentSubtype = @"kWARemoteAttachmentDestinationImageType";
+NSString * const WARemoteAttachmentOriginalSubtype = @"origin";
+NSString * const WARemoteAttachmentLargeSubtype = @"large";
+NSString * const WARemoteAttachmentMediumSubtype = @"medium";
+NSString * const WARemoteAttachmentSmallSubtype = @"small";
+
+
 @implementation WARemoteInterface (Attachments)
 
-- (void) createAttachmentWithFileAtURL:(NSURL *)aFileURL inGroup:(NSString *)aGroupIdentifier representingImageURL:(NSURL *)aRepresentingImageForBinaryTypesOrNil withTitle:(NSString *)aTitle description:(NSString *)aDescription replacingAttachment:(NSString *)replacedAttachmentIdentifierOrNil asType:(WARemoteAttachmentType)aType onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) createAttachmentWithFile:(NSURL *)aFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
-	
-	if (![copiedFileURL pathExtension])
-		NSLog(@"No mine type, using octet/stream.");
-	
-	NSMutableDictionary *sentData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-	
-		copiedFileURL, @"file",
-		aGroupIdentifier, @"group_id",
-	
+	NSParameterAssert([aFileURL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[aFileURL path]]);
+	NSParameterAssert(aGroupIdentifier);
+		
+	NSMutableDictionary *mergedOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		[NSNumber numberWithUnsignedInteger:WARemoteAttachmentUnknownType], kWARemoteAttachmentType,
+		WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
 	nil];
 	
-	if (aRepresentingImageForBinaryTypesOrNil)
-		[sentData setObject:[aRepresentingImageForBinaryTypesOrNil absoluteString] forKey:@"image"];
+	[mergedOptions addEntriesFromDictionary:options];
 	
-	if (aTitle)
-		[sentData setObject:aTitle forKey:@"title"];
 	
-	if (aDescription)
-		[sentData setObject:aDescription forKey:@"description"];
+	WARemoteAttachmentType type = [[mergedOptions objectForKey:kWARemoteAttachmentType] unsignedIntegerValue];
+	WARemoteAttachmentSubtype subtype = [mergedOptions objectForKey:kWARemoteAttachmentSubtype];
+	NSString *title = [mergedOptions objectForKey:kWARemoteAttachmentTitle];
+	NSString *description = [mergedOptions objectForKey:kWARemoteAttachmentDescription];
+	NSURL *proxyImage = [mergedOptions objectForKey:kWARemoteAttachmentRepresentingImageURL];
+	NSString *updatedObjectID = [mergedOptions objectForKey:kWARemoteAttachmentUpdatedObjectIdentifier];
 	
-	[sentData setObject:@"image" forKey:@"type"];
+	if (type == WARemoteAttachmentUnknownType) {
 	
-	if (replacedAttachmentIdentifierOrNil)
-		[sentData setObject:replacedAttachmentIdentifierOrNil forKey:@"object_id"];
+		//	Time for some inference
+		
+		NSString *pathExtension = [aFileURL pathExtension];
+		BOOL fileIsImage = NO;
+		if (pathExtension) {
+			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, kUTTypeItem);
+			if (fileUTI) {
+				fileIsImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
+				CFRelease(fileUTI);
+			}
+		}
+		
+		if (fileIsImage) {
+			type = WARemoteAttachmentImageType;
+		} else {
+			type = WARemoteAttachmentDocumentType;
+		}
 	
-	[sentData setObject:@"origin" forKey:@"image_meta"];
-
+	}
+	
+	
+	NSURL *copiedFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:aFileURL];
+	NSMutableDictionary *sentRemoteOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		copiedFileURL, @"file",
+		aGroupIdentifier, @"group_id",
+	nil];
+	
+	switch (type) {
+		case WARemoteAttachmentImageType: {
+			[sentRemoteOptions setObject:@"image" forKey:@"type"];
+			[sentRemoteOptions setObject:subtype forKey:@"image_meta"];
+			break;
+		}
+		case WARemoteAttachmentDocumentType: {
+			[sentRemoteOptions setObject:@"doc" forKey:@"type"];
+			break;
+		}
+		case WARemoteAttachmentUnknownType:
+		default: {
+			[NSException raise:NSInternalInconsistencyException format:@"Could not send a file %@ with unknown remote type", aFileURL];
+			break;
+		}
+	}
+	
+	void (^stitch)(id, NSString *) = ^ (id anObject, NSString *aKey) {
+		if (anObject && aKey)
+			[sentRemoteOptions setObject:anObject forKey:aKey];
+	};
+	
+	stitch(title, @"title");
+	stitch(description, @"description");
+	stitch(proxyImage, @"image");
+	stitch(updatedObjectID, @"object_id");
+	
 	[self.engine fireAPIRequestNamed:@"attachments/upload" withArguments:nil options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-		sentData, kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
+		sentRemoteOptions, kIRWebAPIEngineRequestContextFormMultipartFieldsKey,
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
 	nil] validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
@@ -109,6 +169,29 @@
 			successBlock([inResponseOrNil valueForKeyPath:@"redirect_to"]);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) createAttachmentWithFileAtURL:(NSURL *)aFileURL inGroup:(NSString *)aGroupIdentifier representingImageURL:(NSURL *)aRepresentingImageForBinaryTypesOrNil withTitle:(NSString *)aTitle description:(NSString *)aDescription replacingAttachment:(NSString *)replacedAttachmentIdentifierOrNil asType:(WARemoteAttachmentType)aType onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	NSMutableDictionary *options = [NSMutableDictionary dictionary];
+	
+	if (aRepresentingImageForBinaryTypesOrNil)
+		[options setObject:aRepresentingImageForBinaryTypesOrNil forKey:kWARemoteAttachmentRepresentingImageURL];
+	
+	if (aTitle)
+		[options setObject:aTitle forKey:kWARemoteAttachmentTitle];
+		
+	if (aDescription)
+		[options setObject:aDescription forKey:kWARemoteAttachmentDescription];
+		
+	if (replacedAttachmentIdentifierOrNil)
+		[options setObject:replacedAttachmentIdentifierOrNil forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+	
+	if (aType)
+		[options setObject:[NSNumber numberWithUnsignedInteger:aType] forKey:kWARemoteAttachmentType];
+
+	[self createAttachmentWithFile:aFileURL group:aGroupIdentifier options:options onSuccess:successBlock onFailure:failureBlock];
 
 }
 
