@@ -188,6 +188,7 @@
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
 		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
 		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
+		FFA774CD14ADBEB70044674B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
@@ -1022,6 +1023,8 @@
 		FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Reachability.h"; sourceTree = "<group>"; };
 		FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Reachability.m"; sourceTree = "<group>"; };
 		FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRRecurrenceMachine.xcodeproj; path = external/IRRecurrenceMachine/IRRecurrenceMachine.xcodeproj; sourceTree = "<group>"; };
+		FFA774C814ADBE6B0044674B /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = external/TestflightSDK/libTestFlight.a; sourceTree = "<group>"; };
+		FFA774C914ADBE6B0044674B /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = external/TestflightSDK/TestFlight.h; sourceTree = "<group>"; };
 		FFA87D02143F01450074AAE4 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
 		FFA87D03143F01450074AAE4 /* WANavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationController.m; sourceTree = "<group>"; };
 		FFA9C95F144E967F0001BA25 /* IRLabelTestingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRLabelTestingViewController.h; sourceTree = "<group>"; };
@@ -1190,6 +1193,7 @@
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
+				FFA774CD14ADBEB70044674B /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1473,6 +1477,7 @@
 			children = (
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
+				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
 				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF97386213D82B55003D1722 /* JSONKit */,
 				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
@@ -1713,6 +1718,15 @@
 				FF460D2E149CF8DA00DB7F0B /* IRRecurrenceMachineX.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FFA774CB14ADBE6F0044674B /* Testflight SDK */ = {
+			isa = PBXGroup;
+			children = (
+				FFA774C814ADBE6B0044674B /* libTestFlight.a */,
+				FFA774C914ADBE6B0044674B /* TestFlight.h */,
+			);
+			name = "Testflight SDK";
 			sourceTree = "<group>";
 		};
 		FFA9512714077BE800BD3302 /* Attached Media */ = {
@@ -2925,7 +2939,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 179;
+				CURRENT_PROJECT_VERSION = 181;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2950,6 +2964,7 @@
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
+					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
@@ -2972,7 +2987,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 179;
+				CURRENT_PROJECT_VERSION = 181;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -2990,6 +3005,7 @@
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
+					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -3073,6 +3089,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
+					"\"$(SRCROOT)/external/TestflightSDK\"",
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3088,6 +3109,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestFlightSDK0.8.2\"",
+					"\"$(SRCROOT)/external/TestflightSDK\"",
+				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
