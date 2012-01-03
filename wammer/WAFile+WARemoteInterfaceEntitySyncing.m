@@ -17,11 +17,11 @@
 #import "QuartzCore+IRAdditions.h"
 
 
-extern NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
-extern NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
-extern NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
-extern NSString * const kWAFileSyncReducedQualityStrategy = @"WAFileSyncReducedQualityStrategy";
-extern NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrategy";
+NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
+NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
+NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
+NSString * const kWAFileSyncReducedQualityStrategy = @"WAFileSyncReducedQualityStrategy";
+NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrategy";
 
 
 @implementation WAFile (WARemoteInterfaceEntitySyncing)
