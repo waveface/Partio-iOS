@@ -43,11 +43,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
+@property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd;
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle;
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void(^)(UIView *aSubview))aBlock;
-
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
 
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
@@ -72,6 +72,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 @implementation WADiscretePaginatedArticlesViewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
+@synthesize requiresRecalculationOnFetchedResultsChangeEnd;
 @synthesize paginatedArticlesViewController;
 @synthesize lastReadObjectIdentifier, lastHandledReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
 
@@ -269,19 +270,16 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid {
 	
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, manager, proposedGrid);
 	NSMutableArray *lastResultantGrids = objc_getAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids);
 	
 	if (![lastResultantGrids count]) {
 		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, nil, OBJC_ASSOCIATION_ASSIGN);
-		NSLog(@"no last grid -> %@", proposedGrid);
 		return proposedGrid;
 	}
 	
 	IRDiscreteLayoutGrid *prototype = [[[lastResultantGrids objectAtIndex:0] retain] autorelease];
 	[lastResultantGrids removeObjectAtIndex:0];
 	
-	NSLog(@"-> %@", prototype);
 	return prototype;
 
 }
@@ -515,6 +513,65 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		}
 			
 	}];	
+
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controllerWillChangeContent:controller];
+	
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
+	
+	switch (type) {
+		
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeMove: {
+			self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+			break;
+		}
+		
+		case NSFetchedResultsChangeUpdate:
+		default: {
+			//	No op
+			break;
+		}
+		
+	}
+		
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controller:controller didChangeSection:sectionInfo atIndex:sectionIndex forChangeType:type];
+	
+	self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
+
+		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+			[super controllerDidChangeContent:controller];
+		
+		NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
+	
+	} else {
+	
+		//	No op
+	
+	}
 
 }
 
