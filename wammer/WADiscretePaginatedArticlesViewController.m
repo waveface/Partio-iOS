@@ -1128,6 +1128,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
+	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+				
 	void (^cleanup)() = ^ {
 	
 		NSParameterAssert([NSThread isMainThread]);
@@ -1135,6 +1137,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (aBlock)
 			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
 	
+		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
 	};
 	
 	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
