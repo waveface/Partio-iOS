@@ -477,17 +477,33 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
 				
 				//	This would recursively delete the files too
-				NSArray *oldFileOrder = [[savedPost.fileOrder retain] autorelease];
-				NSSet *oldFiles = [[savedPost.files retain] autorelease];
-				[savedPost.managedObjectContext deleteObject:savedPost];
+				NSArray *oldFileOrder = [[savedPost.fileOrder copy] autorelease];
+				NSSet *oldFiles = [[savedPost.files copy] autorelease];
 				
 				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
 				NSParameterAssert([touchedObjects count]);
 				
-				savedPost = (WAArticle *)[touchedObjects lastObject];
-				savedPost.files = oldFiles;
-				savedPost.fileOrder = oldFileOrder;
+				WAArticle *recreatedPost = (WAArticle *)[touchedObjects lastObject];
+				NSMutableSet *allInsertedFiles = [[oldFiles mutableCopy] autorelease];
+				for (NSURL *anObjectURL in oldFileOrder) {
+					
+					NSArray *matchingFiles = [[allInsertedFiles objectsPassingTest: ^ (NSManagedObject *aFile, BOOL *stop) {
+						return [[[aFile objectID] URIRepresentation] isEqual:anObjectURL];
+					}] allObjects];
+					
+					for (id anInsertedFile in matchingFiles)
+						[allInsertedFiles removeObject:anInsertedFile];
+					
+					[recreatedPost addFilesObject:[matchingFiles lastObject]];
+					
+				}
+				
+				NSParameterAssert([recreatedPost.files count] == [recreatedPost.fileOrder count]);
+				for (WAFile *aFile in recreatedPost.files)
+					NSParameterAssert(aFile.article == recreatedPost);
+				
+				[savedPost.managedObjectContext deleteObject:savedPost];
 				
 				completionBlock(YES, context, savedPost, nil);
 			
