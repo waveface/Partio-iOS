@@ -109,11 +109,15 @@
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
 	
-	[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		(id)kCFBooleanTrue, @"reinstallCrashHandlers",
-	nil]];
+	if (WATestFlightSDKEnabled()) {
+				
+		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+		nil]];
+		
+		[TestFlight takeOff:kWATestflightTeamToken];
 	
-	[TestFlight takeOff:kWATestflightTeamToken];
+	}
 
 }
 
