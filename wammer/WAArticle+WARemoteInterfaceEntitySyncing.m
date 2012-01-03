@@ -220,34 +220,43 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
 	
 		WAArticleSyncProgressCallback progressCallback = [[[options objectForKey:kWAArticleSyncProgressCallback] copy] autorelease];
+  
+    NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
     
-    NSMutableDictionary *usedOptions = [[options mutableCopy] autorelease];
-		
-		NSMutableDictionary *sessionInfo = [usedOptions objectForKey:kWAArticleSyncSessionInfo];
-		if (!sessionInfo) {
+    if (!sessionInfo)
       sessionInfo = [NSMutableDictionary dictionary];
-			[usedOptions setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
-		}
+      
+    NSMutableDictionary *optionsContinuation = [[options mutableCopy] autorelease];
+    [optionsContinuation setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
     
-		dispatch_queue_t sessionQueue = NULL;
-		if (!(sessionQueue = [[sessionInfo objectForKey:@"sessionQueue"] pointerValue])) {
-			sessionQueue = dispatch_queue_create([@"WAArticle.fullFetch" UTF8String], DISPATCH_QUEUE_SERIAL);
-			[sessionInfo setObject:[NSValue valueWithPointer:sessionQueue] forKey:@"sessionQueue"];
-		}
-			   
+    dispatch_queue_t sessionQueue = ((^ {
+      
+      dispatch_queue_t returnedQueue = [[sessionInfo objectForKey:@"sessionQueue"] pointerValue];
+      if (!returnedQueue) {
+        returnedQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@.%@.temporaryQueue",NSStringFromClass([self class]), NSStringFromSelector(_cmd)] UTF8String], DISPATCH_QUEUE_SERIAL);
+        [sessionInfo setObject:[NSValue valueWithPointer:returnedQueue] forKey:@"sessionQueue"];
+      }
+      
+      return returnedQueue;
+      
+    })());
+    
     dispatch_async(sessionQueue, ^{
     
-			NSManagedObjectContext *usedContext = [sessionInfo objectForKey:@"context"];
-			if (!usedContext) {
-				usedContext = [ds disposableMOC];
-				[sessionInfo setObject:usedContext forKey:@"context"];
-			}
-			
-			NSMutableArray *usedObjects = [sessionInfo objectForKey:@"objects"];
-			if (!usedObjects) {
+      NSManagedObjectContext *usedContext = [sessionInfo objectForKey:@"context"];
+      
+      if (!usedContext) {
+        usedContext = [ds disposableMOC];
+				usedContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+        [sessionInfo setObject:usedContext forKey:@"context"];
+      }
+      
+      NSMutableArray *usedObjects = [sessionInfo objectForKey:@"objects"];
+      
+      if (!usedObjects) {
         usedObjects = [NSMutableArray array];
-				[sessionInfo setObject:usedObjects forKey:@"objects"];
-			}
+        [sessionInfo setObject:usedObjects forKey:@"objects"];
+      }
 			
       [ds fetchLatestArticleInGroup:usedGroupIdentifier usingContext:usedContext onSuccess:^(NSString *identifier, WAArticle *article) {
 			
@@ -261,32 +270,50 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
         [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
 				
-          dispatch_async(sessionQueue, ^ {
-											
-						BOOL canNotFetchMore = ![postReps count] || [[postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
-							return [aPost valueForKeyPath:@"post_id"];
-						}] containsObject:identifier];
-          
-            if (!canNotFetchMore) {
+          dispatch_async(sessionQueue, ^{
 						
-							[usedObjects addObjectsFromArray:[[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations]];
+						BOOL shouldContinue = YES;
+						
+						if (![postReps count]) {
+							
+							shouldContinue = NO;
+							
+						} else {
+						
+							BOOL hasOtherPostIDs = [[[postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
+								return [aPost valueForKeyPath:@"post_id"];
+							}] irMap:^id(id inObject, NSUInteger index, BOOL *stop) {
+								return [inObject isEqual:identifier] ? nil : inObject;
+							}] count];
+							
+							if (!hasOtherPostIDs)
+								shouldContinue = NO;
+							
+						}
+						
+            if (shouldContinue) {
+						
+							NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+							[usedObjects addObjectsFromArray:touchedObjects];
 							
 							if (progressCallback)
 								progressCallback(NO, usedContext, usedObjects, nil);
 							
 							dispatch_async(dispatch_get_main_queue(), ^{
 								
-								[self synchronizeWithOptions:usedOptions completion:completionBlock];
+								[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
 								
 							});
+							              
+            } else {	
 						
-						} else {
+							//	WE HAVE REACHED THE POINT OF NO RETURN
 						
-							if (completionBlock)
-								completionBlock(YES, usedContext, usedObjects, nil);
-								
-							dispatch_release(sessionQueue);
-								
+              if (completionBlock)
+                completionBlock(YES, usedContext, usedObjects, nil);
+              
+              dispatch_release(sessionQueue);
+							
 						}
             
           });
