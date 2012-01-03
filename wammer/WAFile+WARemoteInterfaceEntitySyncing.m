@@ -27,16 +27,12 @@ extern NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQuality
 @implementation WAFile (WARemoteInterfaceEntitySyncing)
 
 - (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
-
-	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, self, inDictionary);
  
 	NSMutableDictionary *usedDictionary = [[inDictionary mutableCopy] autorelease];
   
   if ([[usedDictionary objectForKey:@"url"] isEqualToString:@""])
     [usedDictionary removeObjectForKey:@"url"];
 	
-	NSLog(@"Using %@", usedDictionary);
-
   [super configureWithRemoteDictionary:usedDictionary];
   
   if (!self.resourceType) {

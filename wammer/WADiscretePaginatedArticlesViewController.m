@@ -520,8 +520,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super controllerWillChangeContent:controller];
-	
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
 
 }
 
@@ -564,9 +562,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 			[super controllerDidChangeContent:controller];
-		
-		NSLog(@"%s %@", __PRETTY_FUNCTION__, controller);
-	
+			
 	} else {
 	
 		//	No op
