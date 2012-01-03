@@ -112,7 +112,9 @@
 	NSURL *articleURI = [[self.article objectID] URIRepresentation];
 	[[WADataStore defaultStore] uploadArticle:articleURI onSuccess: ^ {
 	
-		self.article.draft = kCFBooleanFalse;
+		NSParameterAssert([NSThread isMainThread]);
+	
+		self.article.draft = (NSNumber *)kCFBooleanFalse;
 		
 		NSError *savingError = nil;
 		if (![self.managedObjectContext save:&savingError])

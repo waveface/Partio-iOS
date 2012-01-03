@@ -40,6 +40,7 @@ NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification = @"WARem
 NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification = @"WARemoteInterfaceDidObserveAuthenticationFailureNotification";
 NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
 
+NSString * const kWATestFlightSDKEnabled = @"WATestFlightSDKEnabled";
 NSString * const kWATestflightTeamToken = @"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg";
 
 NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c1-a6c2cbf9977c";
@@ -93,6 +94,13 @@ BOOL WAApplicationHasDebuggerAttached (void) {
 		return YES;
 			
 	return NO;
+
+}
+
+
+BOOL WATestFlightSDKEnabled (void) {
+
+	return [[NSUserDefaults standardUserDefaults] boolForKey:kWATestFlightSDKEnabled];
 
 }
 

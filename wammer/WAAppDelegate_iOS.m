@@ -71,21 +71,6 @@
 @synthesize window = _window;
 @synthesize alreadyRequestingAuthentication;
 
-- (id) init {
-
-  self = [super init];
-  if (!self)
-    return nil;
-
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
-	
-  return self;
-
-}
-
 - (void) dealloc {
 
   //  This is so not going to happen
@@ -99,6 +84,11 @@
 	
 	[super bootstrap];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
+	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
 	else {
@@ -109,11 +99,15 @@
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
 	
-	[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		(id)kCFBooleanTrue, @"reinstallCrashHandlers",
-	nil]];
+	if (WATestFlightSDKEnabled()) {
+				
+		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+		nil]];
+		
+		[TestFlight takeOff:kWATestflightTeamToken];
 	
-	[TestFlight takeOff:kWATestflightTeamToken];
+	}
 
 }
 

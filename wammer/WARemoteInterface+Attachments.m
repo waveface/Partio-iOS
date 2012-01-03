@@ -6,8 +6,6 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import <MobileCoreServices/MobileCoreServices.h>
-
 #import "WARemoteInterface+Attachments.h"
 #import "WADataStore.h"
 
