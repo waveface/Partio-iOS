@@ -108,6 +108,12 @@
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
+	
+	[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+	nil]];
+	
+	[TestFlight takeOff:kWATestflightTeamToken];
 
 }
 
@@ -115,10 +121,6 @@
 
 	[self bootstrap];
 	
-	// Testflight takeOff
-	// TODO: Move testflight team token to somewhere for security and easy setup
-	[TestFlight takeOff:@"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg"];
-
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
 	
@@ -262,19 +264,10 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		//	[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
-		
-		void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-		
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-		
-		};
-
 		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
-			writeCredentials(userIdentifier, userToken, primaryGroupIdentifier);
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
-			//	HECKLING ?
 			
 		} runningOnboardingProcess:YES];
 			
@@ -286,7 +279,12 @@
 
   dispatch_async(dispatch_get_main_queue(), ^{
 
-		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO runningOnboardingProcess:NO];
+		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+			
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			
+		} runningOnboardingProcess:NO];
 
   });
   
@@ -521,7 +519,14 @@
 	
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
-    return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
+	
+		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
+	
+		NSLog(@"Old ID: %@", capturedCurrentUserIdentifier);
+		NSLog(@"New ID: %@", currentID);
+		
+    return (BOOL)![currentID isEqualToString:capturedCurrentUserIdentifier];
+		
   };
   
   if (allowsCancellation)
@@ -685,15 +690,19 @@
 			
 			if (successBlock)
 				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+				
+			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
-			if (zapEverything) {
+			NSLog(@"current user ID %@", ri.userIdentifier);
+			
+			if (userIdentifierHasChanged || zapEverything) {
 				UINavigationController *navC = [self.navigationController retain];
 				[self dismissModalViewControllerAnimated:NO];
 				[nrAppDelegate recreateViewHierarchy];
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
 			}
   
-      if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged) {
+      if (userIdentifierHasChanged || shouldRunOnboardingChecksIfUserUnchanged) {
         [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
       } else {
         [self dismissModalViewControllerAnimated:YES];
@@ -731,22 +740,28 @@
   nil];
 
   if (WAAdvancedFeaturesEnabled()) {
-    
-    [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
-      
-      authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
-      authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
-      [authRequestVC authenticate];
-      
-    }]];
 		
-  }
-  
-  authRequestVC.actions = authRequestActions;
-	
+		[authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
+
+			authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+			authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
+			[authRequestVC authenticate];
+
+		}]];
+		
+		[authRequestActions addObject:[IRAction actionWithTitle:@"Zap Everything" block:^{
+		
+			[[[[IRAlertView alloc] initWithTitle:@"Not Implemented" message:"As title." delegate:nil cancelButtonTitle:@"Fine" otherButtonTitles:nil] autorelease] show];
+			
+		}]];
+		
+	}
+
+	authRequestVC.actions = authRequestActions;
+
 	presentWrappedAuthRequestVC(authRequestVC, NO);
-	
-  return YES;
+
+	return YES;
 
 }
 

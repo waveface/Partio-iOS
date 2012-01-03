@@ -331,8 +331,6 @@
 		return 0;
 	
 	CGFloat returnedValue = (CGFloat)(1.0f * aPageNumber / (self.numberOfPages - 1));
-	NSLog(@"%s %i -> %f", __PRETTY_FUNCTION__, aPageNumber, returnedValue);
-	
 	return returnedValue;
 
 }

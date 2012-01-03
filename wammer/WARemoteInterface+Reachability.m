@@ -100,7 +100,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   if (![self.monitoredHosts count])
     return self.engine.context.baseURL;
   
-  NSArray *usableHosts = [[self.monitoredHosts filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSURL *aHost, NSDictionary *bindings) {
+  NSArray *usableHosts = [[[[self.monitoredHosts retain] autorelease] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSURL *aHost, NSDictionary *bindings) {
     
     return [self canHost:aHost handleRequestNamed:aRequestName];
     

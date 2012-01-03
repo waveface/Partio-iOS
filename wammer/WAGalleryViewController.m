@@ -219,7 +219,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[self.view addSubview:self.toolbar];
 	
 	self.contextControlsShown = YES;
-	[self setContextControlsHidden:YES animated:NO completion:nil];
 	
 	UITapGestureRecognizer *tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTap:)] autorelease];
 	tapRecognizer.delegate = self;
