@@ -220,98 +220,79 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
 	
 		WAArticleSyncProgressCallback progressCallback = [[[options objectForKey:kWAArticleSyncProgressCallback] copy] autorelease];
-  
-    NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
-		NSLog(@"Session started with continuation %@", sessionInfo);
     
-    if (!sessionInfo)
+    NSMutableDictionary *usedOptions = [[options mutableCopy] autorelease];
+		
+		NSMutableDictionary *sessionInfo = [usedOptions objectForKey:kWAArticleSyncSessionInfo];
+		if (!sessionInfo) {
       sessionInfo = [NSMutableDictionary dictionary];
-      
-    NSMutableDictionary *optionsContinuation = [[options mutableCopy] autorelease];
-    [optionsContinuation setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
+			[usedOptions setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
+		}
     
-    dispatch_queue_t sessionQueue = ((^ {
-      
-      dispatch_queue_t returnedQueue = [[sessionInfo objectForKey:@"sessionQueue"] pointerValue];
-      if (!returnedQueue) {
-        returnedQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@.%@.temporaryQueue",NSStringFromClass([self class]), NSStringFromSelector(_cmd)] UTF8String], DISPATCH_QUEUE_SERIAL);
-        [sessionInfo setObject:[NSValue valueWithPointer:returnedQueue] forKey:@"sessionQueue"];
-      }
-      
-      return returnedQueue;
-      
-    })());
-    
+		dispatch_queue_t sessionQueue = NULL;
+		if (!(sessionQueue = [[sessionInfo objectForKey:@"sessionQueue"] pointerValue])) {
+			sessionQueue = dispatch_queue_create([@"WAArticle.fullFetch" UTF8String], DISPATCH_QUEUE_SERIAL);
+			[sessionInfo setObject:[NSValue valueWithPointer:sessionQueue] forKey:@"sessionQueue"];
+		}
+			   
     dispatch_async(sessionQueue, ^{
     
-      NSManagedObjectContext *usedContext = [sessionInfo objectForKey:@"context"];
-      
-      if (!usedContext) {
-        usedContext = [ds disposableMOC];
-				usedContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        [sessionInfo setObject:usedContext forKey:@"context"];
-      }
-      
-      NSMutableArray *usedObjects = [sessionInfo objectForKey:@"objects"];
-      
-      if (!usedObjects) {
+			NSManagedObjectContext *usedContext = [sessionInfo objectForKey:@"context"];
+			if (!usedContext) {
+				usedContext = [ds disposableMOC];
+				[sessionInfo setObject:usedContext forKey:@"context"];
+			}
+			
+			NSMutableArray *usedObjects = [sessionInfo objectForKey:@"objects"];
+			if (!usedObjects) {
         usedObjects = [NSMutableArray array];
-        [sessionInfo setObject:usedObjects forKey:@"objects"];
-      }
+				[sessionInfo setObject:usedObjects forKey:@"objects"];
+			}
 			
       [ds fetchLatestArticleInGroup:usedGroupIdentifier usingContext:usedContext onSuccess:^(NSString *identifier, WAArticle *article) {
 			
-				
-      
         NSString *referencedPostIdentifier = identifier;
         NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
         
         if (article.timestamp) {
-          referencedPostDate = [article.timestamp dateByAddingTimeInterval:1];
+          referencedPostDate = article.timestamp;
           referencedPostIdentifier = nil;
         }
-        
+				
         [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
 				
-					NSLog(@"got posts: %@", [postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
-						return [aPost valueForKeyPath:@"post_id"];
-					}]);
-        
-          dispatch_async(sessionQueue, ^{
+          dispatch_async(sessionQueue, ^ {
+											
+						BOOL canNotFetchMore = ![postReps count] || [[postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
+							return [aPost valueForKeyPath:@"post_id"];
+						}] containsObject:identifier];
           
-            if (![postReps count]) {
+            if (!canNotFetchMore) {
 						
-							NSLog(@"No newer stuff, things have ended");
-            
-              if (completionBlock)
-                completionBlock(YES, usedContext, usedObjects, nil);
-              
-              dispatch_release(sessionQueue);
-              
-              return;
-            
-            }
-            
-            NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-            [usedObjects addObject:touchedObjects];
+							[usedObjects addObjectsFromArray:[[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations]];
+							
+							if (progressCallback)
+								progressCallback(NO, usedContext, usedObjects, nil);
+							
+							dispatch_async(dispatch_get_main_queue(), ^{
+								
+								[self synchronizeWithOptions:usedOptions completion:completionBlock];
+								
+							});
 						
-						if (progressCallback)
-							progressCallback(NO, usedContext, usedObjects, nil);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-              
-              [self synchronizeWithOptions:optionsContinuation completion:completionBlock];
-              
-            });
-            
-            return;
+						} else {
+						
+							if (completionBlock)
+								completionBlock(YES, usedContext, usedObjects, nil);
+								
+							dispatch_release(sessionQueue);
+								
+						}
             
           });
         
         } onFailure:^(NSError *error) {
 				
-					NSLog(@"Retrieval failed %@", error);
-        
           if (completionBlock)
             completionBlock(NO, nil, nil, error);
             
