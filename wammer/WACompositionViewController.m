@@ -291,7 +291,7 @@
 	
 	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 42, 20 };
 	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, -42, -20 });
+	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ -32, -20, -42, -20 });
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.opaque = NO;
@@ -388,6 +388,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
     [self.contentTextView becomeFirstResponder];
   
   }
+	
+	//	[self adjustPhotos];
   
 }
 
@@ -645,7 +647,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				
 				if (!hasCellNumberChanges) {
 					reload();
-					[self.photosView setContentOffset:oldOffset animated:NO];
+					//[self.photosView setContentOffset:oldOffset animated:NO];
 					return;
 				}
 				

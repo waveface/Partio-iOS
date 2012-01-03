@@ -43,11 +43,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
+@property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd;
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle;
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void(^)(UIView *aSubview))aBlock;
-
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
 
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
@@ -72,6 +72,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 @implementation WADiscretePaginatedArticlesViewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
+@synthesize requiresRecalculationOnFetchedResultsChangeEnd;
 @synthesize paginatedArticlesViewController;
 @synthesize lastReadObjectIdentifier, lastHandledReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
 
@@ -113,28 +114,20 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return;
 		
 	NSArray *allGrids = self.discreteLayoutResult.grids;
-	if ([allGrids count]) {
+	if (![allGrids count])
+		return;
 
-		IRDiscreteLayoutGrid *grid = [allGrids objectAtIndex:self.paginatedView.currentPage];
-		NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
-		
-		if (!lastArticleID)
-			return;
-		
-		__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
-		taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-		
-			//	?
-			
-		}];
-
-		[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
-		
-			[[UIApplication sharedApplication] endBackgroundTask:taskID];
-			
-		}];
+	IRDiscreteLayoutGrid *grid = [allGrids objectAtIndex:self.paginatedView.currentPage];
 	
-	}
+	NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
+	if (!lastArticleID)
+		return;
+	
+	__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+	taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
+	[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
+		[[UIApplication sharedApplication] endBackgroundTask:taskID];
+	}];
 	
 }
 
@@ -192,43 +185,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
 	self.view.opaque = YES;
-	
-	if (self.navigationItem.leftBarButtonItem)
-	if (!self.navigationItem.leftBarButtonItem.customView) {
-	
-		UIBarButtonItem *oldItem = self.navigationItem.leftBarButtonItem;
-	
-		IRBarButtonItem *replacementItem = [IRBarButtonItem itemWithButton:((^ {
-		
-			UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
-			
-			[returnedButton setImage:[IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:oldItem.title font:nil backgroundColor:nil gradientColors:[NSArray arrayWithObjects:
-				(id)[UIColor colorWithRed:.95 green:.95 blue:.95 alpha:1].CGColor,
-				(id)[UIColor colorWithRed:.85 green:.85 blue:.85 alpha:1].CGColor,
-			nil] innerShadow:nil border:[IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1.0f color:[UIColor colorWithWhite:.6 alpha:1]] shadow:nil] forState:UIControlStateNormal];
-			
-			[returnedButton setImage:[IRBarButtonItem buttonImageForStyle:IRBarButtonItemStyleBordered withTitle:oldItem.title font:nil backgroundColor:nil gradientColors:[NSArray arrayWithObjects:
-				(id)[UIColor colorWithRed:.85 green:.85 blue:.85 alpha:1].CGColor,
-				(id)[UIColor colorWithRed:.75 green:.75 blue:.75 alpha:1].CGColor,
-			nil] innerShadow:nil border:[IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1.0f color:[UIColor colorWithWhite:.6 alpha:1]] shadow:nil] forState:UIControlStateHighlighted];
-			
-			[returnedButton sizeToFit];
-			
-			return returnedButton;
-		
-		})()) wiredAction:nil];
-		
-		replacementItem.target = oldItem.target;
-		replacementItem.action = oldItem.action;
-		
-		if ([oldItem isKindOfClass:[IRBarButtonItem class]]) {
-			replacementItem.block = ((IRBarButtonItem *)oldItem).block;
-		}
-		
-		self.navigationItem.leftBarButtonItem = replacementItem;
-	
-	}
-	
 	
 	__block __typeof__(self) nrSelf = self;
 	
@@ -360,8 +316,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	//		
 	//	};
 	
-	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
-
 	//	void (^enqueueGridPrototypes)(IRDiscreteLayoutGrid *, IRDiscreteLayoutGrid *) = ^ (IRDiscreteLayoutGrid *aGrid, IRDiscreteLayoutGrid *anotherGrid) {
 	//		aGrid.contentSize = (CGSize){ 768, 1024 };
 	//		anotherGrid.contentSize = (CGSize){ 1024, 768 };
@@ -372,6 +326,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	//	};
 	
 	//	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
+	
+	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
 	
 	WAEightPartLayoutGrid *eightPartGrid = [WAEightPartLayoutGrid prototype];
 	eightPartGrid.validatorBlock = nil;
@@ -515,6 +471,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) performReadingProgressSync {
 
+	static NSString * const kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync = @"WADiscretePaginatedArticlesViewController_PerformingReadingProgressSync";
+
+	if (objc_getAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync))
+		return;
+	
+	objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+
 	NSUInteger lastPage = NSNotFound;
 	if ([self isViewLoaded])
 		lastPage = self.paginatedView.currentPage;
@@ -527,6 +490,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 		[[WARemoteInterface sharedInterface] endPerformingAutomaticRemoteUpdates];
 	
+		objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, nil, OBJC_ASSOCIATION_ASSIGN);
+		
 		if (![self isViewLoaded])
 			return;
 			
@@ -551,6 +516,61 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 }
 
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controllerWillChangeContent:controller];
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+	
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
+	
+	switch (type) {
+		
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeMove: {
+			self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+			break;
+		}
+		
+		case NSFetchedResultsChangeUpdate:
+		default: {
+			//	No op
+			break;
+		}
+		
+	}
+		
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controller:controller didChangeSection:sectionInfo atIndex:sectionIndex forChangeType:type];
+	
+	self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+
+}
+
+- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+
+	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
+
+		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+			[super controllerDidChangeContent:controller];
+			
+	} else {
+	
+		//	No op
+	
+	}
+
+}
+
 - (void) reloadViewContents {
 
 	if (self.discreteLayoutResult) {
@@ -561,7 +581,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
 	objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, nil, OBJC_ASSOCIATION_ASSIGN);
-		
+	
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
 	
 	[self.paginatedView reloadViews];
@@ -1128,6 +1148,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
+	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+				
 	void (^cleanup)() = ^ {
 	
 		NSParameterAssert([NSThread isMainThread]);
@@ -1135,6 +1157,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		if (aBlock)
 			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
 	
+		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
 	};
 	
 	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
@@ -1273,12 +1297,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		dispatch_async(dispatch_get_main_queue(), ^{
 
 			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			nrBezel.caption = @"Fetch Failed";
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			});
+			
+			if (usesBezel) {
+				nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+				nrBezel.caption = @"Fetch Failed";
+				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				});
+			}
 
 			//	?
 			

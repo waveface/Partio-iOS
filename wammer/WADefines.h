@@ -38,6 +38,8 @@ extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 extern NSString * const kWASettingsDidRequestActionNotification;
 
+extern NSString * const kWATestflightTeamToken;
+
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;
 extern NSString * const kWARemoteEndpointApplicationKeyMac;

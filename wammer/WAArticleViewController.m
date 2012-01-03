@@ -123,7 +123,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 			return WADiscretePreviewArticleStyle;
 			
 	for (WAFile *aFile in anArticle.files)
-		if (aFile.resourceURL || aFile.thumbnailURL)
+		if (aFile.resourceURL || aFile.thumbnailURL || [aFile.remoteResourceType isEqualToString:@"image"])
 			return WADiscreteSingleImageArticleStyle;
 	
 	return WADiscretePlaintextArticleStyle;

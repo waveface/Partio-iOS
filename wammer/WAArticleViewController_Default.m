@@ -84,7 +84,6 @@
 	[UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
 
 		[self.stackView layoutSubviews];
-		NSLog(@"stack view sub %@", [self.stackView performSelector:@selector(recursiveDescription)]);
 		
 	} completion:^(BOOL finished) {
 	
