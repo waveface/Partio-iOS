@@ -515,6 +515,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) performReadingProgressSync {
 
+	static NSString * const kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync = @"WADiscretePaginatedArticlesViewController_PerformingReadingProgressSync";
+
+	if (objc_getAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync))
+		return;
+	
+	objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+
 	NSUInteger lastPage = NSNotFound;
 	if ([self isViewLoaded])
 		lastPage = self.paginatedView.currentPage;
@@ -527,6 +534,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 		[[WARemoteInterface sharedInterface] endPerformingAutomaticRemoteUpdates];
 	
+		objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, nil, OBJC_ASSOCIATION_ASSIGN);
+		
 		if (![self isViewLoaded])
 			return;
 			
