@@ -123,11 +123,18 @@ def export_xibs(language):
     localization = open(language + os.path.sep + 'xib.strings.new', encoding='utf_16', mode='w+')
     
     ibs = [name for name in os.listdir(os.getcwd()) if name.endswith('.xib') and not os.path.isdir(name)]
+    
+
     for ib in ibs:
         ib_strings = "en.lproj/" + ib + ".strings.new"
-        #extract only if modified
+
+        # extract only if modified
         print 'ibtool --export-strings-file "%s" "%s"' % ( ib_strings, ib )
-        os.system('ibtool --export-strings-file "%s" "%s"' % ( ib_strings, ib ))
+        # run ibtool only once per modification
+        if not os.path.isfile(ib_strings) or (os.stat(ib).st_mtime > os.stat(ib_strings).st_mtime):
+            os.system('ibtool --export-strings-file "%s" "%s"' % ( ib_strings, ib ))
+            os.system('touch %s' % ib_strings)
+
         fin = open(ib_strings, encoding='utf_16', mode='r')
 
         line = fin.readline()
@@ -177,7 +184,6 @@ def localize(path):
         os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
 
     merge(merged, old, new)
-    os.system( 'rm %s/*xib.strings.new' % language )
         
     languages = [name for name in os.listdir(path) if name.endswith('.lproj') and os.path.isdir(name) and not name.startswith('en.')]
     for language in languages:
