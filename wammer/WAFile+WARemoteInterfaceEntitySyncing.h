@@ -17,8 +17,9 @@ typedef NSString * const WAFileSyncStrategy;
 
 extern NSString * const kWAFileSyncDefaultStrategy;	//	kWAFileSyncAdaptiveQualityStrategy
 extern NSString * const kWAFileSyncAdaptiveQualityStrategy;
-//	Sends origin or medium depending on -[WARemoteInterface areExpensiveOperationsAllowed]
-//	Since it only sends one thing, it is the best strategy to use when invoked by user interaction
+//	medium, or origin + medium
+//	Depending on -[WARemoteInterface areExpensiveOperationsAllowed]
+//	Should be the best strategy to use when invoked by user interaction
 
 extern NSString * const kWAFileSyncReducedQualityStrategy;
 //	medium only
