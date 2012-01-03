@@ -37,12 +37,26 @@
 
 - (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 
-	[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-  
-    //  kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-    kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
-  
-  nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
+	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		
+		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+		
+	nil];
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+		case UIUserInterfaceIdiomPad: {
+			[options setObject:kWAArticleSyncFullyFetchOnlyStrategy forKey:kWAArticleSyncStrategy];
+			break;
+		}
+		
+		default: {
+			break;
+		}
+		
+	}
+
+	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
 		if (!didFinish) {
 			if (failureBlock)
