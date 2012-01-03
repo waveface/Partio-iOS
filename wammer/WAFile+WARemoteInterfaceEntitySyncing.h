@@ -13,7 +13,7 @@
 #define __WAFile_EntitySyncing__
 
 extern NSString * const kWAFileSyncStrategy;
-typedef NSString * const WAFileSyncStrategy;
+typedef NSString * WAFileSyncStrategy;
 
 extern NSString * const kWAFileSyncDefaultStrategy;	//	kWAFileSyncAdaptiveQualityStrategy
 extern NSString * const kWAFileSyncAdaptiveQualityStrategy;
