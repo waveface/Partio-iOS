@@ -315,22 +315,17 @@
 		
 	}
 	
-	void (^confirmURLChange)(NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) = ^ (NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) {
-	
-		if (!newString)
-			return;
-		
-		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:defaultsKey]];
-		NSURL *newURL = [NSURL URLWithString:newString];
-		
-		[[NSUserDefaults standardUserDefaults] setObject:newString forKey:defaultsKey];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
 		
 		__block __typeof__(self) nrSelf = self;
-		
 		void (^zapAndRequestReauthentication)() = ^ {
 
-			if (self.alreadyRequestingAuthentication) {
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"url"] forKey:kWARemoteEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+
+			if (nrSelf.alreadyRequestingAuthentication) {
 				nrSelf.alreadyRequestingAuthentication = NO;
 				[nrSelf clearViewHierarchy];
 			}
@@ -339,49 +334,15 @@
 			
 		};
 		
-		NSString *alertTitle = NSLocalizedString(alertTitleKey, nil);
-		NSString *alertText = [NSString stringWithFormat:
-			NSLocalizedString(alertTextKey, nil),
-			[oldURL absoluteString],
-			[newURL absoluteString]
-		];
+		NSString *alertTitle = @"Switch endpoint to";
+		NSString *alertText = [params objectForKey:@"url"];
 		
-		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
-		IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionReset", nil) block:zapAndRequestReauthentication];
+		IRAction *cancelAction = [IRAction actionWithTitle:@"Cancel" block:nil];
+		IRAction *confirmAction = [IRAction actionWithTitle:@"Yes, Switch" block:zapAndRequestReauthentication];
 		
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
-			signOutAction,
+			confirmAction,
 		nil]] show];
-	
-	};
-	
-	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
-	
-		confirmURLChange(
-			kWARemoteEndpointURL,
-			[params objectForKey:@"url"],
-			@"WARemoteEndpointURLChangeConfirmationTitle",
-			@"WARemoteEndpointURLChangeConfirmationDescription"
-		);
-	
-	} else if ([command isEqualToString:kWACallbackActionSetUserRegistrationEndpointURL]) {
-	
-		confirmURLChange(
-			kWAUserRegistrationEndpointURL,
-			[params objectForKey:@"url"],
-			@"WAUserRegistrationEndpointURLChangeConfirmationTitle",
-			@"WAUserRegistrationEndpointURLChangeConfirmationDescription"
-		);
-	
-	} else if ([command isEqualToString:kWACallbackActionSetUserPasswordResetEndpointURL]) {
-
-		confirmURLChange(
-			kWAUserPasswordResetEndpointURL,
-			[params objectForKey:@"url"],
-			@"WAUserPasswordResetEndpointURLChangeConfirmationTitle",
-			@"WAUserPasswordResetEndpointURLChangeConfirmationDescription"
-		);
-	
 	}
 	
 }
