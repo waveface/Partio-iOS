@@ -105,7 +105,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 		
-		@"WAFile", @"files",
+		//	@"WAFile", @"files",
 		@"WAGroup", @"group",
 		@"WAComment", @"comments",
 		@"WAUser", @"owner",
@@ -222,7 +222,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		WAArticleSyncProgressCallback progressCallback = [[[options objectForKey:kWAArticleSyncProgressCallback] copy] autorelease];
   
     NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
-		NSLog(@"Session started with continuation %@", sessionInfo);
     
     if (!sessionInfo)
       sessionInfo = [NSMutableDictionary dictionary];
@@ -261,57 +260,66 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
       [ds fetchLatestArticleInGroup:usedGroupIdentifier usingContext:usedContext onSuccess:^(NSString *identifier, WAArticle *article) {
 			
-				
-      
         NSString *referencedPostIdentifier = identifier;
         NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
         
         if (article.timestamp) {
-          referencedPostDate = [article.timestamp dateByAddingTimeInterval:1];
+          referencedPostDate = article.timestamp;
           referencedPostIdentifier = nil;
         }
-        
+				
         [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
 				
-					NSLog(@"got posts: %@", [postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
-						return [aPost valueForKeyPath:@"post_id"];
-					}]);
-        
           dispatch_async(sessionQueue, ^{
-          
-            if (![postReps count]) {
 						
-							NSLog(@"No newer stuff, things have ended");
-            
+						BOOL shouldContinue = YES;
+						
+						if (![postReps count]) {
+							
+							shouldContinue = NO;
+							
+						} else {
+						
+							BOOL hasOtherPostIDs = [[[postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
+								return [aPost valueForKeyPath:@"post_id"];
+							}] irMap:^id(id inObject, NSUInteger index, BOOL *stop) {
+								return [inObject isEqual:identifier] ? nil : inObject;
+							}] count];
+							
+							if (!hasOtherPostIDs)
+								shouldContinue = NO;
+							
+						}
+						
+            if (shouldContinue) {
+						
+							NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+							[usedObjects addObjectsFromArray:touchedObjects];
+							
+							if (progressCallback)
+								progressCallback(NO, usedContext, usedObjects, nil);
+							
+							dispatch_async(dispatch_get_main_queue(), ^{
+								
+								[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
+								
+							});
+							              
+            } else {	
+						
+							//	WE HAVE REACHED THE POINT OF NO RETURN
+						
               if (completionBlock)
                 completionBlock(YES, usedContext, usedObjects, nil);
               
               dispatch_release(sessionQueue);
-              
-              return;
-            
-            }
-            
-            NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-            [usedObjects addObject:touchedObjects];
-						
-						if (progressCallback)
-							progressCallback(NO, usedContext, usedObjects, nil);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-              
-              [self synchronizeWithOptions:optionsContinuation completion:completionBlock];
-              
-            });
-            
-            return;
+							
+						}
             
           });
         
         } onFailure:^(NSError *error) {
 				
-					NSLog(@"Retrieval failed %@", error);
-        
           if (completionBlock)
             completionBlock(NO, nil, nil, error);
             
@@ -414,6 +422,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					}
 					
 					WAFile *savedFile = (WAFile *)prospectiveUnsavedObject;
+					NSParameterAssert(savedFile.article);
+					
 					aCallback(savedFile.identifier);
 					
 				}];
@@ -464,9 +474,36 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:ownURL];
 				savedPost.draft = (id)kCFBooleanFalse;
 				
-				[savedPost.managedObjectContext deleteObject:savedPost];
+				NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
 				
-				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				//	This would recursively delete the files too
+				NSArray *oldFileOrder = [[savedPost.fileOrder copy] autorelease];
+				NSSet *oldFiles = [[savedPost.files copy] autorelease];
+				
+				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				
+				NSParameterAssert([touchedObjects count]);
+				
+				WAArticle *recreatedPost = (WAArticle *)[touchedObjects lastObject];
+				NSMutableSet *allInsertedFiles = [[oldFiles mutableCopy] autorelease];
+				for (NSURL *anObjectURL in oldFileOrder) {
+					
+					NSArray *matchingFiles = [[allInsertedFiles objectsPassingTest: ^ (NSManagedObject *aFile, BOOL *stop) {
+						return [[[aFile objectID] URIRepresentation] isEqual:anObjectURL];
+					}] allObjects];
+					
+					for (id anInsertedFile in matchingFiles)
+						[allInsertedFiles removeObject:anInsertedFile];
+					
+					[recreatedPost addFilesObject:[matchingFiles lastObject]];
+					
+				}
+				
+				NSParameterAssert([recreatedPost.files count] == [recreatedPost.fileOrder count]);
+				for (WAFile *aFile in recreatedPost.files)
+					NSParameterAssert(aFile.article == recreatedPost);
+				
+				[savedPost.managedObjectContext deleteObject:savedPost];
 				
 				completionBlock(YES, context, savedPost, nil);
 			
