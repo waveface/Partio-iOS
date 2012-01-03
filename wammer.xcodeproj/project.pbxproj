@@ -59,6 +59,7 @@
 		4BFAE5ED1484C33B002CDE07 /* WASend@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5E51484C33B002CDE07 /* WASend@2x.png */; };
 		FA259F451457E96300F79C8F /* WASettingsGlyph~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */; };
 		FA259F461457E96300F79C8F /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */; };
+		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_Plaintext.m */; };
 		FF0AC0CA149F7A8C00AA5611 /* WAArticleViewController_Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_Default.xib */; };
 		FF0AC0CB149F7A8C00AA5611 /* WAArticleViewController_Discrete_Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C6149F7A8B00AA5611 /* WAArticleViewController_Discrete_Default.xib */; };
@@ -164,6 +165,8 @@
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
 		FF897D32146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
 		FF897D35146A69A600DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */; };
+		FF8A71C714B3505400EC6D66 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8A71BC14B3504000EC6D66 /* Sparkle.framework */; };
+		FF8A71C814B3505E00EC6D66 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF8A71BC14B3504000EC6D66 /* Sparkle.framework */; };
 		FF8CADA61485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CADA41485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m */; };
 		FF8CADA71485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8CADA51485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iphone.xib */; };
 		FF8CADA91485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF8CADA81485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib */; };
@@ -581,6 +584,48 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
+		FF8A71BB14B3504000EC6D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
+		FF8A71BD14B3504000EC6D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
+			remoteInfo = "Sparkle Test App";
+		};
+		FF8A71BF14B3504000EC6D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 612279D90DB5470200AB99EA;
+			remoteInfo = "Sparkle Unit Tests";
+		};
+		FF8A71C114B3504000EC6D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
+			remoteInfo = BinaryDelta;
+		};
+		FF8A71C314B3504000EC6D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 55C14BB7136EEF1500649790;
+			remoteInfo = finish_installation;
+		};
+		FF8A71C514B3504D00EC6D66 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = Sparkle;
+		};
 		FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
@@ -685,6 +730,7 @@
 				FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */,
 				FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */,
 				FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */,
+				FF8A71C814B3505E00EC6D66 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -766,6 +812,7 @@
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
 		FF027CC313F1433B009D979A /* WAPatternPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternPaper.png; path = Resources/WAPatternPaper.png; sourceTree = "<group>"; };
 		FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = WAModel.xcdatamodel; sourceTree = "<group>"; };
+		FF06363814B346CB00E7AF78 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		FF0AC0C2149F734600AA5611 /* WAArticleViewController_Plaintext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_Plaintext.h; sourceTree = "<group>"; };
 		FF0AC0C3149F734600AA5611 /* WAArticleViewController_Plaintext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_Plaintext.m; sourceTree = "<group>"; };
 		FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_Default.xib; sourceTree = "<group>"; };
@@ -958,6 +1005,7 @@
 		FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = external/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		FF8CADA31485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStationDiscoveryFeedbackViewController.h; sourceTree = "<group>"; };
 		FF8CADA41485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStationDiscoveryFeedbackViewController.m; sourceTree = "<group>"; };
 		FF8CADA51485FFB100C8BF04 /* WAStationDiscoveryFeedbackViewController~iphone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAStationDiscoveryFeedbackViewController~iphone.xib"; sourceTree = "<group>"; };
@@ -1150,6 +1198,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF8A71C714B3505400EC6D66 /* Sparkle.framework in Frameworks */,
+				FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */,
 				FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */,
 				FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */,
 				FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */,
@@ -1383,6 +1433,8 @@
 		FF59F87914419581005508FC /* OSX */ = {
 			isa = PBXGroup;
 			children = (
+				FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */,
+				FF06363814B346CB00E7AF78 /* QuartzCore.framework */,
 				FF460D0D149CF86400DB7F0B /* SystemConfiguration.framework */,
 				FF87FA49149CF46D00B8207A /* Cocoa.framework */,
 				FF87FA4A149CF46D00B8207A /* CoreAudio.framework */,
@@ -1477,20 +1529,10 @@
 			children = (
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
-				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
-				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
-				FF97386213D82B55003D1722 /* JSONKit */,
-				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
-				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
-				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
-				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
-				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
-				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
-				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 			);
 			name = Frameworks;
@@ -1589,6 +1631,18 @@
 			);
 			name = Authentication;
 			path = wammer;
+			sourceTree = "<group>";
+		};
+		FF8A71AE14B3504000EC6D66 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF8A71BC14B3504000EC6D66 /* Sparkle.framework */,
+				FF8A71BE14B3504000EC6D66 /* Sparkle Test App.app */,
+				FF8A71C014B3504000EC6D66 /* Sparkle Unit Tests.octest */,
+				FF8A71C214B3504000EC6D66 /* BinaryDelta */,
+				FF8A71C414B3504000EC6D66 /* finish_installation.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FF97382213D821C1003D1722 /* Model */ = {
@@ -2011,6 +2065,16 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
+				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
+				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
+				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
+				FF97386213D82B55003D1722 /* JSONKit */,
+				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
+				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
+				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
+				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
+				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
 				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
 				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
 				FF154657148E06D600352428 /* SystemConfiguration.framework */,
@@ -2046,17 +2110,18 @@
 				FFC648301445E8D700593E5E /* Frameworks */,
 				FFF7F504149E5586004EFB1B /* Copy Frameworks */,
 				FFC648311445E8D700593E5E /* Resources */,
-				FFF7F500149E5463004EFB1B /* Copy Chameleon Frameworks */,
+				FFF7F500149E5463004EFB1B /* Copy Private Frameworks */,
 				FFF7F50E149E5B27004EFB1B /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FF335A3F1445F12B00E60C14 /* PBXTargetDependency */,
+				FF8A71C614B3504D00EC6D66 /* PBXTargetDependency */,
 				FF460DB0149CFC3B00DB7F0B /* PBXTargetDependency */,
 				FF460D30149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D32149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D2B149CF8DA00DB7F0B /* PBXTargetDependency */,
-				FF335A3F1445F12B00E60C14 /* PBXTargetDependency */,
 			);
 			name = "wammer-OSX";
 			productName = "wammer-OSX";
@@ -2151,6 +2216,10 @@
 				{
 					ProductGroup = FF73A59F13D6DC6A00D54EC6 /* Products */;
 					ProjectRef = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
+				},
+				{
+					ProductGroup = FF8A71AE14B3504000EC6D66 /* Products */;
+					ProjectRef = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -2322,6 +2391,41 @@
 			fileType = archive.ar;
 			path = libAQGridView.a;
 			remoteRef = FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF8A71BC14B3504000EC6D66 /* Sparkle.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Sparkle.framework;
+			remoteRef = FF8A71BB14B3504000EC6D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF8A71BE14B3504000EC6D66 /* Sparkle Test App.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "Sparkle Test App.app";
+			remoteRef = FF8A71BD14B3504000EC6D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF8A71C014B3504000EC6D66 /* Sparkle Unit Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Sparkle Unit Tests.octest";
+			remoteRef = FF8A71BF14B3504000EC6D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF8A71C214B3504000EC6D66 /* BinaryDelta */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = BinaryDelta;
+			remoteRef = FF8A71C114B3504000EC6D66 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF8A71C414B3504000EC6D66 /* finish_installation.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = finish_installation.app;
+			remoteRef = FF8A71C314B3504000EC6D66 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */ = {
@@ -2584,19 +2688,19 @@
 			shellPath = /bin/sh;
 			shellScript = "commitSha=$(git rev-parse HEAD | head -c 7)\ninfoPlistPath=$TARGET_BUILD_DIR/$INFOPLIST_PATH\n\necho \"infoPlistPath $infoPlistPath\"\n\n/usr/libexec/PlistBuddy -c \"Delete :IRCommitSHA\" $infoPlistPath\n/usr/libexec/PlistBuddy -c \"Add :IRCommitSHA string $commitSha\" $infoPlistPath\n";
 		};
-		FFF7F500149E5463004EFB1B /* Copy Chameleon Frameworks */ = {
+		FFF7F500149E5463004EFB1B /* Copy Private Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Chameleon Frameworks";
+			name = "Copy Private Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $CONFIGURATION_BUILD_DIR/UIKit.framework;\ncpio -pmadv $CONFIGURATION_BUILD_DIR/$FRAMEWORKS_FOLDER_PATH";
+			shellScript = "FRAMEWORKS=\"UIKit.framework\"\n\nPRIVATE_FRAMEWORKS_PATH=${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\n    \nmkdir -p ${PRIVATE_FRAMEWORKS_PATH}\n\nfor fwk in ${FRAMEWORKS}\ndo\n    FRAMEWORK_NAME=${BUILT_PRODUCTS_DIR}/${fwk}\n    cp -vfRH \"${FRAMEWORK_NAME}\" \"${PRIVATE_FRAMEWORKS_PATH}\"\ndone\n";
 		};
 		FFF7F50E149E5B27004EFB1B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2825,6 +2929,11 @@
 			isa = PBXTargetDependency;
 			name = IRKeychainX;
 			targetProxy = FF460DAF149CFC3B00DB7F0B /* PBXContainerItemProxy */;
+		};
+		FF8A71C614B3504D00EC6D66 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Sparkle;
+			targetProxy = FF8A71C514B3504D00EC6D66 /* PBXContainerItemProxy */;
 		};
 		FFB117C5147F8B34002094E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

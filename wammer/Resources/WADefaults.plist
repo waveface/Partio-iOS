@@ -34,5 +34,7 @@
 	<false/>
 	<key>WADebugUsesDiscreteArticleFlip</key>
 	<false/>
+	<key>WADebugTestFlightSDKEnabled</key>
+	<true/>
 </dict>
 </plist>
