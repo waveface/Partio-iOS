@@ -108,6 +108,12 @@
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
+	
+	[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+	nil]];
+	
+	[TestFlight takeOff:kWATestflightTeamToken];
 
 }
 
@@ -115,10 +121,6 @@
 
 	[self bootstrap];
 	
-	// Testflight takeOff
-	// TODO: Move testflight team token to somewhere for security and easy setup
-	[TestFlight takeOff:@"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg"];
-
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
 	
@@ -731,22 +733,28 @@
   nil];
 
   if (WAAdvancedFeaturesEnabled()) {
-    
-    [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
-      
-      authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
-      authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
-      [authRequestVC authenticate];
-      
-    }]];
 		
-  }
-  
-  authRequestVC.actions = authRequestActions;
-	
+		[authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
+
+			authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+			authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
+			[authRequestVC authenticate];
+
+		}]];
+		
+		[authRequestActions addObject:[IRAction actionWithTitle:@"Zap Everything" block:^{
+		
+			[[[[IRAlertView alloc] initWithTitle:@"Not Implemented" message:"As title." delegate:nil cancelButtonTitle:@"Fine" otherButtonTitles:nil] autorelease] show];
+			
+		}]];
+		
+	}
+
+	authRequestVC.actions = authRequestActions;
+
 	presentWrappedAuthRequestVC(authRequestVC, NO);
-	
-  return YES;
+
+	return YES;
 
 }
 
