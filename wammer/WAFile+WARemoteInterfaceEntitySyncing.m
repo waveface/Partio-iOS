@@ -10,6 +10,14 @@
 #import "WADataStore.h"
 #import "WARemoteInterface.h"
 
+
+extern NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
+extern NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
+extern NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
+extern NSString * const kWAFileSyncReducedQualityStrategy = @"WAFileSyncReducedQualityStrategy";
+extern NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrategy";
+
+
 @implementation WAFile (WARemoteInterfaceEntitySyncing)
 
 - (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
@@ -252,14 +260,38 @@
 - (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
 
 	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));
+	
+	WAFileSyncStrategy syncStrategy = [options objectForKey:kWAFileSyncStrategy];
+	if (!syncStrategy)
+		syncStrategy = kWAFileSyncAdaptiveQualityStrategy;
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	NSURL *ownURL = [[self objectID] URIRepresentation];
-	
 
 	if (([[NSURL URLWithString:self.resourceURL] isFileURL] || !self.resourceURL) && (self.resourceFilePath)) {
 	
-		[ri createAttachmentWithFileAtURL:[NSURL URLWithString:self.resourceURL] inGroup:ri.primaryGroupIdentifier representingImageURL:nil withTitle:self.text description:nil replacingAttachment:nil asType:WARemoteAttachmentUnknownType onSuccess:^(NSString *attachmentIdentifier) {
+		//	Upload stuff
+		BOOL expensiveOperationsAllowed = [[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed];
+		BOOL sendsThumbnailImage = YES;
+		BOOL sendsFullResolutionImage = expensiveOperationsAllowed;
+		
+		if ([syncStrategy isEqual:kWAFileSyncAdaptiveQualityStrategy]) {
+		
+			//	No op
+		
+		} else if ([syncStrategy isEqual:kWAFileSyncReducedQualityStrategy]) {
+		
+			sendsFullResolutionImage = NO;
+		
+		} else if ([syncStrategy isEqual:kWAFileSyncFullQualityStrategy]) {
+		
+			sendsFullResolutionImage = YES;
+		
+		}
+		
+		NSLog(@"%s: thumb? %x, full? %x", __PRETTY_FUNCTION__, sendsThumbnailImage, sendsFullResolutionImage);
+	
+		[ri createAttachmentWithFileAtURL:[NSURL URLWithString:self.resourceURL] inGroup:ri.primaryGroupIdentifier representingImageURL:nil withTitle:self.text description:nil replacingAttachment:nil asType:nil onSuccess:^(NSString *attachmentIdentifier) {
 		
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
