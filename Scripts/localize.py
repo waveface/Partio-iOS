@@ -21,6 +21,7 @@ re_translation = compile(r'^"(.+)" = "(.+)";$')
 re_comment_single = compile(r'^/\*.*\*/$')
 re_comment_start = compile(r'^/\*.*$')
 re_comment_end = compile(r'^.*\*/$')
+re_widecamelcase = compile(r'(?x)( [A-Z](\S+)([A-Z](\S*))+ | ([A-Z_][A-Z_]+) )')  # LogIn or LOG_IN
 
 def print_help():
     print u"""Usage: merge.py merged_file old_file new_file
@@ -100,14 +101,6 @@ class LocalizedFile():
 
             merged.strings.append(string)
             merged.strings_d[string.key] = string
-        
-        for string in self.strings:
-            if not new.strings_d.has_key(string.key):
-                new_string = copy(self.strings_d[string.key])
-                new_string.comments = string.comments
-                string = new_string
-                merged.strings.append(string)
-                merged.strings_d[string.key] = string
 
         return merged
 
@@ -124,21 +117,79 @@ def merge(merged_fname, old_fname, new_fname):
 
 STRINGS_FILE = 'Localizable.strings'
 
-def localize(path):
-    languages = [name for name in os.listdir(path) if name.endswith('.lproj') and os.path.isdir(name)]
+# use ibtool to extract localizable strings from ib files
+def export_xibs(language):
+    # XIBs
+    localization = open(language + os.path.sep + 'xib.strings.new', encoding='utf_16', mode='w+')
     
+    ibs = [name for name in os.listdir(os.getcwd()) if name.endswith('.xib') and not os.path.isdir(name)]
+    for ib in ibs:
+        ib_strings = "en.lproj/" + ib + ".strings.new"
+        #extract only if modified
+        print 'ibtool --export-strings-file "%s" "%s"' % ( ib_strings, ib )
+        os.system('ibtool --export-strings-file "%s" "%s"' % ( ib_strings, ib ))
+        fin = open(ib_strings, encoding='utf_16', mode='r')
+
+        line = fin.readline()
+        comments = []
+        while line:
+            translate = re_translation.match(line)
+            if translate:
+                wrong_key, key = translate.groups()
+                if re_widecamelcase.match(key) and not key.count(' '):
+                    for comment in comments:
+                        localization.write( comment )
+                    localization.write( u'"%s" = "%s";' % (key,key) )
+                    localization.write( "\n" )
+                comments = []
+            else:
+                comments.append(line)
+            line = fin.readline() 
+    localization.close()
+    return localization.name
+
+def concat(file1, file2):
+    f1 = open(file1, encoding='utf_16', mode='r')
+    f2 = open(file2, encoding='utf_16', mode='r')
+    buffer = f1.read() + f2.read()
+    f1.close
+    f2.close
+
+    f1 = open(file1, encoding='utf_16', mode='w')
+    f1.write(buffer)
+    f1.close
+
+def localize(path):
+    # init phase the new
+    start_with = 'en'
+    
+    language = start_with + '.lproj'
+    original = merged = language + os.path.sep + STRINGS_FILE
+    old = original + '.old'
+    new = original + '.new'
+    
+    if os.path.isfile(original):
+        os.rename(original, old)
+        os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
+        os.rename(original, new)
+        concat(new, export_xibs(language))
+    else:
+        os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
+
+    merge(merged, old, new)
+    os.system( 'rm %s/*xib.strings.new' % language )
+        
+    languages = [name for name in os.listdir(path) if name.endswith('.lproj') and os.path.isdir(name) and not name.startswith('en.')]
     for language in languages:
         original = merged = language + os.path.sep + STRINGS_FILE
         old = original + '.old'
-        new = original + '.new'
-    
+        
         if os.path.isfile(original):
             os.rename(original, old)
-            os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
-            os.rename(original, new)
-            merge(merged, old, new)
-        else:
-            os.system('genstrings -q -o "%s" `find . -name "*.m"`' % language)
-
+        
+        merge(merged, old, new)
+        
+        # os.system( 'cd %s; rm *.old *.new *.xib.strings' % language )
+        
 if __name__ == '__main__':
     localize(os.getcwd())
