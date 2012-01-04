@@ -81,6 +81,7 @@
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
+		returnedRequest.fetchBatchSize = 100;
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
 		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(draft == NO)"];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
@@ -92,6 +93,7 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
+	
 	[self.fetchedResultsController performFetch:nil];
 	
 	self.navigationItem.titleView = WAStandardTitleView();
