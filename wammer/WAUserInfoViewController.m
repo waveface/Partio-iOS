@@ -118,7 +118,7 @@
     return;
   
   [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade]; 
+  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
 
 }
@@ -127,6 +127,9 @@
 
   NSParameterAssert([NSThread isMainThread]);
 
+  if (![self isViewLoaded])
+    return;
+		
   WAReachabilityDetector *targetDetector = aNotification.object;
   NSURL *updatedHost = targetDetector.hostURL;
   
@@ -163,7 +166,7 @@
   
   self.monitoredHosts = [WARemoteInterface sharedInterface].monitoredHosts;
   return monitoredHosts;
-
+	
 }
 
 - (void) setMonitoredHosts:(NSArray *)newMonitoredHosts {
