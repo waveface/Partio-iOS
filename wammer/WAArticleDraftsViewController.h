@@ -11,6 +11,7 @@
 @class WAArticleDraftsViewController;
 @protocol WAArticleDraftsViewControllerDelegate <NSObject>
 - (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil;
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil;
 @end
 
 @interface WAArticleDraftsViewController : UITableViewController

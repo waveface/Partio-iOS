@@ -20,6 +20,7 @@
 
 @property (nonatomic, readwrite, retain) WAUserInfoHeaderCell *headerCell;
 @property (nonatomic, readwrite, retain) NSArray *monitoredHosts;
+- (NSString *) titleForMonitoredHost:(NSURL *)anURL;
 
 - (void) handleReachableHostsDidChange:(NSNotification *)aNotification;
 - (void) handleReachabilityDetectorDidUpdate:(NSNotification *)aNotification;
@@ -108,6 +109,15 @@
   
 }
 
+- (NSString *) titleForMonitoredHost:(NSURL *)anURL {
+
+	if ([[anURL host] isEqualToString:[[WARemoteInterface sharedInterface].engine.context.baseURL host]])
+		return NSLocalizedString(@"WAProperNounWFCloud", @"Short label for the Cloud");
+
+	return NSLocalizedString(@"WAProperNounWFStation", @"Short label for a particular Station");
+
+}
+
 - (void) handleReachableHostsDidChange:(NSNotification *)aNotification {
 
   NSParameterAssert([NSThread isMainThread]);
@@ -118,7 +128,7 @@
     return;
   
   [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade]; 
+  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
 
 }
@@ -127,6 +137,17 @@
 
   NSParameterAssert([NSThread isMainThread]);
 
+  if (![self isViewLoaded])
+    return;
+
+#if 1
+		
+  [self.tableView beginUpdates];
+  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+  [self.tableView endUpdates];
+
+#else
+	
   WAReachabilityDetector *targetDetector = aNotification.object;
   NSURL *updatedHost = targetDetector.hostURL;
   
@@ -145,6 +166,8 @@
     [self.tableView reloadData];
     
   }
+
+#endif
   
 }
 
@@ -163,7 +186,7 @@
   
   self.monitoredHosts = [WARemoteInterface sharedInterface].monitoredHosts;
   return monitoredHosts;
-
+	
 }
 
 - (void) setMonitoredHosts:(NSArray *)newMonitoredHosts {
@@ -231,6 +254,29 @@
 
 }
 
+- (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+
+	if (section == 0) {
+	
+		NSUInteger numberOfMonitoredHosts = [self.monitoredHosts count];
+
+		if (numberOfMonitoredHosts == 0)
+			return NSLocalizedString(@"WAEndpointReachabilityStatusNoEndpointsDescription", @"Text to show when not even Cloud is there — a rare case");
+		
+		if (numberOfMonitoredHosts == 1)
+			return NSLocalizedString(@"WAEndpointReachabilityStatusCloudOnlyDescription", @"Text to show when only Cloud is available");
+		
+		if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed])
+			return NSLocalizedString(@"WAEndpointReachabilityStatusCloudAndStationAvailableDescription", @"Text to show when Cloud and Station are both available");
+		
+		return NSLocalizedString(@"WAEndpointReachabilityStatusStationNotAvailableDescription", @"Text to show when Cloud is available, but the Station is not responsive");
+
+	}
+	
+	return nil;
+
+}
+
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UITableViewCell *cell = nil;
@@ -242,16 +288,20 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:kTopBottomIdentifier];
 		if (!cell) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTopBottomIdentifier] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 		
     NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
-    cell.textLabel.text = [hostURL host];
-    
+		
+		cell.textLabel.text = [self titleForMonitoredHost:hostURL];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ (%@)",
       NSLocalizedStringFromWAReachabilityState([[WARemoteInterface sharedInterface] reachabilityStateForHost:hostURL]),
       [hostURL absoluteString]
     ];
-    
+		
+		if (WAAdvancedFeaturesEnabled())
+			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+		
   } else if (indexPath.section == 1) {
 	
 		NSString * const kLeftRightIdentifier = @"LeftRight";
@@ -259,6 +309,7 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:kLeftRightIdentifier];
 		if (!cell) {
 			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kLeftRightIdentifier] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 		  
 		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
@@ -266,20 +317,33 @@
 		switch ([indexPath row]) {
 			
 			case 0: {
+				
+				NSNumber *used = [storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"];
+				NSNumber *all = [storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"];
+				
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllObjects", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
-					[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"],
-					[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"]
-				];
+				if ([all isEqualToNumber:[NSNumber numberWithInteger:-1]]) {
+					cell.detailTextLabel.text = NSLocalizedString(@"WAStorageQuotaUnlimited", nil);
+				} else {
+					cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@", used, all];
+				}
+				
 				break;
+				
 			}
 			
 			case 1: {
+			
+				NSNumber *used = [storageInfo valueForKeyPath:@"waveface.usage.month_image_objects"];
+				NSNumber *all = [storageInfo valueForKeyPath:@"waveface.quota.month_image_objects"];
+				
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllImages", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
-					[storageInfo valueForKeyPath:@"waveface.usage.month_image_objects"],
-					[storageInfo valueForKeyPath:@"waveface.quota.month_image_objects"]
-				];
+				if ([all isEqualToNumber:[NSNumber numberWithInteger:-1]]) {
+					cell.detailTextLabel.text = NSLocalizedString(@"WAStorageQuotaUnlimited", nil);
+				} else {
+					cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@", used, all];
+				}
+				
 				break;
 			}
 			
@@ -313,15 +377,19 @@
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   if (indexPath.section == 0) {
+	
+		if (WAAdvancedFeaturesEnabled()) {
   
-    NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
-    WAReachabilityDetector *detector = [[WARemoteInterface sharedInterface] reachabilityDetectorForHost:hostURL];
-    
-    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Diagnostics" message:[detector description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-    
-    [alertView show];
-    
-    [aTV deselectRowAtIndexPath:indexPath animated:YES];
+			NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
+			WAReachabilityDetector *detector = [[WARemoteInterface sharedInterface] reachabilityDetectorForHost:hostURL];
+			
+			UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Diagnostics" message:[detector description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+			
+			[alertView show];
+			
+			[aTV deselectRowAtIndexPath:indexPath animated:YES];
+		
+		}
   
   }
 
