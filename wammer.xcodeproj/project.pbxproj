@@ -1388,7 +1388,7 @@
 				4BB172FA14B495EF00282052 /* Supporting Files */,
 			);
 			name = "iOS Tests";
-			path = "wammer-iOS_tests";
+			path = "wammer-iOS-tests";
 			sourceTree = "<group>";
 		};
 		4BB172FA14B495EF00282052 /* Supporting Files */ = {
