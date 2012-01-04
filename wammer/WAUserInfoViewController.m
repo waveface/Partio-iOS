@@ -24,6 +24,14 @@
           inUnit: NSEraCalendarUnit forDate:endDate];
      return endDay-startDay;
 }
+-(NSInteger)daysFromNow:(NSDate *) someDate
+{
+     NSInteger startDay=[self ordinalityOfUnit:NSDayCalendarUnit
+          inUnit: NSEraCalendarUnit forDate:[NSDate date]];
+     NSInteger endDay=[self ordinalityOfUnit:NSDayCalendarUnit
+          inUnit: NSEraCalendarUnit forDate:someDate];
+     return endDay-startDay;
+}
 @end
 
 @interface WAUserInfoViewController ()
@@ -61,10 +69,23 @@
 
 }
 
-//- (void) viewDidLoad {
-//
-//  [super viewDidLoad];
-//  
+- (void) viewDidLoad {
+
+  [super viewDidLoad];
+	
+	UILabel *productDisclaimer = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 52)] autorelease];
+	productDisclaimer.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	productDisclaimer.backgroundColor = [UIColor clearColor];
+	productDisclaimer.text = NSLocalizedString(@"WAProductDisclaimer", nil);
+	productDisclaimer.textColor = [UIColor grayColor];
+	productDisclaimer.textAlignment = UITextAlignmentCenter;
+	productDisclaimer.numberOfLines = 2;
+	productDisclaimer.shadowColor = [UIColor whiteColor];
+	productDisclaimer.shadowOffset = CGSizeMake(1, 1);
+		
+	self.tableView.tableFooterView = productDisclaimer;
+	
+	  
 //  __block UITableView *nrTV = self.tableView;
 //  
 //  self.tableView.tableHeaderView = ((^ {
@@ -104,7 +125,7 @@
 //  
 //  };
 //
-//}
+}
 
 - (void) viewWillAppear:(BOOL)animated {
 
@@ -315,15 +336,13 @@
 			
 			
 			case 3: {
-				NSCalendar *calendar = [NSCalendar currentCalendar];
 				NSDate *expireDate = [NSDate dateWithTimeIntervalSince1970:
 					[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]];
-				NSDate *today = [NSDate date];
-	
+				
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaInterval", nil);
 				cell.detailTextLabel.text =  [NSString stringWithFormat:
 					NSLocalizedString(@"%d days", @"days before expire"), 
-					[calendar daysWithinEraFromDate:today toDate:expireDate]
+					[[NSCalendar currentCalendar] daysFromNow:expireDate]
 					];
 				break;
 			}
