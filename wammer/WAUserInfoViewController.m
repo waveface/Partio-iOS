@@ -63,9 +63,10 @@
   [self updateDisplayTitleWithPotentialTitle:nil];
   
 	self.tableViewStyle = UITableViewStyleGrouped;
-  self.contentSizeForViewInPopover = (CGSize){ 320, 416 };
+  self.contentSizeForViewInPopover = (CGSize){ 320, 500 };
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
+	self.title = NSLocalizedString(@"WASettings", nil);
 
 }
 
@@ -233,12 +234,6 @@
   
   };
 
-}
-
-- (CGFloat) tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section {
-
-  return 48;
-	
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
