@@ -13,6 +13,8 @@
 #import "UIImage+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 
+#import "WARemoteInterface.h"
+
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #import <UIKit/UIDevice.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -111,21 +113,13 @@
 	
 	NSURL *resourceURL = [NSURL URLWithString:self.resourceURL];
 	
-	if (![resourceURL isFileURL]) {
+	if (![resourceURL isFileURL] && [[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed]) {
+		
+		NSLog(@"Fetching resource image on-demand");
 		
 		NSURL *ownURL = [[self objectID] URIRepresentation];
-    NSString *preferredExtension = nil;
-    
-    if (self.resourceType) {
-    
-      preferredExtension = (NSString *)UTTypeCopyPreferredTagWithClass((CFStringRef)self.resourceType, kUTTagClassFilenameExtension);
-      [[preferredExtension retain] autorelease];
-      
-      if (preferredExtension)
-        CFRelease((CFStringRef)preferredExtension);
-      
-    }
-      
+		NSString *ownResourceType = self.resourceType;
+		
 		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 			
 			if (!tempFileURLOrNil)
@@ -145,6 +139,10 @@
         
         NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil];
         
+				NSString *preferredExtension = nil;
+				if (ownResourceType)
+					preferredExtension = [NSMakeCollectable(UTTypeCopyPreferredTagWithClass((CFStringRef)ownResourceType, kUTTagClassFilenameExtension)) autorelease];
+				
         if (preferredExtension) {
           
           NSURL *newFileURL = [NSURL fileURLWithPath:[[[fileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:preferredExtension]];

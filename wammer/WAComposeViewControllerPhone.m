@@ -386,7 +386,7 @@
   
 	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 	stitchedFile.resourceType = (NSString *)kUTTypeImage;
-	stitchedFile.resourceURL = [finalFileURL absoluteString];
+	//	stitchedFile.resourceURL = [finalFileURL absoluteString];
 	stitchedFile.resourceFilePath = [finalFileURL path];
 	stitchedFile.article = self.post;
 	
