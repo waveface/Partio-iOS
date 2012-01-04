@@ -203,18 +203,22 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		NSArray *currentIndexPaths = [self.tableView indexPathsForVisibleRows];
 		
-		[answer setObject:[currentIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
-			
-			NSManagedObject *rowObject = [self.fetchedResultsController objectAtIndexPath:anIndexPath];
-			return [[[rowObject objectID] URIRepresentation] absoluteString];
-			
-		}] forKey:kWAPostsViewControllerLastVisibleObjectURIs];
+		if (currentIndexPaths) {
 		
-		[answer setObject:[currentIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
-		
-			return NSStringFromCGRect([self.tableView rectForRowAtIndexPath:anIndexPath]);
+			[answer setObject:[currentIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+				
+				NSManagedObject *rowObject = [self.fetchedResultsController objectAtIndexPath:anIndexPath];
+				return [[[rowObject objectID] URIRepresentation] absoluteString];
+				
+			}] forKey:kWAPostsViewControllerLastVisibleObjectURIs];
 			
-		}] forKey:kWAPostsViewControllerLastVisibleRects];
+			[answer setObject:[currentIndexPaths irMap: ^ (NSIndexPath *anIndexPath, NSUInteger index, BOOL *stop) {
+			
+				return NSStringFromCGRect([self.tableView rectForRowAtIndexPath:anIndexPath]);
+				
+			}] forKey:kWAPostsViewControllerLastVisibleRects];
+		
+		}
 	
 	}
 	

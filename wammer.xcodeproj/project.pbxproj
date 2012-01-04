@@ -59,6 +59,7 @@
 		4BFAE5ED1484C33B002CDE07 /* WASend@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5E51484C33B002CDE07 /* WASend@2x.png */; };
 		FA259F451457E96300F79C8F /* WASettingsGlyph~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */; };
 		FA259F461457E96300F79C8F /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */; };
+		FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */; };
 		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_Plaintext.m */; };
 		FF0AC0CA149F7A8C00AA5611 /* WAArticleViewController_Default.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_Default.xib */; };
@@ -808,6 +809,8 @@
 		FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph~iphone.png"; path = "Resources/WASettingsGlyph~iphone.png"; sourceTree = "<group>"; };
 		FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph@2x~iphone.png"; path = "Resources/WASettingsGlyph@2x~iphone.png"; sourceTree = "<group>"; };
 		FAE26ECA13E1435D00CB1E3A /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Resources/Icon.png; sourceTree = "<group>"; };
+		FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABlobSyncManager.h; sourceTree = "<group>"; };
+		FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABlobSyncManager.m; sourceTree = "<group>"; };
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
 		FF027CC313F1433B009D979A /* WAPatternPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternPaper.png; path = Resources/WAPatternPaper.png; sourceTree = "<group>"; };
@@ -986,6 +989,7 @@
 		FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+DeprecatedNonfunctional.m"; sourceTree = "<group>"; };
 		FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADateBadgeBackdrop.png; path = Resources/WADateBadgeBackdrop.png; sourceTree = "<group>"; };
 		FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WADateBadgeBackdrop@2x.png"; path = "Resources/WADateBadgeBackdrop@2x.png"; sourceTree = "<group>"; };
+		FF83360214B453D600D59D29 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
 		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageView.m; sourceTree = "<group>"; };
@@ -1354,6 +1358,16 @@
 			path = Xibs;
 			sourceTree = "<group>";
 		};
+		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
+			isa = PBXGroup;
+			children = (
+				FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */,
+				FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */,
+			);
+			name = "Blob Syncing";
+			path = wammer;
+			sourceTree = "<group>";
+		};
 		FF1A10471462ACDB004FD00D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1506,6 +1520,7 @@
 				FF3ACA9113E6AD1C000F608C /* Views */,
 				FF97382213D821C1003D1722 /* Model */,
 				FF97384613D82771003D1722 /* API */,
+				FF0024F914B44CC500F54AAF /* Blob Syncing */,
 				FF73A54913D6C2CD00D54EC6 /* iOS Supporting Files */,
 				FFC2E04C13DD706600816EA1 /* iOS Resources */,
 				FFC6483B1445E8D700593E5E /* Mac */,
@@ -2894,6 +2909,7 @@
 				FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */,
 				FF3AEEF814A30EEB00FC4E19 /* WAArticleViewController_Default.m in Sources */,
 				FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */,
+				FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3275,6 +3291,7 @@
 			isa = XCVersionGroup;
 			children = (
 				FF60694A1498C8CD00F65CF2 /* WAModel 11.xcdatamodel */,
+				FF83360214B453D600D59D29 /* WAModel 12.xcdatamodel */,
 				FF7997A114908B72000CE08D /* WAModel 10.xcdatamodel */,
 				FF4570E21488F0D7005B5905 /* WAModel 9.xcdatamodel */,
 				FF4570521488BACE005B5905 /* WAModel 8.xcdatamodel */,
@@ -3286,7 +3303,7 @@
 				FFDDB4171418B43B00FE9CE2 /* WAModel 2.xcdatamodel */,
 				FF03F5CE13D81B76007E168F /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF60694A1498C8CD00F65CF2 /* WAModel 11.xcdatamodel */;
+			currentVersion = FF83360214B453D600D59D29 /* WAModel 12.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
