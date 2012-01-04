@@ -14,6 +14,8 @@
 
 #import "IRGradientView.h"
 
+#import "UIApplication+IRAdditions.h"
+
 
 @interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
@@ -88,7 +90,7 @@
 		centerToolbar.usesCustomLayout = NO;
 		centerToolbar.items = [NSArray arrayWithObjects:
 			[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-			[[[UIBarButtonItem alloc] initWithTitle:@"Attachment" style:UIBarButtonItemStyleBordered target:self action:@selector(handleCameraItemTap:)] autorelease],	
+			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(handleCameraItemTap:)] autorelease],
 			[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
 		nil];
 		centerToolbar.frame = (CGRect){ (CGPoint){ 0, -1 }, centerToolbar.frame.size };
@@ -104,7 +106,6 @@
 	
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardWillShowNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 
  	return self;
 }
@@ -124,60 +125,24 @@
 	
 }
 
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
-	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	if ([NSThread isMainThread])
-		[self retain];
-	else
-		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		[self.managedObjectContext refreshObject:self.post mergeChanges:YES];
-		
-		if ([self isViewLoaded]) {
-		
-			//	Refresh view
-		
-		}
-			
-		[self autorelease];
-	
-	});
-
-}
-
 - (IBAction) handleCameraItemTap:(id)sender {
 
-	__block WAAttachedMediaListViewController *controller = nil;
-	//	__block __typeof__(self) nrSelf = self;
-	//	[self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:nil];
-	
-	NSLog(@"self.post %@", self.post);
-	
 	if ([self.post.objectID isTemporaryID]) {
 		NSError *permanentIDObtainingError = nil;
 		if (![self.post.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.post] error:&permanentIDObtainingError])
 			NSLog(@"Error obtaining permanent ID: %@", permanentIDObtainingError);
 	}
 	
-	NSLog(@"post = %@", self.post);
-
-  controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
+	[self.post.managedObjectContext save:nil];
+	
+  __block WAAttachedMediaListViewController *controller = [WAAttachedMediaListViewController controllerWithArticleURI:[[self.post objectID] URIRepresentation] completion: ^ (NSURL *objectURI) {
 		[controller dismissModalViewControllerAnimated:YES];
 	}];
 	
 	controller.headerView = self.attachmentsListViewControllerHeaderView;
 	UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:controller] autorelease];
- 
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
-  [self.navigationController presentModalViewController:wrapper animated:YES];
+	
+	[self.navigationController presentModalViewController:wrapper animated:YES];
 	
 }
 
@@ -196,13 +161,26 @@
 	imagePickerController.usesAssetsLibrary = NO;
 	imagePickerController.savesCameraImageCapturesToSavedPhotos = YES;
 	
-	//	[imagePickerController.view addSubview:((^ {
-	//		UIView *decorativeView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 480, 20 }] autorelease];
-	//		decorativeView.backgroundColor = [UIColor blackColor];
-	//		return decorativeView;
-	//	})())];
-
-	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:YES];
+	[CATransaction begin];
+	
+	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+	UIImageView *windowProxy = [[[UIImageView alloc] initWithImage:[keyWindow.layer irRenderedImage]] autorelease];
+	windowProxy.frame = keyWindow.bounds;
+	 
+	[[UIApplication sharedApplication] irBeginIgnoringStatusBarAppearanceRequests];
+	[(self.modalViewController ? self.modalViewController : self) presentModalViewController:imagePickerController animated:NO];
+	[[UIApplication sharedApplication] irEndIgnoringStatusBarAppearanceRequests];
+	
+	[keyWindow addSubview:windowProxy];
+	
+	[UIView animateWithDuration:0.3 delay:0 options:0 animations:^{
+		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+		windowProxy.alpha = 0;
+	} completion:^(BOOL finished) {
+		[windowProxy removeFromSuperview];
+	}];
+	
+	[CATransaction commit];
 
 }
 
