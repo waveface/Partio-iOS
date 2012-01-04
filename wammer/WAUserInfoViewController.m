@@ -15,6 +15,16 @@
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
 
+@implementation NSCalendar (MySpecialCalculations)
+-(NSInteger)daysWithinEraFromDate:(NSDate *) startDate toDate:(NSDate *) endDate
+{
+     NSInteger startDay=[self ordinalityOfUnit:NSDayCalendarUnit
+          inUnit: NSEraCalendarUnit forDate:startDate];
+     NSInteger endDay=[self ordinalityOfUnit:NSDayCalendarUnit
+          inUnit: NSEraCalendarUnit forDate:endDate];
+     return endDay-startDay;
+}
+@end
 
 @interface WAUserInfoViewController ()
 
@@ -51,50 +61,50 @@
 
 }
 
-- (void) viewDidLoad {
-
-  [super viewDidLoad];
-  
-  __block UITableView *nrTV = self.tableView;
-  
-  self.tableView.tableHeaderView = ((^ {
-  
-    UITableViewCell *cell = [self headerCell];
-		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		
-    UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
-		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		
-    [returnedView addSubview:cell];
-    
-    return returnedView;
-    
-  })());
-	
-	
-	self.tableView.scrollIndicatorInsets = (UIEdgeInsets){
-		CGRectGetHeight(self.tableView.tableHeaderView.bounds),		
-		0, 
-		0, 
-		0
-	};
-  
-  self.tableView.onLayoutSubviews = ^ {
-  
-    UIView *tableHeaderView = nrTV.tableHeaderView;
-    CGPoint contentOffset = nrTV.contentOffset;
-    
-    nrTV.tableHeaderView.center = (CGPoint) {
-      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
-      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
-    };
-    
-    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
-      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
-  
-  };
-
-}
+//- (void) viewDidLoad {
+//
+//  [super viewDidLoad];
+//  
+//  __block UITableView *nrTV = self.tableView;
+//  
+//  self.tableView.tableHeaderView = ((^ {
+//  
+//    UITableViewCell *cell = [self headerCell];
+//		cell.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		
+//    UIView *returnedView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+//		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		
+//    [returnedView addSubview:cell];
+//    
+//    return returnedView;
+//    
+//  })());
+//	
+//	
+//	self.tableView.scrollIndicatorInsets = (UIEdgeInsets){
+//		CGRectGetHeight(self.tableView.tableHeaderView.bounds),		
+//		0, 
+//		0, 
+//		0
+//	};
+//  
+//  self.tableView.onLayoutSubviews = ^ {
+//  
+//    UIView *tableHeaderView = nrTV.tableHeaderView;
+//    CGPoint contentOffset = nrTV.contentOffset;
+//    
+//    nrTV.tableHeaderView.center = (CGPoint) {
+//      contentOffset.x + 0.5f * CGRectGetWidth(tableHeaderView.bounds),
+//      contentOffset.y + 0.5f * CGRectGetHeight(tableHeaderView.bounds)
+//    };
+//    
+//    if ([tableHeaderView.superview.subviews lastObject] != tableHeaderView)
+//      [tableHeaderView.superview bringSubviewToFront:tableHeaderView]; 
+//  
+//  };
+//
+//}
 
 - (void) viewWillAppear:(BOOL)animated {
 
@@ -192,7 +202,7 @@
   switch (section) {
   
     case 0:
-      return [self.monitoredHosts count];
+      return 3; //[self.monitoredHosts count];
 			
 		case 1:
 			return 4;
@@ -222,10 +232,10 @@
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 
   if (section == 0)
-    return NSLocalizedString(@"WANounPluralEndpoints", @"Plural noun for remote endpoints");
+    return NSLocalizedString(@"USER_ACCOUNT_HEADER", nil);
   
 	if (section == 1)
-    return NSLocalizedString(@"WANounStorageQuota", @"Noun for storage quota.");
+    return NSLocalizedString(@"SYSTEM_STATUS_HEADER", nil);
   
   return nil;
 
@@ -233,48 +243,92 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	NSString * const kAccountInfoIdentifier = @"AccountInfo";
 	UITableViewCell *cell = nil;
 
+	cell = [tableView dequeueReusableCellWithIdentifier:kAccountInfoIdentifier];
+	if (!cell) {
+		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kAccountInfoIdentifier] autorelease];
+	}
+
   if (indexPath.section == 0) {
-    
-		NSString * const kTopBottomIdentifier = @"TopBottom";
+		NSError *fetchingError = nil;
+		NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+    [WARemoteInterface sharedInterface].userIdentifier, @"identifier",
+  nil]] error:&fetchingError];
+  
+		if (!fetchedUser)
+			NSLog(@"Fetching failed: %@", fetchingError);
 		
-		cell = [tableView dequeueReusableCellWithIdentifier:kTopBottomIdentifier];
-		if (!cell) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kTopBottomIdentifier] autorelease];
-		}
-		
-    NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
-    cell.textLabel.text = [hostURL host];
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ (%@)",
-      NSLocalizedStringFromWAReachabilityState([[WARemoteInterface sharedInterface] reachabilityStateForHost:hostURL]),
-      [hostURL absoluteString]
-    ];
-    
-  } else if (indexPath.section == 1) {
-	
-		NSString * const kLeftRightIdentifier = @"LeftRight";
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:kLeftRightIdentifier];
-		if (!cell) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2 reuseIdentifier:kLeftRightIdentifier] autorelease];
-		}
-		  
-		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
+		WAUser *user = [fetchedUser lastObject];
 		
 		switch ([indexPath row]) {
-			
 			case 0: {
-				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllObjects", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
-					[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"],
-					[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"]
-				];
+				cell.textLabel.text = NSLocalizedString(@"WAUserName", nil);
+				cell.detailTextLabel.text = user.nickname;
 				break;
 			}
 			
 			case 1: {
+				cell.textLabel.text = NSLocalizedString(@"WAUserEmail", nil);
+				cell.detailTextLabel.text = user.email;
+				break;
+			}
+			
+			case 2: {
+				cell.textLabel.text = NSLocalizedString(@"WADeviceName", nil);
+				cell.detailTextLabel.text = [[UIDevice currentDevice] name];
+				break;
+			}
+			
+			default:
+				break;
+			
+		}  
+		
+  } else if (indexPath.section == 1) {
+		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
+		
+		switch ([indexPath row]) {
+			case 0: {
+				cell.textLabel.text = NSLocalizedString(@"WAConnectToCloudOrStation", nil);
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				break;
+			}
+
+			case 1: {
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllObjects", nil);
+				cell.detailTextLabel.text = ((^{
+						NSNumber *quota=[storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"];
+						if ( [quota intValue] == -1 ) 
+							return NSLocalizedString(@"WAInfinity", @"Unlimited storage size. This should be rare.");
+						return [quota stringValue];
+					}()));
+				break;
+			}
+			
+			case 2: {
+				cell.textLabel.text = NSLocalizedString(@"WAStorageObjectsUsed", nil);
+				cell.detailTextLabel.text = [[storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"] stringValue];
+				break;
+			}
+			
+			
+			case 3: {
+				NSCalendar *calendar = [NSCalendar currentCalendar];
+				NSDate *expireDate = [NSDate dateWithTimeIntervalSince1970:
+					[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]];
+				NSDate *today = [NSDate date];
+	
+				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaInterval", nil);
+				cell.detailTextLabel.text =  [NSString stringWithFormat:
+					NSLocalizedString(@"%d days", @"days before expire"), 
+					[calendar daysWithinEraFromDate:today toDate:expireDate]
+					];
+				break;
+			}
+				
+			case 4: {
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllImages", nil);
 				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
 					[storageInfo valueForKeyPath:@"waveface.usage.month_image_objects"],
@@ -288,27 +342,30 @@
 				break;
 			}
 			
-			case 2: {
-				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalStartDate", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
-					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_begin"] doubleValue]]
-				];
-				break;
-			}
-				
-			case 3: {
+			case 5: {
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalEndDate", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
-					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]]
-				];
+				cell.detailTextLabel.text = [[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]] stringValue];
+				NSLog(@"%@", [[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]);
+//				  [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
+//					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]]
+//				];
 				break;
 			}
 			
 			default:
 				break;
-			
-		}
-		
+		}  
+
+	
+		return cell;
+		NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
+    cell.textLabel.text = [hostURL host];
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ (%@)",
+      NSLocalizedStringFromWAReachabilityState([[WARemoteInterface sharedInterface] reachabilityStateForHost:hostURL]),
+      [hostURL absoluteString]
+    ];
+
 	}
 	
   return cell;
@@ -317,18 +374,18 @@
 
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  if (indexPath.section == 0) {
-  
-    NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
-    WAReachabilityDetector *detector = [[WARemoteInterface sharedInterface] reachabilityDetectorForHost:hostURL];
-    
-    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Diagnostics" message:[detector description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-    
-    [alertView show];
-    
-    [aTV deselectRowAtIndexPath:indexPath animated:YES];
-  
-  }
+//  if (indexPath.section == 0) {
+//  
+//    NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
+//    WAReachabilityDetector *detector = [[WARemoteInterface sharedInterface] reachabilityDetectorForHost:hostURL];
+//    
+//    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Diagnostics" message:[detector description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+//    
+//    [alertView show];
+//    
+//    [aTV deselectRowAtIndexPath:indexPath animated:YES];
+//  
+//  }
 
 }
 
@@ -360,9 +417,12 @@
     NSLog(@"Fetching failed: %@", fetchingError);
   
   WAUser *user = [fetchedUser lastObject];
-  self.headerCell.userNameLabel.text = user.nickname;
+	NSIndexPath *userPath = [NSIndexPath indexPathForRow:0 inSection:0];
+  [self.tableView cellForRowAtIndexPath:userPath].textLabel.text = user.nickname;
+	userPath = [NSIndexPath indexPathForRow:1 inSection:0];
+	[self.tableView cellForRowAtIndexPath:userPath].textLabel.text = user.email;
+	self.headerCell.userNameLabel.text = user.nickname;
   self.headerCell.userEmailLabel.text = user.email;
-  self.headerCell.avatarView.image = user.avatar;
   
   [self updateDisplayTitleWithPotentialTitle:user.nickname];
 
