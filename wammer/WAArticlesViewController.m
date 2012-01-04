@@ -507,6 +507,12 @@
   
 }
 
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
+
+	return ![[WADataStore defaultStore] isUploadingArticle:anObjectURIOrNil];
+
+}
+
 - (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
 
   [self dismissAuxiliaryControlsAnimated:NO];
