@@ -704,12 +704,6 @@
 
 		}]];
 		
-		[authRequestActions addObject:[IRAction actionWithTitle:@"Zap Everything" block:^{
-		
-			[[[[IRAlertView alloc] initWithTitle:@"Not Implemented" message:"As title." delegate:nil cancelButtonTitle:@"Fine" otherButtonTitles:nil] autorelease] show];
-			
-		}]];
-		
 	}
 
 	authRequestVC.actions = authRequestActions;
