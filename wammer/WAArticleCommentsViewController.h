@@ -57,6 +57,8 @@ typedef enum {
 
 @property (nonatomic, readwrite, retain) IBOutlet WAView *commentsRevealingActionContainerView;
 
+@property (nonatomic, readwrite, retain) IBOutlet UIView *coachmarkOverlay;
+
 - (IBAction) handleCommentReveal:(id)sender;
 - (IBAction) handleCommentPost:(id)sender;
 - (IBAction) handleCommentClose:(id)sender;

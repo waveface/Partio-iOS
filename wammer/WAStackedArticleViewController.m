@@ -82,6 +82,7 @@
 		return textStackCellLabel;
 	
 	textStackCellLabel = [[WAArticleTextEmphasisLabel alloc] initWithFrame:CGRectZero];
+	textStackCellLabel.placeholder = @"This post has no body text";
 	[textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
@@ -129,7 +130,6 @@
 		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
 		nrCommentsVC.commentsView.clipsToBounds = NO;
 		
-//		[nrCommentsVC.view addSubview:backgroundView];
 		[backgroundView.superview sendSubviewToBack:backgroundView]; 
 		
 	};
@@ -293,9 +293,13 @@
 	separatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 	separatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 24 }};
 
-	[self.stackView addStackElementsObject:topCell];	
-	[self.stackView addStackElementsObject:self.textStackCell];	
-	[self.stackView addStackElementsObject:separatorCell];	
+	[self.stackView addStackElementsObject:topCell];
+	
+	if ([self.article.text length]) {
+		[self.stackView addStackElementsObject:self.textStackCell];
+		[self.stackView addStackElementsObject:separatorCell];
+	}
+	
 	[self.stackView addStackElementsObject:self.commentsVC.view];
 
 	WAArticleTextStackCell *bottomCell = [WAArticleTextStackCell cellFromNib];

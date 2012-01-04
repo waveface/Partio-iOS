@@ -11,6 +11,14 @@
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
+
+@interface WADataStore (WARemoteInterfaceAdditions_Private)
+
+- (NSMutableSet *) articlesCurrentlyBeingUploaded;
+
+@end
+
+
 @implementation WADataStore (WARemoteInterfaceAdditions)
 
 - (BOOL) hasDraftArticles {
@@ -37,12 +45,26 @@
 
 - (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 
-	[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-  
-    //  kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-    kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
-  
-  nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
+	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+		
+		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+		
+	nil];
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+		case UIUserInterfaceIdiomPad: {
+			[options setObject:kWAArticleSyncFullyFetchOnlyStrategy forKey:kWAArticleSyncStrategy];
+			break;
+		}
+		
+		default: {
+			break;
+		}
+		
+	}
+
+	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
 		if (!didFinish) {
 			if (failureBlock)
@@ -71,11 +93,15 @@
 
 - (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
 
+	__block __typeof__(self) nrSelf = self;
 	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
 	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
+	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
+	
 	void (^cleanup)() = ^ {
 		[context autorelease];
+		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
 	};
 	
 	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
@@ -107,6 +133,12 @@
 		
 	}];
 	
+}
+
+- (BOOL) isUploadingArticle:(NSURL *)anObjectURI {
+
+	return [[self articlesCurrentlyBeingUploaded] containsObject:anObjectURI];
+
 }
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
@@ -181,6 +213,25 @@
 			failureBlock();
 		
 	}];
+
+}
+
+@end
+
+
+@implementation WADataStore (WARemoteInterfaceAdditions_Private)
+
+- (NSMutableSet *) articlesCurrentlyBeingUploaded {
+
+	static NSString * const key = @"WADataStore_WARemoteInterfaceAdditions_articlesCurrentlyBeingUploaded";
+	
+	NSMutableSet *returnedSet = objc_getAssociatedObject(self, &key);
+	if (!returnedSet) {
+		returnedSet = [NSMutableSet set];
+		objc_setAssociatedObject(self, &key, returnedSet, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+
+	return returnedSet;
 
 }
 

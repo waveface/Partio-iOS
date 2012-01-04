@@ -19,7 +19,7 @@
 	<key>WAAlwaysAllowExpensiveRemoteOperations</key>
 	<false/>
 	<key>WAAlwaysDenyExpensiveRemoteOperations</key>
-	<true/>
+	<false/>
 	<key>WADebugAutologinUserIdentifier</key>
 	<string>haskell@master.waveface.com</string>
 	<key>WADebugAutologinUserPassword</key>
@@ -34,5 +34,7 @@
 	<false/>
 	<key>WADebugUsesDiscreteArticleFlip</key>
 	<false/>
+	<key>WADebugTestFlightSDKEnabled</key>
+	<true/>
 </dict>
 </plist>

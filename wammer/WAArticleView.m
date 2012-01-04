@@ -132,6 +132,8 @@
 
 		case WADiscreteSingleImageArticleStyle: {
 			self.userNameLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
+			self.articleDescriptionLabel.layer.shadowOpacity = 1;
+			self.articleDescriptionLabel.layer.shadowOffset = (CGSize){ 0, 1 };
 			break;
 		}
 		

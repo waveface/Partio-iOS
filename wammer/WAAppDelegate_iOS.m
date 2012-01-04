@@ -71,21 +71,6 @@
 @synthesize window = _window;
 @synthesize alreadyRequestingAuthentication;
 
-- (id) init {
-
-  self = [super init];
-  if (!self)
-    return nil;
-
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
-	
-  return self;
-
-}
-
 - (void) dealloc {
 
   //  This is so not going to happen
@@ -99,6 +84,11 @@
 	
 	[super bootstrap];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
+	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
 	else {
@@ -108,13 +98,23 @@
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
+	
+	if (WATestFlightSDKEnabled()) {
+				
+		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+		nil]];
+		
+		[TestFlight takeOff:kWATestflightTeamToken];
+	
+	}
 
 }
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	[self bootstrap];
-
+	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
 	
@@ -258,19 +258,10 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		//	[self presentAuthenticationRequestRemovingPriorData:YES clearingNavigationHierarchy:YES runningOnboardingProcess:YES];
-		
-		void (^writeCredentials)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) = ^ (NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
-		
-			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-		
-		};
-
 		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
-			writeCredentials(userIdentifier, userToken, primaryGroupIdentifier);
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
-			//	HECKLING ?
 			
 		} runningOnboardingProcess:YES];
 			
@@ -282,7 +273,12 @@
 
   dispatch_async(dispatch_get_main_queue(), ^{
 
-		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO runningOnboardingProcess:NO];
+		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+			
+			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
+			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			
+		} runningOnboardingProcess:NO];
 
   });
   
@@ -313,22 +309,17 @@
 		
 	}
 	
-	void (^confirmURLChange)(NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) = ^ (NSString *defaultsKey, NSString *newString, NSString *alertTitleKey, NSString *alertTextKey) {
-	
-		if (!newString)
-			return;
-		
-		NSURL *oldURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:defaultsKey]];
-		NSURL *newURL = [NSURL URLWithString:newString];
-		
-		[[NSUserDefaults standardUserDefaults] setObject:newString forKey:defaultsKey];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
 		
 		__block __typeof__(self) nrSelf = self;
-		
 		void (^zapAndRequestReauthentication)() = ^ {
 
-			if (self.alreadyRequestingAuthentication) {
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"url"] forKey:kWARemoteEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"RegistrationUrl"] forKey:kWAUserRegistrationEndpointURL];
+			[[NSUserDefaults standardUserDefaults] setObject:[params objectForKey:@"PasswordResetUrl"] forKey:kWAUserPasswordResetEndpointURL];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+
+			if (nrSelf.alreadyRequestingAuthentication) {
 				nrSelf.alreadyRequestingAuthentication = NO;
 				[nrSelf clearViewHierarchy];
 			}
@@ -337,49 +328,15 @@
 			
 		};
 		
-		NSString *alertTitle = NSLocalizedString(alertTitleKey, nil);
-		NSString *alertText = [NSString stringWithFormat:
-			NSLocalizedString(alertTextKey, nil),
-			[oldURL absoluteString],
-			[newURL absoluteString]
-		];
+		NSString *alertTitle = @"Switch endpoint to";
+		NSString *alertText = [params objectForKey:@"url"];
 		
-		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
-		IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionReset", nil) block:zapAndRequestReauthentication];
+		IRAction *cancelAction = [IRAction actionWithTitle:@"Cancel" block:nil];
+		IRAction *confirmAction = [IRAction actionWithTitle:@"Yes, Switch" block:zapAndRequestReauthentication];
 		
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
-			signOutAction,
+			confirmAction,
 		nil]] show];
-	
-	};
-	
-	if ([command isEqualToString:kWACallbackActionSetRemoteEndpointURL]) {
-	
-		confirmURLChange(
-			kWARemoteEndpointURL,
-			[params objectForKey:@"url"],
-			@"WARemoteEndpointURLChangeConfirmationTitle",
-			@"WARemoteEndpointURLChangeConfirmationDescription"
-		);
-	
-	} else if ([command isEqualToString:kWACallbackActionSetUserRegistrationEndpointURL]) {
-	
-		confirmURLChange(
-			kWAUserRegistrationEndpointURL,
-			[params objectForKey:@"url"],
-			@"WAUserRegistrationEndpointURLChangeConfirmationTitle",
-			@"WAUserRegistrationEndpointURLChangeConfirmationDescription"
-		);
-	
-	} else if ([command isEqualToString:kWACallbackActionSetUserPasswordResetEndpointURL]) {
-
-		confirmURLChange(
-			kWAUserPasswordResetEndpointURL,
-			[params objectForKey:@"url"],
-			@"WAUserPasswordResetEndpointURLChangeConfirmationTitle",
-			@"WAUserPasswordResetEndpointURLChangeConfirmationDescription"
-		);
-	
 	}
 	
 }
@@ -517,7 +474,14 @@
 	
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
-    return (BOOL)![[WARemoteInterface sharedInterface].userIdentifier isEqualToString:capturedCurrentUserIdentifier];
+	
+		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
+	
+		NSLog(@"Old ID: %@", capturedCurrentUserIdentifier);
+		NSLog(@"New ID: %@", currentID);
+		
+    return (BOOL)![currentID isEqualToString:capturedCurrentUserIdentifier];
+		
   };
   
   if (allowsCancellation)
@@ -681,15 +645,19 @@
 			
 			if (successBlock)
 				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+				
+			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
-			if (zapEverything) {
+			NSLog(@"current user ID %@", ri.userIdentifier);
+			
+			if (userIdentifierHasChanged || zapEverything) {
 				UINavigationController *navC = [self.navigationController retain];
 				[self dismissModalViewControllerAnimated:NO];
 				[nrAppDelegate recreateViewHierarchy];
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
 			}
   
-      if (userIdentifierChanged() || shouldRunOnboardingChecksIfUserUnchanged) {
+      if (userIdentifierHasChanged || shouldRunOnboardingChecksIfUserUnchanged) {
         [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
       } else {
         [self dismissModalViewControllerAnimated:YES];
@@ -727,22 +695,22 @@
   nil];
 
   if (WAAdvancedFeaturesEnabled()) {
-    
-    [authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
-      
-      authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
-      authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
-      [authRequestVC authenticate];
-      
-    }]];
 		
-  }
-  
-  authRequestVC.actions = authRequestActions;
-	
+		[authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
+
+			authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+			authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
+			[authRequestVC authenticate];
+
+		}]];
+		
+	}
+
+	authRequestVC.actions = authRequestActions;
+
 	presentWrappedAuthRequestVC(authRequestVC, NO);
-	
-  return YES;
+
+	return YES;
 
 }
 

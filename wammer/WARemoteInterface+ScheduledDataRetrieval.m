@@ -121,8 +121,8 @@
 		});
 		return;
 	}
-
-	NSParameterAssert(self.dataRetrievalTimerPostponingCount);
+	
+	NSParameterAssert(self.automaticRemoteUpdatesPerformingCount);
 	
 	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
 	self.automaticRemoteUpdatesPerformingCount = self.automaticRemoteUpdatesPerformingCount - 1;

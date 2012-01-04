@@ -69,13 +69,13 @@
   NSError *fetchingError = nil;
   NSArray *fetchedArticles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
   
-  if (!fetchedArticles) {
+  if (![fetchedArticles count]) {
     NSLog(@"%s: %@", __PRETTY_FUNCTION__, fetchingError);
     callback(nil, nil);
     return;
   }
   
-  WAArticle *fetchedArticle = [fetchedArticles lastObject];
+  WAArticle *fetchedArticle = [fetchedArticles objectAtIndex:0];
   callback(fetchedArticle.identifier, fetchedArticle);  
 
 }

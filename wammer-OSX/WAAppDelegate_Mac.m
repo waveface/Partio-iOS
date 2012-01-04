@@ -42,6 +42,8 @@
 - (void) bootstrap {
 
 	[super bootstrap];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
 
 	[IRKeychainManager sharedManager].defaultAccessGroupName = @"waveface";
 	[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyMac;
@@ -70,6 +72,16 @@
 		
 	}
 	
+}
+
+- (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
+
+	if (![NSApp isActive])
+		[NSApp requestUserAttention:NSCriticalRequest];
+		
+	[[WAAuthRequestWindowController sharedController] setDelegate:self];
+	[[[WAAuthRequestWindowController sharedController] window] makeKeyAndOrderFront:self];
+
 }
 
 - (void) authRequestController:(WAAuthRequestWindowController *)controller didRequestAuthenticationForUserName:(NSString *)proposedUsername password:(NSString *)proposedPassword withCallback:(void (^)(BOOL))aCallback {

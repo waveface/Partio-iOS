@@ -46,3 +46,6 @@
 [submodule "external/InAppSettingsKit"]
 	path = external/InAppSettingsKit
 	url = https://github.com/futuretap/InAppSettingsKit
+[submodule "external/Sparkle"]
+	path = external/Sparkle
+	url = git://github.com/iridia/Sparkle.git

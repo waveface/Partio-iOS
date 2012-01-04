@@ -25,12 +25,15 @@
 @property (nonatomic, readwrite, retain) AQGridView *gridView;
 
 - (WAFile *) itemAtIndex:(NSUInteger)index;
+- (NSUInteger) indexOfItem:(WAFile *)aFile;
+
+@property (nonatomic, readwrite, assign) BOOL requiresGalleryReload;
 
 @end
 
 
 @implementation WAArticleViewController_Default
-@synthesize fetchedResultsController, gridView;
+@synthesize fetchedResultsController, gridView, requiresGalleryReload;
 
 - (void) dealloc {
 
@@ -84,7 +87,6 @@
 	[UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
 
 		[self.stackView layoutSubviews];
-		NSLog(@"stack view sub %@", [self.stackView performSelector:@selector(recursiveDescription)]);
 		
 	} completion:^(BOOL finished) {
 	
@@ -177,12 +179,61 @@
 
 }
 
+- (NSUInteger) indexOfItem:(WAFile *)aFile {
+
+	return [self.article.fileOrder indexOfObject:[[aFile objectID] URIRepresentation]];
+
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	if (![self isViewLoaded])
+		return;
+
+	requiresGalleryReload = NO;
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	NSParameterAssert(NO);
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	if (![self isViewLoaded])
+		return;
+	
+	if (requiresGalleryReload)
+		return;
+
+	if (![anObject isKindOfClass:[WAFile class]]) {
+		requiresGalleryReload = YES;
+		return;
+	}
+	
+	NSUInteger ownIndex = [self indexOfItem:(WAFile *)anObject];
+	if (ownIndex == NSNotFound) {
+		requiresGalleryReload = YES;
+		return;
+	}
+	
+	WACompositionViewPhotoCell *currentCell = (WACompositionViewPhotoCell *)[gridView cellForItemAtIndex:ownIndex];
+	if (![currentCell isKindOfClass:[WACompositionViewPhotoCell class]])
+		return;	//	It will just show new stuff the next time it shows up
+	
+	currentCell.image = ((WAFile *)anObject).thumbnailImage;
+
+}
+
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	if (![self isViewLoaded])
 		return;
 	
-	[self.gridView reloadData];
+	if (requiresGalleryReload)
+		[gridView reloadData];
 
 }
 

@@ -42,6 +42,12 @@
 }
 
 - (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI completion:(void (^)(NSURL *))aBlock {
+	
+	return [self initWithArticleURI:anArticleURI usingContext:nil completion:aBlock];
+
+}
+
+- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void (^)(NSURL *))aBlock {
 
 	self = [super init];
 	if (!self)
@@ -59,8 +65,13 @@
 	self.callback = aBlock;
 	self.title = @"Attachments";
 	
-	self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	if (aContext) {
+		self.managedObjectContext = aContext;
+	} else {
+		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+		self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;		
+	}
+	
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
   
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
@@ -161,13 +172,6 @@
 
 }
 
-- (void) viewDidLoad {
-
-	[super viewDidLoad];	
-	[self.tableView setEditing:YES animated:NO];
-
-}
-
 - (void) viewDidUnload {
 
 	[super viewDidUnload];
@@ -204,13 +208,11 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-	NSInteger count = [self.article.fileOrder count];
-	NSLog(@"count %i", count);
-	return count;
+	return [self.article.files count];
 
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	switch (editingStyle) {
 	case UITableViewCellEditingStyleDelete: {
