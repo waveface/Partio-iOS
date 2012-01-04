@@ -278,7 +278,12 @@
 				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaAllImages", nil);
 				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@",
 					[storageInfo valueForKeyPath:@"waveface.usage.month_image_objects"],
-					[storageInfo valueForKeyPath:@"waveface.quota.month_image_objects"]
+					((^{
+						NSNumber *quota=[storageInfo valueForKeyPath:@"waveface.quota.month_image_objects"];
+						if ( [quota intValue] == -1 ) 
+							return NSLocalizedString(@"WAInfinity", @"Unlimited storage size. This should be rare.");
+						return [quota stringValue];
+					}()))
 				];
 				break;
 			}
