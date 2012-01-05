@@ -47,5 +47,7 @@
 			<string>WAComposition</string>
 		</dict>
 	</array>
+	<key>SUFeedURL</key>
+	<string>https://waveface-blob.s3.amazonaws.com/waveface-OSX.xml</string>
 </dict>
 </plist>

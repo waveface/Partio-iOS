@@ -137,6 +137,15 @@
     cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedDraft.timestamp];
   else
     cell.detailTextLabel.text = NSLocalizedString(@"WADraftStateNoTimestamp", @"State for drafts without a timestamp");
+	
+	BOOL cellEnabled = [self.delegate articleDraftsViewController:self shouldEnableArticle:[[representedDraft objectID] URIRepresentation]];
+	if (cellEnabled) {
+		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+		cell.contentView.alpha = 1.0f;
+	} else {
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.contentView.alpha = 0.5f;
+	}
   
   return cell;
   
@@ -168,7 +177,15 @@
   if (indexPath.section == 0)
     return UITableViewCellEditingStyleNone;
   
-  return UITableViewCellEditingStyleDelete;
+  NSIndexPath *actualIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:(indexPath.section - 1)];
+  WAArticle *selectedArticle = [self.fetchedResultsController objectAtIndexPath:actualIndexPath];
+  NSURL *articleURI = [[selectedArticle objectID] URIRepresentation];
+	
+	BOOL cellEnabled = [self.delegate articleDraftsViewController:self shouldEnableArticle:articleURI];
+	if (!cellEnabled)
+		return UITableViewCellEditingStyleNone;
+	
+	return UITableViewCellEditingStyleDelete;
 
 }
 
@@ -198,6 +215,10 @@
   WAArticle *selectedArticle = [self.fetchedResultsController objectAtIndexPath:actualIndexPath];
   NSURL *articleURI = [[selectedArticle objectID] URIRepresentation];
   
+	BOOL cellEnabled = [self.delegate articleDraftsViewController:self shouldEnableArticle:articleURI];
+	if (!cellEnabled)
+		return;
+	
   [self.delegate articleDraftsViewController:self didSelectArticle:articleURI];
 
 }

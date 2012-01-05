@@ -949,7 +949,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return;
 	
 	if ([slider.slider isTracking]) {
-		UIViewAnimationOptions options = UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction;
+		UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction;
 		[UIView animateWithDuration:0.3 delay:0 options:options animations:^{
 			[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];			
 		} completion:nil];

@@ -964,7 +964,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				[stitchedFile.article willChangeValueForKey:@"fileOrder"];
 				
 				stitchedFile.resourceType = (NSString *)kUTTypeImage;
-				stitchedFile.resourceURL = [finalFileURL absoluteString];
+				//stitchedFile.resourceURL = [finalFileURL absoluteString];
 				stitchedFile.resourceFilePath = [finalFileURL path];
 				
 				[stitchedFile.article didChangeValueForKey:@"fileOrder"];

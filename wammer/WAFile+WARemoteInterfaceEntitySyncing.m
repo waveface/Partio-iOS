@@ -17,11 +17,11 @@
 #import "QuartzCore+IRAdditions.h"
 
 
-extern NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
-extern NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
-extern NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
-extern NSString * const kWAFileSyncReducedQualityStrategy = @"WAFileSyncReducedQualityStrategy";
-extern NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrategy";
+NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
+NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
+NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
+NSString * const kWAFileSyncReducedQualityStrategy = @"WAFileSyncReducedQualityStrategy";
+NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrategy";
 
 
 @implementation WAFile (WARemoteInterfaceEntitySyncing)
@@ -54,7 +54,7 @@ extern NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQuality
     self.thumbnailURL = [[self class] transformedValue:self.remoteRepresentedImage fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];        
   
   if (!self.resourceURL)
-  if (self.identifier)
+  if (self.identifier && self.remoteResourceHash)
     self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
   
 }
