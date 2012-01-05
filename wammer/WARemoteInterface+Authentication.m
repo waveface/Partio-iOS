@@ -85,8 +85,17 @@
         if (nrSelf.userToken) {
         
           //  Token is failing right now
-          
-          [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self];
+					
+					NSUInteger returnCode = [[inParsedResponse valueForKeyPath:@"api_ret_code"] intValue];
+					NSString *returnMessage = [inParsedResponse valueForKeyPath:@"api_ret_message"];
+					
+          [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+					
+						[NSError errorWithDomain:@"com.waveface.wammer.remoteInterface" code:returnCode userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+							returnMessage, NSLocalizedDescriptionKey,
+						nil]], @"error",
+					
+					nil]];
         
         }
       
