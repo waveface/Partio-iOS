@@ -49,3 +49,6 @@
 [submodule "external/Sparkle"]
 	path = external/Sparkle
 	url = git://github.com/iridia/Sparkle.git
+[submodule "external/IRDeployment"]
+	path = external/IRDeployment
+	url = git://github.com/iridia/IRDeployment.git

@@ -381,7 +381,7 @@
 			if (!foundFile)
 				return;
 			
-			NSString *thumbnailFilePath = [foundFile primitiveValueForKey:@"thumbnailFilePath"];
+			NSString *thumbnailFilePath = [[[foundFile primitiveValueForKey:@"thumbnailFilePath"] retain] autorelease];
 			
 			if (![foundFile.thumbnailURL isEqualToString:capturedThumbnailFileURL])
 				return;
