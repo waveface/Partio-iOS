@@ -11,12 +11,10 @@
 # João Moreno 2009
 # http://joaomoreno.com/
 
-from sys import argv
 from codecs import open
 from re import compile
 from copy import copy
-import os
-import io
+import io, os, sys
 
 re_translation = compile(r'^"(.+)" = "(.+)";$')
 re_comment_single = compile(r'^/\*.*\*/$')
@@ -24,9 +22,13 @@ re_comment_start = compile(r'^/\*.*$')
 re_comment_end = compile(r'^.*\*/$')
 re_widecamelcase = compile(r'(?x)( [A-Z](\S+)([A-Z](\S*))+ | ([A-Z_][A-Z_]+) )')  # LogIn or LOG_IN
 
-def print_help():
-    print u"""Usage: merge.py merged_file old_file new_file
-Xcode localizable strings merger script. João Moreno 2009."""
+useUTF8 = False
+
+def usage():
+    print u"""
+Usage: Localize.py pathToYourCocoaProject
+try `localize.py --help' for more information.
+"""
 
 class LocalizedString():
     def __init__(self, comments, translation):
@@ -82,6 +84,7 @@ class LocalizedFile():
         fname = self.fname if fname == None else fname
         try:
             f = open(fname, encoding='utf_16', mode='w')
+            
         except:
             print 'Couldn\'t open file %s.' % fname
             exit(-1)
