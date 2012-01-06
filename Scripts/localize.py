@@ -16,6 +16,7 @@ from codecs import open
 from re import compile
 from copy import copy
 import os
+import io
 
 re_translation = compile(r'^"(.+)" = "(.+)";$')
 re_comment_single = compile(r'^/\*.*\*/$')
@@ -156,15 +157,7 @@ def export_xibs(language):
     return localization.name
 
 def concat(file1, file2):
-    f1 = open(file1, encoding='utf_16', mode='r')
-    f2 = open(file2, encoding='utf_16', mode='r')
-    buffer = f1.read() + f2.read()
-    f1.close
-    f2.close
-
-    f1 = open(file1, encoding='utf_16', mode='w')
-    f1.write(buffer)
-    f1.close
+    io.open(file1,encoding='utf-16',mode='a').write(open(file2,encoding='utf-16').read())
 
 def localize(path):
     # init phase the new
