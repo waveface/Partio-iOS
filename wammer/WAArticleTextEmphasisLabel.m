@@ -17,6 +17,8 @@
 
 - (void) waInitialize;
 
+- (void) updateText;
+
 @end
 
 

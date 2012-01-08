@@ -66,9 +66,6 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 		[WAReachabilityDetector sharedDetectorForInternet];
 		[WAReachabilityDetector sharedDetectorForLocalWiFi];
 		
-		NSLog(@"shared Internet %@", [WAReachabilityDetector sharedDetectorForInternet]);
-		NSLog(@"shared WiFi %@", [WAReachabilityDetector sharedDetectorForLocalWiFi]);
-		
 	}];
 
 }

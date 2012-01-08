@@ -23,6 +23,8 @@
 @property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine;
 - (void) handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification;
 
+- (IRAsyncOperation *) haulingOperationPrototype;
+
 @end
 
 
