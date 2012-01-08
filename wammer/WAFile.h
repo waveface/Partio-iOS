@@ -1,24 +1,23 @@
 //
 //  WAFile.h
-//  wammer-iOS
+//  wammer
 //
-//  Created by Evadne Wu on 7/27/11.
-//  Copyright (c) 2011 Iridia Productions. All rights reserved.
+//  Created by Evadne Wu on 1/9/12.
+//  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "CoreData+IRAdditions.h"
 
-#import "IRWebAPIKit.h"
-
-@class WAArticle, WAUser;
+@class WAArticle, WAFilePageElement, WAUser;
 
 @interface WAFile : IRManagedObject
 
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
 @property (nonatomic, retain) NSString * identifier;
+@property (nonatomic, retain) id pageElementOrder;
 @property (nonatomic, retain) NSString * remoteFileName;
 @property (nonatomic, retain) NSNumber * remoteFileSize;
 @property (nonatomic, retain) NSString * remoteRepresentedImage;
@@ -28,19 +27,23 @@
 @property (nonatomic, retain) NSString * resourceType;
 @property (nonatomic, retain) NSString * resourceURL;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) UIImage *thumbnail;	//	Synthesized thumbnail
-@property (nonatomic, retain) NSString * thumbnailFilePath;	//	Downloaded canonical (remote) thumbnail
+@property (nonatomic, retain) id thumbnail;
+@property (nonatomic, retain) NSString * thumbnailFilePath;
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
-
-@property (nonatomic, retain) NSSet *pageElements;
-@property (nonatomic, retain) NSArray *pageElementOrder;
-
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
+@property (nonatomic, retain) NSSet *pageElements;
+@end
 
-@property (nonatomic, readwrite, retain) UIImage *resourceImage;
-@property (nonatomic, readwrite, retain) UIImage *thumbnailImage;
+@interface WAFile (CoreDataGeneratedAccessors)
+
+- (void)addPageElementsObject:(WAFilePageElement *)value;
+- (void)removePageElementsObject:(WAFilePageElement *)value;
+- (void)addPageElements:(NSSet *)values;
+- (void)removePageElements:(NSSet *)values;
 
 @end
+
+#import "WAFile+WAAdditions.h"
