@@ -227,18 +227,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 - (void) noteReachabilityFlagsChanged:(SCNetworkReachabilityFlags)flags {
 
-	NSLog(@"reachability flags changed");
-
 	[self sendUpdateNotification];
 
 }
 
 - (void) sendUpdateNotification {
-
-	NSLog(@"Shared Internet %@", [[self class] sharedDetectorForInternet]);
-	NSLog(@"Shared WiFi %@", [	[self class] sharedDetectorForLocalWiFi]);
-
-	NSLog(@"%s: %@", __PRETTY_FUNCTION__, self);
 
 	[self.delegate reachabilityDetectorDidUpdate:self];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kWAReachabilityDetectorDidUpdateStatusNotification object:self];
@@ -271,7 +264,6 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	
 	if (hostURL) {
 		const char *hostName = [[hostURL host] UTF8String];
-		NSLog(@"using host name %s", hostName);
 		reachability = SCNetworkReachabilityCreateWithName(NULL, hostName);
 	} else {
 		reachability = SCNetworkReachabilityCreateWithAddress(NULL, (const struct sockaddr *)&hostAddress);
