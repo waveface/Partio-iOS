@@ -21,8 +21,8 @@
 
 - (void) setImage:(UIImage *)newImage {
 
-  if (self.image == newImage)
-    return;
+ if (lastImagePtr == newImage)
+		return;
   
   lastImagePtr = newImage;
 
