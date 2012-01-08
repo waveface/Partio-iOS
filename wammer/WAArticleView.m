@@ -15,6 +15,8 @@
 #import "IRRelativeDateFormatter.h"
 #import "WAArticleViewController.h"
 
+#import "IRLifetimeHelper.h"
+
 
 @interface WAArticleView ()
 
@@ -168,10 +170,30 @@
 	
 	[self disassociateBindings];
 	
+	[article irRemoveObserverBlocksForKeyPath:@"files" context:self];
+	
 	[article release];
 	article = [newArticle retain];
 	
 	[self associateBindings];
+	
+	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(article) nrArticle = article;
+	
+	__block id nrObserver = [article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+		
+		NSLog(@"fileOrder changed to %@ — NEEDS REBINDING", inNewValue);
+		
+		[nrSelf disassociateBindings];
+		[nrSelf associateBindings];
+		
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionNew context:nrSelf];
+	
+	[self irPerformOnDeallocation:^{
+	
+		[nrArticle irRemoveObservingsHelper:nrObserver];
+		
+	}];
 
 }
 
@@ -181,58 +203,91 @@
 	
 	[self disassociateBindings];
 	
-	NSArray * (^topImages)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
-		NSParameterAssert([NSThread isMainThread]);
+	NSArray * (^topImageFiles)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
+		
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
+			
 			if (index >= maxNumberOfPickedImages) {
 				*stop = YES;
 				return (id)nil;
 			}
-			WAFile *aFile = (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			return (id)(/* aFile.resourceImage ? aFile.resourceImage : */ aFile.thumbnailImage ? aFile.thumbnailImage : nil);
+			
+			return (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
+			
 		}];
+		
+	};
+	
+	UIImage * (^bestImageFromFile)(WAFile *) = ^ (WAFile *aFile){
+		
+		return (id)(aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil);
+		
 	};
 
-	void (^bind)(id, NSString *, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath, NSString *articleKeypath, IRBindingsValueTransformer transformerBlock) {
-		[object irBind:objectKeyPath toObject:self.article keyPath:articleKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
+	void (^bind)(id, NSString *, id, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath,  id boundObject, NSString *boundKeypath, IRBindingsValueTransformer transformerBlock) {
+	
+		IRBindingsValueTransformer actualTransformer = [[transformerBlock copy] autorelease];
+	
+		[object irBind:objectKeyPath toObject:boundObject keyPath:boundKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
+			
 			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			[[transformerBlock copy] autorelease], kIRBindingsValueTransformerBlock,
+			
+			[[^ (id old, id new, NSString *change) {
+				
+				NSLog(@"%@, %@ => %@; %@ -> %@ (%@)", object, objectKeyPath, boundKeypath, old, new, change);
+				
+				if (actualTransformer)
+					return actualTransformer(old, new, change);
+				
+				return new;
+				
+			} copy] autorelease], kIRBindingsValueTransformerBlock,
+			
 		nil]];
 	};
-		
-	bind(self.userNameLabel, @"text", @"owner.nickname", nil);
 	
-	bind(self.relativeCreationDateLabel, @"text", @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	WAArticle *boundArticle = self.article;
+	WAFile *boundImageFile = [topImageFiles(boundArticle.fileOrder, 1) lastObject];
+
+	NSLog(@"boundImageFile %@", boundImageFile);
+		
+	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);
+	
+	bind(self.relativeCreationDateLabel, @"text", boundArticle, @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
 	});
 	
-	bind(self.articleDescriptionLabel, @"text", @"text", nil);
+	bind(self.articleDescriptionLabel, @"text", boundArticle, @"text", nil);
 	
-	bind(self.previewBadge, @"preview", @"previews", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.previewBadge, @"preview", boundArticle, @"previews", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return (WAPreview *)[[[inNewValue allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil]] lastObject];
 	});
 	
-	bind(self.imageStackView, @"images", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return topImages(inNewValue, 2);
+	bind(self.imageStackView, @"images", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return inNewValue ? [NSArray arrayWithObject:inNewValue] : nil;
 	});
 	
-	bind(self.mainImageView, @"image", @"fileOrder", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-		return [topImages(inNewValue, 1) lastObject];
+	bind(self.mainImageView, @"image", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		NSLog(@"updating main image view image %@ -> %@", inOldValue, inNewValue);
+		
+		return inNewValue;
+	
 	});
 	
-	bind(self.avatarView, @"image", @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.avatarView, @"image", boundArticle, @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return [inNewValue isEqual:[NSNull null]] ? nil : inNewValue;
 	});
 	
-	bind(self.deviceDescriptionLabel, @"text", @"creationDeviceName", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.deviceDescriptionLabel, @"text", boundArticle, @"creationDeviceName", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? inNewValue : @"an unknown device";
 	});
 	
-	bind(self.textEmphasisView, @"text", @"text", nil);
+	bind(self.textEmphasisView, @"text", boundArticle, @"text", nil);
 	
-	bind(self.textEmphasisView, @"hidden", @"files", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.textEmphasisView, @"hidden", boundArticle, @"files", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return [NSNumber numberWithBool:!![inNewValue count]];
 	});
 	
