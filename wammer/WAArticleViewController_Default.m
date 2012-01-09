@@ -133,9 +133,6 @@
 	gridView.alwaysBounceVertical = YES;
 	gridView.alwaysBounceHorizontal = NO;
 	
-	gridView.leftContentInset = 64;
-	gridView.rightContentInset = 64;
-	
 	[gridView reloadData];
 	[gridView setNeedsLayout];
 	
@@ -157,6 +154,7 @@
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	if (!dequeuedCell) {
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	}
 	
 	dequeuedCell.canRemove = NO;
@@ -169,7 +167,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 128, 128 };
+	return (CGSize){ 240, 240 };
 
 }
 
@@ -269,7 +267,18 @@
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 32 + 128 };
+		return (CGSize){
+			CGRectGetWidth(aStackView.bounds), 
+			MAX(
+				32 + 128, 
+				MIN(
+					CGRectGetHeight(aStackView.bounds),
+					(gridView.numberOfRows + (!!(gridView.numberOfItems - gridView.numberOfRows * gridView.numberOfColumns) ? 1 : 0)) * 
+						gridView.gridCellSize.height + 
+						gridView.contentInset.top + gridView.contentInset.bottom + 32
+				)
+			)
+		};
 	}
 	
 	return [super sizeThatFitsElement:anElement inStackView:aStackView];

@@ -22,6 +22,11 @@
 		NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
 		NSMutableDictionary *originalFormURLEncodedFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
 		
+		BOOL shouldSign = YES;
+		
+		if ([[mutatedContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"auth/login"])
+			shouldSign = NO;
+		
 		if (originalFormMultipartFields) {
 		
 			NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
@@ -30,7 +35,7 @@
 			if (nrSelf.apiKey)
 				[mutatedFormMultipartFields setObject:nrSelf.apiKey forKey:@"apikey"];
 			
-			if (nrSelf.userToken)
+			if (shouldSign && nrSelf.userToken)
 				[mutatedFormMultipartFields setObject:nrSelf.userToken forKey:@"session_token"];
 			
 		} else if (originalFormURLEncodedFields) {
@@ -41,7 +46,7 @@
 			if (nrSelf.apiKey)
 				[mutatedFormURLEncodedFields setObject:nrSelf.apiKey forKey:@"apikey"];
 			
-			if (nrSelf.userToken)
+			if (shouldSign && nrSelf.userToken)
 				[mutatedFormURLEncodedFields setObject:nrSelf.userToken forKey:@"session_token"];
 		
 		} else {
@@ -57,7 +62,7 @@
 			if (nrSelf.apiKey)
 				[mutatedQueryParams setObject:nrSelf.apiKey forKey:@"apikey"];
 			
-			if (nrSelf.userToken)
+			if (shouldSign && nrSelf.userToken)
 				[mutatedQueryParams setObject:nrSelf.userToken forKey:@"session_token"];
 		
 		}

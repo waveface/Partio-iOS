@@ -8,6 +8,8 @@
 
 #import "WAAppDelegate_iOS.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "WADefines.h"
 
 #import "WAAppDelegate.h"
@@ -108,6 +110,8 @@
 		[TestFlight takeOff:kWATestflightTeamToken];
 	
 	}
+	
+	[[AVAudioSession sharedInstance] setActive:YES error:nil];
 
 }
 
@@ -207,6 +211,13 @@
 }
 
 - (void) recreateViewHierarchy {
+
+	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
+	[queue setSuspended:YES];
+	for (NSOperation *anOperation in queue.operations) {
+		[anOperation cancel];
+	}
+	[queue setSuspended:NO];
 
 	NSString *rootViewControllerClassName = nil;
 		
