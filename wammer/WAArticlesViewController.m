@@ -81,6 +81,7 @@
 	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
 	
 		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
+		returnedRequest.fetchBatchSize = 100;
 		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
 		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(draft == NO)"];
 		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
@@ -92,6 +93,7 @@
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
+	
 	[self.fetchedResultsController performFetch:nil];
 	
 	self.navigationItem.titleView = WAStandardTitleView();
@@ -406,16 +408,26 @@
           return fr;
         })()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
         
-          if (aFile.resourceFilePath) {
-            [[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
+					NSString *resourcePath = [aFile primitiveValueForKey:@"resourceFilePath"];
+					NSString *thumbnailPath = [aFile primitiveValueForKey:@"thumbnailFilePath"];
+				
+          if (resourcePath) {
+            [[NSFileManager defaultManager] removeItemAtPath:resourcePath error:nil];
             aFile.resourceFilePath = nil;
           }
           
+          if (thumbnailPath) {
+            [[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:nil];
+            aFile.thumbnailFilePath = nil;
+          }
+					
         }];
         
         NSError *savingError = nil;
-        if (![context save:&savingError])
+        if (![context save:&savingError]) {
           NSLog(@"Error saving: %@", savingError);
+					NSParameterAssert(NO);
+				}
       
       }],
     
@@ -505,6 +517,12 @@
   [self dismissAuxiliaryControlsAnimated:NO];
   [self beginCompositionSessionForArticle:nil];
   
+}
+
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
+
+	return ![[WADataStore defaultStore] isUploadingArticle:anObjectURIOrNil];
+
 }
 
 - (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {

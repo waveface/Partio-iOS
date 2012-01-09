@@ -46,3 +46,12 @@
 [submodule "external/InAppSettingsKit"]
 	path = external/InAppSettingsKit
 	url = https://github.com/futuretap/InAppSettingsKit
+[submodule "external/Sparkle"]
+	path = external/Sparkle
+	url = git://github.com/iridia/Sparkle.git
+[submodule "external/IRDeployment"]
+	path = external/IRDeployment
+	url = git://github.com/iridia/IRDeployment.git
+[submodule "external/C3PO"]
+	path = external/C3PO
+	url = git@github.com:jamessa/C3PO.git

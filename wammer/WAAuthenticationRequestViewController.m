@@ -395,8 +395,11 @@
 
 - (void) authenticate {
 	
-	// Set a testflight checkpoint: SignIn
-	[TestFlight passCheckpoint:@"SignIn"];
+	if (WATestFlightSDKEnabled()) {
+	
+		[TestFlight passCheckpoint:@"SignIn"];
+	
+	}
 
   [self update];
 	

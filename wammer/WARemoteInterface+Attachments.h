@@ -6,6 +6,12 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#if TARGET_OS_IPHONE
+#import <MobileCoreServices/MobileCoreServices.h>
+#else
+#import <CoreServices/CoreServices.h>
+#endif
+
 #import "WARemoteInterface.h"
 
 #ifndef __WARemoteInterface_Attachments__

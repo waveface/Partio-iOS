@@ -25,12 +25,15 @@
 @property (nonatomic, readwrite, retain) AQGridView *gridView;
 
 - (WAFile *) itemAtIndex:(NSUInteger)index;
+- (NSUInteger) indexOfItem:(WAFile *)aFile;
+
+@property (nonatomic, readwrite, assign) BOOL requiresGalleryReload;
 
 @end
 
 
 @implementation WAArticleViewController_Default
-@synthesize fetchedResultsController, gridView;
+@synthesize fetchedResultsController, gridView, requiresGalleryReload;
 
 - (void) dealloc {
 
@@ -130,9 +133,6 @@
 	gridView.alwaysBounceVertical = YES;
 	gridView.alwaysBounceHorizontal = NO;
 	
-	gridView.leftContentInset = 64;
-	gridView.rightContentInset = 64;
-	
 	[gridView reloadData];
 	[gridView setNeedsLayout];
 	
@@ -154,6 +154,7 @@
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	if (!dequeuedCell) {
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	}
 	
 	dequeuedCell.canRemove = NO;
@@ -166,7 +167,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 128, 128 };
+	return (CGSize){ 240, 240 };
 
 }
 
@@ -176,12 +177,61 @@
 
 }
 
+- (NSUInteger) indexOfItem:(WAFile *)aFile {
+
+	return [self.article.fileOrder indexOfObject:[[aFile objectID] URIRepresentation]];
+
+}
+
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	if (![self isViewLoaded])
+		return;
+
+	requiresGalleryReload = NO;
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	NSParameterAssert(NO);
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	if (![self isViewLoaded])
+		return;
+	
+	if (requiresGalleryReload)
+		return;
+
+	if (![anObject isKindOfClass:[WAFile class]]) {
+		requiresGalleryReload = YES;
+		return;
+	}
+	
+	NSUInteger ownIndex = [self indexOfItem:(WAFile *)anObject];
+	if (ownIndex == NSNotFound) {
+		requiresGalleryReload = YES;
+		return;
+	}
+	
+	WACompositionViewPhotoCell *currentCell = (WACompositionViewPhotoCell *)[gridView cellForItemAtIndex:ownIndex];
+	if (![currentCell isKindOfClass:[WACompositionViewPhotoCell class]])
+		return;	//	It will just show new stuff the next time it shows up
+	
+	currentCell.image = ((WAFile *)anObject).thumbnailImage;
+
+}
+
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	if (![self isViewLoaded])
 		return;
 	
-	[self.gridView reloadData];
+	if (requiresGalleryReload)
+		[gridView reloadData];
 
 }
 
@@ -217,7 +267,18 @@
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 32 + 128 };
+		return (CGSize){
+			CGRectGetWidth(aStackView.bounds), 
+			MAX(
+				32 + 128, 
+				MIN(
+					CGRectGetHeight(aStackView.bounds),
+					(gridView.numberOfRows + (!!(gridView.numberOfItems - gridView.numberOfRows * gridView.numberOfColumns) ? 1 : 0)) * 
+						gridView.gridCellSize.height + 
+						gridView.contentInset.top + gridView.contentInset.bottom + 32
+				)
+			)
+		};
 	}
 	
 	return [super sizeThatFitsElement:anElement inStackView:aStackView];

@@ -8,6 +8,8 @@
 
 #import "WAAppDelegate_iOS.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "WADefines.h"
 
 #import "WAAppDelegate.h"
@@ -71,21 +73,6 @@
 @synthesize window = _window;
 @synthesize alreadyRequestingAuthentication;
 
-- (id) init {
-
-  self = [super init];
-  if (!self)
-    return nil;
-
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
-	
-  return self;
-
-}
-
 - (void) dealloc {
 
   //  This is so not going to happen
@@ -99,6 +86,11 @@
 	
 	[super bootstrap];
 
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedAuthenticationFailure:) name:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleObservedRemoteURLNotification:) name:kWAApplicationDidReceiveRemoteURLNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsChanged:) name:kIASKAppSettingChanged object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleIASKSettingsDidRequestAction:) name:kWASettingsDidRequestActionNotification object:nil];
+	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPad;
 	else {
@@ -109,11 +101,17 @@
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
 	
-	[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		(id)kCFBooleanTrue, @"reinstallCrashHandlers",
-	nil]];
+	if (WATestFlightSDKEnabled()) {
+				
+		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+		nil]];
+		
+		[TestFlight takeOff:kWATestflightTeamToken];
 	
-	[TestFlight takeOff:kWATestflightTeamToken];
+	}
+	
+	[[AVAudioSession sharedInstance] setActive:YES error:nil];
 
 }
 
@@ -214,6 +212,13 @@
 
 - (void) recreateViewHierarchy {
 
+	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
+	[queue setSuspended:YES];
+	for (NSOperation *anOperation in queue.operations) {
+		[anOperation cancel];
+	}
+	[queue setSuspended:NO];
+
 	NSString *rootViewControllerClassName = nil;
 		
 	switch (UI_USER_INTERFACE_IDIOM()) {
@@ -277,9 +282,11 @@
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
+	NSError *error = [[aNotification userInfo] objectForKey:@"error"];
+
   dispatch_async(dispatch_get_main_queue(), ^{
 
-		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		[self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 			
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
@@ -403,7 +410,7 @@
 	IRAlertView *alertView = nil;
 	
 	void (^zapAndRequestReauthentication)() = ^ {
-
+	
 		if (self.alreadyRequestingAuthentication) {
 			nrSelf.alreadyRequestingAuthentication = NO;
 			[nrSelf clearViewHierarchy];
@@ -708,12 +715,6 @@
 			authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
 			[authRequestVC authenticate];
 
-		}]];
-		
-		[authRequestActions addObject:[IRAction actionWithTitle:@"Zap Everything" block:^{
-		
-			[[[[IRAlertView alloc] initWithTitle:@"Not Implemented" message:"As title." delegate:nil cancelButtonTitle:@"Fine" otherButtonTitles:nil] autorelease] show];
-			
 		}]];
 		
 	}

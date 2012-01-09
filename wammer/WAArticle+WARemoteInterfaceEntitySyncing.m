@@ -195,6 +195,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   WADataStore *ds = [WADataStore defaultStore];
   NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
   NSUInteger usedBatchLimit = ri.defaultBatchSize;
+	
+	if (!usedGroupIdentifier) {
+		completionBlock(NO, nil, nil, [NSError errorWithDomain:@"com.waveface.wammer.dataStore.article" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+			@"Article sync requires a primary group identifier", NSLocalizedDescriptionKey,
+		nil]]);
+		return;
+	}
   
   if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
   
