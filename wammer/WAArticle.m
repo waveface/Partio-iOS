@@ -37,6 +37,18 @@
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingFiles {
+
+	return [NSSet setWithObjects:@"fileOrder", nil];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingFileOrder {
+
+	return [NSSet setWithObjects:@"files", nil];
+
+}
+
 - (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
 
 	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
@@ -85,7 +97,8 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
-	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, keyPath, object, change, context);
+	//	NOT YET
+	//	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, keyPath, object, change, context);
 
 }
 
