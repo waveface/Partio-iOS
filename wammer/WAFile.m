@@ -32,6 +32,8 @@
 @dynamic thumbnailURL;
 @dynamic timestamp;
 @dynamic title;
+@dynamic largeThumbnailFilePath;
+@dynamic largeThumbnailURL;
 @dynamic article;
 @dynamic owner;
 @dynamic pageElements;

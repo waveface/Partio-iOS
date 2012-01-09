@@ -21,7 +21,7 @@
 
 - (void) setImage:(UIImage *)newImage {
 
- if (lastImagePtr == newImage)
+	if (lastImagePtr == newImage)
 		return;
   
   lastImagePtr = newImage;
@@ -39,7 +39,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
     
       if (self.lastImagePtr != decodedImage)
-        return;
+				return;
     
       [super setImage:decodedImage];
       [self.delegate imageViewDidUpdate:self];

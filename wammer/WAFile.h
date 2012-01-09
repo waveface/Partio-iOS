@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "CoreData+IRAdditions.h"
 
 @class WAArticle, WAFilePageElement, WAUser;
 
-@interface WAFile : IRManagedObject
+@interface WAFile : NSManagedObject
 
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
@@ -32,6 +31,8 @@
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSString * largeThumbnailFilePath;
+@property (nonatomic, retain) NSString * largeThumbnailURL;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *pageElements;
@@ -45,5 +46,3 @@
 - (void)removePageElements:(NSSet *)values;
 
 @end
-
-#import "WAFile+WAAdditions.h"
