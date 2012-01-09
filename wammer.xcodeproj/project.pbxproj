@@ -2733,7 +2733,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/zsh;
-			shellScript = "cd ${SRCROOT}/wammer\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-8 -t UTF-16 =(cat {})> {}\"  | zsh\n\npython ${SRCROOT}/scripts/localize.py\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-16 -t UTF-8 =(cat {})> {}\"  | zsh";
+			shellScript = "cd ${SRCROOT}/wammer\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-8 -t UTF-16 =(cat {})> {}\"  | zsh\n\npython ${SRCROOT}/external/C3PO/localize.py\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-16 -t UTF-8 =(cat {})> {}\"  | zsh";
 		};
 		4BB172F014B495EE00282052 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
