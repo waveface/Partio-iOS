@@ -408,16 +408,26 @@
           return fr;
         })()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
         
-          if (aFile.resourceFilePath) {
-            [[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
+					NSString *resourcePath = [aFile primitiveValueForKey:@"resourceFilePath"];
+					NSString *thumbnailPath = [aFile primitiveValueForKey:@"thumbnailFilePath"];
+				
+          if (resourcePath) {
+            [[NSFileManager defaultManager] removeItemAtPath:resourcePath error:nil];
             aFile.resourceFilePath = nil;
           }
           
+          if (thumbnailPath) {
+            [[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:nil];
+            aFile.thumbnailFilePath = nil;
+          }
+					
         }];
         
         NSError *savingError = nil;
-        if (![context save:&savingError])
+        if (![context save:&savingError]) {
           NSLog(@"Error saving: %@", savingError);
+					NSParameterAssert(NO);
+				}
       
       }],
     

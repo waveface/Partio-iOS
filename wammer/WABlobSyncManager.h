@@ -30,9 +30,7 @@ enum {
 
 - (void) beginPostponingBlobSync;
 - (void) endPostponingBlobSync;
-
-- (int) state;
-- (BOOL) isPerformingBlobSync;	//	Convenience on -state
+- (BOOL) isPerformingBlobSync;
 
 @end
 

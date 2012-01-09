@@ -52,6 +52,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
 
+- (void) updateLastReadingProgressAnnotation;
 
 - (NSUInteger) gridIndexOfLastReadArticle;
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
@@ -66,6 +67,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier;
 @property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
 @property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView;
+
+- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated;
 
 @end
 
@@ -253,6 +256,22 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 			nrSelf.lastReadObjectIdentifier = identifier;
 			[nrSelf updateLastReadingProgressAnnotation];
+		
+		}],
+		
+		[IRAction actionWithTitle:@"Run Add Animation" block:^{
+		
+			articleViewController.view.alpha = 0;
+		
+			[UIView transitionWithView:articleViewController.view duration:5.0 options:UIViewAnimationOptionTransitionCurlDown animations:^{
+				
+				articleViewController.view.alpha = 1;
+				
+			} completion:^(BOOL finished) {
+			
+				//	?
+				
+			}];
 		
 		}],
 	
@@ -476,7 +495,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (objc_getAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync))
 		return;
 	
-	objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
 
 	NSUInteger lastPage = NSNotFound;
 	if ([self isViewLoaded])
