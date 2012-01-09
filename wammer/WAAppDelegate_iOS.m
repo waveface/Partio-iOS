@@ -8,6 +8,8 @@
 
 #import "WAAppDelegate_iOS.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 #import "WADefines.h"
 
 #import "WAAppDelegate.h"
@@ -108,6 +110,8 @@
 		[TestFlight takeOff:kWATestflightTeamToken];
 	
 	}
+	
+	[[AVAudioSession sharedInstance] setActive:YES error:nil];
 
 }
 
@@ -208,6 +212,13 @@
 
 - (void) recreateViewHierarchy {
 
+	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
+	[queue setSuspended:YES];
+	for (NSOperation *anOperation in queue.operations) {
+		[anOperation cancel];
+	}
+	[queue setSuspended:NO];
+
 	NSString *rootViewControllerClassName = nil;
 		
 	switch (UI_USER_INTERFACE_IDIOM()) {
@@ -271,9 +282,11 @@
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification {
 
+	NSError *error = [[aNotification userInfo] objectForKey:@"error"];
+
   dispatch_async(dispatch_get_main_queue(), ^{
 
-		[self presentAuthenticationRequestWithReason:@"Token Expired" allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		[self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 			
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
@@ -397,7 +410,7 @@
 	IRAlertView *alertView = nil;
 	
 	void (^zapAndRequestReauthentication)() = ^ {
-
+	
 		if (self.alreadyRequestingAuthentication) {
 			nrSelf.alreadyRequestingAuthentication = NO;
 			[nrSelf clearViewHierarchy];

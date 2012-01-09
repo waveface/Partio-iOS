@@ -23,6 +23,8 @@
 @property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine;
 - (void) handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification;
 
+- (IRAsyncOperation *) haulingOperationPrototype;
+
 @end
 
 
@@ -84,11 +86,32 @@
 	
 	recurrenceMachine = [[IRRecurrenceMachine alloc] init];
 	recurrenceMachine.queue.maxConcurrentOperationCount = 1;
-	recurrenceMachine.recurrenceInterval = 5;
+	recurrenceMachine.recurrenceInterval = 30;
 	
 	[recurrenceMachine addRecurringOperation:[self haulingOperationPrototype]];
 	
 	return recurrenceMachine;
+
+}
+
+- (void) beginPostponingBlobSync {
+
+	NSParameterAssert(recurrenceMachine);
+	[recurrenceMachine beginPostponingOperations];
+
+}
+
+- (void) endPostponingBlobSync {
+
+	NSParameterAssert(recurrenceMachine);
+	[recurrenceMachine endPostponingOperations];
+
+}
+
+- (BOOL) isPerformingBlobSync {
+
+	NSParameterAssert(recurrenceMachine);
+	return ![recurrenceMachine isPostponingOperations];
 
 }
 
@@ -98,8 +121,6 @@
 	
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		
-			NSLog(@"Background stuff.");
-			
 			__block NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
 			tempQueue.maxConcurrentOperationCount = 1;
 			[tempQueue setSuspended:YES];
@@ -155,8 +176,6 @@
 			
 			enqueue([NSBlockOperation blockOperationWithBlock:^{
 			
-				NSLog(@"Finally.");
-			
 				[context release];
 				
 				dispatch_async(dispatch_get_main_queue(), ^{					
@@ -173,8 +192,8 @@
 		
 	} completionBlock: ^ (id results) {
 	
-		NSLog(@"operation completion block called");
-		NSLog(@"Results %@", results);
+	//	NSLog(@"operation completion block called");
+	//	NSLog(@"Results %@", results);
 		
 	}];
 
@@ -182,8 +201,6 @@
 
 - (void) handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification {
 
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, aNotification);
-	
 	if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed]) {
 	
 		if ([self.recurrenceMachine isPostponingOperations]) {
