@@ -36,6 +36,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 @property (nonatomic, readwrite, assign) BOOL contextControlsShown;
 
+@property (nonatomic, readwrite, assign) BOOL requiresReloadOnFetchedResultsChange;
+
 @end
 
 
@@ -48,6 +50,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize contextControlsShown;
 @synthesize onDismiss;
 @synthesize onViewDidLoad;
+@synthesize requiresReloadOnFetchedResultsChange;
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
@@ -116,8 +119,46 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
+- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
+
+	self.requiresReloadOnFetchedResultsChange = NO;
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	switch (type) {
+	
+		case NSFetchedResultsChangeUpdate: {
+			//	No op
+			break;
+		}
+
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeInsert:
+		case NSFetchedResultsChangeMove:
+		default: {
+			self.requiresReloadOnFetchedResultsChange = YES;
+			break;
+		}
+		
+	}
+
+}
+
+- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+
+	self.requiresReloadOnFetchedResultsChange = YES;
+
+}
+
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
+	if (!self.requiresReloadOnFetchedResultsChange)
+		return;
+		
+	//	Seriously
+	
 	NSUInteger oldCurrentPage = self.paginatedView.currentPage;
 	
 	[self.paginatedView reloadViews];
@@ -320,8 +361,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	//  WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
   WAFile *representedFile = [self representedFileAtIndex:index];
-	UIImage *representedImage = representedFile.thumbnailImage;
+	UIImage *representedImage = representedFile.presentableImage;
+	
 	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
+	[returnedView irBind:@"image" toObject:representedFile keyPath:@"presentableImage" options:nil];
+	
 	returnedView.delegate = self;
   
   [returnedView reset];

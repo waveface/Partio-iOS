@@ -182,12 +182,12 @@
 	
 	__block id nrObserver = [article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		
-		NSLog(@"fileOrder changed to %@ — NEEDS REBINDING", inNewValue);
+		NSParameterAssert([NSThread isMainThread]);
 		
 		[nrSelf disassociateBindings];
 		[nrSelf associateBindings];
 		
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionNew context:nrSelf];
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nrSelf];
 	
 	[self irPerformOnDeallocation:^{
 	
@@ -218,39 +218,19 @@
 		
 	};
 	
-	UIImage * (^bestImageFromFile)(WAFile *) = ^ (WAFile *aFile){
-		
-		return (id)(aFile.resourceImage ? aFile.resourceImage : aFile.thumbnailImage ? aFile.thumbnailImage : nil);
-		
-	};
-
 	void (^bind)(id, NSString *, id, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath,  id boundObject, NSString *boundKeypath, IRBindingsValueTransformer transformerBlock) {
 	
-		IRBindingsValueTransformer actualTransformer = [[transformerBlock copy] autorelease];
-	
 		[object irBind:objectKeyPath toObject:boundObject keyPath:boundKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
-			
 			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			
-			[[^ (id old, id new, NSString *change) {
-				
-				NSLog(@"%@, %@ => %@; %@ -> %@ (%@)", object, objectKeyPath, boundKeypath, old, new, change);
-				
-				if (actualTransformer)
-					return actualTransformer(old, new, change);
-				
-				return new;
-				
-			} copy] autorelease], kIRBindingsValueTransformerBlock,
-			
+			[[transformerBlock copy] autorelease], kIRBindingsValueTransformerBlock,
 		nil]];
+		
 	};
+	
 	
 	WAArticle *boundArticle = self.article;
 	WAFile *boundImageFile = [topImageFiles(boundArticle.fileOrder, 1) lastObject];
-
-	NSLog(@"boundImageFile %@", boundImageFile);
-		
+	
 	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);
 	
 	bind(self.relativeCreationDateLabel, @"text", boundArticle, @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
@@ -270,11 +250,11 @@
 	});
 	
 	bind(self.mainImageView, @"image", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-	
-		NSLog(@"updating main image view image %@ -> %@", inOldValue, inNewValue);
-		
 		return inNewValue;
+	});
 	
+	bind(self.mainImageView, @"backgroundColor", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+		return inNewValue ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
 	});
 	
 	bind(self.avatarView, @"image", boundArticle, @"owner.avatar", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
@@ -301,6 +281,7 @@
 	[self.previewBadge irUnbind:@"preview"];
 	[self.imageStackView irUnbind:@"images"];
 	[self.mainImageView irUnbind:@"image"];
+	[self.mainImageView irUnbind:@"backgroundColor"];
 	[self.avatarView irUnbind:@"image"];
 	[self.deviceDescriptionLabel irUnbind:@"text"];
 	[self.textEmphasisView irUnbind:@"text"];

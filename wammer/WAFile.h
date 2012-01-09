@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "CoreData+IRAdditions.h"
 
 @class WAArticle, WAFilePageElement, WAUser;
 
-@interface WAFile : NSManagedObject
+@interface WAFile : IRManagedObject
 
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
@@ -46,3 +47,5 @@
 - (void)removePageElements:(NSSet *)values;
 
 @end
+
+#import "WAFile+WAAdditions.h"

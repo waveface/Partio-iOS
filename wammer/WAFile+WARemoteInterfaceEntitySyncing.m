@@ -96,6 +96,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			@"title", @"title",
 			@"remoteResourceType", @"type",
 			@"thumbnailURL", @"thumbnail_url",
+			@"largeThumbnailURL", @"large_thumbnail_url",
 			@"resourceURL", @"url",
 			@"timestamp", @"timestamp",
       
@@ -129,6 +130,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([mediumImageRepURLString isKindOfClass:[NSString class]])
     [returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
   
+	NSString *largeImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.large.url"];
+	if ([largeImageRepURLString isKindOfClass:[NSString class]])
+    [returnedDictionary setObject:largeImageRepURLString forKey:@"large_thumbnail_url"];
+	
   NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
   
   if ([incomingFileType isEqualToString:@"image"]) {
@@ -227,8 +232,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 	}
 	
-	if ([aLocalKeyPath isEqualToString:@"resourceURL"] || [aLocalKeyPath isEqualToString:@"thumbnailURL"]) {
-  
+	if ([aLocalKeyPath isEqualToString:@"resourceURL"] || 
+		[aLocalKeyPath isEqualToString:@"largeThumbnailURL"] || 
+		[aLocalKeyPath isEqualToString:@"thumbnailURL"]) {
+	
     if (![aValue length])
       return nil;
   
@@ -292,8 +299,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 		}
 		
-		
-		NSLog(@"%s: thumb? %x, full? %x", __PRETTY_FUNCTION__, sendsThumbnailImage, sendsFullResolutionImage);
 		
 		__block NSOperationQueue *queue = [[NSOperationQueue alloc] init];
 		__block NSString *usedObjectID = nil;
