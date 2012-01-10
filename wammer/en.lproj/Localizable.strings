@@ -7,6 +7,9 @@
 /* No comment provided by engineer. */
 "DAYS_LEFT_IN_CYCLE" = "Days left in cycle";
 
+/* Production Disclaimer */
+"PRODUCTION_DISCLAIMER" = "\nVersion 1.0\n©Waveface Inc.";
+
 /* No comment provided by engineer. */
 "STORAGE_QUOTA_ALL_OBJECTS" = "Monthly Quota";
 
@@ -17,7 +20,7 @@
 "STORAGE_USED_ALL_OBJECTS" = "Used";
 
 /* No comment provided by engineer. */
-"UNLIMITED_QUOTA" = "UNLIMITED_QUOTA";
+"UNLIMITED_QUOTA" = "∞";
 
 /* This Device */
 "USER_DEVICE" = "Device";
@@ -32,7 +35,7 @@
 "USER_SECTION_TITLE" = "Account";
 
 /* Settings for User popover */
-"USER_SETTINGS" = "Settings";
+"USER_SETTINGS" = "User";
 
 /* Action title for cancelling
    Action title for Cancelling
@@ -163,7 +166,7 @@
 "WAPluralNounDrafts" = "Drafts";
 
 /* Short label for the Cloud */
-"WAProperNounWFCloud" = "☁ Waveface Cloud";
+"WAProperNounWFCloud" = "Connect to ☁";
 
 /* Short label for a particular Station */
 "WAProperNounWFStation" = "Waveface Station";

@@ -53,7 +53,7 @@
   self.title = NSLocalizedString(@"USER_SETTINGS", @"Settings for User popover");
   
 	self.tableViewStyle = UITableViewStyleGrouped;
-  self.contentSizeForViewInPopover = (CGSize){ 320, 416 };
+  self.contentSizeForViewInPopover = (CGSize){ 320, 650 };
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
 
@@ -256,6 +256,9 @@
 
 	}
 	
+	if (section == 2) {
+		return NSLocalizedString(@"PRODUCTION_DISCLAIMER", @"Production Disclaimer");
+	}
 	return nil;
 
 }
