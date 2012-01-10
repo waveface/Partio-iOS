@@ -15,6 +15,17 @@
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
 
+@implementation NSCalendar (MySpecialCalculations)
+-(NSInteger)daysFromDate:(NSDate *) endDate
+{
+	NSDate *startDate = [NSDate date];
+     NSInteger startDay=[self ordinalityOfUnit:NSDayCalendarUnit
+          inUnit: NSEraCalendarUnit forDate:startDate];
+     NSInteger endDay=[self ordinalityOfUnit:NSDayCalendarUnit
+          inUnit: NSEraCalendarUnit forDate:endDate];
+     return endDay-startDay;
+}
+@end
 
 @interface WAUserInfoViewController ()
 
@@ -313,10 +324,11 @@
 			}
 			
 			case 2: {
+				NSCalendar *calendar = [NSCalendar currentCalendar];
+				NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]];
+				NSInteger days = [calendar daysFromDate:endDate];
 				cell.textLabel.text = NSLocalizedString(@"DAYS_LEFT_IN_CYCLE", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
-					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_begin"] doubleValue]]
-				];
+				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DAYS_LATER", @"Number of days left in cycle"), days];
 				break;
 			}
 				

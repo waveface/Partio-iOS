@@ -1,6 +1,9 @@
 /* Endpoint Status */
 "CONNECTIVITY_STATUS" = "CONNECTIVITY_STATUS";
 
+/* Number of days left in cycle */
+"DAYS_LATER" = "DAYS_LATER";
+
 /* No comment provided by engineer. */
 "DAYS_LEFT_IN_CYCLE" = "DAYS_LEFT_IN_CYCLE";
 
