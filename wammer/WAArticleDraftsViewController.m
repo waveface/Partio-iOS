@@ -27,7 +27,7 @@
   if (!self)
     return nil;
   
-  self.title = NSLocalizedString(@"WAPluralNounDrafts", @"Plural noun for draft objects");
+  self.title = NSLocalizedString(@"NOUN_DRAFTS", @"Plural noun for draft objects");
   
   NSFetchRequest *fr = [[[WADataStore defaultStore] managedObjectModel] fetchRequestFromTemplateWithName:@"WAFRArticleDrafts" substitutionVariables:[NSDictionary dictionary]];
   NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
@@ -111,7 +111,7 @@
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = NSLocalizedString(@"WAActionNewPost", @"Action title for creating a new post");
+    cell.textLabel.text = NSLocalizedString(@"ACTION_NEW_POST", @"Action title for creating a new post");
     
     return cell;
   
@@ -131,12 +131,12 @@
   if (representedDraft.text)
     cell.textLabel.text = representedDraft.text;
   else
-    cell.textLabel.text = NSLocalizedString(@"WADraftStateNoContent", @"State for drafts without content text");
+    cell.textLabel.text = NSLocalizedString(@"DRAFT_STATE_NO_CONTENT", @"State for drafts without content text");
   
   if (representedDraft.timestamp)
     cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedDraft.timestamp];
   else
-    cell.detailTextLabel.text = NSLocalizedString(@"WADraftStateNoTimestamp", @"State for drafts without a timestamp");
+    cell.detailTextLabel.text = NSLocalizedString(@"DRAFT_STATE_NO_TIMESTAMP", @"State for drafts without a timestamp");
 	
 	BOOL cellEnabled = [self.delegate articleDraftsViewController:self shouldEnableArticle:[[representedDraft objectID] URIRepresentation]];
 	if (cellEnabled) {
@@ -163,10 +163,10 @@
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 
   if (section == 0)
-    return NSLocalizedString(@"WANounAction", @"Singluar noun for action objects");
+    return NSLocalizedString(@"NOUN_ACTIONS_OBJECT", @"Singluar noun for action objects");
   
   if (section == 1)
-    return NSLocalizedString(@"WAPluralNounDrafts", @"Plural noun for draft objects");
+    return NSLocalizedString(@"NOUN_DRAFTS", @"Plural noun for draft objects");
   
   return nil;
 

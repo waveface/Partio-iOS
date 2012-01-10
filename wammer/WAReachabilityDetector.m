@@ -351,11 +351,11 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
 
   switch (aState) {
     case WAReachabilityStateUnknown:
-      return NSLocalizedString(@"WAReachabilityStateUnknown", @"WAReachabilityStateUnknown");
+      return NSLocalizedString(@"REACHABILITY_STATE_UNKNOWN", @"REACHABILITY_STATE_UNKNOWN");
     case WAReachabilityStateAvailable:
-      return NSLocalizedString(@"WAReachabilityStateAvailable", @"WAReachabilityStateAvailable");
+      return NSLocalizedString(@"REACHABILITY_STATE_AVAILABLE", @"REACHABILITY_STATE_AVAILABLE");
     case WAReachabilityStateNotAvailable:
-      return NSLocalizedString(@"WAReachabilityStateNotAvailable", @"WAReachabilityStateNotAvailable");
+      return NSLocalizedString(@"REACHABILITY_STATE_NOT_AVAILABLE", @"REACHABILITY_STATE_NOT_AVAILABLE");
     default:
       return [NSString stringWithFormat:@"%x", aState];
   };

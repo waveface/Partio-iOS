@@ -269,12 +269,14 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		BOOL didRequest = [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
 			
 		} runningOnboardingProcess:YES];
+		
+		NSParameterAssert(didRequest);
 			
 	});
 
@@ -369,11 +371,11 @@
 	
 		__block __typeof__(self) nrSelf = self;
 		
-		NSString *alertTitle = NSLocalizedString(@"WAResetSettingsConfirmationTitle", nil);
-		NSString *alertText = NSLocalizedString(@"WAResetSettingsConfirmationDescription", nil);
+		NSString *alertTitle = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_TITLE", nil);
+		NSString *alertText = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_DESCRIPTION", nil);
 	
-		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
-		IRAction *resetAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionReset", nil) block: ^ {
+		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+		IRAction *resetAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_RESET", nil) block: ^ {
 		
 			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		
@@ -421,17 +423,17 @@
 	};
 	
 	if (isNowEnabled) {
-		alertTitle = NSLocalizedString(@"WAAdvancedFeaturesEnabledTitle", nil);
-		alertText = NSLocalizedString(@"WAAdvancedFeaturesEnabledDescription", nil);
+		alertTitle = NSLocalizedString(@"ADVANCED_FEATURES_ENABLED_TITLE", nil);
+		alertText = NSLocalizedString(@"ADVANCED_FEATURES_ENABLED_DESCRIPTION", nil);
 	} else {
-		alertTitle = NSLocalizedString(@"WAAdvancedFeaturesDisabledTitle", nil);
-		alertText = NSLocalizedString(@"WAAdvancedFeaturesDisabledDescription", nil);
+		alertTitle = NSLocalizedString(@"ADVANCED_FEATURES_DISABLED_TITLE", nil);
+		alertText = NSLocalizedString(@"ADVANCED_FEATURES_DISABLED_DESCRIPTION", nil);
 	}
 
-	IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", nil) block:nil];
-	IRAction *okayAndZapAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", nil) block:zapAndRequestReauthentication];
-	IRAction *laterAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionLater", nil) block:nil];
-	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", nil) block:zapAndRequestReauthentication];
+	IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:nil];
+	IRAction *okayAndZapAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:zapAndRequestReauthentication];
+	IRAction *laterAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_LATER", nil) block:nil];
+	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:zapAndRequestReauthentication];
 	
 	if (self.alreadyRequestingAuthentication) {
 		
@@ -569,7 +571,7 @@
 	
 	};
   
-  IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionResetPassword", @"Action title for resetting password") block: ^ {
+  IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password") block: ^ {
   
     authRequestVC.password = nil;
     [authRequestVC assignFirstResponderStatusToBestMatchingField];
@@ -578,18 +580,18 @@
   
   }];
 
-  IRAction *registerUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionRegisterUser", @"Action title for registering") block: ^ {
+  IRAction *registerUserAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_REGISTER_USER", @"Action title for registering") block: ^ {
   
     __block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
     
       if (error) {
         
-        NSString *alertTitle = NSLocalizedString(@"WAErrorUserRegistrationFailedTitle", @"Title for registration failure");
+        NSString *alertTitle = NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_TITLE", @"Title for registration failure");
         
         NSString *alertText = [[NSArray arrayWithObjects:
-          NSLocalizedString(@"WAErrorUserRegistrationFailedDescription", @"Description for registration failure"),
+          NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION", @"Description for registration failure"),
           [NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
-          NSLocalizedString(@"WAErrorUserRegistrationFailedRecoveryNotion", @"Recovery notion for registration failure recovery"),
+          NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION", @"Recovery notion for registration failure recovery"),
         nil] componentsJoinedByString:@""];
 
         [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
@@ -618,7 +620,7 @@
   
   }];
   
-  IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignIn", @"Action title for signing in") block:^{
+  IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_IN", @"Action title for signing in") block:^{
     
     [authRequestVC authenticate];
     
@@ -631,14 +633,14 @@
   
       if (anError) {
       
-        NSString *alertTitle = NSLocalizedString(@"WAErrorAuthenticationFailedTitle", @"Title for authentication failure");
+        NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure");
         NSString *alertText = [[NSArray arrayWithObjects:
-          NSLocalizedString(@"WAErrorAuthenticationFailedDescription", @"Description for authentication failure"),
+          NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_DESCRIPTION", @"Description for authentication failure"),
           [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
-          NSLocalizedString(@"WAErrorAuthenticationFailedRecoveryNotion", @"Recovery notion for authentication failure recovery"),
+          NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION", @"Recovery notion for authentication failure recovery"),
         nil] componentsJoinedByString:@""];
         
-        [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for cancelling") block:^{
+        [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling") block:^{
         
           authRequestVC.password = nil;
           [authRequestVC assignFirstResponderStatusToBestMatchingField];
@@ -661,8 +663,6 @@
 				
 			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
-			NSLog(@"current user ID %@", ri.userIdentifier);
-			
 			if (userIdentifierHasChanged || zapEverything) {
 				UINavigationController *navC = [self.navigationController retain];
 				[self dismissModalViewControllerAnimated:NO];
@@ -670,14 +670,14 @@
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
 			}
   
-      if (userIdentifierHasChanged || shouldRunOnboardingChecksIfUserUnchanged) {
+			if (userIdentifierHasChanged || shouldRunOnboardingChecksIfUserUnchanged) {
         [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
       } else {
         [self dismissModalViewControllerAnimated:YES];
       }
-      
-      nrAppDelegate.alreadyRequestingAuthentication = NO;
-      
+            
+			nrAppDelegate.alreadyRequestingAuthentication = NO;
+
   }];
   
   if (aReason)
@@ -820,7 +820,7 @@
                 
                   WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
                   UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
-                  stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for signing the user out") block:^{
+                  stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for signing the user out") block:^{
                     
                     removeOverlayView(NO);
                     [stationDiscoveryNavC dismissModalViewControllerAnimated:NO];
@@ -909,7 +909,7 @@
 
       [IRAlertView alertViewWithTitle:@"Error Retrieving User Information" message:@"Unable to retrieve user metadata." cancelAction:nil otherActions:[NSArray arrayWithObjects:
       
-        [IRAction actionWithTitle:NSLocalizedString(@"WAActionOkay", @"Action title for accepting what happened reluctantly") block:nil],
+        [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Action title for accepting what happened reluctantly") block:nil],
       
       nil]];
     

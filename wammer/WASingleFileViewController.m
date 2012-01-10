@@ -140,7 +140,7 @@
 
   self.progressView.progress = 1;
   
-	self.fileLoadingLabel.text = NSLocalizedString(@"WAStateLoadingSingleDocument", nil);
+	self.fileLoadingLabel.text = NSLocalizedString(@"STATE_LOADING_SINGLE_DOCUMENT", nil);
   self.fileLoadingProgressLabel.text = [self.file.remoteFileSize stringValue];
   
   [self.file addObserver:self forKeyPath:@"resourceFilePath" options:NSKeyValueObservingOptionNew context:nil];

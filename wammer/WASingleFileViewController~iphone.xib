@@ -51,17 +51,17 @@
 					<object class="IBUILabel" id="839531889">
 						<reference key="NSNextResponder" ref="503202979"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{20, 333}, {280, 32}}</string>
+						<string key="NSFrame">{{0, 333}, {320, 32}}</string>
 						<reference key="NSSuperview" ref="503202979"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="587858329"/>
 						<string key="NSReuseIdentifierKey">_NS:345</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">WAStateLoadingSingleDocument</string>
+						<string key="IBUIText">STATE_LOADING_SINGLE_DOCUMENT</string>
 						<object class="NSColor" key="IBUITextColor" id="420568420">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -84,16 +84,17 @@
 					<object class="IBUILabel" id="587858329">
 						<reference key="NSNextResponder" ref="503202979"/>
 						<int key="NSvFlags">266</int>
-						<string key="NSFrame">{{20, 375}, {280, 21}}</string>
+						<string key="NSFrame">{{0, 375}, {320, 21}}</string>
 						<reference key="NSSuperview" ref="503202979"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:345</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">WAStateLoadingSingleDocumentProgress</string>
+						<string key="IBUIText">STATE_LOADING_SINGLE_DOCUMENT_PROGRESS</string>
 						<reference key="IBUITextColor" ref="420568420"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -114,7 +115,7 @@
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView"/>
+				<reference key="NSNextKeyView" ref="618265884"/>
 				<string key="NSReuseIdentifierKey">_NS:196</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
