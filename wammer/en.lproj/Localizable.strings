@@ -1,3 +1,42 @@
+/* Endpoint Status */
+"CONNECTIVITY_STATUS" = "Status";
+
+/* Number of days left in cycle */
+"DAYS_LATER" = "%d days";
+
+/* No comment provided by engineer. */
+"DAYS_LEFT_IN_CYCLE" = "Days left in cycle";
+
+/* Production Disclaimer */
+"PRODUCTION_DISCLAIMER" = "\nVersion 1.0\n©Waveface Inc.";
+
+/* No comment provided by engineer. */
+"STORAGE_QUOTA_ALL_OBJECTS" = "Monthly Quota";
+
+/* Noun for storage quota. */
+"STORAGE_QUOTA_STATUS" = "Usage";
+
+/* No comment provided by engineer. */
+"STORAGE_USED_ALL_OBJECTS" = "Used";
+
+/* No comment provided by engineer. */
+"UNLIMITED_QUOTA" = "∞";
+
+/* This Device */
+"USER_DEVICE" = "Device";
+
+/* email */
+"USER_EMAIL" = "Email";
+
+/* user nickname */
+"USER_NAME" = "Name";
+
+/* Title in User Section */
+"USER_SECTION_TITLE" = "Account";
+
+/* Settings for User popover */
+"USER_SETTINGS" = "User";
+
 /* Action title for cancelling
    Action title for Cancelling
    Cancel. */
@@ -119,12 +158,6 @@
 /* Title for password confirmation */
 "WANounPasswordConfirmation" = "Confirm Password";
 
-/* Plural noun for remote endpoints */
-"WANounPluralEndpoints" = "API Endpoints";
-
-/* Noun for storage quota. */
-"WANounStorageQuota" = "Storage Quota";
-
 /* Noun for Username
    Title for username */
 "WANounUsername" = "Email";
@@ -133,7 +166,7 @@
 "WAPluralNounDrafts" = "Drafts";
 
 /* Short label for the Cloud */
-"WAProperNounWFCloud" = "☁ Waveface Cloud";
+"WAProperNounWFCloud" = "Connect to ☁";
 
 /* Short label for a particular Station */
 "WAProperNounWFStation" = "Waveface Station";
@@ -163,22 +196,7 @@
 "WAStateLoadingSingleDocument" = "Loading Document…";
 
 /* No comment provided by engineer. */
-"WAStorageQuotaAllImages" = "Images";
-
-/* No comment provided by engineer. */
-"WAStorageQuotaAllObjects" = "All";
-
-/* No comment provided by engineer. */
 "WAStorageQuotaIntervalEndDate" = "Ends";
-
-/* No comment provided by engineer. */
-"WAStorageQuotaIntervalStartDate" = "Starts";
-
-/* No comment provided by engineer. */
-"WAStorageQuotaUnlimited" = "Unlimited";
-
-/* Title for user information */
-"WAUserInformationTitle" = "Account";
 
 /* Class = "IBUILabel"; text = "WAActionGoToLastReadPosition"; ObjectID = "13"; */
 "WAActionGoToLastReadPosition" = "Jump to Furthest Post";
