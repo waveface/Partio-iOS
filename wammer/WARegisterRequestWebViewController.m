@@ -131,7 +131,7 @@
 - (void) webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 
   if (![[[[error userInfo] objectForKey:NSURLErrorFailingURLErrorKey] scheme] isEqualToString:@"waveface"])
-    [[[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"WAActionOkay", @"Fine!") otherButtonTitles:nil] autorelease] show];
+    [[[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"Fine!") otherButtonTitles:nil] autorelease] show];
   
   [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:^{
     self.spinner.alpha = webView.loading ? 1.0f : 0.0f;

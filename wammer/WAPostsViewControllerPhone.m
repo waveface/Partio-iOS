@@ -99,7 +99,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
   
-	self.title = NSLocalizedString(@"WAAppTitle", @"Title for application");
+	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
 	__block __typeof__(self) nrSelf = self;
 	
@@ -303,15 +303,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	__block __typeof(self) nrSelf = self;
 	
-	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", nil) block:nil];
-	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", nil) block:^{
+	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:^{
 	
-		NSString *alertTitle = NSLocalizedString(@"WAActionSignOut", nil);
-		NSString *alertText = NSLocalizedString(@"WASignOutConfirmation", nil);
+		NSString *alertTitle = NSLocalizedString(@"ACTION_SIGN_OUT", nil);
+		NSString *alertText = NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil);
 		
 		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
 			
-			[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", nil) block: ^ {
+			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
 				
 				[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				

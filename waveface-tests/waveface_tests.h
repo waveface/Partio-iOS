@@ -1,13 +1,13 @@
 //
-//  wammer_iOS_tests.h
-//  wammer-iOS_tests
+//  waveface_tests.h
+//  waveface-tests
 //
-//  Created by jamie on 1/4/12.
+//  Created by jamie on 1/10/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface wammer_iOS_tests : SenTestCase
+@interface waveface_tests : SenTestCase
 
 @end

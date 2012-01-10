@@ -57,7 +57,7 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
-	self.title = NSLocalizedString(@"WARegisterRequestTitle", @"Title for registration request view");
+	self.title = NSLocalizedString(@"REGISTER_REQUEST_TITLE", @"Title for registration request view");
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -93,7 +93,7 @@
 	[super viewDidLoad];
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
-	self.usernameField.placeholder = NSLocalizedString(@"WANounUsername", @"Title for username");
+	self.usernameField.placeholder = NSLocalizedString(@"NOUN_USERNAME", @"Title for username");
 	self.usernameField.text = self.username;
 	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -105,7 +105,7 @@
 
 	self.nicknameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.nicknameField.delegate = self;
-	self.nicknameField.placeholder = NSLocalizedString(@"WANounNickname", @"Title for nick name");
+	self.nicknameField.placeholder = NSLocalizedString(@"NOUN_NICKNAME", @"Title for nick name");
 	self.nicknameField.text = self.nickname;
 	self.nicknameField.font = [UIFont systemFontOfSize:17.0f];
 	self.nicknameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -117,7 +117,7 @@
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
-	self.passwordField.placeholder = NSLocalizedString(@"WANounPassword", @"Title for password");
+	self.passwordField.placeholder = NSLocalizedString(@"NOUN_PASSWORD", @"Title for password");
 	self.passwordField.text = self.password;
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -130,7 +130,7 @@
 	
 	self.passwordConfirmationField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordConfirmationField.delegate = self;
-	self.passwordConfirmationField.placeholder = NSLocalizedString(@"WANounPasswordConfirmation", @"Title for password confirmation");
+	self.passwordConfirmationField.placeholder = NSLocalizedString(@"NOUN_PASSWORD_CONFIRMATION", @"Title for password confirmation");
 	self.passwordConfirmationField.text = nil;//self.password;
 	self.passwordConfirmationField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordConfirmationField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -247,13 +247,13 @@
 	}
 
 	if (indexPath.row == 0) {
-		cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Title for username");
+		cell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Title for username");
 		cell.accessoryView = self.usernameField;
 	} else if (indexPath.row == 1) {
-		cell.textLabel.text = NSLocalizedString(@"WANounNickname", @"Title for nickname");
+		cell.textLabel.text = NSLocalizedString(@"NOUN_NICKNAME", @"Title for nickname");
 		cell.accessoryView = self.nicknameField;
 	} else if (indexPath.row == 2) {
-		cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Title for password");
+		cell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Title for password");
 		cell.accessoryView = self.passwordField;
 	} else if (indexPath.row == 3) {
 		cell.textLabel.text = @"";
@@ -340,7 +340,7 @@
 		return;
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");
+	busyBezel.caption = NSLocalizedString(@"ACTION_PROCESSING", @"Action title for processing stuff");
 	
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
