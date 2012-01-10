@@ -15,6 +15,8 @@
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
 
+#define kConnectivitySection 1
+
 @implementation NSCalendar (MySpecialCalculations)
 -(NSInteger)daysFromDate:(NSDate *) endDate
 {
@@ -106,7 +108,7 @@
     return;
   
   [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
 
 }
@@ -121,7 +123,7 @@
 #if 1
 		
   [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
   [self.tableView endUpdates];
 
 #else
@@ -195,7 +197,7 @@
     case 0:
       return 3;
 			
-		case 1:
+		case kConnectivitySection:
 			return [self.monitoredHosts count];
 			
 		case 2:
@@ -228,7 +230,7 @@
   if (section == 0)
     return NSLocalizedString(@"USER_SECTION_TITLE", @"Title in User Section");
   
-	if (section == 1)
+	if (section == kConnectivitySection)
     return NSLocalizedString(@"CONNECTIVITY_STATUS", @"Endpoint Status");
   
   if (section == 2)
@@ -239,7 +241,7 @@
 
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
-	if (section == 1) {
+	if (section == kConnectivitySection) {
 	
 		NSUInteger numberOfMonitoredHosts = [self.monitoredHosts count];
 
@@ -292,7 +294,7 @@
 			default:
 				break;
 		}
-	} else if (indexPath.section == 1) {
+	} else if (indexPath.section == kConnectivitySection) {
 		if([self.monitoredHosts count] > 0) {
 			NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
 			
