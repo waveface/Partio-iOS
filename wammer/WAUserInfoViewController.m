@@ -354,27 +354,6 @@
 
 }
 
-- (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  if (indexPath.section == 0) {
-	
-		if (WAAdvancedFeaturesEnabled()) {
-  
-			NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
-			WAReachabilityDetector *detector = [[WARemoteInterface sharedInterface] reachabilityDetectorForHost:hostURL];
-			
-			UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"Diagnostics" message:[detector description] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
-			
-			[alertView show];
-			
-			[aTV deselectRowAtIndexPath:indexPath animated:YES];
-		
-		}
-  
-  }
-
-}
-
 - (NSManagedObjectContext *) managedObjectContext {
   
   if (managedObjectContext)
