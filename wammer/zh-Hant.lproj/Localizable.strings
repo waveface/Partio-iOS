@@ -1,3 +1,36 @@
+/* Endpoint Status */
+"CONNECTIVITY_STATUS" = "CONNECTIVITY_STATUS";
+
+/* No comment provided by engineer. */
+"DAYS_LEFT_IN_CYCLE" = "DAYS_LEFT_IN_CYCLE";
+
+/* No comment provided by engineer. */
+"STORAGE_QUOTA_ALL_OBJECTS" = "STORAGE_QUOTA_ALL_OBJECTS";
+
+/* Noun for storage quota. */
+"STORAGE_QUOTA_STATUS" = "STORAGE_QUOTA_STATUS";
+
+/* No comment provided by engineer. */
+"STORAGE_USED_ALL_OBJECTS" = "STORAGE_USED_ALL_OBJECTS";
+
+/* No comment provided by engineer. */
+"UNLIMITED_QUOTA" = "UNLIMITED_QUOTA";
+
+/* This Device */
+"USER_DEVICE" = "USER_DEVICE";
+
+/* email */
+"USER_EMAIL" = "USER_EMAIL";
+
+/* user nickname */
+"USER_NAME" = "USER_NAME";
+
+/* Title in User Section */
+"USER_SECTION_TITLE" = "USER_SECTION_TITLE";
+
+/* Settings for User popover */
+"USER_SETTINGS" = "USER_SETTINGS";
+
 /* Action title for cancelling
    Action title for Cancelling
    Cancel. */
@@ -119,12 +152,6 @@
 /* Title for password confirmation */
 "WANounPasswordConfirmation" = "確認密碼";
 
-/* Plural noun for remote endpoints */
-"WANounPluralEndpoints" = "WANounPluralEndpoints";
-
-/* Noun for storage quota. */
-"WANounStorageQuota" = "WANounStorageQuota";
-
 /* Noun for Username
    Title for username */
 "WANounUsername" = "電子郵件";
@@ -163,22 +190,7 @@
 "WAStateLoadingSingleDocument" = "正在載入文件…";
 
 /* No comment provided by engineer. */
-"WAStorageQuotaAllImages" = "照片";
-
-/* No comment provided by engineer. */
-"WAStorageQuotaAllObjects" = "所有物件";
-
-/* No comment provided by engineer. */
 "WAStorageQuotaIntervalEndDate" = "結算日期";
-
-/* No comment provided by engineer. */
-"WAStorageQuotaIntervalStartDate" = "WAStorageQuotaIntervalStartDate";
-
-/* No comment provided by engineer. */
-"WAStorageQuotaUnlimited" = "WAStorageQuotaUnlimited";
-
-/* Title for user information */
-"WAUserInformationTitle" = "帳戶";
 
 /* Class = "IBUILabel"; text = "WAActionGoToLastReadPosition"; ObjectID = "13"; */
 "WAActionGoToLastReadPosition" = "回到上次的閱讀斷點";
