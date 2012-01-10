@@ -55,7 +55,7 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
-	self.title = NSLocalizedString(@"WAAuthRequestTitle", @"Title for the auth request controller");
+	self.title = NSLocalizedString(@"AUTH_REQUEST_TITLE", @"Title for the auth request controller");
   self.navigationItem.hidesBackButton = YES;
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
@@ -96,7 +96,7 @@
   
 	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.usernameField.delegate = self;
-	self.usernameField.placeholder = NSLocalizedString(@"WANounUsername", @"Noun for Username");
+	self.usernameField.placeholder = NSLocalizedString(@"NOUN_USERNAME", @"Noun for Username");
 	self.usernameField.text = self.username;
 	self.usernameField.font = [UIFont systemFontOfSize:17.0f];
 	self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -108,7 +108,7 @@
 	
 	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
 	self.passwordField.delegate = self;
-	self.passwordField.placeholder = NSLocalizedString(@"WANounPassword", @"Noun for Password");
+	self.passwordField.placeholder = NSLocalizedString(@"NOUN_PASSWORD", @"Noun for Password");
 	self.passwordField.text = self.password;
 	self.passwordField.font = [UIFont systemFontOfSize:17.0f];
 	self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -250,7 +250,7 @@
     
     if (indexPath.row == 0) {
     
-      cell.textLabel.text = NSLocalizedString(@"WANounUsername", @"Noun for Username");
+      cell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"Noun for Username");
       
       if ([self.usernameField isFirstResponder])
       if (![self.usernameField isDescendantOfView:cell]) {
@@ -261,7 +261,7 @@
       
     } else if (indexPath.row == 1) {
     
-      cell.textLabel.text = NSLocalizedString(@"WANounPassword", @"Noun for Password");
+      cell.textLabel.text = NSLocalizedString(@"NOUN_PASSWORD", @"Noun for Password");
       
       if ([self.passwordField isFirstResponder])
       if (![self.passwordField isDescendantOfView:cell]) {
@@ -413,7 +413,7 @@
     return;
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	busyBezel.caption = NSLocalizedString(@"WAActionProcessing", @"Action title for processing stuff");
+	busyBezel.caption = NSLocalizedString(@"ACTION_PROCESSING", @"Action title for processing stuff");
 	
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;

@@ -1,233 +1,212 @@
-/* Endpoint Status */
-"CONNECTIVITY_STATUS" = "CONNECTIVITY_STATUS";
-
-/* Number of days left in cycle */
-"DAYS_LATER" = "DAYS_LATER";
-
-/* No comment provided by engineer. */
-"DAYS_LEFT_IN_CYCLE" = "DAYS_LEFT_IN_CYCLE";
-
-/* Production Disclaimer */
-"PRODUCTION_DISCLAIMER" = "PRODUCTION_DISCLAIMER";
-
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_ALL_OBJECTS" = "STORAGE_QUOTA_ALL_OBJECTS";
-
-/* Noun for storage quota. */
-"STORAGE_QUOTA_STATUS" = "STORAGE_QUOTA_STATUS";
-
-/* No comment provided by engineer. */
-"STORAGE_USED_ALL_OBJECTS" = "STORAGE_USED_ALL_OBJECTS";
-
-/* No comment provided by engineer. */
-"UNLIMITED_QUOTA" = "UNLIMITED_QUOTA";
-
-/* This Device */
-"USER_DEVICE" = "USER_DEVICE";
-
-/* email */
-"USER_EMAIL" = "USER_EMAIL";
-
-/* user nickname */
-"USER_NAME" = "USER_NAME";
-
-/* Title in User Section */
-"USER_SECTION_TITLE" = "USER_SECTION_TITLE";
-
-/* Settings for User popover */
-"USER_SETTINGS" = "USER_SETTINGS";
-
 /* Action title for cancelling
    Action title for Cancelling
    Cancel. */
-"WAActionCancel" = "取消";
+"ACTION_CANCEL" = "取消";
 
 /* Action title for discarding a draft */
-"WAActionDiscard" = "丟棄";
+"ACTION_DISCARD" = "丟棄草稿";
 
 /* Action title for done */
-"WAActionDone" = "完成";
+"ACTION_DONE" = "完成";
 
 /* Action title for feedback composition */
-"WAActionFeedback" = "問題回報";
+"ACTION_FEEDBACK" = "迴響";
 
 /* No comment provided by engineer. */
-"WAActionLater" = "稍後再做";
+"ACTION_LATER" = "稍後再做";
 
 /* Action title for creating a new post */
-"WAActionNewPost" = "寫新的";
+"ACTION_NEW_POST" = "新文章";
 
 /* Action title for accepting what happened reluctantly
    Fine! */
-"WAActionOkay" = "確認";
+"ACTION_OKAY" = "好";
 
 /* Action title for processing stuff */
-"WAActionProcessing" = "運作中";
+"ACTION_PROCESSING" = "處理中";
 
 /* Action title for registering */
-"WAActionRegisterUser" = "註冊";
+"ACTION_REGISTER_USER" = "註冊";
 
 /* No comment provided by engineer. */
-"WAActionReset" = "重設";
+"ACTION_RESET" = "重設";
 
 /* Action title for resetting password */
-"WAActionResetPassword" = "重設密碼";
+"ACTION_RESET_PASSWORD" = "重設密碼";
 
 /* Action title for saving a draft */
-"WAActionSaveDraft" = "存成草稿";
+"ACTION_SAVE_DRAFT" = "存成草稿";
 
 /* Action title for signing in */
-"WAActionSignIn" = "登入";
+"ACTION_SIGN_IN" = "登入";
 
 /* Action title for Signing Out
    Action title for signing the user out */
-"WAActionSignOut" = "登出";
+"ACTION_SIGN_OUT" = "登出";
 
 /* No comment provided by engineer. */
-"WAAdvancedFeaturesDisabledDescription" = "禁用進階功能後，請重新登入。";
+"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
 
 /* No comment provided by engineer. */
-"WAAdvancedFeaturesDisabledTitle" = "已禁用進階功能";
+"ADVANCED_FEATURES_DISABLED_TITLE" = "除錯功能已禁用";
 
 /* No comment provided by engineer. */
-"WAAdvancedFeaturesEnabledDescription" = "啓用進階功能後，請重新登入。";
+"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
 
 /* No comment provided by engineer. */
-"WAAdvancedFeaturesEnabledTitle" = "已啟用進階功能";
+"ADVANCED_FEATURES_ENABLED_TITLE" = "除錯功能已啟用";
 
 /* Application Title
    Title for application */
-"WAAppTitle" = "Waveface";
+"APP_TITLE" = "Waveface";
 
 /* Title for the auth request controller */
-"WAAuthRequestTitle" = "歡迎";
+"AUTH_REQUEST_TITLE" = "歡迎使用 Waveface";
 
 /* Title for the composition view */
-"WACompositionTitle" = "編輯";
+"COMPOSITION_TITLE" = "編輯";
 
 /* State for drafts without content text */
-"WADraftStateNoContent" = "（沒有內文）";
+"DRAFT_STATE_NO_CONTENT" = "（沒有內容）";
 
 /* State for drafts without a timestamp */
-"WADraftStateNoTimestamp" = "（沒有時間戳記）";
+"DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
+
+/* Endpoint Status */
+"ENDPOINT_CONNECTIVITY_STATUS_TITLE" = "連線狀況";
 
 /* Text to show when Cloud and Station are both available */
-"WAEndpointReachabilityStatusCloudAndStationAvailableDescription" = "WAEndpointReachabilityStatusCloudAndStationAvailableDescription";
+"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "能連上 Waveface Cloud 與您的 Station。所有物件都可被同步。";
 
 /* Text to show when only Cloud is available */
-"WAEndpointReachabilityStatusCloudOnlyDescription" = "WAEndpointReachabilityStatusCloudOnlyDescription";
+"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION" = "只能連接 Waveface Cloud。有些資料可能會稍晚纔能同步。";
 
 /* Text to show when not even Cloud is there — a rare case */
-"WAEndpointReachabilityStatusNoEndpointsDescription" = "WAEndpointReachabilityStatusNoEndpointsDescription";
+"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION" = "無法連接任何 Waveface 伺服器。";
 
 /* Text to show when Cloud is available, but the Station is not responsive */
-"WAEndpointReachabilityStatusStationNotAvailableDescription" = "WAEndpointReachabilityStatusStationNotAvailableDescription";
+"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "無法連上您的 Station。有些資料可能會稍晚纔能同步。";
 
 /* Description for authentication failure */
-"WAErrorAuthenticationFailedDescription" = "Waveface 目前無法認證您的帳號資料：";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface 現在無法登錄您的帳號：";
 
 /* Recovery notion for authentication failure recovery */
-"WAErrorAuthenticationFailedRecoveryNotion" = "您可以重設密碼或新增一個帳號";
+"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "您可以重設密碼或新增一個帳號";
 
 /* Title for authentication failure */
-"WAErrorAuthenticationFailedTitle" = "無法認證";
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "無法認證";
 
 /* Description for registration failure */
-"WAErrorUserRegistrationFailedDescription" = "Waveface 現在無法登錄您的帳號";
+"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface 現在無法為您註冊";
 
 /* Recovery notion for registration failure recovery */
-"WAErrorUserRegistrationFailedRecoveryNotion" = "請稍候再嘗試登錄";
+"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "請稍候再嘗試登錄";
 
 /* Title for registration failure */
-"WAErrorUserRegistrationFailedTitle" = "無法登錄";
-
-/* Title for Waveface Feedback */
-"WAFeedbackCompositionTitle" = "Waveface 問題回報";
+"ERROR_USER_REGISTRATION_FAILED_TITLE" = "無法註冊";
 
 /* Singluar noun for action objects */
-"WANounAction" = "動作";
+"NOUN_ACTIONS_OBJECT" = "動作";
+
+/* This Device
+   Title for Waveface Feedback */
+"NOUN_CURRENT_DEVICE" = "目前裝置";
+
+/* Plural noun for draft objects */
+"NOUN_DRAFTS" = "草稿";
 
 /* Title for nick name
    Title for nickname */
-"WANounNickname" = "暱稱";
+"NOUN_NICKNAME" = "暱稱";
 
 /* Noun for Password
    Title for password */
-"WANounPassword" = "密碼";
+"NOUN_PASSWORD" = "密碼";
 
 /* Title for password confirmation */
-"WANounPasswordConfirmation" = "確認密碼";
+"NOUN_PASSWORD_CONFIRMATION" = "確認密碼";
+
+/* Noun for storage quota. */
+"NOUN_STORAGE_QUOTA" = "可用配額";
 
 /* Noun for Username
    Title for username */
-"WANounUsername" = "電子郵件";
-
-/* Plural noun for draft objects */
-"WAPluralNounDrafts" = "以前的草稿";
+"NOUN_USERNAME" = "用戶名";
 
 /* Short label for the Cloud */
-"WAProperNounWFCloud" = "WAProperNounWFCloud";
+"PROPER_NOUN_WF_CLOUD" = "Cloud";
 
 /* Short label for a particular Station */
-"WAProperNounWFStation" = "WAProperNounWFStation";
+"PROPER_NOUN_WF_STATION" = "Station";
 
-/* WAReachabilityStateAvailable */
-"WAReachabilityStateAvailable" = "可用";
+/* REACHABILITY_STATE_AVAILABLE */
+"REACHABILITY_STATE_AVAILABLE" = "可用";
 
-/* WAReachabilityStateNotAvailable */
-"WAReachabilityStateNotAvailable" = "不可用";
+/* REACHABILITY_STATE_NOT_AVAILABLE */
+"REACHABILITY_STATE_NOT_AVAILABLE" = "不可用";
 
-/* WAReachabilityStateUnknown */
-"WAReachabilityStateUnknown" = "狀態未知";
+/* REACHABILITY_STATE_UNKNOWN */
+"REACHABILITY_STATE_UNKNOWN" = "未知";
 
 /* Title for registration request view */
-"WARegisterRequestTitle" = "註冊";
+"REGISTER_REQUEST_TITLE" = "註冊";
 
 /* No comment provided by engineer. */
-"WAResetSettingsConfirmationDescription" = "是否要清除所有設定？";
+"RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "是否要清除所有設定？";
 
 /* No comment provided by engineer. */
-"WAResetSettingsConfirmationTitle" = "清除設定？";
+"RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
+
+/* Settings for User popover */
+"SETTINGS_TITLE" = "設定";
+
+/* Production Disclaimer */
+"SHORT_LEGAL_DISCLAIMER" = "Waveface Inc.";
 
 /* Confirmation text for Signing Out */
-"WASignOutConfirmation" = "確定登出？";
+"SIGN_OUT_CONFIRMATION" = "確定登出？";
 
 /* No comment provided by engineer. */
-"WAStateLoadingSingleDocument" = "正在載入文件…";
+"STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
 /* No comment provided by engineer. */
-"WAStorageQuotaIntervalEndDate" = "結算日期";
+"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE" = "可用物件";
 
-/* Class = "IBUILabel"; text = "WAActionGoToLastReadPosition"; ObjectID = "13"; */
-"WAActionGoToLastReadPosition" = "回到上次的閱讀斷點";
+/* No comment provided by engineer. */
+"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE" = "已用物件";
 
-/* Class = "IBUILabel"; text = "WACompositionNoPhotoReminderTitle"; ObjectID = "25"; */
-"WACompositionNoPhotoReminderTitle" = "沒有照片";
+/* No comment provided by engineer. */
+"STORAGE_QUOTA_CYCLE_DAYS_LEFT" = "剩餘日數";
 
-/* Class = "IBUILabel"; text = "WACompositionNoPhotoReminderDescription"; ObjectID = "26"; */
-"WACompositionNoPhotoReminderDescription" = "加入照片";
+/* Number of days left in cycle */
+"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "距下次重設還有 %d 天";
 
-/* Class = "IBUILabel"; text = "WAStateLoadingSingleDocument"; ObjectID = "5"; */
-"WAStateLoadingSingleDocument" = "正在載入文件…";
+/* No comment provided by engineer. */
+"STORAGE_QUOTA_UNLIMITED_TITLE" = "無限制";
 
-/* Class = "IBUILabel"; text = "WAStateLoadingSingleDocumentProgress"; ObjectID = "6"; */
-"WAStateLoadingSingleDocumentProgress" = "%1 / %2";
+/* No comment provided by engineer. */
+"STORATE_QUOTA_INTERVAL_END_DATE" = "結算日ㄑ";
 
-/* Class = "IBUILabel"; text = "WAStateLoadingSingleDocument"; ObjectID = "5"; */
-"WAStateLoadingSingleDocument" = "正在載入文件…";
+/* Title in User Section */
+"USER_INFO_ACCOUNT_SECTION_TITLE" = "用戶資訊";
 
-/* Class = "IBUILabel"; text = "WAStateLoadingSingleDocumentProgress"; ObjectID = "10"; */
-"WAStateLoadingSingleDocumentProgress" = "%1 / %2";
+/* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
+"ACTION_GO_TO_LAST_READ_POSITION" = "回到上次閱讀斷點";
 
-/* Class = "IBUILabel"; text = "WAErrorNoStationFoundTitle"; ObjectID = "3"; */
-"WAErrorNoStationFoundTitle" = "尚未安裝主程式";
+/* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
+"COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "沒有照片";
 
-/* Class = "IBUILabel"; text = "WAErrorNoStationFoundDescription"; ObjectID = "6"; */
-"WAErrorNoStationFoundDescription" = "請到 http://waveface.com 下載 Windows Waveface 主程式，完成安裝與登入後，即可使用行動版本。";
+/* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
-/* Class = "IBUILabel"; text = "WAErrorNoStationFoundTitle"; ObjectID = "5"; */
-"WAErrorNoStationFoundTitle" = "尚未安裝主程式";
+/* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
+"STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
-/* Class = "IBUILabel"; text = "WAErrorNoStationFoundDescription"; ObjectID = "7"; */
-"WAErrorNoStationFoundDescription" = "請到 http://waveface.com 下載 Windows Waveface 主程式，完成安裝與登入後，即可使用行動版本。";
+/* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "6"; */
+"STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
+/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
+"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝主程式";
+
+/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface 主程式，完成安裝與設定後即可使用行動版本。";

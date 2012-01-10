@@ -93,7 +93,6 @@
 								<string key="NSFrame">{{492, 472}, {40, 40}}</string>
 								<reference key="NSSuperview" ref="844220895"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:184</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -197,7 +196,7 @@
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">WACompositionNoPhotoReminderTitle</string>
+								<string key="IBUIText">COMPOSITION_NO_PHOTO_REMINDER_TITLE</string>
 								<object class="NSColor" key="IBUITextColor" id="156489647">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MC4yNQA</bytes>
@@ -227,14 +226,13 @@
 								<string key="NSFrame">{{20, 32}, {410, 21}}</string>
 								<reference key="NSSuperview" ref="1046231578"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<int key="IBUIContentMode">7</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<string key="IBUIText">WACompositionNoPhotoReminderDescription</string>
+								<string key="IBUIText">COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION</string>
 								<reference key="IBUITextColor" ref="156489647"/>
 								<nil key="IBUIHighlightedColor"/>
 								<string key="IBUIShadowOffset">{0, 1}</string>

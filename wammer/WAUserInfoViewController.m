@@ -17,18 +17,6 @@
 
 #define kConnectivitySection 1
 
-@implementation NSCalendar (MySpecialCalculations)
--(NSInteger)daysFromDate:(NSDate *) endDate
-{
-	NSDate *startDate = [NSDate date];
-     NSInteger startDay=[self ordinalityOfUnit:NSDayCalendarUnit
-          inUnit: NSEraCalendarUnit forDate:startDate];
-     NSInteger endDay=[self ordinalityOfUnit:NSDayCalendarUnit
-          inUnit: NSEraCalendarUnit forDate:endDate];
-     return endDay-startDay;
-}
-@end
-
 @interface WAUserInfoViewController ()
 
 @property (nonatomic, readwrite, retain) NSArray *monitoredHosts;
@@ -52,10 +40,10 @@
 
   [super irConfigure];
   
-  self.title = NSLocalizedString(@"USER_SETTINGS", @"Settings for User popover");
+  self.title = NSLocalizedString(@"SETTINGS_TITLE", @"Settings for User popover");
   
 	self.tableViewStyle = UITableViewStyleGrouped;
-  self.contentSizeForViewInPopover = (CGSize){ 320, 650 };
+  //	self.contentSizeForViewInPopover = (CGSize){ 320, 650 };
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
 
@@ -64,15 +52,18 @@
 - (void) viewDidLoad {
 
   [super viewDidLoad];
+	
+	self.tableView.sectionHeaderHeight = 56;
   
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 
   [super viewWillAppear:animated];
-  
+	
   self.monitoredHosts = nil;
   [self.tableView reloadData];
+	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:nil];
   
 	NSError *fetchingError = nil;
   NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -92,9 +83,9 @@
 - (NSString *) titleForMonitoredHost:(NSURL *)anURL {
 
 	if ([[anURL host] isEqualToString:[[WARemoteInterface sharedInterface].engine.context.baseURL host]])
-		return NSLocalizedString(@"WAProperNounWFCloud", @"Short label for the Cloud");
+		return NSLocalizedString(@"PROPER_NOUN_WF_CLOUD", @"Short label for the Cloud");
 
-	return NSLocalizedString(@"WAProperNounWFStation", @"Short label for a particular Station");
+	return NSLocalizedString(@"PROPER_NOUN_WF_STATION", @"Short label for a particular Station");
 
 }
 
@@ -151,14 +142,6 @@
   
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-
-  [super viewWillDisappear:animated];
-
-  [[NSNotificationCenter defaultCenter] removeObserver:self]; //  crazy
-
-}
-
 - (NSArray *) monitoredHosts {
 
   if (monitoredHosts)
@@ -195,7 +178,7 @@
   switch (section) {
 			
     case 0:
-      return 3;
+      return 2;
 			
 		case kConnectivitySection:
 			return [self.monitoredHosts count];
@@ -218,23 +201,24 @@
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	if (indexPath.section != 0)
-		return tableView.rowHeight;
+	if (indexPath.section == 0)
+	if (indexPath.row == 0)
+		return 56;
 	
-	return 56;
+	return tableView.rowHeight;
 
 }
 
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 
   if (section == 0)
-    return NSLocalizedString(@"USER_SECTION_TITLE", @"Title in User Section");
+    return NSLocalizedString(@"USER_INFO_ACCOUNT_SECTION_TITLE", @"Title in User Section");
   
 	if (section == kConnectivitySection)
-    return NSLocalizedString(@"CONNECTIVITY_STATUS", @"Endpoint Status");
+    return NSLocalizedString(@"ENDPOINT_CONNECTIVITY_STATUS_TITLE", @"Endpoint Status");
   
   if (section == 2)
-    return NSLocalizedString(@"STORAGE_QUOTA_STATUS", @"Noun for storage quota.");
+    return NSLocalizedString(@"NOUN_STORAGE_QUOTA", @"Noun for storage quota.");
   return nil;
 
 }
@@ -246,20 +230,20 @@
 		NSUInteger numberOfMonitoredHosts = [self.monitoredHosts count];
 
 		if (numberOfMonitoredHosts == 0)
-			return NSLocalizedString(@"WAEndpointReachabilityStatusNoEndpointsDescription", @"Text to show when not even Cloud is there — a rare case");
+			return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION", @"Text to show when not even Cloud is there — a rare case");
 		
 		if (numberOfMonitoredHosts == 1)
-			return NSLocalizedString(@"WAEndpointReachabilityStatusCloudOnlyDescription", @"Text to show when only Cloud is available");
+			return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION", @"Text to show when only Cloud is available");
 		
 		if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed])
-			return NSLocalizedString(@"WAEndpointReachabilityStatusCloudAndStationAvailableDescription", @"Text to show when Cloud and Station are both available");
+			return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION", @"Text to show when Cloud and Station are both available");
 		
-		return NSLocalizedString(@"WAEndpointReachabilityStatusStationNotAvailableDescription", @"Text to show when Cloud is available, but the Station is not responsive");
+		return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION", @"Text to show when Cloud is available, but the Station is not responsive");
 
 	}
 	
 	if (section == 2) {
-		return NSLocalizedString(@"PRODUCTION_DISCLAIMER", @"Production Disclaimer");
+		return NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer");
 	}
 	return nil;
 
@@ -267,43 +251,72 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	UITableViewCell *cell = nil;
-	NSString * const kCellIdentifier = @"SettingsCell";
+	__block UITableViewCell *cell = nil;
+	NSString * const kValue1Identifier = @"Value1Cell";
+	NSString * const kSubtitleCellIdentifier = @"SubtitleCell";
 	
-	cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+	UITableViewCell * (^createCell)(NSString *, UITableViewCellStyle) = ^ (NSString *anIdentifier, UITableViewCellStyle aStyle) {
+		
+		cell = [tableView dequeueReusableCellWithIdentifier:anIdentifier];
 		if (!cell) {
-			cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:kCellIdentifier] autorelease];
+			cell = [[[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier] autorelease];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
 		
+		return cell;
+		
+	};
+	
+	UITableViewCell * (^anyCell)(void) = ^ {
+		
+		if (cell)
+			return cell;
+		
+		cell = createCell(kValue1Identifier, UITableViewCellStyleValue1);
+		return cell;
+		
+	};
+		
   if (indexPath.section == 0) {
-		switch ([indexPath row]) {
-			case 0:
-				cell.textLabel.text = NSLocalizedString(@"USER_NAME", @"user nickname");
-				cell.detailTextLabel.text = user.nickname;
-				break;
-			case 1:
-				cell.textLabel.text = NSLocalizedString(@"USER_EMAIL", @"email");
-				cell.detailTextLabel.text = user.email;
-				break;
-			case 2:
-				cell.textLabel.text = NSLocalizedString(@"USER_DEVICE", @"This Device");
-				cell.detailTextLabel.text = [[UIDevice currentDevice]name];
-				break;
-				
-			default:
-				break;
-		}
-	} else if (indexPath.section == kConnectivitySection) {
-		if([self.monitoredHosts count] > 0) {
-			NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
+		
+		switch (indexPath.row) {
 			
-			cell.textLabel.text = [self titleForMonitoredHost:hostURL];
-			cell.detailTextLabel.text = NSLocalizedStringFromWAReachabilityState([[WARemoteInterface sharedInterface] reachabilityStateForHost:hostURL]);
+			case 0: {
+				cell = createCell(kValue1Identifier, UITableViewCellStyleSubtitle);
+				cell.textLabel.text = self.user.nickname;
+				cell.detailTextLabel.text = self.user.email;
+				break;
+			}
+			
+			case 1: {
+				cell = anyCell();
+				cell.textLabel.text = NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"This Device");
+				cell.detailTextLabel.text = [UIDevice currentDevice].name;
+				break;
+			}
+			
+			default: {
+				break;
+			}
+			
 		}
 		
-  } else if (indexPath.section == 2) {
+	} else if (indexPath.section == kConnectivitySection) {
+	
+		cell = anyCell();
+		
+		if ([self.monitoredHosts count]) {
+			
+			NSURL *hostURL = [self.monitoredHosts objectAtIndex:indexPath.row];
+			cell.textLabel.text = [self titleForMonitoredHost:hostURL];
+			cell.detailTextLabel.text = NSLocalizedStringFromWAReachabilityState([[WARemoteInterface sharedInterface] reachabilityStateForHost:hostURL]);
+			
+		}
+		
+	} else if (indexPath.section == 2) {
 		  
+		cell = anyCell();
+		
 		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
 		NSNumber *used = [storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"];
 		NSNumber *all = [storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"];
@@ -311,9 +324,10 @@
 		switch ([indexPath row]) {
 			
 			case 0: {
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_QUOTA_ALL_OBJECTS", nil);
+			
+				cell.textLabel.text = NSLocalizedString(@"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE", nil);
 				cell.detailTextLabel.text = ([all isEqualToNumber:[NSNumber numberWithInteger:-1]]) ?
-					NSLocalizedString(@"UNLIMITED_QUOTA", nil):
+					NSLocalizedString(@"STORAGE_QUOTA_UNLIMITED_TITLE", nil):
 					[NSString stringWithFormat:@"%@", all];
 				
 				break;
@@ -321,7 +335,8 @@
 			}
 			
 			case 1: {
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_USED_ALL_OBJECTS", nil);
+			
+				cell.textLabel.text = NSLocalizedString(@"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE", nil);
 				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", used];
 				
 				break;
@@ -329,16 +344,23 @@
 			}
 			
 			case 2: {
-				NSCalendar *calendar = [NSCalendar currentCalendar];
+			
+				NSUInteger (^dayOrdinality)(NSDate *) = ^ (NSDate *aDate) {
+					return [[NSCalendar currentCalendar] ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:aDate];
+				};
+				
 				NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]];
-				NSInteger days = [calendar daysFromDate:endDate];
-				cell.textLabel.text = NSLocalizedString(@"DAYS_LEFT_IN_CYCLE", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"DAYS_LATER", @"Number of days left in cycle"), days];
+				NSInteger daysLeft = dayOrdinality(endDate) - dayOrdinality([NSDate date]);
+			
+				cell.textLabel.text = NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT", nil);
+				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING", @"Number of days left in cycle"), daysLeft];
+				
 				break;
+				
 			}
 				
 			case 3: {
-				cell.textLabel.text = NSLocalizedString(@"WAStorageQuotaIntervalEndDate", nil);
+				cell.textLabel.text = NSLocalizedString(@"STORATE_QUOTA_INTERVAL_END_DATE", nil);
 				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
 					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]]
 				];
@@ -352,6 +374,7 @@
 		
 	}
 	
+	NSParameterAssert(cell);
   return cell;
 
 }
@@ -362,31 +385,31 @@
     return managedObjectContext;
     
   managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextObjectsDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
-  
   return managedObjectContext;
 
 }
 
-- (void) handleManagedObjectContextObjectsDidChange:(NSNotification *)aNotification {
-
-
-//  self.headerCell.userNameLabel.text = user.nickname;
-//  self.headerCell.userEmailLabel.text = user.email;
-//  self.headerCell.avatarView.image = user.avatar;
-}
-
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   
-  return YES;
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+		case UIUserInterfaceIdiomPad: {
+			return YES;
+		}
+		
+		default: {
+			return interfaceOrientation == UIInterfaceOrientationPortrait;
+		}
+		
+	}
   
 }
 
 - (void) viewDidUnload {
   
-  [super viewDidUnload];
-
+  [super viewDidUnload];	
+	[self irUnbind:@"contentSize"];
+	
 }
 
 - (void) dealloc {
@@ -394,7 +417,7 @@
   [monitoredHosts release];
   [managedObjectContext release];
   
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self irUnbind:@"contentSize"];
   
   [super dealloc];
 
