@@ -122,9 +122,12 @@
 - (void) handleActionButtonTap:(UIButton *)sender {
 
 	[self.interface performAutomaticRemoteUpdatesNow];
+	[self updateStateAnimated:YES];
+
+#if 0 //Mute
 	[self playRefreshStartSoundEffect];
 	[self setRequiresSoundEffectOnSessionEnd:YES];
-	[self updateStateAnimated:YES];
+#endif
 
 }
 

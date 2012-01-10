@@ -43,10 +43,12 @@
 		4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */; };
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
+		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
+		4B8CA96C14BBE7BA006E06BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96B14BBE7BA006E06BB /* UIKit.framework */; };
+		4B8CA96E14BBE7BA006E06BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96D14BBE7BA006E06BB /* Foundation.framework */; };
+		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
+		4B8CA97714BBE7BA006E06BB /* waveface_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* waveface_tests.m */; };
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
-		4BB172F414B495EF00282052 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB172F314B495EF00282052 /* SenTestingKit.framework */; };
-		4BB172FE14B495EF00282052 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4BB172FC14B495EF00282052 /* InfoPlist.strings */; };
-		4BB1730114B495EF00282052 /* wammer_iOS_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BB1730014B495EF00282052 /* wammer_iOS_tests.m */; };
 		4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD0D941490C97D00EAE3E1 /* WABackground.png */; };
 		4BC91A941446E3130019399B /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyph.png */; };
 		4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */; };
@@ -187,8 +189,6 @@
 		FF8F463F14691A7D00D65864 /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF8FDF45143DA467006D57D8 /* WAPatternThickShrunkPaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */; };
 		FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF91960C14AB09C400352E4D /* WADimmingView.m */; };
-		FF96854114B4F00D00625784 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
-		FF96854214B4F00D00625784 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA0654C143B0F4F00145079 /* WAPatternSoftWallpaper.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654B143B0F4F00145079 /* WAPatternSoftWallpaper.png */; };
@@ -788,16 +788,19 @@
 		4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSTextFieldSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
+		4B8CA96814BBE7BA006E06BB /* waveface-tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "waveface-tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		4B8CA96B14BBE7BA006E06BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		4B8CA96D14BBE7BA006E06BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		4B8CA97114BBE7BA006E06BB /* waveface-tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "waveface-tests-Info.plist"; sourceTree = "<group>"; };
+		4B8CA97314BBE7BA006E06BB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		4B8CA97514BBE7BA006E06BB /* waveface_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waveface_tests.h; sourceTree = "<group>"; };
+		4B8CA97614BBE7BA006E06BB /* waveface_tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = waveface_tests.m; sourceTree = "<group>"; };
+		4B8CA97814BBE7BA006E06BB /* waveface-tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "waveface-tests-Prefix.pch"; sourceTree = "<group>"; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
-		4BB172F214B495EE00282052 /* wammer-iOS_tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wammer-iOS_tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BB172F314B495EF00282052 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		4BB172FB14B495EF00282052 /* wammer-iOS_tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wammer-iOS_tests-Info.plist"; sourceTree = "<group>"; };
-		4BB172FD14B495EF00282052 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		4BB172FF14B495EF00282052 /* wammer_iOS_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = wammer_iOS_tests.h; path = "../wammer-iOS-tests/wammer_iOS_tests.h"; sourceTree = "<group>"; };
-		4BB1730014B495EF00282052 /* wammer_iOS_tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = wammer_iOS_tests.m; path = "../wammer-iOS-tests/wammer_iOS_tests.m"; sourceTree = "<group>"; };
-		4BB1730214B495EF00282052 /* wammer-iOS_tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS_tests-Prefix.pch"; sourceTree = "<group>"; };
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
 		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeCommentViewControllerPhone.xib; sourceTree = "<group>"; };
@@ -1212,13 +1215,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4BB172EE14B495EE00282052 /* Frameworks */ = {
+		4B8CA96414BBE7BA006E06BB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BB172F414B495EF00282052 /* SenTestingKit.framework in Frameworks */,
-				FF96854114B4F00D00625784 /* UIKit.framework in Frameworks */,
-				FF96854214B4F00D00625784 /* Foundation.framework in Frameworks */,
+				4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */,
+				4B8CA96C14BBE7BA006E06BB /* UIKit.framework in Frameworks */,
+				4B8CA96E14BBE7BA006E06BB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1382,26 +1385,24 @@
 			path = Xibs;
 			sourceTree = "<group>";
 		};
-		4BB172F914B495EF00282052 /* iOS Tests */ = {
+		4B8CA96F14BBE7BA006E06BB /* waveface-tests */ = {
 			isa = PBXGroup;
 			children = (
-				4BB172FF14B495EF00282052 /* wammer_iOS_tests.h */,
-				4BB1730014B495EF00282052 /* wammer_iOS_tests.m */,
-				4BB172FA14B495EF00282052 /* Supporting Files */,
+				4B8CA97514BBE7BA006E06BB /* waveface_tests.h */,
+				4B8CA97614BBE7BA006E06BB /* waveface_tests.m */,
+				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
 			);
-			name = "iOS Tests";
-			path = "wammer-iOS-tests";
+			path = "waveface-tests";
 			sourceTree = "<group>";
 		};
-		4BB172FA14B495EF00282052 /* Supporting Files */ = {
+		4B8CA97014BBE7BA006E06BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				4BB172FB14B495EF00282052 /* wammer-iOS_tests-Info.plist */,
-				4BB172FC14B495EF00282052 /* InfoPlist.strings */,
-				4BB1730214B495EF00282052 /* wammer-iOS_tests-Prefix.pch */,
+				4B8CA97114BBE7BA006E06BB /* waveface-tests-Info.plist */,
+				4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */,
+				4B8CA97814BBE7BA006E06BB /* waveface-tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			path = "../wammer-iOS-tests";
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -1569,8 +1570,8 @@
 				FF0024F914B44CC500F54AAF /* Blob Syncing */,
 				FF73A54913D6C2CD00D54EC6 /* iOS Supporting Files */,
 				FFC2E04C13DD706600816EA1 /* iOS Resources */,
-				4BB172F914B495EF00282052 /* iOS Tests */,
 				FFC6483B1445E8D700593E5E /* Mac */,
+				4B8CA96F14BBE7BA006E06BB /* waveface-tests */,
 				FF73A54113D6C2CC00D54EC6 /* Frameworks */,
 				FF73A53F13D6C2CC00D54EC6 /* Products */,
 			);
@@ -1582,7 +1583,7 @@
 			children = (
 				FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */,
 				FFC648331445E8D700593E5E /* wammer-OSX.app */,
-				4BB172F214B495EE00282052 /* wammer-iOS_tests.octest */,
+				4B8CA96814BBE7BA006E06BB /* waveface-tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1597,6 +1598,9 @@
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
+				4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */,
+				4B8CA96B14BBE7BA006E06BB /* UIKit.framework */,
+				4B8CA96D14BBE7BA006E06BB /* Foundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2168,22 +2172,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4BB172F114B495EE00282052 /* wammer-iOS_tests */ = {
+		4B8CA96714BBE7BA006E06BB /* waveface-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BB1730314B495EF00282052 /* Build configuration list for PBXNativeTarget "wammer-iOS_tests" */;
+			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "waveface-tests" */;
 			buildPhases = (
-				4BB172ED14B495EE00282052 /* Sources */,
-				4BB172EE14B495EE00282052 /* Frameworks */,
-				4BB172EF14B495EE00282052 /* Resources */,
-				4BB172F014B495EE00282052 /* ShellScript */,
+				4B8CA96314BBE7BA006E06BB /* Sources */,
+				4B8CA96414BBE7BA006E06BB /* Frameworks */,
+				4B8CA96514BBE7BA006E06BB /* Resources */,
+				4B8CA96614BBE7BA006E06BB /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "wammer-iOS_tests";
-			productName = "wammer-iOS_tests";
-			productReference = 4BB172F214B495EE00282052 /* wammer-iOS_tests.octest */;
+			name = "waveface-tests";
+			productName = "waveface-tests";
+			productReference = 4B8CA96814BBE7BA006E06BB /* waveface-tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		FFC648321445E8D700593E5E /* wammer-OSX */ = {
@@ -2311,7 +2315,7 @@
 				FFCFE078142111E100B9E6AF /* wammer-iOS */,
 				FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */,
 				FFC648321445E8D700593E5E /* wammer-OSX */,
-				4BB172F114B495EE00282052 /* wammer-iOS_tests */,
+				4B8CA96714BBE7BA006E06BB /* waveface-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -2552,11 +2556,11 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4BB172EF14B495EE00282052 /* Resources */ = {
+		4B8CA96514BBE7BA006E06BB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BB172FE14B495EF00282052 /* InfoPlist.strings in Resources */,
+				4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2739,7 +2743,7 @@
 			shellPath = /bin/zsh;
 			shellScript = "cd ${SRCROOT}/wammer\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-8 -t UTF-16 =(cat {})> {}\"  | zsh\n\npython ${SRCROOT}/external/C3PO/localize.py\n\nfind . -name \"Localizable.strings\" -print | xargs -I {} echo \"iconv -f UTF-16 -t UTF-8 =(cat {})> {}\"  | zsh";
 		};
-		4BB172F014B495EE00282052 /* ShellScript */ = {
+		4B8CA96614BBE7BA006E06BB /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2824,11 +2828,11 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		4BB172ED14B495EE00282052 /* Sources */ = {
+		4B8CA96314BBE7BA006E06BB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BB1730114B495EF00282052 /* wammer_iOS_tests.m in Sources */,
+				4B8CA97714BBE7BA006E06BB /* waveface_tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3092,10 +3096,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		4BB172FC14B495EF00282052 /* InfoPlist.strings */ = {
+		4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4BB172FD14B495EF00282052 /* en */,
+				4B8CA97314BBE7BA006E06BB /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -3144,7 +3148,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		4BB1730414B495EF00282052 /* Debug */ = {
+		4B8CA97A14BBE7BA006E06BB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3155,15 +3159,15 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "wammer-iOS_tests/wammer-iOS_tests-Prefix.pch";
-				INFOPLIST_FILE = "wammer-iOS_tests/wammer-iOS_tests-Info.plist";
+				GCC_PREFIX_HEADER = "waveface-tests/waveface-tests-Prefix.pch";
+				INFOPLIST_FILE = "waveface-tests/waveface-tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
-		4BB1730514B495EF00282052 /* Release */ = {
+		4B8CA97B14BBE7BA006E06BB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3175,8 +3179,8 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "wammer-iOS_tests/wammer-iOS_tests-Prefix.pch";
-				INFOPLIST_FILE = "wammer-iOS_tests/wammer-iOS_tests-Info.plist";
+				GCC_PREFIX_HEADER = "waveface-tests/waveface-tests-Prefix.pch";
+				INFOPLIST_FILE = "waveface-tests/waveface-tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -3393,11 +3397,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4BB1730314B495EF00282052 /* Build configuration list for PBXNativeTarget "wammer-iOS_tests" */ = {
+		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "waveface-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4BB1730414B495EF00282052 /* Debug */,
-				4BB1730514B495EF00282052 /* Release */,
+				4B8CA97A14BBE7BA006E06BB /* Debug */,
+				4B8CA97B14BBE7BA006E06BB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
