@@ -206,7 +206,7 @@
 		
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
-		if (isImageItem(currentItem) && arc4random_uniform(1) ) { // 50% chance
+		if (isImageItem(currentItem) ) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
@@ -226,7 +226,7 @@
 			continue;
 		
 		
-		unsigned char pattern = [[actualPatterns objectAtIndex:0] unsignedCharValue];
+		unsigned char pattern = [[actualPatterns objectAtIndex:arc4random_uniform([actualPatterns count])] unsignedCharValue];
 		tileMap |= pattern;
 		
 		CGRect unitRect = [self unitRectForPattern:pattern];
