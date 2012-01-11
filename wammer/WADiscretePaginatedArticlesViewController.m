@@ -31,6 +31,8 @@
 
 #import "WAViewController.h"
 
+#import "WAGestureWindow.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -1412,31 +1414,18 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 			case WAArticleContextAnimationCoverVertically: {
 			
-				__block UIView *backgroundView = nil;
+				__block UIWindow *containerWindow = nil;
+				
+				__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+				backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+				backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];				
+				
 				__block UIView *contextView = nil;
 			
 				presentBlock = ^ {
 				
-					#if 0
-				
-					UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
-					if (!usedScreen)
-						usedScreen = [UIScreen mainScreen];
-				
-					UIWindow *usedWindow = [[[UIWindow alloc] initWithFrame:[usedScreen applicationFrame]] autorelease];
-					usedWindow.backgroundColor = [UIColor clearColor];
-					usedWindow.opaque = YES;
-					
-					[usedWindow.rootViewController.view addSubview:enqueuedNavController.view];
-					enqueuedNavController.view.frame = CGRectInset(usedWindow.rootViewController.view.bounds, 48, 24);
-					
-					[usedWindow makeKeyAndVisible];
-					[usedWindow retain];
-					
-					#endif
-					
 					[enqueuedNavController setNavigationBarHidden:YES animated:NO];
-										
+					
 					NSMutableArray *preconditions = [NSMutableArray array];
 					NSMutableArray *animations = [NSMutableArray array];
 					NSMutableArray *postconditions = [NSMutableArray array];
@@ -1445,10 +1434,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					containerView.transform = CGAffineTransformIdentity;
 					containerView.frame = containerView.superview.bounds;
 					
-					[containerView addSubview:(backgroundView = [[[UIView alloc] initWithFrame:containerView.bounds] autorelease])];
-					backgroundView.layer.shouldRasterize = YES;
-					backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-					backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.35];
+					backgroundView.frame = containerView.bounds;
+					[containerView addSubview:backgroundView];
 					[preconditions irEnqueueBlock:^{
 						backgroundView.alpha = 0;
 					}];
@@ -1459,7 +1446,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					CGRect contextRect = IRCGRectAlignToRect((CGRect){
 						CGPointZero,
 						(CGSize){
-							MIN(600, CGRectGetWidth(containerView.bounds)),
+							CGRectGetWidth(containerView.bounds) - 48,
 							CGRectGetHeight(containerView.bounds) - 48
 						}
 					}, containerView.bounds, irBottom, YES);
@@ -1470,19 +1457,17 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					[containerView addSubview:(contextView = enqueuedNavController.view)];
 					contextView.frame = toContextRect;
 					contextView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+					[contextView layoutSubviews];
 					[preconditions irEnqueueBlock:^{
-						contextView.layer.shouldRasterize = NO;
 						contextView.frame = fromContextRect;
 					}];
 					[animations irEnqueueBlock:^{
 						contextView.frame = toContextRect;
 					}];
-					[postconditions irEnqueueBlock:^{
-						contextView.layer.shouldRasterize = NO;
-					}];
 					
 					
 					[shownArticleVC view];
+					shownArticleVC.view.backgroundColor = [UIColor clearColor];
 					
 					if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)])
 						[shownArticleVC handlePreferredInterfaceRect:contextRect];
@@ -1497,34 +1482,58 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						[postconditions irExecuteAllObjectsAsBlocks];
 						[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 						
+						[CATransaction begin];
+						
 						[[containerView retain] autorelease];
 						[containerView removeFromSuperview];
 						[enqueuedNavController.view removeFromSuperview];
-												
+						
 						UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
 						if (!usedScreen)
 							usedScreen = [UIScreen mainScreen];
 					
-						UIWindow *usedWindow = [[[UIWindow alloc] initWithFrame:usedScreen.bounds] autorelease];
-						usedWindow.backgroundColor = [UIColor blueColor];
-						usedWindow.opaque = YES;
+						__block WAGestureWindow *usedWindow = [[[WAGestureWindow alloc] initWithFrame:usedScreen.bounds] autorelease];
+						usedWindow.backgroundColor = backgroundView.backgroundColor;
+						usedWindow.opaque = NO;
 						usedWindow.rootViewController = enqueuedNavController;
+						
+						usedWindow.onTap = ^ {
+							
+							void (^dismissBlock)(void) = objc_getAssociatedObject(shownArticleVC, kDismissBlock);
+							
+							if (dismissBlock)
+								dismissBlock();
+							
+							usedWindow.onTap = nil;
+							
+						};
+						
+						usedWindow.onGestureRecognizeShouldReceiveTouch = ^ (UIGestureRecognizer *recognizer, UITouch *touch) {
+						
+							CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
+							
+							if ([shownArticleVC respondsToSelector:@selector(isPointInsideInterfaceRect:)])
+								return (BOOL)![shownArticleVC isPointInsideInterfaceRect:locationInShownArticleVC];
+							
+							return NO;
+						
+						};
 						
 						[usedWindow makeKeyAndVisible];
 						[usedWindow retain];
 						
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-						
-							[usedWindow resignKeyWindow];
-							[usedWindow autorelease];
-						
-						});
+						[CATransaction commit];
+					
+						containerWindow = usedWindow;
 						
 					}];
 				
 				};
 				
 				dismissBlock = ^ {
+					
+					[containerWindow resignKeyWindow];
+					[containerWindow autorelease];
 				
 				};
 			
