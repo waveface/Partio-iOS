@@ -50,7 +50,7 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 }
 
 - (NSString *) representedText {
-	return IRDiscreteLayoutItemContentMediaForUTIType(self, kUTTypeText);
+	return [self text];
 }
 
 - (NSURL *) representedImageURI {

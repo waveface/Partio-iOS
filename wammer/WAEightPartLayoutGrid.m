@@ -170,12 +170,12 @@
 		return itemHasMediaOfType(anItem, kUTTypeURL);
 	};
 	
-	//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-	//		return (BOOL)!![[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
-	//	};
+//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+//		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
+//	};
 	
 	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 32);
+		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 140);
 	};
 	
 	
@@ -215,8 +215,13 @@
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
-		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
+		// increase probablity
+		if (isLongTextItem(currentItem)) {
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
+		}
 		
+		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
 		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, NSUInteger index, BOOL *stop) {
 			return (NSNumber *)(tilesOccupied([pattern unsignedCharValue]) ? nil : pattern);
@@ -224,7 +229,6 @@
 		
 		if (![actualPatterns count])
 			continue;
-		
 		
 		unsigned char pattern = [[actualPatterns objectAtIndex:arc4random_uniform([actualPatterns count])] unsignedCharValue];
 		tileMap |= pattern;
