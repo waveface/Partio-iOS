@@ -29,6 +29,8 @@
 
 #import "IRConcaveView.h"
 
+#import "WAViewController.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -68,12 +70,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
 @property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView;
 
+- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI;
 - (void) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated;
+- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI usingAnimation:(WAArticleContextAnimation)animation;
 
 @end
 
 
 @implementation WADiscretePaginatedArticlesViewController
+@synthesize paginationSliderSlot;
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize requiresRecalculationOnFetchedResultsChangeEnd;
 @synthesize paginatedArticlesViewController;
@@ -138,59 +143,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	[super viewDidLoad];
 	
-	__block IRPaginatedView *ownPaginatedView = self.paginatedView;
-	
-	ownPaginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
-	
-		CGPoint convertedPoint = [ownPaginatedView.scrollView convertPoint:aPoint fromView:ownPaginatedView];
-		if ([ownPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
-			return YES;
-		
-		return superAnswer;
-	
-	};
-	
-	UILongPressGestureRecognizer *backgroundTouchRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleBackgroundTouchPresense:)] autorelease];
-	backgroundTouchRecognizer.minimumPressDuration = 0.05;
-	backgroundTouchRecognizer.delegate = self;
-	[self.view addGestureRecognizer:backgroundTouchRecognizer];
-
-	if (self.discreteLayoutResult)
-		[self.paginatedView reloadViews];
-	
-	self.paginationSlider.dotMargin = 32;
-	self.paginationSlider.edgeInsets = (UIEdgeInsets){ 0, 16, 0, 16 };
-	self.paginationSlider.backgroundColor = nil;
-	self.paginationSlider.instantaneousCallbacks = YES;
-	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
-	
-	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
-	
-	IRConcaveView *sliderSlot = [[[IRConcaveView alloc] initWithFrame:IRGravitize(
-		self.view.bounds,
-		(CGSize){ CGRectGetWidth(self.view.bounds), 20 },
-		kCAGravityBottom
-	)] autorelease];
-	
-	sliderSlot.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
-	sliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
-	sliderSlot.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth;
-	sliderSlot.frame = CGRectInset(CGRectOffset(sliderSlot.frame, 0, -10), 64, 0);
-	sliderSlot.layer.cornerRadius = 4.0f;
-	sliderSlot.layer.masksToBounds = YES;
-	[self.view insertSubview:sliderSlot belowSubview:self.paginationSlider];
-	
-	
-	self.paginatedView.backgroundColor = nil;
-	self.paginatedView.horizontalSpacing = 32.0f;
-	self.paginatedView.clipsToBounds = NO;
-	self.paginatedView.scrollView.clipsToBounds = NO;
+	__block __typeof__(self) nrSelf = self;
 	
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
 	self.view.opaque = YES;
-	
-	__block __typeof__(self) nrSelf = self;
-	
 	((WAView *)self.view).onLayoutSubviews = ^ {
 	
 		if (!nrSelf.paginatedView.numberOfPages)
@@ -200,6 +156,36 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		[nrSelf adjustPageView:pageView usingGridAtIndex:currentPage];
 	
 	};
+	
+	__block IRPaginatedView *nrPaginatedView = self.paginatedView;
+	self.paginatedView.backgroundColor = nil;
+	self.paginatedView.horizontalSpacing = 32.0f;
+	self.paginatedView.clipsToBounds = NO;
+	self.paginatedView.scrollView.clipsToBounds = NO;
+	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	
+		CGPoint convertedPoint = [nrPaginatedView.scrollView convertPoint:aPoint fromView:nrPaginatedView];
+		if ([nrPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
+			return YES;
+		
+		return superAnswer;
+	
+	};
+	
+	if (self.discreteLayoutResult)
+		[self.paginatedView reloadViews];
+	
+	self.paginationSlider.dotMargin = 32;
+	self.paginationSlider.edgeInsets = (UIEdgeInsets){ 0, 16, 0, 16 };
+	self.paginationSlider.backgroundColor = nil;
+	self.paginationSlider.instantaneousCallbacks = YES;
+	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
+	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
+	
+	self.paginationSliderSlot.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	self.paginationSliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
+	self.paginationSliderSlot.layer.cornerRadius = 4.0f;
+	self.paginationSliderSlot.layer.masksToBounds = YES;
 
 }
 
@@ -212,22 +198,28 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
+		
 		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:[WAArticleViewController suggestedDiscreteStyleForArticle:anArticle]];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		
 	}
 	
 	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
+		
 		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
+		
 	};
 	
 	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
+		
 		action(nrSelf);
+		
 	};
 	
 	articleViewController.onViewTap = ^ {
-		
+	
 		[nrSelf updateLatestReadingProgressWithIdentifier:articleViewController.article.identifier];
-		[nrSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];
+		[nrSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];		
 		
 	};
 	
@@ -259,22 +251,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		}],
 		
-		[IRAction actionWithTitle:@"Run Add Animation" block:^{
-		
-			articleViewController.view.alpha = 0;
-		
-			[UIView transitionWithView:articleViewController.view duration:5.0 options:UIViewAnimationOptionTransitionCurlDown animations:^{
-				
-				articleViewController.view.alpha = 1;
-				
-			} completion:^(BOOL finished) {
-			
-				//	?
-				
-			}];
-		
-		}],
-	
 	nil];
 
 	return articleViewController.view;
@@ -308,6 +284,18 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (discreteLayoutManager)
 		return discreteLayoutManager;
 		
+	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
+	self.discreteLayoutManager.delegate = self;
+	self.discreteLayoutManager.dataSource = self;
+	return self.discreteLayoutManager;
+
+}
+
+- (NSArray *) layoutGrids {
+
+	if (layoutGrids)
+		return layoutGrids;
+
 	__block __typeof__(self) nrSelf = self;
 		
 	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
@@ -319,131 +307,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	} copy] autorelease];
 	
-	//	IRDiscreteLayoutGrid * (^gridWithLayoutBlocks)(IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) = ^ (IRDiscreteLayoutGridAreaLayoutBlock aBlock, ...) {
-	//	
-	//		IRDiscreteLayoutGrid *returnedPrototype = [IRDiscreteLayoutGrid prototype];
-	//		NSUInteger numberOfAppendedLayoutAreas = 0;
-	//	
-	//		va_list arguments;
-	//		va_start(arguments, aBlock);
-	//		for (IRDiscreteLayoutGridAreaLayoutBlock aLayoutBlock = aBlock; aLayoutBlock != nil; aLayoutBlock =	va_arg(arguments, IRDiscreteLayoutGridAreaLayoutBlock)) {
-	//			[returnedPrototype registerLayoutAreaNamed:[NSString stringWithFormat:@"area_%2.0i", numberOfAppendedLayoutAreas] validatorBlock:nil layoutBlock:aLayoutBlock displayBlock:genericDisplayBlock];
-	//			numberOfAppendedLayoutAreas++;
-	//		};
-	//		va_end(arguments);
-	//		return returnedPrototype;
-	//		
-	//	};
-	
-	//	void (^enqueueGridPrototypes)(IRDiscreteLayoutGrid *, IRDiscreteLayoutGrid *) = ^ (IRDiscreteLayoutGrid *aGrid, IRDiscreteLayoutGrid *anotherGrid) {
-	//		aGrid.contentSize = (CGSize){ 768, 1024 };
-	//		anotherGrid.contentSize = (CGSize){ 1024, 768 };
-	//		[enqueuedLayoutGrids addObject:aGrid];		
-	//		[aGrid enumerateLayoutAreaNamesWithBlock: ^ (NSString *anAreaName) {
-	//			[[aGrid class] markAreaNamed:anAreaName inGridPrototype:aGrid asEquivalentToAreaNamed:anAreaName inGridPrototype:anotherGrid];
-	//		}];
-	//	};
-	
-	//	IRDiscreteLayoutGridAreaLayoutBlock (^make)(float_t, float_t, float_t, float_t, float_t, float_t) = ^ (float_t a, float_t b, float_t c, float_t d, float_t e, float_t f) { return IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(a, b, c, d, e, f); };
-	
 	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
 	
 	WAEightPartLayoutGrid *eightPartGrid = [WAEightPartLayoutGrid prototype];
+	[enqueuedLayoutGrids addObject:eightPartGrid];
 	eightPartGrid.validatorBlock = nil;
 	eightPartGrid.displayBlock = genericDisplayBlock;
 	
-	[enqueuedLayoutGrids addObject:eightPartGrid];
-	
-	//	enqueueGridPrototypes(
-	//		gridWithLayoutBlocks(
-	//			make(2, 3, 0, 0, 1, 1),
-	//			make(2, 3, 0, 1, 1, 1),
-	//			make(2, 3, 1, 0, 1, 2),
-	//			make(2, 3, 0, 2, 2, 1),
-	//		nil),
-	//		gridWithLayoutBlocks(
-	//			make(3, 2, 0, 0, 1, 1),
-	//			make(3, 2, 0, 1, 1, 1),
-	//			make(3, 2, 1, 0, 1, 2),
-	//			make(3, 2, 2, 0, 1, 2),
-	//		nil)		
-	//	);
-	
-	//	enqueueGridPrototypes(
-	//		gridWithLayoutBlocks(
-	//			make(2, 2, 0, 0, 2, 1),
-	//			make(2, 2, 0, 1, 1, 1),
-	//			make(2, 2, 1, 1, 1, 1), 
-	//		nil),
-	//		gridWithLayoutBlocks(
-	//			make(2, 2, 0, 0, 1, 2),
-	//			make(2, 2, 1, 0, 1, 1),
-	//			make(2, 2, 1, 1, 1, 1),
-	//		nil)
-	//	);
-	
-	//	enqueueGridPrototypes(
-	//		gridWithLayoutBlocks(
-	//			make(5, 5, 0, 0, 2, 2.5),
-	//			make(5, 5, 0, 2.5, 2, 2.5),
-	//			make(5, 5, 2, 0, 3, 1.66),
-	//			make(5, 5, 2, 1.66, 3, 1.66),
-	//			make(5, 5, 2, 3.32, 3, 1.68), 
-	//		nil),
-	//		gridWithLayoutBlocks(
-	//			make(5, 5, 0, 0, 2, 2.5),
-	//			make(5, 5, 0, 2.5, 2, 2.5),
-	//			make(5, 5, 2, 0, 3, 1.66),
-	//			make(5, 5, 2, 1.66, 3, 1.66),
-	//			make(5, 5, 2, 3.32, 3, 1.68),
-	//		nil)
-	//	);
-
-	//	enqueueGridPrototypes(
-	//		gridWithLayoutBlocks(
-	//			make(5, 5, 0, 0, 2.5, 3),
-	//			make(5, 5, 0, 3, 2.5, 2),
-	//			make(5, 5, 2.5, 0, 2.5, 1.5),
-	//			make(5, 5, 2.5, 1.5, 2.5, 1.5),
-	//			make(5, 5, 2.5, 3, 2.5, 0.66),
-	//			make(5, 5, 2.5, 3.66, 2.5, 0.66),
-	//			make(5, 5, 2.5, 4.33, 2.5, 0.67), 
-	//		nil),
-	//		gridWithLayoutBlocks(
-	//			make(5, 5, 0, 0, 2, 2),
-	//			make(5, 5, 0, 2, 2, 1),
-	//			make(5, 5, 0, 3, 2, 1),
-	//			make(5, 5, 0, 4, 2, 1),
-	//			make(5, 5, 2, 0, 3, 2),
-	//			make(5, 5, 2, 2, 3, 1.5),
-	//			make(5, 5, 2, 3.5, 3, 1.5),
-	//		nil)
-	//	);
-
-	//	enqueueGridPrototypes(
-	//		gridWithLayoutBlocks(
-	//			make(3, 3, 0, 0, 3, 1),
-	//			make(3, 3, 0, 1, 1.5, 1),
-	//			make(3, 3, 1.5, 1, 1.5, 1),
-	//			make(3, 3, 0, 2, 1, 1),
-	//			make(3, 3, 1, 2, 1, 1),
-	//			make(3, 3, 2, 2, 1, 1), 
-	//		nil),
-	//		gridWithLayoutBlocks(
-	//			make(3, 3, 0, 0, 1, 3),
-	//			make(3, 3, 1, 0, 1, 1.5),
-	//			make(3, 3, 1, 1.5, 1, 1.5),
-	//			make(3, 3, 2, 0, 1, 1),
-	//			make(3, 3, 2, 1, 1, 1),
-	//			make(3, 3, 2, 2, 1, 1),
-	//		nil)
-	//	);
-	
-	self.layoutGrids = enqueuedLayoutGrids;
-	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
-	self.discreteLayoutManager.delegate = self;
-	self.discreteLayoutManager.dataSource = self;
-	return self.discreteLayoutManager;
+	layoutGrids = [enqueuedLayoutGrids retain];
+	return layoutGrids;
 
 }
 
@@ -454,6 +326,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	self.discreteLayoutManager = nil;
 	self.discreteLayoutResult = nil;
+	[self setPaginationSliderSlot:nil];
 	[super viewDidUnload];
 
 }
@@ -577,16 +450,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
-	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
-
-		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-			[super controllerDidChangeContent:controller];
-			
-	} else {
-	
-		//	No op
-	
-	}
+	if (self.requiresRecalculationOnFetchedResultsChangeEnd)
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super controllerDidChangeContent:controller];
 
 }
 
@@ -968,7 +834,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return;
 	
 	if ([slider.slider isTracking]) {
-		UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction;
+		UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState;
 		[UIView animateWithDuration:0.3 delay:0 options:options animations:^{
 			[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];			
 		} completion:nil];
@@ -1002,32 +868,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 }
 
-- (void) handleBackgroundTouchPresense:(UILongPressGestureRecognizer *)aRecognizer {
-
-	switch (aRecognizer.state) {
-	
-		case UIGestureRecognizerStatePossible:
-			break;
-		
-		case UIGestureRecognizerStateBegan: {
-			[self beginDelayingInterfaceUpdates];
-			break;
-		}
-		
-		case UIGestureRecognizerStateChanged:
-			break;
-			
-		case UIGestureRecognizerStateEnded:
-		case UIGestureRecognizerStateCancelled:
-		case UIGestureRecognizerStateFailed: {
-			[self endDelayingInterfaceUpdates];
-			break;
-		}
-	
-	};
-
-}
-
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
 	return ![self.paginationSlider hitTest:[touch locationInView:self.paginationSlider] withEvent:nil];
@@ -1037,12 +877,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
 
 	return YES;
-
-}
-
-- (void) enqueueInterfaceUpdate:(void (^)(void))anAction {
-
-	[self performInterfaceUpdate:anAction];
 
 }
 
@@ -1336,389 +1170,379 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 }
 
+- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI {
+
+	[self presentDetailedContextForArticle:anObjectURI animated:YES];
+
+}
+
 - (void) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated {
 
-	NSParameterAssert(animated);
-
-	__block WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anObjectURI];
-	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
-	__block WAArticleViewController *articleViewController = objc_getAssociatedObject(article, &kWADiscreteArticleViewControllerOnItem);
-	
-	NSParameterAssert(articleViewController);
-	NSURL *articleURI = anObjectURI;
-	
 	BOOL usesFlip = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugUsesDiscreteArticleFlip];
 	
-	if (usesFlip) {
-
-		__block WAArticleViewController *presentedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle(articleViewController.presentationStyle)];
-		
-		presentedVC.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
-			action(nrSelf);
-		};
-		
-		__block WANavigationController *presentedNavC = [presentedVC wrappingNavController];
-		presentedNavC.modalPresentationStyle = UIModalPresentationFormSheet;
-		
-		[presentedNavC retain];
-		[presentedVC retain];
-		
-		UIView *hostingView = [self.view.window.subviews lastObject];
-		UIImageView *capturedArticleView = [[[UIImageView alloc] initWithImage:[articleViewController.view.layer irRenderedImage]] autorelease];
-		capturedArticleView.layer.borderColor = [UIColor redColor].CGColor;
-		capturedArticleView.layer.borderWidth = 1;
-		
-		__block UIView *containerView = [[[UIView alloc] initWithFrame:hostingView.bounds] autorelease];
-		containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		
-		presentedNavC.view.layer.doubleSided = NO;
-		capturedArticleView.layer.doubleSided = NO;
-		
-		[hostingView addSubview:containerView];
-		
-		[containerView addSubview:capturedArticleView];
-		
-		[presentedNavC viewWillAppear:NO];
-		[containerView addSubview:presentedNavC.view];
-		
-		presentedNavC.view.frame = UIEdgeInsetsInsetRect(
-			IRGravitize(containerView.bounds, (CGSize){ 600, 600 }, kCAGravityCenter),
-			(UIEdgeInsets){ -20, 0, 0, 0 }
-		);
-		
-		presentedNavC.view.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-		
-		presentedNavC.view.layer.shadowPath = [UIBezierPath bezierPathWithRect:UIEdgeInsetsInsetRect(
-			presentedNavC.view.layer.bounds, 
-			(UIEdgeInsets){ 20, 0, 0, 0 }
-		)].CGPath;
-		
-		presentedNavC.view.layer.shadowOpacity = 0.5;
-		presentedNavC.view.layer.shadowOffset = (CGSize){ 0, 2 };
-		
-		[presentedNavC viewDidAppear:NO];
-		
-		CGRect fromRect = [hostingView convertRect:articleViewController.view.bounds fromView:articleViewController.view];
-		capturedArticleView.frame = fromRect;
-		
-		fromRect = CGRectOffset(
-			IRGravitize(fromRect, presentedNavC.view.bounds.size, kCAGravityResizeAspectFill),
-			fromRect.origin.x,
-			fromRect.origin.y
-		);	
-		
-		CGRect toRect = presentedNavC.view.frame;
-		capturedArticleView.center = irCGRectAnchor(toRect, irCenter, YES);
-		
-		[capturedArticleView.layer addAnimation:((^ {
-		
-			CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-			animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-			animationGroup.duration = 0.5;
-			animationGroup.removedOnCompletion = YES;		
-			animationGroup.animations = [NSArray arrayWithObjects:
-			
-				((^ {			
-					CABasicAnimation *positionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
-					positionAnimation.fromValue = [NSValue valueWithCGPoint:irCGRectAnchor(fromRect, irCenter, YES)];
-					positionAnimation.toValue = [NSValue valueWithCGPoint:irCGRectAnchor(toRect, irCenter, YES)];
-					return positionAnimation;
-				})()),
-				
-				((^ {
-					CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-					scaleAnimation.fromValue = [NSNumber numberWithDouble:1];
-					scaleAnimation.toValue = [NSNumber numberWithDouble:(CGRectGetWidth(toRect) / CGRectGetWidth(fromRect))];
-					return scaleAnimation;			
-				})()),
-				
-				((^ {
-					CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
-					scaleAnimation.fromValue = [NSNumber numberWithDouble:0];
-					scaleAnimation.toValue = [NSNumber numberWithDouble:M_PI];
-					return scaleAnimation;
-				})()),
-				
-			nil];
-			
-			return animationGroup;
-
-		})()) forKey:kCATransition];
-		
-		[presentedNavC.view.layer addAnimation:((^ {
-		
-			CAAnimationGroup *animationGroup = [CAAnimationGroup animation];
-			animationGroup.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-			animationGroup.duration = 0.5;
-			animationGroup.removedOnCompletion = YES;		
-			animationGroup.animations = [NSArray arrayWithObjects:
-			
-				((^ {			
-					CABasicAnimation *positionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
-					positionAnimation.fromValue = [NSValue valueWithCGPoint:irCGRectAnchor(fromRect, irCenter, YES)];
-					positionAnimation.toValue = [NSValue valueWithCGPoint:irCGRectAnchor(toRect, irCenter, YES)];
-					return positionAnimation;
-				})()),
-				
-				((^ {
-					CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
-					scaleAnimation.fromValue = [NSNumber numberWithDouble:(CGRectGetWidth(fromRect) / CGRectGetWidth(toRect))];
-					scaleAnimation.toValue = [NSNumber numberWithDouble:1];
-					return scaleAnimation;			
-				})()),
-			
-				((^ {
-					CABasicAnimation *scaleAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
-					scaleAnimation.fromValue = [NSNumber numberWithDouble:M_PI];
-					scaleAnimation.toValue = [NSNumber numberWithDouble:0];
-					return scaleAnimation;
-				})()),
-				
-			nil];
-			
-			return animationGroup;
-		
-		})()) forKey:kCATransition];
-		
-		
-		presentedVC.title = @"Presented";
-		presentedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(@"Back", ^{
-		
-			[presentedNavC viewWillDisappear:NO];
-			[containerView removeFromSuperview];
-			[presentedNavC viewDidDisappear:NO];
-			
-			[presentedNavC autorelease];
-			[presentedVC autorelease];
-			
-		});
-		
-		presentedVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:@"FFF" action:^{
-			
-			NSLog(@"Hello");
-			
-		}];
+	WAArticleContextAnimation animation = WAArticleContextAnimationDefault;
 	
+	if (!animated) {
+		animation = WAArticleContextAnimationNone;
+	} else if (usesFlip) {
+		animation = WAArticleContextAnimationFlipAndScale;
 	} else {
+		animation = WAArticleContextAnimationCoverVertically;
+	}
+
+	[self presentDetailedContextForArticle:anObjectURI usingAnimation:animation];
+
+}
+
+- (void) presentDetailedContextForArticle:(NSURL *)articleURI usingAnimation:(WAArticleContextAnimation)animation {
+
+	static BOOL const usesPaginatedContext = NO;
 	
-//		__block UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-//		[spinner startAnimating];
-//		[spinner setCenter:(CGPoint){
-//			CGRectGetMidX(articleViewController.view.bounds),
-//			CGRectGetMidY(articleViewController.view.bounds)
-//		}];
-//		[articleViewController.view addSubview:spinner];
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
+	dispatch_async(dispatch_get_main_queue(), ^ {
 
-//	NSParameterAssert(nrSelf.navigationController);
+		__block WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
+		__block WADiscretePaginatedArticlesViewController *nrSelf = self;
+		__block WAArticleViewController *articleViewController = objc_getAssociatedObject(article, &kWADiscreteArticleViewControllerOnItem);
 		
-		self.view.superview.clipsToBounds = NO;
-		self.view.superview.superview.clipsToBounds = NO;
+		NSString * const kDismissBlock = [NSString stringWithFormat:@"%@_%s_Dismiss", NSStringFromClass([self class]), __PRETTY_FUNCTION__];
 		
-		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+		__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = ((^ {
 		
-		double delayInSeconds = 0.01;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-		dispatch_after(popTime, dispatch_get_main_queue(), ^ {
+			__block UIViewController<WAArticleViewControllerPresenting> *returnedVC = nil;
 		
-//			[spinner removeFromSuperview];
-			
-			__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = nil;
-			
-			shownArticleVC = ((^ {
-			
-				BOOL showsStandalone = YES;	//	articleViewController.presentationStyle == WADiscretePlaintextArticleStyle;
+			if (usesPaginatedContext) {
 				
-				if (showsStandalone) {
-			
-					__block WAArticleViewController *presentedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle(articleViewController.presentationStyle)];
-					
-					presentedVC.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
-						if ([presentedVC.navigationController conformsToProtocol:@protocol(WAArticleViewControllerPresenting)]) {
-							action((UIViewController <WAArticleViewControllerPresenting> *)presentedVC.navigationController);
-						} else {
-							action(nrSelf);
-						}
-					};
-					
-					return (UIViewController<WAArticleViewControllerPresenting> *)presentedVC;
+				returnedVC = nrSelf.paginatedArticlesViewController;
 				
-				} else {
-
-					//	Don’t use everything
-					return (UIViewController<WAArticleViewControllerPresenting> *)nrSelf.paginatedArticlesViewController;
+				((WAPaginatedArticlesViewController *)returnedVC).context = [NSDictionary dictionaryWithObjectsAndKeys:
+					articleURI, @"lastVisitedObjectURI",
+				nil];
 				
-				}
+			} else {
 			
-			})());
-			
-			
-			shownArticleVC.navigationItem.leftBarButtonItem = nil;
-			shownArticleVC.navigationItem.hidesBackButton = NO;
-			
-			if ([shownArticleVC isKindOfClass:[WAPaginatedArticlesViewController class]]) {
-				((WAPaginatedArticlesViewController *)shownArticleVC).context = [NSDictionary dictionaryWithObjectsAndKeys:
-					anObjectURI, @"lastVisitedObjectURI",		
-				nil]; 
+				returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle(articleViewController.presentationStyle)];
+				
+				((WAArticleViewController *)returnedVC).onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
+					if ([returnedVC.navigationController conformsToProtocol:@protocol(WAArticleViewControllerPresenting)]) {
+						action((UIViewController <WAArticleViewControllerPresenting> *)returnedVC.navigationController);
+					} else {
+						action(nrSelf);
+					}
+				};
+				
 			}
 			
-			shownArticleVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(@"Back", ^ {
+			returnedVC.navigationItem.hidesBackButton = NO;
+			returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(@"Back", ^ {
 			
-				IRCATransact(^{
-					
-					[shownArticleVC dismissModalViewControllerAnimated:NO];
-					
-					[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
-						CATransition *transition = [CATransition animation];
-						transition.type = kCATransitionFade;
-						transition.removedOnCompletion = YES;
-						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-						transition.duration = 0.3f;
-						return transition;
-					})()) forKey:kCATransition];
-
-				});
+				[[returnedVC retain] autorelease];
 				
-			});
+				void (^dismissBlock)(void) = objc_getAssociatedObject(returnedVC, kDismissBlock);
 				
-			WANavigationController *enqueuedNavController = ((^ {
-			
-				__block WANavigationController *navController = nil;
-				
-				if ([shownArticleVC isKindOfClass:[WAArticleViewController class]]) {
-				
-					navController = [(WAArticleViewController *)shownArticleVC wrappingNavController];
-				
-				} else {
-		
-					navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:shownArticleVC] autorelease];
-				
+				if (dismissBlock) {
+					[[UIApplication sharedApplication] beginIgnoringInteractionEvents];			
+					dismissBlock();
+					objc_setAssociatedObject(returnedVC, kDismissBlock, nil, OBJC_ASSOCIATION_ASSIGN);
+					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 				}
-				
-				[navController setOnViewDidLoad: ^ (WANavigationController *self) {
-					((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
-				}];
-				
-				if ([navController isViewLoaded])
-				if (navController.onViewDidLoad)
-					navController.onViewDidLoad(navController);
-					
-				return navController;
-			
-			})());
-			
-			[CATransaction begin];
-			
-			UIWindow *containingWindow = self.navigationController.view.window;
-			CGAffineTransform containerTransform = containingWindow.rootViewController.view.transform;
-			CGRect actualRect = CGRectApplyAffineTransform(containingWindow.bounds, containerTransform);
-			UIView *transitionContainerView = [[[UIView alloc] initWithFrame:actualRect] autorelease];
-			transitionContainerView.center = (CGPoint){
-				CGRectGetMidX(containingWindow.bounds),
-				CGRectGetMidY(containingWindow.bounds)
-			};
-			transitionContainerView.transform = containerTransform;
-			
-			UIEdgeInsets navBarSnapshotEdgeInsets = (UIEdgeInsets){ 0, 0, -12, 0 };
-			CGRect navBarBounds = self.navigationController.navigationBar.bounds;
-			navBarBounds = UIEdgeInsetsInsetRect(navBarBounds, navBarSnapshotEdgeInsets);
-			CGRect navBarRectInWindow = [containingWindow convertRect:navBarBounds fromView:self.navigationController.navigationBar];
-			UIImage *navBarSnapshot = [self.navigationController.navigationBar.layer irRenderedImageWithEdgeInsets:navBarSnapshotEdgeInsets];
-			UIView *navBarSnapshotHolderView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, navBarSnapshot.size }] autorelease];
-			navBarSnapshotHolderView.layer.contents = (id)navBarSnapshot.CGImage;
-			
-			self.navigationController.navigationBar.layer.opacity = 0;
-			articleViewController.view.hidden = YES;
-			
-			UIImage *initialStateSnapshot = [self.navigationController.view.layer irRenderedImage];
-			transitionContainerView.layer.contents = (id)initialStateSnapshot.CGImage;
-			transitionContainerView.layer.contentsGravity = kCAGravityResizeAspectFill;
-			
-			self.navigationController.navigationBar.layer.opacity = 1;
-			articleViewController.view.hidden = NO;
-			
-			UIView *backgroundView = [[[UIView alloc] initWithFrame:transitionContainerView.bounds] autorelease];
-			backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
-			[transitionContainerView addSubview:backgroundView];
-			
-			UIView *scalingHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			[transitionContainerView addSubview:scalingHolderView];
-			
-			CGRect discreteArticleViewRectInWindow = [containingWindow convertRect:articleViewController.view.bounds fromView:articleViewController.view];
-			UIImage *discreteArticleViewSnapshot = [articleViewController.view.layer irRenderedImage];
-			UIView *discreteArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			discreteArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, discreteArticleViewSnapshot.size };
-			discreteArticleSnapshotHolderView.layer.contents = (id)discreteArticleViewSnapshot.CGImage;
-			discreteArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
-			[scalingHolderView addSubview:discreteArticleSnapshotHolderView];
-			
-			[self.navigationController presentModalViewController:enqueuedNavController animated:NO];
-			
-			if ([shownArticleVC conformsToProtocol:@protocol(WAArticleViewControllerPresenting)])
-				[(id<WAArticleViewControllerPresenting>)shownArticleVC setContextControlsVisible:NO animated:NO];
-			
-			//	CGRect fullsizeArticleViewRectInWindow = [containingWindow convertRect:enqueuedNavController.view.bounds fromView:enqueuedNavController.view];
-			UIImage *fullsizeArticleViewSnapshot = [enqueuedNavController.view.layer irRenderedImage];
-			UIView *fullsizeArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			fullsizeArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
-			fullsizeArticleSnapshotHolderView.layer.contents = (id)fullsizeArticleViewSnapshot.CGImage;
-			fullsizeArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
-			[scalingHolderView addSubview:fullsizeArticleSnapshotHolderView];
-			
-			discreteArticleSnapshotHolderView.frame = scalingHolderView.bounds;
-			discreteArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			fullsizeArticleSnapshotHolderView.frame = scalingHolderView.bounds;
-			fullsizeArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			
-			[containingWindow addSubview:transitionContainerView];
-			
-			[transitionContainerView addSubview:navBarSnapshotHolderView];
-			navBarSnapshotHolderView.frame = [containingWindow convertRect:navBarRectInWindow toView:navBarSnapshotHolderView.superview];
-			
-			backgroundView.alpha = 0;
-			discreteArticleSnapshotHolderView.alpha = 1;
-			fullsizeArticleSnapshotHolderView.alpha = 0;
-			scalingHolderView.frame = [containingWindow convertRect:discreteArticleViewRectInWindow toView:scalingHolderView.superview];
-						
-			[CATransaction commit];
-			
-			UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
-			
-			[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations: ^ {
-			
-				backgroundView.alpha = 1;
-				//	discreteArticleSnapshotHolderView.alpha = 0;
-				fullsizeArticleSnapshotHolderView.alpha = 1;
-				scalingHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
-				
-			} completion: ^ (BOOL finished) {
-			
-				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-				
-					[CATransaction begin];
-					[CATransaction setDisableActions:YES];
-					
-					[transitionContainerView removeFromSuperview];
 
-					if ([shownArticleVC conformsToProtocol:@protocol(WAArticleViewControllerPresenting)])
-						[(id<WAArticleViewControllerPresenting>)shownArticleVC setContextControlsVisible:YES animated:NO];
-					
-					[shownArticleVC.view.window.layer addAnimation:((^{
-						CATransition *transition = [CATransition animation];
-						transition.type = kCATransitionFade;
-						transition.removedOnCompletion = YES;
-						transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-						transition.duration = 0.35f;
-						return transition;
-					})()) forKey:kCATransition];
+			});
 
-					[CATransaction commit];
-
-			}];
+			return returnedVC;
 		
-		});
+		})());
+		
+		WANavigationController *enqueuedNavController = ((^ {
+		
+			__block WANavigationController *navController;
+			if ([shownArticleVC isKindOfClass:[WAArticleViewController class]]) {
+				navController = [(WAArticleViewController *)shownArticleVC wrappingNavController];
+			} else {
+				navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:shownArticleVC] autorelease];
+			}
+			
+			navController.onViewDidLoad = ^ (WANavigationController *self) {
+				((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			};
+			
+			if ([navController isViewLoaded])
+			if (navController.onViewDidLoad)
+				navController.onViewDidLoad(navController);
+			
+			return navController;
+		
+		})());
 
-	}
+		__block void (^presentBlock)(void) = nil;
+		__block void (^dismissBlock)(void) = nil;
+		
+		
+		//	SHARED STUFF
+		
+		UIWindow *containingWindow = self.navigationController.view.window;
+		CGAffineTransform containingWindowTransform = containingWindow.rootViewController.view.transform;
+		CGRect containingWindowBounds = CGRectApplyAffineTransform(containingWindow.bounds, containingWindowTransform);		
+
+		UIView *containerView = [[[UIView alloc] initWithFrame:containingWindowBounds] autorelease];
+		containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		containerView.center = irCGRectAnchor(containingWindow.bounds, irCenter, YES);
+		containerView.transform = containingWindowTransform;
+		
+		switch (animation) {
+
+			case WAArticleContextAnimationFadeAndZoom: {
+		
+				presentBlock = ^ {
+				
+					UIEdgeInsets const navBarSnapshotEdgeInsets = (UIEdgeInsets){ 0, 0, -12, 0 };
+					
+					CGRect navBarBounds = self.navigationController.navigationBar.bounds;
+					navBarBounds = UIEdgeInsetsInsetRect(navBarBounds, navBarSnapshotEdgeInsets);
+					CGRect navBarRectInWindow = [containingWindow convertRect:navBarBounds fromView:self.navigationController.navigationBar];
+					UIImage *navBarSnapshot = [self.navigationController.navigationBar.layer irRenderedImageWithEdgeInsets:navBarSnapshotEdgeInsets];
+					UIView *navBarSnapshotHolderView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, navBarSnapshot.size }] autorelease];
+					navBarSnapshotHolderView.layer.contents = (id)navBarSnapshot.CGImage;
+					
+					self.navigationController.navigationBar.layer.opacity = 0;
+					articleViewController.view.hidden = YES;
+					
+					containerView.layer.contents = (id)[self.navigationController.view.layer irRenderedImage].CGImage;
+					containerView.layer.contentsGravity = kCAGravityResizeAspectFill;
+					
+					self.navigationController.navigationBar.layer.opacity = 1;
+					articleViewController.view.hidden = NO;
+					
+					UIView *backgroundView, *scalingHolderView;
+					
+					backgroundView = [[[UIView alloc] initWithFrame:containerView.bounds] autorelease];
+					backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+					backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
+					[containerView addSubview:backgroundView];
+					
+					scalingHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+					[containerView addSubview:scalingHolderView];
+					
+					CGRect discreteArticleViewRectInWindow = [containingWindow convertRect:articleViewController.view.bounds fromView:articleViewController.view];
+					UIView *discreteArticleSnapshotHolderView = [articleViewController.view irRenderedProxyView];
+					discreteArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, discreteArticleSnapshotHolderView.bounds.size };
+					discreteArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
+					[scalingHolderView addSubview:discreteArticleSnapshotHolderView];
+					
+					[self.navigationController presentModalViewController:enqueuedNavController animated:NO];
+					[shownArticleVC setContextControlsVisible:NO animated:NO];
+					
+					UIImage *fullsizeArticleViewSnapshot = [enqueuedNavController.view.layer irRenderedImage];
+					UIView *fullsizeArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+					fullsizeArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
+					fullsizeArticleSnapshotHolderView.layer.contents = (id)fullsizeArticleViewSnapshot.CGImage;
+					fullsizeArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
+					[scalingHolderView addSubview:fullsizeArticleSnapshotHolderView];
+					
+					discreteArticleSnapshotHolderView.frame = scalingHolderView.bounds;
+					discreteArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+					fullsizeArticleSnapshotHolderView.frame = scalingHolderView.bounds;
+					fullsizeArticleSnapshotHolderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+					
+					[containingWindow addSubview:containerView];
+					
+					[containerView addSubview:navBarSnapshotHolderView];
+					navBarSnapshotHolderView.frame = [containingWindow convertRect:navBarRectInWindow toView:navBarSnapshotHolderView.superview];
+					
+					backgroundView.alpha = 0;
+					discreteArticleSnapshotHolderView.alpha = 1;
+					fullsizeArticleSnapshotHolderView.alpha = 0;
+					scalingHolderView.frame = [containingWindow convertRect:discreteArticleViewRectInWindow toView:scalingHolderView.superview];
+					scalingHolderView.layer.borderWidth = 1;
+					scalingHolderView.layer.borderColor = [UIColor redColor].CGColor;
+					
+					UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
+					
+					[UIView animateWithDuration:0.35 * 10 delay:0 options:animationOptions animations: ^ {
+					
+						backgroundView.alpha = 1;
+						fullsizeArticleSnapshotHolderView.alpha = 1;
+						scalingHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
+						
+					} completion: ^ (BOOL finished) {
+					
+						[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+						
+						[containerView removeFromSuperview];
+
+						if ([shownArticleVC conformsToProtocol:@protocol(WAArticleViewControllerPresenting)])
+							[(id<WAArticleViewControllerPresenting>)shownArticleVC setContextControlsVisible:YES animated:NO];
+						
+						[shownArticleVC.view.window.layer addAnimation:((^{
+							CATransition *transition = [CATransition animation];
+							transition.type = kCATransitionFade;
+							transition.removedOnCompletion = YES;
+							transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+							transition.duration = 0.35f;
+							return transition;
+						})()) forKey:kCATransition];
+
+					}];
+				
+				};
+				
+				dismissBlock = ^ {
+				
+					IRCATransact(^{
+						
+						[shownArticleVC dismissModalViewControllerAnimated:NO];
+						
+						[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^{
+							CATransition *transition = [CATransition animation];
+							transition.type = kCATransitionFade;
+							transition.removedOnCompletion = YES;
+							transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+							transition.duration = 0.3f;
+							return transition;
+						})()) forKey:kCATransition];
+
+					});
+				
+				};
+							
+				break;
+				
+			}
+
+			case WAArticleContextAnimationCoverVertically: {
+			
+				__block UIView *backgroundView = nil;
+				__block UIView *contextView = nil;
+			
+				presentBlock = ^ {
+				
+					#if 0
+				
+					UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
+					if (!usedScreen)
+						usedScreen = [UIScreen mainScreen];
+				
+					UIWindow *usedWindow = [[[UIWindow alloc] initWithFrame:[usedScreen applicationFrame]] autorelease];
+					usedWindow.backgroundColor = [UIColor clearColor];
+					usedWindow.opaque = YES;
+					
+					[usedWindow.rootViewController.view addSubview:enqueuedNavController.view];
+					enqueuedNavController.view.frame = CGRectInset(usedWindow.rootViewController.view.bounds, 48, 24);
+					
+					[usedWindow makeKeyAndVisible];
+					[usedWindow retain];
+					
+					#endif
+					
+					[enqueuedNavController setNavigationBarHidden:YES animated:NO];
+										
+					NSMutableArray *preconditions = [NSMutableArray array];
+					NSMutableArray *animations = [NSMutableArray array];
+					NSMutableArray *postconditions = [NSMutableArray array];
+					
+					[containingWindow.rootViewController.view addSubview:containerView];
+					containerView.transform = CGAffineTransformIdentity;
+					containerView.frame = containerView.superview.bounds;
+					
+					[containerView addSubview:(backgroundView = [[[UIView alloc] initWithFrame:containerView.bounds] autorelease])];
+					backgroundView.layer.shouldRasterize = YES;
+					backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+					backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.35];
+					[preconditions irEnqueueBlock:^{
+						backgroundView.alpha = 0;
+					}];
+					[animations irEnqueueBlock:^{
+						backgroundView.alpha = 1;
+					}];
+					
+					CGRect contextRect = IRCGRectAlignToRect((CGRect){
+						CGPointZero,
+						(CGSize){
+							MIN(600, CGRectGetWidth(containerView.bounds)),
+							CGRectGetHeight(containerView.bounds) - 48
+						}
+					}, containerView.bounds, irBottom, YES);
+					
+					CGRect fromContextRect = CGRectOffset(containerView.bounds, 0, CGRectGetHeight(containerView.bounds));
+					CGRect toContextRect = containerView.bounds;
+					
+					[containerView addSubview:(contextView = enqueuedNavController.view)];
+					contextView.frame = toContextRect;
+					contextView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
+					[preconditions irEnqueueBlock:^{
+						contextView.layer.shouldRasterize = NO;
+						contextView.frame = fromContextRect;
+					}];
+					[animations irEnqueueBlock:^{
+						contextView.frame = toContextRect;
+					}];
+					[postconditions irEnqueueBlock:^{
+						contextView.layer.shouldRasterize = NO;
+					}];
+					
+					
+					[shownArticleVC view];
+					
+					if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)])
+						[shownArticleVC handlePreferredInterfaceRect:contextRect];
+					
+					[preconditions irExecuteAllObjectsAsBlocks];
+					[UIView animateWithDuration:0.5f delay:0 options:0 animations:^{
+						
+						[animations irExecuteAllObjectsAsBlocks];
+						
+					} completion: ^ (BOOL finished) {
+						
+						[postconditions irExecuteAllObjectsAsBlocks];
+						[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+						
+						[[containerView retain] autorelease];
+						[containerView removeFromSuperview];
+						[enqueuedNavController.view removeFromSuperview];
+												
+						UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
+						if (!usedScreen)
+							usedScreen = [UIScreen mainScreen];
+					
+						UIWindow *usedWindow = [[[UIWindow alloc] initWithFrame:usedScreen.bounds] autorelease];
+						usedWindow.backgroundColor = [UIColor blueColor];
+						usedWindow.opaque = YES;
+						usedWindow.rootViewController = enqueuedNavController;
+						
+						[usedWindow makeKeyAndVisible];
+						[usedWindow retain];
+						
+						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+						
+							[usedWindow resignKeyWindow];
+							[usedWindow autorelease];
+						
+						});
+						
+					}];
+				
+				};
+				
+				dismissBlock = ^ {
+				
+				};
+			
+				break;
+				
+			}
+
+			default: {
+				NSParameterAssert(NO);
+				break;
+			}
+			
+		}
+
+		objc_setAssociatedObject(shownArticleVC, kDismissBlock, [[dismissBlock copy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		presentBlock();
+	
+	});
 	
 }
 
@@ -1740,6 +1564,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
+	[paginationSliderSlot release];
 	[super dealloc];
 
 }

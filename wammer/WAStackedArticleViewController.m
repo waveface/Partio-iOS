@@ -26,19 +26,22 @@
 @property (nonatomic, readwrite, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *commentsVC;
 
-- (void) adjustStackViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds;
+@property (nonatomic, readwrite, retain) UIView *wrapperView;
+
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds;
 
 @end
 
 
 @implementation WAStackedArticleViewController
-@synthesize textStackCell, textStackCellLabel, commentsVC, stackView;
+@synthesize textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView;
 
 - (void) dealloc {
 
 	[textStackCell release];
 	[commentsVC release];
 	[stackView release];
+	[wrapperView release];
 	[super dealloc];
 
 }
@@ -251,7 +254,7 @@
 
 }
 
-- (void) adjustStackViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds {
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds {
 
 	if (!self.view.window)
 		return;
@@ -262,13 +265,13 @@
 	if (CGRectEqualToRect(CGRectNull, intersection) || CGRectIsInfinite(intersection))
 		return;
 	
-	intersection = [self.view.window convertRect:intersection toView:self.stackView.superview];
+	intersection = [self.view.window convertRect:intersection toView:self.wrapperView.superview];
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 	
 	[UIView animateWithDuration:0.3 delay:0 options:animationOptions animations:^{
 		
-		self.stackView.frame = intersection;
+		self.wrapperView.frame = intersection;
 		[self.stackView layoutSubviews];
 		
 	} completion:^(BOOL finished) {
@@ -283,7 +286,19 @@
 
 	[super viewDidLoad];
 	
-	self.stackView.frame = self.view.bounds;
+	self.wrapperView = [[[UIView alloc] initWithFrame:self.stackView.frame] autorelease];
+	[self.stackView.superview addSubview:self.wrapperView];
+	[self.wrapperView addSubview:self.stackView];
+	self.stackView.frame = self.wrapperView.bounds;
+	self.wrapperView.frame = self.view.bounds;
+	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	
+	self.wrapperView.layer.borderColor = [UIColor blueColor].CGColor;
+	self.wrapperView.layer.borderWidth = 1;
+	
+	self.stackView.layer.borderColor = [UIColor greenColor].CGColor;
+	self.stackView.layer.borderWidth = 2;
 	
 	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
 	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
@@ -318,6 +333,7 @@
 #endif
 	
 	self.stackView.backgroundColor = nil;
+	self.wrapperView.backgroundColor = nil;
 	
 }
 
@@ -382,15 +398,16 @@
 	if (object == self.view.window)
 	if ([keyPath isEqualToString:@"irInterfaceBounds"]) {
 		
-		[self adjustStackViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
+		[self adjustWrapperViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
 	
 	}
 
 }
 
+- (void) handlePreferredInterfaceRect:(CGRect)aRect {
+
+	self.stackView.frame = CGRectInset(aRect, 48, 48);
+
+}
+
 @end
-
-
-
-
-

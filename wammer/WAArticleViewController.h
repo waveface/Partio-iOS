@@ -29,6 +29,7 @@
 
 @optional
 - (void) enqueueInterfaceUpdate:(void(^)(void))anAction;
+- (void) handlePreferredInterfaceRect:(CGRect)aRect;
 
 @end
 
