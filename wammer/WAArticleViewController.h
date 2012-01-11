@@ -30,6 +30,7 @@
 @optional
 - (void) enqueueInterfaceUpdate:(void(^)(void))anAction;
 - (void) handlePreferredInterfaceRect:(CGRect)aRect;
+- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint;
 
 @end
 

@@ -292,7 +292,7 @@
 	self.stackView.frame = self.wrapperView.bounds;
 	self.wrapperView.frame = self.view.bounds;
 	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	
 	self.wrapperView.layer.borderColor = [UIColor blueColor].CGColor;
 	self.wrapperView.layer.borderWidth = 1;
@@ -406,7 +406,14 @@
 
 - (void) handlePreferredInterfaceRect:(CGRect)aRect {
 
-	self.stackView.frame = CGRectInset(aRect, 48, 48);
+	self.stackView.frame = aRect;
+
+}
+
+- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint { 
+
+	CGRect stackViewFrame = [self.view convertRect:self.stackView.bounds fromView:self.stackView];
+	return CGRectContainsPoint(stackViewFrame, aPoint);
 
 }
 
