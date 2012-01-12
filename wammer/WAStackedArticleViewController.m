@@ -26,19 +26,25 @@
 @property (nonatomic, readwrite, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *commentsVC;
 
-- (void) adjustStackViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds;
+@property (nonatomic, readwrite, retain) UIView *wrapperView;
+
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds;
 
 @end
 
 
 @implementation WAStackedArticleViewController
-@synthesize textStackCell, textStackCellLabel, commentsVC, stackView;
+@synthesize textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView, onViewDidLoad, onPullTop;
 
 - (void) dealloc {
 
 	[textStackCell release];
 	[commentsVC release];
 	[stackView release];
+	[wrapperView release];
+	[onViewDidLoad release];
+	[onPullTop release];
+	
 	[super dealloc];
 
 }
@@ -126,8 +132,10 @@
 		backgroundWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		backgroundView.frame = CGRectInset(backgroundWrapperView.bounds, -64, 0);
 		[backgroundWrapperView addSubview:backgroundView];
-		
+				
 		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
+		nrCommentsVC.commentsView.backgroundColor = nil;
+		nrCommentsVC.commentsView.opaque = NO;
 		nrCommentsVC.commentsView.clipsToBounds = NO;
 		
 		[backgroundView.superview sendSubviewToBack:backgroundView]; 
@@ -157,7 +165,7 @@
 	
 	CGFloat preferredHeight = roundf(elementAnswer.height);
 	
-	if (anElement == self.commentsVC.view)
+	if ((anElement == self.commentsVC.view) || [self.commentsVC.view isDescendantOfView:anElement])
 		preferredHeight = MAX(144, preferredHeight);
 	
 	return (CGSize){
@@ -251,7 +259,7 @@
 
 }
 
-- (void) adjustStackViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds {
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds {
 
 	if (!self.view.window)
 		return;
@@ -262,13 +270,13 @@
 	if (CGRectEqualToRect(CGRectNull, intersection) || CGRectIsInfinite(intersection))
 		return;
 	
-	intersection = [self.view.window convertRect:intersection toView:self.stackView.superview];
+	intersection = [self.view.window convertRect:intersection toView:self.wrapperView.superview];
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 	
 	[UIView animateWithDuration:0.3 delay:0 options:animationOptions animations:^{
 		
-		self.stackView.frame = intersection;
+		self.wrapperView.frame = intersection;
 		[self.stackView layoutSubviews];
 		
 	} completion:^(BOOL finished) {
@@ -283,7 +291,17 @@
 
 	[super viewDidLoad];
 	
-	self.stackView.frame = self.view.bounds;
+	self.wrapperView = [[[UIView alloc] initWithFrame:self.stackView.frame] autorelease];
+	[self.stackView.superview addSubview:self.wrapperView];
+	[self.wrapperView addSubview:self.stackView];
+	self.stackView.frame = self.wrapperView.bounds;
+	self.wrapperView.frame = self.view.bounds;
+	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+
+	self.stackView.alwaysBounceVertical = YES;
+	self.stackView.showsHorizontalScrollIndicator = NO;	
+	self.stackView.showsVerticalScrollIndicator = NO;
 	
 	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
 	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
@@ -295,12 +313,19 @@
 
 	[self.stackView addStackElementsObject:topCell];
 	
-	if ([self.article.text length]) {
+	BOOL hasText = [self.article.text length];
+	BOOL showsComments = NO;
+	
+	if (hasText) {
 		[self.stackView addStackElementsObject:self.textStackCell];
-		[self.stackView addStackElementsObject:separatorCell];
 	}
 	
-	[self.stackView addStackElementsObject:self.commentsVC.view];
+	if (showsComments) {
+		if (hasText) {
+			[self.stackView addStackElementsObject:separatorCell];
+		}
+		[self.stackView addStackElementsObject:self.commentsVC.view];
+	}
 
 	WAArticleTextStackCell *bottomCell = [WAArticleTextStackCell cellFromNib];
 	bottomCell.backgroundView = WAStandardArticleStackCellBottomBackgroundView();
@@ -310,14 +335,22 @@
 	
 #if 0
 	
-	self.stackView.layer.borderColor = [UIColor redColor].CGColor;
-	self.stackView.layer.borderWidth = 1.0;	
+	self.wrapperView.layer.borderColor = [UIColor redColor].CGColor;
+	self.wrapperView.layer.borderWidth = 1;
+	
+	self.stackView.layer.borderColor = [UIColor greenColor].CGColor;
+	self.stackView.layer.borderWidth = 2;
+	
 	self.commentsVC.view.layer.borderColor = [UIColor blueColor].CGColor;
 	self.commentsVC.view.layer.borderWidth = 2.0;
 	
 #endif
 	
 	self.stackView.backgroundColor = nil;
+	self.wrapperView.backgroundColor = nil;
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
 	
 }
 
@@ -382,15 +415,61 @@
 	if (object == self.view.window)
 	if ([keyPath isEqualToString:@"irInterfaceBounds"]) {
 		
-		[self adjustStackViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
+		[self adjustWrapperViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
 	
 	}
 
 }
 
+- (void) handlePreferredInterfaceRect:(CGRect)aRect {
+
+	CGRect intersection = CGRectIntersection(aRect, self.stackView.superview.bounds);
+	self.stackView.frame = intersection;
+	self.stackView.contentInset = (UIEdgeInsets){
+		CGRectGetMinY(intersection) - CGRectGetMinY(aRect),
+		0,
+		0,
+		0
+	};
+	
+}
+
+- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint { 
+
+	CGRect stackViewFrame = [self.view convertRect:self.stackView.bounds fromView:self.stackView];
+	return CGRectContainsPoint(stackViewFrame, aPoint);
+
+}
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	self.stackView.backgroundColor = [UIColor whiteColor];
+
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	self.stackView.backgroundColor = nil;
+
+}
+
+- (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+
+	if (scrollView != self.stackView)
+		return;
+	
+	CGPoint contentOffset = self.stackView.contentOffset;
+	CGFloat cap = -200.0f;
+	
+	if (contentOffset.y < cap) {
+		if (self.onPullTop)
+			self.onPullTop(self.stackView);
+	}
+	
+}
+
 @end
-
-
-
-
-
