@@ -6,6 +6,7 @@
 //  Copyright 2011 Iridia Productions. All rights reserved.
 //
 
+#import <math.h>
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 #import "WADiscretePaginatedArticlesViewController.h"
@@ -623,7 +624,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	CGFloat currentAspectRatio = ((^ {
 	
-		//	FIXME: Save this somewhere to avoid recalculating stuff again and again?
+		//	FIXME: Save this
+		
+		UIWindow *usedWindow = self.view.window;
+		if (!usedWindow)
+			usedWindow = [UIApplication sharedApplication].keyWindow;
+		
+		NSParameterAssert(usedWindow);
 
 		CGAffineTransform orientationsToTransforms[] = {
 			[UIInterfaceOrientationPortrait] = CGAffineTransformMakeRotation(0),
@@ -633,11 +640,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		};
 		
 		CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform(
-			[[UIApplication sharedApplication].keyWindow.screen applicationFrame],
-			orientationsToTransforms[[UIApplication sharedApplication].statusBarOrientation]
+			[usedWindow.screen applicationFrame],
+			orientationsToTransforms[self.interfaceOrientation]
 		);
 		
-		return CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
+		CGFloat ratio = CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
+		assert(!isnan(ratio));
+		
+		return ratio;
 
 	})());
 	
@@ -1355,8 +1365,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					discreteArticleSnapshotHolderView.alpha = 1;
 					fullsizeArticleSnapshotHolderView.alpha = 0;
 					scalingHolderView.frame = [containingWindow convertRect:discreteArticleViewRectInWindow toView:scalingHolderView.superview];
-					scalingHolderView.layer.borderWidth = 1;
-					scalingHolderView.layer.borderColor = [UIColor redColor].CGColor;
 					
 					UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
 					
@@ -1442,14 +1450,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						backgroundView.alpha = 1;
 					}];
 					
-					CGRect contextRect = IRCGRectAlignToRect((CGRect){
-						CGPointZero,
-						(CGSize){
-							CGRectGetWidth(containerView.bounds) - 48,
-							CGRectGetHeight(containerView.bounds) - 48
-						}
-					}, containerView.bounds, irBottom, YES);
-					
 					CGRect fromContextRect = CGRectOffset(containerView.bounds, 0, CGRectGetHeight(containerView.bounds));
 					CGRect toContextRect = containerView.bounds;
 					
@@ -1465,11 +1465,69 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					}];
 					
 					
-					[shownArticleVC view];
 					shownArticleVC.view.backgroundColor = [UIColor clearColor];
+					[shownArticleVC view];
 					
-					if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)])
-						[shownArticleVC handlePreferredInterfaceRect:contextRect];
+					if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)]) {
+					
+						void (^onViewDidLoad)() = ^ {
+						
+							IRCATransact(^{
+							
+								shownArticleVC.view.backgroundColor = [UIColor clearColor];
+								
+								[containerView layoutSubviews];
+								[enqueuedNavController.view layoutSubviews];
+								
+								CGRect contextRect = IRCGRectAlignToRect((CGRect){
+									CGPointZero,
+									(CGSize){
+										CGRectGetWidth(containerView.bounds) - 80,
+										CGRectGetHeight(containerView.bounds) - 40
+									}
+								}, containerView.bounds, irBottom, YES);
+								
+								[shownArticleVC handlePreferredInterfaceRect:contextRect];
+								
+								__block void (^poke)(UIView *) = ^ (UIView *aView) {
+								
+									[aView layoutSubviews];
+									
+									for (UIView *aSubview in aView.subviews)
+										poke(aSubview);
+									
+								};
+								
+								poke(shownArticleVC.view);
+							
+							});							
+						
+						};
+						
+						if ([shownArticleVC respondsToSelector:@selector(setOnViewDidLoad:)])
+							[shownArticleVC performSelector:@selector(setOnViewDidLoad:) withObject:(id)onViewDidLoad];
+						
+						if ([shownArticleVC isViewLoaded])
+							onViewDidLoad();
+						
+					}
+					
+					if ([shownArticleVC respondsToSelector:@selector(setOnPullTop:)]) {
+						
+						[shownArticleVC performSelector:@selector(setOnPullTop:) withObject:(id)(^ (UIScrollView *aSV){
+						
+							void (^dismissBlock)(void) = objc_getAssociatedObject(shownArticleVC, kDismissBlock);
+							
+							if (!dismissBlock)
+								return;
+							
+							[aSV setContentOffset:aSV.contentOffset animated:NO];
+							
+							dismissBlock();
+							
+						})];
+						
+					}
 					
 					[preconditions irExecuteAllObjectsAsBlocks];
 					[UIView animateWithDuration:0.5f delay:0 options:0 animations:^{
@@ -1540,9 +1598,21 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 				};
 				
 				dismissBlock = ^ {
+				
+					UIView *rootView = containerWindow.rootViewController.view;
+					NSParameterAssert(rootView);
 					
-					[containerWindow resignKeyWindow];
-					[containerWindow autorelease];
+					[UIView animateWithDuration:0.35 delay:0 options:0 animations:^{
+					
+						rootView.frame = [rootView.superview convertRect:CGRectOffset(rootView.bounds, 0, CGRectGetHeight(rootView.bounds)) fromView:rootView];
+						containerWindow.backgroundColor = nil;
+						
+					} completion:^(BOOL finished) {
+						
+						[containerWindow resignKeyWindow];
+						[containerWindow autorelease];
+						
+					}];
 				
 				};
 			

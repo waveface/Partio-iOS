@@ -325,9 +325,6 @@ UIView * WAStandardArticleStackCellTopBackgroundView (void) {
 		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 0.0/128.0, 384.0/384.0, 48.0/128.0 };
 		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 40.0/48.0, 128.0/384.0, 8.0/48.0 };
 		
-		returnedView.layer.borderColor = [UIColor greenColor].CGColor;
-		returnedView.layer.borderWidth = 1;
-		
     return returnedView;
   
   })())];
@@ -350,9 +347,6 @@ UIView * WAStandardArticleStackCellCenterBackgroundView (void) {
     returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
 		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 48.0/128.0, 384.0/384.0, 32.0/128.0 };
 		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 0.0/32.0, 128.0/384.0, 32.0/32.0 };
-		
-		returnedView.layer.borderColor = [UIColor blueColor].CGColor;
-		returnedView.layer.borderWidth = 4;
 		
     return returnedView;
   

@@ -34,7 +34,7 @@
 
 
 @implementation WAStackedArticleViewController
-@synthesize textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView;
+@synthesize textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView, onViewDidLoad, onPullTop;
 
 - (void) dealloc {
 
@@ -42,6 +42,9 @@
 	[commentsVC release];
 	[stackView release];
 	[wrapperView release];
+	[onViewDidLoad release];
+	[onPullTop release];
+	
 	[super dealloc];
 
 }
@@ -129,10 +132,7 @@
 		backgroundWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		backgroundView.frame = CGRectInset(backgroundWrapperView.bounds, -64, 0);
 		[backgroundWrapperView addSubview:backgroundView];
-		
-		backgroundWrapperView.layer.borderColor = [[[UIColor redColor] colorWithAlphaComponent:0.5] CGColor];
-		backgroundWrapperView.layer.borderWidth = 4;
-		
+				
 		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
 		nrCommentsVC.commentsView.backgroundColor = nil;
 		nrCommentsVC.commentsView.opaque = NO;
@@ -298,6 +298,10 @@
 	self.wrapperView.frame = self.view.bounds;
 	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+
+	self.stackView.alwaysBounceVertical = YES;
+	self.stackView.showsHorizontalScrollIndicator = NO;	
+	self.stackView.showsVerticalScrollIndicator = NO;
 	
 	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
 	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
@@ -309,12 +313,19 @@
 
 	[self.stackView addStackElementsObject:topCell];
 	
-	if ([self.article.text length]) {
+	BOOL hasText = [self.article.text length];
+	BOOL showsComments = NO;
+	
+	if (hasText) {
 		[self.stackView addStackElementsObject:self.textStackCell];
-		[self.stackView addStackElementsObject:separatorCell];
 	}
 	
-	[self.stackView addStackElementsObject:self.commentsVC.view];
+	if (showsComments) {
+		if (hasText) {
+			[self.stackView addStackElementsObject:separatorCell];
+		}
+		[self.stackView addStackElementsObject:self.commentsVC.view];
+	}
 
 	WAArticleTextStackCell *bottomCell = [WAArticleTextStackCell cellFromNib];
 	bottomCell.backgroundView = WAStandardArticleStackCellBottomBackgroundView();
@@ -337,6 +348,9 @@
 	
 	self.stackView.backgroundColor = nil;
 	self.wrapperView.backgroundColor = nil;
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
 	
 }
 
@@ -425,6 +439,37 @@
 	CGRect stackViewFrame = [self.view convertRect:self.stackView.bounds fromView:self.stackView];
 	return CGRectContainsPoint(stackViewFrame, aPoint);
 
+}
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	self.stackView.backgroundColor = [UIColor whiteColor];
+
+}
+
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	self.stackView.backgroundColor = nil;
+
+}
+
+- (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+
+	if (scrollView != self.stackView)
+		return;
+	
+	CGPoint contentOffset = self.stackView.contentOffset;
+	CGFloat cap = -200.0f;
+	
+	if (contentOffset.y < cap) {
+		if (self.onPullTop)
+			self.onPullTop(self.stackView);
+	}
+	
 }
 
 @end
