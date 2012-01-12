@@ -487,6 +487,16 @@
   
   }
 	
+  if (allowsCancellation)
+    NSParameterAssert(!eraseAuthInfo);
+
+	if (eraseAuthInfo)
+    [self removeAuthenticationData];
+	
+	if (zapEverything)
+		[self clearViewHierarchy];
+	
+	
   NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIdentifierChanged)() = ^ {
 	
@@ -497,17 +507,8 @@
 		
     return (BOOL)![currentID isEqualToString:capturedCurrentUserIdentifier];
 		
-  };
-  
-  if (allowsCancellation)
-    NSParameterAssert(!eraseAuthInfo);
-
-	if (eraseAuthInfo)
-    [self removeAuthenticationData];
+  };  
 	
-	if (zapEverything)
-		[self clearViewHierarchy];
-
 	
   __block WAAuthenticationRequestViewController *authRequestVC;
 	
@@ -518,57 +519,7 @@
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 	
 		[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:animated];
-		return;
-	
-		switch (UI_USER_INTERFACE_IDIOM()) {
-		
-			//  FIXME: Move this in a CustomUI category
-		
-			case UIUserInterfaceIdiomPad: {
 			
-				WAViewController *fullscreenBaseVC = [[[WAViewController alloc] init] autorelease];
-				fullscreenBaseVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
-					return YES;
-				};
-				fullscreenBaseVC.modalPresentationStyle = UIModalPresentationFullScreen;
-				fullscreenBaseVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];	//	was		WAPatternCarbonFibre
-				
-				[fullscreenBaseVC.view addSubview:((^ {
-					UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-					spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-					spinner.center = (CGPoint){
-						roundf(CGRectGetMidX(fullscreenBaseVC.view.bounds)),
-						roundf(CGRectGetMidY(fullscreenBaseVC.view.bounds))
-					};
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-						[spinner startAnimating];							
-					});
-					return spinner;
-				})())];
-				
-				if (self.window.rootViewController.modalViewController)
-					[self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
-				
-				[self.window.rootViewController presentModalViewController:fullscreenBaseVC animated:NO];
-				[fullscreenBaseVC presentModalViewController:authRequestWrappingVC animated:animated];
-				
-				break;
-			
-			}
-			
-			case UIUserInterfaceIdiomPhone:
-			default: {
-			
-				if (self.window.rootViewController.modalViewController)
-					[self.window.rootViewController.modalViewController dismissModalViewControllerAnimated:NO];
-				
-				[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:animated];
-				break;
-				
-			}
-		
-		}
-	
 	};
   
   IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password") block: ^ {
@@ -664,7 +615,7 @@
 			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
 			if (userIdentifierHasChanged || zapEverything) {
-				UINavigationController *navC = [self.navigationController retain];
+				UINavigationController *navC = [[self.navigationController retain] autorelease];
 				[self dismissModalViewControllerAnimated:NO];
 				[nrAppDelegate recreateViewHierarchy];
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
@@ -790,7 +741,8 @@
 	
 	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-
+	
+	
 	[[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
 
     dispatch_async(dispatch_get_main_queue(), ^{
