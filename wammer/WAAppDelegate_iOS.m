@@ -104,7 +104,7 @@
 	if (WATestFlightSDKEnabled()) {
 				
 		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)kCFBooleanTrue, @"reinstallCrashHandlers",
+			(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
 		nil]];
 		
 		[TestFlight takeOff:kWATestflightTeamToken];
