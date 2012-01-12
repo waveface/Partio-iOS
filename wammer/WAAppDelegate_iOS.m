@@ -276,7 +276,7 @@
 			
 		} runningOnboardingProcess:YES];
 		
-		NSParameterAssert(didRequest);
+		NSParameterAssert(self.alreadyRequestingAuthentication);
 			
 	});
 
