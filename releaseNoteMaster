@@ -1,2 +1,2 @@
-ETReleaseNotes="- Updates the User Info popover"
+ETReleaseNotes="- Fixes various bugs\n- Revises the Overview and introduces more randomness in cell candidacy determination\n- Fixes communication bug between the Authentication logic and the Remote Interface\n- Updates Reachability detector"
 ETMarketingVersionNumber="0.9.8"
