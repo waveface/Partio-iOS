@@ -1026,6 +1026,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (void) retrieveLatestReadingProgressWithCompletion:(void (^)(NSTimeInterval))aBlock {
 
+	if ([[WARemoteInterface sharedInterface] isPostponingDataRetrievalTimerFiring])
+		return;
+
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
 	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
