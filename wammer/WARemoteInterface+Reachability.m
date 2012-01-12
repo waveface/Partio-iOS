@@ -16,6 +16,8 @@
 #import "WADefines.h"
 #import "WAAppDelegate.h"
 
+#import "WARemoteInterfaceContext.h"
+
 
 @interface WARemoteInterface (Reachability_Private) <WAReachabilityDetectorDelegate>
 
@@ -27,6 +29,40 @@
 @implementation WARemoteInterface (Reachability)
 
 static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARemoteInterface)Reachability)-availableHosts";
+
++ (void) load {
+
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	
+	__block id appLoaded = [[center addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		
+		[center removeObserver:[appLoaded autorelease]];
+		
+		//	__block id baseURLChanged = 
+		[[center addObserverForName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+			
+			NSURL *oldURL = [[note userInfo] objectForKey:kWARemoteInterfaceContextOldBaseURL];
+			NSURL *newURL = [[note userInfo] objectForKey:kWARemoteInterfaceContextNewBaseURL];
+			
+			WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+			
+			NSArray *monitoredHosts = ri.monitoredHosts;
+			NSMutableArray *updatedHosts = [[monitoredHosts mutableCopy] autorelease];
+			
+			for (NSURL *anURL in ri.monitoredHosts)
+				if ([anURL isEqual:oldURL] || [anURL isEqual:newURL])
+					[updatedHosts removeObject:anURL];
+
+			[updatedHosts insertObject:newURL atIndex:0];
+			
+			ri.monitoredHosts = updatedHosts;
+			
+		}] retain];
+				
+	}] retain];
+
+
+}
 
 - (NSArray *) monitoredHosts {
 

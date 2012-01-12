@@ -41,7 +41,39 @@ NSString * const kWAFileValidatesLargeThumbnailImage = @"validatesLargeThumbnail
 NSString * const kWAFilePresentableImage = @"presentableImage";
 
 
+@interface WAFile (WAAdditions_PrivateAccessors)
+
+@property (nonatomic, readwrite, retain) UIImage *resourceImage;
+@property (nonatomic, readwrite, retain) UIImage *largeThumbnailImage;
+@property (nonatomic, readwrite, retain) UIImage *thumbnailImage;
+
+- (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey;
+
+@end
+
+
 @implementation WAFile (WAAdditions)
+
+- (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+
+	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
+	if (!self)
+		return nil;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	[super dealloc];
+
+}
+
 
 # pragma mark - Lifecycle
 
@@ -247,7 +279,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	[self willChangeValueForKey:kWAFileResourceFilePath];
 	
 	[self setPrimitiveResourceFilePath:newResourceFilePath];
-	//	[self setResourceImage:nil];
+	[self setResourceImage:nil];
 	[self setValidatesResourceImage:!!newResourceFilePath];
 	
 	[self didChangeValueForKey:kWAFileResourceFilePath];
@@ -349,55 +381,37 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) validateForDelete:(NSError **)error {
 
-	if (![super validateForDelete:error])
-		return NO;
+	if ([super validateForDelete:error])
+	if ([self validateThumbnailImageIfNeeded:error])
+	if ([self validateLargeThumbnailImageIfNeeded:error])
+	if ([self validateResourceImageIfNeeded:error])
+		return YES;
 	
-	if (![self validateThumbnailImageIfNeeded:error])
-		return NO;
-	
-	if (![self validateLargeThumbnailImageIfNeeded:error])
-		return NO;
-
-	if (![self validateResourceImageIfNeeded:error])
-		return NO;
-	
-	return YES;
+	return NO;
 
 }
 
 - (BOOL) validateForInsert:(NSError **)error {
 
-	if (![super validateForInsert:error])
-		return NO;
+	if ([super validateForInsert:error])
+	if ([self validateThumbnailImageIfNeeded:error])
+	if ([self validateLargeThumbnailImageIfNeeded:error])
+	if ([self validateResourceImageIfNeeded:error])
+		return YES;
 	
-	if (![self validateThumbnailImageIfNeeded:error])
-		return NO;
-	
-	if (![self validateLargeThumbnailImageIfNeeded:error])
-		return NO;
-
-	if (![self validateResourceImageIfNeeded:error])
-		return NO;
-
-	return YES;
+	return NO;
 
 }
 
 - (BOOL) validateForUpdate:(NSError **)error {
 
-	if (![super validateForUpdate:error])
-		return NO;
+	if ([super validateForUpdate:error])
+	if ([self validateThumbnailImageIfNeeded:error])
+	if ([self validateLargeThumbnailImageIfNeeded:error])
+	if ([self validateResourceImageIfNeeded:error])
+		return YES;
 	
-	if (![self validateThumbnailImageIfNeeded:error])
-		return NO;
-	
-	if (![self validateLargeThumbnailImageIfNeeded:error])
-		return NO;
-
-	if (![self validateResourceImageIfNeeded:error])
-		return NO;
-		
-	return YES;
+	return NO;
 
 }
 
@@ -405,17 +419,15 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 	[super prepareForDeletion];
 	
-	NSString *thumbnailPath = [self primitiveValueForKey:kWAFileThumbnailFilePath];
-	NSString *largeThumbnailPath = [self primitiveValueForKey:kWAFileLargeThumbnailFilePath];
-	NSString *resourcePath = [self primitiveValueForKey:kWAFileResourceFilePath];
+	NSString *thumbnailPath, *largeThumbnailPath, *resourcePath;
 	
-	if (thumbnailPath)
+	if ((thumbnailPath = [self primitiveValueForKey:kWAFileThumbnailFilePath]))
 		[[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:nil];
 
-	if (largeThumbnailPath)
+	if ((largeThumbnailPath = [self primitiveValueForKey:kWAFileLargeThumbnailFilePath]))
 		[[NSFileManager defaultManager] removeItemAtPath:largeThumbnailPath error:nil];
 	
-	if (resourcePath)
+	if ((resourcePath = [self primitiveValueForKey:kWAFileResourceFilePath]))
 		[[NSFileManager defaultManager] removeItemAtPath:resourcePath error:nil];
 	
 }
@@ -489,17 +501,17 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 }
 
 
-# pragma mark - Presentable Image
+# pragma mark Lazy Images
 
 + (NSSet *) keyPathsForValuesAffectingPresentableImage {
 
 	return [NSSet setWithObjects:
-		@"thumbnailURL",
-		@"largeThumbnailURL",
-		@"resourceURL",
-		@"thumbnailFilePath",
-		@"largeThumbnailFilePath",
-		@"resourceFilePath",
+		kWAFileThumbnailURL,
+		kWAFileThumbnailFilePath,
+		kWAFileLargeThumbnailURL,
+		kWAFileLargeThumbnailFilePath,
+		kWAFileResourceURL,
+		kWAFileResourceFilePath,
 	nil];
 
 }
@@ -519,6 +531,34 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingResourceImage {
+
+	return [NSSet setWithObjects:
+		kWAFileResourceFilePath,
+		kWAFileResourceURL,
+	nil];
+
+}
+
+- (UIImage *) resourceImage {
+
+	UIImage *resourceImage = objc_getAssociatedObject(self, &kWAFileResourceImage);
+	if (resourceImage)
+		return resourceImage;
+	
+	NSString *resourceFilePath = self.resourceFilePath;
+	if (!resourceFilePath)
+		return nil;
+	
+	resourceImage = [UIImage imageWithContentsOfFile:resourceFilePath];
+	resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
+
+	self.resourceImage = resourceImage;	
+	return resourceImage;
+	
+}
+
+
 
 # pragma mark - Trivial Stuff
 
@@ -534,42 +574,20 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 }
 
-+ (NSSet *) keyPathsForValuesAffectingResourceImage {
+- (void) setResourceImage:(UIImage *)newResourceImage {
+
+	[self associateObject:newResourceImage usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:YES usingKey:kWAFileResourceImage];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingThumbnailImage {
 
 	return [NSSet setWithObjects:
-		kWAFileResourceFilePath,
-		kWAFileResourceURL,
+		kWAFileThumbnailFilePath,
+		kWAFileThumbnailURL,
 	nil];
 
 }
-
-- (UIImage *) resourceImage {
-
-	NSString *resourceFilePath = self.resourceFilePath;
-	if (!resourceFilePath)
-		return nil;
-	
-	UIImage *resourceImage = objc_getAssociatedObject(self, &kWAFileResourceImage);
-	if (![resourceImage.irRepresentedObject isEqualToString:resourceFilePath]) {
-		resourceImage = [UIImage imageWithContentsOfFile:resourceFilePath];
-		resourceImage.irRepresentedObject = resourceFilePath;
-		objc_setAssociatedObject(self, &kWAFileResourceImage, resourceImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	}
-	
-	return resourceImage;
-	
-}
-
-//- (void) setResourceImage:(UIImage *)newResourceImage {
-//
-//	if (objc_getAssociatedObject(self, &kWAFileResourceImage) == newResourceImage)
-//		return;
-//		
-//	[self willChangeValueForKey:kWAFileResourceImage];
-//	objc_setAssociatedObject(self, &kWAFileResourceImage, newResourceImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//	[self didChangeValueForKey:kWAFileResourceImage];
-//
-//}
 
 - (UIImage *) thumbnailImage {
 	
@@ -581,24 +599,17 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if (!thumbnailFilePath)
 		return nil;
 	
-	[self willChangeValueForKey:kWAFileThumbnailImage];
 	thumbnailImage = [UIImage imageWithContentsOfFile:thumbnailFilePath];
 	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
-	self.thumbnailImage = thumbnailImage;
-	[self didChangeValueForKey:kWAFileThumbnailImage];
 	
+	self.thumbnailImage = thumbnailImage;
 	return thumbnailImage;
 	
 }
 
 - (void) setThumbnailImage:(UIImage *)newThumbnailImage {
 
-	if (objc_getAssociatedObject(self, &kWAFileThumbnailImage) == newThumbnailImage)
-		return;
-	
-	[self willChangeValueForKey:kWAFileThumbnailImage];
-	objc_setAssociatedObject(self, &kWAFileThumbnailImage, newThumbnailImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self didChangeValueForKey:kWAFileThumbnailImage];
+	[self associateObject:newThumbnailImage usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:YES usingKey:kWAFileThumbnailImage];
 
 }
 
@@ -611,25 +622,18 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	NSString *largeThumbnailFilePath = self.largeThumbnailFilePath;
 	if (!largeThumbnailFilePath)
 		return nil;
-    
-	[self willChangeValueForKey:kWAFileLargeThumbnailImage];
+	
 	largeThumbnailImage = [UIImage imageWithContentsOfFile:largeThumbnailFilePath];
 	largeThumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
-	self.largeThumbnailImage = largeThumbnailImage;
-	[self didChangeValueForKey:kWAFileLargeThumbnailImage];
 	
+	self.largeThumbnailImage = largeThumbnailImage;
 	return largeThumbnailImage;
 	
 }
 
 - (void) setLargeThumbnailImage:(UIImage *)newLargeThumbnailImage {
 
-	if (objc_getAssociatedObject(self, &kWAFileLargeThumbnailImage) == newLargeThumbnailImage)
-		return;
-	
-	[self willChangeValueForKey:kWAFileLargeThumbnailImage];
-	objc_setAssociatedObject(self, &kWAFileLargeThumbnailImage, newLargeThumbnailImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self didChangeValueForKey:kWAFileLargeThumbnailImage];
+	[self associateObject:newLargeThumbnailImage usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:YES usingKey:kWAFileLargeThumbnailImage];
 
 }
 
@@ -684,6 +688,29 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 }
 
+- (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey {
+
+	if (objc_getAssociatedObject(self, aKey) == anObject)
+		return;
+	
+	if (emitsChangeNotifications)
+		[self willChangeValueForKey:propertyKey];
+	
+	objc_setAssociatedObject(self, aKey, anObject, policy);
+	
+	if (emitsChangeNotifications)
+		[self didChangeValueForKey:propertyKey];
+
+}
+
+- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
+
+	objc_setAssociatedObject(self, &kWAFileThumbnailImage, nil, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(self, &kWAFileLargeThumbnailImage, nil, OBJC_ASSOCIATION_ASSIGN);
+	objc_setAssociatedObject(self, &kWAFileResourceImage, nil, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
 
 # pragma mark - Deprecated
 
@@ -703,5 +730,13 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	return self.thumbnail;
 
 }
+
+@end
+
+
+
+
+
+@implementation WAFile (WAAdditions_PrivateAccessors)
 
 @end
