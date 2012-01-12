@@ -1,2 +1,2 @@
-ETReleaseNotes="- Fixes various bugs\n- Revises the Overview and introduces more randomness in cell candidacy determination\n- Fixes communication bug between the Authentication logic and the Remote Interface\n- Updates Reachability detector"
+ETReleaseNotes="- Initial implementation for a revised Single Post presentation / dismissal animation segue\n- Fixes up bug where the Overview layout might inadvertently use the wrong aspect ratio to determine landscape-or-portrait status\n- Revises graphic assets used in the Overview"
 ETMarketingVersionNumber="0.9.8"

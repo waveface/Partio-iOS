@@ -64,9 +64,7 @@
 	self.activityIndicatorView.center = (CGPoint){ 12, 12 };
 	
 	[self.interface addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
-	
-	[self soundEngine];
-	
+		
 	return self;
 
 }
