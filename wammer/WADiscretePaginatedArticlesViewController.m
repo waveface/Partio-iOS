@@ -186,7 +186,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
 	
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWood"]];
 	self.view.opaque = YES;
 	
 	__block __typeof__(self) nrSelf = self;

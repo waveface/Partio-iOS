@@ -48,6 +48,9 @@
 		4B8CA96E14BBE7BA006E06BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96D14BBE7BA006E06BB /* Foundation.framework */; };
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8CA97714BBE7BA006E06BB /* waveface_tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* waveface_tests.m */; };
+		4B8CC02A14BED121000E6F71 /* WAPageShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */; };
+		4B8CC02B14BED121000E6F71 /* WAPageShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */; };
+		4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02914BED121000E6F71 /* WAPatternWood.png */; };
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
 		4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD0D941490C97D00EAE3E1 /* WABackground.png */; };
 		4BC91A941446E3130019399B /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyph.png */; };
@@ -797,6 +800,9 @@
 		4B8CA97514BBE7BA006E06BB /* waveface_tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = waveface_tests.h; sourceTree = "<group>"; };
 		4B8CA97614BBE7BA006E06BB /* waveface_tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = waveface_tests.m; sourceTree = "<group>"; };
 		4B8CA97814BBE7BA006E06BB /* waveface-tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "waveface-tests-Prefix.pch"; sourceTree = "<group>"; };
+		4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageShadowLeft.png; path = Resources/WAPageShadowLeft.png; sourceTree = "<group>"; };
+		4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageShadowRight.png; path = Resources/WAPageShadowRight.png; sourceTree = "<group>"; };
+		4B8CC02914BED121000E6F71 /* WAPatternWood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternWood.png; path = Resources/WAPatternWood.png; sourceTree = "<group>"; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
@@ -1405,6 +1411,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		4B8CC02D14BED147000E6F71 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */,
+				4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */,
+				4B8CC02914BED121000E6F71 /* WAPatternWood.png */,
+			);
+			name = Timeline;
+			sourceTree = "<group>";
+		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
 			isa = PBXGroup;
 			children = (
@@ -1882,6 +1898,7 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4B8CC02D14BED147000E6F71 /* Timeline */,
 				FF5EE1AC149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop.png */,
 				FF5EE1AD149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop@2x.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
@@ -2723,6 +2740,9 @@
 				FF0AC0D3149F865E00AA5611 /* WAArticleTextStackCell.xib in Resources */,
 				FF5EE1AE149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop.png in Resources */,
 				FF5EE1AF149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop@2x.png in Resources */,
+				4B8CC02A14BED121000E6F71 /* WAPageShadowLeft.png in Resources */,
+				4B8CC02B14BED121000E6F71 /* WAPageShadowRight.png in Resources */,
+				4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
