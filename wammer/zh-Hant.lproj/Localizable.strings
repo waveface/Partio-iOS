@@ -205,8 +205,21 @@
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "6"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
+/* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
+"STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
+
+/* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
+"STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
+
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
 "ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝主程式";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface 主程式，完成安裝與設定後即可使用行動版本。";
+
+/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "5"; */
+"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝主程式";
+
+/* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface 主程式，完成安裝與設定後即可使用行動版本。";
+
