@@ -12,5 +12,7 @@
 @interface WAStackedArticleViewController : WAArticleViewController <UITableViewDelegate, WAStackViewDelegate>
 
 @property (nonatomic, readwrite, retain) IBOutlet WAStackView *stackView;
+@property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void); 
+@property (nonatomic, readwrite, copy) void (^onPullTop)(UIScrollView *pulledScrollView);
 
 @end
