@@ -332,7 +332,7 @@
   
   nil];
   
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled]) {
+  if (WAAdvancedFeaturesEnabled()) {
   
     [returnedArray addObjectsFromArray:[NSArray arrayWithObjects:
       
