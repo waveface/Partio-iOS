@@ -170,15 +170,20 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (WAFile *) representedFileAtIndex:(NSUInteger)anIndex {
 
-  return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
-  
-    WAFile *returnedObject = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anURI];
-    if (![self.fetchedResultsController.fetchedObjects containsObject:returnedObject])
-      return (id)nil;
-    
-    return (id)returnedObject;
-      
-  }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
+	WAFile *returnedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:anIndex]];
+	NSParameterAssert([self.article.files containsObject:returnedFile]);
+	
+	return returnedFile;
+
+	//  return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
+	//  
+	//    WAFile *returnedObject = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anURI];
+	//    if (![self.fetchedResultsController.fetchedObjects containsObject:returnedObject])
+	//      return (id)nil;
+	//    
+	//    return (id)returnedObject;
+	//      
+	//  }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
 
 }
 
