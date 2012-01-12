@@ -80,34 +80,35 @@
   return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
   
     NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
+		
+		BOOL canIntercept = YES;
+		
+		if (![urlResponse isKindOfClass:[NSHTTPURLResponse class]])
+			canIntercept = NO;
+		
+		if ([[inResponseContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"reachability"])
+			canIntercept = NO;
     
-    if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
-    
-      //  ?
-      
-      if (urlResponse.statusCode == 401) {
-      
-        if (nrSelf.userToken) {
-        
-          //  Token is failing right now
-					
-					NSUInteger returnCode = [[inParsedResponse valueForKeyPath:@"api_ret_code"] intValue];
-					NSString *returnMessage = [inParsedResponse valueForKeyPath:@"api_ret_message"];
-					
-          [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-					
-						[NSError errorWithDomain:@"com.waveface.wammer.remoteInterface" code:returnCode userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-							returnMessage, NSLocalizedDescriptionKey,
-						nil]], @"error",
-					
-					nil]];
-        
-        }
-      
-      }
-    
-    }
-    
+		if (!canIntercept)
+			return inParsedResponse;
+		
+		if ((urlResponse.statusCode == 401) && nrSelf.userToken) {
+		
+			//  Token is failing right now
+			
+			NSUInteger returnCode = [[inParsedResponse valueForKeyPath:@"api_ret_code"] intValue];
+			NSString *returnMessage = [inParsedResponse valueForKeyPath:@"api_ret_message"];
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				[NSError errorWithDomain:@"com.waveface.wammer.remoteInterface" code:returnCode userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+					returnMessage, NSLocalizedDescriptionKey,
+				nil]], @"error",
+			
+			nil]];
+		
+		}
+		
     return inParsedResponse;
     
   } copy] autorelease];
