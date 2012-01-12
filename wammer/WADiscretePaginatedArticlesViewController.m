@@ -1510,6 +1510,16 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 						usedWindow.onGestureRecognizeShouldReceiveTouch = ^ (UIGestureRecognizer *recognizer, UITouch *touch) {
 						
+							if (shownArticleVC.modalViewController)
+								return NO;
+							
+							if (shownArticleVC.navigationController.modalViewController)
+								return NO;
+							
+							if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
+							if (shownArticleVC.navigationController.topViewController != shownArticleVC)
+								return NO;
+						
 							CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
 							
 							if ([shownArticleVC respondsToSelector:@selector(isPointInsideInterfaceRect:)])

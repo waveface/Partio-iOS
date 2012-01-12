@@ -130,7 +130,12 @@
 		backgroundView.frame = CGRectInset(backgroundWrapperView.bounds, -64, 0);
 		[backgroundWrapperView addSubview:backgroundView];
 		
+		backgroundWrapperView.layer.borderColor = [[[UIColor redColor] colorWithAlphaComponent:0.5] CGColor];
+		backgroundWrapperView.layer.borderWidth = 4;
+		
 		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
+		nrCommentsVC.commentsView.backgroundColor = nil;
+		nrCommentsVC.commentsView.opaque = NO;
 		nrCommentsVC.commentsView.clipsToBounds = NO;
 		
 		[backgroundView.superview sendSubviewToBack:backgroundView]; 
@@ -160,7 +165,7 @@
 	
 	CGFloat preferredHeight = roundf(elementAnswer.height);
 	
-	if (anElement == self.commentsVC.view)
+	if ((anElement == self.commentsVC.view) || [self.commentsVC.view isDescendantOfView:anElement])
 		preferredHeight = MAX(144, preferredHeight);
 	
 	return (CGSize){
@@ -294,12 +299,6 @@
 	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	
-	self.wrapperView.layer.borderColor = [UIColor blueColor].CGColor;
-	self.wrapperView.layer.borderWidth = 1;
-	
-	self.stackView.layer.borderColor = [UIColor greenColor].CGColor;
-	self.stackView.layer.borderWidth = 2;
-	
 	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
 	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
 	topCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
@@ -325,8 +324,12 @@
 	
 #if 0
 	
-	self.stackView.layer.borderColor = [UIColor redColor].CGColor;
-	self.stackView.layer.borderWidth = 1.0;	
+	self.wrapperView.layer.borderColor = [UIColor redColor].CGColor;
+	self.wrapperView.layer.borderWidth = 1;
+	
+	self.stackView.layer.borderColor = [UIColor greenColor].CGColor;
+	self.stackView.layer.borderWidth = 2;
+	
 	self.commentsVC.view.layer.borderColor = [UIColor blueColor].CGColor;
 	self.commentsVC.view.layer.borderWidth = 2.0;
 	
@@ -406,8 +409,15 @@
 
 - (void) handlePreferredInterfaceRect:(CGRect)aRect {
 
-	self.stackView.frame = aRect;
-
+	CGRect intersection = CGRectIntersection(aRect, self.stackView.superview.bounds);
+	self.stackView.frame = intersection;
+	self.stackView.contentInset = (UIEdgeInsets){
+		CGRectGetMinY(intersection) - CGRectGetMinY(aRect),
+		0,
+		0,
+		0
+	};
+	
 }
 
 - (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint { 
