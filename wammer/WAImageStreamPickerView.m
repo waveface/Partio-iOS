@@ -50,6 +50,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		
 		returnedView.layer.borderColor = [UIColor whiteColor].CGColor;
 		returnedView.layer.borderWidth = 1.0f;
+		returnedView.backgroundColor = [UIColor colorWithWhite:0.3 alpha:1];
 		
     return returnedView;
 	
@@ -162,12 +163,22 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
         break;
       }
       case WAClippedThumbnailsStyle: {
-        NSParameterAssert(self.thumbnailAspectRatio);
+        
+				NSParameterAssert(self.thumbnailAspectRatio);
         NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
         float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
         for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta){
           [thumbnailedItemIndices addIndex:roundf(i)];
         }
+				
+				//	Guarantee that the last item is always shown
+				
+				if ([thumbnailedItemIndices count] < numberOfItems)
+				if ([thumbnailedItemIndices lastIndex] != (numberOfItems - 1)) {
+					[thumbnailedItemIndices removeIndex:[thumbnailedItemIndices lastIndex]];
+					[thumbnailedItemIndices addIndex:(numberOfItems - 1)];
+				}
+				
         break;
       }
     }
@@ -280,6 +291,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	}];
 	
 	__block CGFloat leftPadding = 0.5f * (usableWidth - exhaustedWidth);
+	CGFloat const startLeftPadding = leftPadding;
 	
   [thumbnailedItemIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 	
@@ -300,10 +312,10 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	}];
 	
 	
-	if (self.selectedItemIndex != NSNotFound) {
+	if (selectedItemIndex != NSNotFound) {
 	
-		id item = [self.items objectAtIndex:self.selectedItemIndex];
-		UIImage *thumbnailImage = [self.delegate thumbnailForItem:item inImageStreamPickerView:self];
+		id item = [self.items objectAtIndex:selectedItemIndex];
+		UIImage *thumbnailImage = [delegate thumbnailForItem:item inImageStreamPickerView:self];
 	
 		if (self.activeImageOverlay)
 			self.activeImageOverlay = self.viewForThumbnail(self.activeImageOverlay, thumbnailImage);
@@ -315,12 +327,27 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 			sizeForComponent(self.activeImageOverlay)
 		};
 		
-		self.activeImageOverlay.center = (CGPoint){
-			0.5 * (usableHeight / self.thumbnailAspectRatio) + 
-      0.5f * (usableWidth - exhaustedWidth) +
-      (((exhaustedWidth - 0.5 * usableHeight / self.thumbnailAspectRatio) / numberOfItems + 1.0) * self.selectedItemIndex) + 4.0,
-			CGRectGetMidY(usableRect)
-		};
+		NSUInteger numberOfItems = [thumbnailedItemIndices count];
+		
+		if (numberOfItems > 1) {
+		
+			self.activeImageOverlay.center = (CGPoint){
+
+				0.5f * (usableWidth - exhaustedWidth)
+					+ (leftPadding - startLeftPadding) * ((float_t)selectedItemIndex / (float_t)[self.items count]),
+
+				CGRectGetMidY(usableRect)
+
+			};
+		
+		} else {
+		
+			self.activeImageOverlay.center = (CGPoint){
+				CGRectGetMidX(usableRect),
+				CGRectGetMidY(usableRect)
+			};
+		
+		}
     
     self.activeImageOverlay.frame = CGRectInset(self.activeImageOverlay.frame, -4, -4);
 				

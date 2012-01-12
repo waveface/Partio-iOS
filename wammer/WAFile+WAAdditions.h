@@ -11,8 +11,8 @@
 @interface WAFile (WAAdditions)
 
 @property (nonatomic, readonly, retain) UIImage *resourceImage;
-@property (nonatomic, readwrite, retain) UIImage *largeThumbnailImage;
-@property (nonatomic, readwrite, retain) UIImage *thumbnailImage;
+@property (nonatomic, readonly, retain) UIImage *largeThumbnailImage;
+@property (nonatomic, readonly, retain) UIImage *thumbnailImage;
 
 - (UIImage *) presentableImage;	//	Conforms to KVO; automatically chooses the highest resolution thing
 

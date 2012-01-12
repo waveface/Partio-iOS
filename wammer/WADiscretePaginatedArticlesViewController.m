@@ -921,33 +921,21 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 }
 
 - (NSArray *) debugActionSheetControllerActions {
+
+	NSMutableArray *returnedActions = [[[super debugActionSheetControllerActions] mutableCopy] autorelease];
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	if (![defaults boolForKey:kWAAdvancedFeaturesEnabled])
-		return nil;
-	
+	if (!WAAdvancedFeaturesEnabled())
+		return returnedActions;
+		
 	__block __typeof__(self) nrSelf = self; 
+
+	[returnedActions addObject:[IRAction actionWithTitle:@"Reflow" block: ^ {
+		
+		[nrSelf reloadViewContents];
+		
+	}]];
 	
-	return [[super debugActionSheetControllerActions] 
-					arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:
-																				 
-																				 [IRAction actionWithTitle:@"Reflow" block: ^ {
-						[nrSelf reloadViewContents];
-						
-					}],
-																				 
-																				 [IRAction actionWithTitle:@"Label Smoke" block: ^ {
-						
-						UIViewController *testingVC = [[(UIViewController *)[NSClassFromString(@"IRLabelTestingViewController") alloc] init] autorelease];
-						__block UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testingVC] autorelease];
-						testingVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:@"Close" action:^{
-							[navC dismissModalViewControllerAnimated:YES];
-						}];
-						navC.modalPresentationStyle = UIModalPresentationFormSheet;
-						[[UIApplication sharedApplication].keyWindow.rootViewController presentModalViewController:navC animated:YES];
-						
-					}],
-					nil]];
+	return returnedActions;
 	
 }
 
@@ -1037,6 +1025,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 }
 
 - (void) retrieveLatestReadingProgressWithCompletion:(void (^)(NSTimeInterval))aBlock {
+
+	if ([[WARemoteInterface sharedInterface] isPostponingDataRetrievalTimerFiring])
+		return;
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
