@@ -155,6 +155,8 @@
 		[NSException raise:NSInternalInconsistencyException format:@"%s shall only be called when the current alert view is not on screen.", __PRETTY_FUNCTION__];
 	
 	UIWindow *window = [UIApplication sharedApplication].keyWindow;
+	if (!window)
+		window = [[UIApplication sharedApplication].windows objectAtIndex:0];
 	NSParameterAssert(window);
 	
 	[window addSubview:self];
