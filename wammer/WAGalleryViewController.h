@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import "WAView.h"
 
+#define WAGalleryViewController_UsesProxyOverlay 0
+
 extern NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI;
 
 @interface WAGalleryViewController : UIViewController
