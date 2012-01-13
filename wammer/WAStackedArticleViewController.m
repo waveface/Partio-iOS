@@ -22,6 +22,7 @@
 
 @interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate>
 
+@property (nonatomic, readwrite, retain) WAArticleTextStackCell *topCell;
 @property (nonatomic, readwrite, retain) WAArticleTextStackCell *textStackCell;
 @property (nonatomic, readwrite, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *commentsVC;
@@ -34,16 +35,20 @@
 
 
 @implementation WAStackedArticleViewController
-@synthesize textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView, onViewDidLoad, onPullTop;
+@synthesize headerView;
+@synthesize topCell, textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
 
 - (void) dealloc {
 
+	[headerView release];
+	[topCell release];
 	[textStackCell release];
 	[commentsVC release];
 	[stackView release];
 	[wrapperView release];
 	[onViewDidLoad release];
 	[onPullTop release];
+	[footerCell release];
 	
 	[super dealloc];
 
@@ -57,8 +62,10 @@
 	textStackCell = [[WAArticleTextStackCell cellFromNib] retain];
 	textStackCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 	
+	textStackCell.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.3];
+	
 	__block WAArticleTextEmphasisLabel *cellLabel = self.textStackCellLabel;
-	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 16, 80, 0, 80 }; 
+	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 0, 24, 0, 24 };
 	
 	cellLabel.frame = UIEdgeInsetsInsetRect(textStackCell.contentView.bounds, cellLabelInsets);
 	cellLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -88,6 +95,8 @@
 		return textStackCellLabel;
 	
 	textStackCellLabel = [[WAArticleTextEmphasisLabel alloc] initWithFrame:CGRectZero];
+	textStackCellLabel.backgroundColor = nil;
+	textStackCellLabel.opaque = NO;
 	textStackCellLabel.placeholder = @"This post has no body text";
 	[textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
@@ -303,15 +312,15 @@
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
 	
-	WAArticleTextStackCell *topCell = [WAArticleTextStackCell cellFromNib];
-	topCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
-	topCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
-	
-	WAArticleTextStackCell *separatorCell = [WAArticleTextStackCell cellFromNib];
-	separatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
-	separatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 24 }};
-
-	[self.stackView addStackElementsObject:topCell];
+	if (!headerView) {
+		
+		WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
+		topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
+		topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
+		
+		self.headerView = topTextStackCell;
+		
+	}
 	
 	BOOL hasText = [self.article.text length];
 	BOOL showsComments = NO;
@@ -322,16 +331,18 @@
 	
 	if (showsComments) {
 		if (hasText) {
-			[self.stackView addStackElementsObject:separatorCell];
+			WAArticleTextStackCell *commentsSeparatorCell = [WAArticleTextStackCell cellFromNib];
+			commentsSeparatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
+			commentsSeparatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(commentsSeparatorCell.bounds), 24 }};
+			[self.stackView addStackElementsObject:commentsSeparatorCell];
 		}
 		[self.stackView addStackElementsObject:self.commentsVC.view];
 	}
 
-	WAArticleTextStackCell *bottomCell = [WAArticleTextStackCell cellFromNib];
-	bottomCell.backgroundView = WAStandardArticleStackCellBottomBackgroundView();
-	bottomCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(bottomCell.bounds), 48 }};
-
-	[self.stackView addStackElementsObject:bottomCell];	
+	WAArticleTextStackCell *contentsSeparatorCell = [WAArticleTextStackCell cellFromNib];
+	contentsSeparatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
+	contentsSeparatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(contentsSeparatorCell.bounds), 24 }};
+	[self.stackView addStackElementsObject:contentsSeparatorCell];
 	
 #if 0
 	
@@ -345,13 +356,62 @@
 	self.commentsVC.view.layer.borderWidth = 2.0;
 	
 #endif
+
+	[self.stackView addStackElementsObject:self.footerCell];
 	
 	self.stackView.backgroundColor = nil;
 	self.wrapperView.backgroundColor = nil;
-	
+
 	if (self.onViewDidLoad)
-		self.onViewDidLoad();
+		self.onViewDidLoad(self, self.view);
 	
+}
+
+- (void) setHeaderView:(UIView *)newHeaderView {
+
+	if (headerView == newHeaderView)
+		return;
+	
+	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
+	
+	if ([allStackElements containsObject:headerView]) {
+		[headerView removeFromSuperview];
+		[allStackElements removeObject:headerView];
+	}
+	
+	[headerView release];
+	headerView = [newHeaderView retain];
+	
+	if (![allStackElements containsObject:headerView]) {
+		[allStackElements insertObject:headerView atIndex:0];
+	}
+	
+	[self.stackView setNeedsLayout];
+
+}
+
+- (UIView *) footerCell {
+
+	if (footerCell)
+		return footerCell;
+	
+	WAArticleTextStackCell *footerShadow = [WAArticleTextStackCell cellFromNib];
+	footerShadow.backgroundView = WAStandardArticleStackCellBottomBackgroundView();
+	footerShadow.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(footerShadow.bounds), 1024 }};
+	
+	footerCell = [[UIView alloc] initWithFrame:(CGRect){
+		CGPointZero,
+		(CGSize){
+			CGRectGetWidth(footerShadow.bounds),
+			0
+		}
+	}];
+	
+	footerShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+	[footerCell addSubview:footerShadow];
+	
+	return footerCell;
+
 }
 
 - (void) viewDidUnload {
@@ -437,6 +497,10 @@
 - (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint { 
 
 	CGRect stackViewFrame = [self.view convertRect:self.stackView.bounds fromView:self.stackView];
+	
+	if (self.stackView.contentOffset.y > CGRectGetMinY(stackViewFrame))
+		return YES;
+	
 	return CGRectContainsPoint(stackViewFrame, aPoint);
 
 }

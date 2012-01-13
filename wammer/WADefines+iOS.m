@@ -294,13 +294,11 @@ UIView * WAStandardArticleStackCellBackgroundView (void) {
   [backgroundView addSubview:((^ {
   
     UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ -32, -32, 0, -32 });
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
     returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
     returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 48.0/128.0, 128.0/384.0, 32.0/128.0 };
-		
-		returnedView.layer.borderColor = [UIColor redColor].CGColor;
-		returnedView.layer.borderWidth = 1;
 		
     return returnedView;
   
@@ -313,17 +311,28 @@ UIView * WAStandardArticleStackCellBackgroundView (void) {
 UIView * WAStandardArticleStackCellTopBackgroundView (void) {
 
 	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
-	backgroundView.backgroundColor = [UIColor clearColor];
 	
   [backgroundView addSubview:((^ {
   
     UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
-		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ -32, -32, 0, -32 });
+		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ 0, -32, 0, -32 });
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
     returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
-		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 0.0/128.0, 384.0/384.0, 48.0/128.0 };
+		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 32.0/128.0, 384.0/384.0, 16.0/128.0 };
 		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 40.0/48.0, 128.0/384.0, 8.0/48.0 };
+		
+    return returnedView;
+  
+  })())];
+	
+	[backgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+		returnedView.frame = returnedView.frame;
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+		returnedView.alpha = 0.35f;
 		
     return returnedView;
   
@@ -352,6 +361,18 @@ UIView * WAStandardArticleStackCellCenterBackgroundView (void) {
   
   })())];
 	
+	[backgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+		returnedView.frame = returnedView.frame;
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+		returnedView.alpha = 0.35f;
+		
+    return returnedView;
+  
+  })())];
+
 	return backgroundView;	
 
 }
@@ -370,6 +391,18 @@ UIView * WAStandardArticleStackCellBottomBackgroundView (void) {
     returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
 		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 80.0/128.0, 384.0/384.0, 48.0/128.0 };
 		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 0.0/48.0, 128.0/384.0, 8.0/48.0 };
+		
+    return returnedView;
+  
+  })())];
+	
+	[backgroundView addSubview:((^ {
+  
+    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+		returnedView.frame = returnedView.frame;
+    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
+		returnedView.alpha = 0.35f;
 		
     return returnedView;
   
