@@ -34,6 +34,9 @@
 
 #import "WAGestureWindow.h"
 
+#import "IRTransparentToolbar.h"
+#import "WAButton.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -524,7 +527,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backdropView.backgroundColor = [UIColor whiteColor];
+	backdropView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.9];
 	backdropView.layer.shadowOpacity = 0.35;
 	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
 	[returnedView addSubview:backdropView];
@@ -1501,8 +1504,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 								CGRect contextRect = IRCGRectAlignToRect((CGRect){
 									CGPointZero,
 									(CGSize){
-										CGRectGetWidth(containerView.bounds) - 80,
-										CGRectGetHeight(containerView.bounds) - 40
+										CGRectGetWidth(containerView.bounds) - 24,
+										CGRectGetHeight(containerView.bounds) - 56
 									}
 								}, containerView.bounds, irBottom, YES);
 								
@@ -1546,6 +1549,38 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 							
 						})];
 						
+					}
+					
+					if ([shownArticleVC respondsToSelector:@selector(setHeaderView:)]) {
+					
+						[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
+						
+							UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
+							UIView *topBackgroundView = WAStandardArticleStackCellCenterBackgroundView();
+							topBackgroundView.frame = enclosingView.bounds;
+							topBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+							[enclosingView addSubview:topBackgroundView];
+							
+							WAButton *closeButton = [WAButton buttonWithType:UIButtonTypeCustom];
+							[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
+							[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
+							[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
+							closeButton.frame = enclosingView.bounds;
+							closeButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+							[enclosingView addSubview:closeButton];
+							
+							closeButton.action = ^ {
+							
+								void (^dismissBlock)(void) = objc_getAssociatedObject(shownArticleVC, kDismissBlock);
+								if (dismissBlock)
+									dismissBlock();
+							
+							};
+
+							return enclosingView;
+														
+						})())];
+					
 					}
 					
 					[preconditions irExecuteAllObjectsAsBlocks];
@@ -1621,7 +1656,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					UIView *rootView = containerWindow.rootViewController.view;
 					NSParameterAssert(rootView);
 					
-					[UIView animateWithDuration:0.35 delay:0 options:0 animations:^{
+					UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
+					
+					[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations:^{
 					
 						rootView.frame = [rootView.superview convertRect:CGRectOffset(rootView.bounds, 0, CGRectGetHeight(rootView.bounds)) fromView:rootView];
 						containerWindow.backgroundColor = nil;
