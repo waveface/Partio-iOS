@@ -83,6 +83,20 @@
 
 }
 
+/*
+
++---+---+
+| 0 | 4 |
++---+---+
+| 1 | 5 |
++---+---+
+| 2 | 6 |
++---+---+
+| 3 | 7 |
++---+---+
+
+*/
+
 - (NSDictionary *) defaultTilingPatternGroups {
 
 	if (defaultTilingPatternGroups)
@@ -182,11 +196,18 @@
 	//	Layout progress introspection helpers
 	
 	__block unsigned char tileMap = 0b00000000;
+	__block unsigned char nextTile = 0b00000000;
+  
+  BOOL (^usableTile)(unsigned char) = ^ (unsigned char bitMask) {
+
+    for (unsigned char i = 0b10000000; i > 0; i >>= 1)
+      if ( !(tileMap & i) ){
+        nextTile = i;
+        break;
+      }  
+		return (BOOL) ( !(tileMap & bitMask) && (bitMask & nextTile) ) ;
+	};	
 	
-	BOOL (^tilesOccupied)(unsigned char) = ^ (unsigned char bitMask) {
-		return (BOOL)(tileMap & bitMask);
-	};
-		
 	IRDiscreteLayoutGrid *portraitPrototype = [IRDiscreteLayoutGrid prototype];
 	portraitPrototype.contentSize = (CGSize){ 768, 1024 };
 	
@@ -224,7 +245,7 @@
 		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
 		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, NSUInteger index, BOOL *stop) {
-			return (NSNumber *)(tilesOccupied([pattern unsignedCharValue]) ? nil : pattern);
+			return (NSNumber *)(usableTile([pattern unsignedCharValue]) ? pattern: nil);
 		}];
 		
 		if (![actualPatterns count])

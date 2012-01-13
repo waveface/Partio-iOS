@@ -56,18 +56,18 @@
 	
 	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
-		6
+		3
 	}, kCAGravityTop)];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.25] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
+	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[gridViewWrapper addSubview:topShadow];
 	
 	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
-		6
+		3
 	}, kCAGravityBottom)];
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.25] anchor:irBottom];
+	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irBottom];
 	[gridViewWrapper addSubview:bottomShadow];
 		
 	self.gridView.clipsToBounds = NO;
@@ -76,7 +76,18 @@
 	[gridView reloadData];
 	[gridView setNeedsLayout];
 	
-	[self.stackView addStackElementsObject:gridViewWrapper];
+	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
+
+	UIView *footerCell = self.footerCell;
+	if ([allStackElements containsObject:footerCell]) {
+		[[footerCell retain] autorelease];
+		[allStackElements removeObject:footerCell];
+	}
+	
+	[allStackElements addObject:gridViewWrapper];
+	
+	if (footerCell)
+		[allStackElements addObject:footerCell];
 	
 }
 
@@ -167,7 +178,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 240, 240 };
+	return (CGSize){ 224, 224 };
 
 }
 
