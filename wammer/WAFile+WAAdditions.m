@@ -739,4 +739,6 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 @implementation WAFile (WAAdditions_PrivateAccessors)
 
+@dynamic thumbnailImage, largeThumbnailImage, resourceImage;
+
 @end
