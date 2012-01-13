@@ -205,7 +205,6 @@
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
 		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
 		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
-		FFA774CD14ADBEB70044674B /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
@@ -1290,7 +1289,6 @@
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
-				FFA774CD14ADBEB70044674B /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3290,6 +3288,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+				WF_USES_TESTFLIGHT = NO;
 			};
 			name = Debug;
 		};
@@ -3333,6 +3332,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
+				WF_USES_TESTFLIGHT = NO;
 			};
 			name = Release;
 		};
