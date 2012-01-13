@@ -68,6 +68,8 @@
 		FA259F451457E96300F79C8F /* WASettingsGlyph~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */; };
 		FA259F461457E96300F79C8F /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */; };
 		FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */; };
+		FF0505EB14C088D6002EA455 /* WACornerCloseButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0505E914C088D6002EA455 /* WACornerCloseButton.png */; };
+		FF0505EC14C088D6002EA455 /* WACornerCloseButtonActive.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0505EA14C088D6002EA455 /* WACornerCloseButtonActive.png */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
 		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_Plaintext.m */; };
@@ -836,6 +838,8 @@
 		FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADefaultUserIcon.png; path = Resources/WADefaultUserIcon.png; sourceTree = "<group>"; };
 		FF027CC113F13E03009D979A /* WAPatternGreenFibers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternGreenFibers.png; path = Resources/WAPatternGreenFibers.png; sourceTree = "<group>"; };
 		FF027CC313F1433B009D979A /* WAPatternPaper.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternPaper.png; path = Resources/WAPatternPaper.png; sourceTree = "<group>"; };
+		FF0505E914C088D6002EA455 /* WACornerCloseButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACornerCloseButton.png; path = Resources/WACornerCloseButton.png; sourceTree = "<group>"; };
+		FF0505EA14C088D6002EA455 /* WACornerCloseButtonActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACornerCloseButtonActive.png; path = Resources/WACornerCloseButtonActive.png; sourceTree = "<group>"; };
 		FF0505ED14C088FF002EA455 /* WAButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAButton.h; sourceTree = "<group>"; };
 		FF0505EE14C088FF002EA455 /* WAButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAButton.m; sourceTree = "<group>"; };
 		FF06363814B346CB00E7AF78 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -1906,6 +1910,8 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FF0505E914C088D6002EA455 /* WACornerCloseButton.png */,
+				FF0505EA14C088D6002EA455 /* WACornerCloseButtonActive.png */,
 				4B8CC02D14BED147000E6F71 /* Timeline */,
 				FF5EE1AC149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop.png */,
 				FF5EE1AD149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop@2x.png */,
@@ -2753,6 +2759,8 @@
 				4B8CC02A14BED121000E6F71 /* WAPageShadowLeft.png in Resources */,
 				4B8CC02B14BED121000E6F71 /* WAPageShadowRight.png in Resources */,
 				4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */,
+				FF0505EB14C088D6002EA455 /* WACornerCloseButton.png in Resources */,
+				FF0505EC14C088D6002EA455 /* WACornerCloseButtonActive.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
