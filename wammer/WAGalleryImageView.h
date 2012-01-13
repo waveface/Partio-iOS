@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WAView.h"
 
 @class WAGalleryImageView;
 @protocol WAGalleryImageViewDelegate <NSObject>
@@ -17,7 +17,7 @@
 @end
 
 
-@interface WAGalleryImageView : UIView
+@interface WAGalleryImageView : WAView
 
 + (WAGalleryImageView *) viewForImage:(UIImage *)image;
 
@@ -25,6 +25,7 @@
 
 @property (nonatomic, readwrite, retain) UIImage *image;
 - (void) setImage:(UIImage *)newImage animated:(BOOL)animate;
+- (void) setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync;
 
 - (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer;
 - (void) reset;

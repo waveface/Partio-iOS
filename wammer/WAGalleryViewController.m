@@ -12,6 +12,7 @@
 #import "WAGalleryImageView.h"
 #import "WAImageStreamPickerView.h"
 #import "UIImage+IRAdditions.h"
+#import "IRLifetimeHelper.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
@@ -38,6 +39,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 @property (nonatomic, readwrite, assign) BOOL requiresReloadOnFetchedResultsChange;
 
+#if WAGalleryViewController_UsesProxyOverlay
+@property (nonatomic, readwrite, retain) WAGalleryImageView *swipeOverlay;
+#endif
+
+- (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode;
+
 @end
 
 
@@ -51,6 +58,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize onDismiss;
 @synthesize onViewDidLoad;
 @synthesize requiresReloadOnFetchedResultsChange;
+
+#if WAGalleryViewController_UsesProxyOverlay
+@synthesize swipeOverlay;
+#endif
 
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI {
@@ -130,7 +141,23 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	switch (type) {
 	
 		case NSFetchedResultsChangeUpdate: {
-			//	No op
+			
+			NSUInteger index = [self.article.fileOrder indexOfObject:[[anObject objectID] URIRepresentation]];
+			if (index != NSNotFound) {
+				
+				WAGalleryImageView *imageView = nil;
+				@try {
+					imageView = (WAGalleryImageView *)[self.paginatedView existingPageAtIndex:index];
+				} @catch (NSException *e) {
+					NSLog(@"Error %@", e);
+				}
+				
+				if (imageView) {
+					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:NO forceSync:NO];
+				}
+
+			}
+			
 			break;
 		}
 
@@ -295,6 +322,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad();
+	
+#if WAGalleryViewController_UsesProxyOverlay
+	
+	[self.view insertSubview:self.swipeOverlay aboveSubview:self.paginatedView];
+
+#endif
 
 }
 
@@ -318,6 +351,32 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	};
 
 }
+
+
+#if WAGalleryViewController_UsesProxyOverlay
+
+- (WAGalleryImageView *) swipeOverlay {
+
+	if (swipeOverlay)
+		return swipeOverlay;
+	
+	swipeOverlay = [[WAGalleryImageView viewForImage:nil] retain];
+	swipeOverlay.hidden = YES;
+	swipeOverlay.frame = self.view.bounds;
+	swipeOverlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	swipeOverlay.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+		return NO;
+	};
+	
+	swipeOverlay.alpha = 0.5;
+	
+	[swipeOverlay reset];
+	
+	return swipeOverlay;
+
+}
+
+#endif
 
 
 
@@ -364,24 +423,28 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	//  WAFile *representedFile = [[self.fetchedResultsController fetchedObjects] objectAtIndex:index];
-  WAFile *representedFile = [self representedFileAtIndex:index];
-	UIImage *representedImage = representedFile.presentableImage;
-	
-	WAGalleryImageView *returnedView =  [WAGalleryImageView viewForImage:representedImage];
-	[returnedView irBind:@"image" toObject:representedFile keyPath:@"presentableImage" options:nil];
-	
-	returnedView.delegate = self;
-  
-  [returnedView reset];
-	
-	return returnedView;
+	return [self configureGalleryImageView:[WAGalleryImageView viewForImage:nil] withFile:[self representedFileAtIndex:index] degradeQuality:NO forceSync:NO];
 
 }
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
 	return nil;
+
+}
+
+- (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode {
+
+	if (exclusivelyUsesThumbnail) {
+		[aView setImage:aFile.thumbnailImage animated:NO synchronized:forceSynchronousImageDecode];
+	} else {
+		[aView setImage:aFile.presentableImage animated:NO synchronized:forceSynchronousImageDecode];
+	}
+	
+	aView.delegate = self;
+  [aView reset];
+	
+	return aView;
 
 }
 
@@ -414,9 +477,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (id) itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker {
 
   WAFile *representedFile = [self representedFileAtIndex:anIndex];
-
-	//  WAFile *representedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:anIndex]];
-  
 	return representedFile;
 
 }
@@ -433,8 +493,31 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	if (index == NSNotFound)
 		return;
-		
-	[self.paginatedView scrollToPageAtIndex:index animated:NO];
+	
+	WAFile *representedFile = [self representedFileAtIndex:index];
+	NSParameterAssert(representedFile);
+	
+	NSUInteger selectedIndex = picker.selectedItemIndex;
+
+#if WAGalleryViewController_UsesProxyOverlay
+
+	self.swipeOverlay.hidden = NO;
+	[self configureGalleryImageView:self.swipeOverlay withFile:representedFile degradeQuality:YES forceSync:NO];
+	[self.swipeOverlay reset];
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+		if (picker.selectedItemIndex == selectedIndex) {
+			[self.paginatedView scrollToPageAtIndex:selectedIndex animated:NO];
+			self.swipeOverlay.hidden = YES;
+		}
+	});
+
+#else
+	
+	[self.paginatedView scrollToPageAtIndex:selectedIndex animated:NO];
+
+#endif
+
 
 }
 
@@ -541,6 +624,14 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 
 
+- (void) didReceiveMemoryWarning {
+
+	[super didReceiveMemoryWarning];
+	
+	
+
+}
+
 - (void) viewDidUnload {
 
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
@@ -552,6 +643,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.streamPickerView = nil;
 	
 	self.view.onLayoutSubviews = nil;
+	
+	#if WAGalleryViewController_UsesProxyOverlay
+	self.swipeOverlay = nil;
+	#endif
 		
 	[super viewDidUnload];
 

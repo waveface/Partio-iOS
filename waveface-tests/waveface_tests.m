@@ -48,4 +48,24 @@
 	STAssertEquals(days, 3, @"3 days");
 }
 
+- (void)testBitOperation
+{
+  __block unsigned char tileMap = 0b00000000;
+	__block unsigned char nextTile = 0b00000000;
+  
+  BOOL (^usableTile)(unsigned char) = ^ (unsigned char bitMask) {
+
+    for (unsigned char i = 0b10000000; i > 0; i >>= 1)
+      if ( !(tileMap & i) ){
+        nextTile = i;
+        break;
+      }  
+		return (BOOL) ( !(tileMap & bitMask) && (bitMask & nextTile) ) ;
+	};
+  
+  STAssertTrue( usableTile(0b11001100), @"should be true");
+  STAssertFalse( usableTile(0b00110011), @"should be false");
+  
+}
+
 @end

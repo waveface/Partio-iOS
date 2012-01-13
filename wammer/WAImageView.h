@@ -9,6 +9,19 @@
 #import <UIKit/UIKit.h>
 
 
+#ifndef __WAImageView__
+#define __WAImageView__
+
+enum {	
+	
+	WAImageViewForceAsynchronousOption = 1,
+	WAImageViewForceSynchronousOption = 2
+	
+}; typedef NSUInteger WAImageViewOptions;
+
+#endif
+
+
 @class WAImageView;
 @protocol WAImageViewDelegate 
 
@@ -22,5 +35,7 @@
 + (Class) preferredClusterClass;
 
 @property (nonatomic, readwrite, assign) id<WAImageViewDelegate> delegate;
+
+- (void) setImage:(UIImage *)anImage withOptions:(WAImageViewOptions)options;
 
 @end
