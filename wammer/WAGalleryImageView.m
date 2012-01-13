@@ -157,13 +157,19 @@
 
 - (void) setImage:(UIImage *)newImage animated:(BOOL)animate {
 
+	[self setImage:newImage animated:animate synchronized:NO];
+
+}
+
+- (void) setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync {
+
 	if (self.imageView.image == newImage)
 		return;
 
 	void (^operations)() = ^ {
 		
     [self willChangeValueForKey:@"image"];
-		self.imageView.image = newImage;
+		[self.imageView setImage:newImage withOptions:(sync ? WAImageViewForceSynchronousOption : WAImageViewForceAsynchronousOption)];
 		self.imageView.bounds = (CGRect) { CGPointZero, newImage.size } ;
 		self.activityIndicator.hidden = !!(newImage);
     
@@ -346,7 +352,7 @@
 	id currentDelegate = self.delegate;
 	delegate = nil;
 	
-	CGRect scrollViewBounds = self.scrollView.bounds;
+	CGRect scrollViewBounds = self.bounds;
 	CGRect presumedImageRect = IRGravitize(scrollViewBounds, self.image.size, kCAGravityResizeAspect);
 	
 	if (self.needsContentAdjustmentOnLayout) {
@@ -376,7 +382,7 @@
 		
 		if (!CGSizeEqualToSize(oldScrollViewContentSize, newScrollViewContentSize))
 			self.scrollView.contentSize = newScrollViewContentSize;
-				
+		
 	}
 	
 	if (self.needsContentAdjustmentOnLayout || self.needsInsetAdjustmentOnLayout) {
@@ -444,6 +450,10 @@
 		self.revertsOnZoomEnd = YES;
 	else
 		[self.scrollView setZoomScale:1 animated:NO];
+	
+	self.needsContentAdjustmentOnLayout = YES;
+	self.needsOffsetAdjustmentOnLayout = YES;
+	self.needsInsetAdjustmentOnLayout = YES;
 	
 	[self setNeedsLayout];
 
