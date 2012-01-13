@@ -120,7 +120,7 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
   
-  NSString *aDevice = ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )? @"iPad": @"iPhone";
+  NSString *aDevice = [[UIDevice currentDevice] name];
   
 	[self.engine fireAPIRequestNamed:@"auth/login" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
