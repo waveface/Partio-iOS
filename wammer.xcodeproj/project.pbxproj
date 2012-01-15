@@ -470,6 +470,13 @@
 			remoteGlobalIDString = FF460D47149CFBFD00DB7F0B;
 			remoteInfo = IRKeychainX;
 		};
+		FF543F3C14C30A15005D3F7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF0F650E14C2DDAA0037787A;
+			remoteInfo = IRFoundationsTest;
+		};
 		FF59A3AC1441C97000BB1FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
@@ -1665,6 +1672,7 @@
 			children = (
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
 				FF72C188142789FA00B5D838 /* IRFoundationsX.framework */,
+				FF543F3D14C30A15005D3F7D /* IRFoundationsTest.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2387,6 +2395,13 @@
 			fileType = wrapper.framework;
 			path = IRKeychainX.framework;
 			remoteRef = FF460D7E149CFC0600DB7F0B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF543F3D14C30A15005D3F7D /* IRFoundationsTest.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IRFoundationsTest.octest;
+			remoteRef = FF543F3C14C30A15005D3F7D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */ = {

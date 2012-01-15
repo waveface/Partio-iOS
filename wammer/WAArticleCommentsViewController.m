@@ -46,35 +46,10 @@
 
 	WAArticleCommentsViewController *returnedController =  [[[self alloc] initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]] autorelease];
 	
-	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	returnedController.representedArticleURI = articleObjectURL;
 	
 	return returnedController;
-
-}
-
-- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-	
-	return self;
-
-}
-
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
-	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	
-	});
 
 }
 
