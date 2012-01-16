@@ -926,6 +926,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 	}];
 	
+	imagePickerController.usesAssetsLibrary = NO;
+	
 	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:imagePickerController] autorelease];
 	
 	return imagePickerPopover;
