@@ -33,6 +33,7 @@ NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword"
 
 NSString * const kWADebugLastScanSyncBezelsVisible = @"WADebugLastScanSyncBezelsVisible";
 NSString * const kWADebugUsesDiscreteArticleFlip = @"WADebugUsesDiscreteArticleFlip";
+NSString * const kWADebugPersistentStoreName = @"WADebugPersistentStoreName";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
 NSString * const kWAApplicationDidReceiveRemoteURLNotification = @"WAApplicationDidReceiveRemoteURLNotification";
