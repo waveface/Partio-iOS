@@ -942,38 +942,27 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 		stitchedFile.article = capturedArticle;
 		
-		//	Create a new file entity, associate it, but leave NO photo in it
+		NSURL *finalFileURL = nil;
 		
-		dispatch_async(dispatch_get_global_queue(0, 0), ^ {
+		if (selectedAssetURI)
+			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
 		
-			NSURL *finalFileURL = nil;
-				
-			if (selectedAssetURI)
-				finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+		if (!finalFileURL)
+		if (!selectedAssetURI && representedAsset) {
+		
+			UIImage *fullImage = [[representedAsset defaultRepresentation] irImage];
+			NSData *fullImageData = UIImagePNGRepresentation(fullImage);
 			
-			if (!finalFileURL)
-			if (!selectedAssetURI && representedAsset) {
+			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
+		
+		}
 			
-				UIImage *fullImage = [[representedAsset defaultRepresentation] irImage];
-				NSData *fullImageData = UIImagePNGRepresentation(fullImage);
-				
-				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
-				
-			}
-				
-			dispatch_async(dispatch_get_main_queue(), ^ {			
-				
-				[stitchedFile.article willChangeValueForKey:@"fileOrder"];
-				
-				stitchedFile.resourceType = (NSString *)kUTTypeImage;
-				//stitchedFile.resourceURL = [finalFileURL absoluteString];
-				stitchedFile.resourceFilePath = [finalFileURL path];
-				
-				[stitchedFile.article didChangeValueForKey:@"fileOrder"];
-				
-			});
-			
-		});
+		[stitchedFile.article willChangeValueForKey:@"fileOrder"];
+		
+		stitchedFile.resourceType = (NSString *)kUTTypeImage;
+		stitchedFile.resourceFilePath = [finalFileURL path];
+		
+		[stitchedFile.article didChangeValueForKey:@"fileOrder"];
 		
 	}
 	
