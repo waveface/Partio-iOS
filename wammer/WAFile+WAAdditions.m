@@ -82,7 +82,24 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
   [super awakeFromFetch];
   
   [self irReconcileObjectOrderWithKey:@"pageElements" usingArrayKeyed:@"pageElementOrder"];
-
+	
+	//	TBD: We’re assuming that everthing is restorable, might not be true if users pound on local drafts more
+	
+	NSFileManager *fileManager = [NSFileManager defaultManager];	
+	NSError *error = nil;
+	
+	if (![self validateThumbnailImage:nil])
+	if ([fileManager removeItemAtPath:[self primitiveThumbnailFilePath] error:nil])
+		[self setPrimitiveThumbnailFilePath:nil];
+		
+	if (![self validateLargeThumbnailImage:nil])
+	if ([fileManager removeItemAtPath:[self primitiveLargeThumbnailFilePath] error:nil])
+		[self setPrimitiveLargeThumbnailFilePath:nil];
+		
+	if (![self validateResourceImage:&error])
+	if ([fileManager removeItemAtPath:[self primitiveResourceFilePath] error:nil])
+		[self setPrimitiveResourceFilePath:nil];
+	
 }
 
 - (NSArray *) pageElementOrder {
@@ -418,6 +435,11 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 - (void) prepareForDeletion {
 
 	[super prepareForDeletion];
+
+#if 0
+	
+	//	TBD: Create IRFileWrapper for this, since deleting a file entity does NOT mean that there is no other entity using it
+	//	FIXME: For now, we’re doing zero cleanup, and just leaving stuff there waiting for the next version to clean them up
 	
 	NSString *thumbnailPath, *largeThumbnailPath, *resourcePath;
 	
@@ -429,6 +451,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	
 	if ((resourcePath = [self primitiveValueForKey:kWAFileResourceFilePath]))
 		[[NSFileManager defaultManager] removeItemAtPath:resourcePath error:nil];
+	
+#endif
 	
 }
 
@@ -519,14 +543,17 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 - (UIImage *) presentableImage {
 
 	if ([self resourceFilePath])
-		return self.resourceImage;
+	if (self.resourceImage)
+		self.resourceImage;
 	
 	if ([self largeThumbnailFilePath])
+	if (self.largeThumbnailImage)
 		return self.largeThumbnailImage;
 	
 	if ([self thumbnailFilePath])
+	if (self.thumbnailImage)
 		return self.thumbnailImage;
-		
+	
 	return nil;
 
 }

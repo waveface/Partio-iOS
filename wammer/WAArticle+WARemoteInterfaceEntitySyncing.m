@@ -510,6 +510,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				for (WAFile *aFile in recreatedPost.files)
 					NSParameterAssert(aFile.article == recreatedPost);
 				
+				NSParameterAssert(![savedPost.files count]);
+				
 				[savedPost.managedObjectContext deleteObject:savedPost];
 				
 				completionBlock(YES, context, savedPost, nil);

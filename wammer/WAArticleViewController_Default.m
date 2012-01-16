@@ -93,6 +93,9 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 
+	if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
+		[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
+	
 	[super viewWillAppear:animated];
 	
 	[UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
