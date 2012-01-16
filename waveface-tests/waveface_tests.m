@@ -3,14 +3,15 @@
 //  wammer-iOS_tests
 //
 //  Created by jamie on 1/4/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Waveface Inc. All rights reserved.
 //
 
-#import "wammer_iOS_tests.h"
+#import "waveface_tests.h"
 
 @implementation NSCalendar (MySpecialCalculations)
--(NSInteger)daysWithinEraFromDate:(NSDate *) startDate toDate:(NSDate *) endDate
+-(NSInteger)daysFromDate:(NSDate *) endDate
 {
+	NSDate *startDate = [NSDate date];
      NSInteger startDay=[self ordinalityOfUnit:NSDayCalendarUnit
           inUnit: NSEraCalendarUnit forDate:startDate];
      NSInteger endDay=[self ordinalityOfUnit:NSDayCalendarUnit
@@ -19,7 +20,7 @@
 }
 @end
 
-@implementation wammer_iOS_tests
+@implementation waveface_tests
 
 - (void)setUp
 {
@@ -42,9 +43,29 @@
 							initWithTimeIntervalSinceNow:secondsPerDay*3];
 						
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSInteger days = [calendar daysWithinEraFromDate:[NSDate date] toDate:threeDaysLater];
+	NSInteger days = [calendar daysFromDate:threeDaysLater];
 	
 	STAssertEquals(days, 3, @"3 days");
+}
+
+- (void)testBitOperation
+{
+  __block unsigned char tileMap = 0b00000000;
+	__block unsigned char nextTile = 0b00000000;
+  
+  BOOL (^usableTile)(unsigned char) = ^ (unsigned char bitMask) {
+
+    for (unsigned char i = 0b10000000; i > 0; i >>= 1)
+      if ( !(tileMap & i) ){
+        nextTile = i;
+        break;
+      }  
+		return (BOOL) ( !(tileMap & bitMask) && (bitMask & nextTile) ) ;
+	};
+  
+  STAssertTrue( usableTile(0b11001100), @"should be true");
+  STAssertFalse( usableTile(0b00110011), @"should be false");
+  
 }
 
 @end

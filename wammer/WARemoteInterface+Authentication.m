@@ -22,6 +22,11 @@
 		NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
 		NSMutableDictionary *originalFormURLEncodedFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
 		
+		BOOL shouldSign = YES;
+		
+		if ([[mutatedContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"auth/login"])
+			shouldSign = NO;
+		
 		if (originalFormMultipartFields) {
 		
 			NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
@@ -30,7 +35,7 @@
 			if (nrSelf.apiKey)
 				[mutatedFormMultipartFields setObject:nrSelf.apiKey forKey:@"apikey"];
 			
-			if (nrSelf.userToken)
+			if (shouldSign && nrSelf.userToken)
 				[mutatedFormMultipartFields setObject:nrSelf.userToken forKey:@"session_token"];
 			
 		} else if (originalFormURLEncodedFields) {
@@ -41,7 +46,7 @@
 			if (nrSelf.apiKey)
 				[mutatedFormURLEncodedFields setObject:nrSelf.apiKey forKey:@"apikey"];
 			
-			if (nrSelf.userToken)
+			if (shouldSign && nrSelf.userToken)
 				[mutatedFormURLEncodedFields setObject:nrSelf.userToken forKey:@"session_token"];
 		
 		} else {
@@ -57,7 +62,7 @@
 			if (nrSelf.apiKey)
 				[mutatedQueryParams setObject:nrSelf.apiKey forKey:@"apikey"];
 			
-			if (nrSelf.userToken)
+			if (shouldSign && nrSelf.userToken)
 				[mutatedQueryParams setObject:nrSelf.userToken forKey:@"session_token"];
 		
 		}
@@ -75,25 +80,35 @@
   return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
   
     NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
+		
+		BOOL canIntercept = YES;
+		
+		if (![urlResponse isKindOfClass:[NSHTTPURLResponse class]])
+			canIntercept = NO;
+		
+		if ([[inResponseContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"reachability"])
+			canIntercept = NO;
     
-    if ([urlResponse isKindOfClass:[NSHTTPURLResponse class]]) {
-    
-      //  ?
-      
-      if (urlResponse.statusCode == 401) {
-      
-        if (nrSelf.userToken) {
-        
-          //  Token is failing right now
-          
-          [[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self];
-        
-        }
-      
-      }
-    
-    }
-    
+		if (!canIntercept)
+			return inParsedResponse;
+		
+		if ((urlResponse.statusCode == 401) && nrSelf.userToken) {
+		
+			//  Token is failing right now
+			
+			NSUInteger returnCode = [[inParsedResponse valueForKeyPath:@"api_ret_code"] intValue];
+			NSString *returnMessage = [inParsedResponse valueForKeyPath:@"api_ret_message"];
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceDidObserveAuthenticationFailureNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				[NSError errorWithDomain:@"com.waveface.wammer.remoteInterface" code:returnCode userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+					returnMessage, NSLocalizedDescriptionKey,
+				nil]], @"error",
+			
+			nil]];
+		
+		}
+		
     return inParsedResponse;
     
   } copy] autorelease];
@@ -105,7 +120,7 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
   
-  NSString *aDevice = ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )? @"iPad": @"iPhone";
+  NSString *aDevice = [[UIDevice currentDevice] name];
   
 	[self.engine fireAPIRequestNamed:@"auth/login" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	

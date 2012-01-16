@@ -56,18 +56,18 @@
 	
 	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
-		6
+		3
 	}, kCAGravityTop)];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.25] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
+	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[gridViewWrapper addSubview:topShadow];
 	
 	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
-		6
+		3
 	}, kCAGravityBottom)];
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.25] anchor:irBottom];
+	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irBottom];
 	[gridViewWrapper addSubview:bottomShadow];
 		
 	self.gridView.clipsToBounds = NO;
@@ -76,7 +76,18 @@
 	[gridView reloadData];
 	[gridView setNeedsLayout];
 	
-	[self.stackView addStackElementsObject:gridViewWrapper];
+	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
+
+	UIView *footerCell = self.footerCell;
+	if ([allStackElements containsObject:footerCell]) {
+		[[footerCell retain] autorelease];
+		[allStackElements removeObject:footerCell];
+	}
+	
+	[allStackElements addObject:gridViewWrapper];
+	
+	if (footerCell)
+		[allStackElements addObject:footerCell];
 	
 }
 
@@ -133,9 +144,6 @@
 	gridView.alwaysBounceVertical = YES;
 	gridView.alwaysBounceHorizontal = NO;
 	
-	gridView.leftContentInset = 64;
-	gridView.rightContentInset = 64;
-	
 	[gridView reloadData];
 	[gridView setNeedsLayout];
 	
@@ -157,6 +165,7 @@
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	if (!dequeuedCell) {
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	}
 	
 	dequeuedCell.canRemove = NO;
@@ -169,7 +178,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 128, 128 };
+	return (CGSize){ 224, 224 };
 
 }
 
@@ -269,7 +278,18 @@
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 32 + 128 };
+		return (CGSize){
+			CGRectGetWidth(aStackView.bounds), 
+			MAX(
+				32 + 128, 
+				MIN(
+					CGRectGetHeight(aStackView.bounds),
+					(gridView.numberOfRows + (!!(gridView.numberOfItems - gridView.numberOfRows * gridView.numberOfColumns) ? 1 : 0)) * 
+						gridView.gridCellSize.height + 
+						gridView.contentInset.top + gridView.contentInset.bottom + 32
+				)
+			)
+		};
 	}
 	
 	return [super sizeThatFitsElement:anElement inStackView:aStackView];

@@ -64,9 +64,7 @@
 	self.activityIndicatorView.center = (CGPoint){ 12, 12 };
 	
 	[self.interface addObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
-	
-	[self soundEngine];
-	
+		
 	return self;
 
 }
@@ -122,9 +120,12 @@
 - (void) handleActionButtonTap:(UIButton *)sender {
 
 	[self.interface performAutomaticRemoteUpdatesNow];
+	[self updateStateAnimated:YES];
+
+#if 0 //Mute
 	[self playRefreshStartSoundEffect];
 	[self setRequiresSoundEffectOnSessionEnd:YES];
-	[self updateStateAnimated:YES];
+#endif
 
 }
 

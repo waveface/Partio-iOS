@@ -118,7 +118,7 @@
 	if (!self)
 		return nil;
 	
-	self.title = NSLocalizedString(@"WACompositionTitle", @"Title for the composition view");
+	self.title = NSLocalizedString(@"COMPOSITION_TITLE", @"Title for the composition view");
 	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
 	
@@ -289,9 +289,9 @@
 	//	photosConcaveEdgeView.userInteractionEnabled = NO;
 	//	[self.view addSubview:photosConcaveEdgeView];
 	
-	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 42, 20 };
+	self.photosView.contentInset = (UIEdgeInsets){ 0, 20, 0, 20 };
 	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ -32, -20, -42, -20 });
+	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, 0, -20 });
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.opaque = NO;
@@ -783,14 +783,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
     if (actionSheetController)
       return;
     
-    IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionDiscard", @"Action title for discarding a draft") block:^{
+    IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
       
       if (self.completionBlock)
         self.completionBlock(nil);
       
     }];
     
-    IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"WAActionSaveDraft", @"Action title for saving a draft") block:^{
+    IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
     
       NSError *savingError = nil;
       if (![self.managedObjectContext save:&savingError])

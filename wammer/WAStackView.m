@@ -85,9 +85,11 @@
 
 	if (stackElements == newStackElements)
 		return;
-		
+	
+	[self willChangeValueForKey:@"stackElements"];
 	[stackElements release];
 	stackElements = [newStackElements retain];
+	[self didChangeValueForKey:@"stackElements"];
 	
 	[self setNeedsLayout];
 
@@ -115,12 +117,20 @@
 
 - (void) removeStackElements:(NSSet *)objects {
 
+	for (UIView *aView in [objects allObjects])
+		[aView removeFromSuperview];
+	
 	[[self mutableStackElements] removeObjectsInArray:[objects allObjects]];
+	
 	[self setNeedsLayout];
 
 }
 
 - (void) removeStackElementsAtIndexes:(NSIndexSet *)indexes {
+
+	NSArray *removedObjects = [[self mutableStackElements] objectsAtIndexes:indexes];
+	for (UIView *anObject in removedObjects)
+		[anObject removeFromSuperview];
 
 	[[self mutableStackElements] removeObjectsAtIndexes:indexes];
 	[self setNeedsLayout];
@@ -128,6 +138,8 @@
 }
 
 - (void) removeStackElementsObject:(UIView *)object {
+
+	[object removeFromSuperview];
 
 	[[self mutableStackElements] removeObject:object];
 	[self setNeedsLayout];

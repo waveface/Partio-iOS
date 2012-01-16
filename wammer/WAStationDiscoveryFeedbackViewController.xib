@@ -49,7 +49,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">WAErrorNoStationFoundTitle</string>
+						<string key="IBUIText">ERROR_NO_STATION_FOUND_TITLE</string>
 						<object class="NSColor" key="IBUITextColor" id="989410993">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -98,7 +98,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">WAErrorNoStationFoundDescription</string>
+						<string key="IBUIText">ERROR_NO_STATION_FOUND_DESCRIPTION</string>
 						<reference key="IBUITextColor" ref="989410993"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>

@@ -83,6 +83,20 @@
 
 }
 
+/*
+
++---+---+
+| 0 | 4 |
++---+---+
+| 1 | 5 |
++---+---+
+| 2 | 6 |
++---+---+
+| 3 | 7 |
++---+---+
+
+*/
+
 - (NSDictionary *) defaultTilingPatternGroups {
 
 	if (defaultTilingPatternGroups)
@@ -170,23 +184,30 @@
 		return itemHasMediaOfType(anItem, kUTTypeURL);
 	};
 	
-	//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-	//		return (BOOL)!![[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
-	//	};
+//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
+//		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
+//	};
 	
 	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 32);
+		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 140);
 	};
 	
 	
 	//	Layout progress introspection helpers
 	
 	__block unsigned char tileMap = 0b00000000;
+	__block unsigned char nextTile = 0b00000000;
+  
+  BOOL (^usableTile)(unsigned char) = ^ (unsigned char bitMask) {
+
+    for (unsigned char i = 0b10000000; i > 0; i >>= 1)
+      if ( !(tileMap & i) ){
+        nextTile = i;
+        break;
+      }  
+		return (BOOL) ( !(tileMap & bitMask) && (bitMask & nextTile) ) ;
+	};	
 	
-	BOOL (^tilesOccupied)(unsigned char) = ^ (unsigned char bitMask) {
-		return (BOOL)(tileMap & bitMask);
-	};
-		
 	IRDiscreteLayoutGrid *portraitPrototype = [IRDiscreteLayoutGrid prototype];
 	portraitPrototype.contentSize = (CGSize){ 768, 1024 };
 	
@@ -206,7 +227,7 @@
 		
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
-		if (isImageItem(currentItem) && arc4random_uniform(1) ) { // 50% chance
+		if (isImageItem(currentItem) ) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
@@ -215,18 +236,22 @@
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
+		// increase probablity
+		if (isLongTextItem(currentItem)) {
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
+		}
+		
 		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
 		
-		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, NSUInteger index, BOOL *stop) {
-			return (NSNumber *)(tilesOccupied([pattern unsignedCharValue]) ? nil : pattern);
+			return (NSNumber *)(usableTile([pattern unsignedCharValue]) ? pattern: nil);
 		}];
 		
 		if (![actualPatterns count])
 			continue;
 		
-		
-		unsigned char pattern = [[actualPatterns objectAtIndex:0] unsignedCharValue];
+		unsigned char pattern = [[actualPatterns objectAtIndex:arc4random_uniform([actualPatterns count])] unsignedCharValue];
 		tileMap |= pattern;
 		
 		CGRect unitRect = [self unitRectForPattern:pattern];

@@ -9,6 +9,12 @@
 #import "WADefines.h"
 #import "WARemoteInterfaceContext.h"
 
+
+NSString * const kWARemoteInterfaceContextDidChangeBaseURLNotification = @"WARemoteInterfaceContextDidChangeBaseURLNotification";
+NSString * const kWARemoteInterfaceContextOldBaseURL = @"WARemoteInterfaceContextOldBaseURL";
+NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContextNewBaseURL";
+
+
 @interface WARemoteInterfaceContext ()
 
 + (NSDictionary *) methodMap;
@@ -85,12 +91,20 @@
 
 - (void) handleUserDefaultsDidChange:(NSNotification *)aNotification {
 
+	NSURL *oldBaseURL = [[self.baseURL retain] autorelease];
 	NSURL *newBaseURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
 	
 	if ([self.baseURL isEqual:newBaseURL])
 		return;
 	
 	self.baseURL = newBaseURL;
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		oldBaseURL, kWARemoteInterfaceContextOldBaseURL,
+		newBaseURL, kWARemoteInterfaceContextNewBaseURL,
+		
+	nil]];
 
 }
 

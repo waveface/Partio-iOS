@@ -312,11 +312,11 @@
 
 	NSMutableArray *returnedArray = [NSMutableArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
+		[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") block: ^ {
 		
-			[[IRAlertView alertViewWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") message:NSLocalizedString(@"WASignOutConfirmation", @"Confirmation text for Signing Out") cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Action title for Cancelling") block:nil] otherActions:[NSArray arrayWithObjects:
+			[[IRAlertView alertViewWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") message:NSLocalizedString(@"SIGN_OUT_CONFIRMATION", @"Confirmation text for Signing Out") cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for Cancelling") block:nil] otherActions:[NSArray arrayWithObjects:
 			
-				[IRAction actionWithTitle:NSLocalizedString(@"WAActionSignOut", @"Action title for Signing Out") block: ^ {
+				[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for Signing Out") block: ^ {
 				
 					dispatch_async(dispatch_get_main_queue(), ^ {
 					
@@ -332,11 +332,11 @@
   
   nil];
   
-  if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled]) {
+  if (WAAdvancedFeaturesEnabled()) {
   
     [returnedArray addObjectsFromArray:[NSArray arrayWithObjects:
       
-      [IRAction actionWithTitle:NSLocalizedString(@"WAActionFeedback", @"Action title for feedback composition") block:^ {
+      [IRAction actionWithTitle:NSLocalizedString(@"ACTION_FEEDBACK", @"Action title for feedback composition") block:^ {
       
         if (![IRMailComposeViewController canSendMail]) {
           [[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
@@ -344,7 +344,7 @@
         }
         
         __block IRMailComposeViewController *composeViewController;
-        composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"WAFeedbackCompositionTitle", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
+        composeViewController = [IRMailComposeViewController controllerWithMessageToRecipients:[NSArray arrayWithObjects:@"ev@waveface.com",	nil] withSubject:NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"Title for Waveface Feedback") messageBody:nil inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
           [composeViewController dismissModalViewControllerAnimated:YES];
         }];
         
@@ -408,16 +408,26 @@
           return fr;
         })()) error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
         
-          if (aFile.resourceFilePath) {
-            [[NSFileManager defaultManager] removeItemAtPath:aFile.resourceFilePath error:nil];
+					NSString *resourcePath = [aFile primitiveValueForKey:@"resourceFilePath"];
+					NSString *thumbnailPath = [aFile primitiveValueForKey:@"thumbnailFilePath"];
+				
+          if (resourcePath) {
+            [[NSFileManager defaultManager] removeItemAtPath:resourcePath error:nil];
             aFile.resourceFilePath = nil;
           }
           
+          if (thumbnailPath) {
+            [[NSFileManager defaultManager] removeItemAtPath:thumbnailPath error:nil];
+            aFile.thumbnailFilePath = nil;
+          }
+					
         }];
         
         NSError *savingError = nil;
-        if (![context save:&savingError])
+        if (![context save:&savingError]) {
           NSLog(@"Error saving: %@", savingError);
+					NSParameterAssert(NO);
+				}
       
       }],
     
@@ -434,7 +444,7 @@
 	if (debugActionSheetController)
 		return debugActionSheetController;
 		
-	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"WAActionCancel", @"Cancel.") block:nil] destructiveAction:nil otherActions:[self debugActionSheetControllerActions]] retain];
+	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel.") block:nil] destructiveAction:nil otherActions:[self debugActionSheetControllerActions]] retain];
 	
 	return debugActionSheetController;
 
