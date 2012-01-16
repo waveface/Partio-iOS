@@ -128,8 +128,14 @@
 	
 			
 	void (^initializeInterface)() = ^ {
+	
+		if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
+			
+			[WADataStore defaultStore].persistentStoreName = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
+			
+			[self recreateViewHierarchy];
 		
-		if (![self hasAuthenticationData]) {
+		} else if (![self hasAuthenticationData]) {
 		
 			[self applicationRootViewControllerDidRequestReauthentication:nil];
 						
