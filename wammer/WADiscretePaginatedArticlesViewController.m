@@ -1664,9 +1664,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						containerWindow.backgroundColor = nil;
 						
 					} completion:^(BOOL finished) {
-						
+					
 						[containerWindow resignKeyWindow];
-						[containerWindow autorelease];
+						
+						dispatch_async(dispatch_get_main_queue(), ^{
+							
+							containerWindow.rootViewController = nil;
+							[containerWindow autorelease];
+
+						});
 						
 					}];
 				
