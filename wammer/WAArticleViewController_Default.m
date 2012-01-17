@@ -181,8 +181,12 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 224, 224 };
-
+	NSUInteger numberOfItems = [self.article.fileOrder count];
+	if (numberOfItems > 4)
+		return (CGSize){ 224, 224 };
+	else
+		return (CGSize){ 360, 360 };
+	
 }
 
 - (WAFile *) itemAtIndex:(NSUInteger)index {
