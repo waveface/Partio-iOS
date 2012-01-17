@@ -111,6 +111,12 @@
 	
 	}
 	
+	if (YES) {
+	
+		[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+	
+	}
+	
 	[[AVAudioSession sharedInstance] setActive:YES error:nil];
 
 }
