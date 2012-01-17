@@ -95,8 +95,11 @@
 		[self.textEmphasisView.backgroundView addSubview:bubbleView];
 	
 	}
+	
+	if (!articleDescriptionLabel.font)	//	Compromise
+		articleDescriptionLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
 
-} 
+}
 
 - (void) dealloc {
 

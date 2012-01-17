@@ -162,21 +162,37 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
         [thumbnailedItemIndices addIndexesInRange:(NSRange){ 0, numberOfItems }];
         break;
       }
+			
       case WAClippedThumbnailsStyle: {
         
 				NSParameterAssert(self.thumbnailAspectRatio);
-        NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
-        float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
-        for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta){
-          [thumbnailedItemIndices addIndex:roundf(i)];
-        }
 				
-				//	Guarantee that the last item is always shown
+				NSUInteger numberOfThumbnails = (usableWidth + thumbnailSpacing) / ((usableHeight / self.thumbnailAspectRatio) + thumbnailSpacing);
 				
-				if ([thumbnailedItemIndices count] < numberOfItems)
-				if ([thumbnailedItemIndices lastIndex] != (numberOfItems - 1)) {
-					[thumbnailedItemIndices removeIndex:[thumbnailedItemIndices lastIndex]];
-					[thumbnailedItemIndices addIndex:(numberOfItems - 1)];
+				if (numberOfThumbnails < numberOfItems) {
+					
+					float_t delta = (float_t)numberOfItems / (float_t)numberOfThumbnails;
+					
+					for (float_t i = delta - 1; i < (numberOfItems - 1); i = i + delta){
+						[thumbnailedItemIndices addIndex:roundf(i)];
+					}
+				
+					if ([thumbnailedItemIndices count] < numberOfItems)
+					if ([thumbnailedItemIndices firstIndex] != 0) {
+						[thumbnailedItemIndices removeIndex:[thumbnailedItemIndices firstIndex]];
+						[thumbnailedItemIndices addIndex:0];
+					}
+
+					if ([thumbnailedItemIndices count] < numberOfItems)
+					if ([thumbnailedItemIndices lastIndex] != (numberOfItems - 1)) {
+						[thumbnailedItemIndices removeIndex:[thumbnailedItemIndices lastIndex]];
+						[thumbnailedItemIndices addIndex:(numberOfItems - 1)];
+					}
+				
+				} else {
+				
+					[thumbnailedItemIndices addIndexesInRange:(NSRange){ 0, numberOfItems - 1 }];
+				
 				}
 				
         break;
@@ -334,7 +350,8 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 			self.activeImageOverlay.center = (CGPoint){
 
 				0.5f * (usableWidth - exhaustedWidth)
-					+ (leftPadding - startLeftPadding) * ((float_t)selectedItemIndex / (float_t)[self.items count]),
+					+ (leftPadding - startLeftPadding - sizeForComponent(self.activeImageOverlay).width) * ((float_t)selectedItemIndex / (float_t)([self.items count] - 1))
+					+ (0.5f) * sizeForComponent(self.activeImageOverlay).width,
 
 				CGRectGetMidY(usableRect)
 

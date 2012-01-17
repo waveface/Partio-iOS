@@ -158,6 +158,7 @@
 	for (UIView *anElement in self.stackElements) {
 	
 		CGSize fitSize = [self sizeThatFitsElement:anElement];
+		
 		CGRect fitFrame = (CGRect){
 			nextOffset,
 			fitSize
@@ -176,7 +177,7 @@
 			CGRectGetMaxY(contentRect)
 		};
 		
-		[anElement.superview sendSubviewToBack:anElement];
+		[anElement.superview bringSubviewToFront:anElement];
 	
 	}
 	
