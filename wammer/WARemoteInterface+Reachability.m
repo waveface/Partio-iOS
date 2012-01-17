@@ -106,18 +106,20 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   NSString *cloudHost = [self.engine.context.baseURL host];
   BOOL incomingURLIsCloud = [[aHost host] isEqualToString:cloudHost];
   
-  if ([aRequestName hasPrefix:@"auth/"])
-    return incomingURLIsCloud;
-  
   if ([aRequestName hasPrefix:@"reachability"])
     return incomingURLIsCloud;
     
-  if ([aRequestName hasPrefix:@"stations"])
-    return incomingURLIsCloud;
-    
-  if ([aRequestName hasPrefix:@"users/findMyStation"])
+  if ([aRequestName hasPrefix:@"auth/"])
     return incomingURLIsCloud;
   
+  if ([aRequestName hasPrefix:@"stations/"])
+    return incomingURLIsCloud;
+	
+  if ([aRequestName hasPrefix:@"users/"])
+    return incomingURLIsCloud;
+  
+  if ([aRequestName hasPrefix:@"groups/"])
+    return incomingURLIsCloud;
     
   WAReachabilityDetector *detectorForHost = [self.monitoredHostsToReachabilityDetectors objectForKey:aHost];
   
