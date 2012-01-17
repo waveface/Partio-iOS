@@ -322,6 +322,34 @@
 		
 	}
 	
+	UIView *titleStackCell = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	[titleStackCell addSubview:((^ {
+		UIView *container = [[[UIView alloc] initWithFrame:(CGRect){
+			(CGPoint){ 0, -64, },
+			(CGSize){ CGRectGetHeight(titleStackCell.bounds), 64 }}] autorelease];
+		container.backgroundColor = nil;
+		container.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+		
+		NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:self.article.timestamp];
+		NSString *device = self.article.creationDeviceName;
+		
+		IRLabel *label = [[[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 24, 32 }, (CGSize){ CGRectGetWidth(container.bounds) - 48 , 24 } }] autorelease];
+		label.opaque = NO;
+		label.backgroundColor = nil;
+		label.attributedText = [label attributedStringForString:(
+			
+			[NSString stringWithFormat:@"%@ (%@)", relDate, device]
+			
+		) font:[UIFont boldSystemFontOfSize:14.0] color:[UIColor colorWithWhite:0.5 alpha:1]];
+		
+		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;//|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+		
+		[container addSubview:label];
+		return container;
+		
+	})())];
+	[self.stackView addStackElementsObject:titleStackCell];
+	
 	BOOL hasText = [self.article.text length];
 	BOOL showsComments = NO;
 	
