@@ -12,21 +12,17 @@
 	#import <QuartzCore/QuartzCore.h>
 
 	#if WF_USES_TESTFLIGHT
-		#warning "TestFlight On"
 		#import	"TestFlight.h"
 		#define WF_TESTFLIGHT(...) do { (__VA_ARGS__)(); } while (0)	
 	#else
-		#warning "TestFlight Off"
 		#define TestFlight (id)nil
 		#define WF_TESTFLIGHT(...) do {  } while (0)	
 	#endif
 	
 	#if WF_USES_CRASHLYTICS
-		#warning "Crashlytics On"
 		#import	<Crashlytics/Crashlytics.h>
 		#define WF_CRASHLYTICS(...) do { (__VA_ARGS__)(); } while (0)	
 	#else
-		#warning "Crashlytics Off"
 		#define Crashlytics (id)nil
 		#define WF_CRASHLYTICS(...) do {  } while (0)	
 	#endif
