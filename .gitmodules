@@ -54,4 +54,4 @@
 	url = git://github.com/iridia/IRDeployment.git
 [submodule "external/C3PO"]
 	path = external/C3PO
-	url = git@github.com:jamessa/C3PO.git
+	url = git://github.com/jamessa/C3PO.git
