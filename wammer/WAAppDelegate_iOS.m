@@ -101,7 +101,9 @@
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
 	
-	if (WATestFlightSDKEnabled()) {
+	WF_TESTFLIGHT(^ {
+	
+		NSLog(@"Using Testflight");
 				
 		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 			(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
@@ -109,7 +111,15 @@
 		
 		[TestFlight takeOff:kWATestflightTeamToken];
 	
-	}
+	});
+	
+	WF_CRASHLYTICS(^ {
+		
+		NSLog(@"Using Crashlytics");
+		
+		[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+		
+	});
 	
 	[[AVAudioSession sharedInstance] setActive:YES error:nil];
 

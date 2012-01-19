@@ -95,6 +95,23 @@
 
 	if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
 		[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
+		
+	for (UIWindow *aWindow in [UIApplication sharedApplication].windows) {
+	
+		UIViewController *rootVC = aWindow.rootViewController;
+		if ([rootVC isViewLoaded])
+			[rootVC.view layoutSubviews];
+		
+		UINavigationController *rootNavC = [rootVC isKindOfClass:[UINavigationController class]] ? (UINavigationController *)rootVC : nil;
+		if (rootNavC) {
+			BOOL navBarHidden = rootNavC.navigationBarHidden;
+			[rootNavC setNavigationBarHidden:YES animated:NO];
+			[rootNavC setNavigationBarHidden:NO animated:NO];
+			[rootNavC setNavigationBarHidden:YES animated:NO];
+			[rootNavC setNavigationBarHidden:navBarHidden animated:NO];
+		}
+	
+	}
 	
 	[super viewWillAppear:animated];
 	

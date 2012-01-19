@@ -39,10 +39,8 @@ extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 extern NSString * const kWASettingsDidRequestActionNotification;
 
-extern NSString * const kWATestFlightSDKEnabled;
-extern BOOL WATestFlightSDKEnabled (void);
-
 extern NSString * const kWATestflightTeamToken;
+extern NSString * const kWACrashlyticsAPIKey;
 
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;
