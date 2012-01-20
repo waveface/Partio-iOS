@@ -162,6 +162,11 @@
     
 	};
 	
+#if WF_USES_CRASHLYTICS
+	
+	initializeInterface();
+
+#else
 	
 	if (WAApplicationHasDebuggerAttached()) {
 	
@@ -193,6 +198,8 @@
 		}];
     
 	}
+
+#endif
 	
   return YES;
 	
