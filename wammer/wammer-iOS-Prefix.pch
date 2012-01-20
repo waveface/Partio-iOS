@@ -1,17 +1,30 @@
-//
-// Prefix header for all source files of the 'wammer-iOS' target in the 'wammer-iOS' project
-//
-
 #import <Availability.h>
 
-#ifndef __IPHONE_3_0
-#warning "This project uses features only available in iOS SDK 3.0 and later."
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
 
 #ifdef __OBJC__
+	
 	#import <UIKit/UIKit.h>
 	#import <Foundation/Foundation.h>
 	#import <CoreData/CoreData.h>
 	#import <QuartzCore/QuartzCore.h>
-	#import	"TestFlight.h"
+
+	#if WF_USES_TESTFLIGHT
+		#import	"TestFlight.h"
+		#define WF_TESTFLIGHT(...) do { (__VA_ARGS__)(); } while (0)	
+	#else
+		#define TestFlight (id)nil
+		#define WF_TESTFLIGHT(...) do {  } while (0)	
+	#endif
+	
+	#if WF_USES_CRASHLYTICS
+		#import	<Crashlytics/Crashlytics.h>
+		#define WF_CRASHLYTICS(...) do { (__VA_ARGS__)(); } while (0)	
+	#else
+		#define Crashlytics (id)nil
+		#define WF_CRASHLYTICS(...) do {  } while (0)	
+	#endif
+	
 #endif
