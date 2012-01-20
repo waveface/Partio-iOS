@@ -395,11 +395,9 @@
 
 - (void) authenticate {
 	
-	if (WATestFlightSDKEnabled()) {
-	
-		[TestFlight passCheckpoint:@"SignIn"];
-	
-	}
+	WF_TESTFLIGHT(^ {
+		[TestFlight passCheckpoint:@"SignIn"];	
+	});
 
   [self update];
 	

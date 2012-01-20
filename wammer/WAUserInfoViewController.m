@@ -282,7 +282,7 @@
 		switch (indexPath.row) {
 			
 			case 0: {
-				cell = createCell(kValue1Identifier, UITableViewCellStyleSubtitle);
+				cell = createCell(kSubtitleCellIdentifier, UITableViewCellStyleSubtitle);
 				cell.textLabel.text = self.user.nickname;
 				cell.detailTextLabel.text = self.user.email;
 				break;
