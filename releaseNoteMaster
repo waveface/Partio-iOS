@@ -1,2 +1,0 @@
-ETReleaseNotes="- Fixes bug where with iOS 4.3 and older devices, the title text for Photo posts will not show\n- Fixes bug where the Gallery Image Stream Picker thumb will occassionally appear at weird positions\n- Fixes bug in Reachability Detector overriding where Cloud/Station eligibility is messed up for User API calls \n- Initial re-implementation of the Article Description label on the new Single Post view header\n- Initial dynamic grid cell resizing"
-ETMarketingVersionNumber="0.9.8"
