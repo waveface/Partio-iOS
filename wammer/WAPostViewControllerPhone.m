@@ -438,15 +438,19 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.fillMode = kCAFillModeForwards;
 	transition.removedOnCompletion = YES;
-	
+		
 	[self.navigationController setNavigationBarHidden:YES animated:NO];
+
+	[galleryViewController view];
+	[galleryViewController setContextControlsHidden:NO animated:NO barringInteraction:NO completion:nil];
+
 	[self.navigationController pushViewController:galleryViewController animated:NO];
 	
 	[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-  
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+		[galleryViewController setContextControlsHidden:YES animated:YES barringInteraction:YES completion:nil];
 	});
 	
 }
