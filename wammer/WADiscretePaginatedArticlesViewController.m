@@ -600,23 +600,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		WAArticle *representedArticle = (WAArticle *)item;
 				
 		if ([representedArticle.fileOrder count]) {
+			
 			WAFile *firstFile = (WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]];
 			
-			if (firstFile.thumbnailURL)
-			if (![firstFile primitiveValueForKey:@"thumbnailFilePath"])
-				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.thumbnailURL] usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:nil];
-        
-      if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed]) {
-			
-        //  No non-on-demand resource downloading by default
-        //  TBD: Maybe just move it into syncing
-        
-        if (firstFile.resourceURL)
-        if (![firstFile primitiveValueForKey:@"resourceFilePath"])
-          [[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:firstFile.resourceURL] usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:nil];
-      
-      }
-			
+			[firstFile thumbnailFilePath];
+									
 		}
 			
 		for (WAPreview *aPreview in representedArticle.previews)
