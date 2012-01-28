@@ -41,13 +41,70 @@ NSString * const kWAFileValidatesLargeThumbnailImage = @"validatesLargeThumbnail
 NSString * const kWAFilePresentableImage = @"presentableImage";
 
 
-@interface WAFile (WAAdditions_PrivateAccessors)
+@interface WAFile (CoreDataGeneratedPrimitiveAccessors)
+
+- (void) setPrimitiveResourceFilePath:(NSString *)newResourceFilePath;
+- (NSString *) primitiveResourceFilePath;
+
+- (void) setPrimitiveResourceURL:(NSString *)newResourceURL;
+- (NSString *) primitiveResourceURL;
+
+- (void) setPrimitiveThumbnailFilePath:(NSString *)newThumbnailFilePath;
+- (NSString *) primitiveThumbnailFilePath;
+
+- (void) setPrimitiveThumbnailURL:(NSString *)newThumbnailURL;
+- (NSString *) primitiveThumbnailURL;
+
+- (void) setPrimitiveLargeThumbnailFilePath:(NSString *)newLargeThumbnailFilePath;
+- (NSString *) primitiveLargeThumbnailFilePath;
+
+- (void) setPrimitiveLargeThumbnailURL:(NSString *)newLargeThumbnailURL;
+- (NSString *) primitiveLargeThumbnailURL;
+
+@end
+
+
+@interface WAFile (WAAdditions_Accessors)
 
 @property (nonatomic, readwrite, retain) UIImage *resourceImage;
 @property (nonatomic, readwrite, retain) UIImage *largeThumbnailImage;
 @property (nonatomic, readwrite, retain) UIImage *thumbnailImage;
 
 - (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey;
+
+- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority;
+
+@end
+
+
+@interface WAFile (WAAdditions_Validators)
+
+@property (nonatomic, readwrite, assign) BOOL validatesResourceImage;
+@property (nonatomic, readwrite, assign) BOOL validatesLargeThumbnailImage;
+@property (nonatomic, readwrite, assign) BOOL validatesThumbnailImage;
+
+- (BOOL) validateResourceImageIfNeeded:(NSError **)outError;
+- (BOOL) validateResourceImage:(NSError **)outError;
+- (BOOL) validateLargeThumbnailImageIfNeeded:(NSError **)outError;
+- (BOOL) validateLargeThumbnailImage:(NSError **)outError;
+- (BOOL) validateThumbnailImageIfNeeded:(NSError **)outError;
+- (BOOL) validateThumbnailImage:(NSError **)outError;
+
++ (BOOL) validateImageAtPath:(NSString *)aFilePath error:(NSError **)outError;
+
+@end
+
+
+@interface WAFile (WAAdditions_RemoteBlobRetrieval)
+
+- (void) scheduleResourceRetrievalIfPermitted;
+- (void) scheduleThumbnailRetrievalIfPermitted;
+- (void) scheduleLargeThumbnailRetrievalIfPermitted;
+
+- (BOOL) canScheduleBlobRetrieval;
+- (BOOL) canScheduleExpensiveBlobRetrieval;
+
+- (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath;
 
 @end
 
@@ -60,9 +117,21 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if (!self)
 		return nil;
 	
+	self.validatesThumbnailImage = YES;
+	self.validatesLargeThumbnailImage = YES;
+	self.validatesResourceImage = YES;
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 	
 	return self;
+
+}
+
+- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
+
+	[self associateObject:nil usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileThumbnailImage];
+	[self associateObject:nil usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileLargeThumbnailImage];
+	[self associateObject:nil usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileResourceImage];
 
 }
 
@@ -86,7 +155,6 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	//	TBD: We’re assuming that everthing is restorable, might not be true if users pound on local drafts more
 	
 	NSFileManager *fileManager = [NSFileManager defaultManager];	
-	NSError *error = nil;
 	
 	if (![self validateThumbnailImage:nil])
 	if ([fileManager removeItemAtPath:[self primitiveThumbnailFilePath] error:nil])
@@ -96,7 +164,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if ([fileManager removeItemAtPath:[self primitiveLargeThumbnailFilePath] error:nil])
 		[self setPrimitiveLargeThumbnailFilePath:nil];
 		
-	if (![self validateResourceImage:&error])
+	if (![self validateResourceImage:nil])
 	if ([fileManager removeItemAtPath:[self primitiveResourceFilePath] error:nil])
 		[self setPrimitiveResourceFilePath:nil];
 	
@@ -125,28 +193,21 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) canScheduleBlobRetrieval {
 
-	if ([[self objectID] isTemporaryID])
-		return NO;
+	if (![[self objectID] isTemporaryID])
+	if (![self isDeleted])
+		return YES;
 	
-	//	if (![self isInserted])
-	//		return NO;
-	
-	if ([self isDeleted])
-		return NO;
-	
-	return YES;
+	return NO;
 
 }
 
 - (BOOL) canScheduleExpensiveBlobRetrieval {
 
-	if (![self canScheduleBlobRetrieval])
-		return NO;
-
+	if ([self canScheduleBlobRetrieval])
 	if (![[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed])
-		return NO;
+		return YES;
 	
-	return YES;
+	return NO;
 	
 }
 
@@ -155,27 +216,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if (![self canScheduleExpensiveBlobRetrieval])
 		return;
 
-	NSURL *ownURL = [[self objectID] URIRepresentation];
-	NSURL *resourceURL = [NSURL URLWithString:self.resourceURL];
-	
-	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:resourceURL usingPriority:NSOperationQueuePriorityLow forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
-		
-		dispatch_async([[self class] sharedResourceHandlingQueue], ^ {
+	[self scheduleRetrievalForBlobURL:[NSURL URLWithString:self.resourceURL] blobKeyPath:kWAFileResourceURL filePathKeyPath:kWAFileResourceFilePath usingPriority:NSOperationQueuePriorityLow];
 
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
-			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-			[file takeResourceFromTemporaryFile:[tempFileURLOrNil path] matchingURL:resourceURL];
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
-			
-		});
-		
-	}];
-		
 }
 
 - (void) scheduleThumbnailRetrievalIfPermitted {
@@ -183,26 +225,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if (![self canScheduleBlobRetrieval])
 		return;
 	
-	NSURL *ownURL = [[self objectID] URIRepresentation];
-	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
-	
-	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:thumbnailURL usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
-		
-		dispatch_async([[self class] sharedResourceHandlingQueue], ^ {
-
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
-			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-			[file takeThumbnailFromTemporaryFile:[tempFileURLOrNil path] matchingURL:thumbnailURL];
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
-			
-		});
-		
-	}];
+	[self scheduleRetrievalForBlobURL:[NSURL URLWithString:self.thumbnailURL] blobKeyPath:kWAFileThumbnailURL filePathKeyPath:kWAFileThumbnailFilePath usingPriority:NSOperationQueuePriorityHigh];
 
 }
 
@@ -211,39 +234,35 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if (![self canScheduleBlobRetrieval])
 		return;
 	
+	[self scheduleRetrievalForBlobURL:[NSURL URLWithString:self.largeThumbnailURL] blobKeyPath:kWAFileLargeThumbnailURL filePathKeyPath:kWAFileLargeThumbnailFilePath usingPriority:NSOperationQueuePriorityNormal];
+		
+}
+
+- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority {
+
 	NSURL *ownURL = [[self objectID] URIRepresentation];
-	NSURL *largeThumbnailURL = [NSURL URLWithString:self.largeThumbnailURL];
 	
-	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:largeThumbnailURL usingPriority:NSOperationQueuePriorityNormal forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
 		
 		dispatch_async([[self class] sharedResourceHandlingQueue], ^ {
 
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
-			[file takeLargeThumbnailFromTemporaryFile:[tempFileURLOrNil path] matchingURL:largeThumbnailURL];
 			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
+			if ([file takeBlobFromTemporaryFile:[tempFileURLOrNil path] forKeyPath:filePathKeyPath matchingURL:blobURL forKeyPath:blobURLKeyPath]) {
+			
+				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+				NSError *savingError = nil;
+				if (![context save:&savingError])
+					NSLog(@"Error saving: %@", savingError);
+
+			}
 			
 		});
 		
 	}];
-	
-}
 
-- (BOOL) takeResourceFromTemporaryFile:(NSString *)aPath matchingURL:(NSURL *)anURL {
-	return [self takeBlobFromTemporaryFile:aPath forKeyPath:@"resourceFilePath" matchingURL:anURL forKeyPath:@"resourceURL"];
-}
-
-- (BOOL) takeThumbnailFromTemporaryFile:(NSString *)aPath matchingURL:(NSURL *)anURL {
-	return [self takeBlobFromTemporaryFile:aPath forKeyPath:@"thumbnailFilePath" matchingURL:anURL forKeyPath:@"thumbnailURL"];
-}
-
-- (BOOL) takeLargeThumbnailFromTemporaryFile:(NSString *)aPath matchingURL:(NSURL *)anURL {
-	return [self takeBlobFromTemporaryFile:aPath forKeyPath:@"largeThumbnailFilePath" matchingURL:anURL forKeyPath:@"largeThumbnailURL"];
 }
 
 - (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath {
@@ -256,7 +275,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 	NSString *currentFilePath = [self primitiveValueForKey:fileKeyPath];
 	if (currentFilePath || ![[self valueForKey:urlKeyPath] isEqualToString:[anURL absoluteString]]) {
-		NSLog(@"Skipping double-writing");
+		//	NSLog(@"Skipping double-writing");
 		return NO;
 	}
 	
@@ -459,70 +478,6 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 # pragma mark - Validation
 
-- (BOOL) validateResourceImageIfNeeded:(NSError **)outError {
-	return self.validatesResourceImage ? [self validateResourceImage:outError] : YES;
-}
-- (BOOL) validateResourceImageIfNeeded {
-	return [self validateResourceImageIfNeeded:nil];
-}
-- (BOOL) validateResourceImage:(NSError **)outError {
-	return [[self class] validateImageAtPath:[self primitiveValueForKey:@"resourceFilePath"] error:outError];
-}
-- (BOOL) validateResourceImage {
-	return [self validateResourceImage:nil];	
-}
-
-- (BOOL) validateThumbnailImageIfNeeded:(NSError **)outError {
-	return self.validatesThumbnailImage ? [self validateThumbnailImage:outError] : YES;
-}
-- (BOOL) validateThumbnailImageIfNeeded {
-	return [self validateThumbnailImageIfNeeded:nil];
-}
-- (BOOL) validateThumbnailImage:(NSError **)outError {
-	return [[self class] validateImageAtPath:[self primitiveValueForKey:@"thumbnailFilePath"] error:outError];
-}
-- (BOOL) validateThumbnailImage {
-	return [self validateThumbnailImage:nil];
-}
-
-- (BOOL) validateLargeThumbnailImageIfNeeded:(NSError **)outError {
-	return self.validatesLargeThumbnailImage ? [self validateLargeThumbnailImage:outError] : YES;
-}
-- (BOOL) validateLargeThumbnailImageIfNeeded {	
-	return [self validateLargeThumbnailImageIfNeeded:nil];
-}
-- (BOOL) validateLargeThumbnailImage:(NSError **)outError {
-	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
-}
-- (BOOL) validateLargeThumbnailImage {
-	return [self validateLargeThumbnailImage:nil];
-}
-
-+ (BOOL) validateImageAtPath:(NSString *)aFilePath error:(NSError **)error {
-
-	error = error ? error : &(NSError *){ nil };
-	
-	if (aFilePath && ![[NSFileManager defaultManager] fileExistsAtPath:aFilePath]) {
-		
-		*error = [NSError errorWithDomain:@"com.waveface.wammer.dataStore.file" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSString stringWithFormat:@"Image at %@ is actually nonexistant", aFilePath], NSLocalizedDescriptionKey,
-		nil]];
-		
-		return NO;
-		
-	} else if (![UIImage imageWithData:[NSData dataWithContentsOfMappedFile:aFilePath]]) {
-		
-		*error = [NSError errorWithDomain:@"com.waveface.wammer.dataStore.file" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSString stringWithFormat:@"Image at %@ can’t be decoded", aFilePath], NSLocalizedDescriptionKey,
-		nil]];
-		
-		return NO;
-		
-	}
-
-	return YES;
-
-}
 
 
 # pragma mark Lazy Images
@@ -544,7 +499,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 	if ([self resourceFilePath])
 	if (self.resourceImage)
-		self.resourceImage;
+		return self.resourceImage;
 	
 	if ([self largeThumbnailFilePath])
 	if (self.largeThumbnailImage)
@@ -567,6 +522,23 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 }
 
+
+
+
+# pragma mark - Trivial Stuff
+
++ (dispatch_queue_t) sharedResourceHandlingQueue {
+
+  static dispatch_queue_t queue = nil;
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+      queue = dispatch_queue_create("com.waveface.wammer.WAFile.resourceHandlingQueue", DISPATCH_QUEUE_SERIAL);
+  });
+  
+  return queue;
+
+}
+
 - (UIImage *) resourceImage {
 
 	UIImage *resourceImage = objc_getAssociatedObject(self, &kWAFileResourceImage);
@@ -583,22 +555,6 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	self.resourceImage = resourceImage;	
 	return resourceImage;
 	
-}
-
-
-
-# pragma mark - Trivial Stuff
-
-+ (dispatch_queue_t) sharedResourceHandlingQueue {
-
-  static dispatch_queue_t queue = nil;
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-      queue = dispatch_queue_create("com.waveface.wammer.WAFile.resourceHandlingQueue", DISPATCH_QUEUE_SERIAL);
-  });
-  
-  return queue;
-
 }
 
 - (void) setResourceImage:(UIImage *)newResourceImage {
@@ -664,81 +620,6 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 }
 
-- (BOOL) validatesResourceImage {
-
-	return [objc_getAssociatedObject(self, &kWAFileValidatesResourceImage) boolValue];
-
-}
-
-- (void) setValidatesResourceImage:(BOOL)newFlag {
-
-	if (self.validateResourceImage == newFlag)
-		return;
-	
-	[self willChangeValueForKey:kWAFileValidatesResourceImage];
-	objc_setAssociatedObject(self, &kWAFileValidatesResourceImage, [NSNumber numberWithBool:newFlag], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self didChangeValueForKey:kWAFileValidatesResourceImage];
-
-}
-
-- (BOOL) validatesThumbnailImage {
-
-	return [objc_getAssociatedObject(self, &kWAFileValidatesThumbnailImage) boolValue];
-
-}
-
-- (void) setValidatesThumbnailImage:(BOOL)newFlag {
-
-	if (self.validateThumbnailImage == newFlag)
-		return;
-	
-	[self willChangeValueForKey:kWAFileValidatesThumbnailImage];
-	objc_setAssociatedObject(self, &kWAFileValidatesThumbnailImage, [NSNumber numberWithBool:newFlag], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self didChangeValueForKey:kWAFileValidatesThumbnailImage];
-
-}
-
-- (BOOL) validatesLargeThumbnailImage {
-
-	return [objc_getAssociatedObject(self, &kWAFileValidatesLargeThumbnailImage) boolValue];
-
-}
-
-- (void) setValidatesLargeThumbnailImage:(BOOL)newFlag {
-
-	if (self.validateLargeThumbnailImage == newFlag)
-		return;
-	
-	[self willChangeValueForKey:kWAFileValidatesLargeThumbnailImage];
-	objc_setAssociatedObject(self, &kWAFileValidatesLargeThumbnailImage, [NSNumber numberWithBool:newFlag], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	[self didChangeValueForKey:kWAFileValidatesLargeThumbnailImage];
-
-}
-
-- (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey {
-
-	if (objc_getAssociatedObject(self, aKey) == anObject)
-		return;
-	
-	if (emitsChangeNotifications)
-		[self willChangeValueForKey:propertyKey];
-	
-	objc_setAssociatedObject(self, aKey, anObject, policy);
-	
-	if (emitsChangeNotifications)
-		[self didChangeValueForKey:propertyKey];
-
-}
-
-- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
-
-	objc_setAssociatedObject(self, &kWAFileThumbnailImage, nil, OBJC_ASSOCIATION_ASSIGN);
-	objc_setAssociatedObject(self, &kWAFileLargeThumbnailImage, nil, OBJC_ASSOCIATION_ASSIGN);
-	objc_setAssociatedObject(self, &kWAFileResourceImage, nil, OBJC_ASSOCIATION_ASSIGN);
-
-}
-
-
 # pragma mark - Deprecated
 
 - (UIImage *) thumbnail {
@@ -764,8 +645,128 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 
 
-@implementation WAFile (WAAdditions_PrivateAccessors)
+@implementation WAFile (WAAdditions_Accessors)
 
 @dynamic thumbnailImage, largeThumbnailImage, resourceImage;
+
+- (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey {
+
+	if (objc_getAssociatedObject(self, aKey) == anObject)
+		return;
+	
+	if (emitsChangeNotifications)
+		[self willChangeValueForKey:propertyKey];
+	
+	objc_setAssociatedObject(self, aKey, anObject, policy);
+	
+	if (emitsChangeNotifications)
+		[self didChangeValueForKey:propertyKey];
+
+}
+
+@end
+
+
+@implementation WAFile (WAAdditions_Validators)
+
+- (BOOL) validatesResourceImage {
+
+	return [objc_getAssociatedObject(self, &kWAFileValidatesResourceImage) boolValue];
+
+}
+
+- (void) setValidatesResourceImage:(BOOL)newFlag {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesResourceImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileValidatesResourceImage];
+
+}
+
+- (BOOL) validatesThumbnailImage {
+
+	return [objc_getAssociatedObject(self, &kWAFileValidatesThumbnailImage) boolValue];
+}
+
+- (void) setValidatesThumbnailImage:(BOOL)newFlag {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileValidatesThumbnailImage];
+	
+}
+
+- (BOOL) validatesLargeThumbnailImage {
+
+	return [objc_getAssociatedObject(self, &kWAFileValidatesLargeThumbnailImage) boolValue];
+	
+}
+
+- (void) setValidatesLargeThumbnailImage:(BOOL)newFlag {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileValidatesLargeThumbnailImage];
+	
+}
+
+- (BOOL) validateResourceImageIfNeeded:(NSError **)outError {
+	
+	return self.validatesResourceImage ? [self validateResourceImage:outError] : YES;
+	
+}
+
+- (BOOL) validateResourceImage:(NSError **)outError {
+	
+	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileResourceFilePath] error:outError];
+	
+}
+
+- (BOOL) validateThumbnailImageIfNeeded:(NSError **)outError {
+	
+	return self.validatesThumbnailImage ? [self validateThumbnailImage:outError] : YES;
+	
+}
+
+- (BOOL) validateThumbnailImage:(NSError **)outError {
+	
+	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileThumbnailFilePath] error:outError];
+	
+}
+
+- (BOOL) validateLargeThumbnailImageIfNeeded:(NSError **)outError {
+	
+	return self.validatesLargeThumbnailImage ? [self validateLargeThumbnailImage:outError] : YES;
+	
+}
+
+- (BOOL) validateLargeThumbnailImage:(NSError **)outError {
+	
+	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
+	
+}
+
++ (BOOL) validateImageAtPath:(NSString *)aFilePath error:(NSError **)error {
+	
+	if (!aFilePath)
+		return YES;
+
+	error = error ? error : &(NSError *){ nil };
+	
+	if (aFilePath && ![[NSFileManager defaultManager] fileExistsAtPath:aFilePath]) {
+		
+		*error = [NSError errorWithDomain:@"com.waveface.wammer.dataStore.file" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+			[NSString stringWithFormat:@"Image at %@ is actually nonexistant", aFilePath], NSLocalizedDescriptionKey,
+		nil]];
+		
+		return NO;
+		
+	} else if (![UIImage imageWithData:[NSData dataWithContentsOfMappedFile:aFilePath]]) {
+		
+		*error = [NSError errorWithDomain:@"com.waveface.wammer.dataStore.file" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+			[NSString stringWithFormat:@"Image at %@ can’t be decoded", aFilePath], NSLocalizedDescriptionKey,
+		nil]];
+		
+		return NO;
+		
+	}
+
+	return YES;
+
+}
 
 @end
