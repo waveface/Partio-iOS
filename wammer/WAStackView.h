@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "WAScrollView.h"
 
 @class WAStackView;
 @protocol WAStackViewDelegate <NSObject>
@@ -18,7 +18,7 @@
 @end
 
 
-@interface WAStackView : UIScrollView
+@interface WAStackView : WAScrollView
 
 @property (nonatomic, readwrite, assign) id <UIScrollViewDelegate, WAStackViewDelegate> delegate;	//	the aptly-named `delegate` is used by the scrollview
 
@@ -29,5 +29,9 @@
 - (void) removeStackElements:(NSSet *)objects;
 - (void) removeStackElementsAtIndexes:(NSIndexSet *)indexes;
 - (void) removeStackElementsObject:(UIView *)object;
+
+- (void) beginPostponingStackElementLayout;
+- (void) endPostponingStackElementLayout;
+- (BOOL) isPostponingStackElementLayout;
 
 @end
