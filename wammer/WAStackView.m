@@ -17,12 +17,15 @@
 - (NSMutableArray *) mutableStackElements; 
 - (CGSize) sizeThatFitsElement:(UIView *)anElement;
 
+@property (nonatomic, readwrite, assign) NSInteger stackElementLayoutPostponingCount;
+
 @end
 
 
 @implementation WAStackView
 @synthesize stackElements;
 @dynamic delegate;
+@synthesize stackElementLayoutPostponingCount;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -150,81 +153,85 @@
 
 	[super layoutSubviews];
 	
-	__block CGPoint nextOffset = CGPointZero;
-	__block CGRect contentRect = CGRectZero;
+	if (![self isPostponingStackElementLayout]) {
 	
-	CGFloat usableHeight = CGRectGetHeight(self.bounds);
-	
-	for (UIView *anElement in self.stackElements) {
-	
-		CGSize fitSize = [self sizeThatFitsElement:anElement];
+		__block CGPoint nextOffset = CGPointZero;
+		__block CGRect contentRect = CGRectZero;
 		
-		CGRect fitFrame = (CGRect){
-			nextOffset,
-			fitSize
-		};
+		CGFloat usableHeight = CGRectGetHeight(self.bounds);
+		
+		for (UIView *anElement in self.stackElements) {
+		
+			CGSize fitSize = [self sizeThatFitsElement:anElement];
+			
+			CGRect fitFrame = (CGRect){
+				nextOffset,
+				fitSize
+			};
 
-		if (!CGRectEqualToRect(anElement.frame, fitFrame))
-			anElement.frame = fitFrame;
-		
-		if (anElement.superview != self)
-			[self addSubview:anElement];
-		
-		contentRect = CGRectUnion(contentRect, anElement.frame);
-		
-		nextOffset = (CGPoint){
-			0,
-			CGRectGetMaxY(contentRect)
-		};
-		
-		[anElement.superview bringSubviewToFront:anElement];
-	
-	}
-	
-	NSParameterAssert(CGPointEqualToPoint(CGPointZero, contentRect.origin));
-	
-	if (CGRectGetHeight(contentRect) < usableHeight) {
-	
-		//	Find stretchable stuff
-		
-		__block CGFloat additionalOffset = 0;
-		__block CGFloat availableOffset = usableHeight - CGRectGetHeight(contentRect);
-		
-		NSMutableArray *stretchableElements = [NSMutableArray array];
-		
-		for (UIView *anElement in self.stackElements)
-			if ([self.delegate stackView:self shouldStretchElement:anElement])
-				[stretchableElements addObject:anElement];
-		
-		if ([stretchableElements count]) {
-		
-			[self.stackElements enumerateObjectsUsingBlock: ^ (UIView *anElement, NSUInteger idx, BOOL *stop) {
-				
-				anElement.frame = CGRectOffset(anElement.frame, 0, additionalOffset);
-				
-				if (![stretchableElements containsObject:anElement])
-					return;
-				
-				CGFloat consumedHeight = ([stretchableElements lastObject] == anElement) ? availableOffset : roundf(availableOffset / [stretchableElements count]);
-				CGRect newElementFrame = anElement.frame;
-				newElementFrame.size.height += consumedHeight;
-				anElement.frame = newElementFrame;
-				
-				availableOffset -= consumedHeight;
-				additionalOffset += consumedHeight;
-				
-			}];
+			if (!CGRectEqualToRect(anElement.frame, fitFrame))
+				anElement.frame = fitFrame;
+			
+			if (anElement.superview != self)
+				[self addSubview:anElement];
+			
+			contentRect = CGRectUnion(contentRect, anElement.frame);
+			
+			nextOffset = (CGPoint){
+				0,
+				CGRectGetMaxY(contentRect)
+			};
+			
+			[anElement.superview bringSubviewToFront:anElement];
 		
 		}
 		
-		contentRect.size.height = usableHeight;
+		NSParameterAssert(CGPointEqualToPoint(CGPointZero, contentRect.origin));
 		
-	}
+		if (CGRectGetHeight(contentRect) < usableHeight) {
+		
+			//	Find stretchable stuff
+			
+			__block CGFloat additionalOffset = 0;
+			__block CGFloat availableOffset = usableHeight - CGRectGetHeight(contentRect);
+			
+			NSMutableArray *stretchableElements = [NSMutableArray array];
+			
+			for (UIView *anElement in self.stackElements)
+				if ([self.delegate stackView:self shouldStretchElement:anElement])
+					[stretchableElements addObject:anElement];
+			
+			if ([stretchableElements count]) {
+			
+				[self.stackElements enumerateObjectsUsingBlock: ^ (UIView *anElement, NSUInteger idx, BOOL *stop) {
+					
+					anElement.frame = CGRectOffset(anElement.frame, 0, additionalOffset);
+					
+					if (![stretchableElements containsObject:anElement])
+						return;
+					
+					CGFloat consumedHeight = ([stretchableElements lastObject] == anElement) ? availableOffset : roundf(availableOffset / [stretchableElements count]);
+					CGRect newElementFrame = anElement.frame;
+					newElementFrame.size.height += consumedHeight;
+					anElement.frame = newElementFrame;
+					
+					availableOffset -= consumedHeight;
+					additionalOffset += consumedHeight;
+					
+				}];
+			
+			}
+			
+			contentRect.size.height = usableHeight;
+			
+		}
+		
+		//	Stretching implementation point
+		
+		if (!CGSizeEqualToSize(self.contentSize, contentRect.size)) {
+			self.contentSize = contentRect.size;
+		}
 	
-	//	Stretching implementation point
-	
-	if (!CGSizeEqualToSize(self.contentSize, contentRect.size)) {
-		self.contentSize = contentRect.size;
 	}
 
 }
@@ -236,6 +243,24 @@
 	
 	CGSize bestSize = [self.delegate sizeThatFitsElement:anElement inStackView:self];
 	return bestSize;
+
+}
+
+- (void) beginPostponingStackElementLayout {
+
+	self.stackElementLayoutPostponingCount++;
+
+}
+
+- (void) endPostponingStackElementLayout {
+
+	self.stackElementLayoutPostponingCount--;
+
+}
+
+- (BOOL) isPostponingStackElementLayout {
+
+	return !!self.stackElementLayoutPostponingCount;
 
 }
 
