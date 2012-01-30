@@ -101,25 +101,29 @@
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
 	
-	WF_TESTFLIGHT(^ {
+	if (!WAApplicationHasDebuggerAttached()) {
 	
-		NSLog(@"Using Testflight");
-				
-		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
-		nil]];
+		WF_TESTFLIGHT(^ {
 		
-		[TestFlight takeOff:kWATestflightTeamToken];
+			NSLog(@"Using Testflight");
+					
+			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
+			nil]];
+			
+			[TestFlight takeOff:kWATestflightTeamToken];
+		
+		});
+		
+		WF_CRASHLYTICS(^ {
+			
+			NSLog(@"Using Crashlytics");
+			
+			[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+			
+		});
 	
-	});
-	
-	WF_CRASHLYTICS(^ {
-		
-		NSLog(@"Using Crashlytics");
-		
-		[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
-		
-	});
+	}
 	
 	[[AVAudioSession sharedInstance] setActive:YES error:nil];
 

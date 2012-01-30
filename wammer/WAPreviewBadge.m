@@ -305,38 +305,25 @@ typedef enum {
 
 	if (self.title || self.text) {
 	
-		NSDictionary *titleAttributes = [NSAttributedString irAttributesForFont:self.titleFont color:self.titleColor];
-		NSDictionary *contentAttributes = [NSAttributedString irAttributesForFont:self.textFont color:self.textColor];
+		NSDictionary *titleAttributes = [[NSAttributedString irAttributesForFont:self.titleFont color:self.titleColor] irDictionaryByMergingWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[self.titleFont irFixedLineHeightParagraphStyle], kCTParagraphStyleAttributeName,
+		nil]];
+		NSDictionary *contentAttributes = [[NSAttributedString irAttributesForFont:self.textFont color:self.textColor] irDictionaryByMergingWithDictionary:[NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[self.textFont irFixedLineHeightParagraphStyle], kCTParagraphStyleAttributeName,
+		nil]];
 		
 		if (self.link)
 			titleAttributes = [titleAttributes irDictionaryBySettingObject:self.link forKey:kIRTextLinkAttribute];
 		
 		NSMutableAttributedString *realContentString = [[NSMutableAttributedString alloc] initWithString:@"" attributes:nil];
 		
-		CTParagraphStyleRef (^paragraphStyleForLineHeight)(CGFloat) = ^ (CGFloat aHeight) {
-
-			CTParagraphStyleSetting titleParagraphSettings[] = {
-				{ kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(float_t), &((float_t[]){ 1.0f }) },
-				{ kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(float_t), &((float_t[]){ 1.0f }) },
-				{ kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(float_t), &((float_t[]){ 0.01f }) },
-				{ kCTParagraphStyleSpecifierLineSpacing, sizeof(float_t), &((float_t[]){ aHeight }) },
-			};
-			
-			return CTParagraphStyleCreate(titleParagraphSettings, sizeof(titleParagraphSettings) / sizeof(CTParagraphStyleSetting));
-
-		};
-		
 		if (self.title) {
 						
-			CTParagraphStyleRef titleParagraphStyle = paragraphStyleForLineHeight(30.0f);
-			titleAttributes = [titleAttributes irDictionaryBySettingObject:(id)titleParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
-			CFRelease(titleParagraphStyle);
-
 			NSMutableAttributedString *titleAttributedString = [[[NSMutableAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease];
 
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:titleAttributes] autorelease]];
+			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
 			[realContentString appendAttributedString:titleAttributedString];
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:titleAttributes] autorelease]];
+			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
 			
 			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n \n" attributes:[NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:12.0f] color:nil]] autorelease]];			
 
@@ -344,9 +331,9 @@ typedef enum {
 		
 		if (self.text) {
 			
-			CTParagraphStyleRef textParagraphStyle = paragraphStyleForLineHeight(18.0f);
-			contentAttributes = [contentAttributes irDictionaryBySettingObject:(id)textParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
-			CFRelease(textParagraphStyle);
+//			CTParagraphStyleRef textParagraphStyle = paragraphStyleForLineHeight(18.0f);
+//			contentAttributes = [contentAttributes irDictionaryBySettingObject:(id)textParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
+//			CFRelease(textParagraphStyle);
 			
 			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.text attributes:contentAttributes] autorelease]];
 			
