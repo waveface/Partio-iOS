@@ -6,17 +6,31 @@
 // Expected: start successfully
 
 var target = UIATarget.localTarget();
-
+target.logElementTree();
 //target.delay(5);
 
 var application = target.frontMostApp();
 var mainWindow = application.mainWindow();
-var tableView = mainWindow.tableViews()[0];
-
-UIALoggExpected.logMessage("NumbExpected of cells " + tableView.cells().length);
+var naviBar = mainWindow.navigationBar();
+var post = naviBar.elements()[3].buttons()[1];
 
 // 2. Post a text (1 line)
 // Expected: post successfully and see the new post
+
+post.tap();
+
+application.logElementTree();
+var text = mainWindow.textViews()[0];
+
+text.setValue("hello world!");
+
+mainWindow.navigationBars()["Compose"].buttons()[1].tap();
+
+
+UIALogger.logMessage("Post!");
+
+
+
 // 3. Post a text (10 line)
 // Expected: post successfully and see the new post
 // 4. Post a text and cancel it
@@ -33,6 +47,12 @@ UIALoggExpected.logMessage("NumbExpected of cells " + tableView.cells().length);
 // Expected: cancel successfully and will be back to posts
 // 10. Browse the posts page. Tap to the end of page and tap back to the top of page
 // Expected: see the end of page and back to top successfully
+
+UIATarget.localTarget().dragFromToForDuration({x:500, y:200}, {x:100, y:200}, 1);
+UIATarget.localTarget().delay(3);
+UIATarget.localTarget().dragFromToForDuration({x:100, y:200}, {x:500, y:200}, 1);
+
+
 // 11. Read a text post
 // Expected: see all text content in the post
 // 12. Post a 1-line comment on a text post
