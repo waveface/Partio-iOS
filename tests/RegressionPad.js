@@ -6,7 +6,7 @@
 // Expected: start successfully
 
 var target = UIATarget.localTarget();
-target.logElementTree();
+// target.logElementTree();
 //target.delay(5);
 
 var application = target.frontMostApp();
@@ -23,23 +23,30 @@ var naviBar = mainWindow.navigationBar();
 
 naviBar.elements()[3].buttons()["Compose"].tap();
 
-application.logElementTree();
+// application.logElementTree();
 var text = mainWindow.textViews()[0];
 
 text.setValue("hello world!");
 
-mainWindow.navigationBars()["Compose"].logElementTree();
-mainWindow.navigationBars()["Compose"].buttons()["Compose Button"].tap();
+mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
+mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
 
+mainWindow.navigationBars()["Compose"].buttons()[1].tap();
 
 UIALogger.logMessage("Post!");
-
 
 
 // 3. Post a text (10 line)
 // Expected: post successfully and see the new post
 // 4. Post a text and cancel it
 // Expected: cancel successfully and will be back to timeline
+
+naviBar.elements()[3].buttons()["Compose"].tap();
+mainWindow.buttons()["PLCameraButtonIcon"].tap();
+mainWindow.elements()[0].actionSheet().buttons()["Photo Library"].tap();
+
+mainWindow.logElementTree();
+
 // 5. Post a photo (take photo)
 // Expected: post successfully and see the new post
 // 6. Post 10 photos (take photo)
@@ -74,17 +81,3 @@ UIATarget.localTarget().dragFromToForDuration({x:100, y:200}, {x:500, y:200}, 1)
 // Expected: post successfully and see the new comment
 // 18. Post a comment and cancel it on a photo post 
 // Expected: cancel successfully and will be back to timeline
-
-for (var currentCellIndex = 0; currentCellIndex < tableView.cells().length; currentCellIndex++) {
-    var currentCell = tableView.cells()[currentCellIndex];
-    UIALoggExpected.logStart("Testing table option " + currentCell.name());
-    tableView.scrollToElementWithName(currentCell.name());
-    target.delay(1);
-    currentCell.tap();
-    target.delay(1);
-    
-    UIATarget.localTarget().captureScreenWithName(currentCell.name());
-    mainWindow.navigationBar().leftButton().tap();
-    target.delay(1);
-    UIALoggExpected.logPass("Testing table option " + currentCell.name());
-}
