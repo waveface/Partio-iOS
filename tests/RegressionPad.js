@@ -12,19 +12,24 @@ target.logElementTree();
 var application = target.frontMostApp();
 var mainWindow = application.mainWindow();
 var naviBar = mainWindow.navigationBar();
-var post = naviBar.elements()[3].buttons()[1];
+
+// var elements = mainWindow.elements()
+// for ( var i =0; i < elements.length; i ++ ) {
+//     elements[i].logElementTree();
+// }
 
 // 2. Post a text (1 line)
 // Expected: post successfully and see the new post
 
-post.tap();
+naviBar.elements()[3].buttons()["Compose"].tap();
 
 application.logElementTree();
 var text = mainWindow.textViews()[0];
 
 text.setValue("hello world!");
 
-mainWindow.navigationBars()["Compose"].buttons()[1].tap();
+mainWindow.navigationBars()["Compose"].logElementTree();
+mainWindow.navigationBars()["Compose"].buttons()["Compose Button"].tap();
 
 
 UIALogger.logMessage("Post!");

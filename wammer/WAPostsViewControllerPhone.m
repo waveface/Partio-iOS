@@ -104,7 +104,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	__block __typeof__(self) nrSelf = self;
 	
 	if (WAAdvancedFeaturesEnabled()) {
-		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction:^(UIButton *senderButton, IRBarButtonItem *senderItem) {
+		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph"), @"Settings") wiredAction:^(UIButton *senderButton, IRBarButtonItem *senderItem) {
 			
 			__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
 			appSettingsViewController.delegate = self;
@@ -132,7 +132,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		toolbar.itemPadding = -8;
 		toolbar.items = [NSArray arrayWithObjects:
 		
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph"), @"User Info") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 				
 				//	[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
 				
@@ -151,7 +151,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
         
 			}],
 			
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WACompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WACompose"), @"Compose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
 				
 				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
         

@@ -115,15 +115,16 @@
     __block __typeof__(self) nrSelf = self;
 		
     IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }] autorelease];
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
+		
+		NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
 		
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph"), @"UserInfo") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
         [nrSelf handleUserInfoItemTap:senderItem];
 			}],
       
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose"), @"Compose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
         [nrSelf handleComposeItemTap:senderItem];
 			}],
 			
@@ -131,7 +132,7 @@
     
     if (WAAdvancedFeaturesEnabled()) {
     
-      [toolbarItems insertObject:[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+      [toolbarItems insertObject:[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph"), @"Settings") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
         [nrSelf handleActionItemTap:senderItem];
 			}] atIndex:1];
     
