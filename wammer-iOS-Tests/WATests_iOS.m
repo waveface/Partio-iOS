@@ -1,6 +1,6 @@
 //
 //  WATests_iOS.m
-//  wammer-iOS-Tests
+//  wammer-iOS-Test
 //
 //  Created by jamie on 1/4/12.
 //  Copyright (c) 2012 Waveface Inc. All rights reserved.
