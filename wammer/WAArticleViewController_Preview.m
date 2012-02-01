@@ -58,12 +58,12 @@
 		webScrollView.canCancelContentTouches = NO;
 		webScrollView.delaysContentTouches = NO;
 		
-		[webScrollView.panGestureRecognizer ]
-		
 		[webScrollView.subviews enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 			
 			if ([aSubview isKindOfClass:[UIImageView class]])
-				[aSubview removeFromSuperview];	//	I think this will break stuff, but it did not
+				[aSubview removeFromSuperview];
+				
+			//	I think this will break stuff, but it did not
 			
 		}];
 		
