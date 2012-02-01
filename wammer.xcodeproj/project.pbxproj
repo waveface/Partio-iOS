@@ -654,6 +654,13 @@
 			remoteGlobalIDString = 05CD31630EE93905000FDE88;
 			remoteInfo = "CrashReporter-iOS-Simulator";
 		};
+		FFA53E3414D934C7001E7B6B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A53513D6C2CC00D54EC6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFCFE078142111E100B9E6AF;
+			remoteInfo = "wammer-iOS";
+		};
 		FFA69460147F800400F46347 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
@@ -804,7 +811,7 @@
 		4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSTextFieldSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
-		4B8CA96814BBE7BA006E06BB /* waveface-tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "waveface-tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B8CA96814BBE7BA006E06BB /* waveface-tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "waveface-tests.octest"; path = "wammer-iOS-Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8CA96B14BBE7BA006E06BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8CA96D14BBE7BA006E06BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -2225,9 +2232,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4B8CA96714BBE7BA006E06BB /* waveface-tests */ = {
+		4B8CA96714BBE7BA006E06BB /* wammer-iOS-Test */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "waveface-tests" */;
+			buildConfigurationList = 4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "wammer-iOS-Test" */;
 			buildPhases = (
 				4B8CA96314BBE7BA006E06BB /* Sources */,
 				4B8CA96414BBE7BA006E06BB /* Frameworks */,
@@ -2237,8 +2244,9 @@
 			buildRules = (
 			);
 			dependencies = (
+				FFA53E3514D934C7001E7B6B /* PBXTargetDependency */,
 			);
-			name = "waveface-tests";
+			name = "wammer-iOS-Test";
 			productName = "waveface-tests";
 			productReference = 4B8CA96814BBE7BA006E06BB /* waveface-tests.octest */;
 			productType = "com.apple.product-type.bundle";
@@ -2367,9 +2375,9 @@
 			projectRoot = "";
 			targets = (
 				FFCFE078142111E100B9E6AF /* wammer-iOS */,
+				4B8CA96714BBE7BA006E06BB /* wammer-iOS-Test */,
 				FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */,
 				FFC648321445E8D700593E5E /* wammer-OSX */,
-				4B8CA96714BBE7BA006E06BB /* waveface-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -3136,6 +3144,11 @@
 			name = Sparkle;
 			targetProxy = FF8A71C514B3504D00EC6D66 /* PBXContainerItemProxy */;
 		};
+		FFA53E3514D934C7001E7B6B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFCFE078142111E100B9E6AF /* wammer-iOS */;
+			targetProxy = FFA53E3414D934C7001E7B6B /* PBXContainerItemProxy */;
+		};
 		FFB117C5147F8B34002094E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRRecurrenceMachine;
@@ -3502,7 +3515,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "waveface-tests" */ = {
+		4B8CA97914BBE7BA006E06BB /* Build configuration list for PBXNativeTarget "wammer-iOS-Test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4B8CA97A14BBE7BA006E06BB /* Debug */,
