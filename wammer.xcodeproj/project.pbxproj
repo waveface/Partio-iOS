@@ -1431,7 +1431,7 @@
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		4B8CA97014BBE7BA006E06BB /* Supporting Files */ = {
 			isa = PBXGroup;
@@ -1441,16 +1441,6 @@
 				4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		4B8CC02D14BED147000E6F71 /* Timeline */ = {
-			isa = PBXGroup;
-			children = (
-				4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */,
-				4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */,
-				4B8CC02914BED121000E6F71 /* WAPatternWood.png */,
-			);
-			name = Timeline;
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -1620,8 +1610,8 @@
 				FF0024F914B44CC500F54AAF /* Blob Syncing */,
 				FF73A54913D6C2CD00D54EC6 /* iOS Supporting Files */,
 				FFC2E04C13DD706600816EA1 /* iOS Resources */,
-				FFC6483B1445E8D700593E5E /* Mac */,
 				4B8CA96F14BBE7BA006E06BB /* iOS Tests */,
+				FFC6483B1445E8D700593E5E /* Mac */,
 				FF73A54113D6C2CC00D54EC6 /* Frameworks */,
 				FF73A53F13D6C2CC00D54EC6 /* Products */,
 			);
@@ -1933,11 +1923,6 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FF0505E914C088D6002EA455 /* WACornerCloseButton.png */,
-				FF0505EA14C088D6002EA455 /* WACornerCloseButtonActive.png */,
-				4B8CC02D14BED147000E6F71 /* Timeline */,
-				FF5EE1AC149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop.png */,
-				FF5EE1AD149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop@2x.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -1972,6 +1957,10 @@
 				FF13871013E94F0700154B7D /* WACompositionBarBackground.png */,
 				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
 				FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */,
+				FF0505E914C088D6002EA455 /* WACornerCloseButton.png */,
+				FF0505EA14C088D6002EA455 /* WACornerCloseButtonActive.png */,
+				FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */,
+				FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */,
 				FF027C9B13F1304D009D979A /* WADefaultUserIcon.png */,
 				4BFAE5E01484C33B002CDE07 /* WAFilter.png */,
 				4BFAE5E11484C33B002CDE07 /* WAFilter@2x.png */,
@@ -1993,6 +1982,8 @@
 				FFCEDAB1149B6698000F2B20 /* WAOverlayBezel-Error@2x.png */,
 				FFCEDAB2149B6698000F2B20 /* WAOverlayBezel-Restricted.png */,
 				FFCEDAB3149B6698000F2B20 /* WAOverlayBezel-Restricted@2x.png */,
+				4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */,
+				4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */,
 				FF692B9F143C791700A084A8 /* WAPageSliderThumb.png */,
 				FF692BA0143C791700A084A8 /* WAPageSliderThumbActive.png */,
 				FF692BA1143C791700A084A8 /* WAPageSliderThumbInactive.png */,
@@ -2009,11 +2000,14 @@
 				FF4CCE44149A00180049B83C /* WAPatternSoftWallpaper@2x.png */,
 				FF8FDF44143DA467006D57D8 /* WAPatternThickShrunkPaper.png */,
 				FF4CCE45149A00180049B83C /* WAPatternThickShrunkPaper@2x.png */,
+				4B8CC02914BED121000E6F71 /* WAPatternWood.png */,
 				FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */,
 				FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */,
 				4BFAE5E21484C33B002CDE07 /* WAPhoto.png */,
 				4BFAE5E31484C33B002CDE07 /* WAPhoto@2x.png */,
 				FFA67D5213EBD35C00159B6E /* WAPhotoQueueBackground.png */,
+				FF5EE1AC149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop.png */,
+				FF5EE1AD149F9B55003173F1 /* WAPlaintextArticleStackCellBackdrop@2x.png */,
 				4B7333F41490AC4700F41909 /* WAPostBackground.png */,
 				FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */,
 				4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */,
@@ -2025,6 +2019,9 @@
 				4BC91A931446E3130019399B /* WASettingsGlyph.png */,
 				FA259F441457E96300F79C8F /* WASettingsGlyph@2x~iphone.png */,
 				FA259F431457E96300F79C8F /* WASettingsGlyph~iphone.png */,
+				FF601539149C8E1E00D8A50F /* WASliderKnob.png */,
+				FF60153A149C8E1E00D8A50F /* WASliderKnobDisabled.png */,
+				FF60153B149C8E1E00D8A50F /* WASliderKnobPressed.png */,
 				FF1A10631462D8CC004FD00D /* WASoundRefreshEnded.caf */,
 				FF1A10641462D8CC004FD00D /* WASoundRefreshStarted.caf */,
 				FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */,
@@ -2035,11 +2032,6 @@
 				FFF9B7A413E7D8E5002A9D7F /* WATinyArrowUp.png */,
 				FFFC76351487760F00247099 /* WAUserGlyph.png */,
 				FFFC76361487760F00247099 /* WAUserGlyph@2x.png */,
-				FF601539149C8E1E00D8A50F /* WASliderKnob.png */,
-				FF60153A149C8E1E00D8A50F /* WASliderKnobDisabled.png */,
-				FF60153B149C8E1E00D8A50F /* WASliderKnobPressed.png */,
-				FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */,
-				FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */,
 			);
 			name = "iOS Resources";
 			path = wammer;
