@@ -1,12 +1,12 @@
 //
-//  wammer_iOS_tests.m
-//  wammer-iOS_tests
+//  WATests_iOS.m
+//  wammer-iOS-Tests
 //
 //  Created by jamie on 1/4/12.
 //  Copyright (c) 2012 Waveface Inc. All rights reserved.
 //
 
-#import "waveface_tests.h"
+#import "WATests_iOS.h"
 
 @implementation NSCalendar (MySpecialCalculations)
 -(NSInteger)daysFromDate:(NSDate *) endDate
@@ -20,7 +20,7 @@
 }
 @end
 
-@implementation waveface_tests
+@implementation WATests_iOS
 
 - (void)setUp
 {
