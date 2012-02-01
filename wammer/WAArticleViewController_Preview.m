@@ -43,6 +43,7 @@
 	
 	webView = [[UIWebView alloc] initWithFrame:CGRectZero];
 	
+	webView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	webView.delegate = self;
 
 	UIScrollView *webScrollView = [webView respondsToSelector:@selector(scrollView)] ? webView.scrollView : [[webView.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
@@ -57,7 +58,14 @@
 		webScrollView.canCancelContentTouches = NO;
 		webScrollView.delaysContentTouches = NO;
 		
-		//	?
+		[webScrollView.panGestureRecognizer ]
+		
+		[webScrollView.subviews enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+			
+			if ([aSubview isKindOfClass:[UIImageView class]])
+				[aSubview removeFromSuperview];	//	I think this will break stuff, but it did not
+			
+		}];
 		
 		self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
 		
