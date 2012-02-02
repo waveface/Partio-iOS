@@ -46,7 +46,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 + (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL{
     
-    WAPostViewControllerPhone *controller = [[self alloc] initWithStyle:UITableViewStylePlain];
+    WAPostViewControllerPhone *controller = [[[self alloc] initWithStyle:UITableViewStylePlain] autorelease];
     
     controller.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
     controller.post = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:postURL];
@@ -93,7 +93,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) loadView {
 
-	self.tableView = [[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	self.tableView = [[[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain] autorelease];
 	self.view = self.tableView;
 	
 	__block IRTableView *nrTV = ((IRTableView *)self.tableView);
@@ -199,9 +199,10 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
     
 }
 
-- (void)showCompose:(UIBarButtonItem *)sender
-{
-  [self.navigationController pushViewController:[[WAComposeCommentViewControllerPhone alloc] init] animated:YES];
+- (void) showCompose:(UIBarButtonItem *)sender {
+
+  [self.navigationController pushViewController:[[[WAComposeCommentViewControllerPhone alloc] init] autorelease] animated:YES];
+	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -292,7 +293,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
       if(!cell) {
 			       
-				cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
+				cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
         cell.imageStackView.delegate = self;
         
 				[self cellViewWithDecoration:cell];
@@ -321,6 +322,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       cell.imageStackView.images = allImages;
       
       return cell;
+			
     }
     
     // Section 2 for comment cell

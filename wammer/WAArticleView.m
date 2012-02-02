@@ -206,6 +206,11 @@
 	
 	[self disassociateBindings];
 	
+	WAArticle *boundArticle = self.article;
+
+	if (!boundArticle)
+		return;
+	
 	NSArray * (^topImageFiles)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
 		
 		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
@@ -230,8 +235,6 @@
 		
 	};
 	
-	
-	WAArticle *boundArticle = self.article;
 	WAFile *boundImageFile = [topImageFiles(boundArticle.fileOrder, 1) lastObject];
 	
 	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);

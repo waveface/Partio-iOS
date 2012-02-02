@@ -87,16 +87,16 @@
 	if (webViewWrapper)
 		return webViewWrapper;
 		
-	webViewWrapper = [[UIView alloc] initWithFrame:self.webView.bounds];
+	webViewWrapper = [[[UIView alloc] initWithFrame:self.webView.bounds] autorelease];
 
 	self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	webViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[webViewWrapper addSubview:self.webView];
 
-	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
+	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(webViewWrapper.bounds),
 		3
-	}, kCAGravityTop)];
+	}, kCAGravityTop)] autorelease];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[webViewWrapper addSubview:topShadow];

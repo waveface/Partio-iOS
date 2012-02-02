@@ -262,7 +262,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	
 	CGSize (^sizeForComponent)(id) = ^ (id aComponent) {
 
-		CGSize calculatedSize;
+		CGSize calculatedSize = CGSizeZero;
 
 		switch (self.style) {
 			case WADynamicThumbnailsStyle: {

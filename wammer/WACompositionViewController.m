@@ -658,8 +658,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				
 				reload();
 				
-				NSUInteger shownCenterItemIndex = (self.photosView.numberOfItems - 1);
-				shownCenterItemIndex = (unsigned int)fabsf(ceilf(((float_t)self.photosView.numberOfItems / (float_t)2)));
+				NSUInteger shownCenterItemIndex = (unsigned int)fabsf(ceilf(((float_t)self.photosView.numberOfItems / (float_t)2)));
 				
 				if ([removedObjectIndices count])
 					shownCenterItemIndex = [removedObjectIndices firstIndex];

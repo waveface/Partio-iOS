@@ -66,7 +66,9 @@
       loadedNibName = @"WAPostViewCellPhone-WebLink";
     }
 	}
-
+	
+	[self autorelease];	//	from unwanted +alloc
+	
 	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
 	
 	if (!self)

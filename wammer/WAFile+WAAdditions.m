@@ -72,8 +72,6 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey;
 
-- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority;
-
 @end
 
 
@@ -103,6 +101,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) canScheduleBlobRetrieval;
 - (BOOL) canScheduleExpensiveBlobRetrieval;
+
+- (void) scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority;
 
 - (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath;
 

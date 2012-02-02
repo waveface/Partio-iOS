@@ -29,7 +29,7 @@
   if (!self)
     return nil;
     
-  self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+  self.spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
   self.spinner.hidesWhenStopped = NO;
   [self.spinner startAnimating];
   
@@ -53,7 +53,7 @@
   NSURL *registrationURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserRegistrationEndpointURL]];
   NSURL *usedRegistrationURL = IRWebAPIRequestURLWithQueryParameters(registrationURL, registrationQueryParams);
   
-  NSURLRequest *registrationRequest = [[NSURLRequest alloc] initWithURL:usedRegistrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
+  NSURLRequest *registrationRequest = [[[NSURLRequest alloc] initWithURL:usedRegistrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15] autorelease];
   
   [[self view] loadRequest:registrationRequest];
 

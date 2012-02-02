@@ -315,7 +315,7 @@ typedef enum {
 		if (self.link)
 			titleAttributes = [titleAttributes irDictionaryBySettingObject:self.link forKey:kIRTextLinkAttribute];
 		
-		NSMutableAttributedString *realContentString = [[NSMutableAttributedString alloc] initWithString:@"" attributes:nil];
+		NSMutableAttributedString *realContentString = [[[NSMutableAttributedString alloc] initWithString:@"" attributes:nil] autorelease];
 		
 		if (self.title) {
 						
