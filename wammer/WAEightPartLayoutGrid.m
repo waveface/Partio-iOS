@@ -23,7 +23,7 @@
 @implementation WAEightPartLayoutPlacementCandidate
 @synthesize pattern, occurrence;
 + (id) candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence {
-	WAEightPartLayoutPlacementCandidate *returnedInstance = [[self alloc] init];
+	WAEightPartLayoutPlacementCandidate *returnedInstance = [[[self alloc] init] autorelease];
 	returnedInstance.pattern = aPattern;
 	returnedInstance.occurrence = anOccurrence;
 	return returnedInstance;

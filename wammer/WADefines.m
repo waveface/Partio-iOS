@@ -129,3 +129,19 @@ NSString * WADeviceIdentifier (void) {
   return nil;
 
 }
+
+NSString * const kWAAppEventNotification = @"WAAppEventNotification";
+NSString * const kWAAppEventTitle = @"WAAppEventTitle";
+
+void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
+
+	NSMutableDictionary *sentUserInfo = [[userInfo mutableCopy] autorelease];
+	if (!sentUserInfo)
+		sentUserInfo = [NSMutableDictionary dictionary];
+	
+	if (eventTitle)
+		[sentUserInfo setObject:eventTitle forKey:kWAAppEventTitle];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kWAAppEventNotification object:nil userInfo:sentUserInfo];
+
+}

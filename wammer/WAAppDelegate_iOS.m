@@ -112,6 +112,15 @@
 			nil]];
 			
 			[TestFlight takeOff:kWATestflightTeamToken];
+			
+			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+				
+				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
+				[TestFlight passCheckpoint:eventTitle];
+				
+			}];
+			
+			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		});
 		
@@ -125,7 +134,11 @@
 	
 	}
 	
-	[[AVAudioSession sharedInstance] setActive:YES error:nil];
+	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
+	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
+	[audioSession setActive:YES error:nil];
+	
+	WAPostAppEvent(@"bootstrap-finished", nil);
 
 }
 
@@ -221,9 +234,10 @@
 	
 	};
 	
-	dismissModal(self.window.rootViewController);
+	UIViewController *rootVC = self.window.rootViewController;
 	
-	
+	dismissModal(rootVC);
+
 	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
 	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
 		return YES;
@@ -234,7 +248,8 @@
 	};
 	
 	self.window.rootViewController = bottomMostViewController;
-
+	[rootVC didReceiveMemoryWarning];	//	Kill it now
+	
 }
 
 - (void) recreateViewHierarchy {
@@ -266,7 +281,7 @@
 	
 	self.window.rootViewController = (( ^ {
 	
-		__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+		__block WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
 		
 		navController.onViewDidLoad = ^ (WANavigationController *self) {
 			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
@@ -296,7 +311,7 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		BOOL didRequest = [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;

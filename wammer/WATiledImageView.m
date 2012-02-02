@@ -107,9 +107,9 @@ static NSString * const kWATiledImageView_storedImage = @"kWAImageView_storedIma
 
 	if (!CGSizeEqualToSize(ownImage.size, ((CATiledLayer *)self.layer).tileSize)) {
 	
-		UIScreen *usedScreen = self.window.screen;
-		if (!usedScreen)
-			usedScreen = [UIScreen mainScreen];
+		//	UIScreen *usedScreen = self.window.screen;
+		//	if (!usedScreen)
+		//		usedScreen = [UIScreen mainScreen];
 		
 		((CATiledLayer *)self.layer).tileSize = (CGSize){
 		

@@ -34,12 +34,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	
-	__block id appLoaded = [[center addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+	__block id appLoaded = [center addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 		
-		[center removeObserver:[appLoaded autorelease]];
+		[center removeObserver:appLoaded];
+		objc_setAssociatedObject([WARemoteInterface class], &UIApplicationDidFinishLaunchingNotification, nil, OBJC_ASSOCIATION_ASSIGN);
 		
-		//	__block id baseURLChanged = 
-		[[center addObserverForName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		__block id baseURLChanged = [center addObserverForName:kWARemoteInterfaceContextDidChangeBaseURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 			
 			NSURL *oldURL = [[note userInfo] objectForKey:kWARemoteInterfaceContextOldBaseURL];
 			NSURL *newURL = [[note userInfo] objectForKey:kWARemoteInterfaceContextNewBaseURL];
@@ -57,10 +57,13 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 			
 			ri.monitoredHosts = updatedHosts;
 			
-		}] retain];
+		}];
+		
+		objc_setAssociatedObject([WARemoteInterface class], &kWARemoteInterfaceContextDidChangeBaseURLNotification, baseURLChanged, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 				
-	}] retain];
+	}];
 
+	objc_setAssociatedObject([WARemoteInterface class], &UIApplicationDidFinishLaunchingNotification, appLoaded, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
