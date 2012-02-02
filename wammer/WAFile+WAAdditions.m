@@ -154,19 +154,22 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	
 	//	TBD: We’re assuming that everthing is restorable, might not be true if users pound on local drafts more
 	
-	NSFileManager *fileManager = [NSFileManager defaultManager];	
+	NSFileManager * const fileManager = [NSFileManager defaultManager];	
 	
-	if (![self validateThumbnailImage:nil])
-	if ([fileManager removeItemAtPath:[self primitiveThumbnailFilePath] error:nil])
-		[self setPrimitiveThumbnailFilePath:nil];
+	if (![self validateThumbnailImage:nil]) {
+		[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
+		self.thumbnailFilePath = nil;
+	}
+	
+	if (![self validateLargeThumbnailImage:nil]) {
+		[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
+		self.largeThumbnailFilePath = nil;
+	}
 		
-	if (![self validateLargeThumbnailImage:nil])
-	if ([fileManager removeItemAtPath:[self primitiveLargeThumbnailFilePath] error:nil])
-		[self setPrimitiveLargeThumbnailFilePath:nil];
-		
-	if (![self validateResourceImage:nil])
-	if ([fileManager removeItemAtPath:[self primitiveResourceFilePath] error:nil])
-		[self setPrimitiveResourceFilePath:nil];
+	if (![self validateResourceImage:nil]) {
+		[fileManager removeItemAtPath:self.resourceFilePath error:nil];
+		self.resourceFilePath = nil;
+	}
 	
 }
 
@@ -273,7 +276,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 		NSLog(@"Got access exception: %@", exception);
 	}
 
-	NSString *currentFilePath = [self primitiveValueForKey:fileKeyPath];
+	NSString *currentFilePath = [self valueForKey:fileKeyPath];
 	if (currentFilePath || ![[self valueForKey:urlKeyPath] isEqualToString:[anURL absoluteString]]) {
 		//	NSLog(@"Skipping double-writing");
 		return NO;
@@ -310,11 +313,25 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 # pragma mark - File Path Accessors & Triggers
 
+- (NSString *) relativePathFromPath:(NSString *)absolutePath {
+
+	WADataStore *const dataStore = [WADataStore defaultStore];
+	return [dataStore relativePathWithBasePath:[dataStore persistentFileURLBasePath] filePath:absolutePath];
+
+}
+
+- (NSString *) absolutePathFromPath:(NSString *)relativePath {
+
+	WADataStore *const dataStore = [WADataStore defaultStore];
+	return [dataStore absolutePathWithBasePath:[dataStore persistentFileURLBasePath] filePath:relativePath];
+
+}
+
 - (void) setResourceFilePath:(NSString *)newResourceFilePath {
 
 	[self willChangeValueForKey:kWAFileResourceFilePath];
 	
-	[self setPrimitiveResourceFilePath:newResourceFilePath];
+	[self setPrimitiveResourceFilePath:[self relativePathFromPath:newResourceFilePath]];
 	[self setResourceImage:nil];
 	[self setValidatesResourceImage:!!newResourceFilePath];
 	
@@ -326,7 +343,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	
 	[self willChangeValueForKey:kWAFileThumbnailFilePath];
 	
-	[self setPrimitiveThumbnailFilePath:newThumbnailFilePath];
+	[self setPrimitiveThumbnailFilePath:[self relativePathFromPath:newThumbnailFilePath]];
 	[self setThumbnailImage:nil];
 	[self setValidatesThumbnailImage:!!newThumbnailFilePath];
 	
@@ -338,7 +355,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	
 	[self willChangeValueForKey:kWAFileLargeThumbnailFilePath];
 	
-	[self setPrimitiveLargeThumbnailFilePath:newLargeThumbnailFilePath];
+	[self setPrimitiveLargeThumbnailFilePath:[self relativePathFromPath:newLargeThumbnailFilePath]];
 	[self setLargeThumbnailImage:nil];
 	[self setValidatesLargeThumbnailImage:!!newLargeThumbnailFilePath];
 	
@@ -351,17 +368,15 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	NSString *primitivePath = [self primitiveValueForKey:@"resourceFilePath"];
 	
 	if (primitivePath)
-		return primitivePath;
+		return [self absolutePathFromPath:primitivePath];
 	
 	if (!self.resourceURL)
 		return nil;
 	
 	NSURL *resourceURL = [NSURL URLWithString:self.resourceURL];
 
-	if ([resourceURL isFileURL]) {
-		self.resourceFilePath = (primitivePath = [resourceURL path]);
-		return primitivePath;
-	}
+	if ([resourceURL isFileURL])
+		return [resourceURL path];
 	
 	[self scheduleResourceRetrievalIfPermitted];
 	
@@ -374,17 +389,15 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	NSString *primitivePath = [self primitiveValueForKey:@"thumbnailFilePath"];
 	
 	if (primitivePath)
-		return primitivePath;
+		return [self absolutePathFromPath:primitivePath];
 	
 	if (!self.thumbnailURL)
 		return nil;
 	
 	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
 	
-	if ([thumbnailURL isFileURL]) {
-		self.thumbnailFilePath = (primitivePath = [thumbnailURL path]);
+	if ([thumbnailURL isFileURL])
 		return primitivePath;
-	}
 	
 	[self scheduleThumbnailRetrievalIfPermitted];
 	
@@ -397,17 +410,15 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	NSString *primitivePath = [self primitiveValueForKey:kWAFileLargeThumbnailFilePath];
 	
 	if (primitivePath)
-		return primitivePath;
+		return [self absolutePathFromPath:primitivePath];
 	
 	if (!self.largeThumbnailURL)
 		return nil;
 	
 	NSURL *largeThumbnailURL = [NSURL URLWithString:self.largeThumbnailURL];
 	
-	if ([largeThumbnailURL isFileURL]) {
-		self.largeThumbnailFilePath = (primitivePath = [largeThumbnailURL path]);
-		return primitivePath;
-	}
+	if ([largeThumbnailURL isFileURL])
+		return [largeThumbnailURL path];
 	
 	[self scheduleLargeThumbnailRetrievalIfPermitted];
 	
@@ -552,7 +563,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	resourceImage = [UIImage imageWithContentsOfFile:resourceFilePath];
 	resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
-	self.resourceImage = resourceImage;	
+	[self associateObject:resourceImage usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileResourceImage];
+	
 	return resourceImage;
 	
 }
@@ -585,7 +597,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	thumbnailImage = [UIImage imageWithContentsOfFile:thumbnailFilePath];
 	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
-	self.thumbnailImage = thumbnailImage;
+	[self associateObject:thumbnailImage usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileThumbnailImage];
+	
 	return thumbnailImage;
 	
 }
@@ -609,7 +622,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	largeThumbnailImage = [UIImage imageWithContentsOfFile:largeThumbnailFilePath];
 	largeThumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
-	self.largeThumbnailImage = largeThumbnailImage;
+	[self associateObject:largeThumbnailImage usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileLargeThumbnailImage];
+	
 	return largeThumbnailImage;
 	
 }
@@ -712,7 +726,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) validateResourceImage:(NSError **)outError {
 	
-	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileResourceFilePath] error:outError];
+	return [[self class] validateImageAtPath:[self valueForKey:kWAFileResourceFilePath] error:outError];
 	
 }
 
@@ -724,7 +738,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) validateThumbnailImage:(NSError **)outError {
 	
-	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileThumbnailFilePath] error:outError];
+	return [[self class] validateImageAtPath:[self valueForKey:kWAFileThumbnailFilePath] error:outError];
 	
 }
 
@@ -736,7 +750,7 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) validateLargeThumbnailImage:(NSError **)outError {
 	
-	return [[self class] validateImageAtPath:[self primitiveValueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
+	return [[self class] validateImageAtPath:[self valueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
 	
 }
 
