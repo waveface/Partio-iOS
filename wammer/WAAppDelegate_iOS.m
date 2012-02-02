@@ -134,7 +134,9 @@
 	
 	}
 	
-	[[AVAudioSession sharedInstance] setActive:YES error:nil];
+	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
+	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
+	[audioSession setActive:YES error:nil];
 	
 	WAPostAppEvent(@"bootstrap-finished", nil);
 
