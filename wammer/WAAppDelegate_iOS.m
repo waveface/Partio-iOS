@@ -112,6 +112,15 @@
 			nil]];
 			
 			[TestFlight takeOff:kWATestflightTeamToken];
+			
+			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+				
+				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
+				[TestFlight passCheckpoint:eventTitle];
+				
+			}];
+			
+			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		});
 		
@@ -126,6 +135,8 @@
 	}
 	
 	[[AVAudioSession sharedInstance] setActive:YES error:nil];
+	
+	WAPostAppEvent(@"bootstrap-finished", nil);
 
 }
 
