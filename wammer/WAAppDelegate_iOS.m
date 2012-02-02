@@ -234,9 +234,10 @@
 	
 	};
 	
-	dismissModal(self.window.rootViewController);
+	UIViewController *rootVC = self.window.rootViewController;
 	
-	
+	dismissModal(rootVC);
+
 	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
 	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
 		return YES;
@@ -247,7 +248,8 @@
 	};
 	
 	self.window.rootViewController = bottomMostViewController;
-
+	[rootVC didReceiveMemoryWarning];	//	Kill it now
+	
 }
 
 - (void) recreateViewHierarchy {
