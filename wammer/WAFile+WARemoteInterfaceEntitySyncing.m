@@ -41,9 +41,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     if (pathExtension) {
       
       CFStringRef preferredUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, NULL);
-      [NSMakeCollectable(preferredUTI) autorelease];
-      
-      self.resourceType = (NSString *)preferredUTI;
+      self.resourceType = (NSString *)[NSMakeCollectable(preferredUTI) autorelease];
 
     }
     
@@ -216,11 +214,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		 
 		id returnedValue = IRWebAPIKitStringValue(aValue);
 		
-		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
+		NSArray *possibleTypes = [NSMakeCollectable(UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil)) autorelease];
 		
-		if (CFArrayGetCount(possibleTypes) > 0) {
+		if ([possibleTypes count]) {
 			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
-			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
+			returnedValue = [possibleTypes objectAtIndex:0];
 		}
     
     //  Incoming stuff is moot (“application/unknown”)
@@ -315,7 +313,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			[lastError autorelease];
 		};
 		
-		NSString *capturedResourcePath = self.resourceFilePath;
+		//	NSString *capturedResourcePath = self.resourceFilePath;
 		NSString *sentResourcePath = [[[WADataStore defaultStore] persistentFileURLForFileAtPath:self.resourceFilePath] path];
 		
 		if (sendsThumbnailImage) {

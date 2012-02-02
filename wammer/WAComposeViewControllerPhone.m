@@ -339,27 +339,20 @@
 		return;
 
 	NSURL *finalFileURL = nil;
-	NSLog(@"%@", selectedAssetURI);
+	
 	if (selectedAssetURI){
-    UIImage *image = [UIImage imageWithData:(NSData *)[NSData dataWithContentsOfURL:selectedAssetURI]];
-    CGSize imageSize = [image size];
-    CGSize thumbSize;
-    if (imageSize.height > imageSize.width) {
-      thumbSize = CGSizeMake(360.0, 480.0);
-    } else {
-      thumbSize = CGSizeMake(480.0, 360.0);
-    }
-    UIGraphicsBeginImageContext(thumbSize);
-    [image drawInRect:CGRectMake(0, 0, thumbSize.width, thumbSize.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:
-                    UIImageJPEGRepresentation(newImage, 0.95) extension:@"jpeg"];
+    
+		UIImage *image = [UIImage imageWithData:(NSData *)[NSData dataWithContentsOfMappedFile:[selectedAssetURI path]]];
+		UIImage *scaledImage = [image irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ 480, 480 }}, image.size, kCAGravityResizeAspect).size];
+		
+    finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(scaledImage, 0.95) extension:@"jpeg"];
+		
   }
 	
 	if (!finalFileURL)
-	if (!selectedAssetURI && representedAsset)
+	if (!selectedAssetURI && representedAsset) {
 		finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation([UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullScreenImage]], 0.95) extension:@"jpeg"];
+	}
 	
   
 	WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];

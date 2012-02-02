@@ -152,10 +152,11 @@
 	if (self.thumbnailURL)
 	if (![[NSURL URLWithString:self.thumbnailURL] host]) {
 		
-		*error = [NSError errorWithDomain:@"com.waveface.wammer" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-			@"Objects having a thumbnail URL should also have a host in the URL.", NSLocalizedDescriptionKey,
-			self.thumbnailURL, @"offendingThumbnailURL",
-		nil]];
+		if (error)
+			*error = [NSError errorWithDomain:@"com.waveface.wammer" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+				@"Objects having a thumbnail URL should also have a host in the URL.", NSLocalizedDescriptionKey,
+				self.thumbnailURL, @"offendingThumbnailURL",
+			nil]];
 		
 		return NO;
 		

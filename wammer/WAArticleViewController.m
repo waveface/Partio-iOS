@@ -177,6 +177,21 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
+- (void) didReceiveMemoryWarning {
+
+	//	heh
+	
+	__typeof__(self.view) ownView = [self.view retain];
+	
+	[super didReceiveMemoryWarning];
+
+	if (![self isViewLoaded]) {
+		ownView.article = nil;
+		[ownView autorelease];
+	}
+
+}
+
 - (void) viewDidUnload {
 
 //	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
@@ -308,7 +323,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 				
 				shownViewController.onLoadview = ^ (WAViewController *self) {
 					self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+					UITextView *textView = [[[UITextView alloc] initWithFrame:self.view.bounds] autorelease];
 					textView.text = inspectionText;
 					textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 					textView.editable = NO;
@@ -497,7 +512,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	NSString * const animationTimingFunctionName = kCAMediaTimingFunctionEaseInEaseOut;
 	CABasicAnimation * (^animation)(NSString *keyPath, id fromValue, id toValue, NSTimeInterval duration);
 	CATransform3D (^fillingTransform)(CGRect aRect, CGRect enclosingRect);
-	CATransform3D (^shrinkingTransform)(CGRect aRect, CGRect enclosingRect);
+	//	CATransform3D (^shrinkingTransform)(CGRect aRect, CGRect enclosingRect);
 	
 	animation = ^ (NSString *keyPath, id fromValue, id toValue, NSTimeInterval duration) {
 		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:keyPath];
@@ -519,14 +534,14 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		);
 	};
 
-	shrinkingTransform = ^ (CGRect aRect, CGRect enclosingRect) {
-		CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){ 16.0f * aRect.size.width, 16.0f * aRect.size.height }, enclosingRect, 0.0f, YES));
-		CGFloat aspectRatio = CGRectGetWidth(aRect) / CGRectGetWidth(fullRect);
-		return CATransform3DConcat(
-			CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), 
-			CATransform3DMakeTranslation((CGRectGetMidX(fullRect) - CGRectGetMidX(aRect)), (CGRectGetMidY(fullRect) - CGRectGetMidY(aRect)), 0.0f)
-		);
-	};
+	//	shrinkingTransform = ^ (CGRect aRect, CGRect enclosingRect) {
+	//		CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){ 16.0f * aRect.size.width, 16.0f * aRect.size.height }, enclosingRect, 0.0f, YES));
+	//		CGFloat aspectRatio = CGRectGetWidth(aRect) / CGRectGetWidth(fullRect);
+	//		return CATransform3DConcat(
+	//			CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), 
+	//			CATransform3DMakeTranslation((CGRectGetMidX(fullRect) - CGRectGetMidX(aRect)), (CGRectGetMidY(fullRect) - CGRectGetMidY(aRect)), 0.0f)
+	//		);
+	//	};
 	
 	__block UIView *rootView, *backdropView, *statusBarPaddingView, *fauxView;
 	

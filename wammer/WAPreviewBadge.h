@@ -19,7 +19,6 @@
 
 @property (nonatomic, readwrite, retain) UIFont *titleFont;
 @property (nonatomic, readwrite, retain) UIColor *titleColor;
-@property (nonatomic, readwrite, assign) CGFloat titleLineHeight;
 @property (nonatomic, readwrite, retain) UIFont *textFont;
 @property (nonatomic, readwrite, retain) UIColor *textColor;
 

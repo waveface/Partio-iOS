@@ -161,7 +161,12 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
-  [userInfoPopoverController release];
+	
+	if ([userInfoPopoverController isPopoverVisible])
+		[userInfoPopoverController dismissPopoverAnimated:NO];
+  
+	[userInfoPopoverController release];
+	
   [draftsPopoverController release];
   [settingsPopoverController release];
 	
