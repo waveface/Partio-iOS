@@ -279,7 +279,7 @@
 	
 	self.window.rootViewController = (( ^ {
 	
-		__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+		__block WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
 		
 		navController.onViewDidLoad = ^ (WANavigationController *self) {
 			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
@@ -309,7 +309,7 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		BOOL didRequest = [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;

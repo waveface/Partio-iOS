@@ -672,13 +672,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
 		
-		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
-		CGFloat currentGridAspectRatio = aGrid.contentSize.width / aGrid.contentSize.height;
-		
 		if (!bestGrid) {
 			bestGrid = [[aGrid retain] autorelease];
 			continue;
 		}
+		
+		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
+		CGFloat currentGridAspectRatio = aGrid.contentSize.width / aGrid.contentSize.height;
 		
 		if (fabs(currentAspectRatio - bestGridAspectRatio) < fabs(currentAspectRatio - currentGridAspectRatio)) {
 			continue;

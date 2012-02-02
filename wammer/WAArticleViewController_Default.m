@@ -54,18 +54,18 @@
 	self.gridView.frame = CGRectInset(self.gridView.frame, 0, 16);
 	[gridViewWrapper addSubview:self.gridView];
 	
-	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
+	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		3
-	}, kCAGravityTop)];
+	}, kCAGravityTop)] autorelease];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[gridViewWrapper addSubview:topShadow];
 	
-	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
+	IRGradientView *bottomShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		3
-	}, kCAGravityBottom)];
+	}, kCAGravityBottom)] autorelease];
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irBottom];
 	[gridViewWrapper addSubview:bottomShadow];

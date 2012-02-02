@@ -143,7 +143,7 @@
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
 	
-	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
+	__block NSManagedObjectContext *context = [self disposableMOC];
 	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	NSString *postIdentifier = updatedArticle.identifier;

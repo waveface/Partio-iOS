@@ -388,7 +388,7 @@
 	if (self.needsContentAdjustmentOnLayout || self.needsInsetAdjustmentOnLayout) {
 
 		UIEdgeInsets oldContentInset = self.scrollView.contentInset;
-		UIEdgeInsets newContentInset = oldContentInset;
+		UIEdgeInsets newContentInset = UIEdgeInsetsZero;
 	
 		if (self.scrollView.zoomScale > 1) {
 		
