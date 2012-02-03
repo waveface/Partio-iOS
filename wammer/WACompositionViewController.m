@@ -321,7 +321,16 @@
 	self.previewBadge.autoresizingMask = photosViewWrapper.autoresizingMask;
 	self.previewBadge.frame = UIEdgeInsetsInsetRect(self.previewBadge.frame, (UIEdgeInsets){ 0, 8, 8, -48 });
 	self.previewBadge.alpha = 0;
+	self.previewBadge.userInteractionEnabled = NO;
 	[photosViewWrapper.superview addSubview:self.previewBadge];
+	
+	//	Makeshift implementation for preview removal
+	
+	UIButton *previewBadgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	previewBadgeButton.frame = self.previewBadge.frame;
+	previewBadgeButton.autoresizingMask = self.previewBadge.autoresizingMask;
+	[previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[self.previewBadge.superview addSubview:previewBadgeButton];
   
   [self.noPhotoReminderViewElements enumerateObjectsUsingBlock: ^ (UILabel *aLabel, NSUInteger idx, BOOL *stop) {
   
@@ -487,7 +496,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) updateTextAttributorContentWithString:(NSString *)aString {
 
-	[self.article removePreviews:self.article.previews];
+	//	[self.article removePreviews:self.article.previews];
 	
 	self.textAttributor.attributedContent = [[[NSMutableAttributedString alloc] initWithString:aString] autorelease];
 
@@ -501,6 +510,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
 
+	//	Get the last preview available, if there’s nothing don’t fix anything up though
+
 	NSArray *insertedPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:[NSArray arrayWithObjects:
 		[NSDictionary dictionaryWithObjectsAndKeys:
 			newAttribute, @"og",
@@ -508,7 +519,16 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		nil],
 	nil] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 	
-	[self.article addPreviews:[NSSet setWithArray:insertedPreviews]];
+	WAPreview *lastPreview = [insertedPreviews lastObject];
+	
+	if (!lastPreview)
+		return;
+	
+	for (WAPreview *aPreview in insertedPreviews)
+		if (aPreview != lastPreview)
+			[aPreview.managedObjectContext deleteObject:aPreview];
+	
+	self.article.previews = [NSSet setWithObject:lastPreview];
 
 }
 
@@ -524,6 +544,23 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		self.previewBadge.alpha = badgeShown ? 1 : 0;
 		
 	} completion:nil];
+
+}
+
+- (IBAction) handlePreviewBadgeTapped:(id)sender {
+
+	if (!self.previewBadge.preview)
+		return;
+		
+	WAPreview *removedPreview = self.previewBadge.preview;
+	
+	[[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:[IRAction actionWithTitle:NSLocalizedString(@"COMPOSITION_REMOVE_CURRENT_PREVIEW", nil) block: ^ {
+	
+		self.article.previews = [self.article.previews objectsPassingTest: ^ (id obj, BOOL *stop) {
+			return (BOOL)![obj isEqual:removedPreview];
+		}];
+		
+	}] otherActions:nil] singleUseActionSheet] showFromRect:self.previewBadge.bounds inView:self.previewBadge animated:NO];
 
 }
 
