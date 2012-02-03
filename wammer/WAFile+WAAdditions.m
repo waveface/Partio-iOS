@@ -374,6 +374,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 		return nil;
 	
 	NSURL *resourceURL = [NSURL URLWithString:self.resourceURL];
+	if (!resourceURL)
+		return nil;
 
 	if ([resourceURL isFileURL])
 		return [resourceURL path];
@@ -395,6 +397,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 		return nil;
 	
 	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
+	if (!thumbnailURL)
+		return nil;
 	
 	if ([thumbnailURL isFileURL])
 		return primitivePath;
@@ -416,6 +420,8 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 		return nil;
 	
 	NSURL *largeThumbnailURL = [NSURL URLWithString:self.largeThumbnailURL];
+	if (!largeThumbnailURL)
+		return nil;
 	
 	if ([largeThumbnailURL isFileURL])
 		return [largeThumbnailURL path];
