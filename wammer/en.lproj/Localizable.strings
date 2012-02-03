@@ -63,6 +63,9 @@
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "Welcome";
 
+/* No comment provided by engineer. */
+"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
+
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
 

@@ -63,6 +63,9 @@
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "歡迎使用 Waveface";
 
+/* No comment provided by engineer. */
+"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "移除網頁預覽";
+
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
 
