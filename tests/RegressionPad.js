@@ -28,6 +28,8 @@ var naviBar = mainWindow.navigationBar();
 
 UIALogger.logPass(testName);
 
+
+
 // 2. Post a text (1 line)
 // Expected: post successfully and see the new post
 // TODO: have a wait-till-next-item function
@@ -36,12 +38,12 @@ countTest++;
 UIALogger.logStart(testName);
 
 // Execution steps
+mainWindow.logElementTree();
 naviBar.elements()[3].buttons()["Compose"].tap();
 
 var text = mainWindow.textViews()[0];
-var msg = testName + " @ " + new Date();
+var msg = testName + " " + new Date().getTime();
 text.setValue(msg);
-UIALogger.logMessage(msg);
 
 //mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
 //mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
@@ -50,20 +52,25 @@ mainWindow.navigationBars()["Compose"].buttons()[1].tap();
 
 UIALogger.logMessage("Post 1 line text!");
 
+
+// scroll right to the end
+mainWindow.sliders()[0].dragToValue(1);
+
 // Verification
-// a. the check image
-// b. the new post in timeline 
-target.delay(1);
-if (mainWindow.elements()["WAOverlayBezel-Checkmark"].isValid()) {
+// a. the checkmark image
+// b. the new post in timeline
+// TODO: need new post cell's attribute to verify display
+if (mainWindow.elements()["WAOverlayBezel-Checkmark"].isEnabled()) {
     UIALogger.logMessage("Checkmark shows!");
 }
 else {
     UIALogger.logFail(testName + " - no checkmark");
 }
-target.delay(5);
+
+
 UIALogger.logMessage(msg);
-mainWindow.scrollViews()[0].elements()[msg].logElementTree();
-if (mainWindow.scrollViews()[0].elements()[msg].isValid()) {
+mainWindow.scrollViews()[0].elements()[mainWindow.scrollViews()[0].elements().length - 1].logElementTree();
+if (mainWindow.scrollViews()[0].elements()[msg]) {
     UIALogger.logPass(testName);
 }
 else {
@@ -83,7 +90,7 @@ naviBar.elements()[3].buttons()["Compose"].tap();
 
 text = mainWindow.textViews()[0];
 msg = "";
-for (var count=1; count <= 10; count++) {msg += (testName + "\n");}
+for (var count=1; count <= 10; count++) {msg += (testName + " " + new Date().getTime() + "\n");}
 text.setValue(msg);
 
 mainWindow.navigationBars()["Compose"].buttons()[1].tap();
@@ -91,18 +98,17 @@ mainWindow.navigationBars()["Compose"].buttons()[1].tap();
 UIALogger.logMessage("Post 10 line text!");
 
 // Verification
-// a. the check image
+// a. the checkmark image
 // b. the new post in timeline 
-// TODO: find how to check the display of checkmark
 target.delay(1);
-if (mainWindow.elements()["WAOverlayBezel-Checkmark"]) {
+if (mainWindow.elements()["WAOverlayBezel-Checkmark"].isEnabled()) {
     UIALogger.logMessage("Checkmark shows!");
 }
 else {
     UIALogger.logFail(testName + " - no checkmark");
 }
 target.delay(1);
-if (mainWindow.elements()["New post?!"]) {
+if (mainWindow.elements()[msg]) {
     UIALogger.logPass(testName);
 }
 else {
@@ -120,7 +126,7 @@ UIALogger.logStart(testName);
 naviBar.elements()[3].buttons()["Compose"].tap();
 
 var text = mainWindow.textViews()[0];
-text.setValue(testName);
+text.setValue(testName + " " + new Date().getTime());
 
 //mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
 //mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
@@ -131,7 +137,7 @@ mainWindow.popover().actionSheet().buttons()["Discard"].tap();
 UIALogger.logMessage("Cancel the composition!");
 
 // Verification
-// a. the check image
+// a. the checkmark image
 // b. the new post in timeline 
 target.delay(1);
 mainWindow.logElementTree();
@@ -146,11 +152,14 @@ testName = "Regression Test " + countTest + " - read a post";
 countTest++;
 UIALogger.logStart(testName);
 
-mainWindow.scrollViews()[0].elements()[msg].tap();
+// scroll right to the end
+mainWindow.sliders()[0].dragToValue(1);
+
+mainWindow.scrollViews()[0].elements()[mainWindow.scrollViews()[0].elements().length - 1].tap();
 //application.elements()[1].logElementTree();
 application.elements()[1].scrollViews()[0].elements()["WACornerCloseButton"].tap();
 
-UIALogger.logFail(testName);
+UIALogger.logPass(testName);
 
 // 6. Post a 1-line comment on a text post
 // Expected: post successfully and see the new comment
@@ -165,8 +174,10 @@ testName = "Regression Test " + countTest + " - browse timeline";
 countTest++;
 UIALogger.logStart(testName);
 
+UIATarget.localTarget().dragFromToForDuration({x:100, y:200}, {x:500, y:200}, 0.5);
+target.delay(3);
 UIATarget.localTarget().dragFromToForDuration({x:500, y:200}, {x:100, y:200}, 1);
-UIATarget.localTarget().delay(3);
+target.delay(3);
 UIATarget.localTarget().dragFromToForDuration({x:100, y:200}, {x:500, y:200}, 1);
 
 UIALogger.logPass(testName);
@@ -176,39 +187,6 @@ UIALogger.logPass(testName);
 // Expected: post successfully and see the new post
 // TODO: determin if the device is iphone or ipad 2
 
-testName = "Regression Test " + countTest + " - post a photo (take photo)";
-countTest++;
-UIALogger.logStart(testName);
-
-// Execution steps
-//naviBar.elements()[3].buttons()["Compose"].tap();
-
-//var text = mainWindow.textViews()[0];
-//text.setValue(testName);
-
-//mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
-//mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
-
-//naviBar.elements()[3].buttons()["Compose"].tap();
-//mainWindow.buttons()["PLCameraButtonIcon"].tap();
-//mainWindow.elements()[0].actionSheet().buttons()["Photo Library"].tap();
-
-UIALogger.logMessage("Post a photo (take photo)");
-
-// Verification
-// a. the check image
-// b. the new post in timeline 
-target.delay(1);
-mainWindow.logElementTree();
-// TODO: verify it's timeline screen
-UIALogger.logPass(testName);
-
-
-// 11. Post 10 photos (take photo)
-// Expected: post successfully and see the new post
-// 12. Post a photo (from library)
-// Expected: post successfully and see the new post
-// TODO: have an index for photos in gallery
 testName = "Regression Test " + countTest + " - post a photo (from library)";
 countTest++;
 UIALogger.logStart(testName);
@@ -225,12 +203,18 @@ text.setValue("a photo (from library)");
 mainWindow.buttons()["PLCameraButtonIcon"].tap();
 mainWindow.popover().tableViews()[0].cells()[0].tap();
 mainWindow.popover().tableViews()[1].cells()[0].tap();
+target.delay(1);
 mainWindow.navigationBars()["Compose"].buttons()[1].tap();
-target.delay(5);
+
+// wait for action completed
+while (mainWindow.elements()["In progress"].value() == 1) {
+        target.delay(1);
+}
+
 UIALogger.logMessage("Post a photo (from library)");
 
 // Verification
-// a. the check image
+// a. the checkmark image
 // b. the new post in timeline 
 target.delay(1);
 mainWindow.logElementTree();
@@ -240,10 +224,86 @@ UIALogger.logPass(testName);
 
 // 13. Post 10 photos (from library)
 // Expected: post successfully and see the new post
+testName = "Regression Test " + countTest + " - post 10 photos (from library)";
+countTest++;
+UIALogger.logStart(testName);
+
+// Execution steps
+naviBar.elements()[3].buttons()["Compose"].tap();
+
+var text = mainWindow.textViews()[0];
+text.setValue("10 photos (from library)");
+
+//mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
+//mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
+
+for (count = 1; count <= 10; count++) {
+    mainWindow.buttons()["PLCameraButtonIcon"].tap();
+    mainWindow.popover().tableViews()[0].cells()[0].tap();
+    mainWindow.popover().tableViews()[1].cells()[0].tap();
+    target.delay(1);
+}
+mainWindow.navigationBars()["Compose"].buttons()[1].tap();
+
+// wait for action completed
+while (mainWindow.elements()["In progress"].value() == 1) {
+        target.delay(1);
+}
+
+UIALogger.logMessage("Post 10 photos (from library)");
+
+// Verification
+// a. the checkmark image
+// b. the new post in timeline 
+mainWindow.logElementTree();
+
+
+
+// TODO: verify it's timeline screen
+UIALogger.logPass(testName);
+
+
 // 14. Post a photo and cancel it
 // Expected: cancel successfully and will be back to posts
+
+testName = "Regression Test " + countTest + " - post a photo and cancel it";
+countTest++;
+UIALogger.logStart(testName);
+
+// Execution steps
+naviBar.elements()[3].buttons()["Compose"].tap();
+
+var text = mainWindow.textViews()[0];
+text.setValue("a photo (from library)");
+
+//mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
+//mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
+
+mainWindow.buttons()["PLCameraButtonIcon"].tap();
+mainWindow.popover().tableViews()[0].cells()[0].tap();
+mainWindow.popover().tableViews()[1].cells()[0].tap();
+target.delay(1);
+mainWindow.navigationBars()["Compose"].buttons()[0].tap();
+mainWindow.popover().actionSheet().buttons()["Discard"].tap(); 
+
+UIALogger.logPass(testName);
+
 // 15. Read a photo post
 // Expected: see the text if any and the photo covExpected. tap the photo covExpected and browse all photos successfully
+
+testName = "Regression Test " + countTest + " - read a photo post";
+countTest++;
+UIALogger.logStart(testName);
+
+// scroll right to the end
+mainWindow.sliders()[0].dragToValue(1);
+
+mainWindow.scrollViews()[0].elements()[mainWindow.scrollViews()[0].elements().length - 1].tap();
+//application.elements()[1].logElementTree();
+application.elements()[1].scrollViews()[0].elements()["WACornerCloseButton"].tap();
+
+UIALogger.logPass(testName);
+
 // 16. Post a 1-line comment on a photo post 
 // Expected: post successfully and see the new comment
 // 17. Post a 10-line comment on a photo post 
