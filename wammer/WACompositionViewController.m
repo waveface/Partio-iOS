@@ -323,7 +323,7 @@
 	self.previewBadge.alpha = 0;
 	self.previewBadge.userInteractionEnabled = NO;
 	[photosViewWrapper.superview addSubview:self.previewBadge];
-  
+	
 	//	Makeshift implementation for preview removal
 	
 	UIButton *previewBadgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -496,7 +496,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) updateTextAttributorContentWithString:(NSString *)aString {
 
-	[self.article removePreviews:self.article.previews];
+	//	[self.article removePreviews:self.article.previews];
 	
 	self.textAttributor.attributedContent = [[[NSMutableAttributedString alloc] initWithString:aString] autorelease];
 
@@ -510,6 +510,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
 
+	//	Get the last preview available, if there’s nothing don’t fix anything up though
+
 	NSArray *insertedPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:[NSArray arrayWithObjects:
 		[NSDictionary dictionaryWithObjectsAndKeys:
 			newAttribute, @"og",
@@ -517,7 +519,16 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		nil],
 	nil] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 	
-	[self.article addPreviews:[NSSet setWithArray:insertedPreviews]];
+	WAPreview *lastPreview = [insertedPreviews lastObject];
+	
+	if (!lastPreview)
+		return;
+	
+	for (WAPreview *aPreview in insertedPreviews)
+		if (aPreview != lastPreview)
+			[aPreview.managedObjectContext deleteObject:aPreview];
+	
+	self.article.previews = [NSSet setWithObject:lastPreview];
 
 }
 
