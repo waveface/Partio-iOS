@@ -109,7 +109,7 @@
 		
 	};
 	
-	[navController performSelector:@selector(initWithRootViewController) withObject:self];
+	[navController performSelector:@selector(initWithRootViewController:) withObject:self];
 	
 	navController.onViewDidLoad = ^ (WANavigationController *self) {
 		
