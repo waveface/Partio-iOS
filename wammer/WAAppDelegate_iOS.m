@@ -255,11 +255,9 @@
 - (void) recreateViewHierarchy {
 
 	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
-	[queue setSuspended:YES];
-	for (NSOperation *anOperation in queue.operations) {
-		[anOperation cancel];
-	}
-	[queue setSuspended:NO];
+	[queue cancelAllOperations];
+	
+	
 
 	NSString *rootViewControllerClassName = nil;
 		

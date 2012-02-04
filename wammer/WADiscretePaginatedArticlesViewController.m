@@ -1463,7 +1463,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					CGRect fromContextRect = CGRectOffset(containerView.bounds, 0, CGRectGetHeight(containerView.bounds));
 					CGRect toContextRect = containerView.bounds;
 					
+					[enqueuedNavController viewWillAppear:NO];
 					[containerView addSubview:(contextView = enqueuedNavController.view)];
+					[enqueuedNavController viewDidAppear:NO];
+					
 					contextView.frame = toContextRect;
 					contextView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
 					[contextView layoutSubviews];
@@ -1571,6 +1574,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 					}
 					
+					[preconditions irEnqueueBlock:^{
+						[containerView.superview bringSubviewToFront:containerView];
+					}];
+					
 					[preconditions irExecuteAllObjectsAsBlocks];
 					[UIView animateWithDuration:0.5f delay:0 options:0 animations:^{
 						
@@ -1585,7 +1592,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 						[[containerView retain] autorelease];
 						[containerView removeFromSuperview];
+						
+						[enqueuedNavController viewWillDisappear:NO];
 						[enqueuedNavController.view removeFromSuperview];
+						[enqueuedNavController viewDidDisappear:NO];
 						
 						UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
 						if (!usedScreen)
@@ -1629,12 +1639,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						};
 						
 						[usedWindow makeKeyAndVisible];
-						[usedWindow retain];
 						
 						[CATransaction commit];
-					
-						containerWindow = usedWindow;
 						
+						containerWindow = usedWindow;
+						[containerWindow retain]; //	Keep it
+
 					}];
 				
 				};
@@ -1653,14 +1663,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 					} completion:^(BOOL finished) {
 					
+						containerWindow.rootViewController = nil;
+						containerWindow.hidden = YES;
 						[containerWindow resignKeyWindow];
+						[containerWindow autorelease];
 						
-						dispatch_async(dispatch_get_main_queue(), ^{
-							
-							containerWindow.rootViewController = nil;
-							[containerWindow autorelease];
-
-						});
+						
 						
 					}];
 				
