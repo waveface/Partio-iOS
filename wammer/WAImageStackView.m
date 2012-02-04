@@ -148,7 +148,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 	self.activityIndicator.hidden = NO;
 	
-	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
+	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(3, [self.images count]) }]];
 
 	if (async) {
 	
@@ -215,14 +215,15 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 		[shownImages enumerateObjectsUsingBlock: ^ (UIImage *anImage, NSUInteger idx, BOOL *stop) {
 		
+			NSLog(@"%@", anImage);
 			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
 			imageView.tag = kPhotoViewTag;
 			imageView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
 			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
 			imageView.layer.borderWidth = 4.0f;
-			imageView.layer.shadowOffset = (CGSize){ 0, 2 };
-			imageView.layer.shadowRadius = 2.0f;
+			imageView.layer.shadowOffset = (CGSize){ 0, 1 };
+			imageView.layer.shadowRadius = 1.0f;
 			imageView.layer.shadowOpacity = 0.25f;
 			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
 			[imageView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -255,6 +256,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 - (void) layoutSubviews {
 
+	NSLog(@"image stack view: %d images.", [self.images count]);
+
 	[self sendSubviewToBack:self.activityIndicator];
 
 	if (self.gestureProcessingOngoing)
@@ -269,38 +272,79 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 	}]];
 	
-	[allPhotoViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock: ^ (UIView *imageView, NSUInteger idx, BOOL *stop) {
-	
-		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
-		CGSize imageSize = ((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size;
-		imageSize.width *= 16;
-		imageSize.height *= 16;
-		
-		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(imageSize, self.bounds, 8.0f, YES));
-		
-		if (idx == ([allPhotoViews count] - 1)) {
-		
-			imageView.layer.transform = CATransform3DIdentity;
-			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
-			
-			self.firstPhotoView = imageView;
+	switch ([allPhotoViews count]) {
+  case 1: {
+    UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
+		//	innerImageView.layer.borderColor = [[UIColor redColor] CGColor];
+		//	innerImageView.layer.borderWidth = 1;
+		innerImageView.frame = CGRectMake(0, 0, 296, 196);
+		innerImageView.contentMode = UIViewContentModeCenter;
+		[self addSubview:innerImageView];
+    break; }
+	case 2: {
+		UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
+		//	innerImageView.layer.borderColor = [[UIColor redColor] CGColor];
+		//	innerImageView.layer.borderWidth = 1;
+		innerImageView.frame = CGRectMake(0, 0, 146, 196);
+		[self addSubview:innerImageView];
 
-		} else {
-		
-			CGFloat baseDelta = 2.0f;	//	at least ± 2°
-			CGFloat allowedAdditionalDeltaInDegrees = 0.0f; //	 with this much added variance
-			CGFloat rotatedDegrees = baseDelta + ((rand() % 2) ? 1 : -1) * (((1.0f * rand()) / (1.0f * INT_MAX)) * allowedAdditionalDeltaInDegrees);
-			
-			imageView.layer.transform = CATransform3DMakeRotation((rotatedDegrees / 360.0f) * 2 * M_PI, 0.0f, 0.0f, 1.0f);
-			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
+		innerImageView = [allPhotoViews objectAtIndex:1];
+		innerImageView.frame = CGRectMake(150, 0, 146, 196);
+		[self addSubview:innerImageView];
 
+		break; }
+	case 3:
+		{
+		UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
+		innerImageView.frame = CGRectMake(0, 0, 196, 196);
+		[self addSubview:innerImageView];
+
+		innerImageView = [allPhotoViews objectAtIndex:1];
+		innerImageView.frame = CGRectMake(200, 0, 96, 96);
+		[self addSubview:innerImageView];
+
+		innerImageView = [allPhotoViews objectAtIndex:2];
+		innerImageView.frame = CGRectMake(200, 100, 96, 96);
+		[self addSubview:innerImageView];
+		break;
 		}
-		
-		imageView.frame = photoViewFrame;
-		imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:imageView.bounds].CGPath;
-		objc_setAssociatedObject(imageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:imageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-	}];
+	
+  default:
+    break;
+}
+	
+//	[allPhotoViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock: ^ (UIView *imageView, NSUInteger idx, BOOL *stop) {
+//	
+//		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
+//		CGSize imageSize = ((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size;
+//		imageSize.width *= 16;
+//		imageSize.height *= 16;
+//		
+//		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(imageSize, self.bounds, 8.0f, YES));
+//		
+//		if (idx == ([allPhotoViews count] - 1)) {
+//		
+//			imageView.layer.transform = CATransform3DIdentity;
+//			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
+//			
+//			self.firstPhotoView = imageView;
+//
+//		} else {
+//		
+//			CGFloat baseDelta = 2.0f;	//	at least ± 2°
+//			CGFloat allowedAdditionalDeltaInDegrees = 0.0f; //	 with this much added variance
+//			CGFloat rotatedDegrees = baseDelta + ((rand() % 2) ? 1 : -1) * (((1.0f * rand()) / (1.0f * INT_MAX)) * allowedAdditionalDeltaInDegrees);
+//			
+//			imageView.layer.transform = CATransform3DMakeRotation((rotatedDegrees / 360.0f) * 2 * M_PI, 0.0f, 0.0f, 1.0f);
+//			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
+//
+//		}
+//		
+//		imageView.frame = photoViewFrame;
+//		imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:imageView.bounds].CGPath;
+//		objc_setAssociatedObject(imageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:imageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//		
+//	}];
 	
 }
 
