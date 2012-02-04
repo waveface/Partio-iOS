@@ -39,6 +39,7 @@ NSString * const kWAFileValidatesResourceImage = @"validatesResourceImage";
 NSString * const kWAFileValidatesThumbnailImage = @"validatesThumbnailImage";
 NSString * const kWAFileValidatesLargeThumbnailImage = @"validatesLargeThumbnailImage";
 NSString * const kWAFilePresentableImage = @"presentableImage";
+NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 
 @interface WAFile (CoreDataGeneratedPrimitiveAccessors)
@@ -77,9 +78,15 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 @interface WAFile (WAAdditions_Validators)
 
+//	By default the setters fire KVO notifications
+
 @property (nonatomic, readwrite, assign) BOOL validatesResourceImage;
 @property (nonatomic, readwrite, assign) BOOL validatesLargeThumbnailImage;
 @property (nonatomic, readwrite, assign) BOOL validatesThumbnailImage;
+
+- (void) setValidatesResourceImage:(BOOL)flag notify:(BOOL)firesKVONotifications;
+- (void) setValidatesLargeThumbnailImage:(BOOL)flag notify:(BOOL)firesKVONotifications;
+- (void) setValidatesThumbnailImage:(BOOL)flag notify:(BOOL)firesKVONotifications;
 
 - (BOOL) validateResourceImageIfNeeded:(NSError **)outError;
 - (BOOL) validateResourceImage:(NSError **)outError;
@@ -94,6 +101,10 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 
 @interface WAFile (WAAdditions_RemoteBlobRetrieval)
+
+@property (nonatomic, readwrite, assign) BOOL attemptsBlobRetrieval;
+
+- (void) setAttemptsBlobRetrieval:(BOOL)attemptsBlobRetrieval notify:(BOOL) firesKVONotifications;
 
 - (void) scheduleResourceRetrievalIfPermitted;
 - (void) scheduleThumbnailRetrievalIfPermitted;
@@ -117,9 +128,10 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	if (!self)
 		return nil;
 	
-	self.validatesThumbnailImage = YES;
-	self.validatesLargeThumbnailImage = YES;
-	self.validatesResourceImage = YES;
+	[self setValidatesResourceImage:YES notify:NO];
+	[self setValidatesLargeThumbnailImage:YES notify:NO];
+	[self setValidatesThumbnailImage:YES notify:NO];
+	[self setAttemptsBlobRetrieval:YES notify:NO];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 	
@@ -156,17 +168,17 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 	
 	NSFileManager * const fileManager = [NSFileManager defaultManager];	
 	
-	if (![self validateThumbnailImage:nil]) {
+	if (![self validateThumbnailImageIfNeeded:nil]) {
 		[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
 		self.thumbnailFilePath = nil;
 	}
 	
-	if (![self validateLargeThumbnailImage:nil]) {
+	if (![self validateThumbnailImageIfNeeded:nil]) {
 		[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
 		self.largeThumbnailFilePath = nil;
 	}
 		
-	if (![self validateResourceImage:nil]) {
+	if (![self validateThumbnailImageIfNeeded:nil]) {
 		[fileManager removeItemAtPath:self.resourceFilePath error:nil];
 		self.resourceFilePath = nil;
 	}
@@ -194,10 +206,29 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 # pragma mark - Blob Retrieval Scheduling
 
+- (BOOL) attemptsBlobRetrieval {
+
+	return [objc_getAssociatedObject(self, &kWAFileAttemptsBlobRetrieval) boolValue];
+}
+
+- (void) setAttemptsBlobRetrieval:(BOOL)newFlag {
+
+	[self setAttemptsBlobRetrieval:newFlag notify:NO];
+	
+}
+
+- (void) setAttemptsBlobRetrieval:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileAttemptsBlobRetrieval associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileAttemptsBlobRetrieval];
+
+}
+
+
 - (BOOL) canScheduleBlobRetrieval {
 
 	if (![[self objectID] isTemporaryID])
 	if (![self isDeleted])
+	if ([self attemptsBlobRetrieval])
 		return YES;
 	
 	return NO;
@@ -251,6 +282,11 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+			
+			[file setValidatesResourceImage:NO notify:NO];
+			[file setValidatesLargeThumbnailImage:NO notify:NO];
+			[file setValidatesThumbnailImage:NO notify:NO];
+			[file setAttemptsBlobRetrieval:NO notify:NO];
 			
 			if ([file takeBlobFromTemporaryFile:[tempFileURLOrNil path] forKeyPath:filePathKeyPath matchingURL:blobURL forKeyPath:blobURLKeyPath]) {
 			
@@ -434,37 +470,58 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (BOOL) validateForDelete:(NSError **)error {
 
+	BOOL wouldAttemptBlobRetrieval = [self attemptsBlobRetrieval];
+	[self setAttemptsBlobRetrieval:NO notify:NO];
+	
+	BOOL answer = NO;
+
 	if ([super validateForDelete:error])
 	if ([self validateThumbnailImageIfNeeded:error])
 	if ([self validateLargeThumbnailImageIfNeeded:error])
 	if ([self validateResourceImageIfNeeded:error])
-		return YES;
+		answer = YES;
 	
-	return NO;
+	[self setAttemptsBlobRetrieval:wouldAttemptBlobRetrieval notify:NO];
+	
+	return answer;
 
 }
 
 - (BOOL) validateForInsert:(NSError **)error {
 
+	BOOL wouldAttemptBlobRetrieval = [self attemptsBlobRetrieval];
+	[self setAttemptsBlobRetrieval:NO notify:NO];
+	
+	BOOL answer = NO;
+
 	if ([super validateForInsert:error])
 	if ([self validateThumbnailImageIfNeeded:error])
 	if ([self validateLargeThumbnailImageIfNeeded:error])
 	if ([self validateResourceImageIfNeeded:error])
-		return YES;
+		answer = YES;
 	
-	return NO;
+	[self setAttemptsBlobRetrieval:wouldAttemptBlobRetrieval notify:NO];
+	
+	return answer;
 
 }
 
 - (BOOL) validateForUpdate:(NSError **)error {
 
+	BOOL wouldAttemptBlobRetrieval = [self attemptsBlobRetrieval];
+	[self setAttemptsBlobRetrieval:NO notify:NO];
+	
+	BOOL answer = NO;
+
 	if ([super validateForUpdate:error])
 	if ([self validateThumbnailImageIfNeeded:error])
 	if ([self validateLargeThumbnailImageIfNeeded:error])
 	if ([self validateResourceImageIfNeeded:error])
-		return YES;
+		answer = YES;
 	
-	return NO;
+	[self setAttemptsBlobRetrieval:wouldAttemptBlobRetrieval notify:NO];
+	
+	return answer;
 
 }
 
@@ -697,7 +754,13 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (void) setValidatesResourceImage:(BOOL)newFlag {
 
-	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesResourceImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileValidatesResourceImage];
+	[self setValidatesResourceImage:newFlag notify:YES];
+
+}
+
+- (void) setValidatesResourceImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesResourceImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileValidatesResourceImage];
 
 }
 
@@ -708,8 +771,14 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (void) setValidatesThumbnailImage:(BOOL)newFlag {
 
-	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileValidatesThumbnailImage];
+	[self setValidatesThumbnailImage:newFlag notify:NO];
 	
+}
+
+- (void) setValidatesLargeThumbnailImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileValidatesThumbnailImage];
+
 }
 
 - (BOOL) validatesLargeThumbnailImage {
@@ -720,8 +789,14 @@ NSString * const kWAFilePresentableImage = @"presentableImage";
 
 - (void) setValidatesLargeThumbnailImage:(BOOL)newFlag {
 
-	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileValidatesLargeThumbnailImage];
+	[self setValidatesLargeThumbnailImage:newFlag notify:YES];
 	
+}
+
+- (void) setValidatesThumbnailImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
+
+	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileValidatesLargeThumbnailImage];
+
 }
 
 - (BOOL) validateResourceImageIfNeeded:(NSError **)outError {

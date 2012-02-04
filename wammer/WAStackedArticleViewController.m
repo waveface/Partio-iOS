@@ -474,16 +474,16 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	@try {
+//	@try {
 		
-		[self.view.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
+	[self.view.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
 		
-	} @catch (NSException *exception) {
-	
-		if (![exception.name isEqual:NSRangeException])
-			@throw exception;
-		
-	}
+//	} @catch (NSException *exception) {
+//	
+//		if (![exception.name isEqual:NSRangeException])
+//			@throw exception;
+//		
+//	}
 
 	[super viewWillDisappear:animated];
 	[self.commentsVC viewWillDisappear:animated];

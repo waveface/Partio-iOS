@@ -167,7 +167,6 @@
 		FF7BB4B314A1B26B00F6B76C /* WAStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7BB4B214A1B26B00F6B76C /* WAStackView.m */; };
 		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
 		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
-		FF7F361B14DAEFDA00C5956A /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		FF80504C149E1157000AE0F3 /* WADateBadgeBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */; };
 		FF80504D149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */; };
 		FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA49149CF46D00B8207A /* Cocoa.framework */; };
@@ -1313,7 +1312,6 @@
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */,
-				FF7F361B14DAEFDA00C5956A /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3304,7 +3302,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 221;
+				CURRENT_PROJECT_VERSION = 222;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3344,7 +3342,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_CRASHLYTICS = 1;
-				WF_USES_TESTFLIGHT = 1;
+				WF_USES_TESTFLIGHT = 0;
 			};
 			name = Debug;
 		};
@@ -3356,7 +3354,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 221;
+				CURRENT_PROJECT_VERSION = 222;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -3395,7 +3393,7 @@
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_CRASHLYTICS = 1;
-				WF_USES_TESTFLIGHT = 1;
+				WF_USES_TESTFLIGHT = 0;
 			};
 			name = Release;
 		};
