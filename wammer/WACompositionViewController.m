@@ -58,6 +58,7 @@
 - (void) updateTextAttributorContentWithString:(NSString *)aString;
 
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
+@property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 
 @property (nonatomic, readwrite, assign) BOOL delaysKeyboardPresentationOnViewDidAppear;
@@ -81,7 +82,7 @@
 
 @synthesize deniesOrientationChanges;
 
-@synthesize previewBadge;
+@synthesize previewBadge, previewBadgeButton;
 
 @synthesize delaysKeyboardPresentationOnViewDidAppear;
 
@@ -170,6 +171,7 @@
 	[backingContentText release];
 	
 	[previewBadge release];
+	[previewBadgeButton release];
 	
 	[super dealloc];
 
@@ -188,6 +190,7 @@
 	self.noPhotoReminderViewElements = nil;
 	
 	self.previewBadge = nil;
+	self.previewBadgeButton = nil;
 
 	[super viewDidUnload];
 
@@ -326,11 +329,12 @@
 	
 	//	Makeshift implementation for preview removal
 	
-	UIButton *previewBadgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	previewBadgeButton.frame = self.previewBadge.frame;
-	previewBadgeButton.autoresizingMask = self.previewBadge.autoresizingMask;
-	[previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTapped:) forControlEvents:UIControlEventTouchUpInside];
-	[self.previewBadge.superview addSubview:previewBadgeButton];
+	self.previewBadgeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	self.previewBadgeButton.frame = self.previewBadge.frame;
+	self.previewBadgeButton.autoresizingMask = self.previewBadge.autoresizingMask;
+	self.previewBadgeButton.hidden = YES;
+	[self.previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[self.previewBadge.superview addSubview:self.previewBadgeButton];
   
   [self.noPhotoReminderViewElements enumerateObjectsUsingBlock: ^ (UILabel *aLabel, NSUInteger idx, BOOL *stop) {
   
@@ -519,16 +523,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		nil],
 	nil] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 	
-	WAPreview *lastPreview = [insertedPreviews lastObject];
+	WAPreview *stitchedPreview = [insertedPreviews lastObject];
 	
-	if (!lastPreview)
-		return;
+	
+	//	If there’s already an attachment, do nothing
+	
+	if ([self.article.files count])
+		stitchedPreview = nil;
 	
 	for (WAPreview *aPreview in insertedPreviews)
-		if (aPreview != lastPreview)
+		if (stitchedPreview ? (aPreview != stitchedPreview) : YES)
 			[aPreview.managedObjectContext deleteObject:aPreview];
 	
-	self.article.previews = [NSSet setWithObject:lastPreview];
+	self.article.previews = stitchedPreview ? [NSSet setWithObject:stitchedPreview] : [NSSet set];
 
 }
 
@@ -542,6 +549,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
 
 		self.previewBadge.alpha = badgeShown ? 1 : 0;
+		self.previewBadgeButton.hidden = badgeShown ? NO : YES;
 		
 	} completion:nil];
 
