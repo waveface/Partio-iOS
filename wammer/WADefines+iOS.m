@@ -252,7 +252,7 @@ UIView * WAStandardPostCellBackgroundView (void) {
     
     UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 4, 4)] autorelease];
     paperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternPaper"]];
+    paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
     [returnedView addSubview:paperView];
     
     return returnedView;
