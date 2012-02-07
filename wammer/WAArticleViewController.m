@@ -179,9 +179,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (void) didReceiveMemoryWarning {
 
-	//	heh
-	
-	__typeof__(self.view) ownView = [self.view retain];
+	WAArticleView *ownView = (WAArticleView *)([self isViewLoaded] ? [self.view retain] : nil);
 	
 	[super didReceiveMemoryWarning];
 
