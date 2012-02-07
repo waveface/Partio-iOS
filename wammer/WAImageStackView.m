@@ -215,30 +215,31 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 		[shownImages enumerateObjectsUsingBlock: ^ (UIImage *anImage, NSUInteger idx, BOOL *stop) {
 		
-			NSLog(@"%@", anImage);
-			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
-			imageView.tag = kPhotoViewTag;
-			imageView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
-			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-			imageView.layer.borderWidth = 4.0f;
-			imageView.layer.shadowOffset = (CGSize){ 0, 1 };
-			imageView.layer.shadowRadius = 1.0f;
-			imageView.layer.shadowOpacity = 0.25f;
-			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
-			[imageView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
+			UIView *frameView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+			objc_setAssociatedObject(frameView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
+			frameView.tag = kPhotoViewTag;
+			frameView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
+			frameView.layer.borderColor = [UIColor whiteColor].CGColor;
+			frameView.layer.borderWidth = 4.0f;
+			frameView.layer.shadowOffset = (CGSize){ 0, 1 };
+			frameView.layer.shadowRadius = 1.0f;
+			frameView.layer.shadowOpacity = 0.25f;
+			frameView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
+			[frameView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNull null], @"shadowPath",
 			nil]];
-			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-			imageView.opaque = NO;
+			frameView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+			frameView.opaque = NO;
 			
-			WAImageView *innerImageView = [[[WAImageView alloc] initWithFrame:imageView.bounds] autorelease];
-			innerImageView.image = (UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage);
+			WAImageView *innerImageView = [[[WAImageView alloc] initWithFrame:frameView.bounds] autorelease];
+			innerImageView.image = (UIImage *)objc_getAssociatedObject(frameView, kWAImageStackViewElementImage);
+			innerImageView.layer.borderColor = [UIColor greenColor].CGColor;
 			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
 			innerImageView.layer.masksToBounds = YES;
 			
-			[imageView addSubview:innerImageView];					
-			[self insertSubview:imageView atIndex:0];		
+			[frameView addSubview:innerImageView];					
+			[self addSubview:frameView];		
 			
 			//NSParameterAssert(innerImageView.layer.contents);
 			
@@ -275,16 +276,11 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	switch ([allPhotoViews count]) {
   case 1: {
     UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
-		//	innerImageView.layer.borderColor = [[UIColor redColor] CGColor];
-		//	innerImageView.layer.borderWidth = 1;
 		innerImageView.frame = CGRectMake(0, 0, 296, 196);
-		innerImageView.contentMode = UIViewContentModeCenter;
 		[self addSubview:innerImageView];
     break; }
 	case 2: {
 		UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
-		//	innerImageView.layer.borderColor = [[UIColor redColor] CGColor];
-		//	innerImageView.layer.borderWidth = 1;
 		innerImageView.frame = CGRectMake(0, 0, 146, 196);
 		[self addSubview:innerImageView];
 
@@ -293,8 +289,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		[self addSubview:innerImageView];
 
 		break; }
-	case 3:
-		{
+	case 3:{
 		UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
 		innerImageView.frame = CGRectMake(0, 0, 196, 196);
 		[self addSubview:innerImageView];
@@ -306,8 +301,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		innerImageView = [allPhotoViews objectAtIndex:2];
 		innerImageView.frame = CGRectMake(200, 100, 96, 96);
 		[self addSubview:innerImageView];
-		break;
-		}
+		break; }
 	
   default:
     break;
