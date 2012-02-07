@@ -136,6 +136,9 @@
    Title for username */
 "NOUN_USERNAME" = "Username";
 
+/* Photo information in cell */
+"NUMBER_OF_PHOTOS" = "%d photos";
+
 /* Short label for the Cloud */
 "PROPER_NOUN_WF_CLOUD" = "Cloud";
 

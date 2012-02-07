@@ -832,6 +832,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
+	cell.extraInfoLabel.text = @"";
  
   if (postHasPreview) {
 	
@@ -855,6 +856,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
       WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
 			return file.thumbnailImage;
 		}] asynchronously:YES withDecodingCompletion:nil];
+		
+		if ([post.files count] > 3){
+			cell.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
+		}
 	
 	} else {
 	
