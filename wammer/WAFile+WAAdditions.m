@@ -645,7 +645,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	if (!resourceFilePath)
 		return nil;
 	
-	resourceImage = [UIImage imageWithContentsOfFile:resourceFilePath];
+	resourceImage = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:resourceFilePath]];
 	resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
 	[self associateObject:resourceImage usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileResourceImage];
@@ -674,12 +674,12 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	UIImage *thumbnailImage = objc_getAssociatedObject(self, &kWAFileThumbnailImage);
 	if (thumbnailImage)
 		return thumbnailImage;
-	
+	 
 	NSString *thumbnailFilePath = self.thumbnailFilePath;
 	if (!thumbnailFilePath)
 		return nil;
 	
-	thumbnailImage = [UIImage imageWithContentsOfFile:thumbnailFilePath];
+	thumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:thumbnailFilePath]];
 	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self associateObject:thumbnailImage usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileThumbnailImage];
@@ -704,7 +704,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	if (!largeThumbnailFilePath)
 		return nil;
 	
-	largeThumbnailImage = [UIImage imageWithContentsOfFile:largeThumbnailFilePath];
+	largeThumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:largeThumbnailFilePath]];
 	largeThumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self associateObject:largeThumbnailImage usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileLargeThumbnailImage];
