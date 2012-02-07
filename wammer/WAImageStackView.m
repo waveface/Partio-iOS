@@ -97,7 +97,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		CGRectGetMidY(self.bounds)
 	};
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-	[self.activityIndicator startAnimating];
+	self.activityIndicator.hidesWhenStopped = YES;
 	[self insertSubview:self.activityIndicator atIndex:[self.subviews count]];
 	
 }
@@ -145,8 +145,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	[images release];
 	images = [newImages retain];
 	[self didChangeValueForKey:@"images"];
-	
-	self.activityIndicator.hidden = NO;
 	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(3, [self.images count]) }]];
 
@@ -240,7 +238,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			[frameView addSubview:imageView];					
 			[self addSubview:frameView];		
 			
-			self.activityIndicator.hidden = YES;
+			[self.activityIndicator stopAnimating];
 			
 		}];
 		
@@ -254,7 +252,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 - (void) layoutSubviews {
 
-	[self sendSubviewToBack:self.activityIndicator];
+	[self.activityIndicator startAnimating];
 
 	if (self.gestureProcessingOngoing)
 		return;
@@ -282,6 +280,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			photoView = [photoViews objectAtIndex:1];
 			photoView.frame = CGRectMake(150,  0,146,196);
 			[self addSubview:photoView];
+			[self.activityIndicator stopAnimating];
 			break; }
 			
 		case 3:{
