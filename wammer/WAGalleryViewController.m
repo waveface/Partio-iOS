@@ -24,6 +24,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 
+@property (nonatomic, readwrite, retain) NSCache *galleryViewCache;
+
 @property (nonatomic, readwrite, retain) UINavigationBar *navigationBar;
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
 @property (nonatomic, readwrite, retain) UINavigationItem *previousNavigationItem;
@@ -53,6 +55,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize navigationBar, toolbar, previousNavigationItem;
 @synthesize paginatedView;
+@synthesize galleryViewCache;
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
 @synthesize onDismiss;
@@ -153,7 +156,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				}
 				
 				if (imageView) {
-					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:NO forceSync:NO];
+					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:YES forceSync:NO];
 				}
 
 			}
@@ -224,7 +227,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	nil]];
 	
 	fetchRequest.returnsObjectsAsFaults = NO;
-	
+	fetchRequest.fetchBatchSize = 20;
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 		[NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES],
 	nil];
@@ -423,7 +426,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	return [self configureGalleryImageView:[WAGalleryImageView viewForImage:nil] withFile:[self representedFileAtIndex:index] degradeQuality:NO forceSync:NO];
+	WAFile *file = [self representedFileAtIndex:index];
+	WAGalleryImageView *view = [self.galleryViewCache objectForKey:file];
+	
+	if (!view) {
+		view = [WAGalleryImageView viewForImage:nil];
+		[self.galleryViewCache setObject:view forKey:file];
+	}
+	
+	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:NO];
 
 }
 
@@ -628,6 +639,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	[super didReceiveMemoryWarning];
 	
+	[self.galleryViewCache removeAllObjects];
 	
 
 }
@@ -641,6 +653,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
+	
+	[self.galleryViewCache removeAllObjects];
 	
 	self.view.onLayoutSubviews = nil;
 	
@@ -667,6 +681,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[toolbar release];
 	[previousNavigationItem release];
 	[streamPickerView release];
+	
+	[galleryViewCache release];
 		
 	[onDismiss release];
 	
