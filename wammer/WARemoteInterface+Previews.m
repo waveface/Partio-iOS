@@ -15,7 +15,9 @@
 	[self.engine fireAPIRequestNamed:@"previews/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 
 		[aRemoteURL absoluteString], @"url",
-		kCFBooleanTrue, @"adv",
+		
+		//	Advanced flag is deprecated
+		//	kCFBooleanTrue, @"adv",
 
 	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
