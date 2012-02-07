@@ -231,17 +231,14 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			frameView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 			frameView.opaque = NO;
 			
-			WAImageView *innerImageView = [[[WAImageView alloc] initWithFrame:frameView.bounds] autorelease];
-			innerImageView.image = (UIImage *)objc_getAssociatedObject(frameView, kWAImageStackViewElementImage);
-			innerImageView.layer.borderColor = [UIColor greenColor].CGColor;
-			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
-			innerImageView.layer.masksToBounds = YES;
+			WAImageView *imageView = [[[WAImageView alloc] initWithFrame:frameView.bounds] autorelease];
+			imageView.image = (UIImage *)objc_getAssociatedObject(frameView, kWAImageStackViewElementImage);
+			imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			imageView.contentMode = UIViewContentModeScaleAspectFill;
+			imageView.layer.masksToBounds = YES;
 			
-			[frameView addSubview:innerImageView];					
+			[frameView addSubview:imageView];					
 			[self addSubview:frameView];		
-			
-			//NSParameterAssert(innerImageView.layer.contents);
 			
 			self.activityIndicator.hidden = YES;
 			
@@ -257,89 +254,54 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 - (void) layoutSubviews {
 
-	NSLog(@"image stack view: %d images.", [self.images count]);
-
 	[self sendSubviewToBack:self.activityIndicator];
 
 	if (self.gestureProcessingOngoing)
 		return;
 	
 	static int kPhotoViewTag = 1024;
-	__block CGRect photoViewFrame = CGRectNull;
-	
-	NSArray *allPhotoViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+
+	NSArray *photoViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		return (BOOL)(aSubview.tag == kPhotoViewTag);
 			
 	}]];
 	
-	switch ([allPhotoViews count]) {
-  case 1: {
-    UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
-		innerImageView.frame = CGRectMake(0, 0, 296, 196);
-		[self addSubview:innerImageView];
-    break; }
-	case 2: {
-		UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
-		innerImageView.frame = CGRectMake(0, 0, 146, 196);
-		[self addSubview:innerImageView];
+	switch ([photoViews count]) {
+		case 1: {
+			UIView *photoView = [photoViews objectAtIndex:0];
+			photoView.frame = CGRectMake(  0,  0,296,196);
+			[self addSubview:photoView];
+			break; }
+			
+		case 2: {
+			UIView *photoView = [photoViews objectAtIndex:0];
+			photoView.frame = CGRectMake(  0,  0,146,196);
+			[self addSubview:photoView];
 
-		innerImageView = [allPhotoViews objectAtIndex:1];
-		innerImageView.frame = CGRectMake(150, 0, 146, 196);
-		[self addSubview:innerImageView];
+			photoView = [photoViews objectAtIndex:1];
+			photoView.frame = CGRectMake(150,  0,146,196);
+			[self addSubview:photoView];
+			break; }
+			
+		case 3:{
+			UIView *photoView = [photoViews objectAtIndex:0];
+			photoView.frame = CGRectMake(  0,  0,196,196);
+			[self addSubview:photoView];
 
-		break; }
-	case 3:{
-		UIImageView *innerImageView = [allPhotoViews objectAtIndex:0];
-		innerImageView.frame = CGRectMake(0, 0, 196, 196);
-		[self addSubview:innerImageView];
+			photoView = [photoViews objectAtIndex:1];
+			photoView.frame = CGRectMake(200,  0, 96, 96);
+			[self addSubview:photoView];
 
-		innerImageView = [allPhotoViews objectAtIndex:1];
-		innerImageView.frame = CGRectMake(200, 0, 96, 96);
-		[self addSubview:innerImageView];
+			photoView = [photoViews objectAtIndex:2];
+			photoView.frame = CGRectMake(200,100, 96, 96);
+			[self addSubview:photoView];
+			break; }
+		
+		default:
+			break;
+	}
 
-		innerImageView = [allPhotoViews objectAtIndex:2];
-		innerImageView.frame = CGRectMake(200, 100, 96, 96);
-		[self addSubview:innerImageView];
-		break; }
-	
-  default:
-    break;
-}
-	
-//	[allPhotoViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock: ^ (UIView *imageView, NSUInteger idx, BOOL *stop) {
-//	
-//		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
-//		CGSize imageSize = ((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size;
-//		imageSize.width *= 16;
-//		imageSize.height *= 16;
-//		
-//		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(imageSize, self.bounds, 8.0f, YES));
-//		
-//		if (idx == ([allPhotoViews count] - 1)) {
-//		
-//			imageView.layer.transform = CATransform3DIdentity;
-//			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
-//			
-//			self.firstPhotoView = imageView;
-//
-//		} else {
-//		
-//			CGFloat baseDelta = 2.0f;	//	at least ± 2°
-//			CGFloat allowedAdditionalDeltaInDegrees = 0.0f; //	 with this much added variance
-//			CGFloat rotatedDegrees = baseDelta + ((rand() % 2) ? 1 : -1) * (((1.0f * rand()) / (1.0f * INT_MAX)) * allowedAdditionalDeltaInDegrees);
-//			
-//			imageView.layer.transform = CATransform3DMakeRotation((rotatedDegrees / 360.0f) * 2 * M_PI, 0.0f, 0.0f, 1.0f);
-//			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
-//
-//		}
-//		
-//		imageView.frame = photoViewFrame;
-//		imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:imageView.bounds].CGPath;
-//		objc_setAssociatedObject(imageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:imageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-//		
-//	}];
-	
 }
 
 - (void) handlePinch:(UIPinchGestureRecognizer *)aPinchRecognizer {
