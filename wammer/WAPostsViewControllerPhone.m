@@ -799,12 +799,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
+	static NSString *imageCellIdentifier = @"PostCell-Stacked";
+	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
   
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  
-  static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
-  static NSString *imageCellIdentifier = @"PostCell-Stacked";
-  static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
@@ -988,10 +988,27 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
+	NSURL *postURL = [[post objectID] URIRepresentation];
+	BOOL photoPost = (BOOL)!![post.files count];
+  
+	if (photoPost) {
+		WAGalleryViewController *galleryViewController = nil;
+		galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
+		[galleryViewController view];
+		[galleryViewController setContextControlsHidden:NO animated:NO barringInteraction:NO completion:nil];
+		
+		__block __typeof__(self) nrSelf = self; 
+		galleryViewController.onDismiss = ^ {
+			[nrSelf.navigationController dismissModalViewControllerAnimated:YES];    
+		};
+		
+		[self.navigationController pushViewController:galleryViewController animated:YES];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 
-	[self.navigationController pushViewController:controller animated:YES];
-	
+	} else {
+		WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:postURL];
+		[self.navigationController pushViewController:controller animated:YES];
+	}
 }
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
