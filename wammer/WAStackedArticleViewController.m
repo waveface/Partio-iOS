@@ -29,7 +29,7 @@
 
 @property (nonatomic, readwrite, retain) UIView *wrapperView;
 
-- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds;
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate;
 
 @end
 
@@ -268,7 +268,7 @@
 
 }
 
-- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds {
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
 
 	if (!self.view.window)
 		return;
@@ -283,7 +283,7 @@
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 	
-	[UIView animateWithDuration:0.3 delay:0 options:animationOptions animations:^{
+	[UIView animateWithDuration:(animate ? 0.3 : 0) delay:0 options:animationOptions animations:^{
 		
 		self.wrapperView.frame = intersection;
 		[self.stackView layoutSubviews];
@@ -475,7 +475,7 @@
 	[super viewDidAppear:animated];
 	[self.commentsVC viewDidAppear:animated];
 	
-	[self.view.window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	[self.view.window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 }
 
@@ -509,8 +509,10 @@
 	if ([self isViewLoaded])
 	if (object == self.view.window)
 	if ([keyPath isEqualToString:@"irInterfaceBounds"]) {
+	
+		BOOL isInitialNotification = [change objectForKey:NSKeyValueChangeNewKey] && ![change objectForKey:NSKeyValueChangeOldKey];
 		
-		[self adjustWrapperViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue]];
+		[self adjustWrapperViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue] animated:!isInitialNotification];
 	
 	}
 
