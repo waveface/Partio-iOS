@@ -1431,6 +1431,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 			case WAArticleContextAnimationCoverVertically: {
 			
+				__block UIWindow *currentKeyWindow = [UIApplication sharedApplication].keyWindow;
 				__block UIWindow *containerWindow = nil;
 				
 				__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -1670,9 +1671,23 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 						//	Potentially smoofy
 						
-						[(UIWindow *)[[[UIApplication sharedApplication].windows irMap:^id(id inObject, NSUInteger index, BOOL *stop) {
-							return (inObject == containerWindow) ? nil : inObject;
-						}] lastObject] makeKeyAndVisible];
+						NSArray *allCurrentWindows = [UIApplication sharedApplication].windows;
+						__block BOOL hasFoundCapturedKeyWindow = NO;
+						
+						[allCurrentWindows enumerateObjectsUsingBlock: ^ (UIWindow *aWindow, NSUInteger idx, BOOL *stop) {
+						
+							if (aWindow == currentKeyWindow) {
+								[aWindow makeKeyAndVisible];
+								hasFoundCapturedKeyWindow = YES;
+								*stop = YES;
+								return;
+							}
+							
+							if (!hasFoundCapturedKeyWindow)
+							if (idx == ([allCurrentWindows count] - 1))
+								[[allCurrentWindows objectAtIndex:0] becomeKeyWindow];
+							
+						}];
 						
 					}];
 				
