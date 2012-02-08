@@ -33,6 +33,7 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel;
 @property (nonatomic, retain) IBOutlet IRLabel *commentLabel;
 @property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge;
+@property (retain, nonatomic) IBOutlet UILabel *extraInfoLabel;
 
 @end
 

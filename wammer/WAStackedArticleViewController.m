@@ -312,7 +312,14 @@
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
 	
-	if (!headerView) {
+	if (headerView) {
+	
+		NSMutableArray *stackElements = [self.stackView mutableStackElements];
+	
+		if (![stackElements containsObject:headerView])
+			[stackElements insertObject:headerView atIndex:0];
+	
+	} else {
 		
 		WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
 		topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
