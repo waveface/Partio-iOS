@@ -10,10 +10,12 @@
 
 @interface WANavigationBar : UINavigationBar
 
-@property (nonatomic, readwrite, retain) UIView *backgroundView;
+@property (nonatomic, readwrite, retain) UIView *customBackgroundView;
 @property (nonatomic, readwrite, assign) BOOL suppressesDefaultAppearance;
 
 + (UIView *) defaultGradientBackgroundView;
 + (UIView *) defaultPatternBackgroundView;
+
+@property (nonatomic, readwrite, copy) void (^onBarStyleContextChanged)(void);
 
 @end

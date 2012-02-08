@@ -17,8 +17,9 @@
 
 
 @implementation WANavigationBar
-@synthesize backgroundView;
+@synthesize customBackgroundView;
 @synthesize suppressesDefaultAppearance;
+@synthesize onBarStyleContextChanged;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -62,7 +63,9 @@
 
 - (void) dealloc {
 
-	[backgroundView release];
+	[customBackgroundView release];
+	[onBarStyleContextChanged release];
+	
 	[super dealloc];
 
 }
@@ -79,26 +82,26 @@
 		
 }
 
-- (void) setBackgroundView:(UIView *)newBackgroundView {
+- (void) setCustomBackgroundView:(UIView *)newCustomBackgroundView {
 
-	if (backgroundView == newBackgroundView)
+	if (customBackgroundView == newCustomBackgroundView)
 		return;
 	
-	if ([backgroundView isDescendantOfView:self])
-		[backgroundView removeFromSuperview];
+	if ([customBackgroundView isDescendantOfView:self])
+		[customBackgroundView removeFromSuperview];
 		
-	[backgroundView release];
-	backgroundView = [newBackgroundView retain];
+	[customBackgroundView release];
+	customBackgroundView = [newCustomBackgroundView retain];
 	
-	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backgroundView.frame = self.bounds;
+	customBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	customBackgroundView.frame = self.bounds;
   
-  backgroundView.userInteractionEnabled = NO;
+  customBackgroundView.userInteractionEnabled = NO;
 	
-	[self addSubview:backgroundView];
-	[self sendSubviewToBack:backgroundView];
+	[self addSubview:customBackgroundView];
+	[self sendSubviewToBack:customBackgroundView];
 
-  self.suppressesDefaultAppearance = (BOOL)!!(backgroundView);
+  self.suppressesDefaultAppearance = (BOOL)!!(customBackgroundView);
 
 }
 
@@ -106,7 +109,7 @@
 
   [super layoutSubviews];
   
-  [self.backgroundView.superview sendSubviewToBack:self.backgroundView];
+  [self.customBackgroundView.superview sendSubviewToBack:self.customBackgroundView];
   
 }
 
@@ -115,6 +118,30 @@
   suppressesDefaultAppearance = flag;
   
   [self setNeedsDisplay];
+
+}
+
+- (void) setBarStyle:(UIBarStyle)newBarStyle {
+
+	BOOL barStyleChanged = (self.barStyle != newBarStyle);
+
+	[super setBarStyle:newBarStyle];
+	
+	if (barStyleChanged)
+	if (self.onBarStyleContextChanged)
+		self.onBarStyleContextChanged();
+
+}
+
+- (void) setTranslucent:(BOOL)newFlag {
+
+	BOOL translucentFlagChanged = (self.translucent != newFlag);
+	
+	[super setTranslucent:newFlag];
+	
+	if (translucentFlagChanged)
+	if (self.onBarStyleContextChanged)
+		self.onBarStyleContextChanged();
 
 }
 
