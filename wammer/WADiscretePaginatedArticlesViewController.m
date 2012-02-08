@@ -1285,7 +1285,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			}
 			
 			navController.onViewDidLoad = ^ (WANavigationController *self) {
-				((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
+				((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 			};
 			
 			if ([navController isViewLoaded])
