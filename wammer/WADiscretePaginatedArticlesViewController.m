@@ -1285,7 +1285,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			}
 			
 			navController.onViewDidLoad = ^ (WANavigationController *self) {
-				((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
+				((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 			};
 			
 			if ([navController isViewLoaded])
@@ -1668,7 +1668,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						[containerWindow resignKeyWindow];
 						[containerWindow autorelease];
 						
+						//	Potentially smoofy
 						
+						[(UIWindow *)[[[UIApplication sharedApplication].windows irMap:^id(id inObject, NSUInteger index, BOOL *stop) {
+							return (inObject == containerWindow) ? nil : inObject;
+						}] lastObject] makeKeyAndVisible];
 						
 					}];
 				

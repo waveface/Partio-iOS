@@ -282,9 +282,29 @@
 		__block WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
 		
 		navController.onViewDidLoad = ^ (WANavigationController *self) {
+			
 			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			((WANavigationBar *)self.navigationBar).tintColor = [UIColor brownColor];
-			((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			
+			__block WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
+			
+			navigationBar.tintColor = [UIColor brownColor];
+			navigationBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
+			
+			navigationBar.onBarStyleContextChanged = ^ {
+			
+				[UIView animateWithDuration:0.3 animations:^{
+					
+					BOOL isTranslucent = (navigationBar.barStyle == UIBarStyleBlackTranslucent) || ((navigationBar.barStyle == UIBarStyleBlack) && navigationBar.translucent);
+					
+					navigationBar.customBackgroundView.alpha = isTranslucent ? 0 : 1;
+					navigationBar.suppressesDefaultAppearance = isTranslucent ? NO : YES;
+					
+					navigationBar.tintColor = isTranslucent ? nil : [UIColor brownColor];
+			
+				}];
+			
+			};
+			
 		};
 		
 		if ([navController isViewLoaded])
