@@ -526,6 +526,27 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	}
 	
+	
+	IRPaginatedView *paginatedView = self.paginatedView;
+	NSUInteger currentPage = paginatedView.currentPage;
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+	
+		if (paginatedView.currentPage != currentPage)
+			return;
+		
+		WAGalleryImageView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
+		if (!pageView)
+			return;
+		
+		WAFile *pageFile = [self representedFileAtIndex:currentPage];
+		if (!pageFile)
+			return;
+		
+		[self configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
+	
+	});
+	
 }
 
 - (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView {
@@ -572,10 +593,30 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode {
 
 	if (exclusivelyUsesThumbnail) {
+		
 		[aView setImage:aFile.thumbnailImage animated:NO synchronized:forceSynchronousImageDecode];
+		
 	} else {
+		
 		[aView setImage:aFile.presentableImage animated:NO synchronized:forceSynchronousImageDecode];
+		
 	}
+	
+#if 0
+
+	if (exclusivelyUsesThumbnail) {
+		
+		aView.layer.borderColor = [UIColor greenColor].CGColor;
+		aView.layer.borderWidth = 2;
+	
+	} else {
+	
+		aView.layer.borderColor = [UIColor redColor].CGColor;
+		aView.layer.borderWidth = 2;
+	
+	}
+	
+#endif
 	
 	aView.delegate = self;
   [aView reset];
