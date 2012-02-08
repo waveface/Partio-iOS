@@ -24,12 +24,17 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) IRPaginatedView *paginatedView;
 
+@property (nonatomic, readwrite, retain) NSCache *galleryViewCache;
+
 @property (nonatomic, readwrite, retain) UINavigationBar *navigationBar;
 @property (nonatomic, readwrite, retain) UIToolbar *toolbar;
 @property (nonatomic, readwrite, retain) UINavigationItem *previousNavigationItem;
 @property (nonatomic, readwrite, retain) WAImageStreamPickerView *streamPickerView;
 
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
+@property (nonatomic, readwrite, copy) void (^onViewDidAppear)(BOOL animated);
+@property (nonatomic, readwrite, copy) void (^onViewWillDisappear)(BOOL animated);
+@property (nonatomic, readwrite, copy) void (^onViewDidDisappear)(BOOL animated);
 
 - (void) waSubviewWillLayout;
 
@@ -45,6 +50,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode;
 
+- (void) adjustStreamPickerView;
+
 @end
 
 
@@ -53,10 +60,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize navigationBar, toolbar, previousNavigationItem;
 @synthesize paginatedView;
+@synthesize galleryViewCache;
 @synthesize streamPickerView;
 @synthesize contextControlsShown;
 @synthesize onDismiss;
-@synthesize onViewDidLoad;
+@synthesize onViewDidLoad, onViewDidAppear, onViewWillDisappear, onViewDidDisappear;
 @synthesize requiresReloadOnFetchedResultsChange;
 
 #if WAGalleryViewController_UsesProxyOverlay
@@ -126,7 +134,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	self.streamPickerView.frame = CGRectInset(self.toolbar.bounds, 10, 0);
+	[self adjustStreamPickerView];
 
 }
 
@@ -153,7 +161,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				}
 				
 				if (imageView) {
-					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:NO forceSync:NO];
+					[self configureGalleryImageView:imageView withFile:(WAFile *)anObject degradeQuality:YES forceSync:NO];
 				}
 
 			}
@@ -224,7 +232,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	nil]];
 	
 	fetchRequest.returnsObjectsAsFaults = NO;
-	
+	fetchRequest.fetchBatchSize = 20;
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
 		[NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:YES],
 	nil];
@@ -280,12 +288,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = [[[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }] autorelease];
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
-		
-	self.toolbar.items = [NSArray arrayWithObjects:
+	
+	self.toolbarItems = [NSArray arrayWithObjects:
 		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		[[[UIBarButtonItem alloc] initWithCustomView:self.streamPickerView] autorelease],
 		[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 	nil];
+	
+	if (!self.navigationController)
+		self.toolbar.items = self.toolbarItems;
 	
 	[self.view addSubview:self.paginatedView];
 	[self.view addSubview:self.navigationBar];
@@ -314,6 +325,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	} forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
+	[self adjustStreamPickerView];
+	
 }
 
 - (void) viewDidLoad {
@@ -333,8 +346,102 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (void) viewWillAppear:(BOOL)animated {
 
+	if (self.navigationController) {
+	
+		UINavigationController *navC = self.navigationController;
+
+		UIBarStyle oldNavBarStyle = navC.navigationBar.barStyle;
+		BOOL oldNavBarWasTranslucent = navC.navigationBar.translucent;
+		UIBarStyle oldToolBarStyle = navC.toolbar.barStyle;
+		BOOL oldToolBarWasTranslucent = navC.toolbar.translucent;
+		BOOL toolbarWasHidden = navC.toolbarHidden;
+		UIColor *oldNavBarTintColor = navC.navigationBar.tintColor;
+		
+		navC.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+		navC.navigationBar.translucent = YES;
+		
+		navC.toolbar.barStyle = UIBarStyleBlackTranslucent;
+		navC.toolbar.translucent = YES;
+		
+		navC.toolbar.items = self.toolbarItems;
+		
+		[self.navigationBar removeFromSuperview];
+		self.navigationBar = nil;
+		
+		[self.toolbar removeFromSuperview];
+		self.toolbar = nil;
+				
+		[navC setToolbarHidden:NO animated:YES];
+			
+		__block __typeof__(self) nrSelf = self;
+		
+		self.onViewDidAppear = ^ (BOOL animated) {
+		
+			nrSelf.onViewDidAppear = nil;
+		
+		};
+		
+		self.onViewWillDisappear = ^ (BOOL animated) {
+		
+			navC.navigationBar.barStyle = oldNavBarStyle;
+			navC.navigationBar.translucent = oldNavBarWasTranslucent;
+			navC.navigationBar.tintColor = [UIColor blackColor];
+			
+			[navC setToolbarHidden:toolbarWasHidden animated:animated];
+			
+			nrSelf.onViewDidDisappear = ^ (BOOL animated) {
+			
+				navC.toolbar.barStyle = oldToolBarStyle;
+				navC.toolbar.translucent = oldToolBarWasTranslucent;
+				navC.navigationBar.tintColor = oldNavBarTintColor;
+				
+				if (nrSelf.onDismiss)
+					nrSelf.onDismiss();
+			
+				nrSelf.onViewDidDisappear = nil;
+				
+			};
+			
+			nrSelf.onViewWillDisappear = nil;
+		
+		};
+	
+	}
+	
+	[self adjustStreamPickerView];
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
+	
 	[super viewWillAppear:animated];
+	
 	[self.paginatedView reloadViews];
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	if (self.onViewDidAppear)
+		self.onViewDidAppear(animated);
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	if (self.onViewWillDisappear)
+		self.onViewWillDisappear(animated);
+	
+	[super viewWillDisappear:animated];
+
+}
+
+- (void) viewDidDisappear:(BOOL)animated {
+
+	[super viewDidDisappear:animated];
+
+	if (self.onViewDidDisappear)
+		self.onViewDidDisappear(animated);
 
 }
 
@@ -398,6 +505,48 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		
 	}];
 	
+	
+	//	Hides contest on page turns, but NOT stream picker changes
+	
+	if (((^ {
+	
+		UIScrollView *sv = self.paginatedView.scrollView;
+		if ([sv respondsToSelector:@selector(panGestureRecognizer)])
+			return sv.panGestureRecognizer;
+		
+		for (UIGestureRecognizer *aGR in sv.gestureRecognizers)
+			if ([aGR isKindOfClass:[UIPanGestureRecognizer class]])
+				return aGR;
+		
+		return (UIGestureRecognizer *)nil;
+	
+	})()).state == UIGestureRecognizerStateChanged) {
+		
+		[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
+	
+	}
+	
+	
+	IRPaginatedView *paginatedView = self.paginatedView;
+	NSUInteger currentPage = paginatedView.currentPage;
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+	
+		if (paginatedView.currentPage != currentPage)
+			return;
+		
+		WAGalleryImageView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
+		if (!pageView)
+			return;
+		
+		WAFile *pageFile = [self representedFileAtIndex:currentPage];
+		if (!pageFile)
+			return;
+		
+		[self configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
+	
+	});
+	
 }
 
 - (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView {
@@ -423,7 +572,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	return [self configureGalleryImageView:[WAGalleryImageView viewForImage:nil] withFile:[self representedFileAtIndex:index] degradeQuality:NO forceSync:NO];
+	WAFile *file = [self representedFileAtIndex:index];
+	WAGalleryImageView *view = [self.galleryViewCache objectForKey:file];
+	
+	if (!view) {
+		view = [WAGalleryImageView viewForImage:nil];
+		[self.galleryViewCache setObject:view forKey:file];
+	}
+	
+	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:NO];
 
 }
 
@@ -436,10 +593,30 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (WAGalleryImageView *) configureGalleryImageView:(WAGalleryImageView *)aView withFile:(WAFile *)aFile degradeQuality:(BOOL)exclusivelyUsesThumbnail forceSync:(BOOL)forceSynchronousImageDecode {
 
 	if (exclusivelyUsesThumbnail) {
+		
 		[aView setImage:aFile.thumbnailImage animated:NO synchronized:forceSynchronousImageDecode];
+		
 	} else {
+		
 		[aView setImage:aFile.presentableImage animated:NO synchronized:forceSynchronousImageDecode];
+		
 	}
+	
+#if 0
+
+	if (exclusivelyUsesThumbnail) {
+		
+		aView.layer.borderColor = [UIColor greenColor].CGColor;
+		aView.layer.borderWidth = 2;
+	
+	} else {
+	
+		aView.layer.borderColor = [UIColor redColor].CGColor;
+		aView.layer.borderWidth = 2;
+	
+	}
+	
+#endif
 	
 	aView.delegate = self;
   [aView reset];
@@ -465,6 +642,15 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[self.streamPickerView reloadData];
 	
 	return streamPickerView;
+
+}
+
+- (void) adjustStreamPickerView {
+
+	UIToolbar *usedBar = ((self.navigationController && !self.navigationController.toolbarHidden) ? self.navigationController.toolbar : self.toolbar);
+	NSParameterAssert(usedBar);
+
+	self.streamPickerView.frame = CGRectInset(usedBar.bounds, 10, 0);
 
 }
 
@@ -599,6 +785,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		self.navigationBar.alpha = (willHide ? 0.0f : 1.0f);
 		self.toolbar.alpha = (willHide ? 0.0f : 1.0f);
 		
+		self.navigationController.navigationBar.alpha = (willHide ? 0.0f : 1.0f);
+		self.navigationController.toolbar.alpha = (willHide ? 0.0f : 1.0f);
+		
 	} completion: ^ (BOOL didFinish){
 	
 		if (callback)
@@ -628,6 +817,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	[super didReceiveMemoryWarning];
 	
+	[self.galleryViewCache removeAllObjects];
 	
 
 }
@@ -641,6 +831,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = nil;
 	self.previousNavigationItem = nil;
 	self.streamPickerView = nil;
+	
+	[self.galleryViewCache removeAllObjects];
 	
 	self.view.onLayoutSubviews = nil;
 	
@@ -667,10 +859,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[toolbar release];
 	[previousNavigationItem release];
 	[streamPickerView release];
+	
+	[galleryViewCache release];
 		
 	[onDismiss release];
 	
 	[onViewDidLoad release];
+	
+	[onViewDidAppear release];
+	[onViewWillDisappear release];
+	[onViewDidDisappear release];
 	
 	[super dealloc];
 

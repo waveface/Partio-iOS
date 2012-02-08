@@ -113,7 +113,7 @@
 	
 	navController.onViewDidLoad = ^ (WANavigationController *self) {
 		
-		((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultGradientBackgroundView];
+		((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultGradientBackgroundView];
 		
 		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
 		

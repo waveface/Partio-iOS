@@ -48,7 +48,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
     
     WAPostViewControllerPhone *controller = [[[self alloc] initWithStyle:UITableViewStylePlain] autorelease];
     
-    controller.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+    controller.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
     controller.post = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:postURL];
     
     return controller;
@@ -62,8 +62,6 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
  
   self.title = @"Post";
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
   return self;
 
@@ -124,48 +122,36 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 }
 
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-  
-  NSLog(@"%@: a managed object context saved, merge it", self);
-  
-  if (aNotification.object == self.managedObjectContext)
-    return;
-  
-  [self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-  
-}
-
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
   
   //  This method will be called initially to populate the table view, and also on updates so the table view shows newly composed comments
   
-  void (^operation)() = ^ {
-  
-    if (![self isViewLoaded])
-      return;
-      
-    [self.tableView reloadData];
-		[self.tableView layoutSubviews];
-		[self.tableView setNeedsLayout];
-    
-    NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
-    
-    if (indexPathForLastCell) {
-      [self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-  
-  };
-  
-  if ([NSThread isMainThread])
-    operation();
-  else
-    dispatch_async(dispatch_get_main_queue(), operation);
+  NSParameterAssert([NSThread isMainThread]);
 
-}
+	if (![self isViewLoaded])
+		return;
+		
+	[self.tableView reloadData];
+	[self.tableView layoutSubviews];
+	[self.tableView setNeedsLayout];
+	
+	NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
+	
+	if (indexPathForLastCell) {
+		[self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	}
+
+};
 
 - (void) dealloc {
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[fetchedResultsController setDelegate:nil];
+	[fetchedResultsController release];
+	
+	[post release];
+	[managedObjectContext release];
   
   [super dealloc];
   

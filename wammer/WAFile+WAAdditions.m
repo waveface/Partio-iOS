@@ -88,6 +88,9 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 - (void) setValidatesLargeThumbnailImage:(BOOL)flag notify:(BOOL)firesKVONotifications;
 - (void) setValidatesThumbnailImage:(BOOL)flag notify:(BOOL)firesKVONotifications;
 
+- (BOOL) validateImagesIfNeeded:(NSError **)outError;
+- (BOOL) validateImages:(NSError **)outError;
+
 - (BOOL) validateResourceImageIfNeeded:(NSError **)outError;
 - (BOOL) validateResourceImage:(NSError **)outError;
 - (BOOL) validateLargeThumbnailImageIfNeeded:(NSError **)outError;
@@ -105,6 +108,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 @property (nonatomic, readwrite, assign) BOOL attemptsBlobRetrieval;
 
 - (void) setAttemptsBlobRetrieval:(BOOL)attemptsBlobRetrieval notify:(BOOL) firesKVONotifications;
+- (void) performBlockSuppressingBlobRetrieval:(void(^)(void))aBlock;
 
 - (void) scheduleResourceRetrievalIfPermitted;
 - (void) scheduleThumbnailRetrievalIfPermitted;
@@ -168,20 +172,24 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	
 	NSFileManager * const fileManager = [NSFileManager defaultManager];	
 	
-	if (![self validateThumbnailImageIfNeeded:nil]) {
-		[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
-		self.thumbnailFilePath = nil;
-	}
-	
-	if (![self validateThumbnailImageIfNeeded:nil]) {
-		[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
-		self.largeThumbnailFilePath = nil;
-	}
+	[self performBlockSuppressingBlobRetrieval:^{
 		
-	if (![self validateThumbnailImageIfNeeded:nil]) {
-		[fileManager removeItemAtPath:self.resourceFilePath error:nil];
-		self.resourceFilePath = nil;
-	}
+		if (![self validateThumbnailImageIfNeeded:nil]) {
+			[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
+			self.thumbnailFilePath = nil;
+		}
+		
+		if (![self validateThumbnailImageIfNeeded:nil]) {
+			[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
+			self.largeThumbnailFilePath = nil;
+		}
+			
+		if (![self validateThumbnailImageIfNeeded:nil]) {
+			[fileManager removeItemAtPath:self.resourceFilePath error:nil];
+			self.resourceFilePath = nil;
+		}
+		
+	}];
 	
 }
 
@@ -220,6 +228,21 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 - (void) setAttemptsBlobRetrieval:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
 
 	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileAttemptsBlobRetrieval associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileAttemptsBlobRetrieval];
+
+}
+
+- (void) performBlockSuppressingBlobRetrieval:(void(^)(void))aBlock {
+
+	if (!aBlock)
+		return;
+
+	BOOL couldHaveAttempteBlobRetrieval = [self attemptsBlobRetrieval];
+	
+	[self setAttemptsBlobRetrieval:NO notify:NO];
+
+	aBlock();
+	
+	[self setAttemptsBlobRetrieval:couldHaveAttempteBlobRetrieval notify:NO];
 
 }
 
@@ -470,18 +493,17 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (BOOL) validateForDelete:(NSError **)error {
 
-	BOOL wouldAttemptBlobRetrieval = [self attemptsBlobRetrieval];
-	[self setAttemptsBlobRetrieval:NO notify:NO];
-	
-	BOOL answer = NO;
+	__block BOOL answer = NO;
 
-	if ([super validateForDelete:error])
-	if ([self validateThumbnailImageIfNeeded:error])
-	if ([self validateLargeThumbnailImageIfNeeded:error])
-	if ([self validateResourceImageIfNeeded:error])
-		answer = YES;
+	[self performBlockSuppressingBlobRetrieval:^{
 	
-	[self setAttemptsBlobRetrieval:wouldAttemptBlobRetrieval notify:NO];
+		if ([super validateForDelete:error])
+		if ([self validateThumbnailImageIfNeeded:error])
+		if ([self validateLargeThumbnailImageIfNeeded:error])
+		if ([self validateResourceImageIfNeeded:error])
+			answer = YES;
+	
+	}];
 	
 	return answer;
 
@@ -623,7 +645,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	if (!resourceFilePath)
 		return nil;
 	
-	resourceImage = [UIImage imageWithContentsOfFile:resourceFilePath];
+	resourceImage = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:resourceFilePath]];
 	resourceImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
 	[self associateObject:resourceImage usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileResourceImage];
@@ -652,12 +674,12 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	UIImage *thumbnailImage = objc_getAssociatedObject(self, &kWAFileThumbnailImage);
 	if (thumbnailImage)
 		return thumbnailImage;
-	
+	 
 	NSString *thumbnailFilePath = self.thumbnailFilePath;
 	if (!thumbnailFilePath)
 		return nil;
 	
-	thumbnailImage = [UIImage imageWithContentsOfFile:thumbnailFilePath];
+	thumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:thumbnailFilePath]];
 	thumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self associateObject:thumbnailImage usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileThumbnailImage];
@@ -682,7 +704,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	if (!largeThumbnailFilePath)
 		return nil;
 	
-	largeThumbnailImage = [UIImage imageWithContentsOfFile:largeThumbnailFilePath];
+	largeThumbnailImage = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:largeThumbnailFilePath]];
 	largeThumbnailImage.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 	
 	[self associateObject:largeThumbnailImage usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_RETAIN_NONATOMIC notify:NO usingKey:kWAFileLargeThumbnailImage];
@@ -799,6 +821,28 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 }
 
+- (BOOL) validateImagesIfNeeded:(NSError **)outError { 
+
+	if ([self validateResourceImageIfNeeded:outError])
+	if ([self validateLargeThumbnailImageIfNeeded :outError])
+	if ([self validateThumbnailImageIfNeeded:outError])
+		return YES;
+	
+	return NO;
+
+}
+
+- (BOOL) validateImages:(NSError **)outError {
+
+	if ([self validateResourceImage:outError])
+	if ([self validateLargeThumbnailImage :outError])
+	if ([self validateThumbnailImage:outError])
+		return YES;
+	
+	return NO;
+
+}
+
 - (BOOL) validateResourceImageIfNeeded:(NSError **)outError {
 	
 	return self.validatesResourceImage ? [self validateResourceImage:outError] : YES;
@@ -806,8 +850,16 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 }
 
 - (BOOL) validateResourceImage:(NSError **)outError {
+
+	__block BOOL retVal = NO;
 	
-	return [[self class] validateImageAtPath:[self valueForKey:kWAFileResourceFilePath] error:outError];
+	[self performBlockSuppressingBlobRetrieval:^{
+	
+		retVal = [[self class] validateImageAtPath:[self valueForKey:kWAFileResourceFilePath] error:outError];
+		
+	}];
+	
+	return retVal;
 	
 }
 
@@ -819,8 +871,17 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (BOOL) validateThumbnailImage:(NSError **)outError {
 	
-	return [[self class] validateImageAtPath:[self valueForKey:kWAFileThumbnailFilePath] error:outError];
+	__block BOOL retVal = NO;
 	
+	[self performBlockSuppressingBlobRetrieval:^{
+	
+		retVal = [[self class] validateImageAtPath:[self valueForKey:kWAFileThumbnailFilePath] error:outError];
+	
+		
+	}];
+	
+	return retVal;
+
 }
 
 - (BOOL) validateLargeThumbnailImageIfNeeded:(NSError **)outError {
@@ -831,8 +892,17 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (BOOL) validateLargeThumbnailImage:(NSError **)outError {
 	
-	return [[self class] validateImageAtPath:[self valueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
+	__block BOOL retVal = NO;
 	
+	[self performBlockSuppressingBlobRetrieval:^{
+	
+		retVal = [[self class] validateImageAtPath:[self valueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
+	
+		
+	}];
+	
+	return retVal;
+
 }
 
 + (BOOL) validateImageAtPath:(NSString *)aFilePath error:(NSError **)error {
