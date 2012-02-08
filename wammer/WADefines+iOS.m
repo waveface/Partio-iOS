@@ -250,9 +250,9 @@ UIView * WAStandardPostCellBackgroundView (void) {
 		
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, backgroundViewPatternInsets);
     
-    UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 11, 11)] autorelease];
+    UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 4, 4)] autorelease];
     paperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternPaper"]];
+    paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
     [returnedView addSubview:paperView];
     
     return returnedView;
@@ -272,7 +272,7 @@ UIView * WAStandardPostCellSelectedBackgroundView (void) {
   
   [selectedBackgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(selectedBackgroundView.bounds, 10, 10)] autorelease];
+    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(selectedBackgroundView.bounds, 4, 4)] autorelease];
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
     

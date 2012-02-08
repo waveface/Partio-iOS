@@ -19,6 +19,7 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
 @synthesize postViewCellStyle;
@@ -39,6 +40,7 @@
   [contentTextView release];
 	[previewBadge release];
 	[dateLabelBackgroundView release];
+    [extraInfoLabel release];
 	[super dealloc];
 	
 }

@@ -799,12 +799,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
+	static NSString *imageCellIdentifier = @"PostCell-Stacked";
+	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
   
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  
-  static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
-  static NSString *imageCellIdentifier = @"PostCell-Stacked";
-  static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
   
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
@@ -832,6 +832,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
+	cell.extraInfoLabel.text = @"";
  
   if (postHasPreview) {
 	
@@ -851,10 +852,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
     
 		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
-		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 2) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 3) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
       WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
 			return file.thumbnailImage;
 		}] asynchronously:YES withDecodingCompletion:nil];
+		
+		if ([post.files count] > 3){
+			cell.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
+		}
 	
 	} else {
 	
@@ -988,10 +993,27 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:[[post objectID] URIRepresentation]];
+	NSURL *postURL = [[post objectID] URIRepresentation];
+	BOOL photoPost = (BOOL)!![post.files count];
+  
+	if (photoPost) {
+		WAGalleryViewController *galleryViewController = nil;
+		galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
+		[galleryViewController view];
+		[galleryViewController setContextControlsHidden:NO animated:NO barringInteraction:NO completion:nil];
+		
+		__block __typeof__(self) nrSelf = self; 
+		galleryViewController.onDismiss = ^ {
+			[nrSelf.navigationController dismissModalViewControllerAnimated:YES];    
+		};
+		
+		[self.navigationController pushViewController:galleryViewController animated:YES];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 
-	[self.navigationController pushViewController:controller animated:YES];
-	
+	} else {
+		WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:postURL];
+		[self.navigationController pushViewController:controller animated:YES];
+	}
 }
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
