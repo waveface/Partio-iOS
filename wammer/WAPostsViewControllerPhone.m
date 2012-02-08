@@ -997,22 +997,32 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	BOOL photoPost = (BOOL)!![post.files count];
   
 	if (photoPost) {
+		
 		WAGalleryViewController *galleryViewController = nil;
 		galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
-		[galleryViewController view];
-		[galleryViewController setContextControlsHidden:NO animated:NO barringInteraction:NO completion:nil];
+		
+		NSParameterAssert(!self.navigationItem.backBarButtonItem);
+		
+		NSString *articleTitle = post.text;
+		if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+			articleTitle = @"Post";
+		
+		self.navigationItem.backBarButtonItem = [IRBarButtonItem itemWithTitle:articleTitle action:nil];
 		
 		__block __typeof__(self) nrSelf = self; 
 		galleryViewController.onDismiss = ^ {
-			[nrSelf.navigationController dismissModalViewControllerAnimated:YES];    
+			
+			nrSelf.navigationItem.backBarButtonItem = nil;
+			
 		};
 		
 		[self.navigationController pushViewController:galleryViewController animated:YES];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
 
 	} else {
+		
 		WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:postURL];
 		[self.navigationController pushViewController:controller animated:YES];
+		
 	}
 }
 
