@@ -326,6 +326,7 @@ text.setValue(testName);
 mainWindow.buttons()["PLCameraButtonIcon"].tap();
 mainWindow.popover().tableViews()[0].cells()[0].tap();
 mainWindow.popover().tableViews()[1].cells()[0].tap();
+target.delay(1);
 // discard it
 mainWindow.navigationBars()["Compose"].buttons()[0].tap();
 mainWindow.popover().actionSheet().buttons()["Save Draft"].tap();
@@ -343,7 +344,7 @@ UIALogger.logPass(testName);
 
 // 20. Save a draft and post it (ipad only)
 // Expected: save a draft and post it successfully 
-testName = "Regression Test " + countTest + " - Save a draft and delete it";
+testName = "Regression Test " + countTest + " - Save a draft and post it";
 countTest++;
 UIALogger.logStart(testName);
 
@@ -357,6 +358,7 @@ text.setValue(testName);
 mainWindow.buttons()["PLCameraButtonIcon"].tap();
 mainWindow.popover().tableViews()[0].cells()[0].tap();
 mainWindow.popover().tableViews()[1].cells()[0].tap();
+target.delay(1);
 // discard it
 mainWindow.navigationBars()["Compose"].buttons()[0].tap();
 mainWindow.popover().actionSheet().buttons()["Save Draft"].tap();
