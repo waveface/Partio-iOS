@@ -183,7 +183,7 @@ UIATarget.localTarget().dragFromToForDuration({x:100, y:200}, {x:500, y:200}, 1)
 UIALogger.logPass(testName);
 
 
-// 10. Post a photo (take photo)
+// 10. Post a photo (take photo) (iphone/ipad2 only)
 // Expected: post successfully and see the new post
 // TODO: determin if the device is iphone or ipad 2
 
@@ -310,3 +310,61 @@ UIALogger.logPass(testName);
 // Expected: post successfully and see the new comment
 // 18. Post a comment and cancel it on a photo post 
 // Expected: cancel successfully and will be back to timeline
+// 19. Save a draft and delete it (ipad only)
+// Expected: save a draft and delete it successfully
+testName = "Regression Test " + countTest + " - Save a draft and delete it";
+countTest++;
+UIALogger.logStart(testName);
+
+naviBar.elements()[3].buttons()["Compose"].tap();
+var text = mainWindow.textViews()[0];
+text.setValue(testName);
+
+//mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
+//mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
+
+mainWindow.buttons()["PLCameraButtonIcon"].tap();
+mainWindow.popover().tableViews()[0].cells()[0].tap();
+mainWindow.popover().tableViews()[1].cells()[0].tap();
+// discard it
+mainWindow.navigationBars()["Compose"].buttons()[0].tap();
+mainWindow.popover().actionSheet().buttons()["Save Draft"].tap();
+target.delay(5);
+UIALogger.logMessage(testName);
+// compose the draft
+naviBar.elements()[3].buttons()["Compose"].tap();
+mainWindow.popover().navigationBars()["Drafts"].buttons()["Edit"].tap();
+mainWindow.popover().elements()[2].logElementTree();
+mainWindow.popover().elements()[2].cells()[1].elements()[0].tap(); // delete switch
+mainWindow.popover().elements()[2].cells()[1].elements()[2].tap(); // confirm deletoin button
+mainWindow.popover().navigationBars()["Drafts"].buttons()["Done"].tap();
+
+UIALogger.logPass(testName);
+
+// 20. Save a draft and post it (ipad only)
+// Expected: save a draft and post it successfully 
+testName = "Regression Test " + countTest + " - Save a draft and delete it";
+countTest++;
+UIALogger.logStart(testName);
+
+naviBar.elements()[3].buttons()["Compose"].tap();
+var text = mainWindow.textViews()[0];
+text.setValue(testName);
+
+//mainWindow.navigationBars()["Compose"].buttons()[0].logElementTree(); // Cancel Button
+//mainWindow.navigationBars()["Compose"].buttons()[1].logElementTree(); // Done Button
+
+mainWindow.buttons()["PLCameraButtonIcon"].tap();
+mainWindow.popover().tableViews()[0].cells()[0].tap();
+mainWindow.popover().tableViews()[1].cells()[0].tap();
+// discard it
+mainWindow.navigationBars()["Compose"].buttons()[0].tap();
+mainWindow.popover().actionSheet().buttons()["Save Draft"].tap();
+target.delay(5);
+UIALogger.logMessage(testName);
+// compose the draft
+naviBar.elements()[3].buttons()["Compose"].tap();
+mainWindow.popover().elements()[2].cells()[1].tap(); // tap the draft
+mainWindow.navigationBars()["Compose"].buttons()[1].tap(); // Done Button
+
+UIALogger.logPass(testName);
