@@ -170,11 +170,14 @@ UIButton * WAButtonForImage (UIImage *anImage) {
 	
 }
 
-UIButton * WAToolbarButtonForImage (UIImage *anImage) {
+UIButton *WAToolbarButtonForImage (UIImage *anImage, NSString *aAccessbilityLabel) {
 
   UIButton *button = WAButtonForImage(anImage);
   button.bounds = (CGRect){ CGPointZero, (CGSize){ 44, 44 }};
-  
+  if (aAccessbilityLabel.length != 0 ){
+		button.isAccessibilityElement = YES;
+		button.accessibilityLabel = aAccessbilityLabel;
+	}
   return button;
   
 }
