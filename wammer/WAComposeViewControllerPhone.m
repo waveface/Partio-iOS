@@ -254,11 +254,6 @@
 	
 	[super viewDidLoad];
   
-  NSLog(@"Trigger preview API and display it later.");
-	
-  self.contentTextView.text = self.post.text;
-	[self.contentTextView becomeFirstResponder];
-	
 	self.navigationItem.titleView.bounds = (CGRect){
 		CGPointZero,
 		(CGSize){
@@ -314,6 +309,21 @@
 	self.toolbar = nil;
 	[super viewDidUnload];
 	
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	self.contentTextView.text = self.post.text;
+	[self.contentTextView becomeFirstResponder];
+
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	self.post.text = self.contentTextView.text;
+
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
