@@ -119,7 +119,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		return WADiscretePlaintextArticleStyle;
 		
 	for (WAPreview *aPreview in anArticle.previews)
-		if (aPreview.text || aPreview.graphElement.text || aPreview.graphElement.title)
+		if (aPreview.text || aPreview.url || aPreview.graphElement.text || aPreview.graphElement.title)
 			return WADiscretePreviewArticleStyle;
 			
 	for (WAFile *aFile in anArticle.files)
