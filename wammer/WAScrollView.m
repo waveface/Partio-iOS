@@ -7,10 +7,22 @@
 //
 
 #import "WAScrollView.h"
+#import "Foundation+IRAdditions.h"
+
+
+@interface UIScrollView (WAScrollView_Private) <UIGestureRecognizerDelegate>
+@end
+
+
+@interface WAScrollView () <UIGestureRecognizerDelegate>
+@end
 
 @implementation WAScrollView
 @synthesize onTouchesShouldBeginWithEventInContentView;
 @synthesize onTouchesShouldCancelInContentView;
+@synthesize onGestureRecognizerShouldBegin;
+@synthesize onGestureRecognizerShouldReceiveTouch;
+@synthesize onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer;
 
 - (BOOL)touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view {
 
@@ -31,6 +43,59 @@
 		return self.onTouchesShouldCancelInContentView(view);
 	
 	return superAnswer;
+
+}
+
+- (BOOL) gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+
+	BOOL superAnswer = YES;
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		superAnswer = [super gestureRecognizerShouldBegin:gestureRecognizer];
+
+	if (self.onGestureRecognizerShouldBegin)
+		return self.onGestureRecognizerShouldBegin(gestureRecognizer, superAnswer);
+
+	return superAnswer;
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+
+	BOOL superAnswer = YES;
+
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		superAnswer = [super gestureRecognizer:gestureRecognizer shouldReceiveTouch:touch];
+	
+	if (self.onGestureRecognizerShouldReceiveTouch)
+		return self.onGestureRecognizerShouldReceiveTouch(gestureRecognizer, touch, superAnswer);
+	
+	return superAnswer;
+
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+	BOOL superAnswer = YES;
+	
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		superAnswer = [super gestureRecognizer:gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:otherGestureRecognizer];
+	
+	if (self.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer)
+		return self.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer(gestureRecognizer, otherGestureRecognizer, superAnswer);
+
+	return superAnswer;
+
+}
+
+- (void) dealloc {
+
+	[onTouchesShouldBeginWithEventInContentView release];
+	[onTouchesShouldCancelInContentView release];
+	[onGestureRecognizerShouldBegin release];
+	[onGestureRecognizerShouldReceiveTouch release];
+	
+	[super dealloc];
+	
 
 }
 
