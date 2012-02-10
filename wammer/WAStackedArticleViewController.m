@@ -396,7 +396,7 @@
 	
 	self.stackView.backgroundColor = nil;
 	self.wrapperView.backgroundColor = nil;
-
+	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	

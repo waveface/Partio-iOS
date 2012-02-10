@@ -95,6 +95,8 @@ typedef enum {
 	innerBackgroundView.backgroundColor = nil;
 	innerBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.backgroundView addSubview:innerBackgroundView];
+	
+	[self setNeedsLayout];
 
 }
 
@@ -177,6 +179,7 @@ typedef enum {
 			self.label.backgroundColor = nil;
 			self.label.opaque = NO;
 			self.label.userInteractionEnabled = YES;
+			self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 			[self addSubview:self.label];
 		}
 	} else {
@@ -321,7 +324,7 @@ typedef enum {
 						
 			NSMutableAttributedString *titleAttributedString = [[[NSMutableAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease];
 
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
+			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
 			[realContentString appendAttributedString:titleAttributedString];
 			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
 			
@@ -342,6 +345,30 @@ typedef enum {
 		self.label.attributedText = realContentString;
 	
 	}
+
+}
+
+- (CGSize) sizeThatFits:(CGSize)size {
+
+	if (!self.label)
+		[self layoutSubviews];
+	
+	CGSize delta = (CGSize){
+		CGRectGetWidth(self.bounds) - CGRectGetWidth(self.label.bounds),
+		CGRectGetHeight(self.bounds) - CGRectGetHeight(self.label.bounds),
+	};
+	
+	CGSize returnedLabelSize = [self.label sizeThatFits:(CGSize){
+		size.width - delta.width,
+		size.height - delta.height
+	}];
+	
+	CGSize returnedSize = (CGSize){
+		ceilf(returnedLabelSize.width + delta.width),
+		ceilf(returnedLabelSize.height + delta.height)
+	};
+	
+	return returnedSize;
 
 }
 

@@ -9,7 +9,7 @@
 #import "WAStackView.h"
 
 
-@interface WAStackView ()
+@interface WAStackView () <UIGestureRecognizerDelegate>
 
 - (void) waInit;
 
@@ -162,6 +162,9 @@
 		
 		for (UIView *anElement in self.stackElements) {
 		
+			if (anElement.superview != self)
+				[self addSubview:anElement];
+			
 			CGSize fitSize = [self sizeThatFitsElement:anElement];
 			
 			CGRect fitFrame = (CGRect){
@@ -172,21 +175,16 @@
 			if (!CGRectEqualToRect(anElement.frame, fitFrame))
 				anElement.frame = fitFrame;
 			
-			if (anElement.superview != self)
-				[self addSubview:anElement];
-			
-			contentRect = CGRectUnion(contentRect, anElement.frame);
+			contentRect = CGRectIntersection(CGRectInfinite, CGRectUnion(contentRect, anElement.frame));
 			
 			nextOffset = (CGPoint){
 				0,
-				CGRectGetMaxY(contentRect)
+				CGRectGetMaxY(fitFrame)
 			};
 			
 			[anElement.superview bringSubviewToFront:anElement];
 		
 		}
-		
-		NSParameterAssert(CGPointEqualToPoint(CGPointZero, contentRect.origin));
 		
 		if (CGRectGetHeight(contentRect) < usableHeight) {
 		
@@ -242,6 +240,7 @@
 	NSParameterAssert(self.delegate);
 	
 	CGSize bestSize = [self.delegate sizeThatFitsElement:anElement inStackView:self];
+	
 	return bestSize;
 
 }
