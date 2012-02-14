@@ -79,6 +79,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			@"files", @"attachments",
 			@"previews", @"previews",
 			
+			@"summary", @"soul",
+			
 		nil];
 		
 		[mapping retain];
