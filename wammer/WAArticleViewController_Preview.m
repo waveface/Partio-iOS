@@ -19,7 +19,21 @@
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
 
+enum {
+
+	WAArticleViewControllerSummaryState,
+	WAArticleViewControllerWebState,
+	
+	WAArticleViewControllerDefaultState = WAArticleViewControllerSummaryState
+
+}; typedef NSUInteger WAArticleViewControllerState;
+
+
 @interface WAArticleViewController_Preview () <UIWebViewDelegate, UIGestureRecognizerDelegate>
+
+- (WAPreview *) preview;
+
+@property (nonatomic, readwrite, assign) WAArticleViewControllerState state;
 
 @property (nonatomic, readwrite, retain) UIWebView *webView;
 @property (nonatomic, readwrite, retain) UIView *webViewWrapper;
@@ -30,25 +44,48 @@
 - (void) handleStackViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
 - (void) handleWebScrollViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
 
+@property (nonatomic, readwrite, retain) UIToolbar *toolbar;
+
 @property (nonatomic, readwrite, assign) CGPoint lastStackViewContentOffset;
 @property (nonatomic, readwrite, assign) CGPoint lastWebScrollViewContentOffset;
 @property (nonatomic, readwrite, assign) UIGestureRecognizerState lastWebScrollViewPanGestureRecognizerState;
 @property (nonatomic, readwrite, assign) CGRect lastWebViewFrame;
+
 @end
 
 
 @implementation WAArticleViewController_Preview
+@synthesize state;
 @synthesize webView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
+@synthesize toolbar;
+
+- (WAPreview *) preview {
+
+	return (WAPreview *)[self.article.previews anyObject];
+
+}
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+	
+	self.state = WAArticleViewControllerWebState;
+	
+	return self;
+
+}
 
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	
-	WAPreview *anyPreview = (WAPreview *)[self.article.previews anyObject];
+	WAPreview *anyPreview = [self preview];
 	
 	if (anyPreview) {
-	
+		
 		NSMutableArray *stackElements = [self.stackView mutableStackElements];
 		
 		self.previewBadge.preview = anyPreview;
@@ -57,9 +94,10 @@
 		[stackElements insertObject:self.previewBadgeWrapper atIndex:(
 			[stackElements containsObject:(id)self.textStackCell] ? [stackElements indexOfObject:(id)self.textStackCell] : [stackElements count]
 		)];
-	
-		[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:anyPreview.graphElement.url]]];
+				
 		[stackElements addObject:self.webViewWrapper];
+		
+		[stackElements addObject:self.toolbar];
 		
 	}
 	
@@ -77,6 +115,20 @@
 	self.webView.scrollView.scrollIndicatorInsets = (UIEdgeInsets){ 0, 0, 0, 8 };
 
 #endif
+
+}
+
+- (void) viewDidUnload {
+
+	[super viewDidUnload];
+
+	self.webView = nil;
+	self.webViewWrapper = nil;
+
+	self.previewBadge = nil;
+	self.previewBadgeWrapper = nil;
+
+	self.toolbar = nil;
 
 }
 
@@ -126,8 +178,9 @@
 		
 		};
 
-		[self.stackView.panGestureRecognizer addTarget:self action:@selector(handleStackViewPanGesture:)];	
-		[webScrollView.panGestureRecognizer addTarget:self action:@selector(handleWebScrollViewPanGesture:)];
+		//	Enables some change handling
+		//	[self.stackView.panGestureRecognizer addTarget:self action:@selector(handleStackViewPanGesture:)];	
+		//	[webScrollView.panGestureRecognizer addTarget:self action:@selector(handleWebScrollViewPanGesture:)];
 		
 		webScrollView.directionalLockEnabled = NO;
 		
@@ -228,6 +281,128 @@
 
 }
 
+- (UIToolbar *) toolbar {
+
+	if (toolbar)
+		return toolbar;
+	
+	toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+	
+	toolbar.items = [NSArray arrayWithObjects:
+	
+		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		
+		[IRBarButtonItem itemWithCustomView:((^ {
+		
+			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
+			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
+			[segmentedControl addTarget:self action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+			
+			[segmentedControl insertSegmentWithTitle:@"Summary" atIndex:0 animated:NO];
+			[segmentedControl insertSegmentWithTitle:@"Web" atIndex:1 animated:NO];
+			
+			[segmentedControl setSelectedSegmentIndex:0];
+			[segmentedControl sendActionsForControlEvents:UIControlEventValueChanged];
+			
+			return segmentedControl;
+		
+		})())],
+		
+		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		
+	nil];
+	
+	return toolbar;
+
+}
+
+- (void) handleSegmentedControlValueChanged:(UISegmentedControl *)sender {
+
+	//	?
+	
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, sender);
+	
+	WAArticleViewControllerState wantedState = self.state;
+	
+	switch (sender.selectedSegmentIndex) {
+		
+		case 0: {
+			wantedState = WAArticleViewControllerSummaryState;
+			break;
+		}
+		
+		case 1: {
+			wantedState = WAArticleViewControllerWebState;
+			break;
+		}
+		
+		default: {
+			break;
+		}
+	
+	}
+	
+	if (self.state == wantedState)
+		return;
+	
+	self.state = wantedState;
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		
+		switch (wantedState) {
+			
+			case WAArticleViewControllerSummaryState: {
+			
+				NSString *tidyString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
+				
+					@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(unescape(\"%@\"));",
+					[self.article.summary stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+					
+				]];
+				
+				NSString *previewTemplatePath = [[NSBundle mainBundle] pathForResource:@"WFPreviewTemplate" ofType:@"html"];
+				NSString *previewTemplateDirectoryPath = [previewTemplatePath stringByDeletingLastPathComponent];
+
+				#if DEBUG
+				
+					NSFileManager * const fileManager = [NSFileManager defaultManager];
+					
+					BOOL fileIsDirectory = NO;
+					NSParameterAssert([fileManager fileExistsAtPath:previewTemplatePath isDirectory:&fileIsDirectory] && !fileIsDirectory);
+					NSParameterAssert([fileManager fileExistsAtPath:previewTemplateDirectoryPath isDirectory:&fileIsDirectory] && fileIsDirectory);				
+				
+				#endif
+				
+				NSString *usedSummary = (tidyString ? tidyString : self.article.summary);
+				NSString *templatedPreview = [[[NSString stringWithContentsOfFile:previewTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$TITLE" withString:@"Preview"] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
+				
+				NSURL *previewBaseURL = nil;
+				
+				if (templatedPreview)
+					previewBaseURL = [NSURL fileURLWithPath:previewTemplateDirectoryPath];
+				
+				
+				
+				[self.webView loadHTMLString:(templatedPreview ? templatedPreview : usedSummary) baseURL:previewBaseURL];
+				
+				break;
+				
+			}
+
+			case WAArticleViewControllerWebState: {
+				[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
+				break;
+			}
+			
+			default:
+				break;
+		
+		}
+	
+	});
+
+}
+
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
 	if ([self.webView isDescendantOfView:anElement])
@@ -254,6 +429,9 @@
 		};
 		
 	}
+	
+	if ((self.toolbar == anElement) || [self.toolbar isDescendantOfView:anElement])
+		return (CGSize){ CGRectGetWidth(aStackView.bounds), 44 };
 
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		return [super sizeThatFitsElement:anElement inStackView:aStackView];
@@ -322,6 +500,8 @@
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	return;
 
 	if (scrollView != self.stackView)
 		return;
