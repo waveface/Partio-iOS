@@ -468,7 +468,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {
 		
-			NSLog(@"aPreviewRep %@", aPreviewRep);
 			callback(aPreviewRep);
 			
 		} onFailure:^(NSError *error) {
