@@ -1496,8 +1496,8 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 								CGRect contextRect = IRCGRectAlignToRect((CGRect){
 									CGPointZero,
 									(CGSize){
-										CGRectGetWidth(containerView.bounds) - 24,
-										CGRectGetHeight(containerView.bounds) - 56
+										CGRectGetWidth(containerView.bounds),// - 24,
+										CGRectGetHeight(containerView.bounds)// - 56
 									}
 								}, containerView.bounds, irBottom, YES);
 								
