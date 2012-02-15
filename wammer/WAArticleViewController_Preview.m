@@ -381,8 +381,6 @@ enum {
 				if (templatedPreview)
 					previewBaseURL = [NSURL fileURLWithPath:previewTemplateDirectoryPath];
 				
-				
-				
 				[self.webView loadHTMLString:(templatedPreview ? templatedPreview : usedSummary) baseURL:previewBaseURL];
 				
 				break;
@@ -406,7 +404,7 @@ enum {
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
 	if ([self.webView isDescendantOfView:anElement])
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 320 };
+		return (CGSize){ CGRectGetWidth(aStackView.bounds), 1 };	//	Stretchable
 	
 	if ((self.previewBadge == anElement) || [self.previewBadge isDescendantOfView:anElement]) {
 	
