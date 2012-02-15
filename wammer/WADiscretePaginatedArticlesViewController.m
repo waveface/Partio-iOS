@@ -608,9 +608,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		}
 			
 		for (WAPreview *aPreview in representedArticle.previews)
-			if (aPreview.graphElement.thumbnailURL)
-			if (![aPreview.graphElement primitiveValueForKey:@"thumbnailFilePath"])
-				[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:[NSURL URLWithString:aPreview.graphElement.thumbnailURL] usingPriority:NSOperationQueuePriorityHigh forced:NO withCompletionBlock:nil];
+		if (aPreview.graphElement.thumbnailURL) {
+		
+			[aPreview.graphElement thumbnailFilePath];
+			
+		}
 	
 	}];
 

@@ -79,8 +79,10 @@
 		return nil;
 	
 	NSURL *thumbnailURL = [NSURL URLWithString:self.thumbnailURL];
+	if (!thumbnailURL)
+		thumbnailURL = [NSURL URLWithString:[self.thumbnailURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	
-	if (![thumbnailURL isFileURL]) {
+	if (thumbnailURL && ![thumbnailURL isFileURL]) {
 
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 		
