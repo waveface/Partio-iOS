@@ -298,7 +298,13 @@
 		return separatorView;
 	})())];
 	[self.toolbar.superview insertSubview:toolbarGradient belowSubview:self.toolbar];
-		
+	
+	UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigationBar"]];
+	UINavigationBar * navigationBar = self.navigationController.navigationBar;
+	navigationBar.tintColor = [UIColor brownColor];
+	[self.navigationController.navigationBar insertSubview:background atIndex:1];
+	self.contentTextView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
+	
 }
 
 - (void) viewDidUnload {
