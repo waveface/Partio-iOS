@@ -10,6 +10,7 @@
 
 @implementation WAPreviewViewController
 @synthesize deleteButton;
+@synthesize navigationBar;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,7 +35,6 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
-//		self.deleteButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"deleteButton"]];
 		
 		UIButton *button = self.deleteButton;
 		button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -43,14 +43,22 @@
 		UIImage *normal = [[UIImage imageNamed:@"delete"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
 		[button setBackgroundImage:normal forState:UIControlStateNormal];
 		[button setBackgroundColor:[UIColor clearColor]];
+		UIImage *highlight = [[UIImage imageNamed:@"deletepressed"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
+		[button setBackgroundImage:highlight forState:UIControlStateHighlighted];
+		
+		UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigationBar"]];
+		
+		self.navigationBar.tintColor = [UIColor brownColor];
+		[self.navigationBar insertSubview:background atIndex:1];
 }
 
 - (void)viewDidUnload
 {
 	[self setDeleteButton:nil];
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+	[self setNavigationBar:nil];
+	[super viewDidUnload];
+	// Release any retained subviews of the main view.
+	// e.g. self.myOutlet = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -61,6 +69,8 @@
 
 - (void)dealloc {
 	[deleteButton release];
+	[navigationBar release];
+	[navigationBar release];
 	[super dealloc];
 }
 
@@ -87,5 +97,10 @@
 	[button setBackgroundColor:[UIColor clearColor]];	// in case the parent view draws with a custom color or gradient, use a transparent color
     [button autorelease];
     return button;
+}
+
+- (IBAction)handleDoneTap:(id)sender {
+	//save preview selection
+	[self dismissModalViewControllerAnimated:YES];
 }
 @end

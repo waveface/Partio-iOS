@@ -78,7 +78,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 							<object class="IBUIButton" id="431265743">
 								<reference key="NSNextResponder" ref="47957778"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{6, 156}, {72, 37}}</string>
+								<string key="NSFrame">{{4, 156}, {77, 37}}</string>
 								<reference key="NSSuperview" ref="47957778"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -91,7 +91,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<int key="IBUIContentHorizontalAlignment">0</int>
 								<int key="IBUIContentVerticalAlignment">0</int>
-								<string key="IBUINormalTitle">Add</string>
+								<string key="IBUINormalTitle">Preview</string>
 								<object class="NSColor" key="IBUIHighlightedTitleColor" id="482604388">
 									<int key="NSColorSpace">3</int>
 									<bytes key="NSWhite">MQA</bytes>
@@ -473,7 +473,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="AttachementButton">UIButton</string>
 						<string key="AttachmentButton">UIButton</string>
 						<string key="attachmentsListViewControllerHeaderView">UIView</string>
 						<string key="contentContainerView">UIView</string>
@@ -481,10 +480,6 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<string key="toolbar">IRTransparentToolbar</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="AttachementButton">
-							<string key="name">AttachementButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="AttachmentButton">
 							<string key="name">AttachmentButton</string>
 							<string key="candidateClassName">UIButton</string>

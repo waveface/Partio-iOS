@@ -11,5 +11,8 @@
 @interface WAPreviewViewController : UIViewController
 
 @property (retain, nonatomic) IBOutlet UIButton *deleteButton;
+@property (retain, nonatomic) IBOutlet UINavigationBar *navigationBar;
+
+- (IBAction)handleDoneTap:(id)sender;
 
 @end
