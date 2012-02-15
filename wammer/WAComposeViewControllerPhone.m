@@ -15,7 +15,19 @@
 #import "IRGradientView.h"
 
 #import "UIApplication+IRAdditions.h"
+#import "WAPreviewViewController.h"
 
+#import <UIKit/UINavigationBar.h>
+@interface UINavigationBar (CustomImage)
+- (void)drawRect:(CGRect)rect;
+@end
+
+@implementation UINavigationBar (CustomImage)
+- (void)drawRect:(CGRect)rect {
+ UIImage *image = [UIImage imageNamed: @"WANavigationBarBackdrop"];
+ [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+}
+@end
 
 @interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
@@ -35,6 +47,7 @@
 @synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
 @synthesize toolbar;
+@synthesize AttachmentButton;
 @synthesize urlForPreview;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
@@ -123,6 +136,13 @@
 		
 	[self didChangeValueForKey:@"post"];
 	
+}
+
+- (IBAction)handleAttachmentTap:(id)sender {
+
+  WAPreviewViewController *previewViewController = [[WAPreviewViewController alloc]init];
+  [self.navigationController pushViewController:previewViewController animated:YES];
+  
 }
 
 - (IBAction) handleCameraItemTap:(id)sender {
@@ -267,6 +287,8 @@
 		CGRectGetMidY(self.navigationController.navigationBar.bounds)
 	};
 	
+	
+	
 	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];
 	[toolbarGradient setLinearGradientFromColor:[UIColor colorWithWhite:.95 alpha:1] anchor:irTop toColor:[UIColor colorWithWhite:.75 alpha:1] anchor:irBottom];
 	toolbarGradient.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleWidth;
@@ -313,6 +335,7 @@
 	self.contentContainerView = nil;
 	self.attachmentsListViewControllerHeaderView = nil;
 	self.toolbar = nil;
+	[self setAttachmentButton:nil];
 	[super viewDidUnload];
 	
 }
@@ -345,6 +368,7 @@
 	[attachmentsListViewControllerHeaderView release];
 	[toolbar release];
 	[urlForPreview release];
+	[AttachmentButton release];
 	[super dealloc];
 }
 

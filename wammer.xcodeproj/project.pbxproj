@@ -69,6 +69,12 @@
 		4BE6910514EB68C6002B9790 /* previewHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FF14EB68C6002B9790 /* previewHighlight.png */; };
 		4BE6910614EB68C6002B9790 /* previewHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */; };
 		4BE6910714EB68C6002B9790 /* previewButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910114EB68C6002B9790 /* previewButton@2x.png */; };
+		4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */; };
+		4BE6910E14EB8159002B9790 /* WAPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */; };
+		4BE6911314EB8BD8002B9790 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910F14EB8BD8002B9790 /* delete.png */; };
+		4BE6911414EB8BD8002B9790 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911014EB8BD8002B9790 /* delete@2x.png */; };
+		4BE6911514EB8BD8002B9790 /* deletepressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911114EB8BD8002B9790 /* deletepressed.png */; };
+		4BE6911614EB8BD8002B9790 /* deletepressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911214EB8BD8002B9790 /* deletepressed@2x.png */; };
 		4BFAE5E61484C33B002CDE07 /* WACompose.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5DE1484C33B002CDE07 /* WACompose.png */; };
 		4BFAE5E71484C33B002CDE07 /* WACompose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */; };
 		4BFAE5E81484C33B002CDE07 /* WAFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5E01484C33B002CDE07 /* WAFilter.png */; };
@@ -862,6 +868,13 @@
 		4BE690FF14EB68C6002B9790 /* previewHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewHighlight.png; path = Resources/previewHighlight.png; sourceTree = "<group>"; };
 		4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewHighlight@2x.png"; path = "Resources/previewHighlight@2x.png"; sourceTree = "<group>"; };
 		4BE6910114EB68C6002B9790 /* previewButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewButton@2x.png"; path = "Resources/previewButton@2x.png"; sourceTree = "<group>"; };
+		4BE6910A14EB8159002B9790 /* WAPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewViewController.h; sourceTree = "<group>"; };
+		4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewViewController.m; sourceTree = "<group>"; };
+		4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewViewController.xib; sourceTree = "<group>"; };
+		4BE6910F14EB8BD8002B9790 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete.png; path = Resources/delete.png; sourceTree = "<group>"; };
+		4BE6911014EB8BD8002B9790 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "delete@2x.png"; path = "Resources/delete@2x.png"; sourceTree = "<group>"; };
+		4BE6911114EB8BD8002B9790 /* deletepressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deletepressed.png; path = Resources/deletepressed.png; sourceTree = "<group>"; };
+		4BE6911214EB8BD8002B9790 /* deletepressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "deletepressed@2x.png"; path = "Resources/deletepressed@2x.png"; sourceTree = "<group>"; };
 		4BFAE5DE1484C33B002CDE07 /* WACompose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompose.png; path = Resources/WACompose.png; sourceTree = "<group>"; };
 		4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompose@2x.png"; path = "Resources/WACompose@2x.png"; sourceTree = "<group>"; };
 		4BFAE5E01484C33B002CDE07 /* WAFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAFilter.png; path = Resources/WAFilter.png; sourceTree = "<group>"; };
@@ -1360,6 +1373,9 @@
 				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
 				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
 				4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */,
+				4BE6910A14EB8159002B9790 /* WAPreviewViewController.h */,
+				4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */,
+				4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */,
 				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
 				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
 				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
@@ -1947,6 +1963,10 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BE6910F14EB8BD8002B9790 /* delete.png */,
+				4BE6911014EB8BD8002B9790 /* delete@2x.png */,
+				4BE6911114EB8BD8002B9790 /* deletepressed.png */,
+				4BE6911214EB8BD8002B9790 /* deletepressed@2x.png */,
 				4BE690F814EB639C002B9790 /* navigationBar.png */,
 				4BBD9BB614EB55C2003086DD /* addHighlight.png */,
 				4BBD9BB714EB55C2003086DD /* addHighlight@2x.png */,
@@ -2838,6 +2858,11 @@
 				4BE6910514EB68C6002B9790 /* previewHighlight.png in Resources */,
 				4BE6910614EB68C6002B9790 /* previewHighlight@2x.png in Resources */,
 				4BE6910714EB68C6002B9790 /* previewButton@2x.png in Resources */,
+				4BE6910E14EB8159002B9790 /* WAPreviewViewController.xib in Resources */,
+				4BE6911314EB8BD8002B9790 /* delete.png in Resources */,
+				4BE6911414EB8BD8002B9790 /* delete@2x.png in Resources */,
+				4BE6911514EB8BD8002B9790 /* deletepressed.png in Resources */,
+				4BE6911614EB8BD8002B9790 /* deletepressed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3144,6 +3169,7 @@
 				FF0505EF14C08900002EA455 /* WAButton.m in Sources */,
 				FFB44D5A14D692AA00080F07 /* WAArticleViewController_Preview.m in Sources */,
 				FFB44D5D14D6A2A800080F07 /* WAScrollView.m in Sources */,
+				4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

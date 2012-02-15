@@ -45,6 +45,7 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrameSize">{320, 416}</string>
 								<reference key="NSSuperview" ref="47957778"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="431265743"/>
 								<string key="NSReuseIdentifierKey">_NS:613</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="985372644">
@@ -79,6 +80,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{6, 156}, {72, 37}}</string>
 								<reference key="NSSuperview" ref="47957778"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:225</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="1033696257">
@@ -116,6 +118,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						</array>
 						<string key="NSFrameSize">{320, 416}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="299358764"/>
 						<string key="NSReuseIdentifierKey">_NS:180</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -130,6 +133,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				</array>
 				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="47957778"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -151,6 +155,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{5, 5}, {151, 34}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="267765065"/>
 						<string key="NSReuseIdentifierKey">_NS:222</string>
 						<reference key="IBUIBackgroundColor" ref="1033696257"/>
@@ -188,6 +193,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="NSvFlags">301</int>
 						<string key="NSFrame">{{164, 5}, {152, 34}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="11106004"/>
 						<string key="NSReuseIdentifierKey">_NS:222</string>
 						<reference key="IBUIBackgroundColor" ref="1033696257"/>
@@ -216,6 +222,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 43}, {320, 1}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="402377760"/>
 						<string key="NSReuseIdentifierKey">_NS:196</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -229,6 +236,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{0, 44}, {320, 1}}</string>
 						<reference key="NSSuperview" ref="215708612"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:196</string>
 						<reference key="IBUIBackgroundColor" ref="985372644"/>
@@ -237,6 +245,7 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				</array>
 				<string key="NSFrameSize">{320, 44}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="530427165"/>
 				<string key="NSReuseIdentifierKey">_NS:180</string>
 				<reference key="IBUIBackgroundColor" ref="1033696257"/>
@@ -280,6 +289,14 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">AttachmentButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="431265743"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="299358764"/>
 						<reference key="destination" ref="372490531"/>
@@ -303,6 +320,15 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">26</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">handleAttachmentTap:</string>
+						<reference key="source" ref="431265743"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">40</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -336,8 +362,8 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="objectID">7</int>
 						<reference key="object" ref="47957778"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="431265743"/>
 							<reference ref="299358764"/>
+							<reference ref="431265743"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Content Container View</string>
@@ -353,8 +379,8 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<array class="NSMutableArray" key="children">
 							<reference ref="11106004"/>
 							<reference ref="402377760"/>
-							<reference ref="530427165"/>
 							<reference ref="267765065"/>
+							<reference ref="530427165"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -407,9 +433,94 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">36</int>
+			<int key="maxID">40</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">IRTransparentToolbar</string>
+					<string key="superclassName">UIToolbar</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/IRTransparentToolbar.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WAComposeViewControllerPhone</string>
+					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="handleAttachmentAddFromCameraItemTap:">id</string>
+						<string key="handleAttachmentAddFromPhotosLibraryItemTap:">id</string>
+						<string key="handleAttachmentTap:">id</string>
+						<string key="handleCameraItemTap:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="handleAttachmentAddFromCameraItemTap:">
+							<string key="name">handleAttachmentAddFromCameraItemTap:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="handleAttachmentAddFromPhotosLibraryItemTap:">
+							<string key="name">handleAttachmentAddFromPhotosLibraryItemTap:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="handleAttachmentTap:">
+							<string key="name">handleAttachmentTap:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="handleCameraItemTap:">
+							<string key="name">handleCameraItemTap:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="AttachementButton">UIButton</string>
+						<string key="AttachmentButton">UIButton</string>
+						<string key="attachmentsListViewControllerHeaderView">UIView</string>
+						<string key="contentContainerView">UIView</string>
+						<string key="contentTextView">UITextView</string>
+						<string key="toolbar">IRTransparentToolbar</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="AttachementButton">
+							<string key="name">AttachementButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="AttachmentButton">
+							<string key="name">AttachmentButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="attachmentsListViewControllerHeaderView">
+							<string key="name">attachmentsListViewControllerHeaderView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="contentContainerView">
+							<string key="name">contentContainerView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="contentTextView">
+							<string key="name">contentTextView</string>
+							<string key="candidateClassName">UITextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="toolbar">
+							<string key="name">toolbar</string>
+							<string key="candidateClassName">IRTransparentToolbar</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WAComposeViewControllerPhone.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">WAView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WAView.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
