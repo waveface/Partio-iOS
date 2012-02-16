@@ -17,17 +17,17 @@
 #import "UIApplication+IRAdditions.h"
 #import "WAPreviewViewController.h"
 
-#import <UIKit/UINavigationBar.h>
-@interface UINavigationBar (CustomImage)
-- (void)drawRect:(CGRect)rect;
-@end
-
-@implementation UINavigationBar (CustomImage)
-- (void)drawRect:(CGRect)rect {
- UIImage *image = [UIImage imageNamed: @"WANavigationBarBackdrop"];
- [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-}
-@end
+//#import <UIKit/UINavigationBar.h>
+//@interface UINavigationBar (CustomImage)
+//- (void)drawRect:(CGRect)rect;
+//@end
+//
+//@implementation UINavigationBar (CustomImage)
+//- (void)drawRect:(CGRect)rect {
+// UIImage *image = [UIImage imageNamed: @"WANavigationBarBackdrop"];
+// [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+//}
+//@end
 
 @interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
@@ -321,11 +321,19 @@
 	})())];
 	[self.toolbar.superview insertSubview:toolbarGradient belowSubview:self.toolbar];
 	
-	UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigationBar"]];
+	// TODO: Make this a universal implmentation with a Custom UI Style, because we have at least 2 different
+	//       Kind of navigationBar, Leather style and black translucent and needs to support both 4.3 and 5.0
+	//			 By applying iOS 5 APIs, we can wear on design quickly and hack the way back to 4.3 later to save time.
 	UINavigationBar *navigationBar = self.navigationController.navigationBar;
-	navigationBar.tintColor = [UIColor brownColor];
-	[self.navigationController.navigationBar insertSubview:background atIndex:1];
 	
+	navigationBar.tintColor = [UIColor brownColor];
+		
+	UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigationBar"]];
+	if( [navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)] ){
+		[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
+	} else {
+		[self.navigationController.navigationBar insertSubview:background atIndex:1];
+	}
 }
 
 - (void) viewDidUnload {
@@ -354,9 +362,9 @@
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 
-  return YES;
+  return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
   
 }
 

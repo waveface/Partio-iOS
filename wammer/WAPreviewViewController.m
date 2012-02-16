@@ -45,7 +45,9 @@
 		[button setBackgroundColor:[UIColor clearColor]];
 		UIImage *highlight = [[UIImage imageNamed:@"deletepressed"] stretchableImageWithLeftCapWidth:5 topCapHeight:0];
 		[button setBackgroundImage:highlight forState:UIControlStateHighlighted];
-		
+		button.titleLabel.shadowColor = [UIColor lightGrayColor];
+		button.titleLabel.shadowOffset = CGSizeMake(0, -1);
+				
 		UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"navigationBar"]];
 		
 		self.navigationBar.tintColor = [UIColor brownColor];
