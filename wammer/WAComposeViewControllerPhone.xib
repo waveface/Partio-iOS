@@ -55,6 +55,10 @@
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIMultipleTouchEnabled">YES</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<double key="IBUIContentInset.top">0.0</double>
+								<double key="IBUIContentInset.bottom">48</double>
+								<double key="IBUIContentInset.left">0.0</double>
+								<double key="IBUIContentInset.right">0.0</double>
 								<string type="base64-UTF8" key="IBUIText">aHR0cDovL3d3dy5hcHBsZS5jb20vcHIvbGlicmFyeS8yMDExLzA4LzI0TGV0dGVyLWZyb20tU3RldmUt
 Sm9icy5odG1sCgpJIGhhdmUgbWFkZSBzb21lIG9mIHRoZSBiZXN0IGZyaWVuZHMgb2YgbXkgbGlmZSBh
 dCBBcHBsZSwgYW5kIEkgdGhhbmsgeW91IGFsbCBmb3IgdGhlIG1hbnkgeWVhcnMgb2YgYmVpbmcgYWJs
@@ -77,8 +81,8 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 							</object>
 							<object class="IBUIButton" id="431265743">
 								<reference key="NSNextResponder" ref="47957778"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{4, 156}, {77, 37}}</string>
+								<int key="NSvFlags">268</int>
+								<string key="NSFrame">{{4, 371}, {77, 37}}</string>
 								<reference key="NSSuperview" ref="47957778"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView"/>
@@ -362,8 +366,8 @@ ZSB0byB3b3JrIGFsb25nc2lkZSB5b3UuIA</string>
 						<int key="objectID">7</int>
 						<reference key="object" ref="47957778"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="299358764"/>
 							<reference ref="431265743"/>
+							<reference ref="299358764"/>
 						</array>
 						<reference key="parent" ref="191373211"/>
 						<string key="objectName">Content Container View</string>
