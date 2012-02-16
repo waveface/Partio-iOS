@@ -36,7 +36,10 @@ enum {
 @property (nonatomic, readwrite, assign) WAArticleViewControllerState state;
 
 @property (nonatomic, readwrite, retain) UIWebView *webView;
+@property (nonatomic, readwrite, retain) UIWebView *summaryWebView;
 @property (nonatomic, readwrite, retain) UIView *webViewWrapper;
+- (UIView *) wrappedView;
+- (void) updateWrapperView;
 
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) UIView *previewBadgeWrapper;
@@ -56,9 +59,24 @@ enum {
 
 @implementation WAArticleViewController_Preview
 @synthesize state;
-@synthesize webView, webViewWrapper, previewBadge, previewBadgeWrapper;
+@synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
 @synthesize toolbar;
+
+- (void) dealloc {
+
+	[webView release];
+	[summaryWebView release];
+	[webViewWrapper release];
+	
+	[previewBadge release];
+	[previewBadgeWrapper release];
+	
+	[toolbar release];
+	
+	[super dealloc];
+
+}
 
 - (WAPreview *) preview {
 
@@ -72,7 +90,7 @@ enum {
 	if (!self)
 		return nil;
 	
-	self.state = WAArticleViewControllerWebState;
+	self.state = WAArticleViewControllerSummaryState;
 	
 	return self;
 
@@ -84,22 +102,40 @@ enum {
 	
 	WAPreview *anyPreview = [self preview];
 	
-	if (anyPreview) {
+	if (!anyPreview)
+		return;
 		
-		NSMutableArray *stackElements = [self.stackView mutableStackElements];
+	NSMutableArray *stackElements = [self.stackView mutableStackElements];
+	
+	//	self.previewBadge.preview = anyPreview;
+	//	self.previewBadge.link = nil;
+	//	
+	//	[stackElements insertObject:self.previewBadgeWrapper atIndex:(
+	//		[stackElements containsObject:(id)self.textStackCell] ? [stackElements indexOfObject:(id)self.textStackCell] : [stackElements count]
+	//	)];
+			
+	[stackElements addObject:self.webViewWrapper];
+	[stackElements addObject:self.toolbar];
+	
+	self.stackView.delaysContentTouches = YES;
+	self.stackView.canCancelContentTouches = NO;
+	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
+	
+		UIView *wrappedView = [self wrappedView];
+	
+		if (wrappedView)
+		if (view == wrappedView)
+			return NO;
 		
-		self.previewBadge.preview = anyPreview;
-		self.previewBadge.link = nil;
-		
-		[stackElements insertObject:self.previewBadgeWrapper atIndex:(
-			[stackElements containsObject:(id)self.textStackCell] ? [stackElements indexOfObject:(id)self.textStackCell] : [stackElements count]
-		)];
-				
-		[stackElements addObject:self.webViewWrapper];
-		
-		[stackElements addObject:self.toolbar];
-		
-	}
+		return YES;
+	
+	};
+	
+	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
+	
+		return NO;
+	
+	};
 	
 #if 0
 	
@@ -116,6 +152,9 @@ enum {
 
 #endif
 
+	if ([self isViewLoaded])
+		[self updateWrapperView];
+
 }
 
 - (void) viewDidUnload {
@@ -123,6 +162,7 @@ enum {
 	[super viewDidUnload];
 
 	self.webView = nil;
+	self.summaryWebView = nil;
 	self.webViewWrapper = nil;
 
 	self.previewBadge = nil;
@@ -148,35 +188,8 @@ enum {
 	
 	if (webScrollView) {
 		
-		self.stackView.delaysContentTouches = YES;
-		self.stackView.canCancelContentTouches = NO;
-		
 		webScrollView.canCancelContentTouches = NO;
 		webScrollView.delaysContentTouches = NO;
-		
-		//	[webScrollView.subviews enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
-		//		
-		//		if ([aSubview isKindOfClass:[UIImageView class]])
-		//			[aSubview removeFromSuperview];
-		//			
-		//		//	I think this will break stuff, but it did not
-		//		
-		//	}];
-		
-		self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
-		
-			if (view == webView)
-				return NO;
-			
-			return YES;
-		
-		};
-		
-		self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
-		
-			return NO;
-		
-		};
 
 		//	Enables some change handling
 		//	[self.stackView.panGestureRecognizer addTarget:self action:@selector(handleStackViewPanGesture:)];	
@@ -186,7 +199,73 @@ enum {
 		
 	}
 		
+	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
+	
 	return webView;
+
+}
+
+- (UIWebView *) summaryWebView {
+
+	if (summaryWebView)
+		return summaryWebView;
+	
+	summaryWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+	
+	summaryWebView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	summaryWebView.delegate = self;
+	
+	summaryWebView.scrollView.canCancelContentTouches = NO;
+	summaryWebView.scrollView.delaysContentTouches = NO;
+	summaryWebView.scrollView.directionalLockEnabled = NO;
+	
+	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
+	
+		@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(unescape(\"%@\"));",
+		[self.article.summary stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+		
+	]];
+	
+	NSString *summaryTemplatePath = [[NSBundle mainBundle] pathForResource:@"WFPreviewTemplate" ofType:@"html"];
+	NSString *summaryTemplateDirectoryPath = [summaryTemplatePath stringByDeletingLastPathComponent];
+
+	#if DEBUG
+	
+		NSFileManager * const fileManager = [NSFileManager defaultManager];
+		
+		BOOL fileIsDirectory = NO;
+		NSParameterAssert([fileManager fileExistsAtPath:summaryTemplatePath isDirectory:&fileIsDirectory] && !fileIsDirectory);
+		NSParameterAssert([fileManager fileExistsAtPath:summaryTemplateDirectoryPath isDirectory:&fileIsDirectory] && fileIsDirectory);				
+	
+	#endif
+	
+	NSString *usedSummary = (tidyString ? tidyString : self.article.summary);
+	NSString *templatedSummary = [[[NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$TITLE" withString:@"Preview"] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
+	
+	NSURL *summaryTemplateBaseURL = nil;
+	
+	if (templatedSummary)
+		summaryTemplateBaseURL = [NSURL fileURLWithPath:summaryTemplateDirectoryPath];
+	
+	[summaryWebView loadHTMLString:(templatedSummary ? templatedSummary : usedSummary) baseURL:summaryTemplateBaseURL];
+	
+	return summaryWebView;
+
+}
+
+- (UIView *) wrappedView {
+
+	switch (self.state) {
+	
+		case WAArticleViewControllerSummaryState:
+			return self.summaryWebView;
+		
+		case WAArticleViewControllerWebState:
+			return self.webView;
+	
+	};
+	
+	return nil;
 
 }
 
@@ -195,11 +274,8 @@ enum {
 	if (webViewWrapper)
 		return webViewWrapper;
 	
-	webViewWrapper = [[[WAView alloc] initWithFrame:self.webView.bounds] autorelease];
-
-	self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	webViewWrapper = [[[WAView alloc] initWithFrame:CGRectZero] autorelease];
 	webViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	[webViewWrapper addSubview:self.webView];
 
 	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(webViewWrapper.bounds),
@@ -213,14 +289,17 @@ enum {
 	
 	((WAView *)webViewWrapper).onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
-		NSParameterAssert([nrSelf.webView isDescendantOfView:webViewWrapper]);
+		UIView *wrappedView = [nrSelf wrappedView];
+		
+		if (!wrappedView)
+			return superAnswer;
+	
+		NSParameterAssert([wrappedView isDescendantOfView:webViewWrapper]);
 		
 		BOOL customAnswer = CGRectContainsPoint(
-				[webViewWrapper convertRect:nrSelf.webView.bounds fromView:nrSelf.webView],
+				[webViewWrapper convertRect:wrappedView.bounds fromView:wrappedView],
 				aPoint
 		);
-		
-		//	NSLog(@"pointinside %@ withevent, custom answer %x super answer %x", NSStringFromCGPoint(aPoint), customAnswer, superAnswer);
 		
 		return customAnswer;
 	
@@ -228,12 +307,18 @@ enum {
 	
 	((WAView *)webViewWrapper).onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
 	
-		if ([webViewWrapper pointInside:aPoint withEvent:anEvent])
-			return [nrSelf.webView hitTest:[nrSelf.webView convertPoint:aPoint fromView:webViewWrapper] withEvent:anEvent];
+		if (![webViewWrapper pointInside:aPoint withEvent:anEvent])
+			return superAnswer;
 		
-		return superAnswer;
+		UIView *wrappedView = [nrSelf wrappedView];
+		if (!wrappedView)
+			return superAnswer;
+		
+		return [wrappedView hitTest:[wrappedView convertPoint:aPoint fromView:webViewWrapper] withEvent:anEvent];
 	
 	};
+	
+	[self updateWrapperView];
 	
 	return webViewWrapper;
 	
@@ -244,7 +329,7 @@ enum {
 	if (previewBadge)
 		return previewBadge;
 	
-	previewBadge = [[[WAPreviewBadge alloc] initWithFrame:CGRectZero] autorelease];
+	previewBadge = [[WAPreviewBadge alloc] initWithFrame:CGRectZero];
 	previewBadge.backgroundView = nil;
 	previewBadge.titleFont = [UIFont boldSystemFontOfSize:24.0f];
 	previewBadge.titleColor = [UIColor colorWithWhite:0.35 alpha:1];
@@ -316,12 +401,43 @@ enum {
 
 }
 
+- (void) setState:(WAArticleViewControllerState)newState {
+
+	BOOL didChange = (state != newState);
+	
+	if (didChange) {
+		[self willChangeValueForKey:@"state"];
+		state = newState;
+		[self didChangeValueForKey:@"state"];
+	}
+	
+	if ([self isViewLoaded])
+		[self updateWrapperView];
+
+}
+
+- (void) updateWrapperView {
+
+	UIView * const wrapperView = self.webViewWrapper;
+	UIView * const contentView = [self wrappedView];
+	
+	if ([contentView isDescendantOfView:wrapperView])
+		return;
+	
+	for (UIView *aSubview in [[wrapperView.subviews copy] autorelease])
+	if (aSubview == summaryWebView || aSubview == webView)
+		[aSubview removeFromSuperview];
+	
+	contentView.frame = wrapperView.bounds;
+	contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	
+	[wrapperView addSubview:contentView];
+	[wrapperView sendSubviewToBack:contentView];
+
+}
+
 - (void) handleSegmentedControlValueChanged:(UISegmentedControl *)sender {
 
-	//	?
-	
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, sender);
-	
 	WAArticleViewControllerState wantedState = self.state;
 	
 	switch (sender.selectedSegmentIndex) {
@@ -342,68 +458,13 @@ enum {
 	
 	}
 	
-	if (self.state == wantedState)
-		return;
-	
 	self.state = wantedState;
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-		
-		switch (wantedState) {
-			
-			case WAArticleViewControllerSummaryState: {
-			
-				NSString *tidyString = [self.webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
-				
-					@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(unescape(\"%@\"));",
-					[self.article.summary stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
-					
-				]];
-				
-				NSString *previewTemplatePath = [[NSBundle mainBundle] pathForResource:@"WFPreviewTemplate" ofType:@"html"];
-				NSString *previewTemplateDirectoryPath = [previewTemplatePath stringByDeletingLastPathComponent];
-
-				#if DEBUG
-				
-					NSFileManager * const fileManager = [NSFileManager defaultManager];
-					
-					BOOL fileIsDirectory = NO;
-					NSParameterAssert([fileManager fileExistsAtPath:previewTemplatePath isDirectory:&fileIsDirectory] && !fileIsDirectory);
-					NSParameterAssert([fileManager fileExistsAtPath:previewTemplateDirectoryPath isDirectory:&fileIsDirectory] && fileIsDirectory);				
-				
-				#endif
-				
-				NSString *usedSummary = (tidyString ? tidyString : self.article.summary);
-				NSString *templatedPreview = [[[NSString stringWithContentsOfFile:previewTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$TITLE" withString:@"Preview"] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
-				
-				NSURL *previewBaseURL = nil;
-				
-				if (templatedPreview)
-					previewBaseURL = [NSURL fileURLWithPath:previewTemplateDirectoryPath];
-				
-				[self.webView loadHTMLString:(templatedPreview ? templatedPreview : usedSummary) baseURL:previewBaseURL];
-				
-				break;
-				
-			}
-
-			case WAArticleViewControllerWebState: {
-				[self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
-				break;
-			}
-			
-			default:
-				break;
-		
-		}
-	
-	});
 
 }
 
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
-	if ([self.webView isDescendantOfView:anElement])
+	if ([[self wrappedView] isDescendantOfView:anElement])
 		return (CGSize){ CGRectGetWidth(aStackView.bounds), 1 };	//	Stretchable
 	
 	if ((self.previewBadge == anElement) || [self.previewBadge isDescendantOfView:anElement]) {
@@ -440,7 +501,7 @@ enum {
 
 - (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
-	if ([self.webView isDescendantOfView:anElement])
+	if ([[self wrappedView] isDescendantOfView:anElement])
 		return YES;
 	
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
