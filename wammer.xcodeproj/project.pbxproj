@@ -108,6 +108,10 @@
 		FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */; };
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
 		FF3AEEF814A30EEB00FC4E19 /* WAArticleViewController_Default.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3AEEF714A30EEB00FC4E19 /* WAArticleViewController_Default.m */; };
+		FF3B1B2814EBA3C7009CFFD1 /* WFPreviewIE.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */; };
+		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
+		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
+		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
 		FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */; };
 		FF4570511488A79D005B5905 /* WAUserInfoHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4570501488A79D005B5905 /* WAUserInfoHeaderCell.xib */; };
 		FF4570E11488E7E3005B5905 /* WAArticleFilesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */; };
@@ -223,8 +227,6 @@
 		FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
 		FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */; };
-		FFC5D04F14EA5B7D0039A0AC /* WFPreview.css in Resources */ = {isa = PBXBuildFile; fileRef = FFC5D04C14EA5B7D0039A0AC /* WFPreview.css */; };
-		FFC5D05114EA5B7D0039A0AC /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FFC5D04E14EA5B7D0039A0AC /* WFPreviewTemplate.html */; };
 		FFC6200E149CF03A0097C377 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FFC6200F149CF0EE0097C377 /* WARemoteInterfaceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */; };
 		FFC62010149CF1840097C377 /* WARemoteInterface+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */; };
@@ -380,6 +382,22 @@
 		FFCFE0F2142111E100B9E6AF /* WAPreviewBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
+		FFEA169D14ED025400671821 /* UIButtonBarArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */; };
+		FFEA169E14ED025400671821 /* UIButtonBarArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */; };
+		FFEA169F14ED025400671821 /* UIButtonBarArrowDownSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */; };
+		FFEA16A014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png */; };
+		FFEA16A114ED025400671821 /* UIButtonBarArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169114ED025400671821 /* UIButtonBarArrowLeft.png */; };
+		FFEA16A214ED025400671821 /* UIButtonBarArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169214ED025400671821 /* UIButtonBarArrowLeft@2x.png */; };
+		FFEA16A314ED025400671821 /* UIButtonBarArrowLeftLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169314ED025400671821 /* UIButtonBarArrowLeftLandscape.png */; };
+		FFEA16A414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png */; };
+		FFEA16A514ED025400671821 /* UIButtonBarArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169514ED025400671821 /* UIButtonBarArrowRight.png */; };
+		FFEA16A614ED025400671821 /* UIButtonBarArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169614ED025400671821 /* UIButtonBarArrowRight@2x.png */; };
+		FFEA16A714ED025400671821 /* UIButtonBarArrowRightLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169714ED025400671821 /* UIButtonBarArrowRightLandscape.png */; };
+		FFEA16A814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png */; };
+		FFEA16A914ED025400671821 /* UIButtonBarArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169914ED025400671821 /* UIButtonBarArrowUp.png */; };
+		FFEA16AA14ED025400671821 /* UIButtonBarArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169A14ED025400671821 /* UIButtonBarArrowUp@2x.png */; };
+		FFEA16AB14ED025400671821 /* UIButtonBarArrowUpSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169B14ED025400671821 /* UIButtonBarArrowUpSmall.png */; };
+		FFEA16AC14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169C14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png */; };
 		FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */; };
 		FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF556B41456A1270077DFFB /* WARefreshGlyph.png */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
@@ -925,6 +943,10 @@
 		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
 		FF3AEEF614A30EEB00FC4E19 /* WAArticleViewController_Default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_Default.h; sourceTree = "<group>"; };
 		FF3AEEF714A30EEB00FC4E19 /* WAArticleViewController_Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_Default.m; sourceTree = "<group>"; };
+		FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewIE.css; path = external/synergised/Source/WFPreviewIE.css; sourceTree = SOURCE_ROOT; };
+		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/synergised/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
+		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/synergised/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
+		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/synergised/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
 		FF45704D1488A786005B5905 /* WAUserInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserInfoHeaderCell.h; sourceTree = "<group>"; };
 		FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoHeaderCell.m; sourceTree = "<group>"; };
 		FF4570501488A79D005B5905 /* WAUserInfoHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAUserInfoHeaderCell.xib; sourceTree = "<group>"; };
@@ -1150,8 +1172,6 @@
 		FFC350FC144434D80085BE78 /* WAArticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleView.m; sourceTree = "<group>"; };
 		FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAEightPartLayoutGrid.h; sourceTree = "<group>"; };
 		FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAEightPartLayoutGrid.m; sourceTree = "<group>"; };
-		FFC5D04C14EA5B7D0039A0AC /* WFPreview.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreview.css; path = external/synergised/WFPreview.css; sourceTree = SOURCE_ROOT; };
-		FFC5D04E14EA5B7D0039A0AC /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/synergised/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
 		FFC62009149CF0310097C377 /* WADefines+Mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADefines+Mac.h"; sourceTree = "<group>"; };
 		FFC6200A149CF0310097C377 /* WADefines+Mac.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADefines+Mac.m"; sourceTree = "<group>"; };
 		FFC6200C149CF03A0097C377 /* WADefines+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADefines+iOS.h"; sourceTree = "<group>"; };
@@ -1230,6 +1250,22 @@
 		FFE3E8F7141647D600519BCD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
+		FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowDown.png; path = Resources/UIButtonBarArrowDown.png; sourceTree = "<group>"; };
+		FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowDown@2x.png"; path = "Resources/UIButtonBarArrowDown@2x.png"; sourceTree = "<group>"; };
+		FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowDownSmall.png; path = Resources/UIButtonBarArrowDownSmall.png; sourceTree = "<group>"; };
+		FFEA169014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowDownSmall@2x.png"; path = "Resources/UIButtonBarArrowDownSmall@2x.png"; sourceTree = "<group>"; };
+		FFEA169114ED025400671821 /* UIButtonBarArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowLeft.png; path = Resources/UIButtonBarArrowLeft.png; sourceTree = "<group>"; };
+		FFEA169214ED025400671821 /* UIButtonBarArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowLeft@2x.png"; path = "Resources/UIButtonBarArrowLeft@2x.png"; sourceTree = "<group>"; };
+		FFEA169314ED025400671821 /* UIButtonBarArrowLeftLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowLeftLandscape.png; path = Resources/UIButtonBarArrowLeftLandscape.png; sourceTree = "<group>"; };
+		FFEA169414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowLeftLandscape@2x.png"; path = "Resources/UIButtonBarArrowLeftLandscape@2x.png"; sourceTree = "<group>"; };
+		FFEA169514ED025400671821 /* UIButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowRight.png; path = Resources/UIButtonBarArrowRight.png; sourceTree = "<group>"; };
+		FFEA169614ED025400671821 /* UIButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowRight@2x.png"; path = "Resources/UIButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
+		FFEA169714ED025400671821 /* UIButtonBarArrowRightLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowRightLandscape.png; path = Resources/UIButtonBarArrowRightLandscape.png; sourceTree = "<group>"; };
+		FFEA169814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowRightLandscape@2x.png"; path = "Resources/UIButtonBarArrowRightLandscape@2x.png"; sourceTree = "<group>"; };
+		FFEA169914ED025400671821 /* UIButtonBarArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowUp.png; path = Resources/UIButtonBarArrowUp.png; sourceTree = "<group>"; };
+		FFEA169A14ED025400671821 /* UIButtonBarArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowUp@2x.png"; path = "Resources/UIButtonBarArrowUp@2x.png"; sourceTree = "<group>"; };
+		FFEA169B14ED025400671821 /* UIButtonBarArrowUpSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowUpSmall.png; path = Resources/UIButtonBarArrowUpSmall.png; sourceTree = "<group>"; };
+		FFEA169C14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowUpSmall@2x.png"; path = "Resources/UIButtonBarArrowUpSmall@2x.png"; sourceTree = "<group>"; };
 		FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternWoodTexture.png; path = Resources/WAPatternWoodTexture.png; sourceTree = "<group>"; };
 		FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockUsersList.json; path = Resources/WAMockUsersList.json; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -1932,8 +1968,26 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FFC5D04C14EA5B7D0039A0AC /* WFPreview.css */,
-				FFC5D04E14EA5B7D0039A0AC /* WFPreviewTemplate.html */,
+				FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */,
+				FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */,
+				FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */,
+				FFEA169014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png */,
+				FFEA169114ED025400671821 /* UIButtonBarArrowLeft.png */,
+				FFEA169214ED025400671821 /* UIButtonBarArrowLeft@2x.png */,
+				FFEA169314ED025400671821 /* UIButtonBarArrowLeftLandscape.png */,
+				FFEA169414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png */,
+				FFEA169514ED025400671821 /* UIButtonBarArrowRight.png */,
+				FFEA169614ED025400671821 /* UIButtonBarArrowRight@2x.png */,
+				FFEA169714ED025400671821 /* UIButtonBarArrowRightLandscape.png */,
+				FFEA169814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png */,
+				FFEA169914ED025400671821 /* UIButtonBarArrowUp.png */,
+				FFEA169A14ED025400671821 /* UIButtonBarArrowUp@2x.png */,
+				FFEA169B14ED025400671821 /* UIButtonBarArrowUpSmall.png */,
+				FFEA169C14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png */,
+				FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */,
+				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
+				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
+				FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -2801,8 +2855,26 @@
 				4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */,
 				FF0505EB14C088D6002EA455 /* WACornerCloseButton.png in Resources */,
 				FF0505EC14C088D6002EA455 /* WACornerCloseButtonActive.png in Resources */,
-				FFC5D04F14EA5B7D0039A0AC /* WFPreview.css in Resources */,
-				FFC5D05114EA5B7D0039A0AC /* WFPreviewTemplate.html in Resources */,
+				FF3B1B2814EBA3C7009CFFD1 /* WFPreviewIE.css in Resources */,
+				FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */,
+				FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */,
+				FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */,
+				FFEA169D14ED025400671821 /* UIButtonBarArrowDown.png in Resources */,
+				FFEA169E14ED025400671821 /* UIButtonBarArrowDown@2x.png in Resources */,
+				FFEA169F14ED025400671821 /* UIButtonBarArrowDownSmall.png in Resources */,
+				FFEA16A014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png in Resources */,
+				FFEA16A114ED025400671821 /* UIButtonBarArrowLeft.png in Resources */,
+				FFEA16A214ED025400671821 /* UIButtonBarArrowLeft@2x.png in Resources */,
+				FFEA16A314ED025400671821 /* UIButtonBarArrowLeftLandscape.png in Resources */,
+				FFEA16A414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png in Resources */,
+				FFEA16A514ED025400671821 /* UIButtonBarArrowRight.png in Resources */,
+				FFEA16A614ED025400671821 /* UIButtonBarArrowRight@2x.png in Resources */,
+				FFEA16A714ED025400671821 /* UIButtonBarArrowRightLandscape.png in Resources */,
+				FFEA16A814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png in Resources */,
+				FFEA16A914ED025400671821 /* UIButtonBarArrowUp.png in Resources */,
+				FFEA16AA14ED025400671821 /* UIButtonBarArrowUp@2x.png in Resources */,
+				FFEA16AB14ED025400671821 /* UIButtonBarArrowUpSmall.png in Resources */,
+				FFEA16AC14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3315,7 +3387,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3367,7 +3439,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 226;
+				CURRENT_PROJECT_VERSION = 227;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

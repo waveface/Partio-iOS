@@ -101,23 +101,30 @@
 
 	NSParameterAssert(aGroupIdentifier);
 	
-	NSString *usedType =  [attachmentIdentifiersOrNil count] ? @"image" : @"text";
+	NSString *usedType = @"text";
 	
 	NSMutableDictionary *sentData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 	
 		aGroupIdentifier, @"group_id",
-		usedType, @"type",
 	
 	nil];
 	
 	if (contentTextOrNil)
 		[sentData setObject:IRWebAPIKitStringValue(contentTextOrNil) forKey:@"content"];
 	
-	if (attachmentIdentifiersOrNil)
+	if (attachmentIdentifiersOrNil) {
 		[sentData setObject:[attachmentIdentifiersOrNil JSONString] forKey:@"attachment_id_array"];
+		if ([attachmentIdentifiersOrNil count]) {
+			usedType = @"image";
+		}
+	}
 	
-	if (aPreviewRep)
+	if (aPreviewRep) {
 		[sentData setObject:[aPreviewRep JSONString] forKey:@"preview"];
+		usedType = @"link";
+	}
+	
+	[sentData setObject:usedType forKey:@"type"];
 
 	[self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(sentData, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		

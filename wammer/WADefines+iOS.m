@@ -21,6 +21,25 @@
 #import "IRWebAPIHelpers.h"
 
 
+IRBorder *kWADefaultBarButtonBorder = nil;
+IRShadow *kWADefaultBarButtonInnerShadow = nil;
+IRShadow *kWADefaultBarButtonShadow = nil;
+
+UIFont *kWADefaultBarButtonTitleFont = nil;
+UIColor *kWADefaultBarButtonTitleColor = nil;
+IRShadow *kWADefaultBarButtonTitleShadow = nil;
+
+UIColor *kWADefaultBarButtonGradientFromColor = nil;
+UIColor *kWADefaultBarButtonGradientToColor = nil;
+NSArray *kWADefaultBarButtonGradientColors = nil;
+UIColor *kWADefaultBarButtonBackgroundColor = nil;
+
+UIColor *kWADefaultBarButtonHighlightedGradientFromColor = nil;
+UIColor *kWADefaultBarButtonHighlightedGradientToColor = nil;
+NSArray *kWADefaultBarButtonHighlightedGradientColors = nil;
+UIColor *kWADefaultBarButtonHighlightedBackgroundColor = nil;
+
+
 WAAppDelegate * AppDelegate (void) {
 
 	return (WAAppDelegate_iOS *)[UIApplication sharedApplication].delegate;
@@ -50,23 +69,6 @@ BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary **outPa
 
 
 
-static IRBorder *kWADefaultBarButtonBorder;
-static IRShadow *kWADefaultBarButtonInnerShadow;
-static IRShadow *kWADefaultBarButtonShadow;
-
-static UIFont *kWADefaultBarButtonTitleFont;
-static UIColor *kWADefaultBarButtonTitleColor;
-static IRShadow *kWADefaultBarButtonTitleShadow;
-
-static UIColor *kWADefaultBarButtonGradientFromColor;
-static UIColor *kWADefaultBarButtonGradientToColor;
-static NSArray *kWADefaultBarButtonGradientColors;
-static UIColor *kWADefaultBarButtonBackgroundColor;
-
-static UIColor *kWADefaultBarButtonHighlightedGradientFromColor;
-static UIColor *kWADefaultBarButtonHighlightedGradientToColor;
-static NSArray *kWADefaultBarButtonHighlightedGradientColors;
-static UIColor *kWADefaultBarButtonHighlightedBackgroundColor;
 
 void kWADefaultBarButtonInitialize (void);
 
@@ -187,6 +189,8 @@ UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
   UIColor *fillColor = [UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1];      
   IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.35f] offset:(CGSize){ 0, 1 } spread:0];
   
+	return WABarButtonImageWithOptions(aName, fillColor, shadow);
+
 	//  switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	//    
 	//    case UIUserInterfaceIdiomPhone: {
@@ -201,10 +205,16 @@ UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
 	//      break;
 	//    }
 	//  }
-  
-	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
+	//  
+	//	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
 
 }
+
+UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRShadow *shadow) {
+
+	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
+
+};
 
 UIView * WAStandardTitleView (void) {
 
