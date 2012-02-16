@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4B451F0F14ECEDE200997B41 /* navigationBarLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0B14ECEDE200997B41 /* navigationBarLandscape.png */; };
+		4B451F1014ECEDE200997B41 /* navigationBarLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0C14ECEDE200997B41 /* navigationBarLandscape@2x.png */; };
+		4B451F1114ECEDE200997B41 /* navigationBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0D14ECEDE200997B41 /* navigationBar.png */; };
+		4B451F1214ECEDE200997B41 /* navigationBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0E14ECEDE200997B41 /* navigationBar@2x.png */; };
 		4B7333F51490AC4700F41909 /* WAPostBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B7333F41490AC4700F41909 /* WAPostBackground.png */; };
 		4B733BA314987A81005CAE8D /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7D14987A81005CAE8D /* IASKAppSettingsViewController.m */; };
 		4B733BA414987A81005CAE8D /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7F14987A81005CAE8D /* IASKAppSettingsWebViewController.m */; };
@@ -53,10 +57,27 @@
 		4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02914BED121000E6F71 /* WAPatternWood.png */; };
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
 		4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD0D941490C97D00EAE3E1 /* WABackground.png */; };
+		4BBD9BC014EB55C2003086DD /* addHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD9BB614EB55C2003086DD /* addHighlight.png */; };
+		4BBD9BC114EB55C2003086DD /* addHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD9BB714EB55C2003086DD /* addHighlight@2x.png */; };
+		4BBD9BC214EB55C2003086DD /* addButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD9BB814EB55C2003086DD /* addButton.png */; };
+		4BBD9BC314EB55C2003086DD /* addDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD9BB914EB55C2003086DD /* addDisabled@2x.png */; };
 		4BC91A941446E3130019399B /* WASettingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BC91A931446E3130019399B /* WASettingsGlyph.png */; };
 		4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */; };
 		4BD7FC2D14458BA1002408F8 /* WARefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */; };
 		4BE0FFB5148CA4E000BA74DB /* WALogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE0FFB4148CA4E000BA74DB /* WALogo.png */; };
+		4BE690FB14EB6487002B9790 /* composeBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FA14EB6487002B9790 /* composeBackground.png */; };
+		4BE6910214EB68C6002B9790 /* previewDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FC14EB68C6002B9790 /* previewDisabled.png */; };
+		4BE6910314EB68C6002B9790 /* previewDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */; };
+		4BE6910414EB68C6002B9790 /* previewButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FE14EB68C6002B9790 /* previewButton.png */; };
+		4BE6910514EB68C6002B9790 /* previewHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FF14EB68C6002B9790 /* previewHighlight.png */; };
+		4BE6910614EB68C6002B9790 /* previewHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */; };
+		4BE6910714EB68C6002B9790 /* previewButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910114EB68C6002B9790 /* previewButton@2x.png */; };
+		4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */; };
+		4BE6910E14EB8159002B9790 /* WAPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */; };
+		4BE6911314EB8BD8002B9790 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910F14EB8BD8002B9790 /* delete.png */; };
+		4BE6911414EB8BD8002B9790 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911014EB8BD8002B9790 /* delete@2x.png */; };
+		4BE6911514EB8BD8002B9790 /* deletepressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911114EB8BD8002B9790 /* deletepressed.png */; };
+		4BE6911614EB8BD8002B9790 /* deletepressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911214EB8BD8002B9790 /* deletepressed@2x.png */; };
 		4BFAE5E61484C33B002CDE07 /* WACompose.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5DE1484C33B002CDE07 /* WACompose.png */; };
 		4BFAE5E71484C33B002CDE07 /* WACompose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */; };
 		4BFAE5E81484C33B002CDE07 /* WAFilter.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BFAE5E01484C33B002CDE07 /* WAFilter.png */; };
@@ -789,6 +810,10 @@
 		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostsViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostsViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B451F0B14ECEDE200997B41 /* navigationBarLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navigationBarLandscape.png; path = Resources/navigationBarLandscape.png; sourceTree = "<group>"; };
+		4B451F0C14ECEDE200997B41 /* navigationBarLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationBarLandscape@2x.png"; path = "Resources/navigationBarLandscape@2x.png"; sourceTree = "<group>"; };
+		4B451F0D14ECEDE200997B41 /* navigationBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navigationBar.png; path = Resources/navigationBar.png; sourceTree = "<group>"; };
+		4B451F0E14ECEDE200997B41 /* navigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationBar@2x.png"; path = "Resources/navigationBar@2x.png"; sourceTree = "<group>"; };
 		4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeViewControllerPhone.h; sourceTree = "<group>"; };
 		4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeViewControllerPhone.m; sourceTree = "<group>"; };
 		4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeViewControllerPhone.xib; sourceTree = "<group>"; };
@@ -851,6 +876,10 @@
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
 		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeCommentViewControllerPhone.xib; sourceTree = "<group>"; };
 		4BBD0D941490C97D00EAE3E1 /* WABackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WABackground.png; path = Resources/WABackground.png; sourceTree = "<group>"; };
+		4BBD9BB614EB55C2003086DD /* addHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addHighlight.png; path = Resources/addHighlight.png; sourceTree = "<group>"; };
+		4BBD9BB714EB55C2003086DD /* addHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "addHighlight@2x.png"; path = "Resources/addHighlight@2x.png"; sourceTree = "<group>"; };
+		4BBD9BB814EB55C2003086DD /* addButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addButton.png; path = Resources/addButton.png; sourceTree = "<group>"; };
+		4BBD9BB914EB55C2003086DD /* addDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "addDisabled@2x.png"; path = "Resources/addDisabled@2x.png"; sourceTree = "<group>"; };
 		4BC91A931446E3130019399B /* WASettingsGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASettingsGlyph.png; path = Resources/WASettingsGlyph.png; sourceTree = "<group>"; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
@@ -858,6 +887,20 @@
 		4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshArrow.png; path = Resources/WARefreshArrow.png; sourceTree = "<group>"; };
 		4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WARefreshArrow@2x.png"; path = "Resources/WARefreshArrow@2x.png"; sourceTree = "<group>"; };
 		4BE0FFB4148CA4E000BA74DB /* WALogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALogo.png; path = Resources/WALogo.png; sourceTree = "<group>"; };
+		4BE690FA14EB6487002B9790 /* composeBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = composeBackground.png; path = Resources/composeBackground.png; sourceTree = "<group>"; };
+		4BE690FC14EB68C6002B9790 /* previewDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewDisabled.png; path = Resources/previewDisabled.png; sourceTree = "<group>"; };
+		4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewDisabled@2x.png"; path = "Resources/previewDisabled@2x.png"; sourceTree = "<group>"; };
+		4BE690FE14EB68C6002B9790 /* previewButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewButton.png; path = Resources/previewButton.png; sourceTree = "<group>"; };
+		4BE690FF14EB68C6002B9790 /* previewHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewHighlight.png; path = Resources/previewHighlight.png; sourceTree = "<group>"; };
+		4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewHighlight@2x.png"; path = "Resources/previewHighlight@2x.png"; sourceTree = "<group>"; };
+		4BE6910114EB68C6002B9790 /* previewButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewButton@2x.png"; path = "Resources/previewButton@2x.png"; sourceTree = "<group>"; };
+		4BE6910A14EB8159002B9790 /* WAPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewViewController.h; sourceTree = "<group>"; };
+		4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewViewController.m; sourceTree = "<group>"; };
+		4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewViewController.xib; sourceTree = "<group>"; };
+		4BE6910F14EB8BD8002B9790 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete.png; path = Resources/delete.png; sourceTree = "<group>"; };
+		4BE6911014EB8BD8002B9790 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "delete@2x.png"; path = "Resources/delete@2x.png"; sourceTree = "<group>"; };
+		4BE6911114EB8BD8002B9790 /* deletepressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deletepressed.png; path = Resources/deletepressed.png; sourceTree = "<group>"; };
+		4BE6911214EB8BD8002B9790 /* deletepressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "deletepressed@2x.png"; path = "Resources/deletepressed@2x.png"; sourceTree = "<group>"; };
 		4BFAE5DE1484C33B002CDE07 /* WACompose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompose.png; path = Resources/WACompose.png; sourceTree = "<group>"; };
 		4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompose@2x.png"; path = "Resources/WACompose@2x.png"; sourceTree = "<group>"; };
 		4BFAE5E01484C33B002CDE07 /* WAFilter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAFilter.png; path = Resources/WAFilter.png; sourceTree = "<group>"; };
@@ -1379,6 +1422,9 @@
 				4B587BB313F4D7AE0084E671 /* WAComposeViewControllerPhone.h */,
 				4B587BB413F4D7AE0084E671 /* WAComposeViewControllerPhone.m */,
 				4B587BB513F4D7AE0084E671 /* WAComposeViewControllerPhone.xib */,
+				4BE6910A14EB8159002B9790 /* WAPreviewViewController.h */,
+				4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */,
+				4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */,
 				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
 				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
 				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
@@ -1988,6 +2034,25 @@
 				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
 				FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */,
+				4B451F0B14ECEDE200997B41 /* navigationBarLandscape.png */,
+				4B451F0C14ECEDE200997B41 /* navigationBarLandscape@2x.png */,
+				4B451F0D14ECEDE200997B41 /* navigationBar.png */,
+				4B451F0E14ECEDE200997B41 /* navigationBar@2x.png */,
+				4BE6910F14EB8BD8002B9790 /* delete.png */,
+				4BE6911014EB8BD8002B9790 /* delete@2x.png */,
+				4BE6911114EB8BD8002B9790 /* deletepressed.png */,
+				4BE6911214EB8BD8002B9790 /* deletepressed@2x.png */,
+				4BBD9BB614EB55C2003086DD /* addHighlight.png */,
+				4BBD9BB714EB55C2003086DD /* addHighlight@2x.png */,
+				4BBD9BB814EB55C2003086DD /* addButton.png */,
+				4BBD9BB914EB55C2003086DD /* addDisabled@2x.png */,
+				4BE690FC14EB68C6002B9790 /* previewDisabled.png */,
+				4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */,
+				4BE690FE14EB68C6002B9790 /* previewButton.png */,
+				4BE690FF14EB68C6002B9790 /* previewHighlight.png */,
+				4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */,
+				4BE6910114EB68C6002B9790 /* previewButton@2x.png */,
+				4BE690FA14EB6487002B9790 /* composeBackground.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -2875,6 +2940,26 @@
 				FFEA16AA14ED025400671821 /* UIButtonBarArrowUp@2x.png in Resources */,
 				FFEA16AB14ED025400671821 /* UIButtonBarArrowUpSmall.png in Resources */,
 				FFEA16AC14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png in Resources */,
+				4BBD9BC014EB55C2003086DD /* addHighlight.png in Resources */,
+				4BBD9BC114EB55C2003086DD /* addHighlight@2x.png in Resources */,
+				4BBD9BC214EB55C2003086DD /* addButton.png in Resources */,
+				4BBD9BC314EB55C2003086DD /* addDisabled@2x.png in Resources */,
+				4BE690FB14EB6487002B9790 /* composeBackground.png in Resources */,
+				4BE6910214EB68C6002B9790 /* previewDisabled.png in Resources */,
+				4BE6910314EB68C6002B9790 /* previewDisabled@2x.png in Resources */,
+				4BE6910414EB68C6002B9790 /* previewButton.png in Resources */,
+				4BE6910514EB68C6002B9790 /* previewHighlight.png in Resources */,
+				4BE6910614EB68C6002B9790 /* previewHighlight@2x.png in Resources */,
+				4BE6910714EB68C6002B9790 /* previewButton@2x.png in Resources */,
+				4BE6910E14EB8159002B9790 /* WAPreviewViewController.xib in Resources */,
+				4BE6911314EB8BD8002B9790 /* delete.png in Resources */,
+				4BE6911414EB8BD8002B9790 /* delete@2x.png in Resources */,
+				4BE6911514EB8BD8002B9790 /* deletepressed.png in Resources */,
+				4BE6911614EB8BD8002B9790 /* deletepressed@2x.png in Resources */,
+				4B451F0F14ECEDE200997B41 /* navigationBarLandscape.png in Resources */,
+				4B451F1014ECEDE200997B41 /* navigationBarLandscape@2x.png in Resources */,
+				4B451F1114ECEDE200997B41 /* navigationBar.png in Resources */,
+				4B451F1214ECEDE200997B41 /* navigationBar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3181,6 +3266,7 @@
 				FFB44D5D14D6A2A800080F07 /* WAScrollView.m in Sources */,
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
 				FF88E14814E8D80400B347A8 /* WAArticle.m in Sources */,
+				4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3387,7 +3473,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 227;
+				CURRENT_PROJECT_VERSION = 228;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3439,7 +3525,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 227;
+				CURRENT_PROJECT_VERSION = 228;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

@@ -15,7 +15,7 @@
 #import "IRGradientView.h"
 
 #import "UIApplication+IRAdditions.h"
-
+#import "WAPreviewViewController.h"
 
 @interface WAComposeViewControllerPhone () <UITextViewDelegate>
 
@@ -35,6 +35,7 @@
 @synthesize attachmentsListViewControllerHeaderView;
 @synthesize completionBlock;
 @synthesize toolbar;
+@synthesize AttachmentButton;
 @synthesize urlForPreview;
 
 + (WAComposeViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
@@ -123,6 +124,13 @@
 		
 	[self didChangeValueForKey:@"post"];
 	
+}
+
+- (IBAction)handleAttachmentTap:(id)sender {
+
+  WAPreviewViewController *previewViewController = [[WAPreviewViewController alloc]init];
+	[self.navigationController presentModalViewController:previewViewController animated:YES];
+
 }
 
 - (IBAction) handleCameraItemTap:(id)sender {
@@ -250,6 +258,21 @@
 
 #pragma mark - View lifecycle
 
+// TODO: Make this a universal implmentation with a Custom UI Style, because we have at least 2 different
+//       Kind of navigationBar, Leather style and black translucent and needs to support both 4.3 and 5.0
+//			 By applying iOS 5 APIs, we can wear on design quickly and hack the way back to 4.3 later to save time.
+- (void)drawStyle:(UIInterfaceOrientation)toInterfaceOrientation {
+
+	UINavigationBar *navigationBar = self.navigationController.navigationBar;
+	navigationBar.tintColor = [UIColor brownColor];
+	
+	if( [navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)] ){
+		UIBarMetrics barMetrics = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))?UIBarMetricsDefault:UIBarMetricsLandscapePhone;
+		UIImage* image = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation))?[UIImage imageNamed:@"navigationBar"]:[UIImage imageNamed:@"navigationBarLandscape"];
+		[navigationBar setBackgroundImage:image forBarMetrics:barMetrics];
+	}
+}
+
 - (void) viewDidLoad {
 	
 	[super viewDidLoad];
@@ -266,6 +289,8 @@
 		CGRectGetMidX(self.navigationController.navigationBar.bounds),
 		CGRectGetMidY(self.navigationController.navigationBar.bounds)
 	};
+	
+	
 	
 	IRGradientView *toolbarGradient = [[[IRGradientView alloc] initWithFrame:self.toolbar.frame] autorelease];
 	[toolbarGradient setLinearGradientFromColor:[UIColor colorWithWhite:.95 alpha:1] anchor:irTop toColor:[UIColor colorWithWhite:.75 alpha:1] anchor:irBottom];
@@ -298,7 +323,8 @@
 		return separatorView;
 	})())];
 	[self.toolbar.superview insertSubview:toolbarGradient belowSubview:self.toolbar];
-		
+	
+	[self drawStyle:self.interfaceOrientation];
 }
 
 - (void) viewDidUnload {
@@ -307,6 +333,7 @@
 	self.contentContainerView = nil;
 	self.attachmentsListViewControllerHeaderView = nil;
 	self.toolbar = nil;
+	[self setAttachmentButton:nil];
 	[super viewDidUnload];
 	
 }
@@ -326,10 +353,12 @@
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
   return YES;
-  
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[self drawStyle:toInterfaceOrientation]; 
 }
 
 - (void)dealloc {
@@ -339,6 +368,7 @@
 	[attachmentsListViewControllerHeaderView release];
 	[toolbar release];
 	[urlForPreview release];
+	[AttachmentButton release];
 	[super dealloc];
 }
 
