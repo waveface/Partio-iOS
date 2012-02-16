@@ -37,6 +37,8 @@
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
+#import "WACompositionViewController+CustomUI.h"
+
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -1028,19 +1030,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
 
-  WAComposeViewControllerPhone *composeViewController = [WAComposeViewControllerPhone controllerWithWebPost:anURL completion:^(NSURL *aPostURLOrNil) {
-    
-		[[WADataStore defaultStore] uploadArticle:aPostURLOrNil onSuccess: ^ {
-			//	We’ll get a save, do nothing
-			//	dispatch_async(dispatch_get_main_queue(), ^ {
-			//		[self refreshData];
-			//	});
-		} onFailure:nil];
+	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
+	
+		[compositionVC dismissModalViewControllerAnimated:YES];
 		
 	}];
-  
-  UINavigationController *navigationController = [[[UINavigationController alloc]initWithRootViewController:composeViewController]autorelease];
-  navigationController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+  UINavigationController *navigationController = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
   [self presentModalViewController:navigationController animated:YES];
 	
 }

@@ -15,6 +15,9 @@
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
 
+#import "WAOverlayBezel.h"
+#import "WADataStore.h"
+
 
 @implementation WACompositionViewController (CustomUI)
 
@@ -133,6 +136,56 @@
 		navController.onViewDidLoad(navController);
 	
 	return navController;
+
+}
+
++ (WACompositionViewController *) defaultAutoSubmittingCompositionViewControllerForArticle:(NSURL *)anArticleURI completion:(void(^)(NSURL *))aBlock {
+
+	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:anArticleURI completion:^(NSURL *anArticleURLOrNil) {
+	
+		if (aBlock)
+			aBlock(anArticleURLOrNil);
+				
+		if (!anArticleURLOrNil)
+			return;
+	
+		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel show];
+	
+		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				[busyBezel dismiss];
+
+				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+				[doneBezel show];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+					[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				});
+				
+			});		
+		
+		} onFailure: ^ {
+		
+			dispatch_async(dispatch_get_main_queue(), ^ {
+			
+				NSLog(@"Article upload failed.  Help!");
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
+				
+				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+				[errorBezel show];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+					[errorBezel dismiss];
+				});
+			
+			});
+					
+		}];
+	
+	}];
+	
+	return compositionVC;
 
 }
 
