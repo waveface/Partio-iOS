@@ -151,6 +151,8 @@
 		
 		case WADiscretePreviewArticleStyle: {
 			self.previewBadge.backgroundView = nil;
+			self.previewBadge.titleColor = [UIColor grayColor];
+			self.previewBadge.userInteractionEnabled = NO;			
 			break;
 		}
 		
