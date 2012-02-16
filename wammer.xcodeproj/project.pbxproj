@@ -382,6 +382,22 @@
 		FFCFE0F2142111E100B9E6AF /* WAPreviewBadge.png in Resources */ = {isa = PBXBuildFile; fileRef = FFD2D916141F4E7E00F21D22 /* WAPreviewBadge.png */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
+		FFEA169D14ED025400671821 /* UIButtonBarArrowDown.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */; };
+		FFEA169E14ED025400671821 /* UIButtonBarArrowDown@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */; };
+		FFEA169F14ED025400671821 /* UIButtonBarArrowDownSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */; };
+		FFEA16A014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png */; };
+		FFEA16A114ED025400671821 /* UIButtonBarArrowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169114ED025400671821 /* UIButtonBarArrowLeft.png */; };
+		FFEA16A214ED025400671821 /* UIButtonBarArrowLeft@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169214ED025400671821 /* UIButtonBarArrowLeft@2x.png */; };
+		FFEA16A314ED025400671821 /* UIButtonBarArrowLeftLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169314ED025400671821 /* UIButtonBarArrowLeftLandscape.png */; };
+		FFEA16A414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png */; };
+		FFEA16A514ED025400671821 /* UIButtonBarArrowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169514ED025400671821 /* UIButtonBarArrowRight.png */; };
+		FFEA16A614ED025400671821 /* UIButtonBarArrowRight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169614ED025400671821 /* UIButtonBarArrowRight@2x.png */; };
+		FFEA16A714ED025400671821 /* UIButtonBarArrowRightLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169714ED025400671821 /* UIButtonBarArrowRightLandscape.png */; };
+		FFEA16A814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png */; };
+		FFEA16A914ED025400671821 /* UIButtonBarArrowUp.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169914ED025400671821 /* UIButtonBarArrowUp.png */; };
+		FFEA16AA14ED025400671821 /* UIButtonBarArrowUp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169A14ED025400671821 /* UIButtonBarArrowUp@2x.png */; };
+		FFEA16AB14ED025400671821 /* UIButtonBarArrowUpSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169B14ED025400671821 /* UIButtonBarArrowUpSmall.png */; };
+		FFEA16AC14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEA169C14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png */; };
 		FFEF00FD144D75F6008E5AF6 /* WAPatternWoodTexture.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */; };
 		FFF556B51456A1270077DFFB /* WARefreshGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFF556B41456A1270077DFFB /* WARefreshGlyph.png */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
@@ -1234,6 +1250,22 @@
 		FFE3E8F7141647D600519BCD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
+		FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowDown.png; path = Resources/UIButtonBarArrowDown.png; sourceTree = "<group>"; };
+		FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowDown@2x.png"; path = "Resources/UIButtonBarArrowDown@2x.png"; sourceTree = "<group>"; };
+		FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowDownSmall.png; path = Resources/UIButtonBarArrowDownSmall.png; sourceTree = "<group>"; };
+		FFEA169014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowDownSmall@2x.png"; path = "Resources/UIButtonBarArrowDownSmall@2x.png"; sourceTree = "<group>"; };
+		FFEA169114ED025400671821 /* UIButtonBarArrowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowLeft.png; path = Resources/UIButtonBarArrowLeft.png; sourceTree = "<group>"; };
+		FFEA169214ED025400671821 /* UIButtonBarArrowLeft@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowLeft@2x.png"; path = "Resources/UIButtonBarArrowLeft@2x.png"; sourceTree = "<group>"; };
+		FFEA169314ED025400671821 /* UIButtonBarArrowLeftLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowLeftLandscape.png; path = Resources/UIButtonBarArrowLeftLandscape.png; sourceTree = "<group>"; };
+		FFEA169414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowLeftLandscape@2x.png"; path = "Resources/UIButtonBarArrowLeftLandscape@2x.png"; sourceTree = "<group>"; };
+		FFEA169514ED025400671821 /* UIButtonBarArrowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowRight.png; path = Resources/UIButtonBarArrowRight.png; sourceTree = "<group>"; };
+		FFEA169614ED025400671821 /* UIButtonBarArrowRight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowRight@2x.png"; path = "Resources/UIButtonBarArrowRight@2x.png"; sourceTree = "<group>"; };
+		FFEA169714ED025400671821 /* UIButtonBarArrowRightLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowRightLandscape.png; path = Resources/UIButtonBarArrowRightLandscape.png; sourceTree = "<group>"; };
+		FFEA169814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowRightLandscape@2x.png"; path = "Resources/UIButtonBarArrowRightLandscape@2x.png"; sourceTree = "<group>"; };
+		FFEA169914ED025400671821 /* UIButtonBarArrowUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowUp.png; path = Resources/UIButtonBarArrowUp.png; sourceTree = "<group>"; };
+		FFEA169A14ED025400671821 /* UIButtonBarArrowUp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowUp@2x.png"; path = "Resources/UIButtonBarArrowUp@2x.png"; sourceTree = "<group>"; };
+		FFEA169B14ED025400671821 /* UIButtonBarArrowUpSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarArrowUpSmall.png; path = Resources/UIButtonBarArrowUpSmall.png; sourceTree = "<group>"; };
+		FFEA169C14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UIButtonBarArrowUpSmall@2x.png"; path = "Resources/UIButtonBarArrowUpSmall@2x.png"; sourceTree = "<group>"; };
 		FFEF00FC144D75F6008E5AF6 /* WAPatternWoodTexture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternWoodTexture.png; path = Resources/WAPatternWoodTexture.png; sourceTree = "<group>"; };
 		FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WAMockUsersList.json; path = Resources/WAMockUsersList.json; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -1936,6 +1968,22 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */,
+				FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */,
+				FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */,
+				FFEA169014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png */,
+				FFEA169114ED025400671821 /* UIButtonBarArrowLeft.png */,
+				FFEA169214ED025400671821 /* UIButtonBarArrowLeft@2x.png */,
+				FFEA169314ED025400671821 /* UIButtonBarArrowLeftLandscape.png */,
+				FFEA169414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png */,
+				FFEA169514ED025400671821 /* UIButtonBarArrowRight.png */,
+				FFEA169614ED025400671821 /* UIButtonBarArrowRight@2x.png */,
+				FFEA169714ED025400671821 /* UIButtonBarArrowRightLandscape.png */,
+				FFEA169814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png */,
+				FFEA169914ED025400671821 /* UIButtonBarArrowUp.png */,
+				FFEA169A14ED025400671821 /* UIButtonBarArrowUp@2x.png */,
+				FFEA169B14ED025400671821 /* UIButtonBarArrowUpSmall.png */,
+				FFEA169C14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png */,
 				FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */,
 				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
@@ -2811,6 +2859,22 @@
 				FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */,
 				FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */,
 				FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */,
+				FFEA169D14ED025400671821 /* UIButtonBarArrowDown.png in Resources */,
+				FFEA169E14ED025400671821 /* UIButtonBarArrowDown@2x.png in Resources */,
+				FFEA169F14ED025400671821 /* UIButtonBarArrowDownSmall.png in Resources */,
+				FFEA16A014ED025400671821 /* UIButtonBarArrowDownSmall@2x.png in Resources */,
+				FFEA16A114ED025400671821 /* UIButtonBarArrowLeft.png in Resources */,
+				FFEA16A214ED025400671821 /* UIButtonBarArrowLeft@2x.png in Resources */,
+				FFEA16A314ED025400671821 /* UIButtonBarArrowLeftLandscape.png in Resources */,
+				FFEA16A414ED025400671821 /* UIButtonBarArrowLeftLandscape@2x.png in Resources */,
+				FFEA16A514ED025400671821 /* UIButtonBarArrowRight.png in Resources */,
+				FFEA16A614ED025400671821 /* UIButtonBarArrowRight@2x.png in Resources */,
+				FFEA16A714ED025400671821 /* UIButtonBarArrowRightLandscape.png in Resources */,
+				FFEA16A814ED025400671821 /* UIButtonBarArrowRightLandscape@2x.png in Resources */,
+				FFEA16A914ED025400671821 /* UIButtonBarArrowUp.png in Resources */,
+				FFEA16AA14ED025400671821 /* UIButtonBarArrowUp@2x.png in Resources */,
+				FFEA16AB14ED025400671821 /* UIButtonBarArrowUpSmall.png in Resources */,
+				FFEA16AC14ED025400671821 /* UIButtonBarArrowUpSmall@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

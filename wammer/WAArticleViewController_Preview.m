@@ -38,6 +38,13 @@ enum {
 @property (nonatomic, readwrite, retain) UIWebView *webView;
 @property (nonatomic, readwrite, retain) UIWebView *summaryWebView;
 @property (nonatomic, readwrite, retain) UIView *webViewWrapper;
+
+@property (nonatomic, readwrite, retain) UIActivityIndicatorView *webViewActivityIndicator;
+@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewBackBarButtonItem;
+@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewForwardBarButtonItem;
+@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewActivityIndicatorBarButtonItem;
+@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewReloadBarButtonItem;
+
 - (UIView *) wrappedView;
 - (void) updateWrapperView;
 
@@ -60,6 +67,7 @@ enum {
 @implementation WAArticleViewController_Preview
 @synthesize state;
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
+@synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
 @synthesize toolbar;
 
@@ -69,6 +77,13 @@ enum {
 	[summaryWebView release];
 	[webViewWrapper release];
 	
+	[webViewActivityIndicator release];
+	[webViewBackBarButtonItem release];
+	[webViewForwardBarButtonItem release];
+	[webViewActivityIndicatorBarButtonItem release];
+	[webViewReloadBarButtonItem release];
+
+	
 	[previewBadge release];
 	[previewBadgeWrapper release];
 	
@@ -76,6 +91,22 @@ enum {
 	
 	[super dealloc];
 
+}
+
+- (void) didReceiveMemoryWarning {
+
+	if ([self isViewLoaded]) {
+	
+		if (!summaryWebView.superview)
+			self.summaryWebView = nil;
+		
+		if (!webView.superview)
+			self.webView = nil;
+	
+	}
+
+	[super didReceiveMemoryWarning];
+	
 }
 
 - (WAPreview *) preview {
@@ -164,6 +195,12 @@ enum {
 	self.webView = nil;
 	self.summaryWebView = nil;
 	self.webViewWrapper = nil;
+	
+	self.webViewActivityIndicator = nil;
+	self.webViewBackBarButtonItem = nil;
+	self.webViewForwardBarButtonItem = nil;
+	self.webViewActivityIndicatorBarButtonItem = nil;
+	self.webViewReloadBarButtonItem = nil;
 
 	self.previewBadge = nil;
 	self.previewBadgeWrapper = nil;
@@ -250,6 +287,120 @@ enum {
 	[summaryWebView loadHTMLString:(templatedSummary ? templatedSummary : usedSummary) baseURL:summaryTemplateBaseURL];
 	
 	return summaryWebView;
+
+}
+
+- (IRBarButtonItem *) webViewBackBarButtonItem {
+
+	if (webViewBackBarButtonItem)
+		return webViewBackBarButtonItem;
+		
+	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+		
+	webViewBackBarButtonItem = [[IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
+	
+	webViewBackBarButtonItem.block = ^ {
+	
+		UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+		
+		if (![currentWebView isKindOfClass:[UIWebView class]])
+			return;
+		
+		[currentWebView goBack];
+	
+	};
+	
+	return webViewBackBarButtonItem;
+
+}
+
+- (IRBarButtonItem *) webViewForwardBarButtonItem {
+
+	if (webViewForwardBarButtonItem)
+		return webViewForwardBarButtonItem;
+		
+	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+		
+	webViewForwardBarButtonItem = [[IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
+	
+	webViewForwardBarButtonItem.block = ^ {
+	
+		UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+		
+		if (![currentWebView isKindOfClass:[UIWebView class]])
+			return;
+		
+		[currentWebView goForward];
+	
+	};
+	
+	return webViewForwardBarButtonItem;
+
+}
+
+- (UIActivityIndicatorView *) webViewActivityIndicator {
+
+	if (webViewActivityIndicator)
+		return webViewActivityIndicator;
+	
+	webViewActivityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	[webViewActivityIndicator startAnimating];
+	
+	return webViewActivityIndicator;
+
+}
+
+- (IRBarButtonItem *) webViewActivityIndicatorBarButtonItem {
+
+	if (webViewActivityIndicatorBarButtonItem)
+		return webViewActivityIndicatorBarButtonItem;
+	
+	webViewActivityIndicatorBarButtonItem = [IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator];
+	
+	return webViewActivityIndicatorBarButtonItem;
+
+}
+
+- (BOOL) webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+
+	return YES;
+
+}
+
+- (void) webViewDidStartLoad:(UIWebView *)aWebView {
+
+	[self updateWebViewBarButtonItems];
+
+}
+
+- (void) webViewDidFinishLoad:(UIWebView *)aWebView {
+
+	[self updateWebViewBarButtonItems];
+
+}
+
+- (void) webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error {
+
+	[self updateWebViewBarButtonItems];
+
+}
+
+- (void) updateWebViewBarButtonItems {
+
+	if (![self isViewLoaded])
+		return;
+		
+	UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+	if (![currentWebView isKindOfClass:[UIWebView class]])
+		return;
+	
+	self.webViewReloadBarButtonItem.enabled = !currentWebView.loading;
+	self.webViewActivityIndicator.alpha = currentWebView.loading ? 1 : 0;
+	
+	self.webViewBackBarButtonItem.enabled = currentWebView.canGoBack;
+	self.webViewForwardBarButtonItem.enabled = currentWebView.canGoForward;
 
 }
 
@@ -374,9 +525,7 @@ enum {
 	toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
 	
 	toolbar.items = [NSArray arrayWithObjects:
-	
-		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-		
+			
 		[IRBarButtonItem itemWithCustomView:((^ {
 		
 			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
@@ -394,6 +543,28 @@ enum {
 		})())],
 		
 		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		
+		self.webViewBackBarButtonItem,
+		
+		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
+				
+		self.webViewActivityIndicatorBarButtonItem,
+		//	self.webViewReloadBarButtonItem,
+		
+		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
+				
+		self.webViewForwardBarButtonItem,
+
+		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		
+		[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
+		
+			NSURL * const previewURL = [NSURL URLWithString:self.preview.graphElement.url];
+			NSURL * const currentWebURL = [NSURL URLWithString:[webView stringByEvaluatingJavaScriptFromString:@"document.location.href"]];
+		
+			[[UIApplication sharedApplication] openURL:currentWebURL ? currentWebURL : previewURL];
+		
+		}],
 		
 	nil];
 	
@@ -433,6 +604,8 @@ enum {
 	
 	[wrapperView addSubview:contentView];
 	[wrapperView sendSubviewToBack:contentView];
+	
+	[self updateWebViewBarButtonItems];
 
 }
 
