@@ -216,6 +216,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			UIView *frameView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 			objc_setAssociatedObject(frameView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
 			frameView.tag = kPhotoViewTag;
+			frameView.layer.shouldRasterize = YES;
+			frameView.layer.rasterizationScale = [UIScreen mainScreen].scale;
 			frameView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
 			frameView.layer.borderColor = [UIColor whiteColor].CGColor;
 			frameView.layer.borderWidth = 1.0f;
