@@ -21,6 +21,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4B1C660014EE2C0D003398AF /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */; };
+		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; };
+		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; };
+		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; };
 		4B451F0F14ECEDE200997B41 /* navigationBarLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0B14ECEDE200997B41 /* navigationBarLandscape.png */; };
 		4B451F1014ECEDE200997B41 /* navigationBarLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0C14ECEDE200997B41 /* navigationBarLandscape@2x.png */; };
 		4B451F1114ECEDE200997B41 /* navigationBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B451F0D14ECEDE200997B41 /* navigationBar.png */; };
@@ -809,6 +813,15 @@
 /* Begin PBXFileReference section */
 		4B1527A013E29E72006E9737 /* WAPostsViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostsViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WAPostsViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostsViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
+		4B1C65F714EE2C0C003398AF /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCrossHairView.h; sourceTree = "<group>"; };
+		4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCCrossHairView.m; sourceTree = "<group>"; };
+		4B1C65F914EE2C0C003398AF /* DCFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCFrameView.h; sourceTree = "<group>"; };
+		4B1C65FA14EE2C0C003398AF /* DCFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCFrameView.m; sourceTree = "<group>"; };
+		4B1C65FB14EE2C0D003398AF /* DCIntrospect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCIntrospect.h; sourceTree = "<group>"; };
+		4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCIntrospect.m; sourceTree = "<group>"; };
+		4B1C65FD14EE2C0D003398AF /* DCIntrospectSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCIntrospectSettings.h; sourceTree = "<group>"; };
+		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
+		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
 		4B451F0B14ECEDE200997B41 /* navigationBarLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = navigationBarLandscape.png; path = Resources/navigationBarLandscape.png; sourceTree = "<group>"; };
 		4B451F0C14ECEDE200997B41 /* navigationBarLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationBarLandscape@2x.png"; path = "Resources/navigationBarLandscape@2x.png"; sourceTree = "<group>"; };
@@ -1433,6 +1446,23 @@
 			);
 			name = iPhone;
 			path = wammer;
+			sourceTree = "<group>";
+		};
+		4B1C65F614EE2C0C003398AF /* DCIntrospect */ = {
+			isa = PBXGroup;
+			children = (
+				4B1C65F714EE2C0C003398AF /* DCCrossHairView.h */,
+				4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */,
+				4B1C65F914EE2C0C003398AF /* DCFrameView.h */,
+				4B1C65FA14EE2C0C003398AF /* DCFrameView.m */,
+				4B1C65FB14EE2C0D003398AF /* DCIntrospect.h */,
+				4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */,
+				4B1C65FD14EE2C0D003398AF /* DCIntrospectSettings.h */,
+				4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */,
+				4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */,
+			);
+			name = DCIntrospect;
+			path = external/DCIntrospect/DCIntrospect;
 			sourceTree = "<group>";
 		};
 		4B733B7A14987A81005CAE8D /* InAppSettingsKit */ = {
@@ -2316,6 +2346,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
 				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
 				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
@@ -3267,6 +3298,10 @@
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
 				FF88E14814E8D80400B347A8 /* WAArticle.m in Sources */,
 				4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */,
+				4B1C660014EE2C0D003398AF /* DCCrossHairView.m in Sources */,
+				4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */,
+				4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */,
+				4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
