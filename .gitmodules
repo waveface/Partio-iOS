@@ -58,3 +58,6 @@
 [submodule "external/synergised"]
 	path = external/synergised
 	url = git://github.com/waveface/synergised.git
+[submodule "external/DCIntrospect"]
+	path = external/DCIntrospect
+	url = https://github.com/domesticcatsoftware/DCIntrospect.git

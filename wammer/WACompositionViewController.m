@@ -826,7 +826,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
     if (actionSheetController)
       return;
     
-    IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
+    IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
       
       if (self.completionBlock)
         self.completionBlock(nil);
@@ -843,8 +843,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
         self.completionBlock(nil);
     
     }];
+		
+		IRAction *cancelAction = nil;
+		
+		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+			cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling stuff") block:nil];
   
-    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:cancelAction otherActions:[NSArray arrayWithObjects:
+    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
       saveAsDraftAction,
     nil]];
     

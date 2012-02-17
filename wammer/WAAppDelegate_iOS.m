@@ -48,6 +48,8 @@
 
 #import "IASKSettingsReader.h"
 
+#import	"DCIntrospect.h"
+
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
@@ -217,6 +219,21 @@
 	}
 
 #endif
+
+	#if TARGET_IPHONE_SIMULATOR
+	// create a custom tap gesture recognizer so introspection can be invoked from a device
+	// this one is a three finger double tap
+	UITapGestureRecognizer *defaultGestureRecognizer = [[[UITapGestureRecognizer alloc] init] autorelease];
+	defaultGestureRecognizer.cancelsTouchesInView = NO;
+	defaultGestureRecognizer.delaysTouchesBegan = NO;
+	defaultGestureRecognizer.delaysTouchesEnded = NO;
+	defaultGestureRecognizer.numberOfTapsRequired = 3;
+	defaultGestureRecognizer.numberOfTouchesRequired = 2;
+	[DCIntrospect sharedIntrospector].invokeGestureRecognizer = defaultGestureRecognizer;
+
+	// always insert this AFTER makeKeyAndVisible so statusBarOrientation is reported correctly.
+	[[DCIntrospect sharedIntrospector] start];
+	#endif
 	
   return YES;
 	
