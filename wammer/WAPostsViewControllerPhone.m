@@ -38,7 +38,7 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WACompositionViewController+CustomUI.h"
-
+#import "WANavigationBar.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -149,6 +149,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 					[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
 				}];
 				
+				wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
+				[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
 				[nrSelf presentModalViewController:wrappingNavC animated:YES];
         
 			}],
