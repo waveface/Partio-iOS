@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "Foundation+IRAdditions.h"
+#import "CGGeometry+IRAdditions.h"
 
 #ifndef __WAImageStreamPickerView__
 #define __WAImageStreamPickerView__

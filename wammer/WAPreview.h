@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 9/8/11.
-//  Copyright (c) 2011 Iridia Productions. All rights reserved.
+//  Copyright (c) 2011 Waveface Inc. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -26,3 +26,5 @@
 @property (nonatomic, retain) NSDate *timestamp;
 
 @end
+
+#import "WAPreview+WAAdditions.h"

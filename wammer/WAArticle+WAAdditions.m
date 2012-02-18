@@ -8,8 +8,6 @@
 
 #import "WAArticle+WAAdditions.h"
 
-#import "WAArticle.h"
-#import "WAUser.h"
 #import "WADataStore.h"
 
 @implementation WAArticle (WAAdditions)
@@ -38,31 +36,11 @@
 
 }
 
-- (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
-
-	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
-	if (!self)
-		return nil;
-	
-	[self addObserver:self forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
-
-	return self;
-
-}
-
 - (void) irAwake {
 
 	[super irAwake];
 	[self irReconcileObjectOrderWithKey:@"files" usingArrayKeyed:@"fileOrder"];
 	
-}
-
-- (void) dealloc {
-
-	[self removeObserver:self forKeyPath:@"files"];
-	
-	[super dealloc];
-
 }
 
 - (NSArray *) fileOrder {
@@ -82,13 +60,6 @@
 
 	[super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
 	
-}
-
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-
-	//	NOT YET
-	//	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, keyPath, object, change, context);
-
 }
 
 @end

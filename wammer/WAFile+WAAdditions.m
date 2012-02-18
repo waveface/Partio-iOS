@@ -15,15 +15,12 @@
 #import <CoreServices/CoreServices.h>
 #endif
 
-
-#import "WAFile+WAAdditions.h"
-
-#import "WARemoteInterface.h"
 #import "WADataStore.h"
-#import "UIImage+IRAdditions.h"
-#import "CGGeometry+IRAdditions.h"
+#import "WARemoteInterface.h"
 
-#import "IRLifetimeHelper.h"
+#import "Foundation+IRAdditions.h"
+#import "CGGeometry+IRAdditions.h"
+#import "UIImage+IRAdditions.h"
 
 
 NSString * const kWAFileResourceImage = @"resourceImage";
@@ -750,17 +747,8 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (void) associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey {
 
-	if (objc_getAssociatedObject(self, aKey) == anObject)
-		return;
+	[self irAssociateObject:anObject usingKey:aKey policy:policy changingObservedKey:(emitsChangeNotifications ? propertyKey : nil)];
 	
-	if (emitsChangeNotifications)
-		[self willChangeValueForKey:propertyKey];
-	
-	objc_setAssociatedObject(self, aKey, anObject, policy);
-	
-	if (emitsChangeNotifications)
-		[self didChangeValueForKey:propertyKey];
-
 }
 
 @end
@@ -789,6 +777,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 - (BOOL) validatesThumbnailImage {
 
 	return [objc_getAssociatedObject(self, &kWAFileValidatesThumbnailImage) boolValue];
+	
 }
 
 - (void) setValidatesThumbnailImage:(BOOL)newFlag {
@@ -876,7 +865,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	[self performBlockSuppressingBlobRetrieval:^{
 	
 		retVal = [[self class] validateImageAtPath:[self valueForKey:kWAFileThumbnailFilePath] error:outError];
-	
 		
 	}];
 	
@@ -897,7 +885,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	[self performBlockSuppressingBlobRetrieval:^{
 	
 		retVal = [[self class] validateImageAtPath:[self valueForKey:kWAFileLargeThumbnailFilePath] error:outError];	
-	
 		
 	}];
 	
@@ -907,30 +894,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 + (BOOL) validateImageAtPath:(NSString *)aFilePath error:(NSError **)error {
 	
-	if (!aFilePath)
-		return YES;
-
-	error = error ? error : &(NSError *){ nil };
-	
-	if (aFilePath && ![[NSFileManager defaultManager] fileExistsAtPath:aFilePath]) {
-		
-		*error = [NSError errorWithDomain:@"com.waveface.wammer.dataStore.file" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSString stringWithFormat:@"Image at %@ is actually nonexistant", aFilePath], NSLocalizedDescriptionKey,
-		nil]];
-		
-		return NO;
-		
-	} else if (![UIImage imageWithData:[NSData dataWithContentsOfMappedFile:aFilePath]]) {
-		
-		*error = [NSError errorWithDomain:@"com.waveface.wammer.dataStore.file" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-			[NSString stringWithFormat:@"Image at %@ can’t be decoded", aFilePath], NSLocalizedDescriptionKey,
-		nil]];
-		
-		return NO;
-		
-	}
-
-	return YES;
+	return [UIImage validateContentsOfFileAtPath:aFilePath error:error];
 
 }
 

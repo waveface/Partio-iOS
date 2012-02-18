@@ -536,7 +536,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		if (capturedSelf.paginatedView.currentPage != capturedCurrentPage)
 			return;
 			
-		WAGalleryImageView *pageView = [capturedSelf.paginatedView existingPageAtIndex:capturedCurrentPage];
+		WAGalleryImageView *pageView = (WAGalleryImageView *)[capturedSelf.paginatedView existingPageAtIndex:capturedCurrentPage];
 		if (!pageView)
 			return;
 		
