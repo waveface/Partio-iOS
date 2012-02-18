@@ -13,6 +13,8 @@
 #import "WAImageStreamPickerView.h"
 #import "UIImage+IRAdditions.h"
 #import "IRLifetimeHelper.h"
+#import "Foundation+IRAdditions.h"
+#import "IRAsyncOperation.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
@@ -35,6 +37,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @property (nonatomic, readwrite, copy) void (^onViewDidAppear)(BOOL animated);
 @property (nonatomic, readwrite, copy) void (^onViewWillDisappear)(BOOL animated);
 @property (nonatomic, readwrite, copy) void (^onViewDidDisappear)(BOOL animated);
+
+@property (nonatomic, readwrite, retain) NSOperationQueue *operationQueue;
 
 - (void) waSubviewWillLayout;
 
@@ -65,6 +69,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 @synthesize contextControlsShown;
 @synthesize onDismiss;
 @synthesize onViewDidLoad, onViewDidAppear, onViewWillDisappear, onViewDidDisappear;
+@synthesize operationQueue;
 @synthesize requiresReloadOnFetchedResultsChange;
 
 #if WAGalleryViewController_UsesProxyOverlay
@@ -209,16 +214,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	NSParameterAssert([self.article.files containsObject:returnedFile]);
 	
 	return returnedFile;
-
-	//  return [[[self.article.fileOrder irMap: ^ (NSURL *anURI, NSUInteger index, BOOL *stop) {
-	//  
-	//    WAFile *returnedObject = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:anURI];
-	//    if (![self.fetchedResultsController.fetchedObjects containsObject:returnedObject])
-	//      return (id)nil;
-	//    
-	//    return (id)returnedObject;
-	//      
-	//  }] filteredArrayUsingPredicate:self.fetchedResultsController.fetchRequest.predicate] objectAtIndex:anIndex];
 
 }
 
@@ -489,11 +484,25 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 
 
+- (NSOperationQueue *) operationQueue {
+
+	if (operationQueue)
+		return operationQueue;
+	
+	operationQueue = [[NSOperationQueue alloc] init];
+	operationQueue.maxConcurrentOperationCount = 1;
+	
+	return operationQueue;
+
+}
+
 - (void) paginatedView:(IRPaginatedView *)aPaginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
 	self.streamPickerView.selectedItemIndex = index;
 	
-	[self.paginatedView.scrollView.subviews enumerateObjectsUsingBlock: ^ (WAGalleryImageView *aPage, NSUInteger idx, BOOL *stop) {
+	__typeof__(self.paginatedView) const ownPaginatedView = self.paginatedView;
+	
+	[ownPaginatedView.scrollView.subviews enumerateObjectsUsingBlock: ^ (WAGalleryImageView *aPage, NSUInteger idx, BOOL *stop) {
 	
 		if (![aPage isKindOfClass:[WAGalleryImageView class]])
 			return;
@@ -501,51 +510,65 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		if (aPage == aView)
 			return;
 		
-		[aPage reset];
+		CGRect intersection = CGRectIntersection([ownPaginatedView convertRect:ownPaginatedView.bounds toView:aPage], aPage.bounds);
+		
+		if (CGRectEqualToRect(CGRectNull, intersection))
+			[aPage reset];
 		
 	}];
 	
-	
 	//	Hides contest on page turns, but NOT stream picker changes
 	
-	if (((^ {
-	
-		UIScrollView *sv = self.paginatedView.scrollView;
-		if ([sv respondsToSelector:@selector(panGestureRecognizer)])
-			return sv.panGestureRecognizer;
-		
-		for (UIGestureRecognizer *aGR in sv.gestureRecognizers)
-			if ([aGR isKindOfClass:[UIPanGestureRecognizer class]])
-				return aGR;
-		
-		return (UIGestureRecognizer *)nil;
-	
-	})()).state == UIGestureRecognizerStateChanged) {
-		
+	if (ownPaginatedView.scrollView.panGestureRecognizer.state == UIGestureRecognizerStateChanged)
 		[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
 	
-	}
+	WAGalleryViewController *capturedSelf = self;
+	NSUInteger capturedCurrentPage = self.paginatedView.currentPage;
+
+	[self.operationQueue cancelAllOperations];
+	[self.operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 	
-	
-	IRPaginatedView *paginatedView = self.paginatedView;
-	NSUInteger currentPage = paginatedView.currentPage;
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-	
-		if (paginatedView.currentPage != currentPage)
+		NSParameterAssert([NSThread isMainThread]);
+		
+		if (![capturedSelf isViewLoaded])
 			return;
 		
-		WAGalleryImageView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
+		if (capturedSelf.paginatedView.currentPage != capturedCurrentPage)
+			return;
+			
+		WAGalleryImageView *pageView = (WAGalleryImageView *)[capturedSelf.paginatedView existingPageAtIndex:capturedCurrentPage];
 		if (!pageView)
 			return;
 		
-		WAFile *pageFile = [self representedFileAtIndex:currentPage];
+		WAFile *pageFile = [capturedSelf representedFileAtIndex:capturedCurrentPage];
 		if (!pageFile)
 			return;
 		
-		[self configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
+		[capturedSelf configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
+		
+		callback(nil);
+		
+	} completionBlock:nil]];
 	
-	});
+//	IRPaginatedView *paginatedView = self.paginatedView;
+//	NSUInteger currentPage = paginatedView.currentPage;
+//	
+//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+//	
+//		if (paginatedView.currentPage != currentPage)
+//			return;
+//		
+//		WAGalleryImageView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
+//		if (!pageView)
+//			return;
+//		
+//		WAFile *pageFile = [self representedFileAtIndex:currentPage];
+//		if (!pageFile)
+//			return;
+//		
+//		[self configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
+//	
+//	});
 	
 }
 
@@ -771,11 +794,31 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	}
 	
+	BOOL statusBarWasHidden = [UIApplication sharedApplication].statusBarHidden;
+	
 	[[UIApplication sharedApplication] setStatusBarHidden:willHide withAnimation:(animate ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
+	
 	[self.view setNeedsLayout];
 	[self.view layoutSubviews];
 	
-	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
+	if (!willHide) {
+	
+		CGRect statusBarFrame = [UIApplication sharedApplication].statusBarFrame;
+		
+		CGRect newOwnNavBarFrame = self.navigationBar.frame;
+		newOwnNavBarFrame.origin.y = CGRectGetMaxY([self.view.window convertRect:statusBarFrame toView:self.view]);
+		self.navigationBar.frame = newOwnNavBarFrame;
+		
+		[self.navigationController.view setNeedsLayout];
+		[self.navigationController.view layoutSubviews];
+		
+		CGRect newNavControllerNavBarFrame = self.navigationController.navigationBar.frame;
+		newNavControllerNavBarFrame.origin.y = CGRectGetMaxY([self.navigationController.view.window convertRect:statusBarFrame toView:self.navigationController.view]);
+		self.navigationController.navigationBar.frame = newNavControllerNavBarFrame;
+	
+	}
+	
+	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration;
 	
 	if (!barringInteraction)
 		animationOptions |= UIViewAnimationOptionAllowUserInteraction;
@@ -785,8 +828,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		self.navigationBar.alpha = (willHide ? 0.0f : 1.0f);
 		self.toolbar.alpha = (willHide ? 0.0f : 1.0f);
 		
+		CGRect oldNavControllerNavBarFrame = self.navigationController.navigationBar.frame;
+		
 		self.navigationController.navigationBar.alpha = (willHide ? 0.0f : 1.0f);
 		self.navigationController.toolbar.alpha = (willHide ? 0.0f : 1.0f);
+		
+		self.navigationController.navigationBar.frame = oldNavControllerNavBarFrame;
 		
 	} completion: ^ (BOOL didFinish){
 	
@@ -839,7 +886,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	#if WAGalleryViewController_UsesProxyOverlay
 	self.swipeOverlay = nil;
 	#endif
-		
+	
+	[operationQueue cancelAllOperations];
+	[operationQueue waitUntilAllOperationsAreFinished];
+	
+	self.operationQueue = nil;
+			
 	[super viewDidUnload];
 
 }
@@ -869,6 +921,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[onViewDidAppear release];
 	[onViewWillDisappear release];
 	[onViewDidDisappear release];
+	
+	[operationQueue cancelAllOperations];
+	[operationQueue waitUntilAllOperationsAreFinished];
+	[operationQueue release];
 	
 	[super dealloc];
 

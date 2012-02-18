@@ -17,6 +17,7 @@
 
 #import "WAOverlayBezel.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 
 @implementation WACompositionViewController (CustomUI)
