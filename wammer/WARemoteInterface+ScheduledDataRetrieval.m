@@ -193,10 +193,7 @@
 
 
 @implementation WARemoteInterface (ScheduledDataRetrieval_Private)
-
-- (BOOL) isPerformingAutomaticRemoteUpdates {
-	return (BOOL)!!(self.automaticRemoteUpdatesPerformingCount);
-}
+@dynamic performingAutomaticRemoteUpdates;
 
 - (void) setDataRetrievalInterval:(NSTimeInterval)newDataRetrievalInterval {
 	if (self.dataRetrievalInterval != newDataRetrievalInterval)

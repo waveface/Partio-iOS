@@ -523,7 +523,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	nil] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 	
 	WAPreview *stitchedPreview = [insertedPreviews lastObject];
-	
+	NSError *error = nil;
+	NSAssert1([self.managedObjectContext save:&error], @"Error Saving: %@", error);
 	
 	//	If there’s already an attachment, do nothing
 	

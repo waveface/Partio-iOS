@@ -54,6 +54,10 @@
   [super viewDidLoad];
 	
 	self.tableView.sectionHeaderHeight = 56;
+	
+	if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+		self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
+	}
   
 }
 
