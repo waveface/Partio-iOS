@@ -8,6 +8,8 @@
 
 #import "WADataStore.h"
 
+@class WAArticle;
+
 @interface WADataStore (FetchingConveniences)
 
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;

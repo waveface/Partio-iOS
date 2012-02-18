@@ -7,6 +7,7 @@
 //
 
 #import "WAPreview+WARemoteInterfaceEntitySyncing.h"
+#import "WADataStore.h"
 
 @implementation WAPreview (WARemoteInterfaceEntitySyncing)
 
@@ -23,19 +24,6 @@
 	return YES;
 	
 }
-
-//	[super configureWithRemoteDictionary:inDictionary];
-//	
-//	NSDictionary *graphRep = [inDictionary objectForKey:@"og"];
-//	
-//	if (graphRep) {
-//		if (!self.graphElement)
-//			self.graphElement = [WAOpenGraphElement objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:graphRep];
-//		else
-//			[self.graphElement configureWithRemoteDictionary:graphRep];
-//	}
-//	
-//	}
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
