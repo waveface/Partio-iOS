@@ -135,7 +135,7 @@
 
 /* Noun for Username
    Title for username */
-"NOUN_USERNAME" = "用戶名";
+"NOUN_USERNAME" = "Email";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
@@ -192,7 +192,7 @@
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "無限制";
 
 /* No comment provided by engineer. */
-"STORATE_QUOTA_INTERVAL_END_DATE" = "結算日ㄑ";
+"STORATE_QUOTA_INTERVAL_END_DATE" = "結算日期";
 
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "用戶資訊";
