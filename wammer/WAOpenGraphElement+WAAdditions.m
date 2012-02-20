@@ -89,9 +89,9 @@
 	
 }
 
-- (NSArray *) keyPathsForValuesAffectingRepresentedImage {
+- (NSSet *) keyPathsForValuesAffectingRepresentedImage {
 
-	return [NSArray arrayWithObjects:
+	return [NSSet setWithObjects:
 	
 		@"imageOrder.@count",
 		
@@ -108,9 +108,9 @@
 
 }
 
-- (NSArray *) keyPathsForValuesAffectingThumbnail {
+- (NSSet *) keyPathsForValuesAffectingThumbnail {
 
-	return [NSArray arrayWithObjects:
+	return [NSSet setWithObjects:
 	
 		@"representedImage",
 		@"representedImage.image",
@@ -125,9 +125,9 @@
 
 }
 
-- (NSArray *) keyPathsForValuesAffectingThumbnailURL {
+- (NSSet *) keyPathsForValuesAffectingThumbnailURL {
 
-	return [NSArray arrayWithObjects:
+	return [NSSet setWithObjects:
 	
 		@"representedImage",
 		@"representedImage.imageRemoteURL",
@@ -141,9 +141,9 @@
 	return [self representedImage].imageRemoteURL;
 }
 
-- (NSArray *) keyPathsForValuesAffectingThumbnailFilePath {
+- (NSSet *) keyPathsForValuesAffectingThumbnailFilePath {
 
-	return [NSArray arrayWithObjects:
+	return [NSSet setWithObjects:
 	
 		@"representedImage",
 		@"representedImage.imageFilePath",

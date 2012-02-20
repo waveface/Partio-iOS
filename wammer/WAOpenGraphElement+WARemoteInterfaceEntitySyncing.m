@@ -51,14 +51,4 @@
 
 }
 
-+ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
-
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, incomingRepresentation);
-	
-	
-
-	return incomingRepresentation;
-
-}
-
 @end
