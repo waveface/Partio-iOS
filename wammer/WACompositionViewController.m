@@ -7,55 +7,36 @@
 //
 
 #import "WACompositionViewController.h"
+
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+#import "AssetsLibrary+IRAdditions.h"
+
+#import "IRTextAttributor.h"
+
+#import "WADefines.h"
 #import "WADataStore.h"
-#import "IRImagePickerController.h"
-#import "IRConcaveView.h"
-#import "IRActionSheetController.h"
-#import "IRActionSheet.h"
+#import "WARemoteInterface.h"
+
 #import "WACompositionViewPhotoCell.h"
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
-#import "IRLifetimeHelper.h"
-#import "IRBarButtonItem.h"
-
-#import "UIWindow+IRAdditions.h"
-#import "WADefines.h"
-
-#import "AssetsLibrary+IRAdditions.h"
-#import "IRTextAttributor.h"
-
-#import "UIView+IRAdditions.h"
-
 #import "WAViewController.h"
-
-#import "WARemoteInterface.h"
-
 #import "WAPreviewBadge.h"
-
-#import "UIViewController+IRAdditions.h"
-
-#import "UIApplication+IRAdditions.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate, IRTextAttributorDelegate>
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
-@property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
-
-- (IRImagePickerController *) newImagePickerController NS_RETURNS_RETAINED;
 
 @property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
 
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
-- (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
 - (void) adjustPhotos;
 
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
-@property (nonatomic, readwrite, retain) NSMutableAttributedString *backingContentText;
-
-@property (nonatomic, readwrite, assign) BOOL deniesOrientationChanges;
 
 - (void) updateTextAttributorContentWithString:(NSString *)aString;
 
@@ -63,7 +44,7 @@
 @property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 
-@property (nonatomic, readwrite, assign) BOOL delaysKeyboardPresentationOnViewDidAppear;
+- (IRAction *) newDebugFullscreenVCAction;
 
 @end
 
@@ -73,25 +54,40 @@
 @synthesize managedObjectContext, article;
 @synthesize containerView;
 @synthesize photosView, contentTextView, toolbar;
-@synthesize imagePickerPopover;
+
 @synthesize noPhotoReminderView;
 @synthesize completionBlock;
 @synthesize usesTransparentBackground;
 @synthesize noPhotoReminderViewElements;
-
 @synthesize textAttributor;
-@synthesize backingContentText;
-
-@synthesize deniesOrientationChanges;
 
 @synthesize previewBadge, previewBadgeButton;
 
-@synthesize delaysKeyboardPresentationOnViewDidAppear;
++ (id) alloc {
+
+	if ([self class] != [WACompositionViewController class])
+		return [super alloc];
+
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPad: {
+			return [(Class)NSClassFromString(@"WACompositionViewControllerPad") alloc];
+			break;
+		}
+	
+		default:
+		case UIUserInterfaceIdiomPhone: {
+			return [(Class)NSClassFromString(@"WACompositionViewControllerPhone") alloc];
+			break;
+		}
+		
+	}
+
+}
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
 	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
-	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
@@ -111,7 +107,7 @@
 
 - (id) init {
 
-	return [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
+	return [self initWithNibName:@"WACompositionViewController" bundle:[NSBundle bundleForClass:[self class]]];
 
 }
 
@@ -136,14 +132,20 @@
 
 	[self willChangeValueForKey:@"article"];
 	
-	[article irRemoveObserverBlocksForKeyPath:@"files"];	
+	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];	
 	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
-	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
+		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+		
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
+
+	[article irRemoveObserverBlocksForKeyPath:@"previews"];
+	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+		
+		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+		
+	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+		
 	[article release];
 	article = [newArticle retain];
 	
@@ -164,14 +166,14 @@
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
+	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
+	
 	[managedObjectContext release];
 	[article release];
-	[imagePickerPopover release];
 	
 	[completionBlock release];
 	
 	[textAttributor release];
-	[backingContentText release];
 	
 	[previewBadge release];
 	[previewBadgeButton release];
@@ -189,7 +191,6 @@
 	self.contentTextView.delegate = nil;
 	self.contentTextView = nil;
 	self.toolbar = nil;
-	self.imagePickerPopover = nil;
 	self.noPhotoReminderViewElements = nil;
 	
 	self.previewBadge = nil;
@@ -214,9 +215,6 @@
 		self.view.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
 	}
 	
-	if ([[UIDevice currentDevice].name rangeOfString:@"Simulator"].location != NSNotFound) {
-		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-	}
 	self.contentTextView.delegate = self;
 	
 	self.toolbar.opaque = NO;
@@ -334,7 +332,7 @@
 	self.previewBadgeButton.frame = self.previewBadge.frame;
 	self.previewBadgeButton.autoresizingMask = self.previewBadge.autoresizingMask;
 	self.previewBadgeButton.hidden = YES;
-	[self.previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[self.previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTap:) forControlEvents:UIControlEventTouchUpInside];
 	[self.previewBadge.superview addSubview:self.previewBadgeButton];
   
   [self.noPhotoReminderViewElements enumerateObjectsUsingBlock: ^ (UILabel *aLabel, NSUInteger idx, BOOL *stop) {
@@ -353,7 +351,7 @@
 static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandler = @"kWACompositionViewWindowInterfaceBoundsNotificationHandler";
 
 - (void) viewWillAppear:(BOOL)animated {
-    
+
   [super viewWillAppear:animated];
   
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
@@ -366,7 +364,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		UIViewAnimationCurve animationCurve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntValue];
 		NSTimeInterval animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 		
-		UIViewAnimationOptions animationOptions = 0;
+		UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 		animationOptions |= ((^ {
 			switch (animationCurve) {
 				case UIViewAnimationCurveEaseIn: return UIViewAnimationOptionCurveEaseIn;
@@ -387,32 +385,22 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
+	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+	nil]];
 	
-  if (delaysKeyboardPresentationOnViewDidAppear) {
+	dispatch_async(dispatch_get_main_queue(), ^{
 		
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-    
-      [self.contentTextView becomeFirstResponder];
-    
-    });
-  
-  } else {
-  
-    [self.contentTextView becomeFirstResponder];
-  
-  }
+		[self.contentTextView becomeFirstResponder];
+		
+	});
 	
-	//	[self adjustPhotos];
-  
-}
+}	
 
 - (void) viewWillDisappear:(BOOL)animated {
 
+	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
+	
 	id notificationObject = objc_getAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler);
 	[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, nil, OBJC_ASSOCIATION_ASSIGN);
@@ -472,11 +460,11 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		}
 		
 		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {
-		
+			
 			callback(aPreviewRep);
 			
 		} onFailure:^(NSError *error) {
-		
+			
 			callback(nil);
 			
 		}];
@@ -489,9 +477,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textViewDidChange:(UITextView *)textView {
 
-	self.navigationItem.rightBarButtonItem.enabled = (BOOL)!![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
-	
 	NSString *capturedText = textView.text;
+	self.article.text = capturedText;
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 	
@@ -582,7 +569,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
-- (IBAction) handlePreviewBadgeTapped:(id)sender {
+- (IBAction) handlePreviewBadgeTap:(id)sender {
 
 	if (!self.previewBadge.preview)
 		return;
@@ -598,6 +585,10 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	}] otherActions:nil] singleUseActionSheet] showFromRect:self.previewBadge.bounds inView:self.previewBadge animated:NO];
 
 }
+
+
+
+
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
@@ -845,143 +836,82 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-  self.article.text = self.contentTextView.text;
-  self.article.timestamp = [NSDate date];
-  
-  if ([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
-  
-    IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
-    if (actionSheetController)
-      return;
-    
-    IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
-      
-      if (self.completionBlock)
-        self.completionBlock(nil);
-      
-    }];
-    
-    IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
-    
-      NSError *savingError = nil;
-      if (![self.managedObjectContext save:&savingError])
-        NSLog(@"Error saving: %@", savingError);
-      
-      if (self.completionBlock)
-        self.completionBlock(nil);
-    
-    }];
-		  
-    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
-      saveAsDraftAction,
-    nil]];
-    
-    IRActionSheet *actionSheet = [actionSheetController managedActionSheet];
-    [actionSheet showFromBarButtonItem:sender animated:YES];
-    
-    objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
-    
-    actionSheetController.onActionSheetCancel = ^ {
-      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
-    };
-    
-    actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
-      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
-    };
-  
-    return;
-  
-  }
-
-	if (self.completionBlock)
-		self.completionBlock(nil);
-
+	if (![self.article hasChanges] || ![self.article hasMeaningfulContent]) {
+	
+		if (self.completionBlock)
+			self.completionBlock(nil);
+		
+		//	Delete things that are not meaningful
+		
+		if (![self.article hasMeaningfulContent])
+			[self.article.managedObjectContext deleteObject:self.article];
+		
+		return;
+	
+	}
+	
+	IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
+	if ([[actionSheetController managedActionSheet] isVisible])
+		return;
+	
+	if (!actionSheetController) {
+	
+		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
+			
+			if (self.completionBlock)
+				self.completionBlock(nil);
+			
+		}];
+		
+		IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
+		
+			self.article.text = self.contentTextView.text;
+			self.article.timestamp = [NSDate date];
+			
+			NSError *savingError = nil;
+			if (![self.managedObjectContext save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+			if (self.completionBlock)
+				self.completionBlock(nil);
+		
+		}];
+			
+		actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
+			saveAsDraftAction,
+		nil]];
+			
+		objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
+		
+		actionSheetController.onActionSheetCancel = ^ {
+			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+		};
+		
+		actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+		};
+	
+	}
+	
+	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
+	
+	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
+	
 }
 
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	NSMutableArray *availableActions = [NSMutableArray arrayWithObjects:
+	NSMutableArray *availableActions = [NSMutableArray array]; 
 	
-		[IRAction actionWithTitle:@"Photo Library" block: ^ {
-		
-			switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			
-				case UIUserInterfaceIdiomPad: {
-				
-					@try {
-
-						[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-				
-					} @catch (NSException *exception) {
-
-						[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-					
-					}
-
-				}
-				
-				case UIUserInterfaceIdiomPhone:
-				default: {
-				
-					[self presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
-				
-					break;
-					
-				}
-			
-			}
-		
-		}],
-		
-	nil];
+	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];
 	
-	if (WAAdvancedFeaturesEnabled()) {
+	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
+		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
 	
-		[availableActions addObject:[IRAction actionWithTitle:@"Faux View Controller" block:^ {
-		
-			WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
-			testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
-				return YES;
-			};
-			testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
-				[nrSelf dismissModalViewControllerAnimated:YES];
-			}];
-			
-			testVC.onViewWillAppear = ^ (WAViewController *self) {
-				[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-			};
-			
-			testVC.onViewWillDisappear = ^ (WAViewController *self) {
-				[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-			};
-			
-			UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
-			navC.modalPresentationStyle = UIModalPresentationFullScreen;
-			
-			[self presentModalViewController:navC animated:YES];
-			
-		}]];
-	
-	}
-	
-	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
-	
-		[availableActions addObject:[IRAction actionWithTitle:@"Take Photo" block: ^ {
-		
-			IRImagePickerController *pickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
-				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-			}];
-			
-			pickerController.usesAssetsLibrary = NO;
-			pickerController.savesCameraImageCapturesToSavedPhotos = YES;
-			
-			[nrSelf presentModalViewController:pickerController animated:YES];
-						
-		}]];
-		
-	}
+	if (WAAdvancedFeaturesEnabled())
+		[availableActions addObject: [[self newDebugFullscreenVCAction] autorelease]];
 	
 	if ([availableActions count] == 1) {
 		
@@ -999,179 +929,41 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 }
 
-- (UIPopoverController *) imagePickerPopover {
-
-	if (imagePickerPopover)
-		return imagePickerPopover;
-		
-	IRImagePickerController *picker = [[self newImagePickerController] autorelease];
-	
-	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
-	
-	return imagePickerPopover;
-
-}
-
-- (IRImagePickerController *) newImagePickerController {
-
-	__block __typeof__(self) nrSelf = self;
-		
-	//	If you have a lot of stuff, but only in the saved photos album — no other albums exist, we will simply show 
-		
-	IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
-		
-		[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-		
-		// Fixme: polyfill for posterity
-
-		if (nrSelf.modalViewController.parentViewController == nrSelf)
-			[nrSelf.modalViewController dismissModalViewControllerAnimated:YES];		
-		
-	}];
-	
-	imagePickerController.usesAssetsLibrary = NO;
-	
-	return [imagePickerController retain];
-
-}
-
-- (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
-	
-	if (selectedAssetURI || representedAsset) {
-
-		WAArticle *capturedArticle = self.article;
-		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		stitchedFile.article = capturedArticle;
-		
-		NSURL *finalFileURL = nil;
-		
-		if (selectedAssetURI)
-			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
-		
-		if (!finalFileURL)
-		if (!selectedAssetURI && representedAsset) {
-		
-			UIImage *fullImage = [[representedAsset defaultRepresentation] irImage];
-			NSData *fullImageData = UIImagePNGRepresentation(fullImage);
-			
-			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
-		
-		}
-			
-		[stitchedFile.article willChangeValueForKey:@"fileOrder"];
-		
-		stitchedFile.resourceType = (NSString *)kUTTypeImage;
-		stitchedFile.resourceFilePath = [finalFileURL path];
-		
-		[stitchedFile.article didChangeValueForKey:@"fileOrder"];
-		
-	}
-	
-	if (self.modalViewController)
-		[self dismissModalViewControllerAnimated:YES];
-	
-	if ([imagePickerPopover isPopoverVisible])
-		[imagePickerPopover dismissPopoverAnimated:YES];
-	
-}
-
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   
-	if (deniesOrientationChanges) {
-	if (interfaceOrientation != self.interfaceOrientation)
-		return NO;
-	}
-
 	return YES;
 	
 }
 
-- (void) presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated {
-
-	if (!animated || (modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
-		[super presentModalViewController:modalViewController animated:animated];
-		return;
-	}
-	
-	__block __typeof__(self) nrSelf = self;
-	
-	void (^dismissalAnimation)() = ^ {
-
-		CATransition *pushTransition = [CATransition animation];
-		pushTransition.type = kCATransitionMoveIn;
-		pushTransition.duration = 0.3;
-		pushTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-		pushTransition.subtype = ((NSString * []){
-			[UIInterfaceOrientationPortrait] = kCATransitionFromTop,
-			[UIInterfaceOrientationPortraitUpsideDown] = kCATransitionFromBottom,
-			[UIInterfaceOrientationLandscapeLeft] = kCATransitionFromRight,
-			[UIInterfaceOrientationLandscapeRight] = kCATransitionFromLeft
-		})[[UIApplication sharedApplication].statusBarOrientation];
-					
-    [[UIApplication sharedApplication] irBeginIgnoringStatusBarAppearanceRequests];
-          
-		[nrSelf presentModalViewController:modalViewController animated:NO];
-		
-		[[UIApplication sharedApplication].keyWindow.layer addAnimation:pushTransition forKey:kCATransition];
-		
-	};
-			
-	UIView *firstResponder = [nrSelf.view irFirstResponderInView];
-
-	if (firstResponder) {
-	
-		[firstResponder resignFirstResponder];
-		double delayInSeconds = 0.15;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-		dispatch_after(popTime, dispatch_get_main_queue(), dismissalAnimation);
-		
-	} else {
-	
-		dismissalAnimation();
-		
-	}
-
-}
-
-- (void) dismissModalViewControllerAnimated:(BOOL)animated {
+- (IRAction *) newDebugFullscreenVCAction {
 
 	__block __typeof__(self) nrSelf = self;
-	
-	if (!animated || !self.modalViewController || (self.modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
-		[super dismissModalViewControllerAnimated:animated];
-		return;
-	}
-  
-  [CATransaction begin];
-  
-  CATransition *popTransition = [CATransition animation];
-	popTransition.type = kCATransitionReveal;
-	popTransition.duration = 0.3;
-	popTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	popTransition.subtype = ((NSString * []){
-		[UIInterfaceOrientationPortrait] = kCATransitionFromBottom,
-		[UIInterfaceOrientationPortraitUpsideDown] = kCATransitionFromTop,
-		[UIInterfaceOrientationLandscapeLeft] = kCATransitionFromLeft,
-		[UIInterfaceOrientationLandscapeRight] = kCATransitionFromRight,
-	})[[UIApplication sharedApplication].statusBarOrientation];
-	
-	[nrSelf dismissModalViewControllerAnimated:NO];
-  
-  [[UIApplication sharedApplication] irEndIgnoringStatusBarAppearanceRequests];
 
-  ((^{
-    [UIView setAnimationsEnabled:NO];
-    NSObject *viewControllerClass = (NSObject *)[UIViewController class];
-    if ([viewControllerClass respondsToSelector:@selector(attemptRotationToDeviceOrientation)]) {
-      [viewControllerClass performSelector:@selector(attemptRotationToDeviceOrientation)];
-    }
-    [UIView setAnimationsEnabled:YES];
-  })());
+	return [[IRAction actionWithTitle:@"Faux View Controller" block:^ {
 
-	[[UIApplication sharedApplication].keyWindow.layer addAnimation:popTransition forKey:kCATransition];
-  
-  [CATransaction commit];
-    
+		WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
+		testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
+			return YES;
+		};
+		testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
+			[nrSelf dismissModalViewControllerAnimated:YES];
+		}];
+		
+		testVC.onViewWillAppear = ^ (WAViewController *self) {
+			[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+		};
+		
+		testVC.onViewWillDisappear = ^ (WAViewController *self) {
+			[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+		};
+		
+		UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
+		navC.modalPresentationStyle = UIModalPresentationFullScreen;
+		
+		[nrSelf presentModalViewController:navC animated:YES];
+		
+	}] retain];
+
 }
 
 @end

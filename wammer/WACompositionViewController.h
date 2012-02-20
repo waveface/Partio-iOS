@@ -14,6 +14,8 @@
 #import "IRTransparentToolbar.h"
 
 
+@class IRImagePickerController, IRAction, WAArticle;
+
 @interface WACompositionViewController : UIViewController
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
@@ -32,4 +34,18 @@
 
 @property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
 
+@property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readonly, retain) WAArticle *article;
+
 @end
+
+
+@interface WACompositionViewController (SubclassResponsibility)
+
+- (IBAction) handlePreviewBadgeTap:(id)sender;
+
+@end
+
+
+#import "WACompositionViewController+CustomUI.h"
+#import "WACompositionViewController+ImageHandling.h"

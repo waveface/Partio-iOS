@@ -10,4 +10,6 @@
 
 @interface WAArticle (WAAdditions)
 
+- (BOOL) hasMeaningfulContent;
+
 @end
