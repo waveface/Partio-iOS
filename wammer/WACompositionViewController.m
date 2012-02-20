@@ -93,6 +93,7 @@
 	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
 	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
 	if (anArticleURLOrNil)
 		returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
@@ -217,8 +218,6 @@
 		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
 	}
 	self.contentTextView.delegate = self;
-	self.contentTextView.text = self.article.text;
-	[self textViewDidChange:self.contentTextView];
 	
 	self.toolbar.opaque = NO;
 	self.toolbar.backgroundColor = [UIColor clearColor];
@@ -343,6 +342,10 @@
     aLabel.text = NSLocalizedString(aLabel.text, nil);
     
   }];
+	
+	//	Put this last so when the article is initialized things all work
+	self.contentTextView.text = self.article.text;
+	[self textViewDidChange:self.contentTextView];
 	
 }
 
@@ -515,16 +518,32 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
 
-	//	Get the last preview available, if there’s nothing don’t fix anything up though
+	NSMutableArray *potentialLinkAttributes = [NSMutableArray array];
 
-	NSArray *insertedPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:[NSArray arrayWithObjects:
-		[NSDictionary dictionaryWithObjectsAndKeys:
-			newAttribute, @"og",
-			[newAttribute valueForKeyPath:@"url"], @"id",
-		nil],
-	nil] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+	[attributedString enumerateAttribute:IRTextAttributorTagAttributeName inRange:(NSRange){ 0, [attributedString length] } options:0 usingBlock: ^ (id value, NSRange range, BOOL *stop) {
+		
+		if (value)
+			[potentialLinkAttributes addObject:value];
+		
+	}];
 	
-	WAPreview *stitchedPreview = [insertedPreviews lastObject];
+	NSArray *mappedPreviewEntities = [potentialLinkAttributes irMap: ^ (id anAttribute, NSUInteger index, BOOL *stop) {
+	
+		if (![anAttribute isKindOfClass:[NSDictionary class]])
+			return (id)nil;
+		
+		return (id)[NSDictionary dictionaryWithObjectsAndKeys:
+			anAttribute, @"og",
+			[anAttribute valueForKeyPath:@"url"], @"id",
+		nil];
+		
+	}];
+
+	NSArray *allMatchingPreviews = [WAPreview insertOrUpdateObjectsUsingContext:self.managedObjectContext withRemoteResponse:mappedPreviewEntities usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+	if (![allMatchingPreviews count])
+		return;
+	
+	WAPreview *stitchedPreview = [allMatchingPreviews objectAtIndex:0];
 	NSError *error = nil;
 	NSAssert1([self.managedObjectContext save:&error], @"Error Saving: %@", error);
 	
@@ -533,9 +552,15 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if ([self.article.files count])
 		stitchedPreview = nil;
 	
-	for (WAPreview *aPreview in insertedPreviews)
-		if (stitchedPreview ? (aPreview != stitchedPreview) : YES)
-			[aPreview.managedObjectContext deleteObject:aPreview];
+	//	If the article holds a preview already, don’t change it
+
+	if ([self.article.previews count])
+		return;
+
+	//	Don’t delete them, just leave them for later to cleanup
+	//	for (WAPreview *aPreview in allMatchingPreviews)
+	//		if (stitchedPreview ? (aPreview != stitchedPreview) : YES)
+	//			[aPreview.managedObjectContext deleteObject:aPreview];
 	
 	self.article.previews = stitchedPreview ? [NSSet setWithObject:stitchedPreview] : [NSSet set];
 

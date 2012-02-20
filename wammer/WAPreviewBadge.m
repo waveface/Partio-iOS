@@ -334,8 +334,12 @@
 		return;
 
 	[self willChangeValueForKey:@"preview"];
+	
+	[preview.graphElement removeObserver:self forKeyPath:@"thumbnail"];
 	[preview release];
+	[newPreview.graphElement addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	preview = [newPreview retain];
+	
 	[self didChangeValueForKey:@"preview"];
 	
 	self.image = preview.graphElement.thumbnail;
@@ -519,8 +523,15 @@
 
 }
 
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+
+	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, keyPath, object, change, context);
+
+}
+
 - (void) dealloc {
 
+	[preview.graphElement removeObserver:self forKeyPath:@"thumbnail"];
 	[preview release];
 
 	[image release];
