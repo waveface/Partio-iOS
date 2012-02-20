@@ -406,37 +406,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
-	
-  if (delaysKeyboardPresentationOnViewDidAppear) {
-		
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-    
-      [self.contentTextView becomeFirstResponder];
-    
-    });
-  
-  } else {
-  
-    [self.contentTextView becomeFirstResponder];
-  
-  }
-	
-	//	[self adjustPhotos];
-  
-}
 	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
+	
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self.contentTextView becomeFirstResponder];
+	});
+	
+}	
 
 - (void) viewWillDisappear:(BOOL)animated {
 
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
-	
 	
 	id notificationObject = objc_getAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler);
 	[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
