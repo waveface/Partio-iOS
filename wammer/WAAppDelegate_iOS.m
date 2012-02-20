@@ -37,7 +37,7 @@
 #import "IRAlertView.h"
 #import "IRAction.h"
 
-#import "WAPostsViewControllerPhone.h"
+#import "WATimelineViewControllerPhone.h"
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
@@ -285,7 +285,7 @@
 		}
 		default:
 		case UIUserInterfaceIdiomPhone: {
-			rootViewControllerClassName = @"WAPostsViewControllerPhone";
+			rootViewControllerClassName = @"WATimelineViewControllerPhone";
 			break;
 		}
 	}
