@@ -370,6 +370,8 @@
 			[deviceDescriptionLabel sizeToFit];
 			[deviceDescriptionLabel irPlaceBehindLabel:relativeCreationDateLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
 			
+			previewBadge.style = WAPreviewBadgeTextOverImageStyle;
+			
 			break;
 			
 		}
