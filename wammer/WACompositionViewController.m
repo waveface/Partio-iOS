@@ -37,7 +37,6 @@
 - (void) adjustPhotos;
 
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
-@property (nonatomic, readwrite, retain) NSMutableAttributedString *backingContentText;
 
 - (void) updateTextAttributorContentWithString:(NSString *)aString;
 
@@ -61,7 +60,7 @@
 @synthesize usesTransparentBackground;
 @synthesize noPhotoReminderViewElements;
 @synthesize textAttributor;
-@synthesize backingContentText;
+
 @synthesize previewBadge, previewBadgeButton;
 
 + (id) alloc {
@@ -89,9 +88,6 @@
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
 	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
-	
-	NSLog(@"returnedController %@", returnedController);
-	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
@@ -178,7 +174,6 @@
 	[completionBlock release];
 	
 	[textAttributor release];
-	[backingContentText release];
 	
 	[previewBadge release];
 	[previewBadgeButton release];
@@ -465,11 +460,11 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		}
 		
 		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {
-		
+			
 			callback(aPreviewRep);
 			
 		} onFailure:^(NSError *error) {
-		
+			
 			callback(nil);
 			
 		}];
