@@ -186,6 +186,7 @@
 			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
 			self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 			self.imageView.clipsToBounds = YES;
+			
 			[self addSubview:self.imageView];
 		}
 	} else {
@@ -288,7 +289,28 @@
 		case WAPreviewBadgeTextOverImageStyle: {
 		
 			self.imageView.frame = self.bounds;
-			self.label.frame = self.bounds;
+			
+			if (![self.imageView.subviews count]) {
+			
+				UIView *overlay = [[[UIView alloc] initWithFrame:self.imageView.bounds] autorelease];
+				overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+				overlay.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+				
+				[self.imageView addSubview:overlay];
+			
+			}
+			
+			CGRect usableLabelFrame = CGRectInset(self.bounds, 16, 12);
+			
+			self.label.frame = usableLabelFrame;
+			self.label.backgroundColor = nil;
+			
+			self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+			
+			self.titleFont = [UIFont boldSystemFontOfSize:24.0f];
+			self.titleColor = [UIColor whiteColor];
+			self.textFont = [UIFont systemFontOfSize:18.0f];
+			self.textColor = [UIColor whiteColor];
 			
 			[self bringSubviewToFront:self.label];
 			
@@ -323,6 +345,102 @@
 	
 	[self setNeedsTextUpdate];
 	[self setNeedsLayout];
+
+}
+
+- (void) setTitle:(NSString *)newTitle {
+
+	if (title == newTitle)
+		return;
+
+	[self willChangeValueForKey:@"title"];
+	
+	[title release];
+	title = [newTitle retain];
+	
+	[self didChangeValueForKey:@"title"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTitleColor:(UIColor *)newTitleColor {
+
+	if (titleColor == newTitleColor)
+		return;
+
+	[self willChangeValueForKey:@"titleColor"];
+	
+	[titleColor release];
+	titleColor = [newTitleColor retain];
+	
+	[self didChangeValueForKey:@"titleColor"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTitleFont:(UIFont *)newTitleFont {
+
+	if (titleFont == newTitleFont)
+		return;
+		
+	[self willChangeValueForKey:@"titleFont"];
+	
+	[titleFont release];
+	titleFont = [newTitleFont retain];
+	
+	[self didChangeValueForKey:@"titleFont"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setText:(NSString *)newText {
+
+	if (text == newText)
+		return;
+	
+	[self willChangeValueForKey:@"text"];
+	
+	[text release];
+	text = [newText retain];
+	
+	[self didChangeValueForKey:@"text"];
+	
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTextColor:(UIColor *)newTextColor {
+
+	if (textColor == newTextColor)
+		return;
+	
+	[self willChangeValueForKey:@"textColor"];
+	
+	[textColor release];
+	textColor = [newTextColor retain];
+	
+	[self didChangeValueForKey:@"textColor"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTextFont:(UIFont *)newTextFont {
+
+	if (textFont == newTextFont)
+		return;
+	
+	[self willChangeValueForKey:@"textFont"];
+	
+	[textFont release];
+	textFont = [newTextFont retain];
+	
+	[self didChangeValueForKey:@"textFont"];
+
+	[self setNeedsTextUpdate];
 
 }
 
