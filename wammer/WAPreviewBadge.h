@@ -45,11 +45,3 @@ enum {
 @property (nonatomic, readonly, retain) NSURL *link;
 
 @end
-
-
-@interface WAPreviewBadge (Deprecated)
-
-- (void) configureWithPreview:(WAPreview *)aPreview DEPRECATED_ATTRIBUTE;
-//  Just call -setPreview:
-
-@end
