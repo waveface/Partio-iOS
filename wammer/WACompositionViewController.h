@@ -33,3 +33,10 @@
 @property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
 
 @end
+
+
+@interface WACompositionViewController (Subclasses)
+
+- (IBAction) handlePreviewBadgeTap:(id)sender;
+
+@end

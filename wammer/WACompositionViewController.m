@@ -78,19 +78,39 @@
 @synthesize completionBlock;
 @synthesize usesTransparentBackground;
 @synthesize noPhotoReminderViewElements;
-
 @synthesize textAttributor;
 @synthesize backingContentText;
-
 @synthesize deniesOrientationChanges;
-
 @synthesize previewBadge, previewBadgeButton;
-
 @synthesize delaysKeyboardPresentationOnViewDidAppear;
+
++ (id) alloc {
+
+	if ([self class] != [WACompositionViewController class])
+		return [super alloc];
+
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPad: {
+			return [(Class)NSClassFromString(@"WACompositionViewControllerPad") alloc];
+			break;
+		}
+	
+		default:
+		case UIUserInterfaceIdiomPhone: {
+			return [(Class)NSClassFromString(@"WACompositionViewControllerPhone") alloc];
+			break;
+		}
+		
+	}
+
+}
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
 	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
+	
+	NSLog(@"returnedController %@", returnedController);
 	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
@@ -111,7 +131,7 @@
 
 - (id) init {
 
-	return [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
+	return [self initWithNibName:@"WACompositionViewController" bundle:[NSBundle bundleForClass:[self class]]];
 
 }
 
@@ -334,7 +354,7 @@
 	self.previewBadgeButton.frame = self.previewBadge.frame;
 	self.previewBadgeButton.autoresizingMask = self.previewBadge.autoresizingMask;
 	self.previewBadgeButton.hidden = YES;
-	[self.previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTapped:) forControlEvents:UIControlEventTouchUpInside];
+	[self.previewBadgeButton addTarget:self action:@selector(handlePreviewBadgeTap:) forControlEvents:UIControlEventTouchUpInside];
 	[self.previewBadge.superview addSubview:self.previewBadgeButton];
   
   [self.noPhotoReminderViewElements enumerateObjectsUsingBlock: ^ (UILabel *aLabel, NSUInteger idx, BOOL *stop) {
@@ -582,7 +602,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
-- (IBAction) handlePreviewBadgeTapped:(id)sender {
+- (IBAction) handlePreviewBadgeTap:(id)sender {
 
 	if (!self.previewBadge.preview)
 		return;
