@@ -63,8 +63,6 @@
 @property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
 
-@property (nonatomic, readwrite, assign) BOOL delaysKeyboardPresentationOnViewDidAppear;
-
 @end
 
 
@@ -82,7 +80,6 @@
 @synthesize backingContentText;
 @synthesize deniesOrientationChanges;
 @synthesize previewBadge, previewBadgeButton;
-@synthesize delaysKeyboardPresentationOnViewDidAppear;
 
 + (id) alloc {
 
