@@ -181,6 +181,8 @@
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
+	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
+	
 	[managedObjectContext release];
 	[article release];
 	[imagePickerPopover release];
@@ -427,9 +429,15 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	//	[self adjustPhotos];
   
 }
+	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+	nil]];
 
 - (void) viewWillDisappear:(BOOL)animated {
 
+	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
+	
+	
 	id notificationObject = objc_getAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler);
 	[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, nil, OBJC_ASSOCIATION_ASSIGN);
@@ -506,8 +514,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) textViewDidChange:(UITextView *)textView {
 
-	self.navigationItem.rightBarButtonItem.enabled = (BOOL)!![[self.contentTextView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
-	
 	NSString *capturedText = textView.text;
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
