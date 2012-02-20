@@ -844,11 +844,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil]] lastObject];	
 		
-		[cell.previewBadge configureWithPreview:latestPreview];
+		cell.previewBadge.preview = latestPreview;
 		
   } else {
 	
-		[cell.previewBadge configureWithPreview:nil];	//	?
+		cell.previewBadge.preview = nil;
 	
 	}
     

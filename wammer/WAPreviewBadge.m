@@ -21,19 +21,20 @@
 #ifndef __WAPreviewBadge__
 #define __WAPreviewBadge__
 
-typedef enum {
-	WAPreviewBadgeImageAndTextStyle = 0,
-	WAPreviewBadgeTextOnlyStyle,
-	WAPreviewBadgeImageOnlyStyle
-} WAPreviewBadgeStyle;
-
 #endif
 
 @interface WAPreviewBadge () {
 	BOOL needsTextUpdate;
 }
 
++ (WAPreviewBadgeStyle) suggestedStyleForPreview:(WAPreview *)aPreview;
+
 - (void) waSharedInit;
+
+@property (nonatomic, readwrite, retain) UIImage *image;
+@property (nonatomic, readwrite, retain) NSString *title;
+@property (nonatomic, readwrite, retain) NSString *text;
+@property (nonatomic, readwrite, retain) NSURL *link;
 
 @property (nonatomic, readwrite, retain) UIImageView *imageView;
 @property (nonatomic, readwrite, retain) IRLabel *label;
@@ -45,6 +46,7 @@ typedef enum {
 
 
 @implementation WAPreviewBadge
+@synthesize style;
 @synthesize image, title, text, link;
 @synthesize imageView, label;
 @synthesize titleFont, titleColor, textFont, textColor;
@@ -128,22 +130,42 @@ typedef enum {
 
 }
 
+- (WAPreviewBadgeStyle) suggestedStyle {
+
+	if (!self.title && !self.text && self.image)
+		return WAPreviewBadgeImageOnlyStyle;
+	
+	if ((self.title || self.text) && !self.image)
+		return WAPreviewBadgeTextOnlyStyle;
+			
+	return WAPreviewBadgeImageAndTextStyle;
+
+}
+
+- (void) setStyle:(WAPreviewBadgeStyle)newStyle {
+
+	if (style == newStyle)
+		return;
+	
+	[self willChangeValueForKey:@"style"];
+	style = newStyle;
+	[self didChangeValueForKey:@"style"];
+	
+	[self setNeedsLayout];
+
+}
+
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
 		
 	self.backgroundView.frame = self.bounds;
 	
-	WAPreviewBadgeStyle style = WAPreviewBadgeImageAndTextStyle;
+	WAPreviewBadgeStyle const usedStyle = (self.style != WAPreviewBadgeAutomaticStyle) ? self.style : [self suggestedStyle];
 	
-	if (!self.title && !self.text && self.image)
-		style = WAPreviewBadgeImageOnlyStyle;
-	else if ((self.title || self.text) && !self.image)
-		style = WAPreviewBadgeTextOnlyStyle;
-		
 	BOOL needsImageView = NO, needsLabel = NO;
 	
-	switch (style) {
+	switch (usedStyle) {
 		case WAPreviewBadgeImageAndTextStyle: {
 			needsImageView = YES;
 			needsLabel = YES;
@@ -194,7 +216,7 @@ typedef enum {
 	if (self.image)
 		self.imageView.image = self.image;
 	
-	switch (style) {
+	switch (usedStyle) {
 		case WAPreviewBadgeImageAndTextStyle: {
 		
 			CGRect usableRect = CGRectStandardize(UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 }));
@@ -278,16 +300,10 @@ typedef enum {
 	preview = [newPreview retain];
 	[self didChangeValueForKey:@"preview"];
 	
-	[self configureWithPreview:preview];
-
-}
-
-- (void) configureWithPreview:(WAPreview *)aPreview {
-
-	self.image = aPreview.graphElement.thumbnail;
-	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
-	self.title = aPreview.graphElement.title;
-	self.text = aPreview.graphElement.text;
+	self.image = preview.graphElement.thumbnail;
+	self.link = preview.graphElement.url ? [NSURL URLWithString:preview.graphElement.url] : nil;
+	self.title = preview.graphElement.title;
+	self.text = preview.graphElement.text;
 	
 	[self setNeedsTextUpdate];
 	[self setNeedsLayout];
