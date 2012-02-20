@@ -912,7 +912,7 @@
 		4BE690FF14EB68C6002B9790 /* previewHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewHighlight.png; path = Resources/previewHighlight.png; sourceTree = "<group>"; };
 		4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewHighlight@2x.png"; path = "Resources/previewHighlight@2x.png"; sourceTree = "<group>"; };
 		4BE6910114EB68C6002B9790 /* previewButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewButton@2x.png"; path = "Resources/previewButton@2x.png"; sourceTree = "<group>"; };
-		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
+		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
 		4BE6910F14EB8BD8002B9790 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete.png; path = Resources/delete.png; sourceTree = "<group>"; };
@@ -1448,21 +1448,9 @@
 		4B1527A313E29E8D006E9737 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */,
-				4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */,
-				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
-				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
-				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
+				FF6E168314F2EB6500AE1C05 /* Timeline */,
 				4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */,
 				4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */,
-				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
-				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
-				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
-				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
-				4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */,
-				4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */,
-				4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */,
-				4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */,
 				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
 				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
 				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
@@ -1716,6 +1704,23 @@
 				FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
+				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
+				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
+				4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */,
+				4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */,
+				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
+				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
+				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
+				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
+				4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */,
+			);
+			name = Timeline;
 			sourceTree = "<group>";
 		};
 		FF71D3F3140E09EF0069B161 /* Overview */ = {
@@ -2361,6 +2366,9 @@
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
+				4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */,
+				4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */,
+				4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */,
 			);
 			name = Composition;
 			path = wammer;
