@@ -17,13 +17,6 @@
 
 - (void) presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated {
 
-	BOOL needsOverride = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) && (self.parentViewController.modalViewController == self) && (self.modalPresentationStyle != UIModalPresentationFullScreen);
-	
-	if (!needsOverride) {
-		[super presentModalViewController:modalViewController animated:animated];
-		return;
-	}
-	
 	if (!animated || (modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
 		[super presentModalViewController:modalViewController animated:animated];
 		return;
@@ -71,20 +64,13 @@
 
 - (void) dismissModalViewControllerAnimated:(BOOL)animated {
 
-	BOOL needsOverride = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) && (self.parentViewController.modalViewController == self) && (self.modalPresentationStyle != UIModalPresentationFullScreen);
-	
-	if (!needsOverride) {
-		[super dismissModalViewControllerAnimated:animated];
-		return;
-	}
-
-	__block __typeof__(self) nrSelf = self;
-	
 	if (!animated || !self.modalViewController || (self.modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
 		[super dismissModalViewControllerAnimated:animated];
 		return;
 	}
   
+	__block __typeof__(self) nrSelf = self;
+	
   [CATransaction begin];
   
   CATransition *popTransition = [CATransition animation];
