@@ -11,17 +11,49 @@
 
 @interface WACompositionViewControllerPad ()
 
+@property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
+
 @end
 
+
 @implementation WACompositionViewControllerPad
+@synthesize imagePickerPopover;
 
-- (void) presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated {
+- (UIPopoverController *) imagePickerPopover {
 
-	if (!animated || (modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
-		[super presentModalViewController:modalViewController animated:animated];
-		return;
-	}
+	if (imagePickerPopover)
+		return imagePickerPopover;
+		
+	IRImagePickerController *picker = [[self newImagePickerController] autorelease];
 	
+	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
+	
+	return imagePickerPopover;
+
+}
+
+- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender {
+
+	@try {
+
+		[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+
+	} @catch (NSException *exception) {
+
+		[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+	
+	}
+
+}
+
+- (void) dismissImagePickerController:(IRImagePickerController *)controller {
+
+	[self.imagePickerPopover dismissPopoverAnimated:YES];
+
+}
+
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
+
 	__block __typeof__(self) nrSelf = self;
 	
 	void (^dismissalAnimation)() = ^ {
@@ -39,7 +71,7 @@
 					
     [[UIApplication sharedApplication] irBeginIgnoringStatusBarAppearanceRequests];
           
-		[nrSelf presentModalViewController:modalViewController animated:NO];
+		[nrSelf presentModalViewController:controller animated:NO];
 		
 		[[UIApplication sharedApplication].keyWindow.layer addAnimation:pushTransition forKey:kCATransition];
 		
@@ -62,13 +94,8 @@
 
 }
 
-- (void) dismissModalViewControllerAnimated:(BOOL)animated {
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
 
-	if (!animated || !self.modalViewController || (self.modalViewController.modalTransitionStyle != UIModalTransitionStyleCoverVertical)) {
-		[super dismissModalViewControllerAnimated:animated];
-		return;
-	}
-  
 	__block __typeof__(self) nrSelf = self;
 	
   [CATransaction begin];
@@ -84,8 +111,8 @@
 		[UIInterfaceOrientationLandscapeRight] = kCATransitionFromRight,
 	})[[UIApplication sharedApplication].statusBarOrientation];
 	
-	[nrSelf dismissModalViewControllerAnimated:NO];
-  
+	[controller dismissModalViewControllerAnimated:NO];
+	
   [[UIApplication sharedApplication] irEndIgnoringStatusBarAppearanceRequests];
 
   ((^{
@@ -98,9 +125,25 @@
   })());
 
 	[[UIApplication sharedApplication].keyWindow.layer addAnimation:popTransition forKey:kCATransition];
-  
+	
   [CATransaction commit];
     
+}
+
+- (void) viewDidUnload {
+
+	self.imagePickerPopover = nil;
+
+	[super viewDidUnload];
+
+}
+
+- (void) dealloc {
+
+	[imagePickerPopover release];
+	
+	[super dealloc];
+
 }
 
 @end

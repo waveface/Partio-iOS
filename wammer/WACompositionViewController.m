@@ -41,9 +41,6 @@
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
-@property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
-
-- (IRImagePickerController *) newImagePickerController NS_RETURNS_RETAINED;
 
 @property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
 
@@ -71,7 +68,7 @@
 @synthesize managedObjectContext, article;
 @synthesize containerView;
 @synthesize photosView, contentTextView, toolbar;
-@synthesize imagePickerPopover;
+
 @synthesize noPhotoReminderView;
 @synthesize completionBlock;
 @synthesize usesTransparentBackground;
@@ -191,7 +188,6 @@
 	
 	[managedObjectContext release];
 	[article release];
-	[imagePickerPopover release];
 	
 	[completionBlock release];
 	
@@ -214,7 +210,6 @@
 	self.contentTextView.delegate = nil;
 	self.contentTextView = nil;
 	self.toolbar = nil;
-	self.imagePickerPopover = nil;
 	self.noPhotoReminderViewElements = nil;
 	
 	self.previewBadge = nil;
@@ -375,7 +370,7 @@
 static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandler = @"kWACompositionViewWindowInterfaceBoundsNotificationHandler";
 
 - (void) viewWillAppear:(BOOL)animated {
-    
+
   [super viewWillAppear:animated];
   
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
@@ -414,7 +409,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	nil]];
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
+		
 		[self.contentTextView becomeFirstResponder];
+		
 	});
 	
 }	
@@ -924,41 +921,11 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
 	
 	__block __typeof__(self) nrSelf = self;
+
 	
 	NSMutableArray *availableActions = [NSMutableArray arrayWithObjects:
-	
-		[IRAction actionWithTitle:@"Photo Library" block: ^ {
-		
-			switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			
-				case UIUserInterfaceIdiomPad: {
-				
-					@try {
 
-						[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-				
-					} @catch (NSException *exception) {
-
-						[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
-					
-					}
-					
-					break;
-
-				}
-				
-				case UIUserInterfaceIdiomPhone:
-				default: {
-				
-					[self presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
-				
-					break;
-					
-				}
-			
-			}
-		
-		}],
+		[[self newPresentImagePickerControllerActionWithSender:sender] autorelease],
 		
 	nil];
 	
@@ -991,22 +958,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	}
 	
-	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear]) {
-	
-		[availableActions addObject:[IRAction actionWithTitle:@"Take Photo" block: ^ {
-		
-			IRImagePickerController *pickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
-				[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-			}];
-			
-			pickerController.usesAssetsLibrary = NO;
-			pickerController.savesCameraImageCapturesToSavedPhotos = YES;
-			
-			[nrSelf presentModalViewController:pickerController animated:YES];
-						
-		}]];
-		
-	}
+	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
+		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
 	
 	if ([availableActions count] == 1) {
 		
@@ -1024,41 +977,96 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 }
 
-- (UIPopoverController *) imagePickerPopover {
 
-	if (imagePickerPopover)
-		return imagePickerPopover;
-		
-	IRImagePickerController *picker = [[self newImagePickerController] autorelease];
+
+
+
+- (IRAction *) newPresentImagePickerControllerActionWithSender:(id)sender {
+
+	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(self) nrSender = sender;
 	
-	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
+	return [[IRAction actionWithTitle:@"Photo Library" block: ^ {
 	
-	return imagePickerPopover;
+		[nrSelf presentImagePickerController:[[nrSelf newImagePickerController] autorelease] sender:nrSender];
+	
+	}] retain];
 
 }
 
 - (IRImagePickerController *) newImagePickerController {
 
 	__block __typeof__(self) nrSelf = self;
-		
-	//	If you have a lot of stuff, but only in the saved photos album — no other albums exist, we will simply show 
-		
-	IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
 		[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-		
-		// Fixme: polyfill for posterity
-
-		if (nrSelf.modalViewController.parentViewController == nrSelf)
-			[nrSelf.modalViewController dismissModalViewControllerAnimated:YES];		
+		[nrSelf dismissImagePickerController:nrImagePickerController];
 		
 	}];
 	
-	imagePickerController.usesAssetsLibrary = NO;
+	nrImagePickerController.usesAssetsLibrary = NO;
 	
-	return [imagePickerController retain];
+	return [nrImagePickerController retain];
 
 }
+
+- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender {
+
+	[self presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
+
+}
+
+- (void) dismissImagePickerController:(IRImagePickerController *)controller {
+
+	[controller dismissModalViewControllerAnimated:YES];
+
+}
+
+- (IRAction *) newPresentCameraCaptureControllerActionWithSender:(id)sender {
+
+	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(self) nrSender = sender;
+		
+	return [[IRAction actionWithTitle:@"Take Photo" block: ^ {
+	
+		[nrSelf presentCameraCapturePickerController:[[nrSelf newCameraCapturePickerController] autorelease] sender:nrSender];
+	
+	}] retain];
+
+}
+
+- (IRImagePickerController *) newCameraCapturePickerController {
+
+	__block __typeof__(self) nrSelf = self;
+	
+	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+		
+		[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[nrSelf dismissCameraCapturePickerController:nrPickerController];
+		
+	}];
+	
+	nrPickerController.usesAssetsLibrary = NO;
+	nrPickerController.savesCameraImageCapturesToSavedPhotos = YES;
+	
+	return [nrPickerController retain];
+
+}
+
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
+		
+	[self presentModalViewController:controller animated:YES];
+
+}
+
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
+
+	[controller dismissModalViewControllerAnimated:YES];
+
+}
+
+
+
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
 	
@@ -1091,13 +1099,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		[stitchedFile.article didChangeValueForKey:@"fileOrder"];
 		
 	}
-	
-	if (self.modalViewController)
-		[self dismissModalViewControllerAnimated:YES];
-	
-	if ([imagePickerPopover isPopoverVisible])
-		[imagePickerPopover dismissPopoverAnimated:YES];
-	
+
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
