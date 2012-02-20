@@ -7,7 +7,25 @@
 //
 
 #import "WAPreview+WAAdditions.h"
+#import "WAOpenGraphElement+WAAdditions.h"
 
 @implementation WAPreview (WAAdditions)
+
++ (NSArray *) keyPathsForValuesAffectingThumbnail {
+
+	return [NSArray arrayWithObjects:
+		
+		@"graphElement",
+		
+	nil];
+
+}
+
+
+- (UIImage *) thumbnail {
+
+	return self.graphElement.thumbnail;
+
+}
 
 @end
