@@ -175,6 +175,10 @@
 			needsLabel = YES;
 			break;
 		}
+		case WAPreviewBadgeTextOverImageStyle: {
+			needsImageView = YES;
+			needsLabel = YES;
+		}
 	}
 	
 	if (needsImageView) {
@@ -279,6 +283,23 @@
 			self.label.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
 			break;
 			
+		}
+		
+		case WAPreviewBadgeTextOverImageStyle: {
+		
+			self.imageView.frame = self.bounds;
+			self.label.frame = self.bounds;
+			
+			[self bringSubviewToFront:self.label];
+			
+			break;
+		
+		}
+		
+		default: {
+		
+			NSParameterAssert(NO);
+		
 		}
 		
 	}

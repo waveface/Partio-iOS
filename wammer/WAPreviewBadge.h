@@ -18,6 +18,8 @@ enum {
 	WAPreviewBadgeTextOnlyStyle,
 	WAPreviewBadgeImageOnlyStyle,
 	
+	WAPreviewBadgeTextOverImageStyle,
+	
 	WAPreviewBadgeDefaultStyle = WAPreviewBadgeAutomaticStyle
 	
 }; typedef NSUInteger WAPreviewBadgeStyle;
