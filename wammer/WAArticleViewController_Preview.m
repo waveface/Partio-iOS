@@ -48,6 +48,8 @@ enum {
 - (UIView *) wrappedView;
 - (void) updateWrapperView;
 
+- (void) updateWebViewBarButtonItems;
+
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) UIView *previewBadgeWrapper;
 

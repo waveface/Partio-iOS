@@ -9,7 +9,7 @@
 #import "WADefines.h"
 
 #import "WAPostViewControllerPhone.h"
-#import "WAComposeViewControllerPhone.h"
+
 #import "WADataStore.h"
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"

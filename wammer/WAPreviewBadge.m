@@ -34,6 +34,9 @@
 @property (nonatomic, readwrite, assign) BOOL needsTextUpdate;
 
 - (void) updateText;
+- (void) setNeedsTextUpdate;
+
+@property (nonatomic, readwrite, assign) id nrLastObservedGraphElement;
 
 @end
 
@@ -47,6 +50,7 @@
 @synthesize minimumAcceptibleFullFrameAspectRatio;
 @synthesize preview;
 @synthesize needsTextUpdate;
+@synthesize nrLastObservedGraphElement;
 
 - (id) initWithFrame:(CGRect)frame {
 	
@@ -335,9 +339,10 @@
 
 	[self willChangeValueForKey:@"preview"];
 	
-	[preview.graphElement removeObserver:self forKeyPath:@"thumbnail"];
+	[preview removeObserver:self forKeyPath:@"thumbnail"];
+	[newPreview addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	
 	[preview release];
-	[newPreview.graphElement addObserver:self forKeyPath:@"thumbnail" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
 	preview = [newPreview retain];
 	
 	[self didChangeValueForKey:@"preview"];
@@ -525,13 +530,15 @@
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
-	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, keyPath, object, change, context);
+	if (object == self.preview)
+	if ([change objectForKey:NSKeyValueChangeNewKey])
+		self.image = self.preview.thumbnail;
 
 }
 
 - (void) dealloc {
 
-	[preview.graphElement removeObserver:self forKeyPath:@"thumbnail"];
+	[preview removeObserver:self forKeyPath:@"thumbnail"];
 	[preview release];
 
 	[image release];

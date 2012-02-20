@@ -24,7 +24,6 @@
 
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
-#import "WAComposeViewControllerPhone.h"
 
 #import "WAGalleryViewController.h"
 #import "WAPulldownRefreshView.h"
