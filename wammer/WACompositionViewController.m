@@ -937,6 +937,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 					
 					}
 
+					break;
+
 				}
 				
 				case UIUserInterfaceIdiomPhone:
