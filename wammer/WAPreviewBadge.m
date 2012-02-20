@@ -12,22 +12,12 @@
 #import "WAPreviewBadge.h"
 #import "WAImageView.h"
 
-#import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
 
-#ifndef __WAPreviewBadge__
-#define __WAPreviewBadge__
-
-#endif
-
-@interface WAPreviewBadge () {
-	BOOL needsTextUpdate;
-}
-
-+ (WAPreviewBadgeStyle) suggestedStyleForPreview:(WAPreview *)aPreview;
+@interface WAPreviewBadge ()
 
 - (void) waSharedInit;
 
@@ -36,10 +26,13 @@
 @property (nonatomic, readwrite, retain) NSString *text;
 @property (nonatomic, readwrite, retain) NSURL *link;
 
+- (WAPreviewBadgeStyle) suggestedStyle;
+
 @property (nonatomic, readwrite, retain) UIImageView *imageView;
 @property (nonatomic, readwrite, retain) IRLabel *label;
 
-- (void) setNeedsTextUpdate;
+@property (nonatomic, readwrite, assign) BOOL needsTextUpdate;
+
 - (void) updateText;
 
 @end
@@ -53,6 +46,7 @@
 @synthesize backgroundView;
 @synthesize minimumAcceptibleFullFrameAspectRatio;
 @synthesize preview;
+@synthesize needsTextUpdate;
 
 - (id) initWithFrame:(CGRect)frame {
 	
