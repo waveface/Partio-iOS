@@ -14,7 +14,7 @@
 #import "IRTransparentToolbar.h"
 
 
-@class IRImagePickerController, IRAction;
+@class IRImagePickerController, IRAction, WAArticle;
 
 @interface WACompositionViewController : UIViewController
 
@@ -34,11 +34,8 @@
 
 @property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
 
-- (IRImagePickerController *) newImagePickerController NS_RETURNS_RETAINED;
-- (IRImagePickerController *) newCameraCapturePickerController NS_RETURNS_RETAINED;
-
-- (IRAction *) newPresentImagePickerControllerActionWithSender:(id)sender NS_RETURNS_RETAINED;
-- (IRAction *) newPresentCameraCaptureControllerActionWithSender:(id)sender NS_RETURNS_RETAINED;
+@property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readonly, retain) WAArticle *article;
 
 @end
 
@@ -47,10 +44,8 @@
 
 - (IBAction) handlePreviewBadgeTap:(id)sender;
 
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender;
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender;
-
-- (void) dismissImagePickerController:(IRImagePickerController *)controller;
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller;
-
 @end
+
+
+#import "WACompositionViewController+CustomUI.h"
+#import "WACompositionViewController+ImageHandling.h"

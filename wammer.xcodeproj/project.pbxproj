@@ -209,6 +209,7 @@
 		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
 		FF80504C149E1157000AE0F3 /* WADateBadgeBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */; };
 		FF80504D149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */; };
+		FF84037514F2C2EE00200C98 /* WACompositionViewController+ImageHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */; };
 		FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA49149CF46D00B8207A /* Cocoa.framework */; };
 		FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4A149CF46D00B8207A /* CoreAudio.framework */; };
 		FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4B149CF46D00B8207A /* CoreData.framework */; };
@@ -1136,6 +1137,8 @@
 		FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+DeprecatedNonfunctional.m"; sourceTree = "<group>"; };
 		FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADateBadgeBackdrop.png; path = Resources/WADateBadgeBackdrop.png; sourceTree = "<group>"; };
 		FF80504B149E1157000AE0F3 /* WADateBadgeBackdrop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WADateBadgeBackdrop@2x.png"; path = "Resources/WADateBadgeBackdrop@2x.png"; sourceTree = "<group>"; };
+		FF84037314F2C2ED00200C98 /* WACompositionViewController+ImageHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+ImageHandling.h"; sourceTree = "<group>"; };
+		FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACompositionViewController+ImageHandling.m"; sourceTree = "<group>"; };
 		FF878BBC13FA6F8700B76807 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
 		FF878C0713FA730100B76807 /* WAGalleryImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageView.m; sourceTree = "<group>"; };
@@ -2349,6 +2352,8 @@
 				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
 				FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */,
 				FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */,
+				FF84037314F2C2ED00200C98 /* WACompositionViewController+ImageHandling.h */,
+				FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */,
 				FF7D12F214F26D7D007EF2B7 /* WACompositionViewControllerPad.h */,
 				FF7D12F314F26D7D007EF2B7 /* WACompositionViewControllerPad.m */,
 				FF7D12F514F26DB2007EF2B7 /* WACompositionViewControllerPhone.h */,
@@ -3352,6 +3357,7 @@
 				4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */,
 				FF7D12F414F26D7D007EF2B7 /* WACompositionViewControllerPad.m in Sources */,
 				FF7D12F714F26DB2007EF2B7 /* WACompositionViewControllerPhone.m in Sources */,
+				FF84037514F2C2EE00200C98 /* WACompositionViewController+ImageHandling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
