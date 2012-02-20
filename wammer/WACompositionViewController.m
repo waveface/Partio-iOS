@@ -7,34 +7,22 @@
 //
 
 #import "WACompositionViewController.h"
+
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+#import "AssetsLibrary+IRAdditions.h"
+
+#import "IRTextAttributor.h"
+
+#import "WADefines.h"
 #import "WADataStore.h"
-#import "IRImagePickerController.h"
-#import "IRConcaveView.h"
-#import "IRActionSheetController.h"
-#import "IRActionSheet.h"
+#import "WARemoteInterface.h"
+
 #import "WACompositionViewPhotoCell.h"
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
-#import "IRLifetimeHelper.h"
-#import "IRBarButtonItem.h"
-
-#import "UIWindow+IRAdditions.h"
-#import "WADefines.h"
-
-#import "AssetsLibrary+IRAdditions.h"
-#import "IRTextAttributor.h"
-
-#import "UIView+IRAdditions.h"
-
 #import "WAViewController.h"
-
-#import "WARemoteInterface.h"
-
 #import "WAPreviewBadge.h"
-
-#import "UIViewController+IRAdditions.h"
-
-#import "UIApplication+IRAdditions.h"
 
 
 @interface WACompositionViewController () <AQGridViewDelegate, AQGridViewDataSource, UITextViewDelegate, IRTextAttributorDelegate>
@@ -56,6 +44,8 @@
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
+
+- (IRAction *) newDebugFullscreenVCAction;
 
 @end
 
@@ -917,45 +907,16 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
 	
 	__block __typeof__(self) nrSelf = self;
-
 	
-	NSMutableArray *availableActions = [NSMutableArray arrayWithObjects:
-
-		[[self newPresentImagePickerControllerActionWithSender:sender] autorelease],
-		
-	nil];
+	NSMutableArray *availableActions = [NSMutableArray array]; 
 	
-	if (WAAdvancedFeaturesEnabled()) {
-	
-		[availableActions addObject:[IRAction actionWithTitle:@"Faux View Controller" block:^ {
-		
-			WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
-			testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
-				return YES;
-			};
-			testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
-				[nrSelf dismissModalViewControllerAnimated:YES];
-			}];
-			
-			testVC.onViewWillAppear = ^ (WAViewController *self) {
-				[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-			};
-			
-			testVC.onViewWillDisappear = ^ (WAViewController *self) {
-				[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-			};
-			
-			UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
-			navC.modalPresentationStyle = UIModalPresentationFullScreen;
-			
-			[self presentModalViewController:navC animated:YES];
-			
-		}]];
-	
-	}
+	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];
 	
 	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
 		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
+	
+	if (WAAdvancedFeaturesEnabled())
+		[availableActions addObject: [[self newDebugFullscreenVCAction] autorelease]];
 	
 	if ([availableActions count] == 1) {
 		
@@ -977,6 +938,37 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
   
 	return YES;
 	
+}
+
+- (IRAction *) newDebugFullscreenVCAction {
+
+	__block __typeof__(self) nrSelf = self;
+
+	return [[IRAction actionWithTitle:@"Faux View Controller" block:^ {
+
+		WAViewController *testVC = [[[WAViewController alloc] init] autorelease];
+		testVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation anOrientation) {
+			return YES;
+		};
+		testVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"Dismiss" action:^{
+			[nrSelf dismissModalViewControllerAnimated:YES];
+		}];
+		
+		testVC.onViewWillAppear = ^ (WAViewController *self) {
+			[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+		};
+		
+		testVC.onViewWillDisappear = ^ (WAViewController *self) {
+			[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+		};
+		
+		UINavigationController *navC = [[[UINavigationController alloc] initWithRootViewController:testVC] autorelease];
+		navC.modalPresentationStyle = UIModalPresentationFullScreen;
+		
+		[nrSelf presentModalViewController:navC animated:YES];
+		
+	}] retain];
+
 }
 
 @end
