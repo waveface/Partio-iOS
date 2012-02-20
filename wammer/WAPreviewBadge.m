@@ -284,6 +284,7 @@
 			self.imageView.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
 			self.label.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
 			break;
+			
 		}
 		
 	}
@@ -340,19 +341,12 @@
 						
 			NSMutableAttributedString *titleAttributedString = [[[NSMutableAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease];
 
-			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
 			[realContentString appendAttributedString:titleAttributedString];
 			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
-			
-			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n \n" attributes:[NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:12.0f] color:nil]] autorelease]];			
 
 		}
 		
 		if (self.text) {
-			
-//			CTParagraphStyleRef textParagraphStyle = paragraphStyleForLineHeight(18.0f);
-//			contentAttributes = [contentAttributes irDictionaryBySettingObject:(id)textParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
-//			CFRelease(textParagraphStyle);
 			
 			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.text attributes:contentAttributes] autorelease]];
 			
