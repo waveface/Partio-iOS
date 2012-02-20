@@ -7,11 +7,18 @@
 //
 
 #import "WACompositionViewControllerPhone.h"
+#import "UIKit+IRAdditions.h"
 
 @interface WACompositionViewControllerPhone ()
 
 @end
 
 @implementation WACompositionViewControllerPhone
+
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
+
+	[super presentCameraCapturePickerController:controller sender:sender];
+
+}
 
 @end

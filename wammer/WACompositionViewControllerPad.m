@@ -12,32 +12,48 @@
 @interface WACompositionViewControllerPad ()
 
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
+@property (nonatomic, readwrite, retain) UIButton *imagePickerPopoverPresentingSender;
+@property (nonatomic, readwrite, assign) CGRect lastAdjustedInterfaceBounds;
 
 @end
 
 
 @implementation WACompositionViewControllerPad
-@synthesize imagePickerPopover;
+@synthesize imagePickerPopover, imagePickerPopoverPresentingSender, lastAdjustedInterfaceBounds;
 
-- (UIPopoverController *) imagePickerPopover {
+- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds {
 
-	if (imagePickerPopover)
-		return imagePickerPopover;
+	[super adjustContainerViewWithInterfaceBounds:newBounds];
+	
+	if (!CGRectEqualToRect(self.lastAdjustedInterfaceBounds, newBounds))
+	if ([imagePickerPopover isPopoverVisible]) {
 		
-	IRImagePickerController *picker = [[self newImagePickerController] autorelease];
+		//	[UIView animateWithDuration:5.0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
+		//		
+		//		[self presentImagePickerController:(IRImagePickerController *)imagePickerPopover.contentViewController sender:self.imagePickerPopoverPresentingSender];
+		//		
+		//	} completion:nil];
+		
+	}
 	
-	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
-	
-	return imagePickerPopover;
+	self.lastAdjustedInterfaceBounds = newBounds;
 
 }
 
 - (void) presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender {
 
 	@try {
-
-		[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-
+	
+		self.imagePickerPopover.contentViewController = controller;
+	
+		if (!self.imagePickerPopover)
+			self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:controller] autorelease];
+					
+		if (!self.imagePickerPopoverPresentingSender)
+			self.imagePickerPopoverPresentingSender = sender;
+	
+		[self.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionDown animated:NO];
+				
 	} @catch (NSException *exception) {
 
 		[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
@@ -48,6 +64,8 @@
 
 - (void) dismissImagePickerController:(IRImagePickerController *)controller {
 
+	self.imagePickerPopoverPresentingSender = nil;
+
 	[self.imagePickerPopover dismissPopoverAnimated:YES];
 
 }
@@ -55,8 +73,24 @@
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
 
 	__block __typeof__(self) nrSelf = self;
+	__block __typeof__(controller) nrController = controller;
 	
-	void (^dismissalAnimation)() = ^ {
+	controller.showsCameraControls = NO;
+	controller.onViewDidAppear = ^ (BOOL animated) {
+		
+//		[nrController retain];
+//		
+//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+			
+			nrController.showsCameraControls = YES;
+      nrController.view.frame = [nrController.view.window convertRect:[nrController.view.window.screen applicationFrame] fromWindow:nil];
+//			[nrController autorelease];
+//		
+//		});
+		
+	};
+	
+	void (^animation)() = ^ {
 
 		CATransition *pushTransition = [CATransition animation];
 		pushTransition.type = kCATransitionMoveIn;
@@ -84,11 +118,11 @@
 		[firstResponder resignFirstResponder];
 		double delayInSeconds = 0.15;
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-		dispatch_after(popTime, dispatch_get_main_queue(), dismissalAnimation);
+		dispatch_after(popTime, dispatch_get_main_queue(), animation);
 		
 	} else {
 	
-		dismissalAnimation();
+		animation();
 		
 	}
 
@@ -96,8 +130,6 @@
 
 - (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
 
-	__block __typeof__(self) nrSelf = self;
-	
   [CATransaction begin];
   
   CATransition *popTransition = [CATransition animation];

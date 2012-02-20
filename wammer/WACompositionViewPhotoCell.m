@@ -50,6 +50,7 @@
 	self.contentView.backgroundColor = nil;
 	self.selectionStyle = AQGridViewCellSelectionStyleNone;
 	self.contentView.layer.shouldRasterize = YES;
+	self.contentView.layer.rasterizationScale = [UIScreen mainScreen].scale;
 	
 	self.contentView.clipsToBounds = NO;
 	
