@@ -65,7 +65,7 @@
 	NSParameterAssert([postIdentifiers count]);
 	NSParameterAssert(aGroupIdentifier);
 
-	[self.engine fireAPIRequestNamed:@"footprints/getLastScan" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	[self.engine fireAPIRequestNamed:@"footprints/getLastRead" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		aGroupIdentifier, @"group_id",
 		[postIdentifiers JSONString], @"post_id_array",
@@ -93,7 +93,7 @@
 
 	NSParameterAssert([postIdentifiers count]);
 	NSParameterAssert(aGroupIdentifier);
-	
+		
 	postIdentifiers = [postIdentifiers irMap: ^ (NSString *anIdentifier, NSUInteger index, BOOL *stop) {
 		return [NSDictionary dictionaryWithObject:anIdentifier forKey:@"post_id"];
 	}];
