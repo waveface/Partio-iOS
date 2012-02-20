@@ -13,6 +13,8 @@
 
 - (void) retrieveLastScannedPostInGroup:(NSString *)anIdentifier onSuccess:(void(^)(NSString *lastScannedPostIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
+	NSParameterAssert(anIdentifier);
+	
 	[self.engine fireAPIRequestNamed:@"footprints/getLastScan" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		anIdentifier, @"group_id",
@@ -29,6 +31,8 @@
 }
 
 - (void) updateLastScannedPostInGroup:(NSString *)aGroupIdentifier withPost:(NSString *)aPostIdentifier onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	NSParameterAssert(aGroupIdentifier);
 
 	[self.engine fireAPIRequestNamed:@"footprints/setLastScan" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -59,6 +63,7 @@
 - (void) retrieveLastReadInfoForPosts:(NSArray *)postIdentifiers inGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSDictionary *lastReadPostIdentifiersToTimestamps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSParameterAssert([postIdentifiers count]);
+	NSParameterAssert(aGroupIdentifier);
 
 	[self.engine fireAPIRequestNamed:@"footprints/getLastScan" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -87,6 +92,7 @@
 - (void) updateLastReadInfoForPosts:(NSArray *)postIdentifiers inGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSParameterAssert([postIdentifiers count]);
+	NSParameterAssert(aGroupIdentifier);
 	
 	postIdentifiers = [postIdentifiers irMap: ^ (NSString *anIdentifier, NSUInteger index, BOOL *stop) {
 		return [NSDictionary dictionaryWithObject:anIdentifier forKey:@"post_id"];
