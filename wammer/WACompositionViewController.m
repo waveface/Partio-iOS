@@ -402,7 +402,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	objc_setAssociatedObject(self, &kWACompositionViewWindowInterfaceBoundsNotificationHandler, notificationObject, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
 	
 	dispatch_async(dispatch_get_main_queue(), ^{
