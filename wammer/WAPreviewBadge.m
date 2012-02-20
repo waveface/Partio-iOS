@@ -34,6 +34,7 @@
 @property (nonatomic, readwrite, assign) BOOL needsTextUpdate;
 
 - (void) updateText;
+- (void) setNeedsTextUpdate;
 
 @end
 
