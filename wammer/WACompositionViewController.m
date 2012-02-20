@@ -43,6 +43,8 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 
+- (IRImagePickerController *) newImagePickerController NS_RETURNS_RETAINED;
+
 @property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
 
 - (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind;
@@ -844,13 +846,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
         self.completionBlock(nil);
     
     }];
-		
-		IRAction *cancelAction = nil;
-		
-		if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
-			cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling stuff") block:nil];
-  
-    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
+		  
+    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
       saveAsDraftAction,
     nil]];
     
@@ -884,13 +881,30 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 		[IRAction actionWithTitle:@"Photo Library" block: ^ {
 		
-			@try {
+			switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			
+				case UIUserInterfaceIdiomPad: {
+				
+					@try {
 
-				[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
-    
-			} @catch (NSException *exception) {
+						[nrSelf.imagePickerPopover presentPopoverFromRect:sender.bounds inView:sender permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:YES];
+				
+					} @catch (NSException *exception) {
 
-				[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+						[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+					
+					}
+
+				}
+				
+				case UIUserInterfaceIdiomPhone:
+				default: {
+				
+					[self presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
+				
+					break;
+					
+				}
 			
 			}
 		
@@ -965,21 +979,34 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (imagePickerPopover)
 		return imagePickerPopover;
 		
-	__block __typeof__(self) nrSelf = self;
+	IRImagePickerController *picker = [[self newImagePickerController] autorelease];
 	
+	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:picker] autorelease];
+	
+	return imagePickerPopover;
+
+}
+
+- (IRImagePickerController *) newImagePickerController {
+
+	__block __typeof__(self) nrSelf = self;
+		
 	//	If you have a lot of stuff, but only in the saved photos album — no other albums exist, we will simply show 
 		
 	IRImagePickerController *imagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
 		[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
 		
+		// Fixme: polyfill for posterity
+
+		if (nrSelf.modalViewController.parentViewController == nrSelf)
+			[nrSelf.modalViewController dismissModalViewControllerAnimated:YES];		
+		
 	}];
 	
 	imagePickerController.usesAssetsLibrary = NO;
 	
-	self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:imagePickerController] autorelease];
-	
-	return imagePickerPopover;
+	return [imagePickerController retain];
 
 }
 

@@ -100,7 +100,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			NSUInteger fileIndex = [returnedController.article.fileOrder indexOfObject:preferredObjectURI];
 			if (fileIndex != NSNotFound) {
 			
-				//	FIXME: Actually fix IRPaginatedView.  We have copied this hack.
+				//		FIXME: Actually fix IRPaginatedView.  We have copied this hack.
 
 				[returnedController.paginatedView layoutSubviews];
 				[returnedController.paginatedView scrollToPageAtIndex:fileIndex animated:NO];

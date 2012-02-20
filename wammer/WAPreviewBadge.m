@@ -12,45 +12,41 @@
 #import "WAPreviewBadge.h"
 #import "WAImageView.h"
 
-#import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
 
-#ifndef __WAPreviewBadge__
-#define __WAPreviewBadge__
-
-typedef enum {
-	WAPreviewBadgeImageAndTextStyle = 0,
-	WAPreviewBadgeTextOnlyStyle,
-	WAPreviewBadgeImageOnlyStyle
-} WAPreviewBadgeStyle;
-
-#endif
-
-@interface WAPreviewBadge () {
-	BOOL needsTextUpdate;
-}
+@interface WAPreviewBadge ()
 
 - (void) waSharedInit;
+
+@property (nonatomic, readwrite, retain) UIImage *image;
+@property (nonatomic, readwrite, retain) NSString *title;
+@property (nonatomic, readwrite, retain) NSString *text;
+@property (nonatomic, readwrite, retain) NSURL *link;
+
+- (WAPreviewBadgeStyle) suggestedStyle;
 
 @property (nonatomic, readwrite, retain) UIImageView *imageView;
 @property (nonatomic, readwrite, retain) IRLabel *label;
 
-- (void) setNeedsTextUpdate;
+@property (nonatomic, readwrite, assign) BOOL needsTextUpdate;
+
 - (void) updateText;
 
 @end
 
 
 @implementation WAPreviewBadge
+@synthesize style;
 @synthesize image, title, text, link;
 @synthesize imageView, label;
 @synthesize titleFont, titleColor, textFont, textColor;
 @synthesize backgroundView;
 @synthesize minimumAcceptibleFullFrameAspectRatio;
 @synthesize preview;
+@synthesize needsTextUpdate;
 
 - (id) initWithFrame:(CGRect)frame {
 	
@@ -128,22 +124,42 @@ typedef enum {
 
 }
 
+- (WAPreviewBadgeStyle) suggestedStyle {
+
+	if (!self.title && !self.text && self.image)
+		return WAPreviewBadgeImageOnlyStyle;
+	
+	if ((self.title || self.text) && !self.image)
+		return WAPreviewBadgeTextOnlyStyle;
+			
+	return WAPreviewBadgeImageAndTextStyle;
+
+}
+
+- (void) setStyle:(WAPreviewBadgeStyle)newStyle {
+
+	if (style == newStyle)
+		return;
+	
+	[self willChangeValueForKey:@"style"];
+	style = newStyle;
+	[self didChangeValueForKey:@"style"];
+	
+	[self setNeedsLayout];
+
+}
+
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
 		
 	self.backgroundView.frame = self.bounds;
 	
-	WAPreviewBadgeStyle style = WAPreviewBadgeImageAndTextStyle;
+	WAPreviewBadgeStyle const usedStyle = (self.style != WAPreviewBadgeAutomaticStyle) ? self.style : [self suggestedStyle];
 	
-	if (!self.title && !self.text && self.image)
-		style = WAPreviewBadgeImageOnlyStyle;
-	else if ((self.title || self.text) && !self.image)
-		style = WAPreviewBadgeTextOnlyStyle;
-		
 	BOOL needsImageView = NO, needsLabel = NO;
 	
-	switch (style) {
+	switch (usedStyle) {
 		case WAPreviewBadgeImageAndTextStyle: {
 			needsImageView = YES;
 			needsLabel = YES;
@@ -159,6 +175,10 @@ typedef enum {
 			needsLabel = YES;
 			break;
 		}
+		case WAPreviewBadgeTextOverImageStyle: {
+			needsImageView = YES;
+			needsLabel = YES;
+		}
 	}
 	
 	if (needsImageView) {
@@ -166,6 +186,7 @@ typedef enum {
 			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
 			self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 			self.imageView.clipsToBounds = YES;
+			
 			[self addSubview:self.imageView];
 		}
 	} else {
@@ -194,7 +215,7 @@ typedef enum {
 	if (self.image)
 		self.imageView.image = self.image;
 	
-	switch (style) {
+	switch (usedStyle) {
 		case WAPreviewBadgeImageAndTextStyle: {
 		
 			CGRect usableRect = CGRectStandardize(UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 }));
@@ -262,6 +283,45 @@ typedef enum {
 			self.imageView.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
 			self.label.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
 			break;
+			
+		}
+		
+		case WAPreviewBadgeTextOverImageStyle: {
+		
+			self.imageView.frame = self.bounds;
+			
+			if (![self.imageView.subviews count]) {
+			
+				UIView *overlay = [[[UIView alloc] initWithFrame:self.imageView.bounds] autorelease];
+				overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+				overlay.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+				
+				[self.imageView addSubview:overlay];
+			
+			}
+			
+			CGRect usableLabelFrame = CGRectInset(self.bounds, 16, 12);
+			
+			self.label.frame = usableLabelFrame;
+			self.label.backgroundColor = nil;
+			
+			self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+			
+			self.titleFont = [UIFont boldSystemFontOfSize:24.0f];
+			self.titleColor = [UIColor whiteColor];
+			self.textFont = [UIFont systemFontOfSize:18.0f];
+			self.textColor = [UIColor whiteColor];
+			
+			[self bringSubviewToFront:self.label];
+			
+			break;
+		
+		}
+		
+		default: {
+		
+			NSParameterAssert(NO);
+		
 		}
 		
 	}
@@ -278,19 +338,116 @@ typedef enum {
 	preview = [newPreview retain];
 	[self didChangeValueForKey:@"preview"];
 	
-	[self configureWithPreview:preview];
-
-}
-
-- (void) configureWithPreview:(WAPreview *)aPreview {
-
-	self.image = aPreview.graphElement.thumbnail;
-	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
-	self.title = aPreview.graphElement.title;
-	self.text = aPreview.graphElement.text;
+	self.image = preview.graphElement.thumbnail;
+	self.link = preview.graphElement.url ? [NSURL URLWithString:preview.graphElement.url] : nil;
+	self.title = preview.graphElement.title;
+	self.text = preview.graphElement.text;
 	
 	[self setNeedsTextUpdate];
 	[self setNeedsLayout];
+
+}
+
+- (void) setTitle:(NSString *)newTitle {
+
+	if (title == newTitle)
+		return;
+
+	[self willChangeValueForKey:@"title"];
+	
+	[title release];
+	title = [newTitle retain];
+	
+	[self didChangeValueForKey:@"title"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTitleColor:(UIColor *)newTitleColor {
+
+	if (titleColor == newTitleColor)
+		return;
+
+	[self willChangeValueForKey:@"titleColor"];
+	
+	[titleColor release];
+	titleColor = [newTitleColor retain];
+	
+	[self didChangeValueForKey:@"titleColor"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTitleFont:(UIFont *)newTitleFont {
+
+	if (titleFont == newTitleFont)
+		return;
+		
+	[self willChangeValueForKey:@"titleFont"];
+	
+	[titleFont release];
+	titleFont = [newTitleFont retain];
+	
+	[self didChangeValueForKey:@"titleFont"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setText:(NSString *)newText {
+
+	if (text == newText)
+		return;
+	
+	[self willChangeValueForKey:@"text"];
+	
+	[text release];
+	text = [newText retain];
+	
+	[self didChangeValueForKey:@"text"];
+	
+//	Label. A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type. Examples are “Add” or “Play.”
+//	Hint. A brief, localized phrase that describes the results of an action on an element. Examples are “Adds a title” or “Opens the shopping list.”
+//	Value. The current value of an element, when the value is not represented by the label. For example, the label for a slider might be “Speed,” but its current value might be “50%.”
+	self.accessibilityLabel = @"Preview Badge";
+	self.accessibilityHint = aPreview.graphElement.title;
+	self.accessibilityValue = aPreview.graphElement.text;
+	
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTextColor:(UIColor *)newTextColor {
+
+	if (textColor == newTextColor)
+		return;
+	
+	[self willChangeValueForKey:@"textColor"];
+	
+	[textColor release];
+	textColor = [newTextColor retain];
+	
+	[self didChangeValueForKey:@"textColor"];
+
+	[self setNeedsTextUpdate];
+
+}
+
+- (void) setTextFont:(UIFont *)newTextFont {
+
+	if (textFont == newTextFont)
+		return;
+	
+	[self willChangeValueForKey:@"textFont"];
+	
+	[textFont release];
+	textFont = [newTextFont retain];
+	
+	[self didChangeValueForKey:@"textFont"];
+
+	[self setNeedsTextUpdate];
 
 }
 
@@ -324,19 +481,12 @@ typedef enum {
 						
 			NSMutableAttributedString *titleAttributedString = [[[NSMutableAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease];
 
-			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
 			[realContentString appendAttributedString:titleAttributedString];
 			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:nil] autorelease]];
-			
-			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n \n" attributes:[NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:12.0f] color:nil]] autorelease]];			
 
 		}
 		
 		if (self.text) {
-			
-//			CTParagraphStyleRef textParagraphStyle = paragraphStyleForLineHeight(18.0f);
-//			contentAttributes = [contentAttributes irDictionaryBySettingObject:(id)textParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
-//			CFRelease(textParagraphStyle);
 			
 			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.text attributes:contentAttributes] autorelease]];
 			
