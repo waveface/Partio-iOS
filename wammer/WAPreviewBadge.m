@@ -343,6 +343,10 @@
 	self.title = preview.graphElement.title;
 	self.text = preview.graphElement.text;
 	
+	self.accessibilityLabel = @"Preview Badge";
+	self.accessibilityHint = preview.graphElement.title;
+	self.accessibilityValue = preview.graphElement.text;
+	
 	[self setNeedsTextUpdate];
 	[self setNeedsLayout];
 
@@ -407,14 +411,7 @@
 	text = [newText retain];
 	
 	[self didChangeValueForKey:@"text"];
-	
-//	Label. A short, localized word or phrase that succinctly describes the control or view, but does not identify the element’s type. Examples are “Add” or “Play.”
-//	Hint. A brief, localized phrase that describes the results of an action on an element. Examples are “Adds a title” or “Opens the shopping list.”
-//	Value. The current value of an element, when the value is not represented by the label. For example, the label for a slider might be “Speed,” but its current value might be “50%.”
-	self.accessibilityLabel = @"Preview Badge";
-	self.accessibilityHint = aPreview.graphElement.title;
-	self.accessibilityValue = aPreview.graphElement.text;
-	
+		
 	[self setNeedsTextUpdate];
 
 }
