@@ -76,8 +76,8 @@
 		4BE6910514EB68C6002B9790 /* previewHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FF14EB68C6002B9790 /* previewHighlight.png */; };
 		4BE6910614EB68C6002B9790 /* previewHighlight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */; };
 		4BE6910714EB68C6002B9790 /* previewButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910114EB68C6002B9790 /* previewButton@2x.png */; };
-		4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */; };
-		4BE6910E14EB8159002B9790 /* WAPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */; };
+		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
+		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BE6911314EB8BD8002B9790 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910F14EB8BD8002B9790 /* delete.png */; };
 		4BE6911414EB8BD8002B9790 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911014EB8BD8002B9790 /* delete@2x.png */; };
 		4BE6911514EB8BD8002B9790 /* deletepressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6911114EB8BD8002B9790 /* deletepressed.png */; };
@@ -912,9 +912,9 @@
 		4BE690FF14EB68C6002B9790 /* previewHighlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewHighlight.png; path = Resources/previewHighlight.png; sourceTree = "<group>"; };
 		4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewHighlight@2x.png"; path = "Resources/previewHighlight@2x.png"; sourceTree = "<group>"; };
 		4BE6910114EB68C6002B9790 /* previewButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewButton@2x.png"; path = "Resources/previewButton@2x.png"; sourceTree = "<group>"; };
-		4BE6910A14EB8159002B9790 /* WAPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewViewController.h; sourceTree = "<group>"; };
-		4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewViewController.m; sourceTree = "<group>"; };
-		4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewViewController.xib; sourceTree = "<group>"; };
+		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
+		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
+		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
 		4BE6910F14EB8BD8002B9790 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = delete.png; path = Resources/delete.png; sourceTree = "<group>"; };
 		4BE6911014EB8BD8002B9790 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "delete@2x.png"; path = "Resources/delete@2x.png"; sourceTree = "<group>"; };
 		4BE6911114EB8BD8002B9790 /* deletepressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = deletepressed.png; path = Resources/deletepressed.png; sourceTree = "<group>"; };
@@ -1460,9 +1460,9 @@
 				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
 				4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */,
 				4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */,
-				4BE6910A14EB8159002B9790 /* WAPreviewViewController.h */,
-				4BE6910B14EB8159002B9790 /* WAPreviewViewController.m */,
-				4BE6910C14EB8159002B9790 /* WAPreviewViewController.xib */,
+				4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */,
+				4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */,
+				4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */,
 				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
 				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
 				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
@@ -3029,7 +3029,7 @@
 				4BE6910514EB68C6002B9790 /* previewHighlight.png in Resources */,
 				4BE6910614EB68C6002B9790 /* previewHighlight@2x.png in Resources */,
 				4BE6910714EB68C6002B9790 /* previewButton@2x.png in Resources */,
-				4BE6910E14EB8159002B9790 /* WAPreviewViewController.xib in Resources */,
+				4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */,
 				4BE6911314EB8BD8002B9790 /* delete.png in Resources */,
 				4BE6911414EB8BD8002B9790 /* delete@2x.png in Resources */,
 				4BE6911514EB8BD8002B9790 /* deletepressed.png in Resources */,
@@ -3341,7 +3341,7 @@
 				FFB44D5D14D6A2A800080F07 /* WAScrollView.m in Sources */,
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
 				FF88E14814E8D80400B347A8 /* WAArticle.m in Sources */,
-				4BE6910D14EB8159002B9790 /* WAPreviewViewController.m in Sources */,
+				4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */,
 				4B1C660014EE2C0D003398AF /* DCCrossHairView.m in Sources */,
 				4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */,
 				4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */,

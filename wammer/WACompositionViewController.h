@@ -14,7 +14,7 @@
 #import "IRTransparentToolbar.h"
 
 
-@class IRImagePickerController, IRAction, WAArticle;
+@class IRImagePickerController, IRAction, WAArticle, WAPreviewBadge;
 
 @interface WACompositionViewController : UIViewController
 
@@ -34,6 +34,7 @@
 
 @property (nonatomic, readwrite, assign) BOOL usesTransparentBackground;
 
+@property (nonatomic, readonly, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readonly, retain) WAArticle *article;
 
