@@ -113,7 +113,8 @@
 	return [NSArray arrayWithObjects:
 	
 		@"representedImage",
-		
+		@"representedImage.image",
+				
 	nil];
 
 }
@@ -129,7 +130,8 @@
 	return [NSArray arrayWithObjects:
 	
 		@"representedImage",
-		
+		@"representedImage.imageRemoteURL",
+				
 	nil];
 
 }
@@ -144,6 +146,7 @@
 	return [NSArray arrayWithObjects:
 	
 		@"representedImage",
+		@"representedImage.imageFilePath",
 		
 	nil];
 
