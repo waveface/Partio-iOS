@@ -13,6 +13,6 @@
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "UIKit+IRAdditions.h"
 
-@interface WAPostsViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
+@interface WATimelineViewControllerPhone : IRTableViewController <WAApplicationRootViewController>
 
 @end

@@ -11,7 +11,7 @@
 #import "WADefines.h"
 
 #import "WADataStore.h"
-#import "WAPostsViewControllerPhone.h"
+#import "WATimelineViewControllerPhone.h"
 #import "WACompositionViewController.h"
 #import "WAPaginationSlider.h"
 
@@ -42,7 +42,7 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WAPostsViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate>
+@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate>
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
@@ -67,7 +67,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @end
 
 
-@implementation WAPostsViewControllerPhone
+@implementation WATimelineViewControllerPhone
 @synthesize delegate;
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
@@ -838,13 +838,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
 	cell.extraInfoLabel.text = @"";
  
-  if (postHasPreview) {
-	
+	cell.accessibilityLabel = @"Text";
+	cell.accessibilityValue = post.text;
+	if (postHasPreview) {
 		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil]] lastObject];	
 		
 		cell.previewBadge.preview = latestPreview;
+		
+		cell.accessibilityLabel = @"Preview";
+		cell.accessibilityHint = latestPreview.graphElement.title;
+		cell.accessibilityValue = latestPreview.graphElement.text;
 		
   } else {
 	
@@ -853,8 +858,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	}
     
   if (postHasFiles) {
-    
-		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 3) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
       WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
@@ -865,6 +869,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			cell.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
 		}
 	
+		cell.accessibilityLabel = @"Photo";
+		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
+		
 	} else {
 	
 		[cell.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
