@@ -52,8 +52,6 @@
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
 @property (nonatomic, readwrite, retain) NSMutableAttributedString *backingContentText;
 
-@property (nonatomic, readwrite, assign) BOOL deniesOrientationChanges;
-
 - (void) updateTextAttributorContentWithString:(NSString *)aString;
 
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
@@ -75,7 +73,6 @@
 @synthesize noPhotoReminderViewElements;
 @synthesize textAttributor;
 @synthesize backingContentText;
-@synthesize deniesOrientationChanges;
 @synthesize previewBadge, previewBadgeButton;
 
 + (id) alloc {
@@ -1104,11 +1101,6 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   
-	if (deniesOrientationChanges) {
-	if (interfaceOrientation != self.interfaceOrientation)
-		return NO;
-	}
-
 	return YES;
 	
 }
