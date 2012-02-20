@@ -153,14 +153,20 @@
 
 	[self willChangeValueForKey:@"article"];
 	
-	[article irRemoveObserverBlocksForKeyPath:@"files"];	
+	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];	
 	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
-	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
+		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+		
+	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
+
+	[article irRemoveObserverBlocksForKeyPath:@"previews"];
+	[newArticle irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+		
+		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+		
+	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+		
 	[article release];
 	article = [newArticle retain];
 	
@@ -233,9 +239,6 @@
 		self.view.backgroundColor = [UIColor colorWithWhite:0.98f alpha:1.0f];
 	}
 	
-	if ([[UIDevice currentDevice].name rangeOfString:@"Simulator"].location != NSNotFound) {
-		self.contentTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-	}
 	self.contentTextView.delegate = self;
 	
 	self.toolbar.opaque = NO;
@@ -385,7 +388,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		UIViewAnimationCurve animationCurve = [[keyboardInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntValue];
 		NSTimeInterval animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
 		
-		UIViewAnimationOptions animationOptions = 0;
+		UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 		animationOptions |= ((^ {
 			switch (animationCurve) {
 				case UIViewAnimationCurveEaseIn: return UIViewAnimationOptionCurveEaseIn;
@@ -497,6 +500,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (void) textViewDidChange:(UITextView *)textView {
 
 	NSString *capturedText = textView.text;
+	self.article.text = capturedText;
 	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 	
@@ -603,6 +607,10 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	}] otherActions:nil] singleUseActionSheet] showFromRect:self.previewBadge.bounds inView:self.previewBadge animated:NO];
 
 }
+
+
+
+
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
@@ -850,57 +858,67 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-  self.article.text = self.contentTextView.text;
-  self.article.timestamp = [NSDate date];
-  
-  if ([[self.article.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length]) {
-  
-    IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
-    if (actionSheetController)
-      return;
-    
-    IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
-      
-      if (self.completionBlock)
-        self.completionBlock(nil);
-      
-    }];
-    
-    IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
-    
-      NSError *savingError = nil;
-      if (![self.managedObjectContext save:&savingError])
-        NSLog(@"Error saving: %@", savingError);
-      
-      if (self.completionBlock)
-        self.completionBlock(nil);
-    
-    }];
-		  
-    actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
-      saveAsDraftAction,
-    nil]];
-    
-    IRActionSheet *actionSheet = [actionSheetController managedActionSheet];
-    [actionSheet showFromBarButtonItem:sender animated:YES];
-    
-    objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
-    
-    actionSheetController.onActionSheetCancel = ^ {
-      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
-    };
-    
-    actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
-      objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
-    };
-  
-    return;
-  
-  }
-
-	if (self.completionBlock)
-		self.completionBlock(nil);
-
+	if (![self.article hasChanges] || ![self.article hasMeaningfulContent]) {
+	
+		if (self.completionBlock)
+			self.completionBlock(nil);
+		
+		//	Delete things that are not meaningful
+		
+		if (![self.article hasMeaningfulContent])
+			[self.article.managedObjectContext deleteObject:self.article];
+		
+		return;
+	
+	}
+	
+	IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
+	if ([[actionSheetController managedActionSheet] isVisible])
+		return;
+	
+	if (!actionSheetController) {
+	
+		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
+			
+			if (self.completionBlock)
+				self.completionBlock(nil);
+			
+		}];
+		
+		IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
+		
+			self.article.text = self.contentTextView.text;
+			self.article.timestamp = [NSDate date];
+			
+			NSError *savingError = nil;
+			if (![self.managedObjectContext save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+			if (self.completionBlock)
+				self.completionBlock(nil);
+		
+		}];
+			
+		actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
+			saveAsDraftAction,
+		nil]];
+			
+		objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
+		
+		actionSheetController.onActionSheetCancel = ^ {
+			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+		};
+		
+		actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+		};
+	
+	}
+	
+	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
+	
+	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
+	
 }
 
 - (IBAction) handleCameraItemTap:(UIButton *)sender {
@@ -924,7 +942,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 						[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
 					
 					}
-
+					
 					break;
 
 				}
