@@ -11,9 +11,9 @@
 
 @implementation WAPreview (WAAdditions)
 
-+ (NSArray *) keyPathsForValuesAffectingThumbnail {
++ (NSSet *) keyPathsForValuesAffectingThumbnail {
 
-	return [NSArray arrayWithObjects:
+	return [NSSet setWithObjects:
 		
 		@"graphElement",
 		

@@ -72,9 +72,9 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 }
 
-- (NSArray *) keyPathsForValuesAffectingRepresentedImage {
++ (NSSet *) keyPathsForValuesAffectingRepresentedImage {
 
-	return [NSArray arrayWithObjects:
+	return [NSSet setWithObjects:
 	
 		@"imageFilePath",
 		@"imageRemoteURL",
