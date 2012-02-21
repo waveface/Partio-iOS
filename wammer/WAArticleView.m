@@ -125,7 +125,6 @@
 
 
 
-
 - (void) setPresentationStyle:(WAArticleViewControllerPresentationStyle)newPresentationStyle {
 
 	if (presentationStyle == newPresentationStyle)
@@ -175,8 +174,6 @@
 	
 	[self disassociateBindings];
 	
-	[article irRemoveObserverBlocksForKeyPath:@"files" context:self];
-	
 	[article release];
 	article = [newArticle retain];
 	
@@ -187,7 +184,7 @@
 	
 	__block id nrObserver = [article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
 		
-		NSParameterAssert([NSThread isMainThread]);
+		NSCParameterAssert([NSThread isMainThread]);
 		
 		[nrSelf disassociateBindings];
 		[nrSelf associateBindings];
@@ -201,6 +198,7 @@
 	}];
 
 }
+
 
 - (void) associateBindings {
 
@@ -281,6 +279,7 @@
 	
 }
 
+
 - (void) disassociateBindings {
 
 	[self.userNameLabel irUnbind:@"text"];
@@ -296,9 +295,6 @@
 	[self.textEmphasisView irUnbind:@"hidden"];
 
 }
-
-
-
 
 
 - (void) layoutSubviews {
@@ -399,7 +395,6 @@
 	}
 
 }
-
 
 
 
