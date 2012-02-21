@@ -12,4 +12,6 @@
 
 - (BOOL) hasMeaningfulContent;
 
+- (WAFile *) representedFile;
+
 @end

@@ -39,6 +39,26 @@
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingRepresentedFile {
+
+	return [NSSet setWithObjects:
+	
+		@"files",
+		@"fileOrder",
+	
+	nil];
+
+}
+
+- (WAFile *) representedFile {
+
+	if (![self.fileOrder count])
+		return nil;
+	
+	return (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
+
+}
+
 + (BOOL) automaticallyNotifiesObserversForKey:(NSString *)key {
 
 	if ([super automaticallyNotifiesObserversForKey:key])
