@@ -204,7 +204,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		
+			
 		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:[WAArticleViewController suggestedDiscreteStyleForArticle:anArticle]];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
@@ -258,7 +258,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		}],
 		
 	nil];
-
+	
 	return articleViewController.view;
 	
 }
@@ -874,30 +874,30 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return;
 	}
 	
-	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+//	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
+//	dispatch_async(dispatch_get_main_queue(), ^ {
 	
-		[CATransaction begin];
-		CATransition *transition = [CATransition animation];
-		transition.type = kCATransitionMoveIn;
-		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
-		transition.duration = 0.25f;
-		transition.fillMode = kCAFillModeForwards;
-		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-		transition.removedOnCompletion = YES;
+//		[CATransaction begin];
+//		CATransition *transition = [CATransition animation];
+//		transition.type = kCATransitionMoveIn;
+//		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
+//		transition.duration = 0.25f;
+//		transition.fillMode = kCAFillModeForwards;
+//		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//		transition.removedOnCompletion = YES;
 		
-		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
-		[(id<UIScrollViewDelegate>)self.paginatedView scrollViewDidScroll:self.paginatedView.scrollView];
-		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
+		[self.paginatedView scrollToPageAtIndex:destinationPage animated:YES];
+//		[(id<UIScrollViewDelegate>)self.paginatedView scrollViewDidScroll:self.paginatedView.scrollView];
+//		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
 		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-		});
+//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+//			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+//		});
 		
-		[CATransaction commit];
+//		[CATransaction commit];
 	
-	});
+//	});
 	
 }
 
@@ -1486,22 +1486,25 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 					if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)]) {
 					
+						__block __typeof__(enqueuedNavController) nrEnqueuedNavController = enqueuedNavController;
+						__block __typeof__(containerView) nrContainerView = containerView;
+					
 						void (^onViewDidLoad)() = ^ {
 						
 							IRCATransact(^{
 							
 								shownArticleVC.view.backgroundColor = [UIColor clearColor];
 								
-								[containerView layoutSubviews];
-								[enqueuedNavController.view layoutSubviews];
+								[nrContainerView layoutSubviews];
+								[nrEnqueuedNavController.view layoutSubviews];
 								
 								CGRect contextRect = IRCGRectAlignToRect((CGRect){
 									CGPointZero,
 									(CGSize){
-										CGRectGetWidth(containerView.bounds),// - 24,
-										CGRectGetHeight(containerView.bounds)// - 56
+										CGRectGetWidth(nrContainerView.bounds),// - 24,
+										CGRectGetHeight(nrContainerView.bounds)// - 56
 									}
-								}, containerView.bounds, irBottom, YES);
+								}, nrContainerView.bounds, irBottom, YES);
 								
 								[shownArticleVC handlePreferredInterfaceRect:contextRect];
 								
@@ -1625,12 +1628,26 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 							if (shownArticleVC.modalViewController)
 								return NO;
 							
-							if (shownArticleVC.navigationController.modalViewController)
-								return NO;
+							UINavigationController *navC = shownArticleVC.navigationController;
 							
-							if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
-							if (shownArticleVC.navigationController.topViewController != shownArticleVC)
-								return NO;
+							if (navC) {
+							
+								if (navC.modalViewController)
+									return NO;
+							
+								if (!navC.navigationBarHidden)
+								if (CGRectContainsPoint(navC.navigationBar.bounds, [touch locationInView:navC.navigationBar]))
+									return NO;
+								
+								if (!navC.toolbarHidden)
+								if (CGRectContainsPoint(navC.toolbar.bounds, [touch locationInView:navC.toolbar]))
+									return NO;
+							
+							}
+							
+							//		if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
+							//		if (shownArticleVC.navigationController.topViewController != shownArticleVC)
+							//			return NO;
 						
 							CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
 							
@@ -1666,8 +1683,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 					} completion:^(BOOL finished) {
 					
-						containerWindow.rootViewController = nil;
+						@autoreleasepool {
+								
+							containerWindow.rootViewController = nil;
+							
+						}
+					
 						containerWindow.hidden = YES;
+						
 						[containerWindow resignKeyWindow];
 						[containerWindow autorelease];
 						

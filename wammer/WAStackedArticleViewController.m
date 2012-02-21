@@ -38,7 +38,21 @@
 @synthesize headerView;
 @synthesize topCell, textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
 
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+		
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+		
+	return self;
+
+}
+
 - (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[headerView release];
 	[topCell release];
@@ -477,22 +491,9 @@
 	[super viewDidAppear:animated];
 	[self.commentsVC viewDidAppear:animated];
 	
-	[self.view.window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-	
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
-
-//	@try {
-		
-	[self.view.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
-		
-//	} @catch (NSException *exception) {
-//	
-//		if (![exception.name isEqual:NSRangeException])
-//			@throw exception;
-//		
-//	}
 
 	[super viewWillDisappear:animated];
 	[self.commentsVC viewWillDisappear:animated];
@@ -506,17 +507,15 @@
 	
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void) handleWindowInterfaceBoundsDidChange:(NSNotification *)notification {
 
-	if ([self isViewLoaded])
-	if (object == self.view.window)
-	if ([keyPath isEqualToString:@"irInterfaceBounds"]) {
+	if (![self isViewLoaded])
+		return;
 	
-		BOOL isInitialNotification = [change objectForKey:NSKeyValueChangeNewKey] && ![change objectForKey:NSKeyValueChangeOldKey];
-		
-		[self adjustWrapperViewBoundsWithWindowInterfaceBounds:[[change objectForKey:NSKeyValueChangeNewKey] CGRectValue] animated:!isInitialNotification];
+	if ([notification object] != self.view.window)
+		return;
 	
-	}
+	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
 
 }
 

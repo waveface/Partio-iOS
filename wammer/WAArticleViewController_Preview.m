@@ -56,8 +56,6 @@ enum {
 - (void) handleStackViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
 - (void) handleWebScrollViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
 
-@property (nonatomic, readwrite, retain) UIToolbar *toolbar;
-
 @property (nonatomic, readwrite, assign) CGPoint lastStackViewContentOffset;
 @property (nonatomic, readwrite, assign) CGPoint lastWebScrollViewContentOffset;
 @property (nonatomic, readwrite, assign) UIGestureRecognizerState lastWebScrollViewPanGestureRecognizerState;
@@ -71,10 +69,22 @@ enum {
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
-@synthesize toolbar;
 
 - (void) dealloc {
 
+	NSURLRequest *blankRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]];
+	
+	[webView setDelegate:nil];
+	[webView loadRequest:blankRequest];
+	[webView setDelegate:self];
+	
+	[summaryWebView setDelegate:nil];
+	[summaryWebView loadRequest:blankRequest];
+	[summaryWebView setDelegate:self];
+
+	webView.delegate = nil;
+	summaryWebView.delegate = nil;
+	
 	[webView release];
 	[summaryWebView release];
 	[webViewWrapper release];
@@ -85,11 +95,8 @@ enum {
 	[webViewActivityIndicatorBarButtonItem release];
 	[webViewReloadBarButtonItem release];
 
-	
 	[previewBadge release];
 	[previewBadgeWrapper release];
-	
-	[toolbar release];
 	
 	[super dealloc];
 
@@ -133,6 +140,8 @@ enum {
 
 	[super viewDidLoad];
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	WAPreview *anyPreview = [self preview];
 	
 	if (!anyPreview)
@@ -148,13 +157,13 @@ enum {
 	//	)];
 			
 	[stackElements addObject:self.webViewWrapper];
-	[stackElements addObject:self.toolbar];
+	//	[stackElements addObject:self.toolbar];
 	
 	self.stackView.delaysContentTouches = YES;
 	self.stackView.canCancelContentTouches = NO;
 	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
 	
-		UIView *wrappedView = [self wrappedView];
+		UIView *wrappedView = [nrSelf wrappedView];
 	
 		if (wrappedView)
 		if (view == wrappedView)
@@ -193,9 +202,13 @@ enum {
 - (void) viewDidUnload {
 
 	[super viewDidUnload];
-
+	
+	self.webView.delegate = nil;
 	self.webView = nil;
+	
+	self.summaryWebView.delegate = nil;
 	self.summaryWebView = nil;
+	
 	self.webViewWrapper = nil;
 	
 	self.webViewActivityIndicator = nil;
@@ -207,7 +220,23 @@ enum {
 	self.previewBadge = nil;
 	self.previewBadgeWrapper = nil;
 
-	self.toolbar = nil;
+	//	self.toolbar = nil;
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self.navigationController setToolbarHidden:NO animated:animated];
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	[self.navigationController setToolbarHidden:YES animated:animated];
 
 }
 
@@ -296,7 +325,9 @@ enum {
 
 	if (webViewBackBarButtonItem)
 		return webViewBackBarButtonItem;
-		
+	
+	__block __typeof__(self) nrSelf = self;
+				
 	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
 	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
 		
@@ -304,7 +335,7 @@ enum {
 	
 	webViewBackBarButtonItem.block = ^ {
 	
-		UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+		UIWebView *currentWebView = (UIWebView *)[nrSelf wrappedView];
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
@@ -321,6 +352,8 @@ enum {
 
 	if (webViewForwardBarButtonItem)
 		return webViewForwardBarButtonItem;
+	
+	__block __typeof__(self) nrSelf = self;
 		
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
 	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
@@ -329,7 +362,7 @@ enum {
 	
 	webViewForwardBarButtonItem.block = ^ {
 	
-		UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+		UIWebView *currentWebView = (UIWebView *)[nrSelf wrappedView];
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
@@ -359,7 +392,7 @@ enum {
 	if (webViewActivityIndicatorBarButtonItem)
 		return webViewActivityIndicatorBarButtonItem;
 	
-	webViewActivityIndicatorBarButtonItem = [IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator];
+	webViewActivityIndicatorBarButtonItem = [[IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator] retain];
 	
 	return webViewActivityIndicatorBarButtonItem;
 
@@ -439,38 +472,35 @@ enum {
 	[webViewWrapper addSubview:topShadow];
 	
 	__block __typeof__(self) nrSelf = self;
+	__block WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
 	
-	((WAView *)webViewWrapper).onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
 		UIView *wrappedView = [nrSelf wrappedView];
 		
 		if (!wrappedView)
 			return superAnswer;
 	
-		NSParameterAssert([wrappedView isDescendantOfView:webViewWrapper]);
+		NSCParameterAssert([wrappedView isDescendantOfView:nrWebViewWrapper]);
 		
-		BOOL customAnswer = CGRectContainsPoint(
-				[webViewWrapper convertRect:wrappedView.bounds fromView:wrappedView],
-				aPoint
-		);
-		
+		BOOL customAnswer = CGRectContainsPoint([nrWebViewWrapper convertRect:wrappedView.bounds fromView:wrappedView], aPoint);
 		return customAnswer;
 	
 	};
 	
-	((WAView *)webViewWrapper).onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	nrWebViewWrapper.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
 	
-		if (![webViewWrapper pointInside:aPoint withEvent:anEvent])
+		if (![nrWebViewWrapper pointInside:aPoint withEvent:anEvent])
 			return superAnswer;
 		
 		UIView *wrappedView = [nrSelf wrappedView];
 		if (!wrappedView)
 			return superAnswer;
 		
-		return [wrappedView hitTest:[wrappedView convertPoint:aPoint fromView:webViewWrapper] withEvent:anEvent];
+		return [wrappedView hitTest:[wrappedView convertPoint:aPoint fromView:nrWebViewWrapper] withEvent:anEvent];
 	
 	};
-	
+
 	[self updateWrapperView];
 	
 	return webViewWrapper;
@@ -519,20 +549,22 @@ enum {
 
 }
 
-- (UIToolbar *) toolbar {
+- (NSArray *) toolbarItems {
 
-	if (toolbar)
-		return toolbar;
+	if ([[super toolbarItems] count])
+		return [super toolbarItems];
 	
-	toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+	__block __typeof__(self) nrSelf = self;
 	
-	toolbar.items = [NSArray arrayWithObjects:
-			
-		[IRBarButtonItem itemWithCustomView:((^ {
+	self.toolbarItems = ((^ {
+	
+		NSMutableArray *returnedArray = [NSMutableArray array];
+		
+		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:((^ {
 		
 			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
 			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-			[segmentedControl addTarget:self action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+			[segmentedControl addTarget:nrSelf action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 			
 			[segmentedControl insertSegmentWithTitle:@"Summary" atIndex:0 animated:NO];
 			[segmentedControl insertSegmentWithTitle:@"Web" atIndex:1 animated:NO];
@@ -542,35 +574,58 @@ enum {
 			
 			return segmentedControl;
 		
-		})())],
+		})())]];
 		
-		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-		
-		self.webViewBackBarButtonItem,
-		
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
-				
-		self.webViewActivityIndicatorBarButtonItem,
-		//	self.webViewReloadBarButtonItem,
-		
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
-				
-		self.webViewForwardBarButtonItem,
+		BOOL const isPhone = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone;
 
-		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
+		[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+		[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 		
-			NSURL * const previewURL = [NSURL URLWithString:self.preview.graphElement.url];
-			NSURL * const currentWebURL = [NSURL URLWithString:[webView stringByEvaluatingJavaScriptFromString:@"document.location.href"]];
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+
+		[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];				
 		
-			[[UIApplication sharedApplication] openURL:currentWebURL ? currentWebURL : previewURL];
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		}],
+		if (isPhone) {
 		
-	nil];
+			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+			
+				[(UIActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObject:[IRAction actionWithTitle:@"Open in Safari" block:^{
+
+					[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+					
+				}]]] singleUseActionSheet] showFromBarButtonItem:senderItem animated:YES];
+			
+			}]];
+		
+		} else {
+		
+			[returnedArray addObject:[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
+			
+				[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+			
+			}]];
+		
+		}
+		
+		return returnedArray;
 	
-	return toolbar;
+	})());
+		
+	return self.toolbarItems;
+
+}
+
+- (NSURL *) externallyVisibleURL {
+
+	if ([self wrappedView] == webView)
+		return [NSURL URLWithString:[webView stringByEvaluatingJavaScriptFromString:@"document.location.href"]];
+
+	return [NSURL URLWithString:self.preview.graphElement.url];
 
 }
 
@@ -664,8 +719,8 @@ enum {
 		
 	}
 	
-	if ((self.toolbar == anElement) || [self.toolbar isDescendantOfView:anElement])
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 44 };
+//	if ((self.toolbar == anElement) || [self.toolbar isDescendantOfView:anElement])
+//		return (CGSize){ CGRectGetWidth(aStackView.bounds), 44 };
 
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		return [super sizeThatFitsElement:anElement inStackView:aStackView];
