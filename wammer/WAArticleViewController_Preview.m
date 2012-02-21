@@ -232,6 +232,14 @@ enum {
 
 }
 
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	[self.navigationController setToolbarHidden:YES animated:animated];
+
+}
+
 - (UIWebView *) webView {
 
 	if (webView)
@@ -548,9 +556,11 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.toolbarItems = [NSArray arrayWithObjects:
+	self.toolbarItems = ((^ {
+	
+		NSMutableArray *returnedArray = [NSMutableArray array];
 		
-		[IRBarButtonItem itemWithCustomView:((^ {
+		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:((^ {
 		
 			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
 			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
@@ -564,31 +574,48 @@ enum {
 			
 			return segmentedControl;
 		
-		})())],
+		})())]];
 		
-		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-		
-		nrSelf.webViewBackBarButtonItem,
-		
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
-				
-		nrSelf.webViewActivityIndicatorBarButtonItem,
-		//	nrSelf.webViewReloadBarButtonItem,
-		
-		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
-				
-		nrSelf.webViewForwardBarButtonItem,
+		BOOL const isPhone = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone;
 
-		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
+		[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+		[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 		
-			[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+
+		[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];				
 		
-		}],
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-	nil];
+		if (isPhone) {
+		
+			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+			
+				[(UIActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObject:[IRAction actionWithTitle:@"Open in Safari" block:^{
+
+					[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+					
+				}]]] singleUseActionSheet] showFromBarButtonItem:senderItem animated:YES];
+			
+			}]];
+		
+		} else {
+		
+			[returnedArray addObject:[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
+			
+				[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+			
+			}]];
+		
+		}
+		
+		return returnedArray;
 	
+	})());
+		
 	return self.toolbarItems;
 
 }
