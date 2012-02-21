@@ -19,7 +19,7 @@
 
 @implementation WAPreviewInspectionViewController
 @synthesize managedObjectContext;
-@synthesize deleteButton, previewBadge, preview;
+@synthesize deleteButton, previewBadge, preview, delegate;
 
 + (id) controllerWithPreview:(NSURL *)anURL {
 
