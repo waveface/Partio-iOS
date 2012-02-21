@@ -179,24 +179,6 @@
 	
 	[self associateBindings];
 	
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(article) nrArticle = article;
-	
-	__block id nrObserver = [article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		
-		NSCParameterAssert([NSThread isMainThread]);
-		
-		[nrSelf disassociateBindings];
-		[nrSelf associateBindings];
-		
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nrSelf];
-	
-	[self irPerformOnDeallocation:^{
-	
-		[nrArticle irRemoveObservingsHelper:nrObserver];
-		
-	}];
-
 }
 
 
@@ -211,21 +193,6 @@
 	if (!boundArticle)
 		return;
 	
-	NSArray * (^topImageFiles)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
-		
-		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-			
-			if (index >= maxNumberOfPickedImages) {
-				*stop = YES;
-				return (id)nil;
-			}
-			
-			return (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			
-		}];
-		
-	};
-	
 	void (^bind)(id, NSString *, id, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath,  id boundObject, NSString *boundKeypath, IRBindingsValueTransformer transformerBlock) {
 	
 		[object irBind:objectKeyPath toObject:boundObject keyPath:boundKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -234,8 +201,6 @@
 		nil]];
 		
 	};
-	
-	WAFile *boundImageFile = [topImageFiles(boundArticle.fileOrder, 1) lastObject];
 	
 	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);
 	
@@ -251,15 +216,15 @@
 		nil]] lastObject];
 	});
 	
-	bind(self.imageStackView, @"images", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.imageStackView, @"images", boundArticle, @"representedFile.presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [NSArray arrayWithObject:inNewValue] : nil;
 	});
 	
-	bind(self.mainImageView, @"image", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"image", boundArticle, @"representedFile.presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue;
 	});
 	
-	bind(self.mainImageView, @"backgroundColor", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representedFile.presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
 	});
 	
