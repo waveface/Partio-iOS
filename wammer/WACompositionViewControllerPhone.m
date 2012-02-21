@@ -90,6 +90,14 @@
 
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+	
+	[super viewWillAppear:animated];
+	
+	[self.contentTextView becomeFirstResponder];
+
+}
+
 - (WAArticleAttachmentActivityView *) articleAttachmentActivityView {
 
 	if (articleAttachmentActivityView)

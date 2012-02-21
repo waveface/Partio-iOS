@@ -19,6 +19,18 @@
 @implementation WAAsyncImageView
 @synthesize lastImagePtr;
 
+- (void) dealloc {
+
+	[super dealloc];
+
+}
+
+- (void) setImage:(UIImage *)newImage {
+
+	[self setImage:newImage withOptions:WAImageViewForceAsynchronousOption];
+
+}
+
 - (void) setImage:(UIImage *)newImage withOptions:(WAImageViewOptions)options {
 
 	if (lastImagePtr == newImage)

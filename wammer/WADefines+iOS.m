@@ -180,6 +180,8 @@ IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^aBlock)(void))
 
 UIButton * WAButtonForImage (UIImage *anImage) {
 
+	kWADefaultBarButtonInitialize();
+
 	//NSParameterAssert(anImage);
 	UIButton *returnedButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[returnedButton setImage:anImage forState:UIControlStateNormal];
@@ -193,6 +195,8 @@ UIButton * WAButtonForImage (UIImage *anImage) {
 
 UIButton *WAToolbarButtonForImage (UIImage *anImage, NSString *aAccessbilityLabel) {
 
+	kWADefaultBarButtonInitialize();
+
   UIButton *button = WAButtonForImage(anImage);
   button.bounds = (CGRect){ CGPointZero, (CGSize){ 44, 44 }};
   if (aAccessbilityLabel.length != 0 ){
@@ -204,6 +208,8 @@ UIButton *WAToolbarButtonForImage (UIImage *anImage, NSString *aAccessbilityLabe
 }
 
 UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
+
+	kWADefaultBarButtonInitialize();
 
   UIColor *fillColor = [UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1];      
   IRShadow *shadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.35f] offset:(CGSize){ 0, 1 } spread:0];
@@ -230,6 +236,8 @@ UIImage * WABarButtonImageFromImageNamed (NSString *aName) {
 }
 
 UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRShadow *shadow) {
+
+	kWADefaultBarButtonInitialize();
 
 	return [[UIImage imageNamed:aName] irSolidImageWithFillColor:fillColor shadow:shadow];
 

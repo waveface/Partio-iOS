@@ -38,6 +38,14 @@
 
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	[self.contentTextView becomeFirstResponder];
+
+}
+
 - (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds {
 
 	[super adjustContainerViewWithInterfaceBounds:newBounds];

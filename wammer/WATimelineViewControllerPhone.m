@@ -1058,9 +1058,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[self.navigationController pushViewController:galleryViewController animated:YES];
 
 	} else {
+	
+		WAArticleViewController *articleVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+		[self.navigationController pushViewController:articleVC animated:YES];
 		
-		WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:postURL];
-		[self.navigationController pushViewController:controller animated:YES];
+		//	WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:postURL];
+		//	[self.navigationController pushViewController:controller animated:YES];
 		
 	}
 }
