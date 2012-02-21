@@ -204,7 +204,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
 	
 	if (!articleViewController) {
-		
+			
 		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:[WAArticleViewController suggestedDiscreteStyleForArticle:anArticle]];
 		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
@@ -258,7 +258,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		}],
 		
 	nil];
-
+	
 	return articleViewController.view;
 	
 }
@@ -874,30 +874,30 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		return;
 	}
 	
-	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+//	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
-	dispatch_async(dispatch_get_main_queue(), ^ {
+//	dispatch_async(dispatch_get_main_queue(), ^ {
 	
-		[CATransaction begin];
-		CATransition *transition = [CATransition animation];
-		transition.type = kCATransitionMoveIn;
-		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
-		transition.duration = 0.25f;
-		transition.fillMode = kCAFillModeForwards;
-		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-		transition.removedOnCompletion = YES;
+//		[CATransaction begin];
+//		CATransition *transition = [CATransition animation];
+//		transition.type = kCATransitionMoveIn;
+//		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
+//		transition.duration = 0.25f;
+//		transition.fillMode = kCAFillModeForwards;
+//		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+//		transition.removedOnCompletion = YES;
 		
-		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
-		[(id<UIScrollViewDelegate>)self.paginatedView scrollViewDidScroll:self.paginatedView.scrollView];
-		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
+		[self.paginatedView scrollToPageAtIndex:destinationPage animated:YES];
+//		[(id<UIScrollViewDelegate>)self.paginatedView scrollViewDidScroll:self.paginatedView.scrollView];
+//		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
 		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-		});
+//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+//			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+//		});
 		
-		[CATransaction commit];
+//		[CATransaction commit];
 	
-	});
+//	});
 	
 }
 
