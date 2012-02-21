@@ -1486,22 +1486,25 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 					
 					if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)]) {
 					
+						__block __typeof__(enqueuedNavController) nrEnqueuedNavController = enqueuedNavController;
+						__block __typeof__(containerView) nrContainerView = containerView;
+					
 						void (^onViewDidLoad)() = ^ {
 						
 							IRCATransact(^{
 							
 								shownArticleVC.view.backgroundColor = [UIColor clearColor];
 								
-								[containerView layoutSubviews];
-								[enqueuedNavController.view layoutSubviews];
+								[nrContainerView layoutSubviews];
+								[nrEnqueuedNavController.view layoutSubviews];
 								
 								CGRect contextRect = IRCGRectAlignToRect((CGRect){
 									CGPointZero,
 									(CGSize){
-										CGRectGetWidth(containerView.bounds),// - 24,
-										CGRectGetHeight(containerView.bounds)// - 56
+										CGRectGetWidth(nrContainerView.bounds),// - 24,
+										CGRectGetHeight(nrContainerView.bounds)// - 56
 									}
-								}, containerView.bounds, irBottom, YES);
+								}, nrContainerView.bounds, irBottom, YES);
 								
 								[shownArticleVC handlePreferredInterfaceRect:contextRect];
 								
@@ -1625,12 +1628,26 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 							if (shownArticleVC.modalViewController)
 								return NO;
 							
-							if (shownArticleVC.navigationController.modalViewController)
-								return NO;
+							UINavigationController *navC = shownArticleVC.navigationController;
 							
-							if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
-							if (shownArticleVC.navigationController.topViewController != shownArticleVC)
-								return NO;
+							if (navC) {
+							
+								if (navC.modalViewController)
+									return NO;
+							
+								if (!navC.navigationBarHidden)
+								if (CGRectContainsPoint(navC.navigationBar.bounds, [touch locationInView:navC.navigationBar]))
+									return NO;
+								
+								if (!navC.toolbarHidden)
+								if (CGRectContainsPoint(navC.toolbar.bounds, [touch locationInView:navC.toolbar]))
+									return NO;
+							
+							}
+							
+							//		if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
+							//		if (shownArticleVC.navigationController.topViewController != shownArticleVC)
+							//			return NO;
 						
 							CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
 							
@@ -1666,8 +1683,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 						
 					} completion:^(BOOL finished) {
 					
-						containerWindow.rootViewController = nil;
+						@autoreleasepool {
+								
+							containerWindow.rootViewController = nil;
+							
+						}
+					
 						containerWindow.hidden = YES;
+						
 						[containerWindow resignKeyWindow];
 						[containerWindow autorelease];
 						

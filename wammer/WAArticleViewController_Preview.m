@@ -72,6 +72,19 @@ enum {
 
 - (void) dealloc {
 
+	NSURLRequest *blankRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"about:blank"]];
+	
+	[webView setDelegate:nil];
+	[webView loadRequest:blankRequest];
+	[webView setDelegate:self];
+	
+	[summaryWebView setDelegate:nil];
+	[summaryWebView loadRequest:blankRequest];
+	[summaryWebView setDelegate:self];
+
+	webView.delegate = nil;
+	summaryWebView.delegate = nil;
+	
 	[webView release];
 	[summaryWebView release];
 	[webViewWrapper release];
@@ -189,9 +202,13 @@ enum {
 - (void) viewDidUnload {
 
 	[super viewDidUnload];
-
+	
+	self.webView.delegate = nil;
 	self.webView = nil;
+	
+	self.summaryWebView.delegate = nil;
 	self.summaryWebView = nil;
+	
 	self.webViewWrapper = nil;
 	
 	self.webViewActivityIndicator = nil;
@@ -300,7 +317,9 @@ enum {
 
 	if (webViewBackBarButtonItem)
 		return webViewBackBarButtonItem;
-		
+	
+	__block __typeof__(self) nrSelf = self;
+				
 	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
 	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
 		
@@ -308,7 +327,7 @@ enum {
 	
 	webViewBackBarButtonItem.block = ^ {
 	
-		UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+		UIWebView *currentWebView = (UIWebView *)[nrSelf wrappedView];
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
@@ -325,6 +344,8 @@ enum {
 
 	if (webViewForwardBarButtonItem)
 		return webViewForwardBarButtonItem;
+	
+	__block __typeof__(self) nrSelf = self;
 		
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
 	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
@@ -333,7 +354,7 @@ enum {
 	
 	webViewForwardBarButtonItem.block = ^ {
 	
-		UIWebView *currentWebView = (UIWebView *)[self wrappedView];
+		UIWebView *currentWebView = (UIWebView *)[nrSelf wrappedView];
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
@@ -363,7 +384,7 @@ enum {
 	if (webViewActivityIndicatorBarButtonItem)
 		return webViewActivityIndicatorBarButtonItem;
 	
-	webViewActivityIndicatorBarButtonItem = [IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator];
+	webViewActivityIndicatorBarButtonItem = [[IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator] retain];
 	
 	return webViewActivityIndicatorBarButtonItem;
 
@@ -443,38 +464,35 @@ enum {
 	[webViewWrapper addSubview:topShadow];
 	
 	__block __typeof__(self) nrSelf = self;
+	__block WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
 	
-	((WAView *)webViewWrapper).onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
 		UIView *wrappedView = [nrSelf wrappedView];
 		
 		if (!wrappedView)
 			return superAnswer;
 	
-		NSParameterAssert([wrappedView isDescendantOfView:webViewWrapper]);
+		NSCParameterAssert([wrappedView isDescendantOfView:nrWebViewWrapper]);
 		
-		BOOL customAnswer = CGRectContainsPoint(
-				[webViewWrapper convertRect:wrappedView.bounds fromView:wrappedView],
-				aPoint
-		);
-		
+		BOOL customAnswer = CGRectContainsPoint([nrWebViewWrapper convertRect:wrappedView.bounds fromView:wrappedView], aPoint);
 		return customAnswer;
 	
 	};
 	
-	((WAView *)webViewWrapper).onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	nrWebViewWrapper.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
 	
-		if (![webViewWrapper pointInside:aPoint withEvent:anEvent])
+		if (![nrWebViewWrapper pointInside:aPoint withEvent:anEvent])
 			return superAnswer;
 		
 		UIView *wrappedView = [nrSelf wrappedView];
 		if (!wrappedView)
 			return superAnswer;
 		
-		return [wrappedView hitTest:[wrappedView convertPoint:aPoint fromView:webViewWrapper] withEvent:anEvent];
+		return [wrappedView hitTest:[wrappedView convertPoint:aPoint fromView:nrWebViewWrapper] withEvent:anEvent];
 	
 	};
-	
+
 	[self updateWrapperView];
 	
 	return webViewWrapper;
@@ -531,12 +549,12 @@ enum {
 	__block __typeof__(self) nrSelf = self;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
-			
+		
 		[IRBarButtonItem itemWithCustomView:((^ {
 		
 			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
 			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-			[segmentedControl addTarget:self action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+			[segmentedControl addTarget:nrSelf action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 			
 			[segmentedControl insertSegmentWithTitle:@"Summary" atIndex:0 animated:NO];
 			[segmentedControl insertSegmentWithTitle:@"Web" atIndex:1 animated:NO];
@@ -572,6 +590,15 @@ enum {
 	nil];
 	
 	return self.toolbarItems;
+
+}
+
+- (NSURL *) externallyVisibleURL {
+
+	if ([self wrappedView] == webView)
+		return [NSURL URLWithString:[webView stringByEvaluatingJavaScriptFromString:@"document.location.href"]];
+
+	return [NSURL URLWithString:self.preview.graphElement.url];
 
 }
 
