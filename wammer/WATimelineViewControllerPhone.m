@@ -817,6 +817,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAPostViewCellStyle style;
 	WAPostViewCellPhone *cell;
 	
+	// TODO: put these logic into cell.
 	if (postHasPreview) {
 		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
