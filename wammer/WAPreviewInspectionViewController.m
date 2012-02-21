@@ -19,7 +19,7 @@
 
 @implementation WAPreviewInspectionViewController
 @synthesize managedObjectContext;
-@synthesize deleteButton, previewBadge;
+@synthesize deleteButton, previewBadge, preview;
 
 + (id) controllerWithPreview:(NSURL *)anURL {
 
@@ -82,7 +82,7 @@
 - (void) viewDidUnload {
 
 	self.deleteButton = nil;
-	self.previewBadge = nil;
+	self.previewBadge = nil;	
 	
 	[super viewDidUnload];
 
@@ -98,6 +98,7 @@
 	
 	[deleteButton release];
 	[previewBadge release];
+	[preview release];
 	
 	[super dealloc];
 	
