@@ -16,11 +16,15 @@
 
 @interface WAAttachedMediaListViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, readwrite, copy) void(^callback)(NSURL *objectURI);
+@property (nonatomic, readwrite, copy) void(^callback)(void);
 @property (nonatomic, readwrite, retain) UITableView *tableView;
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
+
+@property (nonatomic, readwrite, retain) id articleFilesObservingsHelper;
+
+@property (nonatomic, readwrite, assign, getter=isUndergoingProgrammaticEntityMutation, setter=setUndergoingProgrammaticEntityMutation:) BOOL undergoingProgrammaticEntityMutation;
 
 @end
 
@@ -28,8 +32,11 @@
 @implementation WAAttachedMediaListViewController
 @synthesize callback, headerView, tableView;
 @synthesize managedObjectContext, article;
+@synthesize articleFilesObservingsHelper;
+@synthesize onViewDidLoad;
+@synthesize 	undergoingProgrammaticEntityMutation;
 
-+ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(NSURL *objectURI))aBlock {
++ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
 
 	return [[[self alloc] initWithArticleURI:anArticleURI completion:aBlock] autorelease];
 
@@ -41,13 +48,13 @@
 
 }
 
-- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI completion:(void (^)(NSURL *))aBlock {
+- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI completion:(void (^)(void))aBlock {
 	
 	return [self initWithArticleURI:anArticleURI usingContext:nil completion:aBlock];
 
 }
 
-- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void (^)(NSURL *))aBlock {
+- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void (^)(void))aBlock {
 
 	self = [super init];
 	if (!self)
@@ -55,10 +62,10 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
 		if (nrSelf.callback)
-			nrSelf.callback(nil);
+			nrSelf.callback();
 		
 	}];
 	
@@ -73,6 +80,21 @@
 	}
 	
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
+	
+	self.articleFilesObservingsHelper =  [self.article irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		if (![nrSelf isViewLoaded])
+			return;
+		
+		if ([nrSelf isUndergoingProgrammaticEntityMutation])
+			return;
+		
+		[nrSelf.tableView reloadData];
+		
+		// Fixme: Use NSFRC
+		// Fixme: Also remove dupe KVO invocations
+		
+	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
   
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
@@ -83,40 +105,49 @@
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[article irRemoveObservingsHelper:self.articleFilesObservingsHelper];
+	
+	[articleFilesObservingsHelper release];
 
 	[managedObjectContext release];
 	[article release];
 
 	[callback release];
 	[headerView release];
+	
+	[onViewDidLoad release];
+	
 	[super dealloc];
 
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
 
+	if (![NSThread isMainThread]) {
+
+		dispatch_sync(dispatch_get_main_queue(), ^ {
+			[self handleManagedObjectContextDidSave:aNotification];
+		});
+		return;
+		
+	}
+	
 	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
 	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	if ([NSThread isMainThread])
-		[self retain];
-	else
-		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
-		
+	if (savedContext == self.managedObjectContext) {
 		if ([self isViewLoaded]) {
 			[self.tableView reloadData];
 		}
-			
-		[self autorelease];
+		return;
+	}
 	
-	});
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
+	
+	if ([self isViewLoaded]) {
+		[self.tableView reloadData];
+	}
 
 }
 
@@ -172,11 +203,21 @@
 
 }
 
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
+
+}
+
 - (void) viewDidUnload {
 
 	[super viewDidUnload];
 
 }
+
 - (void) setHeaderView:(UIView *)newHeaderView {
 
 	if (headerView == newHeaderView)
@@ -220,28 +261,16 @@
 		NSUInteger deletedFileIndex = indexPath.row;
 		NSURL *deletedFileURI = [self.article.fileOrder objectAtIndex:deletedFileIndex];
 		WAFile *removedFile = (WAFile *)[self.managedObjectContext irManagedObjectForURI:deletedFileURI];
-		removedFile.article = nil;
 		
+		[self.tableView beginUpdates];
+		
+		self.undergoingProgrammaticEntityMutation = YES;
+		
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 		[self.article removeFilesObject:removedFile];
 
-		NSError *savingError = nil;
-		if (![self.managedObjectContext save:&savingError]) {
-			
-			id oldMergePolicy = [[self.managedObjectContext.mergePolicy retain] autorelease];
-			self.managedObjectContext.mergePolicy = NSOverwriteMergePolicy; //hmph
-			NSLog(@"Error saving: %@", savingError);
-			
-			if (![self.managedObjectContext save:&savingError])
-				NSLog(@"%s failed spectacularly", __PRETTY_FUNCTION__);
-			
-			self.managedObjectContext.mergePolicy = oldMergePolicy;
-			
-		}
+		self.undergoingProgrammaticEntityMutation = NO;
 		
-		
-			
-		[self.tableView beginUpdates];
-		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 		[self.tableView endUpdates];
 		
 		break;

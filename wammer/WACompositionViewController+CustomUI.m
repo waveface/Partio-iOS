@@ -25,14 +25,10 @@
 - (UINavigationController *) wrappingNavigationController {
 
 	NSAssert2(!self.navigationController, @"%@ must not have been put within another navigation controller when %@ is invoked.", self, NSStringFromSelector(_cmd));
-	NSAssert2((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()), @"%@: %s is not supported on this device.", self, NSStringFromSelector(_cmd));
+	//	NSAssert2((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()), @"%@: %s is not supported on this device.", self, NSStringFromSelector(_cmd));
 	
 	WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init] autorelease]] autorelease];
-	
-	NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:[NSKeyedArchiver archivedDataWithRootObject:navController]] autorelease];
-	[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
-	navController = [unarchiver decodeObjectForKey:@"root"];
-	
+		
 	static NSString * const kViewControllerActionOnPop = @"waCompositionViewController_wrappingNavigationController_viewControllerActionOnPop";
 
 	navController.willPushViewControllerAnimated = ^ (WANavigationController *self, UIViewController *pushedVC, BOOL animated) {
@@ -116,8 +112,19 @@
 	[navController performSelector:@selector(initWithRootViewController:) withObject:self];
 	
 	navController.onViewDidLoad = ^ (WANavigationController *self) {
-		
-		((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultGradientBackgroundView];
+	
+		WANavigationBar *navBar = ((WANavigationBar *)self.navigationBar);
+	
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			case UIUserInterfaceIdiomPad: {
+				navBar.customBackgroundView = [WANavigationBar defaultGradientBackgroundView];
+				break;
+			}
+			case UIUserInterfaceIdiomPhone: {
+				navBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
+				break;
+			}
+		}
 		
 		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
 		
