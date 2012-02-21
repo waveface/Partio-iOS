@@ -101,6 +101,7 @@
 		FF0527F114F3B2370030D099 /* WACompositionBackgroundBottomCap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0527ED14F3B2370030D099 /* WACompositionBackgroundBottomCap@2x.png */; };
 		FF0527F214F3B2370030D099 /* WACompositionBackgroundPattern.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0527EE14F3B2370030D099 /* WACompositionBackgroundPattern.png */; };
 		FF0527F314F3B2370030D099 /* WACompositionBackgroundPattern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0527EF14F3B2370030D099 /* WACompositionBackgroundPattern@2x.png */; };
+		FF0527F614F3BF860030D099 /* WAArticleAttachmentActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */; };
 		FF0527FB14F3C7240030D099 /* WAAttachmentGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0527F714F3C7230030D099 /* WAAttachmentGlyph.png */; };
 		FF0527FC14F3C7240030D099 /* WAAttachmentGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0527F814F3C7230030D099 /* WAAttachmentGlyph@2x.png */; };
 		FF0527FD14F3C7240030D099 /* WALinkGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0527F914F3C7230030D099 /* WALinkGlyph.png */; };
@@ -953,6 +954,8 @@
 		FF0527ED14F3B2370030D099 /* WACompositionBackgroundBottomCap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompositionBackgroundBottomCap@2x.png"; path = "Resources/WACompositionBackgroundBottomCap@2x.png"; sourceTree = "<group>"; };
 		FF0527EE14F3B2370030D099 /* WACompositionBackgroundPattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBackgroundPattern.png; path = Resources/WACompositionBackgroundPattern.png; sourceTree = "<group>"; };
 		FF0527EF14F3B2370030D099 /* WACompositionBackgroundPattern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompositionBackgroundPattern@2x.png"; path = "Resources/WACompositionBackgroundPattern@2x.png"; sourceTree = "<group>"; };
+		FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleAttachmentActivityView.h; sourceTree = "<group>"; };
+		FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleAttachmentActivityView.m; sourceTree = "<group>"; };
 		FF0527F714F3C7230030D099 /* WAAttachmentGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAAttachmentGlyph.png; path = Resources/WAAttachmentGlyph.png; sourceTree = "<group>"; };
 		FF0527F814F3C7230030D099 /* WAAttachmentGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAAttachmentGlyph@2x.png"; path = "Resources/WAAttachmentGlyph@2x.png"; sourceTree = "<group>"; };
 		FF0527F914F3C7230030D099 /* WALinkGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALinkGlyph.png; path = Resources/WALinkGlyph.png; sourceTree = "<group>"; };
@@ -2388,6 +2391,8 @@
 				FF7D12F514F26DB2007EF2B7 /* WACompositionViewControllerPhone.h */,
 				FF7D12F614F26DB2007EF2B7 /* WACompositionViewControllerPhone.m */,
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewController.xib */,
+				FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */,
+				FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
 				4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */,
