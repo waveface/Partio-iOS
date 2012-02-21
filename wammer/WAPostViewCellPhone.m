@@ -27,6 +27,11 @@
 @synthesize imageStackView, avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel, previewBadge;
 @synthesize dateLabelBackgroundView;
 
+@synthesize previewImageView;
+@synthesize previewTitleLabel;
+@synthesize previewProviderLabel;
+@synthesize previewImageBackground;
+
 - (void) dealloc {
   
 	[imageStackView release];
@@ -41,6 +46,10 @@
 	[previewBadge release];
 	[dateLabelBackgroundView release];
     [extraInfoLabel release];
+	[previewImageView release];
+	[previewTitleLabel release];
+	[previewProviderLabel release];
+	[previewImageBackground release];
 	[super dealloc];
 	
 }

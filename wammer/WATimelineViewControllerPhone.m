@@ -831,14 +831,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 				
   }
 	
-  cell.userNicknameLabel.text = post.owner.nickname;//[[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
-  cell.avatarView.image = post.owner.avatar;
   cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
 	cell.extraInfoLabel.text = @"";
  
 	cell.accessibilityLabel = @"Text";
 	cell.accessibilityValue = post.text;
+	
 	if (postHasPreview) {
 		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
@@ -849,6 +848,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.accessibilityLabel = @"Preview";
 		cell.accessibilityHint = latestPreview.graphElement.title;
 		cell.accessibilityValue = latestPreview.graphElement.text;
+		
+		cell.previewImageView.image = latestPreview.thumbnail;
+		cell.previewTitleLabel.text = latestPreview.graphElement.title;
+		cell.previewProviderLabel.text = latestPreview.graphElement.providerURL;
+		
+		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
+		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
+		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
+		cell.previewImageBackground.layer.shadowRadius = 1.0f;
 		
   } else {
 	

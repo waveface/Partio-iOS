@@ -35,6 +35,12 @@ enum {
 @property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge;
 @property (retain, nonatomic) IBOutlet UILabel *extraInfoLabel;
 
+// preview cell
+@property (retain, nonatomic) IBOutlet UIImageView *previewImageView;
+@property (retain, nonatomic) IBOutlet UILabel *previewTitleLabel;
+@property (retain, nonatomic) IBOutlet UILabel *previewProviderLabel;
+@property (retain, nonatomic) IBOutlet UIView *previewImageBackground;
+
 @end
 
 @interface WAPostViewCellPhone (NibLoading)
