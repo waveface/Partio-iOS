@@ -806,61 +806,80 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
 	static NSString *imageCellIdentifier = @"PostCell-Stacked";
 	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
+  static NSString *webLinkCellWithoutPhotoIdentifier = @"PostCell-WebLinkNoPhoto";
   
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
   
-  NSString *identifier = 
-		postHasFiles ? imageCellIdentifier : 
-		postHasPreview ? webLinkCellIdentifier : 
-		textOnlyCellIdentifier;
+  NSString *identifier;
+	WAPostViewCellStyle style;
+	WAPostViewCellPhone *cell;
 	
-  WAPostViewCellStyle style = 
-		postHasFiles ? WAPostViewCellStyleImageStack : 
-		postHasPreview ? WAPostViewCellStyleWebLink : 
-		WAPostViewCellStyleDefault;
-	
-  WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-  if (!cell) {
-		
-    cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
-    cell.imageStackView.delegate = self;
-		cell.commentLabel.userInteractionEnabled = YES;
-				
-  }
-	
-  cell.userNicknameLabel.text = post.owner.nickname;//[[post.owner.nickname componentsSeparatedByString: @" "] objectAtIndex:0];
-  cell.avatarView.image = post.owner.avatar;
-  cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
-	cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-	cell.extraInfoLabel.text = @"";
- 
-	cell.accessibilityLabel = @"Text";
-	cell.accessibilityValue = post.text;
+	// TODO: put these logic into cell.
 	if (postHasPreview) {
 		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil]] lastObject];	
+		nil]] lastObject];
 		
+		identifier = webLinkCellIdentifier;
+		style = WAPostViewCellStyleWebLink;
+  	if(latestPreview.thumbnail == 0){
+			identifier = webLinkCellWithoutPhotoIdentifier;
+			style = WAPostViewCellStyleWebLinkWithoutPhoto;
+		}
+		
+		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+		if (!cell) {
+			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
+			cell.commentLabel.userInteractionEnabled = YES;
+		}
+		
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
+		cell.extraInfoLabel.text = @"";
+	 
+		cell.accessibilityLabel = @"Text";
+		cell.accessibilityValue = post.text;
+
 		cell.previewBadge.preview = latestPreview;
 		
 		cell.accessibilityLabel = @"Preview";
 		cell.accessibilityHint = latestPreview.graphElement.title;
 		cell.accessibilityValue = latestPreview.graphElement.text;
 		
-  } else {
+		cell.previewImageView.image = latestPreview.thumbnail;
+		cell.previewTitleLabel.text = latestPreview.graphElement.title;
+		cell.previewProviderLabel.text = latestPreview.graphElement.providerURL;
+		
+		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
+		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
+		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
+		cell.previewImageBackground.layer.shadowRadius = 1.0f;
 	
-		cell.previewBadge.preview = nil;
+	} else if (postHasFiles) {
 	
-	}
-    
-  if (postHasFiles) {
-    objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:imageCellIdentifier];
+		if (!cell) {
+			
+			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier] autorelease];
+			cell.imageStackView.delegate = self;
+			cell.commentLabel.userInteractionEnabled = YES;
+					
+		}
+		
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
+		cell.extraInfoLabel.text = @"";
+	 
+		cell.accessibilityLabel = @"Text";
+		cell.accessibilityValue = post.text;
+			
+		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 		
 		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 3) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-      WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
+			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
 			return file.thumbnailImage;
 		}] asynchronously:YES withDecodingCompletion:nil];
 		
@@ -870,15 +889,25 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		cell.accessibilityLabel = @"Photo";
 		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
+  
+  } else {
+		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:textOnlyCellIdentifier];
+		if (!cell) {
+			
+			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier] autorelease];
+			cell.imageStackView.delegate = self;
+			cell.commentLabel.userInteractionEnabled = YES;
+					
+		}
 		
-	} else {
-	
-		[cell.imageStackView setImages:nil asynchronously:NO withDecodingCompletion:nil];
-	
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
+		cell.extraInfoLabel.text = @"";
+	 
+		cell.accessibilityLabel = @"Text";
+		cell.accessibilityValue = post.text;
 	}
-  
-  return cell;
-  
+	return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -891,7 +920,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		9999.0
 	} lineBreakMode:UILineBreakModeWordWrap].height;
 
-	return height + ([post.files count] ? 250 : [post.previews count] ? 164 : 40);
+	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 36);
 	
 }
 
