@@ -15,7 +15,8 @@
 enum {
 	WAPostViewCellStyleDefault,
 	WAPostViewCellStyleImageStack,
-  WAPostViewCellStyleWebLink
+  WAPostViewCellStyleWebLink, // tag 0
+  WAPostViewCellStyleWebLinkWithoutPhoto, // tag 1
 }; typedef NSUInteger WAPostViewCellStyle;
 
 

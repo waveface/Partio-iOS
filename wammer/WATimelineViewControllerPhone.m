@@ -806,6 +806,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
 	static NSString *imageCellIdentifier = @"PostCell-Stacked";
 	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
+  static NSString *webLinkCellWithoutPhotoIdentifier = @"PostCell-WebLinkNoPhoto";
   
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
@@ -822,6 +823,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		postHasPreview ? WAPostViewCellStyleWebLink : 
 		WAPostViewCellStyleDefault;
 	
+	// Preview has photo
+	if (identifier == webLinkCellIdentifier) {
+  	WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+		nil]] lastObject];
+		
+		if(latestPreview.thumbnail == 0){
+			identifier = webLinkCellWithoutPhotoIdentifier;
+			style = WAPostViewCellStyleWebLinkWithoutPhoto;
+			}
+	}
+		
   WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
   if (!cell) {
 		
