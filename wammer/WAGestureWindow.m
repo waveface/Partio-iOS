@@ -75,25 +75,4 @@
 
 }
 
-//- (id) retain {
-//
-//	NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSThread callStackSymbols]);
-//	return [super retain];
-//
-//}
-//
-//- (id) autorelease {
-//
-//	NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSThread callStackSymbols]);
-//	return [super autorelease];
-//
-//}
-//
-//- (oneway void) release {
-//
-//	NSLog(@"%s %@", __PRETTY_FUNCTION__, [NSThread callStackSymbols]);
-//	[super release];
-//
-//}
-
 @end
