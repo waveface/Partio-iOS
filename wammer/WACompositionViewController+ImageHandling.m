@@ -44,7 +44,16 @@
 
 - (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender {
 
-	[self presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
+	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
+		
+		if (aVC.modalViewController)
+			return topNonModalVC(aVC.modalViewController);
+		
+		return aVC;
+		
+	};
+	
+	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
 
 }
 
@@ -87,7 +96,16 @@
 
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
 		
-	[self presentModalViewController:controller animated:YES];
+	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
+		
+		if (aVC.modalViewController)
+			return topNonModalVC(aVC.modalViewController);
+		
+		return aVC;
+		
+	};
+	
+	[topNonModalVC(self) presentModalViewController:controller animated:YES];
 
 }
 
@@ -129,6 +147,48 @@
 		
 	}
 
+}
+
+- (void) handleImageAttachmentInsertionRequestWithSender:(id)sender {
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	NSMutableArray *availableActions = [NSMutableArray array]; 
+	
+	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];
+	
+	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
+		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
+	
+	if ([availableActions count] == 1) {
+		
+		//	With only one action we don’t even need to show the action sheet
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			[(IRAction *)[availableActions objectAtIndex:0] invoke];
+		});
+		
+	} else {
+	
+		IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:availableActions];
+		IRActionSheet *actionSheet = (IRActionSheet *)[controller singleUseActionSheet];
+		
+		if ([sender isKindOfClass:[UIView class]]) {
+			
+			[actionSheet showFromRect:((UIView *)sender).bounds inView:((UIView *)sender) animated:YES];
+			
+		} else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+			
+			[actionSheet showFromBarButtonItem:((UIBarButtonItem *)sender) animated:YES];
+			
+		} else {
+			
+			[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do."];
+		
+		}
+		
+	}
+	
 }
 
 @end

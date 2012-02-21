@@ -8,6 +8,19 @@
 
 #import "WACompositionViewController.h"
 
+#import "AQGridView.h"
+#import "IRTransparentToolbar.h"
+
+
 @interface WACompositionViewControllerPad : WACompositionViewController
+
+@property (nonatomic, readwrite, retain) IBOutlet AQGridView *photosView;
+@property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar;
+@property (nonatomic, readwrite, retain) IBOutlet UIView *noPhotoReminderView;
+
+@property (nonatomic, readwrite, retain) IBOutletCollection(id) NSArray *noPhotoReminderViewElements;
+
+- (IBAction) handleCameraItemTap:(UIButton *)sender;
+- (IBAction) handlePreviewBadgeTap:(id)sender;
 
 @end
