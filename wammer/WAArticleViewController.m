@@ -177,19 +177,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
-- (void) didReceiveMemoryWarning {
-
-	WAArticleView *ownView = (WAArticleView *)([self isViewLoaded] ? [self.view retain] : nil);
-	
-	[super didReceiveMemoryWarning];
-
-	if (![self isViewLoaded]) {
-		ownView.article = nil;
-		[ownView autorelease];
-	}
-
-}
-
 - (void) viewDidUnload {
 
 //	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
