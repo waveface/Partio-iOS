@@ -56,8 +56,6 @@ enum {
 - (void) handleStackViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
 - (void) handleWebScrollViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
 
-@property (nonatomic, readwrite, retain) UIToolbar *toolbar;
-
 @property (nonatomic, readwrite, assign) CGPoint lastStackViewContentOffset;
 @property (nonatomic, readwrite, assign) CGPoint lastWebScrollViewContentOffset;
 @property (nonatomic, readwrite, assign) UIGestureRecognizerState lastWebScrollViewPanGestureRecognizerState;
@@ -71,7 +69,6 @@ enum {
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
-@synthesize toolbar;
 
 - (void) dealloc {
 
@@ -85,11 +82,8 @@ enum {
 	[webViewActivityIndicatorBarButtonItem release];
 	[webViewReloadBarButtonItem release];
 
-	
 	[previewBadge release];
 	[previewBadgeWrapper release];
-	
-	[toolbar release];
 	
 	[super dealloc];
 
@@ -133,6 +127,8 @@ enum {
 
 	[super viewDidLoad];
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	WAPreview *anyPreview = [self preview];
 	
 	if (!anyPreview)
@@ -148,13 +144,13 @@ enum {
 	//	)];
 			
 	[stackElements addObject:self.webViewWrapper];
-	[stackElements addObject:self.toolbar];
+	//	[stackElements addObject:self.toolbar];
 	
 	self.stackView.delaysContentTouches = YES;
 	self.stackView.canCancelContentTouches = NO;
 	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
 	
-		UIView *wrappedView = [self wrappedView];
+		UIView *wrappedView = [nrSelf wrappedView];
 	
 		if (wrappedView)
 		if (view == wrappedView)
@@ -207,7 +203,15 @@ enum {
 	self.previewBadge = nil;
 	self.previewBadgeWrapper = nil;
 
-	self.toolbar = nil;
+	//	self.toolbar = nil;
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self.navigationController setToolbarHidden:NO animated:animated];
 
 }
 
@@ -519,14 +523,14 @@ enum {
 
 }
 
-- (UIToolbar *) toolbar {
+- (NSArray *) toolbarItems {
 
-	if (toolbar)
-		return toolbar;
+	if ([[super toolbarItems] count])
+		return [super toolbarItems];
 	
-	toolbar = [[UIToolbar alloc] initWithFrame:CGRectZero];
+	__block __typeof__(self) nrSelf = self;
 	
-	toolbar.items = [NSArray arrayWithObjects:
+	self.toolbarItems = [NSArray arrayWithObjects:
 			
 		[IRBarButtonItem itemWithCustomView:((^ {
 		
@@ -546,31 +550,28 @@ enum {
 		
 		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
 		
-		self.webViewBackBarButtonItem,
+		nrSelf.webViewBackBarButtonItem,
 		
 		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
 				
-		self.webViewActivityIndicatorBarButtonItem,
-		//	self.webViewReloadBarButtonItem,
+		nrSelf.webViewActivityIndicatorBarButtonItem,
+		//	nrSelf.webViewReloadBarButtonItem,
 		
 		[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 44, 44 }] autorelease]],
 				
-		self.webViewForwardBarButtonItem,
+		nrSelf.webViewForwardBarButtonItem,
 
 		[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
 		
 		[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
 		
-			NSURL * const previewURL = [NSURL URLWithString:self.preview.graphElement.url];
-			NSURL * const currentWebURL = [NSURL URLWithString:[webView stringByEvaluatingJavaScriptFromString:@"document.location.href"]];
-		
-			[[UIApplication sharedApplication] openURL:currentWebURL ? currentWebURL : previewURL];
+			[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
 		
 		}],
 		
 	nil];
 	
-	return toolbar;
+	return self.toolbarItems;
 
 }
 
@@ -664,8 +665,8 @@ enum {
 		
 	}
 	
-	if ((self.toolbar == anElement) || [self.toolbar isDescendantOfView:anElement])
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 44 };
+//	if ((self.toolbar == anElement) || [self.toolbar isDescendantOfView:anElement])
+//		return (CGSize){ CGRectGetWidth(aStackView.bounds), 44 };
 
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		return [super sizeThatFitsElement:anElement inStackView:aStackView];
