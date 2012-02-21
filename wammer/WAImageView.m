@@ -36,10 +36,4 @@
 
 }
 
-- (void) setImage:(UIImage *)anImage withOptions:(WAImageViewOptions)options {
-
-	[self setImage:anImage];
-
-}
-
 @end
