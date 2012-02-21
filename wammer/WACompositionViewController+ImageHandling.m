@@ -44,7 +44,16 @@
 
 - (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender {
 
-	[self presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
+	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
+		
+		if (aVC.modalViewController)
+			return topNonModalVC(aVC.modalViewController);
+		
+		return aVC;
+		
+	};
+	
+	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
 
 }
 
@@ -87,7 +96,16 @@
 
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
 		
-	[self presentModalViewController:controller animated:YES];
+	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
+		
+		if (aVC.modalViewController)
+			return topNonModalVC(aVC.modalViewController);
+		
+		return aVC;
+		
+	};
+	
+	[topNonModalVC(self) presentModalViewController:controller animated:YES];
 
 }
 
