@@ -6,7 +6,7 @@ NextVersion=`expr $CurrentVersion + 1`
 echo $NextVersion
 
 git flow release start $NextVersion
-agvtool next-version
+agvtool new-version $NextVersion
 git commit -a -m "Punt"
 git commit --amend
-git flow release finish
+git flow release finish $NextVersion
