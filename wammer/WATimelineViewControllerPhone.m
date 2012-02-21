@@ -1043,9 +1043,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[compositionVC dismissModalViewControllerAnimated:YES];
 		
 	}];
-
-  UINavigationController *navigationController = [[[UINavigationController alloc] initWithRootViewController:compositionVC] autorelease];
-  [self presentModalViewController:navigationController animated:YES];
+	
+  [self presentModalViewController:[compositionVC wrappingNavigationController] animated:YES];
 	
 }
 

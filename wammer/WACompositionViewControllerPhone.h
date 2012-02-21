@@ -8,6 +8,9 @@
 
 #import "WACompositionViewController.h"
 
+@class IRTransparentToolbar;
 @interface WACompositionViewControllerPhone : WACompositionViewController
+
+@property (retain, nonatomic) IBOutlet IRTransparentToolbar *toolbar;
 
 @end
