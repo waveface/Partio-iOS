@@ -50,9 +50,4 @@
  **/
 - (void)crash;
 
-- (void)setUserIdentifier:(id)user;
-- (void)addCustomAttributesFromDictionary:(NSDictionary *)dictionary;
-- (void)addCustomAttribute:(id)attribute forKey:(NSString *)key;
-- (id)customAttributeForKey:(NSString *)key;
-
 @end
