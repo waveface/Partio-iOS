@@ -202,38 +202,30 @@
 	switch (view.style) {
 	
 		case WAArticleAttachmentActivityViewAttachmentsStyle: {
+				
+			__block WAAttachedMediaListViewController *mediaList = [[[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
 			
-			if ([self.article.files count]) {
+				[mediaList dismissModalViewControllerAnimated:YES];
 				
-				__block WAAttachedMediaListViewController *mediaList = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
-				
-					[mediaList dismissModalViewControllerAnimated:YES];
-					
-				}];
-				
-				mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
-				
-					[self handleImageAttachmentInsertionRequestWithSender:senderItem];
-					
-				}];
-				
-				mediaList.onViewDidLoad = ^ {
-					[mediaList.tableView setEditing:YES animated:NO];
-				};
-				
-				if ([mediaList isViewLoaded])
-					mediaList.onViewDidLoad();
-				
-				WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:mediaList] autorelease];
-				
-				[self presentModalViewController:navC animated:YES];
-				
-			} else {
+			}] autorelease];
 			
-				[self handleImageAttachmentInsertionRequestWithSender:view];
+			mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
+			
+				[self handleImageAttachmentInsertionRequestWithSender:senderItem];
 				
-			}
-			 
+			}];
+			
+			mediaList.onViewDidLoad = ^ {
+				[mediaList.tableView setEditing:YES animated:NO];
+			};
+			
+			if ([mediaList isViewLoaded])
+				mediaList.onViewDidLoad();
+			
+			WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:mediaList] autorelease];
+			
+			[self presentModalViewController:navC animated:YES];
+						 
 			break;
 			
 		}
