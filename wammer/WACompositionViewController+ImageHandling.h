@@ -8,6 +8,7 @@
 
 #import "WACompositionViewController.h"
 
+
 @interface WACompositionViewController (ImageHandling)
 
 - (IRImagePickerController *) newImagePickerController NS_RETURNS_RETAINED;
@@ -19,10 +20,16 @@
 - (void) handleImageAttachmentInsertionRequestWithSender:(id)sender;	//	IMPLEMENTED
 
 - (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender;
+- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated;
+
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender;
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated;
 
 - (void) dismissImagePickerController:(IRImagePickerController *)controller;
+- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated;
+
 - (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller;
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated;
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
