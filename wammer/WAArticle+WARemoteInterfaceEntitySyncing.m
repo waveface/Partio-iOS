@@ -385,9 +385,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		operationQueue.maxConcurrentOperationCount = 1;
 	
 		WAPreview *aPreview = [self.previews anyObject];
-		NSURL *previewURL = [NSURL URLWithString:(aPreview.url ? aPreview.url : aPreview.graphElement.url)];
-		
-		
+		NSURL *previewURL = [NSURL URLWithString:(aPreview.graphElement.url ? aPreview.graphElement.url : aPreview.url)];
 		
 		if (previewURL) {
 		
@@ -406,6 +404,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				}];
 				
 			} completionBlock: ^ (id results) {
+			
+				if (!results)
+					return;
 			
 				[resultsDictionary setObject:results forKey:@"previewEntity"];
 				
