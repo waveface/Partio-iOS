@@ -26,6 +26,8 @@
 
 - (id) initWithFrame:(CGRect)frame {
 
+	NSParameterAssert([NSThread isMainThread]);
+
 	self = [super initWithFrame:frame];
 	if (!self)	
 		return nil;
@@ -55,6 +57,8 @@
 
 - (void) layoutSubviews {
 
+	NSParameterAssert([NSThread isMainThread]);
+	
 	[super layoutSubviews];
 
 	button.frame = self.bounds;
@@ -67,6 +71,8 @@
 }
 
 - (void) setStyle:(WAArticleAttachmentActivityViewStyle)newStyle {
+
+	NSParameterAssert([NSThread isMainThread]);
 
 	if (style == newStyle)
 		return;
@@ -83,6 +89,8 @@
 
 	
 - (void) updateAccordingToCurrentStyle {
+
+	NSParameterAssert([NSThread isMainThread]);
 
 	BOOL const isBusy = (style == WAArticleAttachmentActivityViewSpinnerStyle);
 
@@ -112,12 +120,16 @@
 
 - (IBAction) handleButtonTap:(id)sender {
 
+	NSParameterAssert([NSThread isMainThread]);
+
 	if (self.onTap)
 		self.onTap();
 
 }
 
 - (NSMutableDictionary *) stylesToTitles {
+
+	NSParameterAssert([NSThread isMainThread]);
 
 	if (stylesToTitles)
 		return stylesToTitles;
@@ -129,6 +141,8 @@
 
 - (void) setTitle:(NSString *)title forStyle:(WAArticleAttachmentActivityViewStyle)aStyle {
 
+	NSParameterAssert([NSThread isMainThread]);
+
 	[self.stylesToTitles setObject:title forKey:[NSValue valueWithBytes:&aStyle objCType:@encode(__typeof__(aStyle))]];	
 	[self updateAccordingToCurrentStyle];
 
@@ -136,11 +150,15 @@
 
 - (NSString *) titleForStyle:(WAArticleAttachmentActivityViewStyle)aStyle {
 
+	NSParameterAssert([NSThread isMainThread]);
+
 	return [self.stylesToTitles objectForKey:[NSValue valueWithBytes:&aStyle objCType:@encode(__typeof__(aStyle))]];
 
 }
 
 - (void) dealloc {
+
+	NSParameterAssert([NSThread isMainThread]);
 
 	[button release];
 	[spinner release];

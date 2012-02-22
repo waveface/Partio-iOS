@@ -44,6 +44,12 @@
 
 - (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender {
 
+	[self presentImagePickerController:controller sender:sender animated:YES];
+
+}
+
+- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
+
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
 		
 		if (aVC.modalViewController)
@@ -53,13 +59,19 @@
 		
 	};
 	
-	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:YES];
+	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:animated];
 
 }
 
 - (void) dismissImagePickerController:(IRImagePickerController *)controller {
 
-	[controller dismissModalViewControllerAnimated:YES];
+	[self dismissImagePickerController:controller animated:YES];
+
+}
+
+- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+
+	[controller dismissModalViewControllerAnimated:animated];
 
 }
 
@@ -95,7 +107,13 @@
 }
 
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
-		
+
+	[self presentCameraCapturePickerController:controller sender:sender animated:YES];
+
+}
+
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
+
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
 		
 		if (aVC.modalViewController)
@@ -105,13 +123,19 @@
 		
 	};
 	
-	[topNonModalVC(self) presentModalViewController:controller animated:YES];
+	[topNonModalVC(self) presentModalViewController:controller animated:animated];
 
 }
 
 - (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
 
-	[controller dismissModalViewControllerAnimated:YES];
+	[self dismissCameraCapturePickerController:controller animated:YES];
+
+}
+
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+
+	[controller dismissModalViewControllerAnimated:animated];
 
 }
 
