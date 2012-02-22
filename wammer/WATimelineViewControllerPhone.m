@@ -353,6 +353,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
 		nil];
 		
+		fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+			@"files",
+			@"previews",
+			@"previews.graphElement",
+			@"previews.graphElement.images",
+		nil];
+		
+		fetchRequest.fetchBatchSize = 20;
+		
 		return fetchRequest;
 		
 	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
