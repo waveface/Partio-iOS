@@ -22,19 +22,28 @@
 
 #import "IRLifetimeHelper.h"
 
+
 @interface WACompositionViewControllerPhone () <WAPreviewInspectionViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRActionSheetController *actionSheetController;
 @property (nonatomic, readwrite, retain) WAArticleAttachmentActivityView *articleAttachmentActivityView;
 
+- (WAAttachedMediaListViewController *) newMediaListViewController NS_RETURNS_RETAINED;
+- (void) presentMediaListViewController:(WAAttachedMediaListViewController *)controller sender:(id)sender animated:(BOOL)animated;
+- (void) dismissMediaListViewController:(WAAttachedMediaListViewController *)controller animated:(BOOL)animated;
+
 - (void) handleArticleAttachmentActivityViewTap:(WAArticleAttachmentActivityView *)view;
 
 - (void) updateArticleAttachmentActivityView;
+
+@property (nonatomic, readwrite, copy) void (^onDismissImagePickerControllerAnimated)(IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault);
+@property (nonatomic, readwrite, copy) void (^onDismissCameraCaptureControllerAnimated)(IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault);
 
 @end
 
 @implementation WACompositionViewControllerPhone
 @synthesize toolbar, actionSheetController, articleAttachmentActivityView;
+@synthesize onDismissImagePickerControllerAnimated, onDismissCameraCaptureControllerAnimated;
 
 - (id) init {
 
@@ -85,6 +94,9 @@
 	[actionSheetController release];
 	[toolbar release];
 	[articleAttachmentActivityView release];
+	
+	[onDismissImagePickerControllerAnimated release];
+	[onDismissCameraCaptureControllerAnimated release];
 	
 	[super dealloc];
 
@@ -163,7 +175,7 @@
 	}];
 
 	NSCParameterAssert(!objc_getAssociatedObject(returnedAttributor, _cmd));
-	objc_setAssociatedObject(returnedAttributor, _cmd, kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(returnedAttributor, _cmd, (id)kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	NSCParameterAssert(objc_getAssociatedObject(returnedAttributor, _cmd));
 	
 	return returnedAttributor;
@@ -222,41 +234,92 @@
 
 }
 
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
-
-	[super presentCameraCapturePickerController:controller sender:sender];
-
-}
-
 - (void) handleArticleAttachmentActivityViewTap:(WAArticleAttachmentActivityView *)view {
 
 	switch (view.style) {
 	
 		case WAArticleAttachmentActivityViewAttachmentsStyle: {
+		
+			if ([self.article.files count]) {
+			
+				[self presentMediaListViewController:[[self newMediaListViewController] autorelease] sender:view animated:YES];
+			
+			} else {
+			
+				[self handleImageAttachmentInsertionRequestWithSender:view];
 				
-			__block WAAttachedMediaListViewController *mediaList = [[[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
-			
-				[mediaList dismissModalViewControllerAnimated:YES];
+				__block __typeof__(self) nrSelf = self;
 				
-			}] autorelease];
-			
-			mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
-			
-				[self handleImageAttachmentInsertionRequestWithSender:senderItem];
+				NSArray *capturedFiles = [[self.article.fileOrder copy] autorelease];
+				BOOL (^filesChanged)(void) = ^ {
+					return (BOOL)![nrSelf.article.fileOrder isEqual:capturedFiles];
+				};
 				
-			}];
-			
-			mediaList.onViewDidLoad = ^ {
-				[mediaList.tableView setEditing:YES animated:NO];
-			};
-			
-			if ([mediaList isViewLoaded])
-				mediaList.onViewDidLoad();
-			
-			WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:mediaList] autorelease];
-			
-			[self presentModalViewController:navC animated:YES];
-						 
+				CALayer *crossfadeLayer = nrSelf.view.window.layer;
+				
+				void (^crossfade)(void(^)(void)) = ^ (void(^aBlock)(void)) {
+				
+					CATransition *transition = [CATransition animation];
+					transition.type = kCATransitionFade;
+					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+					transition.duration = 0.3;
+					transition.removedOnCompletion = YES;
+					transition.fillMode = kCAFillModeForwards;
+					
+					[CATransaction begin];
+					[CATransaction setDisableActions:YES];
+					
+					aBlock();
+					
+					[crossfadeLayer addAnimation:transition forKey:kCATransition];
+					
+					[CATransaction commit];
+					
+				};
+				
+				
+				self.onDismissCameraCaptureControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+				
+					[[nrSelf.onDismissCameraCaptureControllerAnimated retain] autorelease];
+					
+					nrSelf.onDismissCameraCaptureControllerAnimated = nil;
+					
+					if (!filesChanged())
+						return;
+					
+					*overrideDefault = YES;
+					
+					crossfade(^ {
+					
+						[nrSelf dismissCameraCapturePickerController:controller animated:NO];
+						[nrSelf presentMediaListViewController:[[self newMediaListViewController] autorelease] sender:nil animated:NO];
+					
+					});
+									
+				};
+				
+				self.onDismissImagePickerControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+				
+					[[nrSelf.onDismissImagePickerControllerAnimated retain] autorelease];
+					
+					nrSelf.onDismissImagePickerControllerAnimated = nil;
+
+					if (!filesChanged())
+						return;
+					
+					*overrideDefault = YES;
+				
+					crossfade(^ {
+
+						[nrSelf dismissImagePickerController:controller animated:NO];
+						[nrSelf presentMediaListViewController:[[self newMediaListViewController] autorelease] sender:nil animated:NO];
+					
+					});
+				
+				};
+				
+			}
+										 
 			break;
 			
 		}
@@ -279,6 +342,69 @@
 		}
 
 	}
+
+}
+
+- (WAAttachedMediaListViewController *) newMediaListViewController {
+
+	__block __typeof__(self) nrSelf = self;
+	__block WAAttachedMediaListViewController *mediaList = [[[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
+	
+		[nrSelf dismissMediaListViewController:mediaList animated:YES];
+		
+	}] autorelease];
+	
+	mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
+	
+		[nrSelf handleImageAttachmentInsertionRequestWithSender:senderItem];
+		
+	}];
+	
+	mediaList.onViewDidLoad = ^ {
+		[mediaList.tableView setEditing:YES animated:NO];
+	};
+	
+	if ([mediaList isViewLoaded])
+		mediaList.onViewDidLoad();
+	
+	return [mediaList retain];
+
+}
+- (void) presentMediaListViewController:(WAAttachedMediaListViewController *)controller sender:(id)sender animated:(BOOL)animated {
+
+	WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:[[self newMediaListViewController] autorelease]] autorelease];
+	
+	[self presentModalViewController:navC animated:animated];
+
+}
+
+- (void) dismissMediaListViewController:(WAAttachedMediaListViewController *)controller animated:(BOOL)animated {
+
+	[controller dismissModalViewControllerAnimated:animated];
+
+}
+
+- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+
+	BOOL shouldOverride = NO;
+	
+	if (self.onDismissImagePickerControllerAnimated)
+		self.onDismissImagePickerControllerAnimated(controller, animated, &shouldOverride);
+	
+	if (!shouldOverride)
+		[super dismissImagePickerController:controller animated:animated];
+
+}
+
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+
+	BOOL shouldOverride = NO;
+	
+	if (self.onDismissCameraCaptureControllerAnimated)
+		self.onDismissCameraCaptureControllerAnimated(controller, animated, &shouldOverride);
+	
+	if (!shouldOverride)
+		[super dismissCameraCapturePickerController:controller animated:animated];
 
 }
 
