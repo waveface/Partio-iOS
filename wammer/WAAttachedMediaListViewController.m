@@ -155,51 +155,48 @@
 
 	self.view = [[[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds] autorelease]; // dummy size for autoresizing
 	
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
-	
 	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.rowHeight = 65.0f; // plus 1 to get UIImageView in right size
-  self.tableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
-  self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+	self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
 	[self.view addSubview:self.tableView];
   
-	__block __typeof__(self) nrSelf = self;
-	
-	((WAView *)self.view).onLayoutSubviews = ^ {
-	
-		//	Handle header view conf
-		
-		CGFloat headerViewHeight = 0.0f;
-		
-		if (nrSelf.headerView) {
-			[nrSelf.view addSubview:nrSelf.headerView];
-			headerViewHeight = CGRectGetHeight(nrSelf.headerView.bounds);
-		}
-			
-		nrSelf.headerView.frame = (CGRect){
-			CGPointZero,
-			(CGSize){
-				CGRectGetWidth(nrSelf.view.bounds),
-				CGRectGetHeight(nrSelf.headerView.bounds)
-			}
-		};
-		
-		nrSelf.tableView.frame = (CGRect){
-			(CGPoint){
-				0,
-				headerViewHeight
-			},
-			(CGSize){
-				CGRectGetWidth(nrSelf.view.bounds),
-				CGRectGetHeight(nrSelf.view.bounds) - headerViewHeight
-			}
-		};
-		
-		//	Relocate table view
-	
-	};
+//	__block __typeof__(self) nrSelf = self;
+//	
+//	((WAView *)self.view).onLayoutSubviews = ^ {
+//	
+//		//	Handle header view conf
+//		
+//		CGFloat headerViewHeight = 0.0f;
+//		
+//		if (nrSelf.headerView) {
+//			[nrSelf.view addSubview:nrSelf.headerView];
+//			headerViewHeight = CGRectGetHeight(nrSelf.headerView.bounds);
+//		}
+//			
+//		nrSelf.headerView.frame = (CGRect){
+//			CGPointZero,
+//			(CGSize){
+//				CGRectGetWidth(nrSelf.view.bounds),
+//				CGRectGetHeight(nrSelf.headerView.bounds)
+//			}
+//		};
+//		
+//		nrSelf.tableView.frame = (CGRect){
+//			(CGPoint){
+//				0,
+//				headerViewHeight
+//			},
+//			(CGSize){
+//				CGRectGetWidth(nrSelf.view.bounds),
+//				CGRectGetHeight(nrSelf.view.bounds) - headerViewHeight
+//			}
+//		};
+//		
+//		//	Relocate table view
+//	
+//	};
 
 }
 
