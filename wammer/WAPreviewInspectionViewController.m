@@ -76,7 +76,8 @@
 	[deleteButton setBackgroundImage:[[UIImage imageNamed:@"deletepressed"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
 	
 	previewBadge.preview = self.preview;
-	
+	previewBadge.titleColor = [UIColor colorWithRed:198.0/255.0 green:107.0/255.0 blue:75.0/255.0 alpha:1.0];
+	previewBadge.textColor = [UIColor colorWithRed:118.0/255.0 green:116.0/255.0 blue:111.0/255.0 alpha:1.0];
 }
 
 - (void) viewDidUnload {
