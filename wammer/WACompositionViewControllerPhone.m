@@ -205,11 +205,11 @@
 			
 			if ([self.article.files count]) {
 				
-				__block WAAttachedMediaListViewController *mediaList = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
+				__block WAAttachedMediaListViewController *mediaList = [[[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
 				
 					[mediaList dismissModalViewControllerAnimated:YES];
 					
-				}];
+				}] autorelease];
 				
 				mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
 				
