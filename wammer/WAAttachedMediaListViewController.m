@@ -261,26 +261,9 @@
 	}] anyObject];
 	
 	UIImage *actualImage = representedFile.resourceImage;
-  UIImage *croppedImage = nil;
   
-  CGRect imageRect = (CGRect){
-    CGPointZero,
-    (CGSize){ aTableView.rowHeight, aTableView.rowHeight }
-  };
-
-  //TODO fix the blur problem
-  UIGraphicsBeginImageContextWithOptions(imageRect.size, NO, 0.0);
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSaveGState(context);
-  CGContextSetShouldAntialias(context, NO);
-  CGContextSetAllowsAntialiasing(context, NO);
-  CGContextClipToRect(context, imageRect);
-  [actualImage drawInRect:IRGravitize(imageRect, actualImage.size, kCAGravityResizeAspectFill)];
-  croppedImage = UIGraphicsGetImageFromCurrentImageContext();
-  CGContextRestoreGState(context);
-  UIGraphicsEndImageContext();
-  
-  cell.imageView.image = croppedImage;
+  cell.imageView.image = representedFile.thumbnail;
+	cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
   
 	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
     actualImage.size.width,
