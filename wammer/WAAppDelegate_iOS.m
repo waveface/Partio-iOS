@@ -1041,4 +1041,14 @@ static unsigned int networkActivityStackingCount = 0;
 
 }
 
+- (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
+
+	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
+	
+		
+	
+	nil]);
+
+}
+
 @end
