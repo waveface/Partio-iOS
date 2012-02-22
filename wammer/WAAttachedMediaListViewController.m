@@ -17,8 +17,6 @@
 @interface WAAttachedMediaListViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, readwrite, copy) void(^callback)(void);
-@property (nonatomic, readwrite, retain) UITableView *tableView;
-
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
@@ -30,11 +28,11 @@
 
 
 @implementation WAAttachedMediaListViewController
-@synthesize callback, headerView, tableView;
+@synthesize callback, tableView;
 @synthesize managedObjectContext, article;
 @synthesize articleFilesObservingsHelper;
 @synthesize onViewDidLoad;
-@synthesize 	undergoingProgrammaticEntityMutation;
+@synthesize undergoingProgrammaticEntityMutation;
 
 + (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
 
@@ -114,7 +112,6 @@
 	[article release];
 
 	[callback release];
-	[headerView release];
 	
 	[onViewDidLoad release];
 	
@@ -155,49 +152,12 @@
 
 	self.view = [[[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds] autorelease]; // dummy size for autoresizing
 	
-	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+	tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
-	self.tableView.rowHeight = 65.0f; // plus 1 to get UIImageView in right size
+	self.tableView.rowHeight = 76.0f; // plus 1 to get UIImageView in right size
 	self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
 	[self.view addSubview:self.tableView];
-  
-//	__block __typeof__(self) nrSelf = self;
-//	
-//	((WAView *)self.view).onLayoutSubviews = ^ {
-//	
-//		//	Handle header view conf
-//		
-//		CGFloat headerViewHeight = 0.0f;
-//		
-//		if (nrSelf.headerView) {
-//			[nrSelf.view addSubview:nrSelf.headerView];
-//			headerViewHeight = CGRectGetHeight(nrSelf.headerView.bounds);
-//		}
-//			
-//		nrSelf.headerView.frame = (CGRect){
-//			CGPointZero,
-//			(CGSize){
-//				CGRectGetWidth(nrSelf.view.bounds),
-//				CGRectGetHeight(nrSelf.headerView.bounds)
-//			}
-//		};
-//		
-//		nrSelf.tableView.frame = (CGRect){
-//			(CGPoint){
-//				0,
-//				headerViewHeight
-//			},
-//			(CGSize){
-//				CGRectGetWidth(nrSelf.view.bounds),
-//				CGRectGetHeight(nrSelf.view.bounds) - headerViewHeight
-//			}
-//		};
-//		
-//		//	Relocate table view
-//	
-//	};
-
 }
 
 - (void) viewDidLoad {
@@ -214,25 +174,6 @@
 	[super viewDidUnload];
 
 }
-
-- (void) setHeaderView:(UIView *)newHeaderView {
-
-	if (headerView == newHeaderView)
-		return;
-	
-	if ([self isViewLoaded])
-		if ([headerView isDescendantOfView:self.view])
-			[headerView removeFromSuperview];
-	
-	[self willChangeValueForKey:@"headerView"];
-	[headerView release];
-	headerView = [newHeaderView retain];
-	[self didChangeValueForKey:@"headerView"];
-	
-	if ([self isViewLoaded])
-		[self.view setNeedsLayout];
-
-} 
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
