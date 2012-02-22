@@ -109,9 +109,9 @@
 		
 			NSLog(@"Using Testflight");
 					
-			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
-			nil]];
+			//		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			//			(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
+			//		nil]];
 			
 			[TestFlight takeOff:kWATestflightTeamToken];
 			
@@ -181,8 +181,8 @@
     
 	};
 	
-#if WF_USES_CRASHLYTICS
-	
+#if WF_USES_CRASHLYTICS || WF_USES_TESTFLIGHT
+
 	initializeInterface();
 
 #else
@@ -200,6 +200,8 @@
 		initializeInterface();
 	
 	} else {
+	
+		NSLog(@"Preparing environment for custom crash handling");
   
 		[self clearViewHierarchy];
 	

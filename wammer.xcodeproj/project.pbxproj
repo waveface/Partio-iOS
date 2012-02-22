@@ -156,6 +156,8 @@
 		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
+		FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; };
+		FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF42755B14F4E8D200824505 /* libz.dylib */; };
 		FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */; };
 		FF4570511488A79D005B5905 /* WAUserInfoHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF4570501488A79D005B5905 /* WAUserInfoHeaderCell.xib */; };
 		FF4570E11488E7E3005B5905 /* WAArticleFilesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4570E01488E7E3005B5905 /* WAArticleFilesListViewController.m */; };
@@ -1048,6 +1050,7 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/synergised/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/synergised/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/synergised/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
+		FF42755B14F4E8D200824505 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		FF45704D1488A786005B5905 /* WAUserInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserInfoHeaderCell.h; sourceTree = "<group>"; };
 		FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoHeaderCell.m; sourceTree = "<group>"; };
 		FF4570501488A79D005B5905 /* WAUserInfoHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAUserInfoHeaderCell.xib; sourceTree = "<group>"; };
@@ -1433,6 +1436,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */,
 				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
 				FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */,
 				FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */,
@@ -1459,6 +1463,7 @@
 				FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */,
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
+				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1764,6 +1769,7 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
+				FF42755B14F4E8D200824505 /* libz.dylib */,
 				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
 				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
 				FFC62019149CF1930097C377 /* Environment */,
@@ -3173,7 +3179,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./external/CrashlyticsSDK/Crashlytics.framework/run d79b0f823e42fdf1cdeb7e988a8453032fd85169";
+			shellScript = "if [ \"$WF_USES_CRASHLYTICS\" -eq \"1\" ]; then\n\necho \"Invoking Crashlytics SDK handler\"\n./external/CrashlyticsSDK/Crashlytics.framework/run d79b0f823e42fdf1cdeb7e988a8453032fd85169\n\nfi\n";
 		};
 		FFF7F500149E5463004EFB1B /* Copy Private Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3653,8 +3659,8 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
-				WF_USES_CRASHLYTICS = 1;
-				WF_USES_TESTFLIGHT = 0;
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 1;
 			};
 			name = Debug;
 		};
@@ -3704,8 +3710,8 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
-				WF_USES_CRASHLYTICS = 1;
-				WF_USES_TESTFLIGHT = 0;
+				WF_USES_CRASHLYTICS = 0;
+				WF_USES_TESTFLIGHT = 1;
 			};
 			name = Release;
 		};
