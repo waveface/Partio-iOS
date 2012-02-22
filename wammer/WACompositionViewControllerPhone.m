@@ -125,7 +125,7 @@
 	if (![self isViewLoaded])
 		return;
 
-	self.articleAttachmentActivityView.style = !!self.textAttributor.queue.operationCount ? WAArticleAttachmentActivityViewSpinnerStyle :
+	self.articleAttachmentActivityView.style = !![self.textAttributor.queue.operations count] ? WAArticleAttachmentActivityViewSpinnerStyle :
 		[self.article.previews count] ? WAArticleAttachmentActivityViewLinkStyle :
 		[self.article.files count] ? WAArticleAttachmentActivityViewAttachmentsStyle :
 		WAArticleAttachmentActivityViewDefaultStyle;
@@ -138,10 +138,21 @@
 - (IRTextAttributor *) textAttributor {
 
 	__block IRTextAttributor *returnedAttributor = [super textAttributor];
+	
+	if (objc_getAssociatedObject(returnedAttributor, _cmd))
+		return returnedAttributor;
+	
 	__block __typeof__(self) nrSelf = self;
 	__block id observer = [returnedAttributor.queue irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	
+		[nrSelf retain];
+	
+		dispatch_async(dispatch_get_main_queue(), ^ {
 
-		[nrSelf updateArticleAttachmentActivityView];
+			[nrSelf updateArticleAttachmentActivityView];
+			[nrSelf autorelease];
+		
+		});
 		
 	} forKeyPath:@"operations" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
@@ -150,6 +161,10 @@
 	 [returnedAttributor irRemoveObservingsHelper:observer];
 		
 	}];
+
+	NSCParameterAssert(!objc_getAssociatedObject(returnedAttributor, _cmd));
+	objc_setAssociatedObject(returnedAttributor, _cmd, kCFBooleanTrue, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	NSCParameterAssert(objc_getAssociatedObject(returnedAttributor, _cmd));
 	
 	return returnedAttributor;
 
@@ -160,8 +175,12 @@
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super textAttributor:attributor willUpdateAttributedString:attributedString withToken:aToken range:tokenRange attribute:newAttribute];
 	
-	[self updateArticleAttachmentActivityView];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		
+		[self updateArticleAttachmentActivityView];
 
+	});
+	
 }
 
 - (void) textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute {
@@ -169,7 +188,11 @@
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super textAttributor:attributor didUpdateAttributedString:attributedString withToken:aToken range:tokenRange attribute:newAttribute];
 	
-	[self updateArticleAttachmentActivityView];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		
+		[self updateArticleAttachmentActivityView];
+
+	});
 
 }
 
@@ -178,7 +201,11 @@
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super handleCurrentArticleFilesChangedFrom:fromValue to:toValue changeKind:changeKind];
 	
-	[self updateArticleAttachmentActivityView];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		
+		[self updateArticleAttachmentActivityView];
+
+	});
 
 }
 
@@ -187,7 +214,11 @@
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super handleCurrentArticlePreviewsChangedFrom:fromValue to:toValue changeKind:changeKind];
 	
-	[self updateArticleAttachmentActivityView];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		
+		[self updateArticleAttachmentActivityView];
+
+	});
 
 }
 
@@ -241,7 +272,12 @@
 		case WAArticleAttachmentActivityViewLinkStyle: {
 			
 			NSParameterAssert([self.article.previews count]);
-			[self inspectPreview:[self.article.previews anyObject]];
+			
+			WAPreview *inspectedPreview = [self.article.previews anyObject];
+			
+			TFLog(@"Inspecting preview %@", inspectedPreview);
+			[self inspectPreview:inspectedPreview];			
+			
 			break;
 			
 		}
