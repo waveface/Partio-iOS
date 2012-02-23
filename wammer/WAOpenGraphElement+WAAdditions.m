@@ -89,13 +89,9 @@
 	
 }
 
-- (NSSet *) keyPathsForValuesAffectingRepresentedImage {
++ (NSSet *) keyPathsForValuesAffectingRepresentedImage {
 
-	return [NSSet setWithObjects:
-	
-		@"imageOrder.@count",
-		
-	nil];
+	return [NSSet setWithObject:@"imageOrder.@count"];
 
 }
 
@@ -108,14 +104,9 @@
 
 }
 
-- (NSSet *) keyPathsForValuesAffectingThumbnail {
++ (NSSet *) keyPathsForValuesAffectingThumbnail {
 
-	return [NSSet setWithObjects:
-	
-		@"representedImage",
-		@"representedImage.image",
-				
-	nil];
+	return [NSSet setWithObject:@"representedImage.image"];
 
 }
 
@@ -125,7 +116,7 @@
 
 }
 
-- (NSSet *) keyPathsForValuesAffectingThumbnailURL {
++ (NSSet *) keyPathsForValuesAffectingThumbnailURL {
 
 	return [NSSet setWithObjects:
 	
@@ -141,7 +132,7 @@
 	return [self representedImage].imageRemoteURL;
 }
 
-- (NSSet *) keyPathsForValuesAffectingThumbnailFilePath {
++ (NSSet *) keyPathsForValuesAffectingThumbnailFilePath {
 
 	return [NSSet setWithObjects:
 	
@@ -156,6 +147,33 @@
 
 	return [self representedImage].imageFilePath;
 	
+}
+
++ (NSSet *) keyPathsForValuesAffectingProviderCaption {
+
+	return [NSSet setWithObjects:
+	
+		@"providerName",
+		@"providerDisplayName",
+		@"providerURL",
+	
+	nil];
+
+}
+
+- (NSString *) providerCaption {
+
+	if (self.providerName && self.providerDisplayName)
+		return [NSString stringWithFormat:@"%@ (%@)", self.providerName, self.providerDisplayName];
+	
+	if (self.providerName)
+		return self.providerName;
+	
+	if (self.providerDisplayName)
+		return self.providerDisplayName;
+	
+	return self.providerURL;
+
 }
 
 @end

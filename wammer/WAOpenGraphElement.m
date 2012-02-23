@@ -2,7 +2,7 @@
 //  WAOpenGraphElement.m
 //  wammer
 //
-//  Created by Evadne Wu on 2/17/12.
+//  Created by Evadne Wu on 2/24/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -13,14 +13,15 @@
 
 @implementation WAOpenGraphElement
 
+@dynamic imageOrder;
 @dynamic providerName;
 @dynamic providerURL;
 @dynamic text;
 @dynamic title;
 @dynamic type;
 @dynamic url;
-@dynamic imageOrder;
-@dynamic preview;
+@dynamic providerDisplayName;
 @dynamic images;
+@dynamic preview;
 
 @end

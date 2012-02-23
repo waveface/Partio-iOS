@@ -13,11 +13,7 @@
 
 + (NSSet *) keyPathsForValuesAffectingThumbnail {
 
-	return [NSSet setWithObjects:
-		
-		@"graphElement",
-		
-	nil];
+	return [NSSet setWithObject:@"graphElement.thumbnail"];
 
 }
 

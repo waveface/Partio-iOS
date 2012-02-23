@@ -12,8 +12,7 @@
 
 @class IRImagePickerController, IRAction, WAArticle, IRTextAttributor;
 
-@protocol IRTextAttributorDelegate;
-@interface WACompositionViewController : UIViewController <IRTextAttributorDelegate>
+@interface WACompositionViewController : UIViewController
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock;
 

@@ -68,16 +68,24 @@
 - (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
 	
 	WAPreview *usedPreview = [self.article.previews anyObject];
-	self.previewBadge.preview = usedPreview;
 	
 	BOOL badgeShown = (BOOL)!!usedPreview;	
+
+	if (usedPreview)
+		self.previewBadge.preview = usedPreview;
 	
 	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
 
 		self.previewBadge.alpha = badgeShown ? 1 : 0;
 		self.previewBadgeButton.hidden = badgeShown ? NO : YES;
 		
-	} completion:nil];
+		self.photosView.alpha = badgeShown ? 0 : 1;
+		
+	} completion: ^ (BOOL finished) {
+	
+		self.previewBadge.preview = usedPreview;
+		
+	}];
 
 }
 
@@ -344,7 +352,10 @@
     aLabel.text = NSLocalizedString(aLabel.text, nil);
     
   }];
-
+	
+	[self handleCurrentArticleFilesChangedFrom:self.article.fileOrder to:self.article.fileOrder changeKind:NSKeyValueChangeReplacement];
+	[self handleCurrentArticlePreviewsChangedFrom:self.article.previews to:self.article.previews changeKind:NSKeyValueChangeReplacement];
+	
 }
 
 - (void) viewDidUnload {

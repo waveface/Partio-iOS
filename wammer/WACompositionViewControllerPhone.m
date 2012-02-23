@@ -155,7 +155,7 @@
 		return returnedAttributor;
 	
 	__block __typeof__(self) nrSelf = self;
-	__block id observer = [returnedAttributor.queue irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	__block id observer = [returnedAttributor.queue irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 	
 		[nrSelf retain];
 	
