@@ -15,6 +15,9 @@
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
 
+#import "Foundation+IRAdditions.h"
+
+
 #define kConnectivitySection 1
 
 @interface WAUserInfoViewController ()
@@ -288,8 +291,11 @@
 	}
 	
 	if (section == 2) {
-		return NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer");
+		
+		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] debugVersionString]];
+		
 	}
+	
 	return nil;
 
 }
