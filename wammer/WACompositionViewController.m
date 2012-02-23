@@ -114,11 +114,11 @@
 	
 	article = [newArticle retain];
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
@@ -290,6 +290,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (textAttributor)
 		return textAttributor;
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	textAttributor = [[IRTextAttributor alloc] init];
 	textAttributor.delegate = self;
 	textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
@@ -305,6 +307,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		if (!url) {
 			callback(nil);
 			return;
+		}
+		
+		if ([[nrSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
+			
+			return [aPreview.url isEqualToString:attributedString];
+			
+		}] count]) {
+		
+			//	Already got something and attached, skip
+			
+			callback(nil);
+			return;
+		
 		}
 		
 		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {

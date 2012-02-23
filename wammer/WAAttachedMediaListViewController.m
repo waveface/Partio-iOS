@@ -79,7 +79,7 @@
 	
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
 	
-	self.articleFilesObservingsHelper =  [self.article irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	self.articleFilesObservingsHelper =  [self.article irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 	
 		if (![nrSelf isViewLoaded])
 			return;
