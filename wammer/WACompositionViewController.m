@@ -114,11 +114,11 @@
 	
 	article = [newArticle retain];
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
