@@ -158,4 +158,31 @@
 	
 }
 
++ (NSSet *) keyPathsForValuesAffectingProviderCaption {
+
+	return [NSSet setWithObjects:
+	
+		@"providerName",
+		@"providerDisplayName",
+		@"providerURL",
+	
+	nil];
+
+}
+
+- (NSString *) providerCaption {
+
+	if (self.providerName && self.providerDisplayName)
+		return [NSString stringWithFormat:@"%@ (%@)", self.providerName, self.providerDisplayName];
+	
+	if (self.providerName)
+		return self.providerName;
+	
+	if (self.providerDisplayName)
+		return self.providerDisplayName;
+	
+	return self.providerURL;
+
+}
+
 @end

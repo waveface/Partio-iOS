@@ -146,7 +146,6 @@
 		FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */; };
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
 		FF3588F714EE7207005B452C /* WAOpenGraphElement+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3588F614EE7207005B452C /* WAOpenGraphElement+WAAdditions.m */; };
-		FF3588FA14EE7256005B452C /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3588F914EE7256005B452C /* WAOpenGraphElement.m */; };
 		FF35892214EE7F8F005B452C /* WAOpenGraphElementImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */; };
 		FF35892514EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892414EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m */; };
 		FF35892814EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892714EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m */; };
@@ -192,6 +191,7 @@
 		FF4CCE4C149A00180049B83C /* WAPatternThickShrunkPaper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE45149A00180049B83C /* WAPatternThickShrunkPaper@2x.png */; };
 		FF4CCE4D149A00180049B83C /* WAPatternWoodTexture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */; };
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
+		FF4D102514F6BB500047D666 /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4D102414F6BB500047D666 /* WAOpenGraphElement.m */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
@@ -1032,8 +1032,6 @@
 		FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 15.xcdatamodel"; sourceTree = "<group>"; };
 		FF3588F514EE7207005B452C /* WAOpenGraphElement+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAOpenGraphElement+WAAdditions.h"; sourceTree = "<group>"; };
 		FF3588F614EE7207005B452C /* WAOpenGraphElement+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAOpenGraphElement+WAAdditions.m"; sourceTree = "<group>"; };
-		FF3588F814EE7256005B452C /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
-		FF3588F914EE7256005B452C /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
 		FF35892014EE7F8F005B452C /* WAOpenGraphElementImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElementImage.h; sourceTree = "<group>"; };
 		FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElementImage.m; sourceTree = "<group>"; };
 		FF35892314EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -1069,6 +1067,9 @@
 		FF4CCE45149A00180049B83C /* WAPatternThickShrunkPaper@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPatternThickShrunkPaper@2x.png"; path = "Resources/WAPatternThickShrunkPaper@2x.png"; sourceTree = "<group>"; };
 		FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPatternWoodTexture@2x.png"; path = "Resources/WAPatternWoodTexture@2x.png"; sourceTree = "<group>"; };
 		FF4CCE94149A07B30049B83C /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
+		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
+		FF4D102314F6BB500047D666 /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
+		FF4D102414F6BB500047D666 /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01313E136A0002C627F /* WACapsuleLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeft.png; path = Resources/WACapsuleLeft.png; sourceTree = "<group>"; };
@@ -1931,11 +1932,6 @@
 		FF97382213D821C1003D1722 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
-				FF35892014EE7F8F005B452C /* WAOpenGraphElementImage.h */,
-				FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */,
-				FF3588F814EE7256005B452C /* WAOpenGraphElement.h */,
-				FF3588F914EE7256005B452C /* WAOpenGraphElement.m */,
 				FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */,
 				FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */,
 				FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */,
@@ -1956,10 +1952,15 @@
 				FF7997A81490A23C000CE08D /* WAFilePageElement.m */,
 				FF8F463D14691A7D00D65864 /* WAGroup.h */,
 				FF8F463E14691A7D00D65864 /* WAGroup.m */,
+				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
 				FF3588F514EE7207005B452C /* WAOpenGraphElement+WAAdditions.h */,
 				FF3588F614EE7207005B452C /* WAOpenGraphElement+WAAdditions.m */,
+				FF4D102314F6BB500047D666 /* WAOpenGraphElement.h */,
+				FF4D102414F6BB500047D666 /* WAOpenGraphElement.m */,
 				FF35892914EE82EF005B452C /* WAOpenGraphElementImage+WAAdditions.h */,
 				FF35892A14EE82F0005B452C /* WAOpenGraphElementImage+WAAdditions.m */,
+				FF35892014EE7F8F005B452C /* WAOpenGraphElementImage.h */,
+				FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */,
 				FF2E82FA14EE48FB000C6044 /* WAPreview+WAAdditions.h */,
 				FF2E82FB14EE48FB000C6044 /* WAPreview+WAAdditions.m */,
 				FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */,
@@ -3404,7 +3405,6 @@
 				FF2E82FC14EE48FB000C6044 /* WAPreview+WAAdditions.m in Sources */,
 				FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF3588F714EE7207005B452C /* WAOpenGraphElement+WAAdditions.m in Sources */,
-				FF3588FA14EE7256005B452C /* WAOpenGraphElement.m in Sources */,
 				FF35892214EE7F8F005B452C /* WAOpenGraphElementImage.m in Sources */,
 				FF35892514EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF35892814EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m in Sources */,
@@ -3414,6 +3414,7 @@
 				FF7D12F714F26DB2007EF2B7 /* WACompositionViewControllerPhone.m in Sources */,
 				FF84037514F2C2EE00200C98 /* WACompositionViewController+ImageHandling.m in Sources */,
 				FF0527F614F3BF860030D099 /* WAArticleAttachmentActivityView.m in Sources */,
+				FF4D102514F6BB500047D666 /* WAOpenGraphElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3877,6 +3878,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */,
 				FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */,
 				FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */,
 				FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */,
@@ -3893,7 +3895,7 @@
 				FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */;
+			currentVersion = FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
