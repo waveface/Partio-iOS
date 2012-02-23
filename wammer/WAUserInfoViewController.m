@@ -43,15 +43,54 @@
   self.title = NSLocalizedString(@"SETTINGS_TITLE", @"Settings for User popover");
   
 	self.tableViewStyle = UITableViewStyleGrouped;
-  //	self.contentSizeForViewInPopover = (CGSize){ 320, 650 };
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingContentSizeInPopover {
+
+	return [NSSet setWithObjects:
+	
+		@"tableView.contentInset",
+		@"tableView.contentSize",
+	
+	nil];
+
+}
+
+- (CGSize) contentSizeForViewInPopover {
+
+	return (CGSize){
+		
+		320,
+		self.tableView.contentInset.top + self.tableView.contentSize.height + self.tableView.contentInset.bottom
+		
+	};
 
 }
 
 - (void) viewDidLoad {
 
   [super viewDidLoad];
+	
+  [self.tableView reloadData];
+//	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:[NSDictionary dictionaryWithObjectsAndKeys:
+//	
+//		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+//		
+//			CGSize inSize = [inNewValue CGSizeValue];
+//			
+//			return [NSValue valueWithCGSize:(CGSize){
+//			
+//				320,
+//				inSize.height
+//			
+//			}];
+//		
+//		} copy] autorelease], kIRBindingsValueTransformerBlock,
+//	
+//	nil]];
 	
 	self.tableView.sectionHeaderHeight = 56;
 	
@@ -70,7 +109,6 @@
 	
   self.monitoredHosts = nil;
   [self.tableView reloadData];
-	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:nil];
   
 	NSError *fetchingError = nil;
   NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -414,8 +452,9 @@
 
 - (void) viewDidUnload {
   
+	//[self irUnbind:@"contentSize"];
+
   [super viewDidUnload];	
-	[self irUnbind:@"contentSize"];
 	
 }
 
@@ -424,7 +463,7 @@
   [monitoredHosts release];
   [managedObjectContext release];
   
-	[self irUnbind:@"contentSize"];
+//	[self irUnbind:@"contentSize"];
   
   [super dealloc];
 
