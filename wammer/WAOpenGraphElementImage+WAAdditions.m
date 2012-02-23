@@ -43,7 +43,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 			
 			if (!tempFileURLOrNil)
 				return;
-					
+			
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 			
@@ -72,7 +72,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 }
 
-+ (NSSet *) keyPathsForValuesAffectingRepresentedImage {
++ (NSSet *) keyPathsForValuesAffectingImage {
 
 	return [NSSet setWithObjects:
 	
