@@ -308,7 +308,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[tapRecognizer requireGestureRecognizerToFail:doubleTapRecognizer];
 	[self.view addGestureRecognizer:doubleTapRecognizer];
 	
-	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
+	[self.paginatedView irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 
 		NSUInteger oldIndex = [inOldValue unsignedIntValue];	
 		NSUInteger newIndex = [inNewValue unsignedIntValue];
