@@ -109,9 +109,10 @@
 		
 			NSLog(@"Using Testflight");
 					
-			//		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			//			(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
-			//		nil]];
+			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				//	(id)kCFBooleanFalse, @"reinstallCrashHandlers",
+				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
+			nil]];
 			
 			[TestFlight takeOff:kWATestflightTeamToken];
 			
