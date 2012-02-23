@@ -131,6 +131,7 @@
 			NSLog(@"Using Crashlytics");
 			
 			[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+			[Crashlytics sharedInstance].debugMode = YES;
 			
 		});
 	
