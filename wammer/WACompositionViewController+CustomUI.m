@@ -59,21 +59,22 @@
 		pushedVC.navigationItem.rightBarButtonItem = newRightItem;
 		
 		if (!pushedVC.navigationItem.titleView) {
-			
-			__block UILabel *titleLabel = [[[UILabel alloc] init] autorelease];
-			titleLabel.textColor = [UIColor colorWithWhite:0.35 alpha:1];
-			titleLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:24.0f];
-			titleLabel.shadowColor = [UIColor whiteColor];
-			titleLabel.shadowOffset = (CGSize){ 0, 1 };
-			titleLabel.opaque = NO;
-			titleLabel.backgroundColor = nil;
+		
+			__block UILabel *titleLabel = WAStandardTitleLabel();
 			
 			[titleLabel irBind:@"text" toObject:pushedVC keyPath:@"title" options:[NSDictionary dictionaryWithObjectsAndKeys:
 				
 				[[^ (id oldValue, id newValue, NSString *changeType) {
 					
 					titleLabel.text = newValue;
-					[titleLabel sizeToFit];
+					
+					titleLabel.bounds = (CGRect){
+						CGPointZero,
+						(CGSize){
+							[titleLabel sizeThatFits:(CGSize){ 1024, 1024 }].width,
+							36
+						}
+					};
 					
 					return newValue;
 				
