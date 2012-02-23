@@ -140,6 +140,15 @@
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
+/* Text to show for previews without a provider name */
+"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
+
+/* Text to show for previews without body text */
+"PREVIEW_BADGE_TEXT_PLACEHOLDER" = "(No Content)";
+
+/* Text to show for previews without a title */
+"PREVIEW_BADGE_TITLE_PLACEHOLDER" = "(No Title)";
+
 /* Short label for the Cloud */
 "PROPER_NOUN_WF_CLOUD" = "Cloud";
 
