@@ -14,4 +14,7 @@
 @property (nonatomic, readonly, retain) NSString *thumbnailURL DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readonly, retain) NSString *thumbnailFilePath DEPRECATED_ATTRIBUTE;
 
+@property (nonatomic, readonly, retain) NSString *providerCaption;
+//	$providerName ($providerDisplay), $providerName, $providerDisplay, or $providerURL in order of availability
+
 @end

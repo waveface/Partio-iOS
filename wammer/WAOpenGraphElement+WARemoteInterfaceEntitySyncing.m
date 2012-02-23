@@ -33,6 +33,7 @@
 	dispatch_once(&onceToken, ^{
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"providerDisplayName", @"provider_display",
 			@"providerName", @"provider_name",
 			@"providerURL", @"provider_url",
 			//	@"thumbnailURL", @"thumbnail_url",

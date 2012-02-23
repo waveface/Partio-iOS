@@ -290,6 +290,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (textAttributor)
 		return textAttributor;
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	textAttributor = [[IRTextAttributor alloc] init];
 	textAttributor.delegate = self;
 	textAttributor.discoveryBlock = IRTextAttributorDiscoveryBlockMakeWithRegularExpression([NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil]);
@@ -305,6 +307,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		if (!url) {
 			callback(nil);
 			return;
+		}
+		
+		if ([[nrSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
+			
+			return [aPreview.url isEqualToString:attributedString];
+			
+		}] count]) {
+		
+			//	Already got something and attached, skip
+			
+			callback(nil);
+			return;
+		
 		}
 		
 		[[WARemoteInterface sharedInterface] retrievePreviewForURL:url onSuccess:^(NSDictionary *aPreviewRep) {

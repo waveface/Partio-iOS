@@ -9,6 +9,7 @@
 #import "WAPreviewInspectionViewController.h"
 #import "WADataStore.h"
 #import "WANavigationController.h"
+#import "CoreData+IRAdditions.h"
 
 @interface WAPreviewInspectionViewController ()
 
@@ -56,6 +57,35 @@
 	
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]]) {
+	
+		//	Prepare for preview refreshes, such as image updates, if appropriate
+	
+		[(IRManagedObjectContext *)self.managedObjectContext irBeginMergingFromSavesAutomatically];
+		[self.managedObjectContext refreshObject:self.preview mergeChanges:YES];
+	
+	}
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]]) {
+	
+		//	Prepare for preview refreshes, such as image updates, if appropriate
+	
+		[(IRManagedObjectContext *)self.managedObjectContext irStopMergingFromSavesAutomatically];
+	
+	}
+
+	[super viewWillDisappear:animated];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
@@ -78,6 +108,7 @@
 	previewBadge.preview = self.preview;
 	previewBadge.titleColor = [UIColor colorWithRed:198.0/255.0 green:107.0/255.0 blue:75.0/255.0 alpha:1.0];
 	previewBadge.textColor = [UIColor colorWithRed:118.0/255.0 green:116.0/255.0 blue:111.0/255.0 alpha:1.0];
+	
 }
 
 - (void) viewDidUnload {
