@@ -23,7 +23,6 @@
 @property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
 
 - (void) adjustPhotos;
-- (IRAction *) newDebugFullscreenVCAction;
 
 @end
 

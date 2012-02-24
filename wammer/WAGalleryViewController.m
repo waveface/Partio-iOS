@@ -794,8 +794,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	}
 	
-	BOOL statusBarWasHidden = [UIApplication sharedApplication].statusBarHidden;
-	
 	[[UIApplication sharedApplication] setStatusBarHidden:willHide withAnimation:(animate ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
 	
 	[self.view setNeedsLayout];
