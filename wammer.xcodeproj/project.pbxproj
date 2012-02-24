@@ -157,7 +157,6 @@
 		FF2981C214F6DFF2004F6893 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4570E31488F362005B5905 /* QuickLook.framework */; };
 		FF2981C314F6DFF2004F6893 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2F140CD31C00C35CED /* Security.framework */; };
 		FF2981C414F6DFF2004F6893 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
-		FF2981C514F6DFF5004F6893 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB172F314B495EF00282052 /* SenTestingKit.framework */; };
 		FF2E82FC14EE48FB000C6044 /* WAPreview+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FB14EE48FB000C6044 /* WAPreview+WAAdditions.m */; };
 		FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */; };
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
@@ -228,6 +227,8 @@
 		FF73351214A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */; };
 		FF73351314A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */; };
 		FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */; };
+		FF78DD3514F7C2D6005694BF /* WACompositionAttachmentsBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF78DD3314F7C2D6005694BF /* WACompositionAttachmentsBarBackground.png */; };
+		FF78DD3614F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF78DD3414F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png */; };
 		FF7997A91490A23C000CE08D /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
 		FF7997AC1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997AB1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m */; };
 		FF7BB4B314A1B26B00F6B76C /* WAStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7BB4B214A1B26B00F6B76C /* WAStackView.m */; };
@@ -915,7 +916,6 @@
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
-		4BB172F314B495EF00282052 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
 		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeCommentViewControllerPhone.xib; sourceTree = "<group>"; };
@@ -1158,6 +1158,8 @@
 		FF73A69913D6E08800D54EC6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterRequestWebViewController.h; sourceTree = "<group>"; };
 		FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterRequestWebViewController.m; sourceTree = "<group>"; };
+		FF78DD3314F7C2D6005694BF /* WACompositionAttachmentsBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionAttachmentsBarBackground.png; path = Resources/WACompositionAttachmentsBarBackground.png; sourceTree = "<group>"; };
+		FF78DD3414F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompositionAttachmentsBarBackground@2x.png"; path = "Resources/WACompositionAttachmentsBarBackground@2x.png"; sourceTree = "<group>"; };
 		FF7997A71490A23C000CE08D /* WAFilePageElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFilePageElement.h; sourceTree = "<group>"; };
 		FF7997A81490A23C000CE08D /* WAFilePageElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFilePageElement.m; sourceTree = "<group>"; };
 		FF7997AA1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFilePageElement+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -1495,7 +1497,6 @@
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */,
-				FF2981C514F6DFF5004F6893 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2211,6 +2212,8 @@
 				FFF9B7A113E7D8E5002A9D7F /* WACapsuleSinglePressed.png */,
 				4BFAE5DE1484C33B002CDE07 /* WACompose.png */,
 				4BFAE5DF1484C33B002CDE07 /* WACompose@2x.png */,
+				FF78DD3314F7C2D6005694BF /* WACompositionAttachmentsBarBackground.png */,
+				FF78DD3414F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png */,
 				FF0527EC14F3B2370030D099 /* WACompositionBackgroundBottomCap.png */,
 				FF0527ED14F3B2370030D099 /* WACompositionBackgroundBottomCap@2x.png */,
 				FF0527EE14F3B2370030D099 /* WACompositionBackgroundPattern.png */,
@@ -2483,7 +2486,6 @@
 				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
 				FF4570E31488F362005B5905 /* QuickLook.framework */,
 				FF666C2F140CD31C00C35CED /* Security.framework */,
-				4BB172F314B495EF00282052 /* SenTestingKit.framework */,
 				FF154657148E06D600352428 /* SystemConfiguration.framework */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
@@ -3122,6 +3124,8 @@
 				FF0527FC14F3C7240030D099 /* WAAttachmentGlyph@2x.png in Resources */,
 				FF0527FD14F3C7240030D099 /* WALinkGlyph.png in Resources */,
 				FF0527FE14F3C7240030D099 /* WALinkGlyph@2x.png in Resources */,
+				FF78DD3514F7C2D6005694BF /* WACompositionAttachmentsBarBackground.png in Resources */,
+				FF78DD3614F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3651,7 +3655,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 248;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3703,7 +3707,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 247;
+				CURRENT_PROJECT_VERSION = 248;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

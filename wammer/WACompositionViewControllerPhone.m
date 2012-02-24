@@ -62,7 +62,6 @@
 	
 	self.contentTextView.backgroundColor = nil;
 	self.contentTextView.contentInset = (UIEdgeInsets){ 4, 0, 64, 0 };
-	self.contentTextView.scrollIndicatorInsets = (UIEdgeInsets){ 0, 0, 44, 0 };
 	self.contentTextView.font = [UIFont systemFontOfSize:18.0f];
 		
 	self.toolbar.items = [NSArray arrayWithObjects:
@@ -71,6 +70,14 @@
 	
 	self.toolbar.backgroundColor = nil;
 	self.toolbar.opaque = NO;
+
+	UIView *toolbarBackground = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	toolbarBackground.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"] irStandardImage]];
+	
+	toolbarBackground.layer.cornerRadius = 4;
+	toolbarBackground.frame = CGRectInset(self.toolbar.frame, 8, 0);
+	toolbarBackground.autoresizingMask = self.toolbar.autoresizingMask;
+	[self.toolbar.superview insertSubview:toolbarBackground belowSubview:self.toolbar];
 	
 	self.containerView.backgroundColor = nil;
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WACompositionBackgroundPattern"]];
@@ -81,8 +88,7 @@
 	bottomCapView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	
 	[self.view addSubview:bottomCapView];
-	[self.view sendSubviewToBack:bottomCapView];
-
+	
 }
 
 - (void) viewDidUnload {
@@ -112,6 +118,25 @@
 	[super viewWillAppear:animated];
 	
 	[self.contentTextView becomeFirstResponder];
+
+}
+
+- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds {
+
+	if (![self isViewLoaded])
+		return;
+		
+	[super adjustContainerViewWithInterfaceBounds:newBounds];
+	
+	if (CGRectEqualToRect(self.view.bounds, [self.view convertRect:self.containerView.bounds fromView:self.containerView])) {
+	
+		self.contentTextView.scrollIndicatorInsets = (UIEdgeInsets){ 0, 0, 6, 0};
+	
+	} else {
+	
+		self.contentTextView.scrollIndicatorInsets = UIEdgeInsetsZero;
+	
+	}
 
 }
 
