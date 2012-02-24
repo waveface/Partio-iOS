@@ -174,9 +174,7 @@
 }
 
 - (void) handleImageAttachmentInsertionRequestWithSender:(id)sender {
-	
-	__block __typeof__(self) nrSelf = self;
-	
+		
 	NSMutableArray *availableActions = [NSMutableArray array]; 
 	
 	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];

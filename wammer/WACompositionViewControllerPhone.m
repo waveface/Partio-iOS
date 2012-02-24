@@ -23,6 +23,11 @@
 #import "IRLifetimeHelper.h"
 
 
+@interface WACompositionViewController (PhoneSubclassKnowledge) <IRTextAttributorDelegate>
+
+@end
+
+
 @interface WACompositionViewControllerPhone () <WAPreviewInspectionViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRActionSheetController *actionSheetController;
@@ -370,6 +375,7 @@
 	return [mediaList retain];
 
 }
+
 - (void) presentMediaListViewController:(WAAttachedMediaListViewController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:[[self newMediaListViewController] autorelease]] autorelease];
