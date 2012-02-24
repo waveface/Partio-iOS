@@ -25,7 +25,7 @@
 #import "WAPreviewBadge.h"
 
 
-@interface WACompositionViewController () <UITextViewDelegate>
+@interface WACompositionViewController () <UITextViewDelegate, IRTextAttributorDelegate>
 
 @property (nonatomic, readwrite, copy) void (^completionBlock)(NSURL *returnedURI);
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -408,19 +408,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind {
 
 	//	No op
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
 	
 	//	No op
 
 }
 
-- (void) handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSKeyValueChange)changeKind {
 
 	NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
 

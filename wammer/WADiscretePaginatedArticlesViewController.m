@@ -598,21 +598,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
 		WAArticle *representedArticle = (WAArticle *)item;
+			[((WAArticle *)item).representedFile thumbnail];
 				
-		if ([representedArticle.fileOrder count]) {
-			
-			WAFile *firstFile = (WAFile *)[representedArticle.managedObjectContext irManagedObjectForURI:[representedArticle.fileOrder objectAtIndex:0]];
-			
-			[firstFile thumbnailFilePath];
-									
-		}
-			
 		for (WAPreview *aPreview in representedArticle.previews)
-		if (aPreview.graphElement.thumbnailURL) {
-		
-			[aPreview.graphElement thumbnailFilePath];
-			
-		}
+			[aPreview.graphElement thumbnail];
 	
 	}];
 
