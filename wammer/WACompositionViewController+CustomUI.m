@@ -47,11 +47,11 @@
 		__block id rightTarget = oldRightItem.target;
 		__block SEL rightAction = oldRightItem.action;
 		
-		__block IRBarButtonItem *newLeftItem = WABackBarButtonItem(NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling"), ^{
+		__block IRBarButtonItem *newLeftItem = WABackBarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling"), ^{
 			[leftTarget performSelector:leftAction withObject:newLeftItem];
 		});
 		
-		__block IRBarButtonItem *newRightItem = WAStandardBarButtonItem(NSLocalizedString(@"ACTION_DONE", @"Action title for done"), ^{
+		__block IRBarButtonItem *newRightItem = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DONE", @"Action title for done"), ^{
 			[rightTarget performSelector:rightAction withObject:newRightItem];
 		});
 		

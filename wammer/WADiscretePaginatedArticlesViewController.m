@@ -1247,7 +1247,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 			}
 			
 			returnedVC.navigationItem.hidesBackButton = NO;
-			returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(@"Back", ^ {
+			returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 			
 				[[returnedVC retain] autorelease];
 				
