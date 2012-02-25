@@ -43,7 +43,15 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self)
 		return nil;
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	self.navigationItem.rightBarButtonItem = WABarButtonItem(nil, @"comments", ^ {
+	
+		[nrSelf.navigationController pushViewController:nrSelf.commentsVC animated:YES];
 		
+	});
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
 		
 	return self;
