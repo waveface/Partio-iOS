@@ -40,19 +40,19 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 		
 		[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:imageURL withCompletionBlock:^(NSURL *tempFileURLOrNil) {
-			
+		
 			if (!tempFileURLOrNil)
 				return;
+				
+			WAOpenGraphElementImage *updatedObject = [[WADataStore defaultStore] updateObjectAtURI:ownURL inContext:nil takingBlobFromTemporaryFile:[tempFileURLOrNil path] usingResourceType:nil forKeyPath:@"imageFilePath" matchingURL:imageURL forKeyPath:@"imageRemoteURL"];
 			
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			if (updatedObject) {
 			
-			WAOpenGraphElementImage *foundGraphElementImage = (WAOpenGraphElementImage *)[context irManagedObjectForURI:ownURL];
-			foundGraphElementImage.imageFilePath = [[[WADataStore defaultStore] persistentFileURLForFileAtURL:tempFileURLOrNil] path];
-			
-			NSError *savingError = nil;
-			if (![context save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
+				NSError *savingError = nil;
+				if (![updatedObject.managedObjectContext save:&savingError])
+					NSLog(@"Error saving: %@", savingError);
+				
+			}
 			
 		}];
 		
