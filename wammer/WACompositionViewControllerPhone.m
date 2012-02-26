@@ -238,7 +238,7 @@
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
 
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super handleCurrentArticleFilesChangedFrom:fromValue to:toValue changeKind:changeKind];
@@ -251,7 +251,7 @@
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
 
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super handleCurrentArticlePreviewsChangedFrom:fromValue to:toValue changeKind:changeKind];

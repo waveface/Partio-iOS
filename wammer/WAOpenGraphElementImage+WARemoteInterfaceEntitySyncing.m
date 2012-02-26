@@ -12,7 +12,7 @@
 
 + (NSString *) keyPathHoldingUniqueValue {
 
-	return @"imageRemoteURL";
+	return nil;
 
 }
 

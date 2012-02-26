@@ -44,7 +44,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 			if (!tempFileURLOrNil)
 				return;
 				
-			WAOpenGraphElementImage *updatedObject = [[WADataStore defaultStore] updateObjectAtURI:ownURL inContext:nil takingBlobFromTemporaryFile:[tempFileURLOrNil path] usingResourceType:nil forKeyPath:@"imageFilePath" matchingURL:imageURL forKeyPath:@"imageRemoteURL"];
+			WAOpenGraphElementImage *updatedObject = (WAOpenGraphElementImage *)[[WADataStore defaultStore] updateObjectAtURI:ownURL inContext:nil takingBlobFromTemporaryFile:[tempFileURLOrNil path] usingResourceType:nil forKeyPath:@"imageFilePath" matchingURL:imageURL forKeyPath:@"imageRemoteURL"];
 			
 			if (updatedObject) {
 			
