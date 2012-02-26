@@ -43,6 +43,8 @@ typedef enum {
 @property (nonatomic, readwrite, assign) id<WAArticleCommentsViewControllerDelegate> delegate;
 @property (nonatomic, readwrite, assign) WAArticleCommentsViewControllerState state;
 
+@property (nonatomic, readwrite, retain) IBOutlet UIView *wrapperView;
+
 @property (nonatomic, readwrite, retain) IBOutlet UITableView *commentsView;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *commentRevealButton;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *commentPostButton;
@@ -68,5 +70,8 @@ typedef enum {
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(void);
 
 @property (nonatomic, readwrite, assign) BOOL scrollsToLastRowOnChange;
+
+@property (nonatomic, readwrite, assign) BOOL adjustsContainerViewOnInterfaceBoundsChange;	//	Default is YES
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)bounds animated:(BOOL)animated;	//Called on interface bounds change
 
 @end
