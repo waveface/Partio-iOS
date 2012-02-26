@@ -12,8 +12,7 @@
 
 + (NSString *) keyPathHoldingUniqueValue {
 
-	return nil;	//	Nope, it is never unique, for each preview its own
-//	return @"url";
+	return nil;
 
 }
 

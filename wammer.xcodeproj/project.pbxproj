@@ -1124,6 +1124,7 @@
 		FF6C29FD143B39E6009735E7 /* UIButtonBarCompose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UIButtonBarCompose.png; path = Resources/UIButtonBarCompose.png; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
 		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryViewController.m; sourceTree = "<group>"; };
+		FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 17.xcdatamodel"; sourceTree = "<group>"; };
 		FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticlesViewController.h; sourceTree = "<group>"; };
 		FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticlesViewController.m; sourceTree = "<group>"; };
 		FF72EAE314BDC30F0093EAB7 /* WAGestureWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGestureWindow.h; sourceTree = "<group>"; };
@@ -3914,6 +3915,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */,
 				FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */,
 				FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */,
 				FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */,
@@ -3931,7 +3933,7 @@
 				FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */;
+			currentVersion = FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
