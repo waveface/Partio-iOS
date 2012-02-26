@@ -12,7 +12,7 @@
 #import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
-#import "UIView+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "WARemoteInterface.h"
 
@@ -32,6 +32,7 @@
 
 
 @implementation WAArticleCommentsViewController
+@synthesize wrapperView;
 @dynamic view;
 @synthesize commentsView, commentRevealButton, commentPostButton, commentCloseButton, compositionContentField, compositionSendButton, compositionAccessoryView, commentsRevealingActionContainerView;
 @synthesize compositionAccessoryTextWellBackgroundView, compositionAccessoryBackgroundView;
@@ -39,7 +40,7 @@
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize cellPrototype;
 @synthesize onViewDidLoad;
-@synthesize scrollsToLastRowOnChange;
+@synthesize scrollsToLastRowOnChange, adjustsContainerViewOnInterfaceBoundsChange;
 @synthesize coachmarkOverlay;
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
@@ -50,6 +51,51 @@
 	returnedController.representedArticleURI = articleObjectURL;
 	
 	return returnedController;
+
+}
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+	
+	scrollsToLastRowOnChange = YES;
+	adjustsContainerViewOnInterfaceBoundsChange = YES;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	[commentsView removeObserver:self forKeyPath:@"contentSize"];
+
+	[commentsView release];
+	[commentRevealButton release];
+	[commentPostButton release];
+	[commentCloseButton release];
+	[compositionContentField release];
+	[compositionSendButton release];
+	[compositionAccessoryView release];
+	[commentsRevealingActionContainerView release];
+	
+	[cellPrototype release];
+	
+	[managedObjectContext release];
+	[fetchedResultsController release];
+	[article release];
+	
+	[onViewDidLoad release];
+	
+	[coachmarkOverlay release];
+	
+	[wrapperView release];
+	[super dealloc];
 
 }
 
@@ -71,6 +117,43 @@
 	[self willChangeValueForKey:@"representedArticleURI"];
 	self.article = newArticle;
 	[self didChangeValueForKey:@"representedArticleURI"];
+
+}
+
+- (void) handleInterfaceBoundsDidChange:(NSNotification *)notification {
+
+	if (![self isViewLoaded])
+		return;
+
+	if ([notification object] != self.view.window)
+		return;
+
+	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
+
+}
+
+- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
+
+	if (!self.view.window)
+		return;
+
+	CGRect ownRectInWindow = [self.view.window convertRect:self.view.bounds fromView:self.view];
+	CGRect intersection = CGRectIntersection(ownRectInWindow, newInterfaceBounds);
+	
+	if (CGRectEqualToRect(CGRectNull, intersection) || CGRectIsInfinite(intersection))
+		return;
+	
+	intersection = [self.view.window convertRect:intersection toView:self.wrapperView.superview];
+	
+	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
+	
+	[UIView animateWithDuration:(animate ? 0.3 : 0) delay:0 options:animationOptions animations:^{
+		
+		self.wrapperView.frame = intersection;
+		
+	} completion:^(BOOL finished) {
+				
+	}];
 
 }
 
@@ -100,8 +183,8 @@
 
 	[super viewDidLoad];
 	
-	[self.view insertSubview:self.commentsRevealingActionContainerView atIndex:0];
-	[self.view addSubview:self.compositionAccessoryView];
+	[self.wrapperView insertSubview:self.commentsRevealingActionContainerView atIndex:0];
+	[self.wrapperView addSubview:self.compositionAccessoryView];
 	
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self.view) nrView = self.view;
@@ -192,7 +275,7 @@
 		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
 		
 		CGRect accessoryViewFrame, nullRect;
-		CGRectDivide(nrView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
+		CGRectDivide(nrSelf.wrapperView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
 		
 		UIEdgeInsets commentsViewContentInset = nrCommentsView.contentInset;
 		commentsViewContentInset.bottom = accessoryViewHeight;
@@ -317,7 +400,7 @@
 	self.compositionAccessoryView.frame = (CGRect){
 		(CGPoint){
 			self.compositionAccessoryView.frame.origin.x,
-			CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
+			CGRectGetHeight(self.wrapperView.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
 		},
 		(CGSize){
 			self.compositionAccessoryView.frame.size.width,
@@ -346,6 +429,8 @@
 - (void) viewDidUnload {
 
 	[self.commentsView removeObserver:self forKeyPath:@"contentSize"];
+	
+	self.wrapperView = nil;
 
 	self.commentsView = nil;
 	self.commentRevealButton = nil;
@@ -674,33 +759,6 @@
 - (CGRect) rectForComposition {
 
 	return [self.view convertRect:self.compositionAccessoryView.frame fromView:self.view];
-
-}
-
-- (void) dealloc {
-
-	[commentsView removeObserver:self forKeyPath:@"contentSize"];
-
-	[commentsView release];
-	[commentRevealButton release];
-	[commentPostButton release];
-	[commentCloseButton release];
-	[compositionContentField release];
-	[compositionSendButton release];
-	[compositionAccessoryView release];
-	[commentsRevealingActionContainerView release];
-	
-	[cellPrototype release];
-	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[article release];
-	
-	[onViewDidLoad release];
-	
-	[coachmarkOverlay release];
-	
-	[super dealloc];
 
 }
 

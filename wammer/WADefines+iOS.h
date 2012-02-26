@@ -32,8 +32,8 @@ extern UIColor *kWADefaultBarButtonHighlightedBackgroundColor;
 
 extern BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary **outParams);
 
-extern IRBarButtonItem * WAStandardBarButtonItem (NSString *labelText, void(^block)(void));
-extern IRBarButtonItem * WABackBarButtonItem (NSString *labelText, void(^block)(void));
+extern IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *title, void(^block)(void));
+extern IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *title, void(^block)(void));
 
 extern UIButton * WAButtonForImage (UIImage *anImage);
 extern UIButton * WAToolbarButtonForImage (UIImage *anImage, NSString *aAccessbilityLabel);
