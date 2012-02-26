@@ -13,7 +13,7 @@
 
 + (NSString *) keyPathHoldingUniqueValue {
 
-	return @"identifier";
+	return nil;// @"identifier";
 
 }
 
@@ -41,7 +41,7 @@
 	dispatch_once(&onceToken, ^{
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
-			@"identifier", @"id",
+		//	@"identifier", @"id",
 			@"htmlSynopsis", @"soul",
 			@"timestamp", @"timestamp",
 			@"text", @"text",
