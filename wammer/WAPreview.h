@@ -17,7 +17,6 @@
 @interface WAPreview : IRManagedObject
 
 @property (nonatomic, retain) NSString * htmlSynopsis;
-@property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) WAArticle *article;

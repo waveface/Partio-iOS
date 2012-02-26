@@ -12,7 +12,6 @@
 @implementation WAPreview
 
 @dynamic htmlSynopsis;
-@dynamic identifier;
 @dynamic text;
 @dynamic url;
 @dynamic article;
