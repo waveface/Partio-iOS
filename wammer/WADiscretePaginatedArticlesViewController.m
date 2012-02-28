@@ -39,8 +39,6 @@
 
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
-static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
-static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
 
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
@@ -197,68 +195,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
 
-	__block __typeof__(self) nrSelf = self;
-	__block WAArticleViewController *articleViewController = nil;
-	
-	articleViewController = objc_getAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem);
-	NSURL *objectURI = [[anArticle objectID] URIRepresentation];
-	
-	if (!articleViewController) {
-			
-		articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:[WAArticleViewController suggestedDiscreteStyleForArticle:anArticle]];
-		objc_setAssociatedObject(anArticle, &kWADiscreteArticleViewControllerOnItem, articleViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	return [self cachedArticleViewControllerForArticle:anArticle].view;
+
+	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:anArticle];
 		
-	}
-	
-	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
-		
-		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
-		
-	};
-	
-	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
-		
-		action(nrSelf);
-		
-	};
-	
-	articleViewController.onViewTap = ^ {
-	
-		[nrSelf updateLatestReadingProgressWithIdentifier:articleViewController.article.identifier];
-		[nrSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];		
-		
-	};
-	
-	articleViewController.onViewPinch = ^ (UIGestureRecognizerState state, CGFloat scale, CGFloat velocity) {
-	
-		if (state == UIGestureRecognizerStateChanged)
-		if (scale > 1.05f)
-		if (velocity > 1.05f) {
-		
-			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
-				gestureRecognizer.enabled = NO;
-		
-			articleViewController.onViewTap();
-			
-			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
-				gestureRecognizer.enabled = YES;
-			
-		}
-	
-	};
-	
-	NSString *identifier = articleViewController.article.identifier;
-	articleViewController.additionalDebugActions = [NSArray arrayWithObjects:
-	
-		[IRAction actionWithTitle:@"Make Last Read" block:^{
-		
-			nrSelf.lastReadObjectIdentifier = identifier;
-			[nrSelf updateLastReadingProgressAnnotation];
-		
-		}],
-		
-	nil];
-	
 	return articleViewController.view;
 	
 }
@@ -271,15 +211,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid {
 	
-	NSMutableArray *lastResultantGrids = objc_getAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids);
+	NSArray *lastResultantGrids = self.lastUsedLayoutGrids;
 	
 	if (![lastResultantGrids count]) {
-		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, nil, OBJC_ASSOCIATION_ASSIGN);
+		self.lastUsedLayoutGrids = nil;
 		return proposedGrid;
 	}
 	
 	IRDiscreteLayoutGrid *prototype = [[[lastResultantGrids objectAtIndex:0] retain] autorelease];
-	[lastResultantGrids removeObjectAtIndex:0];
+	self.lastUsedLayoutGrids = [lastResultantGrids subarrayWithRange:(NSRange){ 1, [lastResultantGrids count] - 1 }];
 	
 	return prototype;
 
@@ -465,13 +405,15 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (void) reloadViewContents {
 
 	if (self.discreteLayoutResult) {
-		objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, [self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
+	
+		self.lastUsedLayoutGrids = [self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
 			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
-		}], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		}];
+		
 	}
 	
 	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
-	objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, nil, OBJC_ASSOCIATION_ASSIGN);
+	self.lastUsedLayoutGrids = nil;
 	
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
 	
@@ -1216,7 +1158,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 		__block WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
 		__block WADiscretePaginatedArticlesViewController *nrSelf = self;
-		__block WAArticleViewController *articleViewController = objc_getAssociatedObject(article, &kWADiscreteArticleViewControllerOnItem);
+		__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:article];
 		
 		NSString * const kDismissBlock = [NSString stringWithFormat:@"%@_%s_Dismiss", NSStringFromClass([self class]), __PRETTY_FUNCTION__];
 		

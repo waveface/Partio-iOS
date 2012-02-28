@@ -34,3 +34,6 @@ enum WADiscretePaginatedArticlesViewControllerAnimation {
 @property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
 
 @end
+
+
+#import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
