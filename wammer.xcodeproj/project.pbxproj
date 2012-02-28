@@ -122,6 +122,7 @@
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
 		FF0DD00E142A3FCB0037FC4A /* WAPulldownRefreshView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */; };
 		FF1305E914FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1305E814FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m */; };
+		FF1305EC14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */; };
 		FF14886014977E4500D8B0AD /* WATiledImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14885F14977E4500D8B0AD /* WATiledImageView.m */; };
 		FF1488631497861F00D8B0AD /* WASquarePanelBackdrop.png in Resources */ = {isa = PBXBuildFile; fileRef = FF1488611497861F00D8B0AD /* WASquarePanelBackdrop.png */; };
 		FF1488641497861F00D8B0AD /* WASquarePanelBackdrop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF1488621497861F00D8B0AD /* WASquarePanelBackdrop@2x.png */; };
@@ -1003,6 +1004,8 @@
 		FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPulldownRefreshView.xib; sourceTree = "<group>"; };
 		FF1305E714FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"; sourceTree = "<group>"; };
 		FF1305E814FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+DiscreteLayout.m"; sourceTree = "<group>"; };
+		FF1305EA14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+ContextPresenting.h"; sourceTree = "<group>"; };
+		FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+ContextPresenting.m"; sourceTree = "<group>"; };
 		FF13871013E94F0700154B7D /* WACompositionBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBarBackground.png; path = Resources/WACompositionBarBackground.png; sourceTree = "<group>"; };
 		FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionTextWellBackground.png; path = Resources/WACompositionTextWellBackground.png; sourceTree = "<group>"; };
 		FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
@@ -1807,6 +1810,8 @@
 			children = (
 				FF1305E714FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.h */,
 				FF1305E814FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m */,
+				FF1305EA14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.h */,
+				FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF761AEC14876222003C11D2 /* Station Discovery */,
@@ -3454,6 +3459,7 @@
 				FF0527F614F3BF860030D099 /* WAArticleAttachmentActivityView.m in Sources */,
 				FF4D102514F6BB500047D666 /* WAOpenGraphElement.m in Sources */,
 				FF1305E914FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m in Sources */,
+				FF1305EC14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

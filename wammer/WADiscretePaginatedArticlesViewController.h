@@ -37,3 +37,4 @@ enum WADiscretePaginatedArticlesViewControllerAnimation {
 
 
 #import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
+#import "WADiscretePaginatedArticlesViewController+ContextPresenting.h"
