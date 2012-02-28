@@ -14,8 +14,13 @@
 #import "WAButton.h"
 #import "WAGestureWindow.h"
 
+#define USES_PAGINATED_CONTEXT 0
 
 @interface WADiscretePaginatedArticlesViewController (ContextPresenting_Private)
+
+- (void(^)(void)) dismissBlockForArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
+
+- (void) setDismissBlock:(void(^)(void))aBlock forArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
 
 @end
 
@@ -48,34 +53,26 @@
 
 - (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)articleURI usingAnimation:(WAArticleContextAnimation)animation {
 
-	static BOOL const usesPaginatedContext = NO;
-	
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	__block WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
 	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:article];
-	
-	NSString * const kDismissBlock = [NSString stringWithFormat:@"%@_%s_Dismiss", NSStringFromClass([self class]), __PRETTY_FUNCTION__];
-	
+		
 	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = ((^ {
 	
 		__block UIViewController<WAArticleViewControllerPresenting> *returnedVC = nil;
 	
-		if (usesPaginatedContext) {
-		
-		#if 0
+		#if USES_PAGINATED_CONTEXT
 			
 			returnedVC = nrSelf.paginatedArticlesViewController;
 			
 			((WAPaginatedArticlesViewController *)returnedVC).context = [NSDictionary dictionaryWithObjectsAndKeys:
 				articleURI, @"lastVisitedObjectURI",
 			nil];
-			
-		#endif
-			
-		} else {
 		
+		#else
+
 			returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle(articleViewController.presentationStyle)];
 			
 			((WAArticleViewController *)returnedVC).onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
@@ -86,22 +83,13 @@
 				}
 			};
 			
-		}
-		
+		#endif
+			
 		returnedVC.navigationItem.hidesBackButton = NO;
 		returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 		
-			[[returnedVC retain] autorelease];
-			
-			void (^dismissBlock)(void) = objc_getAssociatedObject(returnedVC, kDismissBlock);
-			
-			if (dismissBlock) {
-				[[UIApplication sharedApplication] beginIgnoringInteractionEvents];			
-				dismissBlock();
-				objc_setAssociatedObject(returnedVC, kDismissBlock, nil, OBJC_ASSOCIATION_ASSIGN);
-				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-			}
-
+			[nrSelf dismissArticleContextViewController:returnedVC];
+		
 		});
 
 		return returnedVC;
@@ -366,14 +354,8 @@
 					
 					[shownArticleVC performSelector:@selector(setOnPullTop:) withObject:(id)(^ (UIScrollView *aSV){
 					
-						void (^dismissBlock)(void) = objc_getAssociatedObject(shownArticleVC, kDismissBlock);
-						
-						if (!dismissBlock)
-							return;
-						
 						[aSV setContentOffset:aSV.contentOffset animated:NO];
-						
-						dismissBlock();
+						[nrSelf dismissArticleContextViewController:shownArticleVC];
 						
 					})];
 					
@@ -399,9 +381,7 @@
 						
 						closeButton.action = ^ {
 						
-							void (^dismissBlock)(void) = objc_getAssociatedObject(shownArticleVC, kDismissBlock);
-							if (dismissBlock)
-								dismissBlock();
+							[nrSelf dismissArticleContextViewController:shownArticleVC];
 						
 						};
 
@@ -445,11 +425,7 @@
 					
 					usedWindow.onTap = ^ {
 						
-						void (^dismissBlock)(void) = objc_getAssociatedObject(shownArticleVC, kDismissBlock);
-						
-						if (dismissBlock)
-							dismissBlock();
-						
+						[nrSelf dismissArticleContextViewController:shownArticleVC];
 						usedWindow.onTap = nil;
 						
 					};
@@ -560,11 +536,23 @@
 		
 	}
 
-	objc_setAssociatedObject(shownArticleVC, kDismissBlock, [[dismissBlock copy] autorelease], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	[self setDismissBlock:dismissBlock forArticleContextViewController:shownArticleVC];
+	
 	presentBlock();
 
 	return shownArticleVC;
 	
+}
+
+- (void) dismissArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller {
+
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+	
+	(([self dismissBlockForArticleContextViewController:controller])());
+	[self setDismissBlock:nil forArticleContextViewController:controller];
+	
+	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+
 }
 
 @end
@@ -572,6 +560,21 @@
 
 @implementation WADiscretePaginatedArticlesViewController (ContextPresenting_Private)
 
+NSString * const kWADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock = @"WADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock";
 
+- (void(^)(void)) dismissBlockForArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller {
+
+	return objc_getAssociatedObject(controller, &kWADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock);
+
+}
+
+- (void) setDismissBlock:(void(^)(void))aBlock forArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller {
+
+	if (aBlock == [self dismissBlockForArticleContextViewController:controller])
+		return;
+
+	objc_setAssociatedObject(controller, &kWADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock, aBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
+
+}
 
 @end
