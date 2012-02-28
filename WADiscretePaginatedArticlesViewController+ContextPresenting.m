@@ -59,74 +59,18 @@
 	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:article];
 		
-	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = ((^ {
+	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = [[self newContextViewControllerForArticle:articleURI] autorelease];
 	
-		__block UIViewController<WAArticleViewControllerPresenting> *returnedVC = nil;
+	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
 	
-		#if USES_PAGINATED_CONTEXT
-			
-			returnedVC = nrSelf.paginatedArticlesViewController;
-			
-			((WAPaginatedArticlesViewController *)returnedVC).context = [NSDictionary dictionaryWithObjectsAndKeys:
-				articleURI, @"lastVisitedObjectURI",
-			nil];
-		
-		#else
-
-			returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle(articleViewController.presentationStyle)];
-			
-			((WAArticleViewController *)returnedVC).onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
-				if ([returnedVC.navigationController conformsToProtocol:@protocol(WAArticleViewControllerPresenting)]) {
-					action((UIViewController <WAArticleViewControllerPresenting> *)returnedVC.navigationController);
-				} else {
-					action(nrSelf);
-				}
-			};
-			
-		#endif
-			
-		returnedVC.navigationItem.hidesBackButton = NO;
-		returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
-		
-			[nrSelf dismissArticleContextViewController:returnedVC];
-		
-		});
-
-		return returnedVC;
-	
-	})());
-	
-	WANavigationController *enqueuedNavController = ((^ {
-	
-		__block WANavigationController *navController;
-		if ([shownArticleVC isKindOfClass:[WAArticleViewController class]]) {
-			navController = [(WAArticleViewController *)shownArticleVC wrappingNavController];
-		} else {
-			navController = [[[WAFauxRootNavigationController alloc] initWithRootViewController:shownArticleVC] autorelease];
-		}
-		
-		navController.onViewDidLoad = ^ (WANavigationController *self) {
-			((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
-		};
-		
-		if ([navController isViewLoaded])
-		if (navController.onViewDidLoad)
-			navController.onViewDidLoad(navController);
-		
-		return navController;
-	
-	})());
-
 	__block void (^presentBlock)(void) = nil;
 	__block void (^dismissBlock)(void) = nil;
-	
 	
 	//	SHARED STUFF
 	
 	UIWindow *containingWindow = self.navigationController.view.window;
 	CGAffineTransform containingWindowTransform = containingWindow.rootViewController.view.transform;
 	CGRect containingWindowBounds = CGRectApplyAffineTransform(containingWindow.bounds, containingWindowTransform);		
-
 	UIView *containerView = [[[UIView alloc] initWithFrame:containingWindowBounds] autorelease];
 	containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	containerView.center = irCGRectAnchor(containingWindow.bounds, irCenter, YES);
@@ -552,6 +496,72 @@
 	[self setDismissBlock:nil forArticleContextViewController:controller];
 	
 	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+
+}
+
+- (UIViewController<WAArticleViewControllerPresenting> *) newContextViewControllerForArticle:(NSURL *)articleURI {
+
+	__block __typeof__(self) nrSelf = self;
+	__block UIViewController<WAArticleViewControllerPresenting> *returnedVC = nil;
+
+	#if USES_PAGINATED_CONTEXT
+		
+		returnedVC = nrSelf.paginatedArticlesViewController;
+		
+		((WAPaginatedArticlesViewController *)returnedVC).context = [NSDictionary dictionaryWithObjectsAndKeys:
+			articleURI, @"lastVisitedObjectURI",
+		nil];
+
+	#else
+	
+		WAArticleViewControllerPresentationStyle style = WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:(WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI]]);
+
+		returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:style];
+		
+		((WAArticleViewController *)returnedVC).onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
+			if ([returnedVC.navigationController conformsToProtocol:@protocol(WAArticleViewControllerPresenting)]) {
+				action((UIViewController <WAArticleViewControllerPresenting> *)returnedVC.navigationController);
+			} else {
+				action(nrSelf);
+			}
+		};
+		
+	#endif
+		
+	returnedVC.navigationItem.hidesBackButton = NO;
+	returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
+
+		[nrSelf dismissArticleContextViewController:returnedVC];
+
+	});
+
+	return [returnedVC retain];
+
+}
+
+- (UINavigationController *) wrappingNavigationControllerForContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller {
+	
+	WANavigationController *returnedNavC = nil;
+	
+	if ([controller isKindOfClass:[WAArticleViewController class]]) {
+		
+		returnedNavC = [(WAArticleViewController *)controller wrappingNavController];
+		
+	} else {
+
+		returnedNavC = [[[WAFauxRootNavigationController alloc] initWithRootViewController:controller] autorelease];
+		
+	}
+	
+	returnedNavC.onViewDidLoad = ^ (WANavigationController *self) {
+		((WANavigationBar *)self.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
+	};
+	
+	if ([returnedNavC isViewLoaded])
+	if (returnedNavC.onViewDidLoad)
+		returnedNavC.onViewDidLoad(returnedNavC);
+	
+	return returnedNavC;
 
 }
 

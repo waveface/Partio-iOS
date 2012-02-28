@@ -30,4 +30,7 @@ enum WADiscretePaginatedArticlesViewControllerAnimation {
 
 - (void) dismissArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
 
+- (UIViewController<WAArticleViewControllerPresenting> *) newContextViewControllerForArticle:(NSURL *)anObjectURI NS_RETURNS_RETAINED;
+- (UINavigationController *) wrappingNavigationControllerForContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
+
 @end
