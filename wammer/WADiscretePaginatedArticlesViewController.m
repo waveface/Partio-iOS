@@ -461,45 +461,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	UIView *returnedView = [[[UIView alloc] initWithFrame:aPaginatedView.bounds] autorelease];
-	returnedView.autoresizingMask = UIViewAutoresizingNone;
-	returnedView.clipsToBounds = NO;
-	returnedView.layer.shouldRasterize = YES;
-	
-	
-	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
-	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backdropView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.9];
-	backdropView.layer.shadowOpacity = 0.35;
-	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
-	[returnedView addSubview:backdropView];
-	
-	CGRect (^shadowRect)(CGSize, IRAnchor) = ^ (CGSize shadowImageSize, IRAnchor anchor) {
-	
-		return IRCGRectAlignToRect((CGRect){
-			CGPointZero,
-			(CGSize){
-				shadowImageSize.width,
-				MIN(shadowImageSize.height, CGRectGetHeight(backdropView.bounds))
-			}
-		}, backdropView.bounds, anchor, YES);
-	
-	};
-	
-	UIImage *leftShadow = [UIImage imageNamed:@"WAPageShadowLeft"];
-	UIImage *rightShadow = [UIImage imageNamed:@"WAPageShadowRight"];
-	UIImageView *leftShadowView = nil, *rightShadowView = nil;
-	
-	[backdropView addSubview:(rightShadowView = [[[UIImageView alloc] initWithImage:rightShadow] autorelease])];
-	rightShadowView.frame = CGRectOffset(shadowRect(rightShadow.size, irRight), rightShadow.size.width, 0);
-	rightShadowView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
-	rightShadowView.alpha = 0.5;
-	
-	[backdropView addSubview:(leftShadowView = [[[UIImageView alloc] initWithImage:leftShadow] autorelease])];
-	leftShadowView.frame = CGRectOffset(shadowRect(leftShadow.size, irLeft), -1.0f * leftShadow.size.width, 0);
-	leftShadowView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
-	leftShadowView.alpha = 0.5;
-	
+	UIView *returnedView = [[self newPageContainerView] autorelease];
+	returnedView.bounds = aPaginatedView.bounds;
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
 	
@@ -508,7 +471,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	CGSize oldContentSize = viewGrid.contentSize;
 	viewGrid.contentSize = aPaginatedView.frame.size;
 	
-	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
+	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
 	
 		if (!item)
 			return;
@@ -529,7 +492,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[returnedView setNeedsLayout];
 	
 	[self adjustPageView:returnedView usingGridAtIndex:index];
-			
+	
 	return returnedView;
 
 }
