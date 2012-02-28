@@ -8,6 +8,7 @@
 
 #import "WADiscretePaginatedArticlesViewController.h"
 
+
 enum WADiscretePaginatedArticlesViewControllerAnimation {
 	
 	WAArticleContextAnimationNone = 0,
