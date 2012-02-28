@@ -8,10 +8,11 @@
 
 #import "WADiscretePaginatedArticlesViewController.h"
 
+@protocol WAArticleViewControllerPresenting;
 @interface WADiscretePaginatedArticlesViewController (ContextPresenting)
 
-- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI;
-- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated;
-- (void) presentDetailedContextForArticle:(NSURL *)anObjectURI usingAnimation:(WAArticleContextAnimation)animation;
+- (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI;
+- (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated;
+- (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI usingAnimation:(WAArticleContextAnimation)animation;
 
 @end
