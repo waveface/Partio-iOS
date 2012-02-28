@@ -9,6 +9,7 @@
 #import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
 #import "WADataStore.h"
 #import "WAArticleViewController.h"
+#import "WAView.h"
 
 
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
@@ -122,10 +123,10 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (UIView *) newPageContainerView {
 
-	UIView *returnedView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }] autorelease];
+	WAView *returnedView = [[[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }] autorelease];
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
 	returnedView.clipsToBounds = NO;
-	//	returnedView.layer.shouldRasterize = YES;
+	returnedView.layer.shouldRasterize = YES;
 	
 	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -134,33 +135,33 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
 	[returnedView addSubview:backdropView];
 	
-	CGRect (^shadowRect)(CGSize, IRAnchor) = ^ (CGSize shadowImageSize, IRAnchor anchor) {
+	//	CGRect (^shadowRect)(CGSize, IRAnchor) = ^ (CGSize shadowImageSize, IRAnchor anchor) {
+	//	
+	//		return IRCGRectAlignToRect((CGRect){
+	//			CGPointZero,
+	//			(CGSize){
+	//				shadowImageSize.width,
+	//				MIN(shadowImageSize.height, CGRectGetHeight(backdropView.bounds))
+	//			}
+	//		}, backdropView.bounds, anchor, YES);
+	//	
+	//	};
+	//	
+	//	UIImage *leftShadow = [UIImage imageNamed:@"WAPageShadowLeft"];
+	//	UIImage *rightShadow = [UIImage imageNamed:@"WAPageShadowRight"];
+	//	UIImageView *leftShadowView = nil, *rightShadowView = nil;
+	//	
+	//	[backdropView addSubview:(rightShadowView = [[[UIImageView alloc] initWithImage:rightShadow] autorelease])];
+	//	rightShadowView.frame = CGRectOffset(shadowRect(rightShadow.size, irRight), rightShadow.size.width, 0);
+	//	rightShadowView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
+	//	rightShadowView.alpha = 0.5;
+	//	
+	//	[backdropView addSubview:(leftShadowView = [[[UIImageView alloc] initWithImage:leftShadow] autorelease])];
+	//	leftShadowView.frame = CGRectOffset(shadowRect(leftShadow.size, irLeft), -1.0f * leftShadow.size.width, 0);
+	//	leftShadowView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
+	//	leftShadowView.alpha = 0.5;
 	
-		return IRCGRectAlignToRect((CGRect){
-			CGPointZero,
-			(CGSize){
-				shadowImageSize.width,
-				MIN(shadowImageSize.height, CGRectGetHeight(backdropView.bounds))
-			}
-		}, backdropView.bounds, anchor, YES);
-	
-	};
-	
-	UIImage *leftShadow = [UIImage imageNamed:@"WAPageShadowLeft"];
-	UIImage *rightShadow = [UIImage imageNamed:@"WAPageShadowRight"];
-	UIImageView *leftShadowView = nil, *rightShadowView = nil;
-	
-	[backdropView addSubview:(rightShadowView = [[[UIImageView alloc] initWithImage:rightShadow] autorelease])];
-	rightShadowView.frame = CGRectOffset(shadowRect(rightShadow.size, irRight), rightShadow.size.width, 0);
-	rightShadowView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
-	rightShadowView.alpha = 0.5;
-	
-	[backdropView addSubview:(leftShadowView = [[[UIImageView alloc] initWithImage:leftShadow] autorelease])];
-	leftShadowView.frame = CGRectOffset(shadowRect(leftShadow.size, irLeft), -1.0f * leftShadow.size.width, 0);
-	leftShadowView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
-	leftShadowView.alpha = 0.5;
-	
-	return returnedView;
+	return [returnedView retain];
 
 }
 
