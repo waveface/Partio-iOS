@@ -128,6 +128,9 @@
 	if ([notification object] != self.view.window)
 		return;
 
+	if (!self.adjustsContainerViewOnInterfaceBoundsChange)
+		return;
+
 	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
 
 }
