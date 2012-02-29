@@ -122,7 +122,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 		}];
 	}
-	
+		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
   
     __block __typeof__(self) nrSelf = self;
@@ -1043,38 +1043,44 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
 	BOOL photoPost = (BOOL)!![post.files count];
+	
+	__block UIViewController *pushedVC = nil;
   
 	if (photoPost) {
 		
-		WAGalleryViewController *galleryViewController = nil;
-		galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
-		
-		NSParameterAssert(!self.navigationItem.backBarButtonItem);
-		
-		NSString *articleTitle = post.text;
-		if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-			articleTitle = @"Post";
-		
-		self.navigationItem.backBarButtonItem = [IRBarButtonItem itemWithTitle:articleTitle action:nil];
-		
-		__block __typeof__(self) nrSelf = self; 
-		galleryViewController.onDismiss = ^ {
-			
-			nrSelf.navigationItem.backBarButtonItem = nil;
-			
-		};
-		
-		[self.navigationController pushViewController:galleryViewController animated:YES];
-
-	} else {
+		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
 	
-		WAArticleViewController *articleVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
-		[self.navigationController pushViewController:articleVC animated:YES];
+	} else {
 		
-		//	WAPostViewControllerPhone *controller = [WAPostViewControllerPhone controllerWithPost:postURL];
-		//	[self.navigationController pushViewController:controller animated:YES];
-		
+		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+	
 	}
+
+	//	Instead of this…
+	//	
+	//		NSString *articleTitle = post.text;
+	//		if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
+	//			articleTitle = @"Post";
+	//		
+	//		self.navigationItem.backBarButtonItem = [IRBarButtonItem itemWithTitle:articleTitle action:nil];
+	//		
+	//		__block __typeof__(self) nrSelf = self; 
+	//		galleryViewController.onDismiss = ^ {
+	//			
+	//			nrSelf.navigationItem.backBarButtonItem = nil;
+	//			
+	//		};
+
+	pushedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
+		
+		[pushedVC.navigationController popViewControllerAnimated:YES];
+	
+	});
+		
+	pushedVC.navigationItem.hidesBackButton = YES;
+		
+	[self.navigationController pushViewController:pushedVC animated:YES];
+
 }
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
