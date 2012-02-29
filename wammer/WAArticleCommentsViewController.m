@@ -651,6 +651,7 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	[self.commentsView reloadData];
+	[self.view setNeedsLayout];
 	
 	if (![controller.sections count])
 		return;
