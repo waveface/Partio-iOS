@@ -44,7 +44,6 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
 @property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
-@property (nonatomic, readwrite, retain) UIPopoverController *settingsPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -56,7 +55,6 @@
 - (void) dismissAuxiliaryControlsAnimated:(BOOL)animate;
 
 - (void) handleUserInfoItemTap:(id)sender;
-- (void) handleActionItemTap:(id)sender;
 - (void) handleComposeItemTap:(id)sender;
 
 @end
@@ -67,7 +65,6 @@
 @synthesize debugActionSheetController;
 @synthesize draftsPopoverController;
 @synthesize userInfoPopoverController;
-@synthesize settingsPopoverController;
 @synthesize updatesViewOnControllerChangeFinish;
 @synthesize interfaceUpdateOperationSuppressionCount, interfaceUpdateOperationQueue;
 
@@ -116,27 +113,27 @@
 		
     IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }] autorelease];
 		
+		__block UIBarButtonItem *userInfoItem = WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
+		
+			[nrSelf handleUserInfoItemTap:userInfoItem];
+			
+		});
+		
+		__block UIBarButtonItem *composeItem = WABarButtonItem([UIImage imageNamed:@"UIButtonBarCompose"], nil, ^{
+		
+			[nrSelf handleComposeItemTap:composeItem];
+			
+		});
+		
 		NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
 		
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph"), @"UserInfo") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        [nrSelf handleUserInfoItemTap:senderItem];
-			}],
-      
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose"), @"Compose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        [nrSelf handleComposeItemTap:senderItem];
-			}],
+			userInfoItem,
 			
+			composeItem,
+								
 		nil];
-    
-    if (WAAdvancedFeaturesEnabled()) {
-    
-      [toolbarItems insertObject:[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph"), @"Settings") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        [nrSelf handleActionItemTap:senderItem];
-			}] atIndex:1];
-    
-    }
     
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = toolbarItems;
@@ -169,7 +166,6 @@
 	[userInfoPopoverController release];
 	
   [draftsPopoverController release];
-  [settingsPopoverController release];
 	
 	[interfaceUpdateOperationQueue release];
 
@@ -209,7 +205,6 @@
 	self.debugActionSheetController = nil;
   self.draftsPopoverController = nil;
   self.userInfoPopoverController = nil;
-  self.settingsPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -270,9 +265,6 @@
   if ([draftsPopoverController isPopoverVisible])
     [draftsPopoverController dismissPopoverAnimated:animate];
     
-  if ([settingsPopoverController isPopoverVisible])
-    [settingsPopoverController dismissPopoverAnimated:animate];
-  
   if ([debugActionSheetController.managedActionSheet isVisible])
     [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:animate];
 
@@ -468,33 +460,6 @@
 
 
 
-
-
-- (UIPopoverController *) settingsPopoverController {
-
-  if (settingsPopoverController)
-    return settingsPopoverController;
-  
-  IASKAppSettingsViewController *settingsVC = [[[IASKAppSettingsViewController alloc] init] autorelease];
-  settingsVC.showCreditsFooter = NO;
-  settingsVC.showDoneButton = NO;
-  
-  UINavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:settingsVC] autorelease];
-  settingsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
-  
-  return settingsPopoverController;
-
-}
-
-- (void) handleActionItemTap:(UIBarButtonItem *)sender {
-
-  if ([self.settingsPopoverController isPopoverVisible])
-    return;
-
-  [self dismissAuxiliaryControlsAnimated:NO];
-  [self.settingsPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-
-}
 
 
 

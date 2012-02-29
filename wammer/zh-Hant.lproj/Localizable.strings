@@ -179,7 +179,7 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
-/* Settings for User popover */
+/* No comment provided by engineer. */
 "SETTINGS_TITLE" = "設定";
 
 /* Production Disclaimer */
@@ -211,6 +211,9 @@
 
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "用戶資訊";
+
+/* Settings for User popover */
+"USER_INFO_CONTROLLER_TITLE" = "用戶";
 
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "回到上次閱讀斷點";
