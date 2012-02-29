@@ -13,6 +13,7 @@
 #import "WANavigationBar.h"
 #import "WAButton.h"
 #import "WAGestureWindow.h"
+#import "IRTransparentToolbar.h"
 
 #define USES_PAGINATED_CONTEXT 0
 
@@ -314,25 +315,37 @@
 					[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
 					
 						UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
+						
 						UIView *topBackgroundView = WAStandardArticleStackCellCenterBackgroundView();
+						[enclosingView addSubview:topBackgroundView];
 						topBackgroundView.frame = enclosingView.bounds;
 						topBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-						[enclosingView addSubview:topBackgroundView];
+						
+						IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:enclosingView.bounds] autorelease];
+						[enclosingView addSubview:toolbar];
+						toolbar.usesCustomLayout = NO;
+						toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+						toolbar.items = [NSArray arrayWithObjects:
+						
+							[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+						
+							shownArticleVC.navigationItem.rightBarButtonItem,
+						
+						nil];
 						
 						WAButton *closeButton = [WAButton buttonWithType:UIButtonTypeCustom];
+						[enclosingView addSubview:closeButton];
 						[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
 						[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
 						[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
 						closeButton.frame = enclosingView.bounds;
 						closeButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-						[enclosingView addSubview:closeButton];
-						
 						closeButton.action = ^ {
 						
 							[nrSelf dismissArticleContextViewController:shownArticleVC];
 						
 						};
-
+						
 						return enclosingView;
 													
 					})())];

@@ -17,6 +17,8 @@
 
 #import "Foundation+IRAdditions.h"
 
+#import "IASKAppSettingsViewController.h"
+
 
 #define kConnectivitySection 1
 
@@ -43,7 +45,7 @@
 
   [super irConfigure];
   
-  self.title = NSLocalizedString(@"SETTINGS_TITLE", @"Settings for User popover");
+  self.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
   
 	self.tableViewStyle = UITableViewStyleGrouped;
   self.persistsStateWhenViewWillDisappear = NO;
@@ -217,6 +219,9 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
+	if (WAAdvancedFeaturesEnabled())
+		return 4;
+	
   return 3;
 
 }
@@ -233,6 +238,9 @@
 			
 		case 2:
       return 3;
+		
+		case 3:
+			return 1;
 			
     default:
       return 0;
@@ -267,6 +275,7 @@
   
   if (section == 2)
     return NSLocalizedString(@"NOUN_STORAGE_QUOTA", @"Noun for storage quota.");
+	
   return nil;
 
 }
@@ -311,8 +320,10 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:anIdentifier];
 		if (!cell) {
 			cell = [[[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
+		
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		return cell;
 		
@@ -423,10 +434,60 @@
 			
 		}
 		
+	} else if (indexPath.section == 3) {
+	
+		cell = anyCell();
+		
+		switch (indexPath.row) {
+		
+			case 0: {
+			
+				cell.textLabel.text = NSLocalizedString(@"SETTINGS_TITLE", nil);
+				cell.detailTextLabel.text = nil;
+				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			
+				break;
+				
+			}
+		
+		}
+	
 	}
 	
 	NSParameterAssert(cell);
   return cell;
+
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	switch (indexPath.section) {
+	
+		case 3: {
+		
+			switch (indexPath.row) {
+			
+				case 0: {
+				
+					__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					appSettingsViewController.delegate = self;
+					appSettingsViewController.showDoneButton = NO;
+					appSettingsViewController.showCreditsFooter = NO;
+					
+					[self.navigationController pushViewController:appSettingsViewController animated:YES];
+				
+					break;
+				
+				}
+			
+			}
+		
+			break;
+		}
+	
+	
+	}
 
 }
 

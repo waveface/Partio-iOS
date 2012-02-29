@@ -165,7 +165,6 @@
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
 		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
 		NSError *savingError = nil;
 		if (![context save:&savingError])
