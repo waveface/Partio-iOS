@@ -23,6 +23,12 @@
    Fine! */
 "ACTION_OKAY" = "好";
 
+/* No comment provided by engineer. */
+"ACTION_OPEN_IN_SAFARI" = "使用 Safari 打開";
+
+/* No comment provided by engineer. */
+"ACTION_PRINT" = "列印";
+
 /* Action title for processing stuff */
 "ACTION_PROCESSING" = "處理中";
 

@@ -11,22 +11,6 @@
 #import "IRPaginatedView.h"
 #import "IRBarButtonItem.h"
 
-#ifndef __WADiscretePaginatedArticlesViewController__
-#define __WADiscretePaginatedArticlesViewController__
-
-enum WADiscretePaginatedArticlesViewControllerAnimation {
-	
-	WAArticleContextAnimationNone = 0,
-	WAArticleContextAnimationFlipAndScale = 1,
-	WAArticleContextAnimationFadeAndZoom = 2,
-	WAArticleContextAnimationCoverVertically = 3,
-	
-	WAArticleContextAnimationDefault = WAArticleContextAnimationCoverVertically
-	
-}; typedef NSUInteger WAArticleContextAnimation;
-
-#endif
-
 @interface WADiscretePaginatedArticlesViewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IBOutlet WAPaginationSlider *paginationSlider;
@@ -34,3 +18,7 @@ enum WADiscretePaginatedArticlesViewControllerAnimation {
 @property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
 
 @end
+
+
+#import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
+#import "WADiscretePaginatedArticlesViewController+ContextPresenting.h"

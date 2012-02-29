@@ -61,6 +61,8 @@ enum {
 @property (nonatomic, readwrite, assign) UIGestureRecognizerState lastWebScrollViewPanGestureRecognizerState;
 @property (nonatomic, readwrite, assign) CGRect lastWebViewFrame;
 
+- (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender;
+
 @end
 
 
@@ -581,7 +583,17 @@ enum {
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
 		[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
-		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+		
+		if (isPhone) {
+			
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			
+		} else {
+			
+			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+			
+		}
+		
 		[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
@@ -590,33 +602,61 @@ enum {
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		if (isPhone) {
+		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
 		
-			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
-			
-				[(UIActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[NSArray arrayWithObject:[IRAction actionWithTitle:@"Open in Safari" block:^{
-
-					[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
-					
-				}]]] singleUseActionSheet] showFromBarButtonItem:senderItem animated:YES];
-			
-			}]];
+			[(UIActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self previewActionsWithSender:senderItem]] singleUseActionSheet] showFromBarButtonItem:senderItem animated:YES];
 		
-		} else {
-		
-			[returnedArray addObject:[IRBarButtonItem itemWithTitle:@"Open in Safari" action: ^ {
-			
-				[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
-			
-			}]];
-		
-		}
+		}]];
 		
 		return returnedArray;
 	
 	})());
 		
 	return self.toolbarItems;
+
+}
+
+- (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender {
+	
+	__block __typeof__(self) nrSelf = self;
+
+	NSMutableArray *returnedActions = [NSMutableArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OPEN_IN_SAFARI", nil) block:^{
+
+			[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+			
+		}],
+	
+	nil];
+	
+	if ([UIPrintInteractionController isPrintingAvailable]) {
+	
+		[returnedActions addObject:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_PRINT", nil) block:^{
+			
+			UIPrintInteractionController *printIC = [UIPrintInteractionController sharedPrintController];
+			printIC.printFormatter = [[nrSelf wrappedView] viewPrintFormatter];
+			
+			UIPrintInteractionCompletionHandler completionHandler = ^ (UIPrintInteractionController *controller, BOOL completed, NSError *error) {
+			
+			};
+			
+			switch ([UIDevice currentDevice].userInterfaceIdiom) {
+				case UIUserInterfaceIdiomPad: {
+					[printIC presentFromBarButtonItem:sender animated:YES completionHandler:completionHandler];
+					break;
+				}
+				case UIUserInterfaceIdiomPhone: {
+					[printIC presentAnimated:YES completionHandler:completionHandler];
+					break;
+				}
+			}
+		
+		}]];
+	
+	}
+	
+	return returnedActions;
 
 }
 

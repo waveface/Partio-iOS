@@ -207,6 +207,9 @@
 }
 
 - (WAFile *) itemAtIndex:(NSUInteger)index {
+
+	if (index >= [self.article.fileOrder count])
+		return nil;
 	
 	return (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
 
