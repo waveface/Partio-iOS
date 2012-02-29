@@ -286,6 +286,8 @@
 		FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
 		FFB117C9147F9051002094E5 /* NSBlockOperation+NSCopying.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */; };
 		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
+		FFB418F214FE071F009A815B /* WABackGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FFB418F014FE071F009A815B /* WABackGlyph.png */; };
+		FFB418F314FE071F009A815B /* WABackGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFB418F114FE071F009A815B /* WABackGlyph@2x.png */; };
 		FFB44D5A14D692AA00080F07 /* WAArticleViewController_Preview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB44D5914D692AA00080F07 /* WAArticleViewController_Preview.m */; };
 		FFB44D5D14D6A2A800080F07 /* WAScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB44D5C14D6A2A800080F07 /* WAScrollView.m */; };
 		FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD14F0514C5E24C0053116F /* Crashlytics.framework */; };
@@ -1286,6 +1288,8 @@
 		FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBlockOperation+NSCopying.h"; path = "wammer/NSBlockOperation+NSCopying.h"; sourceTree = "<group>"; };
 		FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBlockOperation+NSCopying.m"; path = "wammer/NSBlockOperation+NSCopying.m"; sourceTree = "<group>"; };
 		FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRTextAttributor.xcodeproj; path = external/IRTextAttributor/IRTextAttributor.xcodeproj; sourceTree = "<group>"; };
+		FFB418F014FE071F009A815B /* WABackGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WABackGlyph.png; path = Resources/WABackGlyph.png; sourceTree = "<group>"; };
+		FFB418F114FE071F009A815B /* WABackGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WABackGlyph@2x.png"; path = "Resources/WABackGlyph@2x.png"; sourceTree = "<group>"; };
 		FFB44D5814D692AA00080F07 /* WAArticleViewController_Preview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_Preview.h; sourceTree = "<group>"; };
 		FFB44D5914D692AA00080F07 /* WAArticleViewController_Preview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_Preview.m; sourceTree = "<group>"; };
 		FFB44D5B14D6A2A700080F07 /* WAScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAScrollView.h; sourceTree = "<group>"; };
@@ -2213,6 +2217,8 @@
 				FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */,
 				FF0527F714F3C7230030D099 /* WAAttachmentGlyph.png */,
 				FF0527F814F3C7230030D099 /* WAAttachmentGlyph@2x.png */,
+				FFB418F014FE071F009A815B /* WABackGlyph.png */,
+				FFB418F114FE071F009A815B /* WABackGlyph@2x.png */,
 				4BBD0D941490C97D00EAE3E1 /* WABackground.png */,
 				FF8CDE8613F3DFBB00E08F28 /* WAButtonSpringBoardRemove.png */,
 				FF4FA01313E136A0002C627F /* WACapsuleLeft.png */,
@@ -3137,6 +3143,8 @@
 				FF0527FE14F3C7240030D099 /* WALinkGlyph@2x.png in Resources */,
 				FF78DD3514F7C2D6005694BF /* WACompositionAttachmentsBarBackground.png in Resources */,
 				FF78DD3614F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png in Resources */,
+				FFB418F214FE071F009A815B /* WABackGlyph.png in Resources */,
+				FFB418F314FE071F009A815B /* WABackGlyph@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3668,7 +3676,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 253;
+				CURRENT_PROJECT_VERSION = 254;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3720,7 +3728,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 253;
+				CURRENT_PROJECT_VERSION = 254;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
