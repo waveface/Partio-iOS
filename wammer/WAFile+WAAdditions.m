@@ -297,6 +297,9 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	NSURL *ownURL = [[self objectID] URIRepresentation];
 	
 	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+	
+		if (!tempFileURLOrNil)
+			return;
 		
 		dispatch_async([[self class] sharedResourceHandlingQueue], ^ {
 
