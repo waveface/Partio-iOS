@@ -28,4 +28,7 @@
 @property (nonatomic, readonly, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readonly, retain) WAArticleCommentsViewController *commentsVC;
 
+- (WAArticleCommentsViewController *) newArticleCommentsController NS_RETURNS_RETAINED;
+- (void) presentCommentsViewController:(WAArticleCommentsViewController *)controller sender:(id)sender;
+
 @end
