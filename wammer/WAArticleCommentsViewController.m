@@ -137,8 +137,13 @@
 
 - (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
 
-	if (!self.view.window)
+	if (![self isViewLoaded])
 		return;
+
+	if (!self.view.window) {
+		self.wrapperView.frame = self.view.bounds;
+		return;
+	}
 
 	CGRect ownRectInWindow = [self.view.window convertRect:self.view.bounds fromView:self.view];
 	CGRect intersection = CGRectIntersection(ownRectInWindow, newInterfaceBounds);
@@ -176,6 +181,8 @@
 			[self.commentsView reloadData];
 	}
 	
+	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:NO];
+
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -423,7 +430,7 @@
 			CGRectGetHeight(self.wrapperView.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
 		},
 		(CGSize){
-			self.compositionAccessoryView.frame.size.width,
+			CGRectGetWidth(self.wrapperView.bounds),
 			CGRectGetHeight(self.compositionAccessoryView.frame)	
 		}
 	};
