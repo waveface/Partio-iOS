@@ -297,6 +297,9 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	NSURL *ownURL = [[self objectID] URIRepresentation];
 	
 	[[IRRemoteResourcesManager sharedManager] retrieveResourceAtURL:blobURL usingPriority:priority forced:NO withCompletionBlock:^(NSURL *tempFileURLOrNil) {
+	
+		if (!tempFileURLOrNil)
+			return;
 		
 		dispatch_async([[self class] sharedResourceHandlingQueue], ^ {
 
@@ -326,43 +329,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath {
 
-	@try {
-		[self primitiveValueForKey:[(NSPropertyDescription *)[[self.entity properties] lastObject] name]];
-	} @catch (NSException *exception) {
-		NSLog(@"Got access exception: %@", exception);
-	}
-
-	NSString *currentFilePath = [self valueForKey:fileKeyPath];
-	if (currentFilePath || ![[self valueForKey:urlKeyPath] isEqualToString:[anURL absoluteString]]) {
-		//	NSLog(@"Skipping double-writing");
-		return NO;
-	}
-	
-	NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:[NSURL fileURLWithPath:aPath]];
-	
-	NSString *ownResourceType = self.resourceType;
-	NSString *preferredExtension = nil;
-	if (ownResourceType)
-		preferredExtension = [NSMakeCollectable(UTTypeCopyPreferredTagWithClass((CFStringRef)ownResourceType, kUTTagClassFilenameExtension)) autorelease];
-	
-	if (preferredExtension) {
-		
-		NSURL *newFileURL = [NSURL fileURLWithPath:[[[fileURL path] stringByDeletingPathExtension] stringByAppendingPathExtension:preferredExtension]];
-		
-		NSError *movingError = nil;
-		BOOL didMove = [[NSFileManager defaultManager] moveItemAtURL:fileURL toURL:newFileURL error:&movingError];
-		if (!didMove) {
-			NSLog(@"Error moving: %@", movingError);
-			return NO;
-		}
-			
-		fileURL = newFileURL;
-		
-	}
-	
-	[self setValue:[fileURL path] forKey:fileKeyPath];
-	
-	return YES;
+	return [[WADataStore defaultStore] updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath];
 
 }
 
