@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import "WADefines.h"
+#import "WADefines.h"s
 #import "WADefines+iOS.h"
 
 #import "IRBorder.h"

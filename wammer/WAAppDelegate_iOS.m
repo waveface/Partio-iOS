@@ -50,7 +50,8 @@
 
 #import	"DCIntrospect.h"
 
-
+#import "GANTracker.h"
+		
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
@@ -80,6 +81,7 @@
   //  This is so not going to happen
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[GANTracker sharedTracker] stopTracker];
   [super dealloc];
 
 }
@@ -136,8 +138,32 @@
 			
 		});
 	
+		WF_GOOGLEANALYTICS(^ {
+		
+			NSLog(@"Using Google Analytics");
+					
+			[[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
+																			 dispatchPeriod:kGANDispatchPeriodSec
+																						 delegate:nil];
+
+			NSError *error;
+			if ( ![[GANTracker sharedTracker] trackEvent:@"iOS" action:@"Launch" label:@"bootstrap" value:99 withError:&error]) {
+				NSLog(@"event track error %@", error);
+			}
+			
+			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+				
+				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
+				[[GANTracker sharedTracker] trackEvent:eventTitle action:@"observed" label:nil value:-1 withError:nil];
+				
+			}];
+			
+			objc_setAssociatedObject([GANTracker class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		
+		});
+		
 	}
-	
+		
 	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
