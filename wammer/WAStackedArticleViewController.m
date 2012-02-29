@@ -330,9 +330,9 @@
 	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 
-	self.stackView.bounces = NO;
+	self.stackView.bounces = YES;
 	self.stackView.alwaysBounceHorizontal = NO;	
-	self.stackView.alwaysBounceVertical = NO;
+	self.stackView.alwaysBounceVertical = YES;
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
 	
