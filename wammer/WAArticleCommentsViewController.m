@@ -172,6 +172,14 @@
 		else
 			[self.commentsView reloadData];
 	}
+	
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	[[self.view irFirstResponderInView] resignFirstResponder];
 
 }
 
@@ -327,7 +335,7 @@
 	};
 	
 	self.view.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
-		
+	
 		CGPoint pointWithinRevealingContainerView = [nrView convertPoint:aPoint toView:nrRevealingActionContainerView];
 		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
 			return YES;
