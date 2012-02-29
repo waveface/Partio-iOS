@@ -235,6 +235,9 @@
 	self.commentsView.delegate = self;
 	self.commentsView.rowHeight = 96.0f;
 	
+	self.commentsView.bounces = YES;
+	self.commentsView.alwaysBounceVertical = YES;
+	 
 	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	self.commentsRevealingActionContainerView.backgroundColor = [UIColor clearColor];
 	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
@@ -339,6 +342,9 @@
 	
 	self.view.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
+		if (superAnswer)
+			return superAnswer;
+		
 		CGPoint pointWithinRevealingContainerView = [nrView convertPoint:aPoint toView:nrRevealingActionContainerView];
 		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
 			return YES;
@@ -348,6 +354,9 @@
 	};
 	
 	self.view.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	
+		if ((superAnswer == nrSelf.commentsView) || ([superAnswer isDescendantOfView:nrSelf.commentsView]))
+			return superAnswer;
 	
 		UIView *hitSubview = [nrRevealingActionContainerView hitTest:aPoint withEvent:anEvent];
 		
