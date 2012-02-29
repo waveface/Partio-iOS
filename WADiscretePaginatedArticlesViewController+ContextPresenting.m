@@ -66,11 +66,10 @@
 	__block void (^presentBlock)(void) = nil;
 	__block void (^dismissBlock)(void) = nil;
 	
-	//	SHARED STUFF
+	UIWindow * const containingWindow = self.navigationController.view.window;
+	CGAffineTransform const containingWindowTransform = containingWindow.rootViewController.view.transform;
+	CGRect const containingWindowBounds = CGRectApplyAffineTransform(containingWindow.bounds, containingWindowTransform);
 	
-	UIWindow *containingWindow = self.navigationController.view.window;
-	CGAffineTransform containingWindowTransform = containingWindow.rootViewController.view.transform;
-	CGRect containingWindowBounds = CGRectApplyAffineTransform(containingWindow.bounds, containingWindowTransform);		
 	UIView *containerView = [[[UIView alloc] initWithFrame:containingWindowBounds] autorelease];
 	containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	containerView.center = irCGRectAnchor(containingWindow.bounds, irCenter, YES);
@@ -197,77 +196,86 @@
 		case WAArticleContextAnimationCoverVertically: {
 		
 			__block UIWindow *currentKeyWindow = [UIApplication sharedApplication].keyWindow;
-			__block UIWindow *containerWindow = nil;
+			__block WAGestureWindow *containerWindow = nil;
 			
 			__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 			backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 			backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];				
 			
-			__block UIView *contextView = nil;
-		
 			presentBlock = ^ {
 			
+				UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
+				if (!usedScreen)
+					usedScreen = [UIScreen mainScreen];
+				
+				containerWindow = [[WAGestureWindow alloc] initWithFrame:usedScreen.bounds];
+				containerWindow.backgroundColor = backgroundView.backgroundColor;
+				containerWindow.opaque = NO;
+				containerWindow.rootViewController = enqueuedNavController;
+				
+				containerWindow.onTap = ^ {
+					
+					[nrSelf dismissArticleContextViewController:shownArticleVC];
+					containerWindow.onTap = nil;
+					
+				};
+				
+				containerWindow.onGestureRecognizeShouldReceiveTouch = ^ (UIGestureRecognizer *recognizer, UITouch *touch) {
+				
+					if (shownArticleVC.modalViewController)
+						return NO;
+					
+					UINavigationController *navC = shownArticleVC.navigationController;
+					
+					if (navC) {
+					
+						if (navC.modalViewController)
+							return NO;
+					
+						if (!navC.navigationBarHidden)
+						if (CGRectContainsPoint(navC.navigationBar.bounds, [touch locationInView:navC.navigationBar]))
+							return NO;
+						
+						if (!navC.toolbarHidden)
+						if (CGRectContainsPoint(navC.toolbar.bounds, [touch locationInView:navC.toolbar]))
+							return NO;
+					
+					}
+					
+					//		if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
+					//		if (shownArticleVC.navigationController.topViewController != shownArticleVC)
+					//			return NO;
+				
+					CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
+					
+					if ([shownArticleVC respondsToSelector:@selector(isPointInsideInterfaceRect:)])
+						return (BOOL)![shownArticleVC isPointInsideInterfaceRect:locationInShownArticleVC];
+					
+					return NO;
+				
+				};
+				
 				[enqueuedNavController setNavigationBarHidden:YES animated:NO];
-				
-				NSMutableArray *preconditions = [NSMutableArray array];
-				NSMutableArray *animations = [NSMutableArray array];
-				NSMutableArray *postconditions = [NSMutableArray array];
-				
-				[containingWindow.rootViewController.view addSubview:containerView];
-				containerView.transform = CGAffineTransformIdentity;
-				containerView.frame = containerView.superview.bounds;
-				
-				backgroundView.frame = containerView.bounds;
-				[containerView addSubview:backgroundView];
-				[preconditions irEnqueueBlock:^{
-					backgroundView.alpha = 0;
-				}];
-				[animations irEnqueueBlock:^{
-					backgroundView.alpha = 1;
-				}];
-				
-				CGRect fromContextRect = CGRectOffset(containerView.bounds, 0, CGRectGetHeight(containerView.bounds));
-				CGRect toContextRect = containerView.bounds;
-				
-				[enqueuedNavController viewWillAppear:NO];
-				[containerView addSubview:(contextView = enqueuedNavController.view)];
-				[enqueuedNavController viewDidAppear:NO];
-				
-				contextView.frame = toContextRect;
-				contextView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
-				[contextView layoutSubviews];
-				[preconditions irEnqueueBlock:^{
-					contextView.frame = fromContextRect;
-				}];
-				[animations irEnqueueBlock:^{
-					contextView.frame = toContextRect;
-				}];
-				
-				
-				shownArticleVC.view.backgroundColor = [UIColor clearColor];
-				[shownArticleVC view];
 				
 				if ([shownArticleVC respondsToSelector:@selector(handlePreferredInterfaceRect:)]) {
 				
 					__block __typeof__(enqueuedNavController) nrEnqueuedNavController = enqueuedNavController;
-					__block __typeof__(containerView) nrContainerView = containerView;
+					//	__block __typeof__(containerView) nrContainerView = containerView;
 				
 					void (^onViewDidLoad)() = ^ {
 					
 						IRCATransact(^{
 						
 							shownArticleVC.view.backgroundColor = [UIColor clearColor];
-							
-							[nrContainerView layoutSubviews];
 							[nrEnqueuedNavController.view layoutSubviews];
 							
 							CGRect contextRect = IRCGRectAlignToRect((CGRect){
 								CGPointZero,
 								(CGSize){
-									CGRectGetWidth(nrContainerView.bounds),// - 24,
-									CGRectGetHeight(nrContainerView.bounds)// - 56
+									CGRectGetWidth(nrEnqueuedNavController.view.bounds),// - 24,
+									CGRectGetHeight(nrEnqueuedNavController.view.bounds)// - 56
 								}
-							}, nrContainerView.bounds, irBottom, YES);
+							}, nrEnqueuedNavController.view.bounds, irBottom, YES);
 							
 							[shownArticleVC handlePreferredInterfaceRect:contextRect];
 							
@@ -335,89 +343,28 @@
 				
 				}
 				
-				[preconditions irEnqueueBlock:^{
-					[containerView.superview bringSubviewToFront:containerView];
-				}];
+				[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 				
-				[preconditions irExecuteAllObjectsAsBlocks];
-				[UIView animateWithDuration:0.5f delay:0 options:0 animations:^{
-					
-					[animations irExecuteAllObjectsAsBlocks];
-					
-				} completion: ^ (BOOL finished) {
-					
-					[postconditions irExecuteAllObjectsAsBlocks];
-					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-					
-					[CATransaction begin];
-					
-					[[containerView retain] autorelease];
-					[containerView removeFromSuperview];
-					
-					[enqueuedNavController viewWillDisappear:NO];
-					[enqueuedNavController.view removeFromSuperview];
-					[enqueuedNavController viewDidDisappear:NO];
-					
-					UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
-					if (!usedScreen)
-						usedScreen = [UIScreen mainScreen];
+				[CATransaction begin];
 				
-					__block WAGestureWindow *usedWindow = [[[WAGestureWindow alloc] initWithFrame:usedScreen.bounds] autorelease];
-					usedWindow.backgroundColor = backgroundView.backgroundColor;
-					usedWindow.opaque = NO;
-					usedWindow.rootViewController = enqueuedNavController;
+				[containerWindow makeKeyAndVisible];
+				
+				UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
+				
+				UIView *rootView = containerWindow.rootViewController.view;
+				CGRect toFrame = rootView.frame;
+				CGRect fromFrame = rootView.frame = [rootView.superview convertRect:CGRectOffset(rootView.bounds, 0, CGRectGetHeight(rootView.bounds)) fromView:rootView];
+								
+				containerWindow.rootViewController.view.frame = fromFrame;
+				
+				[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations:^{
+				
+					containerWindow.rootViewController.view.frame = toFrame;
+				
+				} completion:nil];
+				
+				[CATransaction commit];
 					
-					usedWindow.onTap = ^ {
-						
-						[nrSelf dismissArticleContextViewController:shownArticleVC];
-						usedWindow.onTap = nil;
-						
-					};
-					
-					usedWindow.onGestureRecognizeShouldReceiveTouch = ^ (UIGestureRecognizer *recognizer, UITouch *touch) {
-					
-						if (shownArticleVC.modalViewController)
-							return NO;
-						
-						UINavigationController *navC = shownArticleVC.navigationController;
-						
-						if (navC) {
-						
-							if (navC.modalViewController)
-								return NO;
-						
-							if (!navC.navigationBarHidden)
-							if (CGRectContainsPoint(navC.navigationBar.bounds, [touch locationInView:navC.navigationBar]))
-								return NO;
-							
-							if (!navC.toolbarHidden)
-							if (CGRectContainsPoint(navC.toolbar.bounds, [touch locationInView:navC.toolbar]))
-								return NO;
-						
-						}
-						
-						//		if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
-						//		if (shownArticleVC.navigationController.topViewController != shownArticleVC)
-						//			return NO;
-					
-						CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
-						
-						if ([shownArticleVC respondsToSelector:@selector(isPointInsideInterfaceRect:)])
-							return (BOOL)![shownArticleVC isPointInsideInterfaceRect:locationInShownArticleVC];
-						
-						return NO;
-					
-					};
-					
-					[usedWindow makeKeyAndVisible];
-					
-					[CATransaction commit];
-					
-					containerWindow = usedWindow;
-					[containerWindow retain]; //	Keep it
-
-				}];
-			
 			};
 			
 			dismissBlock = ^ {
