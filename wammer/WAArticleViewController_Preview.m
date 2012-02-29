@@ -581,7 +581,17 @@ enum {
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
 		[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
-		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+		
+		if (isPhone) {
+			
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			
+		} else {
+			
+			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+			
+		}
+		
 		[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
