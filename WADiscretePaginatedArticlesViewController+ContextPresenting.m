@@ -269,15 +269,13 @@
 							shownArticleVC.view.backgroundColor = [UIColor clearColor];
 							[nrEnqueuedNavController.view layoutSubviews];
 							
-							CGRect contextRect = IRCGRectAlignToRect((CGRect){
+							[shownArticleVC handlePreferredInterfaceRect:IRCGRectAlignToRect((CGRect){
 								CGPointZero,
 								(CGSize){
-									CGRectGetWidth(nrEnqueuedNavController.view.bounds),// - 24,
-									CGRectGetHeight(nrEnqueuedNavController.view.bounds)// - 56
+									CGRectGetWidth(shownArticleVC.view.bounds) - 0,
+									CGRectGetHeight(shownArticleVC.view.bounds) - 0
 								}
-							}, nrEnqueuedNavController.view.bounds, irBottom, YES);
-							
-							[shownArticleVC handlePreferredInterfaceRect:contextRect];
+							}, shownArticleVC.view.bounds, irBottom, YES)];
 							
 							__block void (^poke)(UIView *) = ^ (UIView *aView) {
 							
