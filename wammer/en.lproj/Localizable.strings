@@ -23,6 +23,12 @@
    Fine! */
 "ACTION_OKAY" = "Okay";
 
+/* No comment provided by engineer. */
+"ACTION_OPEN_IN_SAFARI" = "Open in Safari";
+
+/* No comment provided by engineer. */
+"ACTION_PRINT" = "Print";
+
 /* Action title for processing stuff */
 "ACTION_PROCESSING" = "Processing";
 
