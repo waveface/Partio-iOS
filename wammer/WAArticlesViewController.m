@@ -113,30 +113,24 @@
 		
     IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }] autorelease];
 		
-		__block UIBarButtonItem *userInfoItem = WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-		
-			[nrSelf handleUserInfoItemTap:userInfoItem];
-			
-		});
-		
-		__block UIBarButtonItem *composeItem = WABarButtonItem([UIImage imageNamed:@"UIButtonBarCompose"], nil, ^{
-		
-			[nrSelf handleComposeItemTap:composeItem];
-			
-		});
-		
-		NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSMutableArray arrayWithObjects:
 		
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
-			userInfoItem,
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph"), @"UserInfo") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+		
+				[nrSelf handleUserInfoItemTap:senderItem];
 			
-			composeItem,
+			}],
+			
+			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose"), @"Compose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+							
+				[nrSelf handleComposeItemTap:senderItem];
+				
+			}],
 								
 		nil];
-    
-		toolbar.usesCustomLayout = NO;
-		toolbar.items = toolbarItems;
 		
 		UIView *returnedView = [[[UIView alloc] initWithFrame:toolbar.bounds] autorelease];
 		[returnedView addSubview:toolbar];
