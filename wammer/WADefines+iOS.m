@@ -117,13 +117,13 @@ void kWADefaultBarButtonInitialize (void) {
 			}
 			case UIUserInterfaceIdiomPhone: {
 				
-				kWADefaultBarButtonBorder = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.1]];
-				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.45] offset:(CGSize){ 0, 1 } spread:2];
+				kWADefaultBarButtonBorder = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.25]];
+				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.15] offset:(CGSize){ 0, 2 } spread:2];
 				kWADefaultBarButtonShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.5] offset:(CGSize){ 0, 1 } spread:1];
 				
 				kWADefaultBarButtonTitleFont = [UIFont boldSystemFontOfSize:12];
 				kWADefaultBarButtonTitleColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
-				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.30] offset:(CGSize){ 0, 1 } spread:2];
+				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.30] offset:(CGSize){ 0, 1 } spread:1];
 				
 				kWADefaultBarButtonGradientFromColor = [UIColor colorWithWhite:1 alpha:.1];
 				kWADefaultBarButtonGradientToColor = [UIColor colorWithWhite:0 alpha:.1];
@@ -279,6 +279,24 @@ UIView * WAStandardTitleView (void) {
 	UIView *containerView = [[UIView alloc] initWithFrame:(CGRect){	CGPointZero, (CGSize){ 128, 44 }}];
 	logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
 	[containerView addSubview:logotype];
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPad: {
+		
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			logotype.frame = CGRectOffset(logotype.frame, -12, 1);
+		
+			break;
+		
+		}
+	
+	}
 	
 	return containerView;
 

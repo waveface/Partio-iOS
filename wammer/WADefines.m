@@ -147,3 +147,14 @@ void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
 	[[NSNotificationCenter defaultCenter] postNotificationName:kWAAppEventNotification object:nil userInfo:sentUserInfo];
 
 }
+
+NSString * const kWAUsesUglifiedBarButtonItems = @"WAUsesUglifiedBarButtonItems";
+BOOL WAUsesUglifiedBarButtonItems (void) {
+
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUsesUglifiedBarButtonItems])
+		return YES;
+	
+	return NO;
+
+}

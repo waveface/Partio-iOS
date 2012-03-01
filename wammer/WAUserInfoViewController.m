@@ -16,6 +16,7 @@
 #import "WADataStore.h"
 
 #import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 #import "IASKAppSettingsViewController.h"
 
@@ -102,7 +103,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
 		
 		self.tableView.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];		
-		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
+		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
 		
 	}
   
@@ -474,6 +475,13 @@
 					appSettingsViewController.delegate = self;
 					appSettingsViewController.showDoneButton = NO;
 					appSettingsViewController.showCreditsFooter = NO;
+					
+					appSettingsViewController.navigationItem.hidesBackButton = YES;
+					appSettingsViewController.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, self.title, ^ {
+					
+						[appSettingsViewController.navigationController popViewControllerAnimated:YES];
+					
+					});
 					
 					[self.navigationController pushViewController:appSettingsViewController animated:YES];
 				
