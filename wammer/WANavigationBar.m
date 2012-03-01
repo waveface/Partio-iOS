@@ -8,6 +8,7 @@
 
 #import "WANavigationBar.h"
 #import "IRGradientView.h"
+#import "IRLifetimeHelper.h"
 
 @interface WANavigationBar ()
 
