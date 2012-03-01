@@ -142,15 +142,8 @@
 		
 			NSLog(@"Using Google Analytics");
 					
-			[[GANTracker sharedTracker] startTrackerWithAccountID:kAnalyticsAccountId
-																			 dispatchPeriod:kGANDispatchPeriodSec
-																						 delegate:nil];
-
-			NSError *error;
-			if ( ![[GANTracker sharedTracker] trackEvent:@"iOS" action:@"Launch" label:@"bootstrap" value:99 withError:&error]) {
-				NSLog(@"event track error %@", error);
-			}
-			
+			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
+						
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 				
 				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];

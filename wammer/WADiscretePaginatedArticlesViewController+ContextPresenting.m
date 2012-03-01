@@ -483,7 +483,7 @@
 			if ([returnedVC.navigationController conformsToProtocol:@protocol(WAArticleViewControllerPresenting)]) {
 				action((UIViewController <WAArticleViewControllerPresenting> *)returnedVC.navigationController);
 			} else {
-				action(nrSelf);
+				action((UIViewController <WAArticleViewControllerPresenting> *)nrSelf);
 			}
 		};
 		

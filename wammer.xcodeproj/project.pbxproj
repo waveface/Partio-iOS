@@ -57,7 +57,6 @@
 		4B8CC02A14BED121000E6F71 /* WAPageShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */; };
 		4B8CC02B14BED121000E6F71 /* WAPageShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */; };
 		4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02914BED121000E6F71 /* WAPatternWood.png */; };
-		4B8DFB7014FDFBEA000B41C5 /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB6F14FDFBEA000B41C5 /* libGoogleAnalytics.a */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
@@ -341,6 +340,7 @@
 		FFC937DF149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */; };
 		FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */; };
 		FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */; };
+		FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */; };
 		FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
 		FFCEDA1D149B3F34000F2B20 /* WALastReadIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */; };
@@ -920,8 +920,6 @@
 		4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageShadowLeft.png; path = Resources/WAPageShadowLeft.png; sourceTree = "<group>"; };
 		4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageShadowRight.png; path = Resources/WAPageShadowRight.png; sourceTree = "<group>"; };
 		4B8CC02914BED121000E6F71 /* WAPatternWood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternWood.png; path = Resources/WAPatternWood.png; sourceTree = "<group>"; };
-		4B8DFB6E14FDFBEA000B41C5 /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GANTracker.h; path = wammer/GANTracker.h; sourceTree = "<group>"; };
-		4B8DFB6F14FDFBEA000B41C5 /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalytics.a; path = wammer/libGoogleAnalytics.a; sourceTree = "<group>"; };
 		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
@@ -1354,6 +1352,8 @@
 		FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldClearButtonPressed@2x.png"; path = "Resources/UITextFieldClearButtonPressed@2x.png"; sourceTree = "<group>"; };
 		FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UITextFieldInvertedClearButton.png; path = Resources/UITextFieldInvertedClearButton.png; sourceTree = "<group>"; };
 		FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldInvertedClearButton@2x.png"; path = "Resources/UITextFieldInvertedClearButton@2x.png"; sourceTree = "<group>"; };
+		FFC9D96714FF28B2004197EC /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
+		FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 10.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -1517,7 +1517,7 @@
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */,
-				4B8DFB7014FDFBEA000B41C5 /* libGoogleAnalytics.a in Frameworks */,
+				FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2396,6 +2396,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FFC9D96614FF28B2004197EC /* Google Analytics SDK */ = {
+			isa = PBXGroup;
+			children = (
+				FFC9D96714FF28B2004197EC /* GANTracker.h */,
+				FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */,
+			);
+			name = "Google Analytics SDK";
+			path = external/GoogleAnalyticsSDK;
+			sourceTree = "<group>";
+		};
 		FFDE86A614397055009E04D9 /* Article View */ = {
 			isa = PBXGroup;
 			children = (
@@ -2510,13 +2520,12 @@
 				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
 				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
 				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
-				4B8DFB6E14FDFBEA000B41C5 /* GANTracker.h */,
+				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
 				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
 				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
 				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF97386213D82B55003D1722 /* JSONKit */,
-				4B8DFB6F14FDFBEA000B41C5 /* libGoogleAnalytics.a */,
 				4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */,
 				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF42755B14F4E8D200824505 /* libz.dylib */,
@@ -3866,6 +3875,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer\"",
+					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
@@ -3892,6 +3902,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer\"",
+					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";

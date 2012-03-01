@@ -31,7 +31,7 @@
 		#import	"GANTracker.h"
 		#define WF_GOOGLEANALYTICS(...) do { (__VA_ARGS__)(); } while (0)	
 	#else
-		#define Crashlytics (id)nil
+		#define GANTracker (id)nil
 		#define WF_GOOGLEANALYTICS(...) do {  } while (0)	
 	#endif
 
