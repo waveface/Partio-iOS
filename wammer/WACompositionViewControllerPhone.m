@@ -70,7 +70,7 @@
 	
 	self.toolbar.backgroundColor = nil;
 	self.toolbar.opaque = NO;
-
+	
 	UIView *toolbarBackground = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 	toolbarBackground.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"] irStandardImage]];
 	
@@ -166,14 +166,25 @@
 
 	if (![self isViewLoaded])
 		return;
+		
+	WAArticleAttachmentActivityView activityView = self.articleAttachmentActivityView;
 
-	self.articleAttachmentActivityView.style = !![self.textAttributor.queue.operations count] ? WAArticleAttachmentActivityViewSpinnerStyle :
+	activityView.style = !![self.textAttributor.queue.operations count] ? WAArticleAttachmentActivityViewSpinnerStyle :
 		[self.article.previews count] ? WAArticleAttachmentActivityViewLinkStyle :
 		[self.article.files count] ? WAArticleAttachmentActivityViewAttachmentsStyle :
 		WAArticleAttachmentActivityViewDefaultStyle;
+	
+	if (![self.article.files count]) {
 		
-	[self.articleAttachmentActivityView setTitle:[NSString stringWithFormat:@"%i", [self.article.files count]] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
-	[self.articleAttachmentActivityView setTitle:[NSString stringWithFormat:@"%i", [self.article.previews count]] forStyle:WAArticleAttachmentActivityViewLinkStyle];
+		[activityView setTitle:NSLocalizedString(@"ACTION_ADD",@"attachment activity view") forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
+	
+	} else {
+
+		[activityView setTitle:[NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"attachment activity view"), [self.article.files count]] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
+	
+	}
+		
+	[activityView setTitle:NSLocalizedString(@"WEB_PREVIEW", @"attachment activity view") forStyle:WAArticleAttachmentActivityViewLinkStyle];
 
 }
 
@@ -378,11 +389,11 @@
 - (WAAttachedMediaListViewController *) newMediaListViewController {
 
 	__block __typeof__(self) nrSelf = self;
-	__block WAAttachedMediaListViewController *mediaList = [[[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
+	__block WAAttachedMediaListViewController *mediaList = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
 	
 		[nrSelf dismissMediaListViewController:mediaList animated:YES];
 		
-	}] autorelease];
+	}];
 	
 	mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
 	
@@ -397,7 +408,7 @@
 	if ([mediaList isViewLoaded])
 		mediaList.onViewDidLoad();
 	
-	return [mediaList retain];
+	return mediaList;
 
 }
 

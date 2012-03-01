@@ -156,7 +156,7 @@
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.rowHeight = 76.0f; // plus 1 to get UIImageView in right size
-	self.tableView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
+	self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
 	[self.view addSubview:self.tableView];
 }
 

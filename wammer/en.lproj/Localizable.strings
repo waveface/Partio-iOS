@@ -1,3 +1,6 @@
+/* attachment activity view */
+"ACTION_ADD" = "Add";
+
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
@@ -143,7 +146,8 @@
    Title for username */
 "NOUN_USERNAME" = "Username";
 
-/* Photo information in cell */
+/* attachment activity view
+   Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
 /* Text to show for previews without a provider name */
@@ -214,6 +218,9 @@
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
+
+/* attachment activity view */
+"WEB_PREVIEW" = "web preview";
 
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";

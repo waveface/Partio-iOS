@@ -102,6 +102,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
+	self.navigationItem.titleView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
+	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
   
     __block __typeof__(self) nrSelf = self;
@@ -109,39 +113,52 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
 		toolbar.items = [NSArray arrayWithObjects:
 		
-			WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
+			((^ {
 			
-					__block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
-					__block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+				if (WAUsesUglifiedBarButtonItems()) {
+			
+					UIBarButtonItem *settingsItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)] autorelease];
+
+					[settingsItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 					
-					userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
-						[wrappingNavC dismissModalViewControllerAnimated:YES];
-					}];
-					
-					userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
-						[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
-					}];
-					
-					wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
-					[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
-					[nrSelf presentModalViewController:wrappingNavC animated:YES];
+					return settingsItem;
 				
-			}),
-			
-			WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-			
-				[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
+				}
 				
-			}),
+				return WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
+				
+					[nrSelf handleSettings:nil];
+								
+				});
+		
+			})()),
+			
+			((^ {
+			
+				if (WAUsesUglifiedBarButtonItems()) {
+				
+					UIBarButtonItem *composeItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
+
+					[composeItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+					
+					return composeItem;
+				
+				}
+				
+				return WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
+				
+					[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
+					
+				});
+			
+			})()),
 			
 		nil];
 		
 		return toolbar;
 	
 	})())];
-	
-	self.navigationItem.titleView = WAStandardTitleView();
-	
+			
 	return self;
   
 }
@@ -1073,6 +1090,33 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	[self beginCompositionSessionWithURL:nil];
   
+}
+
+- (void) handleSettings:(UIBarButtonItem *)sender  {
+
+	WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
+	UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DONE", nil), ^{
+		
+		[wrappingNavC dismissModalViewControllerAnimated:YES];
+		
+	});
+	
+	__block UIBarButtonItem *actionItem = WABarButtonItem([UIImage imageNamed:@"WAActionGlyph"], nil, ^{
+		
+		[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:actionItem animated:YES];
+			
+	});
+	
+	userInfoVC.navigationItem.rightBarButtonItem = actionItem;
+	
+	wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
+	[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
+	[self presentModalViewController:wrappingNavC animated:YES];
+	
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
