@@ -36,4 +36,5 @@
 #import "WAPreview+WAAdditions.h"
 #import "WAOpenGraphElement.h"
 #import "WAOpenGraphElement+WAAdditions.h"
-#import "WAFilePageElement.h"
+#import "WAOpenGraphElementImage.h"
+#import "WAOpenGraphElementImage+WAAdditions.h"
