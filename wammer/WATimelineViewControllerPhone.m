@@ -115,7 +115,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 			((^ {
 			
-				if (WAUsesUglifiedBarButtonItems()) {
+				if (WADucklingsEnabled()) {
 			
 					UIBarButtonItem *settingsItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)] autorelease];
 
@@ -135,7 +135,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 			
 			((^ {
 			
-				if (WAUsesUglifiedBarButtonItems()) {
+				if (WADucklingsEnabled()) {
 				
 					UIBarButtonItem *composeItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
 

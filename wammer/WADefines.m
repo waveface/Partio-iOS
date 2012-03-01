@@ -148,11 +148,11 @@ void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
 
 }
 
-NSString * const kWAUsesUglifiedBarButtonItems = @"WAUsesUglifiedBarButtonItems";
-BOOL WAUsesUglifiedBarButtonItems (void) {
+NSString * const kWADucklingsEnabled = @"WADucklingsEnabled";
+BOOL WADucklingsEnabled (void) {
 
 	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
-	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAUsesUglifiedBarButtonItems])
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWADucklingsEnabled])
 		return YES;
 	
 	return NO;

@@ -36,7 +36,7 @@
 			<key>Title</key>
 			<string>Alternative Items</string>
 			<key>Key</key>
-			<string>WAUsesUglifiedBarButtonItems</string>
+			<string>WADucklingsEnabled</string>
 			<key>DefaultValue</key>
 			<false/>
 		</dict>
