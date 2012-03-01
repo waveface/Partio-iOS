@@ -57,6 +57,8 @@
 		4B8CC02A14BED121000E6F71 /* WAPageShadowLeft.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */; };
 		4B8CC02B14BED121000E6F71 /* WAPageShadowRight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */; };
 		4B8CC02C14BED121000E6F71 /* WAPatternWood.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CC02914BED121000E6F71 /* WAPatternWood.png */; };
+		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
+		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
 		4BBD0D951490C97D00EAE3E1 /* WABackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD0D941490C97D00EAE3E1 /* WABackground.png */; };
 		4BBD9BC014EB55C2003086DD /* addHighlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BBD9BB614EB55C2003086DD /* addHighlight.png */; };
@@ -338,6 +340,7 @@
 		FFC937DF149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */; };
 		FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */; };
 		FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */; };
+		FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */; };
 		FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
 		FFCEDA1D149B3F34000F2B20 /* WALastReadIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */; };
@@ -917,6 +920,8 @@
 		4B8CC02714BED121000E6F71 /* WAPageShadowLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageShadowLeft.png; path = Resources/WAPageShadowLeft.png; sourceTree = "<group>"; };
 		4B8CC02814BED121000E6F71 /* WAPageShadowRight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPageShadowRight.png; path = Resources/WAPageShadowRight.png; sourceTree = "<group>"; };
 		4B8CC02914BED121000E6F71 /* WAPatternWood.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPatternWood.png; path = Resources/WAPatternWood.png; sourceTree = "<group>"; };
+		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
 		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
@@ -1347,6 +1352,8 @@
 		FFC937DB149649EE009E5708 /* UITextFieldClearButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldClearButtonPressed@2x.png"; path = "Resources/UITextFieldClearButtonPressed@2x.png"; sourceTree = "<group>"; };
 		FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UITextFieldInvertedClearButton.png; path = Resources/UITextFieldInvertedClearButton.png; sourceTree = "<group>"; };
 		FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldInvertedClearButton@2x.png"; path = "Resources/UITextFieldInvertedClearButton@2x.png"; sourceTree = "<group>"; };
+		FFC9D96714FF28B2004197EC /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
+		FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
 		FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 10.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -1479,6 +1486,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */,
+				4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */,
 				FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */,
 				FF1A105E1462B10C004FD00D /* OpenAL.framework in Frameworks */,
 				FF1A105C1462B100004FD00D /* AudioToolbox.framework in Frameworks */,
@@ -1508,6 +1517,7 @@
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */,
+				FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2386,6 +2396,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FFC9D96614FF28B2004197EC /* Google Analytics SDK */ = {
+			isa = PBXGroup;
+			children = (
+				FFC9D96714FF28B2004197EC /* GANTracker.h */,
+				FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */,
+			);
+			name = "Google Analytics SDK";
+			path = external/GoogleAnalyticsSDK;
+			sourceTree = "<group>";
+		};
 		FFDE86A614397055009E04D9 /* Article View */ = {
 			isa = PBXGroup;
 			children = (
@@ -2486,40 +2506,43 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
-				FF42755B14F4E8D200824505 /* libz.dylib */,
+				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
 				FF1A105B1462B100004FD00D /* AudioToolbox.framework */,
 				FF1A10561462AD54004FD00D /* AVFoundation.framework */,
+				4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */,
 				FF1A10591462B0F0004FD00D /* CoreAudio.framework */,
 				FF73A69713D6E08100D54EC6 /* CoreData.framework */,
 				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
 				FFB67956141E345C006F84E3 /* CoreText.framework */,
 				FFD14F0514C5E24C0053116F /* Crashlytics.framework */,
+				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
+				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
+				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
 				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
+				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
+				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
+				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
+				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
+				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
+				FF97386213D82B55003D1722 /* JSONKit */,
+				4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */,
+				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
+				FF42755B14F4E8D200824505 /* libz.dylib */,
 				FF61635E141618BD004738D3 /* MessageUI.framework */,
+				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
+				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
+				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
 				FF1A105D1462B10C004FD00D /* OpenAL.framework */,
 				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
 				FF4570E31488F362005B5905 /* QuickLook.framework */,
 				FF666C2F140CD31C00C35CED /* Security.framework */,
 				FF154657148E06D600352428 /* SystemConfiguration.framework */,
-				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
-				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
-				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
-				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
-				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
-				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
-				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
-				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
-				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
-				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
-				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
-				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
-				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
-				FF97386213D82B55003D1722 /* JSONKit */,
-				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
+				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
+				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
+				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
 			);
 			name = iOS;
@@ -3676,13 +3699,14 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 255;
+				CURRENT_PROJECT_VERSION = 256;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
 					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
+					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
 					"DEBUG=1",
 					"$(inherited)",
 				);
@@ -3716,6 +3740,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_CRASHLYTICS = 1;
+				WF_USES_GOOGLEANALYTICS = 1;
 				WF_USES_TESTFLIGHT = 1;
 			};
 			name = Debug;
@@ -3728,11 +3753,12 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 255;
+				CURRENT_PROJECT_VERSION = 256;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
 					"WF_USES_CRASHLYTICS=$(WF_USES_CRASHLYTICS)",
+					"WF_USES_GOOGLEANALYTICS=$(WF_USES_GOOGLEANALYTICS)",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -3767,6 +3793,7 @@
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				WF_USES_CRASHLYTICS = 1;
+				WF_USES_GOOGLEANALYTICS = 1;
 				WF_USES_TESTFLIGHT = 1;
 			};
 			name = Release;
@@ -3847,6 +3874,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/TestflightSDK\"",
+					"\"$(SRCROOT)/wammer\"",
+					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
@@ -3872,6 +3901,8 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/TestflightSDK\"",
+					"\"$(SRCROOT)/wammer\"",
+					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";

@@ -41,6 +41,8 @@ extern NSString * const kWASettingsDidRequestActionNotification;
 
 extern NSString * const kWATestflightTeamToken;
 extern NSString * const kWACrashlyticsAPIKey;
+extern NSString * const kWAGoogleAnalyticsAccountID;
+extern NSInteger  const kWAGoogleAnalyticsDispatchInterval;
 
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;

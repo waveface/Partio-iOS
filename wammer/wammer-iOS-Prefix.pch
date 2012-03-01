@@ -27,4 +27,12 @@
 		#define WF_CRASHLYTICS(...) do {  } while (0)	
 	#endif
 	
+	#if WF_USES_GOOGLEANALYTICS
+		#import	"GANTracker.h"
+		#define WF_GOOGLEANALYTICS(...) do { (__VA_ARGS__)(); } while (0)	
+	#else
+		#define GANTracker (id)nil
+		#define WF_GOOGLEANALYTICS(...) do {  } while (0)	
+	#endif
+
 #endif

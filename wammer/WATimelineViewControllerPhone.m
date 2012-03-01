@@ -102,22 +102,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	__block __typeof__(self) nrSelf = self;
-	
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
   
     __block __typeof__(self) nrSelf = self;
-	
-		__block UIBarButtonItem *composeItem = WABarButtonItem([UIImage imageNamed:@"UIButtonBarCompose"], nil, ^{
-		
-			[nrSelf handleComposeItemTap:composeItem];
 			
-		});
-		
 		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
-    
-//		toolbar.usesCustomLayout = YES;
-//		toolbar.itemPadding = -8;
 		toolbar.items = [NSArray arrayWithObjects:
 		
 			WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
