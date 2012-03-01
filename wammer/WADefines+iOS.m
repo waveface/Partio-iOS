@@ -84,10 +84,8 @@ void kWADefaultBarButtonInitialize (void) {
 	
 		UIUserInterfaceIdiom const currentUIIdiom = [UIDevice currentDevice].userInterfaceIdiom;
 		
-		
 		kWADefaultBarButtonTitleFont = [UIFont boldSystemFontOfSize:12];
-		
-		kWADefaultBarButtonBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
+		kWADefaultBarButtonBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
 		kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
 		
 		switch (currentUIIdiom) {
@@ -107,31 +105,31 @@ void kWADefaultBarButtonInitialize (void) {
 				
 				kWADefaultBarButtonGradientFromColor = [UIColor colorWithRed:.9 green:.9 blue:.9 alpha:1];
 				kWADefaultBarButtonGradientToColor = [UIColor colorWithRed:.5 green:.5 blue:.5 alpha:1];
-				kWADefaultBarButtonBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
+				kWADefaultBarButtonBackgroundColor = [UIColor clearColor];
 				
 				kWADefaultBarButtonHighlightedGradientFromColor = [kWADefaultBarButtonGradientFromColor colorWithAlphaComponent:.95];
 				kWADefaultBarButtonHighlightedGradientToColor = [kWADefaultBarButtonGradientToColor colorWithAlphaComponent:.95];
-				kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
+				kWADefaultBarButtonHighlightedBackgroundColor = [UIColor clearColor];
 				
 				break;
 			}
 			case UIUserInterfaceIdiomPhone: {
 				
 				kWADefaultBarButtonBorder = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.25]];
-				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.15] offset:(CGSize){ 0, 2 } spread:2];
+				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.15] offset:(CGSize){ 0, 1 } spread:2];
 				kWADefaultBarButtonShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.5] offset:(CGSize){ 0, 1 } spread:1];
 				
 				kWADefaultBarButtonTitleFont = [UIFont boldSystemFontOfSize:12];
-				kWADefaultBarButtonTitleColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
-				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.30] offset:(CGSize){ 0, 1 } spread:1];
+				kWADefaultBarButtonTitleColor = [UIColor whiteColor];
+				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:.25] offset:(CGSize){ 0, -1 } spread:1];
 				
-				kWADefaultBarButtonGradientFromColor = [UIColor colorWithWhite:1 alpha:.1];
-				kWADefaultBarButtonGradientToColor = [UIColor colorWithWhite:0 alpha:.1];
-				kWADefaultBarButtonBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.2];
+				kWADefaultBarButtonGradientFromColor = [UIColor colorWithWhite:0 alpha:0];
+				kWADefaultBarButtonGradientToColor = [UIColor colorWithWhite:0 alpha:.25];
+				kWADefaultBarButtonBackgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
 				
 				kWADefaultBarButtonHighlightedGradientFromColor = kWADefaultBarButtonGradientFromColor;
 				kWADefaultBarButtonHighlightedGradientToColor = kWADefaultBarButtonGradientToColor;
-				kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
+				kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
 				
 			}
 		}
