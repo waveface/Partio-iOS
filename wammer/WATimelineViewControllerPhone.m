@@ -102,9 +102,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	self.navigationItem.leftBarButtonItem =  [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)];
+	self.navigationItem.leftBarButtonItem =  [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)] autorelease];
 		
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
 
 	[self.navigationItem.leftBarButtonItem  setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 	[self.navigationItem.rightBarButtonItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];

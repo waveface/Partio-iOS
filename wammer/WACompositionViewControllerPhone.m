@@ -381,11 +381,11 @@
 - (WAAttachedMediaListViewController *) newMediaListViewController {
 
 	__block __typeof__(self) nrSelf = self;
-	__block WAAttachedMediaListViewController *mediaList = [[[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
+	__block WAAttachedMediaListViewController *mediaList = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
 	
 		[nrSelf dismissMediaListViewController:mediaList animated:YES];
 		
-	}] autorelease];
+	}];
 	
 	mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
 	
@@ -400,7 +400,7 @@
 	if ([mediaList isViewLoaded])
 		mediaList.onViewDidLoad();
 	
-	return [mediaList retain];
+	return mediaList;
 
 }
 
