@@ -33,25 +33,30 @@
 		return nil;
 	
 	button = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+	[self addSubview:button];
+	
 	button.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
 	button.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
 	button.titleLabel.shadowColor = [UIColor blackColor];
 	button.titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
 	[button setImageEdgeInsets:(UIEdgeInsets){ 0, 0, 0, 0 }];
-	
-	#ifdef GOOD_DESIGN
+	[button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
+
+	if (WAUsesUglifiedBarButtonItems()) {
+
+		[button setBackgroundImage:[[UIImage imageNamed:@"addButton"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateNormal];
+		[button setBackgroundImage:[[UIImage imageNamed:@"addHighlight"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateHighlighted];
+		[self addSubview:button];
+
+	} else {
+
 		button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
 		button.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 		[button setTitleEdgeInsets:(UIEdgeInsets){ 0, 10, 0, 0 }];
 		[button setTitleColor:[UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1] forState:UIControlStateNormal];
-	#endif
 
-	[button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
-	
-	[button setBackgroundImage:[[UIImage imageNamed:@"addButton"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateNormal];
-	[button setBackgroundImage:[[UIImage imageNamed:@"addHighlight"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateHighlighted];
-	[self addSubview:button];
+	}	
 	
 	spinner = [[IRActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	[self addSubview:spinner];
@@ -107,7 +112,12 @@
 	spinner.animating = isBusy;
 	button.hidden = isBusy;
 	
-	#ifdef GOOD_DESIGN
+	if (WAUsesUglifiedBarButtonItems()) {
+	
+		[button setTitle:[self titleForStyle:style] forState:UIControlStateNormal];
+		
+	} else {
+	
 		switch (style) {
 		
 			case WAArticleAttachmentActivityViewAttachmentsStyle: {
@@ -124,10 +134,9 @@
 				break;
 			
 		};
-	#endif
 	
-	[button setTitle:[self titleForStyle:style] forState:UIControlStateNormal];
-	
+	}
+		
 }
 
 - (IBAction) handleButtonTap:(id)sender {

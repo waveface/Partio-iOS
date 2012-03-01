@@ -283,7 +283,7 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	__block WAOverlayBezel *nrBezel = [[WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle] retain];
 	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	
 	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:^{
@@ -291,6 +291,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
 			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			[nrBezel autorelease];
 			
 		});
 		
@@ -299,10 +300,16 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
 			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];		
-			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+			[nrBezel autorelease];
+			
+			nrBezel = [[WAOverlayBezel bezelWithStyle:WAErrorBezelStyle] retain];
 			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				
 				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				[nrBezel autorelease];
+				
 			});
 			
 		});
