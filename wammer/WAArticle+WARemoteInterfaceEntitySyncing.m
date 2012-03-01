@@ -389,7 +389,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		if (previewURL) {
 		
-			//	If preview, fetch it and carry on
+			NSString *primaryImageURL = aPreview.graphElement.primaryImage.imageRemoteURL;
+			if (primaryImageURL)
+				[resultsDictionary setObject:primaryImageURL forKey:@"previewImageURL"];
 			
 			[operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 			
@@ -462,8 +464,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			NSString *postGroupIdentifier = [resultsDictionary objectForKey:@"postGroupIdentifier"];
 			NSString *postText = [resultsDictionary objectForKey:@"postText"];
 			NSArray *attachmentIdentifiers = [resultsDictionary objectForKey:@"fileIdentifiers"];
-			NSDictionary *previewEntity = [resultsDictionary objectForKey:@"previewEntity"];
-
+			NSMutableDictionary *previewEntity = [[resultsDictionary objectForKey:@"previewEntity"] mutableCopy];
+			NSString *previewImageURL = [resultsDictionary objectForKey:@"previewImageURL"];
+			
+			if (previewEntity && previewImageURL)
+				[previewEntity setObject:previewImageURL forKey:@"thumbnail_url"];
+			
 			[ri createPostInGroup:postGroupIdentifier withContentText:postText attachments:attachmentIdentifiers preview:previewEntity onSuccess:^(NSDictionary *postRep) {
 				
 				aCallback(postRep);
