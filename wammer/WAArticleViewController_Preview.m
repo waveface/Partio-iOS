@@ -161,14 +161,18 @@ enum {
 	[stackElements addObject:self.webViewWrapper];
 	//	[stackElements addObject:self.toolbar];
 	
+
 	self.stackView.delaysContentTouches = YES;
-	self.stackView.canCancelContentTouches = NO;
+	self.stackView.canCancelContentTouches = YES;
+
+	self.stackView.delaysContentTouches = NO;
+	self.stackView.canCancelContentTouches = YES;
 	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
 	
 		UIView *wrappedView = [nrSelf wrappedView];
 	
 		if (wrappedView)
-		if (view == wrappedView)
+		if ((view == wrappedView) || [view isDescendantOfView:wrappedView])
 			return NO;
 		
 		return YES;
@@ -180,6 +184,33 @@ enum {
 		return NO;
 	
 	};
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+
+		case UIUserInterfaceIdiomPad: {
+		
+			self.stackView.onDidLayoutSubviews = ^ {
+				
+				[self.headerView.superview bringSubviewToFront:self.headerView];
+				
+				self.headerView.center = (CGPoint){
+					self.headerView.center.x,
+					MAX(0, self.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(self.headerView.bounds)
+				};
+				
+			};
+			
+			break;
+			
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			break;
+		
+		}
+	
+	}
 	
 #if 0
 	
@@ -251,23 +282,7 @@ enum {
 	
 	webView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	webView.delegate = self;
-
-	UIScrollView *webScrollView = [webView respondsToSelector:@selector(scrollView)] ? webView.scrollView : [[webView.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-		return [evaluatedObject isKindOfClass:[UIScrollView class]];
-	}]] lastObject];
-	
-	if (webScrollView) {
-		
-		webScrollView.canCancelContentTouches = NO;
-		webScrollView.delaysContentTouches = NO;
-
-		//	Enables some change handling
-		//	[self.stackView.panGestureRecognizer addTarget:self action:@selector(handleStackViewPanGesture:)];	
-		//	[webScrollView.panGestureRecognizer addTarget:self action:@selector(handleWebScrollViewPanGesture:)];
-		
-		webScrollView.directionalLockEnabled = NO;
-		
-	}
+	webView.scrollView.directionalLockEnabled = NO;
 		
 	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
 	
@@ -284,9 +299,6 @@ enum {
 	
 	summaryWebView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	summaryWebView.delegate = self;
-	
-	summaryWebView.scrollView.canCancelContentTouches = NO;
-	summaryWebView.scrollView.delaysContentTouches = NO;
 	summaryWebView.scrollView.directionalLockEnabled = NO;
 	
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
@@ -734,8 +746,10 @@ enum {
 
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
+	CGFloat minHeaderSpacing = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad ? 44 : 0;
+
 	if ([[self wrappedView] isDescendantOfView:anElement])
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), 1 };	//	Stretchable
+		return (CGSize){ CGRectGetWidth(aStackView.bounds), CGRectGetHeight(aStackView.bounds) - minHeaderSpacing };	//	Stretchable
 	
 	if ((self.previewBadge == anElement) || [self.previewBadge isDescendantOfView:anElement]) {
 	
@@ -781,16 +795,22 @@ enum {
 
 }
 
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+}
+
 - (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 
-	[self.stackView beginPostponingStackElementLayout];
+//	[self.stackView beginPostponingStackElementLayout];
 
 	if ([self irHasDifferentSuperClassMethodForSelector:_cmd])
 		[super scrollViewWillBeginDragging:scrollView];
 	
-	for (UIView *aView in scrollView.subviews)
-		if ([aView isKindOfClass:[UIWebView class]])
-			aView.userInteractionEnabled = NO;
+//	for (UIView *aView in scrollView.subviews)
+//		if ([aView isKindOfClass:[UIWebView class]])
+//			aView.userInteractionEnabled = NO;
 	
 	self.lastStackViewContentOffset = self.stackView.contentOffset;
 	self.lastWebScrollViewContentOffset = self.webView.scrollView.contentOffset;
@@ -804,11 +824,11 @@ enum {
 	
 	if (!decelerate) {
 	
-		[self.stackView endPostponingStackElementLayout];
+//		[self.stackView endPostponingStackElementLayout];
 		
-		for (UIView *aView in scrollView.subviews)
-			if ([aView isKindOfClass:[UIWebView class]])
-				aView.userInteractionEnabled = YES;
+//		for (UIView *aView in scrollView.subviews)
+//			if ([aView isKindOfClass:[UIWebView class]])
+//				aView.userInteractionEnabled = YES;
 			
 	}
 	
@@ -820,46 +840,49 @@ enum {
 	if ([self irHasDifferentSuperClassMethodForSelector:_cmd])
 		[super scrollViewDidEndDecelerating:scrollView];
 	
-	[self.stackView endPostponingStackElementLayout];
+//	[self.stackView endPostponingStackElementLayout];
 	
-	for (UIView *aView in scrollView.subviews)
-		if ([aView isKindOfClass:[UIWebView class]])
-			aView.userInteractionEnabled = YES;
+//	for (UIView *aView in scrollView.subviews)
+//		if ([aView isKindOfClass:[UIWebView class]])
+//			aView.userInteractionEnabled = YES;
 	
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
-	return;
+	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+		[super scrollViewDidScroll:scrollView];
 
 	if (scrollView != self.stackView)
 		return;
 	
 	self.lastWebScrollViewContentOffset = self.webView.scrollView.contentOffset;
+		
+	UIView *wbWrapper = self.webViewWrapper;
+	UIView *wrappedView = [self wrappedView];
 	
 	CGRect newWebViewFrame = (CGRect){
 		CGPointZero,
 		(CGSize){
-			self.webViewWrapper.bounds.size.width,
-			self.webViewWrapper.bounds.size.height + self.stackView.contentOffset.y
+			CGRectGetWidth(wbWrapper.bounds),
+			CGRectGetHeight(wbWrapper.bounds) + MAX(0, self.stackView.contentOffset.y + CGRectGetHeight(self.stackView.bounds) - self.stackView.contentSize.height)
 		}
 	};
-	
-	if (!CGRectEqualToRect(self.webView.frame, newWebViewFrame)) {
-		//	[self.webView.scrollView flashScrollIndicators];
-		self.webView.frame = newWebViewFrame;
-	}
+		
+	if (!CGRectEqualToRect(wrappedView.frame, newWebViewFrame))
+		wrappedView.frame = newWebViewFrame;
 
-//	CGPoint stackViewContentOffset = self.stackView.contentOffset;
+}
+
+- (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)targetContentOffset {
+
+	if (scrollView == self.stackView) {
+
+		CGPoint desiredTargetOffset = *targetContentOffset;
+		desiredTargetOffset.y = MIN(desiredTargetOffset.y, self.stackView.contentSize.height - CGRectGetHeight(self.stackView.bounds));
+		*targetContentOffset = desiredTargetOffset;
 	
-//	if (stackViewContentOffset.y > 0) {
-//	
-//		[self.webView.scrollView setContentOffset:(CGPoint){
-//			self.lastWebScrollViewContentOffset.x,
-//			self.lastWebScrollViewContentOffset.y
-//		} animated:NO];
-//	
-//	}
+	}
 
 }
 
