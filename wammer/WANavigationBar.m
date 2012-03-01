@@ -180,12 +180,48 @@
 + (UIView *) defaultPatternBackgroundView {
 
   UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
+  UIImage *landscapeBackdropImage = [UIImage imageNamed:@"WANavigationBarBackdropLandscape"];
   UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
   
   returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   
-  
+	
+	BOOL (^isPhone)(void) = ^ {
+		
+		return (BOOL)([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone);
+		
+	};
+	
+	void (^updateBarImage)(UIInterfaceOrientation) = [[^ (UIInterfaceOrientation anOrientation) {
+	
+		BOOL landscapePhone = (isPhone()) && UIInterfaceOrientationIsLandscape(anOrientation);
+		UIImage *image = landscapePhone ? landscapeBackdropImage : backdropImage;
+		
+		returnedView.backgroundColor = [UIColor colorWithPatternImage:image];
+		
+	} copy] autorelease];
+	
+	if (isPhone()) {
+	
+		__block id notificationObject = [[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidChangeStatusBarOrientationNotification object:nil queue:nil usingBlock: ^ (NSNotification *note) {
+		
+			updateBarImage([UIApplication sharedApplication].statusBarOrientation);
+			
+		}] retain];
+		
+		[returnedView irPerformOnDeallocation:^{
+			
+			[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
+			[notificationObject release];
+			
+		}];
+	
+	}
+	
+	updateBarImage([UIApplication sharedApplication].statusBarOrientation);
+	
+	
   UIView *topGlare = [[[UIView alloc] initWithFrame:(CGRect){
     (CGPoint){ 0, 0 },
     (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
