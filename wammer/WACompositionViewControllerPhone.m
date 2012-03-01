@@ -167,7 +167,7 @@
 	if (![self isViewLoaded])
 		return;
 		
-	WAArticleAttachmentActivityView activityView = self.articleAttachmentActivityView;
+	WAArticleAttachmentActivityView *activityView = self.articleAttachmentActivityView;
 
 	activityView.style = !![self.textAttributor.queue.operations count] ? WAArticleAttachmentActivityViewSpinnerStyle :
 		[self.article.previews count] ? WAArticleAttachmentActivityViewLinkStyle :
