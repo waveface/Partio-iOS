@@ -2,7 +2,7 @@
 //  WAOpenGraphElement.h
 //  wammer
 //
-//  Created by Evadne Wu on 2/24/12.
+//  Created by Evadne Wu on 3/1/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -14,15 +14,16 @@
 
 @interface WAOpenGraphElement : IRManagedObject
 
-@property (nonatomic, retain) id imageOrder;
+@property (nonatomic, retain) NSArray * imageOrder;
+@property (nonatomic, retain) NSString * providerDisplayName;
 @property (nonatomic, retain) NSString * providerName;
 @property (nonatomic, retain) NSString * providerURL;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * url;
-@property (nonatomic, retain) NSString * providerDisplayName;
-@property (nonatomic, retain) NSSet *images;
+@property (nonatomic, retain) NSURL * primaryImageURI;
+@property (nonatomic, retain) NSSet * images;
 @property (nonatomic, retain) WAPreview *preview;
 @end
 
@@ -34,6 +35,3 @@
 - (void)removeImages:(NSSet *)values;
 
 @end
-
-#import "WAOpenGraphElement+WAAdditions.h"
-#import "WAOpenGraphElement+WARemoteInterfaceEntitySyncing.h"
