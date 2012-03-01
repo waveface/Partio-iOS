@@ -102,7 +102,7 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
 		
 		self.tableView.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];		
-		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
+		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
 		
 	}
   
