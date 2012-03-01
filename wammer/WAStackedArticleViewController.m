@@ -26,6 +26,7 @@
 @property (nonatomic, readwrite, retain) WAArticleTextStackCell *textStackCell;
 @property (nonatomic, readwrite, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *commentsVC;
+@property (nonatomic, readwrite, retain) UIPopoverController *commentsPopover;
 
 @property (nonatomic, readwrite, retain) UIView *wrapperView;
 
@@ -36,7 +37,7 @@
 
 @implementation WAStackedArticleViewController
 @synthesize headerView;
-@synthesize topCell, textStackCell, textStackCellLabel, commentsVC, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
+@synthesize topCell, textStackCell, textStackCellLabel, commentsVC, commentsPopover, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -46,11 +47,13 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.rightBarButtonItem = WABarButtonItem(nil, @"comments", ^ {
+	__block UIBarButtonItem *item = WABarButtonItem(nil, @"comments", ^ {
 	
-		[nrSelf.navigationController pushViewController:nrSelf.commentsVC animated:YES];
-		
+		[nrSelf presentCommentsViewController:[[nrSelf newArticleCommentsController] autorelease] sender:item];
+			
 	});
+	
+	self.navigationItem.rightBarButtonItem = item;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
 		
@@ -66,6 +69,7 @@
 	[topCell release];
 	[textStackCell release];
 	[commentsVC release];
+	[commentsPopover release];
 	[stackView release];
 	[wrapperView release];
 	[onViewDidLoad release];
@@ -128,15 +132,71 @@
 
 }
 
+- (WAArticleCommentsViewController *) newArticleCommentsController {
+
+	return [self.commentsVC retain];
+
+}
+
+- (void) presentCommentsViewController:(WAArticleCommentsViewController *)controller sender:(id)sender {
+
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPad: {
+		
+			NSParameterAssert(self.commentsPopover);
+		
+			if ([self.commentsPopover isPopoverVisible])
+				return;
+			
+			if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+			
+				[self.commentsPopover presentPopoverFromBarButtonItem:((UIBarButtonItem *)sender) permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+			
+			} else if ([sender isKindOfClass:[UIView class]]) {
+			
+				[self.commentsPopover presentPopoverFromRect:((UIView *)sender).bounds inView:((UIView *)sender) permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+			
+			}
+		
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			[self.navigationController pushViewController:controller animated:YES];
+		
+			break;
+		
+		}
+	
+	}
+
+}
+
+- (UIPopoverController *) commentsPopover {
+
+	if (commentsPopover)
+		return commentsPopover;
+	
+	commentsPopover = [[UIPopoverController alloc] initWithContentViewController:self.commentsVC];
+	self.commentsVC.adjustsContainerViewOnInterfaceBoundsChange = NO;
+
+	return commentsPopover;
+
+}
+
 - (WAArticleCommentsViewController *) commentsVC {
 
 	if (commentsVC)
 		return commentsVC;
 	
 	commentsVC = [[WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]] retain];
-	//	__block __typeof__(commentsVC) nrCommentsVC = commentsVC;
-	
 	commentsVC.delegate = self;
+	
+	//	__block __typeof__(commentsVC) nrCommentsVC = commentsVC;
+
 	//	commentsVC.onViewDidLoad = ^ {
 	//		
 	//		nrCommentsVC.view.clipsToBounds = YES;
@@ -475,9 +535,11 @@
 
 - (void) viewDidUnload {
 
-	[super viewDidUnload];
-	
 	self.stackView = nil;
+	self.commentsVC = nil;
+	self.commentsPopover = nil;
+	
+	[super viewDidUnload];
 	
 }
 

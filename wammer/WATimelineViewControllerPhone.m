@@ -104,61 +104,46 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	if (WAAdvancedFeaturesEnabled()) {
-		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph"), @"Settings") wiredAction:^(UIButton *senderButton, IRBarButtonItem *senderItem) {
-			
-			__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
-			appSettingsViewController.delegate = self;
-			appSettingsViewController.showDoneButton = NO;
-			appSettingsViewController.showCreditsFooter = NO;
-			
-			__block UINavigationController *wrapperNavController = [[UINavigationController alloc] initWithRootViewController:appSettingsViewController];
-			appSettingsViewController.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
-				[wrapperNavController dismissModalViewControllerAnimated:YES];
-				NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"toggleSwitch"]); // It works.
-			}];
-			
-			[nrSelf presentModalViewController:wrapperNavController animated:YES];
-			
-		}];
-	}
-		
 	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
   
     __block __typeof__(self) nrSelf = self;
 	
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 88, 44 }] autorelease];
+		__block UIBarButtonItem *composeItem = WABarButtonItem([UIImage imageNamed:@"UIButtonBarCompose"], nil, ^{
+		
+			[nrSelf handleComposeItemTap:composeItem];
+			
+		});
+		
+		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
     
-		toolbar.usesCustomLayout = YES;
-		toolbar.itemPadding = -8;
+//		toolbar.usesCustomLayout = YES;
+//		toolbar.itemPadding = -8;
 		toolbar.items = [NSArray arrayWithObjects:
 		
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph"), @"User Info") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-				
-				//	[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
-				
-				__block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
-				__block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
-				
-				userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
-					[wrappingNavC dismissModalViewControllerAnimated:YES];
-				}];
-				
-				userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
-					[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
-				}];
-				
-				wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
-				[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
-				[nrSelf presentModalViewController:wrappingNavC animated:YES];
-        
-			}],
+			WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
 			
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WACompose"), @"Compose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
+					__block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
+					__block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+					
+					userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+						[wrappingNavC dismissModalViewControllerAnimated:YES];
+					}];
+					
+					userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+						[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+					}];
+					
+					wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
+					[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
+					[nrSelf presentModalViewController:wrappingNavC animated:YES];
 				
-				[nrSelf performSelector:@selector(handleCompose:) withObject:senderItem];
-        
-			}],
+			}),
+			
+			WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
+			
+				[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
+				
+			}),
 			
 		nil];
 		

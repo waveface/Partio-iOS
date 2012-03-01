@@ -128,14 +128,22 @@
 	if ([notification object] != self.view.window)
 		return;
 
+	if (!self.adjustsContainerViewOnInterfaceBoundsChange)
+		return;
+
 	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
 
 }
 
 - (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
 
-	if (!self.view.window)
+	if (![self isViewLoaded])
 		return;
+
+	if (!self.view.window) {
+		self.wrapperView.frame = self.view.bounds;
+		return;
+	}
 
 	CGRect ownRectInWindow = [self.view.window convertRect:self.view.bounds fromView:self.view];
 	CGRect intersection = CGRectIntersection(ownRectInWindow, newInterfaceBounds);
@@ -172,6 +180,16 @@
 		else
 			[self.commentsView reloadData];
 	}
+	
+	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:NO];
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	[[self.view irFirstResponderInView] resignFirstResponder];
 
 }
 
@@ -224,6 +242,9 @@
 	self.commentsView.delegate = self;
 	self.commentsView.rowHeight = 96.0f;
 	
+	self.commentsView.bounces = YES;
+	self.commentsView.alwaysBounceVertical = YES;
+	 
 	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	self.commentsRevealingActionContainerView.backgroundColor = [UIColor clearColor];
 	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
@@ -327,6 +348,9 @@
 	};
 	
 	self.view.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	
+		if (superAnswer)
+			return superAnswer;
 		
 		CGPoint pointWithinRevealingContainerView = [nrView convertPoint:aPoint toView:nrRevealingActionContainerView];
 		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
@@ -337,6 +361,9 @@
 	};
 	
 	self.view.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	
+		if ((superAnswer == nrSelf.commentsView) || ([superAnswer isDescendantOfView:nrSelf.commentsView]))
+			return superAnswer;
 	
 		UIView *hitSubview = [nrRevealingActionContainerView hitTest:aPoint withEvent:anEvent];
 		
@@ -403,7 +430,7 @@
 			CGRectGetHeight(self.wrapperView.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
 		},
 		(CGSize){
-			self.compositionAccessoryView.frame.size.width,
+			CGRectGetWidth(self.wrapperView.bounds),
 			CGRectGetHeight(self.compositionAccessoryView.frame)	
 		}
 	};
@@ -624,6 +651,7 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	[self.commentsView reloadData];
+	[self.view setNeedsLayout];
 	
 	if (![controller.sections count])
 		return;

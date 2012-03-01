@@ -1822,10 +1822,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				FF1305E714FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.h */,
-				FF1305E814FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m */,
-				FF1305EA14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.h */,
-				FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF761AEC14876222003C11D2 /* Station Discovery */,
@@ -2474,6 +2470,10 @@
 				FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */,
 				FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */,
 				FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */,
+				FF1305EA14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.h */,
+				FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */,
+				FF1305E714FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.h */,
+				FF1305E814FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m */,
 				FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */,
 				FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */,
 			);
@@ -3690,7 +3690,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 254;
+				CURRENT_PROJECT_VERSION = 255;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3744,7 +3744,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 254;
+				CURRENT_PROJECT_VERSION = 255;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
