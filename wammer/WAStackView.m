@@ -26,6 +26,7 @@
 @synthesize stackElements;
 @dynamic delegate;
 @synthesize stackElementLayoutPostponingCount;
+@synthesize onDidLayoutSubviews;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -36,6 +37,15 @@
 	[self waInit];
 	
 	return self;
+
+}
+
+- (void) dealloc {
+
+	[stackElements release];
+	[onDidLayoutSubviews release];
+	
+	[super dealloc];
 
 }
 
@@ -159,9 +169,19 @@
 		__block CGRect contentRect = CGRectZero;
 		
 		CGFloat usableHeight = CGRectGetHeight(self.bounds);
+		NSMutableDictionary *elementsToFrames = [NSMakeCollectable(CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks)) autorelease];
+		CGRect (^desiredFrameForElement)(UIView *) = ^ (UIView *element) {
+			NSValue *rectValue = CFDictionaryGetValue((CFMutableDictionaryRef)elementsToFrames, element);
+			return [rectValue CGRectValue];
+		};
+		void (^setDesiredFrameForElement)(UIView *, CGRect) = ^ (UIView *element, CGRect frame) {
+			CFDictionarySetValue((CFMutableDictionaryRef)elementsToFrames, element, [NSValue valueWithCGRect:frame]);
+		};
 		
 		for (UIView *anElement in self.stackElements) {
 		
+			setDesiredFrameForElement(anElement, anElement.frame);
+								
 			if (anElement.superview != self)
 				[self addSubview:anElement];
 			
@@ -172,10 +192,10 @@
 				fitSize
 			};
 
-			if (!CGRectEqualToRect(anElement.frame, fitFrame))
-				anElement.frame = fitFrame;
+			if (!CGRectEqualToRect(desiredFrameForElement(anElement), fitFrame))
+				setDesiredFrameForElement(anElement, fitFrame);
 			
-			contentRect = CGRectIntersection(CGRectInfinite, CGRectUnion(contentRect, anElement.frame));
+			contentRect = CGRectIntersection(CGRectInfinite, CGRectUnion(contentRect, fitFrame));
 			
 			nextOffset = (CGPoint){
 				0,
@@ -202,16 +222,16 @@
 			if ([stretchableElements count]) {
 			
 				[self.stackElements enumerateObjectsUsingBlock: ^ (UIView *anElement, NSUInteger idx, BOOL *stop) {
-					
-					anElement.frame = CGRectOffset(anElement.frame, 0, additionalOffset);
+				
+					CGRect startingElementFrame = CGRectOffset(desiredFrameForElement(anElement), 0, additionalOffset);
 					
 					if (![stretchableElements containsObject:anElement])
 						return;
 					
 					CGFloat consumedHeight = ([stretchableElements lastObject] == anElement) ? availableOffset : roundf(availableOffset / [stretchableElements count]);
-					CGRect newElementFrame = anElement.frame;
+					CGRect newElementFrame = startingElementFrame;
 					newElementFrame.size.height += consumedHeight;
-					anElement.frame = newElementFrame;
+					setDesiredFrameForElement(anElement, newElementFrame);
 					
 					availableOffset -= consumedHeight;
 					additionalOffset += consumedHeight;
@@ -224,13 +244,23 @@
 			
 		}
 		
-		//	Stretching implementation point
+		[self.stackElements enumerateObjectsUsingBlock: ^ (UIView *anElement, NSUInteger idx, BOOL *stop) {
 		
-		if (!CGSizeEqualToSize(self.contentSize, contentRect.size)) {
+			CGRect desiredFrame = desiredFrameForElement(anElement);
+			
+			if (!CGRectEqualToRect(anElement.frame, desiredFrame)) {
+				anElement.frame = desiredFrame;
+			}
+			
+		}];
+		
+		if (!CGSizeEqualToSize(self.contentSize, contentRect.size))
 			self.contentSize = contentRect.size;
-		}
 	
 	}
+	
+	if (self.onDidLayoutSubviews)
+		self.onDidLayoutSubviews();
 
 }
 
