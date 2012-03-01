@@ -71,23 +71,23 @@
 	self.toolbar.backgroundColor = nil;
 	self.toolbar.opaque = NO;
 
-	UIView *toolbarBackground = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-	toolbarBackground.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"] irStandardImage]];
+//	UIView *toolbarBackground = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+//	toolbarBackground.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"] irStandardImage]];
+//	
+//	toolbarBackground.layer.cornerRadius = 4;
+//	toolbarBackground.frame = CGRectInset(self.toolbar.frame, 8, 0);
+//	toolbarBackground.autoresizingMask = self.toolbar.autoresizingMask;
+//	[self.toolbar.superview insertSubview:toolbarBackground belowSubview:self.toolbar];
 	
-	toolbarBackground.layer.cornerRadius = 4;
-	toolbarBackground.frame = CGRectInset(self.toolbar.frame, 8, 0);
-	toolbarBackground.autoresizingMask = self.toolbar.autoresizingMask;
-	[self.toolbar.superview insertSubview:toolbarBackground belowSubview:self.toolbar];
-	
-	self.containerView.backgroundColor = nil;
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WACompositionBackgroundPattern"]];
-	
-	UIImage *bottomCapImage = [[UIImage imageNamed:@"WACompositionBackgroundBottomCap"] stretchableImageWithLeftCapWidth:16 topCapHeight:0];	
-	UIImageView *bottomCapView = [[[UIImageView alloc] initWithImage:bottomCapImage] autorelease];
-	bottomCapView.frame = IRGravitize(self.view.bounds, (CGSize){ CGRectGetWidth(self.view.bounds), bottomCapImage.size.height }, kCAGravityBottom);
-	bottomCapView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	
-	[self.view addSubview:bottomCapView];
+//	self.containerView.backgroundColor = nil;
+//	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WACompositionBackgroundPattern"]];
+//	
+//	UIImage *bottomCapImage = [[UIImage imageNamed:@"WACompositionBackgroundBottomCap"] stretchableImageWithLeftCapWidth:16 topCapHeight:0];	
+//	UIImageView *bottomCapView = [[[UIImageView alloc] initWithImage:bottomCapImage] autorelease];
+//	bottomCapView.frame = IRGravitize(self.view.bounds, (CGSize){ CGRectGetWidth(self.view.bounds), bottomCapImage.size.height }, kCAGravityBottom);
+//	bottomCapView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+//	
+//	[self.view addSubview:bottomCapView];
 	
 }
 
@@ -171,9 +171,12 @@
 		[self.article.previews count] ? WAArticleAttachmentActivityViewLinkStyle :
 		[self.article.files count] ? WAArticleAttachmentActivityViewAttachmentsStyle :
 		WAArticleAttachmentActivityViewDefaultStyle;
+	
+	[self.articleAttachmentActivityView setTitle:[NSString stringWithFormat:@"%i Photos", [self.article.files count]] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
+	if ([self.article.files count]==0) 
+		[self.articleAttachmentActivityView setTitle:@"Add" forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
 		
-	[self.articleAttachmentActivityView setTitle:[NSString stringWithFormat:@"%i", [self.article.files count]] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
-	[self.articleAttachmentActivityView setTitle:[NSString stringWithFormat:@"%i", [self.article.previews count]] forStyle:WAArticleAttachmentActivityViewLinkStyle];
+	[self.articleAttachmentActivityView setTitle:[NSString stringWithFormat:@"Web Preview", [self.article.previews count]] forStyle:WAArticleAttachmentActivityViewLinkStyle];
 
 }
 

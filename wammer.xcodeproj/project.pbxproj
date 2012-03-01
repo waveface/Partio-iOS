@@ -2451,19 +2451,19 @@
 		FFDE86A714397064009E04D9 /* Composition */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
-				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */,
+				FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */,
 				FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */,
 				FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */,
 				FF84037314F2C2ED00200C98 /* WACompositionViewController+ImageHandling.h */,
 				FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */,
+				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
+				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
 				FF7D12F214F26D7D007EF2B7 /* WACompositionViewControllerPad.h */,
 				FF7D12F314F26D7D007EF2B7 /* WACompositionViewControllerPad.m */,
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewControllerPad.xib */,
 				FF7D12F514F26DB2007EF2B7 /* WACompositionViewControllerPhone.h */,
 				FF7D12F614F26DB2007EF2B7 /* WACompositionViewControllerPhone.m */,
-				FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */,
-				FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */,
 				FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
