@@ -52,4 +52,27 @@
 
 }
 
++ (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
+
+	NSArray *incomingImages = [incomingRepresentation objectForKey:@"images"];
+	
+	if (![incomingImages isKindOfClass:[NSArray array]]) {
+	
+		//	Bad API
+	
+		NSString *primaryImageURI = [incomingRepresentation objectForKey:@"thumbnail_url"];
+		if (![primaryImageURI isKindOfClass:[NSString class]])
+			return incomingRepresentation;
+	
+		NSMutableDictionary *transformedRepresentation = [[incomingRepresentation mutableCopy] autorelease];
+		[transformedRepresentation setObject:[NSArray arrayWithObject:[NSDictionary dictionaryWithObject:primaryImageURI forKey:@"url"]] forKey:@"images"];
+		
+		return transformedRepresentation;
+	
+	}
+
+	return incomingRepresentation;
+
+}
+
 @end

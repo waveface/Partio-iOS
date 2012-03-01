@@ -210,7 +210,6 @@
 		FF4CCE4C149A00180049B83C /* WAPatternThickShrunkPaper@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE45149A00180049B83C /* WAPatternThickShrunkPaper@2x.png */; };
 		FF4CCE4D149A00180049B83C /* WAPatternWoodTexture@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */; };
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
-		FF4D102514F6BB500047D666 /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4D102414F6BB500047D666 /* WAOpenGraphElement.m */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
@@ -341,6 +340,7 @@
 		FFC937E214964D2A009E5708 /* UITextFieldInvertedClearButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E014964D2A009E5708 /* UITextFieldInvertedClearButton.png */; };
 		FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */; };
 		FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */; };
+		FFC9DB1D14FF46EE004197EC /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
 		FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
 		FFCEDA1D149B3F34000F2B20 /* WALastReadIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */; };
@@ -1095,8 +1095,6 @@
 		FF4CCE46149A00180049B83C /* WAPatternWoodTexture@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPatternWoodTexture@2x.png"; path = "Resources/WAPatternWoodTexture@2x.png"; sourceTree = "<group>"; };
 		FF4CCE94149A07B30049B83C /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
 		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
-		FF4D102314F6BB500047D666 /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
-		FF4D102414F6BB500047D666 /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF4FA01313E136A0002C627F /* WACapsuleLeft.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACapsuleLeft.png; path = Resources/WACapsuleLeft.png; sourceTree = "<group>"; };
@@ -1354,6 +1352,9 @@
 		FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UITextFieldInvertedClearButton@2x.png"; path = "Resources/UITextFieldInvertedClearButton@2x.png"; sourceTree = "<group>"; };
 		FFC9D96714FF28B2004197EC /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
 		FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
+		FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 18.xcdatamodel"; sourceTree = "<group>"; };
+		FFC9DB1B14FF46EE004197EC /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
+		FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
 		FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 10.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -2003,10 +2004,10 @@
 				FF8F463D14691A7D00D65864 /* WAGroup.h */,
 				FF8F463E14691A7D00D65864 /* WAGroup.m */,
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
+				FFC9DB1B14FF46EE004197EC /* WAOpenGraphElement.h */,
+				FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */,
 				FF3588F514EE7207005B452C /* WAOpenGraphElement+WAAdditions.h */,
 				FF3588F614EE7207005B452C /* WAOpenGraphElement+WAAdditions.m */,
-				FF4D102314F6BB500047D666 /* WAOpenGraphElement.h */,
-				FF4D102414F6BB500047D666 /* WAOpenGraphElement.m */,
 				FF35892914EE82EF005B452C /* WAOpenGraphElementImage+WAAdditions.h */,
 				FF35892A14EE82F0005B452C /* WAOpenGraphElementImage+WAAdditions.m */,
 				FF35892014EE7F8F005B452C /* WAOpenGraphElementImage.h */,
@@ -3488,9 +3489,9 @@
 				FF7D12F714F26DB2007EF2B7 /* WACompositionViewControllerPhone.m in Sources */,
 				FF84037514F2C2EE00200C98 /* WACompositionViewController+ImageHandling.m in Sources */,
 				FF0527F614F3BF860030D099 /* WAArticleAttachmentActivityView.m in Sources */,
-				FF4D102514F6BB500047D666 /* WAOpenGraphElement.m in Sources */,
 				FF1305E914FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.m in Sources */,
 				FF1305EC14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m in Sources */,
+				FFC9DB1D14FF46EE004197EC /* WAOpenGraphElement.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3699,7 +3700,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 257;
+				CURRENT_PROJECT_VERSION = 258;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3753,7 +3754,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 257;
+				CURRENT_PROJECT_VERSION = 258;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -3966,6 +3967,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */,
 				FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */,
 				FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */,
 				FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */,
@@ -3984,7 +3986,7 @@
 				FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */;
+			currentVersion = FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
