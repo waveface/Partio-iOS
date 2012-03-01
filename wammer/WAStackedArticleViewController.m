@@ -277,7 +277,7 @@
 
 - (BOOL) articleCommentsViewController:(WAArticleCommentsViewController *)controller canSendComment:(NSString *)commentText {
 
-	return YES;	//	?
+	return !![[commentText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length];
 
 }
 
@@ -400,8 +400,18 @@
 	
 		NSMutableArray *stackElements = [self.stackView mutableStackElements];
 	
-		if (![stackElements containsObject:headerView])
-			[stackElements insertObject:headerView atIndex:0];
+		if ([stackElements containsObject:headerView])
+			return;
+		
+		[stackElements insertObject:headerView atIndex:0];
+		
+		UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(headerView.bounds), 0 }] autorelease];
+		UIView *topBackgroundView = WAStandardArticleStackCellTopBackgroundView();
+		[enclosingView addSubview:topBackgroundView];
+		topBackgroundView.frame = IRGravitize(enclosingView.bounds, headerView.bounds.size, kCAGravityBottom);
+		topBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+		
+		[stackElements insertObject:enclosingView atIndex:1];
 	
 	} else {
 		
@@ -642,6 +652,41 @@
 			self.onPullTop(self.stackView);
 	}
 	
+}
+
+- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	//	?
+	
+	return;
+	
+	if (scrollView == self.stackView) {
+	
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+			case UIUserInterfaceIdiomPad: {
+			
+				self.stackView.contentOffset = (CGPoint){
+				
+					self.stackView.contentOffset.x,
+					MIN(self.stackView.contentSize.height - CGRectGetHeight(self.stackView.bounds), self.stackView.contentOffset.y)
+				
+				};
+				
+				break;
+			
+			}
+			
+			case UIUserInterfaceIdiomPhone: {
+				
+				break;
+			
+			}
+		
+		}
+	
+	}
+
 }
 
 @end

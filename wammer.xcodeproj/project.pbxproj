@@ -341,6 +341,12 @@
 		FFC937E314964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC937E114964D2A009E5708 /* UITextFieldInvertedClearButton@2x.png */; };
 		FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */; };
 		FFC9DB1D14FF46EE004197EC /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
+		FFC9DC4C14FF7230004197EC /* WACompositionBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC9DC4614FF7230004197EC /* WACompositionBarBackground.png */; };
+		FFC9DC4D14FF7230004197EC /* WACompositionBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC9DC4714FF7230004197EC /* WACompositionBarBackground@2x.png */; };
+		FFC9DC4E14FF7230004197EC /* WACompositionSendButtonBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC9DC4814FF7230004197EC /* WACompositionSendButtonBackground.png */; };
+		FFC9DC4F14FF7230004197EC /* WACompositionSendButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC9DC4914FF7230004197EC /* WACompositionSendButtonBackground@2x.png */; };
+		FFC9DC5014FF7230004197EC /* WACompositionTextWellBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC9DC4A14FF7230004197EC /* WACompositionTextWellBackground.png */; };
+		FFC9DC5114FF7230004197EC /* WACompositionTextWellBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFC9DC4B14FF7230004197EC /* WACompositionTextWellBackground@2x.png */; };
 		FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
 		FFCEDA1D149B3F34000F2B20 /* WALastReadIndicator.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCEDA1C149B3F34000F2B20 /* WALastReadIndicator.png */; };
@@ -1355,6 +1361,12 @@
 		FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 18.xcdatamodel"; sourceTree = "<group>"; };
 		FFC9DB1B14FF46EE004197EC /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
 		FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
+		FFC9DC4614FF7230004197EC /* WACompositionBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionBarBackground.png; path = Resources/WACompositionBarBackground.png; sourceTree = "<group>"; };
+		FFC9DC4714FF7230004197EC /* WACompositionBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompositionBarBackground@2x.png"; path = "Resources/WACompositionBarBackground@2x.png"; sourceTree = "<group>"; };
+		FFC9DC4814FF7230004197EC /* WACompositionSendButtonBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionSendButtonBackground.png; path = Resources/WACompositionSendButtonBackground.png; sourceTree = "<group>"; };
+		FFC9DC4914FF7230004197EC /* WACompositionSendButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompositionSendButtonBackground@2x.png"; path = "Resources/WACompositionSendButtonBackground@2x.png"; sourceTree = "<group>"; };
+		FFC9DC4A14FF7230004197EC /* WACompositionTextWellBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WACompositionTextWellBackground.png; path = Resources/WACompositionTextWellBackground.png; sourceTree = "<group>"; };
+		FFC9DC4B14FF7230004197EC /* WACompositionTextWellBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WACompositionTextWellBackground@2x.png"; path = "Resources/WACompositionTextWellBackground@2x.png"; sourceTree = "<group>"; };
 		FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 10.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -2242,9 +2254,13 @@
 				FF0527ED14F3B2370030D099 /* WACompositionBackgroundBottomCap@2x.png */,
 				FF0527EE14F3B2370030D099 /* WACompositionBackgroundPattern.png */,
 				FF0527EF14F3B2370030D099 /* WACompositionBackgroundPattern@2x.png */,
-				FF13871013E94F0700154B7D /* WACompositionBarBackground.png */,
+				FFC9DC4614FF7230004197EC /* WACompositionBarBackground.png */,
+				FFC9DC4714FF7230004197EC /* WACompositionBarBackground@2x.png */,
 				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
-				FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */,
+				FFC9DC4914FF7230004197EC /* WACompositionSendButtonBackground@2x.png */,
+				FFC9DC4A14FF7230004197EC /* WACompositionTextWellBackground.png */,
+				FFC9DC4B14FF7230004197EC /* WACompositionTextWellBackground@2x.png */,
+				FF13871013E94F0700154B7D /* WACompositionBarBackground.png */,
 				FF0505E914C088D6002EA455 /* WACornerCloseButton.png */,
 				FF0505EA14C088D6002EA455 /* WACornerCloseButtonActive.png */,
 				FF80504A149E1157000AE0F3 /* WADateBadgeBackdrop.png */,
@@ -2326,6 +2342,8 @@
 				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
 				FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */,
+				FF13871413E95E0800154B7D /* WACompositionSendButtonBackground.png */,
+				FF13871213E95C3900154B7D /* WACompositionTextWellBackground.png */,
 			);
 			name = "iOS Resources";
 			path = wammer;
@@ -3169,6 +3187,12 @@
 				FF78DD3614F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png in Resources */,
 				FFB418F214FE071F009A815B /* WABackGlyph.png in Resources */,
 				FFB418F314FE071F009A815B /* WABackGlyph@2x.png in Resources */,
+				FFC9DC4C14FF7230004197EC /* WACompositionBarBackground.png in Resources */,
+				FFC9DC4D14FF7230004197EC /* WACompositionBarBackground@2x.png in Resources */,
+				FFC9DC4E14FF7230004197EC /* WACompositionSendButtonBackground.png in Resources */,
+				FFC9DC4F14FF7230004197EC /* WACompositionSendButtonBackground@2x.png in Resources */,
+				FFC9DC5014FF7230004197EC /* WACompositionTextWellBackground.png in Resources */,
+				FFC9DC5114FF7230004197EC /* WACompositionTextWellBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3700,7 +3724,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 258;
+				CURRENT_PROJECT_VERSION = 259;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3754,7 +3778,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 258;
+				CURRENT_PROJECT_VERSION = 259;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

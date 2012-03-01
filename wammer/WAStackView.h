@@ -22,6 +22,8 @@
 
 @property (nonatomic, readwrite, assign) id <UIScrollViewDelegate, WAStackViewDelegate> delegate;	//	the aptly-named `delegate` is used by the scrollview
 
+@property (nonatomic, readwrite, copy) void (^onDidLayoutSubviews)(void);
+
 - (NSMutableArray *) mutableStackElements;
 
 - (void) addStackElements:(NSSet *)objects;
