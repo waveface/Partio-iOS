@@ -90,7 +90,7 @@
 
 	[super viewDidLoad];
 	
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"composeBackground"]];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
 	
 	deleteButton.backgroundColor = nil;
 		

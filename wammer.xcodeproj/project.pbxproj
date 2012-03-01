@@ -69,7 +69,13 @@
 		4BD7FC2C14458BA1002408F8 /* WARefreshArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */; };
 		4BD7FC2D14458BA1002408F8 /* WARefreshArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */; };
 		4BE0FFB5148CA4E000BA74DB /* WALogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE0FFB4148CA4E000BA74DB /* WALogo.png */; };
-		4BE690FB14EB6487002B9790 /* composeBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FA14EB6487002B9790 /* composeBackground.png */; };
+		4BE4342514FF5AA5001C5DBB /* settingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342314FF5AA5001C5DBB /* settingsGlyph.png */; };
+		4BE4342614FF5AA5001C5DBB /* settingsGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342414FF5AA5001C5DBB /* settingsGlyph@2x.png */; };
+		4BE4342914FF60CE001C5DBB /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342714FF60CE001C5DBB /* button.png */; };
+		4BE4342A14FF60CE001C5DBB /* button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342814FF60CE001C5DBB /* button@2x.png */; };
+		4BE4342D14FF6125001C5DBB /* composeGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342B14FF6125001C5DBB /* composeGlyph.png */; };
+		4BE4342E14FF6125001C5DBB /* composeGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342C14FF6125001C5DBB /* composeGlyph@2x.png */; };
+		4BE690FB14EB6487002B9790 /* lightBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FA14EB6487002B9790 /* lightBackground.png */; };
 		4BE6910214EB68C6002B9790 /* previewDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FC14EB68C6002B9790 /* previewDisabled.png */; };
 		4BE6910314EB68C6002B9790 /* previewDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */; };
 		4BE6910414EB68C6002B9790 /* previewButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FE14EB68C6002B9790 /* previewButton.png */; };
@@ -940,7 +946,13 @@
 		4BD7FC2A14458BA1002408F8 /* WARefreshArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WARefreshArrow.png; path = Resources/WARefreshArrow.png; sourceTree = "<group>"; };
 		4BD7FC2B14458BA1002408F8 /* WARefreshArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WARefreshArrow@2x.png"; path = "Resources/WARefreshArrow@2x.png"; sourceTree = "<group>"; };
 		4BE0FFB4148CA4E000BA74DB /* WALogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALogo.png; path = Resources/WALogo.png; sourceTree = "<group>"; };
-		4BE690FA14EB6487002B9790 /* composeBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = composeBackground.png; path = Resources/composeBackground.png; sourceTree = "<group>"; };
+		4BE4342314FF5AA5001C5DBB /* settingsGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settingsGlyph.png; path = Resources/settingsGlyph.png; sourceTree = "<group>"; };
+		4BE4342414FF5AA5001C5DBB /* settingsGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settingsGlyph@2x.png"; path = "Resources/settingsGlyph@2x.png"; sourceTree = "<group>"; };
+		4BE4342714FF60CE001C5DBB /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = Resources/button.png; sourceTree = "<group>"; };
+		4BE4342814FF60CE001C5DBB /* button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button@2x.png"; path = "Resources/button@2x.png"; sourceTree = "<group>"; };
+		4BE4342B14FF6125001C5DBB /* composeGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = composeGlyph.png; path = Resources/composeGlyph.png; sourceTree = "<group>"; };
+		4BE4342C14FF6125001C5DBB /* composeGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "composeGlyph@2x.png"; path = "Resources/composeGlyph@2x.png"; sourceTree = "<group>"; };
+		4BE690FA14EB6487002B9790 /* lightBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightBackground.png; path = Resources/lightBackground.png; sourceTree = "<group>"; };
 		4BE690FC14EB68C6002B9790 /* previewDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewDisabled.png; path = Resources/previewDisabled.png; sourceTree = "<group>"; };
 		4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewDisabled@2x.png"; path = "Resources/previewDisabled@2x.png"; sourceTree = "<group>"; };
 		4BE690FE14EB68C6002B9790 /* previewButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewButton.png; path = Resources/previewButton.png; sourceTree = "<group>"; };
@@ -2170,7 +2182,10 @@
 				4BBD9BB914EB55C2003086DD /* addDisabled@2x.png */,
 				4BBD9BB614EB55C2003086DD /* addHighlight.png */,
 				4BBD9BB714EB55C2003086DD /* addHighlight@2x.png */,
-				4BE690FA14EB6487002B9790 /* composeBackground.png */,
+				4BE4342714FF60CE001C5DBB /* button.png */,
+				4BE4342814FF60CE001C5DBB /* button@2x.png */,
+				4BE4342B14FF6125001C5DBB /* composeGlyph.png */,
+				4BE4342C14FF6125001C5DBB /* composeGlyph@2x.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -2183,6 +2198,7 @@
 				FAE26ECA13E1435D00CB1E3A /* Icon.png */,
 				FF0D4633147576AD00340287 /* Icon@2x.png */,
 				FF21C8D213E14CF9009B980D /* IPSample */,
+				4BE690FA14EB6487002B9790 /* lightBackground.png */,
 				FF51509C14835A030073386D /* Localizable.strings */,
 				4B451F0D14ECEDE200997B41 /* navigationBar.png */,
 				4B451F0E14ECEDE200997B41 /* navigationBar@2x.png */,
@@ -2199,6 +2215,8 @@
 				4BE6910014EB68C6002B9790 /* previewHighlight@2x.png */,
 				FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */,
 				FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */,
+				4BE4342314FF5AA5001C5DBB /* settingsGlyph.png */,
+				4BE4342414FF5AA5001C5DBB /* settingsGlyph@2x.png */,
 				FFEA168D14ED025400671821 /* UIButtonBarArrowDown.png */,
 				FFEA168E14ED025400671821 /* UIButtonBarArrowDown@2x.png */,
 				FFEA168F14ED025400671821 /* UIButtonBarArrowDownSmall.png */,
@@ -2451,19 +2469,19 @@
 		FFDE86A714397064009E04D9 /* Composition */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
-				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
+				FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */,
+				FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */,
 				FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */,
 				FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */,
 				FF84037314F2C2ED00200C98 /* WACompositionViewController+ImageHandling.h */,
 				FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */,
+				FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */,
+				FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */,
 				FF7D12F214F26D7D007EF2B7 /* WACompositionViewControllerPad.h */,
 				FF7D12F314F26D7D007EF2B7 /* WACompositionViewControllerPad.m */,
 				FFFFD9DA13EAABDB000E3D2D /* WACompositionViewControllerPad.xib */,
 				FF7D12F514F26DB2007EF2B7 /* WACompositionViewControllerPhone.h */,
 				FF7D12F614F26DB2007EF2B7 /* WACompositionViewControllerPhone.m */,
-				FF0527F414F3BF860030D099 /* WAArticleAttachmentActivityView.h */,
-				FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */,
 				FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */,
 				FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */,
 				FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */,
@@ -3140,7 +3158,7 @@
 				4BBD9BC114EB55C2003086DD /* addHighlight@2x.png in Resources */,
 				4BBD9BC214EB55C2003086DD /* addButton.png in Resources */,
 				4BBD9BC314EB55C2003086DD /* addDisabled@2x.png in Resources */,
-				4BE690FB14EB6487002B9790 /* composeBackground.png in Resources */,
+				4BE690FB14EB6487002B9790 /* lightBackground.png in Resources */,
 				4BE6910214EB68C6002B9790 /* previewDisabled.png in Resources */,
 				4BE6910314EB68C6002B9790 /* previewDisabled@2x.png in Resources */,
 				4BE6910414EB68C6002B9790 /* previewButton.png in Resources */,
@@ -3169,6 +3187,12 @@
 				FF78DD3614F7C2D6005694BF /* WACompositionAttachmentsBarBackground@2x.png in Resources */,
 				FFB418F214FE071F009A815B /* WABackGlyph.png in Resources */,
 				FFB418F314FE071F009A815B /* WABackGlyph@2x.png in Resources */,
+				4BE4342514FF5AA5001C5DBB /* settingsGlyph.png in Resources */,
+				4BE4342614FF5AA5001C5DBB /* settingsGlyph@2x.png in Resources */,
+				4BE4342914FF60CE001C5DBB /* button.png in Resources */,
+				4BE4342A14FF60CE001C5DBB /* button@2x.png in Resources */,
+				4BE4342D14FF6125001C5DBB /* composeGlyph.png in Resources */,
+				4BE4342E14FF6125001C5DBB /* composeGlyph@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,14 +33,24 @@
 		return nil;
 	
 	button = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-	button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-	button.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+	button.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
+	button.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
+	button.titleLabel.shadowColor = [UIColor blackColor];
+	button.titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
 	[button setImageEdgeInsets:(UIEdgeInsets){ 0, 0, 0, 0 }];
-	[button setTitleEdgeInsets:(UIEdgeInsets){ 0, 10, 0, 0 }];
-	[button setTitleColor:[UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1] forState:UIControlStateNormal];
 	
+	#ifdef GOOD_DESIGN
+		button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+		button.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+		[button setTitleEdgeInsets:(UIEdgeInsets){ 0, 10, 0, 0 }];
+		[button setTitleColor:[UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1] forState:UIControlStateNormal];
+	#endif
+
 	[button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
+	
+	[button setBackgroundImage:[[UIImage imageNamed:@"addButton"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateNormal];
+	[button setBackgroundImage:[[UIImage imageNamed:@"addHighlight"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateHighlighted];
 	[self addSubview:button];
 	
 	spinner = [[IRActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -97,22 +107,24 @@
 	spinner.animating = isBusy;
 	button.hidden = isBusy;
 	
-	switch (style) {
-	
-		case WAArticleAttachmentActivityViewAttachmentsStyle: {
-			[button setImage:WABarButtonImageFromImageNamed(@"WAAttachmentGlyph") forState:UIControlStateNormal];
-			break;
-		}
+	#ifdef GOOD_DESIGN
+		switch (style) {
 		
-		case WAArticleAttachmentActivityViewLinkStyle: {
-			[button setImage:WABarButtonImageFromImageNamed(@"WALinkGlyph") forState:UIControlStateNormal];
-			break;
-		}
-		
-		default:
-			break;
-		
-	};
+			case WAArticleAttachmentActivityViewAttachmentsStyle: {
+				[button setImage:WABarButtonImageFromImageNamed(@"WAAttachmentGlyph") forState:UIControlStateNormal];
+				break;
+			}
+			
+			case WAArticleAttachmentActivityViewLinkStyle: {
+				[button setImage:WABarButtonImageFromImageNamed(@"WALinkGlyph") forState:UIControlStateNormal];
+				break;
+			}
+			
+			default:
+				break;
+			
+		};
+	#endif
 	
 	[button setTitle:[self titleForStyle:style] forState:UIControlStateNormal];
 	
