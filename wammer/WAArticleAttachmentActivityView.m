@@ -43,7 +43,7 @@
 	[button setImageEdgeInsets:(UIEdgeInsets){ 0, 0, 0, 0 }];
 	[button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 
-	if (WAUsesUglifiedBarButtonItems()) {
+	if (WADucklingsEnabled()) {
 
 		[button setBackgroundImage:[[UIImage imageNamed:@"addButton"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateNormal];
 		[button setBackgroundImage:[[UIImage imageNamed:@"addHighlight"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateHighlighted];
@@ -112,7 +112,7 @@
 	spinner.animating = isBusy;
 	button.hidden = isBusy;
 	
-	if (WAUsesUglifiedBarButtonItems()) {
+	if (WADucklingsEnabled()) {
 	
 		[button setTitle:[self titleForStyle:style] forState:UIControlStateNormal];
 		
