@@ -176,4 +176,37 @@
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingPrimaryImage {
+
+	return [NSSet setWithObjects:
+	
+		@"imageOrder.@count",
+		@"primaryImageURI",
+	
+	nil];
+
+}
+
+- (WAOpenGraphElementImage *) primaryImage {
+
+	if (self.primaryImageURI)
+		return (WAOpenGraphElementImage *)[self.managedObjectContext irManagedObjectForURI:self.primaryImageURI];
+	
+	if ([self.imageOrder count])
+		return [self.managedObjectContext irManagedObjectForURI:[self.imageOrder objectAtIndex:0]];
+	
+	return nil;
+
+}
+
+- (void) setPrimaryImage:(WAOpenGraphElementImage *)newPrimaryImage {
+
+	if (newPrimaryImage == self.primaryImage)
+		return;
+	
+	NSParameterAssert([self.images containsObject:newPrimaryImage]);
+	self.primaryImageURI = [[newPrimaryImage objectID] URIRepresentation];
+
+}
+
 @end
