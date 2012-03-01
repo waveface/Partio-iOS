@@ -16,6 +16,7 @@
 #import "WADataStore.h"
 
 #import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 #import "IASKAppSettingsViewController.h"
 
@@ -474,6 +475,13 @@
 					appSettingsViewController.delegate = self;
 					appSettingsViewController.showDoneButton = NO;
 					appSettingsViewController.showCreditsFooter = NO;
+					
+					appSettingsViewController.navigationItem.hidesBackButton = YES;
+					appSettingsViewController.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, self.title, ^ {
+					
+						[appSettingsViewController.navigationController popViewControllerAnimated:YES];
+					
+					});
 					
 					[self.navigationController pushViewController:appSettingsViewController animated:YES];
 				

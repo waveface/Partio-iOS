@@ -34,5 +34,7 @@
 	<false/>
 	<key>WADebugUsesDiscreteArticleFlip</key>
 	<false/>
+	<key>WAUsesUglifiedBarButtonItems</key>
+	<true/>
 </dict>
 </plist>

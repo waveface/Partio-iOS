@@ -12,9 +12,12 @@
 #import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
+#import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "WARemoteInterface.h"
+#import "IRLifetimeHelper.h"
+
 
 @interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, NSFetchedResultsControllerDelegate>
 
@@ -258,19 +261,31 @@
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
 	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
 	
-	[self.compositionSendButton setBackgroundImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:8 topCapHeight:8] forState:UIControlStateNormal];
+	__block UIImageView *compositionSendButtonBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:20 topCapHeight:20]] autorelease];
+	compositionSendButtonBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	compositionSendButtonBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionSendButton.bounds, (UIEdgeInsets){ -8, -8, -8, -8 });
 	
+	[compositionSendButtonBackgroundView irBind:@"alpha" toObject:self.compositionSendButton keyPath:@"enabled" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
+		[[^ (id oldValue, id newValue, NSKeyValueChange type) {
+		
+			return [newValue isEqual:(id)kCFBooleanTrue] ? [NSNumber numberWithFloat:1.0] : [NSNumber numberWithFloat:0.5];
+
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
 	
-	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:14 topCapHeight:14]] autorelease];
+	nil]];
+	
+	[self.compositionSendButton insertSubview:compositionSendButtonBackgroundView atIndex:0];
+	
+	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:22 topCapHeight:20]] autorelease];
 	NSParameterAssert(textWellBackgroundView.image);
 	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
-	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ 0, -2, -2, -2 });
+	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ -8, -8, -8, -8 });
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
 		
-	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
+	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:24]] autorelease];
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -4, 0, 0, 0 });
+	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -3, 0, 0, 0 });
 	
 	self.compositionAccessoryTextWellBackgroundView = [[[WAView alloc] initWithFrame:textWellBackgroundView.bounds] autorelease];
 	self.compositionAccessoryTextWellBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -289,8 +304,8 @@
 		
 		//	nrView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrView.bounds].CGPath;
 		
-		static CGFloat inactiveAccessoryViewHeight = 64.0f;
-		static CGFloat activeAccessoryViewHeight = 128.0f;
+		static CGFloat inactiveAccessoryViewHeight = 40.0f;
+		static CGFloat activeAccessoryViewHeight = 80.0f;
 		
 		BOOL accessoryViewActive = !![nrCompositionAccessoryView irFirstResponderInView];
 		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
@@ -448,6 +463,8 @@
 	
 	[self.commentsView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
+	[self textViewDidChange:self.compositionContentField];
+	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad();
 	
@@ -579,10 +596,12 @@
 	[self.delegate articleCommentsViewController:self didFinishComposingComment:self.compositionContentField.text];
 	
 	self.compositionContentField.text = nil;
+	[self textViewDidChange:self.compositionContentField];
 	
 	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateShown onFulfillment: ^ {
 		[self.compositionContentField resignFirstResponder];
 	}];
+	
 }
 
 
@@ -767,6 +786,16 @@
 		
 	}];
 	
+}
+
+- (void) textViewDidChange:(UITextView *)textView {
+
+	if (self.delegate) {
+		
+		self.compositionSendButton.enabled = [self.delegate articleCommentsViewController:self canSendComment:textView.text];
+	
+	}
+
 }
 
 - (void) textViewDidEndEditing:(UITextView *)textView {

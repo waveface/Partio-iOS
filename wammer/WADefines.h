@@ -67,6 +67,9 @@ extern NSString * const kWAAppEventNotification;	//	Notification Center key
 extern NSString * const kWAAppEventTitle;	//	The eventTitle
 extern void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo);
 
+extern NSString * const kWAUsesUglifiedBarButtonItems;
+extern BOOL WAUsesUglifiedBarButtonItems (void);
+
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	#import "WADefines+iOS.h"
 #else

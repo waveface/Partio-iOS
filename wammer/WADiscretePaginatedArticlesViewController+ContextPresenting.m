@@ -315,13 +315,11 @@
 					[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
 					
 						UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
+												
+						CGRect toolbarRect = enclosingView.bounds;
+						toolbarRect.size.height = 44;
 						
-						UIView *topBackgroundView = WAStandardArticleStackCellCenterBackgroundView();
-						[enclosingView addSubview:topBackgroundView];
-						topBackgroundView.frame = enclosingView.bounds;
-						topBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-						
-						IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:enclosingView.bounds] autorelease];
+						IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:toolbarRect] autorelease];
 						[enclosingView addSubview:toolbar];
 						toolbar.usesCustomLayout = NO;
 						toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
