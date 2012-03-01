@@ -24,7 +24,7 @@
 @synthesize onGestureRecognizerShouldReceiveTouch;
 @synthesize onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer;
 
-- (BOOL)touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view {
+- (BOOL) touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view {
 
 	BOOL superAnswer = [super touchesShouldBegin:touches withEvent:event inContentView:view];
 	
