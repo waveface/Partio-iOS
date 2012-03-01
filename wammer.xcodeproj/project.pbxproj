@@ -71,6 +71,10 @@
 		4BE0FFB5148CA4E000BA74DB /* WALogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE0FFB4148CA4E000BA74DB /* WALogo.png */; };
 		4BE4342514FF5AA5001C5DBB /* settingsGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342314FF5AA5001C5DBB /* settingsGlyph.png */; };
 		4BE4342614FF5AA5001C5DBB /* settingsGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342414FF5AA5001C5DBB /* settingsGlyph@2x.png */; };
+		4BE4342914FF60CE001C5DBB /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342714FF60CE001C5DBB /* button.png */; };
+		4BE4342A14FF60CE001C5DBB /* button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342814FF60CE001C5DBB /* button@2x.png */; };
+		4BE4342D14FF6125001C5DBB /* composeGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342B14FF6125001C5DBB /* composeGlyph.png */; };
+		4BE4342E14FF6125001C5DBB /* composeGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE4342C14FF6125001C5DBB /* composeGlyph@2x.png */; };
 		4BE690FB14EB6487002B9790 /* lightBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FA14EB6487002B9790 /* lightBackground.png */; };
 		4BE6910214EB68C6002B9790 /* previewDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FC14EB68C6002B9790 /* previewDisabled.png */; };
 		4BE6910314EB68C6002B9790 /* previewDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */; };
@@ -944,6 +948,10 @@
 		4BE0FFB4148CA4E000BA74DB /* WALogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALogo.png; path = Resources/WALogo.png; sourceTree = "<group>"; };
 		4BE4342314FF5AA5001C5DBB /* settingsGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = settingsGlyph.png; path = Resources/settingsGlyph.png; sourceTree = "<group>"; };
 		4BE4342414FF5AA5001C5DBB /* settingsGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "settingsGlyph@2x.png"; path = "Resources/settingsGlyph@2x.png"; sourceTree = "<group>"; };
+		4BE4342714FF60CE001C5DBB /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = Resources/button.png; sourceTree = "<group>"; };
+		4BE4342814FF60CE001C5DBB /* button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button@2x.png"; path = "Resources/button@2x.png"; sourceTree = "<group>"; };
+		4BE4342B14FF6125001C5DBB /* composeGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = composeGlyph.png; path = Resources/composeGlyph.png; sourceTree = "<group>"; };
+		4BE4342C14FF6125001C5DBB /* composeGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "composeGlyph@2x.png"; path = "Resources/composeGlyph@2x.png"; sourceTree = "<group>"; };
 		4BE690FA14EB6487002B9790 /* lightBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightBackground.png; path = Resources/lightBackground.png; sourceTree = "<group>"; };
 		4BE690FC14EB68C6002B9790 /* previewDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = previewDisabled.png; path = Resources/previewDisabled.png; sourceTree = "<group>"; };
 		4BE690FD14EB68C6002B9790 /* previewDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "previewDisabled@2x.png"; path = "Resources/previewDisabled@2x.png"; sourceTree = "<group>"; };
@@ -2174,6 +2182,10 @@
 				4BBD9BB914EB55C2003086DD /* addDisabled@2x.png */,
 				4BBD9BB614EB55C2003086DD /* addHighlight.png */,
 				4BBD9BB714EB55C2003086DD /* addHighlight@2x.png */,
+				4BE4342714FF60CE001C5DBB /* button.png */,
+				4BE4342814FF60CE001C5DBB /* button@2x.png */,
+				4BE4342B14FF6125001C5DBB /* composeGlyph.png */,
+				4BE4342C14FF6125001C5DBB /* composeGlyph@2x.png */,
 				FFE3E8F4141647D600519BCD /* Default-Landscape.png */,
 				FFE3E8F5141647D600519BCD /* Default-Portrait.png */,
 				FFE3E8F6141647D600519BCD /* Default.png */,
@@ -3177,6 +3189,10 @@
 				FFB418F314FE071F009A815B /* WABackGlyph@2x.png in Resources */,
 				4BE4342514FF5AA5001C5DBB /* settingsGlyph.png in Resources */,
 				4BE4342614FF5AA5001C5DBB /* settingsGlyph@2x.png in Resources */,
+				4BE4342914FF60CE001C5DBB /* button.png in Resources */,
+				4BE4342A14FF60CE001C5DBB /* button@2x.png in Resources */,
+				4BE4342D14FF6125001C5DBB /* composeGlyph.png in Resources */,
+				4BE4342E14FF6125001C5DBB /* composeGlyph@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

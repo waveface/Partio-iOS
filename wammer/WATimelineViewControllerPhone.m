@@ -121,9 +121,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 					[nrSelf presentModalViewController:wrappingNavC animated:YES];
 	});
 		
-	self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-				[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-			});
+	UIBarButtonItem *composeButton = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
+
+	[composeButton setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+	self.navigationItem.rightBarButtonItem = composeButton;
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 	
