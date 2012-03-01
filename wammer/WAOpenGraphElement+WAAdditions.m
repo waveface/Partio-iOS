@@ -193,7 +193,7 @@
 		return (WAOpenGraphElementImage *)[self.managedObjectContext irManagedObjectForURI:self.primaryImageURI];
 	
 	if ([self.imageOrder count])
-		return [self.managedObjectContext irManagedObjectForURI:[self.imageOrder objectAtIndex:0]];
+		return (WAOpenGraphElementImage *)[self.managedObjectContext irManagedObjectForURI:[self.imageOrder objectAtIndex:0]];
 	
 	return nil;
 
