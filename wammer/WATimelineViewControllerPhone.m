@@ -102,16 +102,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-  
-    __block __typeof__(self) nrSelf = self;
-			
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
-		toolbar.items = [NSArray arrayWithObjects:
-		
-			WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-			
-					__block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
+	__block __typeof__(self) nrSelf = self;
+	
+	self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"settingsGlyph"], nil, ^{
+		__block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
 					__block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
 					
 					userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
@@ -125,20 +119,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 					wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
 					[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
 					[nrSelf presentModalViewController:wrappingNavC animated:YES];
-				
-			}),
-			
-			WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-			
-				[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-				
-			}),
-			
-		nil];
+	});
 		
-		return toolbar;
-	
-	})())];
+	self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
+				[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
+			});
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 	

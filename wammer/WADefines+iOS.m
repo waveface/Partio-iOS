@@ -118,12 +118,12 @@ void kWADefaultBarButtonInitialize (void) {
 			case UIUserInterfaceIdiomPhone: {
 				
 				kWADefaultBarButtonBorder = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.1]];
-				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.45] offset:(CGSize){ 0, 1 } spread:2];
+				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.45] offset:(CGSize){ 0, 1 } spread:1];
 				kWADefaultBarButtonShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.5] offset:(CGSize){ 0, 1 } spread:1];
 				
 				kWADefaultBarButtonTitleFont = [UIFont boldSystemFontOfSize:12];
-				kWADefaultBarButtonTitleColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
-				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.30] offset:(CGSize){ 0, 1 } spread:2];
+				kWADefaultBarButtonTitleColor = [UIColor colorWithRed:118/255 green:47/255 blue:20/255 alpha:0.5];
+//				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.30] offset:(CGSize){ 0, 1 } spread:1];
 				
 				kWADefaultBarButtonGradientFromColor = [UIColor colorWithWhite:1 alpha:.1];
 				kWADefaultBarButtonGradientToColor = [UIColor colorWithWhite:0 alpha:.1];
