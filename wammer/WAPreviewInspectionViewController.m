@@ -136,6 +136,18 @@
 	
 }
 
+- (void) setPreview:(WAPreview *)newPreview {
+
+	NSCAssert2(![[newPreview objectID] isTemporaryID], @"%s: the incoming preview %@ is a temporary one and won’t work properly", __PRETTY_FUNCTION__, newPreview);
+
+	if (preview == newPreview)
+		return;
+	
+	[preview release];
+	preview = [newPreview retain];
+
+}
+
 - (IBAction) handleDeleteTap:(id)sender {
 
 	[self.delegate previewInspectionViewControllerDidRemove:self];
