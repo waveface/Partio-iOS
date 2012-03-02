@@ -191,11 +191,18 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
 
-	return [self cachedArticleViewControllerForArticle:anArticle].view;
+	UIView *returnedView = [self cachedArticleViewControllerForArticle:anArticle].view;
+	
+	returnedView.layer.cornerRadius = 2;
 
-	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:anArticle];
-		
-	return articleViewController.view;
+//	returnedView.layer.backgroundColor = [UIColor colorWithWhite:0.93 alpha:0.25].CGColor;
+	returnedView.layer.backgroundColor = [UIColor clearColor].CGColor;
+	returnedView.layer.masksToBounds = YES;
+	
+	returnedView.layer.borderWidth = 1;
+	returnedView.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.05].CGColor;
+	
+	return returnedView;
 	
 }
 

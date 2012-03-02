@@ -189,9 +189,8 @@
 //	};
 	
 	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 140);
+		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
 	};
-	
 	
 	//	Layout progress introspection helpers
 	
@@ -231,10 +230,12 @@
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
-		if (isImageItem(currentItem) || isLinkItem(currentItem) || isLongTextItem(currentItem)) {
+		if (isImageItem(currentItem) || isLongTextItem(currentItem)) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
+		
+		//	isLinkItem(currentItem) || is removed because now its -representedText contains the description from its preview
 		
 		// increase probablity
 		if (isLongTextItem(currentItem)) {

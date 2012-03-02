@@ -50,7 +50,7 @@
 	__block UIBarButtonItem *item = WABarButtonItem(nil, @"comments", ^ {
 	
 		[nrSelf presentCommentsViewController:[[nrSelf newArticleCommentsController] autorelease] sender:item];
-			
+		
 	});
 	
 	self.navigationItem.rightBarButtonItem = item;
@@ -146,8 +146,15 @@
 		
 			NSParameterAssert(self.commentsPopover);
 		
-			if ([self.commentsPopover isPopoverVisible])
+			if ([self.commentsPopover isPopoverVisible]) {
+				
+				//	Toggle
+				
+				[self.commentsPopover dismissPopoverAnimated:NO];
+				
 				return;
+				
+			}
 			
 			if ([sender isKindOfClass:[UIBarButtonItem class]]) {
 			

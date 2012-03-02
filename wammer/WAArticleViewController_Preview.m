@@ -62,6 +62,7 @@ enum {
 @property (nonatomic, readwrite, assign) CGRect lastWebViewFrame;
 
 - (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender;
+@property (nonatomic, readwrite, retain) IRActionSheetController *previewActionSheetController;
 
 @end
 
@@ -71,6 +72,7 @@ enum {
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
+@synthesize previewActionSheetController;
 
 - (void) dealloc {
 
@@ -99,6 +101,8 @@ enum {
 
 	[previewBadge release];
 	[previewBadgeWrapper release];
+	
+	[previewActionSheetController release];
 	
 	[super dealloc];
 
@@ -212,21 +216,6 @@ enum {
 	
 	}
 	
-#if 0
-	
-	self.webView.layer.borderColor = [UIColor greenColor].CGColor;
-	self.webView.layer.borderWidth = 4;
-	
-	self.webViewWrapper.layer.borderColor = [UIColor redColor].CGColor;
-	self.webViewWrapper.layer.borderWidth = 2;
-	
-	self.stackView.layer.borderColor = [UIColor blueColor].CGColor;
-	self.stackView.layer.borderWidth = 1;
-	
-	self.webView.scrollView.scrollIndicatorInsets = (UIEdgeInsets){ 0, 0, 0, 8 };
-
-#endif
-
 	if ([self isViewLoaded])
 		[self updateWrapperView];
 
@@ -252,6 +241,8 @@ enum {
 
 	self.previewBadge = nil;
 	self.previewBadgeWrapper = nil;
+	
+	self.previewActionSheetController = nil;
 
 	//	self.toolbar = nil;
 
@@ -283,6 +274,9 @@ enum {
 	webView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	webView.delegate = self;
 	webView.scrollView.directionalLockEnabled = NO;
+	webView.scrollView.bounces = NO;
+	webView.scrollView.alwaysBounceVertical = NO;
+	webView.scrollView.alwaysBounceHorizontal = NO;
 		
 	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
 	
@@ -300,6 +294,9 @@ enum {
 	summaryWebView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	summaryWebView.delegate = self;
 	summaryWebView.scrollView.directionalLockEnabled = NO;
+	summaryWebView.scrollView.bounces = NO;
+	summaryWebView.scrollView.alwaysBounceVertical = NO;
+	summaryWebView.scrollView.alwaysBounceHorizontal = NO;
 	
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
 	
@@ -321,8 +318,21 @@ enum {
 	
 	#endif
 	
+	WAPreview *preview = [self.article.previews anyObject];
+	NSString *usedTitle = preview.graphElement.title;
+	NSString *usedProviderName = [preview.graphElement providerCaption];
+	
 	NSString *usedSummary = (tidyString ? tidyString : self.article.summary);
-	NSString *templatedSummary = [[[NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$TITLE" withString:@"Preview"] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
+	NSString *templatedSummary = [NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil];
+	
+	if (usedSummary)
+		templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
+	
+	if (usedTitle)
+		templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$TITLE" withString:usedTitle];
+	
+	if (usedProviderName)	
+		templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$SOURCE" withString:usedProviderName];
 	
 	NSURL *summaryTemplateBaseURL = nil;
 	
@@ -341,9 +351,11 @@ enum {
 		return webViewBackBarButtonItem;
 	
 	__block __typeof__(self) nrSelf = self;
+	
+	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
 				
-	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
-	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", glyphColor, kWADefaultBarButtonTitleShadow);
+	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
 	webViewBackBarButtonItem = [[IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
 	
@@ -369,8 +381,10 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 		
-	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
-	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+	
+	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
+	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
 	webViewForwardBarButtonItem = [[IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
 	
@@ -594,29 +608,34 @@ enum {
 
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
-		
 		if (isPhone) {
 			
-			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
-			
+			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
+			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
+
 		} else {
 			
-			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 			
 		}
-		
-		[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
-		
-		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
-
-		[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];				
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
 		
-			[(UIActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self previewActionsWithSender:senderItem]] singleUseActionSheet] showFromBarButtonItem:senderItem animated:YES];
+			IRActionSheet *actionSheet = nrSelf.previewActionSheetController.managedActionSheet;
+			
+			if (![actionSheet isVisible]) {
+			
+				nrSelf.previewActionSheetController.otherActions = [self previewActionsWithSender:senderItem];
+				[nrSelf.previewActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+				
+			}
 		
 		}]];
 		
@@ -625,6 +644,17 @@ enum {
 	})());
 		
 	return self.toolbarItems;
+
+}
+
+- (IRActionSheetController *) previewActionSheetController {
+
+	if (previewActionSheetController)
+		return previewActionSheetController;
+	
+	previewActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:nil] retain];
+	
+	return previewActionSheetController;
 
 }
 

@@ -7,8 +7,7 @@
 //
 
 #import "WAArticle+DiscreteLayoutAdditions.h"
-#import "WAPreview.h"
-#import "WAFile.h"
+#import "WADataStore.h"
 
 NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_DiscreteLayoutAdditions_ItemType";
 
@@ -50,7 +49,14 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 }
 
 - (NSString *) representedText {
+
+	NSString *previewDescription = ((WAPreview *)[self.previews anyObject]).graphElement.description;
+
+	if (previewDescription)
+		return [[self text] stringByAppendingString:previewDescription];
+	
 	return [self text];
+	
 }
 
 - (NSURL *) representedImageURI {
