@@ -118,17 +118,29 @@
 		
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph"), @"UserInfo") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-		
-				[nrSelf handleUserInfoItemTap:senderItem];
+			((^ {
 			
-			}],
-			
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose"), @"Compose") wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-							
-				[nrSelf handleComposeItemTap:senderItem];
+				__block IRBarButtonItem *senderItem = WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
+
+					[nrSelf handleUserInfoItemTap:senderItem];
 				
-			}],
+				});
+				
+				return senderItem;
+			
+			})()),
+			
+			((^ {
+			
+				__block IRBarButtonItem *senderItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
+
+					[nrSelf handleComposeItemTap:senderItem];
+				
+				});
+				
+				return senderItem;
+			
+			})()),
 								
 		nil];
 		
