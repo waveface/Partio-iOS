@@ -212,21 +212,6 @@ enum {
 	
 	}
 	
-#if 0
-	
-	self.webView.layer.borderColor = [UIColor greenColor].CGColor;
-	self.webView.layer.borderWidth = 4;
-	
-	self.webViewWrapper.layer.borderColor = [UIColor redColor].CGColor;
-	self.webViewWrapper.layer.borderWidth = 2;
-	
-	self.stackView.layer.borderColor = [UIColor blueColor].CGColor;
-	self.stackView.layer.borderWidth = 1;
-	
-	self.webView.scrollView.scrollIndicatorInsets = (UIEdgeInsets){ 0, 0, 0, 8 };
-
-#endif
-
 	if ([self isViewLoaded])
 		[self updateWrapperView];
 
@@ -321,8 +306,12 @@ enum {
 	
 	#endif
 	
+	WAPreview *preview = [self.article.previews anyObject];
+	NSString *usedTitle = preview.graphElement.title;
+	NSString *usedProviderName = [preview.graphElement providerCaption];
+	
 	NSString *usedSummary = (tidyString ? tidyString : self.article.summary);
-	NSString *templatedSummary = [[[NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$TITLE" withString:@"Preview"] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
+	NSString *templatedSummary = [[[[NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary] stringByReplacingOccurrencesOfString:@"$TITLE" withString:usedTitle] stringByReplacingOccurrencesOfString:@"$SOURCE" withString:usedProviderName];
 	
 	NSURL *summaryTemplateBaseURL = nil;
 	
@@ -341,9 +330,11 @@ enum {
 		return webViewBackBarButtonItem;
 	
 	__block __typeof__(self) nrSelf = self;
+	
+	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
 				
-	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
-	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", glyphColor, kWADefaultBarButtonTitleShadow);
+	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
 	webViewBackBarButtonItem = [[IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
 	
@@ -369,8 +360,10 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 		
-	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
-	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", kWADefaultBarButtonTitleColor, kWADefaultBarButtonTitleShadow);
+	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+	
+	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
+	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
 	webViewForwardBarButtonItem = [[IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
 	
@@ -594,23 +587,21 @@ enum {
 
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
-		
 		if (isPhone) {
 			
-			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
-			
+			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
+			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
+
 		} else {
 			
-			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 			
 		}
-		
-		[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
-		
-		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
-
-		[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];				
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
