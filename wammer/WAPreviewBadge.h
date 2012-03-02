@@ -49,6 +49,7 @@ enum {
 @property (nonatomic, readwrite, retain) UIView *backgroundView;
 
 @property (nonatomic, readwrite, assign) CGFloat minimumAcceptibleFullFrameAspectRatio;
+@property (nonatomic, readwrite, assign) CGFloat gutterWidth;
 
 @property (nonatomic, readonly, retain) NSString *title;
 @property (nonatomic, readonly, retain) NSString *providerName;

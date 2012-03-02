@@ -45,6 +45,7 @@
 
 @synthesize imageView, label, backgroundView;
 @synthesize minimumAcceptibleFullFrameAspectRatio;
+@synthesize gutterWidth;
 
 
 - (id) initWithFrame:(CGRect)frame {
@@ -127,14 +128,14 @@
 	);
 	
 	if (titleElement)
-		append(@"\n", nil, [UIFont systemFontOfSize:4.0], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
+		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
 			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
 		nil]);
 		
 	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
 	
 	if (titleElement || providerElement) {
-		append(@"\n \n", nil, [UIFont systemFontOfSize:4.0], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
+		append(@"\n \n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
 			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:12.0], kCTParagraphStyleAttributeName,
 		nil]);
 	}
@@ -148,6 +149,7 @@
 - (void) waSharedInit {
 
 	self.minimumAcceptibleFullFrameAspectRatio = 0.85f;
+	self.gutterWidth = 12.0f;
 	
 	self.titlePlaceholder	= NSLocalizedString(@"PREVIEW_BADGE_TITLE_PLACEHOLDER", @"Text to show for previews without a title");
 	self.titleFont = [UIFont boldSystemFontOfSize:24.0f];
