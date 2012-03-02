@@ -323,7 +323,16 @@ enum {
 	NSString *usedProviderName = [preview.graphElement providerCaption];
 	
 	NSString *usedSummary = (tidyString ? tidyString : self.article.summary);
-	NSString *templatedSummary = [[[[NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil] stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary] stringByReplacingOccurrencesOfString:@"$TITLE" withString:usedTitle] stringByReplacingOccurrencesOfString:@"$SOURCE" withString:usedProviderName];
+	NSString *templatedSummary = [NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil];
+	
+	if (usedSummary)
+		templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$BODY" withString:usedSummary];
+	
+	if (usedTitle)
+		templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$TITLE" withString:usedTitle];
+	
+	if (usedProviderName)	
+		templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$SOURCE" withString:usedProviderName];
 	
 	NSURL *summaryTemplateBaseURL = nil;
 	
