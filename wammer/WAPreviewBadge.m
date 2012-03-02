@@ -414,7 +414,7 @@
 	
 		UIView *overlay = [[[UIView alloc] initWithFrame:self.imageView.bounds] autorelease];
 		overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		overlay.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+		overlay.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
 		
 		[self.imageView addSubview:overlay];
 	
