@@ -86,6 +86,7 @@
 	
 		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		self.textEmphasisView.font = [UIFont fontWithName:@"HelevticaNeue-Light" size:16.0];
 		
 		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
 		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
@@ -270,10 +271,13 @@
 
 	CGPoint centerOffset = CGPointZero;
 
-	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 20, 20, 64, 20 });
-	const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
-	const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
+	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 10, 10, 32, 10 });
+//	const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
+//	const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
 	
+	const CGFloat maximumTextWidth = CGRectGetWidth(usableRect);
+	const CGFloat minimumTextWidth = CGRectGetWidth(usableRect);
+
 	if (usableRect.size.width > maximumTextWidth) {
 		usableRect.origin.x += roundf(0.5f * (usableRect.size.width - maximumTextWidth));
 		usableRect.size.width = maximumTextWidth;
@@ -325,13 +329,21 @@
 		case WADiscreteSingleImageArticleStyle:
 		case WADiscretePreviewArticleStyle: {
 		
+			contextInfoContainer.hidden = ![self.article.text length];
+			
 			[userNameLabel sizeToFit];
 			[relativeCreationDateLabel sizeToFit];
 			[relativeCreationDateLabel irPlaceBehindLabel:userNameLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
 			[deviceDescriptionLabel sizeToFit];
 			[deviceDescriptionLabel irPlaceBehindLabel:relativeCreationDateLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
 			
-			previewBadge.style = WAPreviewBadgeTextOverImageStyle;
+			previewBadge.style = WAPreviewBadgeImageAndTextStyle;
+			
+			previewBadge.titleFont = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:22.0];
+			previewBadge.titleColor = [UIColor colorWithWhite:0.25 alpha:1];
+			previewBadge.providerNameFont = [UIFont systemFontOfSize:14.0];
+			
+			previewBadge.textFont = [UIFont fontWithName:@"Palatino-Roman" size:16.0];
 			
 			break;
 			
