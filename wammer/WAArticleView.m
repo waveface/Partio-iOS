@@ -71,10 +71,10 @@
 		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
 		[avatarContainingView addSubview:self.avatarView];
 		self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
-		avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
-		avatarContainingView.layer.shadowOpacity = 0.25f;
-		avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
-		avatarContainingView.layer.shadowRadius = 1.0f;
+		//	avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
+		//	avatarContainingView.layer.shadowOpacity = 0.25f;
+		//	avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
+		//	avatarContainingView.layer.shadowRadius = 1.0f;
 		avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
 		avatarContainingView.layer.borderWidth = 1.0f;
 	
@@ -137,8 +137,8 @@
 
 		case WADiscreteSingleImageArticleStyle: {
 			self.userNameLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
-			self.articleDescriptionLabel.layer.shadowOpacity = 1;
-			self.articleDescriptionLabel.layer.shadowOffset = (CGSize){ 0, 1 };
+			//	self.articleDescriptionLabel.layer.shadowOpacity = 1;
+			//	self.articleDescriptionLabel.layer.shadowOffset = (CGSize){ 0, 1 };
 			break;
 		}
 		
@@ -217,15 +217,15 @@
 		nil]] lastObject];
 	});
 	
-	bind(self.imageStackView, @"images", boundArticle, @"representedFile.presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.imageStackView, @"images", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [NSArray arrayWithObject:inNewValue] : nil;
 	});
 	
-	bind(self.mainImageView, @"image", boundArticle, @"representedFile.presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"image", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue;
 	});
 	
-	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representedFile.presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
 	});
 	
