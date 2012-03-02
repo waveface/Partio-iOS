@@ -102,29 +102,23 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	if (WADucklingsEnabled()) {
+	if (YES) {
+	
+		__block __typeof__(self) nrSelf = self;
 	
 		self.navigationItem.titleView = WAStandardTitleView();
 		
-		self.navigationItem.leftBarButtonItem = ((^ {
-	
-			UIBarButtonItem *settingsItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)] autorelease];
-
-			[settingsItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+		self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WASettingsGlyph"], nil, ^{
 			
-			return settingsItem;
+			[nrSelf handleSettings:nil];
+							
+		}),
 		
-		})());
-		
-		self.navigationItem.rightBarButtonItem = ((^ {
-		
-			UIBarButtonItem *composeItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
-
-			[composeItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+		self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
 			
-			return composeItem;
-		
-		})());
+			[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
+			
+		});
 	
 	} else {
 	

@@ -37,26 +37,18 @@
 	
 	button.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
 	button.titleLabel.font = [UIFont boldSystemFontOfSize:16.0f];
-	button.titleLabel.shadowColor = [UIColor blackColor];
-	button.titleLabel.shadowOffset = CGSizeMake(0, -1);
 	
-	[button setImageEdgeInsets:(UIEdgeInsets){ 0, 0, 0, 0 }];
+	[button setTitleColor:[UIColor colorWithWhite:0 alpha:0.3] forState:UIControlStateNormal];
+	[button setTitleColor:[UIColor colorWithWhite:0 alpha:0.7] forState:UIControlStateHighlighted];
+	
+	[button setContentEdgeInsets:(UIEdgeInsets){ 0, 16, 0, 16 }];
+	[button setImageEdgeInsets:(UIEdgeInsets){ 0, -2, 0, 2 }];
+	[button setTitleEdgeInsets:(UIEdgeInsets){ 0, 2, 0, -2 }];
 	[button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 
-	if (WADucklingsEnabled()) {
-
-		[button setBackgroundImage:[[UIImage imageNamed:@"addButton"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateNormal];
-		[button setBackgroundImage:[[UIImage imageNamed:@"addHighlight"]resizableImageWithCapInsets:UIEdgeInsetsMake(18, 18, 18, 18)] forState:UIControlStateHighlighted];
-		[self addSubview:button];
-
-	} else {
-
-		button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-		button.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-		[button setTitleEdgeInsets:(UIEdgeInsets){ 0, 10, 0, 0 }];
-		[button setTitleColor:[UIColor colorWithRed:114.0/255.0 green:49.0/255.0 blue:23.0/255.0 alpha:1] forState:UIControlStateNormal];
-
-	}	
+	[button setBackgroundImage:[[UIImage imageNamed:@"WAFloatingButtonBackdrop"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 16, 0, 16)] forState:UIControlStateNormal];
+	
+	[button setBackgroundImage:[[UIImage imageNamed:@"WAFloatingButtonBackdropActive"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 16, 0, 16)] forState:UIControlStateHighlighted];
 	
 	spinner = [[IRActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	[self addSubview:spinner];
@@ -76,7 +68,9 @@
 	
 	[super layoutSubviews];
 
-	button.frame = self.bounds;
+	[button sizeToFit];
+
+	button.frame =  IRGravitize(self.bounds, button.bounds.size, kCAGravityLeft);
 	
 	if (button.imageView)
 		spinner.center = [spinner.superview convertPoint:button.imageView.center fromView:button.imageView.superview];
@@ -112,30 +106,26 @@
 	spinner.animating = isBusy;
 	button.hidden = isBusy;
 	
-	if (WADucklingsEnabled()) {
+	[button setTitle:[self titleForStyle:style] forState:UIControlStateNormal];
 	
-		[button setTitle:[self titleForStyle:style] forState:UIControlStateNormal];
+	switch (style) {
+	
+		case WAArticleAttachmentActivityViewAttachmentsStyle: {
+			[button setImage:[UIImage imageNamed:@"WAAttachmentGlyph"] forState:UIControlStateHighlighted];
+			[button setImage:[UIImage imageNamed:@"WAAttachmentDisabledGlyph"] forState:UIControlStateNormal];
+			break;
+		}
 		
-	} else {
-	
-		switch (style) {
+		case WAArticleAttachmentActivityViewLinkStyle: {
+			[button setImage:[UIImage imageNamed:@"WALinkGlyph"] forState:UIControlStateHighlighted];
+			[button setImage:[UIImage imageNamed:@"WALinkDisabledGlyph"] forState:UIControlStateNormal];
+			break;
+		}
 		
-			case WAArticleAttachmentActivityViewAttachmentsStyle: {
-				[button setImage:WABarButtonImageFromImageNamed(@"WAAttachmentGlyph") forState:UIControlStateNormal];
-				break;
-			}
-			
-			case WAArticleAttachmentActivityViewLinkStyle: {
-				[button setImage:WABarButtonImageFromImageNamed(@"WALinkGlyph") forState:UIControlStateNormal];
-				break;
-			}
-			
-			default:
-				break;
-			
-		};
-	
-	}
+		default:
+			break;
+		
+	};
 		
 }
 
@@ -174,6 +164,12 @@
 	NSParameterAssert([NSThread isMainThread]);
 
 	return [self.stylesToTitles objectForKey:[NSValue valueWithBytes:&aStyle objCType:@encode(__typeof__(aStyle))]];
+
+}
+
+- (CGSize) sizeThatFits:(CGSize)size {
+
+	return [self.button sizeThatFits:size];
 
 }
 
