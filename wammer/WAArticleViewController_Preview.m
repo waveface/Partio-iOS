@@ -62,6 +62,7 @@ enum {
 @property (nonatomic, readwrite, assign) CGRect lastWebViewFrame;
 
 - (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender;
+@property (nonatomic, readwrite, retain) IRActionSheetController *previewActionSheetController;
 
 @end
 
@@ -71,6 +72,7 @@ enum {
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
 @synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
+@synthesize previewActionSheetController;
 
 - (void) dealloc {
 
@@ -99,6 +101,8 @@ enum {
 
 	[previewBadge release];
 	[previewBadgeWrapper release];
+	
+	[previewActionSheetController release];
 	
 	[super dealloc];
 
@@ -237,6 +241,8 @@ enum {
 
 	self.previewBadge = nil;
 	self.previewBadgeWrapper = nil;
+	
+	self.previewActionSheetController = nil;
 
 	//	self.toolbar = nil;
 
@@ -607,7 +613,14 @@ enum {
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
 		
-			[(UIActionSheet *)[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:[self previewActionsWithSender:senderItem]] singleUseActionSheet] showFromBarButtonItem:senderItem animated:YES];
+			IRActionSheet *actionSheet = nrSelf.previewActionSheetController.managedActionSheet;
+			
+			if (![actionSheet isVisible]) {
+			
+				nrSelf.previewActionSheetController.otherActions = [self previewActionsWithSender:senderItem];
+				[nrSelf.previewActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+				
+			}
 		
 		}]];
 		
@@ -616,6 +629,17 @@ enum {
 	})());
 		
 	return self.toolbarItems;
+
+}
+
+- (IRActionSheetController *) previewActionSheetController {
+
+	if (previewActionSheetController)
+		return previewActionSheetController;
+	
+	previewActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:nil] retain];
+	
+	return previewActionSheetController;
 
 }
 
