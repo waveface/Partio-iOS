@@ -10,6 +10,28 @@
 
 @implementation WADataStore (FetchingConveniences)
 
+- (NSFetchRequest *) newFetchRequestForAllArticles {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 20;
+	
+	return [fetchRequest retain];
+
+}
+
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
 
   [self fetchLatestArticleInGroup:aGroupIdentifier usingContext:[self disposableMOC] onSuccess:callback];

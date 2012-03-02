@@ -73,21 +73,15 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self)
 		return nil;
-	
+		
+	NSFetchRequest *fr = [[[WADataStore defaultStore] newFetchRequestForAllArticles] autorelease];
+	fr.fetchBatchSize = 100;
+	fr.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+	nil];
+		
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
-	
-		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.fetchBatchSize = 100;
-		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(draft == NO)"];
-		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil];
-				
-		return returnedRequest;
-	
-	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
 	
