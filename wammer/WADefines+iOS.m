@@ -278,22 +278,26 @@ UIView * WAStandardTitleView (void) {
 	logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
 	[containerView addSubview:logotype];
 	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-	
-		case UIUserInterfaceIdiomPad: {
-		
-			break;
-		
-		}
-		
-		case UIUserInterfaceIdiomPhone: {
-		
-			logotype.frame = CGRectOffset(logotype.frame, -12, 1);
-		
-			break;
-		
-		}
-	
+	if (WADucklingsEnabled()) {
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			case UIUserInterfaceIdiomPad: {
+				break;
+			}
+			case UIUserInterfaceIdiomPhone: {
+				logotype.frame = CGRectOffset(logotype.frame, 0, 1);
+				break;		
+			}
+		}	
+	} else {
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			case UIUserInterfaceIdiomPad: {
+				break;
+			}
+			case UIUserInterfaceIdiomPhone: {
+				logotype.frame = CGRectOffset(logotype.frame, -12, 1);
+				break;		
+			}
+		}	
 	}
 	
 	return containerView;
