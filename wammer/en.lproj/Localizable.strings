@@ -74,6 +74,12 @@
 "AUTH_REQUEST_TITLE" = "Welcome";
 
 /* No comment provided by engineer. */
+"COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
+
+/* No comment provided by engineer. */
+"COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i Photo";
+
+/* No comment provided by engineer. */
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
@@ -146,8 +152,7 @@
    Title for username */
 "NOUN_USERNAME" = "Username";
 
-/* attachment activity view
-   Photo information in cell */
+/* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
 /* Text to show for previews without a provider name */
@@ -220,7 +225,7 @@
 "USER_INFO_CONTROLLER_TITLE" = "User";
 
 /* attachment activity view */
-"WEB_PREVIEW" = "web preview";
+"WEB_PREVIEW" = "Web Preview";
 
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";

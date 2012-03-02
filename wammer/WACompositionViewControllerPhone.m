@@ -73,32 +73,15 @@
 	self.toolbar.backgroundColor = nil;
 	self.toolbar.opaque = NO;
 	
-	if (WADucklingsEnabled()) {
+	self.containerView.backgroundColor = [UIColor clearColor];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WACompositionBackgroundPattern"]];
 	
-		self.containerView.backgroundColor = [UIColor whiteColor];
-		self.view.backgroundColor = [UIColor whiteColor];
-		
-	} else {
+	UIImageView *toolbarBackground = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"]] autorelease];
+	toolbarBackground.frame = self.toolbar.frame;
+	toolbarBackground.autoresizingMask = self.toolbar.autoresizingMask;
+	[self.toolbar.superview insertSubview:toolbarBackground belowSubview:self.toolbar];
 	
-		UIView *toolbarBackground = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		toolbarBackground.backgroundColor = [UIColor colorWithPatternImage:[[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"] irStandardImage]];
-		
-		toolbarBackground.layer.cornerRadius = 4;
-		toolbarBackground.frame = CGRectInset(self.toolbar.frame, 8, 0);
-		toolbarBackground.autoresizingMask = self.toolbar.autoresizingMask;
-		[self.toolbar.superview insertSubview:toolbarBackground belowSubview:self.toolbar];
-		
-		self.containerView.backgroundColor = nil;
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WACompositionBackgroundPattern"]];
 	
-		UIImage *bottomCapImage = [[UIImage imageNamed:@"WACompositionBackgroundBottomCap"] stretchableImageWithLeftCapWidth:16 topCapHeight:0];	
-		UIImageView *bottomCapView = [[[UIImageView alloc] initWithImage:bottomCapImage] autorelease];
-		bottomCapView.frame = IRGravitize(self.view.bounds, (CGSize){ CGRectGetWidth(self.view.bounds), bottomCapImage.size.height }, kCAGravityBottom);
-		bottomCapView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-		
-		[self.view addSubview:bottomCapView];
-	
-	}
 	
 }
 
@@ -184,18 +167,25 @@
 		[self.article.previews count] ? WAArticleAttachmentActivityViewLinkStyle :
 		[self.article.files count] ? WAArticleAttachmentActivityViewAttachmentsStyle :
 		WAArticleAttachmentActivityViewDefaultStyle;
+		
+	NSUInteger numberOfFiles = [self.article.files count];
 	
-	if (![self.article.files count]) {
+	if (!numberOfFiles) {
 		
 		[activityView setTitle:NSLocalizedString(@"ACTION_ADD",@"attachment activity view") forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
 	
 	} else {
-
-		[activityView setTitle:[NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"attachment activity view"), [self.article.files count]] forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
+	
+		NSString *titleFormatString = (numberOfFiles > 1) ? NSLocalizedString(@"COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT", nil) : NSLocalizedString(@"COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT", nil);
+		NSString *title = [NSString stringWithFormat:titleFormatString, numberOfFiles];
+	
+		[activityView setTitle:title forStyle:WAArticleAttachmentActivityViewAttachmentsStyle];
 	
 	}
 		
 	[activityView setTitle:NSLocalizedString(@"WEB_PREVIEW", @"attachment activity view") forStyle:WAArticleAttachmentActivityViewLinkStyle];
+	
+	[activityView sizeToFit];
 
 }
 
