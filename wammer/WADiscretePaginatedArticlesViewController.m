@@ -335,8 +335,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 		if (![self isViewLoaded])
 			return;
-			
-		//	FIXME if (!self.hasReceivedUserInteraction)
 		
 		if (timeTaken > 3)
 			return;
@@ -349,8 +347,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			return;
 		
 		if (![self.lastHandledReadObjectIdentifier isEqualToString:capturedLastReadObjectID]) {
-			[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
+			
+			//	Scrolling is annoying
+			//	[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
+			
 			self.lastHandledReadObjectIdentifier = self.lastReadObjectIdentifier;
+			
 		}
 			
 	}];	
