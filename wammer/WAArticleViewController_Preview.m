@@ -274,6 +274,9 @@ enum {
 	webView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	webView.delegate = self;
 	webView.scrollView.directionalLockEnabled = NO;
+	webView.scrollView.bounces = NO;
+	webView.scrollView.alwaysBounceVertical = NO;
+	webView.scrollView.alwaysBounceHorizontal = NO;
 		
 	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
 	
@@ -291,6 +294,9 @@ enum {
 	summaryWebView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	summaryWebView.delegate = self;
 	summaryWebView.scrollView.directionalLockEnabled = NO;
+	summaryWebView.scrollView.bounces = NO;
+	summaryWebView.scrollView.alwaysBounceVertical = NO;
+	summaryWebView.scrollView.alwaysBounceHorizontal = NO;
 	
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
 	
