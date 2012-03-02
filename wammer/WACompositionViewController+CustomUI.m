@@ -116,16 +116,18 @@
 	
 		WANavigationBar *navBar = ((WANavigationBar *)self.navigationBar);
 	
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			case UIUserInterfaceIdiomPad: {
-				navBar.customBackgroundView = [WANavigationBar defaultGradientBackgroundView];
-				break;
-			}
-			case UIUserInterfaceIdiomPhone: {
-				navBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
-				break;
-			}
-		}
+		//	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		//		case UIUserInterfaceIdiomPad: {
+		//			navBar.customBackgroundView = [WANavigationBar defaultGradientBackgroundView];
+		//			break;
+		//		}
+		//		case UIUserInterfaceIdiomPhone: {
+		//			navBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
+		//			break;
+		//		}
+		//	}
+		
+		navBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
 		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
 		
