@@ -487,32 +487,44 @@
 
 - (void) previewInspectionViewControllerDidRemove:(WAPreviewInspectionViewController *)inspector {
 
-	//	[inspector dismissModalViewControllerAnimated:YES];
+	BOOL const showsDeleteConfirmation = NO;
 	
-	__block __typeof__(self) nrSelf = self;
+	if (showsDeleteConfirmation) {
+
+		__block __typeof__(self) nrSelf = self;
+		
+		if (self.actionSheetController.managedActionSheet.visible)
+			return;
+		
+		if (!self.actionSheetController) {
+		
+			WAPreview *removedPreview = [self.article.previews anyObject];
+			NSParameterAssert([[inspector.preview objectID] isEqual:[removedPreview objectID]]);
+				
+			IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", nil) block:^{
+			
+				[removedPreview.article removePreviewsObject:removedPreview];
+				[inspector dismissModalViewControllerAnimated:YES];
+
+				nrSelf.actionSheetController = nil;
+				
+			}];
+			
+			self.actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:nil];
+			
+		}
+
+		[self.actionSheetController.managedActionSheet showInView:inspector.view];
 	
-	if (self.actionSheetController.managedActionSheet.visible)
-		return;
-	
-	if (!self.actionSheetController) {
+	} else {
 	
 		WAPreview *removedPreview = [self.article.previews anyObject];
 		NSParameterAssert([[inspector.preview objectID] isEqual:[removedPreview objectID]]);
-			
-		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", nil) block:^{
 		
-			[removedPreview.article removePreviewsObject:removedPreview];
-			[inspector dismissModalViewControllerAnimated:YES];
-
-			nrSelf.actionSheetController = nil;
-			
-		}];
-		
-		self.actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:nil];
-		
+		[removedPreview.article removePreviewsObject:removedPreview];
+		[inspector dismissModalViewControllerAnimated:YES];
+	
 	}
-
-	[self.actionSheetController.managedActionSheet showInView:inspector.view];
 	
 }
 
