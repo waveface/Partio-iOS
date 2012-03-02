@@ -428,9 +428,13 @@
 	self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 	
 	self.titleFont = [UIFont boldSystemFontOfSize:24.0f];
-	self.titleColor = [UIColor whiteColor];
+	self.titleColor = [UIColor colorWithWhite:0.125 alpha:1];
+
+	self.providerNameFont = [UIFont systemFontOfSize:14.0f];
+	self.providerNameColor = [UIColor colorWithWhite:0 alpha:1];
+	
 	self.textFont = [UIFont systemFontOfSize:18.0f];
-	self.textColor = [UIColor whiteColor];
+	self.textColor = [UIColor colorWithWhite:0.125 alpha:1];
 	
 	[self bringSubviewToFront:self.label];
 
