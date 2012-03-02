@@ -102,62 +102,63 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	self.navigationItem.titleView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	if (WADucklingsEnabled()) {
 	
-	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
+		self.navigationItem.titleView = WAStandardTitleView();
+		
+		self.navigationItem.leftBarButtonItem = ((^ {
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-  
-    __block __typeof__(self) nrSelf = self;
-			
-		IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
-		toolbar.items = [NSArray arrayWithObjects:
-		
-			((^ {
-			
-				if (WADucklingsEnabled()) {
-			
-					UIBarButtonItem *settingsItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)] autorelease];
+			UIBarButtonItem *settingsItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"settingsGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleSettings:)] autorelease];
 
-					[settingsItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-					
-					return settingsItem;
-				
-				}
-				
-				return WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-				
-					[nrSelf handleSettings:nil];
-								
-				});
+			[settingsItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+			
+			return settingsItem;
 		
-			})()),
-			
-			((^ {
-			
-				if (WADucklingsEnabled()) {
-				
-					UIBarButtonItem *composeItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
+		})());
+		
+		self.navigationItem.rightBarButtonItem = ((^ {
+		
+			UIBarButtonItem *composeItem = [[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"composeGlyph"] style:UIBarButtonItemStyleBordered target:self action:@selector(handleCompose:)] autorelease];
 
-					[composeItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+			[composeItem setBackgroundImage:[UIImage imageNamed:@"button"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+			
+			return composeItem;
+		
+		})());
+	
+	} else {
+	
+		self.navigationItem.titleView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+		
+		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
+		
+		self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
+		
+			__block __typeof__(self) nrSelf = self;
+				
+			IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
+			
+			toolbar.items = [NSArray arrayWithObjects:
+			
+				WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
 					
-					return composeItem;
+						[nrSelf handleSettings:nil];
+									
+				}),
 				
-				}
-				
-				return WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-				
+				WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
+					
 					[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
 					
-				});
+				}),
 			
-			})()),
+			nil];
 			
-		nil];
+			return toolbar;
 		
-		return toolbar;
+		})())];
 	
-	})())];
+	}
 			
 	return self;
   
