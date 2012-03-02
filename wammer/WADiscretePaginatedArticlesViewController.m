@@ -162,6 +162,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginatedView.horizontalSpacing = 32.0f;
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
+	self.paginatedView.scrollView.pagingEnabled = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
 		CGPoint convertedPoint = [nrPaginatedView.scrollView convertPoint:aPoint fromView:nrPaginatedView];
