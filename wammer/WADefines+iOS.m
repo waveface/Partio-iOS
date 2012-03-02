@@ -88,6 +88,8 @@ void kWADefaultBarButtonInitialize (void) {
 		kWADefaultBarButtonBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
 		kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
 		
+		#if 0
+		
 		switch (currentUIIdiom) {
 			case UIUserInterfaceIdiomPad: {
 				
@@ -115,24 +117,30 @@ void kWADefaultBarButtonInitialize (void) {
 			}
 			case UIUserInterfaceIdiomPhone: {
 				
-				kWADefaultBarButtonBorder = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:0 green:0 blue:0 alpha:.25]];
-				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.15] offset:(CGSize){ 0, 1 } spread:2];
+		#endif
+			
+				kWADefaultBarButtonBorder = [IRBorder borderForEdge:IREdgeNone withType:IRBorderTypeInset width:1 color:[UIColor colorWithRed:143.0/255.0 green:60.0/255.0 blue:32.0/255.0 alpha:1]];
+				kWADefaultBarButtonInnerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:1 alpha:0.5] offset:(CGSize){ 0, 1 } spread:2];
 				kWADefaultBarButtonShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:0.5] offset:(CGSize){ 0, 1 } spread:1];
 				
 				kWADefaultBarButtonTitleFont = [UIFont boldSystemFontOfSize:12];
-				kWADefaultBarButtonTitleColor = [UIColor whiteColor];
-				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:.25] offset:(CGSize){ 0, -1 } spread:1];
+				kWADefaultBarButtonTitleColor = [UIColor colorWithRed:100.0/255.0 green:43.0/255.0 blue:18.0/255.0 alpha:1];
+				kWADefaultBarButtonTitleShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:1 alpha:.25] offset:(CGSize){ 0, 1 } spread:1];
 				
-				kWADefaultBarButtonGradientFromColor = [UIColor colorWithWhite:0 alpha:0];
-				kWADefaultBarButtonGradientToColor = [UIColor colorWithWhite:0 alpha:.25];
-				kWADefaultBarButtonBackgroundColor = [UIColor colorWithWhite:0 alpha:0.1];
+				kWADefaultBarButtonGradientFromColor = [UIColor colorWithWhite:1 alpha:.125];
+				kWADefaultBarButtonGradientToColor = [UIColor colorWithWhite:1 alpha:0];	//	.25
+				kWADefaultBarButtonBackgroundColor = [UIColor colorWithWhite:0 alpha:0];	//	0.1
 				
 				kWADefaultBarButtonHighlightedGradientFromColor = kWADefaultBarButtonGradientFromColor;
 				kWADefaultBarButtonHighlightedGradientToColor = kWADefaultBarButtonGradientToColor;
-				kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+				kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithWhite:0 alpha:0.15];
 				
+		#if 0
+
 			}
 		}
+		
+		#endif
 		
 		kWADefaultBarButtonGradientColors = [NSArray arrayWithObjects:(id)kWADefaultBarButtonGradientFromColor.CGColor, (id)kWADefaultBarButtonGradientToColor.CGColor, nil];
 		kWADefaultBarButtonHighlightedGradientColors = [NSArray arrayWithObjects:(id)kWADefaultBarButtonHighlightedGradientFromColor.CGColor, (id)kWADefaultBarButtonHighlightedGradientToColor.CGColor, nil];
@@ -278,26 +286,32 @@ UIView * WAStandardTitleView (void) {
 	logotype.frame = IRGravitize(containerView.bounds, logotype.bounds.size, kCAGravityResizeAspect);
 	[containerView addSubview:logotype];
 	
-	if (WADucklingsEnabled()) {
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			case UIUserInterfaceIdiomPad: {
-				break;
-			}
-			case UIUserInterfaceIdiomPhone: {
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+
+		case UIUserInterfaceIdiomPhone: {
+
+			if (WADucklingsEnabled()) {
+				
 				logotype.frame = CGRectOffset(logotype.frame, 0, 1);
-				break;		
-			}
-		}	
-	} else {
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			case UIUserInterfaceIdiomPad: {
-				break;
-			}
-			case UIUserInterfaceIdiomPhone: {
+				
+			} else {
+					
 				logotype.frame = CGRectOffset(logotype.frame, -12, 1);
-				break;		
+				
 			}
-		}	
+			
+			break;
+		
+		}
+
+		case UIUserInterfaceIdiomPad: {
+
+			logotype.frame = CGRectOffset(logotype.frame, 0, 1);
+				
+			break;
+		
+		}
+	
 	}
 	
 	return containerView;
@@ -308,26 +322,10 @@ UILabel * WAStandardTitleLabel (void) {
 
 	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
 	label.text = NSLocalizedString(@"APP_TITLE", @"Application Title");
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-	
-		case UIUserInterfaceIdiomPad: {		
-			label.textColor = [UIColor colorWithWhite:0.35 alpha:1];
-			label.font = [UIFont fontWithName:@"Sansus Webissimo" size:20.0f];
-			label.shadowColor = [UIColor whiteColor];
-			label.shadowOffset = (CGSize){ 0, 1 };
-			break;
-		}
-		
-		case UIUserInterfaceIdiomPhone: {
-			label.textColor = [UIColor colorWithWhite:1 alpha:1];
-			label.font = [UIFont boldSystemFontOfSize:20.0f];
-			label.shadowColor = [UIColor blackColor];
-			label.shadowOffset = (CGSize){ 0, -1 };
-			break;
-		}
-	
-	}
+	label.textColor = [UIColor colorWithWhite:1 alpha:1];
+	label.font = [UIFont boldSystemFontOfSize:20.0f];
+	label.shadowColor = [UIColor blackColor];
+	label.shadowOffset = (CGSize){ 0, -1 };
 	
 	label.backgroundColor = nil;
 	label.opaque = NO;
