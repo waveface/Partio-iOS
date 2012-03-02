@@ -16,6 +16,8 @@
 #import "UIView+IRAdditions.h"
 #import "UIScrollView+IRAdditions.h"
 
+#import "WAArticleTextStackCell.h"
+
 #import <UIKit/UIGestureRecognizerSubclass.h>
 
 
@@ -53,14 +55,6 @@ enum {
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) UIView *previewBadgeWrapper;
 
-- (void) handleStackViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
-- (void) handleWebScrollViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer;
-
-@property (nonatomic, readwrite, assign) CGPoint lastStackViewContentOffset;
-@property (nonatomic, readwrite, assign) CGPoint lastWebScrollViewContentOffset;
-@property (nonatomic, readwrite, assign) UIGestureRecognizerState lastWebScrollViewPanGestureRecognizerState;
-@property (nonatomic, readwrite, assign) CGRect lastWebViewFrame;
-
 - (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender;
 @property (nonatomic, readwrite, retain) IRActionSheetController *previewActionSheetController;
 
@@ -71,7 +65,6 @@ enum {
 @synthesize state;
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
-@synthesize lastStackViewContentOffset, lastWebScrollViewContentOffset, lastWebScrollViewPanGestureRecognizerState, lastWebViewFrame;
 @synthesize previewActionSheetController;
 
 - (void) dealloc {
@@ -142,6 +135,18 @@ enum {
 
 }
 
+- (UIView *) scrollableStackElementWrapper {
+
+	return self.webViewWrapper;
+
+}
+
+- (UIScrollView *) scrollableStackElement {
+
+	return [(UIWebView *)self.wrappedView scrollView];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
@@ -155,67 +160,47 @@ enum {
 		
 	NSMutableArray *stackElements = [self.stackView mutableStackElements];
 	
-	//	self.previewBadge.preview = anyPreview;
-	//	self.previewBadge.link = nil;
-	//	
-	//	[stackElements insertObject:self.previewBadgeWrapper atIndex:(
-	//		[stackElements containsObject:(id)self.textStackCell] ? [stackElements indexOfObject:(id)self.textStackCell] : [stackElements count]
-	//	)];
-			
 	[stackElements addObject:self.webViewWrapper];
-	//	[stackElements addObject:self.toolbar];
 	
-
-	self.stackView.delaysContentTouches = YES;
-	self.stackView.canCancelContentTouches = YES;
-
 	self.stackView.delaysContentTouches = NO;
 	self.stackView.canCancelContentTouches = YES;
+	self.stackView.onTouchesShouldBeginWithEventInContentView = ^ (NSSet *touches, UIEvent *event, UIView *contentView) {
+	
+		UIView *currentWrapperView = [nrSelf scrollableStackElementWrapper];
+		UIView *currentWrappedView = [nrSelf scrollableStackElement];
+		
+		if (contentView != currentWrappedView)
+		if (![contentView isDescendantOfView:currentWrappedView])
+			return [contentView isKindOfClass:[UIControl class]];
+			
+		WAStackView *sv = nrSelf.stackView;
+		UIView *svContainer = nrSelf.stackView.superview;
+		
+		if (CGRectContainsRect([svContainer convertRect:sv.bounds fromView:sv], [svContainer convertRect:currentWrapperView.bounds fromView:currentWrapperView]))
+			return YES;
+		
+		return NO;
+	
+	};
+	
 	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
 	
-		UIView *wrappedView = [nrSelf wrappedView];
+		return NO;
 	
-		if (wrappedView)
-		if ((view == wrappedView) || [view isDescendantOfView:wrappedView])
+	};
+	
+	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
+	
+		if ((otherGR.view == [nrSelf scrollableStackElementWrapper]) || [otherGR.view isDescendantOfView:[nrSelf scrollableStackElementWrapper]])
 			return NO;
 		
 		return YES;
 	
 	};
 	
-	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
-	
-		return NO;
-	
-	};
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-
-		case UIUserInterfaceIdiomPad: {
+	self.stackView.panGestureRecognizer.delaysTouchesBegan = NO;
+	self.stackView.panGestureRecognizer.delaysTouchesEnded = NO;
 		
-			self.stackView.onDidLayoutSubviews = ^ {
-				
-				[self.headerView.superview bringSubviewToFront:self.headerView];
-				
-				self.headerView.center = (CGPoint){
-					self.headerView.center.x,
-					MAX(0, self.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(self.headerView.bounds)
-				};
-				
-			};
-			
-			break;
-			
-		}
-		
-		case UIUserInterfaceIdiomPhone: {
-		
-			break;
-		
-		}
-	
-	}
-	
 	if ([self isViewLoaded])
 		[self updateWrapperView];
 
@@ -274,9 +259,6 @@ enum {
 	webView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	webView.delegate = self;
 	webView.scrollView.directionalLockEnabled = NO;
-	webView.scrollView.bounces = NO;
-	webView.scrollView.alwaysBounceVertical = NO;
-	webView.scrollView.alwaysBounceHorizontal = NO;
 		
 	[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:[self preview].graphElement.url]]];
 	
@@ -294,9 +276,6 @@ enum {
 	summaryWebView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	summaryWebView.delegate = self;
 	summaryWebView.scrollView.directionalLockEnabled = NO;
-	summaryWebView.scrollView.bounces = NO;
-	summaryWebView.scrollView.alwaysBounceVertical = NO;
-	summaryWebView.scrollView.alwaysBounceHorizontal = NO;
 	
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
 	
@@ -767,11 +746,11 @@ enum {
 
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
 
-	CGFloat minHeaderSpacing = [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad ? 44 : 0;
-
-	if ([[self wrappedView] isDescendantOfView:anElement])
-		return (CGSize){ CGRectGetWidth(aStackView.bounds), CGRectGetHeight(aStackView.bounds) - minHeaderSpacing };	//	Stretchable
+	CGFloat minWrappedViewHeight = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 384 : CGRectGetHeight(aStackView.bounds);
 	
+	if ([[self wrappedView] isDescendantOfView:anElement])
+		return (CGSize){ CGRectGetWidth(aStackView.bounds), minWrappedViewHeight };	//	Stretchable
+			
 	if ((self.previewBadge == anElement) || [self.previewBadge isDescendantOfView:anElement]) {
 	
 		UIView *furthestWrapper = [self.previewBadge irAncestorInView:anElement.superview];
@@ -787,16 +766,12 @@ enum {
 		}];
 		
 		return (CGSize){
-			//	previewSize.width + sizeDelta.width,
 			CGRectGetWidth(aStackView.bounds),
 			previewSize.height + sizeDelta.height
 		};
 		
 	}
 	
-//	if ((self.toolbar == anElement) || [self.toolbar isDescendantOfView:anElement])
-//		return (CGSize){ CGRectGetWidth(aStackView.bounds), 44 };
-
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		return [super sizeThatFitsElement:anElement inStackView:aStackView];
 	
@@ -819,239 +794,6 @@ enum {
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-}
-
-- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-
-//	[self.stackView beginPostponingStackElementLayout];
-
-	if ([self irHasDifferentSuperClassMethodForSelector:_cmd])
-		[super scrollViewWillBeginDragging:scrollView];
-	
-//	for (UIView *aView in scrollView.subviews)
-//		if ([aView isKindOfClass:[UIWebView class]])
-//			aView.userInteractionEnabled = NO;
-	
-	self.lastStackViewContentOffset = self.stackView.contentOffset;
-	self.lastWebScrollViewContentOffset = self.webView.scrollView.contentOffset;
-
-}
-
-- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-
-	if ([self irHasDifferentSuperClassMethodForSelector:_cmd])
-		[super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
-	
-	if (!decelerate) {
-	
-//		[self.stackView endPostponingStackElementLayout];
-		
-//		for (UIView *aView in scrollView.subviews)
-//			if ([aView isKindOfClass:[UIWebView class]])
-//				aView.userInteractionEnabled = YES;
-			
-	}
-	
-}
-
-
-- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-
-	if ([self irHasDifferentSuperClassMethodForSelector:_cmd])
-		[super scrollViewDidEndDecelerating:scrollView];
-	
-//	[self.stackView endPostponingStackElementLayout];
-	
-//	for (UIView *aView in scrollView.subviews)
-//		if ([aView isKindOfClass:[UIWebView class]])
-//			aView.userInteractionEnabled = YES;
-	
-}
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super scrollViewDidScroll:scrollView];
-
-	if (scrollView != self.stackView)
-		return;
-	
-	self.lastWebScrollViewContentOffset = self.webView.scrollView.contentOffset;
-		
-	UIView *wbWrapper = self.webViewWrapper;
-	UIView *wrappedView = [self wrappedView];
-	
-	CGRect newWebViewFrame = (CGRect){
-		CGPointZero,
-		(CGSize){
-			CGRectGetWidth(wbWrapper.bounds),
-			CGRectGetHeight(wbWrapper.bounds) + MAX(0, self.stackView.contentOffset.y + CGRectGetHeight(self.stackView.bounds) - self.stackView.contentSize.height)
-		}
-	};
-		
-	if (!CGRectEqualToRect(wrappedView.frame, newWebViewFrame))
-		wrappedView.frame = newWebViewFrame;
-
-}
-
-- (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)targetContentOffset {
-
-	if (scrollView == self.stackView) {
-
-		CGPoint desiredTargetOffset = *targetContentOffset;
-		desiredTargetOffset.y = MIN(desiredTargetOffset.y, self.stackView.contentSize.height - CGRectGetHeight(self.stackView.bounds));
-		*targetContentOffset = desiredTargetOffset;
-	
-	}
-
-}
-
-- (void) handleStackViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer {
-
-	//	NSLog(@"%s %@ %x", __PRETTY_FUNCTION__, aPanGestureRecognizer, aPanGestureRecognizer.state);
-
-}
-
-- (void) handleWebScrollViewPanGesture:(UIPanGestureRecognizer *)aPanGestureRecognizer {
-
-	switch (aPanGestureRecognizer.state) {
-	
-		case UIGestureRecognizerStateBegan: {
-		
-			CGPoint currentOffset = self.webView.scrollView.contentOffset;
-			CGPoint currentTranslation = [aPanGestureRecognizer translationInView:self.webView.scrollView];
-			
-			self.lastWebScrollViewContentOffset = (CGPoint){
-				currentOffset.x + currentTranslation.x,
-				currentOffset.y + currentTranslation.y
-			};
-			
-			self.lastStackViewContentOffset = self.stackView.contentOffset;
-			self.lastWebViewFrame = self.webView.frame;
-			
-			//	NSLog(@"began. scroll view %@, stack view %@, last web view frame %@", NSStringFromCGPoint(lastWebScrollViewContentOffset), NSStringFromCGPoint(lastStackViewContentOffset), NSStringFromCGRect(self.lastWebViewFrame));
-			
-			break;
-		
-		}
-		
-		case UIGestureRecognizerStateChanged: {
-				
-			self.stackView.delegate = nil;
-		
-			CGFloat const minStackOffsetY = 0;
-			CGFloat const maxStackOffsetY = 224;
-			
-			UIScrollView *stackV = self.stackView;
-			UIScrollView *webSV = webView.scrollView;
-			UIView *webV = webView;
-			
-			CGPoint translationInStackView = [aPanGestureRecognizer translationInView:stackV];
-			CGFloat usableDeltaY = -1 * translationInStackView.y;
-			
-			CGPoint newStackOffset = lastStackViewContentOffset;
-			newStackOffset.y += usableDeltaY;
-			newStackOffset.y = MAX(minStackOffsetY, MIN(maxStackOffsetY, newStackOffset.y));
-			
-			CGFloat cappedDeltaY = newStackOffset.y - lastStackViewContentOffset.y;
-			
-			CGPoint newWebScrollViewOffset = self.lastWebScrollViewContentOffset;
-			newWebScrollViewOffset.x = webSV.contentOffset.x;
-			newWebScrollViewOffset.y += (usableDeltaY - cappedDeltaY);
-			
-			if (newWebScrollViewOffset.y > 0)
-			if (usableDeltaY < 0) {
-			
-				CGFloat stolenDeltaY = MAX(-1 * newWebScrollViewOffset.y, usableDeltaY);
-			
-				newStackOffset.y -= stolenDeltaY;
-				newWebScrollViewOffset.y += stolenDeltaY;
-				
-				cappedDeltaY -= stolenDeltaY;
-			
-			}
-			
-			
-			CGRect newWebViewFrame = lastWebViewFrame;
-			newWebViewFrame.size.height += cappedDeltaY;
-			
-			//	NSLog(@"usable delt %f, capped %f, newStackOffset %@, lastWebScrollViewContentOffset %@, lastWebViewFrame %@,  newWebScrollViewOffset %@, newWebViewFrame%@", usableDeltaY, cappedDeltaY, NSStringFromCGPoint(newStackOffset), NSStringFromCGPoint(lastWebScrollViewContentOffset), NSStringFromCGRect(lastWebViewFrame), NSStringFromCGPoint(newWebScrollViewOffset), NSStringFromCGRect(newWebViewFrame));
-			
-			[stackV setContentOffset:newStackOffset animated:NO];
-			stackV.contentInset = (UIEdgeInsets){ 0, 0, newStackOffset.y, 0 };
-			[webSV setContentOffset:newWebScrollViewOffset animated:NO];
-			webV.frame = newWebViewFrame;
-			
-			self.stackView.delegate = self;
-			
-			break;
-		
-		}
-		
-		case UIGestureRecognizerStateCancelled:
-		case UIGestureRecognizerStateEnded:
-		case UIGestureRecognizerStateFailed: {
-		
-			//	NSLog(@"finished %x", aPanGestureRecognizer.state);
-			
-			CGPoint velocityInStackView = [aPanGestureRecognizer velocityInView:self.stackView];
-			//	NSLog(@"velocity %@", NSStringFromCGPoint(velocityInStackView));
-			
-			//	self.stackView.delegate = nil;
-			
-			CGPoint oldContentOffset = self.stackView.contentOffset;
-			self.stackView.contentInset = (UIEdgeInsets){ 0, 0, MAX(0, oldContentOffset.y), 0};
-			[self.stackView setContentOffset:oldContentOffset animated:NO];
-
-			[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseIn animations:^{
-				
-				if ((self.stackView.contentOffset.y > 0) && (self.stackView.contentOffset.y < 224)) {
-				
-						if (velocityInStackView.y > 0) {
-
-							[self.stackView setContentOffset:(CGPoint){ 0, 0 } animated:NO];
-						
-						} else {
-						
-							[self.stackView setContentOffset:(CGPoint){ 0, 224 } animated:NO];
-							
-						}
-				
-				} else if ((velocityInStackView.y > 512) && self.webView.scrollView.contentOffset.y == 0) {
-				
-						[self.stackView setContentOffset:(CGPoint){ 0, 0 } animated:NO];
-				
-				}
-					
-			} completion: ^ (BOOL finished) {
-					
-			}];
-		
-			break;
-		
-		}
-		
-		default: {
-		
-			break;
-		
-		}
-	
-	}
-	
-	self.lastWebScrollViewPanGestureRecognizerState = aPanGestureRecognizer.state;
-
-}
-
-- (void) setLastWebScrollViewContentOffset:(CGPoint)newLastWebScrollViewContentOffset {
-
-	if (CGPointEqualToPoint(lastWebScrollViewContentOffset, newLastWebScrollViewContentOffset))
-		return;
-	
-	//	NSLog(@"%s %@ -> %@, %@", __PRETTY_FUNCTION__, NSStringFromCGPoint(lastWebScrollViewContentOffset) , NSStringFromCGPoint(newLastWebScrollViewContentOffset), [NSThread callStackSymbols]);
-	
-	lastWebScrollViewContentOffset = newLastWebScrollViewContentOffset;
 
 }
 

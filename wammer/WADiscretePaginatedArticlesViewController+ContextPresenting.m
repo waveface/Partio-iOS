@@ -314,22 +314,38 @@
 				
 					[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
 					
-						UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
+						WAView *enclosingView = [[[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
 												
 						CGRect toolbarRect = enclosingView.bounds;
 						toolbarRect.size.height = 44;
 						
-						IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:toolbarRect] autorelease];
+						__block IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:toolbarRect] autorelease];
 						[enclosingView addSubview:toolbar];
 						toolbar.usesCustomLayout = NO;
 						toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-						toolbar.items = [NSArray arrayWithObjects:
 						
-							[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+						toolbar.items = ((^ {
 						
-							shownArticleVC.navigationItem.rightBarButtonItem,
+							NSMutableArray *items = [NSMutableArray arrayWithObjects:
+							
+								[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+							
+								shownArticleVC.navigationItem.rightBarButtonItem,
+							
+							nil];
+							
+							if (shownArticleVC.navigationItem.rightBarButtonItems)
+								[items addObjectsFromArray:shownArticleVC.navigationItem.rightBarButtonItems];
+							
+							return items;
 						
-						nil];
+						})());
+						
+						enclosingView.onLayoutSubviews = ^ {
+						
+							[toolbar layoutSubviews];
+						
+						};
 						
 						WAButton *closeButton = [WAButton buttonWithType:UIButtonTypeCustom];
 						[enclosingView addSubview:closeButton];

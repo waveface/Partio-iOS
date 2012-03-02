@@ -19,11 +19,15 @@
 
 #import "WAOverlayBezel.h"
 
+#import "WAArticleTextStackElement.h"
 
-@interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate>
+
+@interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate, WAArticleTextStackElementDelegate>
 
 @property (nonatomic, readwrite, retain) WAArticleTextStackCell *topCell;
-@property (nonatomic, readwrite, retain) WAArticleTextStackCell *textStackCell;
+@property (nonatomic, readwrite, retain) WAArticleTextStackElement *textStackCell;
+@property (nonatomic, readwrite, assign) BOOL foldsTextStackCell;	//	Default is YES
+
 @property (nonatomic, readwrite, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewController *commentsVC;
 @property (nonatomic, readwrite, retain) UIPopoverController *commentsPopover;
@@ -37,7 +41,7 @@
 
 @implementation WAStackedArticleViewController
 @synthesize headerView;
-@synthesize topCell, textStackCell, textStackCellLabel, commentsVC, commentsPopover, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
+@synthesize topCell, textStackCell, foldsTextStackCell, textStackCellLabel, commentsVC, commentsPopover, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -47,15 +51,28 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	__block UIBarButtonItem *item = WABarButtonItem(nil, @"comments", ^ {
+	__block UIBarButtonItem *commentsItem = WABarButtonItem(nil, @"comments", ^ {
 	
-		[nrSelf presentCommentsViewController:[[nrSelf newArticleCommentsController] autorelease] sender:item];
+		[nrSelf presentCommentsViewController:[[nrSelf newArticleCommentsController] autorelease] sender:commentsItem];
 		
 	});
 	
-	self.navigationItem.rightBarButtonItem = item;
+//	__block UIBarButtonItem *actionItem = WABarButtonItem([UIImage imageNamed:@"WAActionGlyph"], nil, ^{
+//	
+//		//	?
+//		
+//	});
+	
+	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+	
+		commentsItem,
+		//	actionItem,
+	
+	nil];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+	
+	self.foldsTextStackCell = YES;
 		
 	return self;
 
@@ -80,55 +97,40 @@
 
 }
 
-- (WAArticleTextStackCell *) textStackCell {
+- (WAArticleTextStackElement *) textStackCell {
 
 	if (textStackCell)
 		return textStackCell;
-	
-	textStackCell = [[WAArticleTextStackCell cellFromNib] retain];
-	textStackCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
-	
-	textStackCell.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.3];
-	
-	__block WAArticleTextEmphasisLabel *cellLabel = self.textStackCellLabel;
-	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 0, 24, 0, 24 };
-	
-	cellLabel.frame = UIEdgeInsetsInsetRect(textStackCell.contentView.bounds, cellLabelInsets);
-	cellLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	[textStackCell.contentView addSubview:cellLabel];
-	
-	textStackCell.onSizeThatFits = ^ (CGSize proposedSize, CGSize superAnswer) {
 		
-		CGSize labelAnswer = [cellLabel sizeThatFits:(CGSize){
-			proposedSize.width - cellLabelInsets.left - cellLabelInsets.right,
-			proposedSize.height - cellLabelInsets.top - cellLabelInsets.bottom,
-		}];
-		
-		return (CGSize){
-			ceilf(labelAnswer.width + cellLabelInsets.left + cellLabelInsets.right),
-			MAX(32, ceilf(labelAnswer.height + cellLabelInsets.top + cellLabelInsets.bottom))
-		};
-		
-	};
+	textStackCell = [[WAArticleTextStackElement cellFromNib] retain];
 	
+	[textStackCell.textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+	nil]];
+	
+	textStackCell.delegate = self;
+
 	return textStackCell;
 
 }
 
-- (WAArticleTextEmphasisLabel *) textStackCellLabel {
+- (void) textStackElement:(WAArticleTextStackElement *)element didRequestContentSizeToggle:(id)sender {
 
-	if (textStackCellLabel)
-		return textStackCellLabel;
+	self.foldsTextStackCell = !self.foldsTextStackCell;
+	[self.stackView setNeedsLayout];
 	
-	textStackCellLabel = [[WAArticleTextEmphasisLabel alloc] initWithFrame:CGRectZero];
-	textStackCellLabel.backgroundColor = nil;
-	textStackCellLabel.opaque = NO;
-	textStackCellLabel.placeholder = @"This post has no body text";
-	[textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-	nil]];
+	CGSize oldContentSize = self.stackView.contentSize;
 	
-	return textStackCellLabel;
+	[UIView animateWithDuration:0.3 animations:^{
+		
+		[self.stackView layoutSubviews];
+		
+		CGSize newContentSize = self.stackView.contentSize;
+		
+		if (oldContentSize.height > newContentSize.height)
+			[self.stackView setContentOffset:CGPointZero];
+		
+	}];
 
 }
 
@@ -266,6 +268,10 @@
 	if ((anElement == self.commentsVC.view) || [self.commentsVC.view isDescendantOfView:anElement])
 		preferredHeight = MAX(144, preferredHeight);
 	
+	if (foldsTextStackCell)
+	if ((anElement == self.textStackCell) || [self.textStackCell isDescendantOfView:anElement])
+		preferredHeight = MIN(144, preferredHeight);
+	
 	return (CGSize){
 		CGRectGetWidth(aStackView.bounds),
 		preferredHeight
@@ -396,6 +402,8 @@
 
 	[super viewDidLoad];
 	
+	__block __typeof__(self) nrSelf = self;
+	
 	self.wrapperView = [[[UIView alloc] initWithFrame:self.stackView.frame] autorelease];
 	[self.stackView.superview addSubview:self.wrapperView];
 	[self.wrapperView addSubview:self.stackView];
@@ -504,6 +512,35 @@
 	
 	self.stackView.backgroundColor = nil;
 	self.wrapperView.backgroundColor = nil;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+
+		case UIUserInterfaceIdiomPad: {
+		
+			self.stackView.onDidLayoutSubviews = ^ {
+				
+				[nrSelf.headerView.superview bringSubviewToFront:nrSelf.headerView];
+				
+				UIView *ownHeaderView = nrSelf.headerView;
+				
+				nrSelf.headerView.center = (CGPoint){
+					nrSelf.headerView.center.x,
+					MAX(0, nrSelf.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(nrSelf.headerView.bounds)
+				};
+				
+			};
+			
+			break;
+			
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			break;
+		
+		}
+	
+	}
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
@@ -637,6 +674,8 @@
 
 }
 
+#if 0
+
 - (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -653,10 +692,37 @@
 
 }
 
+- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+
+	NSParameterAssert(scrollView == self.stackView);
+	
+	[self.stackView beginPostponingStackElementLayout];
+
+}
+
+- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+
+	NSParameterAssert(scrollView == self.stackView);
+	
+	if (!decelerate)
+		[self.stackView endPostponingStackElementLayout];
+	
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+
+	NSParameterAssert(scrollView == self.stackView);
+	
+	[self.stackView endPostponingStackElementLayout];
+	
+}
+
+
+#endif
+
 - (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
 
-	if (scrollView != self.stackView)
-		return;
+	NSParameterAssert(scrollView == self.stackView);
 	
 	CGPoint contentOffset = self.stackView.contentOffset;
 	CGFloat cap = -200.0f;
@@ -669,37 +735,42 @@
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+	
+	NSParameterAssert(scrollView == self.stackView);
+	
+	WAStackView *sv = self.stackView;
+	CGPoint oldSVOffset = sv.contentOffset;
+	CGPoint newSVOffset = (CGPoint){
+		oldSVOffset.x,
+		MIN(sv.contentSize.height - CGRectGetHeight(sv.bounds), oldSVOffset.y)
+	};
+		
+	if (!CGPointEqualToPoint(oldSVOffset, newSVOffset))
+		[sv setContentOffset:newSVOffset animated:NO];
+	
+}
 
-	//	?
-	
-	return;
-	
+- (void) scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)targetContentOffset {
+
 	if (scrollView == self.stackView) {
-	
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-			case UIUserInterfaceIdiomPad: {
-			
-				self.stackView.contentOffset = (CGPoint){
-				
-					self.stackView.contentOffset.x,
-					MIN(self.stackView.contentSize.height - CGRectGetHeight(self.stackView.bounds), self.stackView.contentOffset.y)
-				
-				};
-				
-				break;
-			
-			}
-			
-			case UIUserInterfaceIdiomPhone: {
-				
-				break;
-			
-			}
-		
-		}
+
+		CGPoint desiredTargetOffset = *targetContentOffset;
+		desiredTargetOffset.y = MIN(desiredTargetOffset.y, self.stackView.contentSize.height - CGRectGetHeight(self.stackView.bounds));
+		*targetContentOffset = desiredTargetOffset;
 	
 	}
+
+}
+
+- (UIView *) scrollableStackElementWrapper {
+
+	return nil;
+
+}
+
+- (UIScrollView *) scrollableStackElement {
+
+	return nil;
 
 }
 
