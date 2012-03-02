@@ -12,6 +12,8 @@
 
 @interface WADataStore (FetchingConveniences)
 
+- (NSFetchRequest *) newFetchRequestForAllArticles NS_RETURNS_RETAINED;
+
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;

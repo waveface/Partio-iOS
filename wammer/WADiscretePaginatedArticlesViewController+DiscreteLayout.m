@@ -128,13 +128,21 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	returnedView.clipsToBounds = NO;
 	returnedView.layer.shouldRasterize = YES;
 	
-	UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
+	__block UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -16, -16)] autorelease];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backdropView.layer.backgroundColor = [UIColor colorWithWhite:1 alpha:0.9].CGColor;
 	backdropView.layer.cornerRadius = 4;
 	backdropView.layer.shadowOpacity = 0.35;
 	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
 	[returnedView addSubview:backdropView];
+	
+	returnedView.onLayoutSubviews = ^ {
+	
+		backdropView.layer.shadowPath = [UIBezierPath bezierPathWithRect:backdropView.bounds].CGPath;
+	
+	};
+	
+	[returnedView setNeedsLayout];
 	
 	//	CGRect (^shadowRect)(CGSize, IRAnchor) = ^ (CGSize shadowImageSize, IRAnchor anchor) {
 	//	

@@ -338,25 +338,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (fetchedResultsController)
 		return fetchedResultsController;
 
-	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:(( ^ {
-		
-		NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
-		fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
-		nil];
-		
-		fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
-			@"files",
-			@"previews",
-			@"previews.graphElement",
-			@"previews.graphElement.images",
-		nil];
-		
-		fetchRequest.fetchBatchSize = 20;
-		
-		return fetchRequest;
-		
-	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	NSFetchRequest *fr = [[[WADataStore defaultStore] newFetchRequestForAllArticles] autorelease];
+
+	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
 	fetchedResultsController.delegate = self;
   
