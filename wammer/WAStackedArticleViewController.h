@@ -9,7 +9,7 @@
 #import "WAArticleViewController.h"
 #import "WAStackView.h"
 
-@class WAArticleTextStackCell, WAArticleTextEmphasisLabel, WAArticleCommentsViewController;
+@class WAArticleTextStackCell, WAArticleTextStackElement, WAArticleTextEmphasisLabel, WAArticleCommentsViewController;
 
 @interface WAStackedArticleViewController : WAArticleViewController <UITableViewDelegate, WAStackViewDelegate>
 
@@ -24,11 +24,14 @@
 //	Exposed for subclasses only
 
 @property (nonatomic, readonly, retain) WAArticleTextStackCell *topCell;
-@property (nonatomic, readonly, retain) WAArticleTextStackCell *textStackCell;
+@property (nonatomic, readonly, retain) WAArticleTextStackElement *textStackCell;
 @property (nonatomic, readonly, retain) WAArticleTextEmphasisLabel *textStackCellLabel;
 @property (nonatomic, readonly, retain) WAArticleCommentsViewController *commentsVC;
 
 - (WAArticleCommentsViewController *) newArticleCommentsController NS_RETURNS_RETAINED;
 - (void) presentCommentsViewController:(WAArticleCommentsViewController *)controller sender:(id)sender;
+
+- (UIView *) scrollableStackElementWrapper;
+- (UIScrollView *) scrollableStackElement;
 
 @end

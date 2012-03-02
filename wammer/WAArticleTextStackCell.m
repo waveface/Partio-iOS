@@ -10,6 +10,8 @@
 #import "WADefines.h"
 #import "WAArticle.h"
 
+#import "UIResponder+IRAdditions.h"
+
 
 @interface WAArticleTextStackCell ()
 - (void) waInit;
@@ -20,10 +22,8 @@
 
 + (id) cellFromNib {
 
-	return [[[[UINib nibWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]] instantiateWithOwner:nil options:nil] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-		return [evaluatedObject isKindOfClass:[self class]];
-	}]] lastObject];
-
+	return [self instanceFromNib];
+	
 }
 
 - (void) dealloc {
