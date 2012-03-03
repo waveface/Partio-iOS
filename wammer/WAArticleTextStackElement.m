@@ -23,6 +23,7 @@
 
 
 @implementation WAArticleTextStackElement
+@synthesize delegate;
 @synthesize textStackCellLabel, contentToggle;
 
 + (id) cellFromNib {
@@ -36,6 +37,8 @@
 }
 
 - (void) dealloc {
+
+	[self irRemoveObserverBlocksForKeyPath:@"textStackCellLabel.label.lastDrawnRectRequiredTailTruncation"];
 
 	[textStackCellLabel release];
 	[contentToggle release];
