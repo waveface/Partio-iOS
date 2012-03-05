@@ -106,6 +106,18 @@
 /* Text to show when Cloud is available, but the Station is not responsive */
 "ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "無法連上您的 Station。有些資料可能會稍晚纔能同步。";
 
+/* Article entity sync failure alert message for no underlying error */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION";
+
+/* Article entity sync failure alert title */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "無法上傳";
+
+/* Failed, underlying error %@ with reason %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "上傳時發生錯誤：%@ (%@)。本文已存成草稿。";
+
+/* Failed, underlying error description %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
+
 /* Description for authentication failure */
 "ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface 現在無法登錄您的帳號：";
 
