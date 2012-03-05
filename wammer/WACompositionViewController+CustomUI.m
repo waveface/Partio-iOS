@@ -6,11 +6,12 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import "WACompositionViewController+CustomUI.h"
-#import "IRBarButtonItem.h"
-#import "IRBindings.h"
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 #import "WADefines.h"
+
+#import "WACompositionViewController+CustomUI.h"
 
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
@@ -177,11 +178,10 @@
 				
 			});		
 		
-		} onFailure: ^ {
+		} onFailure: ^ (NSError *error) {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				NSLog(@"Article upload failed.  Help!");
 				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
 				
 				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
@@ -189,6 +189,15 @@
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 					[errorBezel dismiss];
 				});
+				
+				if (error) {
+				
+					NSString *title = [error localizedDescription];
+					NSString *description = [error localizedFailureReason];
+				
+					[[[[IRAlertView alloc] initWithTitle:title message:description delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ACTION_OKAY", nil), nil] autorelease] show];
+				
+				}
 			
 			});
 					
