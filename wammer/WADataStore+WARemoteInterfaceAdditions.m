@@ -37,13 +37,18 @@
 
 }
 
-- (void) updateArticlesWithCompletion:(void(^)(void))aBlock {
+- (void) updateArticlesWithCompletion:(void(^)(NSError *))aBlock {
 
-	[self updateArticlesOnSuccess:aBlock onFailure:aBlock];
+	[self updateArticlesOnSuccess: ^ {
+	
+		if (aBlock)
+			aBlock(nil);
+	
+	} onFailure:aBlock];
 
 }
 
-- (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
+- (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
@@ -68,13 +73,13 @@
 	
 		if (!didFinish) {
 			if (failureBlock)
-				failureBlock();
+				failureBlock(anError);
 			return;
 		}
 		
 		if (![temporalContext save:nil]) {
 			if (failureBlock)
-				failureBlock();
+				failureBlock(anError);
 			return;
 		}
 		
@@ -85,13 +90,18 @@
 	
 }
 
-- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock {
+- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(NSError *))aBlock {
 
-	[self uploadArticle:anArticleURI onSuccess:aBlock onFailure:aBlock];
+	[self uploadArticle:anArticleURI onSuccess:^ {
+	
+		if (aBlock)
+			aBlock(nil);
+	
+	} onFailure:aBlock];
 
 }
 
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
+- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	__block __typeof__(self) nrSelf = self;
 	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
@@ -109,17 +119,18 @@
 		if (!didFinish) {
 			
 			if (failureBlock)
-				failureBlock();
+				failureBlock(anError);
 			
 			cleanup();
 			return;
 			
 		}
 		
+		NSError *savingError = nil;
 		if (![temporalContext save:nil]) {
 			
 			if (failureBlock)
-				failureBlock();
+				failureBlock(savingError);
 			
 			cleanup();
 			return;

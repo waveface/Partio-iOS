@@ -159,7 +159,7 @@
 
         [AppDelegate() endNetworkActivity];
 				
-			} onFailure: ^ {
+			} onFailure: ^ (NSError *error) {
 			
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
