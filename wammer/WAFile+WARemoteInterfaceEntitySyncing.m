@@ -17,6 +17,11 @@
 #import "QuartzCore+IRAdditions.h"
 
 
+NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
+
+#define kWAFileEntitySyncingError(code, descriptionKey, reasonKey) [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil]
+
+
 NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
 NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
 NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
@@ -350,6 +355,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					
 				} onFailure: ^ (NSError *error) {
 				
+					NSCParameterAssert(error);
+				
 					if (aCallback)
 						aCallback(error);
 					
@@ -445,7 +452,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			} else {
 			
 				if (completionBlock)
-					completionBlock(NO, nil, nil, nil);
+					completionBlock(NO, nil, nil, lastError);
 			
 			}
 			

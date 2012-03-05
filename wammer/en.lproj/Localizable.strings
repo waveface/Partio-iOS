@@ -106,6 +106,18 @@
 /* Text to show when Cloud is available, but the Station is not responsive */
 "ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "We’re having trouble connecting to your Station.";
 
+/* Article entity sync failure alert message for no underlying error */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly.  The post has been saved as a draft.";
+
+/* Article entity sync failure alert title */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
+
+/* Failed, underlying error %@ with reason %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — the post has been saved as a draft.";
+
+/* Failed, underlying error description %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — the post has been saved as a draft.";
+
 /* Description for authentication failure */
 "ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface has trouble authenticating your account: ";
 

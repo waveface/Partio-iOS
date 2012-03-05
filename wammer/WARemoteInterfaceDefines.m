@@ -59,7 +59,9 @@ IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NS
 	
 	return [[ ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
-		aFailureBlock(WARemoteInterfaceGenericError(inResponseOrNil, inResponseContext));
+		NSError *error = WARemoteInterfaceGenericError(inResponseOrNil, inResponseContext);
+		
+		aFailureBlock(error);
 		
 	} copy] autorelease];
 

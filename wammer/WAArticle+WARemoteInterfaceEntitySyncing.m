@@ -14,6 +14,11 @@
 #import "IRAsyncOperation.h"
 
 
+NSString * const kWAArticleEntitySyncingErrorDomain = @"com.waveface.wammer.WAArticle.entitySyncing.error";
+NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey) {
+	return [NSError irErrorWithDomain:kWAArticleEntitySyncingErrorDomain code:0 descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil];
+}
+
 NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
 NSString * const kWAArticleSyncDefaultStrategy = @"WAArticleSyncMergeLastBatchStrategy";
 NSString * const kWAArticleSyncFullyFetchOnlyStrategy = @"WAArticleSyncFullyFetchOnlyStrategy";
@@ -23,7 +28,6 @@ NSString * const kWAArticleSyncRangeStart = @"WAArticleSyncRangeStart";
 NSString * const kWAArticleSyncRangeEnd = @"WAArticleSyncRangeEnd";
 
 NSString * const kWAArticleSyncProgressCallback = @"WAArticleSyncProgressCallback";
-
 NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 @implementation WAArticle (WARemoteInterfaceEntitySyncing)
@@ -383,6 +387,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[operationQueue setSuspended:YES];
 		
 		operationQueue.maxConcurrentOperationCount = 1;
+		
+		BOOL (^dependentOperationCancelledOrFailed)(IRAsyncOperation *) = ^ (IRAsyncOperation *self) {
+			
+			for (IRAsyncOperation *op in self.dependencies)
+			if ([op isCancelled] || ([op isFinished] && (!op.results || [op.results isKindOfClass:[NSError class]])))
+				return YES;
+			
+			return NO;
+			
+		};
+		
+		NSError *dependentOperationCancelledOrFailedError = WAArticleEntitySyncingError(0, @"ARTICLE_SYNC_ERROR_DEPENDENT_OPERATION_FAILED_TITLE", @"ARTICLE_SYNC_ERROR_DEPENDENT_OPERATION_FAILED_DESCRIPTION");
 	
 		WAPreview *aPreview = [self.previews anyObject];
 		NSURL *previewURL = [NSURL URLWithString:(aPreview.graphElement.url ? aPreview.graphElement.url : aPreview.url)];
@@ -393,7 +409,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if (primaryImageURL)
 				[resultsDictionary setObject:primaryImageURL forKey:@"previewImageURL"];
 			
-			[operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
+			__block IRAsyncOperation *nrPreviewOp = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
+			
+				if (dependentOperationCancelledOrFailed(nrPreviewOp)) {
+					aCallback(dependentOperationCancelledOrFailedError);
+					return;
+				}
 			
 				[ri retrievePreviewForURL:previewURL onSuccess:^(NSDictionary *aPreviewRep) {
 				
@@ -401,18 +422,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					
 				} onFailure: ^ (NSError *error) {
 				
-					aCallback(nil);
+					aCallback(error);
 					
 				}];
 				
 			} completionBlock: ^ (id results) {
 			
-				if (!results)
+				if ([results isKindOfClass:[NSError class]])
 					return;
-			
+				
 				[resultsDictionary setObject:results forKey:@"previewEntity"];
 				
-			}]];
+			}];
+			
+			[operationQueue addOperation:nrPreviewOp];
 		
 		}
 		
@@ -424,17 +447,29 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 			[representedFile resourceURL];
 			
-			[operationQueue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
+			__block IRAsyncOperation *nrFileOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
+				
+				if (dependentOperationCancelledOrFailed(nrFileOperation)) {
+					aCallback(dependentOperationCancelledOrFailedError);
+					return;
+				}
 				
 				[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
 				
-					if (![temporalContext save:nil]) {
-						aCallback(nil);
+					if (!didFinish) {
+						NSCParameterAssert(anError);
+						aCallback(anError);
+						return;
+					}
+				
+					NSError *savingError = nil;
+					if (![temporalContext save:&savingError]) {
+						aCallback(savingError);
 						return;
 					}
 					
 					WAFile *savedFile = (WAFile *)prospectiveUnsavedObject;
-					NSParameterAssert(savedFile.article);
+					NSCParameterAssert(savedFile.article);
 					
 					aCallback(savedFile.identifier);
 					
@@ -442,10 +477,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 			} completionBlock:^(id results) {
 			
-				if (!results) {
-					NSLog(@"Error injecting file.");
+				if ([results isKindOfClass:[NSError class]])
 					return;
-				}
 			
 				NSMutableArray *fileIdentifiers = [resultsDictionary objectForKey:@"fileIdentifiers"];
 				if (!fileIdentifiers) {
@@ -455,11 +488,28 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 				[fileIdentifiers addObject:results];
 			
-			}]];
+			}];
+			
+			[operationQueue addOperation:nrFileOperation];
 			
 		}];
 		
-		IRAsyncOperation *finalOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
+		__block IRAsyncOperation *nrFinalOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
+		
+			if (dependentOperationCancelledOrFailed(nrFinalOperation)) {
+			
+				for (IRAsyncOperation *dependentOp in nrFinalOperation.dependencies) {
+					if ([dependentOp.results isKindOfClass:[NSError class]]) {
+					
+						aCallback((NSError *)dependentOp.results);
+						return;
+					}
+				}
+			
+				aCallback(dependentOperationCancelledOrFailedError);
+				return;
+				
+			}
 		
 			NSString *postGroupIdentifier = [resultsDictionary objectForKey:@"postGroupIdentifier"];
 			NSString *postText = [resultsDictionary objectForKey:@"postText"];
@@ -537,11 +587,17 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		}];
 		
-		[operationQueue.operations enumerateObjectsUsingBlock: ^ (NSOperation *anOperation, NSUInteger idx, BOOL *stop) {
-			[finalOperation addDependency:anOperation];
+		NSArray *allOps = operationQueue.operations;
+		[allOps enumerateObjectsUsingBlock: ^ (NSOperation *anOperation, NSUInteger idx, BOOL *stop) {
+		
+			if (idx != 0)
+				[anOperation addDependency:[allOps objectAtIndex:(idx - 1)]];
+
+			[nrFinalOperation addDependency:anOperation];
+			
 		}];
 		
-		[operationQueue addOperation:finalOperation];
+		[operationQueue addOperation:nrFinalOperation];
 		[operationQueue setSuspended:NO];
 	
 	} else {
