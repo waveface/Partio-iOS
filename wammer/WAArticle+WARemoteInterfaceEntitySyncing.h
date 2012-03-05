@@ -9,9 +9,8 @@
 #import "WAArticle.h"
 #import "WARemoteInterfaceEntitySyncing.h"
 
-
-#ifndef __WAArticle_EntitySyncing__
-#define __WAArticle_EntitySyncing__
+extern NSString * const kWAArticleEntitySyncingErrorDomain;
+extern NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey);
 
 extern NSString * const kWAArticleSyncStrategy; //  key
 typedef NSString * const WAArticleSyncStrategy;
@@ -29,8 +28,6 @@ extern NSString * const kWAArticleSyncRangeEnd;
 extern NSString * const kWAArticleSyncProgressCallback;
 typedef void (^WAArticleSyncProgressCallback)(BOOL hasDoneWork, NSManagedObjectContext *usedMOC, NSArray *currentObjects, NSError *error);
 //	If set, invoked intermittently for kWAArticleSyncFullyFetchOnlyStrategy
-
-#endif
 
 
 @interface WAArticle (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>

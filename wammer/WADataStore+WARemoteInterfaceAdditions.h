@@ -11,11 +11,12 @@
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
 
+
 @interface WADataStore (WARemoteInterfaceAdditions)
 
 - (BOOL) hasDraftArticles;
-- (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
+- (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
+- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 - (BOOL) isUploadingArticle:(NSURL *)anObjectURI;	//	Really?
 
