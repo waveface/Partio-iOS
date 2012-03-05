@@ -1019,10 +1019,22 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (photoPost) {
 		
 		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
+		
+		pushedVC.navigationItem.leftBarButtonItem = WATransparentBlackBackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
+			
+			[pushedVC.navigationController popViewControllerAnimated:YES];
+		
+		});
 	
 	} else {
 		
 		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+		
+		pushedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
+			
+			[pushedVC.navigationController popViewControllerAnimated:YES];
+		
+		});
 	
 	}
 
@@ -1040,12 +1052,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	//			nrSelf.navigationItem.backBarButtonItem = nil;
 	//			
 	//		};
-
-	pushedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
-		
-		[pushedVC.navigationController popViewControllerAnimated:YES];
-	
-	});
 		
 	pushedVC.navigationItem.hidesBackButton = YES;
 		
