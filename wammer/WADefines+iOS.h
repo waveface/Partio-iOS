@@ -34,6 +34,7 @@ extern BOOL WAIsXCallbackURL (NSURL *anURL, NSString **outCommand, NSDictionary 
 
 extern IRBarButtonItem * WABarButtonItem (UIImage *image, NSString *title, void(^block)(void));
 extern IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *title, void(^block)(void));
+extern IRBarButtonItem * WATransparentBlackBackBarButtonItem (UIImage *image, NSString *title, void(^block)(void));
 
 extern UIButton * WAButtonForImage (UIImage *anImage);
 extern UIButton * WAToolbarButtonForImage (UIImage *anImage, NSString *aAccessbilityLabel);

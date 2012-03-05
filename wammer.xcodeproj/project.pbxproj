@@ -216,6 +216,90 @@
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
 		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
 		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
+		FFA6FB071504BD2B0006D277 /* UINavigationBarAddButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB31504BD2B0006D277 /* UINavigationBarAddButton.png */; };
+		FFA6FB081504BD2B0006D277 /* UINavigationBarAddButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB41504BD2B0006D277 /* UINavigationBarAddButton@2x.png */; };
+		FFA6FB091504BD2B0006D277 /* UINavigationBarBackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB51504BD2B0006D277 /* UINavigationBarBackArrow.png */; };
+		FFA6FB0A1504BD2B0006D277 /* UINavigationBarBackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB61504BD2B0006D277 /* UINavigationBarBackArrow@2x.png */; };
+		FFA6FB0B1504BD2B0006D277 /* UINavigationBarBlackOpaqueBack.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB71504BD2B0006D277 /* UINavigationBarBlackOpaqueBack.png */; };
+		FFA6FB0C1504BD2B0006D277 /* UINavigationBarBlackOpaqueBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB81504BD2B0006D277 /* UINavigationBarBlackOpaqueBack@2x.png */; };
+		FFA6FB0D1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAB91504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground.png */; };
+		FFA6FB0E1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FABA1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground@2x.png */; };
+		FFA6FB0F1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FABB1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed.png */; };
+		FFA6FB101504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FABC1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed@2x.png */; };
+		FFA6FB111504BD2B0006D277 /* UINavigationBarBlackOpaqueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FABD1504BD2B0006D277 /* UINavigationBarBlackOpaqueButton.png */; };
+		FFA6FB121504BD2B0006D277 /* UINavigationBarBlackOpaqueButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FABE1504BD2B0006D277 /* UINavigationBarBlackOpaqueButton@2x.png */; };
+		FFA6FB131504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FABF1504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed.png */; };
+		FFA6FB141504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC01504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed@2x.png */; };
+		FFA6FB151504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC11504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground.png */; };
+		FFA6FB161504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC21504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground@2x.png */; };
+		FFA6FB171504BD2B0006D277 /* UINavigationBarBlackTranslucentBack.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC31504BD2B0006D277 /* UINavigationBarBlackTranslucentBack.png */; };
+		FFA6FB181504BD2B0006D277 /* UINavigationBarBlackTranslucentBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC41504BD2B0006D277 /* UINavigationBarBlackTranslucentBack@2x.png */; };
+		FFA6FB191504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC51504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground.png */; };
+		FFA6FB1A1504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC61504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground@2x.png */; };
+		FFA6FB1B1504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC71504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed.png */; };
+		FFA6FB1C1504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC81504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed@2x.png */; };
+		FFA6FB1D1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAC91504BD2B0006D277 /* UINavigationBarBlackTranslucentButton.png */; };
+		FFA6FB1E1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FACA1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton@2x.png */; };
+		FFA6FB1F1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FACB1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed.png */; };
+		FFA6FB201504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FACC1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed@2x.png */; };
+		FFA6FB211504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FACD1504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground.png */; };
+		FFA6FB221504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FACE1504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground@2x.png */; };
+		FFA6FB231504BD2B0006D277 /* UINavigationBarDefaultBack.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FACF1504BD2B0006D277 /* UINavigationBarDefaultBack.png */; };
+		FFA6FB241504BD2B0006D277 /* UINavigationBarDefaultBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD01504BD2B0006D277 /* UINavigationBarDefaultBack@2x.png */; };
+		FFA6FB251504BD2B0006D277 /* UINavigationBarDefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD11504BD2B0006D277 /* UINavigationBarDefaultBackground.png */; };
+		FFA6FB261504BD2B0006D277 /* UINavigationBarDefaultBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD21504BD2B0006D277 /* UINavigationBarDefaultBackground@2x.png */; };
+		FFA6FB271504BD2B0006D277 /* UINavigationBarDefaultBackPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD31504BD2B0006D277 /* UINavigationBarDefaultBackPressed.png */; };
+		FFA6FB281504BD2B0006D277 /* UINavigationBarDefaultBackPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD41504BD2B0006D277 /* UINavigationBarDefaultBackPressed@2x.png */; };
+		FFA6FB291504BD2B0006D277 /* UINavigationBarDefaultButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD51504BD2B0006D277 /* UINavigationBarDefaultButton.png */; };
+		FFA6FB2A1504BD2B0006D277 /* UINavigationBarDefaultButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD61504BD2B0006D277 /* UINavigationBarDefaultButton@2x.png */; };
+		FFA6FB2B1504BD2B0006D277 /* UINavigationBarDefaultButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD71504BD2B0006D277 /* UINavigationBarDefaultButtonPressed.png */; };
+		FFA6FB2C1504BD2B0006D277 /* UINavigationBarDefaultButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD81504BD2B0006D277 /* UINavigationBarDefaultButtonPressed@2x.png */; };
+		FFA6FB2D1504BD2B0006D277 /* UINavigationBarDefaultTallBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAD91504BD2B0006D277 /* UINavigationBarDefaultTallBackground.png */; };
+		FFA6FB2E1504BD2B0006D277 /* UINavigationBarDefaultTallBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FADA1504BD2B0006D277 /* UINavigationBarDefaultTallBackground@2x.png */; };
+		FFA6FB2F1504BD2B0006D277 /* UINavigationBarDoneButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FADB1504BD2B0006D277 /* UINavigationBarDoneButton.png */; };
+		FFA6FB301504BD2B0006D277 /* UINavigationBarDoneButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FADC1504BD2B0006D277 /* UINavigationBarDoneButton@2x.png */; };
+		FFA6FB311504BD2B0006D277 /* UINavigationBarDoneButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FADD1504BD2B0006D277 /* UINavigationBarDoneButtonPressed.png */; };
+		FFA6FB321504BD2B0006D277 /* UINavigationBarDoneButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FADE1504BD2B0006D277 /* UINavigationBarDoneButtonPressed@2x.png */; };
+		FFA6FB331504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FADF1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack.png */; };
+		FFA6FB341504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE01504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack@2x.png */; };
+		FFA6FB351504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE11504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground.png */; };
+		FFA6FB361504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE21504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground@2x.png */; };
+		FFA6FB371504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE31504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed.png */; };
+		FFA6FB381504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE41504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed@2x.png */; };
+		FFA6FB391504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE51504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton.png */; };
+		FFA6FB3A1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE61504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton@2x.png */; };
+		FFA6FB3B1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE71504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed.png */; };
+		FFA6FB3C1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE81504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed@2x.png */; };
+		FFA6FB3D1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAE91504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack.png */; };
+		FFA6FB3E1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAEA1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack@2x.png */; };
+		FFA6FB3F1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAEB1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground.png */; };
+		FFA6FB401504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAEC1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground@2x.png */; };
+		FFA6FB411504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAED1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed.png */; };
+		FFA6FB421504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAEE1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed@2x.png */; };
+		FFA6FB431504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAEF1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton.png */; };
+		FFA6FB441504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF01504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton@2x.png */; };
+		FFA6FB451504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF11504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed.png */; };
+		FFA6FB461504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF21504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed@2x.png */; };
+		FFA6FB471504BD2B0006D277 /* UINavigationBarMiniDefaultBack.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF31504BD2B0006D277 /* UINavigationBarMiniDefaultBack.png */; };
+		FFA6FB481504BD2B0006D277 /* UINavigationBarMiniDefaultBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF41504BD2B0006D277 /* UINavigationBarMiniDefaultBack@2x.png */; };
+		FFA6FB491504BD2B0006D277 /* UINavigationBarMiniDefaultBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF51504BD2B0006D277 /* UINavigationBarMiniDefaultBackground.png */; };
+		FFA6FB4A1504BD2B0006D277 /* UINavigationBarMiniDefaultBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF61504BD2B0006D277 /* UINavigationBarMiniDefaultBackground@2x.png */; };
+		FFA6FB4B1504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF71504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed.png */; };
+		FFA6FB4C1504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF81504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed@2x.png */; };
+		FFA6FB4D1504BD2B0006D277 /* UINavigationBarMiniDefaultButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAF91504BD2B0006D277 /* UINavigationBarMiniDefaultButton.png */; };
+		FFA6FB4E1504BD2B0006D277 /* UINavigationBarMiniDefaultButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAFA1504BD2B0006D277 /* UINavigationBarMiniDefaultButton@2x.png */; };
+		FFA6FB4F1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAFB1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed.png */; };
+		FFA6FB501504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAFC1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed@2x.png */; };
+		FFA6FB511504BD2B0006D277 /* UINavigationBarMiniDoneButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAFD1504BD2B0006D277 /* UINavigationBarMiniDoneButton.png */; };
+		FFA6FB521504BD2B0006D277 /* UINavigationBarMiniDoneButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAFE1504BD2B0006D277 /* UINavigationBarMiniDoneButton@2x.png */; };
+		FFA6FB531504BD2B0006D277 /* UINavigationBarMiniRemoveButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FAFF1504BD2B0006D277 /* UINavigationBarMiniRemoveButton.png */; };
+		FFA6FB541504BD2B0006D277 /* UINavigationBarMiniRemoveButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB001504BD2B0006D277 /* UINavigationBarMiniRemoveButton@2x.png */; };
+		FFA6FB551504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB011504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed.png */; };
+		FFA6FB561504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB021504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed@2x.png */; };
+		FFA6FB571504BD2B0006D277 /* UINavigationBarRemoveButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB031504BD2B0006D277 /* UINavigationBarRemoveButton.png */; };
+		FFA6FB581504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB041504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png */; };
+		FFA6FB591504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB051504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png */; };
+		FFA6FB5A1504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA6FB061504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
 		FFA9C962144E967F0001BA25 /* IRLabelTestingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA9C960144E967F0001BA25 /* IRLabelTestingViewController.m */; };
 		FFA9C965144E96FB0001BA25 /* IRLabelTestingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA9C964144E96FB0001BA25 /* IRLabelTestingViewController.xib */; };
@@ -1222,6 +1306,90 @@
 		FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Reachability.h"; sourceTree = "<group>"; };
 		FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Reachability.m"; sourceTree = "<group>"; };
 		FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRRecurrenceMachine.xcodeproj; path = external/IRRecurrenceMachine/IRRecurrenceMachine.xcodeproj; sourceTree = "<group>"; };
+		FFA6FAB31504BD2B0006D277 /* UINavigationBarAddButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarAddButton.png; path = Resources/UINavigationBarAddButton.png; sourceTree = "<group>"; };
+		FFA6FAB41504BD2B0006D277 /* UINavigationBarAddButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarAddButton@2x.png"; path = "Resources/UINavigationBarAddButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FAB51504BD2B0006D277 /* UINavigationBarBackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBackArrow.png; path = Resources/UINavigationBarBackArrow.png; sourceTree = "<group>"; };
+		FFA6FAB61504BD2B0006D277 /* UINavigationBarBackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBackArrow@2x.png"; path = "Resources/UINavigationBarBackArrow@2x.png"; sourceTree = "<group>"; };
+		FFA6FAB71504BD2B0006D277 /* UINavigationBarBlackOpaqueBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackOpaqueBack.png; path = Resources/UINavigationBarBlackOpaqueBack.png; sourceTree = "<group>"; };
+		FFA6FAB81504BD2B0006D277 /* UINavigationBarBlackOpaqueBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackOpaqueBack@2x.png"; path = "Resources/UINavigationBarBlackOpaqueBack@2x.png"; sourceTree = "<group>"; };
+		FFA6FAB91504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackOpaqueBackground.png; path = Resources/UINavigationBarBlackOpaqueBackground.png; sourceTree = "<group>"; };
+		FFA6FABA1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackOpaqueBackground@2x.png"; path = "Resources/UINavigationBarBlackOpaqueBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FABB1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackOpaqueBackPressed.png; path = Resources/UINavigationBarBlackOpaqueBackPressed.png; sourceTree = "<group>"; };
+		FFA6FABC1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackOpaqueBackPressed@2x.png"; path = "Resources/UINavigationBarBlackOpaqueBackPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FABD1504BD2B0006D277 /* UINavigationBarBlackOpaqueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackOpaqueButton.png; path = Resources/UINavigationBarBlackOpaqueButton.png; sourceTree = "<group>"; };
+		FFA6FABE1504BD2B0006D277 /* UINavigationBarBlackOpaqueButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackOpaqueButton@2x.png"; path = "Resources/UINavigationBarBlackOpaqueButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FABF1504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackOpaqueButtonPressed.png; path = Resources/UINavigationBarBlackOpaqueButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FAC01504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackOpaqueButtonPressed@2x.png"; path = "Resources/UINavigationBarBlackOpaqueButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAC11504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackOpaqueTallBackground.png; path = Resources/UINavigationBarBlackOpaqueTallBackground.png; sourceTree = "<group>"; };
+		FFA6FAC21504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackOpaqueTallBackground@2x.png"; path = "Resources/UINavigationBarBlackOpaqueTallBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FAC31504BD2B0006D277 /* UINavigationBarBlackTranslucentBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackTranslucentBack.png; path = Resources/UINavigationBarBlackTranslucentBack.png; sourceTree = "<group>"; };
+		FFA6FAC41504BD2B0006D277 /* UINavigationBarBlackTranslucentBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackTranslucentBack@2x.png"; path = "Resources/UINavigationBarBlackTranslucentBack@2x.png"; sourceTree = "<group>"; };
+		FFA6FAC51504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackTranslucentBackground.png; path = Resources/UINavigationBarBlackTranslucentBackground.png; sourceTree = "<group>"; };
+		FFA6FAC61504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackTranslucentBackground@2x.png"; path = "Resources/UINavigationBarBlackTranslucentBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FAC71504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackTranslucentBackPressed.png; path = Resources/UINavigationBarBlackTranslucentBackPressed.png; sourceTree = "<group>"; };
+		FFA6FAC81504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackTranslucentBackPressed@2x.png"; path = "Resources/UINavigationBarBlackTranslucentBackPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAC91504BD2B0006D277 /* UINavigationBarBlackTranslucentButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackTranslucentButton.png; path = Resources/UINavigationBarBlackTranslucentButton.png; sourceTree = "<group>"; };
+		FFA6FACA1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackTranslucentButton@2x.png"; path = "Resources/UINavigationBarBlackTranslucentButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FACB1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackTranslucentButtonPressed.png; path = Resources/UINavigationBarBlackTranslucentButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FACC1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackTranslucentButtonPressed@2x.png"; path = "Resources/UINavigationBarBlackTranslucentButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FACD1504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarBlackTranslucentTallBackground.png; path = Resources/UINavigationBarBlackTranslucentTallBackground.png; sourceTree = "<group>"; };
+		FFA6FACE1504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarBlackTranslucentTallBackground@2x.png"; path = "Resources/UINavigationBarBlackTranslucentTallBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FACF1504BD2B0006D277 /* UINavigationBarDefaultBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDefaultBack.png; path = Resources/UINavigationBarDefaultBack.png; sourceTree = "<group>"; };
+		FFA6FAD01504BD2B0006D277 /* UINavigationBarDefaultBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDefaultBack@2x.png"; path = "Resources/UINavigationBarDefaultBack@2x.png"; sourceTree = "<group>"; };
+		FFA6FAD11504BD2B0006D277 /* UINavigationBarDefaultBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDefaultBackground.png; path = Resources/UINavigationBarDefaultBackground.png; sourceTree = "<group>"; };
+		FFA6FAD21504BD2B0006D277 /* UINavigationBarDefaultBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDefaultBackground@2x.png"; path = "Resources/UINavigationBarDefaultBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FAD31504BD2B0006D277 /* UINavigationBarDefaultBackPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDefaultBackPressed.png; path = Resources/UINavigationBarDefaultBackPressed.png; sourceTree = "<group>"; };
+		FFA6FAD41504BD2B0006D277 /* UINavigationBarDefaultBackPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDefaultBackPressed@2x.png"; path = "Resources/UINavigationBarDefaultBackPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAD51504BD2B0006D277 /* UINavigationBarDefaultButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDefaultButton.png; path = Resources/UINavigationBarDefaultButton.png; sourceTree = "<group>"; };
+		FFA6FAD61504BD2B0006D277 /* UINavigationBarDefaultButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDefaultButton@2x.png"; path = "Resources/UINavigationBarDefaultButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FAD71504BD2B0006D277 /* UINavigationBarDefaultButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDefaultButtonPressed.png; path = Resources/UINavigationBarDefaultButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FAD81504BD2B0006D277 /* UINavigationBarDefaultButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDefaultButtonPressed@2x.png"; path = "Resources/UINavigationBarDefaultButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAD91504BD2B0006D277 /* UINavigationBarDefaultTallBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDefaultTallBackground.png; path = Resources/UINavigationBarDefaultTallBackground.png; sourceTree = "<group>"; };
+		FFA6FADA1504BD2B0006D277 /* UINavigationBarDefaultTallBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDefaultTallBackground@2x.png"; path = "Resources/UINavigationBarDefaultTallBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FADB1504BD2B0006D277 /* UINavigationBarDoneButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDoneButton.png; path = Resources/UINavigationBarDoneButton.png; sourceTree = "<group>"; };
+		FFA6FADC1504BD2B0006D277 /* UINavigationBarDoneButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDoneButton@2x.png"; path = "Resources/UINavigationBarDoneButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FADD1504BD2B0006D277 /* UINavigationBarDoneButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarDoneButtonPressed.png; path = Resources/UINavigationBarDoneButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FADE1504BD2B0006D277 /* UINavigationBarDoneButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarDoneButtonPressed@2x.png"; path = "Resources/UINavigationBarDoneButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FADF1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackOpaqueBack.png; path = Resources/UINavigationBarMiniBlackOpaqueBack.png; sourceTree = "<group>"; };
+		FFA6FAE01504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackOpaqueBack@2x.png"; path = "Resources/UINavigationBarMiniBlackOpaqueBack@2x.png"; sourceTree = "<group>"; };
+		FFA6FAE11504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackOpaqueBackground.png; path = Resources/UINavigationBarMiniBlackOpaqueBackground.png; sourceTree = "<group>"; };
+		FFA6FAE21504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackOpaqueBackground@2x.png"; path = "Resources/UINavigationBarMiniBlackOpaqueBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FAE31504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackOpaqueBackPressed.png; path = Resources/UINavigationBarMiniBlackOpaqueBackPressed.png; sourceTree = "<group>"; };
+		FFA6FAE41504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackOpaqueBackPressed@2x.png"; path = "Resources/UINavigationBarMiniBlackOpaqueBackPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAE51504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackOpaqueButton.png; path = Resources/UINavigationBarMiniBlackOpaqueButton.png; sourceTree = "<group>"; };
+		FFA6FAE61504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackOpaqueButton@2x.png"; path = "Resources/UINavigationBarMiniBlackOpaqueButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FAE71504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackOpaqueButtonPressed.png; path = Resources/UINavigationBarMiniBlackOpaqueButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FAE81504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackOpaqueButtonPressed@2x.png"; path = "Resources/UINavigationBarMiniBlackOpaqueButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAE91504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackTranslucentBack.png; path = Resources/UINavigationBarMiniBlackTranslucentBack.png; sourceTree = "<group>"; };
+		FFA6FAEA1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackTranslucentBack@2x.png"; path = "Resources/UINavigationBarMiniBlackTranslucentBack@2x.png"; sourceTree = "<group>"; };
+		FFA6FAEB1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackTranslucentBackground.png; path = Resources/UINavigationBarMiniBlackTranslucentBackground.png; sourceTree = "<group>"; };
+		FFA6FAEC1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackTranslucentBackground@2x.png"; path = "Resources/UINavigationBarMiniBlackTranslucentBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FAED1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackTranslucentBackPressed.png; path = Resources/UINavigationBarMiniBlackTranslucentBackPressed.png; sourceTree = "<group>"; };
+		FFA6FAEE1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackTranslucentBackPressed@2x.png"; path = "Resources/UINavigationBarMiniBlackTranslucentBackPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAEF1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackTranslucentButton.png; path = Resources/UINavigationBarMiniBlackTranslucentButton.png; sourceTree = "<group>"; };
+		FFA6FAF01504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackTranslucentButton@2x.png"; path = "Resources/UINavigationBarMiniBlackTranslucentButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FAF11504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniBlackTranslucentButtonPressed.png; path = Resources/UINavigationBarMiniBlackTranslucentButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FAF21504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniBlackTranslucentButtonPressed@2x.png"; path = "Resources/UINavigationBarMiniBlackTranslucentButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAF31504BD2B0006D277 /* UINavigationBarMiniDefaultBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniDefaultBack.png; path = Resources/UINavigationBarMiniDefaultBack.png; sourceTree = "<group>"; };
+		FFA6FAF41504BD2B0006D277 /* UINavigationBarMiniDefaultBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniDefaultBack@2x.png"; path = "Resources/UINavigationBarMiniDefaultBack@2x.png"; sourceTree = "<group>"; };
+		FFA6FAF51504BD2B0006D277 /* UINavigationBarMiniDefaultBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniDefaultBackground.png; path = Resources/UINavigationBarMiniDefaultBackground.png; sourceTree = "<group>"; };
+		FFA6FAF61504BD2B0006D277 /* UINavigationBarMiniDefaultBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniDefaultBackground@2x.png"; path = "Resources/UINavigationBarMiniDefaultBackground@2x.png"; sourceTree = "<group>"; };
+		FFA6FAF71504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniDefaultBackPressed.png; path = Resources/UINavigationBarMiniDefaultBackPressed.png; sourceTree = "<group>"; };
+		FFA6FAF81504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniDefaultBackPressed@2x.png"; path = "Resources/UINavigationBarMiniDefaultBackPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAF91504BD2B0006D277 /* UINavigationBarMiniDefaultButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniDefaultButton.png; path = Resources/UINavigationBarMiniDefaultButton.png; sourceTree = "<group>"; };
+		FFA6FAFA1504BD2B0006D277 /* UINavigationBarMiniDefaultButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniDefaultButton@2x.png"; path = "Resources/UINavigationBarMiniDefaultButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FAFB1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniDefaultButtonPressed.png; path = Resources/UINavigationBarMiniDefaultButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FAFC1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniDefaultButtonPressed@2x.png"; path = "Resources/UINavigationBarMiniDefaultButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FAFD1504BD2B0006D277 /* UINavigationBarMiniDoneButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniDoneButton.png; path = Resources/UINavigationBarMiniDoneButton.png; sourceTree = "<group>"; };
+		FFA6FAFE1504BD2B0006D277 /* UINavigationBarMiniDoneButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniDoneButton@2x.png"; path = "Resources/UINavigationBarMiniDoneButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FAFF1504BD2B0006D277 /* UINavigationBarMiniRemoveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniRemoveButton.png; path = Resources/UINavigationBarMiniRemoveButton.png; sourceTree = "<group>"; };
+		FFA6FB001504BD2B0006D277 /* UINavigationBarMiniRemoveButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniRemoveButton@2x.png"; path = "Resources/UINavigationBarMiniRemoveButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FB011504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarMiniRemoveButtonPressed.png; path = Resources/UINavigationBarMiniRemoveButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FB021504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarMiniRemoveButtonPressed@2x.png"; path = "Resources/UINavigationBarMiniRemoveButtonPressed@2x.png"; sourceTree = "<group>"; };
+		FFA6FB031504BD2B0006D277 /* UINavigationBarRemoveButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarRemoveButton.png; path = Resources/UINavigationBarRemoveButton.png; sourceTree = "<group>"; };
+		FFA6FB041504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarRemoveButton@2x.png"; path = "Resources/UINavigationBarRemoveButton@2x.png"; sourceTree = "<group>"; };
+		FFA6FB051504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = UINavigationBarRemoveButtonPressed.png; path = Resources/UINavigationBarRemoveButtonPressed.png; sourceTree = "<group>"; };
+		FFA6FB061504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "UINavigationBarRemoveButtonPressed@2x.png"; path = "Resources/UINavigationBarRemoveButtonPressed@2x.png"; sourceTree = "<group>"; };
 		FFA774C814ADBE6B0044674B /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = external/TestflightSDK/libTestFlight.a; sourceTree = "<group>"; };
 		FFA774C914ADBE6B0044674B /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = external/TestflightSDK/TestFlight.h; sourceTree = "<group>"; };
 		FFA87D02143F01450074AAE4 /* WANavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationController.h; sourceTree = "<group>"; };
@@ -2215,6 +2383,90 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FFA6FAB31504BD2B0006D277 /* UINavigationBarAddButton.png */,
+				FFA6FAB41504BD2B0006D277 /* UINavigationBarAddButton@2x.png */,
+				FFA6FAB51504BD2B0006D277 /* UINavigationBarBackArrow.png */,
+				FFA6FAB61504BD2B0006D277 /* UINavigationBarBackArrow@2x.png */,
+				FFA6FAB71504BD2B0006D277 /* UINavigationBarBlackOpaqueBack.png */,
+				FFA6FAB81504BD2B0006D277 /* UINavigationBarBlackOpaqueBack@2x.png */,
+				FFA6FAB91504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground.png */,
+				FFA6FABA1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground@2x.png */,
+				FFA6FABB1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed.png */,
+				FFA6FABC1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed@2x.png */,
+				FFA6FABD1504BD2B0006D277 /* UINavigationBarBlackOpaqueButton.png */,
+				FFA6FABE1504BD2B0006D277 /* UINavigationBarBlackOpaqueButton@2x.png */,
+				FFA6FABF1504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed.png */,
+				FFA6FAC01504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed@2x.png */,
+				FFA6FAC11504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground.png */,
+				FFA6FAC21504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground@2x.png */,
+				FFA6FAC31504BD2B0006D277 /* UINavigationBarBlackTranslucentBack.png */,
+				FFA6FAC41504BD2B0006D277 /* UINavigationBarBlackTranslucentBack@2x.png */,
+				FFA6FAC51504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground.png */,
+				FFA6FAC61504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground@2x.png */,
+				FFA6FAC71504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed.png */,
+				FFA6FAC81504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed@2x.png */,
+				FFA6FAC91504BD2B0006D277 /* UINavigationBarBlackTranslucentButton.png */,
+				FFA6FACA1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton@2x.png */,
+				FFA6FACB1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed.png */,
+				FFA6FACC1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed@2x.png */,
+				FFA6FACD1504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground.png */,
+				FFA6FACE1504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground@2x.png */,
+				FFA6FACF1504BD2B0006D277 /* UINavigationBarDefaultBack.png */,
+				FFA6FAD01504BD2B0006D277 /* UINavigationBarDefaultBack@2x.png */,
+				FFA6FAD11504BD2B0006D277 /* UINavigationBarDefaultBackground.png */,
+				FFA6FAD21504BD2B0006D277 /* UINavigationBarDefaultBackground@2x.png */,
+				FFA6FAD31504BD2B0006D277 /* UINavigationBarDefaultBackPressed.png */,
+				FFA6FAD41504BD2B0006D277 /* UINavigationBarDefaultBackPressed@2x.png */,
+				FFA6FAD51504BD2B0006D277 /* UINavigationBarDefaultButton.png */,
+				FFA6FAD61504BD2B0006D277 /* UINavigationBarDefaultButton@2x.png */,
+				FFA6FAD71504BD2B0006D277 /* UINavigationBarDefaultButtonPressed.png */,
+				FFA6FAD81504BD2B0006D277 /* UINavigationBarDefaultButtonPressed@2x.png */,
+				FFA6FAD91504BD2B0006D277 /* UINavigationBarDefaultTallBackground.png */,
+				FFA6FADA1504BD2B0006D277 /* UINavigationBarDefaultTallBackground@2x.png */,
+				FFA6FADB1504BD2B0006D277 /* UINavigationBarDoneButton.png */,
+				FFA6FADC1504BD2B0006D277 /* UINavigationBarDoneButton@2x.png */,
+				FFA6FADD1504BD2B0006D277 /* UINavigationBarDoneButtonPressed.png */,
+				FFA6FADE1504BD2B0006D277 /* UINavigationBarDoneButtonPressed@2x.png */,
+				FFA6FADF1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack.png */,
+				FFA6FAE01504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack@2x.png */,
+				FFA6FAE11504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground.png */,
+				FFA6FAE21504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground@2x.png */,
+				FFA6FAE31504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed.png */,
+				FFA6FAE41504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed@2x.png */,
+				FFA6FAE51504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton.png */,
+				FFA6FAE61504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton@2x.png */,
+				FFA6FAE71504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed.png */,
+				FFA6FAE81504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed@2x.png */,
+				FFA6FAE91504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack.png */,
+				FFA6FAEA1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack@2x.png */,
+				FFA6FAEB1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground.png */,
+				FFA6FAEC1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground@2x.png */,
+				FFA6FAED1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed.png */,
+				FFA6FAEE1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed@2x.png */,
+				FFA6FAEF1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton.png */,
+				FFA6FAF01504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton@2x.png */,
+				FFA6FAF11504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed.png */,
+				FFA6FAF21504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed@2x.png */,
+				FFA6FAF31504BD2B0006D277 /* UINavigationBarMiniDefaultBack.png */,
+				FFA6FAF41504BD2B0006D277 /* UINavigationBarMiniDefaultBack@2x.png */,
+				FFA6FAF51504BD2B0006D277 /* UINavigationBarMiniDefaultBackground.png */,
+				FFA6FAF61504BD2B0006D277 /* UINavigationBarMiniDefaultBackground@2x.png */,
+				FFA6FAF71504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed.png */,
+				FFA6FAF81504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed@2x.png */,
+				FFA6FAF91504BD2B0006D277 /* UINavigationBarMiniDefaultButton.png */,
+				FFA6FAFA1504BD2B0006D277 /* UINavigationBarMiniDefaultButton@2x.png */,
+				FFA6FAFB1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed.png */,
+				FFA6FAFC1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed@2x.png */,
+				FFA6FAFD1504BD2B0006D277 /* UINavigationBarMiniDoneButton.png */,
+				FFA6FAFE1504BD2B0006D277 /* UINavigationBarMiniDoneButton@2x.png */,
+				FFA6FAFF1504BD2B0006D277 /* UINavigationBarMiniRemoveButton.png */,
+				FFA6FB001504BD2B0006D277 /* UINavigationBarMiniRemoveButton@2x.png */,
+				FFA6FB011504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed.png */,
+				FFA6FB021504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed@2x.png */,
+				FFA6FB031504BD2B0006D277 /* UINavigationBarRemoveButton.png */,
+				FFA6FB041504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png */,
+				FFA6FB051504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png */,
+				FFA6FB061504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png */,
 				FFEF1EF914FF8E7D00645B53 /* addButton.png */,
 				FFEF1EFA14FF8E7D00645B53 /* addDisabled@2x.png */,
 				FFEF1EFB14FF8E7D00645B53 /* addHighlight.png */,
@@ -3267,6 +3519,90 @@
 				FF22B5781500E05300FA6616 /* WALinkDisabledGlyph.png in Resources */,
 				FF22B5791500E05300FA6616 /* WALinkDisabledGlyph@2x.png in Resources */,
 				FF6AE4A81502F53500517E04 /* WASettingsGlyph@2x.png in Resources */,
+				FFA6FB071504BD2B0006D277 /* UINavigationBarAddButton.png in Resources */,
+				FFA6FB081504BD2B0006D277 /* UINavigationBarAddButton@2x.png in Resources */,
+				FFA6FB091504BD2B0006D277 /* UINavigationBarBackArrow.png in Resources */,
+				FFA6FB0A1504BD2B0006D277 /* UINavigationBarBackArrow@2x.png in Resources */,
+				FFA6FB0B1504BD2B0006D277 /* UINavigationBarBlackOpaqueBack.png in Resources */,
+				FFA6FB0C1504BD2B0006D277 /* UINavigationBarBlackOpaqueBack@2x.png in Resources */,
+				FFA6FB0D1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground.png in Resources */,
+				FFA6FB0E1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackground@2x.png in Resources */,
+				FFA6FB0F1504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed.png in Resources */,
+				FFA6FB101504BD2B0006D277 /* UINavigationBarBlackOpaqueBackPressed@2x.png in Resources */,
+				FFA6FB111504BD2B0006D277 /* UINavigationBarBlackOpaqueButton.png in Resources */,
+				FFA6FB121504BD2B0006D277 /* UINavigationBarBlackOpaqueButton@2x.png in Resources */,
+				FFA6FB131504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed.png in Resources */,
+				FFA6FB141504BD2B0006D277 /* UINavigationBarBlackOpaqueButtonPressed@2x.png in Resources */,
+				FFA6FB151504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground.png in Resources */,
+				FFA6FB161504BD2B0006D277 /* UINavigationBarBlackOpaqueTallBackground@2x.png in Resources */,
+				FFA6FB171504BD2B0006D277 /* UINavigationBarBlackTranslucentBack.png in Resources */,
+				FFA6FB181504BD2B0006D277 /* UINavigationBarBlackTranslucentBack@2x.png in Resources */,
+				FFA6FB191504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground.png in Resources */,
+				FFA6FB1A1504BD2B0006D277 /* UINavigationBarBlackTranslucentBackground@2x.png in Resources */,
+				FFA6FB1B1504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed.png in Resources */,
+				FFA6FB1C1504BD2B0006D277 /* UINavigationBarBlackTranslucentBackPressed@2x.png in Resources */,
+				FFA6FB1D1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton.png in Resources */,
+				FFA6FB1E1504BD2B0006D277 /* UINavigationBarBlackTranslucentButton@2x.png in Resources */,
+				FFA6FB1F1504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed.png in Resources */,
+				FFA6FB201504BD2B0006D277 /* UINavigationBarBlackTranslucentButtonPressed@2x.png in Resources */,
+				FFA6FB211504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground.png in Resources */,
+				FFA6FB221504BD2B0006D277 /* UINavigationBarBlackTranslucentTallBackground@2x.png in Resources */,
+				FFA6FB231504BD2B0006D277 /* UINavigationBarDefaultBack.png in Resources */,
+				FFA6FB241504BD2B0006D277 /* UINavigationBarDefaultBack@2x.png in Resources */,
+				FFA6FB251504BD2B0006D277 /* UINavigationBarDefaultBackground.png in Resources */,
+				FFA6FB261504BD2B0006D277 /* UINavigationBarDefaultBackground@2x.png in Resources */,
+				FFA6FB271504BD2B0006D277 /* UINavigationBarDefaultBackPressed.png in Resources */,
+				FFA6FB281504BD2B0006D277 /* UINavigationBarDefaultBackPressed@2x.png in Resources */,
+				FFA6FB291504BD2B0006D277 /* UINavigationBarDefaultButton.png in Resources */,
+				FFA6FB2A1504BD2B0006D277 /* UINavigationBarDefaultButton@2x.png in Resources */,
+				FFA6FB2B1504BD2B0006D277 /* UINavigationBarDefaultButtonPressed.png in Resources */,
+				FFA6FB2C1504BD2B0006D277 /* UINavigationBarDefaultButtonPressed@2x.png in Resources */,
+				FFA6FB2D1504BD2B0006D277 /* UINavigationBarDefaultTallBackground.png in Resources */,
+				FFA6FB2E1504BD2B0006D277 /* UINavigationBarDefaultTallBackground@2x.png in Resources */,
+				FFA6FB2F1504BD2B0006D277 /* UINavigationBarDoneButton.png in Resources */,
+				FFA6FB301504BD2B0006D277 /* UINavigationBarDoneButton@2x.png in Resources */,
+				FFA6FB311504BD2B0006D277 /* UINavigationBarDoneButtonPressed.png in Resources */,
+				FFA6FB321504BD2B0006D277 /* UINavigationBarDoneButtonPressed@2x.png in Resources */,
+				FFA6FB331504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack.png in Resources */,
+				FFA6FB341504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBack@2x.png in Resources */,
+				FFA6FB351504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground.png in Resources */,
+				FFA6FB361504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackground@2x.png in Resources */,
+				FFA6FB371504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed.png in Resources */,
+				FFA6FB381504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueBackPressed@2x.png in Resources */,
+				FFA6FB391504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton.png in Resources */,
+				FFA6FB3A1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButton@2x.png in Resources */,
+				FFA6FB3B1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed.png in Resources */,
+				FFA6FB3C1504BD2B0006D277 /* UINavigationBarMiniBlackOpaqueButtonPressed@2x.png in Resources */,
+				FFA6FB3D1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack.png in Resources */,
+				FFA6FB3E1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBack@2x.png in Resources */,
+				FFA6FB3F1504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground.png in Resources */,
+				FFA6FB401504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackground@2x.png in Resources */,
+				FFA6FB411504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed.png in Resources */,
+				FFA6FB421504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentBackPressed@2x.png in Resources */,
+				FFA6FB431504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton.png in Resources */,
+				FFA6FB441504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButton@2x.png in Resources */,
+				FFA6FB451504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed.png in Resources */,
+				FFA6FB461504BD2B0006D277 /* UINavigationBarMiniBlackTranslucentButtonPressed@2x.png in Resources */,
+				FFA6FB471504BD2B0006D277 /* UINavigationBarMiniDefaultBack.png in Resources */,
+				FFA6FB481504BD2B0006D277 /* UINavigationBarMiniDefaultBack@2x.png in Resources */,
+				FFA6FB491504BD2B0006D277 /* UINavigationBarMiniDefaultBackground.png in Resources */,
+				FFA6FB4A1504BD2B0006D277 /* UINavigationBarMiniDefaultBackground@2x.png in Resources */,
+				FFA6FB4B1504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed.png in Resources */,
+				FFA6FB4C1504BD2B0006D277 /* UINavigationBarMiniDefaultBackPressed@2x.png in Resources */,
+				FFA6FB4D1504BD2B0006D277 /* UINavigationBarMiniDefaultButton.png in Resources */,
+				FFA6FB4E1504BD2B0006D277 /* UINavigationBarMiniDefaultButton@2x.png in Resources */,
+				FFA6FB4F1504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed.png in Resources */,
+				FFA6FB501504BD2B0006D277 /* UINavigationBarMiniDefaultButtonPressed@2x.png in Resources */,
+				FFA6FB511504BD2B0006D277 /* UINavigationBarMiniDoneButton.png in Resources */,
+				FFA6FB521504BD2B0006D277 /* UINavigationBarMiniDoneButton@2x.png in Resources */,
+				FFA6FB531504BD2B0006D277 /* UINavigationBarMiniRemoveButton.png in Resources */,
+				FFA6FB541504BD2B0006D277 /* UINavigationBarMiniRemoveButton@2x.png in Resources */,
+				FFA6FB551504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed.png in Resources */,
+				FFA6FB561504BD2B0006D277 /* UINavigationBarMiniRemoveButtonPressed@2x.png in Resources */,
+				FFA6FB571504BD2B0006D277 /* UINavigationBarRemoveButton.png in Resources */,
+				FFA6FB581504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png in Resources */,
+				FFA6FB591504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png in Resources */,
+				FFA6FB5A1504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

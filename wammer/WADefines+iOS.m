@@ -210,6 +210,27 @@ IRBarButtonItem * WABackBarButtonItem (UIImage *image, NSString *labelText, void
 
 }
 
+IRBarButtonItem * WATransparentBlackBackBarButtonItem (UIImage *itemImage, NSString *title, void(^block)(void)) {
+
+	IRBarButtonItem *item = [[IRBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:nil action:nil];
+	item.block = block;
+	
+	UIImage * (^image)(NSString *, UIEdgeInsets) = ^ (NSString *name, UIEdgeInsets insets) {
+		return [[UIImage imageNamed:name] resizableImageWithCapInsets:insets];
+	};
+	
+	[item setBackgroundImage:image(@"UINavigationBarBlackTranslucentBack", (UIEdgeInsets){ 0, 13, 0, 5 }) forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+	[item setBackgroundImage:image(@"UINavigationBarBlackTranslucentBackPressed", (UIEdgeInsets){ 0, 13, 0, 5 }) forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+	[item setBackgroundImage:image(@"UINavigationBarMiniBlackTranslucentBack", (UIEdgeInsets){ 0, 10, 0, 4 })  forState:UIControlStateNormal barMetrics:UIBarMetricsLandscapePhone];
+	[item setBackgroundImage:image(@"UINavigationBarMiniBlackTranslucentBackPressed", (UIEdgeInsets){ 0, 10, 0, 4 }) forState:UIControlStateHighlighted barMetrics:UIBarMetricsLandscapePhone];
+	
+	[item setImage:[itemImage irSolidImageWithFillColor:[UIColor whiteColor] shadow:nil]];
+	[item setTitle:title];
+	
+	return item;
+
+}
+
 UIButton * WAButtonForImage (UIImage *anImage) {
 
 	kWADefaultBarButtonInitialize();
