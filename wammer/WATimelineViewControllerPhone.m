@@ -896,7 +896,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	UIFont *baseFont = [UIFont fontWithName:@"Helvetica" size:14.0];
   CGFloat height = [post.text sizeWithFont:baseFont constrainedToSize:(CGSize){
 		CGRectGetWidth(tableView.frame) - 80,
-		9999.0
+		140.0  // 6 lines
 	} lineBreakMode:UILineBreakModeWordWrap].height;
 
 	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 36);
