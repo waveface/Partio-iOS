@@ -96,7 +96,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 	image = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:imageFilePath]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
-	[self irAssociateObject:image usingKey:kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
+	[self irAssociateObject:image usingKey:&kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
 	
 	return image;
 	
@@ -104,7 +104,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 - (void) setImage:(UIImage *)newImage {
 
-	[self irAssociateObject:newImage usingKey:kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAOpenGraphElementImageImage];
+	[self irAssociateObject:newImage usingKey:&kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAOpenGraphElementImageImage];
 
 }
 

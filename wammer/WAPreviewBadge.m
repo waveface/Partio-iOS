@@ -123,16 +123,16 @@
 		
 	};
 	
-	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
-	
-	if (providerElement)
-		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
-			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
-		nil]);
-		
 	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor,
 		(self.link ? [NSDictionary dictionaryWithObject:self.link forKey:kIRTextLinkAttribute] : nil)
 	);
+	
+	if (titleElement)
+		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
+		nil]);
+			
+	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
 	
 	if (titleElement || providerElement) {
 		append(@"\n \n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
@@ -186,10 +186,10 @@
 	__block __typeof__(self) nrSelf = self;
 	
 	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-	
+		
 		[nrSelf setNeedsLayout];
 		
-	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	[self setNeedsLayout];
 
@@ -347,8 +347,8 @@
 	
 	CGRect actualImageRect = IRCGRectAlignToRect(
 		IRCGSizeGetCenteredInRect((CGSize) {
-			self.imageView.image.size.width * 128,
-			self.imageView.image.size.height * 128
+			self.image.size.width * 128,
+			self.image.size.height * 128
 		}, imageRect, 0.0f, YES),
 		imageRect,
 		//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
@@ -574,7 +574,7 @@
 - (void) dealloc {
 
 	[self irRemoveObserverBlocksForKeyPath:@"suggestedStyle"];
-
+	
 	[preview release];
 
 	[titleFont release];
