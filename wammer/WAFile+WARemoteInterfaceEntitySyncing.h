@@ -9,8 +9,8 @@
 #import "WAFile.h"
 #import "WARemoteInterfaceEntitySyncing.h"
 
-#ifndef __WAFile_EntitySyncing__
-#define __WAFile_EntitySyncing__
+
+extern NSString * kWAFileEntitySyncingErrorDomain;
 
 extern NSString * const kWAFileSyncStrategy;
 typedef NSString * WAFileSyncStrategy;
@@ -30,7 +30,6 @@ extern NSString * const kWAFileSyncFullQualityStrategy;
 //	This is best used with a background worker since it takes up most time and bandwidth.
 //	Not recommended to be used on a carrier-provided connection (might be a capped 3G)
 
-#endif
 
 @interface WAFile (WARemoteInterfaceEntitySyncing) <WARemoteInterfaceEntitySyncing>
 
