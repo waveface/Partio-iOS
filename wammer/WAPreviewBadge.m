@@ -123,16 +123,16 @@
 		
 	};
 	
-	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
-	
-	if (providerElement)
-		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
-			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
-		nil]);
-		
 	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor,
 		(self.link ? [NSDictionary dictionaryWithObject:self.link forKey:kIRTextLinkAttribute] : nil)
 	);
+	
+	if (titleElement)
+		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
+		nil]);
+			
+	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
 	
 	if (titleElement || providerElement) {
 		append(@"\n \n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
