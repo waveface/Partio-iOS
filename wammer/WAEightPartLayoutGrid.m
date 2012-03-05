@@ -230,15 +230,7 @@
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
-		if (isImageItem(currentItem) || isLongTextItem(currentItem)) {
-			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
-			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
-		}
-		
-		//	isLinkItem(currentItem) || is removed because now its -representedText contains the description from its preview
-		
-		// increase probablity
-		if (isLongTextItem(currentItem)) {
+		if (isImageItem(currentItem) || isLongTextItem(currentItem) || isLinkItem(currentItem) ) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
