@@ -143,11 +143,16 @@
 			NSLog(@"Using Google Analytics");
 					
 			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
-						
+			[GANTracker sharedTracker].debug = YES;
+			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 				
-				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
-				[[GANTracker sharedTracker] trackEvent:eventTitle action:@"observed" label:nil value:-1 withError:nil];
+				[[GANTracker sharedTracker] 
+					trackEvent: [[note userInfo] objectForKey:@"category"]
+					action:	[[note userInfo] objectForKey:@"action"]
+					label:	[[note userInfo] objectForKey:@"label"]
+					value:	(NSInteger)[[note userInfo] objectForKey:@"value"]
+					withError:nil];
 				
 			}];
 			
@@ -161,8 +166,6 @@
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
 	
-	WAPostAppEvent(@"bootstrap-finished", nil);
-
 }
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -258,6 +261,8 @@
 	[[DCIntrospect sharedIntrospector] start];
 	#endif
 	
+	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+
   return YES;
 	
 }

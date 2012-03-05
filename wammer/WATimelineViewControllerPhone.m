@@ -1016,6 +1016,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	__block UIViewController *pushedVC = nil;
   
+	if([post.previews count])
+		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
+	else if([post.files count])
+		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
+	else 
+		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
+		
 	if (photoPost) {
 		
 		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];

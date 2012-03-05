@@ -442,7 +442,14 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	if (self.completionBlock)
 		self.completionBlock([[self.article objectID] URIRepresentation]);
-
+		
+	if([self.article.previews count])
+		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"create", @"action", nil]);
+	else if([self.article.files count])
+		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"create", @"action", nil]);
+	else 
+		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"create", @"action", nil]);
+		
 }	
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
