@@ -830,7 +830,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 		cell.previewImageView.image = latestPreview.thumbnail;
 		cell.previewTitleLabel.text = latestPreview.graphElement.title;
-		cell.previewProviderLabel.text = latestPreview.graphElement.providerURL;
+		cell.previewProviderLabel.text = latestPreview.graphElement.providerDisplayName;
 		
 		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
 		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
