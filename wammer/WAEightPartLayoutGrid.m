@@ -235,6 +235,12 @@
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
+		// increase web preview 2 cell 
+		if (isLinkItem(currentItem)) {
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
+			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
+		}
+		
 		[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"singleTile"]];
 		
 		NSArray *actualPatterns = [usablePatterns irMap: ^ (NSNumber *pattern, NSUInteger index, BOOL *stop) {
