@@ -313,11 +313,11 @@ UIView * WAStandardTitleView (void) {
 
 			if (WADucklingsEnabled()) {
 				
-				logotype.frame = CGRectOffset(logotype.frame, 0, 1);
+				logotype.frame = CGRectOffset(logotype.frame, -12, 1);
 				
 			} else {
 					
-				logotype.frame = CGRectOffset(logotype.frame, -12, 1);
+				logotype.frame = CGRectOffset(logotype.frame, 0, 1);
 				
 			}
 			
