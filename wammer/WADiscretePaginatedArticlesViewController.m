@@ -145,7 +145,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWood"]];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
 	self.view.opaque = YES;
 	((WAView *)self.view).onLayoutSubviews = ^ {
 	
