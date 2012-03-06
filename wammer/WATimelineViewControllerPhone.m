@@ -899,7 +899,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		140.0  // 6 lines
 	} lineBreakMode:UILineBreakModeWordWrap].height;
 
-	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 36);
+	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 48);
 	
 }
 
