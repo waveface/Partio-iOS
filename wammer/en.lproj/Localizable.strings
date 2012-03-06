@@ -1,6 +1,9 @@
 /* attachment activity view */
 "ACTION_ADD" = "Add";
 
+/* Action title for cancelling */
+"ACTION_BACK" = "Back";
+
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
