@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAScrollView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAScrollView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.h</DeclaredIn>
+			
+			<NodeRef refid="67"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAScrollView/onTouchesShouldBeginWithEventInContentView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( NSSet *touches , UIEvent *event , UIView *view ) onTouchesShouldBeginWithEventInContentView</Declaration>
+			
+			
+			<Anchor>//api/name/onTouchesShouldBeginWithEventInContentView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAScrollView/onTouchesShouldCancelInContentView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIView *view ) onTouchesShouldCancelInContentView</Declaration>
+			
+			
+			<Anchor>//api/name/onTouchesShouldCancelInContentView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAScrollView/onGestureRecognizerShouldBegin</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIGestureRecognizer *recognizer , BOOL superAnswer ) onGestureRecognizerShouldBegin</Declaration>
+			
+			
+			<Anchor>//api/name/onGestureRecognizerShouldBegin</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAScrollView/onGestureRecognizerShouldReceiveTouch</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIGestureRecognizer *recognizer , UITouch *touch , BOOL superAnswer ) onGestureRecognizerShouldReceiveTouch</Declaration>
+			
+			
+			<Anchor>//api/name/onGestureRecognizerShouldReceiveTouch</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAScrollView/onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIGestureRecognizer *recognizer , UIGestureRecognizer *otherRecognizer , BOOL superAnswer ) onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAScrollView/touchesShouldBegin:withEvent:inContentView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)touchesShouldBegin:(NSSet *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view</Declaration>
+			
+			
+			<Anchor>//api/name/touchesShouldBegin:withEvent:inContentView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAScrollView/touchesShouldCancelInContentView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)touchesShouldCancelInContentView:(UIView *)view</Declaration>
+			
+			
+			<Anchor>//api/name/touchesShouldCancelInContentView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAScrollView/gestureRecognizerShouldBegin:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizerShouldBegin:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAScrollView/gestureRecognizer:shouldReceiveTouch:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldReceiveTouch:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAScrollView/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAScrollView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

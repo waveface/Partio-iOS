@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAGalleryImageViewDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAGalleryImageViewDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>
+			
+			<NodeRef refid="92"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAGalleryImageViewDelegate/galleryImageViewDidBeginInteraction:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>- (void)galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView</Declaration>
+			
+			
+			<Anchor>//api/name/galleryImageViewDidBeginInteraction:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

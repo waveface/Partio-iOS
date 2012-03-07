@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAAsyncImageView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAAsyncImageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAsyncImageView.h</DeclaredIn>
+			
+			<NodeRef refid="20"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAsyncImageView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAsyncImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAsyncImageView/setImage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAsyncImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setImage:(UIImage *)newImage</Declaration>
+			
+			
+			<Anchor>//api/name/setImage:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAsyncImageView/setImage:withOptions:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAsyncImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setImage:(UIImage *)newImage withOptions:(WAImageViewOptions)options</Declaration>
+			
+			
+			<Anchor>//api/name/setImage:withOptions:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAsyncImageView/lastImagePtr</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAsyncImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) void *lastImagePtr</Declaration>
+			
+			
+			<Anchor>//api/name/lastImagePtr</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAApplicationRootViewControllerDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAApplicationRootViewControllerDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationRootViewControllerDelegate.h</DeclaredIn>
+			
+			<NodeRef refid="86"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAApplicationRootViewControllerDelegate/applicationRootViewControllerDidRequestReauthentication:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationRootViewControllerDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)applicationRootViewControllerDidRequestReauthentication:(id&lt;WAApplicationRootViewController&gt;)controller</Declaration>
+			
+			
+			<Anchor>//api/name/applicationRootViewControllerDidRequestReauthentication:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAApplicationRootViewControllerDelegate/applicationRootViewControllerDidRequestChangeAPIURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationRootViewControllerDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)applicationRootViewControllerDidRequestChangeAPIURL:(id&lt;WAApplicationRootViewController&gt;)controller</Declaration>
+			
+			
+			<Anchor>//api/name/applicationRootViewControllerDidRequestChangeAPIURL:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

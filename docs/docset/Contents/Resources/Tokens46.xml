@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAImageViewContentView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAImageViewContentView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATiledImageView.m</DeclaredIn>
+			
+			<NodeRef refid="46"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAImageViewContentView/layerClass</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATiledImageView.m</DeclaredIn>			
+			
+			<Declaration>+ (Class)layerClass</Declaration>
+			
+			
+			<Anchor>//api/name/layerClass</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageViewContentView/drawLayer:inContext:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATiledImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)drawLayer:(CATiledLayer *)layer inContext:(CGContextRef)ctx</Declaration>
+			
+			
+			<Anchor>//api/name/drawLayer:inContext:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageViewContentView/setBounds:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATiledImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setBounds:(CGRect)newBounds</Declaration>
+			
+			
+			<Anchor>//api/name/setBounds:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageViewContentView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATiledImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleViewController_Default.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleViewController_Default</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.h</DeclaredIn>
+			
+			<NodeRef refid="16"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/fetchedResultsController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (NSFetchedResultsController *)fetchedResultsController</Declaration>
+			
+			
+			<Anchor>//api/name/fetchedResultsController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/gridView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (AQGridView *)gridView</Declaration>
+			
+			
+			<Anchor>//api/name/gridView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/numberOfItemsInGridView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfItemsInGridView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/gridView:cellForItemAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (AQGridViewCell *)gridView:(AQGridView *)aGV cellForItemAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/gridView:cellForItemAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/portraitGridCellSizeForGridView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)portraitGridCellSizeForGridView:(AQGridView *)aGV</Declaration>
+			
+			
+			<Anchor>//api/name/portraitGridCellSizeForGridView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/itemAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (WAFile *)itemAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/itemAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/indexOfItem:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)indexOfItem:(WAFile *)aFile</Declaration>
+			
+			
+			<Anchor>//api/name/indexOfItem:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/controllerWillChangeContent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWillChangeContent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/controller:didChangeSection:atIndex:forChangeType:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id&lt;NSFetchedResultsSectionInfo&gt;)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type</Declaration>
+			
+			
+			<Anchor>//api/name/controller:didChangeSection:atIndex:forChangeType:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath</Declaration>
+			
+			
+			<Anchor>//api/name/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/controllerDidChangeContent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/controllerDidChangeContent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/gridView:didSelectItemAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (void)gridView:(AQGridView *)aGV didSelectItemAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/gridView:didSelectItemAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/stackView:shouldStretchElement:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement</Declaration>
+			
+			
+			<Anchor>//api/name/stackView:shouldStretchElement:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Default/sizeThatFitsElement:inStackView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFitsElement:inStackView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Default/fetchedResultsController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController</Declaration>
+			
+			
+			<Anchor>//api/name/fetchedResultsController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Default/gridView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) AQGridView *gridView</Declaration>
+			
+			
+			<Anchor>//api/name/gridView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Default/requiresGalleryReload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Default.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL requiresGalleryReload</Declaration>
+			
+			
+			<Anchor>//api/name/requiresGalleryReload</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
