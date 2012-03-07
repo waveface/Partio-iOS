@@ -311,15 +311,7 @@ UIView * WAStandardTitleView (void) {
 
 		case UIUserInterfaceIdiomPhone: {
 
-			if (WADucklingsEnabled()) {
-				
 				logotype.frame = CGRectOffset(logotype.frame, 0, 1);
-				
-			} else {
-					
-				logotype.frame = CGRectOffset(logotype.frame, -12, 1);
-				
-			}
 			
 			break;
 		

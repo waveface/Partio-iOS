@@ -48,7 +48,7 @@
 		__block id rightTarget = oldRightItem.target;
 		__block SEL rightAction = oldRightItem.action;
 		
-		__block IRBarButtonItem *newLeftItem = WABackBarButtonItem(nil, NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling"), ^{
+		__block IRBarButtonItem *newLeftItem = WABackBarButtonItem(nil, NSLocalizedString(@"ACTION_BACK", @"Action title for cancelling"), ^{
 			[leftTarget performSelector:leftAction withObject:newLeftItem];
 		});
 		

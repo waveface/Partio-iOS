@@ -346,7 +346,8 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	//  NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
   NSURL *ownPostURL = [[self.post objectID] URIRepresentation];
   [[WADataStore defaultStore] addComment:commentText onArticle:ownPostURL onSuccess:nil onFailure:nil];
-  
+	WAPostAppEvent(@"CommentComposed", [NSDictionary dictionaryWithObjectsAndKeys:@"comment", @"category", @"create", @"action", nil]);
+	
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

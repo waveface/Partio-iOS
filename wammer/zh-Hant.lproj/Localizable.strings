@@ -1,6 +1,9 @@
 /* attachment activity view */
 "ACTION_ADD" = "加";
 
+/* Action title for cancelling */
+"ACTION_BACK" = "返回";
+
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff

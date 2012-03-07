@@ -830,7 +830,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 		cell.previewImageView.image = latestPreview.thumbnail;
 		cell.previewTitleLabel.text = latestPreview.graphElement.title;
-		cell.previewProviderLabel.text = latestPreview.graphElement.providerURL;
+		cell.previewProviderLabel.text = latestPreview.graphElement.providerDisplayName;
 		
 		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
 		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
@@ -899,7 +899,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		140.0  // 6 lines
 	} lineBreakMode:UILineBreakModeWordWrap].height;
 
-	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 36);
+	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 48);
 	
 }
 
@@ -1016,6 +1016,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	__block UIViewController *pushedVC = nil;
   
+	if([post.previews count])
+		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
+	else if([post.files count])
+		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
+	else 
+		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
+		
 	if (photoPost) {
 		
 		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];

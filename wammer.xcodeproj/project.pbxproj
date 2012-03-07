@@ -1079,7 +1079,6 @@
 		FF16B99B14BB249B00E1C2B8 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		FF16B99C14BB249B00E1C2B8 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FF18F90614FF96D400BCA510 /* WANavigationBarBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WANavigationBarBackdrop.png; path = Resources/WANavigationBarBackdrop.png; sourceTree = "<group>"; };
-		FF18F90814FF96D400BCA510 /* WANavigationBarBackdropLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WANavigationBarBackdropLandscape.png; path = Resources/WANavigationBarBackdropLandscape.png; sourceTree = "<group>"; };
 		FF1A10461462ACDB004FD00D /* Finch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Finch.xcodeproj; path = external/Finch/Finch.xcodeproj; sourceTree = "<group>"; };
 		FF1A10561462AD54004FD00D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FF1A10591462B0F0004FD00D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -2383,6 +2382,62 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FFEF1EF914FF8E7D00645B53 /* addButton.png */,
+				FFEF1EFA14FF8E7D00645B53 /* addDisabled@2x.png */,
+				FFEF1EFB14FF8E7D00645B53 /* addHighlight.png */,
+				FFEF1EFC14FF8E7D00645B53 /* addHighlight@2x.png */,
+				FFEF1EFD14FF8E7D00645B53 /* button.png */,
+				FFEF1EFE14FF8E7D00645B53 /* button@2x.png */,
+				FFEF1EFF14FF8E7D00645B53 /* composeGlyph.png */,
+				FFEF1F0014FF8E7D00645B53 /* composeGlyph@2x.png */,
+				FFEF1F0114FF8E7D00645B53 /* Default-Landscape.png */,
+				FFEF1F0214FF8E7D00645B53 /* Default-Portrait.png */,
+				FFEF1F0314FF8E7D00645B53 /* Default.png */,
+				FFEF1F0414FF8E7D00645B53 /* Default@2x.png */,
+				FFEF1F0514FF8E7D00645B53 /* delete.png */,
+				FFEF1F0614FF8E7D00645B53 /* delete@2x.png */,
+				FFEF1F0714FF8E7D00645B53 /* deletepressed.png */,
+				FFEF1F0814FF8E7D00645B53 /* deletepressed@2x.png */,
+				FFEF1F0914FF8E7D00645B53 /* Icon-72.png */,
+				FFEF1F0A14FF8E7D00645B53 /* Icon.png */,
+				FFEF1F0B14FF8E7D00645B53 /* Icon@2x.png */,
+				FF21C8D213E14CF9009B980D /* IPSample */,
+				FFEF1F0C14FF8E7D00645B53 /* lightBackground.png */,
+				FF51509C14835A030073386D /* Localizable.strings */,
+				FFEF1F0D14FF8E7D00645B53 /* navigationBar.png */,
+				FFEF1F0E14FF8E7D00645B53 /* navigationBar@2x.png */,
+				FFEF1F0F14FF8E7D00645B53 /* navigationBarLandscape.png */,
+				FFEF1F1014FF8E7D00645B53 /* navigationBarLandscape@2x.png */,
+				FFEF1F1114FF8E7D00645B53 /* PLCameraButtonIcon.png */,
+				FFEF1F1214FF8E7D00645B53 /* PLEmptyCameraRoll-Large~ipad.png */,
+				FFEF1F1314FF8E7D00645B53 /* PLEmptyPhotoAlbum-Large~ipad.png */,
+				FFEF1F1414FF8E7D00645B53 /* previewButton.png */,
+				FFEF1F1514FF8E7D00645B53 /* previewButton@2x.png */,
+				FFEF1F1614FF8E7D00645B53 /* previewDisabled.png */,
+				FFEF1F1714FF8E7D00645B53 /* previewDisabled@2x.png */,
+				FFEF1F1814FF8E7D00645B53 /* previewHighlight.png */,
+				FFEF1F1914FF8E7D00645B53 /* previewHighlight@2x.png */,
+				FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */,
+				FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */,
+				FFEF1F1A14FF8E7D00645B53 /* settingsGlyph.png */,
+				FFEF1F1B14FF8E7D00645B53 /* settingsGlyph@2x.png */,
+				FFEF1F1C14FF8E7D00645B53 /* UIButtonBarArrowDown.png */,
+				FFEF1F1D14FF8E7D00645B53 /* UIButtonBarArrowDown@2x.png */,
+				FFEF1F1E14FF8E7D00645B53 /* UIButtonBarArrowDownSmall.png */,
+				FFEF1F1F14FF8E7D00645B53 /* UIButtonBarArrowDownSmall@2x.png */,
+				FFEF1F2014FF8E7D00645B53 /* UIButtonBarArrowLeft.png */,
+				FFEF1F2114FF8E7D00645B53 /* UIButtonBarArrowLeft@2x.png */,
+				FFEF1F2214FF8E7D00645B53 /* UIButtonBarArrowLeftLandscape.png */,
+				FFEF1F2314FF8E7D00645B53 /* UIButtonBarArrowLeftLandscape@2x.png */,
+				FFEF1F2414FF8E7D00645B53 /* UIButtonBarArrowRight.png */,
+				FFEF1F2514FF8E7D00645B53 /* UIButtonBarArrowRight@2x.png */,
+				FFEF1F2614FF8E7D00645B53 /* UIButtonBarArrowRightLandscape.png */,
+				FFEF1F2714FF8E7D00645B53 /* UIButtonBarArrowRightLandscape@2x.png */,
+				FFEF1F2814FF8E7D00645B53 /* UIButtonBarArrowUp.png */,
+				FFEF1F2914FF8E7D00645B53 /* UIButtonBarArrowUp@2x.png */,
+				FFEF1F2A14FF8E7D00645B53 /* UIButtonBarArrowUpSmall.png */,
+				FFEF1F2B14FF8E7D00645B53 /* UIButtonBarArrowUpSmall@2x.png */,
+				FFEF1F2C14FF8E7D00645B53 /* UIButtonBarCompose.png */,
 				FFA6FAB31504BD2B0006D277 /* UINavigationBarAddButton.png */,
 				FFA6FAB41504BD2B0006D277 /* UINavigationBarAddButton@2x.png */,
 				FFA6FAB51504BD2B0006D277 /* UINavigationBarBackArrow.png */,
@@ -2467,62 +2522,6 @@
 				FFA6FB041504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png */,
 				FFA6FB051504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png */,
 				FFA6FB061504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png */,
-				FFEF1EF914FF8E7D00645B53 /* addButton.png */,
-				FFEF1EFA14FF8E7D00645B53 /* addDisabled@2x.png */,
-				FFEF1EFB14FF8E7D00645B53 /* addHighlight.png */,
-				FFEF1EFC14FF8E7D00645B53 /* addHighlight@2x.png */,
-				FFEF1EFD14FF8E7D00645B53 /* button.png */,
-				FFEF1EFE14FF8E7D00645B53 /* button@2x.png */,
-				FFEF1EFF14FF8E7D00645B53 /* composeGlyph.png */,
-				FFEF1F0014FF8E7D00645B53 /* composeGlyph@2x.png */,
-				FFEF1F0114FF8E7D00645B53 /* Default-Landscape.png */,
-				FFEF1F0214FF8E7D00645B53 /* Default-Portrait.png */,
-				FFEF1F0314FF8E7D00645B53 /* Default.png */,
-				FFEF1F0414FF8E7D00645B53 /* Default@2x.png */,
-				FFEF1F0514FF8E7D00645B53 /* delete.png */,
-				FFEF1F0614FF8E7D00645B53 /* delete@2x.png */,
-				FFEF1F0714FF8E7D00645B53 /* deletepressed.png */,
-				FFEF1F0814FF8E7D00645B53 /* deletepressed@2x.png */,
-				FFEF1F0914FF8E7D00645B53 /* Icon-72.png */,
-				FFEF1F0A14FF8E7D00645B53 /* Icon.png */,
-				FFEF1F0B14FF8E7D00645B53 /* Icon@2x.png */,
-				FF21C8D213E14CF9009B980D /* IPSample */,
-				FFEF1F0C14FF8E7D00645B53 /* lightBackground.png */,
-				FF51509C14835A030073386D /* Localizable.strings */,
-				FFEF1F0D14FF8E7D00645B53 /* navigationBar.png */,
-				FFEF1F0E14FF8E7D00645B53 /* navigationBar@2x.png */,
-				FFEF1F0F14FF8E7D00645B53 /* navigationBarLandscape.png */,
-				FFEF1F1014FF8E7D00645B53 /* navigationBarLandscape@2x.png */,
-				FFEF1F1114FF8E7D00645B53 /* PLCameraButtonIcon.png */,
-				FFEF1F1214FF8E7D00645B53 /* PLEmptyCameraRoll-Large~ipad.png */,
-				FFEF1F1314FF8E7D00645B53 /* PLEmptyPhotoAlbum-Large~ipad.png */,
-				FFEF1F1414FF8E7D00645B53 /* previewButton.png */,
-				FFEF1F1514FF8E7D00645B53 /* previewButton@2x.png */,
-				FFEF1F1614FF8E7D00645B53 /* previewDisabled.png */,
-				FFEF1F1714FF8E7D00645B53 /* previewDisabled@2x.png */,
-				FFEF1F1814FF8E7D00645B53 /* previewHighlight.png */,
-				FFEF1F1914FF8E7D00645B53 /* previewHighlight@2x.png */,
-				FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */,
-				FFA0654E143B13ED00145079 /* Sansus Webissimo-Regular.otf */,
-				FFEF1F1A14FF8E7D00645B53 /* settingsGlyph.png */,
-				FFEF1F1B14FF8E7D00645B53 /* settingsGlyph@2x.png */,
-				FFEF1F1C14FF8E7D00645B53 /* UIButtonBarArrowDown.png */,
-				FFEF1F1D14FF8E7D00645B53 /* UIButtonBarArrowDown@2x.png */,
-				FFEF1F1E14FF8E7D00645B53 /* UIButtonBarArrowDownSmall.png */,
-				FFEF1F1F14FF8E7D00645B53 /* UIButtonBarArrowDownSmall@2x.png */,
-				FFEF1F2014FF8E7D00645B53 /* UIButtonBarArrowLeft.png */,
-				FFEF1F2114FF8E7D00645B53 /* UIButtonBarArrowLeft@2x.png */,
-				FFEF1F2214FF8E7D00645B53 /* UIButtonBarArrowLeftLandscape.png */,
-				FFEF1F2314FF8E7D00645B53 /* UIButtonBarArrowLeftLandscape@2x.png */,
-				FFEF1F2414FF8E7D00645B53 /* UIButtonBarArrowRight.png */,
-				FFEF1F2514FF8E7D00645B53 /* UIButtonBarArrowRight@2x.png */,
-				FFEF1F2614FF8E7D00645B53 /* UIButtonBarArrowRightLandscape.png */,
-				FFEF1F2714FF8E7D00645B53 /* UIButtonBarArrowRightLandscape@2x.png */,
-				FFEF1F2814FF8E7D00645B53 /* UIButtonBarArrowUp.png */,
-				FFEF1F2914FF8E7D00645B53 /* UIButtonBarArrowUp@2x.png */,
-				FFEF1F2A14FF8E7D00645B53 /* UIButtonBarArrowUpSmall.png */,
-				FFEF1F2B14FF8E7D00645B53 /* UIButtonBarArrowUpSmall@2x.png */,
-				FFEF1F2C14FF8E7D00645B53 /* UIButtonBarCompose.png */,
 				FFEF1F2D14FF8E7D00645B53 /* UITextFieldClearButton.png */,
 				FFEF1F2E14FF8E7D00645B53 /* UITextFieldClearButton@2x.png */,
 				FFEF1F2F14FF8E7D00645B53 /* UITextFieldClearButtonPressed.png */,
@@ -2583,7 +2582,7 @@
 				FFF1F60013EFDF9600D3997C /* WAMockUsersList.json */,
 				FF18F90614FF96D400BCA510 /* WANavigationBarBackdrop.png */,
 				FF45E33E14FF9C4100B70869 /* WANavigationBarBackdrop@2x.png */,
-				FF18F90814FF96D400BCA510 /* WANavigationBarBackdropLandscape.png */,
+				FF45E33F14FF9C4100B70869 /* WANavigationBarBackdropLandscape.png */,
 				FF45E34014FF9C4100B70869 /* WANavigationBarBackdropLandscape@2x.png */,
 				FFEF1F5E14FF8E7E00645B53 /* WANonSupportedAttachmentPlaceholder.png */,
 				FFEF1F5F14FF8E7E00645B53 /* WAOverlayBezel-Checkmark.png */,
@@ -4135,7 +4134,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 273;
+				CURRENT_PROJECT_VERSION = 274;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4189,7 +4188,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 273;
+				CURRENT_PROJECT_VERSION = 274;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -4317,6 +4316,7 @@
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
+				WF_USES_GOOGLEANALYTICS = "$(WF_USES_GOOGLEANALYTICS)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -4344,6 +4344,7 @@
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
+				WF_USES_GOOGLEANALYTICS = "$(WF_USES_GOOGLEANALYTICS)";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
