@@ -76,6 +76,15 @@
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "歡迎使用 Waveface";
 
+/* “%@ Comments” */
+"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ 則留言";
+
+/* “%@ Comment” */
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ 則留言";
+
+/* “%@ Comment” or “No Comment” */
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "沒有留言";
+
 /* No comment provided by engineer. */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 

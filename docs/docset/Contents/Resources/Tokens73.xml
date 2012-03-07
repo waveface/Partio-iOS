@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WATableViewCell.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WATableViewCell</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATableViewCell.h</DeclaredIn>
+			
+			<NodeRef refid="73"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WATableViewCell/onSetSelected</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATableViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WATableViewCell *self , BOOL selected , BOOL animated ) onSetSelected</Declaration>
+			
+			
+			<Anchor>//api/name/onSetSelected</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WATableViewCell/onSetEditing</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATableViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WATableViewCell *self , BOOL selected , BOOL animated ) onSetEditing</Declaration>
+			
+			
+			<Anchor>//api/name/onSetEditing</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WATableViewCell/setSelected:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATableViewCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)setSelected:(BOOL)selected animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setSelected:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WATableViewCell/setEditing:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATableViewCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)setEditing:(BOOL)editing animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setEditing:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WATableViewCell/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WATableViewCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

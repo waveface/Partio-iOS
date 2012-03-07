@@ -119,6 +119,20 @@
 		FF2981C414F6DFF2004F6893 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
 		FF2E82FC14EE48FB000C6044 /* WAPreview+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FB14EE48FB000C6044 /* WAPreview+WAAdditions.m */; };
 		FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */; };
+		FF2F4B9F15076D2500B5DFEA /* WAArticleStackElementDropdownTag.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4B9915076D2500B5DFEA /* WAArticleStackElementDropdownTag.png */; };
+		FF2F4BA015076D2500B5DFEA /* WAArticleStackElementDropdownTag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4B9A15076D2500B5DFEA /* WAArticleStackElementDropdownTag@2x.png */; };
+		FF2F4BA115076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4B9B15076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled.png */; };
+		FF2F4BA215076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4B9C15076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled@2x.png */; };
+		FF2F4BA315076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4B9D15076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed.png */; };
+		FF2F4BA415076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4B9E15076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed@2x.png */; };
+		FF2F4BA915076EC100B5DFEA /* WADownDoubleArrowGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BA515076EC100B5DFEA /* WADownDoubleArrowGlyph.png */; };
+		FF2F4BAA15076EC100B5DFEA /* WADownDoubleArrowGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BA615076EC100B5DFEA /* WADownDoubleArrowGlyph@2x.png */; };
+		FF2F4BAB15076EC100B5DFEA /* WAUpDoubleArrowGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BA715076EC100B5DFEA /* WAUpDoubleArrowGlyph.png */; };
+		FF2F4BAC15076EC100B5DFEA /* WAUpDoubleArrowGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BA815076EC100B5DFEA /* WAUpDoubleArrowGlyph@2x.png */; };
+		FF2F4BB115077FB700B5DFEA /* WAArticleStackHeaderBarBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BAD15077FB700B5DFEA /* WAArticleStackHeaderBarBackground.png */; };
+		FF2F4BB215077FB700B5DFEA /* WAArticleStackHeaderBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BAE15077FB700B5DFEA /* WAArticleStackHeaderBarBackground@2x.png */; };
+		FF2F4BB315077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BAF15077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone.png */; };
+		FF2F4BB415077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF2F4BB015077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png */; };
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
 		FF3588F714EE7207005B452C /* WAOpenGraphElement+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3588F614EE7207005B452C /* WAOpenGraphElement+WAAdditions.m */; };
 		FF35892214EE7F8F005B452C /* WAOpenGraphElementImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */; };
@@ -130,6 +144,10 @@
 		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
+		FF3C4F73150756510030398B /* WAGrayTranslucentBarButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FF3C4F71150756510030398B /* WAGrayTranslucentBarButton.png */; };
+		FF3C4F74150756510030398B /* WAGrayTranslucentBarButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF3C4F72150756510030398B /* WAGrayTranslucentBarButton@2x.png */; };
+		FF3C4F77150758800030398B /* WAGrayTranslucentBarButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FF3C4F75150758800030398B /* WAGrayTranslucentBarButtonPressed.png */; };
+		FF3C4F78150758800030398B /* WAGrayTranslucentBarButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF3C4F76150758800030398B /* WAGrayTranslucentBarButtonPressed@2x.png */; };
 		FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; };
 		FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF42755B14F4E8D200824505 /* libz.dylib */; };
 		FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */; };
@@ -1111,6 +1129,20 @@
 		FF2E82FB14EE48FB000C6044 /* WAPreview+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAPreview+WAAdditions.m"; sourceTree = "<group>"; };
 		FF2E82FD14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAPreview+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAPreview+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		FF2F4B9915076D2500B5DFEA /* WAArticleStackElementDropdownTag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackElementDropdownTag.png; path = Resources/WAArticleStackElementDropdownTag.png; sourceTree = "<group>"; };
+		FF2F4B9A15076D2500B5DFEA /* WAArticleStackElementDropdownTag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackElementDropdownTag@2x.png"; path = "Resources/WAArticleStackElementDropdownTag@2x.png"; sourceTree = "<group>"; };
+		FF2F4B9B15076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackElementDropdownTagDisabled.png; path = Resources/WAArticleStackElementDropdownTagDisabled.png; sourceTree = "<group>"; };
+		FF2F4B9C15076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackElementDropdownTagDisabled@2x.png"; path = "Resources/WAArticleStackElementDropdownTagDisabled@2x.png"; sourceTree = "<group>"; };
+		FF2F4B9D15076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackElementDropdownTagPressed.png; path = Resources/WAArticleStackElementDropdownTagPressed.png; sourceTree = "<group>"; };
+		FF2F4B9E15076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackElementDropdownTagPressed@2x.png"; path = "Resources/WAArticleStackElementDropdownTagPressed@2x.png"; sourceTree = "<group>"; };
+		FF2F4BA515076EC100B5DFEA /* WADownDoubleArrowGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WADownDoubleArrowGlyph.png; path = "../../../Waveface/Reference Design iOS/WADownDoubleArrowGlyph.png"; sourceTree = "<group>"; };
+		FF2F4BA615076EC100B5DFEA /* WADownDoubleArrowGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WADownDoubleArrowGlyph@2x.png"; path = "../../../Waveface/Reference Design iOS/WADownDoubleArrowGlyph@2x.png"; sourceTree = "<group>"; };
+		FF2F4BA715076EC100B5DFEA /* WAUpDoubleArrowGlyph.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAUpDoubleArrowGlyph.png; path = "../../../Waveface/Reference Design iOS/WAUpDoubleArrowGlyph.png"; sourceTree = "<group>"; };
+		FF2F4BA815076EC100B5DFEA /* WAUpDoubleArrowGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAUpDoubleArrowGlyph@2x.png"; path = "../../../Waveface/Reference Design iOS/WAUpDoubleArrowGlyph@2x.png"; sourceTree = "<group>"; };
+		FF2F4BAD15077FB700B5DFEA /* WAArticleStackHeaderBarBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackHeaderBarBackground.png; path = Resources/WAArticleStackHeaderBarBackground.png; sourceTree = "<group>"; };
+		FF2F4BAE15077FB700B5DFEA /* WAArticleStackHeaderBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackHeaderBarBackground@2x.png"; path = "Resources/WAArticleStackHeaderBarBackground@2x.png"; sourceTree = "<group>"; };
+		FF2F4BAF15077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackHeaderBarBackgroundLandscapePhone.png; path = Resources/WAArticleStackHeaderBarBackgroundLandscapePhone.png; sourceTree = "<group>"; };
+		FF2F4BB015077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png"; path = "Resources/WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png"; sourceTree = "<group>"; };
 		FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAGroup+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAGroup+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 15.xcdatamodel"; sourceTree = "<group>"; };
@@ -1132,6 +1164,10 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/synergised/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/synergised/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/synergised/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
+		FF3C4F71150756510030398B /* WAGrayTranslucentBarButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAGrayTranslucentBarButton.png; path = Resources/WAGrayTranslucentBarButton.png; sourceTree = "<group>"; };
+		FF3C4F72150756510030398B /* WAGrayTranslucentBarButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAGrayTranslucentBarButton@2x.png"; path = "Resources/WAGrayTranslucentBarButton@2x.png"; sourceTree = "<group>"; };
+		FF3C4F75150758800030398B /* WAGrayTranslucentBarButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAGrayTranslucentBarButtonPressed.png; path = Resources/WAGrayTranslucentBarButtonPressed.png; sourceTree = "<group>"; };
+		FF3C4F76150758800030398B /* WAGrayTranslucentBarButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAGrayTranslucentBarButtonPressed@2x.png"; path = "Resources/WAGrayTranslucentBarButtonPressed@2x.png"; sourceTree = "<group>"; };
 		FF42755B14F4E8D200824505 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		FF45704D1488A786005B5905 /* WAUserInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserInfoHeaderCell.h; sourceTree = "<group>"; };
 		FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoHeaderCell.m; sourceTree = "<group>"; };
@@ -2530,6 +2566,16 @@
 				FFEF1F3214FF8E7D00645B53 /* UITextFieldInvertedClearButton@2x.png */,
 				FFEF1F3314FF8E7D00645B53 /* WAActionGlyph.png */,
 				FFEF1F3414FF8E7D00645B53 /* WAActionGlyph@2x.png */,
+				FF2F4B9915076D2500B5DFEA /* WAArticleStackElementDropdownTag.png */,
+				FF2F4B9A15076D2500B5DFEA /* WAArticleStackElementDropdownTag@2x.png */,
+				FF2F4B9B15076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled.png */,
+				FF2F4B9C15076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled@2x.png */,
+				FF2F4B9D15076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed.png */,
+				FF2F4B9E15076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed@2x.png */,
+				FF2F4BAD15077FB700B5DFEA /* WAArticleStackHeaderBarBackground.png */,
+				FF2F4BAE15077FB700B5DFEA /* WAArticleStackHeaderBarBackground@2x.png */,
+				FF2F4BAF15077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone.png */,
+				FF2F4BB015077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png */,
 				FF22B5681500E05300FA6616 /* WAAttachmentDisabledGlyph.png */,
 				FF22B5691500E05300FA6616 /* WAAttachmentDisabledGlyph@2x.png */,
 				FFEF1F3514FF8E7D00645B53 /* WAAttachmentGlyph.png */,
@@ -2564,12 +2610,18 @@
 				FFEF1F5114FF8E7E00645B53 /* WADateBadgeBackdrop.png */,
 				FFEF1F5214FF8E7E00645B53 /* WADateBadgeBackdrop@2x.png */,
 				FFEF1F5314FF8E7E00645B53 /* WADefaultUserIcon.png */,
+				FF2F4BA515076EC100B5DFEA /* WADownDoubleArrowGlyph.png */,
+				FF2F4BA615076EC100B5DFEA /* WADownDoubleArrowGlyph@2x.png */,
 				FFEF1F5414FF8E7E00645B53 /* WAFilter.png */,
 				FFEF1F5514FF8E7E00645B53 /* WAFilter@2x.png */,
 				FF22B56B1500E05300FA6616 /* WAFloatingButtonBackdrop.png */,
 				FF22B56C1500E05300FA6616 /* WAFloatingButtonBackdrop@2x.png */,
 				FF22B56D1500E05300FA6616 /* WAFloatingButtonBackdropActive.png */,
 				FF22B56E1500E05300FA6616 /* WAFloatingButtonBackdropActive@2x.png */,
+				FF3C4F71150756510030398B /* WAGrayTranslucentBarButton.png */,
+				FF3C4F72150756510030398B /* WAGrayTranslucentBarButton@2x.png */,
+				FF3C4F75150758800030398B /* WAGrayTranslucentBarButtonPressed.png */,
+				FF3C4F76150758800030398B /* WAGrayTranslucentBarButtonPressed@2x.png */,
 				FFEF1F5614FF8E7E00645B53 /* WALastReadIndicator.png */,
 				FF22B56F1500E05300FA6616 /* WALinkDisabledGlyph.png */,
 				FF22B5701500E05300FA6616 /* WALinkDisabledGlyph@2x.png */,
@@ -2642,6 +2694,8 @@
 				FFEF1F9414FF8E7E00645B53 /* WAStationNotFoundGlyph.png */,
 				FFEF1F9514FF8E7E00645B53 /* WATinyArrowDown.png */,
 				FFEF1F9614FF8E7E00645B53 /* WATinyArrowUp.png */,
+				FF2F4BA715076EC100B5DFEA /* WAUpDoubleArrowGlyph.png */,
+				FF2F4BA815076EC100B5DFEA /* WAUpDoubleArrowGlyph@2x.png */,
 				FFEF1F9714FF8E7E00645B53 /* WAUserGlyph.png */,
 				FFEF1F9814FF8E7E00645B53 /* WAUserGlyph@2x.png */,
 				FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */,
@@ -3602,6 +3656,24 @@
 				FFA6FB581504BD2B0006D277 /* UINavigationBarRemoveButton@2x.png in Resources */,
 				FFA6FB591504BD2B0006D277 /* UINavigationBarRemoveButtonPressed.png in Resources */,
 				FFA6FB5A1504BD2B0006D277 /* UINavigationBarRemoveButtonPressed@2x.png in Resources */,
+				FF3C4F73150756510030398B /* WAGrayTranslucentBarButton.png in Resources */,
+				FF3C4F74150756510030398B /* WAGrayTranslucentBarButton@2x.png in Resources */,
+				FF3C4F77150758800030398B /* WAGrayTranslucentBarButtonPressed.png in Resources */,
+				FF3C4F78150758800030398B /* WAGrayTranslucentBarButtonPressed@2x.png in Resources */,
+				FF2F4B9F15076D2500B5DFEA /* WAArticleStackElementDropdownTag.png in Resources */,
+				FF2F4BA015076D2500B5DFEA /* WAArticleStackElementDropdownTag@2x.png in Resources */,
+				FF2F4BA115076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled.png in Resources */,
+				FF2F4BA215076D2500B5DFEA /* WAArticleStackElementDropdownTagDisabled@2x.png in Resources */,
+				FF2F4BA315076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed.png in Resources */,
+				FF2F4BA415076D2500B5DFEA /* WAArticleStackElementDropdownTagPressed@2x.png in Resources */,
+				FF2F4BA915076EC100B5DFEA /* WADownDoubleArrowGlyph.png in Resources */,
+				FF2F4BAA15076EC100B5DFEA /* WADownDoubleArrowGlyph@2x.png in Resources */,
+				FF2F4BAB15076EC100B5DFEA /* WAUpDoubleArrowGlyph.png in Resources */,
+				FF2F4BAC15076EC100B5DFEA /* WAUpDoubleArrowGlyph@2x.png in Resources */,
+				FF2F4BB115077FB700B5DFEA /* WAArticleStackHeaderBarBackground.png in Resources */,
+				FF2F4BB215077FB700B5DFEA /* WAArticleStackHeaderBarBackground@2x.png in Resources */,
+				FF2F4BB315077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone.png in Resources */,
+				FF2F4BB415077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

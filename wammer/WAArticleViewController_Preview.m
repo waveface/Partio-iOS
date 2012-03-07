@@ -305,6 +305,8 @@ enum {
 	NSString *templatedSummary = [NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil];
 	NSURL *summaryTemplateBaseURL = templatedSummary ? [NSURL fileURLWithPath:summaryTemplateDirectoryPath] : nil;
 		
+	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$ADDITIONAL_STYLES" withString:@""];
+
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$BODY" withString:(usedSummary ? usedSummary : @"")];
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$TITLE" withString:(usedTitle ? usedTitle : @"")];
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$SOURCE" withString:(usedProviderName ? usedProviderName : @"")];
@@ -322,8 +324,19 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
-				
+	UIColor *glyphColor = nil;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {	
+		case UIUserInterfaceIdiomPad: {
+			glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+			break;
+		}		
+		case UIUserInterfaceIdiomPhone: {
+			glyphColor = [UIColor whiteColor];
+			break;
+		}
+	}
+	
 	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
@@ -351,7 +364,18 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 		
-	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+	UIColor *glyphColor = nil;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {	
+		case UIUserInterfaceIdiomPad: {
+			glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+			break;
+		}		
+		case UIUserInterfaceIdiomPhone: {
+			glyphColor = [UIColor whiteColor];
+			break;
+		}
+	}
 	
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
@@ -581,8 +605,9 @@ enum {
 		if (isPhone) {
 			
 			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+			//	[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
 			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
-			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
 
 		} else {
 			

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAPreviewInspectionViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAPreviewInspectionViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>
+			
+			<NodeRef refid="59"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewInspectionViewController/controllerWithPreview:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (id)controllerWithPreview:(NSURL *)anURL</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWithPreview:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/wrappingNavController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>- (UINavigationController *)wrappingNavController</Declaration>
+			
+			
+			<Anchor>//api/name/wrappingNavController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewInspectionViewController/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;WAPreviewInspectionViewControllerDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewInspectionViewController/deleteButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UIButton *deleteButton</Declaration>
+			
+			
+			<Anchor>//api/name/deleteButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/handleDeleteTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleDeleteTap:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleDeleteTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewInspectionViewController/preview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) WAPreview *preview</Declaration>
+			
+			
+			<Anchor>//api/name/preview</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewInspectionViewController/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/initWithNibName:bundle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/initWithNibName:bundle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewInspectionViewController/handleDoneTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDoneTap:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleDoneTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewInspectionViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewInspectionViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

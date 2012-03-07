@@ -1,0 +1,840 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WADiscretePaginatedArticlesViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WADiscretePaginatedArticlesViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.h</DeclaredIn>
+			
+			<NodeRef refid="33"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/paginationSlider</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAPaginationSlider *paginationSlider</Declaration>
+			
+			
+			<Anchor>//api/name/paginationSlider</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/paginationSliderSlot</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet IRConcaveView *paginationSliderSlot</Declaration>
+			
+			
+			<Anchor>//api/name/paginationSliderSlot</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/paginatedView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView</Declaration>
+			
+			
+			<Anchor>//api/name/paginatedView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/paginatedArticlesViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (WAPaginatedArticlesViewController *)paginatedArticlesViewController</Declaration>
+			
+			
+			<Anchor>//api/name/paginatedArticlesViewController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/handleApplicationDidBecomeActive:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleApplicationDidBecomeActive:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleApplicationDidBecomeActive:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/handleApplicationDidEnterBackground:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleApplicationDidEnterBackground:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleApplicationDidEnterBackground:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/representingViewForItem:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)representingViewForItem:(WAArticle *)anArticle</Declaration>
+			
+			
+			<Anchor>//api/name/representingViewForItem:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/setContextControlsVisible:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setContextControlsVisible:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/layoutManager:nextGridForContentsUsingGrid:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (IRDiscreteLayoutGrid *)layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid</Declaration>
+			
+			
+			<Anchor>//api/name/layoutManager:nextGridForContentsUsingGrid:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/discreteLayoutManager</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (IRDiscreteLayoutManager *)discreteLayoutManager</Declaration>
+			
+			
+			<Anchor>//api/name/discreteLayoutManager</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/layoutGrids</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)layoutGrids</Declaration>
+			
+			
+			<Anchor>//api/name/layoutGrids</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/refreshData</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)refreshData</Declaration>
+			
+			
+			<Anchor>//api/name/refreshData</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/performReadingProgressSync</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)performReadingProgressSync</Declaration>
+			
+			
+			<Anchor>//api/name/performReadingProgressSync</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/controllerWillChangeContent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWillChangeContent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath</Declaration>
+			
+			
+			<Anchor>//api/name/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/controller:didChangeSection:atIndex:forChangeType:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id&lt;NSFetchedResultsSectionInfo&gt;)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type</Declaration>
+			
+			
+			<Anchor>//api/name/controller:didChangeSection:atIndex:forChangeType:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/controllerDidChangeContent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/controllerDidChangeContent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/reloadViewContents</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)reloadViewContents</Declaration>
+			
+			
+			<Anchor>//api/name/reloadViewContents</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/numberOfItemsForLayoutManager:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)numberOfItemsForLayoutManager:(IRDiscreteLayoutManager *)manager</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfItemsForLayoutManager:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/layoutManager:itemAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id&lt;IRDiscreteLayoutItem&gt;)layoutManager:(IRDiscreteLayoutManager *)manager itemAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/layoutManager:itemAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/numberOfLayoutGridsForLayoutManager:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)numberOfLayoutGridsForLayoutManager:(IRDiscreteLayoutManager *)manager</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfLayoutGridsForLayoutManager:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/layoutManager:layoutGridAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id&lt;IRDiscreteLayoutItem&gt;)layoutManager:(IRDiscreteLayoutManager *)manager layoutGridAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/layoutManager:layoutGridAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/numberOfViewsInPaginatedView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfViewsInPaginatedView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewForPaginatedView:atIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/viewForPaginatedView:atIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/paginatedView:didShowView:atIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/paginatedView:didShowView:atIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewControllerForSubviewAtIndex:inPaginatedView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UIViewController *)viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView</Declaration>
+			
+			
+			<Anchor>//api/name/viewControllerForSubviewAtIndex:inPaginatedView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/adjustPageViewAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)adjustPageViewAtIndex:(NSUInteger)anIndex</Declaration>
+			
+			
+			<Anchor>//api/name/adjustPageViewAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/adjustPageView:usingGridAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)adjustPageView:(UIView *)currentPageView usingGridAtIndex:(NSUInteger)anIndex</Declaration>
+			
+			
+			<Anchor>//api/name/adjustPageView:usingGridAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/adjustPageViewAtIndex:withAdditionalAdjustments:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void ( ^ ) ( UIView *aSubview ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/adjustPageViewAtIndex:withAdditionalAdjustments:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/willAnimateRotationToInterfaceOrientation:duration:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration</Declaration>
+			
+			
+			<Anchor>//api/name/willAnimateRotationToInterfaceOrientation:duration:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/updateLastReadingProgressAnnotation</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateLastReadingProgressAnnotation</Declaration>
+			
+			
+			<Anchor>//api/name/updateLastReadingProgressAnnotation</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/gridIndexOfLastReadArticle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)gridIndexOfLastReadArticle</Declaration>
+			
+			
+			<Anchor>//api/name/gridIndexOfLastReadArticle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/gridIndexOfArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)gridIndexOfArticle:(WAArticle *)anArticle</Declaration>
+			
+			
+			<Anchor>//api/name/gridIndexOfArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/lastReadingProgressAnnotation</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (WAPaginationSliderAnnotation *)lastReadingProgressAnnotation</Declaration>
+			
+			
+			<Anchor>//api/name/lastReadingProgressAnnotation</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/lastReadingProgressAnnotationView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)lastReadingProgressAnnotationView</Declaration>
+			
+			
+			<Anchor>//api/name/lastReadingProgressAnnotationView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/viewForAnnotation:inPaginationSlider:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider</Declaration>
+			
+			
+			<Anchor>//api/name/viewForAnnotation:inPaginationSlider:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/paginationSlider:didMoveToPage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage</Declaration>
+			
+			
+			<Anchor>//api/name/paginationSlider:didMoveToPage:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/gestureRecognizer:shouldReceiveTouch:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldReceiveTouch:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/debugActionSheetControllerActions</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)debugActionSheetControllerActions</Declaration>
+			
+			
+			<Anchor>//api/name/debugActionSheetControllerActions</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/setLastReadObjectIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)setLastReadObjectIdentifier:(NSString *)newLastReadObjectIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/setLastReadObjectIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/updateLatestReadingProgressWithIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/updateLatestReadingProgressWithIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/updateLatestReadingProgressWithIdentifier:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void ( ^ ) ( BOOL didUpdate ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateLatestReadingProgressWithIdentifier:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/retrieveLatestReadingProgress</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveLatestReadingProgress</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveLatestReadingProgress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/retrieveLatestReadingProgressWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveLatestReadingProgressWithCompletion:(void ( ^ ) ( NSTimeInterval ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveLatestReadingProgressWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/presentDetailedContextForArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.h</DeclaredIn>			
+			
+			<Declaration>- (UIViewController&lt;WAArticleViewControllerPresenting&gt; *)presentDetailedContextForArticle:(NSURL *)anObjectURI</Declaration>
+			
+			
+			<Anchor>//api/name/presentDetailedContextForArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/presentDetailedContextForArticle:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.h</DeclaredIn>			
+			
+			<Declaration>- (UIViewController&lt;WAArticleViewControllerPresenting&gt; *)presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/presentDetailedContextForArticle:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/presentDetailedContextForArticle:usingAnimation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.h</DeclaredIn>			
+			
+			<Declaration>- (UIViewController&lt;WAArticleViewControllerPresenting&gt; *)presentDetailedContextForArticle:(NSURL *)anObjectURI usingAnimation:(WAArticleContextAnimation)animation</Declaration>
+			
+			
+			<Anchor>//api/name/presentDetailedContextForArticle:usingAnimation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/dismissArticleContextViewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismissArticleContextViewController:(UIViewController&lt;WAArticleViewControllerPresenting&gt; *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/dismissArticleContextViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/newContextViewControllerForArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.h</DeclaredIn>			
+			
+			<Declaration>- (UIViewController&lt;WAArticleViewControllerPresenting&gt; *)newContextViewControllerForArticle:(NSURL *)anObjectURI</Declaration>
+			
+			
+			<Anchor>//api/name/newContextViewControllerForArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/wrappingNavigationControllerForContextViewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.h</DeclaredIn>			
+			
+			<Declaration>- (UINavigationController *)wrappingNavigationControllerForContextViewController:(UIViewController&lt;WAArticleViewControllerPresenting&gt; *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/wrappingNavigationControllerForContextViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/lastUsedLayoutGrids</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+DiscreteLayout.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *lastUsedLayoutGrids</Declaration>
+			
+			
+			<Anchor>//api/name/lastUsedLayoutGrids</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/newDiscreteArticleViewControllerForArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+DiscreteLayout.h</DeclaredIn>			
+			
+			<Declaration>- (WAArticleViewController *)newDiscreteArticleViewControllerForArticle:(WAArticle *)article</Declaration>
+			
+			
+			<Anchor>//api/name/newDiscreteArticleViewControllerForArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/cachedArticleViewControllerForArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+DiscreteLayout.h</DeclaredIn>			
+			
+			<Declaration>- (WAArticleViewController *)cachedArticleViewControllerForArticle:(WAArticle *)article</Declaration>
+			
+			
+			<Anchor>//api/name/cachedArticleViewControllerForArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/removeCachedArticleViewControllers</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+DiscreteLayout.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeCachedArticleViewControllers</Declaration>
+			
+			
+			<Anchor>//api/name/removeCachedArticleViewControllers</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/newPageContainerView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+DiscreteLayout.h</DeclaredIn>			
+			
+			<Declaration>- (UIView *)newPageContainerView</Declaration>
+			
+			
+			<Anchor>//api/name/newPageContainerView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/dismissBlockForArticleContextViewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.m</DeclaredIn>			
+			
+			<Declaration>- (void ( ^ ) ( void ))dismissBlockForArticleContextViewController:(UIViewController&lt;WAArticleViewControllerPresenting&gt; *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/dismissBlockForArticleContextViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADiscretePaginatedArticlesViewController/setDismissBlock:forArticleContextViewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+ContextPresenting.m</DeclaredIn>			
+			
+			<Declaration>- (void)setDismissBlock:(void ( ^ ) ( void ))aBlock forArticleContextViewController:(UIViewController&lt;WAArticleViewControllerPresenting&gt; *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/setDismissBlock:forArticleContextViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/discreteLayoutManager</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager</Declaration>
+			
+			
+			<Anchor>//api/name/discreteLayoutManager</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/discreteLayoutResult</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult</Declaration>
+			
+			
+			<Anchor>//api/name/discreteLayoutResult</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/layoutGrids</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *layoutGrids</Declaration>
+			
+			
+			<Anchor>//api/name/layoutGrids</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/requiresRecalculationOnFetchedResultsChangeEnd</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd</Declaration>
+			
+			
+			<Anchor>//api/name/requiresRecalculationOnFetchedResultsChangeEnd</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/paginatedArticlesViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController</Declaration>
+			
+			
+			<Anchor>//api/name/paginatedArticlesViewController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/lastReadObjectIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/lastReadObjectIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/lastHandledReadObjectIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/lastHandledReadObjectIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/lastReadingProgressAnnotation</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation</Declaration>
+			
+			
+			<Anchor>//api/name/lastReadingProgressAnnotation</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/lastReadingProgressAnnotationView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView</Declaration>
+			
+			
+			<Anchor>//api/name/lastReadingProgressAnnotationView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WADiscretePaginatedArticlesViewController/articleViewControllersCache</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADiscretePaginatedArticlesViewController+DiscreteLayout.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSCache *articleViewControllersCache</Declaration>
+			
+			
+			<Anchor>//api/name/articleViewControllersCache</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

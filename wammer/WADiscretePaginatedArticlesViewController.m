@@ -183,7 +183,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
 	
-	self.paginationSliderSlot.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	self.paginationSliderSlot.backgroundColor = [UIColor colorWithRed:0.75 green:0.55 blue:0.55 alpha:0.125];
 	self.paginationSliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
 	self.paginationSliderSlot.layer.cornerRadius = 4.0f;
 	self.paginationSliderSlot.layer.masksToBounds = YES;
@@ -196,8 +196,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	returnedView.layer.cornerRadius = 2;
 
-//	returnedView.layer.backgroundColor = [UIColor colorWithWhite:0.93 alpha:0.25].CGColor;
-	returnedView.layer.backgroundColor = [UIColor clearColor].CGColor;
+	returnedView.layer.backgroundColor = [UIColor whiteColor].CGColor;
 	returnedView.layer.masksToBounds = YES;
 	
 	returnedView.layer.borderWidth = 1;

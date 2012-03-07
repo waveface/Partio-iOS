@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAImageStreamPickerView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAImageStreamPickerView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>
+			
+			<NodeRef refid="44"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;WAImageStreamPickerViewDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/edgeInsets</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets</Declaration>
+			
+			
+			<Anchor>//api/name/edgeInsets</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/activeImageOverlay</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *activeImageOverlay</Declaration>
+			
+			
+			<Anchor>//api/name/activeImageOverlay</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/viewForThumbnail</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) UIView *^ ) ( UIView *existingView , UIImage *thumbnail ) viewForThumbnail</Declaration>
+			
+			
+			<Anchor>//api/name/viewForThumbnail</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/selectedItemIndex</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSUInteger selectedItemIndex</Declaration>
+			
+			
+			<Anchor>//api/name/selectedItemIndex</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/style</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAImageStreamPickerViewStyle style</Declaration>
+			
+			
+			<Anchor>//api/name/style</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/thumbnailSpacing</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat thumbnailSpacing</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailSpacing</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/thumbnailAspectRatio</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat thumbnailAspectRatio</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailAspectRatio</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/reloadData</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>- (void)reloadData</Declaration>
+			
+			
+			<Anchor>//api/name/reloadData</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/handleTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleTap:(UITapGestureRecognizer *)aTapRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/handlePan:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>- (void)handlePan:(UIPanGestureRecognizer *)aPanRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handlePan:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/itemAtPoint:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>- (id)itemAtPoint:(CGPoint)aPoint</Declaration>
+			
+			
+			<Anchor>//api/name/itemAtPoint:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStreamPickerView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/items</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *items</Declaration>
+			
+			
+			<Anchor>//api/name/items</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/tapRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UITapGestureRecognizer *tapRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/tapRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStreamPickerView/panRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIPanGestureRecognizer *panRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/panRecognizer</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

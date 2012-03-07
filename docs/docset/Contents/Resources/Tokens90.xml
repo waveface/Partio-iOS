@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAArticleView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAArticleView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>
+			
+			<NodeRef refid="90"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/contextInfoContainer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *contextInfoContainer</Declaration>
+			
+			
+			<Anchor>//api/name/contextInfoContainer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/imageStackView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAImageStackView *imageStackView</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/textEmphasisView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticleTextEmphasisLabel *textEmphasisView</Declaration>
+			
+			
+			<Anchor>//api/name/textEmphasisView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/avatarView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImageView *avatarView</Declaration>
+			
+			
+			<Anchor>//api/name/avatarView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/relativeCreationDateLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UILabel *relativeCreationDateLabel</Declaration>
+			
+			
+			<Anchor>//api/name/relativeCreationDateLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/userNameLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UILabel *userNameLabel</Declaration>
+			
+			
+			<Anchor>//api/name/userNameLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/articleDescriptionLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UILabel *articleDescriptionLabel</Declaration>
+			
+			
+			<Anchor>//api/name/articleDescriptionLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/deviceDescriptionLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UILabel *deviceDescriptionLabel</Declaration>
+			
+			
+			<Anchor>//api/name/deviceDescriptionLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/contextTextView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UITextView *contextTextView</Declaration>
+			
+			
+			<Anchor>//api/name/contextTextView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/WAArticleView/mainImageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImageView *mainImageView</Declaration>
+			
+			
+			<Anchor>//api/name/mainImageView</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

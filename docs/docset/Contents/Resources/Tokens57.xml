@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAPreview.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAPreview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>
+			
+			<NodeRef refid="57"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/htmlSynopsis</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *htmlSynopsis</Declaration>
+			
+			
+			<Anchor>//api/name/htmlSynopsis</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/url</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *url</Declaration>
+			
+			
+			<Anchor>//api/name/url</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/graphElement</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAOpenGraphElement *graphElement</Declaration>
+			
+			
+			<Anchor>//api/name/graphElement</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/owner</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAUser *owner</Declaration>
+			
+			
+			<Anchor>//api/name/owner</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/timestamp</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSDate *timestamp</Declaration>
+			
+			
+			<Anchor>//api/name/timestamp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreview/thumbnail</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UIImage *thumbnail</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnail</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/keyPathsForValuesAffectingThumbnail</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingThumbnail</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingThumbnail</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/transformedRepresentationForRemoteRepresentation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation</Declaration>
+			
+			
+			<Anchor>//api/name/transformedRepresentationForRemoteRepresentation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/defaultHierarchicalEntityMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)defaultHierarchicalEntityMapping</Declaration>
+			
+			
+			<Anchor>//api/name/defaultHierarchicalEntityMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreview/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreview+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (id)transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath</Declaration>
+			
+			
+			<Anchor>//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

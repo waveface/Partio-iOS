@@ -34,4 +34,6 @@
 - (UIView *) scrollableStackElementWrapper;
 - (UIScrollView *) scrollableStackElement;
 
+@property (nonatomic, readonly, retain) NSArray *headerBarButtonItems;
+
 @end

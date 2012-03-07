@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>
+			
+			<NodeRef refid="81"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAViewController/onShouldAutorotateToInterfaceOrientation</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIInterfaceOrientation toOrientation ) onShouldAutorotateToInterfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/onShouldAutorotateToInterfaceOrientation</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAViewController/onLoadview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WAViewController *self ) onLoadview</Declaration>
+			
+			
+			<Anchor>//api/name/onLoadview</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAViewController/onViewWillAppear</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WAViewController *self ) onViewWillAppear</Declaration>
+			
+			
+			<Anchor>//api/name/onViewWillAppear</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAViewController/onViewDidAppear</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WAViewController *self ) onViewDidAppear</Declaration>
+			
+			
+			<Anchor>//api/name/onViewDidAppear</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAViewController/onViewWillDisappear</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WAViewController *self ) onViewWillDisappear</Declaration>
+			
+			
+			<Anchor>//api/name/onViewWillDisappear</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAViewController/onViewDidDisappear</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WAViewController *self ) onViewDidDisappear</Declaration>
+			
+			
+			<Anchor>//api/name/onViewDidDisappear</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/loadView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)loadView</Declaration>
+			
+			
+			<Anchor>//api/name/loadView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/viewDidDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

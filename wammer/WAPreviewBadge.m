@@ -118,14 +118,17 @@
 		
 		NSAttributedString *appendedString = [[[NSAttributedString alloc] initWithString:usedString attributes:usedAttrs] autorelease];
 		[returnedString appendAttributedString:appendedString];
-		
+
 		return appendedString;
 		
 	};
 	
-	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor,
-		(self.link ? [NSDictionary dictionaryWithObject:self.link forKey:kIRTextLinkAttribute] : nil)
-	);
+	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor, [NSDictionary dictionaryWithObjectsAndKeys:
+		
+			self.link, kIRTextLinkAttribute,
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:(self.titleFont.leading - 4)], kCTParagraphStyleAttributeName,
+		
+	nil]);
 	
 	if (titleElement)
 		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
@@ -157,8 +160,8 @@
 	self.titlePlaceholderColor = [UIColor grayColor];
 	
 	self.providerNamePlaceholder = NSLocalizedString(@"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER", @"Text to show for previews without a provider name");
-	self.providerNameFont = [UIFont boldSystemFontOfSize:14.0f];
-	self.providerNameColor = [UIColor colorWithWhite:0.3 alpha:1];
+	self.providerNameFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
+	self.providerNameColor = [UIColor colorWithWhite:0.65 alpha:1];
 	self.providerNamePlaceholderColor = [UIColor grayColor];
 	
 	self.textPlaceholder = NSLocalizedString(@"PREVIEW_BADGE_TEXT_PLACEHOLDER", @"Text to show for previews without body text");

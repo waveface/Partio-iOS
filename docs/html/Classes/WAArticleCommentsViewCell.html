@@ -1,0 +1,552 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAArticleCommentsViewCell Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAArticleCommentsViewCell Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/avatarView">&nbsp;&nbsp;&nbsp;&nbsp;avatarView</option>
+	
+	<option value="//api/name/contentTextLabel">&nbsp;&nbsp;&nbsp;&nbsp;contentTextLabel</option>
+	
+	<option value="//api/name/dateLabel">&nbsp;&nbsp;&nbsp;&nbsp;dateLabel</option>
+	
+	<option value="//api/name/dateOriginLabel">&nbsp;&nbsp;&nbsp;&nbsp;dateOriginLabel</option>
+	
+	<option value="//api/name/imageStackView">&nbsp;&nbsp;&nbsp;&nbsp;imageStackView</option>
+	
+	<option value="//api/name/originLabel">&nbsp;&nbsp;&nbsp;&nbsp;originLabel</option>
+	
+	<option value="//api/name/reuseIdentifier">&nbsp;&nbsp;&nbsp;&nbsp;reuseIdentifier</option>
+	
+	<option value="//api/name/style">&nbsp;&nbsp;&nbsp;&nbsp;style</option>
+	
+	<option value="//api/name/userNicknameLabel">&nbsp;&nbsp;&nbsp;&nbsp;userNicknameLabel</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/cellFromNib">&nbsp;&nbsp;&nbsp;&nbsp;+ cellFromNib</option>
+	
+	<option value="//api/name/cellFromNibNamed:instantiatingOwner:withOptions:">&nbsp;&nbsp;&nbsp;&nbsp;+ cellFromNibNamed:instantiatingOwner:withOptions:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/initWithCommentsViewCellStyle:reuseIdentifier:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithCommentsViewCellStyle:reuseIdentifier:</option>
+	
+	<option value="//api/name/initWithStyle:reuseIdentifier:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithStyle:reuseIdentifier:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Extension Methods">Extension Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_NibLoading Methods">NibLoading Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/avatarView">avatarView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/contentTextLabel">contentTextLabel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dateLabel">dateLabel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dateOriginLabel">dateOriginLabel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/imageStackView">imageStackView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/originLabel">originLabel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/reuseIdentifier">reuseIdentifier</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/style">style</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userNicknameLabel">userNicknameLabel</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cellFromNib">cellFromNib</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cellFromNibNamed:instantiatingOwner:withOptions:">cellFromNibNamed:instantiatingOwner:withOptions:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithCommentsViewCellStyle:reuseIdentifier:">initWithCommentsViewCellStyle:reuseIdentifier:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithStyle:reuseIdentifier:">initWithStyle:reuseIdentifier:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAArticleCommentsViewCell Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAArticleCommentsViewCell Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">UITableViewCell</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAArticleCommentsViewCell.h<br />WAArticleCommentsViewCell.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithCommentsViewCellStyle:reuseIdentifier:">&ndash;&nbsp;initWithCommentsViewCellStyle:reuseIdentifier:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/imageStackView">&nbsp;&nbsp;imageStackView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/avatarView">&nbsp;&nbsp;avatarView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userNicknameLabel">&nbsp;&nbsp;userNicknameLabel</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/contentTextLabel">&nbsp;&nbsp;contentTextLabel</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dateOriginLabel">&nbsp;&nbsp;dateOriginLabel</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dateLabel">&nbsp;&nbsp;dateLabel</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/originLabel">&nbsp;&nbsp;originLabel</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithStyle:reuseIdentifier:">&ndash;&nbsp;initWithStyle:reuseIdentifier:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Extension Methods" name="task_Extension Methods"></a>
+						<h3 class="subsubtitle task-title">Extension Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/style">&nbsp;&nbsp;style</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/reuseIdentifier">&nbsp;&nbsp;reuseIdentifier</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="NibLoading Methods" name="task_NibLoading Methods"></a>
+						<h3 class="subsubtitle task-title">NibLoading Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cellFromNib">+&nbsp;cellFromNib</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cellFromNibNamed:instantiatingOwner:withOptions:">+&nbsp;cellFromNibNamed:instantiatingOwner:withOptions:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/avatarView" title="avatarView"></a>
+	<h3 class="subsubtitle method-title">avatarView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/contentTextLabel" title="contentTextLabel"></a>
+	<h3 class="subsubtitle method-title">contentTextLabel</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dateLabel" title="dateLabel"></a>
+	<h3 class="subsubtitle method-title">dateLabel</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dateOriginLabel" title="dateOriginLabel"></a>
+	<h3 class="subsubtitle method-title">dateOriginLabel</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/imageStackView" title="imageStackView"></a>
+	<h3 class="subsubtitle method-title">imageStackView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/originLabel" title="originLabel"></a>
+	<h3 class="subsubtitle method-title">originLabel</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/reuseIdentifier" title="reuseIdentifier"></a>
+	<h3 class="subsubtitle method-title">reuseIdentifier</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/style" title="style"></a>
+	<h3 class="subsubtitle method-title">style</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userNicknameLabel" title="userNicknameLabel"></a>
+	<h3 class="subsubtitle method-title">userNicknameLabel</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/cellFromNib" title="cellFromNib"></a>
+	<h3 class="subsubtitle method-title">cellFromNib</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/cellFromNibNamed:instantiatingOwner:withOptions:" title="cellFromNibNamed:instantiatingOwner:withOptions:"></a>
+	<h3 class="subsubtitle method-title">cellFromNibNamed:instantiatingOwner:withOptions:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithCommentsViewCellStyle:reuseIdentifier:" title="initWithCommentsViewCellStyle:reuseIdentifier:"></a>
+	<h3 class="subsubtitle method-title">initWithCommentsViewCellStyle:reuseIdentifier:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithStyle:reuseIdentifier:" title="initWithStyle:reuseIdentifier:"></a>
+	<h3 class="subsubtitle method-title">initWithStyle:reuseIdentifier:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

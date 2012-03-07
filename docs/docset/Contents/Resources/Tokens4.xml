@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAApplicationDidReceiveReadingProgressUpdateNotificationView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAApplicationDidReceiveReadingProgressUpdateNotificationView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>
+			
+			<NodeRef refid="4"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/viewFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>+ (WAApplicationDidReceiveReadingProgressUpdateNotificationView *)viewFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/viewFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAApplicationDidReceiveReadingProgressUpdateNotificationView/localizableLabels</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutletCollection ( UILabel ) NSArray *localizableLabels</Declaration>
+			
+			
+			<Anchor>//api/name/localizableLabels</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAApplicationDidReceiveReadingProgressUpdateNotificationView/wrapperView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UIView *wrapperView</Declaration>
+			
+			
+			<Anchor>//api/name/wrapperView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/handleAction:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleAction:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleAction:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/handleClear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleClear:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleClear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAApplicationDidReceiveReadingProgressUpdateNotificationView/onAction</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( ) onAction</Declaration>
+			
+			
+			<Anchor>//api/name/onAction</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAApplicationDidReceiveReadingProgressUpdateNotificationView/onClear</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( ) onClear</Declaration>
+			
+			
+			<Anchor>//api/name/onClear</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/enqueueAnimationForVisibility:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>- (void)enqueueAnimationForVisibility:(BOOL)willBeVisible completion:(void ( ^ ) ( BOOL didFinish ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/enqueueAnimationForVisibility:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/enqueueAnimationForVisibility:withAdditionalAnimation:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>- (void)enqueueAnimationForVisibility:(BOOL)willBeVisible withAdditionalAnimation:(void ( ^ ) ( void ))additionalStuff completion:(void ( ^ ) ( BOOL didFinish ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/enqueueAnimationForVisibility:withAdditionalAnimation:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.h</DeclaredIn>			
+			
+			<Declaration>- (void)enqueueAnimationForVisibility:(BOOL)willBeVisible withDuration:(NSTimeInterval)duration additionalAnimation:(void ( ^ ) ( void ))additionalStuff completion:(void ( ^ ) ( BOOL didFinish ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAApplicationDidReceiveReadingProgressUpdateNotificationView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAApplicationDidReceiveReadingProgressUpdateNotificationView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

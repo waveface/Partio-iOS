@@ -316,25 +316,33 @@
 					
 						WAView *enclosingView = [[[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
 												
-						CGRect toolbarRect = enclosingView.bounds;
+						CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
 						toolbarRect.size.height = 44;
 						
-						__block IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:toolbarRect] autorelease];
+						__block UIToolbar *toolbar = [[[UIToolbar alloc] initWithFrame:toolbarRect] autorelease];
 						[enclosingView addSubview:toolbar];
-						toolbar.usesCustomLayout = NO;
+						
+						UIImage *toolbarBackground = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackground"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+						UIImage *toolbarBackgroundLandscapePhone = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackgroundLandscapePhone"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+						[toolbar setBackgroundImage:toolbarBackground forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+						[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
+						
 						toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 						
 						toolbar.items = ((^ {
 						
-							NSMutableArray *items = [NSMutableArray arrayWithObjects:
+							if ([shownArticleVC respondsToSelector:@selector(headerBarButtonItems)])
+								return (NSArray *)[shownArticleVC performSelector:@selector(headerBarButtonItems)];
+						
+							NSMutableArray *items = [NSMutableArray array];
+							UINavigationItem *navItem = shownArticleVC.navigationItem;
 							
-								[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+							if (navItem.leftBarButtonItems)
+								[items addObjectsFromArray:shownArticleVC.navigationItem.leftBarButtonItems];
 							
-								shownArticleVC.navigationItem.rightBarButtonItem,
-							
-							nil];
-							
-							if (shownArticleVC.navigationItem.rightBarButtonItems)
+							[items addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+
+							if (navItem.rightBarButtonItems)
 								[items addObjectsFromArray:shownArticleVC.navigationItem.rightBarButtonItems];
 							
 							return items;
@@ -502,13 +510,17 @@
 		};
 		
 	#endif
-		
-	returnedVC.navigationItem.hidesBackButton = NO;
-	returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
+	
+	if (!returnedVC.navigationItem.leftBarButtonItem) {
+				
+		returnedVC.navigationItem.hidesBackButton = NO;
+		returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 
-		[nrSelf dismissArticleContextViewController:returnedVC];
+			[nrSelf dismissArticleContextViewController:returnedVC];
 
-	});
+		});
+	
+	}
 
 	return [returnedVC retain];
 

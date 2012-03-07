@@ -76,6 +76,15 @@
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "Welcome";
 
+/* “%@ Comments” */
+"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";
+
+/* “%@ Comment” */
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Comment";
+
+/* “%@ Comment” or “No Comment” */
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comment";
+
 /* No comment provided by engineer. */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 

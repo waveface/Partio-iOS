@@ -1,0 +1,4 @@
+Documentation set was installed to Xcode!
+
+Path: /Volumes/Backpack/Heroes/jsa/Library/Developer/Shared/Documentation/DocSets/com.waveface.Waveface-iOS.docset
+Time: 2012-03-07 07:27:45 +0000
