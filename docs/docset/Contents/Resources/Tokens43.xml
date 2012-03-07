@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAImageStackView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAImageStackView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>
+			
+			<NodeRef refid="43"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/id</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) IBOutlet&lt;&gt; id</Declaration>
+			
+			
+			<Anchor>//api/name/id</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/state</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAImageStackViewInteractionState state</Declaration>
+			
+			
+			<Anchor>//api/name/state</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/images</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *images</Declaration>
+			
+			
+			<Anchor>//api/name/images</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/maxNumberOfImages</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSUInteger maxNumberOfImages</Declaration>
+			
+			
+			<Anchor>//api/name/maxNumberOfImages</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/firstPhotoView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) UIView *firstPhotoView</Declaration>
+			
+			
+			<Anchor>//api/name/firstPhotoView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/gestureProcessingOngoing</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) BOOL gestureProcessingOngoing</Declaration>
+			
+			
+			<Anchor>//api/name/gestureProcessingOngoing</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/setImages:asynchronously:withDecodingCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)setImages:(NSArray *)newImages asynchronously:(BOOL)async withDecodingCompletion:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/setImages:asynchronously:withDecodingCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/reset</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)reset</Declaration>
+			
+			
+			<Anchor>//api/name/reset</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/initWithCoder:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithCoder:(NSCoder *)aDecoder</Declaration>
+			
+			
+			<Anchor>//api/name/initWithCoder:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/waInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)waInit</Declaration>
+			
+			
+			<Anchor>//api/name/waInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/setShownImages:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setShownImages:(NSArray *)newShownImages</Declaration>
+			
+			
+			<Anchor>//api/name/setShownImages:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/setShownImages:withDecodingCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setShownImages:(NSArray *)newShownImages withDecodingCompletion:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/setShownImages:withDecodingCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/handlePinch:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)handlePinch:(UIPinchGestureRecognizer *)aPinchRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handlePinch:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/handleRotation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleRotation:(UIRotationGestureRecognizer *)aRotationRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleRotation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/handleTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleTap:(UITapGestureRecognizer *)aTapRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageStackView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/shownImages</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *shownImages</Declaration>
+			
+			
+			<Anchor>//api/name/shownImages</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/pinchRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIPinchGestureRecognizer *pinchRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/pinchRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/rotationRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIRotationGestureRecognizer *rotationRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/rotationRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/tapRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UITapGestureRecognizer *tapRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/tapRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageStackView/activityIndicator</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator</Declaration>
+			
+			
+			<Anchor>//api/name/activityIndicator</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WACompositionViewControllerPad.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WACompositionViewControllerPad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>
+			
+			<NodeRef refid="28"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/photosView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet AQGridView *photosView</Declaration>
+			
+			
+			<Anchor>//api/name/photosView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/toolbar</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet IRTransparentToolbar *toolbar</Declaration>
+			
+			
+			<Anchor>//api/name/toolbar</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/noPhotoReminderView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIView *noPhotoReminderView</Declaration>
+			
+			
+			<Anchor>//api/name/noPhotoReminderView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/id</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutletCollection ( *id</Declaration>
+			
+			
+			<Anchor>//api/name/id</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/handleCameraItemTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleCameraItemTap:(UIButton *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleCameraItemTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/handlePreviewBadgeTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handlePreviewBadgeTap:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handlePreviewBadgeTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/adjustContainerViewWithInterfaceBounds:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)adjustContainerViewWithInterfaceBounds:(CGRect)newBounds</Declaration>
+			
+			
+			<Anchor>//api/name/adjustContainerViewWithInterfaceBounds:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/handleCurrentArticlePreviewsChangedFrom:to:changeKind:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind</Declaration>
+			
+			
+			<Anchor>//api/name/handleCurrentArticlePreviewsChangedFrom:to:changeKind:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/presentImagePickerController:sender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/presentImagePickerController:sender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/dismissImagePickerController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)dismissImagePickerController:(IRImagePickerController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/dismissImagePickerController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/presentCameraCapturePickerController:sender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/presentCameraCapturePickerController:sender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/dismissCameraCapturePickerController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)dismissCameraCapturePickerController:(IRImagePickerController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/dismissCameraCapturePickerController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/scrollViewDidScroll:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)scrollViewDidScroll:(UIScrollView *)scrollView</Declaration>
+			
+			
+			<Anchor>//api/name/scrollViewDidScroll:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/portraitGridCellSizeForGridView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)portraitGridCellSizeForGridView:(AQGridView *)gridView</Declaration>
+			
+			
+			<Anchor>//api/name/portraitGridCellSizeForGridView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/numberOfItemsInGridView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)numberOfItemsInGridView:(AQGridView *)gridView</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfItemsInGridView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/gridView:cellForItemAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (AQGridViewCell *)gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/gridView:cellForItemAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/handleCurrentArticleFilesChangedFrom:to:changeKind:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind</Declaration>
+			
+			
+			<Anchor>//api/name/handleCurrentArticleFilesChangedFrom:to:changeKind:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/adjustPhotos</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)adjustPhotos</Declaration>
+			
+			
+			<Anchor>//api/name/adjustPhotos</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewControllerPad/willAnimateRotationToInterfaceOrientation:duration:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration</Declaration>
+			
+			
+			<Anchor>//api/name/willAnimateRotationToInterfaceOrientation:duration:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/imagePickerPopover</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover</Declaration>
+			
+			
+			<Anchor>//api/name/imagePickerPopover</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/imagePickerPopoverPresentingSender</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIButton *imagePickerPopoverPresentingSender</Declaration>
+			
+			
+			<Anchor>//api/name/imagePickerPopoverPresentingSender</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/lastAdjustedInterfaceBounds</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGRect lastAdjustedInterfaceBounds</Declaration>
+			
+			
+			<Anchor>//api/name/lastAdjustedInterfaceBounds</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewControllerPad/previewBadgeButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewControllerPad.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIButton *previewBadgeButton</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadgeButton</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

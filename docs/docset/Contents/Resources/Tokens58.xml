@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAPreviewBadge.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAPreviewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>
+			
+			<NodeRef refid="58"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/preview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAPreview *preview</Declaration>
+			
+			
+			<Anchor>//api/name/preview</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/style</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAPreviewBadgeStyle style</Declaration>
+			
+			
+			<Anchor>//api/name/style</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/titleFont</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIFont *titleFont</Declaration>
+			
+			
+			<Anchor>//api/name/titleFont</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/titleColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIColor *titleColor</Declaration>
+			
+			
+			<Anchor>//api/name/titleColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/titlePlaceholder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *titlePlaceholder</Declaration>
+			
+			
+			<Anchor>//api/name/titlePlaceholder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/titlePlaceholderColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIColor *titlePlaceholderColor</Declaration>
+			
+			
+			<Anchor>//api/name/titlePlaceholderColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/providerNameFont</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIFont *providerNameFont</Declaration>
+			
+			
+			<Anchor>//api/name/providerNameFont</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/providerNameColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIColor *providerNameColor</Declaration>
+			
+			
+			<Anchor>//api/name/providerNameColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/providerNamePlaceholder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *providerNamePlaceholder</Declaration>
+			
+			
+			<Anchor>//api/name/providerNamePlaceholder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/providerNamePlaceholderColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIColor *providerNamePlaceholderColor</Declaration>
+			
+			
+			<Anchor>//api/name/providerNamePlaceholderColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/textFont</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIFont *textFont</Declaration>
+			
+			
+			<Anchor>//api/name/textFont</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/textColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIColor *textColor</Declaration>
+			
+			
+			<Anchor>//api/name/textColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/textPlaceholder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *textPlaceholder</Declaration>
+			
+			
+			<Anchor>//api/name/textPlaceholder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/textPlaceholderColor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIColor *textPlaceholderColor</Declaration>
+			
+			
+			<Anchor>//api/name/textPlaceholderColor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/backgroundView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *backgroundView</Declaration>
+			
+			
+			<Anchor>//api/name/backgroundView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/minimumAcceptibleFullFrameAspectRatio</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat minimumAcceptibleFullFrameAspectRatio</Declaration>
+			
+			
+			<Anchor>//api/name/minimumAcceptibleFullFrameAspectRatio</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/gutterWidth</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat gutterWidth</Declaration>
+			
+			
+			<Anchor>//api/name/gutterWidth</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/title</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSString *title</Declaration>
+			
+			
+			<Anchor>//api/name/title</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/providerName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSString *providerName</Declaration>
+			
+			
+			<Anchor>//api/name/providerName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/image</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UIImage *image</Declaration>
+			
+			
+			<Anchor>//api/name/image</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/link</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSURL *link</Declaration>
+			
+			
+			<Anchor>//api/name/link</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingAttributedText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingAttributedText</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingAttributedText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/attributedText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (NSAttributedString *)attributedText</Declaration>
+			
+			
+			<Anchor>//api/name/attributedText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/waSharedInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)waSharedInit</Declaration>
+			
+			
+			<Anchor>//api/name/waSharedInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingSuggestedStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingSuggestedStyle</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingSuggestedStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/suggestedStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (WAPreviewBadgeStyle)suggestedStyle</Declaration>
+			
+			
+			<Anchor>//api/name/suggestedStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/imageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (UIImageView *)imageView</Declaration>
+			
+			
+			<Anchor>//api/name/imageView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/label</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (IRLabel *)label</Declaration>
+			
+			
+			<Anchor>//api/name/label</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/layoutImageAndTextStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutImageAndTextStyle</Declaration>
+			
+			
+			<Anchor>//api/name/layoutImageAndTextStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/layoutImageOnlyStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutImageOnlyStyle</Declaration>
+			
+			
+			<Anchor>//api/name/layoutImageOnlyStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/layoutTextOnlyStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutTextOnlyStyle</Declaration>
+			
+			
+			<Anchor>//api/name/layoutTextOnlyStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/layoutTextOverImageStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutTextOverImageStyle</Declaration>
+			
+			
+			<Anchor>//api/name/layoutTextOverImageStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingTitle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingTitle</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingTitle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingProviderName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingProviderName</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingProviderName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingText</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingLink</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingLink</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingLink</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/accessibilityLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)accessibilityLabel</Declaration>
+			
+			
+			<Anchor>//api/name/accessibilityLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingAccessibilityHint</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingAccessibilityHint</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingAccessibilityHint</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/accessibilityHint</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)accessibilityHint</Declaration>
+			
+			
+			<Anchor>//api/name/accessibilityHint</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPreviewBadge/keyPathsForValuesAffectingAccessibilityLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingAccessibilityLabel</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingAccessibilityLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/accessibilityValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)accessibilityValue</Declaration>
+			
+			
+			<Anchor>//api/name/accessibilityValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/sizeThatFits:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFits:(CGSize)size</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFits:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPreviewBadge/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/suggestedStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) WAPreviewBadgeStyle suggestedStyle</Declaration>
+			
+			
+			<Anchor>//api/name/suggestedStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/imageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImageView *imageView</Declaration>
+			
+			
+			<Anchor>//api/name/imageView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/label</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRLabel *label</Declaration>
+			
+			
+			<Anchor>//api/name/label</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPreviewBadge/attributedText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPreviewBadge.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSAttributedString *attributedText</Declaration>
+			
+			
+			<Anchor>//api/name/attributedText</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

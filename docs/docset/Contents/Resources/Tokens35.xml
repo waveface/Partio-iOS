@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAEightPartLayoutPlacementCandidate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAEightPartLayoutPlacementCandidate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAEightPartLayoutGrid.m</DeclaredIn>
+			
+			<NodeRef refid="35"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAEightPartLayoutPlacementCandidate/candidateWithPattern:occurance:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAEightPartLayoutGrid.m</DeclaredIn>			
+			
+			<Declaration>+ (id)candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence</Declaration>
+			
+			
+			<Anchor>//api/name/candidateWithPattern:occurance:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAEightPartLayoutPlacementCandidate/pattern</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAEightPartLayoutGrid.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) unsigned char pattern</Declaration>
+			
+			
+			<Anchor>//api/name/pattern</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAEightPartLayoutPlacementCandidate/occurrence</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAEightPartLayoutGrid.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) float_t occurrence</Declaration>
+			
+			
+			<Anchor>//api/name/occurrence</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

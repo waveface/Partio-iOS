@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WADataStore.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WADataStore</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore.h</DeclaredIn>
+			
+			<NodeRef refid="31"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WADataStore/defaultStore</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore.h</DeclaredIn>			
+			
+			<Declaration>+ (WADataStore *)defaultStore</Declaration>
+			
+			
+			<Anchor>//api/name/defaultStore</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/initWithManagedObjectModel:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore.h</DeclaredIn>			
+			
+			<Declaration>- (WADataStore *)initWithManagedObjectModel:(NSManagedObjectModel *)model</Declaration>
+			
+			
+			<Anchor>//api/name/initWithManagedObjectModel:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/dateFromISO8601String:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore.h</DeclaredIn>			
+			
+			<Declaration>- (NSDate *)dateFromISO8601String:(NSString *)aString</Declaration>
+			
+			
+			<Anchor>//api/name/dateFromISO8601String:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/defaultManagedObjectModel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore.m</DeclaredIn>			
+			
+			<Declaration>- (NSManagedObjectModel *)defaultManagedObjectModel</Declaration>
+			
+			
+			<Anchor>//api/name/defaultManagedObjectModel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/articlesCurrentlyBeingUploaded</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSMutableSet *)articlesCurrentlyBeingUploaded</Declaration>
+			
+			
+			<Anchor>//api/name/articlesCurrentlyBeingUploaded</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/hasDraftArticles</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)hasDraftArticles</Declaration>
+			
+			
+			<Anchor>//api/name/hasDraftArticles</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/updateArticlesOnSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateArticlesOnSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateArticlesOnSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/uploadArticle:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (void)uploadArticle:(NSURL *)anArticleURI onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/uploadArticle:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/isUploadingArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isUploadingArticle:(NSURL *)anObjectURI</Declaration>
+			
+			
+			<Anchor>//api/name/isUploadingArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/addComment:onArticle:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (void)addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( void ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/addComment:onArticle:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/updateCurrentUserOnSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateCurrentUserOnSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( void ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateCurrentUserOnSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/updateArticlesWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateArticlesWithCompletion:(void ( ^ ) ( NSError *))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateArticlesWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/uploadArticle:withCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+WARemoteInterfaceAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)uploadArticle:(NSURL *)anArticleURI withCompletion:(void ( ^ ) ( NSError *))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/uploadArticle:withCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/enumerateFilesWithSyncableBlobsInContext:usingBlock:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.h</DeclaredIn>			
+			
+			<Declaration>- (void)enumerateFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context usingBlock:(void ( ^ ) ( WAFile *aFile , NSUInteger index , BOOL *stop ))block</Declaration>
+			
+			
+			<Anchor>//api/name/enumerateFilesWithSyncableBlobsInContext:usingBlock:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/newFetchRequestForAllArticles</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+FetchingConveniences.h</DeclaredIn>			
+			
+			<Declaration>- (NSFetchRequest *)newFetchRequestForAllArticles</Declaration>
+			
+			
+			<Anchor>//api/name/newFetchRequestForAllArticles</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/fetchLatestArticleInGroup:onSuccess:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+FetchingConveniences.h</DeclaredIn>			
+			
+			<Declaration>- (void)fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void ( ^ ) ( NSString *identifier , WAArticle *article ))callback</Declaration>
+			
+			
+			<Anchor>//api/name/fetchLatestArticleInGroup:onSuccess:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/fetchLatestArticleInGroup:usingContext:onSuccess:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+FetchingConveniences.h</DeclaredIn>			
+			
+			<Declaration>- (void)fetchLatestArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void ( ^ ) ( NSString *identifier , WAArticle *article ))callback</Declaration>
+			
+			
+			<Anchor>//api/name/fetchLatestArticleInGroup:usingContext:onSuccess:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WADataStore/fetchArticleWithIdentifier:usingContext:onSuccess:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WADataStore+FetchingConveniences.h</DeclaredIn>			
+			
+			<Declaration>- (void)fetchArticleWithIdentifier:(NSString *)anArticleIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void ( ^ ) ( NSString *identifier , WAArticle *article ))callback</Declaration>
+			
+			
+			<Anchor>//api/name/fetchArticleWithIdentifier:usingContext:onSuccess:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

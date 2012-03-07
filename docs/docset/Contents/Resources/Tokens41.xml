@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAGestureWindow.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAGestureWindow</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.h</DeclaredIn>
+			
+			<NodeRef refid="41"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGestureWindow/onTap</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( void ) onTap</Declaration>
+			
+			
+			<Anchor>//api/name/onTap</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGestureWindow/tapGestureRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UITapGestureRecognizer *tapGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/tapGestureRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGestureWindow/onGestureRecognizeShouldReceiveTouch</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIGestureRecognizer *recognizer , UITouch *touch ) onGestureRecognizeShouldReceiveTouch</Declaration>
+			
+			
+			<Anchor>//api/name/onGestureRecognizeShouldReceiveTouch</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGestureWindow/onGestureRecognizeShouldRecognizeSimultaneouslyWithGestureRecognizer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( UIGestureRecognizer *recognizer , UIGestureRecognizer *otherRecognizer ) onGestureRecognizeShouldRecognizeSimultaneouslyWithGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/onGestureRecognizeShouldRecognizeSimultaneouslyWithGestureRecognizer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGestureWindow/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGestureWindow/gestureRecognizer:shouldReceiveTouch:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldReceiveTouch:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGestureWindow/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGestureWindow/handleTapGesture:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleTapGesture:(UITapGestureRecognizer *)aTGR</Declaration>
+			
+			
+			<Anchor>//api/name/handleTapGesture:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGestureWindow/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGestureWindow.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

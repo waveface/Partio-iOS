@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WARefreshActionView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WARefreshActionView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.h</DeclaredIn>
+			
+			<NodeRef refid="62"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/initWithRemoteInterface:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithRemoteInterface:(WARemoteInterface *)interface</Declaration>
+			
+			
+			<Anchor>//api/name/initWithRemoteInterface:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/actionButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (UIButton *)actionButton</Declaration>
+			
+			
+			<Anchor>//api/name/actionButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/activityIndicatorView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (UIActivityIndicatorView *)activityIndicatorView</Declaration>
+			
+			
+			<Anchor>//api/name/activityIndicatorView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/handleActionButtonTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleActionButtonTap:(UIButton *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleActionButtonTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/observeValueForKeyPath:ofObject:change:context:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context</Declaration>
+			
+			
+			<Anchor>//api/name/observeValueForKeyPath:ofObject:change:context:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/updateStateAnimated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateStateAnimated:(BOOL)animate</Declaration>
+			
+			
+			<Anchor>//api/name/updateStateAnimated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/setCurrentlyBusy:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setCurrentlyBusy:(BOOL)newCurrentlyBusy</Declaration>
+			
+			
+			<Anchor>//api/name/setCurrentlyBusy:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/soundFactory</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (FIFactory *)soundFactory</Declaration>
+			
+			
+			<Anchor>//api/name/soundFactory</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/soundEngine</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (FISoundEngine *)soundEngine</Declaration>
+			
+			
+			<Anchor>//api/name/soundEngine</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/refreshStartSound</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (FISound *)refreshStartSound</Declaration>
+			
+			
+			<Anchor>//api/name/refreshStartSound</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/refreshEndSound</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (FISound *)refreshEndSound</Declaration>
+			
+			
+			<Anchor>//api/name/refreshEndSound</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/playRefreshStartSoundEffect</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)playRefreshStartSoundEffect</Declaration>
+			
+			
+			<Anchor>//api/name/playRefreshStartSoundEffect</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARefreshActionView/playRefreshEndSoundEffect</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>- (void)playRefreshEndSoundEffect</Declaration>
+			
+			
+			<Anchor>//api/name/playRefreshEndSoundEffect</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/interface</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WARemoteInterface *interface</Declaration>
+			
+			
+			<Anchor>//api/name/interface</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/actionButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIButton *actionButton</Declaration>
+			
+			
+			<Anchor>//api/name/actionButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/activityIndicatorView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicatorView</Declaration>
+			
+			
+			<Anchor>//api/name/activityIndicatorView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/currentlyBusy</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL currentlyBusy</Declaration>
+			
+			
+			<Anchor>//api/name/currentlyBusy</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/requiresSoundEffectOnSessionEnd</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL requiresSoundEffectOnSessionEnd</Declaration>
+			
+			
+			<Anchor>//api/name/requiresSoundEffectOnSessionEnd</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/soundFactory</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) FIFactory *soundFactory</Declaration>
+			
+			
+			<Anchor>//api/name/soundFactory</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/soundEngine</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) FISoundEngine *soundEngine</Declaration>
+			
+			
+			<Anchor>//api/name/soundEngine</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/refreshStartSound</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) FISound *refreshStartSound</Declaration>
+			
+			
+			<Anchor>//api/name/refreshStartSound</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARefreshActionView/refreshEndSound</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARefreshActionView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) FISound *refreshEndSound</Declaration>
+			
+			
+			<Anchor>//api/name/refreshEndSound</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

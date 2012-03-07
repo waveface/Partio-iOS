@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAPostViewCellPhone.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAPostViewCellPhone</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>
+			
+			<NodeRef refid="55"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPostViewCellPhone/initWithPostViewCellStyle:reuseIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithPostViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/initWithPostViewCellStyle:reuseIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/imageStackView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/avatarView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView</Declaration>
+			
+			
+			<Anchor>//api/name/avatarView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/userNicknameLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel</Declaration>
+			
+			
+			<Anchor>//api/name/userNicknameLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/contentDescriptionLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *contentDescriptionLabel</Declaration>
+			
+			
+			<Anchor>//api/name/contentDescriptionLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/contentTextView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UITextView *contentTextView</Declaration>
+			
+			
+			<Anchor>//api/name/contentTextView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/dateOriginLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel</Declaration>
+			
+			
+			<Anchor>//api/name/dateOriginLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/dateLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel</Declaration>
+			
+			
+			<Anchor>//api/name/dateLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/originLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel</Declaration>
+			
+			
+			<Anchor>//api/name/originLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/commentLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) IBOutlet IRLabel *commentLabel</Declaration>
+			
+			
+			<Anchor>//api/name/commentLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/extraInfoLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UILabel *extraInfoLabel</Declaration>
+			
+			
+			<Anchor>//api/name/extraInfoLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/previewImageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UIImageView *previewImageView</Declaration>
+			
+			
+			<Anchor>//api/name/previewImageView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/previewTitleLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UILabel *previewTitleLabel</Declaration>
+			
+			
+			<Anchor>//api/name/previewTitleLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/previewProviderLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UILabel *previewProviderLabel</Declaration>
+			
+			
+			<Anchor>//api/name/previewProviderLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/previewImageBackground</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UIView *previewImageBackground</Declaration>
+			
+			
+			<Anchor>//api/name/previewImageBackground</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPostViewCellPhone/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPostViewCellPhone/initWithStyle:reuseIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/initWithStyle:reuseIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPostViewCellPhone/setSelected:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)setSelected:(BOOL)selecte animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setSelected:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPostViewCellPhone/setHighlighted:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setHighlighted:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPostViewCellPhone/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/postViewCellStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAPostViewCellStyle postViewCellStyle</Declaration>
+			
+			
+			<Anchor>//api/name/postViewCellStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/reuseIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) NSString *reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/reuseIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPostViewCellPhone/dateLabelBackgroundView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *dateLabelBackgroundView</Declaration>
+			
+			
+			<Anchor>//api/name/dateLabelBackgroundView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPostViewCellPhone/cellFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>+ (WAPostViewCellPhone *)cellFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/cellFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPostViewCellPhone/cellFromNibNamed:instantiatingOwner:withOptions:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPostViewCellPhone.h</DeclaredIn>			
+			
+			<Declaration>+ (WAPostViewCellPhone *)cellFromNibNamed:(NSString *)nibName instantiatingOwner:(id)owner withOptions:(NSDictionary *)options</Declaration>
+			
+			
+			<Anchor>//api/name/cellFromNibNamed:instantiatingOwner:withOptions:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

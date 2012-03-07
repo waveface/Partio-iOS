@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DocSetNodes version="1.0">
+    <TOC>
+        <Node type="folder">
+            <Name>Waveface iOS</Name>
+            <Path>index.html</Path>
+			<Subnodes>
+				
+				<Node type="folder">
+					<Name>Classes</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="1"/>
+						<NodeRef refid="2"/>
+						<NodeRef refid="3"/>
+						<NodeRef refid="4"/>
+						<NodeRef refid="5"/>
+						<NodeRef refid="6"/>
+						<NodeRef refid="7"/>
+						<NodeRef refid="8"/>
+						<NodeRef refid="9"/>
+						<NodeRef refid="10"/>
+						<NodeRef refid="11"/>
+						<NodeRef refid="12"/>
+						<NodeRef refid="13"/>
+						<NodeRef refid="14"/>
+						<NodeRef refid="15"/>
+						<NodeRef refid="16"/>
+						<NodeRef refid="17"/>
+						<NodeRef refid="18"/>
+						<NodeRef refid="19"/>
+						<NodeRef refid="20"/>
+						<NodeRef refid="21"/>
+						<NodeRef refid="22"/>
+						<NodeRef refid="23"/>
+						<NodeRef refid="24"/>
+						<NodeRef refid="25"/>
+						<NodeRef refid="26"/>
+						<NodeRef refid="27"/>
+						<NodeRef refid="28"/>
+						<NodeRef refid="29"/>
+						<NodeRef refid="30"/>
+						<NodeRef refid="31"/>
+						<NodeRef refid="32"/>
+						<NodeRef refid="33"/>
+						<NodeRef refid="34"/>
+						<NodeRef refid="35"/>
+						<NodeRef refid="36"/>
+						<NodeRef refid="37"/>
+						<NodeRef refid="38"/>
+						<NodeRef refid="39"/>
+						<NodeRef refid="40"/>
+						<NodeRef refid="41"/>
+						<NodeRef refid="42"/>
+						<NodeRef refid="43"/>
+						<NodeRef refid="44"/>
+						<NodeRef refid="45"/>
+						<NodeRef refid="46"/>
+						<NodeRef refid="47"/>
+						<NodeRef refid="48"/>
+						<NodeRef refid="49"/>
+						<NodeRef refid="50"/>
+						<NodeRef refid="51"/>
+						<NodeRef refid="52"/>
+						<NodeRef refid="53"/>
+						<NodeRef refid="54"/>
+						<NodeRef refid="55"/>
+						<NodeRef refid="56"/>
+						<NodeRef refid="57"/>
+						<NodeRef refid="58"/>
+						<NodeRef refid="59"/>
+						<NodeRef refid="60"/>
+						<NodeRef refid="61"/>
+						<NodeRef refid="62"/>
+						<NodeRef refid="63"/>
+						<NodeRef refid="64"/>
+						<NodeRef refid="65"/>
+						<NodeRef refid="66"/>
+						<NodeRef refid="67"/>
+						<NodeRef refid="68"/>
+						<NodeRef refid="69"/>
+						<NodeRef refid="70"/>
+						<NodeRef refid="71"/>
+						<NodeRef refid="72"/>
+						<NodeRef refid="73"/>
+						<NodeRef refid="74"/>
+						<NodeRef refid="75"/>
+						<NodeRef refid="76"/>
+						<NodeRef refid="77"/>
+						<NodeRef refid="78"/>
+						<NodeRef refid="79"/>
+						<NodeRef refid="80"/>
+						<NodeRef refid="81"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				<Node type="folder">
+					<Name>Categories</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="82"/>
+						<NodeRef refid="83"/>
+						<NodeRef refid="84"/>
+						
+					</Subnodes>
+				</Node>
+				
+				
+				<Node type="folder">
+					<Name>Protocols</Name>
+					<Path>index.html</Path>
+					<Subnodes>
+						<NodeRef refid="85"/>
+						<NodeRef refid="86"/>
+						<NodeRef refid="87"/>
+						<NodeRef refid="88"/>
+						<NodeRef refid="89"/>
+						<NodeRef refid="90"/>
+						<NodeRef refid="91"/>
+						<NodeRef refid="92"/>
+						<NodeRef refid="93"/>
+						<NodeRef refid="94"/>
+						<NodeRef refid="95"/>
+						<NodeRef refid="96"/>
+						<NodeRef refid="97"/>
+						<NodeRef refid="98"/>
+						<NodeRef refid="99"/>
+						<NodeRef refid="100"/>
+						<NodeRef refid="101"/>
+						
+					</Subnodes>
+				</Node>
+				
+			</Subnodes>
+        </Node>
+    </TOC>
+	<Library>
+		<Node id="1">
+			<Name>IRLabelTestingViewController</Name>
+			<Path>Classes/IRLabelTestingViewController.html</Path>
+		</Node>
+		<Node id="2">
+			<Name>WAAppDelegate</Name>
+			<Path>Classes/WAAppDelegate.html</Path>
+		</Node>
+		<Node id="3">
+			<Name>WAAppDelegate_iOS</Name>
+			<Path>Classes/WAAppDelegate_iOS.html</Path>
+		</Node>
+		<Node id="4">
+			<Name>WAApplicationDidReceiveReadingProgressUpdateNotificationView</Name>
+			<Path>Classes/WAApplicationDidReceiveReadingProgressUpdateNotificationView.html</Path>
+		</Node>
+		<Node id="5">
+			<Name>WAArticle</Name>
+			<Path>Classes/WAArticle.html</Path>
+		</Node>
+		<Node id="6">
+			<Name>WAArticleAttachmentActivityView</Name>
+			<Path>Classes/WAArticleAttachmentActivityView.html</Path>
+		</Node>
+		<Node id="7">
+			<Name>WAArticleCommentsViewCell</Name>
+			<Path>Classes/WAArticleCommentsViewCell.html</Path>
+		</Node>
+		<Node id="8">
+			<Name>WAArticleCommentsViewController</Name>
+			<Path>Classes/WAArticleCommentsViewController.html</Path>
+		</Node>
+		<Node id="9">
+			<Name>WAArticleDraftsViewController</Name>
+			<Path>Classes/WAArticleDraftsViewController.html</Path>
+		</Node>
+		<Node id="10">
+			<Name>WAArticleFilesListViewController</Name>
+			<Path>Classes/WAArticleFilesListViewController.html</Path>
+		</Node>
+		<Node id="11">
+			<Name>WAArticleTextEmphasisLabel</Name>
+			<Path>Classes/WAArticleTextEmphasisLabel.html</Path>
+		</Node>
+		<Node id="12">
+			<Name>WAArticleTextStackCell</Name>
+			<Path>Classes/WAArticleTextStackCell.html</Path>
+		</Node>
+		<Node id="13">
+			<Name>WAArticleTextStackElement</Name>
+			<Path>Classes/WAArticleTextStackElement.html</Path>
+		</Node>
+		<Node id="14">
+			<Name>WAArticleView</Name>
+			<Path>Classes/WAArticleView.html</Path>
+		</Node>
+		<Node id="15">
+			<Name>WAArticleViewController</Name>
+			<Path>Classes/WAArticleViewController.html</Path>
+		</Node>
+		<Node id="16">
+			<Name>WAArticleViewController_Default</Name>
+			<Path>Classes/WAArticleViewController_Default.html</Path>
+		</Node>
+		<Node id="17">
+			<Name>WAArticleViewController_Plaintext</Name>
+			<Path>Classes/WAArticleViewController_Plaintext.html</Path>
+		</Node>
+		<Node id="18">
+			<Name>WAArticleViewController_Preview</Name>
+			<Path>Classes/WAArticleViewController_Preview.html</Path>
+		</Node>
+		<Node id="19">
+			<Name>WAArticlesViewController</Name>
+			<Path>Classes/WAArticlesViewController.html</Path>
+		</Node>
+		<Node id="20">
+			<Name>WAAsyncImageView</Name>
+			<Path>Classes/WAAsyncImageView.html</Path>
+		</Node>
+		<Node id="21">
+			<Name>WAAttachedMediaListViewController</Name>
+			<Path>Classes/WAAttachedMediaListViewController.html</Path>
+		</Node>
+		<Node id="22">
+			<Name>WAAuthenticationRequestViewController</Name>
+			<Path>Classes/WAAuthenticationRequestViewController.html</Path>
+		</Node>
+		<Node id="23">
+			<Name>WABlobSyncManager</Name>
+			<Path>Classes/WABlobSyncManager.html</Path>
+		</Node>
+		<Node id="24">
+			<Name>WAButton</Name>
+			<Path>Classes/WAButton.html</Path>
+		</Node>
+		<Node id="25">
+			<Name>WAComment</Name>
+			<Path>Classes/WAComment.html</Path>
+		</Node>
+		<Node id="26">
+			<Name>WAComposeCommentViewControllerPhone</Name>
+			<Path>Classes/WAComposeCommentViewControllerPhone.html</Path>
+		</Node>
+		<Node id="27">
+			<Name>WACompositionViewController</Name>
+			<Path>Classes/WACompositionViewController.html</Path>
+		</Node>
+		<Node id="28">
+			<Name>WACompositionViewControllerPad</Name>
+			<Path>Classes/WACompositionViewControllerPad.html</Path>
+		</Node>
+		<Node id="29">
+			<Name>WACompositionViewControllerPhone</Name>
+			<Path>Classes/WACompositionViewControllerPhone.html</Path>
+		</Node>
+		<Node id="30">
+			<Name>WACompositionViewPhotoCell</Name>
+			<Path>Classes/WACompositionViewPhotoCell.html</Path>
+		</Node>
+		<Node id="31">
+			<Name>WADataStore</Name>
+			<Path>Classes/WADataStore.html</Path>
+		</Node>
+		<Node id="32">
+			<Name>WADimmingView</Name>
+			<Path>Classes/WADimmingView.html</Path>
+		</Node>
+		<Node id="33">
+			<Name>WADiscretePaginatedArticlesViewController</Name>
+			<Path>Classes/WADiscretePaginatedArticlesViewController.html</Path>
+		</Node>
+		<Node id="34">
+			<Name>WAEightPartLayoutGrid</Name>
+			<Path>Classes/WAEightPartLayoutGrid.html</Path>
+		</Node>
+		<Node id="35">
+			<Name>WAEightPartLayoutPlacementCandidate</Name>
+			<Path>Classes/WAEightPartLayoutPlacementCandidate.html</Path>
+		</Node>
+		<Node id="36">
+			<Name>WAFauxRootNavigationController</Name>
+			<Path>Classes/WAFauxRootNavigationController.html</Path>
+		</Node>
+		<Node id="37">
+			<Name>WAFile</Name>
+			<Path>Classes/WAFile.html</Path>
+		</Node>
+		<Node id="38">
+			<Name>WAFilePageElement</Name>
+			<Path>Classes/WAFilePageElement.html</Path>
+		</Node>
+		<Node id="39">
+			<Name>WAGalleryImageView</Name>
+			<Path>Classes/WAGalleryImageView.html</Path>
+		</Node>
+		<Node id="40">
+			<Name>WAGalleryViewController</Name>
+			<Path>Classes/WAGalleryViewController.html</Path>
+		</Node>
+		<Node id="41">
+			<Name>WAGestureWindow</Name>
+			<Path>Classes/WAGestureWindow.html</Path>
+		</Node>
+		<Node id="42">
+			<Name>WAGroup</Name>
+			<Path>Classes/WAGroup.html</Path>
+		</Node>
+		<Node id="43">
+			<Name>WAImageStackView</Name>
+			<Path>Classes/WAImageStackView.html</Path>
+		</Node>
+		<Node id="44">
+			<Name>WAImageStreamPickerView</Name>
+			<Path>Classes/WAImageStreamPickerView.html</Path>
+		</Node>
+		<Node id="45">
+			<Name>WAImageView</Name>
+			<Path>Classes/WAImageView.html</Path>
+		</Node>
+		<Node id="46">
+			<Name>WAImageViewContentView</Name>
+			<Path>Classes/WAImageViewContentView.html</Path>
+		</Node>
+		<Node id="47">
+			<Name>WANavigationBar</Name>
+			<Path>Classes/WANavigationBar.html</Path>
+		</Node>
+		<Node id="48">
+			<Name>WANavigationController</Name>
+			<Path>Classes/WANavigationController.html</Path>
+		</Node>
+		<Node id="49">
+			<Name>WAOpenGraphElement</Name>
+			<Path>Classes/WAOpenGraphElement.html</Path>
+		</Node>
+		<Node id="50">
+			<Name>WAOpenGraphElementImage</Name>
+			<Path>Classes/WAOpenGraphElementImage.html</Path>
+		</Node>
+		<Node id="51">
+			<Name>WAOverlayBezel</Name>
+			<Path>Classes/WAOverlayBezel.html</Path>
+		</Node>
+		<Node id="52">
+			<Name>WAPaginatedArticlesViewController</Name>
+			<Path>Classes/WAPaginatedArticlesViewController.html</Path>
+		</Node>
+		<Node id="53">
+			<Name>WAPaginationSlider</Name>
+			<Path>Classes/WAPaginationSlider.html</Path>
+		</Node>
+		<Node id="54">
+			<Name>WAPaginationSliderAnnotation</Name>
+			<Path>Classes/WAPaginationSliderAnnotation.html</Path>
+		</Node>
+		<Node id="55">
+			<Name>WAPostViewCellPhone</Name>
+			<Path>Classes/WAPostViewCellPhone.html</Path>
+		</Node>
+		<Node id="56">
+			<Name>WAPostViewControllerPhone</Name>
+			<Path>Classes/WAPostViewControllerPhone.html</Path>
+		</Node>
+		<Node id="57">
+			<Name>WAPreview</Name>
+			<Path>Classes/WAPreview.html</Path>
+		</Node>
+		<Node id="58">
+			<Name>WAPreviewBadge</Name>
+			<Path>Classes/WAPreviewBadge.html</Path>
+		</Node>
+		<Node id="59">
+			<Name>WAPreviewInspectionViewController</Name>
+			<Path>Classes/WAPreviewInspectionViewController.html</Path>
+		</Node>
+		<Node id="60">
+			<Name>WAPulldownRefreshView</Name>
+			<Path>Classes/WAPulldownRefreshView.html</Path>
+		</Node>
+		<Node id="61">
+			<Name>WAReachabilityDetector</Name>
+			<Path>Classes/WAReachabilityDetector.html</Path>
+		</Node>
+		<Node id="62">
+			<Name>WARefreshActionView</Name>
+			<Path>Classes/WARefreshActionView.html</Path>
+		</Node>
+		<Node id="63">
+			<Name>WARegisterRequestViewController</Name>
+			<Path>Classes/WARegisterRequestViewController.html</Path>
+		</Node>
+		<Node id="64">
+			<Name>WARegisterRequestWebViewController</Name>
+			<Path>Classes/WARegisterRequestWebViewController.html</Path>
+		</Node>
+		<Node id="65">
+			<Name>WARemoteInterface</Name>
+			<Path>Classes/WARemoteInterface.html</Path>
+		</Node>
+		<Node id="66">
+			<Name>WARemoteInterfaceContext</Name>
+			<Path>Classes/WARemoteInterfaceContext.html</Path>
+		</Node>
+		<Node id="67">
+			<Name>WAScrollView</Name>
+			<Path>Classes/WAScrollView.html</Path>
+		</Node>
+		<Node id="68">
+			<Name>WASetupViewController</Name>
+			<Path>Classes/WASetupViewController.html</Path>
+		</Node>
+		<Node id="69">
+			<Name>WASingleFileViewController</Name>
+			<Path>Classes/WASingleFileViewController.html</Path>
+		</Node>
+		<Node id="70">
+			<Name>WAStackView</Name>
+			<Path>Classes/WAStackView.html</Path>
+		</Node>
+		<Node id="71">
+			<Name>WAStackedArticleViewController</Name>
+			<Path>Classes/WAStackedArticleViewController.html</Path>
+		</Node>
+		<Node id="72">
+			<Name>WAStationDiscoveryFeedbackViewController</Name>
+			<Path>Classes/WAStationDiscoveryFeedbackViewController.html</Path>
+		</Node>
+		<Node id="73">
+			<Name>WATableViewCell</Name>
+			<Path>Classes/WATableViewCell.html</Path>
+		</Node>
+		<Node id="74">
+			<Name>WATiledImageView</Name>
+			<Path>Classes/WATiledImageView.html</Path>
+		</Node>
+		<Node id="75">
+			<Name>WATiledImageViewLayer</Name>
+			<Path>Classes/WATiledImageViewLayer.html</Path>
+		</Node>
+		<Node id="76">
+			<Name>WATimelineViewControllerPhone</Name>
+			<Path>Classes/WATimelineViewControllerPhone.html</Path>
+		</Node>
+		<Node id="77">
+			<Name>WAUser</Name>
+			<Path>Classes/WAUser.html</Path>
+		</Node>
+		<Node id="78">
+			<Name>WAUserInfoHeaderCell</Name>
+			<Path>Classes/WAUserInfoHeaderCell.html</Path>
+		</Node>
+		<Node id="79">
+			<Name>WAUserInfoViewController</Name>
+			<Path>Classes/WAUserInfoViewController.html</Path>
+		</Node>
+		<Node id="80">
+			<Name>WAView</Name>
+			<Path>Classes/WAView.html</Path>
+		</Node>
+		<Node id="81">
+			<Name>WAViewController</Name>
+			<Path>Classes/WAViewController.html</Path>
+		</Node>
+		
+		<Node id="82">
+			<Name>IRActionSheetController(WAAdditions)</Name>
+			<Path>Categories/IRActionSheetController(WAAdditions).html</Path>
+		</Node>
+		<Node id="83">
+			<Name>NSBlockOperation(NSCopying)</Name>
+			<Path>Categories/NSBlockOperation(NSCopying).html</Path>
+		</Node>
+		<Node id="84">
+			<Name>UIScrollView(WAScrollView_Private)</Name>
+			<Path>Categories/UIScrollView(WAScrollView_Private).html</Path>
+		</Node>
+		
+		<Node id="85">
+			<Name>WAApplicationRootViewController</Name>
+			<Path>Protocols/WAApplicationRootViewController.html</Path>
+		</Node>
+		<Node id="86">
+			<Name>WAApplicationRootViewControllerDelegate</Name>
+			<Path>Protocols/WAApplicationRootViewControllerDelegate.html</Path>
+		</Node>
+		<Node id="87">
+			<Name>WAArticleCommentsViewControllerDelegate</Name>
+			<Path>Protocols/WAArticleCommentsViewControllerDelegate.html</Path>
+		</Node>
+		<Node id="88">
+			<Name>WAArticleDraftsViewControllerDelegate</Name>
+			<Path>Protocols/WAArticleDraftsViewControllerDelegate.html</Path>
+		</Node>
+		<Node id="89">
+			<Name>WAArticleTextStackElementDelegate</Name>
+			<Path>Protocols/WAArticleTextStackElementDelegate.html</Path>
+		</Node>
+		<Node id="90">
+			<Name>WAArticleView</Name>
+			<Path>Protocols/WAArticleView.html</Path>
+		</Node>
+		<Node id="91">
+			<Name>WAArticleViewControllerPresenting</Name>
+			<Path>Protocols/WAArticleViewControllerPresenting.html</Path>
+		</Node>
+		<Node id="92">
+			<Name>WAGalleryImageViewDelegate</Name>
+			<Path>Protocols/WAGalleryImageViewDelegate.html</Path>
+		</Node>
+		<Node id="93">
+			<Name>WAImageStackViewDelegate</Name>
+			<Path>Protocols/WAImageStackViewDelegate.html</Path>
+		</Node>
+		<Node id="94">
+			<Name>WAImageStreamPickerViewDelegate</Name>
+			<Path>Protocols/WAImageStreamPickerViewDelegate.html</Path>
+		</Node>
+		<Node id="95">
+			<Name>WAImageViewDelegate</Name>
+			<Path>Protocols/WAImageViewDelegate.html</Path>
+		</Node>
+		<Node id="96">
+			<Name>WAPaginationSliderDelegate</Name>
+			<Path>Protocols/WAPaginationSliderDelegate.html</Path>
+		</Node>
+		<Node id="97">
+			<Name>WAPreviewInspectionViewControllerDelegate</Name>
+			<Path>Protocols/WAPreviewInspectionViewControllerDelegate.html</Path>
+		</Node>
+		<Node id="98">
+			<Name>WAReachabilityDetectorDelegate</Name>
+			<Path>Protocols/WAReachabilityDetectorDelegate.html</Path>
+		</Node>
+		<Node id="99">
+			<Name>WARemoteInterfaceEntitySyncing</Name>
+			<Path>Protocols/WARemoteInterfaceEntitySyncing.html</Path>
+		</Node>
+		<Node id="100">
+			<Name>WASetupViewControllerDelegate</Name>
+			<Path>Protocols/WASetupViewControllerDelegate.html</Path>
+		</Node>
+		<Node id="101">
+			<Name>WAStackViewDelegate</Name>
+			<Path>Protocols/WAStackViewDelegate.html</Path>
+		</Node>
+		
+	</Library>
+</DocSetNodes>

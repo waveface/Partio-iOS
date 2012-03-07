@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAComment.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAComment</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>
+			
+			<NodeRef refid="25"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComment/creationDeviceName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *creationDeviceName</Declaration>
+			
+			
+			<Anchor>//api/name/creationDeviceName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComment/identifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComment/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComment/timestamp</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSDate *timestamp</Declaration>
+			
+			
+			<Anchor>//api/name/timestamp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComment/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComment/owner</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAUser *owner</Declaration>
+			
+			
+			<Anchor>//api/name/owner</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComment/transformedRepresentationForRemoteRepresentation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation</Declaration>
+			
+			
+			<Anchor>//api/name/transformedRepresentationForRemoteRepresentation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComment/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComment/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComment/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComment/defaultHierarchicalEntityMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)defaultHierarchicalEntityMapping</Declaration>
+			
+			
+			<Anchor>//api/name/defaultHierarchicalEntityMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComment/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComment+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (id)transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath</Declaration>
+			
+			
+			<Anchor>//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

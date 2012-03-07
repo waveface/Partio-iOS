@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAAuthenticationRequestViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAAuthenticationRequestViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>
+			
+			<NodeRef refid="22"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAAuthenticationRequestViewController/controllerWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WAAuthenticationRequestViewController *)controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/authenticate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)authenticate</Declaration>
+			
+			
+			<Anchor>//api/name/authenticate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/username</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *username</Declaration>
+			
+			
+			<Anchor>//api/name/username</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/password</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *password</Declaration>
+			
+			
+			<Anchor>//api/name/password</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/labelWidth</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat labelWidth</Declaration>
+			
+			
+			<Anchor>//api/name/labelWidth</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/performsAuthenticationOnViewDidAppear</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL performsAuthenticationOnViewDidAppear</Declaration>
+			
+			
+			<Anchor>//api/name/performsAuthenticationOnViewDidAppear</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/actions</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *actions</Declaration>
+			
+			
+			<Anchor>//api/name/actions</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/assignFirstResponderStatusToBestMatchingField</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)assignFirstResponderStatusToBestMatchingField</Declaration>
+			
+			
+			<Anchor>//api/name/assignFirstResponderStatusToBestMatchingField</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/validForAuthentication</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) BOOL validForAuthentication</Declaration>
+			
+			
+			<Anchor>//api/name/validForAuthentication</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/initWithStyle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithStyle:(UITableViewStyle)style</Declaration>
+			
+			
+			<Anchor>//api/name/initWithStyle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/textFieldShouldReturn:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)textFieldShouldReturn:(UITextField *)textField</Declaration>
+			
+			
+			<Anchor>//api/name/textFieldShouldReturn:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/textField:shouldChangeCharactersInRange:replacementString:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string</Declaration>
+			
+			
+			<Anchor>//api/name/textField:shouldChangeCharactersInRange:replacementString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/textFieldDidEndEditing:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textFieldDidEndEditing:(UITextField *)textField</Declaration>
+			
+			
+			<Anchor>//api/name/textFieldDidEndEditing:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/numberOfSectionsInTableView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfSectionsInTableView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/tableView:numberOfRowsInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:numberOfRowsInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/tableView:cellForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:cellForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/tableView:heightForHeaderInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:heightForHeaderInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/tableView:titleForFooterInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:titleForFooterInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/tableView:willSelectRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:willSelectRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/tableView:didSelectRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:didSelectRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/update</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)update</Declaration>
+			
+			
+			<Anchor>//api/name/update</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAuthenticationRequestViewController/observeValueForKeyPath:ofObject:change:context:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context</Declaration>
+			
+			
+			<Anchor>//api/name/observeValueForKeyPath:ofObject:change:context:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/usernameField</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UITextField *usernameField</Declaration>
+			
+			
+			<Anchor>//api/name/usernameField</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/passwordField</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UITextField *passwordField</Declaration>
+			
+			
+			<Anchor>//api/name/passwordField</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAuthenticationRequestViewController/completionBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAuthenticationRequestViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) WAAuthenticationRequestViewControllerCallback completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/completionBlock</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
