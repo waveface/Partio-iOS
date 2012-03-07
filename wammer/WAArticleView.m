@@ -97,8 +97,7 @@
 	
 	}
 	
-	if (!articleDescriptionLabel.font)	//	Compromise
-		articleDescriptionLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
+	articleDescriptionLabel.font = [UIFont fontWithName:@"Georgia" size:16.0f];
 
 }
 
