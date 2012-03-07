@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/UIScrollView(WAScrollView_Private).html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/UIScrollView(WAScrollView_Private)</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAScrollView.m</DeclaredIn>
+			
+			<NodeRef refid="84"/>
+		</Token>
+		
+		
+	</File>
+</Tokens>

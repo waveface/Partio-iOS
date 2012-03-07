@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAPaginationSlider.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAPaginationSlider</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>
+			
+			<NodeRef refid="53"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/dotRadius</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat dotRadius</Declaration>
+			
+			
+			<Anchor>//api/name/dotRadius</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/dotMargin</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CGFloat dotMargin</Declaration>
+			
+			
+			<Anchor>//api/name/dotMargin</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/edgeInsets</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) UIEdgeInsets edgeInsets</Declaration>
+			
+			
+			<Anchor>//api/name/edgeInsets</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/sliderInsets</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) UIEdgeInsets sliderInsets</Declaration>
+			
+			
+			<Anchor>//api/name/sliderInsets</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/numberOfPages</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSUInteger numberOfPages</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfPages</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/currentPage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSUInteger currentPage</Declaration>
+			
+			
+			<Anchor>//api/name/currentPage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/setCurrentPage:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)setCurrentPage:(NSUInteger)newPage animated:(BOOL)animate</Declaration>
+			
+			
+			<Anchor>//api/name/setCurrentPage:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/snapsToPages</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL snapsToPages</Declaration>
+			
+			
+			<Anchor>//api/name/snapsToPages</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/id</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) IBOutlet&lt;&gt; id</Declaration>
+			
+			
+			<Anchor>//api/name/id</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/sliderTouchDidStart:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)sliderTouchDidStart:(UISlider *)aSlider</Declaration>
+			
+			
+			<Anchor>//api/name/sliderTouchDidStart:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/sliderDidMove:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)sliderDidMove:(UISlider *)aSlider</Declaration>
+			
+			
+			<Anchor>//api/name/sliderDidMove:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/sliderTouchDidEnd:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)sliderTouchDidEnd:(UISlider *)aSlider</Declaration>
+			
+			
+			<Anchor>//api/name/sliderTouchDidEnd:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/instantaneousCallbacks</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL instantaneousCallbacks</Declaration>
+			
+			
+			<Anchor>//api/name/instantaneousCallbacks</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/slider</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UISlider *slider</Declaration>
+			
+			
+			<Anchor>//api/name/slider</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/layoutStrategy</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAPaginationSliderLayoutStrategy layoutStrategy</Declaration>
+			
+			
+			<Anchor>//api/name/layoutStrategy</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/annotations</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSArray *annotations</Declaration>
+			
+			
+			<Anchor>//api/name/annotations</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/addAnnotations:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)addAnnotations:(NSSet *)annotations</Declaration>
+			
+			
+			<Anchor>//api/name/addAnnotations:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/addAnnotationsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)addAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation</Declaration>
+			
+			
+			<Anchor>//api/name/addAnnotationsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/removeAnnotations:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeAnnotations:(NSSet *)annotations</Declaration>
+			
+			
+			<Anchor>//api/name/removeAnnotations:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/removeAnnotationsAtIndexes:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeAnnotationsAtIndexes:(NSIndexSet *)indexes</Declaration>
+			
+			
+			<Anchor>//api/name/removeAnnotationsAtIndexes:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/removeAnnotationsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeAnnotationsObject:(WAPaginationSliderAnnotation *)anAnnotation</Declaration>
+			
+			
+			<Anchor>//api/name/removeAnnotationsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/setNeedsAnnotationsLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.h</DeclaredIn>			
+			
+			<Declaration>- (void)setNeedsAnnotationsLayout</Declaration>
+			
+			
+			<Anchor>//api/name/setNeedsAnnotationsLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAPaginationSlider/transparentImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>+ (UIImage *)transparentImage</Declaration>
+			
+			
+			<Anchor>//api/name/transparentImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/sharedInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (void)sharedInit</Declaration>
+			
+			
+			<Anchor>//api/name/sharedInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/setBounds:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (void)setBounds:(CGRect)bounds</Declaration>
+			
+			
+			<Anchor>//api/name/setBounds:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/setFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (void)setFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/setFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/estimatedPageNumberForPosition:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)estimatedPageNumberForPosition:(CGFloat)aPosition</Declaration>
+			
+			
+			<Anchor>//api/name/estimatedPageNumberForPosition:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/positionForPageNumber:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (CGFloat)positionForPageNumber:(NSUInteger)aPageNumber</Declaration>
+			
+			
+			<Anchor>//api/name/positionForPageNumber:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/currentSliderThumbRect</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (CGRect)currentSliderThumbRect</Declaration>
+			
+			
+			<Anchor>//api/name/currentSliderThumbRect</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAPaginationSlider/mutableAnnotations</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>- (NSMutableArray *)mutableAnnotations</Declaration>
+			
+			
+			<Anchor>//api/name/mutableAnnotations</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/pageIndicatorLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel</Declaration>
+			
+			
+			<Anchor>//api/name/pageIndicatorLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAPaginationSlider/needsAnnotationsLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAPaginationSlider.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL needsAnnotationsLayout</Declaration>
+			
+			
+			<Anchor>//api/name/needsAnnotationsLayout</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

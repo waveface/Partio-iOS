@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAImageStackViewDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAImageStackViewDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>
+			
+			<NodeRef refid="93"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAImageStackViewDelegate/imageStackView:didRecognizePinchZoomGestureWithRepresentedImage:contentRect:transform:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView:didRecognizePinchZoomGestureWithRepresentedImage:contentRect:transform:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAImageStackViewDelegate/imageStackView:didChangeInteractionStateToState:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)imageStackView:(WAImageStackView *)aStackView didChangeInteractionStateToState:(WAImageStackViewInteractionState)newState</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView:didChangeInteractionStateToState:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleTextEmphasisLabel.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleTextEmphasisLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.h</DeclaredIn>
+			
+			<NodeRef refid="11"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextEmphasisLabel/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextEmphasisLabel/placeholder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) NSString *placeholder</Declaration>
+			
+			
+			<Anchor>//api/name/placeholder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextEmphasisLabel/font</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIFont *font</Declaration>
+			
+			
+			<Anchor>//api/name/font</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextEmphasisLabel/backgroundView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView</Declaration>
+			
+			
+			<Anchor>//api/name/backgroundView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextEmphasisLabel/label</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) IBOutlet IRLabel *label</Declaration>
+			
+			
+			<Anchor>//api/name/label</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextEmphasisLabel/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)aFrame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextEmphasisLabel/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextEmphasisLabel/waInitialize</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>- (void)waInitialize</Declaration>
+			
+			
+			<Anchor>//api/name/waInitialize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleTextEmphasisLabel/keyPathsForValuesAffectingFont</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingFont</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingFont</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextEmphasisLabel/updateText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateText</Declaration>
+			
+			
+			<Anchor>//api/name/updateText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextEmphasisLabel/sizeThatFits:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFits:(CGSize)size</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFits:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextEmphasisLabel/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextEmphasisLabel/textView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextEmphasisLabel.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UITextView *textView</Declaration>
+			
+			
+			<Anchor>//api/name/textView</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

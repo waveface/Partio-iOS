@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WASetupViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WASetupViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.h</DeclaredIn>
+			
+			<NodeRef refid="68"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WASetupViewController/resetChoices</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (void)resetChoices</Declaration>
+			
+			
+			<Anchor>//api/name/resetChoices</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/initWithAPIURLString:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithAPIURLString:(NSString *)APIURLString</Declaration>
+			
+			
+			<Anchor>//api/name/initWithAPIURLString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readwrite) id&lt;WASetupViewControllerDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/presentModallyOn:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)presentModallyOn:(UIViewController *)parent animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/presentModallyOn:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/smartURLStringForString:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)smartURLStringForString:(NSString *)str</Declaration>
+			
+			
+			<Anchor>//api/name/smartURLStringForString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/effectiveChoice</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)effectiveChoice</Declaration>
+			
+			
+			<Anchor>//api/name/effectiveChoice</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WASetupViewController/keyPathsForValuesAffectingCanSave</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingCanSave</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingCanSave</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/canSave</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)canSave</Declaration>
+			
+			
+			<Anchor>//api/name/canSave</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/observeValueForKeyPath:ofObject:change:context:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context</Declaration>
+			
+			
+			<Anchor>//api/name/observeValueForKeyPath:ofObject:change:context:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/viewDidDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/tableView:numberOfRowsInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:numberOfRowsInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/tableView:cellForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:cellForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/chooseRow:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)chooseRow:(NSUInteger)row</Declaration>
+			
+			
+			<Anchor>//api/name/chooseRow:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/tableView:didSelectRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:didSelectRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/tableView:editingStyleForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UITableViewCellEditingStyle)tableView:(UITableView *)tv editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:editingStyleForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/tableView:commitEditingStyle:forRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)tableView:(UITableView *)tv commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:commitEditingStyle:forRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/textFieldDidBeginEditing:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textFieldDidBeginEditing:(UITextField *)textField</Declaration>
+			
+			
+			<Anchor>//api/name/textFieldDidBeginEditing:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/textFieldDidEndEditing:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textFieldDidEndEditing:(UITextField *)textField</Declaration>
+			
+			
+			<Anchor>//api/name/textFieldDidEndEditing:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/textFieldDidChange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textFieldDidChange:(NSNotification *)note</Declaration>
+			
+			
+			<Anchor>//api/name/textFieldDidChange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/textFieldShouldReturn:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)textFieldShouldReturn:(UITextField *)textField</Declaration>
+			
+			
+			<Anchor>//api/name/textFieldShouldReturn:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/saveAction:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (IBAction)saveAction:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/saveAction:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WASetupViewController/cancelAction:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>- (IBAction)cancelAction:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/cancelAction:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/canSave</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readonly) BOOL canSave</Declaration>
+			
+			
+			<Anchor>//api/name/canSave</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/choices</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain, readonly) NSMutableArray *choices</Declaration>
+			
+			
+			<Anchor>//api/name/choices</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/choicesDirty</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readwrite) BOOL choicesDirty</Declaration>
+			
+			
+			<Anchor>//api/name/choicesDirty</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/choiceIndex</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, assign, readwrite) NSUInteger choiceIndex</Declaration>
+			
+			
+			<Anchor>//api/name/choiceIndex</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/otherChoice</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy, readwrite) NSString *otherChoice</Declaration>
+			
+			
+			<Anchor>//api/name/otherChoice</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WASetupViewController/activeTextField</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WASetupViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain, readwrite) UITextField *activeTextField</Declaration>
+			
+			
+			<Anchor>//api/name/activeTextField</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

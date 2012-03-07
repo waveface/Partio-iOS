@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAOverlayBezel.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAOverlayBezel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>
+			
+			<NodeRef refid="51"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOverlayBezel/bezelWithStyle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>+ (WAOverlayBezel *)bezelWithStyle:(WAOverlayBezelStyle)aStyle</Declaration>
+			
+			
+			<Anchor>//api/name/bezelWithStyle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/initWithStyle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>- (WAOverlayBezel *)initWithStyle:(WAOverlayBezelStyle)aStyle</Declaration>
+			
+			
+			<Anchor>//api/name/initWithStyle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOverlayBezel/caption</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) NSString *caption</Declaration>
+			
+			
+			<Anchor>//api/name/caption</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/show</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>- (void)show</Declaration>
+			
+			
+			<Anchor>//api/name/show</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/dismiss</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismiss</Declaration>
+			
+			
+			<Anchor>//api/name/dismiss</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/showWithAnimation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>- (void)showWithAnimation:(WAOverlayBezelAnimation)anAnimation</Declaration>
+			
+			
+			<Anchor>//api/name/showWithAnimation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/dismissWithAnimation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation</Declaration>
+			
+			
+			<Anchor>//api/name/dismissWithAnimation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)aFrame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/observeValueForKeyPath:ofObject:change:context:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context</Declaration>
+			
+			
+			<Anchor>//api/name/observeValueForKeyPath:ofObject:change:context:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOverlayBezel/handleDeviceOrientationDidChange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDeviceOrientationDidChange:(NSNotification *)notification</Declaration>
+			
+			
+			<Anchor>//api/name/handleDeviceOrientationDidChange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOverlayBezel/image</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImage *image</Declaration>
+			
+			
+			<Anchor>//api/name/image</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOverlayBezel/style</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAOverlayBezelStyle *style</Declaration>
+			
+			
+			<Anchor>//api/name/style</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOverlayBezel/accessoryView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *accessoryView</Declaration>
+			
+			
+			<Anchor>//api/name/accessoryView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOverlayBezel/captionLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UILabel *captionLabel</Declaration>
+			
+			
+			<Anchor>//api/name/captionLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOverlayBezel/deviceOrientationTransform</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOverlayBezel.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) CATransform3D deviceOrientationTransform</Declaration>
+			
+			
+			<Anchor>//api/name/deviceOrientationTransform</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

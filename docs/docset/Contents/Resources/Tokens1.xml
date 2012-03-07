@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/IRLabelTestingViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/IRLabelTestingViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.h</DeclaredIn>
+			
+			<NodeRef refid="1"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/IRLabelTestingViewController/testLabels</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutletCollection ( IRLabel ) NSArray *testLabels</Declaration>
+			
+			
+			<Anchor>//api/name/testLabels</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/handleTimerTick:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleTimerTick:(NSTimer *)aTimer</Declaration>
+			
+			
+			<Anchor>//api/name/handleTimerTick:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/IRLabelTestingViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/IRLabelTestingViewController/timer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>IRLabelTestingViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSTimer *timer</Declaration>
+			
+			
+			<Anchor>//api/name/timer</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

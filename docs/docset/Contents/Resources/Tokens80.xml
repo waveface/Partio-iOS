@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.h</DeclaredIn>
+			
+			<NodeRef refid="80"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAView/onHitTestWithEvent</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) UIView *^ ) ( CGPoint aPoint , UIEvent *anEvent , UIView *superAnswer ) onHitTestWithEvent</Declaration>
+			
+			
+			<Anchor>//api/name/onHitTestWithEvent</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAView/onPointInsideWithEvent</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) BOOL ( ^ ) ( CGPoint aPoint , UIEvent *anEvent , BOOL superAnswer ) onPointInsideWithEvent</Declaration>
+			
+			
+			<Anchor>//api/name/onPointInsideWithEvent</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAView/onLayoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( ) onLayoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/onLayoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAView/onSizeThatFits</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) CGSize ( ^ ) ( CGSize proposedSize , CGSize superAnswer ) onSizeThatFits</Declaration>
+			
+			
+			<Anchor>//api/name/onSizeThatFits</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAView/hitTest:withEvent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</Declaration>
+			
+			
+			<Anchor>//api/name/hitTest:withEvent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAView/pointInside:withEvent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</Declaration>
+			
+			
+			<Anchor>//api/name/pointInside:withEvent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAView/sizeThatFits:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFits:(CGSize)size</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFits:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAUser.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAUser</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>
+			
+			<NodeRef refid="77"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/avatar</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAUserImage *avatar</Declaration>
+			
+			
+			<Anchor>//api/name/avatar</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/avatarURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *avatarURL</Declaration>
+			
+			
+			<Anchor>//api/name/avatarURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/email</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *email</Declaration>
+			
+			
+			<Anchor>//api/name/email</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/identifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/nickname</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *nickname</Declaration>
+			
+			
+			<Anchor>//api/name/nickname</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/articles</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *articles</Declaration>
+			
+			
+			<Anchor>//api/name/articles</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/comments</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *comments</Declaration>
+			
+			
+			<Anchor>//api/name/comments</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAUser/files</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *files</Declaration>
+			
+			
+			<Anchor>//api/name/files</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAUser/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAUser/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAUser/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAUser/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.m</DeclaredIn>			
+			
+			<Declaration>+ (id)transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath</Declaration>
+			
+			
+			<Anchor>//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/addArticlesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)addArticlesObject:(NSManagedObject *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addArticlesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/removeArticlesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeArticlesObject:(NSManagedObject *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removeArticlesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/addArticles:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)addArticles:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addArticles:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/removeArticles:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeArticles:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removeArticles:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/addCommentsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)addCommentsObject:(NSManagedObject *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addCommentsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/removeCommentsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeCommentsObject:(NSManagedObject *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removeCommentsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/addComments:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)addComments:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addComments:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/removeComments:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeComments:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removeComments:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/addFilesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)addFilesObject:(NSManagedObject *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addFilesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/removeFilesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeFilesObject:(NSManagedObject *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removeFilesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/addFiles:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)addFiles:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addFiles:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAUser/removeFiles:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAUser.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeFiles:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removeFiles:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WARemoteInterfaceEntitySyncing.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WARemoteInterfaceEntitySyncing</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterfaceEntitySyncing.h</DeclaredIn>
+			
+			<NodeRef refid="99"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WARemoteInterfaceEntitySyncing/synchronizeWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterfaceEntitySyncing.h</DeclaredIn>			
+			
+			<Declaration>+ (void)synchronizeWithCompletion:(void ( ^ ) ( BOOL didFinish , NSManagedObjectContext *temporalContext , NSArray *prospectiveUnsavedObjects , NSError *anError ))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WARemoteInterfaceEntitySyncing/synchronizeWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterfaceEntitySyncing.h</DeclaredIn>			
+			
+			<Declaration>- (void)synchronizeWithCompletion:(void ( ^ ) ( BOOL didFinish , NSManagedObjectContext *temporalContext , NSManagedObject *prospectiveUnsavedObject , NSError *anError ))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WARemoteInterfaceEntitySyncing/synchronizeWithOptions:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterfaceEntitySyncing.h</DeclaredIn>			
+			
+			<Declaration>+ (void)synchronizeWithOptions:(NSDictionary *)options completion:(void ( ^ ) ( BOOL didFinish , NSManagedObjectContext *temporalContext , NSArray *prospectiveUnsavedObjects , NSError *anError ))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithOptions:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WARemoteInterfaceEntitySyncing/synchronizeWithOptions:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterfaceEntitySyncing.h</DeclaredIn>			
+			
+			<Declaration>- (void)synchronizeWithOptions:(NSDictionary *)options completion:(void ( ^ ) ( BOOL didFinish , NSManagedObjectContext *temporalContext , NSManagedObject *prospectiveUnsavedObject , NSError *anError ))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithOptions:completion:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

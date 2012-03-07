@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAGalleryImageView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAGalleryImageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>
+			
+			<NodeRef refid="39"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAGalleryImageView/viewForImage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>+ (WAGalleryImageView *)viewForImage:(UIImage *)image</Declaration>
+			
+			
+			<Anchor>//api/name/viewForImage:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;WAGalleryImageViewDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/image</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImage *image</Declaration>
+			
+			
+			<Anchor>//api/name/image</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/setImage:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>- (void)setImage:(UIImage *)newImage animated:(BOOL)animate</Declaration>
+			
+			
+			<Anchor>//api/name/setImage:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/setImage:animated:synchronized:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>- (void)setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync</Declaration>
+			
+			
+			<Anchor>//api/name/setImage:animated:synchronized:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/handleDoubleTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>- (void)handleDoubleTap:(UITapGestureRecognizer *)aRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleDoubleTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/reset</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.h</DeclaredIn>			
+			
+			<Declaration>- (void)reset</Declaration>
+			
+			
+			<Anchor>//api/name/reset</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/waInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)waInit</Declaration>
+			
+			
+			<Anchor>//api/name/waInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/imageViewDidUpdate:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)imageViewDidUpdate:(WAImageView *)anImageView</Declaration>
+			
+			
+			<Anchor>//api/name/imageViewDidUpdate:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/setFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setFrame:(CGRect)newFrame</Declaration>
+			
+			
+			<Anchor>//api/name/setFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/setBounds:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setBounds:(CGRect)newBounds</Declaration>
+			
+			
+			<Anchor>//api/name/setBounds:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/viewForZoomingInScrollView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)viewForZoomingInScrollView:(UIScrollView *)aScrollView</Declaration>
+			
+			
+			<Anchor>//api/name/viewForZoomingInScrollView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/scrollViewDidZoom:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)scrollViewDidZoom:(UIScrollView *)aScrollView</Declaration>
+			
+			
+			<Anchor>//api/name/scrollViewDidZoom:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/scrollViewDidScroll:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)scrollViewDidScroll:(UIScrollView *)scrollView</Declaration>
+			
+			
+			<Anchor>//api/name/scrollViewDidScroll:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/scrollViewDidEndZooming:withView:atScale:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)scrollViewDidEndZooming:(UIScrollView *)aScrollView withView:(UIView *)view atScale:(float)scale</Declaration>
+			
+			
+			<Anchor>//api/name/scrollViewDidEndZooming:withView:atScale:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/initWithCoder:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithCoder:(NSCoder *)aDecoder</Declaration>
+			
+			
+			<Anchor>//api/name/initWithCoder:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAGalleryImageView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/activityIndicator</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator</Declaration>
+			
+			
+			<Anchor>//api/name/activityIndicator</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/scrollView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIScrollView *scrollView</Declaration>
+			
+			
+			<Anchor>//api/name/scrollView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/imageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAImageView *imageView</Declaration>
+			
+			
+			<Anchor>//api/name/imageView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/needsContentAdjustmentOnLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL needsContentAdjustmentOnLayout</Declaration>
+			
+			
+			<Anchor>//api/name/needsContentAdjustmentOnLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/needsInsetAdjustmentOnLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL needsInsetAdjustmentOnLayout</Declaration>
+			
+			
+			<Anchor>//api/name/needsInsetAdjustmentOnLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/needsOffsetAdjustmentOnLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL needsOffsetAdjustmentOnLayout</Declaration>
+			
+			
+			<Anchor>//api/name/needsOffsetAdjustmentOnLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAGalleryImageView/revertsOnZoomEnd</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAGalleryImageView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL revertsOnZoomEnd</Declaration>
+			
+			
+			<Anchor>//api/name/revertsOnZoomEnd</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
