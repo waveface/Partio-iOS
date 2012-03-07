@@ -95,7 +95,6 @@
 	[onGestureRecognizerShouldReceiveTouch release];
 	
 	[super dealloc];
-	
 
 }
 
