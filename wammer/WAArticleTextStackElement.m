@@ -41,7 +41,6 @@
 	[self irRemoveObserverBlocksForKeyPath:@"textStackCellLabel.label.lastDrawnRectRequiredTailTruncation"];
 
 	[textStackCellLabel release];
-	[contentToggle release];
 	
 	[super dealloc];
 
@@ -61,12 +60,6 @@
 	cellLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.contentView addSubview:cellLabel];
 	
-	UIButton *toggle = self.contentToggle;
-	toggle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
-	toggle.frame = IRGravitize(self.contentView.bounds, (CGSize){ 64, 18 }, kCAGravityBottomRight);
-	toggle.backgroundColor = [UIColor redColor];
-	[self.contentView addSubview:toggle];
-
 	self.onSizeThatFits = ^ (CGSize proposedSize, CGSize superAnswer) {
 		
 		CGSize labelAnswer = [cellLabel sizeThatFits:(CGSize){
@@ -82,15 +75,6 @@
 	};
 	
 	[self setNeedsLayout];
-	
-	
-	__block __typeof__(self) nrSelf = self;
-	
-	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-	
-		[nrSelf updateContentToggle];
-		
-	} forKeyPath:@"textStackCellLabel.label.lastDrawnRectRequiredTailTruncation" options:NSKeyValueObservingOptionNew context:nil];
 	
 	return self;
 
@@ -110,47 +94,6 @@
 		
 	return textStackCellLabel;
 
-}
-
-- (UIButton *) contentToggle {
-
-	if (contentToggle)
-		return contentToggle;
-	
-	contentToggle = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-	[contentToggle addTarget:self action:@selector(handleContentToggleTap:) forControlEvents:UIControlEventTouchUpInside];
-	
-	[self updateContentToggle];
-	
-	return contentToggle;
-
-}
-
-- (void) handleContentToggleTap:(id)sender {
-
-	[self.delegate textStackElement:self didRequestContentSizeToggle:sender];
-
-}
-
-- (void) updateContentToggle {
-
-	IRLabel *label = self.textStackCellLabel.label;
-	
-	BOOL truncated = label.lastDrawnRectRequiredTailTruncation;
-	BOOL everythingShown = CGSizeEqualToSize(label.bounds.size, [label sizeThatFits:(CGSize){ CGRectGetWidth(label.bounds), 0 }]);
-
-	if (!truncated && everythingShown) {
-		
-		[self.contentToggle setTitle:@"Less" forState:UIControlStateNormal];	
-		[self.contentToggle setImage:[UIImage imageNamed:@"WATinyArrowUp"] forState:UIControlStateNormal];		
-		
-	} else if (truncated) {
-	
-		[self.contentToggle setTitle:@"More" forState:UIControlStateNormal];
-		[self.contentToggle setImage:[UIImage imageNamed:@"WATinyArrowDown"] forState:UIControlStateNormal];	
-		
-	}
-	
 }
 
 @end
