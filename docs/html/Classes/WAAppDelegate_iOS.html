@@ -1,0 +1,874 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAAppDelegate_iOS Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAAppDelegate_iOS Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/alreadyRequestingAuthentication">&nbsp;&nbsp;&nbsp;&nbsp;alreadyRequestingAuthentication</option>
+	
+	<option value="//api/name/window">&nbsp;&nbsp;&nbsp;&nbsp;window</option>
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/application:didFinishLaunchingWithOptions:">&nbsp;&nbsp;&nbsp;&nbsp;- application:didFinishLaunchingWithOptions:</option>
+	
+	<option value="//api/name/application:openURL:sourceApplication:annotation:">&nbsp;&nbsp;&nbsp;&nbsp;- application:openURL:sourceApplication:annotation:</option>
+	
+	<option value="//api/name/applicationDidReceiveMemoryWarning:">&nbsp;&nbsp;&nbsp;&nbsp;- applicationDidReceiveMemoryWarning:</option>
+	
+	<option value="//api/name/applicationRootViewControllerDidRequestChangeAPIURL:">&nbsp;&nbsp;&nbsp;&nbsp;- applicationRootViewControllerDidRequestChangeAPIURL:</option>
+	
+	<option value="//api/name/applicationRootViewControllerDidRequestReauthentication:">&nbsp;&nbsp;&nbsp;&nbsp;- applicationRootViewControllerDidRequestReauthentication:</option>
+	
+	<option value="//api/name/beginNetworkActivity">&nbsp;&nbsp;&nbsp;&nbsp;- beginNetworkActivity</option>
+	
+	<option value="//api/name/bootstrap">&nbsp;&nbsp;&nbsp;&nbsp;- bootstrap</option>
+	
+	<option value="//api/name/clearViewHierarchy">&nbsp;&nbsp;&nbsp;&nbsp;- clearViewHierarchy</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/endNetworkActivity">&nbsp;&nbsp;&nbsp;&nbsp;- endNetworkActivity</option>
+	
+	<option value="//api/name/handleDebugModeToggled">&nbsp;&nbsp;&nbsp;&nbsp;- handleDebugModeToggled</option>
+	
+	<option value="//api/name/handleIASKSettingsChanged:">&nbsp;&nbsp;&nbsp;&nbsp;- handleIASKSettingsChanged:</option>
+	
+	<option value="//api/name/handleIASKSettingsDidRequestAction:">&nbsp;&nbsp;&nbsp;&nbsp;- handleIASKSettingsDidRequestAction:</option>
+	
+	<option value="//api/name/handleObservedAuthenticationFailure:">&nbsp;&nbsp;&nbsp;&nbsp;- handleObservedAuthenticationFailure:</option>
+	
+	<option value="//api/name/handleObservedRemoteURLNotification:">&nbsp;&nbsp;&nbsp;&nbsp;- handleObservedRemoteURLNotification:</option>
+	
+	<option value="//api/name/performUserOnboardingUsingAuthRequestViewController:">&nbsp;&nbsp;&nbsp;&nbsp;- performUserOnboardingUsingAuthRequestViewController:</option>
+	
+	<option value="//api/name/presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:">&nbsp;&nbsp;&nbsp;&nbsp;- presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</option>
+	
+	<option value="//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:">&nbsp;&nbsp;&nbsp;&nbsp;- presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:</option>
+	
+	<option value="//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:">&nbsp;&nbsp;&nbsp;&nbsp;- presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</option>
+	
+	<option value="//api/name/presentSetupViewControllerAnimated:">&nbsp;&nbsp;&nbsp;&nbsp;- presentSetupViewControllerAnimated:</option>
+	
+	<option value="//api/name/recreateViewHierarchy">&nbsp;&nbsp;&nbsp;&nbsp;- recreateViewHierarchy</option>
+	
+	<option value="//api/name/setupViewController:didChooseString:">&nbsp;&nbsp;&nbsp;&nbsp;- setupViewController:didChooseString:</option>
+	
+	<option value="//api/name/setupViewControllerDidCancel:">&nbsp;&nbsp;&nbsp;&nbsp;- setupViewControllerDidCancel:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Extension Methods">Extension Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/alreadyRequestingAuthentication">alreadyRequestingAuthentication</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/window">window</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/application:didFinishLaunchingWithOptions:">application:didFinishLaunchingWithOptions:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/application:openURL:sourceApplication:annotation:">application:openURL:sourceApplication:annotation:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/applicationDidReceiveMemoryWarning:">applicationDidReceiveMemoryWarning:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/applicationRootViewControllerDidRequestChangeAPIURL:">applicationRootViewControllerDidRequestChangeAPIURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/applicationRootViewControllerDidRequestReauthentication:">applicationRootViewControllerDidRequestReauthentication:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/beginNetworkActivity">beginNetworkActivity</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/bootstrap">bootstrap</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/clearViewHierarchy">clearViewHierarchy</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/endNetworkActivity">endNetworkActivity</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleDebugModeToggled">handleDebugModeToggled</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleIASKSettingsChanged:">handleIASKSettingsChanged:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleIASKSettingsDidRequestAction:">handleIASKSettingsDidRequestAction:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleObservedAuthenticationFailure:">handleObservedAuthenticationFailure:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleObservedRemoteURLNotification:">handleObservedRemoteURLNotification:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/performUserOnboardingUsingAuthRequestViewController:">performUserOnboardingUsingAuthRequestViewController:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:">presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:">presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:">presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentSetupViewControllerAnimated:">presentSetupViewControllerAnimated:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/recreateViewHierarchy">recreateViewHierarchy</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setupViewController:didChooseString:">setupViewController:didChooseString:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setupViewControllerDidCancel:">setupViewControllerDidCancel:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAAppDelegate_iOS Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAAppDelegate_iOS Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value"><a href="../Classes/WAAppDelegate.html">WAAppDelegate</a> : WAAppDelegateRootClass</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">UIAlertViewDelegate<br />UIApplicationDelegate</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAAppDelegate_iOS.h<br />WAAppDelegate_iOS.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/window">&nbsp;&nbsp;window</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:">&ndash;&nbsp;presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:">&ndash;&nbsp;presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:">&ndash;&nbsp;presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/bootstrap">&ndash;&nbsp;bootstrap</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/application:didFinishLaunchingWithOptions:">&ndash;&nbsp;application:didFinishLaunchingWithOptions:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/clearViewHierarchy">&ndash;&nbsp;clearViewHierarchy</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/recreateViewHierarchy">&ndash;&nbsp;recreateViewHierarchy</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/applicationRootViewControllerDidRequestReauthentication:">&ndash;&nbsp;applicationRootViewControllerDidRequestReauthentication:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleObservedAuthenticationFailure:">&ndash;&nbsp;handleObservedAuthenticationFailure:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleObservedRemoteURLNotification:">&ndash;&nbsp;handleObservedRemoteURLNotification:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleIASKSettingsChanged:">&ndash;&nbsp;handleIASKSettingsChanged:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleIASKSettingsDidRequestAction:">&ndash;&nbsp;handleIASKSettingsDidRequestAction:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleDebugModeToggled">&ndash;&nbsp;handleDebugModeToggled</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/performUserOnboardingUsingAuthRequestViewController:">&ndash;&nbsp;performUserOnboardingUsingAuthRequestViewController:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/applicationRootViewControllerDidRequestChangeAPIURL:">&ndash;&nbsp;applicationRootViewControllerDidRequestChangeAPIURL:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentSetupViewControllerAnimated:">&ndash;&nbsp;presentSetupViewControllerAnimated:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setupViewController:didChooseString:">&ndash;&nbsp;setupViewController:didChooseString:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setupViewControllerDidCancel:">&ndash;&nbsp;setupViewControllerDidCancel:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/beginNetworkActivity">&ndash;&nbsp;beginNetworkActivity</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/endNetworkActivity">&ndash;&nbsp;endNetworkActivity</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/application:openURL:sourceApplication:annotation:">&ndash;&nbsp;application:openURL:sourceApplication:annotation:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/applicationDidReceiveMemoryWarning:">&ndash;&nbsp;applicationDidReceiveMemoryWarning:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Extension Methods" name="task_Extension Methods"></a>
+						<h3 class="subsubtitle task-title">Extension Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/alreadyRequestingAuthentication">&nbsp;&nbsp;alreadyRequestingAuthentication</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/alreadyRequestingAuthentication" title="alreadyRequestingAuthentication"></a>
+	<h3 class="subsubtitle method-title">alreadyRequestingAuthentication</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/window" title="window"></a>
+	<h3 class="subsubtitle method-title">window</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/application:didFinishLaunchingWithOptions:" title="application:didFinishLaunchingWithOptions:"></a>
+	<h3 class="subsubtitle method-title">application:didFinishLaunchingWithOptions:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/application:openURL:sourceApplication:annotation:" title="application:openURL:sourceApplication:annotation:"></a>
+	<h3 class="subsubtitle method-title">application:openURL:sourceApplication:annotation:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/applicationDidReceiveMemoryWarning:" title="applicationDidReceiveMemoryWarning:"></a>
+	<h3 class="subsubtitle method-title">applicationDidReceiveMemoryWarning:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/applicationRootViewControllerDidRequestChangeAPIURL:" title="applicationRootViewControllerDidRequestChangeAPIURL:"></a>
+	<h3 class="subsubtitle method-title">applicationRootViewControllerDidRequestChangeAPIURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/applicationRootViewControllerDidRequestReauthentication:" title="applicationRootViewControllerDidRequestReauthentication:"></a>
+	<h3 class="subsubtitle method-title">applicationRootViewControllerDidRequestReauthentication:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/beginNetworkActivity" title="beginNetworkActivity"></a>
+	<h3 class="subsubtitle method-title">beginNetworkActivity</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/bootstrap" title="bootstrap"></a>
+	<h3 class="subsubtitle method-title">bootstrap</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/clearViewHierarchy" title="clearViewHierarchy"></a>
+	<h3 class="subsubtitle method-title">clearViewHierarchy</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/endNetworkActivity" title="endNetworkActivity"></a>
+	<h3 class="subsubtitle method-title">endNetworkActivity</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleDebugModeToggled" title="handleDebugModeToggled"></a>
+	<h3 class="subsubtitle method-title">handleDebugModeToggled</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleIASKSettingsChanged:" title="handleIASKSettingsChanged:"></a>
+	<h3 class="subsubtitle method-title">handleIASKSettingsChanged:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleIASKSettingsDidRequestAction:" title="handleIASKSettingsDidRequestAction:"></a>
+	<h3 class="subsubtitle method-title">handleIASKSettingsDidRequestAction:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleObservedAuthenticationFailure:" title="handleObservedAuthenticationFailure:"></a>
+	<h3 class="subsubtitle method-title">handleObservedAuthenticationFailure:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleObservedRemoteURLNotification:" title="handleObservedRemoteURLNotification:"></a>
+	<h3 class="subsubtitle method-title">handleObservedRemoteURLNotification:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/performUserOnboardingUsingAuthRequestViewController:" title="performUserOnboardingUsingAuthRequestViewController:"></a>
+	<h3 class="subsubtitle method-title">performUserOnboardingUsingAuthRequestViewController:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:" title="presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:"></a>
+	<h3 class="subsubtitle method-title">presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:" title="presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:"></a>
+	<h3 class="subsubtitle method-title">presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:" title="presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:"></a>
+	<h3 class="subsubtitle method-title">presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentSetupViewControllerAnimated:" title="presentSetupViewControllerAnimated:"></a>
+	<h3 class="subsubtitle method-title">presentSetupViewControllerAnimated:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/recreateViewHierarchy" title="recreateViewHierarchy"></a>
+	<h3 class="subsubtitle method-title">recreateViewHierarchy</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setupViewController:didChooseString:" title="setupViewController:didChooseString:"></a>
+	<h3 class="subsubtitle method-title">setupViewController:didChooseString:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setupViewControllerDidCancel:" title="setupViewControllerDidCancel:"></a>
+	<h3 class="subsubtitle method-title">setupViewControllerDidCancel:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

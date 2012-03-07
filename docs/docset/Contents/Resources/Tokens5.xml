@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticle.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>
+			
+			<NodeRef refid="5"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/creationDeviceName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *creationDeviceName</Declaration>
+			
+			
+			<Anchor>//api/name/creationDeviceName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/draft</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSNumber *draft</Declaration>
+			
+			
+			<Anchor>//api/name/draft</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/fileOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) id fileOrder</Declaration>
+			
+			
+			<Anchor>//api/name/fileOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/identifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/timestamp</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSDate *timestamp</Declaration>
+			
+			
+			<Anchor>//api/name/timestamp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/summary</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *summary</Declaration>
+			
+			
+			<Anchor>//api/name/summary</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/comments</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *comments</Declaration>
+			
+			
+			<Anchor>//api/name/comments</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/files</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *files</Declaration>
+			
+			
+			<Anchor>//api/name/files</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/group</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAGroup *group</Declaration>
+			
+			
+			<Anchor>//api/name/group</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/owner</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAUser *owner</Declaration>
+			
+			
+			<Anchor>//api/name/owner</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticle/previews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *previews</Declaration>
+			
+			
+			<Anchor>//api/name/previews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (id)transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath</Declaration>
+			
+			
+			<Anchor>//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/defaultHierarchicalEntityMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)defaultHierarchicalEntityMapping</Declaration>
+			
+			
+			<Anchor>//api/name/defaultHierarchicalEntityMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/transformedRepresentationForRemoteRepresentation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation</Declaration>
+			
+			
+			<Anchor>//api/name/transformedRepresentationForRemoteRepresentation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/synchronizeWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (void)synchronizeWithCompletion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSArray *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/synchronizeWithOptions:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (void)synchronizeWithOptions:(NSDictionary *)options completion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSArray *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithOptions:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/synchronizeWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>- (void)synchronizeWithCompletion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/synchronizeWithOptions:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>- (void)synchronizeWithOptions:(NSDictionary *)options completion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithOptions:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/title</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+DiscreteLayoutAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)title</Declaration>
+			
+			
+			<Anchor>//api/name/title</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/representedMediaItems</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+DiscreteLayoutAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)representedMediaItems</Declaration>
+			
+			
+			<Anchor>//api/name/representedMediaItems</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/typeForRepresentedMediaItem:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+DiscreteLayoutAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (CFStringRef)typeForRepresentedMediaItem:(id)anItem</Declaration>
+			
+			
+			<Anchor>//api/name/typeForRepresentedMediaItem:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/representedText</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+DiscreteLayoutAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)representedText</Declaration>
+			
+			
+			<Anchor>//api/name/representedText</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/representedImageURI</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+DiscreteLayoutAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)representedImageURI</Declaration>
+			
+			
+			<Anchor>//api/name/representedImageURI</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/representedVideoURI</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+DiscreteLayoutAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)representedVideoURI</Declaration>
+			
+			
+			<Anchor>//api/name/representedVideoURI</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/hasMeaningfulContent</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)hasMeaningfulContent</Declaration>
+			
+			
+			<Anchor>//api/name/hasMeaningfulContent</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/representedFile</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (WAFile *)representedFile</Declaration>
+			
+			
+			<Anchor>//api/name/representedFile</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/keyPathsForValuesAffectingHasMeaningfulContent</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingHasMeaningfulContent</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingHasMeaningfulContent</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/keyPathsForValuesAffectingRepresentedFile</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingRepresentedFile</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingRepresentedFile</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/automaticallyNotifiesObserversForKey:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key</Declaration>
+			
+			
+			<Anchor>//api/name/automaticallyNotifiesObserversForKey:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/keyPathsForValuesAffectingFiles</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingFiles</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingFiles</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticle/keyPathsForValuesAffectingFileOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingFileOrder</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingFileOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/irAwake</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)irAwake</Declaration>
+			
+			
+			<Anchor>//api/name/irAwake</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/fileOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)fileOrder</Declaration>
+			
+			
+			<Anchor>//api/name/fileOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/didChangeValueForKey:withSetMutation:usingObjects:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects</Declaration>
+			
+			
+			<Anchor>//api/name/didChangeValueForKey:withSetMutation:usingObjects:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/addCommentsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)addCommentsObject:(WAComment *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addCommentsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/removeCommentsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeCommentsObject:(WAComment *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removeCommentsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/addComments:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)addComments:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addComments:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/removeComments:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeComments:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removeComments:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/addFilesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)addFilesObject:(WAFile *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addFilesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/removeFilesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeFilesObject:(WAFile *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removeFilesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/addFiles:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)addFiles:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addFiles:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/removeFiles:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeFiles:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removeFiles:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/addPreviewsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)addPreviewsObject:(WAPreview *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addPreviewsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/removePreviewsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)removePreviewsObject:(WAPreview *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removePreviewsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/addPreviews:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)addPreviews:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addPreviews:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticle/removePreviews:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticle.h</DeclaredIn>			
+			
+			<Declaration>- (void)removePreviews:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removePreviews:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

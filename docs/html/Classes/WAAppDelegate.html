@@ -1,0 +1,603 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAAppDelegate Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAAppDelegate Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/alloc">&nbsp;&nbsp;&nbsp;&nbsp;+ alloc</option>
+	
+	<option value="//api/name/allocWithZone:">&nbsp;&nbsp;&nbsp;&nbsp;+ allocWithZone:</option>
+	
+	<option value="//api/name/preferredClusterClass">&nbsp;&nbsp;&nbsp;&nbsp;+ preferredClusterClass</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/beginNetworkActivity">&nbsp;&nbsp;&nbsp;&nbsp;- beginNetworkActivity</option>
+	
+	<option value="//api/name/bootstrap">&nbsp;&nbsp;&nbsp;&nbsp;- bootstrap</option>
+	
+	<option value="//api/name/configureRemoteResourceDownloadOperation:">&nbsp;&nbsp;&nbsp;&nbsp;- configureRemoteResourceDownloadOperation:</option>
+	
+	<option value="//api/name/currentKeychainItem">&nbsp;&nbsp;&nbsp;&nbsp;- currentKeychainItem</option>
+	
+	<option value="//api/name/endNetworkActivity">&nbsp;&nbsp;&nbsp;&nbsp;- endNetworkActivity</option>
+	
+	<option value="//api/name/hasAuthenticationData">&nbsp;&nbsp;&nbsp;&nbsp;- hasAuthenticationData</option>
+	
+	<option value="//api/name/remoteResourcesManager:didBeginDownloadingResourceAtURL:">&nbsp;&nbsp;&nbsp;&nbsp;- remoteResourcesManager:didBeginDownloadingResourceAtURL:</option>
+	
+	<option value="//api/name/remoteResourcesManager:didFailDownloadingResourceAtURL:">&nbsp;&nbsp;&nbsp;&nbsp;- remoteResourcesManager:didFailDownloadingResourceAtURL:</option>
+	
+	<option value="//api/name/remoteResourcesManager:didFinishDownloadingResourceAtURL:">&nbsp;&nbsp;&nbsp;&nbsp;- remoteResourcesManager:didFinishDownloadingResourceAtURL:</option>
+	
+	<option value="//api/name/remoteResourcesManager:invokedURLForResourceAtURL:">&nbsp;&nbsp;&nbsp;&nbsp;- remoteResourcesManager:invokedURLForResourceAtURL:</option>
+	
+	<option value="//api/name/removeAuthenticationData">&nbsp;&nbsp;&nbsp;&nbsp;- removeAuthenticationData</option>
+	
+	<option value="//api/name/updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:">&nbsp;&nbsp;&nbsp;&nbsp;- updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_SubclassResponsibility Methods">SubclassResponsibility Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/alloc">alloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/allocWithZone:">allocWithZone:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/preferredClusterClass">preferredClusterClass</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/beginNetworkActivity">beginNetworkActivity</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/bootstrap">bootstrap</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/configureRemoteResourceDownloadOperation:">configureRemoteResourceDownloadOperation:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/currentKeychainItem">currentKeychainItem</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/endNetworkActivity">endNetworkActivity</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/hasAuthenticationData">hasAuthenticationData</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteResourcesManager:didBeginDownloadingResourceAtURL:">remoteResourcesManager:didBeginDownloadingResourceAtURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteResourcesManager:didFailDownloadingResourceAtURL:">remoteResourcesManager:didFailDownloadingResourceAtURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteResourcesManager:didFinishDownloadingResourceAtURL:">remoteResourcesManager:didFinishDownloadingResourceAtURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteResourcesManager:invokedURLForResourceAtURL:">remoteResourcesManager:invokedURLForResourceAtURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeAuthenticationData">removeAuthenticationData</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:">updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAAppDelegate Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAAppDelegate Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">WAAppDelegateRootClass</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAAppDelegate.h<br />WAAppDelegate.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/bootstrap">&ndash;&nbsp;bootstrap</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/hasAuthenticationData">&ndash;&nbsp;hasAuthenticationData</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removeAuthenticationData">&ndash;&nbsp;removeAuthenticationData</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:">&ndash;&nbsp;updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/alloc">+&nbsp;alloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/allocWithZone:">+&nbsp;allocWithZone:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/preferredClusterClass">+&nbsp;preferredClusterClass</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/currentKeychainItem">&ndash;&nbsp;currentKeychainItem</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteResourcesManager:didBeginDownloadingResourceAtURL:">&ndash;&nbsp;remoteResourcesManager:didBeginDownloadingResourceAtURL:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteResourcesManager:didFinishDownloadingResourceAtURL:">&ndash;&nbsp;remoteResourcesManager:didFinishDownloadingResourceAtURL:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteResourcesManager:didFailDownloadingResourceAtURL:">&ndash;&nbsp;remoteResourcesManager:didFailDownloadingResourceAtURL:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteResourcesManager:invokedURLForResourceAtURL:">&ndash;&nbsp;remoteResourcesManager:invokedURLForResourceAtURL:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/configureRemoteResourceDownloadOperation:">&ndash;&nbsp;configureRemoteResourceDownloadOperation:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="SubclassResponsibility Methods" name="task_SubclassResponsibility Methods"></a>
+						<h3 class="subsubtitle task-title">SubclassResponsibility Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/beginNetworkActivity">&ndash;&nbsp;beginNetworkActivity</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/endNetworkActivity">&ndash;&nbsp;endNetworkActivity</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/alloc" title="alloc"></a>
+	<h3 class="subsubtitle method-title">alloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/allocWithZone:" title="allocWithZone:"></a>
+	<h3 class="subsubtitle method-title">allocWithZone:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/preferredClusterClass" title="preferredClusterClass"></a>
+	<h3 class="subsubtitle method-title">preferredClusterClass</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/beginNetworkActivity" title="beginNetworkActivity"></a>
+	<h3 class="subsubtitle method-title">beginNetworkActivity</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/bootstrap" title="bootstrap"></a>
+	<h3 class="subsubtitle method-title">bootstrap</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/configureRemoteResourceDownloadOperation:" title="configureRemoteResourceDownloadOperation:"></a>
+	<h3 class="subsubtitle method-title">configureRemoteResourceDownloadOperation:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/currentKeychainItem" title="currentKeychainItem"></a>
+	<h3 class="subsubtitle method-title">currentKeychainItem</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/endNetworkActivity" title="endNetworkActivity"></a>
+	<h3 class="subsubtitle method-title">endNetworkActivity</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/hasAuthenticationData" title="hasAuthenticationData"></a>
+	<h3 class="subsubtitle method-title">hasAuthenticationData</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteResourcesManager:didBeginDownloadingResourceAtURL:" title="remoteResourcesManager:didBeginDownloadingResourceAtURL:"></a>
+	<h3 class="subsubtitle method-title">remoteResourcesManager:didBeginDownloadingResourceAtURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteResourcesManager:didFailDownloadingResourceAtURL:" title="remoteResourcesManager:didFailDownloadingResourceAtURL:"></a>
+	<h3 class="subsubtitle method-title">remoteResourcesManager:didFailDownloadingResourceAtURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteResourcesManager:didFinishDownloadingResourceAtURL:" title="remoteResourcesManager:didFinishDownloadingResourceAtURL:"></a>
+	<h3 class="subsubtitle method-title">remoteResourcesManager:didFinishDownloadingResourceAtURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteResourcesManager:invokedURLForResourceAtURL:" title="remoteResourcesManager:invokedURLForResourceAtURL:"></a>
+	<h3 class="subsubtitle method-title">remoteResourcesManager:invokedURLForResourceAtURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removeAuthenticationData" title="removeAuthenticationData"></a>
+	<h3 class="subsubtitle method-title">removeAuthenticationData</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:" title="updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:"></a>
+	<h3 class="subsubtitle method-title">updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

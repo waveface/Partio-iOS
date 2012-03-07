@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleViewController_Preview.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleViewController_Preview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.h</DeclaredIn>
+			
+			<NodeRef refid="18"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/didReceiveMemoryWarning</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)didReceiveMemoryWarning</Declaration>
+			
+			
+			<Anchor>//api/name/didReceiveMemoryWarning</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/preview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (WAPreview *)preview</Declaration>
+			
+			
+			<Anchor>//api/name/preview</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/initWithNibName:bundle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/initWithNibName:bundle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/scrollableStackElementWrapper</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)scrollableStackElementWrapper</Declaration>
+			
+			
+			<Anchor>//api/name/scrollableStackElementWrapper</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/scrollableStackElement</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIScrollView *)scrollableStackElement</Declaration>
+			
+			
+			<Anchor>//api/name/scrollableStackElement</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIWebView *)webView</Declaration>
+			
+			
+			<Anchor>//api/name/webView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/summaryWebView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIWebView *)summaryWebView</Declaration>
+			
+			
+			<Anchor>//api/name/summaryWebView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewBackBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (IRBarButtonItem *)webViewBackBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewBackBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewForwardBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (IRBarButtonItem *)webViewForwardBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewForwardBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewActivityIndicator</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIActivityIndicatorView *)webViewActivityIndicator</Declaration>
+			
+			
+			<Anchor>//api/name/webViewActivityIndicator</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewActivityIndicatorBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (IRBarButtonItem *)webViewActivityIndicatorBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewActivityIndicatorBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webView:shouldStartLoadWithRequest:navigationType:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)webView:(UIWebView *)aWebView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType</Declaration>
+			
+			
+			<Anchor>//api/name/webView:shouldStartLoadWithRequest:navigationType:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewDidStartLoad:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)webViewDidStartLoad:(UIWebView *)aWebView</Declaration>
+			
+			
+			<Anchor>//api/name/webViewDidStartLoad:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewDidFinishLoad:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)webViewDidFinishLoad:(UIWebView *)aWebView</Declaration>
+			
+			
+			<Anchor>//api/name/webViewDidFinishLoad:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webView:didFailLoadWithError:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error</Declaration>
+			
+			
+			<Anchor>//api/name/webView:didFailLoadWithError:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/updateWebViewBarButtonItems</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateWebViewBarButtonItems</Declaration>
+			
+			
+			<Anchor>//api/name/updateWebViewBarButtonItems</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/wrappedView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)wrappedView</Declaration>
+			
+			
+			<Anchor>//api/name/wrappedView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/webViewWrapper</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)webViewWrapper</Declaration>
+			
+			
+			<Anchor>//api/name/webViewWrapper</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (WAPreviewBadge *)previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/previewBadgeWrapper</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (UIView *)previewBadgeWrapper</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadgeWrapper</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/toolbarItems</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)toolbarItems</Declaration>
+			
+			
+			<Anchor>//api/name/toolbarItems</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/previewActionSheetController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (IRActionSheetController *)previewActionSheetController</Declaration>
+			
+			
+			<Anchor>//api/name/previewActionSheetController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/previewActionsWithSender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)previewActionsWithSender:(UIBarButtonItem *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/previewActionsWithSender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/externallyVisibleURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)externallyVisibleURL</Declaration>
+			
+			
+			<Anchor>//api/name/externallyVisibleURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/setState:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)setState:(WAArticleViewControllerState)newState</Declaration>
+			
+			
+			<Anchor>//api/name/setState:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/updateWrapperView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)updateWrapperView</Declaration>
+			
+			
+			<Anchor>//api/name/updateWrapperView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/handleSegmentedControlValueChanged:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleSegmentedControlValueChanged:(UISegmentedControl *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleSegmentedControlValueChanged:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/sizeThatFitsElement:inStackView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFitsElement:inStackView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/stackView:shouldStretchElement:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement</Declaration>
+			
+			
+			<Anchor>//api/name/stackView:shouldStretchElement:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController_Preview/willAnimateRotationToInterfaceOrientation:duration:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration</Declaration>
+			
+			
+			<Anchor>//api/name/willAnimateRotationToInterfaceOrientation:duration:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/state</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAArticleViewControllerState state</Declaration>
+			
+			
+			<Anchor>//api/name/state</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIWebView *webView</Declaration>
+			
+			
+			<Anchor>//api/name/webView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/summaryWebView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIWebView *summaryWebView</Declaration>
+			
+			
+			<Anchor>//api/name/summaryWebView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webViewWrapper</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *webViewWrapper</Declaration>
+			
+			
+			<Anchor>//api/name/webViewWrapper</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webViewActivityIndicator</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIActivityIndicatorView *webViewActivityIndicator</Declaration>
+			
+			
+			<Anchor>//api/name/webViewActivityIndicator</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webViewBackBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewBackBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewBackBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webViewForwardBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewForwardBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewForwardBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webViewActivityIndicatorBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewActivityIndicatorBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewActivityIndicatorBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/webViewReloadBarButtonItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRBarButtonItem *webViewReloadBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/webViewReloadBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/previewBadgeWrapper</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIView *previewBadgeWrapper</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadgeWrapper</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController_Preview/previewActionSheetController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController_Preview.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRActionSheetController *previewActionSheetController</Declaration>
+			
+			
+			<Anchor>//api/name/previewActionSheetController</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

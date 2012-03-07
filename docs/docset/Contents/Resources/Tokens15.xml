@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>
+			
+			<NodeRef refid="15"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleViewController/suggestedStyleForArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WAArticleViewControllerPresentationStyle)suggestedStyleForArticle:(WAArticle *)anArticle</Declaration>
+			
+			
+			<Anchor>//api/name/suggestedStyleForArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleViewController/suggestedDiscreteStyleForArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WAArticleViewControllerPresentationStyle)suggestedDiscreteStyleForArticle:(WAArticle *)anArticle</Declaration>
+			
+			
+			<Anchor>//api/name/suggestedDiscreteStyleForArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleViewController/controllerForArticle:usingPresentationStyle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WAArticleViewController *)controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle</Declaration>
+			
+			
+			<Anchor>//api/name/controllerForArticle:usingPresentationStyle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/representedObjectURI</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController+Subclasses.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSURL *representedObjectURI</Declaration>
+			
+			
+			<Anchor>//api/name/representedObjectURI</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController+Subclasses.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/presentationStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) WAArticleViewControllerPresentationStyle presentationStyle</Declaration>
+			
+			
+			<Anchor>//api/name/presentationStyle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/onViewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WAArticleViewController *self , UIView *loadedView ) onViewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/onViewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/onViewTap</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( ) onViewTap</Declaration>
+			
+			
+			<Anchor>//api/name/onViewTap</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/onViewPinch</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( UIGestureRecognizerState state , CGFloat scale , CGFloat velocity ) onViewPinch</Declaration>
+			
+			
+			<Anchor>//api/name/onViewPinch</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/action</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( void ( ^ ) ( UIViewController&lt;WAArticleViewControllerPresenting&gt; *parentViewController ) ) action</Declaration>
+			
+			
+			<Anchor>//api/name/action</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/view</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) UIView&lt;WAArticleView&gt; *view</Declaration>
+			
+			
+			<Anchor>//api/name/view</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/additionalDebugActions</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *additionalDebugActions</Declaration>
+			
+			
+			<Anchor>//api/name/additionalDebugActions</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/wrappingNavController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>- (WANavigationController *)wrappingNavController</Declaration>
+			
+			
+			<Anchor>//api/name/wrappingNavController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSManagedObjectContext *)managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/gestureRecognizer:shouldReceiveTouch:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch</Declaration>
+			
+			
+			<Anchor>//api/name/gestureRecognizer:shouldReceiveTouch:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/handleGlobalTap:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleGlobalTap:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/handleGlobalPinch:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleGlobalPinch:(UIPinchGestureRecognizer *)pinchRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleGlobalPinch:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/handleGlobalInspect:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleGlobalInspect:(UILongPressGestureRecognizer *)longPressRecognizer</Declaration>
+			
+			
+			<Anchor>//api/name/handleGlobalInspect:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/willAnimateRotationToInterfaceOrientation:duration:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration</Declaration>
+			
+			
+			<Anchor>//api/name/willAnimateRotationToInterfaceOrientation:duration:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/tableView:numberOfRowsInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:numberOfRowsInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/imageStackView:didRecognizePinchZoomGestureWithRepresentedImage:contentRect:transform:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView:didRecognizePinchZoomGestureWithRepresentedImage:contentRect:transform:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/imageStackView:didChangeInteractionStateToState:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)imageStackView:(WAImageStackView *)aStackView didChangeInteractionStateToState:(WAImageStackViewInteractionState)newState</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView:didChangeInteractionStateToState:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleViewController/setContextControlsVisible:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setContextControlsVisible:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController+Subclasses.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

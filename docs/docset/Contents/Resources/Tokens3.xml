@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAAppDelegate_iOS.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAAppDelegate_iOS</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.h</DeclaredIn>
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAppDelegate_iOS/window</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIWindow *window</Declaration>
+			
+			
+			<Anchor>//api/name/window</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged</Declaration>
+			
+			
+			<Anchor>//api/name/presentAuthenticationRequestRemovingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged</Declaration>
+			
+			
+			<Anchor>//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:runningOnboardingProcess:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void ( ^ ) ( NSString *userIdentifier , NSString *userToken , NSString *primaryGroupIdentifier ))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged</Declaration>
+			
+			
+			<Anchor>//api/name/presentAuthenticationRequestWithReason:allowingCancellation:removingPriorData:clearingNavigationHierarchy:onAuthSuccess:runningOnboardingProcess:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/bootstrap</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)bootstrap</Declaration>
+			
+			
+			<Anchor>//api/name/bootstrap</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/application:didFinishLaunchingWithOptions:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</Declaration>
+			
+			
+			<Anchor>//api/name/application:didFinishLaunchingWithOptions:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/clearViewHierarchy</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)clearViewHierarchy</Declaration>
+			
+			
+			<Anchor>//api/name/clearViewHierarchy</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/recreateViewHierarchy</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)recreateViewHierarchy</Declaration>
+			
+			
+			<Anchor>//api/name/recreateViewHierarchy</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/applicationRootViewControllerDidRequestReauthentication:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)applicationRootViewControllerDidRequestReauthentication:(id&lt;WAApplicationRootViewController&gt;)controller</Declaration>
+			
+			
+			<Anchor>//api/name/applicationRootViewControllerDidRequestReauthentication:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/handleObservedAuthenticationFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleObservedAuthenticationFailure:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleObservedAuthenticationFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/handleObservedRemoteURLNotification:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleObservedRemoteURLNotification:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleObservedRemoteURLNotification:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/handleIASKSettingsChanged:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleIASKSettingsChanged:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleIASKSettingsChanged:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/handleIASKSettingsDidRequestAction:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleIASKSettingsDidRequestAction:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleIASKSettingsDidRequestAction:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/handleDebugModeToggled</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDebugModeToggled</Declaration>
+			
+			
+			<Anchor>//api/name/handleDebugModeToggled</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/performUserOnboardingUsingAuthRequestViewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)authVC</Declaration>
+			
+			
+			<Anchor>//api/name/performUserOnboardingUsingAuthRequestViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/applicationRootViewControllerDidRequestChangeAPIURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)applicationRootViewControllerDidRequestChangeAPIURL:(id&lt;WAApplicationRootViewController&gt;)controller</Declaration>
+			
+			
+			<Anchor>//api/name/applicationRootViewControllerDidRequestChangeAPIURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/presentSetupViewControllerAnimated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)presentSetupViewControllerAnimated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/presentSetupViewControllerAnimated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/setupViewController:didChooseString:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)setupViewController:(WASetupViewController *)controller didChooseString:(NSString *)string</Declaration>
+			
+			
+			<Anchor>//api/name/setupViewController:didChooseString:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/setupViewControllerDidCancel:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)setupViewControllerDidCancel:(WASetupViewController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/setupViewControllerDidCancel:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/beginNetworkActivity</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)beginNetworkActivity</Declaration>
+			
+			
+			<Anchor>//api/name/beginNetworkActivity</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/endNetworkActivity</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)endNetworkActivity</Declaration>
+			
+			
+			<Anchor>//api/name/endNetworkActivity</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/application:openURL:sourceApplication:annotation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation</Declaration>
+			
+			
+			<Anchor>//api/name/application:openURL:sourceApplication:annotation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate_iOS/applicationDidReceiveMemoryWarning:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application</Declaration>
+			
+			
+			<Anchor>//api/name/applicationDidReceiveMemoryWarning:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAppDelegate_iOS/alreadyRequestingAuthentication</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate_iOS.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication</Declaration>
+			
+			
+			<Anchor>//api/name/alreadyRequestingAuthentication</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

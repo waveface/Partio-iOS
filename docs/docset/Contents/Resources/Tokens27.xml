@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WACompositionViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WACompositionViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>
+			
+			<NodeRef refid="27"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WACompositionViewController/controllerWithArticle:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WACompositionViewController *)controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void ( ^ ) ( NSURL *anArticleURLOrNil ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWithArticle:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/containerView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIView *containerView</Declaration>
+			
+			
+			<Anchor>//api/name/containerView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/adjustContainerViewWithInterfaceBounds:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)adjustContainerViewWithInterfaceBounds:(CGRect)newBounds</Declaration>
+			
+			
+			<Anchor>//api/name/adjustContainerViewWithInterfaceBounds:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/contentTextView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UITextView *contentTextView</Declaration>
+			
+			
+			<Anchor>//api/name/contentTextView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/textAttributor</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) IRTextAttributor *textAttributor</Declaration>
+			
+			
+			<Anchor>//api/name/textAttributor</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/usesTransparentBackground</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL usesTransparentBackground</Declaration>
+			
+			
+			<Anchor>//api/name/usesTransparentBackground</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WACompositionViewController/alloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>+ (id)alloc</Declaration>
+			
+			
+			<Anchor>//api/name/alloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/initWithNibName:bundle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/initWithNibName:bundle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/viewDidAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/textViewDidChange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textViewDidChange:(UITextView *)textView</Declaration>
+			
+			
+			<Anchor>//api/name/textViewDidChange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/textAttributor:willUpdateAttributedString:withToken:range:attribute:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textAttributor:(IRTextAttributor *)attributor willUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute</Declaration>
+			
+			
+			<Anchor>//api/name/textAttributor:willUpdateAttributedString:withToken:range:attribute:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/textAttributor:didUpdateAttributedString:withToken:range:attribute:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textAttributor:(IRTextAttributor *)attributor didUpdateAttributedString:(NSAttributedString *)attributedString withToken:(NSString *)aToken range:(NSRange)tokenRange attribute:(id)newAttribute</Declaration>
+			
+			
+			<Anchor>//api/name/textAttributor:didUpdateAttributedString:withToken:range:attribute:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleCurrentArticleFilesChangedFrom:to:changeKind:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind</Declaration>
+			
+			
+			<Anchor>//api/name/handleCurrentArticleFilesChangedFrom:to:changeKind:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleCurrentArticlePreviewsChangedFrom:to:changeKind:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind</Declaration>
+			
+			
+			<Anchor>//api/name/handleCurrentArticlePreviewsChangedFrom:to:changeKind:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleCurrentTextChangedFrom:to:changeKind:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSKeyValueChange)changeKind</Declaration>
+			
+			
+			<Anchor>//api/name/handleCurrentTextChangedFrom:to:changeKind:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleDone:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDone:(UIBarButtonItem *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleDone:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleCancel:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleCancel:(UIBarButtonItem *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleCancel:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/wrappingNavigationController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+CustomUI.h</DeclaredIn>			
+			
+			<Declaration>- (UINavigationController *)wrappingNavigationController</Declaration>
+			
+			
+			<Anchor>//api/name/wrappingNavigationController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WACompositionViewController/defaultAutoSubmittingCompositionViewControllerForArticle:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+CustomUI.h</DeclaredIn>			
+			
+			<Declaration>+ (WACompositionViewController *)defaultAutoSubmittingCompositionViewControllerForArticle:(NSURL *)anArticleURI completion:(void ( ^ ) ( NSURL *))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/defaultAutoSubmittingCompositionViewControllerForArticle:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WACompositionViewController/completionBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( NSURL *returnedURI ) completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/completionBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/newImagePickerController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (IRImagePickerController *)newImagePickerController</Declaration>
+			
+			
+			<Anchor>//api/name/newImagePickerController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/newCameraCapturePickerController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (IRImagePickerController *)newCameraCapturePickerController</Declaration>
+			
+			
+			<Anchor>//api/name/newCameraCapturePickerController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/newPresentImagePickerControllerActionWithSender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (IRAction *)newPresentImagePickerControllerActionWithSender:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/newPresentImagePickerControllerActionWithSender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/newPresentCameraCaptureControllerActionWithSender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (IRAction *)newPresentCameraCaptureControllerActionWithSender:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/newPresentCameraCaptureControllerActionWithSender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleImageAttachmentInsertionRequestWithSender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)handleImageAttachmentInsertionRequestWithSender:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleImageAttachmentInsertionRequestWithSender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/presentImagePickerController:sender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/presentImagePickerController:sender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/presentImagePickerController:sender:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/presentImagePickerController:sender:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/presentCameraCapturePickerController:sender:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/presentCameraCapturePickerController:sender:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/presentCameraCapturePickerController:sender:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/presentCameraCapturePickerController:sender:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/dismissImagePickerController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismissImagePickerController:(IRImagePickerController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/dismissImagePickerController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/dismissImagePickerController:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/dismissImagePickerController:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/dismissCameraCapturePickerController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismissCameraCapturePickerController:(IRImagePickerController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/dismissCameraCapturePickerController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/dismissCameraCapturePickerController:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/dismissCameraCapturePickerController:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WACompositionViewController/handleIncomingSelectedAssetURI:representedAsset:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WACompositionViewController+ImageHandling.h</DeclaredIn>			
+			
+			<Declaration>- (void)handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset</Declaration>
+			
+			
+			<Anchor>//api/name/handleIncomingSelectedAssetURI:representedAsset:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAReachabilityDetector.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAReachabilityDetector</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>
+			
+			<NodeRef refid="61"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAReachabilityDetector/sharedDetectorForInternet</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>+ (id)sharedDetectorForInternet</Declaration>
+			
+			
+			<Anchor>//api/name/sharedDetectorForInternet</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAReachabilityDetector/sharedDetectorForLocalWiFi</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>+ (id)sharedDetectorForLocalWiFi</Declaration>
+			
+			
+			<Anchor>//api/name/sharedDetectorForLocalWiFi</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAReachabilityDetector/detectorForURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>+ (id)detectorForURL:(NSURL *)aHostURL</Declaration>
+			
+			
+			<Anchor>//api/name/detectorForURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/initWithAddress:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithAddress:(WASocketAddress)anAddress</Declaration>
+			
+			
+			<Anchor>//api/name/initWithAddress:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/initWithURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithURL:(NSURL *)aHostURL</Declaration>
+			
+			
+			<Anchor>//api/name/initWithURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;WAReachabilityDetectorDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/state</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) WAReachabilityState state</Declaration>
+			
+			
+			<Anchor>//api/name/state</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/hostAddress</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) WASocketAddress hostAddress</Declaration>
+			
+			
+			<Anchor>//api/name/hostAddress</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/networkStateFlags</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign) SCNetworkReachabilityFlags networkStateFlags</Declaration>
+			
+			
+			<Anchor>//api/name/networkStateFlags</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/hostURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSURL *hostURL</Declaration>
+			
+			
+			<Anchor>//api/name/hostURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/recurrenceMachine</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) IRRecurrenceMachine *recurrenceMachine</Declaration>
+			
+			
+			<Anchor>//api/name/recurrenceMachine</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAReachabilityDetector/load</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>+ (void)load</Declaration>
+			
+			
+			<Anchor>//api/name/load</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/newPulseCheckerPrototype</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (IRAsyncOperation *)newPulseCheckerPrototype</Declaration>
+			
+			
+			<Anchor>//api/name/newPulseCheckerPrototype</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/noteReachabilityFlagsChanged:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (void)noteReachabilityFlagsChanged:(SCNetworkReachabilityFlags)flags</Declaration>
+			
+			
+			<Anchor>//api/name/noteReachabilityFlagsChanged:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/sendUpdateNotification</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (void)sendUpdateNotification</Declaration>
+			
+			
+			<Anchor>//api/name/sendUpdateNotification</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/recreateReachabilityRef</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (void)recreateReachabilityRef</Declaration>
+			
+			
+			<Anchor>//api/name/recreateReachabilityRef</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAReachabilityDetector/description</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)description</Declaration>
+			
+			
+			<Anchor>//api/name/description</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAReachabilityDetector/reachability</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAReachabilityDetector.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) SCNetworkReachabilityRef reachability</Declaration>
+			
+			
+			<Anchor>//api/name/reachability</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -128,39 +128,49 @@
 	if (![self isViewLoaded])
 		return;
 
-	if ([notification object] != self.view.window)
-		return;
-
 	if (!self.adjustsContainerViewOnInterfaceBoundsChange)
 		return;
+		
+	UIWindow *usedWindow = [notification object];
+	
+	if (![usedWindow isKindOfClass:[UIWindow class]])
+		usedWindow = self.view.window;
+	
+	if (!usedWindow)
+		usedWindow = [UIApplication sharedApplication].keyWindow;
+	
+	if (!usedWindow)
+		return;
 
-	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
+	[self adjustWrapperViewBoundsWithWindow:usedWindow interfaceBounds:usedWindow.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
 
 }
 
-- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
+- (void) adjustWrapperViewBoundsWithWindow:(UIWindow *)window interfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
 
 	if (![self isViewLoaded])
 		return;
-
-	if (!self.view.window) {
+ 
+	if (!window) {
 		self.wrapperView.frame = self.view.bounds;
+		[self.view setNeedsLayout];
 		return;
 	}
 
-	CGRect ownRectInWindow = [self.view.window convertRect:self.view.bounds fromView:self.view];
+	CGRect ownRectInWindow = [window convertRect:self.view.bounds fromView:self.view];
 	CGRect intersection = CGRectIntersection(ownRectInWindow, newInterfaceBounds);
 	
 	if (CGRectEqualToRect(CGRectNull, intersection) || CGRectIsInfinite(intersection))
 		return;
 	
-	intersection = [self.view.window convertRect:intersection toView:self.wrapperView.superview];
+	intersection = [window convertRect:intersection toView:self.wrapperView.superview];
 	
 	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
 	
 	[UIView animateWithDuration:(animate ? 0.3 : 0) delay:0 options:animationOptions animations:^{
 		
 		self.wrapperView.frame = intersection;
+		[self.view layoutSubviews];
 		
 	} completion:^(BOOL finished) {
 				
@@ -184,7 +194,7 @@
 			[self.commentsView reloadData];
 	}
 	
-	[self adjustWrapperViewBoundsWithWindowInterfaceBounds:self.view.window.irInterfaceBounds animated:NO];
+	[self adjustWrapperViewBoundsWithWindow:self.view.window interfaceBounds:self.view.window.irInterfaceBounds animated:NO];
 
 }
 
@@ -203,6 +213,8 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	self.contentSizeForViewInPopover = [self contentSizeForViewInPopover];
 	
 	[self.wrapperView insertSubview:self.commentsRevealingActionContainerView atIndex:0];
 	[self.wrapperView addSubview:self.compositionAccessoryView];
@@ -310,20 +322,34 @@
 		BOOL accessoryViewActive = !![nrCompositionAccessoryView irFirstResponderInView];
 		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
 		
-		CGRect accessoryViewFrame, nullRect;
-		CGRectDivide(nrSelf.wrapperView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
-		
 		UIEdgeInsets commentsViewContentInset = nrCommentsView.contentInset;
 		commentsViewContentInset.bottom = accessoryViewHeight;
+		
+//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
 		
 		UIEdgeInsets commentsViewScrollIndicatorInsets = nrCommentsView.scrollIndicatorInsets;
 		commentsViewScrollIndicatorInsets.bottom = accessoryViewHeight;
 		
+//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+
 		nrCommentsView.contentInset = commentsViewContentInset;
 		nrCommentsView.scrollIndicatorInsets = commentsViewScrollIndicatorInsets;
 		
+//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+
+		CGRect oldWrapperViewBounds = nrSelf.wrapperView.bounds;
+		NSLog(@"nrSelf.wrapperView.bounds was %@", NSStringFromCGRect(nrSelf.wrapperView.bounds));
+		
+		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+
+		CGRect accessoryViewFrame, nullRect;
+		CGRectDivide(nrSelf.wrapperView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
+
 		accessoryViewFrame.origin.x = nrCompositionAccessoryView.frame.origin.x;
 		accessoryViewFrame.size.width = nrCompositionAccessoryView.frame.size.width;
+		
+		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+		NSCParameterAssert(CGRectGetMaxY(accessoryViewFrame) == CGRectGetMaxY(nrSelf.wrapperView.bounds));
 		
 		if (nrView.bounds.size.height == 0) {
 			
@@ -818,5 +844,42 @@
 	return [self.view convertRect:self.compositionAccessoryView.frame fromView:self.view];
 
 }
+
++ (NSSet *) keyPathsForValuesAffectingContentSizeForViewInPopover {
+
+    return [NSSet setWithObjects:
+
+        @"commentsView.contentInset",
+        @"commentsView.contentSize",
+
+    nil];
+
+}
+
+- (CGSize) contentSizeForViewInPopover {
+
+	UITableView *tableView = self.commentsView;
+	CGSize newSize = (CGSize){
+
+			320,
+			MAX(240, tableView.contentInset.top + tableView.contentSize.height + tableView.contentInset.bottom)
+
+	};
+	
+	if (!CGSizeEqualToSize([super contentSizeForViewInPopover], newSize))
+		self.contentSizeForViewInPopover = newSize;
+	
+	return newSize;
+
+}
+
+//- (void) setContentSizeForViewInPopover:(CGSize)newContentSizeForViewInPopover {
+//	
+//	[super setContentSizeForViewInPopover:newContentSizeForViewInPopover];
+//	
+//	if ([self isViewLoaded])
+//		[self.view layoutSubviews];
+//	
+//}
 
 @end

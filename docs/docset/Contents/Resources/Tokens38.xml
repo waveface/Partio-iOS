@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAFilePageElement.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAFilePageElement</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement.h</DeclaredIn>
+			
+			<NodeRef refid="38"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFilePageElement/thumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *thumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFilePageElement/thumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *thumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFilePageElement/file</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAFile *file</Declaration>
+			
+			
+			<Anchor>//api/name/file</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFilePageElement/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFilePageElement/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFilePageElement/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFilePageElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -168,10 +168,20 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingArticle {
+
+	return [NSSet setWithObjects:
+	
+		@"representedObjectURI",
+	
+	nil];
+
+}
+
 - (WAArticle *) article {
 
 	if (!article)
-		self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI];
+		article = [(WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI] retain];
 	
 	return article;
 

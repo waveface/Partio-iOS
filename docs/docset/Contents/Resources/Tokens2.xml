@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAAppDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAAppDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>
+			
+			<NodeRef refid="2"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/bootstrap</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)bootstrap</Declaration>
+			
+			
+			<Anchor>//api/name/bootstrap</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/hasAuthenticationData</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)hasAuthenticationData</Declaration>
+			
+			
+			<Anchor>//api/name/hasAuthenticationData</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/removeAuthenticationData</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)removeAuthenticationData</Declaration>
+			
+			
+			<Anchor>//api/name/removeAuthenticationData</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateCurrentCredentialsWithUserIdentifier:(NSString *)anIdentifier token:(NSString *)aToken primaryGroup:(NSString *)aGroupID</Declaration>
+			
+			
+			<Anchor>//api/name/updateCurrentCredentialsWithUserIdentifier:token:primaryGroup:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAAppDelegate/alloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>+ (id)alloc</Declaration>
+			
+			
+			<Anchor>//api/name/alloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAAppDelegate/allocWithZone:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>+ (id)allocWithZone:(NSZone *)zone</Declaration>
+			
+			
+			<Anchor>//api/name/allocWithZone:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAAppDelegate/preferredClusterClass</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>+ (Class)preferredClusterClass</Declaration>
+			
+			
+			<Anchor>//api/name/preferredClusterClass</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/currentKeychainItem</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>- (IRKeychainInternetPasswordItem *)currentKeychainItem</Declaration>
+			
+			
+			<Anchor>//api/name/currentKeychainItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/remoteResourcesManager:didBeginDownloadingResourceAtURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>- (void)remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL</Declaration>
+			
+			
+			<Anchor>//api/name/remoteResourcesManager:didBeginDownloadingResourceAtURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/remoteResourcesManager:didFinishDownloadingResourceAtURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>- (void)remoteResourcesManager:(IRRemoteResourcesManager *)managed didFinishDownloadingResourceAtURL:(NSURL *)anURL</Declaration>
+			
+			
+			<Anchor>//api/name/remoteResourcesManager:didFinishDownloadingResourceAtURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/remoteResourcesManager:didFailDownloadingResourceAtURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>- (void)remoteResourcesManager:(IRRemoteResourcesManager *)managed didFailDownloadingResourceAtURL:(NSURL *)anURL</Declaration>
+			
+			
+			<Anchor>//api/name/remoteResourcesManager:didFailDownloadingResourceAtURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/remoteResourcesManager:invokedURLForResourceAtURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)remoteResourcesManager:(IRRemoteResourcesManager *)manager invokedURLForResourceAtURL:(NSURL *)givenURL</Declaration>
+			
+			
+			<Anchor>//api/name/remoteResourcesManager:invokedURLForResourceAtURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/configureRemoteResourceDownloadOperation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.m</DeclaredIn>			
+			
+			<Declaration>- (void)configureRemoteResourceDownloadOperation:(IRRemoteResourceDownloadOperation *)anOperation</Declaration>
+			
+			
+			<Anchor>//api/name/configureRemoteResourceDownloadOperation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/beginNetworkActivity</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)beginNetworkActivity</Declaration>
+			
+			
+			<Anchor>//api/name/beginNetworkActivity</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAppDelegate/endNetworkActivity</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAppDelegate.h</DeclaredIn>			
+			
+			<Declaration>- (void)endNetworkActivity</Declaration>
+			
+			
+			<Anchor>//api/name/endNetworkActivity</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

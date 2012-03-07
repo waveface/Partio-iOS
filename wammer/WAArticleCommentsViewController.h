@@ -72,6 +72,6 @@ typedef enum {
 @property (nonatomic, readwrite, assign) BOOL scrollsToLastRowOnChange;
 
 @property (nonatomic, readwrite, assign) BOOL adjustsContainerViewOnInterfaceBoundsChange;	//	Default is YES
-- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)bounds animated:(BOOL)animated;	//Called on interface bounds change
+- (void) adjustWrapperViewBoundsWithWindow:(UIWindow *)window interfaceBounds:(CGRect)bounds animated:(BOOL)animated;	//Called on interface bounds change
 
 @end

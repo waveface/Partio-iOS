@@ -1,0 +1,1170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAFile.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAFile</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>
+			
+			<NodeRef refid="37"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/codeName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *codeName</Declaration>
+			
+			
+			<Anchor>//api/name/codeName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/creationDeviceIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *creationDeviceIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/creationDeviceIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/identifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *identifier</Declaration>
+			
+			
+			<Anchor>//api/name/identifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/pageElementOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) id pageElementOrder</Declaration>
+			
+			
+			<Anchor>//api/name/pageElementOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/remoteFileName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *remoteFileName</Declaration>
+			
+			
+			<Anchor>//api/name/remoteFileName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/remoteFileSize</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSNumber *remoteFileSize</Declaration>
+			
+			
+			<Anchor>//api/name/remoteFileSize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/remoteRepresentedImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *remoteRepresentedImage</Declaration>
+			
+			
+			<Anchor>//api/name/remoteRepresentedImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/remoteResourceHash</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *remoteResourceHash</Declaration>
+			
+			
+			<Anchor>//api/name/remoteResourceHash</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/remoteResourceType</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *remoteResourceType</Declaration>
+			
+			
+			<Anchor>//api/name/remoteResourceType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/resourceFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *resourceFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/resourceFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/resourceType</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *resourceType</Declaration>
+			
+			
+			<Anchor>//api/name/resourceType</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/resourceURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *resourceURL</Declaration>
+			
+			
+			<Anchor>//api/name/resourceURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/thumbnail</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) id thumbnail</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnail</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/thumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *thumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/thumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *thumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/timestamp</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSDate *timestamp</Declaration>
+			
+			
+			<Anchor>//api/name/timestamp</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/title</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *title</Declaration>
+			
+			
+			<Anchor>//api/name/title</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/largeThumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *largeThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/largeThumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/largeThumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *largeThumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/largeThumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/owner</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAUser *owner</Declaration>
+			
+			
+			<Anchor>//api/name/owner</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/pageElements</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *pageElements</Declaration>
+			
+			
+			<Anchor>//api/name/pageElements</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/previewItemTitle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+QuickLook.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)previewItemTitle</Declaration>
+			
+			
+			<Anchor>//api/name/previewItemTitle</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/previewItemURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+QuickLook.m</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)previewItemURL</Declaration>
+			
+			
+			<Anchor>//api/name/previewItemURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/resourceImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImage *resourceImage</Declaration>
+			
+			
+			<Anchor>//api/name/resourceImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/largeThumbnailImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImage *largeThumbnailImage</Declaration>
+			
+			
+			<Anchor>//api/name/largeThumbnailImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/thumbnailImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) UIImage *thumbnailImage</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/associateObject:usingKey:associationPolicy:notify:usingKey:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)associateObject:(id)anObject usingKey:(const void *)aKey associationPolicy:(objc_AssociationPolicy)policy notify:(BOOL)emitsChangeNotifications usingKey:(NSString *)propertyKey</Declaration>
+			
+			
+			<Anchor>//api/name/associateObject:usingKey:associationPolicy:notify:usingKey:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/addPageElementsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>- (void)addPageElementsObject:(WAFilePageElement *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addPageElementsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/removePageElementsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>- (void)removePageElementsObject:(WAFilePageElement *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removePageElementsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/addPageElements:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>- (void)addPageElements:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addPageElements:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/removePageElements:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile.h</DeclaredIn>			
+			
+			<Declaration>- (void)removePageElements:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removePageElements:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/presentableImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>- (UIImage *)presentableImage</Declaration>
+			
+			
+			<Anchor>//api/name/presentableImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/sharedResourceHandlingQueue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>+ (dispatch_queue_t)sharedResourceHandlingQueue</Declaration>
+			
+			
+			<Anchor>//api/name/sharedResourceHandlingQueue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/initWithEntity:insertIntoManagedObjectContext:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context</Declaration>
+			
+			
+			<Anchor>//api/name/initWithEntity:insertIntoManagedObjectContext:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/handleDidReceiveMemoryWarning:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDidReceiveMemoryWarning:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleDidReceiveMemoryWarning:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/pageElementOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)pageElementOrder</Declaration>
+			
+			
+			<Anchor>//api/name/pageElementOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/didChangeValueForKey:withSetMutation:usingObjects:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects</Declaration>
+			
+			
+			<Anchor>//api/name/didChangeValueForKey:withSetMutation:usingObjects:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/attemptsBlobRetrieval</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)attemptsBlobRetrieval</Declaration>
+			
+			
+			<Anchor>//api/name/attemptsBlobRetrieval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setAttemptsBlobRetrieval:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setAttemptsBlobRetrieval:(BOOL)newFlag</Declaration>
+			
+			
+			<Anchor>//api/name/setAttemptsBlobRetrieval:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setAttemptsBlobRetrieval:notify:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setAttemptsBlobRetrieval:(BOOL)newFlag notify:(BOOL)firesKVONotifications</Declaration>
+			
+			
+			<Anchor>//api/name/setAttemptsBlobRetrieval:notify:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/performBlockSuppressingBlobRetrieval:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)performBlockSuppressingBlobRetrieval:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/performBlockSuppressingBlobRetrieval:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/canScheduleBlobRetrieval</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)canScheduleBlobRetrieval</Declaration>
+			
+			
+			<Anchor>//api/name/canScheduleBlobRetrieval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/canScheduleExpensiveBlobRetrieval</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)canScheduleExpensiveBlobRetrieval</Declaration>
+			
+			
+			<Anchor>//api/name/canScheduleExpensiveBlobRetrieval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/scheduleResourceRetrievalIfPermitted</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)scheduleResourceRetrievalIfPermitted</Declaration>
+			
+			
+			<Anchor>//api/name/scheduleResourceRetrievalIfPermitted</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/scheduleThumbnailRetrievalIfPermitted</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)scheduleThumbnailRetrievalIfPermitted</Declaration>
+			
+			
+			<Anchor>//api/name/scheduleThumbnailRetrievalIfPermitted</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/scheduleLargeThumbnailRetrievalIfPermitted</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)scheduleLargeThumbnailRetrievalIfPermitted</Declaration>
+			
+			
+			<Anchor>//api/name/scheduleLargeThumbnailRetrievalIfPermitted</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)scheduleRetrievalForBlobURL:(NSURL *)blobURL blobKeyPath:(NSString *)blobURLKeyPath filePathKeyPath:(NSString *)filePathKeyPath usingPriority:(NSOperationQueuePriority)priority</Declaration>
+			
+			
+			<Anchor>//api/name/scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath</Declaration>
+			
+			
+			<Anchor>//api/name/takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/relativePathFromPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)relativePathFromPath:(NSString *)absolutePath</Declaration>
+			
+			
+			<Anchor>//api/name/relativePathFromPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/absolutePathFromPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)absolutePathFromPath:(NSString *)relativePath</Declaration>
+			
+			
+			<Anchor>//api/name/absolutePathFromPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setResourceFilePath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setResourceFilePath:(NSString *)newResourceFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/setResourceFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setThumbnailFilePath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setThumbnailFilePath:(NSString *)newThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/setThumbnailFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setLargeThumbnailFilePath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setLargeThumbnailFilePath:(NSString *)newLargeThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/setLargeThumbnailFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/resourceFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)resourceFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/resourceFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/thumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)thumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/largeThumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)largeThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/largeThumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateForDelete:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateForDelete:(NSError **)error</Declaration>
+			
+			
+			<Anchor>//api/name/validateForDelete:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateForInsert:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateForInsert:(NSError **)error</Declaration>
+			
+			
+			<Anchor>//api/name/validateForInsert:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateForUpdate:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateForUpdate:(NSError **)error</Declaration>
+			
+			
+			<Anchor>//api/name/validateForUpdate:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/prepareForDeletion</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)prepareForDeletion</Declaration>
+			
+			
+			<Anchor>//api/name/prepareForDeletion</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/keyPathsForValuesAffectingPresentableImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingPresentableImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingPresentableImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/keyPathsForValuesAffectingResourceImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingResourceImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingResourceImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/keyPathsForValuesAffectingThumbnailImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingThumbnailImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingThumbnailImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setPrimitiveResourceFilePath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPrimitiveResourceFilePath:(NSString *)newResourceFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/setPrimitiveResourceFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/primitiveResourceFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)primitiveResourceFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/primitiveResourceFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setPrimitiveResourceURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPrimitiveResourceURL:(NSString *)newResourceURL</Declaration>
+			
+			
+			<Anchor>//api/name/setPrimitiveResourceURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/primitiveResourceURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)primitiveResourceURL</Declaration>
+			
+			
+			<Anchor>//api/name/primitiveResourceURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setPrimitiveThumbnailFilePath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPrimitiveThumbnailFilePath:(NSString *)newThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/setPrimitiveThumbnailFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/primitiveThumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)primitiveThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/primitiveThumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setPrimitiveThumbnailURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPrimitiveThumbnailURL:(NSString *)newThumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/setPrimitiveThumbnailURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/primitiveThumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)primitiveThumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/primitiveThumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setPrimitiveLargeThumbnailFilePath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPrimitiveLargeThumbnailFilePath:(NSString *)newLargeThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/setPrimitiveLargeThumbnailFilePath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/primitiveLargeThumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)primitiveLargeThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/primitiveLargeThumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setPrimitiveLargeThumbnailURL:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPrimitiveLargeThumbnailURL:(NSString *)newLargeThumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/setPrimitiveLargeThumbnailURL:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/primitiveLargeThumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)primitiveLargeThumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/primitiveLargeThumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/validatesResourceImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL validatesResourceImage</Declaration>
+			
+			
+			<Anchor>//api/name/validatesResourceImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/validatesLargeThumbnailImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL validatesLargeThumbnailImage</Declaration>
+			
+			
+			<Anchor>//api/name/validatesLargeThumbnailImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/validatesThumbnailImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL validatesThumbnailImage</Declaration>
+			
+			
+			<Anchor>//api/name/validatesThumbnailImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setValidatesResourceImage:notify:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setValidatesResourceImage:(BOOL)flag notify:(BOOL)firesKVONotifications</Declaration>
+			
+			
+			<Anchor>//api/name/setValidatesResourceImage:notify:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setValidatesLargeThumbnailImage:notify:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setValidatesLargeThumbnailImage:(BOOL)flag notify:(BOOL)firesKVONotifications</Declaration>
+			
+			
+			<Anchor>//api/name/setValidatesLargeThumbnailImage:notify:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/setValidatesThumbnailImage:notify:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)setValidatesThumbnailImage:(BOOL)flag notify:(BOOL)firesKVONotifications</Declaration>
+			
+			
+			<Anchor>//api/name/setValidatesThumbnailImage:notify:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateImagesIfNeeded:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateImagesIfNeeded:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateImagesIfNeeded:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateImages:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateImages:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateImages:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateResourceImageIfNeeded:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateResourceImageIfNeeded:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateResourceImageIfNeeded:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateResourceImage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateResourceImage:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateResourceImage:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateLargeThumbnailImageIfNeeded:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateLargeThumbnailImageIfNeeded:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateLargeThumbnailImageIfNeeded:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateLargeThumbnailImage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateLargeThumbnailImage:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateLargeThumbnailImage:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateThumbnailImageIfNeeded:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateThumbnailImageIfNeeded:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateThumbnailImageIfNeeded:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/validateThumbnailImage:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)validateThumbnailImage:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateThumbnailImage:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/validateImageAtPath:error:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)validateImageAtPath:(NSString *)aFilePath error:(NSError **)outError</Declaration>
+			
+			
+			<Anchor>//api/name/validateImageAtPath:error:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/configureWithRemoteDictionary:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>- (void)configureWithRemoteDictionary:(NSDictionary *)inDictionary</Declaration>
+			
+			
+			<Anchor>//api/name/configureWithRemoteDictionary:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/defaultHierarchicalEntityMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)defaultHierarchicalEntityMapping</Declaration>
+			
+			
+			<Anchor>//api/name/defaultHierarchicalEntityMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/transformedRepresentationForRemoteRepresentation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation</Declaration>
+			
+			
+			<Anchor>//api/name/transformedRepresentationForRemoteRepresentation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (id)transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath</Declaration>
+			
+			
+			<Anchor>//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/synchronizeWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (void)synchronizeWithCompletion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSArray *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAFile/synchronizeWithOptions:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (void)synchronizeWithOptions:(NSDictionary *)options completion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSArray *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithOptions:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/synchronizeWithCompletion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>- (void)synchronizeWithCompletion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithCompletion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAFile/synchronizeWithOptions:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>- (void)synchronizeWithOptions:(NSDictionary *)options completion:(void ( ^ ) ( BOOL , NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/synchronizeWithOptions:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAFile/attemptsBlobRetrieval</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAFile+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL attemptsBlobRetrieval</Declaration>
+			
+			
+			<Anchor>//api/name/attemptsBlobRetrieval</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

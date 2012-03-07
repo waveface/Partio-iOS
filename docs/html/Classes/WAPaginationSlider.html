@@ -1,0 +1,1018 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAPaginationSlider Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAPaginationSlider Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/annotations">&nbsp;&nbsp;&nbsp;&nbsp;annotations</option>
+	
+	<option value="//api/name/currentPage">&nbsp;&nbsp;&nbsp;&nbsp;currentPage</option>
+	
+	<option value="//api/name/dotMargin">&nbsp;&nbsp;&nbsp;&nbsp;dotMargin</option>
+	
+	<option value="//api/name/dotRadius">&nbsp;&nbsp;&nbsp;&nbsp;dotRadius</option>
+	
+	<option value="//api/name/edgeInsets">&nbsp;&nbsp;&nbsp;&nbsp;edgeInsets</option>
+	
+	<option value="//api/name/id">&nbsp;&nbsp;&nbsp;&nbsp;id</option>
+	
+	<option value="//api/name/instantaneousCallbacks">&nbsp;&nbsp;&nbsp;&nbsp;instantaneousCallbacks</option>
+	
+	<option value="//api/name/layoutStrategy">&nbsp;&nbsp;&nbsp;&nbsp;layoutStrategy</option>
+	
+	<option value="//api/name/needsAnnotationsLayout">&nbsp;&nbsp;&nbsp;&nbsp;needsAnnotationsLayout</option>
+	
+	<option value="//api/name/numberOfPages">&nbsp;&nbsp;&nbsp;&nbsp;numberOfPages</option>
+	
+	<option value="//api/name/pageIndicatorLabel">&nbsp;&nbsp;&nbsp;&nbsp;pageIndicatorLabel</option>
+	
+	<option value="//api/name/slider">&nbsp;&nbsp;&nbsp;&nbsp;slider</option>
+	
+	<option value="//api/name/sliderInsets">&nbsp;&nbsp;&nbsp;&nbsp;sliderInsets</option>
+	
+	<option value="//api/name/snapsToPages">&nbsp;&nbsp;&nbsp;&nbsp;snapsToPages</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/transparentImage">&nbsp;&nbsp;&nbsp;&nbsp;+ transparentImage</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/addAnnotations:">&nbsp;&nbsp;&nbsp;&nbsp;- addAnnotations:</option>
+	
+	<option value="//api/name/addAnnotationsObject:">&nbsp;&nbsp;&nbsp;&nbsp;- addAnnotationsObject:</option>
+	
+	<option value="//api/name/awakeFromNib">&nbsp;&nbsp;&nbsp;&nbsp;- awakeFromNib</option>
+	
+	<option value="//api/name/currentSliderThumbRect">&nbsp;&nbsp;&nbsp;&nbsp;- currentSliderThumbRect</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/estimatedPageNumberForPosition:">&nbsp;&nbsp;&nbsp;&nbsp;- estimatedPageNumberForPosition:</option>
+	
+	<option value="//api/name/initWithFrame:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithFrame:</option>
+	
+	<option value="//api/name/layoutSubviews">&nbsp;&nbsp;&nbsp;&nbsp;- layoutSubviews</option>
+	
+	<option value="//api/name/mutableAnnotations">&nbsp;&nbsp;&nbsp;&nbsp;- mutableAnnotations</option>
+	
+	<option value="//api/name/positionForPageNumber:">&nbsp;&nbsp;&nbsp;&nbsp;- positionForPageNumber:</option>
+	
+	<option value="//api/name/removeAnnotations:">&nbsp;&nbsp;&nbsp;&nbsp;- removeAnnotations:</option>
+	
+	<option value="//api/name/removeAnnotationsAtIndexes:">&nbsp;&nbsp;&nbsp;&nbsp;- removeAnnotationsAtIndexes:</option>
+	
+	<option value="//api/name/removeAnnotationsObject:">&nbsp;&nbsp;&nbsp;&nbsp;- removeAnnotationsObject:</option>
+	
+	<option value="//api/name/setBounds:">&nbsp;&nbsp;&nbsp;&nbsp;- setBounds:</option>
+	
+	<option value="//api/name/setCurrentPage:animated:">&nbsp;&nbsp;&nbsp;&nbsp;- setCurrentPage:animated:</option>
+	
+	<option value="//api/name/setFrame:">&nbsp;&nbsp;&nbsp;&nbsp;- setFrame:</option>
+	
+	<option value="//api/name/setNeedsAnnotationsLayout">&nbsp;&nbsp;&nbsp;&nbsp;- setNeedsAnnotationsLayout</option>
+	
+	<option value="//api/name/sharedInit">&nbsp;&nbsp;&nbsp;&nbsp;- sharedInit</option>
+	
+	<option value="//api/name/sliderDidMove:">&nbsp;&nbsp;&nbsp;&nbsp;- sliderDidMove:</option>
+	
+	<option value="//api/name/sliderTouchDidEnd:">&nbsp;&nbsp;&nbsp;&nbsp;- sliderTouchDidEnd:</option>
+	
+	<option value="//api/name/sliderTouchDidStart:">&nbsp;&nbsp;&nbsp;&nbsp;- sliderTouchDidStart:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Extension Methods">Extension Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/annotations">annotations</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/currentPage">currentPage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dotMargin">dotMargin</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dotRadius">dotRadius</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/edgeInsets">edgeInsets</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/id">id</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/instantaneousCallbacks">instantaneousCallbacks</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutStrategy">layoutStrategy</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/needsAnnotationsLayout">needsAnnotationsLayout</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/numberOfPages">numberOfPages</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/pageIndicatorLabel">pageIndicatorLabel</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/slider">slider</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sliderInsets">sliderInsets</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/snapsToPages">snapsToPages</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/transparentImage">transparentImage</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/addAnnotations:">addAnnotations:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/addAnnotationsObject:">addAnnotationsObject:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/awakeFromNib">awakeFromNib</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/currentSliderThumbRect">currentSliderThumbRect</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/estimatedPageNumberForPosition:">estimatedPageNumberForPosition:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithFrame:">initWithFrame:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutSubviews">layoutSubviews</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/mutableAnnotations">mutableAnnotations</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/positionForPageNumber:">positionForPageNumber:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeAnnotations:">removeAnnotations:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeAnnotationsAtIndexes:">removeAnnotationsAtIndexes:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeAnnotationsObject:">removeAnnotationsObject:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setBounds:">setBounds:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setCurrentPage:animated:">setCurrentPage:animated:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setFrame:">setFrame:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setNeedsAnnotationsLayout">setNeedsAnnotationsLayout</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedInit">sharedInit</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sliderDidMove:">sliderDidMove:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sliderTouchDidEnd:">sliderTouchDidEnd:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sliderTouchDidStart:">sliderTouchDidStart:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAPaginationSlider Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAPaginationSlider Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">UIView</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAPaginationSlider.h<br />WAPaginationSlider.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dotRadius">&nbsp;&nbsp;dotRadius</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dotMargin">&nbsp;&nbsp;dotMargin</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/edgeInsets">&nbsp;&nbsp;edgeInsets</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sliderInsets">&nbsp;&nbsp;sliderInsets</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/numberOfPages">&nbsp;&nbsp;numberOfPages</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/currentPage">&nbsp;&nbsp;currentPage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setCurrentPage:animated:">&ndash;&nbsp;setCurrentPage:animated:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/snapsToPages">&nbsp;&nbsp;snapsToPages</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/id">&nbsp;&nbsp;id</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sliderTouchDidStart:">&ndash;&nbsp;sliderTouchDidStart:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sliderDidMove:">&ndash;&nbsp;sliderDidMove:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sliderTouchDidEnd:">&ndash;&nbsp;sliderTouchDidEnd:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/instantaneousCallbacks">&nbsp;&nbsp;instantaneousCallbacks</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/slider">&nbsp;&nbsp;slider</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutStrategy">&nbsp;&nbsp;layoutStrategy</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/annotations">&nbsp;&nbsp;annotations</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/addAnnotations:">&ndash;&nbsp;addAnnotations:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/addAnnotationsObject:">&ndash;&nbsp;addAnnotationsObject:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removeAnnotations:">&ndash;&nbsp;removeAnnotations:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removeAnnotationsAtIndexes:">&ndash;&nbsp;removeAnnotationsAtIndexes:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removeAnnotationsObject:">&ndash;&nbsp;removeAnnotationsObject:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setNeedsAnnotationsLayout">&ndash;&nbsp;setNeedsAnnotationsLayout</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/transparentImage">+&nbsp;transparentImage</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithFrame:">&ndash;&nbsp;initWithFrame:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/awakeFromNib">&ndash;&nbsp;awakeFromNib</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sharedInit">&ndash;&nbsp;sharedInit</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setBounds:">&ndash;&nbsp;setBounds:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setFrame:">&ndash;&nbsp;setFrame:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutSubviews">&ndash;&nbsp;layoutSubviews</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/estimatedPageNumberForPosition:">&ndash;&nbsp;estimatedPageNumberForPosition:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/positionForPageNumber:">&ndash;&nbsp;positionForPageNumber:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/currentSliderThumbRect">&ndash;&nbsp;currentSliderThumbRect</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/mutableAnnotations">&ndash;&nbsp;mutableAnnotations</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Extension Methods" name="task_Extension Methods"></a>
+						<h3 class="subsubtitle task-title">Extension Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/pageIndicatorLabel">&nbsp;&nbsp;pageIndicatorLabel</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/needsAnnotationsLayout">&nbsp;&nbsp;needsAnnotationsLayout</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/annotations" title="annotations"></a>
+	<h3 class="subsubtitle method-title">annotations</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/currentPage" title="currentPage"></a>
+	<h3 class="subsubtitle method-title">currentPage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dotMargin" title="dotMargin"></a>
+	<h3 class="subsubtitle method-title">dotMargin</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dotRadius" title="dotRadius"></a>
+	<h3 class="subsubtitle method-title">dotRadius</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/edgeInsets" title="edgeInsets"></a>
+	<h3 class="subsubtitle method-title">edgeInsets</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/id" title="id"></a>
+	<h3 class="subsubtitle method-title">id</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/instantaneousCallbacks" title="instantaneousCallbacks"></a>
+	<h3 class="subsubtitle method-title">instantaneousCallbacks</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutStrategy" title="layoutStrategy"></a>
+	<h3 class="subsubtitle method-title">layoutStrategy</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/needsAnnotationsLayout" title="needsAnnotationsLayout"></a>
+	<h3 class="subsubtitle method-title">needsAnnotationsLayout</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/numberOfPages" title="numberOfPages"></a>
+	<h3 class="subsubtitle method-title">numberOfPages</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/pageIndicatorLabel" title="pageIndicatorLabel"></a>
+	<h3 class="subsubtitle method-title">pageIndicatorLabel</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/slider" title="slider"></a>
+	<h3 class="subsubtitle method-title">slider</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sliderInsets" title="sliderInsets"></a>
+	<h3 class="subsubtitle method-title">sliderInsets</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/snapsToPages" title="snapsToPages"></a>
+	<h3 class="subsubtitle method-title">snapsToPages</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/transparentImage" title="transparentImage"></a>
+	<h3 class="subsubtitle method-title">transparentImage</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/addAnnotations:" title="addAnnotations:"></a>
+	<h3 class="subsubtitle method-title">addAnnotations:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/addAnnotationsObject:" title="addAnnotationsObject:"></a>
+	<h3 class="subsubtitle method-title">addAnnotationsObject:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/awakeFromNib" title="awakeFromNib"></a>
+	<h3 class="subsubtitle method-title">awakeFromNib</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/currentSliderThumbRect" title="currentSliderThumbRect"></a>
+	<h3 class="subsubtitle method-title">currentSliderThumbRect</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/estimatedPageNumberForPosition:" title="estimatedPageNumberForPosition:"></a>
+	<h3 class="subsubtitle method-title">estimatedPageNumberForPosition:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithFrame:" title="initWithFrame:"></a>
+	<h3 class="subsubtitle method-title">initWithFrame:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutSubviews" title="layoutSubviews"></a>
+	<h3 class="subsubtitle method-title">layoutSubviews</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/mutableAnnotations" title="mutableAnnotations"></a>
+	<h3 class="subsubtitle method-title">mutableAnnotations</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/positionForPageNumber:" title="positionForPageNumber:"></a>
+	<h3 class="subsubtitle method-title">positionForPageNumber:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removeAnnotations:" title="removeAnnotations:"></a>
+	<h3 class="subsubtitle method-title">removeAnnotations:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removeAnnotationsAtIndexes:" title="removeAnnotationsAtIndexes:"></a>
+	<h3 class="subsubtitle method-title">removeAnnotationsAtIndexes:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removeAnnotationsObject:" title="removeAnnotationsObject:"></a>
+	<h3 class="subsubtitle method-title">removeAnnotationsObject:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setBounds:" title="setBounds:"></a>
+	<h3 class="subsubtitle method-title">setBounds:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setCurrentPage:animated:" title="setCurrentPage:animated:"></a>
+	<h3 class="subsubtitle method-title">setCurrentPage:animated:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setFrame:" title="setFrame:"></a>
+	<h3 class="subsubtitle method-title">setFrame:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setNeedsAnnotationsLayout" title="setNeedsAnnotationsLayout"></a>
+	<h3 class="subsubtitle method-title">setNeedsAnnotationsLayout</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sharedInit" title="sharedInit"></a>
+	<h3 class="subsubtitle method-title">sharedInit</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sliderDidMove:" title="sliderDidMove:"></a>
+	<h3 class="subsubtitle method-title">sliderDidMove:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sliderTouchDidEnd:" title="sliderTouchDidEnd:"></a>
+	<h3 class="subsubtitle method-title">sliderTouchDidEnd:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sliderTouchDidStart:" title="sliderTouchDidStart:"></a>
+	<h3 class="subsubtitle method-title">sliderTouchDidStart:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>
