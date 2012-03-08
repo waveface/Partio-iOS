@@ -653,6 +653,45 @@
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
 	
+	self.stackView.delaysContentTouches = NO;
+	self.stackView.canCancelContentTouches = YES;
+	self.stackView.onTouchesShouldBeginWithEventInContentView = ^ (NSSet *touches, UIEvent *event, UIView *contentView) {
+	
+		UIView *currentWrapperView = [nrSelf scrollableStackElementWrapper];
+		UIView *currentWrappedView = [nrSelf scrollableStackElement];
+		
+		if (contentView != currentWrappedView)
+		if (![contentView isDescendantOfView:currentWrappedView])
+			return [contentView isKindOfClass:[UIControl class]];
+			
+		WAStackView *sv = nrSelf.stackView;
+		UIView *svContainer = nrSelf.stackView.superview;
+		
+		if (CGRectContainsRect([svContainer convertRect:sv.bounds fromView:sv], [svContainer convertRect:currentWrapperView.bounds fromView:currentWrapperView]))
+			return YES;
+		
+		return NO;
+	
+	};
+	
+	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
+	
+		return NO;
+	
+	};
+	
+	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
+	
+		if ((otherGR.view == [nrSelf scrollableStackElementWrapper]) || [otherGR.view isDescendantOfView:[nrSelf scrollableStackElementWrapper]])
+			return NO;
+		
+		return YES;
+	
+	};
+	
+	self.stackView.panGestureRecognizer.delaysTouchesBegan = NO;
+	self.stackView.panGestureRecognizer.delaysTouchesEnded = NO;
+	
 	if (headerView) {
 	
 		NSMutableArray *stackElements = [self.stackView mutableStackElements];
