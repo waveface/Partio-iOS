@@ -152,6 +152,9 @@
 			self.previewBadge.backgroundView = nil;
 			self.previewBadge.titleColor = [UIColor grayColor];
 			self.previewBadge.userInteractionEnabled = NO;			
+			self.previewBadge.titlePlaceholder = nil;
+			self.previewBadge.providerNamePlaceholder = nil;
+			self.previewBadge.textPlaceholder = nil;
 			break;
 		}
 		

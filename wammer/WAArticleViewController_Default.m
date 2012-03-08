@@ -348,4 +348,10 @@
 
 }
 
+- (BOOL) enablesTextStackElementFolding {
+
+	return YES;
+
+}
+
 @end

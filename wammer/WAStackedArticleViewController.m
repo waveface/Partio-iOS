@@ -182,7 +182,7 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
 	
-	self.foldsTextStackCell = YES;
+	self.foldsTextStackCell = [self enablesTextStackElementFolding];
 		
 	return self;
 
@@ -751,7 +751,7 @@
 		CGFloat currentTextStackCellHeight = [self sizeThatFitsElement:self.textStackCell inStackView:self.stackView].height;
 		CGFloat idealTextStackCellHeight = [self.textStackCell sizeThatFits:(CGSize){ CGRectGetWidth(self.stackView.bounds), 0 }].height;
 		
-		if (self.foldsTextStackCell && (idealTextStackCellHeight > currentTextStackCellHeight))
+		if ([self enablesTextStackElementFolding] && (idealTextStackCellHeight > currentTextStackCellHeight))
 			[self.stackView addStackElementsObject:self.textStackCellFoldingToggleWrapperView];
 		
 	}
@@ -1062,6 +1062,12 @@
 - (UIScrollView *) scrollableStackElement {
 
 	return nil;
+
+}
+
+- (BOOL) enablesTextStackElementFolding {
+
+	return NO;
 
 }
 
