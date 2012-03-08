@@ -260,6 +260,12 @@
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";
 
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
+"ACTION_SEND" = "Send";
+
+/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
+
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "No Photos";
 

@@ -260,6 +260,12 @@
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "回到上次閱讀斷點";
 
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
+"ACTION_SEND" = "傳送";
+
+/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "沒有迴響";
+
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "沒有照片";
 
