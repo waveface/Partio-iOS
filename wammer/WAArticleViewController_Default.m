@@ -307,15 +307,7 @@
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
 		return (CGSize){
 			CGRectGetWidth(aStackView.bounds), 
-			MAX(
-				32 + 128, 
-				MIN(
-					CGRectGetHeight(aStackView.bounds),
-					(gridView.numberOfRows + (!!(gridView.numberOfItems - gridView.numberOfRows * gridView.numberOfColumns) ? 1 : 0)) * 
-						gridView.gridCellSize.height + 
-						gridView.contentInset.top + gridView.contentInset.bottom + 32
-				)
-			)
+			128	//	Stretchable
 		};
 	}
 	
