@@ -19,6 +19,9 @@
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";
 
+/* Button title for showing an image picker */
+"ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
+
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
 
@@ -56,6 +59,9 @@
 /* Action title for Signing Out
    Action title for signing the user out */
 "ACTION_SIGN_OUT" = "Sign Out";
+
+/* Button title for showing a camera capture controller */
+"ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";

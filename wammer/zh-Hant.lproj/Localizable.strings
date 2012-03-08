@@ -19,6 +19,9 @@
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "迴響";
 
+/* Button title for showing an image picker */
+"ACTION_INSERT_PHOTO_FROM_LIBRARY" = "使用相簿";
+
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
 
@@ -56,6 +59,9 @@
 /* Action title for Signing Out
    Action title for signing the user out */
 "ACTION_SIGN_OUT" = "登出";
+
+/* Button title for showing a camera capture controller */
+"ACTION_TAKE_PHOTO_WITH_CAMERA" = "使用相機";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";

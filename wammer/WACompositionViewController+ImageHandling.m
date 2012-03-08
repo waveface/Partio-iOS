@@ -18,7 +18,7 @@
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self) nrSender = sender;
 	
-	return [[IRAction actionWithTitle:@"Photo Library" block: ^ {
+	return [[IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
 		[nrSelf presentImagePickerController:[[nrSelf newImagePickerController] autorelease] sender:nrSender];
 	
@@ -79,8 +79,8 @@
 
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self) nrSender = sender;
-		
-	return [[IRAction actionWithTitle:@"Take Photo" block: ^ {
+	
+	return [[IRAction actionWithTitle:NSLocalizedString(@"ACTION_TAKE_PHOTO_WITH_CAMERA", @"Button title for showing a camera capture controller") block: ^ {
 	
 		[nrSelf presentCameraCapturePickerController:[[nrSelf newCameraCapturePickerController] autorelease] sender:nrSender];
 	
