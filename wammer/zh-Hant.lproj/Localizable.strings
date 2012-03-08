@@ -248,6 +248,12 @@
 /* No comment provided by engineer. */
 "STORATE_QUOTA_INTERVAL_END_DATE" = "結算日期";
 
+/* Title on the text stack more / less toggle button for “Less” */
+"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
+
+/* Title on the text stack more / less toggle button for “More” */
+"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
+
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "用戶資訊";
 

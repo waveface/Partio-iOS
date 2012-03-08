@@ -248,6 +248,12 @@
 /* No comment provided by engineer. */
 "STORATE_QUOTA_INTERVAL_END_DATE" = "Ends";
 
+/* Title on the text stack more / less toggle button for “Less” */
+"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
+
+/* Title on the text stack more / less toggle button for “More” */
+"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "Account";
 
