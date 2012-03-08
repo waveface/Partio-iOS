@@ -34,6 +34,8 @@
 - (UIView *) scrollableStackElementWrapper;
 - (UIScrollView *) scrollableStackElement;
 
+- (BOOL) enablesTextStackElementFolding;
+
 @property (nonatomic, readonly, retain) NSArray *headerBarButtonItems;
 
 @end

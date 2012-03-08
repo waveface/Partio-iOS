@@ -49,10 +49,9 @@
 	
 	UIView *gridViewWrapper = [[[UIView alloc] initWithFrame:self.gridView.bounds] autorelease];
 	gridViewWrapper.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
+	[gridViewWrapper addSubview:self.gridView];
 	
 	self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.gridView.frame = CGRectInset(self.gridView.frame, 0, 16);
-	[gridViewWrapper addSubview:self.gridView];
 	
 	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
@@ -73,8 +72,8 @@
 	self.gridView.clipsToBounds = NO;
 	gridViewWrapper.clipsToBounds = YES;
 	
-	[gridView reloadData];
-	[gridView setNeedsLayout];
+//	[gridView reloadData];
+//	[gridView setNeedsLayout];
 	
 	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
 
@@ -86,8 +85,8 @@
 	
 	[allStackElements addObject:gridViewWrapper];
 	
-	if (footerCell)
-		[allStackElements addObject:footerCell];
+//	if (footerCell)
+//		[allStackElements addObject:footerCell];
 	
 }
 
@@ -117,7 +116,8 @@
 	
 	[UIView animateWithDuration:0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
 
-		[self.stackView layoutSubviews];
+		[self.gridView reloadData];
+		[self.gridView layoutSubviews];
 		
 	} completion:^(BOOL finished) {
 	
@@ -164,9 +164,6 @@
 	gridView.alwaysBounceVertical = YES;
 	gridView.alwaysBounceHorizontal = NO;
 	
-	[gridView reloadData];
-	[gridView setNeedsLayout];
-	
 	return gridView;
 
 }
@@ -185,24 +182,39 @@
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
 	if (!dequeuedCell) {
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
-		dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	}
 	
+	dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	dequeuedCell.canRemove = NO;
 	dequeuedCell.image = representedFile.thumbnailImage;
 	[dequeuedCell setNeedsLayout];
-
+	
 	return dequeuedCell;
 	
 }
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
+	CGRect gvBounds = aGV.bounds;
+	CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
+	
 	NSUInteger numberOfItems = [self.article.fileOrder count];
-	if (numberOfItems > 4)
-		return (CGSize){ 224, 224 };
-	else
-		return (CGSize){ 360, 360 };
+	if (numberOfItems > 4) {
+	
+		CGFloat edgeLength = floorf(gvWidth / 3);
+		return (CGSize){ edgeLength, edgeLength };
+		
+	} else if (numberOfItems > 1) {
+		
+		CGFloat edgeLength = floorf(gvWidth / 2);
+		return (CGSize){ edgeLength, edgeLength };
+		
+	} else {
+		
+		CGFloat edgeLength = MIN(gvWidth, gvHeight);
+		return (CGSize){ edgeLength, edgeLength };
+		
+	}
 	
 }
 
@@ -307,19 +319,38 @@
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
 		return (CGSize){
 			CGRectGetWidth(aStackView.bounds), 
-			MAX(
-				32 + 128, 
-				MIN(
-					CGRectGetHeight(aStackView.bounds),
-					(gridView.numberOfRows + (!!(gridView.numberOfItems - gridView.numberOfRows * gridView.numberOfColumns) ? 1 : 0)) * 
-						gridView.gridCellSize.height + 
-						gridView.contentInset.top + gridView.contentInset.bottom + 32
-				)
-			)
+			128	//	Stretchable
 		};
 	}
 	
 	return [super sizeThatFitsElement:anElement inStackView:aStackView];
+
+}
+
+- (UIView *) scrollableStackElementWrapper {
+
+	return self.gridView.superview;
+
+}
+
+- (UIScrollView *) scrollableStackElement {
+
+	return self.gridView;
+
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+		
+	[self.gridView reloadData];
+	[self.gridView layoutSubviews];
+
+}
+
+- (BOOL) enablesTextStackElementFolding {
+
+	return YES;
 
 }
 
