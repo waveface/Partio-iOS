@@ -322,6 +322,8 @@
 						__block UIToolbar *toolbar = [[[UIToolbar alloc] initWithFrame:toolbarRect] autorelease];
 						[enclosingView addSubview:toolbar];
 						
+						toolbar.backgroundColor = [UIColor colorWithWhite:245.0/255.0 alpha:1];
+						
 						UIImage *toolbarBackground = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackground"] resizableImageWithCapInsets:UIEdgeInsetsZero];
 						UIImage *toolbarBackgroundLandscapePhone = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackgroundLandscapePhone"] resizableImageWithCapInsets:UIEdgeInsetsZero];
 						[toolbar setBackgroundImage:toolbarBackground forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
