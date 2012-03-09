@@ -441,6 +441,7 @@
 		FFCFE0E8142111E100B9E6AF /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		FFCFE0E9142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
+		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
 		FFEF1F9914FF8E7E00645B53 /* addButton.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF1EF914FF8E7D00645B53 /* addButton.png */; };
 		FFEF1F9A14FF8E7E00645B53 /* addDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFEF1EFA14FF8E7D00645B53 /* addDisabled@2x.png */; };
@@ -1518,6 +1519,8 @@
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewBadge.m; sourceTree = "<group>"; };
+		FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IRManagedObject+WAFileHandling.h"; sourceTree = "<group>"; };
+		FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IRManagedObject+WAFileHandling.m"; sourceTree = "<group>"; };
 		FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreview.h; sourceTree = "<group>"; };
 		FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreview.m; sourceTree = "<group>"; };
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
@@ -2252,6 +2255,8 @@
 				FF88E14614E8D80400B347A8 /* WAArticle.h */,
 				FF88E14714E8D80400B347A8 /* WAArticle.m */,
 				FF9DA0C513DFF89000D6B28B /* WAComment.h */,
+				FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */,
+				FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */,
 				FF9DA0C613DFF89000D6B28B /* WAComment.m */,
 				FF0C7AB814987FCA00632EF3 /* WADataStore+FetchingConveniences.h */,
 				FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */,
@@ -4010,6 +4015,7 @@
 				FF0FF9131501101000D6FE18 /* WAArticleTextStackElement.m in Sources */,
 				FF0528B11508D0FE00F585D7 /* WALocalizedButton.m in Sources */,
 				FF0528B41508D1A100F585D7 /* WALocalizedLabel.m in Sources */,
+				FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4218,7 +4224,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 279;
+				CURRENT_PROJECT_VERSION = 280;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4272,7 +4278,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 279;
+				CURRENT_PROJECT_VERSION = 280;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
