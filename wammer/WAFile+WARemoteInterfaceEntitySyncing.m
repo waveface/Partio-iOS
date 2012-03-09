@@ -257,21 +257,21 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
 }
 
-+ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
++ (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
   [NSException raise:NSInternalInconsistencyException format:@"%@ does not support %@.", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
   
 }
 
-- (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+- (void) synchronizeWithCompletion:(WAEntitySyncCallback)completionBlock {
 
   [self synchronizeWithOptions:nil completion:completionBlock];
   
 }
 
-- (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+- (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
-	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));
+	NSParameterAssert(WAIsSyncableObject(self));
 	
 	WAFileSyncStrategy syncStrategy = [options objectForKey:kWAFileSyncStrategy];
 	if (!syncStrategy)
@@ -446,8 +446,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:ownURL];
 				savedFile.identifier = usedObjectID;
 				
+				NSError *savingError = nil;
+				BOOL didSave = [context save:&savingError];
+				
 				if (completionBlock)
-					completionBlock(YES, context, savedFile, nil);
+					completionBlock(didSave, context, [NSArray arrayWithObject:savedFile], didSave ? nil : savingError);
 				
 			} else {
 			
@@ -476,9 +479,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:ownURL];
 			[savedFile configureWithRemoteDictionary:attachmentRep];
+			
+			NSError *savingError = nil;
+			BOOL didSave = [context save:&savingError];
 		
 			if (completionBlock)
-				completionBlock(YES, context, savedFile, nil);
+				completionBlock(didSave, context, [NSArray arrayWithObject:savedFile], didSave ? nil : savingError);
 			
 		} onFailure:^(NSError *error) {
 		

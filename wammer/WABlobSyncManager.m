@@ -156,13 +156,9 @@
 						
 						kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
 						
-					nil] completion: ^ (BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
-					
-						if (didFinish) {
-							didFinish = [temporalContext save:nil];
-						}
+					nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 						
-						callback(didFinish ? (id)kCFBooleanTrue : anError);
+						callback(didFinish ? (id)kCFBooleanTrue : error);
 						
 					}];
 
