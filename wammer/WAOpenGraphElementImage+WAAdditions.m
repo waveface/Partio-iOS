@@ -14,20 +14,36 @@
 #import "IRRemoteResourcesManager.h"
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
+#import "IRManagedObject+WAFileHandling.h"
 
 NSString * kWAOpenGraphElementImageFilePath = @"imageFilePath";
 NSString * kWAOpenGraphElementImageRemoteURL = @"imageRemoteURL";
 NSString * kWAOpenGraphElementImageImage = @"image";
 
+@interface WAOpenGraphElementImage (CoreDataGeneratedPrimitiveAccessors)
+
+- (void) setPrimitiveImageFilePath:(NSString *)newImageFilePath;
+- (NSString *) primitiveImageFilePath;
+
+@end
+
+
 @implementation WAOpenGraphElementImage (WAAdditions)
+
+- (void) setImageFilePath:(NSString *)newImageFilePath {
+
+	[self setPrimitiveImageFilePath:[self relativePathFromPath:newImageFilePath]];
+	[self setImage:nil];
+
+}
 
 - (NSString *) imageFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:kWAOpenGraphElementImageFilePath];
 	
 	if (primitivePath)
-		return primitivePath;
-	
+		return [self absolutePathFromPath:primitivePath];
+		
 	if (!self.imageRemoteURL)
 		return nil;
 	
