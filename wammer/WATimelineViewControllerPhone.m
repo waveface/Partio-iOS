@@ -39,9 +39,12 @@
 #import "WACompositionViewController+CustomUI.h"
 #import "WANavigationBar.h"
 
+#import "WAArticleDraftsViewController.h"
+
+
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate>
+@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
@@ -1078,9 +1081,47 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
+
+	return ![[WADataStore defaultStore] isUploadingArticle:anObjectURIOrNil];
+
+}
+
+- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
+
+  [aController dismissViewControllerAnimated:YES completion:^{
+
+		[self beginCompositionSessionWithURL:anObjectURIOrNil];
+		
+	}];
+
+}
+
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
-	[self beginCompositionSessionWithURL:nil];
+	if ([[WADataStore defaultStore] hasDraftArticles]) {
+		
+		WAArticleDraftsViewController *draftsVC = [[[WAArticleDraftsViewController alloc] init] autorelease];
+		draftsVC.delegate = self;
+		
+		WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:draftsVC] autorelease];
+		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
+		
+		__block __typeof__(self) nrSelf = self;
+		
+		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+			
+			[nrSelf dismissViewControllerAnimated:YES completion:nil];
+			
+		}];
+		
+		[self presentModalViewController:navC animated:YES];
+	
+	} else {
+
+		[self beginCompositionSessionWithURL:nil];
+	
+	}
   
 }
 
