@@ -61,6 +61,8 @@
 
 - (void) waInit {
 
+	self.exclusiveTouch = YES;
+
 	if (self.avatarView) {
 
 		self.avatarView.layer.masksToBounds = YES;

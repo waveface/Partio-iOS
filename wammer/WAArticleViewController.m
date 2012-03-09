@@ -180,7 +180,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (WAArticle *) article {
 
-	if (!article)
+	if (!article && self.representedObjectURI)
 		article = [(WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI] retain];
 	
 	return article;
