@@ -996,20 +996,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 					
 					kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
 					
-					[[^ (BOOL hasDoneWorking, NSManagedObjectContext *temporalContext, NSArray *usedObjects, NSError *anError) {
-					
-						NSParameterAssert(!hasDoneWorking);
-						
-						NSError *savingError = nil;
-						if (![temporalContext save:&savingError]) {
-							NSLog(@"Error saving: %@", savingError);
-							NSParameterAssert(NO);
-						}
-						
-						//	Save would trigger UI update
-					
-					} copy] autorelease], kWAArticleSyncProgressCallback,
-					
 				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 				
 					if (!didFinish) {

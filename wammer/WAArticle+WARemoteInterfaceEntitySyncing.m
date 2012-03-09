@@ -27,7 +27,6 @@ NSString * const kWAArticleSyncMergeLastBatchStrategy = @"WAArticleSyncMergeLast
 NSString * const kWAArticleSyncRangeStart = @"WAArticleSyncRangeStart";
 NSString * const kWAArticleSyncRangeEnd = @"WAArticleSyncRangeEnd";
 
-NSString * const kWAArticleSyncProgressCallback = @"WAArticleSyncProgressCallback";
 NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 @implementation WAArticle (WARemoteInterfaceEntitySyncing)
@@ -195,7 +194,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
 
-  WAArticleSyncStrategy syncStrategy = [options objectForKey:kWAArticleSyncStrategy];
+  WAArticleSyncStrategy syncStrategy =	[options objectForKey:kWAArticleSyncStrategy];
   
   WARemoteInterface *ri = [WARemoteInterface sharedInterface];
   WADataStore *ds = [WADataStore defaultStore];
@@ -232,8 +231,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
   } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
 	
-		WAArticleSyncProgressCallback progressCallback = [[[options objectForKey:kWAArticleSyncProgressCallback] copy] autorelease];
-  
     NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
     
     if (!sessionInfo)
@@ -255,23 +252,17 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     })());
     
     dispatch_async(sessionQueue, ^{
+		
+			NSString * const kObjectURIs = @"objectURIs";
     
-      NSManagedObjectContext *usedContext = [sessionInfo objectForKey:@"context"];
+			NSMutableArray *objectURIs = [sessionInfo objectForKey:kObjectURIs];
       
-      if (!usedContext) {
-        usedContext = [ds disposableMOC];
-				usedContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-        [sessionInfo setObject:usedContext forKey:@"context"];
-      }
-      
-      NSMutableArray *usedObjects = [sessionInfo objectForKey:@"objects"];
-      
-      if (!usedObjects) {
-        usedObjects = [NSMutableArray array];
-        [sessionInfo setObject:usedObjects forKey:@"objects"];
+      if (!objectURIs) {
+        objectURIs = [NSMutableArray array];
+				[sessionInfo setObject:objectURIs forKey:kObjectURIs];
       }
 			
-      [ds fetchLatestArticleInGroup:usedGroupIdentifier usingContext:usedContext onSuccess:^(NSString *identifier, WAArticle *article) {
+      [ds fetchLatestArticleInGroup:usedGroupIdentifier onSuccess:^(NSString *identifier, WAArticle *article) {
 			
         NSString *referencedPostIdentifier = identifier;
         NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
@@ -283,47 +274,59 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
         [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
 				
-          dispatch_async(sessionQueue, ^{
+          dispatch_async(sessionQueue, ^ {
+					
+						__block BOOL shouldContinue = NO;
 						
-						BOOL shouldContinue = YES;
-						
-						if (![postReps count]) {
+						[postReps enumerateObjectsUsingBlock: ^ (NSDictionary *aPost, NSUInteger idx, BOOL *stop) {
 							
-							shouldContinue = NO;
+							if (![[aPost valueForKeyPath:@"post_id"] isEqual:identifier]) {
+								shouldContinue = YES;
+								*stop = YES;
+							}
 							
-						} else {
-						
-							BOOL hasOtherPostIDs = [[[postReps irMap: ^ (NSDictionary *aPost, NSUInteger index, BOOL *stop) {
-								return [aPost valueForKeyPath:@"post_id"];
-							}] irMap:^id(id inObject, NSUInteger index, BOOL *stop) {
-								return [inObject isEqual:identifier] ? nil : inObject;
-							}] count];
-							
-							if (!hasOtherPostIDs)
-								shouldContinue = NO;
-							
-						}
+						}];
 						
             if (shouldContinue) {
 						
-							NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:usedContext withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-							[usedObjects addObjectsFromArray:touchedObjects];
+							NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+							context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+						
+							NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 							
-							if (progressCallback)
-								progressCallback(NO, usedContext, usedObjects, nil);
+							NSError *savingError = nil;
+							if ([context save:&savingError]) {
 							
-							dispatch_async(dispatch_get_main_queue(), ^{
+								[objectURIs addObjectsFromArray:[touchedObjects irMap: ^ (NSManagedObject *obj, NSUInteger index, BOOL *stop) {
+									
+									return [[obj objectID] URIRepresentation];
+									
+								}]];
 								
-								[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
-								
-							});
+								dispatch_async(dispatch_get_main_queue(), ^{
+									
+									[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
+									
+								});
+
+							} else {
+							
+								if (completionBlock)
+									completionBlock(NO, context, objectURIs, savingError);
+							
+							}
 							              
-            } else {	
+            } else {
 						
-							//	WE HAVE REACHED THE POINT OF NO RETURN
-						
+							NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+							NSArray *savedObjects = [objectURIs irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
+								
+								return [context irManagedObjectForURI:anObjectURI];
+								
+							}];
+							
               if (completionBlock)
-                completionBlock(YES, usedContext, usedObjects, nil);
+                completionBlock(YES, context, savedObjects, nil);
               
               dispatch_release(sessionQueue);
 							
@@ -352,13 +355,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   
 }
 
-- (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+- (void) synchronizeWithCompletion:(WAEntitySyncCallback)completionBlock {
 
   [self synchronizeWithOptions:nil completion:completionBlock];
 
 }
 
-- (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+- (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	
@@ -454,24 +457,21 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					return;
 				}
 				
-				[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
-				
+				[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+					
 					if (!didFinish) {
-						NSCParameterAssert(anError);
-						aCallback(anError);
-						return;
-					}
+						
+						aCallback(error);
+
+					} else {
 				
-					NSError *savingError = nil;
-					if (![temporalContext save:&savingError]) {
-						aCallback(savingError);
-						return;
+						NSCParameterAssert([objects count] == 1);
+						WAFile *savedFile = (WAFile *)[objects lastObject];
+						
+						NSCParameterAssert(savedFile.article);
+						aCallback(savedFile.identifier);
+					
 					}
-					
-					WAFile *savedFile = (WAFile *)prospectiveUnsavedObject;
-					NSCParameterAssert(savedFile.article);
-					
-					aCallback(savedFile.identifier);
 					
 				}];
 				
@@ -571,9 +571,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 				NSParameterAssert(![savedPost.files count]);
 				
-				[savedPost.managedObjectContext deleteObject:savedPost];
+				[context deleteObject:savedPost];
 				
-				completionBlock(YES, context, savedPost, nil);
+				NSError *savingError = nil;
+				BOOL didSave = [context save:&savingError];
+				
+				completionBlock(didSave, context, [NSArray arrayWithObject:savedPost], didSave ? nil : savingError);
 			
 			} else {
 			
@@ -615,7 +618,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			WAArticle *savedPost = (WAArticle *)[touchedObjects lastObject];
 			savedPost.draft = (id)kCFBooleanFalse;
 			
-			completionBlock(YES, context, savedPost, nil);	
+			NSError *savingError = nil;
+			BOOL didSave = [context save:&savingError];
+			
+			completionBlock(didSave, context, [NSArray arrayWithObject:savedPost], didSave ? nil : savingError);	
 			
 		} onFailure:^(NSError *error) {
 		

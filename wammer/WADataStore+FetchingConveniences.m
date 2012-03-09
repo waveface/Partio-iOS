@@ -39,6 +39,8 @@
 }
 
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)context onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
+
+	NSParameterAssert(context);
   
   if (!callback)
     return;

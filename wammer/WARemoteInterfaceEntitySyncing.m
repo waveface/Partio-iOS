@@ -8,7 +8,7 @@
 
 #import "WARemoteInterfaceEntitySyncing.h"
 
-BOOL WAObjectEligibleForRemoteInterfaceEntitySyncing (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject) {
+BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject) {
 
 	return (BOOL)(![anObject hasChanges] && ![[anObject objectID] isTemporaryID]);
 

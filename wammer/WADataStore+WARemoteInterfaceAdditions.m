@@ -71,20 +71,17 @@
 
 	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
-		if (!didFinish) {
+		if (didFinish) {
+
+			if (successBlock)
+				successBlock();
+			
+		} else {
+		
 			if (failureBlock)
 				failureBlock(anError);
-			return;
-		}
 		
-		if (![temporalContext save:nil]) {
-			if (failureBlock)
-				failureBlock(anError);
-			return;
 		}
-		
-		if (successBlock)
-			successBlock();
 		
 	}];
 	
@@ -103,6 +100,8 @@
 
 - (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
+	NSParameterAssert([NSThread isMainThread]);
+
 	__block __typeof__(self) nrSelf = self;
 	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
 	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
@@ -114,31 +113,23 @@
 		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
 	};
 	
-	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
+	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
 	
+	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+		
+		NSParameterAssert([NSThread isMainThread]);
+
 		if (!didFinish) {
 			
 			if (failureBlock)
-				failureBlock(anError);
+				failureBlock(error);
 			
-			cleanup();
-			return;
-			
-		}
+		} else {
+
+			if (successBlock)
+				successBlock();
 		
-		NSError *savingError = nil;
-		if (![temporalContext save:nil]) {
-			
-			if (failureBlock)
-				failureBlock(savingError);
-			
-			cleanup();
-			return;
-			
 		}
-		
-		if (successBlock)
-			successBlock();
 		
 		cleanup();
 		
