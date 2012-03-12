@@ -41,6 +41,8 @@ enum {
 @property (nonatomic, readwrite, retain) UIWebView *summaryWebView;
 @property (nonatomic, readwrite, retain) UIView *webViewWrapper;
 
+- (void) loadSummary;
+
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *webViewActivityIndicator;
 @property (nonatomic, readwrite, retain) IRBarButtonItem *webViewBackBarButtonItem;
 @property (nonatomic, readwrite, retain) IRBarButtonItem *webViewForwardBarButtonItem;
@@ -238,6 +240,14 @@ enum {
 	summaryWebView.delegate = self;
 	summaryWebView.scrollView.directionalLockEnabled = NO;
 	
+	[self loadSummary];
+				
+	return summaryWebView;
+
+}
+
+- (void) loadSummary {
+
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
 	
 		@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(unescape(\"%@\"));",
@@ -273,8 +283,6 @@ enum {
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$SOURCE" withString:(usedProviderName ? usedProviderName : @"")];
 	
 	[summaryWebView loadHTMLString:(templatedSummary ? templatedSummary : usedSummary) baseURL:summaryTemplateBaseURL];
-	
-	return summaryWebView;
 
 }
 
@@ -309,6 +317,14 @@ enum {
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
+			
+		if (nrSelf.state == WAArticleViewControllerSummaryState)
+		if (!currentWebView.canGoBack) {
+		
+			[nrSelf loadSummary];
+			return;
+		
+		}
 		
 		[currentWebView goBack];
 	
@@ -419,7 +435,20 @@ enum {
 	
 	self.webViewBackBarButtonItem.enabled = currentWebView.canGoBack;
 	self.webViewForwardBarButtonItem.enabled = currentWebView.canGoForward;
+	
+	if (self.state == WAArticleViewControllerSummaryState)
+	if (!currentWebView.canGoBack) {
 
+		NSString *locationHref = [currentWebView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
+		if (!locationHref)
+			return;
+		
+		NSURL *pageURL = [NSURL URLWithString:locationHref];
+		if (pageURL && ![pageURL isFileURL])
+			self.webViewBackBarButtonItem.enabled = YES;
+	
+	}
+	
 }
 
 - (UIView *) wrappedView {

@@ -130,7 +130,7 @@
 			
 		};
 		
-		[commentsItem irBind:@"title" toObject:self keyPath:@"article.comments.@count" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		[commentsItem irBind:@"title" toObject:self keyPath:@"commentCount" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
@@ -185,6 +185,22 @@
 	self.foldsTextStackCell = [self enablesTextStackElementFolding];
 		
 	return self;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingCommentCount {
+
+	return [NSSet setWithObjects:
+	
+		@"article.comments.@count",
+	
+	nil];
+
+}
+
+- (NSUInteger) commentCount {
+
+	return [self.article.comments count];
 
 }
 
@@ -410,25 +426,7 @@
 	if (commentsPopover)
 		return commentsPopover;
 	
-	commentsPopover = [[UIPopoverController alloc] initWithContentViewController:
-		self.commentsVC
-		//	[[[UINavigationController alloc] initWithRootViewController:self.commentsVC
-	];
-	
-	__block UIViewController *nrContentVC = commentsPopover.contentViewController;
-	
-	__block id nrHelper = [nrContentVC irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		
-		//	NSLog(@"%@ %@ %x", inOldValue, inNewValue, changeKind);
-		
-	} forKeyPath:@"contentSizeForViewInPopover" options:NSKeyValueObservingOptionNew context:nil];
-	
-	[nrContentVC irPerformOnDeallocation:^{
-	
-		[nrContentVC irRemoveObservingsHelper:nrHelper];
-		
-	}];
-	
+	commentsPopover = [[UIPopoverController alloc] initWithContentViewController:self.commentsVC];
 	self.commentsVC.adjustsContainerViewOnInterfaceBoundsChange = NO;
 
 	return commentsPopover;

@@ -39,6 +39,10 @@
 
 	fetchedResultsController.delegate = nil;
 	[fetchedResultsController release];
+	
+	gridView.delegate = nil;
+	[gridView release];
+	
 	[super dealloc];
 
 }
@@ -88,6 +92,14 @@
 //	if (footerCell)
 //		[allStackElements addObject:footerCell];
 	
+}
+
+- (void) viewDidUnload {
+	
+	self.gridView = nil;
+	
+	[super viewDidUnload];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -300,6 +312,7 @@
 	};
 	
 	[self presentModalViewController:galleryVC animated:NO];
+	[aGV deselectItemAtIndex:index animated:NO];
 
 }
 

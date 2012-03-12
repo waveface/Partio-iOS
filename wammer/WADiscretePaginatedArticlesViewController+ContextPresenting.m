@@ -357,16 +357,17 @@
 						
 						};
 						
-						WAButton *closeButton = [WAButton buttonWithType:UIButtonTypeCustom];
-						[enclosingView addSubview:closeButton];
-						[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
-						[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
-						[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
-						closeButton.frame = enclosingView.bounds;
-						closeButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-						closeButton.action = ^ {
+						__block WAButton *nrCloseButton = [WAButton buttonWithType:UIButtonTypeCustom];
+						[enclosingView addSubview:nrCloseButton];
+						[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
+						[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
+						[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
+						nrCloseButton.frame = enclosingView.bounds;
+						nrCloseButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+						nrCloseButton.action = ^ {
 						
 							[nrSelf dismissArticleContextViewController:shownArticleVC];
+							nrCloseButton.action = nil;
 						
 						};
 						
