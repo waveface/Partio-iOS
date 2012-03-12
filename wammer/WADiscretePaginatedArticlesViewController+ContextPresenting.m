@@ -426,6 +426,7 @@
 					}
 				
 					containerWindow.hidden = YES;
+					containerWindow.userInteractionEnabled = NO;
 					
 					[containerWindow resignKeyWindow];
 					[containerWindow autorelease];
