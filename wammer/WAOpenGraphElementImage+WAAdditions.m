@@ -20,6 +20,7 @@ NSString * kWAOpenGraphElementImageFilePath = @"imageFilePath";
 NSString * kWAOpenGraphElementImageRemoteURL = @"imageRemoteURL";
 NSString * kWAOpenGraphElementImageImage = @"image";
 
+
 @interface WAOpenGraphElementImage (CoreDataGeneratedPrimitiveAccessors)
 
 - (void) setPrimitiveImageFilePath:(NSString *)newImageFilePath;
@@ -32,7 +33,10 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 - (void) setImageFilePath:(NSString *)newImageFilePath {
 
+	[self willChangeValueForKey:@"imageFilePath"];
 	[self setPrimitiveImageFilePath:[self relativePathFromPath:newImageFilePath]];
+	[self didChangeValueForKey:@"imageFilePath"];
+		
 	[self setImage:nil];
 
 }
