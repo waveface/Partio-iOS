@@ -189,11 +189,11 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (void) viewDidUnload {
 
-//	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
+	//	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 	
 	self.managedObjectContext = nil;
 	self.article = nil;
-
+	
 	[super viewDidUnload];
 
 }
