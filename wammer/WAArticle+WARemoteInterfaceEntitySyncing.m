@@ -219,6 +219,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
       NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 
+			NSError *savingError = nil;
+			if ([context save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+							
       if (completionBlock)
         completionBlock(YES, context, touchedObjects, nil);
       
