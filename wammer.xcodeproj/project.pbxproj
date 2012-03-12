@@ -4254,7 +4254,7 @@
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -4305,7 +4305,7 @@
 					"\"$(PROJECT_DIR)/external/IRRecurrenceMachine\"/**",
 					"\"$(PROJECT_DIR)/external/TestflightSDK\"/**",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -4404,7 +4404,6 @@
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WF_USES_GOOGLEANALYTICS = "$(WF_USES_GOOGLEANALYTICS)";
 				WRAPPER_EXTENSION = app;
@@ -4432,7 +4431,6 @@
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 armv7";
 				WF_USES_GOOGLEANALYTICS = "$(WF_USES_GOOGLEANALYTICS)";
 				WRAPPER_EXTENSION = app;
