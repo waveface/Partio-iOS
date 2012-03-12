@@ -52,23 +52,11 @@
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
-		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+		kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
+	//	kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
 		
 	nil];
 	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-		case UIUserInterfaceIdiomPad: {
-			[options setObject:kWAArticleSyncFullyFetchOnlyStrategy forKey:kWAArticleSyncStrategy];
-			break;
-		}
-		
-		default: {
-			break;
-		}
-		
-	}
-
 	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
 		if (didFinish) {
