@@ -312,6 +312,7 @@
 	};
 	
 	[self presentModalViewController:galleryVC animated:NO];
+	[aGV deselectItemAtIndex:index animated:NO];
 
 }
 
