@@ -1065,7 +1065,7 @@
 		FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleAttachmentActivityView.m; sourceTree = "<group>"; };
 		FF0528AF1508D0FE00F585D7 /* WALocalizedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedButton.h; sourceTree = "<group>"; };
 		FF0528B01508D0FE00F585D7 /* WALocalizedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedButton.m; sourceTree = "<group>"; };
-		FF0528B21508D1A100F585D7 /* WALocalizedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WALocalizedLabel.h; sourceTree = "<group>"; };
+		FF0528B21508D1A100F585D7 /* WALocalizedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedLabel.h; sourceTree = "<group>"; };
 		FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedLabel.m; sourceTree = "<group>"; };
 		FF06363814B346CB00E7AF78 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		FF0AC0C2149F734600AA5611 /* WAArticleViewController_Plaintext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_Plaintext.h; sourceTree = "<group>"; };
