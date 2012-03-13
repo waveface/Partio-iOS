@@ -51,7 +51,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
 @property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd;
 
-- (UIView *) representingViewForItem:(WAArticle *)anArticle;
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void(^)(UIView *aSubview))aBlock;
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
@@ -187,22 +186,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginationSliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
 	self.paginationSliderSlot.layer.cornerRadius = 4.0f;
 	self.paginationSliderSlot.layer.masksToBounds = YES;
-	
-}
-
-- (UIView *) representingViewForItem:(WAArticle *)anArticle {
-
-	UIView *returnedView = [self cachedArticleViewControllerForArticle:anArticle].view;
-	
-	returnedView.layer.cornerRadius = 2;
-
-	returnedView.layer.backgroundColor = [UIColor whiteColor].CGColor;
-	returnedView.layer.masksToBounds = YES;
-	
-	returnedView.layer.borderWidth = 1;
-	returnedView.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.05].CGColor;
-	
-	return returnedView;
 	
 }
 

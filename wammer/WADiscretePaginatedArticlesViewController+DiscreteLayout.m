@@ -272,6 +272,22 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 }
 
+- (UIView *) representingViewForItem:(WAArticle *)anArticle {
+
+	UIView *returnedView = [self cachedArticleViewControllerForArticle:anArticle].view;
+	
+	returnedView.layer.cornerRadius = 2;
+
+	returnedView.layer.backgroundColor = [UIColor whiteColor].CGColor;
+	returnedView.layer.masksToBounds = YES;
+	
+	returnedView.layer.borderWidth = 1;
+	returnedView.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.05].CGColor;
+	
+	return returnedView;
+	
+}
+
 @end
 
 
