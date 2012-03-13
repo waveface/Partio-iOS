@@ -1,0 +1,1071 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WARemoteInterface.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WARemoteInterface</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>
+			
+			<NodeRef refid="65"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/sharedInterface</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>+ (WARemoteInterface *)sharedInterface</Declaration>
+			
+			
+			<Anchor>//api/name/sharedInterface</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/sharedDecoder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>+ (JSONDecoder *)sharedDecoder</Declaration>
+			
+			
+			<Anchor>//api/name/sharedDecoder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/decodedJSONObjectFromData:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>+ (id)decodedJSONObjectFromData:(NSData *)data</Declaration>
+			
+			
+			<Anchor>//api/name/decodedJSONObjectFromData:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/defaultBatchSize</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSUInteger defaultBatchSize</Declaration>
+			
+			
+			<Anchor>//api/name/defaultBatchSize</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/apiKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *apiKey</Declaration>
+			
+			
+			<Anchor>//api/name/apiKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/userIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *userIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/userIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/userToken</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *userToken</Declaration>
+			
+			
+			<Anchor>//api/name/userToken</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/primaryGroupIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSString *primaryGroupIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/primaryGroupIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/defaultParser</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>+ (IRWebAPIResponseParser)defaultParser</Declaration>
+			
+			
+			<Anchor>//api/name/defaultParser</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/defaultBeginNetworkActivityTransformer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>+ (IRWebAPIRequestContextTransformer)defaultBeginNetworkActivityTransformer</Declaration>
+			
+			
+			<Anchor>//api/name/defaultBeginNetworkActivityTransformer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/defaultEndNetworkActivityTransformer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>+ (IRWebAPIResponseContextTransformer)defaultEndNetworkActivityTransformer</Declaration>
+			
+			
+			<Anchor>//api/name/defaultEndNetworkActivityTransformer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/defaultDeviceInformationProvidingTransformer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>+ (IRWebAPIRequestContextTransformer)defaultDeviceInformationProvidingTransformer</Declaration>
+			
+			
+			<Anchor>//api/name/defaultDeviceInformationProvidingTransformer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/initWithEngine:authenticator:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithEngine:(IRWebAPIEngine *)engine authenticator:(IRWebAPIAuthenticator *)inAuthenticator</Declaration>
+			
+			
+			<Anchor>//api/name/initWithEngine:authenticator:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createGroupNamed:withDescription:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Groups.h</DeclaredIn>			
+			
+			<Declaration>- (void)createGroupNamed:(NSString *)aName withDescription:(NSString *)aDescription onSuccess:(void ( ^ ) ( NSDictionary *groupRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createGroupNamed:withDescription:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Groups.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveGroup:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSDictionary *groupRep , NSArray *activeMemberReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/updateGroup:withName:description:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Groups.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateGroup:(NSString *)anIdentifier withName:(NSString *)aNewNameOrNil description:(NSString *)aNewDescriptionOrNil onSuccess:(void ( ^ ) ( NSDictionary *groupRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateGroup:withName:description:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/deleteGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Groups.h</DeclaredIn>			
+			
+			<Declaration>- (void)deleteGroup:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/deleteGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/addUser:toGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Groups.h</DeclaredIn>			
+			
+			<Declaration>- (void)addUser:(NSString *)anUserIdentifier toGroup:(NSString *)aGroupIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/addUser:toGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/removeUser:fromGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Groups.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeUser:(NSString *)anUserIdentifier fromGroup:(NSString *)aGroupIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/removeUser:fromGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/areExpensiveOperationsAllowed</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Environment.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)areExpensiveOperationsAllowed</Declaration>
+			
+			
+			<Anchor>//api/name/areExpensiveOperationsAllowed</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/registerUser:password:nickname:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Users.h</DeclaredIn>			
+			
+			<Declaration>- (void)registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void ( ^ ) ( NSDictionary *userRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/registerUser:password:nickname:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveUser:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Users.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveUser:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSDictionary *userRep , NSArray *groupReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveUser:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/updateUser:withNickname:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Users.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateUser:(NSString *)anIdentifier withNickname:(NSString *)aNewNickname onSuccess:(void ( ^ ) ( NSDictionary *userRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateUser:withNickname:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/resetPasswordOfCurrentUserFrom:To:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Users.h</DeclaredIn>			
+			
+			<Declaration>- (void)resetPasswordOfCurrentUserFrom:(NSString *)anOldPassword To:(NSString *)aNewPassword onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/resetPasswordOfCurrentUserFrom:To:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/beginPostponingDataRetrievalTimerFiring</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)beginPostponingDataRetrievalTimerFiring</Declaration>
+			
+			
+			<Anchor>//api/name/beginPostponingDataRetrievalTimerFiring</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/endPostponingDataRetrievalTimerFiring</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)endPostponingDataRetrievalTimerFiring</Declaration>
+			
+			
+			<Anchor>//api/name/endPostponingDataRetrievalTimerFiring</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/isPostponingDataRetrievalTimerFiring</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isPostponingDataRetrievalTimerFiring</Declaration>
+			
+			
+			<Anchor>//api/name/isPostponingDataRetrievalTimerFiring</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/rescheduleAutomaticRemoteUpdates</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)rescheduleAutomaticRemoteUpdates</Declaration>
+			
+			
+			<Anchor>//api/name/rescheduleAutomaticRemoteUpdates</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/performAutomaticRemoteUpdatesNow</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)performAutomaticRemoteUpdatesNow</Declaration>
+			
+			
+			<Anchor>//api/name/performAutomaticRemoteUpdatesNow</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/beginPerformingAutomaticRemoteUpdates</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)beginPerformingAutomaticRemoteUpdates</Declaration>
+			
+			
+			<Anchor>//api/name/beginPerformingAutomaticRemoteUpdates</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/endPerformingAutomaticRemoteUpdates</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)endPerformingAutomaticRemoteUpdates</Declaration>
+			
+			
+			<Anchor>//api/name/endPerformingAutomaticRemoteUpdates</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/isPerformingAutomaticRemoteUpdates</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isPerformingAutomaticRemoteUpdates</Declaration>
+			
+			
+			<Anchor>//api/name/isPerformingAutomaticRemoteUpdates</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/performingAutomaticRemoteUpdates</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, assign, getter=isPerformingAutomaticRemoteUpdates) BOOL performingAutomaticRemoteUpdates</Declaration>
+			
+			
+			<Anchor>//api/name/performingAutomaticRemoteUpdates</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/dataRetrievalInterval</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSTimeInterval dataRetrievalInterval</Declaration>
+			
+			
+			<Anchor>//api/name/dataRetrievalInterval</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/dataRetrievalBlocks</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSArray *dataRetrievalBlocks</Declaration>
+			
+			
+			<Anchor>//api/name/dataRetrievalBlocks</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultDataRetrievalBlocks</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)defaultDataRetrievalBlocks</Declaration>
+			
+			
+			<Anchor>//api/name/defaultDataRetrievalBlocks</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/addRepeatingDataRetrievalBlock:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)addRepeatingDataRetrievalBlock:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/addRepeatingDataRetrievalBlock:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/addRepeatingDataRetrievalBlocks:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.h</DeclaredIn>			
+			
+			<Declaration>- (void)addRepeatingDataRetrievalBlocks:(NSArray *)blocks</Declaration>
+			
+			
+			<Anchor>//api/name/addRepeatingDataRetrievalBlocks:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/handleDataRetrievalTimerDidFire:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDataRetrievalTimerDidFire:(NSTimer *)timer</Declaration>
+			
+			
+			<Anchor>//api/name/handleDataRetrievalTimerDidFire:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/monitoredHosts</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSArray *monitoredHosts</Declaration>
+			
+			
+			<Anchor>//api/name/monitoredHosts</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/canHost:handleRequestNamed:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)canHost:(NSURL *)aHost handleRequestNamed:(NSString *)aRequestName</Declaration>
+			
+			
+			<Anchor>//api/name/canHost:handleRequestNamed:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/bestHostForRequestNamed:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>- (NSURL *)bestHostForRequestNamed:(NSString *)aRequestName</Declaration>
+			
+			
+			<Anchor>//api/name/bestHostForRequestNamed:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultScheduledMonitoredHostsUpdatingBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>- (void ( ^ ) ( void ))defaultScheduledMonitoredHostsUpdatingBlock</Declaration>
+			
+			
+			<Anchor>//api/name/defaultScheduledMonitoredHostsUpdatingBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultHostSwizzlingTransformer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>- (IRWebAPIRequestContextTransformer)defaultHostSwizzlingTransformer</Declaration>
+			
+			
+			<Anchor>//api/name/defaultHostSwizzlingTransformer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/reachabilityStateForHost:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>- (WAReachabilityState)reachabilityStateForHost:(NSURL *)aBaseURL</Declaration>
+			
+			
+			<Anchor>//api/name/reachabilityStateForHost:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/reachabilityDetectorForHost:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.h</DeclaredIn>			
+			
+			<Declaration>- (WAReachabilityDetector *)reachabilityDetectorForHost:(NSURL *)aBaseURL</Declaration>
+			
+			
+			<Anchor>//api/name/reachabilityDetectorForHost:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WARemoteInterface/load</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.m</DeclaredIn>			
+			
+			<Declaration>+ (void)load</Declaration>
+			
+			
+			<Anchor>//api/name/load</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveAssociatedStationsOfCurrentUserOnSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Stations.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveAssociatedStationsOfCurrentUserOnSuccess:(void ( ^ ) ( NSArray *stationReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveAssociatedStationsOfCurrentUserOnSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/registerStation:withURL:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Stations.h</DeclaredIn>			
+			
+			<Declaration>- (void)registerStation:(NSString *)anIdentifier withURL:(NSURL *)anURL onSuccess:(void ( ^ ) ( NSDictionary *stationRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/registerStation:withURL:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/activateStation:withURL:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Stations.h</DeclaredIn>			
+			
+			<Declaration>- (void)activateStation:(NSString *)anIdentifier withURL:(NSURL *)anURL onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/activateStation:withURL:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/deactivateStation:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Stations.h</DeclaredIn>			
+			
+			<Declaration>- (void)deactivateStation:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/deactivateStation:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveAuthorizationURLForStorage:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Storages.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveAuthorizationURLForStorage:(NSString *)aStorage onSuccess:(void ( ^ ) ( NSURL *anURL ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveAuthorizationURLForStorage:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveAccessTokenForStorage:usingStationAccount:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Storages.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveAccessTokenForStorage:(NSString *)aStorage usingStationAccount:(NSString *)stationAccountOrNil onSuccess:(void ( ^ ) ( NSString *token ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveAccessTokenForStorage:usingStationAccount:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveStatusForStorage:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Storages.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveStatusForStorage:(NSString *)aStorage onSuccess:(void ( ^ ) ( WARemoteStorageStatus status , NSDate *timestamp ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveStatusForStorage:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/unlinkStorage:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Storages.h</DeclaredIn>			
+			
+			<Declaration>- (void)unlinkStorage:(NSString *)aStorage onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/unlinkStorage:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrievePost:inGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrievePost:(NSString *)anIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void ( ^ ) ( NSDictionary *postRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrievePost:inGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrievePostsInGroup:relativeToPost:date:withSearchLimits:filter:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrievePostsInGroup:(NSString *)aGroupIdentifier relativeToPost:(NSString *)referencedPostOrNil date:(NSDate *)referencedDateOrNil withSearchLimits:(NSInteger)positiveOrNegativeNumberOfPostsToExpandSearching filter:(id)aFilterPlaceholder onSuccess:(void ( ^ ) ( NSArray *postReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrievePostsInGroup:relativeToPost:date:withSearchLimits:filter:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveLatestPostsInGroup:withBatchLimit:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveLatestPostsInGroup:(NSString *)aGroupIdentifier withBatchLimit:(NSUInteger)maxNumberOfReturnedPosts onSuccess:(void ( ^ ) ( NSArray *postReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveLatestPostsInGroup:withBatchLimit:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createPostInGroup:withContentText:attachments:preview:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)createPostInGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil attachments:(NSArray *)attachmentIdentifiersOrNil preview:(NSDictionary *)aPreviewRep onSuccess:(void ( ^ ) ( NSDictionary *postRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createPostInGroup:withContentText:attachments:preview:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createCommentForPost:inGroup:withContentText:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)createCommentForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier withContentText:(NSString *)contentTextOrNil onSuccess:(void ( ^ ) ( NSDictionary *updatedPostRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createCommentForPost:inGroup:withContentText:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrievePostsInGroup:usingFilter:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrievePostsInGroup:(NSString *)aGroupIdentifier usingFilter:(id)aFilter onSuccess:(void ( ^ ) ( NSArray *postReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrievePostsInGroup:usingFilter:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createSharableSnapshotForPost:inGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)createSharableSnapshotForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void ( ^ ) ( NSString *snapshotAccessToken ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createSharableSnapshotForPost:inGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveSharableSnapshotForPost:usingToken:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveSharableSnapshotForPost:(NSString *)aPostIdentifier usingToken:(NSString *)aToken onSuccess:(void ( ^ ) ( NSDictionary *aPostRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveSharableSnapshotForPost:usingToken:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/configurePost:withVisibilityStatus:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Posts.h</DeclaredIn>			
+			
+			<Declaration>- (void)configurePost:(NSString *)aPostIdentifier withVisibilityStatus:(BOOL)willBeVisible onSuccess:(void ( ^ ) ( void ))aSuccessBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/configurePost:withVisibilityStatus:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrievePreviewForURL:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Previews.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrievePreviewForURL:(NSURL *)aRemoteURL onSuccess:(void ( ^ ) ( NSDictionary *aPreviewRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrievePreviewForURL:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/dataRetrievalTimer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSTimer *dataRetrievalTimer</Declaration>
+			
+			
+			<Anchor>//api/name/dataRetrievalTimer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/dataRetrievalTimerPostponingCount</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) int dataRetrievalTimerPostponingCount</Declaration>
+			
+			
+			<Anchor>//api/name/dataRetrievalTimerPostponingCount</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/automaticRemoteUpdatesPerformingCount</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+ScheduledDataRetrieval.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) int automaticRemoteUpdatesPerformingCount</Declaration>
+			
+			
+			<Anchor>//api/name/automaticRemoteUpdatesPerformingCount</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WARemoteInterface/monitoredHostsToReachabilityDetectors</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSMutableDictionary *monitoredHostsToReachabilityDetectors</Declaration>
+			
+			
+			<Anchor>//api/name/monitoredHostsToReachabilityDetectors</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/reachabilityDetectorDidUpdate:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Reachability.m</DeclaredIn>			
+			
+			<Declaration>- (void)reachabilityDetectorDidUpdate:(WAReachabilityDetector *)aDetector</Declaration>
+			
+			
+			<Anchor>//api/name/reachabilityDetectorDidUpdate:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultV2AuthenticationSignatureBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Authentication.h</DeclaredIn>			
+			
+			<Declaration>- (IRWebAPIRequestContextTransformer)defaultV2AuthenticationSignatureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/defaultV2AuthenticationSignatureBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultV2AuthenticationListeningBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Authentication.h</DeclaredIn>			
+			
+			<Declaration>- (IRWebAPIResponseContextTransformer)defaultV2AuthenticationListeningBlock</Declaration>
+			
+			
+			<Anchor>//api/name/defaultV2AuthenticationListeningBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveTokenForUser:password:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Authentication.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void ( ^ ) ( NSDictionary *userRep , NSString *token ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveTokenForUser:password:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/discardToken:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Authentication.h</DeclaredIn>			
+			
+			<Declaration>- (void)discardToken:(NSString *)aToken onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/discardToken:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveLastScannedPostInGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Footprints.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveLastScannedPostInGroup:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSString *lastScannedPostIdentifier ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveLastScannedPostInGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/updateLastScannedPostInGroup:withPost:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Footprints.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateLastScannedPostInGroup:(NSString *)aGroupIdentifier withPost:(NSString *)aPostIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateLastScannedPostInGroup:withPost:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveLastReadInfoForPosts:inGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Footprints.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveLastReadInfoForPosts:(NSArray *)postIdentifiers inGroup:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSDictionary *lastReadPostIdentifiersToTimestamps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveLastReadInfoForPosts:inGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/updateLastReadInfoForPosts:inGroup:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Footprints.h</DeclaredIn>			
+			
+			<Declaration>- (void)updateLastReadInfoForPosts:(NSArray *)postIdentifiers inGroup:(NSString *)aGroupIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/updateLastReadInfoForPosts:inGroup:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createAttachmentWithFile:group:options:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Attachments.h</DeclaredIn>			
+			
+			<Declaration>- (void)createAttachmentWithFile:(NSURL *)aFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void ( ^ ) ( NSString *attachmentIdentifier ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createAttachmentWithFile:group:options:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveAttachment:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Attachments.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveAttachment:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSDictionary *attachmentRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveAttachment:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/deleteAttachment:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Attachments.h</DeclaredIn>			
+			
+			<Declaration>- (void)deleteAttachment:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( void ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/deleteAttachment:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveThumbnailForAttachment:ofType:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Attachments.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveThumbnailForAttachment:(NSString *)anIdentifier ofType:(WARemoteAttachmentType)aType onSuccess:(void ( ^ ) ( NSURL *aThumbnailURL ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveThumbnailForAttachment:ofType:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createAttachmentWithFileAtURL:inGroup:representingImageURL:withTitle:description:replacingAttachment:asType:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+Attachments.h</DeclaredIn>			
+			
+			<Declaration>- (void)createAttachmentWithFileAtURL:(NSURL *)aFileURL inGroup:(NSString *)aGroupIdentifier representingImageURL:(NSURL *)aRepresentingImageForBinaryTypesOrNil withTitle:(NSString *)aTitle description:(NSString *)aDescription replacingAttachment:(NSString *)replacedAttachmentIdentifierOrNil asType:(WARemoteAttachmentType)aType onSuccess:(void ( ^ ) ( NSString *attachmentIdentifier ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createAttachmentWithFileAtURL:inGroup:representingImageURL:withTitle:description:replacingAttachment:asType:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultV1AuthenticationSignatureBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (IRWebAPIRequestContextTransformer)defaultV1AuthenticationSignatureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/defaultV1AuthenticationSignatureBlock</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/defaultV1QueryHack</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (IRWebAPIRequestContextTransformer)defaultV1QueryHack</Declaration>
+			
+			
+			<Anchor>//api/name/defaultV1QueryHack</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveAvailableUsersOnSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveAvailableUsersOnSuccess:(void ( ^ ) ( NSArray *retrievedUserReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveAvailableUsersOnSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveArticlesWithContinuation:batchLimit:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveArticlesWithContinuation:(id)aContinuation batchLimit:(NSUInteger)maximumNumberOfArticles onSuccess:(void ( ^ ) ( NSArray *retrievedArticleReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveArticlesWithContinuation:batchLimit:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveArticleWithRemoteIdentifier:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSDictionary *retrievedArticleRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveArticleWithRemoteIdentifier:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveCommentsOfArticleWithRemoteIdentifier:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveCommentsOfArticleWithRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSArray *retrievedComentReps ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveCommentsOfArticleWithRemoteIdentifier:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createArticleAsUser:withText:attachments:usingDevice:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)createArticleAsUser:(NSString *)creatorIdentifier withText:(NSString *)bodyText attachments:(NSArray *)attachmentIdentifiers usingDevice:(NSString *)creationDeviceName onSuccess:(void ( ^ ) ( NSDictionary *createdCommentRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createArticleAsUser:withText:attachments:usingDevice:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/uploadFileAtURL:asUser:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)uploadFileAtURL:(NSURL *)aFileURL asUser:(NSString *)creatorIdentifier onSuccess:(void ( ^ ) ( NSDictionary *uploadedFileRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/uploadFileAtURL:asUser:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/createCommentAsUser:forArticle:withText:usingDevice:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)createCommentAsUser:(NSString *)creatorIdentifier forArticle:(NSString *)anIdentifier withText:(NSString *)bodyText usingDevice:(NSString *)creationDeviceName onSuccess:(void ( ^ ) ( NSDictionary *createdCommentRep ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/createCommentAsUser:forArticle:withText:usingDevice:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/retrieveLastReadArticleRemoteIdentifierOnSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)retrieveLastReadArticleRemoteIdentifierOnSuccess:(void ( ^ ) ( NSString *lastID , NSDate *modDate ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/retrieveLastReadArticleRemoteIdentifierOnSuccess:onFailure:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WARemoteInterface/setLastReadArticleRemoteIdentifier:onSuccess:onFailure:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WARemoteInterface+DeprecatedNonfunctional.h</DeclaredIn>			
+			
+			<Declaration>- (void)setLastReadArticleRemoteIdentifier:(NSString *)anIdentifier onSuccess:(void ( ^ ) ( NSDictionary *response ))successBlock onFailure:(void ( ^ ) ( NSError *error ))failureBlock</Declaration>
+			
+			
+			<Anchor>//api/name/setLastReadArticleRemoteIdentifier:onSuccess:onFailure:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

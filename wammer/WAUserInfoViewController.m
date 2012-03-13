@@ -15,6 +15,12 @@
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
 
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+
+#import "IASKAppSettingsViewController.h"
+
+
 #define kConnectivitySection 1
 
 @interface WAUserInfoViewController ()
@@ -40,12 +46,33 @@
 
   [super irConfigure];
   
-  self.title = NSLocalizedString(@"SETTINGS_TITLE", @"Settings for User popover");
+  self.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
   
 	self.tableViewStyle = UITableViewStyleGrouped;
-  //	self.contentSizeForViewInPopover = (CGSize){ 320, 650 };
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingContentSizeInPopover {
+
+	return [NSSet setWithObjects:
+	
+		@"tableView.contentInset",
+		@"tableView.contentSize",
+	
+	nil];
+
+}
+
+- (CGSize) contentSizeForViewInPopover {
+
+	return (CGSize){
+		
+		320,
+		self.tableView.contentInset.top + self.tableView.contentSize.height + self.tableView.contentInset.bottom
+		
+	};
 
 }
 
@@ -53,7 +80,32 @@
 
   [super viewDidLoad];
 	
+  [self.tableView reloadData];
+//	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:[NSDictionary dictionaryWithObjectsAndKeys:
+//	
+//		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+//		
+//			CGSize inSize = [inNewValue CGSizeValue];
+//			
+//			return [NSValue valueWithCGSize:(CGSize){
+//			
+//				320,
+//				inSize.height
+//			
+//			}];
+//		
+//		} copy] autorelease], kIRBindingsValueTransformerBlock,
+//	
+//	nil]];
+	
 	self.tableView.sectionHeaderHeight = 56;
+	
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
+		
+		self.tableView.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];		
+		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
+		
+	}
   
 }
 
@@ -63,7 +115,6 @@
 	
   self.monitoredHosts = nil;
   [self.tableView reloadData];
-	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:nil];
   
 	NSError *fetchingError = nil;
   NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -169,6 +220,9 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
+	if (WAAdvancedFeaturesEnabled())
+		return 4;
+	
   return 3;
 
 }
@@ -185,6 +239,9 @@
 			
 		case 2:
       return 3;
+		
+		case 3:
+			return 1;
 			
     default:
       return 0;
@@ -219,6 +276,7 @@
   
   if (section == 2)
     return NSLocalizedString(@"NOUN_STORAGE_QUOTA", @"Noun for storage quota.");
+	
   return nil;
 
 }
@@ -243,8 +301,11 @@
 	}
 	
 	if (section == 2) {
-		return NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer");
+		
+		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] debugVersionString]];
+		
 	}
+	
 	return nil;
 
 }
@@ -260,8 +321,10 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:anIdentifier];
 		if (!cell) {
 			cell = [[[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
+		
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.accessoryType = UITableViewCellAccessoryNone;
 		
 		return cell;
 		
@@ -282,7 +345,7 @@
 		switch (indexPath.row) {
 			
 			case 0: {
-				cell = createCell(kValue1Identifier, UITableViewCellStyleSubtitle);
+				cell = createCell(kSubtitleCellIdentifier, UITableViewCellStyleSubtitle);
 				cell.textLabel.text = self.user.nickname;
 				cell.detailTextLabel.text = self.user.email;
 				break;
@@ -372,10 +435,67 @@
 			
 		}
 		
+	} else if (indexPath.section == 3) {
+	
+		cell = anyCell();
+		
+		switch (indexPath.row) {
+		
+			case 0: {
+			
+				cell.textLabel.text = NSLocalizedString(@"SETTINGS_TITLE", nil);
+				cell.detailTextLabel.text = nil;
+				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			
+				break;
+				
+			}
+		
+		}
+	
 	}
 	
 	NSParameterAssert(cell);
   return cell;
+
+}
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	switch (indexPath.section) {
+	
+		case 3: {
+		
+			switch (indexPath.row) {
+			
+				case 0: {
+				
+					__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					appSettingsViewController.delegate = self;
+					appSettingsViewController.showDoneButton = NO;
+					appSettingsViewController.showCreditsFooter = NO;
+					
+					appSettingsViewController.navigationItem.hidesBackButton = YES;
+					appSettingsViewController.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, self.title, ^ {
+					
+						[appSettingsViewController.navigationController popViewControllerAnimated:YES];
+					
+					});
+					
+					[self.navigationController pushViewController:appSettingsViewController animated:YES];
+				
+					break;
+				
+				}
+			
+			}
+		
+			break;
+		}
+	
+	
+	}
 
 }
 
@@ -407,8 +527,9 @@
 
 - (void) viewDidUnload {
   
+	//[self irUnbind:@"contentSize"];
+
   [super viewDidUnload];	
-	[self irUnbind:@"contentSize"];
 	
 }
 
@@ -417,7 +538,7 @@
   [monitoredHosts release];
   [managedObjectContext release];
   
-	[self irUnbind:@"contentSize"];
+//	[self irUnbind:@"contentSize"];
   
   [super dealloc];
 

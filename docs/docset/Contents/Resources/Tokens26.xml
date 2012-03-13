@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAComposeCommentViewControllerPhone.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAComposeCommentViewControllerPhone</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.h</DeclaredIn>
+			
+			<NodeRef refid="26"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComposeCommentViewControllerPhone/contentTextView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutlet UITextView *contentTextView</Declaration>
+			
+			
+			<Anchor>//api/name/contentTextView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAComposeCommentViewControllerPhone/controllerWithPost:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.h</DeclaredIn>			
+			
+			<Declaration>+ (WAComposeCommentViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void ( ^ ) ( NSURL *aPostURLOrNil ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWithPost:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/initWithNibName:bundle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/initWithNibName:bundle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/handleManagedObjectContextDidSave:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleManagedObjectContextDidSave:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleManagedObjectContextDidSave:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/didReceiveMemoryWarning</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)didReceiveMemoryWarning</Declaration>
+			
+			
+			<Anchor>//api/name/didReceiveMemoryWarning</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/handleDone:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleDone:(UIBarButtonItem *)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleDone:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAComposeCommentViewControllerPhone/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComposeCommentViewControllerPhone/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComposeCommentViewControllerPhone/post</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAArticle *post</Declaration>
+			
+			
+			<Anchor>//api/name/post</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAComposeCommentViewControllerPhone/completionBlock</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAComposeCommentViewControllerPhone.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, copy) void ( ^ ) ( NSURL *returnedURI ) completionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/completionBlock</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

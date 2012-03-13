@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WANavigationController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WANavigationController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.h</DeclaredIn>
+			
+			<NodeRef refid="48"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WANavigationController/onViewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WANavigationController *self ) onViewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/onViewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WANavigationController/willPushViewControllerAnimated</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WANavigationController *self , UIViewController *pushedVC , BOOL animated ) willPushViewControllerAnimated</Declaration>
+			
+			
+			<Anchor>//api/name/willPushViewControllerAnimated</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WANavigationController/didPushViewControllerAnimated</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WANavigationController *self , UIViewController *pushedVC , BOOL animated ) didPushViewControllerAnimated</Declaration>
+			
+			
+			<Anchor>//api/name/didPushViewControllerAnimated</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WANavigationController/onDismissModalViewControllerAnimated</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( WANavigationController *self , BOOL animated ) onDismissModalViewControllerAnimated</Declaration>
+			
+			
+			<Anchor>//api/name/onDismissModalViewControllerAnimated</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WANavigationController/disablesAutomaticKeyboardDismissal</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL disablesAutomaticKeyboardDismissal</Declaration>
+			
+			
+			<Anchor>//api/name/disablesAutomaticKeyboardDismissal</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WANavigationController/alloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.m</DeclaredIn>			
+			
+			<Declaration>+ (id)alloc</Declaration>
+			
+			
+			<Anchor>//api/name/alloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WANavigationController/initWithRootViewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithRootViewController:(UIViewController *)presentedViewController</Declaration>
+			
+			
+			<Anchor>//api/name/initWithRootViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WANavigationController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WANavigationController/pushViewController:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.m</DeclaredIn>			
+			
+			<Declaration>- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/pushViewController:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WANavigationController/dismissModalViewControllerAnimated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dismissModalViewControllerAnimated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/dismissModalViewControllerAnimated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WANavigationController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WANavigationController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

@@ -12,9 +12,12 @@
 #import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
 
-#import "UIView+IRAdditions.h"
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "WARemoteInterface.h"
+#import "IRLifetimeHelper.h"
+
 
 @interface WAArticleCommentsViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, NSFetchedResultsControllerDelegate>
 
@@ -32,6 +35,7 @@
 
 
 @implementation WAArticleCommentsViewController
+@synthesize wrapperView;
 @dynamic view;
 @synthesize commentsView, commentRevealButton, commentPostButton, commentCloseButton, compositionContentField, compositionSendButton, compositionAccessoryView, commentsRevealingActionContainerView;
 @synthesize compositionAccessoryTextWellBackgroundView, compositionAccessoryBackgroundView;
@@ -39,7 +43,7 @@
 @synthesize managedObjectContext, fetchedResultsController, article;
 @synthesize cellPrototype;
 @synthesize onViewDidLoad;
-@synthesize scrollsToLastRowOnChange;
+@synthesize scrollsToLastRowOnChange, adjustsContainerViewOnInterfaceBoundsChange;
 @synthesize coachmarkOverlay;
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
@@ -50,6 +54,51 @@
 	returnedController.representedArticleURI = articleObjectURL;
 	
 	return returnedController;
+
+}
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+	
+	scrollsToLastRowOnChange = YES;
+	adjustsContainerViewOnInterfaceBoundsChange = YES;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+	
+	return self;
+
+}
+
+- (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	[commentsView removeObserver:self forKeyPath:@"contentSize"];
+
+	[commentsView release];
+	[commentRevealButton release];
+	[commentPostButton release];
+	[commentCloseButton release];
+	[compositionContentField release];
+	[compositionSendButton release];
+	[compositionAccessoryView release];
+	[commentsRevealingActionContainerView release];
+	
+	[cellPrototype release];
+	
+	[managedObjectContext release];
+	[fetchedResultsController release];
+	[article release];
+	
+	[onViewDidLoad release];
+	
+	[coachmarkOverlay release];
+	
+	[wrapperView release];
+	[super dealloc];
 
 }
 
@@ -74,6 +123,61 @@
 
 }
 
+- (void) handleInterfaceBoundsDidChange:(NSNotification *)notification {
+
+	if (![self isViewLoaded])
+		return;
+
+	if (!self.adjustsContainerViewOnInterfaceBoundsChange)
+		return;
+		
+	UIWindow *usedWindow = [notification object];
+	
+	if (![usedWindow isKindOfClass:[UIWindow class]])
+		usedWindow = self.view.window;
+	
+	if (!usedWindow)
+		usedWindow = [UIApplication sharedApplication].keyWindow;
+	
+	if (!usedWindow)
+		return;
+
+	[self adjustWrapperViewBoundsWithWindow:usedWindow interfaceBounds:usedWindow.irInterfaceBounds animated:([[[[[notification userInfo] objectForKey:IRWindowInterfaceChangeUnderlyingKeyboardNotificationKey] userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] > 0)];
+
+}
+
+- (void) adjustWrapperViewBoundsWithWindow:(UIWindow *)window interfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate {
+
+	if (![self isViewLoaded])
+		return;
+ 
+	if (!window) {
+		self.wrapperView.frame = self.view.bounds;
+		[self.view setNeedsLayout];
+		return;
+	}
+
+	CGRect ownRectInWindow = [window convertRect:self.view.bounds fromView:self.view];
+	CGRect intersection = CGRectIntersection(ownRectInWindow, newInterfaceBounds);
+	
+	if (CGRectEqualToRect(CGRectNull, intersection) || CGRectIsInfinite(intersection))
+		return;
+	
+	intersection = [window convertRect:intersection toView:self.wrapperView.superview];
+	
+	UIViewAnimationOptions animationOptions = UIViewAnimationOptionBeginFromCurrentState;
+	
+	[UIView animateWithDuration:(animate ? 0.3 : 0) delay:0 options:animationOptions animations:^{
+		
+		self.wrapperView.frame = intersection;
+		[self.view layoutSubviews];
+		
+	} completion:^(BOOL finished) {
+				
+	}];
+
+}
+
 
 
 
@@ -89,6 +193,16 @@
 		else
 			[self.commentsView reloadData];
 	}
+	
+	[self adjustWrapperViewBoundsWithWindow:self.view.window interfaceBounds:self.view.window.irInterfaceBounds animated:NO];
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	[[self.view irFirstResponderInView] resignFirstResponder];
 
 }
 
@@ -100,8 +214,10 @@
 
 	[super viewDidLoad];
 	
-	[self.view insertSubview:self.commentsRevealingActionContainerView atIndex:0];
-	[self.view addSubview:self.compositionAccessoryView];
+	self.contentSizeForViewInPopover = [self contentSizeForViewInPopover];
+	
+	[self.wrapperView insertSubview:self.commentsRevealingActionContainerView atIndex:0];
+	[self.wrapperView addSubview:self.compositionAccessoryView];
 	
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self.view) nrView = self.view;
@@ -141,6 +257,9 @@
 	self.commentsView.delegate = self;
 	self.commentsView.rowHeight = 96.0f;
 	
+	self.commentsView.bounces = YES;
+	self.commentsView.alwaysBounceVertical = YES;
+	 
 	self.commentsRevealingActionContainerView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin;
 	self.commentsRevealingActionContainerView.backgroundColor = [UIColor clearColor];
 	self.commentsRevealingActionContainerView.layer.shadowOffset = (CGSize){ 0.0f, 1.0f };
@@ -154,19 +273,31 @@
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
 	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
 	
-	[self.compositionSendButton setBackgroundImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:8 topCapHeight:8] forState:UIControlStateNormal];
+	__block UIImageView *compositionSendButtonBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:20 topCapHeight:20]] autorelease];
+	compositionSendButtonBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	compositionSendButtonBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionSendButton.bounds, (UIEdgeInsets){ -8, -8, -8, -8 });
 	
+	[compositionSendButtonBackgroundView irBind:@"alpha" toObject:self.compositionSendButton keyPath:@"enabled" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
+		[[^ (id oldValue, id newValue, NSKeyValueChange type) {
+		
+			return [newValue isEqual:(id)kCFBooleanTrue] ? [NSNumber numberWithFloat:1.0] : [NSNumber numberWithFloat:0.5];
+
+		} copy] autorelease], kIRBindingsValueTransformerBlock,
 	
-	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:14 topCapHeight:14]] autorelease];
+	nil]];
+	
+	[self.compositionSendButton insertSubview:compositionSendButtonBackgroundView atIndex:0];
+	
+	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:22 topCapHeight:20]] autorelease];
 	NSParameterAssert(textWellBackgroundView.image);
 	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
-	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ 0, -2, -2, -2 });
+	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ -8, -8, -8, -8 });
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
 		
-	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:8]] autorelease];
+	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:24]] autorelease];
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -4, 0, 0, 0 });
+	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -3, 0, 0, 0 });
 	
 	self.compositionAccessoryTextWellBackgroundView = [[[WAView alloc] initWithFrame:textWellBackgroundView.bounds] autorelease];
 	self.compositionAccessoryTextWellBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -185,26 +316,40 @@
 		
 		//	nrView.layer.shadowPath = [UIBezierPath bezierPathWithRect:nrView.bounds].CGPath;
 		
-		static CGFloat inactiveAccessoryViewHeight = 64.0f;
-		static CGFloat activeAccessoryViewHeight = 128.0f;
+		static CGFloat inactiveAccessoryViewHeight = 40.0f;
+		static CGFloat activeAccessoryViewHeight = 80.0f;
 		
 		BOOL accessoryViewActive = !![nrCompositionAccessoryView irFirstResponderInView];
 		CGFloat accessoryViewHeight = accessoryViewActive ? activeAccessoryViewHeight : inactiveAccessoryViewHeight;
 		
-		CGRect accessoryViewFrame, nullRect;
-		CGRectDivide(nrView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
-		
 		UIEdgeInsets commentsViewContentInset = nrCommentsView.contentInset;
 		commentsViewContentInset.bottom = accessoryViewHeight;
+		
+//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
 		
 		UIEdgeInsets commentsViewScrollIndicatorInsets = nrCommentsView.scrollIndicatorInsets;
 		commentsViewScrollIndicatorInsets.bottom = accessoryViewHeight;
 		
+//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+
 		nrCommentsView.contentInset = commentsViewContentInset;
 		nrCommentsView.scrollIndicatorInsets = commentsViewScrollIndicatorInsets;
 		
+//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+
+		CGRect oldWrapperViewBounds = nrSelf.wrapperView.bounds;
+		NSLog(@"nrSelf.wrapperView.bounds was %@", NSStringFromCGRect(nrSelf.wrapperView.bounds));
+		
+		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+
+		CGRect accessoryViewFrame, nullRect;
+		CGRectDivide(nrSelf.wrapperView.bounds, &accessoryViewFrame, &nullRect, accessoryViewHeight, CGRectMaxYEdge);
+
 		accessoryViewFrame.origin.x = nrCompositionAccessoryView.frame.origin.x;
 		accessoryViewFrame.size.width = nrCompositionAccessoryView.frame.size.width;
+		
+		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
+		NSCParameterAssert(CGRectGetMaxY(accessoryViewFrame) == CGRectGetMaxY(nrSelf.wrapperView.bounds));
 		
 		if (nrView.bounds.size.height == 0) {
 			
@@ -244,6 +389,9 @@
 	};
 	
 	self.view.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
+	
+		if (superAnswer)
+			return superAnswer;
 		
 		CGPoint pointWithinRevealingContainerView = [nrView convertPoint:aPoint toView:nrRevealingActionContainerView];
 		if ([nrRevealingActionContainerView pointInside:pointWithinRevealingContainerView withEvent:anEvent])
@@ -254,6 +402,9 @@
 	};
 	
 	self.view.onHitTestWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, UIView *superAnswer) {
+	
+		if ((superAnswer == nrSelf.commentsView) || ([superAnswer isDescendantOfView:nrSelf.commentsView]))
+			return superAnswer;
 	
 		UIView *hitSubview = [nrRevealingActionContainerView hitTest:aPoint withEvent:anEvent];
 		
@@ -317,10 +468,10 @@
 	self.compositionAccessoryView.frame = (CGRect){
 		(CGPoint){
 			self.compositionAccessoryView.frame.origin.x,
-			CGRectGetHeight(self.view.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
+			CGRectGetHeight(self.wrapperView.bounds) - CGRectGetHeight(self.compositionAccessoryView.frame)
 		},
 		(CGSize){
-			self.compositionAccessoryView.frame.size.width,
+			CGRectGetWidth(self.wrapperView.bounds),
 			CGRectGetHeight(self.compositionAccessoryView.frame)	
 		}
 	};
@@ -338,6 +489,8 @@
 	
 	[self.commentsView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
+	[self textViewDidChange:self.compositionContentField];
+	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad();
 	
@@ -346,6 +499,8 @@
 - (void) viewDidUnload {
 
 	[self.commentsView removeObserver:self forKeyPath:@"contentSize"];
+	
+	self.wrapperView = nil;
 
 	self.commentsView = nil;
 	self.commentRevealButton = nil;
@@ -467,10 +622,12 @@
 	[self.delegate articleCommentsViewController:self didFinishComposingComment:self.compositionContentField.text];
 	
 	self.compositionContentField.text = nil;
+	[self textViewDidChange:self.compositionContentField];
 	
 	[self.delegate articleCommentsViewController:self wantsState:WAArticleCommentsViewControllerStateShown onFulfillment: ^ {
 		[self.compositionContentField resignFirstResponder];
 	}];
+	
 }
 
 
@@ -539,6 +696,7 @@
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	[self.commentsView reloadData];
+	[self.view setNeedsLayout];
 	
 	if (![controller.sections count])
 		return;
@@ -656,6 +814,16 @@
 	
 }
 
+- (void) textViewDidChange:(UITextView *)textView {
+
+	if (self.delegate) {
+		
+		self.compositionSendButton.enabled = [self.delegate articleCommentsViewController:self canSendComment:textView.text];
+	
+	}
+
+}
+
 - (void) textViewDidEndEditing:(UITextView *)textView {
 
 	[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations: ^ {
@@ -677,31 +845,41 @@
 
 }
 
-- (void) dealloc {
++ (NSSet *) keyPathsForValuesAffectingContentSizeForViewInPopover {
 
-	[commentsView removeObserver:self forKeyPath:@"contentSize"];
+    return [NSSet setWithObjects:
 
-	[commentsView release];
-	[commentRevealButton release];
-	[commentPostButton release];
-	[commentCloseButton release];
-	[compositionContentField release];
-	[compositionSendButton release];
-	[compositionAccessoryView release];
-	[commentsRevealingActionContainerView release];
-	
-	[cellPrototype release];
-	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[article release];
-	
-	[onViewDidLoad release];
-	
-	[coachmarkOverlay release];
-	
-	[super dealloc];
+        @"commentsView.contentInset",
+        @"commentsView.contentSize",
+
+    nil];
 
 }
+
+- (CGSize) contentSizeForViewInPopover {
+
+	UITableView *tableView = self.commentsView;
+	CGSize newSize = (CGSize){
+
+			320,
+			MAX(240, tableView.contentInset.top + tableView.contentSize.height + tableView.contentInset.bottom)
+
+	};
+	
+	if (!CGSizeEqualToSize([super contentSizeForViewInPopover], newSize))
+		self.contentSizeForViewInPopover = newSize;
+	
+	return newSize;
+
+}
+
+//- (void) setContentSizeForViewInPopover:(CGSize)newContentSizeForViewInPopover {
+//	
+//	[super setContentSizeForViewInPopover:newContentSizeForViewInPopover];
+//	
+//	if ([self isViewLoaded])
+//		[self.view layoutSubviews];
+//	
+//}
 
 @end

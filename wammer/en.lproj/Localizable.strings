@@ -1,5 +1,12 @@
-/* Action title for cancelling
-   Action title for Cancelling
+/* attachment activity view */
+"ACTION_ADD" = "Add";
+
+/* Action title for cancelling */
+"ACTION_BACK" = "Back";
+
+/* Action title for Cancelling
+   Action title for cancelling
+   Action title for cancelling stuff
    Cancel. */
 "ACTION_CANCEL" = "Cancel";
 
@@ -12,6 +19,9 @@
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";
 
+/* Button title for showing an image picker */
+"ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
+
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
 
@@ -21,6 +31,12 @@
 /* Action title for accepting what happened reluctantly
    Fine! */
 "ACTION_OKAY" = "Okay";
+
+/* No comment provided by engineer. */
+"ACTION_OPEN_IN_SAFARI" = "Open in Safari";
+
+/* No comment provided by engineer. */
+"ACTION_PRINT" = "Print";
 
 /* Action title for processing stuff */
 "ACTION_PROCESSING" = "Processing";
@@ -44,6 +60,9 @@
    Action title for signing the user out */
 "ACTION_SIGN_OUT" = "Sign Out";
 
+/* Button title for showing a camera capture controller */
+"ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
+
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";
 
@@ -62,6 +81,24 @@
 
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "Welcome";
+
+/* “%@ Comments” */
+"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";
+
+/* “%@ Comment” */
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Comment";
+
+/* “%@ Comment” or “No Comment” */
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comment";
+
+/* No comment provided by engineer. */
+"COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
+
+/* No comment provided by engineer. */
+"COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i Photo";
+
+/* No comment provided by engineer. */
+"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
@@ -86,6 +123,18 @@
 
 /* Text to show when Cloud is available, but the Station is not responsive */
 "ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "We’re having trouble connecting to your Station.";
+
+/* Article entity sync failure alert message for no underlying error */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly.  The post has been saved as a draft.";
+
+/* Article entity sync failure alert title */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
+
+/* Failed, underlying error %@ with reason %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — the post has been saved as a draft.";
+
+/* Failed, underlying error description %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — the post has been saved as a draft.";
 
 /* Description for authentication failure */
 "ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface has trouble authenticating your account: ";
@@ -133,6 +182,18 @@
    Title for username */
 "NOUN_USERNAME" = "Username";
 
+/* Photo information in cell */
+"NUMBER_OF_PHOTOS" = "%d photos";
+
+/* Text to show for previews without a provider name */
+"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
+
+/* Text to show for previews without body text */
+"PREVIEW_BADGE_TEXT_PLACEHOLDER" = "(No Content)";
+
+/* Text to show for previews without a title */
+"PREVIEW_BADGE_TITLE_PLACEHOLDER" = "(No Title)";
+
 /* Short label for the Cloud */
 "PROPER_NOUN_WF_CLOUD" = "Cloud";
 
@@ -157,8 +218,8 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
-/* Settings for User popover */
-"SETTINGS_TITLE" = "User";
+/* No comment provided by engineer. */
+"SETTINGS_TITLE" = "Settings";
 
 /* Production Disclaimer */
 "SHORT_LEGAL_DISCLAIMER" = "Waveface Inc., 2011–";
@@ -187,11 +248,29 @@
 /* No comment provided by engineer. */
 "STORATE_QUOTA_INTERVAL_END_DATE" = "Ends";
 
+/* Title on the text stack more / less toggle button for “Less” */
+"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
+
+/* Title on the text stack more / less toggle button for “More” */
+"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "Account";
 
+/* Settings for User popover */
+"USER_INFO_CONTROLLER_TITLE" = "User";
+
+/* attachment activity view */
+"WEB_PREVIEW" = "Web Preview";
+
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
+"ACTION_SEND" = "Send";
+
+/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "No Photos";

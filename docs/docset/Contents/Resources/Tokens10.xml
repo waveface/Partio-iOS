@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleFilesListViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleFilesListViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.h</DeclaredIn>
+			
+			<NodeRef refid="10"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleFilesListViewController/controllerWithArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (id)controllerWithArticle:(NSURL *)anURI</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWithArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/numberOfSectionsInTableView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfSectionsInTableView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/tableView:numberOfRowsInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:numberOfRowsInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/tableView:cellForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:cellForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/tableView:didSelectRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:didSelectRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/numberOfPreviewItemsInPreviewController:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfPreviewItemsInPreviewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/previewController:previewItemAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id&lt;QLPreviewItem&gt;)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index</Declaration>
+			
+			
+			<Anchor>//api/name/previewController:previewItemAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSManagedObjectContext *)managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/fetchedResultsController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSFetchedResultsController *)fetchedResultsController</Declaration>
+			
+			
+			<Anchor>//api/name/fetchedResultsController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (WAArticle *)article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/controllerDidChangeContent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/controllerDidChangeContent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleFilesListViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleFilesListViewController/articleURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSURL *articleURL</Declaration>
+			
+			
+			<Anchor>//api/name/articleURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleFilesListViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleFilesListViewController/fetchedResultsController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController</Declaration>
+			
+			
+			<Anchor>//api/name/fetchedResultsController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleFilesListViewController/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleFilesListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

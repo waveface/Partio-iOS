@@ -12,45 +12,41 @@
 #import "WAPreviewBadge.h"
 #import "WAImageView.h"
 
-#import "IRLabel.h"
 #import "CoreText+IRAdditions.h"
 #import "CGGeometry+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
 
-#ifndef __WAPreviewBadge__
-#define __WAPreviewBadge__
-
-typedef enum {
-	WAPreviewBadgeImageAndTextStyle = 0,
-	WAPreviewBadgeTextOnlyStyle,
-	WAPreviewBadgeImageOnlyStyle
-} WAPreviewBadgeStyle;
-
-#endif
-
-@interface WAPreviewBadge () {
-	BOOL needsTextUpdate;
-}
+@interface WAPreviewBadge ()
 
 - (void) waSharedInit;
+
+@property (nonatomic, readonly, assign) WAPreviewBadgeStyle suggestedStyle;
 
 @property (nonatomic, readwrite, retain) UIImageView *imageView;
 @property (nonatomic, readwrite, retain) IRLabel *label;
 
-- (void) setNeedsTextUpdate;
-- (void) updateText;
+@property (nonatomic, readonly, retain) NSAttributedString *attributedText; 
+
+- (void) layoutImageAndTextStyle;
+- (void) layoutImageOnlyStyle;
+- (void) layoutTextOnlyStyle;
+- (void) layoutTextOverImageStyle;
 
 @end
 
 
 @implementation WAPreviewBadge
-@synthesize image, title, text, link;
-@synthesize imageView, label;
-@synthesize titleFont, titleColor, textFont, textColor;
-@synthesize backgroundView;
+
+@synthesize preview, style;
+@synthesize titleFont, titleColor, titlePlaceholder, titlePlaceholderColor;
+@synthesize providerNameFont, providerNameColor, providerNamePlaceholder, providerNamePlaceholderColor;
+@synthesize textFont, textColor, textPlaceholder, textPlaceholderColor;
+
+@synthesize imageView, label, backgroundView;
 @synthesize minimumAcceptibleFullFrameAspectRatio;
-@synthesize preview;
+@synthesize gutterWidth;
+
 
 - (id) initWithFrame:(CGRect)frame {
 	
@@ -71,12 +67,107 @@ typedef enum {
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingAttributedText {
+
+	return [NSSet setWithObjects:
+	
+		@"title",
+		@"providerName",
+		@"text",
+	
+		@"titleFont",
+		@"titleColor",
+		@"titlePlaceholder",
+		@"titlePlaceholderColor",
+		
+		@"providerNameFont",
+		@"providerNameColor",
+		@"providerNamePlaceholder",
+		@"providerNamePlaceholderColor",
+		
+		@"textFont",
+		@"textColor",
+		@"textPlaceholder",
+		@"textPlaceholderColor",
+	
+	nil];
+
+}
+
+- (NSAttributedString *) attributedText {
+
+	NSMutableAttributedString *returnedString = [[[NSMutableAttributedString alloc] initWithString:@""] autorelease];
+	
+	NSAttributedString * (^append)(NSString *, NSString *, UIFont *, UIColor *, UIColor *, NSDictionary *) = ^ (NSString *string, NSString *placeholder, UIFont *font, UIColor *color, UIColor *placeholderColor, NSDictionary *otherAttrs) {
+	
+		NSString * const usedString = string ? string : placeholder;
+		if (!usedString)	//	ZERO length strings still occupy space
+			return (NSAttributedString *)nil;
+		
+		UIColor * const usedColor = string ? color : (placeholderColor ? placeholderColor : color);
+		
+		NSDictionary * const baseAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+		
+			//  Global attributes here
+			
+			(id)[font irFixedLineHeightParagraphStyle], kCTParagraphStyleAttributeName,
+		
+		nil];
+		
+		NSDictionary * const usedAttrs = [[[NSAttributedString irAttributesForFont:font color:usedColor] irDictionaryByMergingWithDictionary:baseAttrs] irDictionaryByMergingWithDictionary:otherAttrs];
+		
+		NSAttributedString *appendedString = [[[NSAttributedString alloc] initWithString:usedString attributes:usedAttrs] autorelease];
+		[returnedString appendAttributedString:appendedString];
+
+		return appendedString;
+		
+	};
+	
+	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor, [NSDictionary dictionaryWithObjectsAndKeys:
+		
+			self.link, kIRTextLinkAttribute,
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:(self.titleFont.leading - 4)], kCTParagraphStyleAttributeName,
+		
+	nil]);
+	
+	if (titleElement)
+		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
+		nil]);
+			
+	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
+	
+	if (titleElement || providerElement) {
+		append(@"\n \n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:12.0], kCTParagraphStyleAttributeName,
+		nil]);
+	}
+	
+	append(self.text, self.textPlaceholder, self.textFont, self.textColor, self.textPlaceholderColor, nil);
+	
+	return returnedString;
+
+}
+
 - (void) waSharedInit {
 
-	self.titleFont = [UIFont fontWithName:@"Sansus Webissimo" size:32.0f];
+	self.minimumAcceptibleFullFrameAspectRatio = 0.85f;
+	self.gutterWidth = 12.0f;
+	
+	self.titlePlaceholder	= NSLocalizedString(@"PREVIEW_BADGE_TITLE_PLACEHOLDER", @"Text to show for previews without a title");
+	self.titleFont = [UIFont boldSystemFontOfSize:24.0f];
 	self.titleColor = [UIColor colorWithRed:0 green:0 blue:0.45f alpha:1.0f];
-	self.textFont = [UIFont fontWithName:@"Palatino" size:16.0f];
-	self.textColor = [UIColor blackColor];
+	self.titlePlaceholderColor = [UIColor grayColor];
+	
+	self.providerNamePlaceholder = NSLocalizedString(@"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER", @"Text to show for previews without a provider name");
+	self.providerNameFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
+	self.providerNameColor = [UIColor colorWithWhite:0.65 alpha:1];
+	self.providerNamePlaceholderColor = [UIColor grayColor];
+	
+	self.textPlaceholder = NSLocalizedString(@"PREVIEW_BADGE_TEXT_PLACEHOLDER", @"Text to show for previews without body text");
+	self.textFont = [UIFont systemFontOfSize:16.0f];
+	self.textColor = [UIColor colorWithWhite:0.3 alpha:1];
+	self.textPlaceholderColor = [UIColor grayColor];
 	
 	self.backgroundColor = nil;
 	self.opaque = NO;
@@ -86,8 +177,6 @@ typedef enum {
 	self.backgroundView.backgroundColor = nil;
 	self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	self.minimumAcceptibleFullFrameAspectRatio = 0.85f;
-	
 	UIView *innerBackgroundView = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 })] autorelease];
 	innerBackgroundView.layer.contents = (id)[UIImage imageNamed:@"WAPreviewBadge"].CGImage;
 	innerBackgroundView.layer.contentsCenter = (CGRect){ 10.0/24.0, 10.0/24.0, 4.0/24.0, 4.0/24.0 };
@@ -95,34 +184,97 @@ typedef enum {
 	innerBackgroundView.backgroundColor = nil;
 	innerBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.backgroundView addSubview:innerBackgroundView];
+	
+	
+	__block __typeof__(self) nrSelf = self;
+	
+	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
+		
+		[nrSelf setNeedsLayout];
+		
+	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+	
+	[self setNeedsLayout];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingSuggestedStyle {
+
+	return [NSSet setWithObjects:
+	
+		@"title",
+		@"text",
+		@"image",
+	
+	nil];
+
+}
+
+- (WAPreviewBadgeStyle) suggestedStyle {
+
+	if (!self.title && !self.text && self.image)
+		return WAPreviewBadgeImageOnlyStyle;
+	
+	if ((self.title || self.text) && !self.image)
+		return WAPreviewBadgeTextOnlyStyle;
+			
+	return WAPreviewBadgeImageAndTextStyle;
+
+}
+
+- (void) setStyle:(WAPreviewBadgeStyle)newStyle {
+
+	if (style == newStyle)
+		return;
+	
+	style = newStyle;
+	
+	[self setNeedsLayout];
+
+}
+
+- (UIImageView *) imageView {
+
+	if (imageView)
+		return imageView;
+	
+	imageView = [[WAImageView alloc] initWithImage:nil];
+	imageView.contentMode = UIViewContentModeScaleAspectFit;
+	imageView.clipsToBounds = YES;
+	
+	[imageView irBind:@"image" toObject:self keyPath:@"image" options:nil];
+	
+	return imageView;
+
+}
+
+- (IRLabel *) label {
+
+	if (label)
+		return label;
+
+	label = [[IRLabel alloc] init];
+	label.backgroundColor = nil;
+	label.opaque = NO;
+	label.userInteractionEnabled = YES;
+	label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	
+	[label irBind:@"attributedText" toObject:self keyPath:@"attributedText" options:nil];
+	
+	return label;
 
 }
 
 - (void) setBackgroundView:(UIView *)newBackgroundView {
 
-	if (newBackgroundView == backgroundView)
+	if (backgroundView == newBackgroundView)
 		return;
 	
 	[backgroundView removeFromSuperview];
 	[backgroundView release];
+	
 	backgroundView = [newBackgroundView retain];
 	[self addSubview:backgroundView];
-	
-	[self setNeedsLayout];
-
-}
-
-- (void) setImage:(UIImage *)newImage {
-
-	if (image == newImage)
-		return;
-
-	[self willChangeValueForKey:@"image"];
-	[image release];
-	image = [newImage retain];
-	[self didChangeValueForKey:@"image"];
-	
-	[self setNeedsLayout];
 
 }
 
@@ -132,136 +284,226 @@ typedef enum {
 		
 	self.backgroundView.frame = self.bounds;
 	
-	WAPreviewBadgeStyle style = WAPreviewBadgeImageAndTextStyle;
+	WAPreviewBadgeStyle const usedStyle = (self.style != WAPreviewBadgeAutomaticStyle) ? self.style : [self suggestedStyle];
 	
-	if (!self.title && !self.text && self.image)
-		style = WAPreviewBadgeImageOnlyStyle;
-	else if ((self.title || self.text) && !self.image)
-		style = WAPreviewBadgeTextOnlyStyle;
+	if ((BOOL[]){
 		
-	BOOL needsImageView = NO, needsLabel = NO;
+		[WAPreviewBadgeImageAndTextStyle] = YES,
+		[WAPreviewBadgeImageOnlyStyle] = YES,
+		[WAPreviewBadgeTextOnlyStyle] = NO,
+		[WAPreviewBadgeTextOverImageStyle] = YES
+		
+	}[usedStyle] && (self.imageView.superview != self)) {
 	
-	switch (style) {
+		[self addSubview:self.imageView];
+	
+	};
+	
+	if ((BOOL[]){
+		
+		[WAPreviewBadgeImageAndTextStyle] = YES,
+		[WAPreviewBadgeImageOnlyStyle] = NO,
+		[WAPreviewBadgeTextOnlyStyle] = YES,
+		[WAPreviewBadgeTextOverImageStyle] = YES
+		
+	}[usedStyle] && (self.label.superview != self)) {
+	
+		[self addSubview:self.label];
+	
+	};
+
+	switch (usedStyle) {
+		
 		case WAPreviewBadgeImageAndTextStyle: {
-			needsImageView = YES;
-			needsLabel = YES;
+			[self layoutImageAndTextStyle];
 			break;
-		}
+		}		
+		
 		case WAPreviewBadgeImageOnlyStyle: {
-			needsImageView = YES;
-			needsLabel = NO;
+			[self layoutImageOnlyStyle];
 			break;
 		}
+	
 		case WAPreviewBadgeTextOnlyStyle: {
-			needsImageView = NO;
-			needsLabel = YES;
+			[self layoutTextOnlyStyle];
 			break;
 		}
-	}
-	
-	if (needsImageView) {
-		if (!self.imageView) {
-			self.imageView = [[[WAImageView alloc] initWithImage:nil] autorelease];
-			self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-			self.imageView.clipsToBounds = YES;
-			[self addSubview:self.imageView];
+		
+		case WAPreviewBadgeTextOverImageStyle: {
+			[self layoutTextOverImageStyle];
+			break;
 		}
+		
+	}
+
+}
+
+- (void) layoutImageAndTextStyle {
+
+	CGRect usableRect = CGRectStandardize(UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 }));
+	CGRect imageRect = IRCGSizeGetCenteredInRect((CGSize){
+		CGRectGetHeight(self.bounds),
+		CGRectGetHeight(self.bounds)
+	}, usableRect, 0, YES);
+	imageRect.origin.x = 8;
+	imageRect.origin.y = 8;
+	
+	CGRect actualImageRect = IRCGRectAlignToRect(
+		IRCGSizeGetCenteredInRect((CGSize) {
+			self.image.size.width * 128,
+			self.image.size.height * 128
+		}, imageRect, 0.0f, YES),
+		imageRect,
+		//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
+		irTopLeft, 
+		YES
+	);
+	
+	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	
+	if (verticalLayout) {
+		actualImageRect.size.height = MIN(actualImageRect.size.height, 0.55f * usableRect.size.height);
 	} else {
-		[self.imageView removeFromSuperview];
-		self.imageView = nil;
+		actualImageRect.size.width = MIN(actualImageRect.size.width, 0.55f * usableRect.size.width);
 	}
 	
-	if (needsLabel) {
-		if (!self.label) {
-			self.label = [[[IRLabel alloc] init] autorelease];
-			self.label.backgroundColor = nil;
-			self.label.opaque = NO;
-			self.label.userInteractionEnabled = YES;
-			[self addSubview:self.label];
-		}
+	self.imageView.frame = actualImageRect;
+	
+	CGRect labelRect, tempRect;
+	CGRectDivide(self.bounds, &tempRect, &labelRect,
+		verticalLayout ? actualImageRect.size.height : actualImageRect.size.width,
+		verticalLayout ? CGRectMinYEdge : CGRectMinXEdge
+	);
+	labelRect.origin.x += verticalLayout ? 8 : 16;
+	labelRect.origin.y += verticalLayout ? 16 : 8;
+	labelRect.size.height -= verticalLayout ? 24 : 16;
+	labelRect.size.width -= verticalLayout ? 16 : 24;
+	
+	self.label.frame = CGRectIntegral(labelRect);
+	
+	CGFloat coverageRatio = (actualImageRect.size.width * actualImageRect.size.height) / (imageRect.size.width * imageRect.size.height);
+	if (coverageRatio > self.minimumAcceptibleFullFrameAspectRatio) {
+		self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 	} else {
-		[self.label removeFromSuperview];
-		self.label = nil;
+		self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+		self.imageView.frame = (CGRect){
+			self.imageView.frame.origin,
+			(CGSize){
+				verticalLayout ? usableRect.size.width : self.imageView.frame.size.width,
+				verticalLayout ? self.imageView.frame.size.height : usableRect.size.height
+			}
+		};
+	}
+
+}
+
+- (void) layoutImageOnlyStyle {
+
+	self.imageView.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
+
+}
+
+- (void) layoutTextOnlyStyle {
+
+	self.label.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
+
+}
+
+- (void) layoutTextOverImageStyle {
+
+	self.imageView.frame = self.bounds;
+	
+	if (![self.imageView.subviews count]) {
+	
+		UIView *overlay = [[[UIView alloc] initWithFrame:self.imageView.bounds] autorelease];
+		overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		overlay.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
+		
+		[self.imageView addSubview:overlay];
+	
 	}
 	
+	CGRect usableLabelFrame = CGRectInset(self.bounds, 16, 12);
 	
-	if (needsTextUpdate)
-		[self updateText];
+	self.label.frame = usableLabelFrame;
+	self.label.backgroundColor = nil;
 	
-	if (self.image)
-		self.imageView.image = self.image;
+	self.imageView.contentMode = UIViewContentModeScaleAspectFill;
 	
-	switch (style) {
-		case WAPreviewBadgeImageAndTextStyle: {
-		
-			CGRect usableRect = CGRectStandardize(UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 }));
-			CGRect imageRect = IRCGSizeGetCenteredInRect((CGSize){
-				CGRectGetHeight(self.bounds),
-				CGRectGetHeight(self.bounds)
-			}, usableRect, 0, YES);
-			imageRect.origin.x = 8;
-			imageRect.origin.y = 8;
-			
-			CGRect actualImageRect = IRCGRectAlignToRect(
-				IRCGSizeGetCenteredInRect((CGSize) {
-					self.imageView.image.size.width * 128,
-					self.imageView.image.size.height * 128
-				}, imageRect, 0.0f, YES),
-				imageRect,
-				//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
-				irTopLeft, 
-				YES
-			);
-			
-			BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
-			
-			if (verticalLayout) {
-				actualImageRect.size.height = MIN(actualImageRect.size.height, 0.55f * usableRect.size.height);
-			} else {
-				actualImageRect.size.width = MIN(actualImageRect.size.width, 0.55f * usableRect.size.width);
-			}
-			
-			self.imageView.frame = actualImageRect;
-			
-			CGRect labelRect, tempRect;
-			CGRectDivide(self.bounds, &tempRect, &labelRect,
-				verticalLayout ? actualImageRect.size.height : actualImageRect.size.width,
-				verticalLayout ? CGRectMinYEdge : CGRectMinXEdge
-			);
-			labelRect.origin.x += verticalLayout ? 8 : 16;
-			labelRect.origin.y += verticalLayout ? 16 : 8;
-			labelRect.size.height -= verticalLayout ? 24 : 16;
-			labelRect.size.width -= verticalLayout ? 16 : 24;
-			
-			self.label.frame = CGRectIntegral(labelRect);
-			
-			CGFloat coverageRatio = (actualImageRect.size.width * actualImageRect.size.height) / (imageRect.size.width * imageRect.size.height);
-			if (coverageRatio > self.minimumAcceptibleFullFrameAspectRatio) {
-				self.imageView.contentMode = UIViewContentModeScaleAspectFit;
-			} else {
-				self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-				self.imageView.frame = (CGRect){
-					self.imageView.frame.origin,
-					(CGSize){
-						verticalLayout ? usableRect.size.width : self.imageView.frame.size.width,
-						verticalLayout ? self.imageView.frame.size.height : usableRect.size.height
-					}
-				};
-			}
-			
-			break;
-			
-		}
-		
-		case WAPreviewBadgeImageOnlyStyle:
-		case WAPreviewBadgeTextOnlyStyle: {
-		
-			self.imageView.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
-			self.label.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
-			break;
-		}
-		
-	}
+	self.titleFont = [UIFont boldSystemFontOfSize:24.0f];
+	self.titleColor = [UIColor colorWithWhite:0.125 alpha:1];
+
+	self.providerNameFont = [UIFont systemFontOfSize:14.0f];
+	self.providerNameColor = [UIColor colorWithWhite:0 alpha:1];
+	
+	self.textFont = [UIFont systemFontOfSize:18.0f];
+	self.textColor = [UIColor colorWithWhite:0.125 alpha:1];
+	
+	[self bringSubviewToFront:self.label];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingTitle {
+
+	return [NSSet setWithObject:@"preview.graphElement.title"];
+
+}
+
+- (NSString *) title {
+
+	return self.preview.graphElement.title;
+	
+}
+
++ (NSSet *) keyPathsForValuesAffectingProviderName {
+
+	return [NSSet setWithObject:@"preview.graphElement.providerCaption"];
+
+}
+
+- (NSString *) providerName {
+
+	return self.preview.graphElement.providerCaption;
+	
+}
+
++ (NSSet *) keyPathsForValuesAffectingText {
+
+	return [NSSet setWithObject:@"preview.graphElement.text"];
+
+}
+
+
+- (NSString *) text {
+
+	return [self.preview.graphElement.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingImage {
+
+	return [NSSet setWithObject:@"preview.thumbnail"];
+
+}
+
+- (UIImage *) image {
+
+	return self.preview.thumbnail;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingLink {
+
+	return [NSSet setWithObject:@"preview.graphElement.url"];
+
+}
+
+- (NSURL *) link {
+
+	if (self.preview.graphElement.url)
+		return [NSURL URLWithString:self.preview.graphElement.url];
+	
+	return nil;
 
 }
 
@@ -270,102 +512,88 @@ typedef enum {
 	if (preview == newPreview)
 		return;
 
-	[self willChangeValueForKey:@"preview"];
 	[preview release];
 	preview = [newPreview retain];
-	[self didChangeValueForKey:@"preview"];
-	
-	[self configureWithPreview:preview];
-
-}
-
-- (void) configureWithPreview:(WAPreview *)aPreview {
-
-	self.image = aPreview.graphElement.thumbnail;
-	self.link = aPreview.graphElement.url ? [NSURL URLWithString:aPreview.graphElement.url] : nil;
-	self.title = aPreview.graphElement.title;
-	self.text = aPreview.graphElement.text;
-	
-	[self setNeedsTextUpdate];
+		
 	[self setNeedsLayout];
 
 }
 
-- (void) setNeedsTextUpdate {
+- (NSString *) accessibilityLabel {
 
-	needsTextUpdate = YES;
-
-	[self setNeedsLayout];
+	return @"Preview Badge";
 
 }
 
-- (void) updateText {
++ (NSSet *) keyPathsForValuesAffectingAccessibilityHint {
 
-	needsTextUpdate = NO;
-
-	if (self.title || self.text) {
-	
-		NSDictionary *titleAttributes = [NSAttributedString irAttributesForFont:self.titleFont color:self.titleColor];
-		NSDictionary *contentAttributes = [NSAttributedString irAttributesForFont:self.textFont color:self.textColor];
-		
-		if (self.link)
-			titleAttributes = [titleAttributes irDictionaryBySettingObject:self.link forKey:kIRTextLinkAttribute];
-		
-		NSMutableAttributedString *realContentString = [[NSMutableAttributedString alloc] initWithString:@"" attributes:nil];
-		
-		CTParagraphStyleRef (^paragraphStyleForLineHeight)(CGFloat) = ^ (CGFloat aHeight) {
-
-			CTParagraphStyleSetting titleParagraphSettings[] = {
-				{ kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(float_t), &((float_t[]){ 1.0f }) },
-				{ kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(float_t), &((float_t[]){ 1.0f }) },
-				{ kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(float_t), &((float_t[]){ 0.01f }) },
-				{ kCTParagraphStyleSpecifierLineSpacing, sizeof(float_t), &((float_t[]){ aHeight }) },
-			};
-			
-			return CTParagraphStyleCreate(titleParagraphSettings, sizeof(titleParagraphSettings) / sizeof(CTParagraphStyleSetting));
-
-		};
-		
-		if (self.title) {
-						
-			CTParagraphStyleRef titleParagraphStyle = paragraphStyleForLineHeight(30.0f);
-			titleAttributes = [titleAttributes irDictionaryBySettingObject:(id)titleParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
-			CFRelease(titleParagraphStyle);
-
-			NSMutableAttributedString *titleAttributedString = [[[NSMutableAttributedString alloc] initWithString:self.title attributes:titleAttributes] autorelease];
-
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:titleAttributes] autorelease]];
-			[realContentString appendAttributedString:titleAttributedString];
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n" attributes:titleAttributes] autorelease]];
-			
-			//	[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:@"\n \n" attributes:[NSAttributedString irAttributesForFont:[UIFont boldSystemFontOfSize:12.0f] color:nil]] autorelease]];			
-
-		}
-		
-		if (self.text) {
-			
-			CTParagraphStyleRef textParagraphStyle = paragraphStyleForLineHeight(18.0f);
-			contentAttributes = [contentAttributes irDictionaryBySettingObject:(id)textParagraphStyle forKey:(id)kCTParagraphStyleAttributeName];
-			CFRelease(textParagraphStyle);
-			
-			[realContentString appendAttributedString:[[[NSAttributedString alloc] initWithString:self.text attributes:contentAttributes] autorelease]];
-			
-		}
-		
-		self.label.attributedText = realContentString;
-	
-	}
+	return [NSSet setWithObject:@"title"];
 
 }
+
+- (NSString *) accessibilityHint {
+
+	return self.title;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingAccessibilityLabel {
+
+	return [NSSet setWithObject:@"text"];
+
+}
+
+- (NSString *) accessibilityValue {
+
+	return self.text;
+
+}
+
+- (CGSize) sizeThatFits:(CGSize)size {
+
+	if (!self.label)
+		[self layoutSubviews];
+	
+	CGSize delta = (CGSize){
+		CGRectGetWidth(self.bounds) - CGRectGetWidth(self.label.bounds),
+		CGRectGetHeight(self.bounds) - CGRectGetHeight(self.label.bounds),
+	};
+	
+	CGSize returnedLabelSize = [self.label sizeThatFits:(CGSize){
+		size.width - delta.width,
+		size.height - delta.height
+	}];
+	
+	CGSize returnedSize = (CGSize){
+		ceilf(returnedLabelSize.width + delta.width),
+		ceilf(returnedLabelSize.height + delta.height)
+	};
+	
+	return returnedSize;
+
+}
+
 
 - (void) dealloc {
 
+	[self irRemoveObserverBlocksForKeyPath:@"suggestedStyle"];
+	
 	[preview release];
 
-	[image release];
-	[title release];
-	[text release];
-	[link release];
+	[titleFont release];
+	[titleColor release];
+	[titlePlaceholder release];
+	[titlePlaceholderColor release];
+	
+	[providerNameFont release];
+	[providerNameColor release];
+	[providerNamePlaceholder release];
+	[providerNamePlaceholderColor release];
+	
+	[textFont release];
+	[textColor release];
+	[textPlaceholder release];
+	[textPlaceholderColor release];
 	
 	[imageView release];
 	[label release];

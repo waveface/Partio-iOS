@@ -1,5 +1,12 @@
-/* Action title for cancelling
-   Action title for Cancelling
+/* attachment activity view */
+"ACTION_ADD" = "加";
+
+/* Action title for cancelling */
+"ACTION_BACK" = "返回";
+
+/* Action title for Cancelling
+   Action title for cancelling
+   Action title for cancelling stuff
    Cancel. */
 "ACTION_CANCEL" = "取消";
 
@@ -12,6 +19,9 @@
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "迴響";
 
+/* Button title for showing an image picker */
+"ACTION_INSERT_PHOTO_FROM_LIBRARY" = "使用相簿";
+
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
 
@@ -21,6 +31,12 @@
 /* Action title for accepting what happened reluctantly
    Fine! */
 "ACTION_OKAY" = "好";
+
+/* No comment provided by engineer. */
+"ACTION_OPEN_IN_SAFARI" = "使用 Safari 打開";
+
+/* No comment provided by engineer. */
+"ACTION_PRINT" = "列印";
 
 /* Action title for processing stuff */
 "ACTION_PROCESSING" = "處理中";
@@ -44,6 +60,9 @@
    Action title for signing the user out */
 "ACTION_SIGN_OUT" = "登出";
 
+/* Button title for showing a camera capture controller */
+"ACTION_TAKE_PHOTO_WITH_CAMERA" = "使用相機";
+
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
 
@@ -62,6 +81,24 @@
 
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "歡迎使用 Waveface";
+
+/* “%@ Comments” */
+"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ 則留言";
+
+/* “%@ Comment” */
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ 則留言";
+
+/* “%@ Comment” or “No Comment” */
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "沒有留言";
+
+/* No comment provided by engineer. */
+"COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i 張照片";
+
+/* No comment provided by engineer. */
+"COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i 張照片";
+
+/* No comment provided by engineer. */
+"COMPOSITION_REMOVE_CURRENT_PREVIEW" = "移除網頁預覽";
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
@@ -86,6 +123,18 @@
 
 /* Text to show when Cloud is available, but the Station is not responsive */
 "ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "無法連上您的 Station。有些資料可能會稍晚纔能同步。";
+
+/* Article entity sync failure alert message for no underlying error */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION";
+
+/* Article entity sync failure alert title */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "無法上傳";
+
+/* Failed, underlying error %@ with reason %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "上傳時發生錯誤：%@ (%@)。本文已存成草稿。";
+
+/* Failed, underlying error description %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
 /* Description for authentication failure */
 "ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface 現在無法登錄您的帳號：";
@@ -131,7 +180,19 @@
 
 /* Noun for Username
    Title for username */
-"NOUN_USERNAME" = "用戶名";
+"NOUN_USERNAME" = "Email";
+
+/* Photo information in cell */
+"NUMBER_OF_PHOTOS" = "%d 張照片";
+
+/* Text to show for previews without a provider name */
+"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
+
+/* Text to show for previews without body text */
+"PREVIEW_BADGE_TEXT_PLACEHOLDER" = "（無本文）";
+
+/* Text to show for previews without a title */
+"PREVIEW_BADGE_TITLE_PLACEHOLDER" = "（無標題）";
 
 /* Short label for the Cloud */
 "PROPER_NOUN_WF_CLOUD" = "Cloud";
@@ -157,7 +218,7 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
-/* Settings for User popover */
+/* No comment provided by engineer. */
 "SETTINGS_TITLE" = "設定";
 
 /* Production Disclaimer */
@@ -185,13 +246,31 @@
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "無限制";
 
 /* No comment provided by engineer. */
-"STORATE_QUOTA_INTERVAL_END_DATE" = "結算日ㄑ";
+"STORATE_QUOTA_INTERVAL_END_DATE" = "結算日期";
+
+/* Title on the text stack more / less toggle button for “Less” */
+"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
+
+/* Title on the text stack more / less toggle button for “More” */
+"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
 
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "用戶資訊";
 
+/* Settings for User popover */
+"USER_INFO_CONTROLLER_TITLE" = "用戶";
+
+/* attachment activity view */
+"WEB_PREVIEW" = "預覽";
+
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "回到上次閱讀斷點";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
+"ACTION_SEND" = "傳送";
+
+/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "沒有留言";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "沒有照片";

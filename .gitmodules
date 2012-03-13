@@ -45,7 +45,7 @@
 	url = git://github.com/iridia/IRRecurrenceMachine.git
 [submodule "external/InAppSettingsKit"]
 	path = external/InAppSettingsKit
-	url = https://github.com/futuretap/InAppSettingsKit
+	url = git://github.com/futuretap/InAppSettingsKit
 [submodule "external/Sparkle"]
 	path = external/Sparkle
 	url = git://github.com/iridia/Sparkle.git
@@ -54,4 +54,10 @@
 	url = git://github.com/iridia/IRDeployment.git
 [submodule "external/C3PO"]
 	path = external/C3PO
-	url = git@github.com:jamessa/C3PO.git
+	url = git://github.com/jamessa/C3PO.git
+[submodule "external/synergised"]
+	path = external/synergised
+	url = git://github.com/waveface/synergised.git
+[submodule "external/DCIntrospect"]
+	path = external/DCIntrospect
+	url = https://github.com/domesticcatsoftware/DCIntrospect.git

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WABlobSyncManager.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WABlobSyncManager</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.h</DeclaredIn>
+			
+			<NodeRef refid="23"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WABlobSyncManager/sharedManager</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.h</DeclaredIn>			
+			
+			<Declaration>+ (id)sharedManager</Declaration>
+			
+			
+			<Anchor>//api/name/sharedManager</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/beginPostponingBlobSync</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.h</DeclaredIn>			
+			
+			<Declaration>- (void)beginPostponingBlobSync</Declaration>
+			
+			
+			<Anchor>//api/name/beginPostponingBlobSync</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/endPostponingBlobSync</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.h</DeclaredIn>			
+			
+			<Declaration>- (void)endPostponingBlobSync</Declaration>
+			
+			
+			<Anchor>//api/name/endPostponingBlobSync</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/isPerformingBlobSync</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isPerformingBlobSync</Declaration>
+			
+			
+			<Anchor>//api/name/isPerformingBlobSync</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WABlobSyncManager/load</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>+ (void)load</Declaration>
+			
+			
+			<Anchor>//api/name/load</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/recurrenceMachine</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>- (IRRecurrenceMachine *)recurrenceMachine</Declaration>
+			
+			
+			<Anchor>//api/name/recurrenceMachine</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/haulingOperationPrototype</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>- (IRAsyncOperation *)haulingOperationPrototype</Declaration>
+			
+			
+			<Anchor>//api/name/haulingOperationPrototype</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WABlobSyncManager/handleNetworkReachabilityStatusChanged:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleNetworkReachabilityStatusChanged:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WABlobSyncManager/recurrenceMachine</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WABlobSyncManager.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine</Declaration>
+			
+			
+			<Anchor>//api/name/recurrenceMachine</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

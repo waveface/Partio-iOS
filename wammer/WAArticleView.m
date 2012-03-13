@@ -61,6 +61,8 @@
 
 - (void) waInit {
 
+	self.exclusiveTouch = YES;
+
 	if (self.avatarView) {
 
 		self.avatarView.layer.masksToBounds = YES;
@@ -71,10 +73,10 @@
 		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
 		[avatarContainingView addSubview:self.avatarView];
 		self.avatarView.center = (CGPoint){ CGRectGetMidX(self.avatarView.superview.bounds), CGRectGetMidY(self.avatarView.superview.bounds) };
-		avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
-		avatarContainingView.layer.shadowOpacity = 0.25f;
-		avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
-		avatarContainingView.layer.shadowRadius = 1.0f;
+		//	avatarContainingView.layer.shadowPath = [UIBezierPath bezierPathWithRect:avatarContainingView.bounds].CGPath;
+		//	avatarContainingView.layer.shadowOpacity = 0.25f;
+		//	avatarContainingView.layer.shadowOffset = (CGSize){ 0, 1 };
+		//	avatarContainingView.layer.shadowRadius = 1.0f;
 		avatarContainingView.layer.borderColor = [UIColor whiteColor].CGColor;
 		avatarContainingView.layer.borderWidth = 1.0f;
 	
@@ -86,6 +88,7 @@
 	
 		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
 		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		self.textEmphasisView.font = [UIFont fontWithName:@"HelevticaNeue-Light" size:16.0];
 		
 		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
 		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
@@ -96,8 +99,7 @@
 	
 	}
 	
-	if (!articleDescriptionLabel.font)	//	Compromise
-		articleDescriptionLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
+	articleDescriptionLabel.font = [UIFont fontWithName:@"Georgia" size:16.0f];
 
 }
 
@@ -125,7 +127,6 @@
 
 
 
-
 - (void) setPresentationStyle:(WAArticleViewControllerPresentationStyle)newPresentationStyle {
 
 	if (presentationStyle == newPresentationStyle)
@@ -137,8 +138,8 @@
 
 		case WADiscreteSingleImageArticleStyle: {
 			self.userNameLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
-			self.articleDescriptionLabel.layer.shadowOpacity = 1;
-			self.articleDescriptionLabel.layer.shadowOffset = (CGSize){ 0, 1 };
+			//	self.articleDescriptionLabel.layer.shadowOpacity = 1;
+			//	self.articleDescriptionLabel.layer.shadowOffset = (CGSize){ 0, 1 };
 			break;
 		}
 		
@@ -151,6 +152,11 @@
 		
 		case WADiscretePreviewArticleStyle: {
 			self.previewBadge.backgroundView = nil;
+			self.previewBadge.titleColor = [UIColor grayColor];
+			self.previewBadge.userInteractionEnabled = NO;			
+			self.previewBadge.titlePlaceholder = nil;
+			self.previewBadge.providerNamePlaceholder = nil;
+			self.previewBadge.textPlaceholder = nil;
 			break;
 		}
 		
@@ -173,32 +179,13 @@
 	
 	[self disassociateBindings];
 	
-	[article irRemoveObserverBlocksForKeyPath:@"files" context:self];
-	
 	[article release];
 	article = [newArticle retain];
 	
 	[self associateBindings];
 	
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(article) nrArticle = article;
-	
-	__block id nrObserver = [article irAddObserverBlock:^(id inOldValue, id inNewValue, NSString *changeKind) {
-		
-		NSParameterAssert([NSThread isMainThread]);
-		
-		[nrSelf disassociateBindings];
-		[nrSelf associateBindings];
-		
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nrSelf];
-	
-	[self irPerformOnDeallocation:^{
-	
-		[nrArticle irRemoveObservingsHelper:nrObserver];
-		
-	}];
-
 }
+
 
 - (void) associateBindings {
 
@@ -206,20 +193,10 @@
 	
 	[self disassociateBindings];
 	
-	NSArray * (^topImageFiles)(NSArray *, NSUInteger) = ^ (NSArray *fileOrderArray, NSUInteger maxNumberOfPickedImages) {
-		
-		return [fileOrderArray irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-			
-			if (index >= maxNumberOfPickedImages) {
-				*stop = YES;
-				return (id)nil;
-			}
-			
-			return (WAFile *)[nrSelf.article.managedObjectContext irManagedObjectForURI:anObjectURI];
-			
-		}];
-		
-	};
+	WAArticle *boundArticle = self.article;
+
+	if (!boundArticle)
+		return;
 	
 	void (^bind)(id, NSString *, id, NSString *, IRBindingsValueTransformer) = ^ (id object, NSString *objectKeyPath,  id boundObject, NSString *boundKeypath, IRBindingsValueTransformer transformerBlock) {
 	
@@ -229,10 +206,6 @@
 		nil]];
 		
 	};
-	
-	
-	WAArticle *boundArticle = self.article;
-	WAFile *boundImageFile = [topImageFiles(boundArticle.fileOrder, 1) lastObject];
 	
 	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);
 	
@@ -248,15 +221,15 @@
 		nil]] lastObject];
 	});
 	
-	bind(self.imageStackView, @"images", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.imageStackView, @"images", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [NSArray arrayWithObject:inNewValue] : nil;
 	});
 	
-	bind(self.mainImageView, @"image", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"image", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue;
 	});
 	
-	bind(self.mainImageView, @"backgroundColor", boundImageFile, @"presentableImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
 	});
 	
@@ -276,6 +249,7 @@
 	
 }
 
+
 - (void) disassociateBindings {
 
 	[self.userNameLabel irUnbind:@"text"];
@@ -293,9 +267,6 @@
 }
 
 
-
-
-
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
@@ -304,10 +275,13 @@
 
 	CGPoint centerOffset = CGPointZero;
 
-	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 20, 20, 64, 20 });
-	const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
-	const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
+	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 10, 10, 32, 10 });
+//	const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
+//	const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
 	
+	const CGFloat maximumTextWidth = CGRectGetWidth(usableRect);
+	const CGFloat minimumTextWidth = CGRectGetWidth(usableRect);
+
 	if (usableRect.size.width > maximumTextWidth) {
 		usableRect.origin.x += roundf(0.5f * (usableRect.size.width - maximumTextWidth));
 		usableRect.size.width = maximumTextWidth;
@@ -359,11 +333,21 @@
 		case WADiscreteSingleImageArticleStyle:
 		case WADiscretePreviewArticleStyle: {
 		
+			contextInfoContainer.hidden = ![self.article.text length];
+			
 			[userNameLabel sizeToFit];
 			[relativeCreationDateLabel sizeToFit];
 			[relativeCreationDateLabel irPlaceBehindLabel:userNameLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
 			[deviceDescriptionLabel sizeToFit];
 			[deviceDescriptionLabel irPlaceBehindLabel:relativeCreationDateLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
+			
+			previewBadge.style = WAPreviewBadgeImageAndTextStyle;
+			
+			previewBadge.titleFont = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:22.0];
+			previewBadge.titleColor = [UIColor colorWithWhite:0.25 alpha:1];
+			previewBadge.providerNameFont = [UIFont systemFontOfSize:14.0];
+			
+			previewBadge.textFont = [UIFont fontWithName:@"Palatino-Roman" size:16.0];
 			
 			break;
 			
@@ -392,7 +376,6 @@
 	}
 
 }
-
 
 
 

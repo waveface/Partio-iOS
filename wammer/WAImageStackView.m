@@ -97,7 +97,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		CGRectGetMidY(self.bounds)
 	};
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-	[self.activityIndicator startAnimating];
+	self.activityIndicator.hidesWhenStopped = YES;
 	[self insertSubview:self.activityIndicator atIndex:[self.subviews count]];
 	
 }
@@ -146,9 +146,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	images = [newImages retain];
 	[self didChangeValueForKey:@"images"];
 	
-	self.activityIndicator.hidden = NO;
-	
-	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(2, [self.images count]) }]];
+	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(3, [self.images count]) }]];
 
 	if (async) {
 	
@@ -215,33 +213,34 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 		[shownImages enumerateObjectsUsingBlock: ^ (UIImage *anImage, NSUInteger idx, BOOL *stop) {
 		
-			UIView *imageView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			objc_setAssociatedObject(imageView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
-			imageView.tag = kPhotoViewTag;
-			imageView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
-			imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-			imageView.layer.borderWidth = 4.0f;
-			imageView.layer.shadowOffset = (CGSize){ 0, 2 };
-			imageView.layer.shadowRadius = 2.0f;
-			imageView.layer.shadowOpacity = 0.25f;
-			imageView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
-			[imageView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
+			UIView *frameView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+			objc_setAssociatedObject(frameView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
+			frameView.tag = kPhotoViewTag;
+			frameView.layer.shouldRasterize = YES;
+			frameView.layer.rasterizationScale = [UIScreen mainScreen].scale;
+			frameView.layer.backgroundColor = [UIColor colorWithWhite:0.75 alpha:1].CGColor;
+			frameView.layer.borderColor = [UIColor whiteColor].CGColor;
+			frameView.layer.borderWidth = 1.0f;
+			frameView.layer.shadowOffset = (CGSize){ 0, 1 };
+			frameView.layer.shadowRadius = 1.0f;
+			frameView.layer.shadowOpacity = 0.25f;
+			frameView.layer.edgeAntialiasingMask = kCALayerLeftEdge|kCALayerRightEdge|kCALayerTopEdge|kCALayerBottomEdge;
+			[frameView.layer setActions:[NSDictionary dictionaryWithObjectsAndKeys:
 				[NSNull null], @"shadowPath",
 			nil]];
-			imageView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-			imageView.opaque = NO;
+			frameView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+			frameView.opaque = NO;
 			
-			WAImageView *innerImageView = [[[WAImageView alloc] initWithFrame:imageView.bounds] autorelease];
-			innerImageView.image = (UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage);
-			innerImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			innerImageView.layer.masksToBounds = YES;
+			WAImageView *imageView = [[[WAImageView alloc] initWithFrame:frameView.bounds] autorelease];
+			imageView.image = (UIImage *)objc_getAssociatedObject(frameView, kWAImageStackViewElementImage);
+			imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			imageView.contentMode = UIViewContentModeScaleAspectFill;
+			imageView.layer.masksToBounds = YES;
 			
-			[imageView addSubview:innerImageView];					
-			[self insertSubview:imageView atIndex:0];		
+			[frameView addSubview:imageView];					
+			[self addSubview:frameView];		
 			
-			//NSParameterAssert(innerImageView.layer.contents);
-			
-			self.activityIndicator.hidden = YES;
+			[self.activityIndicator stopAnimating];
 			
 		}];
 		
@@ -255,53 +254,55 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	
 - (void) layoutSubviews {
 
-	[self sendSubviewToBack:self.activityIndicator];
+	[self.activityIndicator startAnimating];
 
 	if (self.gestureProcessingOngoing)
 		return;
 	
 	static int kPhotoViewTag = 1024;
-	__block CGRect photoViewFrame = CGRectNull;
-	
-	NSArray *allPhotoViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+
+	NSArray *photoViews = [self.subviews objectsAtIndexes:[self.subviews indexesOfObjectsPassingTest: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		return (BOOL)(aSubview.tag == kPhotoViewTag);
 			
 	}]];
 	
-	[allPhotoViews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock: ^ (UIView *imageView, NSUInteger idx, BOOL *stop) {
-	
-		UIImageView *innerImageView = (UIImageView *)[imageView.subviews objectAtIndex:0];
-		CGSize imageSize = ((UIImage *)objc_getAssociatedObject(imageView, kWAImageStackViewElementImage)).size;
-		imageSize.width *= 16;
-		imageSize.height *= 16;
-		
-		photoViewFrame = CGRectIntegral(IRCGSizeGetCenteredInRect(imageSize, self.bounds, 8.0f, YES));
-		
-		if (idx == ([allPhotoViews count] - 1)) {
-		
-			imageView.layer.transform = CATransform3DIdentity;
-			innerImageView.contentMode = UIViewContentModeScaleAspectFit;
+	switch ([photoViews count]) {
+		case 1: {
+			UIView *photoView = [photoViews objectAtIndex:0];
+			photoView.frame = CGRectMake(  0,  0,296,196);
+			[self addSubview:photoView];
+			break; }
 			
-			self.firstPhotoView = imageView;
+		case 2: {
+			UIView *photoView = [photoViews objectAtIndex:0];
+			photoView.frame = CGRectMake(  0,  0,146,196);
+			[self addSubview:photoView];
 
-		} else {
-		
-			CGFloat baseDelta = 2.0f;	//	at least ± 2°
-			CGFloat allowedAdditionalDeltaInDegrees = 0.0f; //	 with this much added variance
-			CGFloat rotatedDegrees = baseDelta + ((rand() % 2) ? 1 : -1) * (((1.0f * rand()) / (1.0f * INT_MAX)) * allowedAdditionalDeltaInDegrees);
+			photoView = [photoViews objectAtIndex:1];
+			photoView.frame = CGRectMake(150,  0,146,196);
+			[self addSubview:photoView];
+			[self.activityIndicator stopAnimating];
+			break; }
 			
-			imageView.layer.transform = CATransform3DMakeRotation((rotatedDegrees / 360.0f) * 2 * M_PI, 0.0f, 0.0f, 1.0f);
-			innerImageView.contentMode = UIViewContentModeScaleAspectFill;
+		case 3:{
+			UIView *photoView = [photoViews objectAtIndex:0];
+			photoView.frame = CGRectMake(  0,  0,196,196);
+			[self addSubview:photoView];
 
-		}
+			photoView = [photoViews objectAtIndex:1];
+			photoView.frame = CGRectMake(200,  0, 96, 96);
+			[self addSubview:photoView];
+
+			photoView = [photoViews objectAtIndex:2];
+			photoView.frame = CGRectMake(200,100, 96, 96);
+			[self addSubview:photoView];
+			break; }
 		
-		imageView.frame = photoViewFrame;
-		imageView.layer.shadowPath = [UIBezierPath bezierPathWithRect:imageView.bounds].CGPath;
-		objc_setAssociatedObject(imageView.layer, kWAImageStackViewElementCanonicalTransform, [NSValue valueWithCATransform3D:imageView.layer.transform], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-	}];
-	
+		default:
+			break;
+	}
+
 }
 
 - (void) handlePinch:(UIPinchGestureRecognizer *)aPinchRecognizer {

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAStackView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAStackView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>
+			
+			<NodeRef refid="70"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAStackView/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;UIScrollViewDelegate,WAStackViewDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAStackView/onDidLayoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( void ) onDidLayoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/onDidLayoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/mutableStackElements</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (NSMutableArray *)mutableStackElements</Declaration>
+			
+			
+			<Anchor>//api/name/mutableStackElements</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/addStackElements:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)addStackElements:(NSSet *)objects</Declaration>
+			
+			
+			<Anchor>//api/name/addStackElements:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/addStackElementsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)addStackElementsObject:(UIView *)object</Declaration>
+			
+			
+			<Anchor>//api/name/addStackElementsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/removeStackElements:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeStackElements:(NSSet *)objects</Declaration>
+			
+			
+			<Anchor>//api/name/removeStackElements:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/removeStackElementsAtIndexes:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeStackElementsAtIndexes:(NSIndexSet *)indexes</Declaration>
+			
+			
+			<Anchor>//api/name/removeStackElementsAtIndexes:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/removeStackElementsObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeStackElementsObject:(UIView *)object</Declaration>
+			
+			
+			<Anchor>//api/name/removeStackElementsObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/beginPostponingStackElementLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)beginPostponingStackElementLayout</Declaration>
+			
+			
+			<Anchor>//api/name/beginPostponingStackElementLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/endPostponingStackElementLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (void)endPostponingStackElementLayout</Declaration>
+			
+			
+			<Anchor>//api/name/endPostponingStackElementLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/isPostponingStackElementLayout</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isPostponingStackElementLayout</Declaration>
+			
+			
+			<Anchor>//api/name/isPostponingStackElementLayout</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/setFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setFrame:(CGRect)newFrame</Declaration>
+			
+			
+			<Anchor>//api/name/setFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/setBounds:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setBounds:(CGRect)newBounds</Declaration>
+			
+			
+			<Anchor>//api/name/setBounds:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/setCenter:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setCenter:(CGPoint)newCenter</Declaration>
+			
+			
+			<Anchor>//api/name/setCenter:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/waInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)waInit</Declaration>
+			
+			
+			<Anchor>//api/name/waInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/setStackElements:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setStackElements:(NSArray *)newStackElements</Declaration>
+			
+			
+			<Anchor>//api/name/setStackElements:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStackView/sizeThatFitsElement:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFitsElement:(UIView *)anElement</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFitsElement:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAStackView/stackElements</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSArray *stackElements</Declaration>
+			
+			
+			<Anchor>//api/name/stackElements</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAStackView/stackElementLayoutPostponingCount</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStackView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) NSInteger stackElementLayoutPostponingCount</Declaration>
+			
+			
+			<Anchor>//api/name/stackElementLayoutPostponingCount</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

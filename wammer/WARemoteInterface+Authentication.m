@@ -89,6 +89,9 @@
 		if ([[inResponseContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"reachability"])
 			canIntercept = NO;
     
+		if ([[[inResponseContext objectForKey:kIRWebAPIEngineResponseContextOriginalRequestContext] objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"reachability"])
+			canIntercept = NO;
+		
 		if (!canIntercept)
 			return inParsedResponse;
 		

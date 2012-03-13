@@ -19,12 +19,18 @@
 
 
 @implementation WAPostViewCellPhone
+@synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
 @synthesize postViewCellStyle;
 @dynamic reuseIdentifier;
 @synthesize imageStackView, avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel, previewBadge;
 @synthesize dateLabelBackgroundView;
+
+@synthesize previewImageView;
+@synthesize previewTitleLabel;
+@synthesize previewProviderLabel;
+@synthesize previewImageBackground;
 
 - (void) dealloc {
   
@@ -39,6 +45,11 @@
   [contentTextView release];
 	[previewBadge release];
 	[dateLabelBackgroundView release];
+    [extraInfoLabel release];
+	[previewImageView release];
+	[previewTitleLabel release];
+	[previewProviderLabel release];
+	[previewImageBackground release];
 	[super dealloc];
 	
 }
@@ -53,21 +64,32 @@
 
 	NSString *loadedNibName = nil;
 	
+	[self autorelease];	//	from unwanted +alloc
+	
 	switch (aStyle) {
 		case WAPostViewCellStyleDefault:{
 			loadedNibName = @"WAPostViewCellPhone-Default";
+			self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
+	
 			break;
 		}
     case WAPostViewCellStyleImageStack: {
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
+			self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
+	
 			break;
 		}
-    case WAPostViewCellStyleWebLink: {
+    case WAPostViewCellStyleWebLink: 
+		case WAPostViewCellStyleWebLinkWithoutPhoto:{
       loadedNibName = @"WAPostViewCellPhone-WebLink";
+			UINib *nib = [UINib nibWithNibName:loadedNibName bundle:[NSBundle mainBundle]];
+			
+			NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+			
+			id loadedObject = [loadedObjects objectAtIndex:(aStyle-WAPostViewCellStyleWebLink)];
+			self = [(WAPostViewCellPhone *)loadedObject retain];
     }
 	}
-
-	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
 	
 	if (!self)
 		return nil;
@@ -194,5 +216,4 @@
 	return [[NSSet setWithArray:loadedObjects] anyObject];
 
 }
-
 @end

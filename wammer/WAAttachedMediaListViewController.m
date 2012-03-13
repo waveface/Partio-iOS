@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 8/26/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface Inc. All rights reserved.
 //
 
 #import "WAAttachedMediaListViewController.h"
@@ -16,20 +16,25 @@
 
 @interface WAAttachedMediaListViewController () <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, readwrite, copy) void(^callback)(NSURL *objectURI);
-@property (nonatomic, readwrite, retain) UITableView *tableView;
-
+@property (nonatomic, readwrite, copy) void(^callback)(void);
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
+
+@property (nonatomic, readwrite, retain) id articleFilesObservingsHelper;
+
+@property (nonatomic, readwrite, assign, getter=isUndergoingProgrammaticEntityMutation, setter=setUndergoingProgrammaticEntityMutation:) BOOL undergoingProgrammaticEntityMutation;
 
 @end
 
 
 @implementation WAAttachedMediaListViewController
-@synthesize callback, headerView, tableView;
+@synthesize callback, tableView;
 @synthesize managedObjectContext, article;
+@synthesize articleFilesObservingsHelper;
+@synthesize onViewDidLoad;
+@synthesize undergoingProgrammaticEntityMutation;
 
-+ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(NSURL *objectURI))aBlock {
++ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
 
 	return [[[self alloc] initWithArticleURI:anArticleURI completion:aBlock] autorelease];
 
@@ -41,13 +46,13 @@
 
 }
 
-- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI completion:(void (^)(NSURL *))aBlock {
+- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI completion:(void (^)(void))aBlock {
 	
 	return [self initWithArticleURI:anArticleURI usingContext:nil completion:aBlock];
 
 }
 
-- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void (^)(NSURL *))aBlock {
+- (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void (^)(void))aBlock {
 
 	self = [super init];
 	if (!self)
@@ -55,10 +60,10 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
 		if (nrSelf.callback)
-			nrSelf.callback(nil);
+			nrSelf.callback();
 		
 	}];
 	
@@ -73,6 +78,21 @@
 	}
 	
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
+	
+	self.articleFilesObservingsHelper =  [self.article irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
+	
+		if (![nrSelf isViewLoaded])
+			return;
+		
+		if ([nrSelf isUndergoingProgrammaticEntityMutation])
+			return;
+		
+		[nrSelf.tableView reloadData];
+		
+		// Fixme: Use NSFRC
+		// Fixme: Also remove dupe KVO invocations
+		
+	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
   
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
 	
@@ -83,40 +103,48 @@
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[article irRemoveObservingsHelper:self.articleFilesObservingsHelper];
+	
+	[articleFilesObservingsHelper release];
 
 	[managedObjectContext release];
 	[article release];
 
 	[callback release];
-	[headerView release];
+	
+	[onViewDidLoad release];
+	
 	[super dealloc];
 
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
 
+	if (![NSThread isMainThread]) {
+
+		dispatch_sync(dispatch_get_main_queue(), ^ {
+			[self handleManagedObjectContextDidSave:aNotification];
+		});
+		return;
+		
+	}
+	
 	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
 	
-	if (savedContext == self.managedObjectContext)
-		return;
-	
-	if ([NSThread isMainThread])
-		[self retain];
-	else
-		dispatch_sync(dispatch_get_main_queue(), ^ { [self retain]; });
-	
-	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-		[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
-		
+	if (savedContext == self.managedObjectContext) {
 		if ([self isViewLoaded]) {
 			[self.tableView reloadData];
 		}
-			
-		[self autorelease];
+		return;
+	}
 	
-	});
+	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
+	[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
+	
+	if ([self isViewLoaded]) {
+		[self.tableView reloadData];
+	}
 
 }
 
@@ -124,51 +152,20 @@
 
 	self.view = [[[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds] autorelease]; // dummy size for autoresizing
 	
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
-	
-	self.tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+	tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
-	self.tableView.rowHeight = 65.0f; // plus 1 to get UIImageView in right size
-  self.tableView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.0];
-  self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+	self.tableView.rowHeight = 76.0f; // plus 1 to get UIImageView in right size
+	self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
 	[self.view addSubview:self.tableView];
-  
-	__block __typeof__(self) nrSelf = self;
+}
+
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
 	
-	((WAView *)self.view).onLayoutSubviews = ^ {
-	
-		//	Handle header view conf
-		
-		CGFloat headerViewHeight = 0.0f;
-		
-		if (nrSelf.headerView) {
-			[nrSelf.view addSubview:nrSelf.headerView];
-			headerViewHeight = CGRectGetHeight(nrSelf.headerView.bounds);
-		}
-			
-		nrSelf.headerView.frame = (CGRect){
-			CGPointZero,
-			(CGSize){
-				CGRectGetWidth(nrSelf.view.bounds),
-				CGRectGetHeight(nrSelf.headerView.bounds)
-			}
-		};
-		
-		nrSelf.tableView.frame = (CGRect){
-			(CGPoint){
-				0,
-				headerViewHeight
-			},
-			(CGSize){
-				CGRectGetWidth(nrSelf.view.bounds),
-				CGRectGetHeight(nrSelf.view.bounds) - headerViewHeight
-			}
-		};
-		
-		//	Relocate table view
-	
-	};
+	if (self.onViewDidLoad)
+		self.onViewDidLoad();
 
 }
 
@@ -177,24 +174,6 @@
 	[super viewDidUnload];
 
 }
-- (void) setHeaderView:(UIView *)newHeaderView {
-
-	if (headerView == newHeaderView)
-		return;
-	
-	if ([self isViewLoaded])
-		if ([headerView isDescendantOfView:self.view])
-			[headerView removeFromSuperview];
-	
-	[self willChangeValueForKey:@"headerView"];
-	[headerView release];
-	headerView = [newHeaderView retain];
-	[self didChangeValueForKey:@"headerView"];
-	
-	if ([self isViewLoaded])
-		[self.view setNeedsLayout];
-
-} 
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
@@ -220,28 +199,16 @@
 		NSUInteger deletedFileIndex = indexPath.row;
 		NSURL *deletedFileURI = [self.article.fileOrder objectAtIndex:deletedFileIndex];
 		WAFile *removedFile = (WAFile *)[self.managedObjectContext irManagedObjectForURI:deletedFileURI];
-		removedFile.article = nil;
 		
+		[self.tableView beginUpdates];
+		
+		self.undergoingProgrammaticEntityMutation = YES;
+		
+		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 		[self.article removeFilesObject:removedFile];
 
-		NSError *savingError = nil;
-		if (![self.managedObjectContext save:&savingError]) {
-			
-			id oldMergePolicy = [[self.managedObjectContext.mergePolicy retain] autorelease];
-			self.managedObjectContext.mergePolicy = NSOverwriteMergePolicy; //hmph
-			NSLog(@"Error saving: %@", savingError);
-			
-			if (![self.managedObjectContext save:&savingError])
-				NSLog(@"%s failed spectacularly", __PRETTY_FUNCTION__);
-			
-			self.managedObjectContext.mergePolicy = oldMergePolicy;
-			
-		}
+		self.undergoingProgrammaticEntityMutation = NO;
 		
-		
-			
-		[self.tableView beginUpdates];
-		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 		[self.tableView endUpdates];
 		
 		break;
@@ -294,26 +261,9 @@
 	}] anyObject];
 	
 	UIImage *actualImage = representedFile.resourceImage;
-  UIImage *croppedImage = nil;
   
-  CGRect imageRect = (CGRect){
-    CGPointZero,
-    (CGSize){ aTableView.rowHeight, aTableView.rowHeight }
-  };
-
-  //TODO fix the blur problem
-  UIGraphicsBeginImageContextWithOptions(imageRect.size, NO, 0.0);
-  CGContextRef context = UIGraphicsGetCurrentContext();
-  CGContextSaveGState(context);
-  CGContextSetShouldAntialias(context, NO);
-  CGContextSetAllowsAntialiasing(context, NO);
-  CGContextClipToRect(context, imageRect);
-  [actualImage drawInRect:IRGravitize(imageRect, actualImage.size, kCAGravityResizeAspectFill)];
-  croppedImage = UIGraphicsGetImageFromCurrentImageContext();
-  CGContextRestoreGState(context);
-  UIGraphicsEndImageContext();
-  
-  cell.imageView.image = croppedImage;
+  cell.imageView.image = representedFile.thumbnail;
+	cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
   
 	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
     actualImage.size.width,

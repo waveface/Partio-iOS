@@ -8,14 +8,6 @@
 
 #import "CoreData+IRAdditions.h"
 
-#import "WAFile.h"
-#import "WAComment.h"
-#import "WAArticle.h"
-#import "WAGroup.h"
-#import "WAUser.h"
-#import "WAPreview.h"
-#import "WAOpenGraphElement.h"
-#import "WAFilePageElement.h"
 
 @interface WADataStore : IRDataStore
 
@@ -27,3 +19,22 @@
 @end
 
 #import "WADataStore+FetchingConveniences.h"
+
+#import "WAFile.h"
+#import "WAFile+WAAdditions.h"
+#import "WAComment.h"
+#import "WAArticle.h"
+#import "WAArticle+WAAdditions.h"
+#import "WAGroup.h"
+#import "WAUser.h"
+#import "WAPreview.h"
+#import "WAOpenGraphElement.h"
+#import "WAFilePageElement.h"
+#import "WAGroup.h"
+#import "WAUser.h"
+#import "WAPreview.h"
+#import "WAPreview+WAAdditions.h"
+#import "WAOpenGraphElement.h"
+#import "WAOpenGraphElement+WAAdditions.h"
+#import "WAOpenGraphElementImage.h"
+#import "WAOpenGraphElementImage+WAAdditions.h"

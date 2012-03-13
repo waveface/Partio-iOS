@@ -17,6 +17,11 @@
 #import "QuartzCore+IRAdditions.h"
 
 
+NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
+
+#define kWAFileEntitySyncingError(code, descriptionKey, reasonKey) [NSError irErrorWithDomain:kWAFileEntitySyncingErrorDomain code:code descriptionLocalizationKey:descriptionKey reasonLocalizationKey:reasonKey userInfo:nil]
+
+
 NSString * const kWAFileSyncStrategy = @"WAFileSyncStrategy";
 NSString * const kWAFileSyncDefaultStrategy = @"WAFileSyncDefaultStrategy";
 NSString * const kWAFileSyncAdaptiveQualityStrategy = @"WAFileSyncAdaptiveQualityStrategy";
@@ -41,9 +46,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     if (pathExtension) {
       
       CFStringRef preferredUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, NULL);
-      [NSMakeCollectable(preferredUTI) autorelease];
-      
-      self.resourceType = (NSString *)preferredUTI;
+      self.resourceType = (NSString *)[NSMakeCollectable(preferredUTI) autorelease];
 
     }
     
@@ -216,11 +219,11 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		 
 		id returnedValue = IRWebAPIKitStringValue(aValue);
 		
-		CFArrayRef possibleTypes = UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil);
+		NSArray *possibleTypes = [NSMakeCollectable(UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil)) autorelease];
 		
-		if (CFArrayGetCount(possibleTypes) > 0) {
+		if ([possibleTypes count]) {
 			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
-			returnedValue = CFArrayGetValueAtIndex(possibleTypes, 0);
+			returnedValue = [possibleTypes objectAtIndex:0];
 		}
     
     //  Incoming stuff is moot (“application/unknown”)
@@ -254,21 +257,21 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
 }
 
-+ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
++ (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
   [NSException raise:NSInternalInconsistencyException format:@"%@ does not support %@.", NSStringFromClass([self class]), NSStringFromSelector(_cmd)];
   
 }
 
-- (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+- (void) synchronizeWithCompletion:(WAEntitySyncCallback)completionBlock {
 
   [self synchronizeWithOptions:nil completion:completionBlock];
   
 }
 
-- (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSManagedObject *, NSError *))completionBlock {
+- (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
-	NSParameterAssert(WAObjectEligibleForRemoteInterfaceEntitySyncing(self));
+	NSParameterAssert(WAIsSyncableObject(self));
 	
 	WAFileSyncStrategy syncStrategy = [options objectForKey:kWAFileSyncStrategy];
 	if (!syncStrategy)
@@ -315,7 +318,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			[lastError autorelease];
 		};
 		
-		NSString *capturedResourcePath = self.resourceFilePath;
+		//	NSString *capturedResourcePath = self.resourceFilePath;
 		NSString *sentResourcePath = [[[WADataStore defaultStore] persistentFileURLForFileAtPath:self.resourceFilePath] path];
 		
 		if (sendsThumbnailImage) {
@@ -351,6 +354,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					[[NSFileManager defaultManager] removeItemAtPath:sentThumbnailFilePath error:nil];
 					
 				} onFailure: ^ (NSError *error) {
+				
+					NSCParameterAssert(error);
 				
 					if (aCallback)
 						aCallback(error);
@@ -441,13 +446,16 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:ownURL];
 				savedFile.identifier = usedObjectID;
 				
+				NSError *savingError = nil;
+				BOOL didSave = [context save:&savingError];
+				
 				if (completionBlock)
-					completionBlock(YES, context, savedFile, nil);
+					completionBlock(didSave, context, [NSArray arrayWithObject:savedFile], didSave ? nil : savingError);
 				
 			} else {
 			
 				if (completionBlock)
-					completionBlock(NO, nil, nil, nil);
+					completionBlock(NO, nil, nil, lastError);
 			
 			}
 			
@@ -471,9 +479,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			
 			WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:ownURL];
 			[savedFile configureWithRemoteDictionary:attachmentRep];
+			
+			NSError *savingError = nil;
+			BOOL didSave = [context save:&savingError];
 		
 			if (completionBlock)
-				completionBlock(YES, context, savedFile, nil);
+				completionBlock(didSave, context, [NSArray arrayWithObject:savedFile], didSave ? nil : savingError);
 			
 		} onFailure:^(NSError *error) {
 		

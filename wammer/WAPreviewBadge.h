@@ -9,25 +9,52 @@
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 
+
+enum {
+
+	WAPreviewBadgeAutomaticStyle = 0,
+
+	WAPreviewBadgeImageAndTextStyle,
+	WAPreviewBadgeTextOnlyStyle,
+	WAPreviewBadgeImageOnlyStyle,
+	
+	WAPreviewBadgeTextOverImageStyle,
+	
+	WAPreviewBadgeDefaultStyle = WAPreviewBadgeAutomaticStyle
+	
+}; typedef NSUInteger WAPreviewBadgeStyle;
+
+
 @class WAPreview;
 @interface WAPreviewBadge : UIView
 
-@property (nonatomic, readwrite, retain) UIImage *image;
-@property (nonatomic, readwrite, retain) NSString *title;
-@property (nonatomic, readwrite, retain) NSString *text;
-@property (nonatomic, readwrite, retain) NSURL *link;
+@property (nonatomic, readwrite, retain) WAPreview *preview;
+@property (nonatomic, readwrite, assign) WAPreviewBadgeStyle style;
 
 @property (nonatomic, readwrite, retain) UIFont *titleFont;
 @property (nonatomic, readwrite, retain) UIColor *titleColor;
+@property (nonatomic, readwrite, retain) NSString *titlePlaceholder;
+@property (nonatomic, readwrite, retain) UIColor *titlePlaceholderColor;
+
+@property (nonatomic, readwrite, retain) UIFont *providerNameFont;
+@property (nonatomic, readwrite, retain) UIColor *providerNameColor;
+@property (nonatomic, readwrite, retain) NSString *providerNamePlaceholder;
+@property (nonatomic, readwrite, retain) UIColor *providerNamePlaceholderColor;
+
 @property (nonatomic, readwrite, retain) UIFont *textFont;
 @property (nonatomic, readwrite, retain) UIColor *textColor;
+@property (nonatomic, readwrite, retain) NSString *textPlaceholder;
+@property (nonatomic, readwrite, retain) UIColor *textPlaceholderColor;
 
 @property (nonatomic, readwrite, retain) UIView *backgroundView;
 
 @property (nonatomic, readwrite, assign) CGFloat minimumAcceptibleFullFrameAspectRatio;
+@property (nonatomic, readwrite, assign) CGFloat gutterWidth;
 
-@property (nonatomic, readwrite, retain) WAPreview *preview;	// also calls -configureWithPreview:
-
-- (void) configureWithPreview:(WAPreview *)aPreview; 
+@property (nonatomic, readonly, retain) NSString *title;
+@property (nonatomic, readonly, retain) NSString *providerName;
+@property (nonatomic, readonly, retain) NSString *text;
+@property (nonatomic, readonly, retain) UIImage *image;
+@property (nonatomic, readonly, retain) NSURL *link;
 
 @end

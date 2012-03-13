@@ -50,6 +50,7 @@
 	self.contentView.backgroundColor = nil;
 	self.selectionStyle = AQGridViewCellSelectionStyleNone;
 	self.contentView.layer.shouldRasterize = YES;
+	self.contentView.layer.rasterizationScale = [UIScreen mainScreen].scale;
 	
 	self.contentView.clipsToBounds = NO;
 	
@@ -72,7 +73,7 @@
 	self.removeButton.imageView.contentMode = UIViewContentModeCenter;
 	[self.contentView addSubview:self.removeButton];
 	
-	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	self.activityIndicator.center = (CGPoint){ CGRectGetMidX(self.imageContainer.bounds), CGRectGetMidY(self.imageContainer.bounds) };
 	self.activityIndicator.frame = CGRectIntegral(self.activityIndicator.frame);

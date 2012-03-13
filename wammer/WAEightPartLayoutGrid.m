@@ -23,7 +23,7 @@
 @implementation WAEightPartLayoutPlacementCandidate
 @synthesize pattern, occurrence;
 + (id) candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence {
-	WAEightPartLayoutPlacementCandidate *returnedInstance = [[self alloc] init];
+	WAEightPartLayoutPlacementCandidate *returnedInstance = [[[self alloc] init] autorelease];
 	returnedInstance.pattern = aPattern;
 	returnedInstance.occurrence = anOccurrence;
 	return returnedInstance;
@@ -189,9 +189,8 @@
 //	};
 	
 	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 140);
+		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
 	};
-	
 	
 	//	Layout progress introspection helpers
 	
@@ -231,13 +230,13 @@
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
-		if (isImageItem(currentItem) || isLinkItem(currentItem) || isLongTextItem(currentItem)) {
+		if (isImageItem(currentItem) || isLongTextItem(currentItem) || isLinkItem(currentItem) ) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
-		// increase probablity
-		if (isLongTextItem(currentItem)) {
+		// increase web preview 2 cell 
+		if (isLinkItem(currentItem)) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}

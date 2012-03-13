@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAArticleCommentsViewControllerDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAArticleCommentsViewControllerDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>
+			
+			<NodeRef refid="87"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleCommentsViewControllerDelegate/articleCommentsViewController:wantsState:onFulfillment:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void ( ^ ) ( void ))aCompletionBlock</Declaration>
+			
+			
+			<Anchor>//api/name/articleCommentsViewController:wantsState:onFulfillment:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleCommentsViewControllerDelegate/articleCommentsViewController:canSendComment:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)articleCommentsViewController:(WAArticleCommentsViewController *)controller canSendComment:(NSString *)commentText</Declaration>
+			
+			
+			<Anchor>//api/name/articleCommentsViewController:canSendComment:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleCommentsViewControllerDelegate/articleCommentsViewController:didFinishComposingComment:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText</Declaration>
+			
+			
+			<Anchor>//api/name/articleCommentsViewController:didFinishComposingComment:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleCommentsViewControllerDelegate/articleCommentsViewControllerDidBeginComposition:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)articleCommentsViewControllerDidBeginComposition:(WAArticleCommentsViewController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/articleCommentsViewControllerDidBeginComposition:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleCommentsViewControllerDelegate/articleCommentsViewControllerDidFinishComposition:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)articleCommentsViewControllerDidFinishComposition:(WAArticleCommentsViewController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/articleCommentsViewControllerDidFinishComposition:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleCommentsViewControllerDelegate/articleCommentsViewController:didChangeContentSize:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)articleCommentsViewController:(WAArticleCommentsViewController *)controller didChangeContentSize:(CGSize)newSize</Declaration>
+			
+			
+			<Anchor>//api/name/articleCommentsViewController:didChangeContentSize:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

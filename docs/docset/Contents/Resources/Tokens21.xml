@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAAttachedMediaListViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAAttachedMediaListViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.h</DeclaredIn>
+			
+			<NodeRef refid="21"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAAttachedMediaListViewController/controllerWithArticleURI:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WAAttachedMediaListViewController *)controllerWithArticleURI:(NSURL *)anArticleURI completion:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/controllerWithArticleURI:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/initWithArticleURI:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.h</DeclaredIn>			
+			
+			<Declaration>- (WAAttachedMediaListViewController *)initWithArticleURI:(NSURL *)anArticleURI completion:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/initWithArticleURI:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/initWithArticleURI:usingContext:completion:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.h</DeclaredIn>			
+			
+			<Declaration>- (WAAttachedMediaListViewController *)initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void ( ^ ) ( void ))aBlock</Declaration>
+			
+			
+			<Anchor>//api/name/initWithArticleURI:usingContext:completion:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/tableView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UITableView *tableView</Declaration>
+			
+			
+			<Anchor>//api/name/tableView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/onViewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( void ) onViewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/onViewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/init</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)init</Declaration>
+			
+			
+			<Anchor>//api/name/init</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/handleManagedObjectContextDidSave:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleManagedObjectContextDidSave:(NSNotification *)aNotification</Declaration>
+			
+			
+			<Anchor>//api/name/handleManagedObjectContextDidSave:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/loadView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)loadView</Declaration>
+			
+			
+			<Anchor>//api/name/loadView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/numberOfSectionsInTableView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfSectionsInTableView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/tableView:numberOfRowsInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:numberOfRowsInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/tableView:commitEditingStyle:forRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:commitEditingStyle:forRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAAttachedMediaListViewController/tableView:cellForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:cellForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/callback</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( void ) callback</Declaration>
+			
+			
+			<Anchor>//api/name/callback</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/articleFilesObservingsHelper</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) id articleFilesObservingsHelper</Declaration>
+			
+			
+			<Anchor>//api/name/articleFilesObservingsHelper</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAAttachedMediaListViewController/undergoingProgrammaticEntityMutation</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAAttachedMediaListViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign, getter=isUndergoingProgrammaticEntityMutation, setter=setUndergoingProgrammaticEntityMutation, :) BOOL undergoingProgrammaticEntityMutation</Declaration>
+			
+			
+			<Anchor>//api/name/undergoingProgrammaticEntityMutation</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

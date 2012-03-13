@@ -39,10 +39,10 @@ extern NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification;
 extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification;
 extern NSString * const kWASettingsDidRequestActionNotification;
 
-extern NSString * const kWATestFlightSDKEnabled;
-extern BOOL WATestFlightSDKEnabled (void);
-
 extern NSString * const kWATestflightTeamToken;
+extern NSString * const kWACrashlyticsAPIKey;
+extern NSString * const kWAGoogleAnalyticsAccountID;
+extern NSInteger  const kWAGoogleAnalyticsDispatchInterval;
 
 extern NSString * const kWARemoteEndpointApplicationKeyPhone;
 extern NSString * const kWARemoteEndpointApplicationKeyPad;
@@ -62,6 +62,13 @@ extern NSDictionary * WAPresetDefaults (void);
 extern NSString * const kWACurrentGeneratedDeviceIdentifier;
 BOOL WADeviceIdentifierReset (void);
 NSString * WADeviceIdentifier (void);
+
+extern NSString * const kWAAppEventNotification;	//	Notification Center key
+extern NSString * const kWAAppEventTitle;	//	The eventTitle
+extern void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo);
+
+extern NSString * const kWADucklingsEnabled;
+extern BOOL WADucklingsEnabled (void);
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	#import "WADefines+iOS.h"

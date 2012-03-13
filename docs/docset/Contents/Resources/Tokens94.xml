@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAImageStreamPickerViewDelegate.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAImageStreamPickerViewDelegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>
+			
+			<NodeRef refid="94"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAImageStreamPickerViewDelegate/numberOfItemsInImageStreamPickerView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>- (NSUInteger)numberOfItemsInImageStreamPickerView:(WAImageStreamPickerView *)picker</Declaration>
+			
+			
+			<Anchor>//api/name/numberOfItemsInImageStreamPickerView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAImageStreamPickerViewDelegate/itemAtIndex:inImageStreamPickerView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>- (id)itemAtIndex:(NSUInteger)anIndex inImageStreamPickerView:(WAImageStreamPickerView *)picker</Declaration>
+			
+			
+			<Anchor>//api/name/itemAtIndex:inImageStreamPickerView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAImageStreamPickerViewDelegate/thumbnailForItem:inImageStreamPickerView:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>- (UIImage *)thumbnailForItem:(id)anItem inImageStreamPickerView:(WAImageStreamPickerView *)picker</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailForItem:inImageStreamPickerView:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAImageStreamPickerViewDelegate/imageStreamPickerView:didSelectItem:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageStreamPickerView.h</DeclaredIn>			
+			
+			<Declaration>- (void)imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(id)anItem</Declaration>
+			
+			
+			<Anchor>//api/name/imageStreamPickerView:didSelectItem:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

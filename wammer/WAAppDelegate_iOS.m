@@ -37,7 +37,7 @@
 #import "IRAlertView.h"
 #import "IRAction.h"
 
-#import "WAPostsViewControllerPhone.h"
+#import "WATimelineViewControllerPhone.h"
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
@@ -48,7 +48,10 @@
 
 #import "IASKSettingsReader.h"
 
+#import	"DCIntrospect.h"
 
+#import "GANTracker.h"
+		
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
@@ -78,6 +81,7 @@
   //  This is so not going to happen
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[GANTracker sharedTracker] stopTracker];
   [super dealloc];
 
 }
@@ -101,18 +105,67 @@
 		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
 	nil]];
 	
-	if (WATestFlightSDKEnabled()) {
-				
-		[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			(id)kCFBooleanFalse, @"reinstallCrashHandlers",	//	Don’t use stuff from TestFlight
-		nil]];
+	if (!WAApplicationHasDebuggerAttached()) {
+	
+		WF_TESTFLIGHT(^ {
 		
-		[TestFlight takeOff:kWATestflightTeamToken];
+			NSLog(@"Using Testflight");
+					
+			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				//	(id)kCFBooleanFalse, @"reinstallCrashHandlers",
+				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
+			nil]];
+			
+			[TestFlight takeOff:kWATestflightTeamToken];
+			
+			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+				
+				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
+				[TestFlight passCheckpoint:eventTitle];
+				
+			}];
+			
+			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		
+		});
+		
+		WF_CRASHLYTICS(^ {
+			
+			NSLog(@"Using Crashlytics");
+			
+			[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+			[Crashlytics sharedInstance].debugMode = YES;
+			
+		});
 	
+		WF_GOOGLEANALYTICS(^ {
+		
+			NSLog(@"Using Google Analytics");
+					
+			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
+			[GANTracker sharedTracker].debug = YES;
+			
+			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+				
+				[[GANTracker sharedTracker] 
+					trackEvent: [[note userInfo] objectForKey:@"category"]
+					action:	[[note userInfo] objectForKey:@"action"]
+					label:	[[note userInfo] objectForKey:@"label"]
+					value:	(NSInteger)[[note userInfo] objectForKey:@"value"]
+					withError:nil];
+				
+			}];
+			
+			objc_setAssociatedObject([GANTracker class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		
+		});
+		
 	}
+		
+	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
+	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
+	[audioSession setActive:YES error:nil];
 	
-	[[AVAudioSession sharedInstance] setActive:YES error:nil];
-
 }
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -152,6 +205,11 @@
     
 	};
 	
+#if WF_USES_CRASHLYTICS || WF_USES_TESTFLIGHT
+
+	initializeInterface();
+
+#else
 	
 	if (WAApplicationHasDebuggerAttached()) {
 	
@@ -166,6 +224,8 @@
 		initializeInterface();
 	
 	} else {
+	
+		NSLog(@"Preparing environment for custom crash handling");
   
 		[self clearViewHierarchy];
 	
@@ -183,7 +243,26 @@
 		}];
     
 	}
+
+#endif
+
+	#if TARGET_IPHONE_SIMULATOR
+	// create a custom tap gesture recognizer so introspection can be invoked from a device
+	// this one is a three finger double tap
+	UITapGestureRecognizer *defaultGestureRecognizer = [[[UITapGestureRecognizer alloc] init] autorelease];
+	defaultGestureRecognizer.cancelsTouchesInView = NO;
+	defaultGestureRecognizer.delaysTouchesBegan = NO;
+	defaultGestureRecognizer.delaysTouchesEnded = NO;
+	defaultGestureRecognizer.numberOfTapsRequired = 3;
+	defaultGestureRecognizer.numberOfTouchesRequired = 2;
+	[DCIntrospect sharedIntrospector].invokeGestureRecognizer = defaultGestureRecognizer;
+
+	// always insert this AFTER makeKeyAndVisible so statusBarOrientation is reported correctly.
+	[[DCIntrospect sharedIntrospector] start];
+	#endif
 	
+	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
+
   return YES;
 	
 }
@@ -200,9 +279,10 @@
 	
 	};
 	
-	dismissModal(self.window.rootViewController);
+	UIViewController *rootVC = self.window.rootViewController;
 	
-	
+	dismissModal(rootVC);
+
 	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
 	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
 		return YES;
@@ -213,17 +293,16 @@
 	};
 	
 	self.window.rootViewController = bottomMostViewController;
-
+	[rootVC didReceiveMemoryWarning];	//	Kill it now
+	
 }
 
 - (void) recreateViewHierarchy {
 
 	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
-	[queue setSuspended:YES];
-	for (NSOperation *anOperation in queue.operations) {
-		[anOperation cancel];
-	}
-	[queue setSuspended:NO];
+	[queue cancelAllOperations];
+	
+	
 
 	NSString *rootViewControllerClassName = nil;
 		
@@ -234,7 +313,7 @@
 		}
 		default:
 		case UIUserInterfaceIdiomPhone: {
-			rootViewControllerClassName = @"WAPostsViewControllerPhone";
+			rootViewControllerClassName = @"WATimelineViewControllerPhone";
 			break;
 		}
 	}
@@ -245,12 +324,32 @@
 	
 	self.window.rootViewController = (( ^ {
 	
-		__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+		__block WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
 		
 		navController.onViewDidLoad = ^ (WANavigationController *self) {
+			
 			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			((WANavigationBar *)self.navigationBar).tintColor = [UIColor brownColor];
-			((WANavigationBar *)self.navigationBar).backgroundView = [WANavigationBar defaultPatternBackgroundView];
+			
+			__block WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
+			
+			navigationBar.tintColor = [UIColor brownColor];
+			navigationBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
+			
+			navigationBar.onBarStyleContextChanged = ^ {
+			
+				[UIView animateWithDuration:0.3 animations:^{
+					
+					BOOL isTranslucent = (navigationBar.barStyle == UIBarStyleBlackTranslucent) || ((navigationBar.barStyle == UIBarStyleBlack) && navigationBar.translucent);
+					
+					navigationBar.customBackgroundView.alpha = isTranslucent ? 0 : 1;
+					navigationBar.suppressesDefaultAppearance = isTranslucent ? NO : YES;
+					
+					navigationBar.tintColor = isTranslucent ? nil : [UIColor brownColor];
+			
+				}];
+			
+			};
+			
 		};
 		
 		if ([navController isViewLoaded])
@@ -275,7 +374,7 @@
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 
-		BOOL didRequest = [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
+		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
 			[WADataStore defaultStore].persistentStoreName = userIdentifier;
@@ -965,6 +1064,16 @@ static unsigned int networkActivityStackingCount = 0;
   nil]];
 
   return YES;
+
+}
+
+- (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
+
+	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
+	
+		
+	
+	nil]);
 
 }
 

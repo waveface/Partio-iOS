@@ -7,7 +7,6 @@
 //
 
 #import <CoreText/CoreText.h>
-#import <CoreText/CTFramesetter.h>
 #import <UIKit/UIKit.h>
 
 #import "IRLabel.h"
@@ -18,5 +17,7 @@
 @property (nonatomic, readwrite, copy) NSString *placeholder;	//	Defaults to nil; if exists, draws at 50% gray
 @property (nonatomic, readwrite, retain) UIFont *font;
 @property (nonatomic, readwrite, retain) IBOutlet UIView *backgroundView;
+
+@property (nonatomic, readonly, retain) IBOutlet IRLabel *label;
 
 @end

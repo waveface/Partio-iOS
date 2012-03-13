@@ -37,61 +37,58 @@
 
 }
 
-- (void) updateArticlesWithCompletion:(void(^)(void))aBlock {
+- (void) updateArticlesWithCompletion:(void(^)(NSError *))aBlock {
 
-	[self updateArticlesOnSuccess:aBlock onFailure:aBlock];
+	[self updateArticlesOnSuccess: ^ {
+	
+		if (aBlock)
+			aBlock(nil);
+	
+	} onFailure:aBlock];
 
 }
 
-- (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
+- (void) updateArticlesOnSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
-		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+		kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
+	//	kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
 		
 	nil];
 	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-		case UIUserInterfaceIdiomPad: {
-			[options setObject:kWAArticleSyncFullyFetchOnlyStrategy forKey:kWAArticleSyncStrategy];
-			break;
-		}
-		
-		default: {
-			break;
-		}
-		
-	}
-
 	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 	
-		if (!didFinish) {
-			if (failureBlock)
-				failureBlock();
-			return;
-		}
+		if (didFinish) {
+
+			if (successBlock)
+				successBlock();
+			
+		} else {
 		
-		if (![temporalContext save:nil]) {
 			if (failureBlock)
-				failureBlock();
-			return;
-		}
+				failureBlock(anError);
 		
-		if (successBlock)
-			successBlock();
+		}
 		
 	}];
 	
 }
 
-- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(void))aBlock {
+- (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(NSError *))aBlock {
 
-	[self uploadArticle:anArticleURI onSuccess:aBlock onFailure:aBlock];
+	[self uploadArticle:anArticleURI onSuccess:^ {
+	
+		if (aBlock)
+			aBlock(nil);
+	
+	} onFailure:aBlock];
 
 }
 
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(void))failureBlock {
+- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
+
+	NSParameterAssert([NSThread isMainThread]);
 
 	__block __typeof__(self) nrSelf = self;
 	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
@@ -104,30 +101,23 @@
 		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
 	};
 	
-	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
+	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
 	
+	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+		
+		NSParameterAssert([NSThread isMainThread]);
+
 		if (!didFinish) {
 			
 			if (failureBlock)
-				failureBlock();
+				failureBlock(error);
 			
-			cleanup();
-			return;
-			
-		}
+		} else {
+
+			if (successBlock)
+				successBlock();
 		
-		if (![temporalContext save:nil]) {
-			
-			if (failureBlock)
-				failureBlock();
-			
-			cleanup();
-			return;
-			
 		}
-		
-		if (successBlock)
-			successBlock();
 		
 		cleanup();
 		
@@ -143,7 +133,7 @@
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
 	
-	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
+	__block NSManagedObjectContext *context = [self disposableMOC];
 	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	NSString *postIdentifier = updatedArticle.identifier;
@@ -165,7 +155,6 @@
 		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
 		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
 		NSError *savingError = nil;
 		if (![context save:&savingError])

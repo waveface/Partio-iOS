@@ -23,7 +23,7 @@
 
 
 @implementation WAArticleTextEmphasisLabel
-@synthesize textView, label, backgroundView, font, text, placeholder;
+@synthesize textView, label, backgroundView, text, placeholder;
 
 - (id) initWithFrame:(CGRect)aFrame {
 
@@ -47,18 +47,6 @@
 
 - (void) waInitialize {
 
-	self.font = [UIFont systemFontOfSize:20.0f];
-		
-	self.label = [[[IRLabel alloc] initWithFrame:self.bounds] autorelease];	
-	self.label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.label.font = self.font;
-	self.label.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-	self.label.numberOfLines = 0;
-	self.label.lineBreakMode = UILineBreakModeTailTruncation;
-	self.label.opaque = NO;
-	self.label.backgroundColor = nil;
-	self.label.userInteractionEnabled = YES;
-	
 #if 0
 	
 	self.layer.borderColor = [UIColor redColor].CGColor;
@@ -73,6 +61,25 @@
 	
 	[self updateText];
 	
+}
+
+- (IRLabel *) label {
+
+	if (label)
+		return label;
+
+	label = [[IRLabel alloc] initWithFrame:self.bounds];
+	label.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	label.font = self.font;
+	label.textColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+	label.numberOfLines = 0;
+	label.lineBreakMode = UILineBreakModeTailTruncation;
+	label.opaque = NO;
+	label.backgroundColor = nil;
+	label.userInteractionEnabled = YES;
+	
+	return label;
+
 }
 
 - (void) setBackgroundView:(UIView *)newBackgroundView {
@@ -96,6 +103,28 @@
 	text = [newText copy];
 	
 	[self updateText];
+
+}
+
+- (void) setFont:(UIFont *)font {
+
+	self.label.font = font;
+
+}
+
+- (UIFont *) font {
+
+	return self.label.font;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingFont {
+
+	return [NSSet setWithObjects:
+	
+		@"label.font",
+	
+	nil];
 
 }
 
@@ -189,7 +218,6 @@
 	[text release];
 	[placeholder release];
 	
-	[font release];
 	[label release];
 	[backgroundView release];
 	

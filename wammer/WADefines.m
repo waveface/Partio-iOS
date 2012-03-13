@@ -41,9 +41,11 @@ NSString * const kWARemoteInterfaceReachableHostsDidChangeNotification = @"WARem
 NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification = @"WARemoteInterfaceDidObserveAuthenticationFailureNotification";
 NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
 
-NSString * const kWATestFlightSDKEnabled = @"WATestFlightSDKEnabled";
 NSString * const kWATestflightTeamToken = @"2e0589c9a03560bfeb93e215fdd9cbbb_MTg2ODAyMDExLTA5LTIyIDA0OjM4OjI1LjMzNTEyNg";
-
+NSString * const kWACrashlyticsAPIKey = @"d79b0f823e42fdf1cdeb7e988a8453032fd85169";
+NSString * const kWAGoogleAnalyticsAccountID = @"UA-27817516-3";
+NSInteger  const kWAGoogleAnalyticsDispatchInterval = 10;
+			
 NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c1-a6c2cbf9977c";
 NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
@@ -99,13 +101,6 @@ BOOL WAApplicationHasDebuggerAttached (void) {
 }
 
 
-BOOL WATestFlightSDKEnabled (void) {
-
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kWATestFlightSDKEnabled];
-
-}
-
-
 NSString * const kWACurrentGeneratedDeviceIdentifier = @"WACurrentGeneratedDeviceIdentifier";
 
 BOOL WADeviceIdentifierReset (void) {
@@ -134,5 +129,32 @@ NSString * WADeviceIdentifier (void) {
     return WADeviceIdentifier();
 
   return nil;
+
+}
+
+NSString * const kWAAppEventNotification = @"WAAppEventNotification";
+NSString * const kWAAppEventTitle = @"WAAppEventTitle";
+
+void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
+
+	NSMutableDictionary *sentUserInfo = [[userInfo mutableCopy] autorelease];
+	if (!sentUserInfo)
+		sentUserInfo = [NSMutableDictionary dictionary];
+	
+	if (eventTitle)
+		[sentUserInfo setObject:eventTitle forKey:kWAAppEventTitle];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kWAAppEventNotification object:nil userInfo:sentUserInfo];
+
+}
+
+NSString * const kWADucklingsEnabled = @"WADucklingsEnabled";
+BOOL WADucklingsEnabled (void) {
+
+	if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kWADucklingsEnabled])
+		return YES;
+	
+	return NO;
 
 }

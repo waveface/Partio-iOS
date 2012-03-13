@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleCommentsViewCell.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleCommentsViewCell</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>
+			
+			<NodeRef refid="7"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewCell/initWithCommentsViewCellStyle:reuseIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithCommentsViewCellStyle:(WAArticleCommentsViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/initWithCommentsViewCellStyle:reuseIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/imageStackView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/avatarView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView</Declaration>
+			
+			
+			<Anchor>//api/name/avatarView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/userNicknameLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel</Declaration>
+			
+			
+			<Anchor>//api/name/userNicknameLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/contentTextLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *contentTextLabel</Declaration>
+			
+			
+			<Anchor>//api/name/contentTextLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/dateOriginLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *dateOriginLabel</Declaration>
+			
+			
+			<Anchor>//api/name/dateOriginLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/dateLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *dateLabel</Declaration>
+			
+			
+			<Anchor>//api/name/dateLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/originLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *originLabel</Declaration>
+			
+			
+			<Anchor>//api/name/originLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewCell/initWithStyle:reuseIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/initWithStyle:reuseIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewCell/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/style</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAArticleCommentsViewCellStyle style</Declaration>
+			
+			
+			<Anchor>//api/name/style</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewCell/reuseIdentifier</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) NSString *reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/reuseIdentifier</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleCommentsViewCell/cellFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>+ (WAArticleCommentsViewCell *)cellFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/cellFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleCommentsViewCell/cellFromNibNamed:instantiatingOwner:withOptions:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewCell.h</DeclaredIn>			
+			
+			<Declaration>+ (WAArticleCommentsViewCell *)cellFromNibNamed:(NSString *)nibName instantiatingOwner:(id)owner withOptions:(NSDictionary *)options</Declaration>
+			
+			
+			<Anchor>//api/name/cellFromNibNamed:instantiatingOwner:withOptions:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

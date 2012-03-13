@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 8/30/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface Inc. All rights reserved.
 //
 
 #import "WAAuthenticationRequestViewController.h"
@@ -395,11 +395,9 @@
 
 - (void) authenticate {
 	
-	if (WATestFlightSDKEnabled()) {
-	
-		[TestFlight passCheckpoint:@"SignIn"];
-	
-	}
+	WF_TESTFLIGHT(^ {
+		[TestFlight passCheckpoint:@"SignIn"];	
+	});
 
   [self update];
 	

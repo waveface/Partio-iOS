@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAOpenGraphElementImage.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAOpenGraphElementImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage.h</DeclaredIn>
+			
+			<NodeRef refid="50"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElementImage/imageFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *imageFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/imageFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElementImage/imageRemoteURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *imageRemoteURL</Declaration>
+			
+			
+			<Anchor>//api/name/imageRemoteURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElementImage/owner</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAOpenGraphElement *owner</Declaration>
+			
+			
+			<Anchor>//api/name/owner</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElementImage/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElementImage/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElementImage/image</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UIImage *image</Declaration>
+			
+			
+			<Anchor>//api/name/image</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElementImage/imageFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)imageFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/imageFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElementImage/keyPathsForValuesAffectingImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElementImage+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingImage</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

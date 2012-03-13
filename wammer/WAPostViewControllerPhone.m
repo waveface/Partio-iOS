@@ -9,7 +9,7 @@
 #import "WADefines.h"
 
 #import "WAPostViewControllerPhone.h"
-#import "WAComposeViewControllerPhone.h"
+
 #import "WADataStore.h"
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
@@ -46,9 +46,9 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 + (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL{
     
-    WAPostViewControllerPhone *controller = [[self alloc] initWithStyle:UITableViewStylePlain];
+    WAPostViewControllerPhone *controller = [[[self alloc] initWithStyle:UITableViewStylePlain] autorelease];
     
-    controller.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
+    controller.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
     controller.post = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:postURL];
     
     return controller;
@@ -62,8 +62,6 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
  
   self.title = @"Post";
   self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
-  
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   
   return self;
 
@@ -93,7 +91,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) loadView {
 
-	self.tableView = [[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	self.tableView = [[[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain] autorelease];
 	self.view = self.tableView;
 	
 	__block IRTableView *nrTV = ((IRTableView *)self.tableView);
@@ -124,48 +122,36 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 }
 
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-  
-  NSLog(@"%@: a managed object context saved, merge it", self);
-  
-  if (aNotification.object == self.managedObjectContext)
-    return;
-  
-  [self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-  
-}
-
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
   
   //  This method will be called initially to populate the table view, and also on updates so the table view shows newly composed comments
   
-  void (^operation)() = ^ {
-  
-    if (![self isViewLoaded])
-      return;
-      
-    [self.tableView reloadData];
-		[self.tableView layoutSubviews];
-		[self.tableView setNeedsLayout];
-    
-    NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
-    
-    if (indexPathForLastCell) {
-      [self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-  
-  };
-  
-  if ([NSThread isMainThread])
-    operation();
-  else
-    dispatch_async(dispatch_get_main_queue(), operation);
+  NSParameterAssert([NSThread isMainThread]);
 
-}
+	if (![self isViewLoaded])
+		return;
+		
+	[self.tableView reloadData];
+	[self.tableView layoutSubviews];
+	[self.tableView setNeedsLayout];
+	
+	NSIndexPath *indexPathForLastCell = [NSIndexPath indexPathForRow:([self.fetchedResultsController.fetchedObjects count] - 1) inSection:1];
+	
+	if (indexPathForLastCell) {
+		[self.tableView scrollToRowAtIndexPath:indexPathForLastCell atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	}
+
+};
 
 - (void) dealloc {
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+	
+	[fetchedResultsController setDelegate:nil];
+	[fetchedResultsController release];
+	
+	[post release];
+	[managedObjectContext release];
   
   [super dealloc];
   
@@ -199,9 +185,10 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
     
 }
 
-- (void)showCompose:(UIBarButtonItem *)sender
-{
-  [self.navigationController pushViewController:[[WAComposeCommentViewControllerPhone alloc] init] animated:YES];
+- (void) showCompose:(UIBarButtonItem *)sender {
+
+  [self.navigationController pushViewController:[[[WAComposeCommentViewControllerPhone alloc] init] autorelease] animated:YES];
+	
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -292,7 +279,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
       if(!cell) {
 			       
-				cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
+				cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
         cell.imageStackView.delegate = self;
         
 				[self cellViewWithDecoration:cell];
@@ -321,6 +308,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
       cell.imageStackView.images = allImages;
       
       return cell;
+			
     }
     
     // Section 2 for comment cell
@@ -358,7 +346,8 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	//  NSString *currentUserIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:kWALastAuthenticatedUserIdentifier];
   NSURL *ownPostURL = [[self.post objectID] URIRepresentation];
   [[WADataStore defaultStore] addComment:commentText onArticle:ownPostURL onSuccess:nil onFailure:nil];
-  
+	WAPostAppEvent(@"CommentComposed", [NSDictionary dictionaryWithObjectsAndKeys:@"comment", @"category", @"create", @"action", nil]);
+	
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -438,15 +427,19 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 	transition.fillMode = kCAFillModeForwards;
 	transition.removedOnCompletion = YES;
-	
+		
 	[self.navigationController setNavigationBarHidden:YES animated:NO];
+
+	[galleryViewController view];
+	[galleryViewController setContextControlsHidden:NO animated:NO barringInteraction:NO completion:nil];
+
 	[self.navigationController pushViewController:galleryViewController animated:NO];
 	
 	[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-  
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+		[galleryViewController setContextControlsHidden:YES animated:YES barringInteraction:YES completion:nil];
 	});
 	
 }

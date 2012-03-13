@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAApplicationDidReceiveReadingProgressUpdateNotificationView Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAApplicationDidReceiveReadingProgressUpdateNotificationView Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/localizableLabels">&nbsp;&nbsp;&nbsp;&nbsp;localizableLabels</option>
+	
+	<option value="//api/name/onAction">&nbsp;&nbsp;&nbsp;&nbsp;onAction</option>
+	
+	<option value="//api/name/onClear">&nbsp;&nbsp;&nbsp;&nbsp;onClear</option>
+	
+	<option value="//api/name/wrapperView">&nbsp;&nbsp;&nbsp;&nbsp;wrapperView</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/viewFromNib">&nbsp;&nbsp;&nbsp;&nbsp;+ viewFromNib</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/awakeFromNib">&nbsp;&nbsp;&nbsp;&nbsp;- awakeFromNib</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/enqueueAnimationForVisibility:completion:">&nbsp;&nbsp;&nbsp;&nbsp;- enqueueAnimationForVisibility:completion:</option>
+	
+	<option value="//api/name/enqueueAnimationForVisibility:withAdditionalAnimation:completion:">&nbsp;&nbsp;&nbsp;&nbsp;- enqueueAnimationForVisibility:withAdditionalAnimation:completion:</option>
+	
+	<option value="//api/name/enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:">&nbsp;&nbsp;&nbsp;&nbsp;- enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:</option>
+	
+	<option value="//api/name/handleAction:">&nbsp;&nbsp;&nbsp;&nbsp;- handleAction:</option>
+	
+	<option value="//api/name/handleClear:">&nbsp;&nbsp;&nbsp;&nbsp;- handleClear:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/localizableLabels">localizableLabels</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/onAction">onAction</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/onClear">onClear</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/wrapperView">wrapperView</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewFromNib">viewFromNib</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/awakeFromNib">awakeFromNib</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/enqueueAnimationForVisibility:completion:">enqueueAnimationForVisibility:completion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/enqueueAnimationForVisibility:withAdditionalAnimation:completion:">enqueueAnimationForVisibility:withAdditionalAnimation:completion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:">enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleAction:">handleAction:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleClear:">handleClear:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAApplicationDidReceiveReadingProgressUpdateNotificationView Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAApplicationDidReceiveReadingProgressUpdateNotificationView Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">UIView</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAApplicationDidReceiveReadingProgressUpdateNotificationView.h<br />WAApplicationDidReceiveReadingProgressUpdateNotificationView.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewFromNib">+&nbsp;viewFromNib</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/localizableLabels">&nbsp;&nbsp;localizableLabels</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/wrapperView">&nbsp;&nbsp;wrapperView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleAction:">&ndash;&nbsp;handleAction:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleClear:">&ndash;&nbsp;handleClear:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/onAction">&nbsp;&nbsp;onAction</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/onClear">&nbsp;&nbsp;onClear</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/enqueueAnimationForVisibility:completion:">&ndash;&nbsp;enqueueAnimationForVisibility:completion:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/enqueueAnimationForVisibility:withAdditionalAnimation:completion:">&ndash;&nbsp;enqueueAnimationForVisibility:withAdditionalAnimation:completion:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:">&ndash;&nbsp;enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/awakeFromNib">&ndash;&nbsp;awakeFromNib</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/localizableLabels" title="localizableLabels"></a>
+	<h3 class="subsubtitle method-title">localizableLabels</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/onAction" title="onAction"></a>
+	<h3 class="subsubtitle method-title">onAction</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/onClear" title="onClear"></a>
+	<h3 class="subsubtitle method-title">onClear</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/wrapperView" title="wrapperView"></a>
+	<h3 class="subsubtitle method-title">wrapperView</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/viewFromNib" title="viewFromNib"></a>
+	<h3 class="subsubtitle method-title">viewFromNib</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/awakeFromNib" title="awakeFromNib"></a>
+	<h3 class="subsubtitle method-title">awakeFromNib</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/enqueueAnimationForVisibility:completion:" title="enqueueAnimationForVisibility:completion:"></a>
+	<h3 class="subsubtitle method-title">enqueueAnimationForVisibility:completion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/enqueueAnimationForVisibility:withAdditionalAnimation:completion:" title="enqueueAnimationForVisibility:withAdditionalAnimation:completion:"></a>
+	<h3 class="subsubtitle method-title">enqueueAnimationForVisibility:withAdditionalAnimation:completion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:" title="enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:"></a>
+	<h3 class="subsubtitle method-title">enqueueAnimationForVisibility:withDuration:additionalAnimation:completion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleAction:" title="handleAction:"></a>
+	<h3 class="subsubtitle method-title">handleAction:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleClear:" title="handleClear:"></a>
+	<h3 class="subsubtitle method-title">handleClear:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

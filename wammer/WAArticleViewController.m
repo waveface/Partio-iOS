@@ -119,7 +119,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		return WADiscretePlaintextArticleStyle;
 		
 	for (WAPreview *aPreview in anArticle.previews)
-		if (aPreview.text || aPreview.graphElement.text || aPreview.graphElement.title)
+		if (aPreview.text || aPreview.url || aPreview.graphElement.text || aPreview.graphElement.title)
 			return WADiscretePreviewArticleStyle;
 			
 	for (WAFile *aFile in anArticle.files)
@@ -168,10 +168,20 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingArticle {
+
+	return [NSSet setWithObjects:
+	
+		@"representedObjectURI",
+	
+	nil];
+
+}
+
 - (WAArticle *) article {
 
-	if (!article)
-		self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI];
+	if (!article && self.representedObjectURI)
+		article = [(WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI] retain];
 	
 	return article;
 
@@ -179,11 +189,11 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (void) viewDidUnload {
 
-//	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
+	//	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
 	
 	self.managedObjectContext = nil;
 	self.article = nil;
-
+	
 	[super viewDidUnload];
 
 }
@@ -308,7 +318,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 				
 				shownViewController.onLoadview = ^ (WAViewController *self) {
 					self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+					UITextView *textView = [[[UITextView alloc] initWithFrame:self.view.bounds] autorelease];
 					textView.text = inspectionText;
 					textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 					textView.editable = NO;
@@ -497,7 +507,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	NSString * const animationTimingFunctionName = kCAMediaTimingFunctionEaseInEaseOut;
 	CABasicAnimation * (^animation)(NSString *keyPath, id fromValue, id toValue, NSTimeInterval duration);
 	CATransform3D (^fillingTransform)(CGRect aRect, CGRect enclosingRect);
-	CATransform3D (^shrinkingTransform)(CGRect aRect, CGRect enclosingRect);
+	//	CATransform3D (^shrinkingTransform)(CGRect aRect, CGRect enclosingRect);
 	
 	animation = ^ (NSString *keyPath, id fromValue, id toValue, NSTimeInterval duration) {
 		CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:keyPath];
@@ -519,14 +529,14 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		);
 	};
 
-	shrinkingTransform = ^ (CGRect aRect, CGRect enclosingRect) {
-		CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){ 16.0f * aRect.size.width, 16.0f * aRect.size.height }, enclosingRect, 0.0f, YES));
-		CGFloat aspectRatio = CGRectGetWidth(aRect) / CGRectGetWidth(fullRect);
-		return CATransform3DConcat(
-			CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), 
-			CATransform3DMakeTranslation((CGRectGetMidX(fullRect) - CGRectGetMidX(aRect)), (CGRectGetMidY(fullRect) - CGRectGetMidY(aRect)), 0.0f)
-		);
-	};
+	//	shrinkingTransform = ^ (CGRect aRect, CGRect enclosingRect) {
+	//		CGRect fullRect = CGRectIntegral(IRCGSizeGetCenteredInRect((CGSize){ 16.0f * aRect.size.width, 16.0f * aRect.size.height }, enclosingRect, 0.0f, YES));
+	//		CGFloat aspectRatio = CGRectGetWidth(aRect) / CGRectGetWidth(fullRect);
+	//		return CATransform3DConcat(
+	//			CATransform3DMakeScale(aspectRatio, aspectRatio, 1.0f), 
+	//			CATransform3DMakeTranslation((CGRectGetMidX(fullRect) - CGRectGetMidX(aRect)), (CGRectGetMidY(fullRect) - CGRectGetMidY(aRect)), 0.0f)
+	//		);
+	//	};
 	
 	__block UIView *rootView, *backdropView, *statusBarPaddingView, *fauxView;
 	

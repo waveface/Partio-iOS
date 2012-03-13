@@ -8,6 +8,7 @@
 
 #import "WANavigationBar.h"
 #import "IRGradientView.h"
+#import "IRLifetimeHelper.h"
 
 @interface WANavigationBar ()
 
@@ -17,8 +18,9 @@
 
 
 @implementation WANavigationBar
-@synthesize backgroundView;
+@synthesize customBackgroundView;
 @synthesize suppressesDefaultAppearance;
+@synthesize onBarStyleContextChanged;
 
 - (id) initWithFrame:(CGRect)frame {
 
@@ -62,7 +64,9 @@
 
 - (void) dealloc {
 
-	[backgroundView release];
+	[customBackgroundView release];
+	[onBarStyleContextChanged release];
+	
 	[super dealloc];
 
 }
@@ -79,26 +83,26 @@
 		
 }
 
-- (void) setBackgroundView:(UIView *)newBackgroundView {
+- (void) setCustomBackgroundView:(UIView *)newCustomBackgroundView {
 
-	if (backgroundView == newBackgroundView)
+	if (customBackgroundView == newCustomBackgroundView)
 		return;
 	
-	if ([backgroundView isDescendantOfView:self])
-		[backgroundView removeFromSuperview];
+	if ([customBackgroundView isDescendantOfView:self])
+		[customBackgroundView removeFromSuperview];
 		
-	[backgroundView release];
-	backgroundView = [newBackgroundView retain];
+	[customBackgroundView release];
+	customBackgroundView = [newCustomBackgroundView retain];
 	
-	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backgroundView.frame = self.bounds;
+	customBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	customBackgroundView.frame = self.bounds;
   
-  backgroundView.userInteractionEnabled = NO;
+  customBackgroundView.userInteractionEnabled = NO;
 	
-	[self addSubview:backgroundView];
-	[self sendSubviewToBack:backgroundView];
+	[self addSubview:customBackgroundView];
+	[self sendSubviewToBack:customBackgroundView];
 
-  self.suppressesDefaultAppearance = (BOOL)!!(backgroundView);
+  self.suppressesDefaultAppearance = (BOOL)!!(customBackgroundView);
 
 }
 
@@ -106,7 +110,7 @@
 
   [super layoutSubviews];
   
-  [self.backgroundView.superview sendSubviewToBack:self.backgroundView];
+  [self.customBackgroundView.superview sendSubviewToBack:self.customBackgroundView];
   
 }
 
@@ -115,6 +119,30 @@
   suppressesDefaultAppearance = flag;
   
   [self setNeedsDisplay];
+
+}
+
+- (void) setBarStyle:(UIBarStyle)newBarStyle {
+
+	BOOL barStyleChanged = (self.barStyle != newBarStyle);
+
+	[super setBarStyle:newBarStyle];
+	
+	if (barStyleChanged)
+	if (self.onBarStyleContextChanged)
+		self.onBarStyleContextChanged();
+
+}
+
+- (void) setTranslucent:(BOOL)newFlag {
+
+	BOOL translucentFlagChanged = (self.translucent != newFlag);
+	
+	[super setTranslucent:newFlag];
+	
+	if (translucentFlagChanged)
+	if (self.onBarStyleContextChanged)
+		self.onBarStyleContextChanged();
 
 }
 
@@ -137,7 +165,7 @@
 		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) },
 		(CGSize){ CGRectGetWidth(returnedView.bounds), 3 }
 	}] autorelease];
-	backgroundShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	backgroundShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[backgroundShadowView setLinearGradientFromColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.35f] anchor:irTop toColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] anchor:irBottom];
 	
 	[returnedView addSubview:backgroundShadowView];
@@ -153,12 +181,48 @@
 + (UIView *) defaultPatternBackgroundView {
 
   UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
+  UIImage *landscapeBackdropImage = [UIImage imageNamed:@"WANavigationBarBackdropLandscape"];
   UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
   
   returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   
-  
+	
+	BOOL (^isPhone)(void) = ^ {
+		
+		return (BOOL)([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone);
+		
+	};
+	
+	void (^updateBarImage)(UIInterfaceOrientation) = [[^ (UIInterfaceOrientation anOrientation) {
+	
+		BOOL landscapePhone = (isPhone()) && UIInterfaceOrientationIsLandscape(anOrientation);
+		UIImage *image = landscapePhone ? landscapeBackdropImage : backdropImage;
+		
+		returnedView.backgroundColor = [UIColor colorWithPatternImage:image];
+		
+	} copy] autorelease];
+	
+	if (isPhone()) {
+	
+		__block id notificationObject = [[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidChangeStatusBarOrientationNotification object:nil queue:nil usingBlock: ^ (NSNotification *note) {
+		
+			updateBarImage([UIApplication sharedApplication].statusBarOrientation);
+			
+		}] retain];
+		
+		[returnedView irPerformOnDeallocation:^{
+			
+			[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
+			[notificationObject release];
+			
+		}];
+	
+	}
+	
+	updateBarImage([UIApplication sharedApplication].statusBarOrientation);
+	
+	
   UIView *topGlare = [[[UIView alloc] initWithFrame:(CGRect){
     (CGPoint){ 0, 0 },
     (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }

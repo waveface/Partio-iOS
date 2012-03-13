@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleCommentsViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleCommentsViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>
+			
+			<NodeRef refid="8"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleCommentsViewController/controllerRepresentingArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>+ (WAArticleCommentsViewController *)controllerRepresentingArticle:(NSURL *)articleObjectURL</Declaration>
+			
+			
+			<Anchor>//api/name/controllerRepresentingArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/view</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAView *view</Declaration>
+			
+			
+			<Anchor>//api/name/view</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/representedArticleURI</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSURL *representedArticleURI</Declaration>
+			
+			
+			<Anchor>//api/name/representedArticleURI</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;WAArticleCommentsViewControllerDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/state</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAArticleCommentsViewControllerState state</Declaration>
+			
+			
+			<Anchor>//api/name/state</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/wrapperView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIView *wrapperView</Declaration>
+			
+			
+			<Anchor>//api/name/wrapperView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/commentsView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UITableView *commentsView</Declaration>
+			
+			
+			<Anchor>//api/name/commentsView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/commentRevealButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIButton *commentRevealButton</Declaration>
+			
+			
+			<Anchor>//api/name/commentRevealButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/commentPostButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIButton *commentPostButton</Declaration>
+			
+			
+			<Anchor>//api/name/commentPostButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/commentCloseButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIButton *commentCloseButton</Declaration>
+			
+			
+			<Anchor>//api/name/commentCloseButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/compositionContentField</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UITextView *compositionContentField</Declaration>
+			
+			
+			<Anchor>//api/name/compositionContentField</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/compositionSendButton</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton</Declaration>
+			
+			
+			<Anchor>//api/name/compositionSendButton</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/compositionAccessoryView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAView *compositionAccessoryView</Declaration>
+			
+			
+			<Anchor>//api/name/compositionAccessoryView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/compositionAccessoryTextWellBackgroundView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) WAView *compositionAccessoryTextWellBackgroundView</Declaration>
+			
+			
+			<Anchor>//api/name/compositionAccessoryTextWellBackgroundView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/compositionAccessoryBackgroundView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) WAView *compositionAccessoryBackgroundView</Declaration>
+			
+			
+			<Anchor>//api/name/compositionAccessoryBackgroundView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/commentsRevealingActionContainerView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAView *commentsRevealingActionContainerView</Declaration>
+			
+			
+			<Anchor>//api/name/commentsRevealingActionContainerView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/coachmarkOverlay</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIView *coachmarkOverlay</Declaration>
+			
+			
+			<Anchor>//api/name/coachmarkOverlay</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/handleCommentReveal:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleCommentReveal:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleCommentReveal:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/handleCommentPost:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleCommentPost:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleCommentPost:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/handleCommentClose:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (IBAction)handleCommentClose:(id)sender</Declaration>
+			
+			
+			<Anchor>//api/name/handleCommentClose:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/rectForComposition</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (CGRect)rectForComposition</Declaration>
+			
+			
+			<Anchor>//api/name/rectForComposition</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/onViewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) void ( ^ ) ( void ) onViewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/onViewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/scrollsToLastRowOnChange</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL scrollsToLastRowOnChange</Declaration>
+			
+			
+			<Anchor>//api/name/scrollsToLastRowOnChange</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/adjustsContainerViewOnInterfaceBoundsChange</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) BOOL adjustsContainerViewOnInterfaceBoundsChange</Declaration>
+			
+			
+			<Anchor>//api/name/adjustsContainerViewOnInterfaceBoundsChange</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/adjustWrapperViewBoundsWithWindowInterfaceBounds:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)bounds animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/adjustWrapperViewBoundsWithWindowInterfaceBounds:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/initWithNibName:bundle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/initWithNibName:bundle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/handleInterfaceBoundsDidChange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)handleInterfaceBoundsDidChange:(NSNotification *)notification</Declaration>
+			
+			
+			<Anchor>//api/name/handleInterfaceBoundsDidChange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/viewWillAppear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillAppear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillAppear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/viewWillDisappear:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewWillDisappear:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/viewWillDisappear:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/willAnimateRotationToInterfaceOrientation:duration:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration</Declaration>
+			
+			
+			<Anchor>//api/name/willAnimateRotationToInterfaceOrientation:duration:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/setArticle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)setArticle:(WAArticle *)newArticle</Declaration>
+			
+			
+			<Anchor>//api/name/setArticle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/refreshView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)refreshView</Declaration>
+			
+			
+			<Anchor>//api/name/refreshView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/fetchedResultsController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSFetchedResultsController *)fetchedResultsController</Declaration>
+			
+			
+			<Anchor>//api/name/fetchedResultsController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/controllerDidChangeContent:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller</Declaration>
+			
+			
+			<Anchor>//api/name/controllerDidChangeContent:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/tableView:numberOfRowsInSection:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:numberOfRowsInSection:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/cellPrototype</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (WAArticleCommentsViewCell *)cellPrototype</Declaration>
+			
+			
+			<Anchor>//api/name/cellPrototype</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/tableView:heightForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:heightForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/tableView:cellForRowAtIndexPath:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (UITableViewCell *)tableView:(UITableView *)aTableView cellForRowAtIndexPath:(NSIndexPath *)indexPath</Declaration>
+			
+			
+			<Anchor>//api/name/tableView:cellForRowAtIndexPath:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/observeValueForKeyPath:ofObject:change:context:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context</Declaration>
+			
+			
+			<Anchor>//api/name/observeValueForKeyPath:ofObject:change:context:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/textViewDidBeginEditing:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textViewDidBeginEditing:(UITextView *)textView</Declaration>
+			
+			
+			<Anchor>//api/name/textViewDidBeginEditing:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/textViewDidChange:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textViewDidChange:(UITextView *)textView</Declaration>
+			
+			
+			<Anchor>//api/name/textViewDidChange:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleCommentsViewController/textViewDidEndEditing:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)textViewDidEndEditing:(UITextView *)textView</Declaration>
+			
+			
+			<Anchor>//api/name/textViewDidEndEditing:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/managedObjectContext</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext</Declaration>
+			
+			
+			<Anchor>//api/name/managedObjectContext</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/fetchedResultsController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController</Declaration>
+			
+			
+			<Anchor>//api/name/fetchedResultsController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleCommentsViewController/cellPrototype</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleCommentsViewController.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticleCommentsViewCell *cellPrototype</Declaration>
+			
+			
+			<Anchor>//api/name/cellPrototype</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

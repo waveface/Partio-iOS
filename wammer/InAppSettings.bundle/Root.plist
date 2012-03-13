@@ -26,6 +26,22 @@
 		</dict>
 		<dict>
 			<key>Title</key>
+			<string>Visuals</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Alternative Items</string>
+			<key>Key</key>
+			<string>WADucklingsEnabled</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>Title</key>
 			<string>Remote Endpoint</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>

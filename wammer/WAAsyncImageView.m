@@ -19,6 +19,18 @@
 @implementation WAAsyncImageView
 @synthesize lastImagePtr;
 
+- (void) dealloc {
+
+	[super dealloc];
+
+}
+
+- (void) setImage:(UIImage *)newImage {
+
+	[self setImage:newImage withOptions:WAImageViewForceAsynchronousOption];
+
+}
+
 - (void) setImage:(UIImage *)newImage withOptions:(WAImageViewOptions)options {
 
 	if (lastImagePtr == newImage)
@@ -42,15 +54,16 @@
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^ {
 
     UIImage *decodedImage = [newImage irDecodedImage];
-    dispatch_async(dispatch_get_main_queue(), ^{
-    
+		
+		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+			
       if (self.lastImagePtr != decodedImage)
 				return;
     
       [super setImage:decodedImage];
       [self.delegate imageViewDidUpdate:self];
       
-    });
+		});
   
   });
 

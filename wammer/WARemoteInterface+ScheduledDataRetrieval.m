@@ -146,8 +146,8 @@
 		
 			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
 				return;
-        
-      [AppDelegate() beginNetworkActivity];
+				
+			[AppDelegate() beginNetworkActivity];
 
 			[nrSelf beginPerformingAutomaticRemoteUpdates];		
 			[nrSelf beginPostponingDataRetrievalTimerFiring];
@@ -157,14 +157,14 @@
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
 
-        [AppDelegate() endNetworkActivity];
+				[AppDelegate() endNetworkActivity];
 				
-			} onFailure: ^ {
+			} onFailure: ^ (NSError *error) {
 			
 				[nrSelf endPerformingAutomaticRemoteUpdates];		
 				[nrSelf endPostponingDataRetrievalTimerFiring];
-        
-        [AppDelegate() endNetworkActivity];
+				
+				[AppDelegate() endNetworkActivity];
 				
 			}];
 		
@@ -193,10 +193,7 @@
 
 
 @implementation WARemoteInterface (ScheduledDataRetrieval_Private)
-
-- (BOOL) isPerformingAutomaticRemoteUpdates {
-	return (BOOL)!!(self.automaticRemoteUpdatesPerformingCount);
-}
+@dynamic performingAutomaticRemoteUpdates;
 
 - (void) setDataRetrievalInterval:(NSTimeInterval)newDataRetrievalInterval {
 	if (self.dataRetrievalInterval != newDataRetrievalInterval)

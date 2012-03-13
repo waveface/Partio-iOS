@@ -3,7 +3,7 @@
 //  wammer-iOS
 //
 //  Created by Evadne Wu on 8/31/11.
-//  Copyright 2011 Iridia Productions. All rights reserved.
+//  Copyright 2011 Waveface Inc. All rights reserved.
 //
 
 #import "WAArticlesViewController.h"
@@ -44,7 +44,6 @@
 @property (nonatomic, readwrite, retain) IRActionSheetController *debugActionSheetController;
 @property (nonatomic, readwrite, retain) UIPopoverController *draftsPopoverController;
 @property (nonatomic, readwrite, retain) UIPopoverController *userInfoPopoverController;
-@property (nonatomic, readwrite, retain) UIPopoverController *settingsPopoverController;
 
 @property (nonatomic, readwrite, assign) BOOL updatesViewOnControllerChangeFinish;
 
@@ -56,7 +55,6 @@
 - (void) dismissAuxiliaryControlsAnimated:(BOOL)animate;
 
 - (void) handleUserInfoItemTap:(id)sender;
-- (void) handleActionItemTap:(id)sender;
 - (void) handleComposeItemTap:(id)sender;
 
 @end
@@ -67,7 +65,6 @@
 @synthesize debugActionSheetController;
 @synthesize draftsPopoverController;
 @synthesize userInfoPopoverController;
-@synthesize settingsPopoverController;
 @synthesize updatesViewOnControllerChangeFinish;
 @synthesize interfaceUpdateOperationSuppressionCount, interfaceUpdateOperationQueue;
 
@@ -76,21 +73,15 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (!self)
 		return nil;
-	
+		
+	NSFetchRequest *fr = [[[WADataStore defaultStore] newFetchRequestForAllArticles] autorelease];
+	fr.fetchBatchSize = 100;
+	fr.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+	nil];
+		
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:((^ {
-	
-		NSFetchRequest *returnedRequest = [[[NSFetchRequest alloc] init] autorelease];
-		returnedRequest.fetchBatchSize = 100;
-		returnedRequest.entity = [NSEntityDescription entityForName:@"WAArticle" inManagedObjectContext:self.managedObjectContext];
-		returnedRequest.predicate = [NSPredicate predicateWithFormat:@"(draft == NO)"];
-		returnedRequest.sortDescriptors = [NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil];
-				
-		return returnedRequest;
-	
-	})()) managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
 	
 	self.fetchedResultsController.delegate = self;
 	
@@ -115,30 +106,37 @@
     __block __typeof__(self) nrSelf = self;
 		
     IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }] autorelease];
-    NSMutableArray *toolbarItems = [NSMutableArray arrayWithObjects:
+		
+		toolbar.usesCustomLayout = NO;
+		toolbar.items = [NSMutableArray arrayWithObjects:
 		
 			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
 		
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WAUserGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        [nrSelf handleUserInfoItemTap:senderItem];
-			}],
-      
-			[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"UIButtonBarCompose")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        [nrSelf handleComposeItemTap:senderItem];
-			}],
+			((^ {
 			
+				__block IRBarButtonItem *senderItem = WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
+
+					[nrSelf handleUserInfoItemTap:senderItem];
+				
+				});
+				
+				return senderItem;
+			
+			})()),
+			
+			((^ {
+			
+				__block IRBarButtonItem *senderItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
+
+					[nrSelf handleComposeItemTap:senderItem];
+				
+				});
+				
+				return senderItem;
+			
+			})()),
+								
 		nil];
-    
-    if (WAAdvancedFeaturesEnabled()) {
-    
-      [toolbarItems insertObject:[IRBarButtonItem itemWithButton:WAToolbarButtonForImage(WABarButtonImageFromImageNamed(@"WASettingsGlyph")) wiredAction: ^ (UIButton *senderButton, IRBarButtonItem *senderItem) {
-        [nrSelf handleActionItemTap:senderItem];
-			}] atIndex:1];
-    
-    }
-    
-		toolbar.usesCustomLayout = NO;
-		toolbar.items = toolbarItems;
 		
 		UIView *returnedView = [[[UIView alloc] initWithFrame:toolbar.bounds] autorelease];
 		[returnedView addSubview:toolbar];
@@ -161,9 +159,13 @@
 	[fetchedResultsController release];
 	[managedObjectContext release];
 	[debugActionSheetController release];
-  [userInfoPopoverController release];
+	
+	if ([userInfoPopoverController isPopoverVisible])
+		[userInfoPopoverController dismissPopoverAnimated:NO];
+  
+	[userInfoPopoverController release];
+	
   [draftsPopoverController release];
-  [settingsPopoverController release];
 	
 	[interfaceUpdateOperationQueue release];
 
@@ -203,7 +205,6 @@
 	self.debugActionSheetController = nil;
   self.draftsPopoverController = nil;
   self.userInfoPopoverController = nil;
-  self.settingsPopoverController = nil;
 	
 	[super viewDidUnload];
 
@@ -264,9 +265,6 @@
   if ([draftsPopoverController isPopoverVisible])
     [draftsPopoverController dismissPopoverAnimated:animate];
     
-  if ([settingsPopoverController isPopoverVisible])
-    [settingsPopoverController dismissPopoverAnimated:animate];
-  
   if ([debugActionSheetController.managedActionSheet isVisible])
     [debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:[debugActionSheetController.managedActionSheet cancelButtonIndex] animated:animate];
 
@@ -358,6 +356,16 @@
       [IRAction actionWithTitle:@"Simulate Crash" block: ^ {
       
         ((char *)NULL)[1] = 0;
+      
+      }],
+			
+			[IRAction actionWithTitle:@"Simulate Crashlytics Crash" block: ^ {
+      
+        WF_CRASHLYTICS(^ {
+				
+					[[Crashlytics sharedInstance] crash];
+				
+				});
       
       }],
 			
@@ -454,33 +462,6 @@
 
 
 
-- (UIPopoverController *) settingsPopoverController {
-
-  if (settingsPopoverController)
-    return settingsPopoverController;
-  
-  IASKAppSettingsViewController *settingsVC = [[[IASKAppSettingsViewController alloc] init] autorelease];
-  settingsVC.showCreditsFooter = NO;
-  settingsVC.showDoneButton = NO;
-  
-  UINavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:settingsVC] autorelease];
-  settingsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
-  
-  return settingsPopoverController;
-
-}
-
-- (void) handleActionItemTap:(UIBarButtonItem *)sender {
-
-  if ([self.settingsPopoverController isPopoverVisible])
-    return;
-
-  [self dismissAuxiliaryControlsAnimated:NO];
-  [self.settingsPopoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-
-}
-
-
 
 
 
@@ -495,6 +476,19 @@
   draftsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
   
   return draftsPopoverController;
+
+}
+
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
+
+	return ![[WADataStore defaultStore] isUploadingArticle:anObjectURIOrNil];
+
+}
+
+- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
+
+  [self dismissAuxiliaryControlsAnimated:NO];
+  [self beginCompositionSessionForArticle:anObjectURIOrNil];
 
 }
 
@@ -519,62 +513,12 @@
   
 }
 
-- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
-
-	return ![[WADataStore defaultStore] isUploadingArticle:anObjectURIOrNil];
-
-}
-
-- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
-
-  [self dismissAuxiliaryControlsAnimated:NO];
-  [self beginCompositionSessionForArticle:anObjectURIOrNil];
-
-}
-
 - (void) beginCompositionSessionForArticle:(NSURL *)anURI {
 
-	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:anURI completion:^(NSURL *anArticleURLOrNil) {
-	
+	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURI completion:^(NSURL *anURI) {
+		
 		[compositionVC dismissModalViewControllerAnimated:YES];
-	
-		if (!anArticleURLOrNil)
-			return;
-	
-		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-		[busyBezel show];
-	
-		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				[busyBezel dismiss];
-
-				WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-				[doneBezel show];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-					[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				});
-				
-			});		
-		
-		} onFailure: ^ {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				NSLog(@"Article upload failed.  Help!");
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
-				
-				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-				[errorBezel show];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-					[errorBezel dismiss];
-				});
-			
-			});
-					
-		}];
-	
 	}];
 	
 	UINavigationController *wrapperNC = [compositionVC wrappingNavigationController];
