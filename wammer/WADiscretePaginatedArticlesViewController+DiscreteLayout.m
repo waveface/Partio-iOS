@@ -195,6 +195,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	CGSize portraitSize = (CGSize){ 768, 1024 };
 	CGSize landscapeSize = (CGSize){ 1024, 768 };
 	
+	IRDiscreteLayoutGridAreaValidatorBlock comboValidator = ^ (IRDiscreteLayoutGrid *self, id anItem) {
+	
+		return (BOOL)((WADiscreteLayoutItemHasLink(anItem) && WADiscreteLayoutItemHasLongText(anItem)) || WADiscreteLayoutItemHasImage(anItem));
+	
+	};
+	
 	IRDiscreteLayoutGrid *gridA = [IRDiscreteLayoutGrid prototype];
 	gridA.contentSize = portraitSize;
 	[gridA registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
@@ -225,7 +231,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[gridB registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];	
 	[gridB registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
-	[gridB registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
+	[gridB registerLayoutAreaNamed:@"D" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
 	[gridB registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
 	
 	IRDiscreteLayoutGrid *gridB_H = [IRDiscreteLayoutGrid prototype];
@@ -244,7 +250,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	IRDiscreteLayoutGrid *gridC = [IRDiscreteLayoutGrid prototype];
 	gridC.contentSize = portraitSize;
-	[gridC registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 2) displayBlock:genericDisplayBlock];
+	[gridC registerLayoutAreaNamed:@"A" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 2) displayBlock:genericDisplayBlock];
 	[gridC registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
 	[gridC registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 1) displayBlock:genericDisplayBlock];	
 	[gridC registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 1, 1, 1) displayBlock:genericDisplayBlock];
@@ -252,7 +258,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	IRDiscreteLayoutGrid *gridC_H = [IRDiscreteLayoutGrid prototype];
 	gridC_H.contentSize = landscapeSize;
-	[gridC_H registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 2, 1) displayBlock:genericDisplayBlock];
+	[gridC_H registerLayoutAreaNamed:@"A" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 2, 1) displayBlock:genericDisplayBlock];
 	[gridC_H registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridC_H registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];	
 	[gridC_H registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 1, 1, 1) displayBlock:genericDisplayBlock];

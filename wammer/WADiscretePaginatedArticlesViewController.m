@@ -423,6 +423,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
+- (NSInteger) layoutManager:(IRDiscreteLayoutManager *)manager indexOfLayoutGrid:(IRDiscreteLayoutGrid *)grid {
+
+	return [self.layoutGrids indexOfObject:grid];
+
+}
+
 - (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
 
 	return [self.discreteLayoutResult.grids count];
