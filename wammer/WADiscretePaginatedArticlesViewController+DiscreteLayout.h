@@ -19,4 +19,6 @@
 
 - (UIView *) newPageContainerView NS_RETURNS_RETAINED;
 
+- (NSArray *) newLayoutGrids NS_RETURNS_RETAINED;
+
 @end
