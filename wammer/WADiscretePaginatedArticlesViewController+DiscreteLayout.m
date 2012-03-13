@@ -11,6 +11,10 @@
 #import "WAArticleViewController.h"
 #import "WAView.h"
 
+#import "IRDiscreteLayoutManager.h"
+#import "WAEightPartLayoutGrid.h"
+#import "IRDiscreteLayoutGrid+Transforming.h"
+
 
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
@@ -171,6 +175,100 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	//	leftShadowView.alpha = 0.5;
 	
 	return [returnedView retain];
+
+}
+
+- (NSArray *) newLayoutGrids {
+
+	__block __typeof__(self) nrSelf = self;
+		
+	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
+	
+		if (![anItem isKindOfClass:[WAArticle class]])
+			return nil;
+	
+		return [nrSelf representingViewForItem:(WAArticle *)anItem];
+	
+	} copy] autorelease];
+	
+	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
+	CGSize portraitSize = (CGSize){ 768, 1024 };
+	CGSize landscapeSize = (CGSize){ 1024, 768 };
+	
+	IRDiscreteLayoutGrid *gridA = [IRDiscreteLayoutGrid prototype];
+	gridA.contentSize = portraitSize;
+	[gridA registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA registerLayoutAreaNamed:@"F" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
+	
+	IRDiscreteLayoutGrid *gridA_H = [IRDiscreteLayoutGrid prototype];
+	gridA_H.contentSize = landscapeSize;
+	[gridA_H registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA_H registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA_H registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA_H registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA_H registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridA_H registerLayoutAreaNamed:@"F" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 1, 1, 1) displayBlock:genericDisplayBlock];
+	
+	[[gridA class] markAreaNamed:@"A" inGridPrototype:gridA asEquivalentToAreaNamed:@"A" inGridPrototype:gridA_H];
+	[[gridA class] markAreaNamed:@"B" inGridPrototype:gridA asEquivalentToAreaNamed:@"B" inGridPrototype:gridA_H];
+	[[gridA class] markAreaNamed:@"C" inGridPrototype:gridA asEquivalentToAreaNamed:@"C" inGridPrototype:gridA_H];
+	[[gridA class] markAreaNamed:@"D" inGridPrototype:gridA asEquivalentToAreaNamed:@"D" inGridPrototype:gridA_H];
+	[[gridA class] markAreaNamed:@"E" inGridPrototype:gridA asEquivalentToAreaNamed:@"E" inGridPrototype:gridA_H];
+	[[gridA class] markAreaNamed:@"F" inGridPrototype:gridA asEquivalentToAreaNamed:@"F" inGridPrototype:gridA_H];
+
+	IRDiscreteLayoutGrid *gridB = [IRDiscreteLayoutGrid prototype];
+	gridB.contentSize = portraitSize;
+	[gridB registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];	
+	[gridB registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridB registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
+	[gridB registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
+	[gridB registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
+	
+	IRDiscreteLayoutGrid *gridB_H = [IRDiscreteLayoutGrid prototype];
+	gridB_H.contentSize = landscapeSize;
+	[gridB_H registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];	
+	[gridB_H registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridB_H registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridB_H registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 2, 1) displayBlock:genericDisplayBlock];
+	[gridB_H registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 1, 1, 1) displayBlock:genericDisplayBlock];
+	
+	[[gridB class] markAreaNamed:@"A" inGridPrototype:gridB asEquivalentToAreaNamed:@"A" inGridPrototype:gridB_H];
+	[[gridB class] markAreaNamed:@"B" inGridPrototype:gridB asEquivalentToAreaNamed:@"B" inGridPrototype:gridB_H];
+	[[gridB class] markAreaNamed:@"C" inGridPrototype:gridB asEquivalentToAreaNamed:@"C" inGridPrototype:gridB_H];
+	[[gridB class] markAreaNamed:@"D" inGridPrototype:gridB asEquivalentToAreaNamed:@"D" inGridPrototype:gridB_H];
+	[[gridB class] markAreaNamed:@"E" inGridPrototype:gridB asEquivalentToAreaNamed:@"E" inGridPrototype:gridB_H];
+	
+	IRDiscreteLayoutGrid *gridC = [IRDiscreteLayoutGrid prototype];
+	gridC.contentSize = portraitSize;
+	[gridC registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 2) displayBlock:genericDisplayBlock];
+	[gridC registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
+	[gridC registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 1) displayBlock:genericDisplayBlock];	
+	[gridC registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridC registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
+	
+	IRDiscreteLayoutGrid *gridC_H = [IRDiscreteLayoutGrid prototype];
+	gridC_H.contentSize = landscapeSize;
+	[gridC_H registerLayoutAreaNamed:@"A" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 2, 1) displayBlock:genericDisplayBlock];
+	[gridC_H registerLayoutAreaNamed:@"B" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
+	[gridC_H registerLayoutAreaNamed:@"C" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];	
+	[gridC_H registerLayoutAreaNamed:@"D" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 1, 1, 1) displayBlock:genericDisplayBlock];
+	[gridC_H registerLayoutAreaNamed:@"E" validatorBlock:nil layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 1, 1, 1) displayBlock:genericDisplayBlock];
+	
+	[[gridC class] markAreaNamed:@"A" inGridPrototype:gridC asEquivalentToAreaNamed:@"A" inGridPrototype:gridC_H];
+	[[gridC class] markAreaNamed:@"B" inGridPrototype:gridC asEquivalentToAreaNamed:@"B" inGridPrototype:gridC_H];
+	[[gridC class] markAreaNamed:@"C" inGridPrototype:gridC asEquivalentToAreaNamed:@"C" inGridPrototype:gridC_H];
+	[[gridC class] markAreaNamed:@"D" inGridPrototype:gridC asEquivalentToAreaNamed:@"D" inGridPrototype:gridC_H];
+	[[gridC class] markAreaNamed:@"E" inGridPrototype:gridC asEquivalentToAreaNamed:@"E" inGridPrototype:gridC_H];
+	
+	[enqueuedLayoutGrids addObject:gridA];
+	[enqueuedLayoutGrids addObject:gridB];
+	[enqueuedLayoutGrids addObject:gridC];
+	
+	return [enqueuedLayoutGrids retain];
 
 }
 

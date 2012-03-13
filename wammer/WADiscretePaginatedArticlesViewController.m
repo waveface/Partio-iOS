@@ -20,7 +20,7 @@
 #import "CALayer+IRAdditions.h"
 
 #import "WAFauxRootNavigationController.h"
-#import "WAEightPartLayoutGrid.h"
+//	#import "WAEightPartLayoutGrid.h"
 
 #import "WANavigationBar.h"
 
@@ -234,7 +234,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		return discreteLayoutManager;
 		
 	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
-	self.discreteLayoutManager.delegate = self;
+	self.discreteLayoutManager.delegate =self;
 	self.discreteLayoutManager.dataSource = self;
 	return self.discreteLayoutManager;
 
@@ -244,26 +244,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	if (layoutGrids)
 		return layoutGrids;
-
-	__block __typeof__(self) nrSelf = self;
 		
-	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
-	
-		if (![anItem isKindOfClass:[WAArticle class]])
-			return nil;
-	
-		return [nrSelf representingViewForItem:(WAArticle *)anItem];
-	
-	} copy] autorelease];
-	
-	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
-	
-	WAEightPartLayoutGrid *eightPartGrid = [WAEightPartLayoutGrid prototype];
-	[enqueuedLayoutGrids addObject:eightPartGrid];
-	eightPartGrid.validatorBlock = nil;
-	eightPartGrid.displayBlock = genericDisplayBlock;
-	
-	layoutGrids = [enqueuedLayoutGrids retain];
+	layoutGrids = [self newLayoutGrids];
 	return layoutGrids;
 
 }
