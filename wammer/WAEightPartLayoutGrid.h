@@ -9,7 +9,7 @@
 #import "IRDiscreteLayoutGrid.h"
 #import "IRDiscreteLayoutGrid+Transforming.h"
 #import "IRDiscreteLayoutItem.h"
-
+#import "WADiscreteLayoutHelpers.h"
 
 @interface WAEightPartLayoutGrid : IRDiscreteLayoutGrid <IRDiscreteLayoutGridEngineUsing>
 

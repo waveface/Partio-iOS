@@ -166,32 +166,6 @@
 		
 	};
 	
-	BOOL (^itemHasMediaOfType)(id<IRDiscreteLayoutItem>, CFStringRef) = ^ (id<IRDiscreteLayoutItem> anItem, CFStringRef aMediaType) {
-		
-		for (id aMediaItem in [anItem representedMediaItems])
-			if (UTTypeConformsTo((CFStringRef)[anItem typeForRepresentedMediaItem:aMediaItem], aMediaType))
-				return YES;
-		
-		return NO;
-
-	};
-	
-	BOOL (^isImageItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return itemHasMediaOfType(anItem, kUTTypeImage);
-	};
-	
-	BOOL (^isLinkItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return itemHasMediaOfType(anItem, kUTTypeURL);
-	};
-	
-//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-//		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
-//	};
-	
-	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
-	};
-	
 	//	Layout progress introspection helpers
 	
 	__block unsigned char tileMap = 0b00000000;
@@ -226,17 +200,17 @@
 		
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
-		if (isImageItem(currentItem) ) {
+		if (WADiscreteLayoutItemHasImage(currentItem)) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
-		if (isImageItem(currentItem) || isLongTextItem(currentItem) || isLinkItem(currentItem) ) {
+		if (WADiscreteLayoutItemHasImage(currentItem) || WADiscreteLayoutItemHasLongText(currentItem) || WADiscreteLayoutItemHasLink(currentItem) ) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
 		// increase web preview 2 cell 
-		if (isLinkItem(currentItem)) {
+		if (WADiscreteLayoutItemHasLink(currentItem)) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
