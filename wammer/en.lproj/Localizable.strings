@@ -25,6 +25,9 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
 
+/* Bar button item title to mark the article as a favorite */
+"ACTION_MARK_FAVORITE" = "+ ♥";
+
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
@@ -62,6 +65,9 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
+
+/* Bar button item title to unmark the article as a favorite */
+"ACTION_UNMARK_FAVORITE" = "- ♥";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";

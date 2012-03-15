@@ -18,6 +18,7 @@
 
 @dynamic creationDeviceName;
 @dynamic draft;
+@dynamic favorite;
 @dynamic fileOrder;
 @dynamic identifier;
 @dynamic text;

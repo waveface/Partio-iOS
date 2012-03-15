@@ -21,4 +21,6 @@
 
 - (NSArray *) newLayoutGrids NS_RETURNS_RETAINED;
 
+- (UIView *) representingViewForItem:(WAArticle *)anArticle;
+
 @end

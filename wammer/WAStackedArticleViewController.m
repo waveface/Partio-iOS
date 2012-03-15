@@ -156,14 +156,87 @@
 	
 	})());
 	
+	__block IRBarButtonItem *favoriteToggleItem = ((^ {
+	
+		IRBarButtonItem *favoriteToggleItem = [[[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+	
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+			case UIUserInterfaceIdiomPad: {
+				
+				[favoriteToggleItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
+					[UIColor clearColor], UITextAttributeTextShadowColor,
+					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
+				nil] forState:UIControlStateNormal];
+				
+				[favoriteToggleItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+				
+				[favoriteToggleItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+				
+				break;
+				
+			}
+			
+			case UIUserInterfaceIdiomPhone: {
+			
+				break;
+			
+			}
+		
+		}
+		
+		favoriteToggleItem.block = ^ {
+		
+			nrSelf.article.favorite = (NSNumber *)([nrSelf.article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			
+			//	TBD: maybe not save
+			
+			NSError *savingError = nil;
+			if (![nrSelf.article.managedObjectContext save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+		};
+		
+		[favoriteToggleItem irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			
+				BOOL articleMarkedFavorite = [inNewValue isEqual:(id)kCFBooleanTrue];
+			
+				//	NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
+				
+				return (articleMarkedFavorite) ?
+					NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Bar button item title to unmark the article as a favorite") : 
+					NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Bar button item title to mark the article as a favorite");
+				
+			} copy] autorelease], kIRBindingsValueTransformerBlock,
+		
+		nil]];
+		
+		[self irPerformOnDeallocation:^{
+		
+			[favoriteToggleItem irUnbind:@"title"];
+			
+		}];
+		
+		return favoriteToggleItem;
+	
+	})());
+	
 	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
 		case UIUserInterfaceIdiomPad: {
 			
 			self.headerBarButtonItems = [NSArray arrayWithObjects:
+				
 				articleDateItem,
+				
 				[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+				
+				favoriteToggleItem,
 				commentsItem,
+				
 			nil];
 			
 			break;
@@ -185,6 +258,22 @@
 	self.foldsTextStackCell = [self enablesTextStackElementFolding];
 		
 	return self;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingIsFavorite {
+
+	return [NSSet setWithObjects:
+	
+		@"article.favorite",
+	
+	nil];
+
+}
+
+- (BOOL) isFavorite {
+
+	return [self.article.favorite isEqual:(id)kCFBooleanTrue];
 
 }
 

@@ -25,6 +25,9 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
 
+/* Bar button item title to mark the article as a favorite */
+"ACTION_MARK_FAVORITE" = "+ ♥";
+
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
 
@@ -62,6 +65,9 @@
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "使用相機";
+
+/* Bar button item title to unmark the article as a favorite */
+"ACTION_UNMARK_FAVORITE" = "- ♥";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
