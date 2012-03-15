@@ -345,12 +345,17 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			break;
 		}
 		
-		case NSFetchedResultsChangeUpdate:
-		default: {
-			//	No op
+		case NSFetchedResultsChangeUpdate: {
+				
+			if (!self.requiresRecalculationOnFetchedResultsChangeEnd)
+			if ([anObject isKindOfClass:[WAArticle class]])
+			if ([[[(WAArticle *)anObject changedValues] allKeys] containsObject:@"favorite"])
+				self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+			
 			break;
+			
 		}
-		
+				
 	}
 		
 }
@@ -572,8 +577,11 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 		if (!item)
 			return;
-	
-		((UIView *)[currentPageElements objectAtIndex:[currentPageGrid.layoutAreaNames indexOfObject:name]]).frame = CGRectInset(layoutBlock(transformedGrid, item), 8, 8);
+			
+		NSUInteger objectIndex = [currentPageGrid.layoutAreaNames indexOfObject:name];
+		if (objectIndex != NSNotFound)
+		if ([currentPageElements count] > objectIndex)
+			((UIView *)[currentPageElements objectAtIndex:objectIndex]).frame = CGRectInset(layoutBlock(transformedGrid, item), 8, 8);
 		
 	}];
 	
