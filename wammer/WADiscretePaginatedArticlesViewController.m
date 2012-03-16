@@ -371,24 +371,30 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
-	if (self.requiresRecalculationOnFetchedResultsChangeEnd)
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super controllerDidChangeContent:controller];
+	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
+	
+		self.discreteLayoutResult = nil;
+		self.lastUsedLayoutGrids = nil;
+
+		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
+			[super controllerDidChangeContent:controller];
+	
+	}
 
 }
 
 - (void) reloadViewContents {
 
-	if (self.discreteLayoutResult) {
-	
-		self.lastUsedLayoutGrids = [self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
-			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
-		}];
-		
-	}
-	
+//	if (self.discreteLayoutResult) {
+//	
+//		self.lastUsedLayoutGrids = [self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
+//			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
+//		}];
+//		
+//	}
+//	
 	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
-	self.lastUsedLayoutGrids = nil;
+//	self.lastUsedLayoutGrids = nil;
 	
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
 	
