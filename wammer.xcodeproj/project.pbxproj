@@ -409,7 +409,6 @@
 		FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
 		FFCFE0AB142111E100B9E6AF /* WAComposeCommentViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */; };
 		FFCFE0AC142111E100B9E6AF /* WAOverlayBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */; };
-		FFCFE0AD142111E100B9E6AF /* UIApplication+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */; };
 		FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
 		FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */; };
 		FFCFE0B2142111E100B9E6AF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
@@ -441,6 +440,9 @@
 		FFCFE0E8142111E100B9E6AF /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		FFCFE0E9142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
+		FFD21B0D151313C000FDC0EF /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14714E8D80400B347A8 /* WAArticle.m */; };
+		FFD21B0E151313C400FDC0EF /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF16B99C14BB249B00E1C2B8 /* WAFile.m */; };
+		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
@@ -1285,8 +1287,6 @@
 		FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WAAdditions.m"; sourceTree = "<group>"; };
 		FF88E14614E8D80400B347A8 /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
 		FF88E14714E8D80400B347A8 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
-		FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+CrashReporting.h"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.h"; sourceTree = SOURCE_ROOT; };
-		FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+CrashReporting.m"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.m"; sourceTree = SOURCE_ROOT; };
 		FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceEntitySyncing.h; sourceTree = "<group>"; };
 		FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceEntitySyncing.m; sourceTree = "<group>"; };
 		FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -2943,8 +2943,6 @@
 				FF666C2F140CD31C00C35CED /* Security.framework */,
 				FF154657148E06D600352428 /* SystemConfiguration.framework */,
 				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
-				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
-				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
 			);
@@ -3795,7 +3793,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "FRAMEWORKS=\"UIKit.framework\"\n\nPRIVATE_FRAMEWORKS_PATH=${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\n    \nmkdir -p ${PRIVATE_FRAMEWORKS_PATH}\n\nfor fwk in ${FRAMEWORKS}\ndo\n    FRAMEWORK_NAME=${BUILT_PRODUCTS_DIR}/${fwk}\n    cp -vfRH \"${FRAMEWORK_NAME}\" \"${PRIVATE_FRAMEWORKS_PATH}\"\ndone\n";
+			shellScript = "FRAMEWORKS=\"UIKit.framework\"\n\nPRIVATE_FRAMEWORKS_PATH=${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\n\nrm -rf \"${PRIVATE_FRAMEWORKS_PATH}\"    \nmkdir -p ${PRIVATE_FRAMEWORKS_PATH}\n\nfor fwk in ${FRAMEWORKS}\ndo\n    FRAMEWORK_NAME=${BUILT_PRODUCTS_DIR}/${fwk}\n    cp -vfRH \"${FRAMEWORK_NAME}\" \"${PRIVATE_FRAMEWORKS_PATH}\"\ndone\n";
 		};
 		FFF7F50E149E5B27004EFB1B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3869,6 +3867,9 @@
 				FF61CCB3149D40E500A6EB0B /* WAComposition.m in Sources */,
 				FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */,
 				FF73351314A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */,
+				FFD21B0D151313C000FDC0EF /* WAArticle.m in Sources */,
+				FFD21B0E151313C400FDC0EF /* WAFile.m in Sources */,
+				FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3910,7 +3911,6 @@
 				FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */,
 				FFCFE0AB142111E100B9E6AF /* WAComposeCommentViewControllerPhone.m in Sources */,
 				FFCFE0AC142111E100B9E6AF /* WAOverlayBezel.m in Sources */,
-				FFCFE0AD142111E100B9E6AF /* UIApplication+CrashReporting.m in Sources */,
 				FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */,
 				FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */,
 				FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */,
@@ -4231,7 +4231,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 287;
+				CURRENT_PROJECT_VERSION = 288;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4285,7 +4285,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 287;
+				CURRENT_PROJECT_VERSION = 288;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

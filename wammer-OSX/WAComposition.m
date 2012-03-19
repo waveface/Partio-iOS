@@ -124,7 +124,7 @@
 		
 		[self close];
 	
-	} onFailure: ^ {
+	} onFailure: ^ (NSError *error) {
 	
 		[NSApp endSheet:busyWindow];
 	

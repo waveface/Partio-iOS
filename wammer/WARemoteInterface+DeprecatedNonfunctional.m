@@ -81,7 +81,7 @@
 		[returnedContext setObject:[NSURL URLWithString:transposedRequestParams relativeToURL:requestURL] forKey:kIRWebAPIEngineRequestHTTPBaseURL];
 		[returnedContext removeObjectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
 		
-		return returnedContext;
+		return (NSDictionary *)returnedContext;
 	
 	} copy] autorelease];
 	

@@ -58,7 +58,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   if (!self.resourceURL)
   if (self.identifier && self.remoteResourceHash)
-    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
   
 }
 

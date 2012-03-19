@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Waveface</string>
+	<string>Stream</string>
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>CFBundleExecutable</key>
@@ -95,5 +95,7 @@
 	<array/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackTranslucent</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2012 Waveface. All rights reserved.</string>
 </dict>
 </plist>

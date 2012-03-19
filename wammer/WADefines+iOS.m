@@ -82,13 +82,13 @@ void kWADefaultBarButtonInitialize (void) {
 	static dispatch_once_t onceToken = 0;
 	dispatch_once(&onceToken, ^{
 	
-		UIUserInterfaceIdiom const currentUIIdiom = [UIDevice currentDevice].userInterfaceIdiom;
-		
 		kWADefaultBarButtonTitleFont = [UIFont boldSystemFontOfSize:12];
 		kWADefaultBarButtonBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.1];
 		kWADefaultBarButtonHighlightedBackgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
 		
 		#if 0
+		
+		UIUserInterfaceIdiom const currentUIIdiom = [UIDevice currentDevice].userInterfaceIdiom;
 		
 		switch (currentUIIdiom) {
 			case UIUserInterfaceIdiomPad: {

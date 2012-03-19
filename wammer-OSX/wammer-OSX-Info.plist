@@ -15,7 +15,7 @@
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleDisplayName</key>
-	<string>${PRODUCT_NAME}</string>
+	<string>Stream</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -29,7 +29,7 @@
 	<key>LSHasLocalizedDisplayName</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2011 Waveface. All rights reserved.</string>
+	<string>Copyright © 2012 Waveface. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
