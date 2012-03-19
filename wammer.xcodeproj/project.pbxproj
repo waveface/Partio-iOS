@@ -51,7 +51,6 @@
 		4B8CA97714BBE7BA006E06BB /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
-		4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
@@ -201,7 +200,6 @@
 		FF7D12F414F26D7D007EF2B7 /* WACompositionViewControllerPad.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D12F314F26D7D007EF2B7 /* WACompositionViewControllerPad.m */; };
 		FF7D12F714F26DB2007EF2B7 /* WACompositionViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D12F614F26DB2007EF2B7 /* WACompositionViewControllerPhone.m */; };
 		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
-		FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */; };
 		FF84037514F2C2EE00200C98 /* WACompositionViewController+ImageHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */; };
 		FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA49149CF46D00B8207A /* Cocoa.framework */; };
 		FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4A149CF46D00B8207A /* CoreAudio.framework */; };
@@ -1046,8 +1044,6 @@
 		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASetupViewController.h; sourceTree = "<group>"; };
-		4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASetupViewController.m; sourceTree = "<group>"; };
 		4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComposeCommentViewControllerPhone.h; sourceTree = "<group>"; };
 		4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComposeCommentViewControllerPhone.m; sourceTree = "<group>"; };
 		4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposeCommentViewControllerPhone.xib; sourceTree = "<group>"; };
@@ -1271,8 +1267,6 @@
 		FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStreamPickerView.m; sourceTree = "<group>"; };
 		FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceDefines.h; sourceTree = "<group>"; };
 		FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceDefines.m; sourceTree = "<group>"; };
-		FF7EB68F1467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+DeprecatedNonfunctional.h"; sourceTree = "<group>"; };
-		FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+DeprecatedNonfunctional.m"; sourceTree = "<group>"; };
 		FF84037314F2C2ED00200C98 /* WACompositionViewController+ImageHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+ImageHandling.h"; sourceTree = "<group>"; };
 		FF84037414F2C2ED00200C98 /* WACompositionViewController+ImageHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACompositionViewController+ImageHandling.m"; sourceTree = "<group>"; };
 		FF878C0613FA730100B76807 /* WAGalleryImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageView.h; sourceTree = "<group>"; };
@@ -1930,6 +1924,15 @@
 			path = wammer;
 			sourceTree = "<group>";
 		};
+		FF03C80715171A0D0020E1C1 /* Scheduled Operations */ = {
+			isa = PBXGroup;
+			children = (
+				FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */,
+				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
+			);
+			name = "Scheduled Operations";
+			sourceTree = "<group>";
+		};
 		FF1A10471462ACDB004FD00D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2015,7 +2018,6 @@
 		FF59F87914419581005508FC /* OSX */ = {
 			isa = PBXGroup;
 			children = (
-				FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */,
 				FF06363814B346CB00E7AF78 /* QuartzCore.framework */,
 				FF460D0D149CF86400DB7F0B /* SystemConfiguration.framework */,
 				FF87FA49149CF46D00B8207A /* Cocoa.framework */,
@@ -2105,7 +2107,7 @@
 				FFA9512714077BE800BD3302 /* Attached Media */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
 				FF97382213D821C1003D1722 /* Model */,
-				FF97384613D82771003D1722 /* API */,
+				FF97384613D82771003D1722 /* Remote Interface */,
 				FF0024F914B44CC500F54AAF /* Blob Syncing */,
 				FF73A54913D6C2CD00D54EC6 /* iOS Supporting Files */,
 				FFC2E04C13DD706600816EA1 /* iOS Resources */,
@@ -2132,12 +2134,22 @@
 			children = (
 				FFFDEFB414211D5C0083BEFB /* iOS */,
 				FF59F87914419581005508FC /* OSX */,
+				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
+				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
+				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
+				FF97386213D82B55003D1722 /* JSONKit */,
+				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
+				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
+				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
+				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
+				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
+				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
 				FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */,
 				FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */,
 				FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */,
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
-				4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */,
+				FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2230,8 +2242,6 @@
 				FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */,
 				FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */,
 				FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */,
-				4BA1630714303A7B00CC4CC0 /* WASetupViewController.h */,
-				4BA1630814303A7B00CC4CC0 /* WASetupViewController.m */,
 			);
 			name = Authentication;
 			path = wammer;
@@ -2252,6 +2262,7 @@
 		FF97382213D821C1003D1722 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
 				FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */,
 				FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */,
 				FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */,
@@ -2259,8 +2270,6 @@
 				FF88E14614E8D80400B347A8 /* WAArticle.h */,
 				FF88E14714E8D80400B347A8 /* WAArticle.m */,
 				FF9DA0C513DFF89000D6B28B /* WAComment.h */,
-				FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */,
-				FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */,
 				FF9DA0C613DFF89000D6B28B /* WAComment.m */,
 				FF0C7AB814987FCA00632EF3 /* WADataStore+FetchingConveniences.h */,
 				FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */,
@@ -2274,7 +2283,6 @@
 				FF7997A81490A23C000CE08D /* WAFilePageElement.m */,
 				FF8F463D14691A7D00D65864 /* WAGroup.h */,
 				FF8F463E14691A7D00D65864 /* WAGroup.m */,
-				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
 				FFC9DB1B14FF46EE004197EC /* WAOpenGraphElement.h */,
 				FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */,
 				FF3588F514EE7207005B452C /* WAOpenGraphElement+WAAdditions.h */,
@@ -2289,21 +2297,26 @@
 				FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */,
 				FF9DA0BF13DFF88F00D6B28B /* WAUser.h */,
 				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
+				FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */,
+				FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */,
 			);
 			name = Model;
 			path = wammer;
 			sourceTree = "<group>";
 		};
-		FF97384613D82771003D1722 /* API */ = {
+		FF97384613D82771003D1722 /* Remote Interface */ = {
 			isa = PBXGroup;
 			children = (
+				FF97384713D8278E003D1722 /* WARemoteInterface.h */,
+				FF97384813D8278E003D1722 /* WARemoteInterface.m */,
 				FF7EB6871467AB05002718DC /* WARemoteInterfaceDefines.h */,
 				FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */,
 				FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */,
-				FFA69454147F6F9E00F46347 /* Data Store Additions */,
+				FF03C80715171A0D0020E1C1 /* Scheduled Operations */,
 				FFA69453147F6F9500F46347 /* Reachability */,
+				FFA69454147F6F9E00F46347 /* Data Store Additions */,
 			);
-			name = API;
+			name = "Remote Interface";
 			path = wammer;
 			sourceTree = "<group>";
 		};
@@ -2332,6 +2345,8 @@
 		FFA69454147F6F9E00F46347 /* Data Store Additions */ = {
 			isa = PBXGroup;
 			children = (
+				FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */,
+				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
 				FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */,
 				FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */,
 				FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */,
@@ -2346,8 +2361,6 @@
 				FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */,
 				FF2E82FD14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.h */,
 				FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */,
-				FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */,
-				FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */,
 				FF35892314EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.h */,
 				FF35892414EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m */,
 				FF35892614EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.h */,
@@ -2361,8 +2374,6 @@
 			children = (
 				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
 				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
-				FF97384713D8278E003D1722 /* WARemoteInterface.h */,
-				FF97384813D8278E003D1722 /* WARemoteInterface.m */,
 				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
 				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
 				FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */,
@@ -2379,10 +2390,6 @@
 				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
 				FF8F463914690A2A00D65864 /* WARemoteInterface+Footprints.h */,
 				FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */,
-				FF7EB68F1467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.h */,
-				FF7EB6901467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m */,
-				FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */,
-				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
 				FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */,
 				FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */,
 			);
@@ -2909,7 +2916,9 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
+				4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */,
+				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
+				FF42755B14F4E8D200824505 /* libz.dylib */,
 				FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */,
 				FF1A105B1462B100004FD00D /* AudioToolbox.framework */,
 				FF1A10561462AD54004FD00D /* AVFoundation.framework */,
@@ -2919,31 +2928,20 @@
 				FF73A54613D6C2CC00D54EC6 /* CoreGraphics.framework */,
 				FFB67956141E345C006F84E3 /* CoreText.framework */,
 				FFD14F0514C5E24C0053116F /* Crashlytics.framework */,
-				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
-				4B1C65F614EE2C0C003398AF /* DCIntrospect */,
-				FF1A10461462ACDB004FD00D /* Finch.xcodeproj */,
 				FF73A54413D6C2CC00D54EC6 /* Foundation.framework */,
-				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
-				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
-				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
-				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
-				FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */,
-				FF97386213D82B55003D1722 /* JSONKit */,
-				4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */,
-				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
-				FF42755B14F4E8D200824505 /* libz.dylib */,
 				FF61635E141618BD004738D3 /* MessageUI.framework */,
-				FF73A5C313D6DCAA00D54EC6 /* MGSplitViewController */,
 				FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */,
-				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
-				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
 				FF1A105D1462B10C004FD00D /* OpenAL.framework */,
 				FF73A69913D6E08800D54EC6 /* QuartzCore.framework */,
 				FF4570E31488F362005B5905 /* QuickLook.framework */,
 				FF666C2F140CD31C00C35CED /* Security.framework */,
+				4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */,
 				FF154657148E06D600352428 /* SystemConfiguration.framework */,
-				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
+				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
+				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
+				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
+				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
 			);
 			name = iOS;
@@ -3917,7 +3915,6 @@
 				FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */,
 				FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */,
 				FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
-				4BA1630914303A7B00CC4CC0 /* WASetupViewController.m in Sources */,
 				FF584C4D1435CB320058E109 /* WAImageView.m in Sources */,
 				FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */,
 				FFA06556143B227B00145079 /* WANavigationBar.m in Sources */,
@@ -3930,7 +3927,6 @@
 				FF22283E1463D2BE00541E31 /* WARemoteInterfaceContext.m in Sources */,
 				FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */,
 				FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */,
-				FF7EB6911467E4C9002718DC /* WARemoteInterface+DeprecatedNonfunctional.m in Sources */,
 				FF8F4626146908B700D65864 /* WARemoteInterface+Authentication.m in Sources */,
 				FF8F4629146909AD00D65864 /* WARemoteInterface+Users.m in Sources */,
 				FF8F462C146909DC00D65864 /* WARemoteInterface+Posts.m in Sources */,

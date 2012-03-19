@@ -27,8 +27,6 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
-#import "WASetupViewController.h"
-
 #import "WANavigationBar.h"
 
 #import "UIView+IRAdditions.h"
@@ -51,7 +49,7 @@
 
 #import "GANTracker.h"
 		
-@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
+@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
 - (void) presentSetupViewControllerAnimated:(BOOL)animated;
 
@@ -927,43 +925,6 @@
 
 }
 
-- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller {
-	
-	[self presentSetupViewControllerAnimated:YES];
-	
-}
-
-- (void) presentSetupViewControllerAnimated:(BOOL)animated {
-	
-	WASetupViewController *setupVC = [[[WASetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
-	setupVC.delegate = self;
-	[setupVC presentModallyOn:self.window.rootViewController animated:animated];
-	
-}
-
-- (void) setupViewController:(WASetupViewController *)controller didChooseString:(NSString *)string {
-
-	NSParameterAssert(controller);
-	NSParameterAssert(string);
-  
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:kWARemoteEndpointURL];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-  //	TODO
-	//	Update remote interface context here. Right now the API update only works when the app is killed and restarted.	
-	
-	//	This will work:
-	//	[[WARemoteInterface sharedInterface].engine performSelector:@selector(setContext:) withObject:[WARemoteInterfaceContext context]];
-	
-  [controller dismissModalViewControllerAnimated:YES];
-
-}
-
-- (void) setupViewControllerDidCancel:(WASetupViewController *)controller{
-	
-	[controller dismissModalViewControllerAnimated:YES];
-	
-}
 
 #pragma mark - Network Activity
 
@@ -1020,7 +981,7 @@ static unsigned int networkActivityStackingCount = 0;
 
 	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
 	
-		
+		//	TBD
 	
 	nil]);
 
