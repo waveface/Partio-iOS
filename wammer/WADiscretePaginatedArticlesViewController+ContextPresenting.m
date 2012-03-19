@@ -347,7 +347,7 @@
 							if (navItem.rightBarButtonItems)
 								[items addObjectsFromArray:shownArticleVC.navigationItem.rightBarButtonItems];
 							
-							return items;
+							return (NSArray *)items;
 						
 						})());
 						

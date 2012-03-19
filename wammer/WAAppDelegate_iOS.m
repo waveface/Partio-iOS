@@ -27,7 +27,6 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
-#import "UIApplication+CrashReporting.h"
 #import "WASetupViewController.h"
 
 #import "WANavigationBar.h"
@@ -101,10 +100,6 @@
 		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPhone;
 	}
 
-	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
-	nil]];
-	
 	if (!WAApplicationHasDebuggerAttached()) {
 	
 		WF_TESTFLIGHT(^ {
@@ -179,72 +174,26 @@
 	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
-			
-	void (^initializeInterface)() = ^ {
-	
-		if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
-			
-			[WADataStore defaultStore].persistentStoreName = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
-			
-			[self recreateViewHierarchy];
+	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
 		
-		} else if (![self hasAuthenticationData]) {
+		[WADataStore defaultStore].persistentStoreName = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
 		
-			[self applicationRootViewControllerDidRequestReauthentication:nil];
-						
-		} else {
-		
-			NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
-			
-			if (lastAuthenticatedUserIdentifier)
-				[WADataStore defaultStore].persistentStoreName = [lastAuthenticatedUserIdentifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-			
-			[self recreateViewHierarchy];
-			
-		}
-    
-	};
+		[self recreateViewHierarchy];
 	
-#if WF_USES_CRASHLYTICS || WF_USES_TESTFLIGHT
-
-	initializeInterface();
-
-#else
+	} else if (![self hasAuthenticationData]) {
 	
-	if (WAApplicationHasDebuggerAttached()) {
-	
-    //  Disable for GDB / LLDB
-		
-		initializeInterface();
-	
-	} else if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
-	
-    //  Never send crash reports thru the Simulator since it won’t actually matter
-
-		initializeInterface();
-	
+		[self applicationRootViewControllerDidRequestReauthentication:nil];
+					
 	} else {
 	
-		NSLog(@"Preparing environment for custom crash handling");
-  
-		[self clearViewHierarchy];
-	
-		//  Only enable crash reporting as an advanced feature
-
-		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
-					initializeInterface();
-				}];
-			} else {
-				initializeInterface();
-			}
-		}];
-    
+		NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+		
+		if (lastAuthenticatedUserIdentifier)
+			[WADataStore defaultStore].persistentStoreName = [lastAuthenticatedUserIdentifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+		
+		[self recreateViewHierarchy];
+		
 	}
-
-#endif
 
 	#if TARGET_IPHONE_SIMULATOR
 	// create a custom tap gesture recognizer so introspection can be invoked from a device

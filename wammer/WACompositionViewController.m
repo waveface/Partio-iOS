@@ -422,7 +422,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSKeyValueChange)changeKind {
 
-	NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
+	NSLog(@"%s %@ %@ %i", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
 
 }
 

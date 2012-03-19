@@ -185,7 +185,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
 	
 		if (![anItem isKindOfClass:[WAArticle class]])
-			return nil;
+			return (UIView *)nil;
 	
 		return [nrSelf representingViewForItem:(WAArticle *)anItem];
 	

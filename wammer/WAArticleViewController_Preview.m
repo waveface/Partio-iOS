@@ -153,8 +153,6 @@ enum {
 
 	[super viewDidLoad];
 	
-	__block __typeof__(self) nrSelf = self;
-	
 	WAPreview *anyPreview = [self preview];
 	
 	if (!anyPreview)

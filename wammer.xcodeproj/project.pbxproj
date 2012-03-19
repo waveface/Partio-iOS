@@ -409,7 +409,6 @@
 		FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
 		FFCFE0AB142111E100B9E6AF /* WAComposeCommentViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */; };
 		FFCFE0AC142111E100B9E6AF /* WAOverlayBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */; };
-		FFCFE0AD142111E100B9E6AF /* UIApplication+CrashReporting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */; };
 		FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
 		FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */; };
 		FFCFE0B2142111E100B9E6AF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
@@ -1288,8 +1287,6 @@
 		FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WAAdditions.m"; sourceTree = "<group>"; };
 		FF88E14614E8D80400B347A8 /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
 		FF88E14714E8D80400B347A8 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
-		FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIApplication+CrashReporting.h"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.h"; sourceTree = SOURCE_ROOT; };
-		FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+CrashReporting.m"; path = "external/IRFoundations/IRAccessories/PLCrashReporter-iOS/UIApplication+CrashReporting.m"; sourceTree = SOURCE_ROOT; };
 		FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceEntitySyncing.h; sourceTree = "<group>"; };
 		FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceEntitySyncing.m; sourceTree = "<group>"; };
 		FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -2946,8 +2943,6 @@
 				FF666C2F140CD31C00C35CED /* Security.framework */,
 				FF154657148E06D600352428 /* SystemConfiguration.framework */,
 				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
-				FF890CAC14162A5300CD7D1F /* UIApplication+CrashReporting.h */,
-				FF890CAD14162A5300CD7D1F /* UIApplication+CrashReporting.m */,
 				FF73A54213D6C2CC00D54EC6 /* UIKit.framework */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
 			);
@@ -3916,7 +3911,6 @@
 				FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */,
 				FFCFE0AB142111E100B9E6AF /* WAComposeCommentViewControllerPhone.m in Sources */,
 				FFCFE0AC142111E100B9E6AF /* WAOverlayBezel.m in Sources */,
-				FFCFE0AD142111E100B9E6AF /* UIApplication+CrashReporting.m in Sources */,
 				FFCFE0AE142111E100B9E6AF /* WAPreview.m in Sources */,
 				FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */,
 				FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */,
