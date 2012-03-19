@@ -27,7 +27,7 @@
 
 + (WAComposeCommentViewControllerPhone *)controllerWithPost:(NSURL *)aPostURLOrNil completion:(void (^)(NSURL *))aBlock
 {
-  WAComposeCommentViewControllerPhone *returnedController = [[[self alloc] init] autorelease];
+  WAComposeCommentViewControllerPhone *returnedController = [[self alloc] init];
   returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
   returnedController.post = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:aPostURLOrNil];
   
@@ -43,7 +43,7 @@
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self) {
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
   }
   return self;
@@ -107,8 +107,4 @@
   return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)dealloc {
-  [contentTextView release];
-  [super dealloc];
-}
 @end

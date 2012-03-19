@@ -63,13 +63,13 @@
 	
 	IRBarButtonItem *articleDateItem = [IRBarButtonItem itemWithCustomView:((^ {
 					
-		__block IRLabel *label = [[[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }] autorelease];
+		__block IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
 		label.opaque = NO;
 		label.backgroundColor = nil;
 		
 		[label irBind:@"attributedText" toObject:nrSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
 				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:nrSelf.article.timestamp];
 				NSString *device = nrSelf.article.creationDeviceName;
@@ -80,7 +80,7 @@
 					
 				) font:[UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f] color:[UIColor colorWithWhite:0.5 alpha:1]];
 			
-			} copy] autorelease], kIRBindingsValueTransformerBlock,
+			}, kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		
@@ -96,7 +96,7 @@
 	
 	__block IRBarButtonItem *commentsItem = ((^ {
 	
-		IRBarButtonItem *commentsItem = [[[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+		IRBarButtonItem *commentsItem = [[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil];
 	
 		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
@@ -124,15 +124,17 @@
 		
 		}
 		
+		__weak IRBarButtonItem *nrCommentsItem = commentsItem;
+		
 		commentsItem.block = ^ {
 		
-			[nrSelf presentCommentsViewController:[[nrSelf newArticleCommentsController] autorelease] sender:commentsItem];
+			[nrSelf presentCommentsViewController:[nrSelf newArticleCommentsController] sender:nrCommentsItem];
 			
 		};
 		
 		[commentsItem irBind:@"title" toObject:self keyPath:@"commentCount" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
 				NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
 				
@@ -142,7 +144,7 @@
 							NSLocalizedString(@"COMMENTS_COUNT_ONE_FORMAT_STRING", @"“%@ Comment”") :
 								NSLocalizedString(@"COMMENTS_COUNT_MANY_FORMAT_STRING", @"“%@ Comments”"), inNewValue];
 			
-			} copy] autorelease], kIRBindingsValueTransformerBlock,
+			}, kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		
@@ -158,7 +160,7 @@
 	
 	__block IRBarButtonItem *favoriteToggleItem = ((^ {
 	
-		IRBarButtonItem *favoriteToggleItem = [[[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil] autorelease];
+		IRBarButtonItem *favoriteToggleItem = [[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil];
 	
 		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
@@ -200,7 +202,7 @@
 		
 		[favoriteToggleItem irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
 				BOOL articleMarkedFavorite = [inNewValue isEqual:(id)kCFBooleanTrue];
 			
@@ -210,7 +212,7 @@
 					NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Bar button item title to unmark the article as a favorite") : 
 					NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Bar button item title to mark the article as a favorite");
 				
-			} copy] autorelease], kIRBindingsValueTransformerBlock,
+			}, kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		
@@ -299,22 +301,6 @@
 	
 	[commentsPopover dismissPopoverAnimated:NO];
 
-	[headerView release];
-	[topCell release];
-	[textStackCell release];
-	[commentsVC release];
-	[commentsPopover release];
-	[stackView release];
-	[wrapperView release];
-	[onViewDidLoad release];
-	[onPullTop release];
-	[footerCell release];
-	
-	[textStackCellFoldingToggleWrapperView release];
-	[textStackCellFoldingToggle release];
-	
-	[super dealloc];
-
 }
 
 - (WAArticleTextStackElement *) textStackCell {
@@ -322,7 +308,7 @@
 	if (textStackCell)
 		return textStackCell;
 		
-	textStackCell = [[WAArticleTextStackElement cellFromNib] retain];
+	textStackCell = [WAArticleTextStackElement cellFromNib];
 	
 	[textStackCell.textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
@@ -381,7 +367,7 @@
 	if (textStackCellFoldingToggle)
 		return textStackCellFoldingToggle;
 		
-	textStackCellFoldingToggle = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+	textStackCellFoldingToggle = [UIButton buttonWithType:UIButtonTypeCustom];
 	[textStackCellFoldingToggle addTarget:self action:@selector(handleTextStackCellFoldingToggleTap:) forControlEvents:UIControlEventTouchUpInside];
 	
 	[self.textStackCellFoldingToggle setContentEdgeInsets:(UIEdgeInsets){ 0, 16, 0, 16 }];
@@ -462,7 +448,7 @@
 
 - (WAArticleCommentsViewController *) newArticleCommentsController {
 
-	return [self.commentsVC retain];
+	return self.commentsVC;
 
 }
 
@@ -527,7 +513,7 @@
 	if (commentsVC)
 		return commentsVC;
 	
-	commentsVC = [[WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]] retain];
+	commentsVC = [WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]];
 	commentsVC.delegate = self;
 	
 	//	__block __typeof__(commentsVC) nrCommentsVC = commentsVC;
@@ -622,7 +608,7 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 
-	__block WAOverlayBezel *nrBezel = [[WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle] retain];
+	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	
 	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:^{
@@ -630,24 +616,23 @@
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
 			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			[nrBezel autorelease];
-			
+			nrBezel = nil;
+						
 		});
 		
 	} onFailure:^{
 	
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];		
-			[nrBezel autorelease];
+			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
-			nrBezel = [[WAOverlayBezel bezelWithStyle:WAErrorBezelStyle] retain];
+			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
 			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
 			
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				
 				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				[nrBezel autorelease];
+				nrBezel = nil;
 				
 			});
 			
@@ -730,7 +715,7 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.wrapperView = [[[UIView alloc] initWithFrame:self.stackView.frame] autorelease];
+	self.wrapperView = [[UIView alloc] initWithFrame:self.stackView.frame];
 	[self.stackView.superview addSubview:self.wrapperView];
 	[self.wrapperView addSubview:self.stackView];
 	self.stackView.frame = self.wrapperView.bounds;
@@ -792,7 +777,7 @@
 		
 		[stackElements insertObject:headerView atIndex:0];
 		
-		UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(headerView.bounds), 0 }] autorelease];
+		UIView *enclosingView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(headerView.bounds), 0 }];
 		UIView *topBackgroundView = WAStandardArticleStackCellTopBackgroundView();
 		[enclosingView addSubview:topBackgroundView];
 		topBackgroundView.frame = IRGravitize(enclosingView.bounds, headerView.bounds.size, kCAGravityBottom);
@@ -926,8 +911,7 @@
 		[allStackElements removeObject:headerView];
 	}
 	
-	[headerView release];
-	headerView = [newHeaderView retain];
+	headerView = newHeaderView;
 	
 	if (![allStackElements containsObject:headerView]) {
 		[allStackElements insertObject:headerView atIndex:0];

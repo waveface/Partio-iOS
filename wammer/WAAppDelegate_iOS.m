@@ -51,8 +51,6 @@
 		
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
-- (void) presentSetupViewControllerAnimated:(BOOL)animated;
-
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
 - (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification;
 - (void) handleIASKSettingsChanged:(NSNotification *)aNotification;
@@ -79,7 +77,6 @@
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[GANTracker sharedTracker] stopTracker];
-  [super dealloc];
 
 }
 
@@ -167,8 +164,7 @@
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 	
-	
-	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
@@ -196,7 +192,7 @@
 	#if TARGET_IPHONE_SIMULATOR
 	// create a custom tap gesture recognizer so introspection can be invoked from a device
 	// this one is a three finger double tap
-	UITapGestureRecognizer *defaultGestureRecognizer = [[[UITapGestureRecognizer alloc] init] autorelease];
+	UITapGestureRecognizer *defaultGestureRecognizer = [[UITapGestureRecognizer alloc] init];
 	defaultGestureRecognizer.cancelsTouchesInView = NO;
 	defaultGestureRecognizer.delaysTouchesBegan = NO;
 	defaultGestureRecognizer.delaysTouchesEnded = NO;
@@ -216,8 +212,7 @@
 
 - (void) clearViewHierarchy {
 
-	__block void (^dismissModal)(UIViewController *aVC);
-	dismissModal = ^ (UIViewController *aVC) {
+	__block void (^dismissModal)(UIViewController *) = ^ (UIViewController *aVC) {
 		
 		if (aVC.modalViewController)
 			dismissModal(aVC.modalViewController);
@@ -230,12 +225,12 @@
 	
 	dismissModal(rootVC);
 
-	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
+	WAViewController *bottomMostViewController = [[WAViewController alloc] init];
 	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
 		return YES;
 	};
 	bottomMostViewController.onLoadview = ^ (WAViewController *self) {
-		self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }] autorelease];
+		self.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
 		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
 	};
 	
@@ -267,11 +262,11 @@
 	
 	NSParameterAssert(rootViewControllerClassName);
 	
-	__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
+	__block UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
 	
 	self.window.rootViewController = (( ^ {
 	
-		__block WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
+		__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
 		
 		navController.onViewDidLoad = ^ (WANavigationController *self) {
 			
@@ -566,7 +561,7 @@
 	
 	void (^presentWrappedAuthRequestVC)(WAAuthenticationRequestViewController *authVC, BOOL animated) = ^ (WAAuthenticationRequestViewController *authVC, BOOL animated) {
 	
-		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authVC] autorelease];
+		WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authVC];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 	
@@ -667,7 +662,7 @@
 			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
 			if (userIdentifierHasChanged || zapEverything) {
-				UINavigationController *navC = [[self.navigationController retain] autorelease];
+				UINavigationController *navC = self.navigationController;
 				[self dismissModalViewControllerAnimated:NO];
 				[nrAppDelegate recreateViewHierarchy];
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
@@ -742,10 +737,10 @@
 	
 	UIView *overlayView = ((^ {
 	
-		UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+		UIView *returnedView = [[UIView alloc] initWithFrame:rootView.bounds];
 		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		
-		UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+		UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		
 		spinner.center = (CGPoint){
 			CGRectGetMidX(returnedView.bounds),
@@ -822,7 +817,7 @@
                 
                 } else {
                 
-                  WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
+                  WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[WAStationDiscoveryFeedbackViewController alloc] init];
                   UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
                   stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for signing the user out") block:^{
                     
@@ -934,7 +929,7 @@ static unsigned int networkActivityStackingCount = 0;
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self beginNetworkActivity];
 		});
 		return;
 	}
@@ -950,7 +945,7 @@ static unsigned int networkActivityStackingCount = 0;
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self endNetworkActivity];
 		});
 		return;
 	}

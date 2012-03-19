@@ -28,7 +28,7 @@
 	
 	fetchRequest.fetchBatchSize = 20;
 	
-	return [fetchRequest retain];
+	return fetchRequest;
 
 }
 

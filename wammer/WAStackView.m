@@ -40,15 +40,6 @@
 
 }
 
-- (void) dealloc {
-
-	[stackElements release];
-	[onDidLayoutSubviews release];
-	
-	[super dealloc];
-
-}
-
 - (void) awakeFromNib {
 
 	[super awakeFromNib];
@@ -86,7 +77,7 @@
 
 - (void) waInit {
 
-	stackElements = [[NSArray array] retain];	
+	stackElements = [NSArray array];
 	
 	//	self.bounces = YES;
 	//	self.alwaysBounceHorizontal = NO;
@@ -100,8 +91,7 @@
 		return;
 	
 	[self willChangeValueForKey:@"stackElements"];
-	[stackElements release];
-	stackElements = [newStackElements retain];
+	stackElements = newStackElements;
 	[self didChangeValueForKey:@"stackElements"];
 	
 	[self setNeedsLayout];
@@ -169,13 +159,14 @@
 		__block CGRect contentRect = CGRectZero;
 		
 		CGFloat usableHeight = CGRectGetHeight(self.bounds);
-		NSMutableDictionary *elementsToFrames = [NSMakeCollectable(CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks)) autorelease];
+		
+		NSMutableDictionary *elementsToFrames = (__bridge_transfer NSMutableDictionary *)CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
 		CGRect (^desiredFrameForElement)(UIView *) = ^ (UIView *element) {
-			NSValue *rectValue = CFDictionaryGetValue((CFMutableDictionaryRef)elementsToFrames, element);
+			NSValue *rectValue = (__bridge NSValue *)(CFDictionaryGetValue((__bridge CFMutableDictionaryRef)elementsToFrames, (__bridge const void *)(element)));
 			return [rectValue CGRectValue];
 		};
 		void (^setDesiredFrameForElement)(UIView *, CGRect) = ^ (UIView *element, CGRect frame) {
-			CFDictionarySetValue((CFMutableDictionaryRef)elementsToFrames, element, [NSValue valueWithCGRect:frame]);
+			CFDictionarySetValue((__bridge CFMutableDictionaryRef)elementsToFrames, (__bridge const void *)(element), (__bridge const void *)([NSValue valueWithCGRect:frame]));
 		};
 		
 		for (UIView *anElement in self.stackElements) {

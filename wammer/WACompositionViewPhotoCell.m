@@ -24,7 +24,7 @@
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
-	WACompositionViewPhotoCell *returnedCell = [[[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier] autorelease];
+	WACompositionViewPhotoCell *returnedCell = [[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier];
 	
 	return returnedCell;
 
@@ -54,7 +54,7 @@
 	
 	self.contentView.clipsToBounds = NO;
 	
-	self.imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
+	self.imageContainer = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })];
 	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;//kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
@@ -73,7 +73,7 @@
 	self.removeButton.imageView.contentMode = UIViewContentModeCenter;
 	[self.contentView addSubview:self.removeButton];
 	
-	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	self.activityIndicator.center = (CGPoint){ CGRectGetMidX(self.imageContainer.bounds), CGRectGetMidY(self.imageContainer.bounds) };
 	self.activityIndicator.frame = CGRectIntegral(self.activityIndicator.frame);
@@ -101,8 +101,7 @@
 		return;
 	
 	[self willChangeValueForKey:@"image"];
-	[image release];
-	image = [newImage retain];
+	image = newImage;
 	[self didChangeValueForKey:@"image"];
 	
 	self.imageContainer.layer.contents = (id)newImage.CGImage;
@@ -154,17 +153,6 @@
 - (void) prepareForReuse {
 
 	self.image = nil;
-
-}
-
-- (void) dealloc {
-
-	[onRemove release];
-	[imageContainer release];
-	[image release];
-	[removeButton release];
-	[activityIndicator release];
-	[super dealloc];
 
 }
 

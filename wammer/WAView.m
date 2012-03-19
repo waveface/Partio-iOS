@@ -56,15 +56,4 @@
 
 }
 
-- (void) dealloc {
-
-	[onHitTestWithEvent release];
-	[onPointInsideWithEvent release];
-	[onLayoutSubviews release];
-	[onSizeThatFits release];
-	
-	[super dealloc];
-
-}
-
 @end

@@ -40,10 +40,6 @@
 - (void) dealloc {
 
 	[timer invalidate];
-	[timer release];
-	[testLabels release];
-	
-	[super dealloc];
 
 }
 
@@ -66,8 +62,8 @@
 
 - (void) handleTimerTick:(NSTimer *)aTimer {
 
-	NSMutableAttributedString *newString = [[[NSMutableAttributedString alloc] initWithString:[[NSDate date] description]] autorelease];
-	NSAttributedString *dotString = [[[NSAttributedString alloc] initWithString:@"‡"] autorelease];
+	NSMutableAttributedString *newString = [[NSMutableAttributedString alloc] initWithString:[[NSDate date] description]];
+	NSAttributedString *dotString = [[NSAttributedString alloc] initWithString:@"‡"];
 	
 	int numberOfDots = (arc4random() % 16) * 4;
 	for (int i = 0; i < numberOfDots; i++)

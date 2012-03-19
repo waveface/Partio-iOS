@@ -24,7 +24,7 @@
 
 + (id) controllerWithPreview:(NSURL *)anURL {
 
-	WAPreviewInspectionViewController *controller = [[[self alloc] init] autorelease];
+	WAPreviewInspectionViewController *controller = [[self alloc] init];
 	controller.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	controller.preview = (WAPreview *)[controller.managedObjectContext irManagedObjectForURI:anURL];
 	
@@ -40,7 +40,7 @@
 	if (self.navigationController)
 		return self.navigationController;
 	
-	WANavigationController *returnedNavC = [[[WANavigationController alloc] initWithRootViewController:self] autorelease];
+	WANavigationController *returnedNavC = [[WANavigationController alloc] initWithRootViewController:self];
 	return returnedNavC;
 
 }
@@ -51,7 +51,7 @@
 	if (!self)
 		return nil;
 	
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDoneTap:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDoneTap:)];
 	
 	return self;
 	
@@ -126,16 +126,6 @@
 	
 }
 
-- (void) dealloc {
-	
-	[deleteButton release];
-	[previewBadge release];
-	[preview release];
-	
-	[super dealloc];
-	
-}
-
 - (void) setPreview:(WAPreview *)newPreview {
 
 	NSCAssert2(![[newPreview objectID] isTemporaryID], @"%s: the incoming preview %@ is a temporary one and won’t work properly", __PRETTY_FUNCTION__, newPreview);
@@ -143,8 +133,7 @@
 	if (preview == newPreview)
 		return;
 	
-	[preview release];
-	preview = [newPreview retain];
+	preview = newPreview;
 
 }
 

@@ -57,17 +57,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 @property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
 
-- (void) updateLastReadingProgressAnnotation;
-
-- (NSUInteger) gridIndexOfLastReadArticle;
-- (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
-
-- (void) performReadingProgressSync;	//	will transition and stuff
-- (void) retrieveLatestReadingProgress;
-- (void) retrieveLatestReadingProgressWithCompletion:(void(^)(NSTimeInterval timeTaken))aBlock;
-- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier;
-- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock;
-
 @property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier;
 @property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier;
 @property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
@@ -204,7 +193,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		return proposedGrid;
 	}
 	
-	IRDiscreteLayoutGrid *prototype = [[[lastResultantGrids objectAtIndex:0] retain] autorelease];
+	IRDiscreteLayoutGrid *prototype = [lastResultantGrids objectAtIndex:0];
 	self.lastUsedLayoutGrids = [lastResultantGrids subarrayWithRange:(NSRange){ 1, [lastResultantGrids count] - 1 }];
 	
 	return prototype;
@@ -216,7 +205,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (discreteLayoutManager)
 		return discreteLayoutManager;
 		
-	self.discreteLayoutManager = [[IRDiscreteLayoutManager new] autorelease];
+	self.discreteLayoutManager = [IRDiscreteLayoutManager new];
 	self.discreteLayoutManager.delegate =self;
 	self.discreteLayoutManager.dataSource = self;
 	return self.discreteLayoutManager;
@@ -448,7 +437,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (UIView *) viewForPaginatedView:(IRPaginatedView *)aPaginatedView atIndex:(NSUInteger)index {
 
-	UIView *returnedView = [[self newPageContainerView] autorelease];
+	UIView *returnedView = [self newPageContainerView];
 	returnedView.bounds = aPaginatedView.bounds;
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
@@ -559,7 +548,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
 		
 		if (!bestGrid) {
-			bestGrid = [[aGrid retain] autorelease];
+			bestGrid = aGrid;
 			continue;
 		}
 		
@@ -570,7 +559,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			continue;
 		}
 		
-		bestGrid = [[aGrid retain] autorelease];
+		bestGrid = aGrid;
 		
 	}
 	
@@ -580,7 +569,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	CGSize oldContentSize = transformedGrid.contentSize;
 	transformedGrid.contentSize = self.paginatedView.frame.size;
-	[[currentPageGrid retain] autorelease];
 			
 	[transformedGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
@@ -614,9 +602,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	void (^removeAnimations)(UIView *) = ^ (UIView *introspectedView) {
 	
-		__block void (^removeAnimationsOnView)(UIView *aView) = nil;
-		
-		removeAnimationsOnView = ^ (UIView *aView) {
+		void (^removeAnimationsOnView)(UIView *aView) __weak = ^ (UIView *aView) {
 		
 			[aView.layer removeAllAnimations];
 
@@ -802,7 +788,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (NSArray *) debugActionSheetControllerActions {
 
-	NSMutableArray *returnedActions = [[[super debugActionSheetControllerActions] mutableCopy] autorelease];
+	NSMutableArray *returnedActions = [[super debugActionSheetControllerActions] mutableCopy];
 	
 	if (!WAAdvancedFeaturesEnabled())
 		return returnedActions;
@@ -824,8 +810,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (lastReadObjectIdentifier == newLastReadObjectIdentifier)
 		return;
 	
-	[lastReadObjectIdentifier release];
-	lastReadObjectIdentifier = [newLastReadObjectIdentifier retain];
+	lastReadObjectIdentifier = newLastReadObjectIdentifier;
 	
 	[self updateLastReadingProgressAnnotation];	//	?
 
@@ -839,7 +824,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAOverlayBezel *nrBezel = nil;
 	
 	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
@@ -849,15 +834,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	}
 	
-	[nrSelf retain];
-	
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 	[ri updateLastScannedPostInGroup:ri.primaryGroupIdentifier withPost:anIdentifier onSuccess:^{
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
 			nrSelf.lastReadObjectIdentifier = anIdentifier;	//	Heh
-			[nrSelf autorelease];
 			
 			if (aBlock)
 				aBlock(YES);
@@ -876,8 +858,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	} onFailure:^(NSError *error) {
 	
 		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			[nrSelf autorelease];
 			
 			if (aBlock)
 				aBlock(NO);
@@ -1070,22 +1050,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[self.paginationSlider irUnbind:@"currentPage"];
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
-	
-	[paginationSlider release];
-	[paginatedView release];
-	[discreteLayoutManager release];
-	[discreteLayoutResult release];
-	[layoutGrids release];
-	
-	[paginatedArticlesViewController release];
-	
-	[lastReadingProgressAnnotation release];
-	[lastReadingProgressAnnotationView release];
-	
+		
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-	[paginationSliderSlot release];
-	[super dealloc];
 
 }
 

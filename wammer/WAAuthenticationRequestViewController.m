@@ -42,7 +42,7 @@
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock {
 
-	WAAuthenticationRequestViewController *returnedVC = [[[self alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+	WAAuthenticationRequestViewController *returnedVC = [[self alloc] initWithStyle:UITableViewStyleGrouped];
 	returnedVC.completionBlock = aBlock;
 	return returnedVC;
 
@@ -74,27 +74,13 @@
 
 }
 
-- (void) dealloc {
-
-	[username release];
-	[usernameField release];
-	
-	[password release];
-	[passwordField release];
-  
-  [actions release];
-
-	[super dealloc];
-
-}
-
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
   
   self.tableView.sectionHeaderHeight = 32;
   
-	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.usernameField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.usernameField.delegate = self;
 	self.usernameField.placeholder = NSLocalizedString(@"NOUN_USERNAME", @"Noun for Username");
 	self.usernameField.text = self.username;
@@ -106,7 +92,7 @@
 	self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
   self.usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
-	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.passwordField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.passwordField.delegate = self;
 	self.passwordField.placeholder = NSLocalizedString(@"NOUN_PASSWORD", @"Noun for Password");
 	self.passwordField.text = self.password;
@@ -240,7 +226,7 @@
 
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
   
   cell.textLabel.textColor = [UIColor blackColor];
@@ -365,8 +351,7 @@
   if (username == newUsername)
     return;
   
-  [username release];
-  username = [newUsername retain];
+  username = newUsername;
   
   self.usernameField.text = username;
 
@@ -377,8 +362,7 @@
   if (password == newPassword)
     return;
   
-  [password release];
-  password = [newPassword retain];
+  password = newPassword;
   
   self.passwordField.text = password;
 
@@ -467,8 +451,7 @@
   for (IRAction *anAction in newActions)
     [anAction addObserver:self forKeyPath:@"enabled" options:NSKeyValueObservingOptionNew context:nil];
   
-  [actions release];
-  actions = [newActions retain];
+  actions = newActions;
 
 }
 

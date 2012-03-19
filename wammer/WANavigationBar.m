@@ -62,15 +62,6 @@
 
 }
 
-- (void) dealloc {
-
-	[customBackgroundView release];
-	[onBarStyleContextChanged release];
-	
-	[super dealloc];
-
-}
-
 - (void) drawRect:(CGRect)rect {
   
   if (self.suppressesDefaultAppearance) {
@@ -91,8 +82,7 @@
 	if ([customBackgroundView isDescendantOfView:self])
 		[customBackgroundView removeFromSuperview];
 		
-	[customBackgroundView release];
-	customBackgroundView = [newCustomBackgroundView retain];
+	customBackgroundView = newCustomBackgroundView;
 	
 	customBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	customBackgroundView.frame = self.bounds;
@@ -148,23 +138,23 @@
 
 + (UIView *) defaultGradientBackgroundView {
 
-	UIView *returnedView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 512, 44 }}] autorelease]; 
+	UIView *returnedView = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 512, 44 }}];
 
-	IRGradientView *backgroundGradientView = [[[IRGradientView alloc] initWithFrame:returnedView.bounds] autorelease];
+	IRGradientView *backgroundGradientView = [[IRGradientView alloc] initWithFrame:returnedView.bounds];
 	backgroundGradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[backgroundGradientView setLinearGradientFromColor:[UIColor colorWithRed:.95 green:.95 blue:.95 alpha:.95] anchor:irTop toColor:[UIColor colorWithRed:.7 green:.7 blue:.7 alpha:.95] anchor:irBottom];
 	
-	UIView *backgroundGlareView = [[[UIView alloc] initWithFrame:(CGRect){
+	UIView *backgroundGlareView = [[UIView alloc] initWithFrame:(CGRect){
 		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) - 1 },
 		(CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
-	}] autorelease];
+	}];
 	backgroundGlareView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	backgroundGlareView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:.25];
 	
-	IRGradientView *backgroundShadowView = [[[IRGradientView alloc] initWithFrame:(CGRect){
+	IRGradientView *backgroundShadowView = [[IRGradientView alloc] initWithFrame:(CGRect){
 		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) },
 		(CGSize){ CGRectGetWidth(returnedView.bounds), 3 }
-	}] autorelease];
+	}];
 	backgroundShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[backgroundShadowView setLinearGradientFromColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.35f] anchor:irTop toColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] anchor:irBottom];
 	
@@ -182,7 +172,7 @@
 
   UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
   UIImage *landscapeBackdropImage = [UIImage imageNamed:@"WANavigationBarBackdropLandscape"];
-  UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+  UIView *returnedView = [[UIView alloc] initWithFrame:CGRectZero];
   
   returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
@@ -194,27 +184,26 @@
 		
 	};
 	
-	void (^updateBarImage)(UIInterfaceOrientation) = [[^ (UIInterfaceOrientation anOrientation) {
+	void (^updateBarImage)(UIInterfaceOrientation) = ^ (UIInterfaceOrientation anOrientation) {
 	
 		BOOL landscapePhone = (isPhone()) && UIInterfaceOrientationIsLandscape(anOrientation);
 		UIImage *image = landscapePhone ? landscapeBackdropImage : backdropImage;
 		
 		returnedView.backgroundColor = [UIColor colorWithPatternImage:image];
 		
-	} copy] autorelease];
+	};
 	
 	if (isPhone()) {
 	
-		__block id notificationObject = [[[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidChangeStatusBarOrientationNotification object:nil queue:nil usingBlock: ^ (NSNotification *note) {
+		__weak id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidChangeStatusBarOrientationNotification object:nil queue:nil usingBlock: ^ (NSNotification *note) {
 		
 			updateBarImage([UIApplication sharedApplication].statusBarOrientation);
 			
-		}] retain];
+		}];
 		
 		[returnedView irPerformOnDeallocation:^{
 			
 			[[NSNotificationCenter defaultCenter] removeObserver:notificationObject];
-			[notificationObject release];
 			
 		}];
 	
@@ -223,10 +212,10 @@
 	updateBarImage([UIApplication sharedApplication].statusBarOrientation);
 	
 	
-  UIView *topGlare = [[[UIView alloc] initWithFrame:(CGRect){
+  UIView *topGlare = [[UIView alloc] initWithFrame:(CGRect){
     (CGPoint){ 0, 0 },
     (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
-  }] autorelease];
+  }];
   
   topGlare.backgroundColor = [UIColor colorWithWhite:1 alpha:0.25];
   topGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
@@ -234,10 +223,10 @@
   [returnedView addSubview:topGlare];
   
   
-  UIView *bottomGlare = [[[UIView alloc] initWithFrame:(CGRect){
+  UIView *bottomGlare = [[UIView alloc] initWithFrame:(CGRect){
     (CGPoint){ 0, CGRectGetHeight(returnedView.bounds) - 1 },
     (CGSize){ CGRectGetWidth(returnedView.bounds), 1 }
-  }] autorelease];
+  }];
   
   bottomGlare.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
   bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
@@ -245,10 +234,10 @@
   [returnedView addSubview:bottomGlare];
 	
 	
-	IRGradientView *bottomShadow = [[[IRGradientView alloc] initWithFrame:(CGRect){
+	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:(CGRect){
 		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) },
 		(CGSize){ CGRectGetWidth(returnedView.bounds), 3 }
-	}] autorelease];
+	}];
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[bottomShadow setLinearGradientFromColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] anchor:irTop toColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] anchor:irBottom];
 	

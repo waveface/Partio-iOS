@@ -142,7 +142,7 @@
   }
   
   if (!lastAuthenticatedUserTokenKeychainItem)
-    lastAuthenticatedUserTokenKeychainItem = [[[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"] autorelease];
+    lastAuthenticatedUserTokenKeychainItem = [[IRKeychainInternetPasswordItem alloc] initWithIdentifier:@"com.waveface.wammer"];
 	
 	if (!lastAuthenticatedUserTokenKeychainItem.serverAddress)
 		lastAuthenticatedUserTokenKeychainItem.serverAddress = [[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] host];

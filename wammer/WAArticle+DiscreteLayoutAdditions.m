@@ -39,7 +39,7 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 
 - (CFStringRef) typeForRepresentedMediaItem:(id)anItem {
 	
-	CFStringRef returnedType = (CFStringRef)objc_getAssociatedObject(anItem, &WAArticle_DiscreteLayoutAdditions_ItemType);
+	CFStringRef returnedType = (__bridge CFStringRef)objc_getAssociatedObject(anItem, &WAArticle_DiscreteLayoutAdditions_ItemType);
 	
 	if (!returnedType)
 		returnedType = kUTTypeItem;

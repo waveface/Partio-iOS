@@ -26,8 +26,6 @@
 			@"imageRemoteURL", @"url",
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;

@@ -145,24 +145,6 @@ void kWADefaultBarButtonInitialize (void) {
 		kWADefaultBarButtonGradientColors = [NSArray arrayWithObjects:(id)kWADefaultBarButtonGradientFromColor.CGColor, (id)kWADefaultBarButtonGradientToColor.CGColor, nil];
 		kWADefaultBarButtonHighlightedGradientColors = [NSArray arrayWithObjects:(id)kWADefaultBarButtonHighlightedGradientFromColor.CGColor, (id)kWADefaultBarButtonHighlightedGradientToColor.CGColor, nil];
 		
-		[kWADefaultBarButtonBorder retain];
-		[kWADefaultBarButtonInnerShadow retain];
-		[kWADefaultBarButtonShadow retain];
-
-		[kWADefaultBarButtonTitleFont retain];
-		[kWADefaultBarButtonTitleColor retain];
-		[kWADefaultBarButtonTitleShadow retain];
-
-		[kWADefaultBarButtonGradientFromColor retain];
-		[kWADefaultBarButtonGradientToColor retain];
-		[kWADefaultBarButtonGradientColors retain];
-		[kWADefaultBarButtonBackgroundColor retain];
-
-		[kWADefaultBarButtonHighlightedGradientFromColor retain];
-		[kWADefaultBarButtonHighlightedGradientToColor retain];
-		[kWADefaultBarButtonHighlightedGradientColors retain];
-		[kWADefaultBarButtonHighlightedBackgroundColor retain];
-
 	});
 
 }
@@ -298,7 +280,7 @@ UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRSh
 
 UIView * WAStandardTitleView (void) {
 
-	UIImageView *logotype = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]] autorelease];
+	UIImageView *logotype = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]];
 	logotype.contentMode = UIViewContentModeScaleAspectFit;
 	logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};
@@ -333,7 +315,7 @@ UIView * WAStandardTitleView (void) {
 
 UILabel * WAStandardTitleLabel (void) {
 
-	UILabel *label = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
 	label.text = NSLocalizedString(@"APP_TITLE", @"Application Title");
 	label.textColor = [UIColor colorWithWhite:1 alpha:1];
 	label.font = [UIFont boldSystemFontOfSize:20.0f];
@@ -351,12 +333,12 @@ UIView * WAStandardPostCellBackgroundView (void) {
 
 	static UIEdgeInsets const backgroundViewPatternInsets = (UIEdgeInsets){ 8, 0, 0, 0 };
 	
-	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	UIView *backgroundView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	backgroundView.backgroundColor = [UIColor clearColor];
   
   [backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(backgroundView.bounds, 1, 0)] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:CGRectInset(backgroundView.bounds, 1, 0)];
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WASquarePanelBackdrop"].CGImage;
     returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
@@ -364,7 +346,7 @@ UIView * WAStandardPostCellBackgroundView (void) {
 		
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, backgroundViewPatternInsets);
     
-    UIView *paperView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 4, 4)] autorelease];
+    UIView *paperView = [[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, 4, 4)];
     paperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     paperView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPostBackground"]];
     [returnedView addSubview:paperView];
@@ -381,12 +363,12 @@ UIView * WAStandardPostCellSelectedBackgroundView (void) {
 
 	static UIEdgeInsets const backgroundViewPatternInsets = (UIEdgeInsets){ 8, 0, 0, 0 };
 	
-	UIView *selectedBackgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	selectedBackgroundView.backgroundColor = [UIColor clearColor];
   
   [selectedBackgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:CGRectInset(selectedBackgroundView.bounds, 4, 4)] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:CGRectInset(selectedBackgroundView.bounds, 4, 4)];
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.5];
     
@@ -402,12 +384,12 @@ UIView * WAStandardPostCellSelectedBackgroundView (void) {
 
 UIView * WAStandardArticleStackCellBackgroundView (void) {
 
-	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	UIView *backgroundView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	backgroundView.backgroundColor = [UIColor clearColor];
   
   [backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ -32, -32, 0, -32 });
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
@@ -424,11 +406,11 @@ UIView * WAStandardArticleStackCellBackgroundView (void) {
 
 UIView * WAStandardArticleStackCellTopBackgroundView (void) {
 
-	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	UIView *backgroundView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	
   [backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ 0, -32, 0, -32 });
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
@@ -442,7 +424,7 @@ UIView * WAStandardArticleStackCellTopBackgroundView (void) {
 	
 	[backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = returnedView.frame;
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
@@ -458,12 +440,12 @@ UIView * WAStandardArticleStackCellTopBackgroundView (void) {
 
 UIView * WAStandardArticleStackCellCenterBackgroundView (void) {
 
-	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	UIView *backgroundView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	backgroundView.backgroundColor = [UIColor clearColor];
   
   [backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ 0, -32, 0, -32 });
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
@@ -477,7 +459,7 @@ UIView * WAStandardArticleStackCellCenterBackgroundView (void) {
 	
 	[backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = returnedView.frame;
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];
@@ -493,12 +475,12 @@ UIView * WAStandardArticleStackCellCenterBackgroundView (void) {
 
 UIView * WAStandardArticleStackCellBottomBackgroundView (void) {
 
-	UIView *backgroundView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }] autorelease];
+	UIView *backgroundView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	backgroundView.backgroundColor = [UIColor clearColor];
   
   [backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ 0, -32, -32, -32 });
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
@@ -512,7 +494,7 @@ UIView * WAStandardArticleStackCellBottomBackgroundView (void) {
 	
 	[backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 		returnedView.frame = returnedView.frame;
     returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		returnedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternSoftWallpaper"]];

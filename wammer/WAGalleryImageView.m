@@ -33,7 +33,7 @@
 
 + (WAGalleryImageView *) viewForImage:(UIImage *)image {
 
-	WAGalleryImageView *returnedView = [[[self alloc] init] autorelease];
+	WAGalleryImageView *returnedView = [[self alloc] init];
 	returnedView.image = image;
 	return returnedView;
 
@@ -46,7 +46,7 @@
 	//	doubleTapRecognizer.numberOfTapsRequired = 2;
 	//	[self addGestureRecognizer:doubleTapRecognizer];
 
-	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 	self.activityIndicator.hidesWhenStopped = NO;
 	self.activityIndicator.center = (CGPoint){
@@ -56,7 +56,7 @@
 	[self.activityIndicator startAnimating];
 	[self addSubview:self.activityIndicator];
 	
-	self.scrollView = [[[UIScrollView alloc] initWithFrame:self.bounds] autorelease];
+	self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
 	self.scrollView.minimumZoomScale = 0.01;
 	self.scrollView.maximumZoomScale = 4.0f;
 	self.scrollView.showsHorizontalScrollIndicator = NO;
@@ -65,7 +65,7 @@
 	self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self addSubview:self.scrollView];
 
-	self.imageView = [[[WAImageView alloc] initWithFrame:self.scrollView.bounds] autorelease];
+	self.imageView = [[WAImageView alloc] initWithFrame:self.scrollView.bounds];
 	self.imageView.center = CGPointZero;
 	self.imageView.autoresizingMask = UIViewAutoresizingNone;
 	self.imageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -469,14 +469,8 @@
 
 - (void) dealloc {
 
-  imageView.delegate = nil;
+	imageView.delegate = nil;
 
-	[activityIndicator release];
-	[imageView release];
-	[scrollView release];
-
-	[super dealloc];
-	
 }
 
 @end

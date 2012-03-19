@@ -37,7 +37,7 @@
 
 - (UINavigationController *) wrappingNavigationController {
 
-  WANavigationController *returnedNavC = [[[WANavigationController alloc] initWithRootViewController:self] autorelease];
+  WANavigationController *returnedNavC = [[WANavigationController alloc] initWithRootViewController:self];
   
   switch ([UIDevice currentDevice].userInterfaceIdiom) {
     case UIUserInterfaceIdiomPad: { 
@@ -81,14 +81,6 @@
     aLabel.layer.shadowOffset = (CGSize){ 0, 2 };
   }
 
-}
-
-- (void) dealloc {
-  
-  [interfaceLabels release];
-  [dismissalAction release];
-  [super dealloc];
-  
 }
 
 - (void) viewDidUnload {

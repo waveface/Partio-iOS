@@ -60,7 +60,7 @@
 	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:article];
 		
-	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = [[self newContextViewControllerForArticle:articleURI] autorelease];
+	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = [self newContextViewControllerForArticle:articleURI];
 	
 	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
 	
@@ -71,7 +71,7 @@
 	CGAffineTransform const containingWindowTransform = containingWindow.rootViewController.view.transform;
 	CGRect const containingWindowBounds = CGRectApplyAffineTransform(containingWindow.bounds, containingWindowTransform);
 	
-	UIView *containerView = [[[UIView alloc] initWithFrame:containingWindowBounds] autorelease];
+	UIView *containerView = [[UIView alloc] initWithFrame:containingWindowBounds];
 	containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	containerView.center = irCGRectAnchor(containingWindow.bounds, irCenter, YES);
 	containerView.transform = containingWindowTransform;
@@ -88,7 +88,7 @@
 				navBarBounds = UIEdgeInsetsInsetRect(navBarBounds, navBarSnapshotEdgeInsets);
 				CGRect navBarRectInWindow = [containingWindow convertRect:navBarBounds fromView:self.navigationController.navigationBar];
 				UIImage *navBarSnapshot = [self.navigationController.navigationBar.layer irRenderedImageWithEdgeInsets:navBarSnapshotEdgeInsets];
-				UIView *navBarSnapshotHolderView = [[[UIView alloc] initWithFrame:(CGRect){ CGPointZero, navBarSnapshot.size }] autorelease];
+				UIView *navBarSnapshotHolderView = [[UIView alloc] initWithFrame:(CGRect){ CGPointZero, navBarSnapshot.size }];
 				navBarSnapshotHolderView.layer.contents = (id)navBarSnapshot.CGImage;
 				
 				self.navigationController.navigationBar.layer.opacity = 0;
@@ -102,12 +102,12 @@
 				
 				UIView *backgroundView, *scalingHolderView;
 				
-				backgroundView = [[[UIView alloc] initWithFrame:containerView.bounds] autorelease];
+				backgroundView = [[UIView alloc] initWithFrame:containerView.bounds];
 				backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 				backgroundView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5f];
 				[containerView addSubview:backgroundView];
 				
-				scalingHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+				scalingHolderView = [[UIView alloc] initWithFrame:CGRectZero];
 				[containerView addSubview:scalingHolderView];
 				
 				CGRect discreteArticleViewRectInWindow = [containingWindow convertRect:articleViewController.view.bounds fromView:articleViewController.view];
@@ -120,7 +120,7 @@
 				[shownArticleVC setContextControlsVisible:NO animated:NO];
 				
 				UIImage *fullsizeArticleViewSnapshot = [enqueuedNavController.view.layer irRenderedImage];
-				UIView *fullsizeArticleSnapshotHolderView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+				UIView *fullsizeArticleSnapshotHolderView = [[UIView alloc] initWithFrame:CGRectZero];
 				fullsizeArticleSnapshotHolderView.frame = (CGRect){ CGPointZero, fullsizeArticleViewSnapshot.size };
 				fullsizeArticleSnapshotHolderView.layer.contents = (id)fullsizeArticleViewSnapshot.CGImage;
 				fullsizeArticleSnapshotHolderView.layer.contentsGravity = kCAGravityResize;
@@ -314,12 +314,12 @@
 				
 					[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
 					
-						WAView *enclosingView = [[[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}] autorelease];
+						WAView *enclosingView = [[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
 												
 						CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
 						toolbarRect.size.height = 44;
 						
-						__block UIToolbar *toolbar = [[[UIToolbar alloc] initWithFrame:toolbarRect] autorelease];
+						__block UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
 						[enclosingView addSubview:toolbar];
 						
 						toolbar.backgroundColor = [UIColor colorWithWhite:245.0/255.0 alpha:1];
@@ -430,7 +430,7 @@
 					containerWindow.userInteractionEnabled = NO;
 					
 					[containerWindow resignKeyWindow];
-					[containerWindow autorelease];
+					containerWindow = nil;
 					
 					//	Potentially smoofy
 					
@@ -526,7 +526,7 @@
 	
 	}
 
-	return [returnedVC retain];
+	return returnedVC;
 
 }
 
@@ -540,7 +540,7 @@
 		
 	} else {
 
-		returnedNavC = [[[WAFauxRootNavigationController alloc] initWithRootViewController:controller] autorelease];
+		returnedNavC = [[WAFauxRootNavigationController alloc] initWithRootViewController:controller];
 		
 	}
 	

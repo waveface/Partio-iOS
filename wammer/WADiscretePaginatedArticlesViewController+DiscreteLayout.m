@@ -102,7 +102,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 //		
 //	nil];
 	
-	return [articleViewController retain];
+	return articleViewController;
 
 }
 
@@ -112,7 +112,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (cachedVC)
 		return cachedVC;
 	
-	WAArticleViewController *createdVC = [[self newDiscreteArticleViewControllerForArticle:article] autorelease];
+	WAArticleViewController *createdVC = [self newDiscreteArticleViewControllerForArticle:article];
 	[self.articleViewControllersCache setObject:createdVC forKey:article];
 	
 	return createdVC;
@@ -127,12 +127,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (UIView *) newPageContainerView {
 
-	WAView *returnedView = [[[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }] autorelease];
+	WAView *returnedView = [[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }];
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
 	returnedView.clipsToBounds = NO;
 	returnedView.layer.shouldRasterize = YES;
 	
-	__block UIView *backdropView = [[[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -12, -12)] autorelease];
+	__block UIView *backdropView = [[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -12, -12)];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backdropView.layer.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:240.0f/255.0f blue:234.0f/255.0f alpha:1].CGColor;
 	backdropView.layer.cornerRadius = 4;
@@ -148,33 +148,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	[returnedView setNeedsLayout];
 	
-	//	CGRect (^shadowRect)(CGSize, IRAnchor) = ^ (CGSize shadowImageSize, IRAnchor anchor) {
-	//	
-	//		return IRCGRectAlignToRect((CGRect){
-	//			CGPointZero,
-	//			(CGSize){
-	//				shadowImageSize.width,
-	//				MIN(shadowImageSize.height, CGRectGetHeight(backdropView.bounds))
-	//			}
-	//		}, backdropView.bounds, anchor, YES);
-	//	
-	//	};
-	//	
-	//	UIImage *leftShadow = [UIImage imageNamed:@"WAPageShadowLeft"];
-	//	UIImage *rightShadow = [UIImage imageNamed:@"WAPageShadowRight"];
-	//	UIImageView *leftShadowView = nil, *rightShadowView = nil;
-	//	
-	//	[backdropView addSubview:(rightShadowView = [[[UIImageView alloc] initWithImage:rightShadow] autorelease])];
-	//	rightShadowView.frame = CGRectOffset(shadowRect(rightShadow.size, irRight), rightShadow.size.width, 0);
-	//	rightShadowView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleHeight;
-	//	rightShadowView.alpha = 0.5;
-	//	
-	//	[backdropView addSubview:(leftShadowView = [[[UIImageView alloc] initWithImage:leftShadow] autorelease])];
-	//	leftShadowView.frame = CGRectOffset(shadowRect(leftShadow.size, irLeft), -1.0f * leftShadow.size.width, 0);
-	//	leftShadowView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleHeight;
-	//	leftShadowView.alpha = 0.5;
-	
-	return [returnedView retain];
+	return returnedView;
 
 }
 
@@ -182,14 +156,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	__block __typeof__(self) nrSelf = self;
 		
-	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = [[^ (IRDiscreteLayoutGrid *self, id anItem) {
+	IRDiscreteLayoutGridAreaDisplayBlock genericDisplayBlock = ^ (IRDiscreteLayoutGrid *self, id anItem) {
 	
 		if (![anItem isKindOfClass:[WAArticle class]])
 			return (UIView *)nil;
 	
 		return [nrSelf representingViewForItem:(WAArticle *)anItem];
 	
-	} copy] autorelease];
+	};
 	
 	NSMutableArray *enqueuedLayoutGrids = [NSMutableArray array];
 	CGSize portraitSize = (CGSize){ 768, 1024 };
@@ -339,7 +313,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	[enqueuedLayoutGrids addObject:gridD];
 	[enqueuedLayoutGrids addObject:gridE];
 	
-	return [enqueuedLayoutGrids retain];
+	return enqueuedLayoutGrids;
 
 }
 
@@ -372,7 +346,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if (currentCache)
 		return currentCache;
 	
-	NSCache *cache = [[[NSCache alloc] init] autorelease];
+	NSCache *cache = [[NSCache alloc] init];
 	objc_setAssociatedObject(self, &key, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 	return cache;

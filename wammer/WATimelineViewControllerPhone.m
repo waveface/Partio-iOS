@@ -79,16 +79,8 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) dealloc {
 	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[readingProgressUpdateNotificationView release];
-  [lastScannedObjectIdentifier release];
-	[lastUserReactedScannedObjectIdentifier release];
-
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
-		
-	[super dealloc];
   
 }
 
@@ -125,7 +117,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	} else {
 	
-		self.navigationItem.titleView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+		self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectZero];
 		
 		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
 		
@@ -133,7 +125,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 			__block __typeof__(self) nrSelf = self;
 				
-			IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
+			IRTransparentToolbar *toolbar = [[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }];
 			
 			toolbar.items = [NSArray arrayWithObjects:
 			
@@ -313,7 +305,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-	settingsActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil] retain];
+	settingsActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil];
 
 	return settingsActionSheetController;
 
@@ -324,7 +316,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (managedObjectContext)
 		return managedObjectContext;
 	
-	managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+	managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 
 	return managedObjectContext;
 
@@ -335,7 +327,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (fetchedResultsController)
 		return fetchedResultsController;
 
-	NSFetchRequest *fr = [[[WADataStore defaultStore] newFetchRequestForAllArticles] autorelease];
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
 
 	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
@@ -370,7 +362,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (readingProgressUpdateNotificationView)
 		return readingProgressUpdateNotificationView;
 		
-	readingProgressUpdateNotificationView = [[WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib] retain];
+	readingProgressUpdateNotificationView = [WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib];
 	readingProgressUpdateNotificationView.hidden = YES;
 	
 	return readingProgressUpdateNotificationView;
@@ -402,11 +394,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	
-	__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	__block UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 	self.tableView.backgroundView = backgroundView;
 	
-	__block UIView *actualBackgroundView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
+	__block UIView *actualBackgroundView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 	[backgroundView addSubview:actualBackgroundView];
 	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
 	CGSize backgroundImageSize = backgroundImage.size;
@@ -600,8 +591,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)incomingIdentifier {
 
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
+	__weak WATimelineViewControllerPhone *nrSelf = self;
+	__weak __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
 	
 	if ([self.lastUserReactedScannedObjectIdentifier isEqualToString:self.lastScannedObjectIdentifier])
 		return NO;
@@ -761,13 +752,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	
-	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	return [[UIView alloc] initWithFrame:CGRectZero];
 
 }
 
 - (UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
 	
-	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+	return [[UIView alloc] initWithFrame:CGRectZero];
 
 }
 
@@ -799,22 +790,22 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAPostViewCellStyle style;
 	WAPostViewCellPhone *cell;
 	
-	// TODO: put these logic into cell.
 	if (postHasPreview) {
+		
 		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 		nil]] lastObject];
 		
 		identifier = webLinkCellIdentifier;
 		style = WAPostViewCellStyleWebLink;
-  	if(latestPreview.thumbnail == 0){
+		if (!latestPreview.thumbnail) {
 			identifier = webLinkCellWithoutPhotoIdentifier;
 			style = WAPostViewCellStyleWebLinkWithoutPhoto;
 		}
 		
 		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
 		if (!cell) {
-			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
+			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
 			cell.commentLabel.userInteractionEnabled = YES;
 		}
 		
@@ -845,7 +836,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:imageCellIdentifier];
 		if (!cell) {
 			
-			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier] autorelease];
+			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
 					
@@ -876,7 +867,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:textOnlyCellIdentifier];
 		if (!cell) {
 			
-			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier] autorelease];
+			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
 					
@@ -1101,10 +1092,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	if ([[WADataStore defaultStore] hasDraftArticles]) {
 		
-		WAArticleDraftsViewController *draftsVC = [[[WAArticleDraftsViewController alloc] init] autorelease];
+		WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
 		draftsVC.delegate = self;
 		
-		WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:draftsVC] autorelease];
+		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
 		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
 		__block __typeof__(self) nrSelf = self;
@@ -1127,8 +1118,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) handleSettings:(UIBarButtonItem *)sender  {
 
-	WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
-	UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+	WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
+	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
 	
 	__block __typeof__(self) nrSelf = self;
 	

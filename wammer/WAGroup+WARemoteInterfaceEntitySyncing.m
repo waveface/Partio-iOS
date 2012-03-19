@@ -39,8 +39,6 @@
 			
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;

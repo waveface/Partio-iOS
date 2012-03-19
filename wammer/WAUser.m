@@ -48,8 +48,6 @@
 			@"email", @"email",
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;

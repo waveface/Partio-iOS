@@ -28,7 +28,7 @@
 	NSAssert2(!self.navigationController, @"%@ must not have been put within another navigation controller when %@ is invoked.", self, NSStringFromSelector(_cmd));
 	//	NSAssert2((UIUserInterfaceIdiomPad == UI_USER_INTERFACE_IDIOM()), @"%@: %s is not supported on this device.", self, NSStringFromSelector(_cmd));
 	
-	WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:[[[UIViewController alloc] init] autorelease]] autorelease];
+	WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:[[UIViewController alloc] init]];
 		
 	static NSString * const kViewControllerActionOnPop = @"waCompositionViewController_wrappingNavigationController_viewControllerActionOnPop";
 
@@ -49,11 +49,11 @@
 		__block SEL rightAction = oldRightItem.action;
 		
 		__block IRBarButtonItem *newLeftItem = WABackBarButtonItem(nil, NSLocalizedString(@"ACTION_BACK", @"Action title for cancelling"), ^{
-			[leftTarget performSelector:leftAction withObject:newLeftItem];
+			[[UIApplication sharedApplication] sendAction:leftAction to:leftTarget from:newLeftItem forEvent:nil];
 		});
 		
 		__block IRBarButtonItem *newRightItem = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DONE", @"Action title for done"), ^{
-			[rightTarget performSelector:rightAction withObject:newRightItem];
+			[[UIApplication sharedApplication] sendAction:rightAction to:rightTarget from:newRightItem forEvent:nil];
 		});
 		
 		pushedVC.navigationItem.leftBarButtonItem = newLeftItem;		
@@ -65,7 +65,7 @@
 			
 			[titleLabel irBind:@"text" toObject:pushedVC keyPath:@"title" options:[NSDictionary dictionaryWithObjectsAndKeys:
 				
-				[[^ (id oldValue, id newValue, NSString *changeType) {
+				^ (id oldValue, id newValue, NSString *changeType) {
 					
 					titleLabel.text = newValue;
 					
@@ -79,7 +79,7 @@
 					
 					return newValue;
 				
-				} copy] autorelease], kIRBindingsValueTransformerBlock,
+				}, kIRBindingsValueTransformerBlock,
 				
 				kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 			
@@ -111,7 +111,7 @@
 		
 	};
 	
-	[navController performSelector:@selector(initWithRootViewController:) withObject:self];
+	navController = [navController initWithRootViewController:self];
 	
 	navController.onViewDidLoad = ^ (WANavigationController *self) {
 	
@@ -134,7 +134,7 @@
 		
 		UIColor *baseColor = [UIColor colorWithRed:.75 green:.65 blue:.52 alpha:1];
 		
-		IRGradientView *gradientView = [[[IRGradientView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(self.view.frame), 512 } }] autorelease];
+		IRGradientView *gradientView = [[IRGradientView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(self.view.frame), 512 } }];
 		[gradientView setLinearGradientFromColor:[baseColor colorWithAlphaComponent:1] anchor:irTop toColor:[baseColor colorWithAlphaComponent:0] anchor:irBottom];
 		
 		gradientView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
@@ -211,7 +211,7 @@
 					
 					}
 					
-					[[[[IRAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ACTION_OKAY", nil), nil] autorelease] show];
+					[[[IRAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:nil otherButtonTitles:NSLocalizedString(@"ACTION_OKAY", nil), nil] show];
 				
 				}
 			

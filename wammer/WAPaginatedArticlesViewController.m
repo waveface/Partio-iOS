@@ -70,44 +70,30 @@
 
 - (void) dealloc {
 
-	NSParameterAssert([NSThread isMainThread]);
-
 	[paginatedView removeObserver:self forKeyPath:@"currentPage"];
-	[paginatedView release];
 	
-	[coachmarkView release];
-	[paginationSlider release];
-	[articleViewControllers release];
-	
-	[articleCommentsDismissalButton release];
-	[articleCommentsViewController release];
-	
-	[context release];
-	
-	[super dealloc];
-
 }
 
 - (void) loadView {
 
-	self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }] autorelease];
+	self.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.view.backgroundColor = [UIColor colorWithWhite:0.97f alpha:1.0f];
 	
-	self.paginatedView = [[[IRPaginatedView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 })] autorelease];
+	self.paginatedView = [[IRPaginatedView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.view.bounds, (UIEdgeInsets){ 32, 0, 32, 0 })];
 	self.paginatedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.paginatedView.backgroundColor = self.view.backgroundColor;
 	self.paginatedView.delegate = self;
 	self.paginatedView.horizontalSpacing = 32.0f;
 	self.paginatedView.scrollView.clipsToBounds = NO;
 	
-	self.coachmarkView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+	self.coachmarkView = [[UIView alloc] initWithFrame:self.view.bounds];
 	self.coachmarkView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.coachmarkView.opaque = NO;
 	self.coachmarkView.backgroundColor = [UIColor clearColor];
 	[self.coachmarkView addSubview:((^ {
 	
-		UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+		UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		spinner.center = (CGPoint){ CGRectGetMidX(self.coachmarkView.bounds), CGRectGetMidY(self.coachmarkView.bounds) };
 		spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 		[spinner startAnimating];
@@ -115,7 +101,7 @@
 	
 	})())];
 	
-	self.paginationSlider = [[[WAPaginationSlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }] autorelease];
+	self.paginationSlider = [[WAPaginationSlider alloc] initWithFrame:(CGRect){ 0, CGRectGetHeight(self.view.frame) - 44, CGRectGetWidth(self.view.frame), 44 }];
 	self.paginationSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;	
 	self.paginationSlider.delegate = self;
 	
@@ -147,7 +133,7 @@
 	[self updateLayoutForCommentsVisible:NO];
 	[self.paginatedView addObserver:self forKeyPath:@"currentPage" options:NSKeyValueObservingOptionNew context:nil];
 	
-	UIPanGestureRecognizer *panGestureRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentViewPan:)] autorelease];
+	UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleCommentViewPan:)];
 	panGestureRecognizer.delegate = self;
 	[self.view addGestureRecognizer:panGestureRecognizer];
 	
@@ -224,7 +210,7 @@
 
 	self.context = ((^ {
 		
-		NSMutableDictionary *mutatedContext = [[self.context mutableCopy] autorelease];
+		NSMutableDictionary *mutatedContext = [self.context mutableCopy];
 		NSURL *objectURL = [[[self.fetchedResultsController.fetchedObjects objectAtIndex:self.paginatedView.currentPage] objectID] URIRepresentation];
 		[mutatedContext setObject:objectURL forKey:@"lastVisitedObjectURI"];
 		
@@ -703,7 +689,7 @@
 		if (!alreadyPostponing) {
 			alreadyPostponing = YES;
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5f * NSEC_PER_SEC), dispatch_get_current_queue(), ^ {
-				[self performSelector:_cmd];
+				[self refreshPaginatedViewPages];
 				alreadyPostponing = NO;
 			});
 		}
@@ -714,7 +700,7 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	NSArray *oldArticleViewControllers = [[self.articleViewControllers mutableCopy] autorelease];
+	NSArray *oldArticleViewControllers = [self.articleViewControllers mutableCopy];
 	NSArray *oldArticleObjectIDs = [oldArticleViewControllers irMap: ^ (WAArticleViewController *aVC, NSUInteger index, BOOL *stop) {
 		return [aVC.article objectID];
 	}];

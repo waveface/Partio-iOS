@@ -41,10 +41,10 @@
       
       self.wrapperView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.75];
       
-      UIView *bottomGlare = [[[UIView alloc] initWithFrame:(CGRect){
+      UIView *bottomGlare = [[UIView alloc] initWithFrame:(CGRect){
         (CGPoint){ 0, CGRectGetHeight(self.bounds) - 2 },
         (CGSize){ CGRectGetWidth(self.bounds), 1 }
-      }] autorelease];
+      }];
       
       bottomGlare.backgroundColor = [UIColor colorWithWhite:1 alpha:0.25];
       bottomGlare.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
@@ -52,7 +52,7 @@
       [self.wrapperView addSubview:bottomGlare];
       
       
-      IRGradientView *backgroundShadowView = [[[IRGradientView alloc] initWithFrame:(CGRect){
+      IRGradientView *backgroundShadowView = [[IRGradientView alloc] initWithFrame:(CGRect){
         (CGPoint){
           CGRectGetMinX(self.wrapperView.bounds),
           CGRectGetMaxY(self.wrapperView.bounds) },
@@ -60,7 +60,7 @@
           CGRectGetWidth(self.wrapperView.bounds),
           3
         }
-      }] autorelease];
+      }];
       
       backgroundShadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
       
@@ -75,16 +75,6 @@
     
   }
 
-}
-
-- (void) dealloc {
-	
-	[localizableLabels release];
-	[onAction release];
-  [onClear release];
-  [wrapperView release];
-	[super dealloc];
-	
 }
 
 - (IBAction) handleAction:(id)sender {

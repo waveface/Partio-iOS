@@ -12,16 +12,16 @@
 
 static void __attribute__((constructor)) initialize() {
 
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
+
+		Class class = [IRActionSheetController class];
+		
+		method_exchangeImplementations(
+			class_getClassMethod(class, @selector(defaultCancelAction)),
+			class_getClassMethod(class, @selector(swizzledDefaultCancelAction))
+		);
 	
-	Class class = [IRActionSheetController class];
-	
-	method_exchangeImplementations(
-		class_getClassMethod(class, @selector(defaultCancelAction)),
-		class_getClassMethod(class, @selector(swizzledDefaultCancelAction))
-	);
-	
-	[pool drain];
+	}
 	
 }
 
