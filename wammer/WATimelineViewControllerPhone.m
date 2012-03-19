@@ -1259,7 +1259,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 				if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
 					return anArticle;
 				
-				return nil;
+				return (WAArticle *)nil;
 				
 			}] lastObject];
 			

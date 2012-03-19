@@ -17,7 +17,7 @@ NSString *kWARemoteInterfaceRemoteErrorCode = @"WARemoteInterfaceRemoteErrorCode
 
 void WARemoteInterfaceNotPorted (void) {
 
-	[NSException raise:NSObjectNotAvailableException format:@"%s has not been modified to use v.2 API methods.  Returning immediately."];
+	[NSException raise:NSObjectNotAvailableException format:@"%s has not been modified to use v.2 API methods.  Returning immediately.", __PRETTY_FUNCTION__];
 
 }
 

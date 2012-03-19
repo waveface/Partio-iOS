@@ -140,12 +140,12 @@
 	NSString *groupIdentifier = updatedArticle.group.identifier;
 	
 	if (!postIdentifier) {
-		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not been saved, and was not assigned a remote identifier."];
+		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not been saved, and was not assigned a remote identifier.", updatedArticle];
 		return;
 	}
 	
 	if (!groupIdentifier) {
-		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not yet been assigned a group."];
+		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not yet been assigned a group.", updatedArticle];
 		return;
 	}
 	

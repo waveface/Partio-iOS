@@ -55,7 +55,7 @@
 		aGroupIdentifier, @"group_id",
 		datum, @"datum",
     
-                [NSString stringWithFormat:@"%@%lu", 
+                [NSString stringWithFormat:@"%@%i", 
                   (positiveOrNegativeNumberOfPostsToExpandSearching > 0) ? @"+" : @"",
                   positiveOrNegativeNumberOfPostsToExpandSearching
                 ], @"limit",
