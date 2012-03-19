@@ -341,8 +341,9 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     nil] componentsJoinedByString:@""]];
     
     NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
-    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];    
-		return returnedContext;
+    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		
+		return (NSDictionary *)returnedContext;
 	
 	} copy] autorelease];
 
