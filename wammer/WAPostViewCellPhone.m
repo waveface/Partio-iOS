@@ -32,28 +32,6 @@
 @synthesize previewProviderLabel;
 @synthesize previewImageBackground;
 
-- (void) dealloc {
-  
-	[imageStackView release];
-	[avatarView release];
-	[userNicknameLabel release];
-	[contentDescriptionLabel release];
-	[dateOriginLabel release];
-	[dateLabel release];
-	[originLabel release];	
-	[commentLabel release];
-  [contentTextView release];
-	[previewBadge release];
-	[dateLabelBackgroundView release];
-    [extraInfoLabel release];
-	[previewImageView release];
-	[previewTitleLabel release];
-	[previewProviderLabel release];
-	[previewImageBackground release];
-	[super dealloc];
-	
-}
-
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
 	return [self initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:reuseIdentifier];
@@ -64,19 +42,15 @@
 
 	NSString *loadedNibName = nil;
 	
-	[self autorelease];	//	from unwanted +alloc
-	
 	switch (aStyle) {
 		case WAPostViewCellStyleDefault:{
 			loadedNibName = @"WAPostViewCellPhone-Default";
-			self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
-	
+			self = [[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil];
 			break;
 		}
     case WAPostViewCellStyleImageStack: {
 			loadedNibName = @"WAPostViewCellPhone-ImageStack";
-			self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
-	
+			self = [[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil];
 			break;
 		}
     case WAPostViewCellStyleWebLink: 
@@ -87,7 +61,7 @@
 			NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
 			
 			id loadedObject = [loadedObjects objectAtIndex:(aStyle-WAPostViewCellStyleWebLink)];
-			self = [(WAPostViewCellPhone *)loadedObject retain];
+			self = (WAPostViewCellPhone *)loadedObject;
     }
 	}
 	
@@ -103,7 +77,7 @@
   self.avatarView.layer.cornerRadius = 4.0;
 	self.avatarView.layer.masksToBounds = YES;
 	
-	UIView *avatarWrapper = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+	UIView *avatarWrapper = [[UIView alloc] initWithFrame:self.avatarView.frame];
 	avatarWrapper.autoresizingMask = avatarWrapper.autoresizingMask;
 	avatarWrapper.layer.shadowRadius = 1.0f;
 	avatarWrapper.layer.shadowOffset = (CGSize){ 0, 1 };
@@ -121,18 +95,18 @@
 	self.dateLabel.shadowColor = [UIColor whiteColor];
 	self.dateLabel.shadowOffset = (CGSize){ 0, 1 };
 	
-	self.dateLabelBackgroundView = [[[UIView alloc] initWithFrame:self.dateLabel.bounds] autorelease];
+	self.dateLabelBackgroundView = [[UIView alloc] initWithFrame:self.dateLabel.bounds];
 	self.dateLabelBackgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
 	
 	[self.dateLabelBackgroundView addSubview:((^ {
 	
-		UIView *actualView = [[[UIView alloc] initWithFrame:(CGRect){
+		UIView *actualView = [[UIView alloc] initWithFrame:(CGRect){
 			(CGPoint){ 0, -8 },
 			(CGSize){
 				CGRectGetWidth(self.dateLabelBackgroundView.bounds),
 				36
 			}
-		}] autorelease];
+		}];
 		
 		UIImage *dateBadgeBackdrop = [UIImage imageNamed:@"WADateBadgeBackdrop"];
 		actualView.layer.contents = (id)dateBadgeBackdrop.CGImage;

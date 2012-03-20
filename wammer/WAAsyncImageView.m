@@ -19,12 +19,6 @@
 @implementation WAAsyncImageView
 @synthesize lastImagePtr;
 
-- (void) dealloc {
-
-	[super dealloc];
-
-}
-
 - (void) setImage:(UIImage *)newImage {
 
 	[self setImage:newImage withOptions:WAImageViewForceAsynchronousOption];
@@ -33,10 +27,10 @@
 
 - (void) setImage:(UIImage *)newImage withOptions:(WAImageViewOptions)options {
 
-	if (lastImagePtr == newImage)
+	if (lastImagePtr == (__bridge void *)(newImage))
 		return;
   
-  lastImagePtr = newImage;
+  lastImagePtr = (__bridge void *)(newImage);
 
   if (!newImage) {
   
@@ -57,7 +51,7 @@
 		
 		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
 			
-      if (self.lastImagePtr != decodedImage)
+      if (self.lastImagePtr != (__bridge void *)(decodedImage))
 				return;
     
       [super setImage:decodedImage];

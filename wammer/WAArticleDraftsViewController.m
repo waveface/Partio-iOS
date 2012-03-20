@@ -45,8 +45,7 @@
 
 - (void) dealloc {
 
-  [fetchedResultsController release];
-  [super dealloc];
+	fetchedResultsController.delegate = nil;
 
 }
 
@@ -107,7 +106,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ActionCellIdentifier];
     if (!cell) {
-      cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ActionCellIdentifier] autorelease];
+      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ActionCellIdentifier];
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
@@ -124,7 +123,7 @@
 
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:DraftCellIdentifier];
   if (cell == nil) {
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:DraftCellIdentifier] autorelease];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:DraftCellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
    

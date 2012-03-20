@@ -76,7 +76,7 @@
 	self.containerView.backgroundColor = [UIColor clearColor];
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WACompositionBackgroundPattern"]];
 	
-	UIImageView *toolbarBackground = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"]] autorelease];
+	UIImageView *toolbarBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WACompositionAttachmentsBarBackground"]];
 	toolbarBackground.frame = self.toolbar.frame;
 	toolbarBackground.autoresizingMask = self.toolbar.autoresizingMask;
 	[self.toolbar.superview insertSubview:toolbarBackground belowSubview:self.toolbar];
@@ -91,19 +91,6 @@
 	self.toolbar = nil;
 	
 	[super viewDidUnload];
-
-}
-
-- (void) dealloc {
-
-	[actionSheetController release];
-	[toolbar release];
-	[articleAttachmentActivityView release];
-	
-	[onDismissImagePickerControllerAnimated release];
-	[onDismissCameraCaptureControllerAnimated release];
-	
-	[super dealloc];
 
 }
 
@@ -139,16 +126,14 @@
 	if (articleAttachmentActivityView)
 		return articleAttachmentActivityView;
 	
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(articleAttachmentActivityView) nrArticleAttachmentActivityView = [[WAArticleAttachmentActivityView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 96, 32 }}];
+	__weak WACompositionViewControllerPhone *nrSelf = self;
 	
-	nrArticleAttachmentActivityView.onTap = ^ {
+	articleAttachmentActivityView = [[WAArticleAttachmentActivityView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 96, 32 }}];
+	articleAttachmentActivityView.onTap = ^ {
 	
-		[nrSelf handleArticleAttachmentActivityViewTap:nrArticleAttachmentActivityView];
+		[nrSelf handleArticleAttachmentActivityViewTap:nrSelf.articleAttachmentActivityView];
 	
 	};
-	
-	articleAttachmentActivityView = nrArticleAttachmentActivityView;
 	
 	[self updateArticleAttachmentActivityView];
 	
@@ -199,12 +184,9 @@
 	__block __typeof__(self) nrSelf = self;
 	__block id observer = [returnedAttributor.queue irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 	
-		[nrSelf retain];
-	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 
 			[nrSelf updateArticleAttachmentActivityView];
-			[nrSelf autorelease];
 		
 		});
 		
@@ -284,15 +266,15 @@
 		
 			if ([self.article.files count]) {
 			
-				[self presentMediaListViewController:[[self newMediaListViewController] autorelease] sender:view animated:YES];
+				[self presentMediaListViewController:[self newMediaListViewController] sender:view animated:YES];
 			
 			} else {
 			
 				[self handleImageAttachmentInsertionRequestWithSender:view];
 				
-				__block __typeof__(self) nrSelf = self;
+				__weak WACompositionViewControllerPhone *nrSelf = self;
 				
-				NSArray *capturedFiles = [[self.article.fileOrder copy] autorelease];
+				NSArray *capturedFiles = [self.article.fileOrder copy];
 				BOOL (^filesChanged)(void) = ^ {
 					return (BOOL)![nrSelf.article.fileOrder isEqual:capturedFiles];
 				};
@@ -322,8 +304,6 @@
 				
 				self.onDismissCameraCaptureControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
 				
-					[[nrSelf.onDismissCameraCaptureControllerAnimated retain] autorelease];
-					
 					nrSelf.onDismissCameraCaptureControllerAnimated = nil;
 					
 					if (!filesChanged())
@@ -334,7 +314,7 @@
 					crossfade(^ {
 					
 						[nrSelf dismissCameraCapturePickerController:controller animated:NO];
-						[nrSelf presentMediaListViewController:[[self newMediaListViewController] autorelease] sender:nil animated:NO];
+						[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
 					
 					});
 									
@@ -342,8 +322,6 @@
 				
 				self.onDismissImagePickerControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
 				
-					[[nrSelf.onDismissImagePickerControllerAnimated retain] autorelease];
-					
 					nrSelf.onDismissImagePickerControllerAnimated = nil;
 
 					if (!filesChanged())
@@ -354,7 +332,7 @@
 					crossfade(^ {
 
 						[nrSelf dismissImagePickerController:controller animated:NO];
-						[nrSelf presentMediaListViewController:[[self newMediaListViewController] autorelease] sender:nil animated:NO];
+						[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
 					
 					});
 				
@@ -415,7 +393,7 @@
 
 - (void) presentMediaListViewController:(WAAttachedMediaListViewController *)controller sender:(id)sender animated:(BOOL)animated {
 
-	WANavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:[[self newMediaListViewController] autorelease]] autorelease];
+	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:[self newMediaListViewController]];
 	
 	[self presentModalViewController:navC animated:animated];
 

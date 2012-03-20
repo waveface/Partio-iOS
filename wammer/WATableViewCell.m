@@ -29,12 +29,4 @@
 		
 }
 
-- (void) dealloc {
-
-	[onSetSelected release];
-	[onSetEditing release];
-	[super dealloc];
-
-}
-
 @end

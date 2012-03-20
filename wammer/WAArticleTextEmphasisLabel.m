@@ -85,8 +85,7 @@
 - (void) setBackgroundView:(UIView *)newBackgroundView {
 
 	[backgroundView removeFromSuperview];
-	[backgroundView release];
-	backgroundView = [newBackgroundView retain];
+	backgroundView = newBackgroundView;
 	
 	[self insertSubview:newBackgroundView atIndex:0];
 	backgroundView.frame = self.bounds;
@@ -99,7 +98,6 @@
 	if (text == newText)
 		return;
 	
-	[text release];
 	text = [newText copy];
 	
 	[self updateText];
@@ -133,7 +131,6 @@
 	if (placeholder == newPlaceholder)
 		return;
 	
-	[placeholder release];
 	placeholder = [newPlaceholder copy];
 	
 	[self updateText];
@@ -160,16 +157,16 @@
 			static NSDataDetector *sharedDataDetector = nil;
 			static dispatch_once_t onceToken;
 			dispatch_once(&onceToken, ^{
-				sharedDataDetector = [[NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil] retain];
+				sharedDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:nil];
 			});
 		
 			__block BOOL hasLinks = NO;
 			
-			NSMutableAttributedString *linkedAttributedText = [[attributedText mutableCopy] autorelease];		
+			NSMutableAttributedString *linkedAttributedText = [attributedText mutableCopy];
 			
 			[linkedAttributedText beginEditing];
 			
-			NSString *matchedText = [[capturedText copy] autorelease];
+			NSString *matchedText = [capturedText copy];
 			matchedText = [matchedText stringByReplacingOccurrencesOfString:@"\n" withString:@" "];  //  iOS 4.3 Crasher
 			
 			[sharedDataDetector enumerateMatchesInString:matchedText options:0 range:(NSRange){ 0, [matchedText length] } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
@@ -210,18 +207,6 @@
 - (CGSize) sizeThatFits:(CGSize)size {
 
 	return [self.label sizeThatFits:size];
-
-}
-
-- (void) dealloc {
-
-	[text release];
-	[placeholder release];
-	
-	[label release];
-	[backgroundView release];
-	
-	[super dealloc];
 
 }
 

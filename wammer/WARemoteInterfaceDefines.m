@@ -57,19 +57,19 @@ IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NS
 	if (!aFailureBlock)
 		return (IRWebAPICallback)nil;
 	
-	return [[ ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	return ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		NSError *error = WARemoteInterfaceGenericError(inResponseOrNil, inResponseContext);
 		
 		aFailureBlock(error);
 		
-	} copy] autorelease];
+	};
 
 };
 
 IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator () {
 
-	return [[ ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	return ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
 	
 		BOOL answer = [[inResponseOrNil valueForKey:@"api_ret_code"] isEqual:[NSNumber numberWithInt:WASuccess]];
 		answer &= ([((NSHTTPURLResponse *)[inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse]) statusCode] == 200);
@@ -80,7 +80,7 @@ IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator () {
 		
 		return answer;
 	
-	} copy] autorelease];
+	};
 
 };
 

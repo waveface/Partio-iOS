@@ -50,7 +50,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		NSString *pathExtension = [aFileURL pathExtension];
 		BOOL fileIsImage = NO;
 		if (pathExtension) {
-			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, kUTTypeItem);
+			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)pathExtension, kUTTypeItem);
 			if (fileUTI) {
 				fileIsImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
 				CFRelease(fileUTI);

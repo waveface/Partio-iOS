@@ -23,7 +23,7 @@
 @implementation WAEightPartLayoutPlacementCandidate
 @synthesize pattern, occurrence;
 + (id) candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence {
-	WAEightPartLayoutPlacementCandidate *returnedInstance = [[[self alloc] init] autorelease];
+	WAEightPartLayoutPlacementCandidate *returnedInstance = [[self alloc] init];
 	returnedInstance.pattern = aPattern;
 	returnedInstance.occurrence = anOccurrence;
 	return returnedInstance;
@@ -104,7 +104,7 @@
 	
 	[self willChangeValueForKey:@"defaultTilingPatternGroups"];
 	
-	defaultTilingPatternGroups = [[NSDictionary dictionaryWithObjectsAndKeys:
+	defaultTilingPatternGroups = [NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[NSArray arrayWithObjects:
 				[NSNumber numberWithUnsignedChar:0b11001100],
@@ -134,7 +134,7 @@
 				[NSNumber numberWithUnsignedChar:0b00000001],
 			nil], @"singleTile",
 			
-		nil] retain];
+		nil];
 		
 		[self didChangeValueForKey:@"defaultTilingPatternGroups"];
 		
@@ -152,14 +152,14 @@
 	
 	//	Item introspection helpers
 	
-	NSMutableArray *availableItems = [[[items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN([items count], 8) }]] mutableCopy] autorelease];
+	NSMutableArray *availableItems = [[items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN([items count], 8) }]] mutableCopy];
 	
 	id<IRDiscreteLayoutItem> (^nextItem)() = ^ {
 	
 		if (![availableItems count])
 			return (id<IRDiscreteLayoutItem>)nil;
 		
-		id<IRDiscreteLayoutItem> returnedItem = [[[availableItems objectAtIndex:0] retain] autorelease];
+		id<IRDiscreteLayoutItem> returnedItem = [availableItems objectAtIndex:0];
 		[availableItems removeObjectAtIndex:0];
 		
 		return returnedItem;
@@ -282,15 +282,6 @@
 	
 	cleanup();
 	return returnedInstance;
-
-}
-
-- (void) dealloc {
-
-	[validatorBlock release];
-	[displayBlock release];
-	[defaultTilingPatternGroups release];
-	[super dealloc];
 
 }
 

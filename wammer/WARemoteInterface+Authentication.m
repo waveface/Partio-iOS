@@ -14,11 +14,11 @@
 
 - (IRWebAPIRequestContextTransformer) defaultV2AuthenticationSignatureBlock {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WARemoteInterface *nrSelf = self;
 	
-	return [[ ^ (NSDictionary *inOriginalContext) {
+	return ^ (NSDictionary *inOriginalContext) {
 			
-		NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
+		NSMutableDictionary *mutatedContext = [inOriginalContext mutableCopy];
 		NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
 		NSMutableDictionary *originalFormURLEncodedFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
 		
@@ -29,7 +29,7 @@
 		
 		if (originalFormMultipartFields) {
 		
-			NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
+			NSMutableDictionary *mutatedFormMultipartFields = [originalFormMultipartFields mutableCopy];
 			[mutatedContext setObject:mutatedFormMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
 			
 			if (nrSelf.apiKey)
@@ -40,7 +40,7 @@
 			
 		} else if (originalFormURLEncodedFields) {
 		
-			NSMutableDictionary *mutatedFormURLEncodedFields = [[originalFormURLEncodedFields mutableCopy] autorelease];
+			NSMutableDictionary *mutatedFormURLEncodedFields = [originalFormURLEncodedFields mutableCopy];
 			[mutatedContext setObject:mutatedFormURLEncodedFields forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
 			
 			if (nrSelf.apiKey)
@@ -52,7 +52,7 @@
 		} else {
 		
 			NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
-			NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
+			NSMutableDictionary *mutatedQueryParams = [originalQueryParams mutableCopy];
 			
 			if (!mutatedQueryParams)
 					mutatedQueryParams = [NSMutableDictionary dictionary];
@@ -69,15 +69,15 @@
 		
 		return (NSDictionary *)mutatedContext;
 	
-	} copy] autorelease];
+	};
 
 }
 
 - (IRWebAPIResponseContextTransformer) defaultV2AuthenticationListeningBlock {
 
-  __block __typeof__(self) nrSelf = self;
+  __weak WARemoteInterface *nrSelf = self;
 
-  return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+  return ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
   
     NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
 		
@@ -114,7 +114,7 @@
 		
     return inParsedResponse;
     
-  } copy] autorelease];
+  };
 
 }
 
@@ -146,7 +146,7 @@
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
 		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
-		NSMutableDictionary *userEntity = [[[inResponseOrNil valueForKeyPath:@"user"] mutableCopy] autorelease];
+		NSMutableDictionary *userEntity = [[inResponseOrNil valueForKeyPath:@"user"] mutableCopy];
 		
 		if (!userEntity)
 			userEntity = [NSMutableDictionary dictionary];

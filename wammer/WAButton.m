@@ -19,13 +19,6 @@
 @implementation WAButton
 @synthesize action;
 
-- (void) dealloc {
-
-	[action release];
-	[super dealloc];
-
-}
-
 - (id) initWithFrame:(CGRect)frame {
 
 	self = [super initWithFrame:frame];

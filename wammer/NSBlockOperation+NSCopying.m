@@ -19,9 +19,7 @@
   }];
   
   for (void(^aBlock)(void) in [self executionBlocks])
-    [returnedOperation addExecutionBlock:[[aBlock copy] autorelease]];
-    
-  [returnedOperation retain];
+    [returnedOperation addExecutionBlock:[aBlock copy]];
   
   return returnedOperation;
 

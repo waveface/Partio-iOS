@@ -29,13 +29,6 @@ static NSString * const kWATiledImageView_storedImage = @"kWAImageView_storedIma
 @implementation WATiledImageViewLayer
 @synthesize onContentsGravityChanged;
 
-- (void) dealloc {
-
-	[onContentsGravityChanged release];
-	[super dealloc];
-
-}
-
 + (NSTimeInterval) fadeDuration {
 
 	return 0.0f;
@@ -149,14 +142,6 @@ static NSString * const kWATiledImageView_storedImage = @"kWAImageView_storedIma
 
 }
 
-- (void) dealloc {
-
-	[image release];
-	[contentView release];
-	[super dealloc];
-
-}
-
 + (Class) layerClass {
 
 	return [WATiledImageViewLayer class];
@@ -199,10 +184,7 @@ static NSString * const kWATiledImageView_storedImage = @"kWAImageView_storedIma
 	if (newImage && (newImage == self.image))
 		return;
 	
-	[self willChangeValueForKey:@"image"];
-	[image release];
-	image = [newImage retain];
-	[self didChangeValueForKey:@"image"];
+	image = newImage;
 	
 	self.layer.contents = nil;
 	

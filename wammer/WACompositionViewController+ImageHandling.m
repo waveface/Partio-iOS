@@ -18,11 +18,11 @@
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self) nrSender = sender;
 	
-	return [[IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[nrSelf presentImagePickerController:[[nrSelf newImagePickerController] autorelease] sender:nrSender];
+		[nrSelf presentImagePickerController:[nrSelf newImagePickerController] sender:nrSender];
 	
-	}] retain];
+	}];
 
 }
 
@@ -38,7 +38,7 @@
 	
 	nrImagePickerController.usesAssetsLibrary = NO;
 	
-	return [nrImagePickerController retain];
+	return nrImagePickerController;
 
 }
 
@@ -59,7 +59,7 @@
 		
 	};
 	
-	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:animated];
+	[topNonModalVC(self) presentModalViewController:[self newImagePickerController] animated:animated];
 
 }
 
@@ -80,11 +80,11 @@
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self) nrSender = sender;
 	
-	return [[IRAction actionWithTitle:NSLocalizedString(@"ACTION_TAKE_PHOTO_WITH_CAMERA", @"Button title for showing a camera capture controller") block: ^ {
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_TAKE_PHOTO_WITH_CAMERA", @"Button title for showing a camera capture controller") block: ^ {
 	
-		[nrSelf presentCameraCapturePickerController:[[nrSelf newCameraCapturePickerController] autorelease] sender:nrSender];
+		[nrSelf presentCameraCapturePickerController:[nrSelf newCameraCapturePickerController] sender:nrSender];
 	
-	}] retain];
+	}];
 
 }
 
@@ -102,7 +102,7 @@
 	nrPickerController.usesAssetsLibrary = NO;
 	nrPickerController.savesCameraImageCapturesToSavedPhotos = YES;
 	
-	return [nrPickerController retain];
+	return nrPickerController;
 
 }
 
@@ -177,10 +177,10 @@
 		
 	NSMutableArray *availableActions = [NSMutableArray array]; 
 	
-	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];
+	[availableActions addObject:[self newPresentImagePickerControllerActionWithSender:sender]];
 	
 	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
-		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
+		[availableActions addObject:[self newPresentCameraCaptureControllerActionWithSender:sender]];
 	
 	if ([availableActions count] == 1) {
 		

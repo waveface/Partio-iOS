@@ -38,11 +38,11 @@ NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReacha
 static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void* info) {
 
   NSCAssert(info != NULL, @"info was NULL.");
-  NSCAssert([(WAReachabilityDetector *)info isKindOfClass:[WAReachabilityDetector class]], @"info was wrong class.");
+  NSCAssert([(__bridge WAReachabilityDetector *)info isKindOfClass:[WAReachabilityDetector class]], @"info was wrong class.");
   
   @autoreleasepool {
     
-    WAReachabilityDetector *self = (WAReachabilityDetector *)info;
+    WAReachabilityDetector *self = (__bridge WAReachabilityDetector *)info;
 		[self noteReachabilityFlagsChanged:flags];
 
   };
@@ -61,10 +61,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 	
-		[[NSNotificationCenter defaultCenter] removeObserver:applicationDidFinishLaunchingListener];
-		
 		[WAReachabilityDetector sharedDetectorForInternet];
 		[WAReachabilityDetector sharedDetectorForLocalWiFi];
+		
+		[[NSNotificationCenter defaultCenter] removeObserver:applicationDidFinishLaunchingListener];
+		applicationDidFinishLaunchingListener = nil;
 		
 	}];
 
@@ -73,7 +74,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 + (id) sharedDetectorForInternet {
 
 	static dispatch_once_t token = 0;
-	static __typeof__(self) instance = nil;
+	static id instance = nil;
 	dispatch_once(&token, ^{
 		instance = [[self alloc] initWithAddress:WASocketAddressCreateZero()];
 	});
@@ -85,7 +86,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 + (id) sharedDetectorForLocalWiFi {
 
 	static dispatch_once_t token = 0;
-	static __typeof__(self) instance = nil;
+	static id instance = nil;
 	dispatch_once(&token, ^{
 		instance = [[self alloc] initWithAddress:WASocketAddressCreateLinkLocal()];
 	});
@@ -96,7 +97,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 + (id) detectorForURL:(NSURL *)aHostURL {
 
-  return [[[self alloc] initWithURL:aHostURL] autorelease];
+  return [[self alloc] initWithURL:aHostURL];
 
 }
 
@@ -133,7 +134,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     return nil;
       
 	self.hostURL = aHostURL;
-	[self.recurrenceMachine addRecurringOperation:[[self newPulseCheckerPrototype] autorelease]];
+	[self.recurrenceMachine addRecurringOperation:[self newPulseCheckerPrototype]];
 	[self.recurrenceMachine scheduleOperationsNow];
 	
 	return self;
@@ -158,9 +159,8 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	
 	__block __typeof__(self) nrSelf = self;
 
-	return [[IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
+	return [IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
 	
-    [nrSelf retain];
     [nrSelf.recurrenceMachine beginPostponingOperations];
     
     [[WARemoteInterface sharedInterface].engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -204,11 +204,9 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 			
 			}
 		
-			[nrSelf autorelease];
-			
 		});
 		
-	}] retain];
+	}];
 
 }
 
@@ -245,8 +243,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
   
   [self willChangeValueForKey:@"hostURL"];
   
-  [hostURL release];
-  hostURL = [newHostURL retain];
+  hostURL = newHostURL;
 	
 	[self recreateReachabilityRef];
   
@@ -269,7 +266,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 		reachability = SCNetworkReachabilityCreateWithAddress(NULL, (const struct sockaddr *)&hostAddress);
 	}
 
-  SCNetworkReachabilityContext context = { 0, self, NULL, NULL, NULL };
+  SCNetworkReachabilityContext context = { 0, (__bridge void *)(self), NULL, NULL, NULL };
   SCNetworkReachabilitySetCallback(reachability, WASCReachabilityCallback, &context);
   SCNetworkReachabilitySetDispatchQueue(reachability, dispatch_get_main_queue());
 
@@ -287,16 +284,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 - (void) dealloc {
 
-  [hostURL release];
-  [recurrenceMachine release];
-  
   if (reachability) {
     SCNetworkReachabilitySetDispatchQueue(reachability, NULL);
     CFRelease(reachability);
   }
   
-  [super dealloc];
-
 }
 
 - (NSString *) description {

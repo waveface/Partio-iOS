@@ -91,13 +91,12 @@
 	NSParameterAssert([NSThread isMainThread]);
 
 	__block __typeof__(self) nrSelf = self;
-	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
+	__block NSManagedObjectContext *context = [self disposableMOC];
 	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
 	
 	void (^cleanup)() = ^ {
-		[context autorelease];
 		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
 	};
 	

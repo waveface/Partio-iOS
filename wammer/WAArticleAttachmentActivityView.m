@@ -32,7 +32,7 @@
 	if (!self)	
 		return nil;
 	
-	button = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+	button = [UIButton buttonWithType:UIButtonTypeCustom];
 	[self addSubview:button];
 	
 	button.contentHorizontalAlignment = UIControlContentVerticalAlignmentCenter;
@@ -145,7 +145,7 @@
 	if (stylesToTitles)
 		return stylesToTitles;
 	
-	stylesToTitles = [[NSMutableDictionary dictionary] retain];
+	stylesToTitles = [NSMutableDictionary dictionary];
 	return stylesToTitles;
 
 }
@@ -176,14 +176,6 @@
 - (void) dealloc {
 
 	NSParameterAssert([NSThread isMainThread]);
-
-	[button release];
-	[spinner release];
-	[onTap release];
-	
-	[stylesToTitles release];
-	
-	[super dealloc];
 
 }
 

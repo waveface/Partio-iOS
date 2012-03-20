@@ -44,7 +44,7 @@
   else
     usedClass = self;
 
-	WARegisterRequestViewController *returnedVC = [[(WARegisterRequestViewController *)[usedClass alloc] initWithStyle:UITableViewStyleGrouped] autorelease];
+	WARegisterRequestViewController *returnedVC = [(WARegisterRequestViewController *)[usedClass alloc] initWithStyle:UITableViewStyleGrouped];
 	returnedVC.completionBlock = aBlock;
 	return returnedVC;
 
@@ -75,23 +75,10 @@
 
 }
 
-- (void) dealloc {
-
-	[username release];
-	[usernameField release];
-	
-	[password release];
-	[passwordField release];
-	[passwordConfirmationField release];
-	
-	[super dealloc];
-
-}
-
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	self.usernameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.usernameField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.usernameField.delegate = self;
 	self.usernameField.placeholder = NSLocalizedString(@"NOUN_USERNAME", @"Title for username");
 	self.usernameField.text = self.username;
@@ -103,7 +90,7 @@
 	self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
   self.usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
-	self.nicknameField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.nicknameField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.nicknameField.delegate = self;
 	self.nicknameField.placeholder = NSLocalizedString(@"NOUN_NICKNAME", @"Title for nick name");
 	self.nicknameField.text = self.nickname;
@@ -115,7 +102,7 @@
 	self.nicknameField.keyboardType = UIKeyboardTypeASCIICapable;
   self.nicknameField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
-	self.passwordField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.passwordField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.passwordField.delegate = self;
 	self.passwordField.placeholder = NSLocalizedString(@"NOUN_PASSWORD", @"Title for password");
 	self.passwordField.text = self.password;
@@ -128,7 +115,7 @@
 	self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
   self.passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	
-	self.passwordConfirmationField = [[[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }] autorelease];
+	self.passwordConfirmationField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.passwordConfirmationField.delegate = self;
 	self.passwordConfirmationField.placeholder = NSLocalizedString(@"NOUN_PASSWORD_CONFIRMATION", @"Title for password confirmation");
 	self.passwordConfirmationField.text = nil;//self.password;
@@ -242,7 +229,7 @@
 
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
 
@@ -283,8 +270,7 @@
   if (username == newUsername)
     return;
   
-  [username release];
-  username = [newUsername retain];
+  username = newUsername;
   
   self.usernameField.text = username;
 
@@ -295,8 +281,7 @@
   if (password == newPassword)
     return;
   
-  [password release];
-  password = [newPassword retain];
+  password = newPassword;
   
   self.passwordField.text = password;
 
@@ -307,8 +292,7 @@
   if (nickname == newNickname)
     return;
   
-  [nickname release];
-  nickname = [newNickname retain];
+  nickname = newNickname;
   
   self.nicknameField.text = nickname;
 

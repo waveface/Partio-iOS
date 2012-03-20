@@ -8,17 +8,13 @@
 
 #import "WAArticleViewController_Preview.h"
 #import "WADataStore.h"
-
 #import "WAScrollView.h"
-
 #import "WADefines.h"
-
-#import "UIView+IRAdditions.h"
-#import "UIScrollView+IRAdditions.h"
-
 #import "WAArticleTextStackCell.h"
 
 #import <UIKit/UIGestureRecognizerSubclass.h>
+
+#import "UIKit+IRAdditions.h"
 
 
 enum {
@@ -84,23 +80,6 @@ enum {
 	webView.delegate = nil;
 	summaryWebView.delegate = nil;
 	
-	[webView release];
-	[summaryWebView release];
-	[webViewWrapper release];
-	
-	[webViewActivityIndicator release];
-	[webViewBackBarButtonItem release];
-	[webViewForwardBarButtonItem release];
-	[webViewActivityIndicatorBarButtonItem release];
-	[webViewReloadBarButtonItem release];
-
-	[previewBadge release];
-	[previewBadgeWrapper release];
-	
-	[previewActionSheetController release];
-	
-	[super dealloc];
-
 }
 
 - (void) didReceiveMemoryWarning {
@@ -307,7 +286,7 @@ enum {
 	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
-	webViewBackBarButtonItem = [[IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
+	webViewBackBarButtonItem = [IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil];
 	
 	webViewBackBarButtonItem.block = ^ {
 	
@@ -355,7 +334,7 @@ enum {
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
-	webViewForwardBarButtonItem = [[IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
+	webViewForwardBarButtonItem = [IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil];
 	
 	webViewForwardBarButtonItem.block = ^ {
 	
@@ -389,7 +368,7 @@ enum {
 	if (webViewActivityIndicatorBarButtonItem)
 		return webViewActivityIndicatorBarButtonItem;
 	
-	webViewActivityIndicatorBarButtonItem = [[IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator] retain];
+	webViewActivityIndicatorBarButtonItem = [IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator];
 	
 	return webViewActivityIndicatorBarButtonItem;
 
@@ -470,19 +449,19 @@ enum {
 	if (webViewWrapper)
 		return webViewWrapper;
 	
-	webViewWrapper = [[[WAView alloc] initWithFrame:CGRectZero] autorelease];
+	webViewWrapper = [[WAView alloc] initWithFrame:CGRectZero];
 	webViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 
-	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
+	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(webViewWrapper.bounds),
 		3
-	}, kCAGravityTop)] autorelease];
+	}, kCAGravityTop)];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[webViewWrapper addSubview:topShadow];
 	
-	__block __typeof__(self) nrSelf = self;
-	__block WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
+	__weak WAArticleViewController_Preview *nrSelf = self;
+	__weak WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
 	
 	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
@@ -539,13 +518,13 @@ enum {
 	if (previewBadgeWrapper)
 		return previewBadgeWrapper;
 	
-	previewBadgeWrapper = [[[UIView alloc] initWithFrame:(CGRect){
+	previewBadgeWrapper = [[UIView alloc] initWithFrame:(CGRect){
 		CGPointZero,
 		(CGSize){
 			384,
 			384
 		}
-	}] autorelease];
+	}];
 	UIView *backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = previewBadgeWrapper.bounds;
@@ -572,7 +551,7 @@ enum {
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:((^ {
 		
-			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
+			UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:nil];
 			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 			[segmentedControl addTarget:nrSelf action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 			
@@ -600,9 +579,9 @@ enum {
 		} else {
 			
 			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
-			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}]]];
 			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
-			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}]]];
 			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 			
 		}
@@ -635,7 +614,7 @@ enum {
 	if (previewActionSheetController)
 		return previewActionSheetController;
 	
-	previewActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:nil] retain];
+	previewActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:nil];
 	
 	return previewActionSheetController;
 
@@ -717,7 +696,7 @@ enum {
 	if ([contentView isDescendantOfView:wrapperView])
 		return;
 	
-	for (UIView *aSubview in [[wrapperView.subviews copy] autorelease])
+	for (UIView *aSubview in [wrapperView.subviews copy])
 	if (aSubview == summaryWebView || aSubview == webView)
 		[aSubview removeFromSuperview];
 	

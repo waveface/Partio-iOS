@@ -43,7 +43,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 			returnedView = (UIImageView *)aView;
 			returnedView.image = anImage;
 		} else {			
-			returnedView = [[[UIImageView alloc] initWithImage:anImage] autorelease];
+			returnedView = [[UIImageView alloc] initWithImage:anImage];
 			returnedView.contentMode = UIViewContentModeScaleAspectFill;
 			returnedView.clipsToBounds = YES;
 		}
@@ -56,10 +56,10 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	
 	};
 	
-	self.tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)] autorelease];
+	self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 	[self addGestureRecognizer:self.tapRecognizer];
 	
-	self.panRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)] autorelease];
+	self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	[self addGestureRecognizer:self.panRecognizer];
 	
 	self.selectedItemIndex = NSNotFound;
@@ -77,11 +77,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		return;
 	
 	[activeImageOverlay removeFromSuperview];
-	
-	[self willChangeValueForKey:@"activeImageOverlay"];
-	[activeImageOverlay release];
-	activeImageOverlay = [newActiveImageOverlay retain];
-	[self didChangeValueForKey:@"activeImageOverlay"];
+	activeImageOverlay = newActiveImageOverlay;
 	
 	[self setNeedsLayout];
 
@@ -200,7 +196,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
     }
   }
 	
-	NSMutableArray *currentImageThumbnailViews = [[[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy] autorelease];
+	NSMutableArray *currentImageThumbnailViews = [[NSArray irArrayByRepeatingObject:[NSNull null] count:[self.items count]] mutableCopy];
 	NSMutableSet *removedThumbnailViews = [NSMutableSet set];
 	
 	//	id (^itemForComponent)(id) = ^ (id aComponent) {
@@ -212,11 +208,11 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	};
 	
 	NSUInteger (^indexForComponent)(id) = ^ (id aComponent) {
-		return (NSUInteger)objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentIndex);
+		return [objc_getAssociatedObject(aComponent, &kWAImageStreamPickerComponentIndex) unsignedIntegerValue];
 	};
 	
 	void (^setIndexForComponent)(id, NSUInteger) = ^ (id aComponent, NSUInteger anIndex) {
-		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentIndex, (id)anIndex, OBJC_ASSOCIATION_ASSIGN);
+		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentIndex, [NSNumber numberWithUnsignedInteger:anIndex], OBJC_ASSOCIATION_ASSIGN);
 	};
 	
 	UIImage * (^thumbnailForComponent)(id) = ^ (id aComponent) {
@@ -227,7 +223,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		objc_setAssociatedObject(aComponent, &kWAImageStreamPickerComponentThumbnail, aThumbnail, OBJC_ASSOCIATION_RETAIN);
 	};
 	
-	[[[self.subviews copy] autorelease] enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
+	[[self.subviews copy] enumerateObjectsUsingBlock: ^ (UIView *aSubview, NSUInteger idx, BOOL *stop) {
 		
 		if (aSubview.tag != kWAImageStreamPickerComponent)
 			return;
@@ -448,17 +444,6 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 		return [self.items objectAtIndex:hitIndex];
 	
 	return nil;
-
-}
-
-- (void) dealloc {
-
-	[items release];
-	[activeImageOverlay release];
-	
-	[viewForThumbnail release];
-
-	[super dealloc];
 
 }
 

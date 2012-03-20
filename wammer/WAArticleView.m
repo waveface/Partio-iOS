@@ -67,7 +67,7 @@
 
 		self.avatarView.layer.masksToBounds = YES;
 		self.avatarView.backgroundColor = [UIColor colorWithRed:0.85f green:0.85f blue:0.85f alpha:1];
-		UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+		UIView *avatarContainingView = [[UIView alloc] initWithFrame:self.avatarView.frame];
 		avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
 		self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
@@ -86,11 +86,11 @@
 	
 	if (self.textEmphasisView) {
 	
-		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
+		self.textEmphasisView.backgroundView = [[UIView alloc] initWithFrame:self.textEmphasisView.bounds];
 		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		self.textEmphasisView.font = [UIFont fontWithName:@"HelevticaNeue-Light" size:16.0];
 		
-		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
+		UIView *bubbleView = [[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds];
 		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
 		bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
 		bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
@@ -106,21 +106,6 @@
 - (void) dealloc {
 
 	[self disassociateBindings];
-
-	[article release];
-
-	[contextInfoContainer release];
-	[imageStackView release];
-	[previewBadge release];
-	[textEmphasisView release];
-	[avatarView release];
-	[relativeCreationDateLabel release];
-	[userNameLabel release];
-	[articleDescriptionLabel release];
-	[contextTextView release];
-	[mainImageView release];
-
-	[super dealloc];
 
 }
 
@@ -179,8 +164,7 @@
 	
 	[self disassociateBindings];
 	
-	[article release];
-	article = [newArticle retain];
+	article = newArticle;
 	
 	[self associateBindings];
 	
@@ -189,7 +173,7 @@
 
 - (void) associateBindings {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleView *nrSelf = self;
 	
 	[self disassociateBindings];
 	
@@ -202,7 +186,7 @@
 	
 		[object irBind:objectKeyPath toObject:boundObject keyPath:boundKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
 			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			[[transformerBlock copy] autorelease], kIRBindingsValueTransformerBlock,
+			[transformerBlock copy], kIRBindingsValueTransformerBlock,
 		nil]];
 		
 	};

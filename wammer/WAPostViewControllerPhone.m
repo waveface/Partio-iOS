@@ -46,7 +46,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 + (WAPostViewControllerPhone *) controllerWithPost:(NSURL *)postURL{
     
-    WAPostViewControllerPhone *controller = [[[self alloc] initWithStyle:UITableViewStylePlain] autorelease];
+    WAPostViewControllerPhone *controller = [[self alloc] initWithStyle:UITableViewStylePlain];
     
     controller.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
     controller.post = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:postURL];
@@ -61,7 +61,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
     return nil;
  
   self.title = @"Post";
-  self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
+  self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)];
   
   return self;
 
@@ -83,15 +83,15 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   
   // the first attachment is a PDF
   if( [self.post.fileOrder count] >=1 && [[[[self.post.files allObjects] objectAtIndex:0] resourceType] isEqualToString:@"com.adobe.pdf"]){
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleDownload:)]autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(handleDownload:)];
   } else {
-    self.navigationItem.rightBarButtonItem  = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)]autorelease];
+    self.navigationItem.rightBarButtonItem  = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(handleCompose:)];
   }
 }
 
 - (void) loadView {
 
-	self.tableView = [[[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain] autorelease];
+	self.tableView = [[IRTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	self.view = self.tableView;
 	
 	__block IRTableView *nrTV = ((IRTableView *)self.tableView);
@@ -148,12 +148,6 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 	
 	[fetchedResultsController setDelegate:nil];
-	[fetchedResultsController release];
-	
-	[post release];
-	[managedObjectContext release];
-  
-  [super dealloc];
   
 }
 
@@ -173,7 +167,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
                                     [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
                                     nil];
 	
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
 	self.fetchedResultsController.delegate = self;
 	
@@ -187,7 +181,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (void) showCompose:(UIBarButtonItem *)sender {
 
-  [self.navigationController pushViewController:[[[WAComposeCommentViewControllerPhone alloc] init] autorelease] animated:YES];
+  [self.navigationController pushViewController:[[WAComposeCommentViewControllerPhone alloc] init] animated:YES];
 	
 }
 
@@ -216,7 +210,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 - (void)cellViewWithDecoration:(WAPostViewCellPhone *)cell {
   objc_setAssociatedObject(cell, &kWAPostViewCellFloatsAbove, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
   
-  cell.backgroundView = [[[UIView alloc] initWithFrame:cell.bounds] autorelease];
+  cell.backgroundView = [[UIView alloc] initWithFrame:cell.bounds];
   cell.clipsToBounds = NO;
   cell.backgroundView.clipsToBounds = NO;
   cell.backgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1];
@@ -224,7 +218,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
   [cell.backgroundView addSubview:((^ {
     
     static const CGRect triangle = (CGRect){ 0, 0, 16, 12 };
-    IRShapeView *decorativeTriangleView = [[[IRShapeView alloc] initWithFrame:triangle] autorelease];
+    IRShapeView *decorativeTriangleView = [[IRShapeView alloc] initWithFrame:triangle];
     decorativeTriangleView.layer.path = (( ^ {
       UIBezierPath *path = [UIBezierPath bezierPath];
       [path moveToPoint:(CGPoint){
@@ -264,70 +258,73 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Section 0 for post cell
-    if( [indexPath section] == 0) {
-        //TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
-      static NSString *defaultCellIdentifier = @"PostCell-Default";
-      static NSString *imageCellIdentifier = @"PostCell-Stacked";
-      
-      BOOL postHasFiles = (BOOL)!![post.files count];
-      
-      NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
-      
-      WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
-      
-      WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-      if(!cell) {
-			       
-				cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
-        cell.imageStackView.delegate = self;
-        
-				[self cellViewWithDecoration:cell];
-      }
+
+	// Section 0 for post cell
+	if ([indexPath section] == 0) {
+		
+		//TODO the cell style need to use Image && Comment for settings rather than 4 different style which grows exponentially
+		static NSString *defaultCellIdentifier = @"PostCell-Default";
+		static NSString *imageCellIdentifier = @"PostCell-Stacked";
+		
+		BOOL postHasFiles = (BOOL)!![post.files count];
+		
+		NSString *identifier = postHasFiles ? imageCellIdentifier : defaultCellIdentifier;
+		
+		WAPostViewCellStyle style = postHasFiles ? WAPostViewCellStyleImageStack : WAPostViewCellStyleDefault;
+		
+		WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
+		if(!cell) {
+					 
+			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
+			cell.imageStackView.delegate = self;
 			
-      NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
-      cell.userNicknameLabel.text = post.owner.nickname;
-      cell.avatarView.image = post.owner.avatar;
-      cell.commentLabel.text = post.text;
-      cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
-                             [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp], 
-                             [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
-      cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
-      
-      cell.imageStackView.userInteractionEnabled = true;
-      
-      if (cell.imageStackView)
-        objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-      
-      NSArray *allImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-        WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
-        return  file.thumbnailImage;
-      }];
-      
-      
-      cell.imageStackView.images = allImages;
-      
-      return cell;
-			
-    }
-    
-    // Section 2 for comment cell
-    NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
-    WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
+			[self cellViewWithDecoration:cell];
+		}
+		
+		NSLog(@"Post ID: %@ with WAPostViewCellStyle %d and Text %@", [post identifier], style, post.text);
+		cell.userNicknameLabel.text = post.owner.nickname;
+		cell.avatarView.image = post.owner.avatar;
+		cell.commentLabel.text = post.text;
+		cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
+													 [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp], 
+													 [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
+		cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
+		
+		cell.imageStackView.userInteractionEnabled = true;
+		
+		if (cell.imageStackView)
+			objc_setAssociatedObject(cell.imageStackView, &WAPostViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		
+		NSArray *allImages = [post.fileOrder irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
+			return  file.thumbnailImage;
+		}];
+		
+		
+		cell.imageStackView.images = allImages;
+		
+		return cell;
+		
+	}
+	
+	// Section 2 for comment cell
+	NSIndexPath *commentIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:0];
+	WAComment *representedComment = (WAComment *)[self.fetchedResultsController objectAtIndexPath:commentIndexPath];
 	
 	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:@"Cell"];
 	if (!cell)
-		cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:@"Cell"] autorelease];
+		cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:@"Cell"];
     
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
 	cell.commentLabel.text = representedComment.text;
 	cell.dateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp];
 
-    [representedComment.timestamp description];
+	[representedComment.timestamp description];
 	cell.originLabel.text = representedComment.creationDeviceName;
 	
-    return cell;
+	return cell;
+	
 }
 
 - (void) handleCompose:(UIBarButtonItem *)sender

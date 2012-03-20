@@ -152,8 +152,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	[super dealloc];
-
 }
 
 

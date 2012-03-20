@@ -36,7 +36,7 @@
 
 + (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
 
-	return [[[self alloc] initWithArticleURI:anArticleURI completion:aBlock] autorelease];
+	return [[self alloc] initWithArticleURI:anArticleURI completion:aBlock];
 
 }
 
@@ -106,17 +106,6 @@
 	
 	[article irRemoveObservingsHelper:self.articleFilesObservingsHelper];
 	
-	[articleFilesObservingsHelper release];
-
-	[managedObjectContext release];
-	[article release];
-
-	[callback release];
-	
-	[onViewDidLoad release];
-	
-	[super dealloc];
-
 }
 
 - (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
@@ -150,14 +139,15 @@
 
 - (void) loadView {
 
-	self.view = [[[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds] autorelease]; // dummy size for autoresizing
+	self.view = [[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds];
 	
-	tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+	tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.rowHeight = 76.0f; // plus 1 to get UIImageView in right size
 	self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
 	[self.view addSubview:self.tableView];
+	
 }
 
 - (void) viewDidLoad {
@@ -231,7 +221,7 @@
 	WATableViewCell *cell = (WATableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
 		
-		cell = [[[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier] autorelease];
+		cell = [[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		cell.indentationWidth = 8.0f;

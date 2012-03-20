@@ -29,11 +29,11 @@
   if (!self)
     return nil;
     
-  self.spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+  self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
   self.spinner.hidesWhenStopped = NO;
   [self.spinner startAnimating];
   
-  self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:spinner] autorelease];
+  self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:spinner];
   
   return self;
 
@@ -41,7 +41,7 @@
 
 - (void) loadView {
 
-  [self setView:[[[UIWebView alloc] initWithFrame:CGRectZero] autorelease]];
+  [self setView:[[UIWebView alloc] initWithFrame:CGRectZero]];
   [[self view] setDelegate:self];
   
   NSDictionary *registrationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -53,7 +53,7 @@
   NSURL *registrationURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserRegistrationEndpointURL]];
   NSURL *usedRegistrationURL = IRWebAPIRequestURLWithQueryParameters(registrationURL, registrationQueryParams);
   
-  NSURLRequest *registrationRequest = [[[NSURLRequest alloc] initWithURL:usedRegistrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15] autorelease];
+  NSURLRequest *registrationRequest = [[NSURLRequest alloc] initWithURL:usedRegistrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
   
   [[self view] loadRequest:registrationRequest];
 
@@ -131,7 +131,7 @@
 - (void) webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 
   if (![[[[error userInfo] objectForKey:NSURLErrorFailingURLErrorKey] scheme] isEqualToString:@"waveface"])
-    [[[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"Fine!") otherButtonTitles:nil] autorelease] show];
+    [[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"Fine!") otherButtonTitles:nil] show];
   
   [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:^{
     self.spinner.alpha = webView.loading ? 1.0f : 0.0f;
@@ -144,8 +144,6 @@
   id incomingRegistrationCompletionListener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
   [[NSNotificationCenter defaultCenter] removeObserver:incomingRegistrationCompletionListener];
   objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, nil, OBJC_ASSOCIATION_ASSIGN);
-  
-  [super dealloc];
 
 }
 
