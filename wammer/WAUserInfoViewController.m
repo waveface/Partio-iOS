@@ -454,16 +454,16 @@
 			
 				case 0: {
 				
-					__weak IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					
 					appSettingsViewController.delegate = self;
 					appSettingsViewController.showDoneButton = NO;
 					appSettingsViewController.showCreditsFooter = NO;
-					
 					appSettingsViewController.navigationItem.hidesBackButton = YES;
+					
+					__weak IASKAppSettingsViewController *wAppSettingsVC = appSettingsViewController;
 					appSettingsViewController.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, self.title, ^ {
-					
-						[appSettingsViewController.navigationController popViewControllerAnimated:YES];
-					
+						[wAppSettingsVC.navigationController popViewControllerAnimated:YES];
 					});
 					
 					[self.navigationController pushViewController:appSettingsViewController animated:YES];
