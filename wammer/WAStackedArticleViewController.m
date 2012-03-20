@@ -69,7 +69,7 @@
 		
 		[label irBind:@"attributedText" toObject:nrSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
 				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:nrSelf.article.timestamp];
 				NSString *device = nrSelf.article.creationDeviceName;
@@ -80,7 +80,7 @@
 					
 				) font:[UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f] color:[UIColor colorWithWhite:0.5 alpha:1]];
 			
-			}, kIRBindingsValueTransformerBlock,
+			} copy], kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		
@@ -134,7 +134,7 @@
 		
 		[commentsItem irBind:@"title" toObject:self keyPath:@"commentCount" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
 				NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
 				
@@ -144,7 +144,7 @@
 							NSLocalizedString(@"COMMENTS_COUNT_ONE_FORMAT_STRING", @"“%@ Comment”") :
 								NSLocalizedString(@"COMMENTS_COUNT_MANY_FORMAT_STRING", @"“%@ Comments”"), inNewValue];
 			
-			}, kIRBindingsValueTransformerBlock,
+			} copy], kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		
@@ -202,7 +202,7 @@
 		
 		[favoriteToggleItem irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
 				BOOL articleMarkedFavorite = [inNewValue isEqual:(id)kCFBooleanTrue];
 			
@@ -212,7 +212,7 @@
 					NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Bar button item title to unmark the article as a favorite") : 
 					NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Bar button item title to mark the article as a favorite");
 				
-			}, kIRBindingsValueTransformerBlock,
+			} copy], kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		

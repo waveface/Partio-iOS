@@ -65,7 +65,7 @@
 			
 			[titleLabel irBind:@"text" toObject:pushedVC keyPath:@"title" options:[NSDictionary dictionaryWithObjectsAndKeys:
 				
-				^ (id oldValue, id newValue, NSString *changeType) {
+				[^ (id oldValue, id newValue, NSString *changeType) {
 					
 					titleLabel.text = newValue;
 					
@@ -79,7 +79,7 @@
 					
 					return newValue;
 				
-				}, kIRBindingsValueTransformerBlock,
+				} copy], kIRBindingsValueTransformerBlock,
 				
 				kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 			

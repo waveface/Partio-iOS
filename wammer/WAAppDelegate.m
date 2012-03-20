@@ -65,7 +65,7 @@
 
 - (void) bootstrap {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WAAppDelegate *nrSelf  = self;
 	
 	WARegisterUserDefaults();
 	

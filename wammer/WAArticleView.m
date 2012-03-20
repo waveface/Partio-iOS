@@ -173,7 +173,7 @@
 
 - (void) associateBindings {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleView *nrSelf = self;
 	
 	[self disassociateBindings];
 	
@@ -186,7 +186,7 @@
 	
 		[object irBind:objectKeyPath toObject:boundObject keyPath:boundKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
 			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			transformerBlock, kIRBindingsValueTransformerBlock,
+			[transformerBlock copy], kIRBindingsValueTransformerBlock,
 		nil]];
 		
 	};

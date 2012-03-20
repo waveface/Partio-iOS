@@ -64,7 +64,7 @@
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
 	
 	WAPreview *usedPreview = [self.article.previews anyObject];
 	
@@ -442,7 +442,7 @@
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind {
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	

@@ -20,7 +20,6 @@
 #import "CALayer+IRAdditions.h"
 
 #import "WAFauxRootNavigationController.h"
-//	#import "WAEightPartLayoutGrid.h"
 
 #import "WANavigationBar.h"
 
@@ -131,7 +130,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WADiscretePaginatedArticlesViewController *nrSelf = self;
 	
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
 	self.view.opaque = YES;
@@ -145,7 +144,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	};
 	
-	__block IRPaginatedView *nrPaginatedView = self.paginatedView;
+	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
 	self.paginatedView.backgroundColor = nil;
 	self.paginatedView.horizontalSpacing = 32.0f;
 	self.paginatedView.clipsToBounds = NO;
@@ -602,14 +601,14 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	void (^removeAnimations)(UIView *) = ^ (UIView *introspectedView) {
 	
-		void (^removeAnimationsOnView)(UIView *aView) __weak = ^ (UIView *aView) {
-		
+		__block void (^removeAnimationsOnView)(UIView *aView) = [^ (UIView *aView) {
+	
 			[aView.layer removeAllAnimations];
 
 			for (UIView *aSubview in aView.subviews)
 				removeAnimationsOnView(aSubview);
 		
-		};
+		} copy];
 		
 		removeAnimationsOnView(introspectedView);
 
@@ -793,7 +792,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (!WAAdvancedFeaturesEnabled())
 		return returnedActions;
 		
-	__block __typeof__(self) nrSelf = self; 
+	__weak WADiscretePaginatedArticlesViewController *nrSelf = self;
 
 	[returnedActions addObject:[IRAction actionWithTitle:@"Reflow" block: ^ {
 		
@@ -906,9 +905,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
 	
-	__block __typeof__(self) nrSelf = self;
-	
-	
+	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAOverlayBezel *nrBezel = nil;
 	
 	if (usesBezel) {

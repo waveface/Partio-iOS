@@ -257,11 +257,11 @@
 	
 	[compositionSendButtonBackgroundView irBind:@"alpha" toObject:self.compositionSendButton keyPath:@"enabled" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-		^ (id oldValue, id newValue, NSKeyValueChange type) {
+		[^ (id oldValue, id newValue, NSKeyValueChange type) {
 		
 			return [newValue isEqual:(id)kCFBooleanTrue] ? [NSNumber numberWithFloat:1.0] : [NSNumber numberWithFloat:0.5];
 
-		}, kIRBindingsValueTransformerBlock,
+		} copy], kIRBindingsValueTransformerBlock,
 	
 	nil]];
 	

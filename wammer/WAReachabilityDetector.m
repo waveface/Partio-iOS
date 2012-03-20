@@ -61,10 +61,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 	__block id applicationDidFinishLaunchingListener = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 	
-		[[NSNotificationCenter defaultCenter] removeObserver:applicationDidFinishLaunchingListener];
-		
 		[WAReachabilityDetector sharedDetectorForInternet];
 		[WAReachabilityDetector sharedDetectorForLocalWiFi];
+		
+		[[NSNotificationCenter defaultCenter] removeObserver:applicationDidFinishLaunchingListener];
+		applicationDidFinishLaunchingListener = nil;
 		
 	}];
 
