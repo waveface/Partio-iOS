@@ -371,7 +371,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	[super viewDidLoad];
 		
-	__weak WATimelineViewControllerPhone *nrSelf;
+	__weak WATimelineViewControllerPhone *nrSelf = self;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
@@ -395,8 +395,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 	self.tableView.backgroundView = backgroundView;
 	
-	__block UIView *actualBackgroundView = [[UIView alloc] initWithFrame:backgroundView.bounds];
+	UIView *actualBackgroundView = [[UIView alloc] initWithFrame:backgroundView.bounds];
 	[backgroundView addSubview:actualBackgroundView];
+	
 	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
 	CGSize backgroundImageSize = backgroundImage.size;
 	actualBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
