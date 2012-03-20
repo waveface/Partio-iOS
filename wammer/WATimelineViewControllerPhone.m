@@ -99,7 +99,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	if (YES) {
 	
-		__block __typeof__(self) nrSelf = self;
+		__weak WATimelineViewControllerPhone *nrSelf = self;
 	
 		self.navigationItem.titleView = WAStandardTitleView();
 		
@@ -123,7 +123,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 		
 		self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 		
-			__block __typeof__(self) nrSelf = self;
+			__weak WATimelineViewControllerPhone *nrSelf = self;
 				
 			IRTransparentToolbar *toolbar = [[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }];
 			
@@ -285,7 +285,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (settingsActionSheetController)
 		return settingsActionSheetController;
 	
-	__block __typeof(self) nrSelf = self;
+	__weak WATimelineViewControllerPhone *nrSelf = self;
 	
 	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:^{
@@ -351,9 +351,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView {
 
-	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
-	
-	return pulldownHeader;
+	return [WAPulldownRefreshView viewFromNib];
 		
 }
 
@@ -373,7 +371,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	[super viewDidLoad];
 		
-	__block __typeof__(self) nrSelf = self;
+	__weak WATimelineViewControllerPhone *nrSelf;
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
@@ -394,7 +392,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	__block UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+	UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 	self.tableView.backgroundView = backgroundView;
 	
 	__block UIView *actualBackgroundView = [[UIView alloc] initWithFrame:backgroundView.bounds];
