@@ -18,15 +18,15 @@
 
 + (id) alloc {
 
-  UIViewController *fauxVC = [[[UIViewController alloc] init] autorelease];
+  UIViewController *fauxVC = [[UIViewController alloc] init];
   WANavigationController *fauxNavController = [super alloc];
-  fauxNavController = [[fauxNavController initWithRootViewController:fauxVC] autorelease];
+  fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
   
   NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
-  NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData] autorelease];
+  NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
   [unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
 
-  return [[unarchiver decodeObjectForKey:@"root"] retain];
+  return [unarchiver decodeObjectForKey:@"root"];
     
 }
 
@@ -68,24 +68,10 @@
 
 - (void) dismissModalViewControllerAnimated:(BOOL)animated {
 
-	[self retain];
-
 	[super dismissModalViewControllerAnimated:animated];
 
 	if (self.onDismissModalViewControllerAnimated)
 		self.onDismissModalViewControllerAnimated(self, animated);
-	
-	[self autorelease];
-
-}
-
-- (void) dealloc {
-
-	[onViewDidLoad release];
-	[willPushViewControllerAnimated release];
-	[didPushViewControllerAnimated release];
-	[onDismissModalViewControllerAnimated release];
-	[super dealloc];
 
 }
 

@@ -69,7 +69,7 @@
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
-	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
+	WACompositionViewController *returnedController = [[self alloc] init];
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
@@ -95,8 +95,8 @@
 		return nil;
 	
 	self.title = NSLocalizedString(@"COMPOSITION_TITLE", @"Title for the composition view");
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)];
 	
 	return self;
 
@@ -110,9 +110,8 @@
 	
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
-	[article release];
 	
-	article = [newArticle retain];
+	article = newArticle;
 	
 	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
@@ -128,22 +127,10 @@
 
 - (void) dealloc {
 
-	[containerView release];	
-	[contentTextView release];
-
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
-	
-	[managedObjectContext release];
-	[article release];
-	
-	[completionBlock release];
-	
-	[textAttributor release];
-	
-	[super dealloc];
 
 }
 
@@ -346,7 +333,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 	
 		if ([textView.text isEqualToString:capturedText])
-			self.textAttributor.attributedContent = [[[NSMutableAttributedString alloc] initWithString:capturedText] autorelease];
+			self.textAttributor.attributedContent = [[NSMutableAttributedString alloc] initWithString:capturedText];
 			
 	});
 	

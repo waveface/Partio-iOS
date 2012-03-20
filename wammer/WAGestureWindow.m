@@ -63,16 +63,4 @@
 
 }
 
-- (void) dealloc {
-
-	[tapGestureRecognizer release];
-
-	[onTap release];
-	[onGestureRecognizeShouldReceiveTouch release];
-	[onGestureRecognizeShouldRecognizeSimultaneouslyWithGestureRecognizer release];
-	
-	[super dealloc];
-
-}
-
 @end

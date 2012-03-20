@@ -24,7 +24,7 @@
 
 - (NSManagedObjectModel *) defaultManagedObjectModel {
 
-	return [[[NSManagedObjectModel alloc] initWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"WAModel" withExtension:@"momd"]] autorelease];
+	return [[NSManagedObjectModel alloc] initWithContentsOfURL:[[NSBundle bundleForClass:[self class]] URLForResource:@"WAModel" withExtension:@"momd"]];
 
 }
 
@@ -35,7 +35,7 @@
 	dispatch_once(&onceToken, ^{
 		sharedFormatter = [[NSDateFormatter alloc] init];
 		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-		sharedFormatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		sharedFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
 		sharedFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 	});
 	

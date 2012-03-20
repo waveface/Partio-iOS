@@ -32,7 +32,7 @@
 
 + (id) controllerWithArticle:(NSURL *)anURI {
 
-  WAArticleFilesListViewController *returnedController = [[[self alloc] init] autorelease];
+  WAArticleFilesListViewController *returnedController = [[self alloc] init];
   returnedController.articleURL = anURI;
   
   return returnedController;
@@ -62,7 +62,7 @@
   static NSString *CellIdentifier = @"Cell";
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   if (!cell) {
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
   }
   
   WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:indexPath.row]]);
@@ -103,7 +103,7 @@
   if (managedObjectContext)
     return managedObjectContext;
   
-  managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+  managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   return managedObjectContext;
 
 }
@@ -161,17 +161,6 @@
   //  self.managedObjectContext = nil;
   
   [super viewDidUnload];
-
-}
-
-- (void) dealloc {
-
-  [fetchedResultsController release];
-  [article release];
-  [managedObjectContext release];
-  [articleURL release];
-  
-  [super dealloc];
 
 }
 

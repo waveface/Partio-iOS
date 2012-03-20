@@ -87,15 +87,4 @@
 
 }
 
-- (void) dealloc {
-
-	[onTouchesShouldBeginWithEventInContentView release];
-	[onTouchesShouldCancelInContentView release];
-	[onGestureRecognizerShouldBegin release];
-	[onGestureRecognizerShouldReceiveTouch release];
-	
-	[super dealloc];
-
-}
-
 @end

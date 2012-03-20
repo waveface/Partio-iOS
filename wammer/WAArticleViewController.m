@@ -152,7 +152,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
   if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
     loadedNibName = nil;
 	
-	WAArticleViewController *returnedController = [[[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle] autorelease];
+	WAArticleViewController *returnedController = [[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle];
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
 	return returnedController;
@@ -181,7 +181,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 - (WAArticle *) article {
 
 	if (!article && self.representedObjectURI)
-		article = [(WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI] retain];
+		article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI];
 	
 	return article;
 
@@ -198,33 +198,13 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
-- (void) dealloc {
-
-	//	[self disassociateBindings];
-
-	[managedObjectContext release];
-	[article release];
-	[onPresentingViewController release];
-	
-	[onViewTap release];
-	[onViewDidLoad release];
-	[onViewPinch release];
-	
-	[additionalDebugActions release];
-	
-	[super dealloc];
-
-}
-
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	
-	UITapGestureRecognizer *globalTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)] autorelease];
-	
-	UIPinchGestureRecognizer *globalPinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)] autorelease];
-	
-	UILongPressGestureRecognizer *globalInspectRecognizer = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)] autorelease];
+	UITapGestureRecognizer *globalTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalTap:)];
+	UIPinchGestureRecognizer *globalPinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalPinch:)];
+	UILongPressGestureRecognizer *globalInspectRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGlobalInspect:)];
 	
 	globalTapRecognizer.delegate = self;
 	globalPinchRecognizer.delegate = self;
@@ -314,11 +294,11 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 			
 			if (nrSelf.onPresentingViewController) {
 
-				__block WAViewController *shownViewController = [[[WAViewController alloc] init] autorelease];
+				__block WAViewController *shownViewController = [[WAViewController alloc] init];
 				
 				shownViewController.onLoadview = ^ (WAViewController *self) {
-					self.view = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-					UITextView *textView = [[[UITextView alloc] initWithFrame:self.view.bounds] autorelease];
+					self.view = [[UIView alloc] initWithFrame:CGRectZero];
+					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
 					textView.text = inspectionText;
 					textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 					textView.editable = NO;
@@ -329,7 +309,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 					return YES;
 				};
 				
-				__block UINavigationController *shownNavController = [[[UINavigationController alloc] initWithRootViewController:shownViewController] autorelease];
+				__block UINavigationController *shownNavController = [[UINavigationController alloc] initWithRootViewController:shownViewController];
 				shownNavController.modalPresentationStyle = UIModalPresentationFormSheet;
 				
 				shownViewController.title = @"Inspect";
@@ -352,11 +332,8 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 						NSString *mailSubject = [NSString stringWithFormat:@"Inspected Article — %@", versionString];
 						
 						__block IRMailComposeViewController *mailComposeController = [IRMailComposeViewController controllerWithMessageToRecipients:mailRecipients withSubject:mailSubject messageBody:inspectionText inHTML:NO completion:^(MFMailComposeViewController *controller, MFMailComposeResult result, NSError *error) {
-							
-							SEL presentingVCSelector = [mailComposeController respondsToSelector:@selector(presentingViewController)] ? @selector(presentingViewController) : @selector(parentViewController);
-							UIViewController *presentingVC = [mailComposeController performSelector:presentingVCSelector];
-							
-							[presentingVC dismissModalViewControllerAnimated:YES];
+						
+							[mailComposeController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 							
 						}];
 						
@@ -402,7 +379,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 			
 			} else {
 		
-				[[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+				[[[IRAlertView alloc] initWithTitle:@"Inspect" message:inspectionText delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 			
 			}
 			
@@ -440,10 +417,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	if (article == newArticle)
 		return;
 	
-	[self willChangeValueForKey:@"article"];
-	[article release];
-	article = [newArticle retain];
-	[self didChangeValueForKey:@"article"];
+	article = newArticle;
 	
 	if ([self isViewLoaded])
 		self.view.article = newArticle;
@@ -467,7 +441,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 					CGPointZero,
 					((CALayer *)[aView.layer presentationLayer]).bounds.size
 				}].CGPath;
-				transition.toValue = (id)oldShadowPath;
+				transition.toValue = (__bridge id)oldShadowPath;
 				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 				transition.duration = duration;
 				transition.removedOnCompletion = YES;
@@ -547,16 +521,16 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		if (!rootView)
 			rootView = self.view.window.rootViewController.view;
 		
-		backdropView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+		backdropView = [[UIView alloc] initWithFrame:rootView.bounds];
 		backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		backdropView.backgroundColor = [UIColor blackColor];
 		[rootView addSubview:backdropView];
 
-		statusBarPaddingView = [[[UIView alloc] initWithFrame:[rootView.window convertRect:[[UIApplication sharedApplication] statusBarFrame] toView:rootView]] autorelease];
+		statusBarPaddingView = [[UIView alloc] initWithFrame:[rootView.window convertRect:[[UIApplication sharedApplication] statusBarFrame] toView:rootView]];
 		statusBarPaddingView.backgroundColor = [UIColor blackColor];
 		[rootView addSubview:statusBarPaddingView];
 		
-		fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:aRect fromView:aStackView]] autorelease];
+		fauxView = [[UIView alloc] initWithFrame:[rootView convertRect:aRect fromView:aStackView]];
 		fauxView.layer.contents = (id)representedImage.CGImage;
 		fauxView.layer.contentsGravity = kCAGravityResizeAspect;
 		[rootView addSubview:fauxView];
@@ -582,10 +556,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	
 	});
 	
-	[backdropView retain];
-	[statusBarPaddingView retain];
-	[fauxView retain];
-	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
 	
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
@@ -596,13 +566,13 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		
 				[statusBarPaddingView removeFromSuperview];
 				[fauxView removeFromSuperview];
-				[fauxView autorelease];
 				[backdropView removeFromSuperview];
 				
 				aStackView.firstPhotoView.alpha = 1.0f;
 				
-				__block WAGalleryViewController *galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:articleURI];
-				__block __typeof__(self) nrSelf = self;
+				__weak WAGalleryViewController *galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:articleURI];
+				__weak WAArticleViewController *nrSelf = self;
+				
 				galleryViewController.modalPresentationStyle = UIModalPresentationFullScreen;
 				galleryViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 				
@@ -610,8 +580,8 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 				
 					[nrSelf view];
 					
-					NSArray *originalImages = [[nrSelf.view.imageStackView.images retain] autorelease];
-					NSMutableArray *tempImages = [[originalImages mutableCopy] autorelease];
+					NSArray *originalImages = nrSelf.view.imageStackView.images;
+					NSMutableArray *tempImages = [originalImages mutableCopy];
 					
 					UIImage *currentImage = [galleryViewController currentImage];
           
@@ -658,7 +628,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 						NSParameterAssert(rootView);
 						backdropView.frame = rootView.bounds;
 						
-						fauxView = [[[UIView alloc] initWithFrame:[rootView convertRect:nrSelf.view.imageStackView.firstPhotoView.frame fromView:nrSelf.view.imageStackView]] autorelease];
+						fauxView = [[UIView alloc] initWithFrame:[rootView convertRect:nrSelf.view.imageStackView.firstPhotoView.frame fromView:nrSelf.view.imageStackView]];
 						NSParameterAssert(fauxView);
 						fauxView.layer.contents = (id)currentImage.CGImage;
 						fauxView.layer.transform = nrSelf.view.imageStackView.firstPhotoView.layer.transform;
@@ -685,17 +655,11 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 						[rootView addSubview:fauxView];
 						[rootView addSubview:statusBarPaddingView];
 						
-						[fauxView retain];
-						
 						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, animationDuration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 													
 							[backdropView removeFromSuperview];
 							[statusBarPaddingView removeFromSuperview];
 							[fauxView removeFromSuperview];
-							
-							[backdropView autorelease];
-							[statusBarPaddingView autorelease];
-							[fauxView autorelease];
 							
 							nrSelf.view.imageStackView.firstPhotoView.alpha = 1.0f;
 							
@@ -771,7 +735,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 - (WANavigationController *) wrappingNavController {
 
 	NSParameterAssert(!self.navigationController);
-	WANavigationController *controller = [[[WANavigationController alloc] initWithRootViewController:self] autorelease];
+	WANavigationController *controller = [[WANavigationController alloc] initWithRootViewController:self];
 	
 	return controller;
 

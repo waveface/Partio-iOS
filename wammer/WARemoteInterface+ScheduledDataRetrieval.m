@@ -56,7 +56,7 @@
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self beginPostponingDataRetrievalTimerFiring];
 		});
 		return;
 	}
@@ -76,7 +76,7 @@
 	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self endPostponingDataRetrievalTimerFiring];
 		});
 		return;
 	}
@@ -102,7 +102,7 @@
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self beginPerformingAutomaticRemoteUpdates];
 		});
 		return;
 	}
@@ -117,7 +117,7 @@
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self endPerformingAutomaticRemoteUpdates];
 		});
 		return;
 	}
@@ -142,7 +142,7 @@
 
 	return [NSArray arrayWithObjects:
 	
-		[[ ^ {
+		^ {
 		
 			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
 				return;
@@ -168,7 +168,7 @@
 				
 			}];
 		
-		} copy] autorelease],
+		},
     
     [self defaultScheduledMonitoredHostsUpdatingBlock],
 	

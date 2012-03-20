@@ -74,14 +74,14 @@
 	if (!self)
 		return nil;
 		
-	NSFetchRequest *fr = [[[WADataStore defaultStore] newFetchRequestForAllArticles] autorelease];
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
 	fr.fetchBatchSize = 100;
 	fr.sortDescriptors = [NSArray arrayWithObjects:
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 	nil];
 		
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
 	self.fetchedResultsController.delegate = self;
 	
@@ -91,8 +91,8 @@
 		
 	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
 	
-		UIView *wrapperView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 32, 24 }] autorelease];
-		WARefreshActionView *actionView = [[[WARefreshActionView alloc] initWithRemoteInterface:[WARemoteInterface sharedInterface]] autorelease];
+		UIView *wrapperView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 32, 24 }];
+		WARefreshActionView *actionView = [[WARefreshActionView alloc] initWithRemoteInterface:[WARemoteInterface sharedInterface]];
 		
 		[wrapperView addSubview:actionView];
 		actionView.frame = IRCGRectAlignToRect(actionView.frame, wrapperView.bounds, irRight, YES);
@@ -105,12 +105,12 @@
   
     __block __typeof__(self) nrSelf = self;
 		
-    IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }] autorelease];
+    IRTransparentToolbar *toolbar = [[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }];
 		
 		toolbar.usesCustomLayout = NO;
 		toolbar.items = [NSMutableArray arrayWithObjects:
 		
-			[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease],
+			[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 		
 			((^ {
 			
@@ -138,7 +138,7 @@
 								
 		nil];
 		
-		UIView *returnedView = [[[UIView alloc] initWithFrame:toolbar.bounds] autorelease];
+		UIView *returnedView = [[UIView alloc] initWithFrame:toolbar.bounds];
 		[returnedView addSubview:toolbar];
 		toolbar.frame = CGRectOffset(toolbar.frame, 10, 0);
 		
@@ -148,7 +148,7 @@
 	
 	self.title = @"Articles";
 	
-	self.interfaceUpdateOperationQueue = [[[NSOperationQueue alloc] init] autorelease];
+	self.interfaceUpdateOperationQueue = [[NSOperationQueue alloc] init];
 	
 	return self;
 	
@@ -156,21 +156,9 @@
 
 - (void) dealloc {
 
-	[fetchedResultsController release];
-	[managedObjectContext release];
-	[debugActionSheetController release];
-	
 	if ([userInfoPopoverController isPopoverVisible])
 		[userInfoPopoverController dismissPopoverAnimated:NO];
   
-	[userInfoPopoverController release];
-	
-  [draftsPopoverController release];
-	
-	[interfaceUpdateOperationQueue release];
-
-	[super dealloc];
-
 }
 
 
@@ -276,8 +264,8 @@
     return userInfoPopoverController;
     
   __block __typeof__(self) nrSelf = self;
-  __block WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
-  __block UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
+  __block WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
+  __block UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
   
   userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
     
@@ -337,7 +325,7 @@
       [IRAction actionWithTitle:NSLocalizedString(@"ACTION_FEEDBACK", @"Action title for feedback composition") block:^ {
       
         if (![IRMailComposeViewController canSendMail]) {
-          [[[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+          [[[IRAlertView alloc] initWithTitle:@"Email Disabled" message:@"Add a mail account to enable this." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
           return;
         }
         
@@ -379,7 +367,7 @@
       
         dispatch_async(dispatch_get_global_queue(0, 0), ^ {
       
-          ALAssetsLibrary *library = [[[ALAssetsLibrary alloc] init] autorelease];
+          ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
           
           NSString *sampleDirectory = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"IPSample"];
           
@@ -410,7 +398,7 @@
         context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
         
         [[context executeFetchRequest:((^ {
-          NSFetchRequest *fr = [[[NSFetchRequest alloc] init] autorelease];
+          NSFetchRequest *fr = [[NSFetchRequest alloc] init];
           fr.entity = [NSEntityDescription entityForName:@"WAFile" inManagedObjectContext:context];
           fr.predicate = [NSPredicate predicateWithFormat:@"(resourceURL != nil) || (thumbnailURL != nil)"];
           return fr;
@@ -452,7 +440,7 @@
 	if (debugActionSheetController)
 		return debugActionSheetController;
 		
-	debugActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel.") block:nil] destructiveAction:nil otherActions:[self debugActionSheetControllerActions]] retain];
+	debugActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel.") block:nil] destructiveAction:nil otherActions:[self debugActionSheetControllerActions]];
 	
 	return debugActionSheetController;
 
@@ -470,9 +458,9 @@
   if (draftsPopoverController)
     return draftsPopoverController;
 
-  WAArticleDraftsViewController *draftsVC = [[[WAArticleDraftsViewController alloc] init] autorelease];
+  WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
   draftsVC.delegate = self;
-  UINavigationController *navC = [[[WANavigationController alloc] initWithRootViewController:draftsVC] autorelease];
+  UINavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
   draftsPopoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
   
   return draftsPopoverController;
@@ -562,8 +550,6 @@ NSString * const kLoadingBezel = @"loadingBezel";
 - (void) remoteDataLoadingDidEnd {
 
 	WAOverlayBezel *bezel = objc_getAssociatedObject(self, &kLoadingBezel);
-	
-	[[bezel retain] autorelease];
 	objc_setAssociatedObject(self, &kLoadingBezel, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 	[bezel dismissWithAnimation:WAOverlayBezelAnimationFade|WAOverlayBezelAnimationZoom];
@@ -629,18 +615,6 @@ NSString * const kLoadingBezel = @"loadingBezel";
 - (BOOL) isDelayingInterfaceUpdates {
 
 	return [self.interfaceUpdateOperationQueue isSuspended];
-
-}
-
-
-
-
-
-- (void) didReceiveMemoryWarning {
-
-	[self retain];
-	[super didReceiveMemoryWarning];
-	[self release];
 
 }
 

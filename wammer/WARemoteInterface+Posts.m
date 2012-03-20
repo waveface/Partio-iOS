@@ -42,9 +42,9 @@
 	NSString *datum = referencedPostOrNil;
 	if (!datum) {
 	
-		NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-		formatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
 		formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 		datum = [formatter stringFromDate:referencedDateOrNil];
 	

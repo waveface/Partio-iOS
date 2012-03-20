@@ -19,13 +19,6 @@
 @implementation WADimmingView
 @synthesize onAction;
 
-- (void) dealloc {
-
-	[onAction release];
-	[super dealloc];
-
-}
-
 - (id) initWithFrame:(CGRect)aFrame {
 
 	self = [super initWithFrame:aFrame];

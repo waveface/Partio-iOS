@@ -38,12 +38,7 @@
 - (void) dealloc {
 
 	fetchedResultsController.delegate = nil;
-	[fetchedResultsController release];
-	
 	gridView.delegate = nil;
-	[gridView release];
-	
-	[super dealloc];
 
 }
 
@@ -51,24 +46,24 @@
 
 	[super viewDidLoad];
 	
-	UIView *gridViewWrapper = [[[UIView alloc] initWithFrame:self.gridView.bounds] autorelease];
+	UIView *gridViewWrapper = [[UIView alloc] initWithFrame:self.gridView.bounds];
 	gridViewWrapper.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
 	[gridViewWrapper addSubview:self.gridView];
 	
 	self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
+	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		3
-	}, kCAGravityTop)] autorelease];
+	}, kCAGravityTop)];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[gridViewWrapper addSubview:topShadow];
 	
-	IRGradientView *bottomShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
+	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		3
-	}, kCAGravityBottom)] autorelease];
+	}, kCAGravityBottom)];
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irBottom];
 	[gridViewWrapper addSubview:bottomShadow];
@@ -76,14 +71,10 @@
 	self.gridView.clipsToBounds = NO;
 	gridViewWrapper.clipsToBounds = YES;
 	
-//	[gridView reloadData];
-//	[gridView setNeedsLayout];
-	
 	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
 
 	UIView *footerCell = self.footerCell;
 	if ([allStackElements containsObject:footerCell]) {
-		[[footerCell retain] autorelease];
 		[allStackElements removeObject:footerCell];
 	}
 	
@@ -166,7 +157,7 @@
 	if (gridView)
 		return gridView;
 	
-	gridView = [[[AQGridView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 128 }}] autorelease];
+	gridView = [[AQGridView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 128 }}];
 	gridView.delegate = self;
 	gridView.dataSource = self;
 	
@@ -297,7 +288,7 @@
 
 - (void) gridView:(AQGridView *)aGV didSelectItemAtIndex:(NSUInteger)index {
 
-	__block WAGalleryViewController *galleryVC = nil;
+	__weak WAGalleryViewController *galleryVC = nil;
 	
 	galleryVC = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation] context:[NSDictionary dictionaryWithObjectsAndKeys:
 	

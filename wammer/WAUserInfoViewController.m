@@ -81,28 +81,12 @@
   [super viewDidLoad];
 	
   [self.tableView reloadData];
-//	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:[NSDictionary dictionaryWithObjectsAndKeys:
-//	
-//		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-//		
-//			CGSize inSize = [inNewValue CGSizeValue];
-//			
-//			return [NSValue valueWithCGSize:(CGSize){
-//			
-//				320,
-//				inSize.height
-//			
-//			}];
-//		
-//		} copy] autorelease], kIRBindingsValueTransformerBlock,
-//	
-//	nil]];
 	
 	self.tableView.sectionHeaderHeight = 56;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
 		
-		self.tableView.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];		
+		self.tableView.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
 		
 	}
@@ -212,8 +196,7 @@
     return;
   
   [self willChangeValueForKey:@"monitoredHosts"];
-  [monitoredHosts release];
-  monitoredHosts = [newMonitoredHosts retain];
+  monitoredHosts = newMonitoredHosts;
   [self didChangeValueForKey:@"monitoredHosts"];
 
 }
@@ -320,7 +303,7 @@
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:anIdentifier];
 		if (!cell) {
-			cell = [[[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier];
 		}
 		
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -471,7 +454,7 @@
 			
 				case 0: {
 				
-					__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					__weak IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
 					appSettingsViewController.delegate = self;
 					appSettingsViewController.showDoneButton = NO;
 					appSettingsViewController.showCreditsFooter = NO;
@@ -504,7 +487,7 @@
   if (managedObjectContext)
     return managedObjectContext;
     
-  managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+  managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   return managedObjectContext;
 
 }
@@ -531,17 +514,6 @@
 
   [super viewDidUnload];	
 	
-}
-
-- (void) dealloc {
-
-  [monitoredHosts release];
-  [managedObjectContext release];
-  
-//	[self irUnbind:@"contentSize"];
-  
-  [super dealloc];
-
 }
 
 @end

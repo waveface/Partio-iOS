@@ -80,18 +80,18 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	self.gestureProcessingOngoing = NO;
 	self.state = WAImageStackViewInteractionNormal;
 	
-	self.pinchRecognizer = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)] autorelease];
+	self.pinchRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
 	self.pinchRecognizer.delegate = self;
 	[self addGestureRecognizer:self.pinchRecognizer];
 	
-	self.rotationRecognizer = [[[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotation:)] autorelease];
+	self.rotationRecognizer = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(handleRotation:)];
 	self.rotationRecognizer.delegate = self;
 	[self addGestureRecognizer:self.rotationRecognizer];
 	
-	self.tapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)] autorelease];
+	self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 	[self addGestureRecognizer:self.tapRecognizer];
 	
-	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	self.activityIndicator.center = (CGPoint){
 		CGRectGetMidX(self.bounds),
 		CGRectGetMidY(self.bounds)
@@ -142,8 +142,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		return;
 
 	[self willChangeValueForKey:@"images"];
-	[images release];
-	images = [newImages retain];
+	images = newImages;
 	[self didChangeValueForKey:@"images"];
 	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(3, [self.images count]) }]];
@@ -180,7 +179,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 	if (self.gestureProcessingOngoing) {
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_current_queue(), ^(void){
-				[self performSelector:_cmd withObject:newShownImages withObject:aBlock];
+				[self setShownImages:newShownImages withDecodingCompletion:aBlock];
 		});
 		return;
 	}
@@ -192,8 +191,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	}
 	
 	[self willChangeValueForKey:@"shownImages"];
-	[shownImages release];
-	shownImages = [newShownImages retain];
+	shownImages = newShownImages;
 	[self didChangeValueForKey:@"shownImages"];
 	
 	
@@ -213,8 +211,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 		[shownImages enumerateObjectsUsingBlock: ^ (UIImage *anImage, NSUInteger idx, BOOL *stop) {
 		
-			UIView *frameView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-			objc_setAssociatedObject(frameView, kWAImageStackViewElementImage, anImage, OBJC_ASSOCIATION_RETAIN);
+			UIView *frameView = [[UIView alloc] initWithFrame:CGRectZero];
+			objc_setAssociatedObject(frameView, (__bridge const void *)(kWAImageStackViewElementImage), anImage, OBJC_ASSOCIATION_RETAIN);
 			frameView.tag = kPhotoViewTag;
 			frameView.layer.shouldRasterize = YES;
 			frameView.layer.rasterizationScale = [UIScreen mainScreen].scale;
@@ -231,8 +229,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			frameView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 			frameView.opaque = NO;
 			
-			WAImageView *imageView = [[[WAImageView alloc] initWithFrame:frameView.bounds] autorelease];
-			imageView.image = (UIImage *)objc_getAssociatedObject(frameView, kWAImageStackViewElementImage);
+			WAImageView *imageView = [[WAImageView alloc] initWithFrame:frameView.bounds];
+			imageView.image = (UIImage *)objc_getAssociatedObject(frameView, (__bridge const void *)(kWAImageStackViewElementImage));
 			imageView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 			imageView.contentMode = UIViewContentModeScaleAspectFill;
 			imageView.layer.masksToBounds = YES;
@@ -309,7 +307,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 	static CGPoint startingTouchPoint;
 
-	NSValue *canonicalTransformValue = objc_getAssociatedObject(self.firstPhotoView.layer, kWAImageStackViewElementCanonicalTransform);
+	NSValue *canonicalTransformValue = objc_getAssociatedObject(self.firstPhotoView.layer, (__bridge const void *)(kWAImageStackViewElementCanonicalTransform));
 	CATransform3D canonicalTransform = canonicalTransformValue ? [canonicalTransformValue CATransform3DValue] : CATransform3DIdentity;
 	
 	switch (aPinchRecognizer.state) {
@@ -364,7 +362,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 		case UIGestureRecognizerStateCancelled:
 		case UIGestureRecognizerStateFailed: {
 		
-			UIView *capturedFirstPhotoView = [[self.firstPhotoView retain] autorelease];
+			UIView *capturedFirstPhotoView = self.firstPhotoView;
 		
 			self.state = (self.pinchRecognizer.scale > 1.2f) ? WAImageStackViewInteractionZoomInPossible : WAImageStackViewInteractionNormal;
 			
@@ -380,7 +378,7 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 			
 				dispatch_async(dispatch_get_main_queue(), ^ {
 												
-					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImage) contentRect:capturedRect transform:oldTransform];
+					[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, (__bridge const void *)(kWAImageStackViewElementImage)) contentRect:capturedRect transform:oldTransform];
 					
 					capturedFirstPhotoView.layer.transform = newTransform;
 				
@@ -422,8 +420,8 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	if (self.gestureProcessingOngoing)
 		return;
 	
-	UIView *capturedFirstPhotoView = [[self.firstPhotoView retain] autorelease];
-	[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, kWAImageStackViewElementImage) contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
+	UIView *capturedFirstPhotoView = self.firstPhotoView;
+	[self.delegate imageStackView:self didRecognizePinchZoomGestureWithRepresentedImage:objc_getAssociatedObject(capturedFirstPhotoView, (__bridge const void *)kWAImageStackViewElementImage) contentRect:capturedFirstPhotoView.frame transform:capturedFirstPhotoView.layer.transform];
 
 }
 
@@ -431,19 +429,6 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 
 	self.gestureProcessingOngoing = NO;
 	[self setNeedsLayout];
-
-}
-
-- (void) dealloc {
-
-	[images release];
-	[shownImages release];
-	[pinchRecognizer release];
-	[rotationRecognizer release];
-	[tapRecognizer release];
-	[activityIndicator release];
-	
-	[super dealloc];
 
 }
 

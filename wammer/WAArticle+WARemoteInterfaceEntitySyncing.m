@@ -86,8 +86,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;
@@ -123,7 +121,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
-	NSMutableDictionary *returnedDictionary = [[incomingRepresentation mutableCopy] autorelease];
+	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
 
 	NSString *creatorID = [incomingRepresentation objectForKey:@"creator_id"];
 	NSString *articleID = [incomingRepresentation objectForKey:@"post_id"];
@@ -138,11 +136,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSArray *comments = [incomingRepresentation objectForKey:@"comments"];
 	if ([comments count] && articleID) {
 	
-		NSMutableArray *transformedComments = [[comments mutableCopy] autorelease];
+		NSMutableArray *transformedComments = [comments mutableCopy];
 		
 		[comments enumerateObjectsUsingBlock: ^ (NSDictionary *aCommentRep, NSUInteger idx, BOOL *stop) {
 		
-			NSMutableDictionary *transformedComment = [[aCommentRep mutableCopy] autorelease];
+			NSMutableDictionary *transformedComment = [aCommentRep mutableCopy];
 			NSString *commentID = [transformedComment objectForKey:@"comment_id"];
 			id aTimestamp = [aCommentRep objectForKey:@"timestamp"];
 			if (!aTimestamp)
@@ -240,7 +238,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     if (!sessionInfo)
       sessionInfo = [NSMutableDictionary dictionary];
       
-    NSMutableDictionary *optionsContinuation = [[options mutableCopy] autorelease];
+    NSMutableDictionary *optionsContinuation = [options mutableCopy];
     [optionsContinuation setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
     
     dispatch_queue_t sessionQueue = ((^ {
@@ -373,9 +371,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 	
-		__block NSManagedObjectContext *context = [self.managedObjectContext retain];
 		__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-		__block NSMutableDictionary *resultsDictionary = [[NSMutableDictionary dictionary] retain];
+		__block NSMutableDictionary *resultsDictionary = [NSMutableDictionary dictionary];
 		
 		if (self.text)
 			[resultsDictionary setObject:self.text forKey:@"postText"];
@@ -386,9 +383,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			[resultsDictionary setObject:ri.primaryGroupIdentifier forKey:@"postGroupIdentifier"];
 		
 		void (^cleanup)() = ^ {
-			[operationQueue release];
-			[resultsDictionary release];
-			[context autorelease];
+			//	?
 		};
 		
 		[operationQueue setSuspended:YES];
@@ -547,15 +542,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
 				
 				//	This would recursively delete the files too
-				NSArray *oldFileOrder = [[savedPost.fileOrder copy] autorelease];
-				NSSet *oldFiles = [[savedPost.files copy] autorelease];
+				NSArray *oldFileOrder = [savedPost.fileOrder copy];
+				NSSet *oldFiles = [savedPost.files copy];
 				
 				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
 				NSParameterAssert([touchedObjects count]);
 				
 				WAArticle *recreatedPost = (WAArticle *)[touchedObjects lastObject];
-				NSMutableSet *allInsertedFiles = [[oldFiles mutableCopy] autorelease];
+				NSMutableSet *allInsertedFiles = [oldFiles mutableCopy];
 				for (NSURL *anObjectURL in oldFileOrder) {
 					
 					NSArray *matchingFiles = [[allInsertedFiles objectsPassingTest: ^ (NSManagedObject *aFile, BOOL *stop) {

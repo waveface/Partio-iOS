@@ -73,15 +73,6 @@
 
 	[interface removeObserver:self forKeyPath:@"isPerformingAutomaticRemoteUpdates"];
 
-	[interface release];
-	[actionButton release];
-	[activityIndicatorView release];
-	
-	[soundFactory release];
-	[soundEngine release];
-	
-	[super dealloc];
-
 }
 
 - (UIButton *) actionButton {
@@ -89,7 +80,7 @@
 	if (actionButton)
 		return actionButton;
 	
-	actionButton = [WAButtonForImage(WABarButtonImageFromImageNamed(@"WARefreshGlyph")) retain];
+	actionButton = WAButtonForImage(WABarButtonImageFromImageNamed(@"WARefreshGlyph"));
 	actionButton.frame = (CGRect){ CGPointZero, (CGSize){ 25, 25 }};
 
 	actionButton.contentEdgeInsets = UIEdgeInsetsZero;
@@ -210,7 +201,7 @@
 	if (soundEngine)
 		return soundEngine;
 	
-	soundEngine = [[self.soundFactory buildSoundEngine] retain];
+	soundEngine = [self.soundFactory buildSoundEngine];
 	[soundEngine activateAudioSessionWithCategory:AVAudioSessionCategoryAmbient];
 	[soundEngine openAudioDevice];
 		
@@ -223,7 +214,7 @@
 	if (refreshStartSound)
 		return refreshStartSound;
 	
-	refreshStartSound = [[self.soundFactory loadSoundNamed:@"WASoundRefreshStarted.caf"] retain];
+	refreshStartSound = [self.soundFactory loadSoundNamed:@"WASoundRefreshStarted.caf"];
 	return refreshStartSound;
 
 }
@@ -233,7 +224,7 @@
 	if (refreshEndSound)
 		return refreshEndSound;
 	
-	refreshEndSound = [[self.soundFactory loadSoundNamed:@"WASoundRefreshEnded.caf"] retain];	
+	refreshEndSound = [self.soundFactory loadSoundNamed:@"WASoundRefreshEnded.caf"];
 	return refreshEndSound;
 
 }

@@ -31,11 +31,4 @@
 
 }
  
-- (void) dealloc {
-
-	[onPoppingFauxRoot release];
-	[super dealloc];
-
-}
-
 @end

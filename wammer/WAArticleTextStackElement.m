@@ -29,7 +29,7 @@
 + (id) cellFromNib {
 
   NSData *superData = [NSKeyedArchiver archivedDataWithRootObject:[super cellFromNib]];
-  NSKeyedUnarchiver *unarchiver = [[[NSKeyedUnarchiver alloc] initForReadingWithData:superData] autorelease];
+  NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:superData];
   [unarchiver setClass:[self class] forClassName:NSStringFromClass([self superclass])];
 
   return [unarchiver decodeObjectForKey:@"root"];
@@ -39,10 +39,6 @@
 - (void) dealloc {
 
 	[self irRemoveObserverBlocksForKeyPath:@"textStackCellLabel.label.lastDrawnRectRequiredTailTruncation"];
-
-	[textStackCellLabel release];
-	
-	[super dealloc];
 
 }
 

@@ -109,7 +109,7 @@ BOOL WADeviceIdentifierReset (void) {
 	if (!uuidRef)
     return NO;
 	
-	NSString *uuid = [NSMakeCollectable(CFUUIDCreateString(kCFAllocatorDefault, uuidRef)) autorelease];
+	NSString *uuid = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
 	CFRelease(uuidRef);
 
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWACurrentGeneratedDeviceIdentifier];
@@ -137,7 +137,7 @@ NSString * const kWAAppEventTitle = @"WAAppEventTitle";
 
 void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
 
-	NSMutableDictionary *sentUserInfo = [[userInfo mutableCopy] autorelease];
+	NSMutableDictionary *sentUserInfo = [userInfo mutableCopy];
 	if (!sentUserInfo)
 		sentUserInfo = [NSMutableDictionary dictionary];
 	
