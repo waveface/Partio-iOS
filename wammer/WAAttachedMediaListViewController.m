@@ -224,18 +224,6 @@
 		cell = [[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		cell.indentationWidth = 8.0f;
-    
-		cell.onSetEditing = ^ (WATableViewCell *self, BOOL editing, BOOL animated) {
-
-			if (editing) {
-				self.indentationLevel = 1;
-			} else {
-				self.indentationLevel = 0;
-			}
-		
-		};
-
 	}
 	
 	NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
@@ -268,4 +256,19 @@
 
 }
 
+#pragma ---MOVE---
+
+-(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+-(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+	
+	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
+	[fromURL retain];
+	[self.article.fileOrder removeObjectAtIndex:[sourceIndexPath row]];
+	[self.article.fileOrder insertObject:fromURL atIndex:[destinationIndexPath row]];
+	NSLog(@"%@", self.article.fileOrder);
+	[fromURL release];
+}
 @end
