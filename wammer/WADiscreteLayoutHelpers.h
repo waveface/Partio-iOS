@@ -13,3 +13,5 @@ extern BOOL WADiscreteLayoutItemHasImage (id<IRDiscreteLayoutItem> anItem);
 extern BOOL WADiscreteLayoutItemHasLink (id<IRDiscreteLayoutItem> anItem);
 extern BOOL WADiscreteLayoutItemHasShortText (id<IRDiscreteLayoutItem> anItem);
 extern BOOL WADiscreteLayoutItemHasLongText (id<IRDiscreteLayoutItem> anItem);
+
+extern NSArray * WADefaultLayoutGrids (void);

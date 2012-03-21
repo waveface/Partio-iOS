@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import <CoreData/CoreData.h>
 #import "WARemoteInterfaceEntitySyncing.h"
 
 BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject) {

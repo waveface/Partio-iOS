@@ -12,6 +12,9 @@
 typedef void (^WAEntitySyncCallback)(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error);
 
 
+@class NSManagedObject;
+
+
 @protocol WARemoteInterfaceEntitySyncing <NSObject>
 
 //	Remote entity syncing ideally does these jobs:
