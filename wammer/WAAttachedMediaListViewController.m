@@ -265,10 +265,7 @@
 -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
 	
 	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
-	[fromURL retain];
 	[self.article.fileOrder removeObjectAtIndex:[sourceIndexPath row]];
 	[self.article.fileOrder insertObject:fromURL atIndex:[destinationIndexPath row]];
-	NSLog(@"%@", self.article.fileOrder);
-	[fromURL release];
 }
 @end
