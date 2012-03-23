@@ -187,29 +187,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
-- (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager nextGridForContentsUsingGrid:(IRDiscreteLayoutGrid *)proposedGrid {
-	
-	NSArray *lastResultantGrids = self.lastUsedLayoutGrids;
-	
-	if (![lastResultantGrids count]) {
-		self.lastUsedLayoutGrids = nil;
-		return proposedGrid;
-	}
-	
-	IRDiscreteLayoutGrid *prototype = [lastResultantGrids objectAtIndex:0];
-	self.lastUsedLayoutGrids = [lastResultantGrids subarrayWithRange:(NSRange){ 1, [lastResultantGrids count] - 1 }];
-	
-	return prototype;
-
-}
-
 - (IRDiscreteLayoutManager *) discreteLayoutManager {
 
 	if (discreteLayoutManager)
 		return discreteLayoutManager;
 		
 	self.discreteLayoutManager = [IRDiscreteLayoutManager new];
-	self.discreteLayoutManager.delegate =self;
+	self.discreteLayoutManager.delegate = self;
 	self.discreteLayoutManager.dataSource = self;
 	return self.discreteLayoutManager;
 
@@ -366,8 +350,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
 	
 		self.discreteLayoutResult = nil;
-		self.lastUsedLayoutGrids = nil;
-
+		
 		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 			[super controllerDidChangeContent:controller];
 	
@@ -377,16 +360,20 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) reloadViewContents {
 
-//	if (self.discreteLayoutResult) {
-//	
-//		self.lastUsedLayoutGrids = [self.discreteLayoutResult.grids irMap: ^ (IRDiscreteLayoutGrid *aGridInstance, NSUInteger index, BOOL *stop) {
-//			return [aGridInstance isFullyPopulated] ? aGridInstance.prototype : nil;
-//		}];
-//		
-//	}
-//	
-	self.discreteLayoutResult = [self.discreteLayoutManager calculatedResult];
-//	self.lastUsedLayoutGrids = nil;
+	NSError *layoutError = nil;
+	IRDiscreteLayoutResult *result = [self.discreteLayoutManager calculatedResultWithReference:self.discreteLayoutResult strategy:IRCompareScoreLayoutStrategy error:&layoutError];
+	
+	if (!result) {
+	
+	//	result = [self.discreteLayoutManager calculatedResultWithReference:self.discreteLayoutResult strategy:IRRandomLayoutStrategy error:&layoutError];
+		
+	//		if (!result) {
+			[[[UIAlertView alloc] initWithTitle:@"Layout Manager Choked" message:[layoutError localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", nil) otherButtonTitles:nil] show];
+	//		}
+		
+	}
+	
+	self.discreteLayoutResult = result;
 	
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
 	
@@ -756,30 +743,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		return;
 	}
 	
-//	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-	
-//	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-//		[CATransaction begin];
-//		CATransition *transition = [CATransition animation];
-//		transition.type = kCATransitionMoveIn;
-//		transition.subtype = (self.paginatedView.currentPage < destinationPage) ? kCATransitionFromRight : kCATransitionFromLeft;
-//		transition.duration = 0.25f;
-//		transition.fillMode = kCAFillModeForwards;
-//		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-//		transition.removedOnCompletion = YES;
-		
-		[self.paginatedView scrollToPageAtIndex:destinationPage animated:YES];
-//		[(id<UIScrollViewDelegate>)self.paginatedView scrollViewDidScroll:self.paginatedView.scrollView];
-//		[self.paginatedView.layer addAnimation:transition forKey:@"transition"];
-		
-//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-//			[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-//		});
-		
-//		[CATransaction commit];
-	
-//	});
+	[self.paginatedView scrollToPageAtIndex:destinationPage animated:YES];
 	
 }
 

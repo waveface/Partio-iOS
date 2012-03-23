@@ -9,6 +9,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAEightPartLayoutGrid.h"
 #import "Foundation+IRAdditions.h"
+#import "IRDiscreteLayout.h"
 
 
 @interface WAEightPartLayoutPlacementCandidate : NSObject

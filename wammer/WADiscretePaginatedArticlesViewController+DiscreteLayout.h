@@ -18,7 +18,6 @@
 - (void) removeCachedArticleViewControllers;
 
 - (UIView *) newPageContainerView NS_RETURNS_RETAINED;
-
 - (NSArray *) newLayoutGrids NS_RETURNS_RETAINED;
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle;
