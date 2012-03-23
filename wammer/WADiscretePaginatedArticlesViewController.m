@@ -215,7 +215,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
 
 	self.discreteLayoutManager = nil;
-	self.discreteLayoutResult = nil;
+	self.discreteLayoutResult = nil;	//	TBD: Not really?
+	
 	[self setPaginationSliderSlot:nil];
 	[super viewDidUnload];
 
@@ -348,9 +349,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
-	
-		self.discreteLayoutResult = nil;
-		
+			
 		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 			[super controllerDidChangeContent:controller];
 	
@@ -365,11 +364,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	if (!result) {
 	
-	//	result = [self.discreteLayoutManager calculatedResultWithReference:self.discreteLayoutResult strategy:IRRandomLayoutStrategy error:&layoutError];
-		
-	//		if (!result) {
-			[[[UIAlertView alloc] initWithTitle:@"Layout Manager Choked" message:[layoutError localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", nil) otherButtonTitles:nil] show];
-	//		}
+		[[[UIAlertView alloc] initWithTitle:@"Layout Manager Choked" message:[layoutError localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", nil) otherButtonTitles:nil] show];
 		
 	}
 	
