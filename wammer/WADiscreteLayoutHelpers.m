@@ -83,6 +83,7 @@ NSArray * WADefaultLayoutGrids (void) {
 	};
 	
 	IRDiscreteLayoutGrid *gridA = [IRDiscreteLayoutGrid prototype];
+	gridA.identifier = @"6_non_faves_portrait";
 	gridA.contentSize = portraitSize;
 	gridA.allowsPartialInstancePopulation = YES;
 	[gridA registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
@@ -93,6 +94,7 @@ NSArray * WADefaultLayoutGrids (void) {
 	[gridA registerLayoutAreaNamed:@"F" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
 	
 	IRDiscreteLayoutGrid *gridA_H = [IRDiscreteLayoutGrid prototype];
+	gridA_H.identifier = @"6_non_faves_landscape";
 	gridA_H.contentSize = landscapeSize;
 	gridA_H.allowsPartialInstancePopulation = YES;
 	[gridA_H registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
@@ -110,8 +112,9 @@ NSArray * WADefaultLayoutGrids (void) {
 	[[gridA class] markAreaNamed:@"F" inGridPrototype:gridA asEquivalentToAreaNamed:@"F" inGridPrototype:gridA_H];
 
 	IRDiscreteLayoutGrid *gridB = [IRDiscreteLayoutGrid prototype];
+	gridB.identifier = @"5_non_faves_A_portrait";
 	gridB.contentSize = portraitSize;
-	[gridB registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];	
+	[gridB registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB registerLayoutAreaNamed:@"D" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
@@ -119,7 +122,8 @@ NSArray * WADefaultLayoutGrids (void) {
 	
 	IRDiscreteLayoutGrid *gridB_H = [IRDiscreteLayoutGrid prototype];
 	gridB_H.contentSize = landscapeSize;
-	[gridB_H registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];	
+	gridB_H.identifier = @"5_non_faves_A_landscape";
+	[gridB_H registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB_H registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 1, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB_H registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridB_H registerLayoutAreaNamed:@"D" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 2, 1) displayBlock:genericDisplayBlock];
@@ -133,6 +137,7 @@ NSArray * WADefaultLayoutGrids (void) {
 	
 	IRDiscreteLayoutGrid *gridC = [IRDiscreteLayoutGrid prototype];
 	gridC.contentSize = portraitSize;
+	gridC.identifier = @"5_non_faves_B_portrait";
 	[gridC registerLayoutAreaNamed:@"A" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 0, 1, 2) displayBlock:genericDisplayBlock];
 	[gridC registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
 	[gridC registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 3, 1, 0, 1, 1) displayBlock:genericDisplayBlock];	
@@ -141,6 +146,7 @@ NSArray * WADefaultLayoutGrids (void) {
 	
 	IRDiscreteLayoutGrid *gridC_H = [IRDiscreteLayoutGrid prototype];
 	gridC_H.contentSize = landscapeSize;
+	gridC_H.identifier = @"5_non_faves_B_landscape";
 	[gridC_H registerLayoutAreaNamed:@"A" validatorBlock:comboValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 0, 2, 1) displayBlock:genericDisplayBlock];
 	[gridC_H registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridC_H registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(3, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];	
@@ -155,6 +161,7 @@ NSArray * WADefaultLayoutGrids (void) {
 	
 	IRDiscreteLayoutGrid *gridD = [IRDiscreteLayoutGrid prototype];
 	gridD.contentSize = portraitSize;
+	gridD.identifier = @"1_fave_with_4_non_faves_portrait";
 	[gridD registerLayoutAreaNamed:@"A" validatorBlock:defaultFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 4, 0, 0, 2, 2) displayBlock:genericDisplayBlock];
 	[gridD registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 4, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
 	[gridD registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 4, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
@@ -163,6 +170,7 @@ NSArray * WADefaultLayoutGrids (void) {
 	
 	IRDiscreteLayoutGrid *gridD_H = [IRDiscreteLayoutGrid prototype];
 	gridD_H.contentSize = landscapeSize;
+	gridD_H.identifier = @"1_fave_with_4_non_faves_landscape";
 	[gridD_H registerLayoutAreaNamed:@"A" validatorBlock:defaultFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(4, 2, 0, 0, 2, 2) displayBlock:genericDisplayBlock];
 	[gridD_H registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(4, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridD_H registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(4, 2, 2, 1, 1, 1) displayBlock:genericDisplayBlock];
@@ -177,12 +185,15 @@ NSArray * WADefaultLayoutGrids (void) {
 	
 	IRDiscreteLayoutGrid *gridE = [IRDiscreteLayoutGrid prototype];
 	gridE.contentSize = portraitSize;
+	
+	gridE.identifier = @"2_faves_portrait";
 	gridE.allowsPartialInstancePopulation = YES;
 	[gridE registerLayoutAreaNamed:@"A" validatorBlock:defaultFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(1, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridE registerLayoutAreaNamed:@"B" validatorBlock:defaultFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(1, 2, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
 		
 	IRDiscreteLayoutGrid *gridE_H = [IRDiscreteLayoutGrid prototype];
 	gridE_H.contentSize = landscapeSize;
+	gridE_H.identifier = @"2_faves_landscape";
 	gridE_H.allowsPartialInstancePopulation = YES;
 	[gridE_H registerLayoutAreaNamed:@"A" validatorBlock:defaultFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 1, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
 	[gridE_H registerLayoutAreaNamed:@"B" validatorBlock:defaultFavoriteValidator layoutBlock:IRDiscreteLayoutGridAreaLayoutBlockForProportionsMake(2, 1, 1, 0, 1, 1) displayBlock:genericDisplayBlock];
