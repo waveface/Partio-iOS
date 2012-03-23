@@ -131,6 +131,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
 	returnedView.clipsToBounds = NO;
 	returnedView.layer.shouldRasterize = YES;
+	returnedView.layer.rasterizationScale = [UIScreen mainScreen].scale;
 	
 	__block UIView *backdropView = [[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -12, -12)];
 	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
