@@ -11,6 +11,10 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WADiscretePaginatedArticlesViewController.h"
 #import "IRDiscreteLayoutManager.h"
+#import "IRDiscreteLayoutResult.h"
+#import "IRDiscreteLayoutGrid.h"
+#import "IRDiscreteLayoutGrid+Transforming.h"
+
 #import "WADataStore.h"
 
 #import "WAArticleViewController.h"
@@ -407,6 +411,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 - (id<IRDiscreteLayoutItem>) layoutManager:(IRDiscreteLayoutManager *)manager itemAtIndex:(NSUInteger)index {
 
   return (id<IRDiscreteLayoutItem>)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+
+}
+
+- (NSInteger) layoutManager:(IRDiscreteLayoutManager *)manager indexOfLayoutItem:(id<IRDiscreteLayoutItem>)item {
+
+	return [self.fetchedResultsController.fetchedObjects indexOfObject:item];
 
 }
 

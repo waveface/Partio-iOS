@@ -59,32 +59,33 @@
 	if (!self)
 		return nil;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAStackedArticleViewController *wSelf = self;
 	
 	IRBarButtonItem *articleDateItem = [IRBarButtonItem itemWithCustomView:((^ {
 					
-		__block IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
+		IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
 		label.opaque = NO;
 		label.backgroundColor = nil;
 		
-		[label irBind:@"attributedText" toObject:nrSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		__weak IRLabel *wLabel = label;
+		[label irBind:@"attributedText" toObject:wSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
-				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:nrSelf.article.timestamp];
-				NSString *device = nrSelf.article.creationDeviceName;
+				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.timestamp];
+				NSString *device = wSelf.article.creationDeviceName;
+				NSString *string = [NSString stringWithFormat:@"%@ (%@)", relDate, device];
+				
+				UIFont * const font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
+				UIColor * const color = [UIColor colorWithWhite:0.5 alpha:1];
 
-				return [label attributedStringForString:(
-					
-					[NSString stringWithFormat:@"%@ (%@)", relDate, device]
-					
-				) font:[UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f] color:[UIColor colorWithWhite:0.5 alpha:1]];
+				return [wLabel attributedStringForString:string font:font color:color];
 			
 			} copy], kIRBindingsValueTransformerBlock,
 		
 		nil]];
 		
-		[nrSelf irPerformOnDeallocation:^{
+		[wSelf irPerformOnDeallocation:^{
 		
 			[label irUnbind:@"attributedText"];
 			
@@ -94,7 +95,7 @@
 		
 	})())];
 	
-	__block IRBarButtonItem *commentsItem = ((^ {
+	IRBarButtonItem *commentsItem = ((^ {
 	
 		IRBarButtonItem *commentsItem = [[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil];
 	
@@ -128,7 +129,7 @@
 		
 		commentsItem.block = ^ {
 		
-			[nrSelf presentCommentsViewController:[nrSelf newArticleCommentsController] sender:nrCommentsItem];
+			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:nrCommentsItem];
 			
 		};
 		
@@ -190,12 +191,12 @@
 		
 		favoriteToggleItem.block = ^ {
 		
-			nrSelf.article.favorite = (NSNumber *)([nrSelf.article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			wSelf.article.favorite = (NSNumber *)([wSelf.article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
 			
 			//	TBD: maybe not save
 			
 			NSError *savingError = nil;
-			if (![nrSelf.article.managedObjectContext save:&savingError])
+			if (![wSelf.article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 			
 		};
@@ -206,8 +207,6 @@
 			
 				BOOL articleMarkedFavorite = [inNewValue isEqual:(id)kCFBooleanTrue];
 			
-				//	NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
-				
 				return (articleMarkedFavorite) ?
 					NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Bar button item title to unmark the article as a favorite") : 
 					NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Bar button item title to mark the article as a favorite");
@@ -608,15 +607,20 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	
+	[busyBezel irPerformOnDeallocation:^{
+	
+		NSLog(@"busy bezel dying");
+		
+	}];
 	
 	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:^{
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			nrBezel = nil;
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 						
 		});
 		
@@ -624,15 +628,14 @@
 	
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
-			nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
 			
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				nrBezel = nil;
+				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				
 			});
 			
@@ -1010,9 +1013,9 @@
 	self.stackView.frame = intersection;
 	self.stackView.contentInset = (UIEdgeInsets){
 		CGRectGetMinY(intersection) - CGRectGetMinY(aRect),
-		0,
-		0,
-		0
+		CGRectGetMinX(intersection) - CGRectGetMinX(aRect),
+		CGRectGetMaxY(intersection) - CGRectGetMaxY(aRect),
+		CGRectGetMaxX(intersection) - CGRectGetMaxX(aRect)
 	};
 	
 }
