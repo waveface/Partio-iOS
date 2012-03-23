@@ -68,9 +68,9 @@
   self.view.backgroundColor = [UIColor clearColor];
   
   if (self.dismissalAction) {
-    __block __typeof__(self) nrSelf = self;
+    __weak WAStationDiscoveryFeedbackViewController *wSelf = self;
     self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:self.dismissalAction.title action:^{
-      [nrSelf.dismissalAction invoke];
+      [wSelf.dismissalAction invoke];
     }];
   }
   

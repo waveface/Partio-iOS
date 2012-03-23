@@ -295,7 +295,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 			if (nrSelf.onPresentingViewController) {
 
 				__block WAViewController *shownViewController = [[WAViewController alloc] init];
-				
 				shownViewController.onLoadview = ^ (WAViewController *self) {
 					self.view = [[UIView alloc] initWithFrame:CGRectZero];
 					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];

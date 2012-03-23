@@ -11,7 +11,7 @@
 #import "IRDiscreteLayoutItem.h"
 #import "WADiscreteLayoutHelpers.h"
 
-@interface WAEightPartLayoutGrid : IRDiscreteLayoutGrid <IRDiscreteLayoutGridEngineUsing>
+@interface WAEightPartLayoutGrid : IRDiscreteLayoutGrid
 
 @property (nonatomic, readwrite, copy) IRDiscreteLayoutGridAreaValidatorBlock validatorBlock;
 @property (nonatomic, readwrite, copy) IRDiscreteLayoutGridAreaDisplayBlock displayBlock;

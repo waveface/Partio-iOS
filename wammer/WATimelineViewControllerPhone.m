@@ -1064,6 +1064,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
 	
 		[compositionVC dismissModalViewControllerAnimated:YES];
+		compositionVC = nil;
 		
 	}];
 	
@@ -1098,7 +1099,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
 		__block __typeof__(self) nrSelf = self;
-		
+				
 		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
 			
 			[nrSelf dismissViewControllerAnimated:YES completion:nil];
