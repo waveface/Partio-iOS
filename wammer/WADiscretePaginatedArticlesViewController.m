@@ -58,7 +58,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void(^)(UIView *aSubview))aBlock;
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
 
-@property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
+//	@property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
 
 @property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier;
 @property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier;
@@ -72,20 +72,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @synthesize paginationSliderSlot;
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize requiresRecalculationOnFetchedResultsChangeEnd;
-@synthesize paginatedArticlesViewController;
 @synthesize lastReadObjectIdentifier, lastHandledReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
-
-- (WAPaginatedArticlesViewController *) paginatedArticlesViewController {
-
-	if (paginatedArticlesViewController)
-		return paginatedArticlesViewController;
-		
-	paginatedArticlesViewController = [[WAPaginatedArticlesViewController alloc] init];
-  paginatedArticlesViewController.delegate = self.delegate;
-  
-	return paginatedArticlesViewController;
-
-}
 
 - (id) init {
 
