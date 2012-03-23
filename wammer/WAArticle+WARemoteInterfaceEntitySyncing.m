@@ -443,12 +443,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		[self.fileOrder enumerateObjectsUsingBlock: ^ (NSURL *aFileURL, NSUInteger idx, BOOL *stop) {
 		
-			WAFile *representedFile = (WAFile *)[self.managedObjectContext irManagedObjectForURI:aFileURL];
-			if (!representedFile)
-				return;
-			
-			[representedFile resourceURL];
-			
 			__block IRAsyncOperation *nrFileOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 				
 				if (dependentOperationCancelledOrFailed(nrFileOperation)) {
@@ -456,6 +450,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					return;
 				}
 				
+				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+				WAFile *representedFile = (WAFile *)[context irManagedObjectForURI:aFileURL];
+				if (!representedFile) {
+					aCallback(nil);
+					return;
+				}
+				
+				NSCParameterAssert(representedFile.managedObjectContext);
+
 				[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 					
 					if (!didFinish) {
