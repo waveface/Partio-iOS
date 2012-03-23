@@ -110,12 +110,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (WAArticleViewController *) cachedArticleViewControllerForArticle:(WAArticle *)article {
 
-	WAArticleViewController *cachedVC = [self.articleViewControllersCache objectForKey:article];
+	NSValue *objectValue = [NSValue valueWithNonretainedObject:article];
+
+	WAArticleViewController *cachedVC = [self.articleViewControllersCache objectForKey:objectValue];
 	if (cachedVC)
 		return cachedVC;
 	
 	WAArticleViewController *createdVC = [self newDiscreteArticleViewControllerForArticle:article];
-	[self.articleViewControllersCache setObject:createdVC forKey:article];
+	[self.articleViewControllersCache setObject:createdVC forKey:objectValue];
 	
 	return createdVC;
 
