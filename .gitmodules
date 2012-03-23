@@ -15,7 +15,7 @@
 	url = git://github.com/waveface/mockingBird.git
 [submodule "external/JSONKit"]
 	path = external/JSONKit
-	url = git://github.com/waveface/JSONKit.git
+	url = git://github.com/iridia/JSONKit.git
 [submodule "external/IRKeychain"]
 	path = external/IRKeychain
 	url = git://github.com/iridia/IRKeychain.git
