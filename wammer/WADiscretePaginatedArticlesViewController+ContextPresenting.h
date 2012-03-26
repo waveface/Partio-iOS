@@ -24,6 +24,8 @@ enum WADiscretePaginatedArticlesViewControllerAnimation {
 @protocol WAArticleViewControllerPresenting;
 @interface WADiscretePaginatedArticlesViewController (ContextPresenting)
 
+@property (nonatomic, readonly, retain) WAArticle *presentedArticle;
+
 - (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI;
 - (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated;
 - (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI usingAnimation:(WAArticleContextAnimation)animation;
