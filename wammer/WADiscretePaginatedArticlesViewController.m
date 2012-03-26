@@ -9,35 +9,27 @@
 #import <math.h>
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
+
 #import "WADiscretePaginatedArticlesViewController.h"
-#import "IRDiscreteLayoutManager.h"
-#import "IRDiscreteLayoutResult.h"
-#import "IRDiscreteLayoutGrid.h"
-#import "IRDiscreteLayoutGrid+Transforming.h"
+#import "IRDiscreteLayout.h"
 
 #import "WADataStore.h"
-
 #import "WAArticleViewController.h"
 #import "WAPaginatedArticlesViewController.h"
-
 #import "WAOverlayBezel.h"
+
+#import "UIKit+IRAdditions.h"
 #import "CALayer+IRAdditions.h"
 
 #import "WAFauxRootNavigationController.h"
-
 #import "WANavigationBar.h"
 
 #import "WARemoteInterface.h"
-#import "WAArticle.h"
+#import "WADataStore.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
-#import "IRConcaveView.h"
-
 #import "WAViewController.h"
-
 #import "WAGestureWindow.h"
-
-#import "IRTransparentToolbar.h"
 #import "WAButton.h"
 
 
@@ -55,15 +47,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd;
 
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
-- (void) adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void(^)(UIView *aSubview))aBlock;
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
-
-//	@property (nonatomic, readonly, retain) WAPaginatedArticlesViewController *paginatedArticlesViewController;
-
-@property (nonatomic, readwrite, retain) NSString *lastReadObjectIdentifier;
-@property (nonatomic, readwrite, retain) NSString *lastHandledReadObjectIdentifier;
-@property (nonatomic, readwrite, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
-@property (nonatomic, readwrite, retain) UIView *lastReadingProgressAnnotationView;
 
 @end
 
@@ -72,7 +56,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @synthesize paginationSliderSlot;
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize requiresRecalculationOnFetchedResultsChangeEnd;
-@synthesize lastReadObjectIdentifier, lastHandledReadObjectIdentifier, lastReadingProgressAnnotation, lastReadingProgressAnnotationView;
 
 - (id) init {
 
@@ -117,30 +100,31 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 }
 
+- (void) viewDidLayoutSubviews {
+
+	[super viewDidLayoutSubviews];
+	
+	if (!self.paginatedView.numberOfPages)
+		return;
+	
+	NSUInteger currentPage = self.paginatedView.currentPage;
+	UIView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
+	[self adjustPageView:pageView usingGridAtIndex:currentPage];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 	
-	__weak WADiscretePaginatedArticlesViewController *nrSelf = self;
-	
 	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
 	self.view.opaque = YES;
-	((WAView *)self.view).onLayoutSubviews = ^ {
-	
-		if (!nrSelf.paginatedView.numberOfPages)
-			return;
-		NSUInteger currentPage = nrSelf.paginatedView.currentPage;
-		UIView *pageView = [nrSelf.paginatedView existingPageAtIndex:currentPage];
-		[nrSelf adjustPageView:pageView usingGridAtIndex:currentPage];
-	
-	};
 	
 	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
 	self.paginatedView.backgroundColor = nil;
 	self.paginatedView.horizontalSpacing = 32.0f;
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
-	//	self.paginatedView.scrollView.pagingEnabled = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
 		CGPoint convertedPoint = [nrPaginatedView.scrollView convertPoint:aPoint fromView:nrPaginatedView];
@@ -237,55 +221,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
 	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
 	
-}
-
-- (void) performReadingProgressSync {
-
-	static NSString * const kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync = @"WADiscretePaginatedArticlesViewController_PerformingReadingProgressSync";
-
-	if (objc_getAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync))
-		return;
-	
-	objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
-
-	NSUInteger lastPage = NSNotFound;
-	if ([self isViewLoaded])
-		lastPage = self.paginatedView.currentPage;
-	
-	NSString *capturedLastReadObjectID = self.lastReadObjectIdentifier;
-	
-	[[WARemoteInterface sharedInterface] beginPerformingAutomaticRemoteUpdates];
-	
-	[self retrieveLatestReadingProgressWithCompletion:^(NSTimeInterval timeTaken) {
-	
-		[[WARemoteInterface sharedInterface] endPerformingAutomaticRemoteUpdates];
-	
-		objc_setAssociatedObject(self, &kWADiscretePaginatedArticlesViewController_PerformingReadingProgressSync, nil, OBJC_ASSOCIATION_ASSIGN);
-		
-		if (![self isViewLoaded])
-			return;
-		
-		if (timeTaken > 3)
-			return;
-		
-		NSInteger currentIndex = [self gridIndexOfLastReadArticle];
-		if (currentIndex == NSNotFound)
-			return;
-		
-		if (self.paginatedView.currentPage != lastPage)
-			return;
-		
-		if (![self.lastHandledReadObjectIdentifier isEqualToString:capturedLastReadObjectID]) {
-			
-			//	Scrolling is annoying
-			//	[self.paginatedView scrollToPageAtIndex:currentIndex animated:YES];
-			
-			self.lastHandledReadObjectIdentifier = self.lastReadObjectIdentifier;
-			
-		}
-			
-	}];	
-
 }
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
@@ -477,7 +412,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex {
 
-	[self adjustPageViewAtIndex:anIndex withAdditionalAdjustments:nil];
+	if (anIndex == NSNotFound)
+		return;
+	
+	UIView *currentPageView = [self.paginatedView existingPageAtIndex:anIndex];
+	
+	if (currentPageView)
+		[self adjustPageView:currentPageView usingGridAtIndex:anIndex];
 
 }
 
@@ -504,20 +445,18 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 		NSParameterAssert(usedWindow);
 
-		CGAffineTransform orientationsToTransforms[] = {
-			[UIInterfaceOrientationPortrait] = CGAffineTransformMakeRotation(0),
-			[UIInterfaceOrientationPortraitUpsideDown] = CGAffineTransformMakeRotation(M_PI),
-			[UIInterfaceOrientationLandscapeLeft] = CGAffineTransformMakeRotation(-0.5 * M_PI),
-			[UIInterfaceOrientationLandscapeRight] = CGAffineTransformMakeRotation(0.5 * M_PI)
-		};
-		
 		CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform(
 			[usedWindow.screen applicationFrame],
-			orientationsToTransforms[self.interfaceOrientation]
+			((CGAffineTransform[]){
+				[UIInterfaceOrientationPortrait] = CGAffineTransformMakeRotation(0),
+				[UIInterfaceOrientationPortraitUpsideDown] = CGAffineTransformMakeRotation(M_PI),
+				[UIInterfaceOrientationLandscapeLeft] = CGAffineTransformMakeRotation(-0.5 * M_PI),
+				[UIInterfaceOrientationLandscapeRight] = CGAffineTransformMakeRotation(0.5 * M_PI)
+			})[self.interfaceOrientation]
 		);
 		
 		CGFloat ratio = CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
-		assert(!isnan(ratio));
+		NSCParameterAssert(isnormal(ratio));
 		
 		return ratio;
 
@@ -564,85 +503,20 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
-- (void) adjustPageViewAtIndex:(NSUInteger)anIndex withAdditionalAdjustments:(void(^)(UIView *aSubview))aBlock {
-
-	UIView *currentPageView = [self.paginatedView existingPageAtIndex:anIndex];	
-	[self adjustPageView:currentPageView usingGridAtIndex:anIndex];
-		
-	if (aBlock)
-		aBlock(currentPageView);
-
-}
-
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	void (^removeAnimations)(UIView *) = ^ (UIView *introspectedView) {
+	NSUInteger const currentPage = self.paginatedView.currentPage;
 	
-		__block void (^removeAnimationsOnView)(UIView *aView) = [^ (UIView *aView) {
+	if (currentPage > 0)
+		[self adjustPageViewAtIndex:(currentPage - 1)];
 	
-			[aView.layer removeAllAnimations];
-
-			for (UIView *aSubview in aView.subviews)
-				removeAnimationsOnView(aSubview);
-		
-		} copy];
-		
-		removeAnimationsOnView(introspectedView);
-
-	};
+	[self adjustPageViewAtIndex:currentPage];
+	[self adjustPageViewAtIndex:(currentPage + 1)];
 	
-	[CATransaction begin];
-	[CATransaction setDisableActions:YES];
+	[self.paginatedView irRemoveAnimationsRecusively:YES];
 	
-	removeAnimations(self.paginatedView);
-
-	//	If the paginated view is currently showing a view constructed with information provided by a layout grid, and that layout grid’s prototype has a fully transformable target, grab that transformable prototype and do a transform, then reposition individual items
-	
-	if (self.paginatedView.currentPage > 0)
-		[self adjustPageViewAtIndex:(self.paginatedView.currentPage - 1) withAdditionalAdjustments:removeAnimations];
-	
-	[self adjustPageViewAtIndex:self.paginatedView.currentPage withAdditionalAdjustments:removeAnimations];
-	
-	if ((self.paginatedView.currentPage + 1) < self.paginatedView.numberOfPages) {
-		[self adjustPageViewAtIndex:(self.paginatedView.currentPage + 1) withAdditionalAdjustments:removeAnimations];
-	}
-	
-	[CATransaction commit];
-	
-}
-
-- (void) updateLastReadingProgressAnnotation {
-
-	WAPaginationSliderAnnotation *annotation = self.lastReadingProgressAnnotation;
-	if (annotation) {
-		[self.paginationSlider addAnnotationsObject:annotation];
-	} else {
-		[self.paginationSlider removeAnnotations:[NSSet setWithArray:self.paginationSlider.annotations]];
-	}
-	
-	[self.paginationSlider setNeedsAnnotationsLayout];
-	[self.paginationSlider layoutSubviews];
-	[self.paginationSlider setNeedsLayout];
-
-}
-
-- (NSUInteger) gridIndexOfLastReadArticle {
-
-	__block WAArticle *lastReadArticle = nil;
-	
-	[[WADataStore defaultStore] fetchArticleWithIdentifier:self.lastReadObjectIdentifier usingContext:self.fetchedResultsController.managedObjectContext onSuccess: ^ (NSString *identifier, WAArticle *article) {
-	
-		lastReadArticle = article;
-		
-	}];
-	
-	if (!lastReadArticle)
-		return NSNotFound;
-	
-	return [self gridIndexOfArticle:lastReadArticle];
-
 }
 
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle {
@@ -672,43 +546,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
-- (WAPaginationSliderAnnotation *) lastReadingProgressAnnotation {
-
-	NSUInteger gridIndex = [self gridIndexOfLastReadArticle];
-	
-	if (gridIndex == NSNotFound)
-		return nil;
-	
-	if (!lastReadingProgressAnnotation) {
-		lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
-	}
-	lastReadingProgressAnnotation.pageIndex = gridIndex;
-	//	lastReadingProgressAnnotation.centerOffset = (CGPoint){, 0 };
-	return lastReadingProgressAnnotation;
-
-}
-
-- (UIView *) lastReadingProgressAnnotationView {
-
-	if (lastReadingProgressAnnotationView)
-		return lastReadingProgressAnnotationView;
-	
-	lastReadingProgressAnnotationView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALastReadIndicator"]];
-	[lastReadingProgressAnnotationView sizeToFit];
-	
-	return lastReadingProgressAnnotationView;
-
-}
-
-- (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider {
-
-	if (anAnnotation == lastReadingProgressAnnotation)
-		return self.lastReadingProgressAnnotationView;
-	
-	return nil;
-
-}
-
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
 	NSParameterAssert(destinationPage >= 0);
@@ -727,6 +564,15 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	[self.paginatedView scrollToPageAtIndex:destinationPage animated:YES];
 	
+}
+
+- (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider {
+
+	if (anAnnotation == self.lastReadingProgressAnnotation)
+		return self.lastReadingProgressAnnotationView;
+	
+	return nil;
+
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -758,245 +604,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	return returnedActions;
 	
-}
-
-- (void) setLastReadObjectIdentifier:(NSString *)newLastReadObjectIdentifier {
-
-	if (lastReadObjectIdentifier == newLastReadObjectIdentifier)
-		return;
-	
-	lastReadObjectIdentifier = newLastReadObjectIdentifier;
-	
-	[self updateLastReadingProgressAnnotation];	//	?
-
-}
-
-- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier {
-
-	[self updateLatestReadingProgressWithIdentifier:anIdentifier completion:nil];
-
-}
-
-- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock {
-
-	__weak WADiscretePaginatedArticlesViewController *nrSelf = self;
-	__block WAOverlayBezel *nrBezel = nil;
-	
-	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
-	if (usesBezel) {
-		nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-		nrBezel.caption = @"Set Last Scan";
-		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
-	}
-	
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	[ri updateLastScannedPostInGroup:ri.primaryGroupIdentifier withPost:anIdentifier onSuccess:^{
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-		
-			nrSelf.lastReadObjectIdentifier = anIdentifier;	//	Heh
-			
-			if (aBlock)
-				aBlock(YES);
-			
-			if (usesBezel) {
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-				nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				});
-			}
-			
-		});
-		
-	} onFailure:^(NSError *error) {
-	
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			if (aBlock)
-				aBlock(NO);
-			
-			if (usesBezel) {
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-				nrBezel.caption = @"Can’t Set";
-				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				});
-			}
-		
-		});
-		
-	}];
-
-}
- 
-- (void) retrieveLatestReadingProgress {
-
-	[self retrieveLatestReadingProgressWithCompletion:nil];
-
-}
-
-- (void) retrieveLatestReadingProgressWithCompletion:(void (^)(NSTimeInterval))aBlock {
-
-	if ([[WARemoteInterface sharedInterface] isPostponingDataRetrievalTimerFiring])
-		return;
-
-	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
-	
-	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
-				
-	void (^cleanup)() = ^ {
-	
-		NSParameterAssert([NSThread isMainThread]);
-		
-		if (aBlock)
-			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
-	
-		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-		
-	};
-	
-	BOOL usesBezel = [[NSUserDefaults standardUserDefaults] boolForKey:kWADebugLastScanSyncBezelsVisible];
-	
-	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
-	__block WAOverlayBezel *nrBezel = nil;
-	
-	if (usesBezel) {
-		nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-		nrBezel.caption = @"Get Last Scan";
-		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
-	}
-	
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	WADataStore *ds = [WADataStore defaultStore];
-	
-	
-	//	Retrieve the last scanned post in the primary group
-	//	Before anything happens at all
-	
-	[ri retrieveLastScannedPostInGroup:ri.primaryGroupIdentifier onSuccess: ^ (NSString *lastScannedPostIdentifier) {
-	
-		dispatch_async(dispatch_get_main_queue(), ^{
-		
-			//	On retrieval completion, set it on the main queue
-			//	Then ensure the object exists locally
-			
-			[ds fetchArticleWithIdentifier:lastScannedPostIdentifier usingContext:self.fetchedResultsController.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-			
-				//	If the object exists locally, go on, things are merry
-
-				if (article) {
-					
-					nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
-					
-					if (usesBezel) {
-						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-						nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-						[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						});
-					}
-					
-					cleanup();
-					return;
-					
-				}
-				
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-				nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-				nrBezel.caption = @"Loading";
-				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-				
-				//	Otherwise, fetch stuff until things are tidy again
-				
-				[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-					
-					kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-					
-				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
-				
-					if (!didFinish) {
-						
-						dispatch_async(dispatch_get_main_queue(), ^ {
-
-							[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-							
-							if (usesBezel) {
-								nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-								nrBezel.caption = @"Load Failed";
-								[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-								dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-								});
-							}
-
-							cleanup();
-							
-						});
-						
-						return;
-						
-					}
-				
-					NSError *savingError = nil;
-					if (![temporalContext save:&savingError]) {
-						NSLog(@"Error saving: %@", savingError);
-						NSParameterAssert(NO);
-					}
-						
-					dispatch_async(dispatch_get_main_queue(), ^{
-
-						[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-						
-						if (usesBezel) {
-							nrBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-							[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-							});
-						}
-
-						nrSelf.lastReadObjectIdentifier = lastScannedPostIdentifier;
-						
-						cleanup();
-						
-					});
-					
-					return;
-					
-				}];
-				
-			}];
-		
-		});
-	
-	} onFailure: ^ (NSError *error) {
-	
-		dispatch_async(dispatch_get_main_queue(), ^{
-
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			
-			if (usesBezel) {
-				nrBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-				nrBezel.caption = @"Fetch Failed";
-				[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-					[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				});
-			}
-
-			//	?
-			
-			cleanup();
-		
-		});
-		
-	}];
-
 }
 
 - (void) dealloc {

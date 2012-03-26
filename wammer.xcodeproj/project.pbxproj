@@ -184,6 +184,7 @@
 		FF460DB8149D15F100DB7F0B /* wammer-OSX-Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF460DB7149D15F100DB7F0B /* wammer-OSX-Entitlements.plist */; };
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
+		FF54C362152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
 		FF586B911519B4ED00F308E2 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
@@ -1311,6 +1312,8 @@
 		FF4FA01A13E13D44002C627F /* WAImageStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStackView.m; sourceTree = "<group>"; };
 		FF51509B14835A030073386D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		FF54C360152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.h"; sourceTree = "<group>"; };
+		FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.m"; sourceTree = "<group>"; };
 		FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+DiscreteLayoutAdditions.h"; sourceTree = "<group>"; };
 		FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+DiscreteLayoutAdditions.m"; sourceTree = "<group>"; };
 		FF55C23613F5256B00F38861 /* WAArticleCommentsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewCell.h; sourceTree = "<group>"; };
@@ -3005,6 +3008,8 @@
 				FFBA66DF140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.h */,
 				FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */,
 				FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */,
+				FF54C360152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.h */,
+				FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */,
 				FF1305EA14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.h */,
 				FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */,
 				FF1305E714FD4FC6004BD3D6 /* WADiscretePaginatedArticlesViewController+DiscreteLayout.h */,
@@ -4207,6 +4212,7 @@
 				4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */,
 				4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */,
 				4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */,
+				FF54C362152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
