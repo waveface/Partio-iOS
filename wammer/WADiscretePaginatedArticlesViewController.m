@@ -301,8 +301,16 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	//	Instead of going back to the last current page, since we might have nothing left on the current page
 	//	And things can get garbled very quickly
 	
-	if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
-		[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
+	if (self.presentedArticle) {
+	
+		[self.paginatedView scrollToPageAtIndex:[self gridIndexOfArticle:self.presentedArticle] animated:NO];
+	
+	} else {
+	
+		if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
+			[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
+		
+	}
 
 }
 

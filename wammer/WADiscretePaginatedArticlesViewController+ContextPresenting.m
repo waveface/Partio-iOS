@@ -17,16 +17,30 @@
 
 #define USES_PAGINATED_CONTEXT 0
 
+NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController_presentedArticle";
+
+
 @interface WADiscretePaginatedArticlesViewController (ContextPresenting_Private)
 
 - (void(^)(void)) dismissBlockForArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
-
 - (void) setDismissBlock:(void(^)(void))aBlock forArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
 
 @end
 
 
 @implementation WADiscretePaginatedArticlesViewController (ContextPresenting)
+
+- (WAArticle *) presentedArticle {
+
+	return [self irAssociatedObjectWithKey:&kPresentedArticle];
+
+}
+
+- (void) setPresentedArticle:(WAArticle *)presentedArticle {
+
+	[self irAssociateObject:presentedArticle usingKey:&kPresentedArticle policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
+	
+}
 
 - (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI {
 
@@ -59,8 +73,9 @@
 	__block WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
 	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:article];
-		
 	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = [self newContextViewControllerForArticle:articleURI];
+	
+	self.presentedArticle = article;
 	
 	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
 	
@@ -477,14 +492,9 @@
 
 - (void) dismissArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller {
 
+	self.presentedArticle = nil;
+
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-	
-	if ([controller respondsToSelector:@selector(article)]) {
-		id representedArticle = [controller performSelector:@selector(article)];
-		if ([representedArticle isKindOfClass:[WAArticle class]]) {
-			[self.paginatedView scrollToPageAtIndex:[self gridIndexOfArticle:(WAArticle *)representedArticle] animated:NO];
-		}
-	}
 	
 	(([self dismissBlockForArticleContextViewController:controller])());
 	[self setDismissBlock:nil forArticleContextViewController:controller];
