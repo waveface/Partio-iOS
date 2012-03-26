@@ -34,12 +34,6 @@
 @synthesize onViewDidLoad;
 @synthesize undergoingProgrammaticEntityMutation;
 
-+ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
-
-	return [[self alloc] initWithArticleURI:anArticleURI completion:aBlock];
-
-}
-
 - (id) init {
 
 	return [self initWithArticleURI:nil completion:nil];
@@ -95,6 +89,7 @@
 	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
   
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
 	
 	return self;
 

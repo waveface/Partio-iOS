@@ -15,7 +15,7 @@
 #import "IRLifetimeHelper.h"
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
-#import "WAAttachedMediaListViewController.h"
+#import "WACompositionViewController.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
@@ -901,11 +901,13 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (void) handlePhotoEdit: (UIBarButtonItem *)sender {
 
-	WAAttachedMediaListViewController *mediaViewController = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] completion:^{
-		[self dismissModalViewControllerAnimated:YES];
+	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:[self.article.objectID URIRepresentation] completion:^(NSURL *anURI) {
+	
+		[compositionVC dismissModalViewControllerAnimated:YES];
+		
 	}];
 	
-	[self presentModalViewController:mediaViewController animated:YES];
+  [self presentModalViewController:[compositionVC wrappingNavigationController] animated:YES];
 	
 }
 
