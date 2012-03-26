@@ -479,6 +479,13 @@
 
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
+	if ([controller respondsToSelector:@selector(article)]) {
+		id representedArticle = [controller performSelector:@selector(article)];
+		if ([representedArticle isKindOfClass:[WAArticle class]]) {
+			[self.paginatedView scrollToPageAtIndex:[self gridIndexOfArticle:(WAArticle *)representedArticle] animated:NO];
+		}
+	}
+	
 	(([self dismissBlockForArticleContextViewController:controller])());
 	[self setDismissBlock:nil forArticleContextViewController:controller];
 	
