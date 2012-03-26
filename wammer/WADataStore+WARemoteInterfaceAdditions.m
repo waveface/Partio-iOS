@@ -104,8 +104,6 @@
 	
 	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 		
-		NSParameterAssert([NSThread isMainThread]);
-
 		if (!didFinish) {
 			
 			if (failureBlock)
