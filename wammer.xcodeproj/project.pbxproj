@@ -71,6 +71,7 @@
 		FF0AC0D3149F865E00AA5611 /* WAArticleTextStackCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0D2149F865E00AA5611 /* WAArticleTextStackCell.xib */; };
 		FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
 		FF0B2A2F1438921100309F0E /* WADefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF0B2A2E1438921100309F0E /* WADefaults.plist */; };
+		FF0C25E715204B5E00036B8F /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */; };
 		FF0C7ABA14987FCA00632EF3 /* WADataStore+FetchingConveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0C7AB914987FCA00632EF3 /* WADataStore+FetchingConveniences.m */; };
 		FF0D45F01475688100340287 /* WAArticleDraftsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0D45EF1475688100340287 /* WAArticleDraftsViewController.m */; };
 		FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */; };
@@ -221,7 +222,6 @@
 		FF586BB21519B52A00F308E2 /* WADefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2A2C14388FF000309F0E /* WADefines.m */; };
 		FF586BB31519B52A00F308E2 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA69461147F800400F46347 /* libIRRecurrenceMachine.a */; };
-		FF586BBE1519B5B000F308E2 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586BBD1519B5B000F308E2 /* libxml2.dylib */; };
 		FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6A1519B93400F308E2 /* libJSONKitTouch.a */; };
 		FF586C721519B95E00F308E2 /* libJSONKitTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6A1519B93400F308E2 /* libJSONKitTouch.a */; };
 		FF586C731519B9F300F308E2 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
@@ -1319,7 +1319,6 @@
 		FF577B8E14A3109100B25E74 /* WAArticleViewController+Subclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticleViewController+Subclasses.h"; sourceTree = "<group>"; };
 		FF584C4B1435CB320058E109 /* WAImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageView.h; sourceTree = "<group>"; };
 		FF584C4C1435CB320058E109 /* WAImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageView.m; sourceTree = "<group>"; };
-		FF586BBD1519B5B000F308E2 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		FF586C611519B93400F308E2 /* JSONKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = JSONKit.xcodeproj; path = external/JSONKit/JSONKit.xcodeproj; sourceTree = "<group>"; };
 		FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADiscretePaginatedArticlesViewController.xib; sourceTree = "<group>"; };
 		FF61635E141618BD004738D3 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -1813,7 +1812,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF586C721519B95E00F308E2 /* libJSONKitTouch.a in Frameworks */,
-				FF586BBE1519B5B000F308E2 /* libxml2.dylib in Frameworks */,
 				FF586BBA1519B59E00F308E2 /* libIRRecurrenceMachine.a in Frameworks */,
 				FF586BB11519B51700F308E2 /* libIRWebAPIKit.a in Frameworks */,
 				FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */,
@@ -1836,6 +1834,7 @@
 				FF2981C214F6DFF2004F6893 /* QuickLook.framework in Frameworks */,
 				FF2981C314F6DFF2004F6893 /* Security.framework in Frameworks */,
 				FF2981C414F6DFF2004F6893 /* SystemConfiguration.framework in Frameworks */,
+				FF0C25E715204B5E00036B8F /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2234,7 +2233,6 @@
 		FF73A53313D6C2CC00D54EC6 = {
 			isa = PBXGroup;
 			children = (
-				FF586BBD1519B5B000F308E2 /* libxml2.dylib */,
 				FFC62019149CF1930097C377 /* Environment */,
 				FF890CAB1416297C00CD7D1F /* Authentication */,
 				FF761AEC14876222003C11D2 /* Station Discovery */,
