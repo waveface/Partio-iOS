@@ -18,24 +18,10 @@
 @property (retain, nonatomic) IBOutlet IRConcaveView *paginationSliderSlot;
 @property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
 
-- (void) updateLastReadingProgressAnnotation;
-
-- (NSUInteger) gridIndexOfLastReadArticle;
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
-
-- (void) performReadingProgressSync;	//	will transition and stuff
-- (void) retrieveLatestReadingProgress;
-- (void) retrieveLatestReadingProgressWithCompletion:(void(^)(NSTimeInterval timeTaken))aBlock;
-- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier;
-- (void) updateLatestReadingProgressWithIdentifier:(NSString *)anIdentifier completion:(void(^)(BOOL didUpdate))aBlock;
-
-@property (nonatomic, readonly, retain) NSString *lastReadObjectIdentifier;
-@property (nonatomic, readonly, retain) NSString *lastHandledReadObjectIdentifier;
-@property (nonatomic, readonly, retain) WAPaginationSliderAnnotation *lastReadingProgressAnnotation;
-@property (nonatomic, readonly, retain) UIView *lastReadingProgressAnnotationView;
 
 @end
 
-
 #import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
+#import "WADiscretePaginatedArticlesViewController+ReadingProgress.h"
 #import "WADiscretePaginatedArticlesViewController+ContextPresenting.h"

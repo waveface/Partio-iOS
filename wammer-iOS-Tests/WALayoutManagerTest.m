@@ -94,6 +94,14 @@
 
 }
 
+- (NSInteger) layoutManager:(IRDiscreteLayoutManager *)manager indexOfLayoutItem:(id<IRDiscreteLayoutItem>)item {
+
+	NSParameterAssert(manager == self.layoutManager);
+	
+	return [self.layoutItems indexOfObject:item];
+
+}
+
 - (NSUInteger) numberOfLayoutGridsForLayoutManager:(IRDiscreteLayoutManager *)manager {
 
 	NSParameterAssert(manager == self.layoutManager);
