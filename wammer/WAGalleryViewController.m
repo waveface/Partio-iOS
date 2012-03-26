@@ -15,6 +15,7 @@
 #import "IRLifetimeHelper.h"
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
+#import "WAAttachedMediaListViewController.h"
 
 NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGalleryViewControllerContextPreferredFileObjectURI";
 
@@ -278,6 +279,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	NSParameterAssert(self.navigationItem);
 	
 	[self.navigationBar pushNavigationItem:self.previousNavigationItem animated:NO];
+	
+	
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(handlePhotoEdit:)];
+	
 	[self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 	
 	self.toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
@@ -892,6 +897,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[operationQueue cancelAllOperations];
 	[operationQueue waitUntilAllOperationsAreFinished];
 
+}
+
+- (void) handlePhotoEdit: (UIBarButtonItem *)sender {
+
+	WAAttachedMediaListViewController *mediaViewController = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] completion:^{
+		[self dismissModalViewControllerAnimated:YES];
+	}];
+	
+	[self presentModalViewController:mediaViewController animated:YES];
+	
 }
 
 @end
