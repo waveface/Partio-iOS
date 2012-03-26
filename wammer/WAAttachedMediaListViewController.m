@@ -34,12 +34,6 @@
 @synthesize onViewDidLoad;
 @synthesize undergoingProgrammaticEntityMutation;
 
-+ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
-
-	return [[self alloc] initWithArticleURI:anArticleURI completion:aBlock];
-
-}
-
 - (id) init {
 
 	return [self initWithArticleURI:nil completion:nil];
@@ -95,6 +89,7 @@
 	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
   
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	
 	
 	return self;
 
@@ -224,18 +219,6 @@
 		cell = [[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		cell.indentationWidth = 8.0f;
-    
-		cell.onSetEditing = ^ (WATableViewCell *self, BOOL editing, BOOL animated) {
-
-			if (editing) {
-				self.indentationLevel = 1;
-			} else {
-				self.indentationLevel = 0;
-			}
-		
-		};
-
 	}
 	
 	NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
@@ -268,4 +251,16 @@
 
 }
 
+#pragma ---MOVE---
+
+-(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+-(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+	
+	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
+	[self.article.fileOrder removeObjectAtIndex:[sourceIndexPath row]];
+	[self.article.fileOrder insertObject:fromURL atIndex:[destinationIndexPath row]];
+}
 @end
