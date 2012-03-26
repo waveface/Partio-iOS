@@ -233,25 +233,36 @@
 		
 	}] anyObject];
 	
-	UIImage *actualImage = representedFile.resourceImage;
-  
-  cell.imageView.image = representedFile.thumbnail;
+	UIImage *resourceImage = representedFile.resourceImage;
+	
 	cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+
+	if (resourceImage) {
   
-	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
-    actualImage.size.width,
-    actualImage.size.height
-  ];
+		cell.imageView.image = representedFile.thumbnail;
+		
+		cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
+			resourceImage.size.width,
+			resourceImage.size.height
+		];
   
-  NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
-  long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
- 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
+		long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+	
+	} else {
+	
+		//	TBD: When the Data Store stores metadata, use stored metadat in place
+		
+		cell.imageView.image = representedFile.thumbnailImage;
+		cell.textLabel.text = @"";
+		cell.detailTextLabel.text = @"File not loaded";
+	
+	}
 	
 	return cell;
 
 }
-
-#pragma ---MOVE---
 
 -(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 	return YES;
@@ -260,7 +271,13 @@
 -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
 	
 	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
-	[self.article.fileOrder removeObjectAtIndex:[sourceIndexPath row]];
-	[self.article.fileOrder insertObject:fromURL atIndex:[destinationIndexPath row]];
+	
+	NSMutableArray *order = [(NSArray *)self.article.fileOrder  mutableCopy];
+	
+	[order removeObjectAtIndex:[sourceIndexPath row]];
+	[order insertObject:fromURL atIndex:[destinationIndexPath row]];
+	
+	self.article.fileOrder = order;
+	
 }
 @end
