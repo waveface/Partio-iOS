@@ -15,6 +15,7 @@
 - (WADataStore *) initWithManagedObjectModel:(NSManagedObjectModel *)model;
 
 - (NSDate *) dateFromISO8601String:(NSString *)aString;
+- (NSString *) ISO8601StringFromDate:(NSDate *)date;
 
 @end
 

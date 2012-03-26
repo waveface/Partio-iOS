@@ -53,4 +53,19 @@
 
 }
 
+- (NSString *) ISO8601StringFromDate:(NSDate *)date {
+
+	static NSDateFormatter *sharedFormatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		sharedFormatter = [[NSDateFormatter alloc] init];
+		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+		sharedFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		sharedFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+	});
+	
+	return [sharedFormatter stringFromDate:date];
+
+}
+
 @end

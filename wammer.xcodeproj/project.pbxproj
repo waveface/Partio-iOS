@@ -185,6 +185,7 @@
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF54C362152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */; };
+		FF54C4BD15206B0D00301887 /* WARemoteInterface+Usertracks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
 		FF586B911519B4ED00F308E2 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
@@ -1314,6 +1315,8 @@
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		FF54C360152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.h"; sourceTree = "<group>"; };
 		FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.m"; sourceTree = "<group>"; };
+		FF54C4BB15206B0D00301887 /* WARemoteInterface+Usertracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Usertracks.h"; sourceTree = "<group>"; };
+		FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Usertracks.m"; sourceTree = "<group>"; };
 		FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+DiscreteLayoutAdditions.h"; sourceTree = "<group>"; };
 		FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+DiscreteLayoutAdditions.m"; sourceTree = "<group>"; };
 		FF55C23613F5256B00F38861 /* WAArticleCommentsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewCell.h; sourceTree = "<group>"; };
@@ -2492,26 +2495,28 @@
 		FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */ = {
 			isa = PBXGroup;
 			children = (
-				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
-				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
-				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
-				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
-				FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */,
-				FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */,
-				FF8F462A146909DC00D65864 /* WARemoteInterface+Posts.h */,
-				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
-				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
-				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
-				FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */,
-				FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */,
 				FF8F463314690A1D00D65864 /* WARemoteInterface+Attachments.h */,
 				FF8F463414690A1E00D65864 /* WARemoteInterface+Attachments.m */,
-				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
-				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
+				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
 				FF8F463914690A2A00D65864 /* WARemoteInterface+Footprints.h */,
 				FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */,
+				FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */,
+				FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */,
+				FF8F462A146909DC00D65864 /* WARemoteInterface+Posts.h */,
+				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
+				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
+				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
+				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
 				FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */,
 				FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */,
+				FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */,
+				FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */,
+				FF54C4BB15206B0D00301887 /* WARemoteInterface+Usertracks.h */,
+				FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */,
+				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
+				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
 			);
 			name = "Base API Endpoint Interfacing";
 			sourceTree = "<group>";
@@ -4213,6 +4218,7 @@
 				4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */,
 				4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */,
 				FF54C362152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m in Sources */,
+				FF54C4BD15206B0D00301887 /* WARemoteInterface+Usertracks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
