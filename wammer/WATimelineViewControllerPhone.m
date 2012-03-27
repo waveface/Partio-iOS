@@ -760,6 +760,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		if (!cell) {
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
 			cell.commentLabel.userInteractionEnabled = YES;
+						
+			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+			[cell addGestureRecognizer:longPress];
+
 		}
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
@@ -792,7 +796,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
-					
+			
+			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+			[cell addGestureRecognizer:longPress];
 		}
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
@@ -823,6 +829,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
+			
+			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+			[cell addGestureRecognizer:longPress];
+
 					
 		}
 		
@@ -1224,6 +1234,45 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 
+}
+
+
+- (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
+	
+	if(longPress.state == UIGestureRecognizerStateBegan){
+	
+	  UITableViewCell *cell = (UITableViewCell *)longPress.view;
+		[self becomeFirstResponder];
+		
+		UIMenuController *menuController = [UIMenuController sharedMenuController];
+		menuController.arrowDirection = UIMenuControllerArrowUp;
+		[menuController setMenuItems:[NSArray arrayWithObjects:
+			[[UIMenuItem alloc] initWithTitle:@"❤" action:@selector(favorite:)],
+			[[UIMenuItem alloc] initWithTitle:@"❏" action:@selector(cover:)],
+			[[UIMenuItem alloc] initWithTitle:@"🚀" action:@selector(remove:)],
+			nil]];
+		[menuController setTargetRect:[cell frame] inView:cell];
+		[menuController setMenuVisible:YES animated:YES];
+		[cell setNeedsDisplayInRect:[cell frame]];
+	}
+
+	return;
+}
+
+- (BOOL) canBecomeFirstResponder {
+	return YES;
+}
+
+- (void) favorite:(id)sender {
+	NSLog(@"Cell was favorited");
+}
+
+- (void) cover:(id)sender {
+	NSLog(@"Cell was cover");
+}
+
+- (void) remove:(id)sender {
+	NSLog(@"Cell was removed");
 }
 
 @end
