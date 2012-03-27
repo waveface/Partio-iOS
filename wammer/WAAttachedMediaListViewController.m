@@ -68,7 +68,7 @@
 		self.managedObjectContext = aContext;
 	} else {
 		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-		self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;		
+		self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	}
 	
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
@@ -157,6 +157,24 @@
 - (void) viewDidUnload {
 
 	[super viewDidUnload];
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]])
+		[(IRManagedObjectContext *)self.managedObjectContext irBeginMergingFromSavesAutomatically];
+
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[super viewWillDisappear:animated];
+	
+	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]])
+		[(IRManagedObjectContext *)self.managedObjectContext irStopMergingFromSavesAutomatically];
 
 }
 
@@ -264,8 +282,10 @@
 
 }
 
--(BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+-(BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	
 	return YES;
+	
 }
 
 -(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{

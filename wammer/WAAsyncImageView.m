@@ -49,14 +49,15 @@
 
     UIImage *decodedImage = [newImage irDecodedImage];
 		
-		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		//	CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
 			
       if (self.lastImagePtr != (__bridge void *)(decodedImage))
 				return;
     
       [super setImage:decodedImage];
       [self.delegate imageViewDidUpdate:self];
-      
+		
 		});
   
   });

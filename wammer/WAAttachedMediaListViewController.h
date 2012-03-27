@@ -12,8 +12,6 @@
 
 @interface WAAttachedMediaListViewController : UIViewController
 
-+ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock DEPRECATED_ATTRIBUTE;  // too much helper is not helpful
-
 - (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock;
  
 - (WAAttachedMediaListViewController *) initWithArticleURI:(NSURL *)anArticleURI usingContext:(NSManagedObjectContext *)aContext completion:(void(^)(void))aBlock;
