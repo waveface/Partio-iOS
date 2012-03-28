@@ -1245,15 +1245,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[self becomeFirstResponder];
 		
 		UIMenuController *menuController = [UIMenuController sharedMenuController];
-		menuController.arrowDirection = UIMenuControllerArrowUp;
+		menuController.arrowDirection = UIMenuControllerArrowDown;
 		[menuController setMenuItems:[NSArray arrayWithObjects:
-			[[UIMenuItem alloc] initWithTitle:@"❤" action:@selector(favorite:)],
-			[[UIMenuItem alloc] initWithTitle:@"❏" action:@selector(cover:)],
-			[[UIMenuItem alloc] initWithTitle:@"🚀" action:@selector(remove:)],
+			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
+			//[[UIMenuItem alloc] initWithTitle:@"Cover" action:@selector(cover:)],
+			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
 			nil]];
-		[menuController setTargetRect:[cell frame] inView:cell];
+		
+		CGRect originalRect= [cell frame];
+		CGRect targetRect = CGRectMake(originalRect.origin.x, originalRect.origin.y+44.0, originalRect.size.width, originalRect.size.height);
+		[menuController setTargetRect:targetRect inView:[super view]];
 		[menuController setMenuVisible:YES animated:YES];
-		[cell setNeedsDisplayInRect:[cell frame]];
+		[cell setNeedsDisplayInRect:targetRect];
 	}
 
 	return;
