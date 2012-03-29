@@ -103,11 +103,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 		self.navigationItem.titleView = WAStandardTitleView();
 		
-		self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WASettingsGlyph"], nil, ^{
-			
-			[nrSelf handleSettings:nil];
-							
-		}),
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
 		
 		self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
 			
@@ -450,6 +446,16 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	};
 	
+	
+	UINavigationBar *navigationBar = self.navigationController.navigationBar;
+	[navigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBarlLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
+	
+//	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
+//	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
+//	[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
