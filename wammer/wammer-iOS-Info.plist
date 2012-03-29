@@ -95,7 +95,7 @@
 	<array/>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2012 Waveface. All rights reserved.</string>
-	<key>UIStatusBarHidden</key>
-	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleBlackOpaque</string>
 </dict>
 </plist>

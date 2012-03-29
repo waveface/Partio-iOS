@@ -411,7 +411,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[super viewWillAppear:animated];
   [self refreshData];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:animated];
 	
 	self.readingProgressUpdateNotificationView.hidden = YES;
 	self.tableView.contentInset = UIEdgeInsetsZero;

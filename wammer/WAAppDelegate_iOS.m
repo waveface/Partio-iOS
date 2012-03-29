@@ -162,7 +162,7 @@
 
 	[self bootstrap];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -305,7 +305,7 @@
 	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 			
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
 
 }
 
