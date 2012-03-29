@@ -163,6 +163,7 @@
 	[self bootstrap];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];

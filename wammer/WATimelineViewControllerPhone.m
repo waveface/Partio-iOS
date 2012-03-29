@@ -346,17 +346,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-	self.tableView.backgroundView = backgroundView;
-	
-	UIView *actualBackgroundView = [[UIView alloc] initWithFrame:backgroundView.bounds];
-	[backgroundView addSubview:actualBackgroundView];
-	
-	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
-	CGSize backgroundImageSize = backgroundImage.size;
-	actualBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	actualBackgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
-	
 	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
 	
 	progressUpdateNotification.bounds = (CGRect){
@@ -368,41 +357,42 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	};
 	
 	[self.tableView addSubview:progressUpdateNotification];
+	self.tableView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	
-	
-	self.tableView.onLayoutSubviews = ^ {
-	
-		CGRect tableViewBounds = nrSelf.tableView.bounds;
-		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
-		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
-		
-		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
-		
-		actualBackgroundView.bounds = (CGRect){
-			CGPointZero,
-			(CGSize){
-				CGRectGetWidth(tableViewBounds),
-				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
-			}
-		};
-		
-		actualBackgroundView.center = (CGPoint){
-			
-			0.5 * CGRectGetWidth(tableViewBounds),
-
-			backgroundImageSize.height + remainderf(
-				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
-				backgroundImageSize.height
-			)
-			
-		};
-		
-		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
-			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
-			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
-		};
-		
-	};
+//	self.tableView.onLayoutSubviews = ^ {
+//	
+//		CGRect tableViewBounds = nrSelf.tableView.bounds;
+//		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
+//		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
+//		
+//		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
+//		
+//		actualBackgroundView.bounds = (CGRect){
+//			CGPointZero,
+//			(CGSize){
+//				CGRectGetWidth(tableViewBounds),
+//				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
+//			}
+//		};
+//		
+//		actualBackgroundView.center = (CGPoint){
+//			
+//			0.5 * CGRectGetWidth(tableViewBounds),
+//
+//			backgroundImageSize.height + remainderf(
+//				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
+//				backgroundImageSize.height
+//			)
+//			
+//		};
+//		
+//		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
+//			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
+//			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
+//		};
+//		
+//	};
 	
 	
 	UINavigationBar *navigationBar = self.navigationController.navigationBar;
