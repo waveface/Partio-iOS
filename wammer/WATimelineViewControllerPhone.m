@@ -97,54 +97,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	if (YES) {
+	self.navigationItem.titleView = WAStandardTitleView();
 	
-		__weak WATimelineViewControllerPhone *nrSelf = self;
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
 	
-		self.navigationItem.titleView = WAStandardTitleView();
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UINavigationBarAddButton"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
 		
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
-		
-		self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-			
-			[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-			
-		});
-	
-	} else {
-	
-		self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectZero];
-		
-		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
-		
-		self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-		
-			__weak WATimelineViewControllerPhone *nrSelf = self;
-				
-			IRTransparentToolbar *toolbar = [[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }];
-			
-			toolbar.items = [NSArray arrayWithObjects:
-			
-				WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-					
-						[nrSelf handleSettings:nil];
-									
-				}),
-				
-				WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-					
-					[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-					
-				}),
-			
-			nil];
-			
-			return toolbar;
-		
-		})())];
-	
-	}
-			
 	return self;
   
 }
