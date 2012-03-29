@@ -212,23 +212,41 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 	
 	return [IRAction actionWithTitle:actionTitle block:^{
 	
-		WAArticle *article = wSelf.article;
+		__block BOOL hasRunAction = NO;
 		
-		article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+		void (^action)(void) = ^ {
 		
-		NSError *savingError = nil;
-		if (![article.managedObjectContext save:&savingError])
-			NSLog(@"Error saving: %@", savingError);
-		
-		[[WADataStore defaultStore] uploadArticle:[[article objectID] URIRepresentation] onSuccess:^{
-		
-			NSLog(@":D");
+			WAArticle *article = wSelf.article;
 			
-		} onFailure:^(NSError *error) {
-		
-			NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
 			
-		}];
+			NSError *savingError = nil;
+			if (![article.managedObjectContext save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+
+		};
+	
+		if (wSelf.onPresentingViewController) {
+		
+			wSelf.onPresentingViewController(^(UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+				
+				if (![parentViewController respondsToSelector:@selector(enqueueInterfaceUpdate:sender:)])
+					return;
+				
+				hasRunAction = YES;
+				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					
+					[parentViewController enqueueInterfaceUpdate:action sender:wSelf];
+				
+				});
+
+			});
+		
+		}
+		
+		if (!hasRunAction)
+			action();
 	
 	}];
 
