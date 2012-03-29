@@ -45,28 +45,13 @@
 						<int key="NSvFlags">256</int>
 						<object class="NSMutableArray" key="NSSubviews">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="359074932">
-								<reference key="NSNextResponder" ref="229656081"/>
-								<int key="NSvFlags">289</int>
-								<string key="NSFrame">{{296, 0}, {24, 24}}</string>
-								<reference key="NSSuperview" ref="229656081"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">timelineDefault.png</string>
-								</object>
-							</object>
 							<object class="IBUILabel" id="1062622976">
 								<reference key="NSNextResponder" ref="229656081"/>
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{20, 22}, {280, 99}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="359074932"/>
+								<reference key="NSNextKeyView" ref="887813443"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="365413422">
 									<int key="NSColorSpace">3</int>
@@ -97,6 +82,20 @@
 									<string key="NSName">Helvetica</string>
 									<double key="NSSize">14</double>
 									<int key="NSfFlags">16</int>
+								</object>
+							</object>
+							<object class="IBUIImageView" id="887813443">
+								<reference key="NSNextResponder" ref="229656081"/>
+								<int key="NSvFlags">289</int>
+								<string key="NSFrame">{{296, 0}, {43, 42}}</string>
+								<reference key="NSSuperview" ref="229656081"/>
+								<reference key="NSWindow"/>
+								<string key="NSReuseIdentifierKey">_NS:9</string>
+								<bool key="IBUIUserInteractionEnabled">NO</bool>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">timelineDefault.png</string>
 								</object>
 							</object>
 						</object>
@@ -167,7 +166,7 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="1062622976"/>
-							<reference ref="359074932"/>
+							<reference ref="887813443"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -178,7 +177,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">36</int>
-						<reference key="object" ref="359074932"/>
+						<reference key="object" ref="887813443"/>
 						<reference key="parent" ref="102746709"/>
 					</object>
 				</object>
