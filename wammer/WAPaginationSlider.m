@@ -277,7 +277,7 @@
 		if (!annotationView)
 			annotationView = [self.delegate viewForAnnotation:anAnnotation inPaginationSlider:self];
 		
-		NSParameterAssert(annotationView);
+		NSAssert1(annotationView, @"Delegate must return a valid annotation view for annotation %@", anAnnotation);
 		
 		annotationView.center = (CGPoint){
 			anAnnotation.centerOffset.x + usedInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),

@@ -64,8 +64,10 @@ NSString * const kLastReadingProgressAnnotationView = @"WADiscretePaginatedArtic
 
 	NSUInteger gridIndex = [self gridIndexOfLastReadArticle];
 	
-	if (gridIndex == NSNotFound)
+	if (gridIndex == NSNotFound) {
+		self.lastReadingProgressAnnotationView = nil;	//	Make sure it is niled
 		return nil;
+	}
 	
 	if (![self irAssociatedObjectWithKey:&kLastReadingProgressAnnotation])
 		self.lastReadingProgressAnnotation = [[WAPaginationSliderAnnotation alloc] init];
@@ -256,12 +258,18 @@ NSString * const kLastReadingProgressAnnotationView = @"WADiscretePaginatedArtic
 
 - (void) retrieveLatestReadingProgressWithCompletion:(void (^)(NSTimeInterval))aBlock {
 
-	if ([[WARemoteInterface sharedInterface] isPostponingDataRetrievalTimerFiring])
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	WADataStore *ds = [WADataStore defaultStore];
+	
+	if (!ri.primaryGroupIdentifier)
+			return;
+
+	if ([ri isPostponingDataRetrievalTimerFiring])
 		return;
 
 	CFAbsoluteTime operationStart = CFAbsoluteTimeGetCurrent();
 	
-	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+	[ri beginPostponingDataRetrievalTimerFiring];
 				
 	void (^cleanup)() = ^ {
 	
@@ -270,7 +278,7 @@ NSString * const kLastReadingProgressAnnotationView = @"WADiscretePaginatedArtic
 		if (aBlock)
 			aBlock((NSTimeInterval)(CFAbsoluteTimeGetCurrent() - operationStart));
 	
-		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		[ri endPostponingDataRetrievalTimerFiring];
 		
 	};
 	
@@ -284,10 +292,6 @@ NSString * const kLastReadingProgressAnnotationView = @"WADiscretePaginatedArtic
 		nrBezel.caption = @"Get Last Scan";
 		[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	}
-	
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	WADataStore *ds = [WADataStore defaultStore];
-	
 	
 	//	Retrieve the last scanned post in the primary group
 	//	Before anything happens at all

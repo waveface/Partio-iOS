@@ -92,18 +92,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	};
 	
-//	NSString *identifier = articleViewController.article.identifier;
-//	articleViewController.additionalDebugActions = [NSArray arrayWithObjects:
-//	
-//		[IRAction actionWithTitle:@"Make Last Read" block:^{
-//		
-//			nrSelf.lastReadObjectIdentifier = identifier;
-//			[nrSelf updateLastReadingProgressAnnotation];
-//		
-//		}],
-//		
-//	nil];
-	
 	return articleViewController;
 
 }
