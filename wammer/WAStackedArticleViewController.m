@@ -191,13 +191,23 @@
 		
 		favoriteToggleItem.block = ^ {
 		
-			wSelf.article.favorite = (NSNumber *)([wSelf.article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
-			
-			//	TBD: maybe not save
+			WAArticle *article = wSelf.article;
+		
+			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
 			
 			NSError *savingError = nil;
-			if (![wSelf.article.managedObjectContext save:&savingError])
+			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
+			
+			[[WADataStore defaultStore] uploadArticle:[[article objectID] URIRepresentation] onSuccess:^{
+			
+				NSLog(@":D");
+				
+			} onFailure:^(NSError *error) {
+			
+				NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+				
+			}];
 			
 		};
 		

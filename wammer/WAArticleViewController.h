@@ -81,8 +81,8 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 @property (nonatomic, retain) UIView<WAArticleView> *view;
 
-@property (nonatomic, readwrite, retain) NSArray *additionalDebugActions;
-
 - (WANavigationController *) wrappingNavController;
 
 @end
+
+#import "WAArticleViewController+Inspection.h"
