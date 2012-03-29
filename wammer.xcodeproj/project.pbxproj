@@ -185,6 +185,8 @@
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF54C362152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */; };
+		FF54C4BD15206B0D00301887 /* WARemoteInterface+Usertracks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */; };
+		FF54C5161520947100301887 /* WADataStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C5151520947100301887 /* WADataStoreTest.m */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
 		FF586B911519B4ED00F308E2 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
@@ -268,6 +270,7 @@
 		FF8F463B14690A2A00D65864 /* WARemoteInterface+Footprints.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */; };
 		FF8F463F14691A7D00D65864 /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF91960C14AB09C400352E4D /* WADimmingView.m */; };
+		FF96BDC8152420C3007B6405 /* WAArticleViewController+Inspection.m in Sources */ = {isa = PBXBuildFile; fileRef = FF96BDC7152420C3007B6405 /* WAArticleViewController+Inspection.m */; };
 		FF9962101441E7D300F725F5 /* libCrashReporter-iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA0654F143B13ED00145079 /* Sansus Webissimo-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFA0654D143B13ED00145079 /* Sansus Webissimo-Italic.otf */; };
@@ -1314,6 +1317,10 @@
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		FF54C360152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.h"; sourceTree = "<group>"; };
 		FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.m"; sourceTree = "<group>"; };
+		FF54C4BB15206B0D00301887 /* WARemoteInterface+Usertracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Usertracks.h"; sourceTree = "<group>"; };
+		FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Usertracks.m"; sourceTree = "<group>"; };
+		FF54C5141520947100301887 /* WADataStoreTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStoreTest.h; sourceTree = "<group>"; };
+		FF54C5151520947100301887 /* WADataStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStoreTest.m; sourceTree = "<group>"; };
 		FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+DiscreteLayoutAdditions.h"; sourceTree = "<group>"; };
 		FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+DiscreteLayoutAdditions.m"; sourceTree = "<group>"; };
 		FF55C23613F5256B00F38861 /* WAArticleCommentsViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleCommentsViewCell.h; sourceTree = "<group>"; };
@@ -1429,6 +1436,8 @@
 		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATableViewCell.h; sourceTree = "<group>"; };
 		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATableViewCell.m; sourceTree = "<group>"; };
 		FF92CC4E1511C964001E0A4F /* WAModel 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 19.xcdatamodel"; sourceTree = "<group>"; };
+		FF96BDC6152420C3007B6405 /* WAArticleViewController+Inspection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticleViewController+Inspection.h"; sourceTree = "<group>"; };
+		FF96BDC7152420C3007B6405 /* WAArticleViewController+Inspection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticleViewController+Inspection.m"; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
@@ -2019,6 +2028,8 @@
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
 				FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTest.h */,
 				FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTest.m */,
+				FF54C5141520947100301887 /* WADataStoreTest.h */,
+				FF54C5151520947100301887 /* WADataStoreTest.m */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
 			);
 			name = "iOS Tests";
@@ -2492,26 +2503,28 @@
 		FFA69455147F6FA800F46347 /* Base API Endpoint Interfacing */ = {
 			isa = PBXGroup;
 			children = (
-				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
-				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
-				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
-				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
-				FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */,
-				FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */,
-				FF8F462A146909DC00D65864 /* WARemoteInterface+Posts.h */,
-				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
-				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
-				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
-				FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */,
-				FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */,
 				FF8F463314690A1D00D65864 /* WARemoteInterface+Attachments.h */,
 				FF8F463414690A1E00D65864 /* WARemoteInterface+Attachments.m */,
-				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
-				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
+				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
 				FF8F463914690A2A00D65864 /* WARemoteInterface+Footprints.h */,
 				FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */,
+				FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */,
+				FF8F4631146909E900D65864 /* WARemoteInterface+Groups.m */,
+				FF8F462A146909DC00D65864 /* WARemoteInterface+Posts.h */,
+				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
+				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
+				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
+				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
 				FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */,
 				FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */,
+				FF8F4627146909AD00D65864 /* WARemoteInterface+Users.h */,
+				FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */,
+				FF54C4BB15206B0D00301887 /* WARemoteInterface+Usertracks.h */,
+				FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */,
+				FF22283C1463D2BE00541E31 /* WARemoteInterfaceContext.h */,
+				FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */,
 			);
 			name = "Base API Endpoint Interfacing";
 			sourceTree = "<group>";
@@ -2945,6 +2958,8 @@
 				FFB44D5C14D6A2A800080F07 /* WAScrollView.m */,
 				FF4FA00813E114F3002C627F /* WAArticleViewController.h */,
 				FF4FA00913E114F3002C627F /* WAArticleViewController.m */,
+				FF96BDC6152420C3007B6405 /* WAArticleViewController+Inspection.h */,
+				FF96BDC7152420C3007B6405 /* WAArticleViewController+Inspection.m */,
 				FF577B8E14A3109100B25E74 /* WAArticleViewController+Subclasses.h */,
 				FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_Default.xib */,
 				FFBD444713FDA6E000F535D2 /* WAArticleViewController_Plaintext.xib */,
@@ -4012,6 +4027,7 @@
 				FF586BB31519B52A00F308E2 /* WADefines+iOS.m in Sources */,
 				FF586C731519B9F300F308E2 /* WADiscreteLayoutHelpers.m in Sources */,
 				FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */,
+				FF54C5161520947100301887 /* WADataStoreTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4213,6 +4229,8 @@
 				4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */,
 				4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */,
 				FF54C362152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m in Sources */,
+				FF54C4BD15206B0D00301887 /* WARemoteInterface+Usertracks.m in Sources */,
+				FF96BDC8152420C3007B6405 /* WAArticleViewController+Inspection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4451,7 +4469,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 296;
+				CURRENT_PROJECT_VERSION = 297;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4506,7 +4524,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 296;
+				CURRENT_PROJECT_VERSION = 297;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

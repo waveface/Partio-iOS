@@ -123,6 +123,12 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 @implementation WAFile (WAAdditions)
 
++ (void) load {
+
+	[self configureSimulatedOrderedRelationship];
+
+}
+
 - (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
 
 	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
@@ -161,8 +167,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
   [super awakeFromFetch];
   
-  [self irReconcileObjectOrderWithKey:@"pageElements" usingArrayKeyed:@"pageElementOrder"];
-	
 	//	TBD: We’re assuming that everthing is restorable, might not be true if users pound on local drafts more
 	//	TBD: Create sanitary worker
 	//	NSFileManager * const fileManager = [NSFileManager defaultManager];	
@@ -188,21 +192,25 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	
 }
 
-- (NSArray *) pageElementOrder {
++ (NSSet *) keyPathsForValuesAffectingPageElements {
 
-  return [self irBackingOrderArrayKeyed:@"pageElementOrder"];
+	return [NSSet setWithObjects:@"pageElementOrder", nil];
 
 }
 
-- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
++ (NSSet *) keyPathsForValuesAffectingPageElementOrder {
 
-  [super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
-  
-  if ([inKey isEqualToString:@"pageElements"]) {
-    
-    [self irUpdateObjects:inObjects withRelationshipKey:@"pageElements" usingOrderArray:@"pageElementOrder" withSetMutation:inMutationKind];
-    
-  }
+	return [NSSet setWithObjects:@"pageElements", nil];
+
+}
+
++ (NSDictionary *) orderedRelationships {
+
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		
+		@"pageElementOrder", @"pageElements",
+		
+	nil];
 
 }
 

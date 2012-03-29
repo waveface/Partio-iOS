@@ -12,6 +12,12 @@
 
 @implementation WAArticle (WAAdditions)
 
++ (void) load {
+
+	[self configureSimulatedOrderedRelationship];
+
+}
+
 + (NSSet *) keyPathsForValuesAffectingHasMeaningfulContent {
 
 	return [NSSet setWithObjects:
@@ -64,9 +70,6 @@
 	if ([super automaticallyNotifiesObserversForKey:key])
 		return YES;
 	
-	if ([key isEqualToString:@"files"])
-		return YES;
-	
 	if ([key isEqualToString:@"text"])
 		return YES;
 	
@@ -86,30 +89,14 @@
 
 }
 
-- (void) irAwake {
++ (NSDictionary *) orderedRelationships {
 
-	[super irAwake];
-	[self irReconcileObjectOrderWithKey:@"files" usingArrayKeyed:@"fileOrder"];
-	
-}
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		
+		@"fileOrder", @"files",
+		
+	nil];
 
-- (NSArray *) fileOrder {
-
-	return [self irBackingOrderArrayKeyed:@"fileOrder"];
-
-}
-
-- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
-
-	if ([inKey isEqualToString:@"files"]) {
-    
-    [self irUpdateObjects:inObjects withRelationshipKey:@"files" usingOrderArray:@"fileOrder" withSetMutation:inMutationKind];
-		return;
-    
-  }
-
-	[super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
-	
 }
 
 @end

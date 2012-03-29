@@ -18,7 +18,7 @@
 @property (nonatomic, retain) NSString * creationDeviceName;
 @property (nonatomic, retain) NSNumber * draft;
 @property (nonatomic, retain) NSNumber * favorite;
-@property (nonatomic, retain) id fileOrder;
+@property (nonatomic, retain) NSArray * fileOrder;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSDate * timestamp;

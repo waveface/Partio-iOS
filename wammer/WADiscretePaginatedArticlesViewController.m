@@ -48,6 +48,9 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
+- (void) adjustPageView:(UIView *)aPageView withGrid:(IRDiscreteLayoutGrid *)grid;	//	Will use the best transformation destination for the grid with matching aspect ratio of current application frame
+
+- (CGFloat) currentAspectRatio;
 
 @end
 
@@ -281,12 +284,31 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) reloadViewContents {
 
+	//	Should never be called when the paginated view is busy
+	NSParameterAssert([self isViewLoaded] && !self.paginatedView.hidden);
+
 	NSError *layoutError = nil;
 	IRDiscreteLayoutResult *result = [self.discreteLayoutManager calculatedResultWithReference:self.discreteLayoutResult strategy:IRCompareScoreLayoutStrategy error:&layoutError];
 	
 	if (!result) {
 	
-		[[[UIAlertView alloc] initWithTitle:@"Layout Manager Choked" message:[layoutError localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", nil) otherButtonTitles:nil] show];
+		//	Choked, probably gather data here?
+		
+		NSLog(@"Discrete layout manager choked on calculation with reference: %@", layoutError);
+		result = [self.discreteLayoutManager calculatedResultWithReference:nil strategy:IRCompareScoreLayoutStrategy error:&layoutError];
+		
+		if (!result) {
+			
+			NSLog(@"Layout manager choked on calculation with no reference: %@", layoutError);
+			result = [self.discreteLayoutManager calculatedResultWithReference:nil strategy:IRRandomLayoutStrategy error:&layoutError];
+			
+			if (!result) {
+			
+				NSLog(@"Layout manager choked at last resort: %@", layoutError);
+			
+			}
+			
+		}
 		
 	}
 	
@@ -310,6 +332,205 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
 			[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
 		
+	}
+
+}
+
+- (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller {
+
+	if (!aBlock)
+		return;
+
+	NSParameterAssert([self isViewLoaded]);
+	NSParameterAssert(self.discreteLayoutResult);
+	
+	CGSize const contentSize = self.paginatedView.frame.size;
+	
+	NSUInteger const fromPage = self.paginatedView.currentPage;
+	IRDiscreteLayoutGrid * const fromUntransformedGrid = [self.discreteLayoutResult.grids objectAtIndex:fromPage];
+	IRDiscreteLayoutGrid * const fromGrid = [fromUntransformedGrid transformedGridWithPrototype:[fromUntransformedGrid bestCounteprartPrototypeForAspectRatio:[self currentAspectRatio]]];
+	
+	fromGrid.contentSize = contentSize;
+	
+	aBlock();
+	
+	NSUInteger articlePage = [self gridIndexOfArticle:controller.article];
+	[self.paginatedView scrollToPageAtIndex:articlePage animated:NO];
+	
+	NSUInteger const toPage = (articlePage != NSNotFound) ? articlePage : self.paginatedView.currentPage;
+	IRDiscreteLayoutGrid * const toUntransformedGrid = [self.discreteLayoutResult.grids objectAtIndex:toPage];
+	IRDiscreteLayoutGrid * const toGrid = [toUntransformedGrid transformedGridWithPrototype:[toUntransformedGrid bestCounteprartPrototypeForAspectRatio:[self currentAspectRatio]]];
+	toGrid.contentSize = contentSize;
+	
+	NSParameterAssert(fromGrid && toGrid);
+	
+	IRDiscreteLayoutChangeSet *changeSet = [IRDiscreteLayoutChangeSet changeSetFromGrid:fromGrid toGrid:toGrid];
+	
+	UIView *containerView = self.paginatedView.superview;
+	UIView *pageView = [self newPageContainerView];
+	
+	NSMutableArray *preconditionBlocks = [NSMutableArray array];
+	NSMutableArray *animationBlocks = [NSMutableArray array];
+	
+	self.paginatedView.hidden = YES;
+	pageView.frame = [containerView convertRect:[self.paginatedView pageRectForIndex:toPage] fromView:self.paginatedView.scrollView];
+	
+	[containerView addSubview:pageView];
+	
+	//	Every single item should have at least one backing view — either it swaps in, or out, or so
+	
+	[changeSet enumerateChangesWithBlock: ^ (id item, IRDiscreteLayoutItemChangeType changeType) {
+	
+		NSString *fromAreaName = [fromGrid layoutAreaNameForItem:item];
+		NSString *toAreaName = [toGrid layoutAreaNameForItem:item];
+		
+		UIView *itemView = [item isKindOfClass:[WAArticle class]] ? [self representingViewForItem:(WAArticle *)item] : toAreaName ? [toGrid displayBlockForAreaNamed:toAreaName](toGrid, item) : [fromGrid displayBlockForAreaNamed:fromAreaName](fromGrid, item);
+	
+		NSParameterAssert(itemView);
+		
+		CGRect fromRect = fromAreaName ? [fromGrid layoutBlockForAreaNamed:fromAreaName](fromGrid, item) : CGRectNull;
+		CGRect toRect = toAreaName ? [toGrid layoutBlockForAreaNamed:toAreaName](toGrid, item) : CGRectNull;
+				
+		[preconditionBlocks irEnqueueBlock:^{
+
+			[pageView addSubview:itemView];
+			NSParameterAssert(itemView.superview == pageView);
+			
+		}];
+
+		[animationBlocks irEnqueueBlock:^{
+			
+			NSParameterAssert(itemView.superview == pageView);
+			
+			NSParameterAssert(
+				CGRectContainsRect(
+					itemView.window.bounds,
+					[itemView.window convertRect:itemView.frame fromView:itemView.superview]
+				)
+			);
+			
+		}];
+		
+		switch (changeType) {
+		
+			case IRDiscreteLayoutItemChangeInserting: {
+				
+				[preconditionBlocks irEnqueueBlock:^{
+
+					NSParameterAssert(CGRectEqualToRect(fromRect, CGRectNull) && !CGRectEqualToRect(toRect, CGRectNull));
+					itemView.frame = toRect;
+					itemView.alpha = 0;
+				
+				}];
+				
+				[animationBlocks irEnqueueBlock:^{
+					itemView.alpha = 1;
+				}];
+				
+				break;
+				
+			}
+			
+			case IRDiscreteLayoutItemChangeDeleting: {
+			
+				[preconditionBlocks irEnqueueBlock:^{
+
+					NSParameterAssert(!CGRectEqualToRect(fromRect, CGRectNull) && CGRectEqualToRect(toRect, CGRectNull));
+					itemView.frame = fromRect;
+					itemView.alpha = 1;
+				
+				}];
+				
+				[animationBlocks irEnqueueBlock:^{
+					itemView.alpha = 0;
+				}];
+				
+				break;
+				
+			}
+			
+			case IRDiscreteLayoutItemChangeRelayout: {
+			
+				[preconditionBlocks irEnqueueBlock:^{
+
+					NSParameterAssert(!CGRectEqualToRect(fromRect, CGRectNull) && !CGRectEqualToRect(toRect, CGRectNull));
+					itemView.frame = fromRect;
+					
+				}];
+				
+				[animationBlocks irEnqueueBlock:^{
+					itemView.frame = toRect;
+				}];
+			
+				break;
+				
+			}
+			
+			case IRDiscreteLayoutItemChangeNone: {
+				
+				[preconditionBlocks irEnqueueBlock:^{
+
+					NSParameterAssert(!CGRectEqualToRect(fromRect, CGRectNull) && !CGRectEqualToRect(toRect, CGRectNull) && CGRectEqualToRect(fromRect, toRect));
+					
+					itemView.frame = fromRect;
+				
+				}];
+				
+				break;
+				
+			}
+		
+		};
+		
+	}];
+	
+//	[CATransaction flush];
+//	[CATransaction begin];
+	[self.view layoutIfNeeded];
+	[preconditionBlocks irExecuteAllObjectsAsBlocks];
+//	[CATransaction commit];
+	
+//	[CATransaction begin];
+//	[CATransaction setDisableActions:NO];
+//	[CATransaction setAnimationDuration:10.0];
+	
+	[UIView animateWithDuration:5.0f delay:0 options:UIViewAnimationOptionOverrideInheritedDuration animations:^{
+		
+		[animationBlocks irExecuteAllObjectsAsBlocks];
+	
+	} completion: ^ (BOOL finished) {
+	
+		[pageView removeFromSuperview];
+		self.paginatedView.hidden = NO;
+		
+		[self reloadViewContents];
+		
+	}];
+	
+//	[CATransaction commit];
+
+}
+
+- (void) presentArticleViewController:(WAArticleViewController *)controller animated:(BOOL)animated completion:(void(^)(void))callback {
+
+	NSUInteger index = [self gridIndexOfArticle:controller.article];
+	
+	[self.paginatedView scrollToPageAtIndex:index animated:animated];
+	
+	if (animated) {
+	
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
+		
+			if (callback)
+				callback();
+		
+		});
+	
+	} else {
+	
+		if (callback)
+			callback();
+	
 	}
 
 }
@@ -430,67 +651,49 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
+- (CGFloat) currentAspectRatio {
+
+	UIWindow *usedWindow = self.view.window;
+	if (!usedWindow)
+		usedWindow = [UIApplication sharedApplication].keyWindow;
+	
+	NSParameterAssert(usedWindow);
+
+	CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform(
+		[usedWindow.screen applicationFrame],
+		((CGAffineTransform[]){
+			[UIInterfaceOrientationPortrait] = CGAffineTransformMakeRotation(0),
+			[UIInterfaceOrientationPortraitUpsideDown] = CGAffineTransformMakeRotation(M_PI),
+			[UIInterfaceOrientationLandscapeLeft] = CGAffineTransformMakeRotation(-0.5 * M_PI),
+			[UIInterfaceOrientationLandscapeRight] = CGAffineTransformMakeRotation(0.5 * M_PI)
+		})[self.interfaceOrientation]
+	);
+	
+	CGFloat ratio = CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
+	NSCParameterAssert(isnormal(ratio));
+	
+	return ratio;
+
+}
+
 - (void) adjustPageView:(UIView *)currentPageView usingGridAtIndex:(NSUInteger)anIndex {
 
 	//	Find the best grid alternative in allDestinations, and then enumerate its layout areas, using the provided layout blocks to relayout all the element representing views in the current paginated view page.
 	
 	if ([self.discreteLayoutResult.grids count] < (anIndex + 1))
 		return;
-	
-	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
+
 	IRDiscreteLayoutGrid *currentPageGrid = [self.discreteLayoutResult.grids objectAtIndex:anIndex];
-	NSSet *allDestinations = [currentPageGrid allTransformablePrototypeDestinations];
-	NSSet *allIntrospectedGrids = [allDestinations setByAddingObject:currentPageGrid];
-	IRDiscreteLayoutGrid *bestGrid = nil;
 	
-	CGFloat currentAspectRatio = ((^ {
-	
-		//	FIXME: Save this
-		
-		UIWindow *usedWindow = self.view.window;
-		if (!usedWindow)
-			usedWindow = [UIApplication sharedApplication].keyWindow;
-		
-		NSParameterAssert(usedWindow);
+	[self adjustPageView:currentPageView withGrid:currentPageGrid];
 
-		CGRect currentTransformedApplicationFrame = CGRectApplyAffineTransform(
-			[usedWindow.screen applicationFrame],
-			((CGAffineTransform[]){
-				[UIInterfaceOrientationPortrait] = CGAffineTransformMakeRotation(0),
-				[UIInterfaceOrientationPortraitUpsideDown] = CGAffineTransformMakeRotation(M_PI),
-				[UIInterfaceOrientationLandscapeLeft] = CGAffineTransformMakeRotation(-0.5 * M_PI),
-				[UIInterfaceOrientationLandscapeRight] = CGAffineTransformMakeRotation(0.5 * M_PI)
-			})[self.interfaceOrientation]
-		);
-		
-		CGFloat ratio = CGRectGetWidth(currentTransformedApplicationFrame) / CGRectGetHeight(currentTransformedApplicationFrame);
-		NSCParameterAssert(isnormal(ratio));
-		
-		return ratio;
+}
 
-	})());
+- (void) adjustPageView:(UIView *)currentPageView withGrid:(IRDiscreteLayoutGrid *)currentPageGrid {
+
+	NSArray *currentPageElements = objc_getAssociatedObject(currentPageView, &kWADiscreteArticlePageElements);
 	
-	for (IRDiscreteLayoutGrid *aGrid in allIntrospectedGrids) {
-		
-		if (!bestGrid) {
-			bestGrid = aGrid;
-			continue;
-		}
-		
-		CGFloat bestGridAspectRatio = bestGrid.contentSize.width / bestGrid.contentSize.height;
-		CGFloat currentGridAspectRatio = aGrid.contentSize.width / aGrid.contentSize.height;
-		
-		if (fabs(currentAspectRatio - bestGridAspectRatio) < fabs(currentAspectRatio - currentGridAspectRatio)) {
-			continue;
-		}
-		
-		bestGrid = aGrid;
-		
-	}
-	
-	
-	IRDiscreteLayoutGrid *transformedGrid = bestGrid;//[allDestinations anyObject];
-	transformedGrid = [currentPageGrid transformedGridWithPrototype:(transformedGrid.prototype ? transformedGrid.prototype : transformedGrid)];
+	IRDiscreteLayoutGrid *transformedGrid = [currentPageGrid transformedGridWithPrototype:[currentPageGrid bestCounteprartPrototypeForAspectRatio:[self currentAspectRatio]]];
 	
 	CGSize oldContentSize = transformedGrid.contentSize;
 	transformedGrid.contentSize = self.paginatedView.frame.size;
@@ -502,8 +705,18 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			
 		NSUInteger objectIndex = [currentPageGrid.layoutAreaNames indexOfObject:name];
 		if (objectIndex != NSNotFound)
-		if ([currentPageElements count] > objectIndex)
-			((UIView *)[currentPageElements objectAtIndex:objectIndex]).frame = CGRectInset(layoutBlock(transformedGrid, item), 8, 8);
+		if ([currentPageElements count] > objectIndex) {
+
+			UIView *itemView = (UIView *)[currentPageElements objectAtIndex:objectIndex];
+			CGRect itemViewFrame = layoutBlock(transformedGrid, item);
+			
+			if (![itemView isDescendantOfView:currentPageView])
+				[currentPageView addSubview:itemView];
+			
+			if (!CGRectEqualToRect(itemView.frame, itemViewFrame))
+				itemView.frame = itemViewFrame;
+			
+		}
 		
 	}];
 	
@@ -576,10 +789,9 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider {
 
-	if (anAnnotation == self.lastReadingProgressAnnotation)
-		return self.lastReadingProgressAnnotationView;
+	NSParameterAssert(anAnnotation == self.lastReadingProgressAnnotation);
 	
-	return nil;
+	return self.lastReadingProgressAnnotationView;
 
 }
 

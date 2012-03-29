@@ -23,14 +23,16 @@
 
 
 @class WAImageStackView;
+@class WAArticleViewController;
 
 @protocol WAArticleViewControllerPresenting
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
 
 @optional
-- (void) enqueueInterfaceUpdate:(void(^)(void))anAction;
+- (void) enqueueInterfaceUpdate:(void(^)(void))anAction sender:(WAArticleViewController *)controller;
 - (void) handlePreferredInterfaceRect:(CGRect)aRect;
 - (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint;
+- (void) presentArticleViewController:(WAArticleViewController *)controller animated:(BOOL)animated completion:(void(^)(void))callback;
 
 @end
 
@@ -81,8 +83,8 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 @property (nonatomic, retain) UIView<WAArticleView> *view;
 
-@property (nonatomic, readwrite, retain) NSArray *additionalDebugActions;
-
 - (WANavigationController *) wrappingNavController;
 
 @end
+
+#import "WAArticleViewController+Inspection.h"
