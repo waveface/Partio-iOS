@@ -484,17 +484,10 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}];
 	
-//	[CATransaction flush];
-//	[CATransaction begin];
 	[self.view layoutIfNeeded];
 	[preconditionBlocks irExecuteAllObjectsAsBlocks];
-//	[CATransaction commit];
 	
-//	[CATransaction begin];
-//	[CATransaction setDisableActions:NO];
-//	[CATransaction setAnimationDuration:10.0];
-	
-	[UIView animateWithDuration:5.0f delay:0 options:UIViewAnimationOptionOverrideInheritedDuration animations:^{
+	[UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionOverrideInheritedDuration animations:^{
 		
 		[animationBlocks irExecuteAllObjectsAsBlocks];
 	
@@ -507,8 +500,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}];
 	
-//	[CATransaction commit];
-
 }
 
 - (void) presentArticleViewController:(WAArticleViewController *)controller animated:(BOOL)animated completion:(void(^)(void))callback {
@@ -709,6 +700,9 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 			UIView *itemView = (UIView *)[currentPageElements objectAtIndex:objectIndex];
 			CGRect itemViewFrame = layoutBlock(transformedGrid, item);
+			
+			if (itemView.alpha != 1)
+				itemView.alpha = 1;
 			
 			if (![itemView isDescendantOfView:currentPageView])
 				[currentPageView addSubview:itemView];
