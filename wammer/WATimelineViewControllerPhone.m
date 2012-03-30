@@ -97,58 +97,12 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	if (YES) {
+	self.navigationItem.titleView = WAStandardTitleView();
 	
-		__weak WATimelineViewControllerPhone *nrSelf = self;
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
 	
-		self.navigationItem.titleView = WAStandardTitleView();
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UINavigationBarAddButton"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
 		
-		self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WASettingsGlyph"], nil, ^{
-			
-			[nrSelf handleSettings:nil];
-							
-		}),
-		
-		self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-			
-			[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-			
-		});
-	
-	} else {
-	
-		self.navigationItem.titleView = [[UIView alloc] initWithFrame:CGRectZero];
-		
-		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
-		
-		self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-		
-			__weak WATimelineViewControllerPhone *nrSelf = self;
-				
-			IRTransparentToolbar *toolbar = [[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }];
-			
-			toolbar.items = [NSArray arrayWithObjects:
-			
-				WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-					
-						[nrSelf handleSettings:nil];
-									
-				}),
-				
-				WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-					
-					[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-					
-				}),
-			
-			nil];
-			
-			return toolbar;
-		
-		})())];
-	
-	}
-			
 	return self;
   
 }
@@ -392,17 +346,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-	self.tableView.backgroundView = backgroundView;
-	
-	UIView *actualBackgroundView = [[UIView alloc] initWithFrame:backgroundView.bounds];
-	[backgroundView addSubview:actualBackgroundView];
-	
-	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
-	CGSize backgroundImageSize = backgroundImage.size;
-	actualBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	actualBackgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
-	
 	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
 	
 	progressUpdateNotification.bounds = (CGRect){
@@ -414,42 +357,53 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	};
 	
 	[self.tableView addSubview:progressUpdateNotification];
+	self.tableView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	
+//	self.tableView.onLayoutSubviews = ^ {
+//	
+//		CGRect tableViewBounds = nrSelf.tableView.bounds;
+//		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
+//		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
+//		
+//		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
+//		
+//		actualBackgroundView.bounds = (CGRect){
+//			CGPointZero,
+//			(CGSize){
+//				CGRectGetWidth(tableViewBounds),
+//				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
+//			}
+//		};
+//		
+//		actualBackgroundView.center = (CGPoint){
+//			
+//			0.5 * CGRectGetWidth(tableViewBounds),
+//
+//			backgroundImageSize.height + remainderf(
+//				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
+//				backgroundImageSize.height
+//			)
+//			
+//		};
+//		
+//		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
+//			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
+//			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
+//		};
+//		
+//	};
 	
 	
-	self.tableView.onLayoutSubviews = ^ {
+	UINavigationBar *navigationBar = self.navigationController.navigationBar;
+	[navigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBarlLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
 	
-		CGRect tableViewBounds = nrSelf.tableView.bounds;
-		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
-		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
-		
-		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
-		
-		actualBackgroundView.bounds = (CGRect){
-			CGPointZero,
-			(CGSize){
-				CGRectGetWidth(tableViewBounds),
-				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
-			}
-		};
-		
-		actualBackgroundView.center = (CGPoint){
-			
-			0.5 * CGRectGetWidth(tableViewBounds),
+//	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
+//	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
+//	[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
 
-			backgroundImageSize.height + remainderf(
-				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
-				backgroundImageSize.height
-			)
-			
-		};
-		
-		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
-			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
-			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
-		};
-		
-	};
-	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -457,7 +411,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[super viewWillAppear:animated];
   [self refreshData];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:animated];
 	
 	self.readingProgressUpdateNotificationView.hidden = YES;
 	self.tableView.contentInset = UIEdgeInsetsZero;

@@ -25,6 +25,11 @@
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4B3324AD15244B5400F45737 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B3324AC15244B5400F45737 /* logo.png */; };
+		4B3324B015244CE600F45737 /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B3324AE15244CE600F45737 /* WASettingsGlyph@2x~iphone.png */; };
+		4B3324B115244CE600F45737 /* WASettingsGlyph~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B3324AF15244CE600F45737 /* WASettingsGlyph~iphone.png */; };
+		4B3324B41524B13700F45737 /* timelineFavorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B3324B21524B13700F45737 /* timelineFavorite.png */; };
+		4B3324B51524B13700F45737 /* timelineDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B3324B31524B13700F45737 /* timelineDefault.png */; };
 		4B733BA314987A81005CAE8D /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7D14987A81005CAE8D /* IASKAppSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B733BA414987A81005CAE8D /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7F14987A81005CAE8D /* IASKAppSettingsWebViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B733BA514987A81005CAE8D /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B8114987A81005CAE8D /* IASKSpecifierValuesViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1114,6 +1119,11 @@
 		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
 		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B3324AC15244B5400F45737 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = Resources/logo.png; sourceTree = "<group>"; };
+		4B3324AE15244CE600F45737 /* WASettingsGlyph@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph@2x~iphone.png"; path = "Resources/WASettingsGlyph@2x~iphone.png"; sourceTree = "<group>"; };
+		4B3324AF15244CE600F45737 /* WASettingsGlyph~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph~iphone.png"; path = "Resources/WASettingsGlyph~iphone.png"; sourceTree = "<group>"; };
+		4B3324B21524B13700F45737 /* timelineFavorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timelineFavorite.png; path = Resources/timelineFavorite.png; sourceTree = "<group>"; };
+		4B3324B31524B13700F45737 /* timelineDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timelineDefault.png; path = Resources/timelineDefault.png; sourceTree = "<group>"; };
 		4B587BB613F4D7AE0084E671 /* WAPostViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewControllerPhone.h; sourceTree = "<group>"; };
 		4B587BB713F4D7AE0084E671 /* WAPostViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewControllerPhone.m; sourceTree = "<group>"; };
 		4B733B7C14987A81005CAE8D /* IASKAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsViewController.h; sourceTree = "<group>"; };
@@ -2577,6 +2587,8 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4B3324B21524B13700F45737 /* timelineFavorite.png */,
+				4B3324B31524B13700F45737 /* timelineDefault.png */,
 				FFEF1EF914FF8E7D00645B53 /* addButton.png */,
 				FFEF1EFA14FF8E7D00645B53 /* addDisabled@2x.png */,
 				FFEF1EFB14FF8E7D00645B53 /* addHighlight.png */,
@@ -2599,6 +2611,7 @@
 				FF21C8D213E14CF9009B980D /* IPSample */,
 				FFEF1F0C14FF8E7D00645B53 /* lightBackground.png */,
 				FF51509C14835A030073386D /* Localizable.strings */,
+				4B3324AC15244B5400F45737 /* logo.png */,
 				FFEF1F0D14FF8E7D00645B53 /* navigationBar.png */,
 				FFEF1F0E14FF8E7D00645B53 /* navigationBar@2x.png */,
 				FFEF1F0F14FF8E7D00645B53 /* navigationBarLandscape.png */,
@@ -2842,6 +2855,8 @@
 				FFEF1F8A14FF8E7E00645B53 /* WASend@2x.png */,
 				FFEF1F8B14FF8E7E00645B53 /* WASettingsGlyph.png */,
 				FF6AE4A71502F53500517E04 /* WASettingsGlyph@2x.png */,
+				4B3324AE15244CE600F45737 /* WASettingsGlyph@2x~iphone.png */,
+				4B3324AF15244CE600F45737 /* WASettingsGlyph~iphone.png */,
 				FFEF1F8E14FF8E7E00645B53 /* WASliderKnob.png */,
 				FFEF1F8F14FF8E7E00645B53 /* WASliderKnobDisabled.png */,
 				FFEF1F9014FF8E7E00645B53 /* WASliderKnobPressed.png */,
@@ -3855,6 +3870,11 @@
 				FF2F4BB215077FB700B5DFEA /* WAArticleStackHeaderBarBackground@2x.png in Resources */,
 				FF2F4BB315077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone.png in Resources */,
 				FF2F4BB415077FB700B5DFEA /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png in Resources */,
+				4B3324AD15244B5400F45737 /* logo.png in Resources */,
+				4B3324B015244CE600F45737 /* WASettingsGlyph@2x~iphone.png in Resources */,
+				4B3324B115244CE600F45737 /* WASettingsGlyph~iphone.png in Resources */,
+				4B3324B41524B13700F45737 /* timelineFavorite.png in Resources */,
+				4B3324B51524B13700F45737 /* timelineDefault.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
