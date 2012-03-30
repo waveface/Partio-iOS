@@ -484,17 +484,14 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}];
 	
-//	[CATransaction flush];
-//	[CATransaction begin];
+	//	TBD: The views should relayout during animation, not before or after
+	
 	[self.view layoutIfNeeded];
 	[preconditionBlocks irExecuteAllObjectsAsBlocks];
-//	[CATransaction commit];
 	
-//	[CATransaction begin];
-//	[CATransaction setDisableActions:NO];
-//	[CATransaction setAnimationDuration:10.0];
+	UIViewAnimationOptions options = UIViewAnimationOptionOverrideInheritedDuration|UIViewAnimationOptionLayoutSubviews;
 	
-	[UIView animateWithDuration:5.0f delay:0 options:UIViewAnimationOptionOverrideInheritedDuration animations:^{
+	[UIView animateWithDuration:0.5f delay:0 options:options animations:^{
 		
 		[animationBlocks irExecuteAllObjectsAsBlocks];
 	
@@ -507,8 +504,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}];
 	
-//	[CATransaction commit];
-
 }
 
 - (void) presentArticleViewController:(WAArticleViewController *)controller animated:(BOOL)animated completion:(void(^)(void))callback {
@@ -709,6 +704,9 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 			UIView *itemView = (UIView *)[currentPageElements objectAtIndex:objectIndex];
 			CGRect itemViewFrame = layoutBlock(transformedGrid, item);
+			
+			if (itemView.alpha != 1)
+				itemView.alpha = 1;
 			
 			if (![itemView isDescendantOfView:currentPageView])
 				[currentPageView addSubview:itemView];
