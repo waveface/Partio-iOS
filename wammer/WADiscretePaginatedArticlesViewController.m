@@ -484,10 +484,14 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}];
 	
+	//	TBD: The views should relayout during animation, not before or after
+	
 	[self.view layoutIfNeeded];
 	[preconditionBlocks irExecuteAllObjectsAsBlocks];
 	
-	[UIView animateWithDuration:0.5f delay:0 options:UIViewAnimationOptionOverrideInheritedDuration animations:^{
+	UIViewAnimationOptions options = UIViewAnimationOptionOverrideInheritedDuration|UIViewAnimationOptionLayoutSubviews;
+	
+	[UIView animateWithDuration:0.5f delay:0 options:options animations:^{
 		
 		[animationBlocks irExecuteAllObjectsAsBlocks];
 	
