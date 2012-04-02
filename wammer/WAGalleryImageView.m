@@ -98,12 +98,16 @@
 
 - (void) imageViewDidUpdate:(WAImageView *)anImageView {
 
+//	NSLog(@"%s %@", __PRETTY_FUNCTION__, anImageView);
+
   [self layoutSubviews];
   [self setNeedsLayout];
 
 }
 
 - (void) setFrame:(CGRect)newFrame {
+
+//	NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGRect(newFrame));
 
 	BOOL frameChanged = !CGRectEqualToRect(self.frame, newFrame);
 
@@ -127,6 +131,8 @@
 }
 
 - (void) setBounds:(CGRect)newBounds {
+
+//	NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGRect(newBounds));
 
 	BOOL boundsChanged = !CGRectEqualToRect(self.bounds, newBounds);
 
@@ -162,6 +168,8 @@
 }
 
 - (void) setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync {
+
+//	NSLog(@"%s %@ %x %x", __PRETTY_FUNCTION__, newImage, animate, sync);
 
 	if (self.imageView.image == newImage)
 		return;
@@ -221,21 +229,23 @@
 
 }
 
-- (void) scrollViewDidEndZooming:(UIScrollView *)aScrollView withView:(UIView *)view atScale:(float)scale {
+- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
 
+//	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, scrollView, view);
+
+}
+
+- (void) scrollViewDidEndZooming:(UIScrollView *)aScrollView withView:(UIView *)view atScale:(float)scale {
+	
 	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations: ^ {
+	
+//		NSLog(@"did end zooming");
 
 		if (scale > 1) {
 	
-			CGRect scrollViewBounds = self.scrollView.bounds;
-			CGRect imageViewFrame = self.imageView.frame;
-			
-			aScrollView.contentInset = (UIEdgeInsets){
-				MAX(0, 0.5f * (CGRectGetHeight(scrollViewBounds) - CGRectGetHeight(imageViewFrame))),
-				MAX(0, 0.5f * (CGRectGetWidth(scrollViewBounds) - CGRectGetWidth(imageViewFrame))),
-				0,
-				0
-			};
+			self.needsContentAdjustmentOnLayout = YES;
+			self.needsInsetAdjustmentOnLayout = YES;
+			self.needsOffsetAdjustmentOnLayout = YES;
 			
 			[self layoutSubviews];
 			
@@ -332,62 +342,50 @@
 	id currentDelegate = self.delegate;
 	delegate = nil;
 	
-	CGRect scrollViewBounds = self.bounds;
-	CGRect presumedImageRect = IRGravitize(scrollViewBounds, self.image.size, kCAGravityResizeAspect);
-	
+	CGRect const scrollViewBounds = self.bounds;
+	CGRect const presumedImageRect = IRGravitize(scrollViewBounds, self.image.size, kCAGravityResizeAspect);
+
 	if (self.needsContentAdjustmentOnLayout) {
 	
-		CGRect oldImageViewBounds = self.imageView.bounds;
-		CGPoint oldImageViewCenter = self.imageView.center;
-		CGSize oldScrollViewContentSize = self.scrollView.contentSize;
-		
-		CGRect newImageViewBounds = (CGRect){
+		CGFloat zoomScale = self.scrollView.zoomScale;
+		CGRect newImageViewFrame = (CGRect){
 			CGPointZero,
-			presumedImageRect.size
-			//	(self.scrollView.zoomScale > 1) ? presumedImageRect.size : scrollViewBounds.size
+			(CGSize) {
+				presumedImageRect.size.width * zoomScale,
+				presumedImageRect.size.height * zoomScale
+			}
 		};
 		
-		CGPoint newImageViewCenter = (CGPoint){
-			CGRectGetMidX(newImageViewBounds),
-			CGRectGetMidY(newImageViewBounds)
-		};
+		CGSize newScrollViewContentSize = newImageViewFrame.size;
 		
-		CGSize newScrollViewContentSize = newImageViewBounds.size;
+		if (!CGRectEqualToRect(self.imageView.frame, newImageViewFrame))
+			self.imageView.frame = newImageViewFrame;
 		
-		if (!CGRectEqualToRect(oldImageViewBounds, newImageViewBounds))
-			self.imageView.bounds = newImageViewBounds;
-		
-		if (!CGPointEqualToPoint(oldImageViewCenter, newImageViewCenter))
-			self.imageView.center = newImageViewCenter;
-		
-		if (!CGSizeEqualToSize(oldScrollViewContentSize, newScrollViewContentSize))
+		if (!CGSizeEqualToSize(self.scrollView.contentSize, newScrollViewContentSize))
 			self.scrollView.contentSize = newScrollViewContentSize;
 		
 	}
 	
 	if (self.needsContentAdjustmentOnLayout || self.needsInsetAdjustmentOnLayout) {
-
+	
 		UIEdgeInsets oldContentInset = self.scrollView.contentInset;
 		UIEdgeInsets newContentInset = UIEdgeInsetsZero;
-	
-		if (self.scrollView.zoomScale > 1) {
 		
-			newContentInset = UIEdgeInsetsZero;
+		CGSize scrollViewContentSize = self.scrollView.contentSize;
+		CGSize scrollViewBoundsSize = scrollViewBounds.size;
 		
-		} else {
+		CGFloat horizontalPadding = scrollViewBoundsSize.width - scrollViewContentSize.width;
+		CGFloat verticalPadding = scrollViewBoundsSize.height - scrollViewContentSize.height;
+		
+		newContentInset = (UIEdgeInsets) {
+			MAX(0, 0.5f * verticalPadding),
+			MAX(0, 0.5f * horizontalPadding),
+			-1.0f * MAX(0, 0.5f * verticalPadding),
+			-1.0f * MAX(0, 0.5f * horizontalPadding)
+		};
 
-			newContentInset = (UIEdgeInsets) {
-				0.5f * (CGRectGetHeight(scrollViewBounds) - CGRectGetHeight(presumedImageRect)),
-				0.5f * (CGRectGetWidth(scrollViewBounds) - CGRectGetWidth(presumedImageRect)),
-				-0.5f * (CGRectGetHeight(scrollViewBounds) - CGRectGetHeight(presumedImageRect)),
-				-0.5f * (CGRectGetWidth(scrollViewBounds) - CGRectGetWidth(presumedImageRect))
-			};
-	
-		}
-		
-		if (!UIEdgeInsetsEqualToEdgeInsets(oldContentInset, newContentInset)) {
+		if (!UIEdgeInsetsEqualToEdgeInsets(oldContentInset, newContentInset))
 			self.scrollView.contentInset = newContentInset;
-		}
 		
 	};
 	
@@ -407,9 +405,8 @@
 
 		}
 		
-		if (!CGPointEqualToPoint(oldContentOffset, newContentOffset)) {
+		if (!CGPointEqualToPoint(oldContentOffset, newContentOffset))
 			self.scrollView.contentOffset = newContentOffset;
-		}
 	
 	}
 	
