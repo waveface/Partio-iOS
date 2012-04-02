@@ -47,8 +47,7 @@
 
 #import	"DCIntrospect.h"
 
-#import "GANTracker.h"
-		
+
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
@@ -76,7 +75,12 @@
   //  This is so not going to happen
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[GANTracker sharedTracker] stopTracker];
+	
+	WF_GOOGLEANALYTICS(^ {
+		
+		[[GANTracker sharedTracker] stopTracker];
+		
+	});
 
 }
 
@@ -162,7 +166,8 @@
 
 	[self bootstrap];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];
@@ -304,7 +309,7 @@
 	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 			
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
 
 }
 

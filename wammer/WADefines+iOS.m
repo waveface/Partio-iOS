@@ -280,7 +280,7 @@ UIImage * WABarButtonImageWithOptions (NSString *aName, UIColor *fillColor, IRSh
 
 UIView * WAStandardTitleView (void) {
 
-	UIImageView *logotype = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogo"]];
+	UIImageView *logotype = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
 	logotype.contentMode = UIViewContentModeScaleAspectFit;
 	logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	logotype.frame = (CGRect){ CGPointZero, (CGSize){ 128, 40 }};

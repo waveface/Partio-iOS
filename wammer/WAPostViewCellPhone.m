@@ -71,56 +71,45 @@
 	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
 	  
-	self.backgroundView = WAStandardPostCellBackgroundView();  	
-	self.selectedBackgroundView = WAStandardPostCellSelectedBackgroundView();  
+//	self.backgroundView = WAStandardPostCellBackgroundView();  	
+//	self.selectedBackgroundView = WAStandardPostCellSelectedBackgroundView();  
+//	
+//  self.avatarView.layer.cornerRadius = 4.0;
+//	self.avatarView.layer.masksToBounds = YES;
 	
-  self.avatarView.layer.cornerRadius = 4.0;
-	self.avatarView.layer.masksToBounds = YES;
-	
-	UIView *avatarWrapper = [[UIView alloc] initWithFrame:self.avatarView.frame];
-	avatarWrapper.autoresizingMask = avatarWrapper.autoresizingMask;
-	avatarWrapper.layer.shadowRadius = 1.0f;
-	avatarWrapper.layer.shadowOffset = (CGSize){ 0, 1 };
-	avatarWrapper.layer.shadowOpacity = 0.25f;
-	[self.avatarView.superview addSubview:avatarWrapper];
-	[avatarWrapper addSubview:self.avatarView];
-	self.avatarView.frame = avatarWrapper.bounds;
-  
 	self.previewBadge.titleFont = [UIFont systemFontOfSize:14.0f];
 	self.previewBadge.textFont = [UIFont systemFontOfSize:14.0f];
-	
-	self.dateLabel.backgroundColor = nil;
-	self.dateLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-	self.dateLabel.textColor = [UIColor colorWithRed:145.0/255.0 green:118.0/255.0 blue:58.0/255.0 alpha:1];
-	self.dateLabel.shadowColor = [UIColor whiteColor];
-	self.dateLabel.shadowOffset = (CGSize){ 0, 1 };
-	
-	self.dateLabelBackgroundView = [[UIView alloc] initWithFrame:self.dateLabel.bounds];
-	self.dateLabelBackgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
-	
-	[self.dateLabelBackgroundView addSubview:((^ {
-	
-		UIView *actualView = [[UIView alloc] initWithFrame:(CGRect){
-			(CGPoint){ 0, -8 },
-			(CGSize){
-				CGRectGetWidth(self.dateLabelBackgroundView.bounds),
-				36
-			}
-		}];
 		
-		UIImage *dateBadgeBackdrop = [UIImage imageNamed:@"WADateBadgeBackdrop"];
-		actualView.layer.contents = (id)dateBadgeBackdrop.CGImage;
-		actualView.layer.contentsScale = dateBadgeBackdrop.scale;
-		actualView.layer.contentsCenter = (CGRect){ 8.0f/18.0f, 12.0f/36.0f, 2.0f/18.0f, 12.0f/36.0f };
-		actualView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-		actualView.frame = UIEdgeInsetsInsetRect(actualView.frame, (UIEdgeInsets){ 0, -10, 0, -10 });
-		
-		return actualView;
-		
-	})())];
+//	self.dateLabel.backgroundColor = nil;
+//	self.dateLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+//	self.dateLabel.textColor = [UIColor colorWithRed:145.0/255.0 green:118.0/255.0 blue:58.0/255.0 alpha:1];
+//	self.dateLabel.shadowColor = [UIColor whiteColor];
+//	self.dateLabel.shadowOffset = (CGSize){ 0, 1 };
+//	
+//	self.dateLabelBackgroundView = [[UIView alloc] initWithFrame:self.dateLabel.bounds];
+//	self.dateLabelBackgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
+//	
+//	[self.dateLabelBackgroundView addSubview:((^ {
+//	
+//		UIView *actualView = [[UIView alloc] initWithFrame:(CGRect){
+//			(CGPoint){ 0, -8 },
+//			(CGSize){
+//				CGRectGetWidth(self.dateLabelBackgroundView.bounds),
+//				36
+//			}
+//		}];
+//		
+//		UIImage *dateBadgeBackdrop = [UIImage imageNamed:@"WADateBadgeBackdrop"];
+//		actualView.layer.contents = (id)dateBadgeBackdrop.CGImage;
+//		actualView.layer.contentsScale = dateBadgeBackdrop.scale;
+//		actualView.layer.contentsCenter = (CGRect){ 8.0f/18.0f, 12.0f/36.0f, 2.0f/18.0f, 12.0f/36.0f };
+//		actualView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//		actualView.frame = UIEdgeInsetsInsetRect(actualView.frame, (UIEdgeInsets){ 0, -10, 0, -10 });
+//		
+//		return actualView;
+//		
+//	})())];
 	
-	[self.contentView insertSubview:self.dateLabelBackgroundView belowSubview:self.dateLabel];
-  
 	return self;
 	
 }

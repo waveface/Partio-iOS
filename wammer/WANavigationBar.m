@@ -170,8 +170,8 @@
 
 + (UIView *) defaultPatternBackgroundView {
 
-  UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBarBackdrop"];
-  UIImage *landscapeBackdropImage = [UIImage imageNamed:@"WANavigationBarBackdropLandscape"];
+  UIImage *backdropImage = [UIImage imageNamed:@"navigationBar"];
+  UIImage *landscapeBackdropImage = [UIImage imageNamed:@"navigationBarLandscape"];
   UIView *returnedView = [[UIView alloc] initWithFrame:CGRectZero];
   
   returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
