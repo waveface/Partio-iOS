@@ -43,23 +43,29 @@
 
 }
 
+- (WAFile *) newFileInContext:(NSManagedObjectContext *)context {
+
+	return [WAFile objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionaryWithObjectsAndKeys:IRDataStoreNonce(), @"identifier", nil]];
+
+}
+
 - (void) testOrderedRelationshipMutationFromSet {
 
 	NSManagedObjectContext *context = nil;
 	WAArticle *article = [self disposableArticleWithContext:&context];
 	
-	WAFile *file = [WAFile objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionaryWithObjectsAndKeys:IRDataStoreNonce(), @"identifier", nil]];
-	
-	NSLog(@"Before: files %@", article.files);
-	NSLog(@"Before: fileOrder %@", article.fileOrder);
-	
+	WAFile *file = [self newFileInContext:context];
 	[article addFilesObject:file];
 	[self assertFileEquivalancy:article];
 	
-	NSLog(@"After: files %@", article.files);
-	NSLog(@"After: fileOrder %@", article.fileOrder);
-	
 	STAssertTrue([article.fileOrder containsObject:[[file objectID] URIRepresentation]], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array");
+	
+	WAFile *secondFile = [self newFileInContext:context];
+	[article addFilesObject:secondFile];
+	[self assertFileEquivalancy:article];
+
+	STAssertTrue([article.fileOrder containsObject:[[file objectID] URIRepresentation]], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array");
+	STAssertTrue([article.fileOrder containsObject:[[secondFile objectID] URIRepresentation]], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array");
 
 }
 
@@ -68,21 +74,24 @@
 	NSManagedObjectContext *context = nil;
 	WAArticle *article = [self disposableArticleWithContext:&context];
 	
-	WAFile *file = [WAFile objectInsertingIntoContext:context withRemoteDictionary:[NSDictionary dictionaryWithObjectsAndKeys:IRDataStoreNonce(), @"identifier", nil]];
-	
+	WAFile *file = [self newFileInContext:context];
+	[file.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:file] error:nil];
 	NSMutableArray *newOrder = [article.fileOrder mutableCopy];
 	[newOrder addObject:[[file objectID] URIRepresentation]];
-	
-	NSLog(@"Before: files %@", article.files);
-	NSLog(@"Before: fileOrder %@", article.fileOrder);
-	
 	article.fileOrder = newOrder;
 	[self assertFileEquivalancy:article];
 	
-	NSLog(@"After: files %@", article.files);
-	NSLog(@"After: fileOrder %@", article.fileOrder);
+	STAssertTrue([article.files containsObject:file], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array.");
 	
-	STAssertTrue([article.fileOrder containsObject:[[file objectID] URIRepresentation]], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array.");
+	WAFile *secondFile = [self newFileInContext:context];
+	[secondFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:secondFile] error:nil];
+	NSMutableArray *nextOrder = [article.fileOrder mutableCopy];
+	[nextOrder addObject:[[secondFile objectID] URIRepresentation]];
+	article.fileOrder = nextOrder;
+	[self assertFileEquivalancy:article];
+	
+	STAssertTrue([article.files containsObject:file], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array.");
+	STAssertTrue([article.files containsObject:secondFile], @"After inserting an entity to the unordered to-many relationship,  the object ID should show up in the backing order array.");
 
 }
 
