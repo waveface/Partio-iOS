@@ -325,8 +325,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	[super viewDidLoad];
 		
-	__weak WATimelineViewControllerPhone *nrSelf = self;
-	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
 	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
