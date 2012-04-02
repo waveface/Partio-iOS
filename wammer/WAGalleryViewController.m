@@ -330,6 +330,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 #endif
 
+	self.paginatedView.scrollView.delaysContentTouches = NO;
+	self.paginatedView.scrollView.canCancelContentTouches = NO;
+
 }
 
 - (void) viewWillAppear:(BOOL)animated {
