@@ -98,16 +98,12 @@
 
 - (void) imageViewDidUpdate:(WAImageView *)anImageView {
 
-//	NSLog(@"%s %@", __PRETTY_FUNCTION__, anImageView);
-
   [self layoutSubviews];
   [self setNeedsLayout];
 
 }
 
 - (void) setFrame:(CGRect)newFrame {
-
-//	NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGRect(newFrame));
 
 	BOOL frameChanged = !CGRectEqualToRect(self.frame, newFrame);
 
@@ -131,8 +127,6 @@
 }
 
 - (void) setBounds:(CGRect)newBounds {
-
-//	NSLog(@"%s %@", __PRETTY_FUNCTION__, NSStringFromCGRect(newBounds));
 
 	BOOL boundsChanged = !CGRectEqualToRect(self.bounds, newBounds);
 
@@ -168,8 +162,6 @@
 }
 
 - (void) setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync {
-
-//	NSLog(@"%s %@ %x %x", __PRETTY_FUNCTION__, newImage, animate, sync);
 
 	if (self.imageView.image == newImage)
 		return;
@@ -229,18 +221,10 @@
 
 }
 
-- (void) scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(UIView *)view {
-
-//	NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, scrollView, view);
-
-}
-
 - (void) scrollViewDidEndZooming:(UIScrollView *)aScrollView withView:(UIView *)view atScale:(float)scale {
 	
 	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations: ^ {
 	
-//		NSLog(@"did end zooming");
-
 		if (scale > 1) {
 	
 			self.needsContentAdjustmentOnLayout = YES;
