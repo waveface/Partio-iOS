@@ -973,43 +973,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (photoPost) {
 		
 		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
-		
-		pushedVC.navigationItem.leftBarButtonItem = WATransparentBlackBackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
-			
-			[pushedVC.navigationController popViewControllerAnimated:YES];
-		
-		});
 	
 	} else {
 		
 		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
-		
-		pushedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
-			
-			[pushedVC.navigationController popViewControllerAnimated:YES];
-		
-		});
 	
 	}
-
-	//	Instead of this…
-	//	
-	//		NSString *articleTitle = post.text;
-	//		if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-	//			articleTitle = @"Post";
-	//		
-	//		self.navigationItem.backBarButtonItem = [IRBarButtonItem itemWithTitle:articleTitle action:nil];
-	//		
-	//		__block __typeof__(self) nrSelf = self; 
-	//		galleryViewController.onDismiss = ^ {
-	//			
-	//			nrSelf.navigationItem.backBarButtonItem = nil;
-	//			
-	//		};
 		
-	pushedVC.navigationItem.hidesBackButton = YES;
-		
-	[self.navigationController pushViewController:pushedVC animated:YES];
+ 	[self.navigationController pushViewController:pushedVC animated:YES];
 
 }
 

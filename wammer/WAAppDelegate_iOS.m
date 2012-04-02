@@ -47,8 +47,7 @@
 
 #import	"DCIntrospect.h"
 
-#import "GANTracker.h"
-		
+
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
@@ -76,7 +75,12 @@
   //  This is so not going to happen
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[GANTracker sharedTracker] stopTracker];
+	
+	WF_GOOGLEANALYTICS(^ {
+		
+		[[GANTracker sharedTracker] stopTracker];
+		
+	});
 
 }
 
