@@ -29,7 +29,9 @@
 @end
 
 @implementation WALayoutManagerTest
-
+@synthesize layoutManager = _layoutManager;
+@synthesize layoutGrids = _layoutGrids;
+@synthesize layoutItems = _layoutItems;
 
 - (void) testGridGeneration {
 
