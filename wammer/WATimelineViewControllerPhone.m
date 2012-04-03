@@ -320,10 +320,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
 	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBarlLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
 	
-//	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
-//	[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
-//	[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
-
+	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+	[self.tableView addGestureRecognizer:longPressGR];
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -462,10 +461,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		if (!cell) {
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
 			cell.commentLabel.userInteractionEnabled = YES;
-						
-			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
-			[cell addGestureRecognizer:longPress];
-
 		}
 		cell.post = post;
 		
@@ -495,13 +490,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:imageCellIdentifier];
 		if (!cell) {
-			
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
-			
-			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
-			[cell addGestureRecognizer:longPress];
 		}
 		cell.post = post;
 		
@@ -912,64 +903,55 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
+- (BOOL) canBecomeFirstResponder {
+
+	return [self isViewLoaded];
+
+}
+
+- (BOOL) canPerformAction:(SEL)anAction withSender:(id)sender {
+
+	if ([super canPerformAction:anAction withSender:sender])
+		return YES;
+		
+	if ([self respondsToSelector:anAction])
+		return YES;
+	
+	return NO;
+
+}
+
+- (BOOL) canResignFirstResponder {
+
+	return NO;
+
+}
 
 - (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
+
+	UIMenuController * const menuController = [UIMenuController sharedMenuController];
+	if (menuController.menuVisible)
+		return;
 	
-	if(longPress.state == UIGestureRecognizerStateBegan){
+	BOOL didBecomeFirstResponder = [self becomeFirstResponder];
+	NSAssert1(didBecomeFirstResponder, @"%s must require cell to become first responder", __PRETTY_FUNCTION__);
+
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]]];
+	menuController.arrowDirection = UIMenuControllerArrowDown;
+		
+	NSMutableArray *menuItems = [NSMutableArray array];
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)]];
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)]];
 	
-	  WAPostViewCellPhone *cell = (WAPostViewCellPhone *)longPress.view;
-		[self becomeFirstResponder];
-		
-		[longPress locationInView:cell];
-		UIMenuController *menuController = [UIMenuController sharedMenuController];
-		menuController.arrowDirection = UIMenuControllerArrowDown;
-		
-		NSArray *menuItems = [NSArray arrayWithObjects:
-			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
-			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
-			nil];
-			
-		if ( [cell.post.files count] > 2 ) { // photo
-			menuItems = [NSArray arrayWithObjects:
-			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
-			[[UIMenuItem alloc] initWithTitle:@"Choose Cover" action:@selector(cover:)],
-			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
-			nil];
-    }
-		[menuController setMenuItems:menuItems];
-		
-		CGRect originalRect= [cell frame];
-		CGRect targetRect = CGRectMake(originalRect.origin.x, originalRect.origin.y+44.0, originalRect.size.width, originalRect.size.height);
-		[menuController setTargetRect:targetRect inView:cell.superview];
-		[menuController setMenuVisible:YES animated:YES];
-		//[cell setNeedsDisplayInRect:targetRect];
-		
-		NSLog(@"%@", cell.post.favorite);
-		
-	}
-
-	return;
-}
-
-- (BOOL) canBecomeFirstResponder {
-	return YES;
-}
-
-//- (BOOL) tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
-//	return YES;
-//}
-//
-//- (BOOL) tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-//if (action == @selector(favorite:) || 
-//	action == @selector(cover:) ||
-//	action == @selector(remove:)) {
-//  return YES;
-//}
-//	return YES;
-//}
-//
-- (void) tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	NSLog(@"please");
+	if ([cell.post.files count] > 2)
+		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Choose Cover" action:@selector(cover:)]];
+	
+	[menuController setMenuItems:menuItems];
+	[menuController update];
+	
+	[menuController setTargetRect:cell.frame inView:cell.superview];
+	[menuController setMenuVisible:YES animated:YES];
+	
 }
 
 - (void) favorite:(id)sender {
