@@ -48,8 +48,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
-@property (nonatomic, readwrite, retain) WAApplicationDidReceiveReadingProgressUpdateNotificationView *readingProgressUpdateNotificationView;
-
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
@@ -57,14 +55,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 - (void) refreshData;
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL;
-
-@property (nonatomic, readwrite, retain) NSString *lastScannedObjectIdentifier;
-@property (nonatomic, readwrite, retain) NSString *lastUserReactedScannedObjectIdentifier;
-- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback;
-- (void) retrieveLastScannedObjectWithCompletion:(void(^)(NSString *articleIdentifier, WAArticle *anArticleOrNil))callback;
-
-- (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)anIdentifier;
-- (void) scrollToArticle:(WAArticle *)anArticle;
 
 @end
 
@@ -74,8 +64,6 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize settingsActionSheetController;
-@synthesize readingProgressUpdateNotificationView;
-@synthesize lastScannedObjectIdentifier, lastUserReactedScannedObjectIdentifier;
 
 - (void) dealloc {
 	
@@ -295,30 +283,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
-- (void) viewDidUnload {
-		
-	self.readingProgressUpdateNotificationView = nil;
-	
-	[super viewDidUnload];
-	
-}
-
 - (WAPulldownRefreshView *) defaultPulldownRefreshView {
 
 	return [WAPulldownRefreshView viewFromNib];
 		
-}
-
-- (WAApplicationDidReceiveReadingProgressUpdateNotificationView *) readingProgressUpdateNotificationView {
-
-	if (readingProgressUpdateNotificationView)
-		return readingProgressUpdateNotificationView;
-		
-	readingProgressUpdateNotificationView = [WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib];
-	readingProgressUpdateNotificationView.hidden = YES;
-	
-	return readingProgressUpdateNotificationView;
-
 }
 
 - (void) viewDidLoad {
@@ -344,54 +312,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
-	
-	progressUpdateNotification.bounds = (CGRect){
-		CGPointZero,
-		(CGSize){
-			CGRectGetWidth(self.tableView.bounds),
-			progressUpdateNotification.bounds.size.height
-		}
-	};
-	
-	[self.tableView addSubview:progressUpdateNotification];
 	self.tableView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	
-//	self.tableView.onLayoutSubviews = ^ {
-//	
-//		CGRect tableViewBounds = nrSelf.tableView.bounds;
-//		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
-//		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
-//		
-//		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
-//		
-//		actualBackgroundView.bounds = (CGRect){
-//			CGPointZero,
-//			(CGSize){
-//				CGRectGetWidth(tableViewBounds),
-//				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
-//			}
-//		};
-//		
-//		actualBackgroundView.center = (CGPoint){
-//			
-//			0.5 * CGRectGetWidth(tableViewBounds),
-//
-//			backgroundImageSize.height + remainderf(
-//				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
-//				backgroundImageSize.height
-//			)
-//			
-//		};
-//		
-//		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
-//			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
-//			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
-//		};
-//		
-//	};
-	
 	
 	UINavigationBar *navigationBar = self.navigationController.navigationBar;
 	[navigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
@@ -411,212 +333,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:animated];
 	
-	self.readingProgressUpdateNotificationView.hidden = YES;
 	self.tableView.contentInset = UIEdgeInsetsZero;
-
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
-	
-	self.tableView.contentInset = UIEdgeInsetsZero;
-	self.readingProgressUpdateNotificationView.hidden = YES;
-	self.readingProgressUpdateNotificationView.onAction = nil;
-	self.readingProgressUpdateNotificationView.onClear = nil;
-
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
-	
-	CFAbsoluteTime beforeLastScannedObjectRetrieval = CFAbsoluteTimeGetCurrent();
-	
-	void (^presentInterface)(NSString *) = ^ (NSString *incomingIdentifier) {
-	
-		CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
-		CFTimeInterval elapsedTime = (currentTime - beforeLastScannedObjectRetrieval);
-		
-		if (![nrSelf handleIncomingLastScannedObjectIdentifier:incomingIdentifier])
-			return;
-			
-		if (elapsedTime <= 3) {
-		
-			if (![nrSelf.lastUserReactedScannedObjectIdentifier isEqualToString:incomingIdentifier]) {
-		
-				NSLog(@"autoscroll, nrSelf.lastUserReactedScannedObjectIdentifier -> %@", incomingIdentifier);
-				
-				nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-				
-				[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-
-					[nrSelf.fetchedResultsController performFetch:nil];
-					[nrSelf.tableView reloadData];
-					
-					[nrSelf scrollToArticle:article];
-					
-				}];
-			
-			}
-			
-			return;
-			
-		} else {
-		
-			if (nrNotificationView.hidden) {
-			
-				[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-				
-				[nrNotificationView enqueueAnimationForVisibility:YES withAdditionalAnimation:^{
-				
-					UIEdgeInsets newInsets = self.tableView.contentInset;
-					newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
-					self.tableView.contentInset = newInsets;
-					[nrSelf.tableView layoutSubviews];
-								
-				} completion: ^ (BOOL didFinish) {
-
-					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-					
-				}];
-			
-			}
-		
-		}
-		
-	};
-	
-	[self retrieveLastScannedObjectWithCompletion: ^ (NSString *incomingIdentifier, WAArticle *anArticleOrNil) {
-	
-		NSLog(@"retrieveLastScannedObjectWithCompletion -> %@", incomingIdentifier);
-	
-		if (!incomingIdentifier)
-			return;
-	
-		nrSelf.lastScannedObjectIdentifier = anArticleOrNil.identifier;
-	
-		if (![nrSelf isViewLoaded])
-			return;
-		
-		if (anArticleOrNil) {
-			presentInterface(incomingIdentifier);
-			return;
-		}
-		
-		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
-		
-		[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-		nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				if (didFinish) {
-				
-					NSError *savingError = nil;
-					if (![temporalContext save:&savingError])
-						NSLog(@"Error saving: %@", savingError);
-					
-					[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:temporalContext onSuccess:^(NSString *identifier, WAArticle *article) {
-					
-						if (!article) {
-							nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-							return;
-						}
-						
-						presentInterface(incomingIdentifier);
-						
-					}];
-				
-				}
-				
-				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-			
-			});
-			
-		}];
-		
-		//	?
-		
-	}];
-
-}
-
-- (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)incomingIdentifier {
-
-	__weak WATimelineViewControllerPhone *nrSelf = self;
-	__weak __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
-	
-	if ([self.lastUserReactedScannedObjectIdentifier isEqualToString:self.lastScannedObjectIdentifier])
-		return NO;
-	
-	nrNotificationView.onAction = ^ {
-	
-		NSLog(@"self.lastUserReactedScannedObjectIdentifier -> %@", nrSelf.lastUserReactedScannedObjectIdentifier);
-		nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-	
-		[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
-			
-			UIEdgeInsets newInsets = self.tableView.contentInset;
-			newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
-			self.tableView.contentInset = newInsets;
-			[nrSelf.tableView layoutSubviews];
-			
-		} completion:nil];
-		
-		[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-		
-			//	Fixme: MOMENTARILY HIGHLGIGHT THE CELL
-		
-			[nrSelf scrollToArticle:article];
-			
-		}];
-		
-		nrNotificationView.onAction = nil;
-		
-	};
-	
-	nrNotificationView.onClear = ^ {
-	
-		NSLog(@"self.lastUserReactedScannedObjectIdentifier -> %@", nrSelf.lastUserReactedScannedObjectIdentifier);
-		nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-		
-		[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
-			
-			UIEdgeInsets newInsets = nrSelf.tableView.contentInset;
-			newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
-			nrSelf.tableView.contentInset = newInsets;
-			[nrSelf.tableView layoutSubviews];
-			
-		} completion:nil];
-		
-		nrNotificationView.onClear = nil;
-		
-	};
-	
-	return YES;
-	
-}
-
-- (void) scrollToArticle:(WAArticle *)anArticleOrNil {
-
-	NSParameterAssert(anArticleOrNil.managedObjectContext == self.managedObjectContext);
-	NSIndexPath *objectIndexPath = [self.fetchedResultsController indexPathForObject:anArticleOrNil];
-	
-	if (objectIndexPath) {
-	
-			CGRect objectRect = [self.tableView rectForRowAtIndexPath:objectIndexPath];
-			
-			if (CGRectEqualToRect(CGRectIntersection(objectRect, self.tableView.bounds), CGRectNull)) {
-			
-				//	Only scroll if the cell is not already shown
-			
-				[self.tableView setContentOffset:(CGPoint){
-					self.tableView.contentOffset.x,
-					MAX(0, objectRect.origin.y - 24)
-				} animated:YES];
-			
-			}
-			
-	}
 
 }
 
@@ -649,20 +366,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		}];
 	
 	}
-	
-	//	NSString *newLastScannedObjectIdentifier = sentArticle.identifier;
-	
-	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 		
-		//	Don’t go back to what we have said
-		//	self.lastScannedObjectIdentifier = newLastScannedObjectIdentifier;
-		//	self.lastUserReactedScannedObjectIdentifier = newLastScannedObjectIdentifier;
-		
-	}];
-	
-	self.readingProgressUpdateNotificationView.onAction = nil;
-	self.readingProgressUpdateNotificationView.onClear = nil;
-	
 	[self.tableView resetPullDown];
 	//	self.tableView.contentOffset = UIEdgeInsetsZero;
 	
@@ -758,7 +462,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		if (!cell) {
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
 			cell.commentLabel.userInteractionEnabled = YES;
+						
+			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+			[cell addGestureRecognizer:longPress];
+
 		}
+		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
@@ -790,8 +499,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
-					
+			
+			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+			[cell addGestureRecognizer:longPress];
 		}
+		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
@@ -821,8 +533,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier];
 			cell.imageStackView.delegate = self;
 			cell.commentLabel.userInteractionEnabled = YES;
+			
+			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+			[cell addGestureRecognizer:longPress];
+
 					
 		}
+		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
@@ -1193,6 +910,78 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 
+}
+
+
+- (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
+	
+	if(longPress.state == UIGestureRecognizerStateBegan){
+	
+	  WAPostViewCellPhone *cell = (WAPostViewCellPhone *)longPress.view;
+		[self becomeFirstResponder];
+		
+		[longPress locationInView:cell];
+		UIMenuController *menuController = [UIMenuController sharedMenuController];
+		menuController.arrowDirection = UIMenuControllerArrowDown;
+		
+		NSArray *menuItems = [NSArray arrayWithObjects:
+			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
+			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
+			nil];
+			
+		if ( [cell.post.files count] > 2 ) { // photo
+			menuItems = [NSArray arrayWithObjects:
+			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
+			[[UIMenuItem alloc] initWithTitle:@"Choose Cover" action:@selector(cover:)],
+			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
+			nil];
+    }
+		[menuController setMenuItems:menuItems];
+		
+		CGRect originalRect= [cell frame];
+		CGRect targetRect = CGRectMake(originalRect.origin.x, originalRect.origin.y+44.0, originalRect.size.width, originalRect.size.height);
+		[menuController setTargetRect:targetRect inView:cell.superview];
+		[menuController setMenuVisible:YES animated:YES];
+		//[cell setNeedsDisplayInRect:targetRect];
+		
+		NSLog(@"%@", cell.post.favorite);
+		
+	}
+
+	return;
+}
+
+- (BOOL) canBecomeFirstResponder {
+	return YES;
+}
+
+//- (BOOL) tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return YES;
+//}
+//
+//- (BOOL) tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+//if (action == @selector(favorite:) || 
+//	action == @selector(cover:) ||
+//	action == @selector(remove:)) {
+//  return YES;
+//}
+//	return YES;
+//}
+//
+- (void) tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+	NSLog(@"please");
+}
+
+- (void) favorite:(id)sender {
+	NSLog(@"Cell was favorited");
+}
+
+- (void) cover:(id)sender {
+	NSLog(@"Cell was cover");
+}
+
+- (void) remove:(id)sender {
+	NSLog(@"Cell was removed");
 }
 
 @end
