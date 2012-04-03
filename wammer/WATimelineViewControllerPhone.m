@@ -467,6 +467,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			[cell addGestureRecognizer:longPress];
 
 		}
+		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
@@ -502,6 +503,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 			[cell addGestureRecognizer:longPress];
 		}
+		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
@@ -537,6 +539,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 					
 		}
+		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
@@ -914,22 +917,35 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	if(longPress.state == UIGestureRecognizerStateBegan){
 	
-	  UITableViewCell *cell = (UITableViewCell *)longPress.view;
+	  WAPostViewCellPhone *cell = (WAPostViewCellPhone *)longPress.view;
 		[self becomeFirstResponder];
 		
+		[longPress locationInView:cell];
 		UIMenuController *menuController = [UIMenuController sharedMenuController];
 		menuController.arrowDirection = UIMenuControllerArrowDown;
-		[menuController setMenuItems:[NSArray arrayWithObjects:
+		
+		NSArray *menuItems = [NSArray arrayWithObjects:
 			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
-			//[[UIMenuItem alloc] initWithTitle:@"Cover" action:@selector(cover:)],
 			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
-			nil]];
+			nil];
+			
+		if ( [cell.post.files count] > 2 ) { // photo
+			menuItems = [NSArray arrayWithObjects:
+			[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)],
+			[[UIMenuItem alloc] initWithTitle:@"Choose Cover" action:@selector(cover:)],
+			[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)],
+			nil];
+    }
+		[menuController setMenuItems:menuItems];
 		
 		CGRect originalRect= [cell frame];
 		CGRect targetRect = CGRectMake(originalRect.origin.x, originalRect.origin.y+44.0, originalRect.size.width, originalRect.size.height);
-		[menuController setTargetRect:targetRect inView:[super view]];
+		[menuController setTargetRect:targetRect inView:cell.superview];
 		[menuController setMenuVisible:YES animated:YES];
-		[cell setNeedsDisplayInRect:targetRect];
+		//[cell setNeedsDisplayInRect:targetRect];
+		
+		NSLog(@"%@", cell.post.favorite);
+		
 	}
 
 	return;
@@ -937,6 +953,23 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) canBecomeFirstResponder {
 	return YES;
+}
+
+//- (BOOL) tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return YES;
+//}
+//
+//- (BOOL) tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+//if (action == @selector(favorite:) || 
+//	action == @selector(cover:) ||
+//	action == @selector(remove:)) {
+//  return YES;
+//}
+//	return YES;
+//}
+//
+- (void) tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+	NSLog(@"please");
 }
 
 - (void) favorite:(id)sender {

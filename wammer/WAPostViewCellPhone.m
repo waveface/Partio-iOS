@@ -31,6 +31,7 @@
 @synthesize previewTitleLabel;
 @synthesize previewProviderLabel;
 @synthesize previewImageBackground;
+@synthesize post;
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
 
