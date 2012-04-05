@@ -87,9 +87,9 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 	
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WASettingsGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WASettingsGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"UINavigationBarAddButton"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
 		
 	return self;
   
@@ -315,11 +315,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	self.tableView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	
-	UINavigationBar *navigationBar = self.navigationController.navigationBar;
-	[navigationBar setTintColor:[UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0]];
-	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBar"] forBarMetrics:UIBarMetricsDefault];
-	[navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationBarlLandscape"] forBarMetrics:UIBarMetricsLandscapePhone];
-	
 	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
 	[self.tableView addGestureRecognizer:longPressGR];
 	
@@ -329,8 +324,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	[super viewWillAppear:animated];
   [self refreshData];
-	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:animated];
 	
 	self.tableView.contentInset = UIEdgeInsetsZero;
 
@@ -750,27 +743,24 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) handleSettings:(UIBarButtonItem *)sender  {
 
 	WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
-	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WATimelineViewControllerPhone *wSelf = self;
+	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
 	
-	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DONE", nil), ^{
+	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
-		[wrappingNavC dismissModalViewControllerAnimated:YES];
+		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
 		
-	});
+	}];
 	
-	__block UIBarButtonItem *actionItem = WABarButtonItem([UIImage imageNamed:@"WAActionGlyph"], nil, ^{
-		
-		[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:actionItem animated:YES];
+	userInfoVC.navigationItem.rightBarButtonItem =	[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+	
+		[wSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:wUserInfoVC.navigationItem.rightBarButtonItem animated:YES];
 			
-	});
+	}];
 	
-	userInfoVC.navigationItem.rightBarButtonItem = actionItem;
-	
-	wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
-	[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
-	[self presentModalViewController:wrappingNavC animated:YES];
+	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
+	[self presentViewController:wrappingNavC animated:YES completion:nil];
 	
 }
 
@@ -917,12 +907,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if ([self respondsToSelector:anAction])
 		return YES;
 	
-	return NO;
-
-}
-
-- (BOOL) canResignFirstResponder {
-
 	return NO;
 
 }

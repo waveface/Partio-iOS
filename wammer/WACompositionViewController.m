@@ -104,8 +104,8 @@
 
 - (void) setArticle:(WAArticle *)newArticle {
 
-	__block __typeof__(self) nrSelf = self;
-
+	__weak WACompositionViewController *wSelf = self;
+	
 	[self willChangeValueForKey:@"article"];
 	
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
@@ -114,11 +114,11 @@
 	article = newArticle;
 	
 	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+		[wSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
 	
 	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
+		[wSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
 	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	[self didChangeValueForKey:@"article"];
@@ -222,7 +222,9 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
-			
+	
+	[self.contentTextView becomeFirstResponder];
+	
 }	
 
 - (void) viewDidAppear:(BOOL)animated {

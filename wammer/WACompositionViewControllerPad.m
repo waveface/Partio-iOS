@@ -237,6 +237,8 @@
 
 	[super viewDidLoad];
 	
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
+	
 	UIView *photosViewWrapper = [[UIView alloc] initWithFrame:self.photosView.frame];
 	photosViewWrapper.autoresizingMask = self.photosView.autoresizingMask;
 	photosViewWrapper.clipsToBounds = NO;
