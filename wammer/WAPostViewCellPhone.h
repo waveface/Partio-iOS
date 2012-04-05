@@ -11,6 +11,7 @@
 #import "WAPreviewBadge.h"
 #import "IRGradientView.h"
 #import "IRLabel.h"
+#import "WAArticle.h"
 
 enum {
 	WAPostViewCellStyleDefault,
@@ -24,6 +25,7 @@ enum {
 
 - (id) initWithPostViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
+@property (nonatomic, retain, readwrite) WAArticle *post;
 @property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;

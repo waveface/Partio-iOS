@@ -160,6 +160,8 @@
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
 	
+	WADefaultBarButtonInitialize();
+	
 }
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -194,21 +196,6 @@
 		
 	}
 
-	#if TARGET_IPHONE_SIMULATOR
-	// create a custom tap gesture recognizer so introspection can be invoked from a device
-	// this one is a three finger double tap
-	UITapGestureRecognizer *defaultGestureRecognizer = [[UITapGestureRecognizer alloc] init];
-	defaultGestureRecognizer.cancelsTouchesInView = NO;
-	defaultGestureRecognizer.delaysTouchesBegan = NO;
-	defaultGestureRecognizer.delaysTouchesEnded = NO;
-	defaultGestureRecognizer.numberOfTapsRequired = 3;
-	defaultGestureRecognizer.numberOfTouchesRequired = 2;
-	[DCIntrospect sharedIntrospector].invokeGestureRecognizer = defaultGestureRecognizer;
-
-	// always insert this AFTER makeKeyAndVisible so statusBarOrientation is reported correctly.
-	[[DCIntrospect sharedIntrospector] start];
-	#endif
-	
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 
   return YES;
@@ -249,67 +236,19 @@
 	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
 	[queue cancelAllOperations];
 	
-	
-
-	NSString *rootViewControllerClassName = nil;
-		
-	switch (UI_USER_INTERFACE_IDIOM()) {
-		case UIUserInterfaceIdiomPad: {
-			rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
-			break;
-		}
-		default:
-		case UIUserInterfaceIdiomPhone: {
-			rootViewControllerClassName = @"WATimelineViewControllerPhone";
-			break;
-		}
-	}
+	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
+		@"WADiscretePaginatedArticlesViewController" :
+		@"WATimelineViewControllerPhone";
 	
 	NSParameterAssert(rootViewControllerClassName);
 	
-	__block UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
-	
-	self.window.rootViewController = (( ^ {
-	
-		__block WANavigationController *navController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+	UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
+	self.window.rootViewController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
 		
-		navController.onViewDidLoad = ^ (WANavigationController *self) {
-			
-			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			
-			__block WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-			
-			navigationBar.tintColor = [UIColor brownColor];
-			navigationBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
-			
-			navigationBar.onBarStyleContextChanged = ^ {
-			
-				[UIView animateWithDuration:0.3 animations:^{
-					
-					BOOL isTranslucent = (navigationBar.barStyle == UIBarStyleBlackTranslucent) || ((navigationBar.barStyle == UIBarStyleBlack) && navigationBar.translucent);
-					
-					navigationBar.customBackgroundView.alpha = isTranslucent ? 0 : 1;
-					navigationBar.suppressesDefaultAppearance = isTranslucent ? NO : YES;
-					
-					navigationBar.tintColor = isTranslucent ? nil : [UIColor brownColor];
-			
-				}];
-			
-			};
-			
-		};
-		
-		if ([navController isViewLoaded])
-			navController.onViewDidLoad(navController);
-		
-		return navController;
-		
-	})());
-	
 	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 			
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 
 }
 

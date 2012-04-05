@@ -170,13 +170,12 @@
 
 + (UIView *) defaultPatternBackgroundView {
 
-  UIImage *backdropImage = [UIImage imageNamed:@"navigationBar"];
-  UIImage *landscapeBackdropImage = [UIImage imageNamed:@"navigationBarLandscape"];
+  UIImage *backdropImage = [UIImage imageNamed:@"WANavigationBar"];
+  UIImage *landscapeBackdropImage = [UIImage imageNamed:@"WANavigationBarLandscapePhone"];
   UIView *returnedView = [[UIView alloc] initWithFrame:CGRectZero];
   
   returnedView.backgroundColor = [UIColor colorWithPatternImage:backdropImage];
   returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-  
 	
 	BOOL (^isPhone)(void) = ^ {
 		
@@ -233,6 +232,24 @@
   
   [returnedView addSubview:bottomGlare];
 	
+	
+	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:(CGRect){
+		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) },
+		(CGSize){ CGRectGetWidth(returnedView.bounds), 3 }
+	}];
+	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
+	[bottomShadow setLinearGradientFromColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] anchor:irTop toColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0] anchor:irBottom];
+	
+	[returnedView addSubview:bottomShadow];
+  
+  return (UIView *)returnedView;
+
+}
+
++ (UIView *) defaultShadowBackgroundView {
+
+  UIView *returnedView = [[UIView alloc] initWithFrame:CGRectZero];
+  returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
 	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:(CGRect){
 		(CGPoint){ CGRectGetMinX(returnedView.bounds), CGRectGetMaxY(returnedView.bounds) },

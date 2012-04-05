@@ -374,6 +374,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		
 		self.onViewWillDisappear = ^ (BOOL animated) {
 		
+			UIApplication *app = [UIApplication sharedApplication];
+			[app setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+			[app setStatusBarHidden:NO withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
+		
 			navC.navigationBar.barStyle = oldNavBarStyle;
 			navC.navigationBar.translucent = oldNavBarWasTranslucent;
 			navC.navigationBar.tintColor = [UIColor blackColor];
@@ -874,8 +878,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.streamPickerView = nil;
 	
 	[self.galleryViewCache removeAllObjects];
-	
-	self.view.onLayoutSubviews = nil;
 	
 	#if WAGalleryViewController_UsesProxyOverlay
 	self.swipeOverlay = nil;

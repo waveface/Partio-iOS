@@ -101,50 +101,35 @@
 	
 	})())];
 	
-	self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-  
-    __block __typeof__(self) nrSelf = self;
-		
-    IRTransparentToolbar *toolbar = [[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 180, 44 }];
-		
-		toolbar.usesCustomLayout = NO;
-		toolbar.items = [NSMutableArray arrayWithObjects:
-		
-			[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
-		
-			((^ {
-			
-				__block IRBarButtonItem *senderItem = WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-
-					[nrSelf handleUserInfoItemTap:senderItem];
-				
-				});
-				
-				return senderItem;
-			
-			})()),
-			
-			((^ {
-			
-				__block IRBarButtonItem *senderItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-
-					[nrSelf handleComposeItemTap:senderItem];
-				
-				});
-				
-				return senderItem;
-			
-			})()),
-								
-		nil];
-		
-		UIView *returnedView = [[UIView alloc] initWithFrame:toolbar.bounds];
-		[returnedView addSubview:toolbar];
-		toolbar.frame = CGRectOffset(toolbar.frame, 10, 0);
-		
-		return returnedView;
+	__weak WAArticlesViewController *nrSelf = self;
 	
-	})())];
+	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+	
+		((^ {
+		
+			__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WACompose"), nil, ^{
+
+				[nrSelf handleComposeItemTap:senderItem];
+			
+			});
+			
+			return senderItem;
+		
+		})()),
+	
+		((^ {
+			
+			__block IRBarButtonItem *senderItem = WABarButtonItem(WABarButtonImageFromImageNamed(@"WAUserGlyph"), nil, ^{
+
+				[nrSelf handleUserInfoItemTap:senderItem];
+			
+			});
+			
+			return senderItem;
+		
+		})()),
+		
+	nil];
 	
 	self.title = @"Articles";
 	
