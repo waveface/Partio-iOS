@@ -1,9 +1,6 @@
 /* attachment activity view */
 "ACTION_ADD" = "Add";
 
-/* Action title for cancelling */
-"ACTION_BACK" = "Back";
-
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
@@ -12,9 +9,6 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
-
-/* Action title for done */
-"ACTION_DONE" = "Done";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";

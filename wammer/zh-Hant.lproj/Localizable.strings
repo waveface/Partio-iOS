@@ -1,9 +1,6 @@
 /* attachment activity view */
 "ACTION_ADD" = "加";
 
-/* Action title for cancelling */
-"ACTION_BACK" = "返回";
-
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
@@ -12,9 +9,6 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "丟棄草稿";
-
-/* Action title for done */
-"ACTION_DONE" = "完成";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "迴響";

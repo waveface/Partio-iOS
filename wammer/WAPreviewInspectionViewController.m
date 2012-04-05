@@ -10,6 +10,7 @@
 #import "WADataStore.h"
 #import "WANavigationController.h"
 #import "CoreData+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 @interface WAPreviewInspectionViewController ()
 
@@ -102,8 +103,8 @@
 	
 	[deleteButton setBackgroundColor:[UIColor clearColor]];
 	
-	[deleteButton setBackgroundImage:[[UIImage imageNamed:@"delete"] stretchableImageWithLeftCapWidth:5 topCapHeight:12] forState:UIControlStateNormal];
-	[deleteButton setBackgroundImage:[[UIImage imageNamed:@"deletepressed"] stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
+	[deleteButton setBackgroundImage:[IRUIKitImage(@"UINavigationBarRemoveButton") stretchableImageWithLeftCapWidth:5 topCapHeight:12] forState:UIControlStateNormal];
+	[deleteButton setBackgroundImage:[IRUIKitImage(@"UINavigationBarRemoveButtonPressed") stretchableImageWithLeftCapWidth:5 topCapHeight:0] forState:UIControlStateHighlighted];
 	
 	previewBadge.preview = self.preview;
 	previewBadge.titleColor = [UIColor colorWithRed:198.0/255.0 green:107.0/255.0 blue:75.0/255.0 alpha:1.0];

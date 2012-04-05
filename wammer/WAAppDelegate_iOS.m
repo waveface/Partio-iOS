@@ -160,6 +160,8 @@
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
 	
+	WADefaultBarButtonInitialize();
+	
 }
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -261,27 +263,7 @@
 		navController.onViewDidLoad = ^ (WANavigationController *self) {
 			
 			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			
-			__block WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-			
-			navigationBar.tintColor = [UIColor brownColor];
-			navigationBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
-			
-			navigationBar.onBarStyleContextChanged = ^ {
-			
-				[UIView animateWithDuration:0.3 animations:^{
-					
-					BOOL isTranslucent = (navigationBar.barStyle == UIBarStyleBlackTranslucent) || ((navigationBar.barStyle == UIBarStyleBlack) && navigationBar.translucent);
-					
-					navigationBar.customBackgroundView.alpha = isTranslucent ? 0 : 1;
-					navigationBar.suppressesDefaultAppearance = isTranslucent ? NO : YES;
-					
-					navigationBar.tintColor = isTranslucent ? nil : [UIColor brownColor];
-			
-				}];
-			
-			};
-			
+						
 		};
 		
 		if ([navController isViewLoaded])
@@ -294,7 +276,7 @@
 	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
 		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 			
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 
 }
 
