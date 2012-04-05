@@ -990,8 +990,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	 
 	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController controllerWithObjectURI:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
 	
-		NSLog(@"obj %@", selectedFileURI);
-		
 		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
 		picker = nil;
 		
