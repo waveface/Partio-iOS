@@ -427,11 +427,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
-	static NSString *imageCellIdentifier = @"PostCell-Stacked";
-	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
-  static NSString *webLinkCellWithoutPhotoIdentifier = @"PostCell-WebLinkNoPhoto";
-  
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
   BOOL postHasFiles = (BOOL)!![post.files count];
