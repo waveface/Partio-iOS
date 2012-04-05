@@ -77,7 +77,7 @@
 
 /* Application Title
    Title for application */
-"APP_TITLE" = "Waveface";
+"APP_TITLE" = "Stream";
 
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "Welcome";
