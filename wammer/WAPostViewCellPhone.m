@@ -89,14 +89,6 @@
 	
 }
 
-- (void) setSelected:(BOOL)selected animated:(BOOL)animated {
-
-	NSLog(@"%s %@ %x %x, %@", __PRETTY_FUNCTION__, self, selected, animated, [NSThread callStackSymbols]);
-	
-	[super setSelected:selected animated:animated];
-
-}
-
 @end
 
 
