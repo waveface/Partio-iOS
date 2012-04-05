@@ -87,7 +87,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 	
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:WABarButtonImageWithOptions(@"WASettingsGlyph", [UIColor whiteColor], [IRShadow shadowWithColor:[UIColor blackColor] offset:(CGSize){ 0, -0.5} spread:0.5]) style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WASettingsGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
 	
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
 		
