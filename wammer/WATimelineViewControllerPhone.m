@@ -326,10 +326,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   [self refreshData];
 	
 	self.tableView.contentInset = UIEdgeInsetsZero;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMenuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
 
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
 
 	NSArray *shownArticleIndexPaths = [self.tableView indexPathsForVisibleRows];
 
@@ -423,38 +427,34 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
-	static NSString *imageCellIdentifier = @"PostCell-Stacked";
-	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
-  static NSString *webLinkCellWithoutPhotoIdentifier = @"PostCell-WebLinkNoPhoto";
-  
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
   
   BOOL postHasFiles = (BOOL)!![post.files count];
   BOOL postHasPreview = (BOOL)!![post.previews count];
   
-  NSString *identifier;
-	WAPostViewCellStyle style;
 	WAPostViewCellPhone *cell;
 	
-	if (postHasPreview) {
+	WAPostViewCellPhone * (^makeCell)(WAPostViewCellStyle) = ^ (WAPostViewCellStyle style) {
+	
+		NSString *identifier = ((NSString * []){
+			[WAPostViewCellStyleDefault] = @"PostCell-TextOnly",
+			[WAPostViewCellStyleImageStack] = @"PostCell-Stacked",
+			[WAPostViewCellStyleWebLink] = @"PostCell-WebLink",
+			[WAPostViewCellStyleWebLinkWithoutPhoto] = @"PostCell-WebLinkNoPhoto"
+		})[style];
 		
-		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil]] lastObject];
-		
-		identifier = webLinkCellIdentifier;
-		style = WAPostViewCellStyleWebLink;
-		if (!latestPreview.thumbnail) {
-			identifier = webLinkCellWithoutPhotoIdentifier;
-			style = WAPostViewCellStyleWebLinkWithoutPhoto;
-		}
-		
-		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-		if (!cell) {
+		WAPostViewCellPhone *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+		if (!cell)
 			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
-			cell.commentLabel.userInteractionEnabled = YES;
-		}
+		
+		return cell;
+		
+	};
+	
+	if (postHasPreview) {
+	
+		WAPreview *preview = [post.previews anyObject];
+		cell = makeCell(preview.thumbnail ? WAPostViewCellStyleWebLink : WAPostViewCellStyleWebLinkWithoutPhoto);
 		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
@@ -464,15 +464,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.accessibilityLabel = @"Text";
 		cell.accessibilityValue = post.text;
 
-		cell.previewBadge.preview = latestPreview;
+		cell.previewBadge.preview = preview;
 		
 		cell.accessibilityLabel = @"Preview";
-		cell.accessibilityHint = latestPreview.graphElement.title;
-		cell.accessibilityValue = latestPreview.graphElement.text;
+		cell.accessibilityHint = preview.graphElement.title;
+		cell.accessibilityValue = preview.graphElement.text;
 		
-		cell.previewImageView.image = latestPreview.thumbnail;
-		cell.previewTitleLabel.text = latestPreview.graphElement.title;
-		cell.previewProviderLabel.text = latestPreview.graphElement.providerDisplayName;
+		cell.previewImageView.image = preview.thumbnail;
+		cell.previewTitleLabel.text = preview.graphElement.title;
+		cell.previewProviderLabel.text = preview.graphElement.providerDisplayName;
 		
 		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
 		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
@@ -480,19 +480,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.previewImageBackground.layer.shadowRadius = 1.0f;
 	
 	} else if (postHasFiles) {
-	
-		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:imageCellIdentifier];
-		if (!cell) {
-			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier];
-			cell.imageStackView.delegate = self;
-			cell.commentLabel.userInteractionEnabled = YES;
-		}
+
+		cell = makeCell(WAPostViewCellStyleImageStack);
+		cell.imageStackView.delegate = self;
+		cell.commentLabel.userInteractionEnabled = YES;
 		cell.post = post;
-		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
-		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-		cell.extraInfoLabel.text = @"";
-	 
 		cell.accessibilityLabel = @"Text";
 		cell.accessibilityValue = post.text;
 			
@@ -503,7 +495,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			return file.thumbnailImage;
 		}] asynchronously:YES withDecodingCompletion:nil];
 		
-		if ([post.files count] > 3){
+		if ([post.files count] > 3) {
 			cell.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
 		}
 	
@@ -511,18 +503,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
   
   } else {
-		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:textOnlyCellIdentifier];
-		if (!cell) {
-			
-			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier];
-			cell.imageStackView.delegate = self;
-			cell.commentLabel.userInteractionEnabled = YES;
-			
-			UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
-			[cell addGestureRecognizer:longPress];
-
-					
-		}
+		
+		cell = makeCell(WAPostViewCellStyleDefault);
 		cell.post = post;
 		
 		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
@@ -531,7 +513,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	 
 		cell.accessibilityLabel = @"Text";
 		cell.accessibilityValue = post.text;
+		
 	}
+		
 	return cell;
 }
 
@@ -656,6 +640,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	UIMenuController *menuController = [UIMenuController sharedMenuController];
+	if ([menuController isMenuVisible])
+		return;
+	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
 	BOOL photoPost = (BOOL)!![post.files count];
@@ -903,7 +891,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	if ([super canPerformAction:anAction withSender:sender])
 		return YES;
-		
+	
 	if ([self respondsToSelector:anAction])
 		return YES;
 	
@@ -920,7 +908,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	BOOL didBecomeFirstResponder = [self becomeFirstResponder];
 	NSAssert1(didBecomeFirstResponder, @"%s must require cell to become first responder", __PRETTY_FUNCTION__);
 
-	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:[self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]]];
+	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]];
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:indexPath];
+	
+	if (![cell isSelected])
+		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	
 	menuController.arrowDirection = UIMenuControllerArrowDown;
 		
 	NSMutableArray *menuItems = [NSMutableArray array];
@@ -933,9 +926,20 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[menuController setMenuItems:menuItems];
 	[menuController update];
 	
-	[menuController setTargetRect:cell.frame inView:cell.superview];
-	[menuController setMenuVisible:YES animated:YES];
+	CGRect onScreenCellBounds = CGRectIntersection(cell.bounds, [self.tableView convertRect:self.tableView.bounds toView:cell]);
 	
+	[menuController setTargetRect:IRGravitize(onScreenCellBounds, (CGSize){ 8, 8}, kCAGravityCenter) inView:cell];
+	[menuController setMenuVisible:YES animated:NO];
+	
+}
+
+- (void) handleMenuWillHide:(NSNotification *)note {
+
+	NSIndexPath *selectedRowIndexPath = [self.tableView indexPathForSelectedRow];
+
+	if (selectedRowIndexPath)
+		[self.tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+
 }
 
 - (void) favorite:(id)sender {
