@@ -641,8 +641,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	if ([menuController isMenuVisible])
+	if ([menuController isMenuVisible]) {
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+		if (indexPath)
+			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+		
 		return;
+		
+	}
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
