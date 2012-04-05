@@ -91,10 +91,10 @@
 "AUTH_REQUEST_TITLE" = "Welcome";
 
 /* Prompt for Cover Image picker */
-"CHANGE_REPRESENTING_FILE_PROMPT" = "CHANGE_REPRESENTING_FILE_PROMPT";
+"CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
 
 /* Title for Cover Image picker */
-"CHANGE_REPRESENTING_FILE_TITLE" = "CHANGE_REPRESENTING_FILE_TITLE";
+"CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
 /* “%@ Comments” */
 "COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";

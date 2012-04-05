@@ -32,6 +32,20 @@
 
 }
 
+- (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImagesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+		article, @"Article",
+	nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+	nil];
+
+	return fetchRequest;
+
+}
+
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
 
   [self fetchLatestArticleInGroup:aGroupIdentifier usingContext:[self disposableMOC] onSuccess:callback];

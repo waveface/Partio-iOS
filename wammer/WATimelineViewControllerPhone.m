@@ -41,6 +41,8 @@
 
 #import "WAArticleDraftsViewController.h"
 #import "WAViewController.h"
+#import "WARepresentedFilePickerViewController.h"
+#import "WAOverlayBezel.h"
 
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -986,27 +988,32 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
 	 
-	//	Move prototype code into dedicated subclass
+	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController controllerWithObjectURI:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
 	
-	WAViewController *coverPicker = [[WAViewController alloc] init];
-	coverPicker.navigationItem.title = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_TITLE", @"Title for Cover Image picker");
-	coverPicker.navigationItem.prompt = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_PROMPT", @"Prompt for Cover Image picker");
+		NSLog(@"obj %@", selectedFileURI);
+		
+		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		picker = nil;
+		
+		WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[bezel showWithAnimation:WAOverlayBezelAnimationFade];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+			
+			[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			
+		});
+		
+	}];
 	
-	coverPicker.onLoadview = ^ (WAViewController *self) {
+	picker.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
 	
-		self.view = [[UIView alloc] initWithFrame:CGRectZero];
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWood"]];
-	
-	};
-
-	__weak WAViewController *wCoverPicker = coverPicker;
-	coverPicker.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
-	
-			[wCoverPicker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		picker = nil;
 				
 	}];
 	
-	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:coverPicker];
+	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:picker];
 	[self.navigationController presentViewController:navC animated:YES completion:nil];
 	
 }
