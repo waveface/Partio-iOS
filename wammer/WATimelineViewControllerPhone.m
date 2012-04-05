@@ -40,6 +40,7 @@
 #import "WANavigationBar.h"
 
 #import "WAArticleDraftsViewController.h"
+#import "WAViewController.h"
 
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -896,13 +897,26 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) canPerformAction:(SEL)anAction withSender:(id)sender {
 
-	if ([super canPerformAction:anAction withSender:sender])
+	if (anAction == @selector(toggleFavorite:))
 		return YES;
 	
-	if ([self respondsToSelector:anAction])
+	if (anAction == @selector(editCoverImage:))
+		return YES;
+	
+	if (anAction == @selector(removeArticle:))
 		return YES;
 	
 	return NO;
+
+	//	In the future, this will prove handy
+	//
+	//	if ([super canPerformAction:anAction withSender:sender])
+	//		return YES;
+	//	
+	//	if ([self respondsToSelector:anAction])
+	//		return YES;
+	//	
+	//	return NO;
 
 }
 
@@ -916,7 +930,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSAssert1(didBecomeFirstResponder, @"%s must require cell to become first responder", __PRETTY_FUNCTION__);
 
 	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	
 	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:indexPath];
+	NSParameterAssert(cell.post == article);	//	Bleh
 	
 	if (![cell isSelected])
 		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -924,11 +941,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	menuController.arrowDirection = UIMenuControllerArrowDown;
 		
 	NSMutableArray *menuItems = [NSMutableArray array];
-	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)]];
-	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)]];
+		
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:([article.favorite isEqual:(id)kCFBooleanTrue] ?
+		NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Action marking article as not favorite") :
+		NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Action marking article as favorite")) action:@selector(toggleFavorite:)]];
+	
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Action deleting an article") action:@selector(removeArticle:)]];
 	
 	if ([cell.post.files count] > 2)
-		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Choose Cover" action:@selector(cover:)]];
+		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Action changing representing file of an article") action:@selector(editCoverImage:)]];
 	
 	[menuController setMenuItems:menuItems];
 	[menuController update];
@@ -949,16 +970,54 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
-- (void) favorite:(id)sender {
-	NSLog(@"Cell was favorited");
+- (void) toggleFavorite:(id)sender {
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
 }
 
-- (void) cover:(id)sender {
-	NSLog(@"Cell was cover");
+- (void) editCoverImage:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	 
+	//	Move prototype code into dedicated subclass
+	
+	WAViewController *coverPicker = [[WAViewController alloc] init];
+	coverPicker.navigationItem.title = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_TITLE", @"Title for Cover Image picker");
+	coverPicker.navigationItem.prompt = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_PROMPT", @"Prompt for Cover Image picker");
+	
+	coverPicker.onLoadview = ^ (WAViewController *self) {
+	
+		self.view = [[UIView alloc] initWithFrame:CGRectZero];
+		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWood"]];
+	
+	};
+
+	__weak WAViewController *wCoverPicker = coverPicker;
+	coverPicker.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+	
+			[wCoverPicker.navigationController dismissViewControllerAnimated:YES completion:nil];
+				
+	}];
+	
+	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:coverPicker];
+	[self.navigationController presentViewController:navC animated:YES completion:nil];
+	
 }
 
-- (void) remove:(id)sender {
-	NSLog(@"Cell was removed");
+- (void) removeArticle:(id)sender {
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
 }
 
 @end

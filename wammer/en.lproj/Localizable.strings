@@ -7,6 +7,12 @@
    Cancel. */
 "ACTION_CANCEL" = "Cancel";
 
+/* Action changing representing file of an article */
+"ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
+
+/* Action deleting an article */
+"ACTION_DELETE" = "Delete";
+
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
 
@@ -19,8 +25,9 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
 
-/* Bar button item title to mark the article as a favorite */
-"ACTION_MARK_FAVORITE" = "+ ♥";
+/* Action marking article as favorite
+   Bar button item title to mark the article as a favorite */
+"ACTION_MARK_FAVORITE" = "Fave";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
@@ -60,8 +67,9 @@
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
 
-/* Bar button item title to unmark the article as a favorite */
-"ACTION_UNMARK_FAVORITE" = "- ♥";
+/* Action marking article as not favorite
+   Bar button item title to unmark the article as a favorite */
+"ACTION_UNMARK_FAVORITE" = "Unfave";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";
@@ -81,6 +89,12 @@
 
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "Welcome";
+
+/* Prompt for Cover Image picker */
+"CHANGE_REPRESENTING_FILE_PROMPT" = "CHANGE_REPRESENTING_FILE_PROMPT";
+
+/* Title for Cover Image picker */
+"CHANGE_REPRESENTING_FILE_TITLE" = "CHANGE_REPRESENTING_FILE_TITLE";
 
 /* “%@ Comments” */
 "COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";
