@@ -72,86 +72,29 @@
 	self.postViewCellStyle = aStyle;
 	self.reuseIdentifier = aReuseIdentifier;
 	  
-//	self.backgroundView = WAStandardPostCellBackgroundView();  	
-//	self.selectedBackgroundView = WAStandardPostCellSelectedBackgroundView();  
-//	
-//  self.avatarView.layer.cornerRadius = 4.0;
-//	self.avatarView.layer.masksToBounds = YES;
+	self.selectedBackgroundView = ((^ {
+	
+		UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+		view.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1];
+		view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		
+		return view;
+		
+	})());
 	
 	self.previewBadge.titleFont = [UIFont systemFontOfSize:14.0f];
 	self.previewBadge.textFont = [UIFont systemFontOfSize:14.0f];
-		
-//	self.dateLabel.backgroundColor = nil;
-//	self.dateLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-//	self.dateLabel.textColor = [UIColor colorWithRed:145.0/255.0 green:118.0/255.0 blue:58.0/255.0 alpha:1];
-//	self.dateLabel.shadowColor = [UIColor whiteColor];
-//	self.dateLabel.shadowOffset = (CGSize){ 0, 1 };
-//	
-//	self.dateLabelBackgroundView = [[UIView alloc] initWithFrame:self.dateLabel.bounds];
-//	self.dateLabelBackgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
-//	
-//	[self.dateLabelBackgroundView addSubview:((^ {
-//	
-//		UIView *actualView = [[UIView alloc] initWithFrame:(CGRect){
-//			(CGPoint){ 0, -8 },
-//			(CGSize){
-//				CGRectGetWidth(self.dateLabelBackgroundView.bounds),
-//				36
-//			}
-//		}];
-//		
-//		UIImage *dateBadgeBackdrop = [UIImage imageNamed:@"WADateBadgeBackdrop"];
-//		actualView.layer.contents = (id)dateBadgeBackdrop.CGImage;
-//		actualView.layer.contentsScale = dateBadgeBackdrop.scale;
-//		actualView.layer.contentsCenter = (CGRect){ 8.0f/18.0f, 12.0f/36.0f, 2.0f/18.0f, 12.0f/36.0f };
-//		actualView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//		actualView.frame = UIEdgeInsetsInsetRect(actualView.frame, (UIEdgeInsets){ 0, -10, 0, -10 });
-//		
-//		return actualView;
-//		
-//	})())];
 	
 	return self;
 	
 }
 
-- (void) setSelected:(BOOL)selecte animated:(BOOL)animated {
+- (void) setSelected:(BOOL)selected animated:(BOOL)animated {
 
-  //  Default behavior is undesirable
-
-}
-
-- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-
-  //  Default behavior is undesirable
-
-  if (highlighted) {
-  
-    if (self.backgroundView)
-    if (self.selectedBackgroundView) {
-
-      self.selectedBackgroundView.frame = self.bounds;
-      [self insertSubview:self.selectedBackgroundView aboveSubview:self.backgroundView];
-    
-    }
-  
-  } else {
-  
-    [self.selectedBackgroundView removeFromSuperview];
-  
-  }
-
-}
-
-- (void) layoutSubviews {
+	NSLog(@"%s %@ %x %x, %@", __PRETTY_FUNCTION__, self, selected, animated, [NSThread callStackSymbols]);
 	
-	[super layoutSubviews];
-	
-	CGRect dateRect = self.dateLabel.frame;
-	[self.dateLabel sizeToFit];
-	self.dateLabel.frame = IRGravitize(dateRect, self.dateLabel.frame.size, kCAGravityTopRight);
-	self.dateLabelBackgroundView.frame = self.dateLabel.frame;
-	
+	[super setSelected:selected animated:animated];
+
 }
 
 @end
