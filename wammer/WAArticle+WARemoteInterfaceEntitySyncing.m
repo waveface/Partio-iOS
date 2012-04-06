@@ -372,15 +372,111 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	*/
 
-	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	id mergePolicy = [options objectForKey:kWAMergePolicy];
-	
 	if (!mergePolicy)
 		mergePolicy = kWAOverwriteWithLatestMergePolicy;
 	
 	NSAssert1(mergePolicy == kWAOverwriteWithLatestMergePolicy, @"Merge policies (got %@) other than kWAOverwriteWithLatestMergePolicy are not implemented", mergePolicy);
 	
+	
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	NSMutableArray *operations = [NSMutableArray array];
+	NSMutableDictionary *context = [NSMutableDictionary dictionary];
+	
+	NSString * const kPostExistingRemoteRep = @"postExistingRemoteRep";
+	NSString * const kPostGroupID = @"postGroupID";
+	NSString * const kPostText = @"postText";
+	NSString * const kPostWebPreview = @"postWebPreview";
+	NSString * const kPostAttachmentIDs = @"postAttachmentIDs";
+	NSString * const kPostCoverPhoto = @"postCoverPhotoID";
+	
+	
+	NSString * const postID = self.identifier;
+	NSString * const groupID = self.group.identifier;
 	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier);
+	
+	if (!isDraft) {
+		
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+		
+			[ri retrievePost:postID inGroup:groupID onSuccess:^(NSDictionary *postRep) {
+
+				callback(postRep);
+				
+			} onFailure:^(NSError *error) {
+			
+				callback(error);
+				
+			}];
+			
+		} completionBlock:^(id results) {
+		
+			if ([results isKindOfClass:[NSDictionary class]]) {
+
+				NSLog(@"context was %@", context);
+				[context setObject:results forKey:kPostExistingRemoteRep];
+				NSLog(@"context is %@", context);
+				
+			}
+			
+		}]];
+	
+	}
+	
+	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+	
+		NSDictionary *postExistingRemoteRep = [context objectForKey:kPostExistingRemoteRep];
+		if (!postExistingRemoteRep) {
+			callback((id)kCFBooleanTrue);
+			return;
+		}
+		
+		//	Compare timestamp, return boxed nscomparisonresult
+		
+		//	[WAArticle remoteDictionaryConfigurationMapping]
+		//	[WAArticle transformedValue:￼ fromRemoteKeyPath:￼ toLocalKeyPath:￼]
+		
+	} completionBlock:^(id results) {
+	
+		
+		
+	}]];
+	
+	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+	
+		callback(groupID);
+	
+	} completionBlock:^(id results) {
+	
+		if ([results isKindOfClass:[NSString class]])
+			[context setObject:groupID forKey:kPostGroupID];
+		
+	}]];
+	
+	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+	
+		//	?
+	
+	} completionBlock:^(id results) {
+	
+		//	?
+		
+	}]];
+	
+	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+	
+		//	?
+	
+	} completionBlock:^(id results) {
+	
+		//	?
+		
+	}]];
+	
 	
 	if (isDraft) {
 	
@@ -396,10 +492,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			[resultsDictionary setObject:self.group.identifier forKey:@"postGroupIdentifier"];
 		else
 			[resultsDictionary setObject:ri.primaryGroupIdentifier forKey:@"postGroupIdentifier"];
-		
-		void (^cleanup)() = ^ {
-			//	?
-		};
 		
 		[operationQueue setSuspended:YES];
 		
@@ -600,10 +692,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 			}
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				cleanup();
-			});
-			
 		}];
 		
 		NSArray *allOps = operationQueue.operations;
