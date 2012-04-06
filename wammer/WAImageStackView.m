@@ -268,32 +268,32 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	switch ([photoViews count]) {
 		case 1: {
 			UIView *photoView = [photoViews objectAtIndex:0];
-			photoView.frame = CGRectMake(  0,  0,296,196);
+			photoView.frame = CGRectMake(    0,   0,296-24,196-24);
 			[self addSubview:photoView];
 			break; }
 			
 		case 2: {
 			UIView *photoView = [photoViews objectAtIndex:0];
-			photoView.frame = CGRectMake(  0,  0,146,196);
+			photoView.frame = CGRectMake(    0,   0,146-12,196-24);
 			[self addSubview:photoView];
 
 			photoView = [photoViews objectAtIndex:1];
-			photoView.frame = CGRectMake(150,  0,146,196);
+			photoView.frame = CGRectMake(150-12,  0,146-12,196-24);
 			[self addSubview:photoView];
 			[self.activityIndicator stopAnimating];
 			break; }
 			
 		case 3:{
 			UIView *photoView = [photoViews objectAtIndex:0];
-			photoView.frame = CGRectMake(  0,  0,196,196);
+			photoView.frame = CGRectMake(  0,  0,196-12,196-24);
 			[self addSubview:photoView];
 
 			photoView = [photoViews objectAtIndex:1];
-			photoView.frame = CGRectMake(200,  0, 96, 96);
+			photoView.frame = CGRectMake(200-12,  0, 96-12, 96-12);
 			[self addSubview:photoView];
 
 			photoView = [photoViews objectAtIndex:2];
-			photoView.frame = CGRectMake(200,100, 96, 96);
+			photoView.frame = CGRectMake(200-12,100-12, 96-12, 96-12);
 			[self addSubview:photoView];
 			break; }
 		
