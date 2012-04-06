@@ -22,7 +22,7 @@
 @dynamic fileOrder;
 @dynamic identifier;
 @dynamic text;
-@dynamic timestamp;
+@dynamic creationDate;
 @dynamic summary;
 @dynamic comments;
 @dynamic files;

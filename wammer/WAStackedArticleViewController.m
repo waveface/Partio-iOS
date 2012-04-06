@@ -72,7 +72,7 @@
 		
 			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
-				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.timestamp];
+				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.creationDate];
 				NSString *device = wSelf.article.creationDeviceName;
 				NSString *string = [NSString stringWithFormat:@"%@ (%@)", relDate, device];
 				

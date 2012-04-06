@@ -286,7 +286,7 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 		cell.avatarView.image = post.owner.avatar;
 		cell.commentLabel.text = post.text;
 		cell.dateLabel.text = [NSString stringWithFormat:@"%@ %@", 
-													 [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp], 
+													 [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate],
 													 [NSString stringWithFormat:@"via %@", post.creationDeviceName]];
 		cell.originLabel.text = [NSString stringWithFormat:@"via %@", post.creationDeviceName];
 		
@@ -318,9 +318,8 @@ static NSString * const kWAPostViewCellFloatsAbove = @"kWAPostViewCellFloatsAbov
 	cell.userNicknameLabel.text = representedComment.owner.nickname;
 	cell.avatarView.image = representedComment.owner.avatar;
 	cell.commentLabel.text = representedComment.text;
-	cell.dateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp];
+	cell.dateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate];
 
-	[representedComment.timestamp description];
 	cell.originLabel.text = representedComment.creationDeviceName;
 	
 	return cell;

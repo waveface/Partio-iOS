@@ -53,30 +53,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 		
-		/*
-		
-		    post_id: <post_id>,     // unique   
-    creator_id: <uid>,
-    code_name: (String) nameOfCreatingDevice,
-    group_id: <group_id>,
-    timestamp: (Date) aTimestamp,
-    content: (String) contentText,
-    comment_count: (Number) numberOfComments,
-    comments: (Array) zeroOrMoreCommentEntities,
-    attachment_id_array: (Array) arrayOfAttachmentId,
-    attachments_count: (Number) numberOfFiles,
-    attachments: (Array) zeroOrMoreFileEntities,
-    preview: (Array) zeroOrMore PreviewEntities,
-    soul: aSoulEntity
-
-		
-		*/
-		
 			@"identifier", @"post_id",
 			@"owner", @"owner",	//	wraps @"creator_id"
 			@"creationDeviceName", @"code_name",
 			@"group", @"group",	//	wraps @"group_id"
-			@"timestamp", @"timestamp",
+			@"creationDate", @"timestamp",
 			@"text", @"content",
 			@"comments", @"comments",
 			@"files", @"attachments",
@@ -94,7 +75,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (id) transformedValue:(id)aValue fromRemoteKeyPath:(NSString *)aRemoteKeyPath toLocalKeyPath:(NSString *)aLocalKeyPath {
 
-	if ([aLocalKeyPath isEqualToString:@"timestamp"])
+	if ([aLocalKeyPath isEqualToString:@"creationDate"])
 		return [[WADataStore defaultStore] dateFromISO8601String:aValue];
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
@@ -108,7 +89,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 	return [NSDictionary dictionaryWithObjectsAndKeys:
 		
-		//	@"WAFile", @"files",
 		@"WAGroup", @"group",
 		@"WAComment", @"comments",
 		@"WAUser", @"owner",
@@ -269,8 +249,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         NSString *referencedPostIdentifier = identifier;
         NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
         
-        if (article.timestamp) {
-          referencedPostDate = article.timestamp;
+        if (article.creationDate) {
+          referencedPostDate = article.creationDate;
           referencedPostIdentifier = nil;
         }
 				

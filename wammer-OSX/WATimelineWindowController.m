@@ -56,7 +56,7 @@
 - (NSArray *) sortDescriptors {
 
 	return [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 
 }

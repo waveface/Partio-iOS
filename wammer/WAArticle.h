@@ -21,7 +21,7 @@
 @property (nonatomic, retain) NSArray * fileOrder;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSDate * timestamp;
+@property (nonatomic, retain) NSDate * creationDate;
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;

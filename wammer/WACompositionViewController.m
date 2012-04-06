@@ -423,7 +423,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	//	TBD save a draft
 	
 	self.article.text = self.contentTextView.text;
-  self.article.timestamp = [NSDate date];
+  self.article.creationDate = [NSDate date];
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
@@ -473,7 +473,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
 		
 			self.article.text = self.contentTextView.text;
-			self.article.timestamp = [NSDate date];
+			self.article.creationDate = [NSDate date];
 			
 			NSError *savingError = nil;
 			if (![self.managedObjectContext save:&savingError])

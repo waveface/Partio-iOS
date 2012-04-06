@@ -460,7 +460,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell = makeCell(preview.thumbnail ? WAPostViewCellStyleWebLink : WAPostViewCellStyleWebLinkWithoutPhoto);
 		cell.post = post;
 		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
 		cell.extraInfoLabel.text = @"";
 	 
@@ -510,7 +510,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell = makeCell(WAPostViewCellStyleDefault);
 		cell.post = post;
 		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
 		cell.extraInfoLabel.text = @"";
 	 
