@@ -365,9 +365,44 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 - (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	/*
 	
-	if ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier) {
+		The general idea:
+		
+		
+		First, see if the article is only a draft.
+		
+		- If it’s not a draft, load the entire remote representation into memory, but do not put them in the Data Store yet.
+		
+		
+		If there’s a remote representation, and it matches local representation, bail.
+		
+		-	We assume that if the modification date on the remote representation matches local timestamp, both entities are equal and holds the same data.
+		-	It’s no longer necessary to do any work because we totally assume that if the timestamps match things will be fine.
+		-	HOWEVER, debug builds will do more work and assert equivalency.
+		
+		
+		If things differ, we need to do some more work:
+		
+		-	For every single attachment which lacks a remote identifier, we need to upload it and create an identifier for it
+		-	For every preview (we currently only have one) we need to generate a representation
+		
+		
+		Finally, invoke either the update API or the post creation API.
+	
+	*/
+
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	id mergePolicy = [options objectForKey:kWAMergePolicy];
+	
+	if (!mergePolicy)
+		mergePolicy = kWAOverwriteWithLatestMergePolicy;
+	
+	NSAssert1(mergePolicy == kWAOverwriteWithLatestMergePolicy, @"Merge policies (got %@) other than kWAOverwriteWithLatestMergePolicy are not implemented", mergePolicy);
+	
+	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier);
+	
+	if (isDraft) {
 	
 		NSURL *ownURL = [[self objectID] URIRepresentation];
 	
@@ -501,8 +536,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if (dependentOperationCancelledOrFailed(nrFinalOperation)) {
 			
 				for (IRAsyncOperation *dependentOp in nrFinalOperation.dependencies) {
-					if ([dependentOp.results isKindOfClass:[NSError class]]) {
-					
+					if ([dependentOp.results isKindOfClass:[NSError class]]) {					
 						aCallback((NSError *)dependentOp.results);
 						return;
 					}
@@ -608,6 +642,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	} else {
 	
 		[ri retrievePost:self.identifier inGroup:self.group.identifier onSuccess:^(NSDictionary *postRep) {
+		
+			//	TBD: Look at postRep, find the latest one, overwrite either part
+			
+			
 		
 			if (!completionBlock)
 				return;
