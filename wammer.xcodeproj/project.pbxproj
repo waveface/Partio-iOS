@@ -219,7 +219,6 @@
 		FF87FA51149CF46D00B8207A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4C149CF46D00B8207A /* CoreFoundation.framework */; };
 		FF87FA52149CF46D00B8207A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4D149CF46D00B8207A /* Foundation.framework */; };
 		FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
-		FF88E14814E8D80400B347A8 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14714E8D80400B347A8 /* WAArticle.m */; };
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
 		FF897D32146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
 		FF897D35146A69A600DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */; };
@@ -456,7 +455,6 @@
 		FFCEF41215199ED10021AECB /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
 		FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
-		FFCEF41515199F000021AECB /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14714E8D80400B347A8 /* WAArticle.m */; };
 		FFCEF41615199F000021AECB /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FFCEF41815199F000021AECB /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FFCEF41A15199F000021AECB /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF16B99C14BB249B00E1C2B8 /* WAFile.m */; };
@@ -525,11 +523,13 @@
 		FFCFE0E8142111E100B9E6AF /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		FFCFE0E9142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
-		FFD21B0D151313C000FDC0EF /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14714E8D80400B347A8 /* WAArticle.m */; };
 		FFD21B0E151313C400FDC0EF /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF16B99C14BB249B00E1C2B8 /* WAFile.m */; };
 		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
+		FFE3899A15328E9C00A26948 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3899915328E9C00A26948 /* WAArticle.m */; };
+		FFE3899B15328E9C00A26948 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3899915328E9C00A26948 /* WAArticle.m */; };
+		FFE3899C15328E9C00A26948 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3899915328E9C00A26948 /* WAArticle.m */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
 		FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF72C188142789FA00B5D838 /* IRFoundationsX.framework */; };
@@ -1242,8 +1242,6 @@
 		FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 14.xcdatamodel"; sourceTree = "<group>"; };
 		FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WAAdditions.h"; sourceTree = "<group>"; };
 		FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WAAdditions.m"; sourceTree = "<group>"; };
-		FF88E14614E8D80400B347A8 /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
-		FF88E14714E8D80400B347A8 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		FF897D2D146A515C00DA7199 /* WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterfaceEntitySyncing.h; sourceTree = "<group>"; };
 		FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceEntitySyncing.m; sourceTree = "<group>"; };
 		FF897D30146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
@@ -1554,6 +1552,8 @@
 		FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreview.m; sourceTree = "<group>"; };
 		FFE2E60A150F336D00555C16 /* WADiscreteLayoutHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADiscreteLayoutHelpers.h; path = wammer/WADiscreteLayoutHelpers.h; sourceTree = "<group>"; };
 		FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADiscreteLayoutHelpers.m; path = wammer/WADiscreteLayoutHelpers.m; sourceTree = "<group>"; };
+		FFE3899815328E9C00A26948 /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
+		FFE3899915328E9C00A26948 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -2172,12 +2172,12 @@
 			isa = PBXGroup;
 			children = (
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
+				FFE3899815328E9C00A26948 /* WAArticle.h */,
+				FFE3899915328E9C00A26948 /* WAArticle.m */,
 				FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */,
 				FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */,
 				FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */,
 				FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */,
-				FF88E14614E8D80400B347A8 /* WAArticle.h */,
-				FF88E14714E8D80400B347A8 /* WAArticle.m */,
 				FF9DA0C513DFF89000D6B28B /* WAComment.h */,
 				FF9DA0C613DFF89000D6B28B /* WAComment.m */,
 				FF0C7AB814987FCA00632EF3 /* WADataStore+FetchingConveniences.h */,
@@ -3502,7 +3502,6 @@
 				FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTest.m in Sources */,
 				FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */,
-				FFCEF41515199F000021AECB /* WAArticle.m in Sources */,
 				FFCEF41615199F000021AECB /* WAComment.m in Sources */,
 				FFCEF41815199F000021AECB /* WADataStore.m in Sources */,
 				FFCEF41A15199F000021AECB /* WAFile.m in Sources */,
@@ -3549,6 +3548,7 @@
 				FF586C731519B9F300F308E2 /* WADiscreteLayoutHelpers.m in Sources */,
 				FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */,
 				FF54C5161520947100301887 /* WADataStoreTest.m in Sources */,
+				FFE3899B15328E9C00A26948 /* WAArticle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3599,9 +3599,9 @@
 				FF61CCB3149D40E500A6EB0B /* WAComposition.m in Sources */,
 				FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */,
 				FF73351314A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */,
-				FFD21B0D151313C000FDC0EF /* WAArticle.m in Sources */,
 				FFD21B0E151313C400FDC0EF /* WAFile.m in Sources */,
 				FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */,
+				FFE3899C15328E9C00A26948 /* WAArticle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3708,7 +3708,6 @@
 				FFB44D5A14D692AA00080F07 /* WAArticleViewController_Preview.m in Sources */,
 				FFB44D5D14D6A2A800080F07 /* WAScrollView.m in Sources */,
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
-				FF88E14814E8D80400B347A8 /* WAArticle.m in Sources */,
 				4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */,
 				FF2E82FC14EE48FB000C6044 /* WAPreview+WAAdditions.m in Sources */,
 				FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */,
@@ -3755,6 +3754,7 @@
 				FF946023152D7EF10034D540 /* WAAppearance.m in Sources */,
 				FF5ACC22152D917E00F1DF3D /* WANavigationState.m in Sources */,
 				FF6D75D7152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m in Sources */,
+				FFE3899A15328E9C00A26948 /* WAArticle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
