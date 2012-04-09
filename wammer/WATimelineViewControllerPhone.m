@@ -477,10 +477,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.previewTitleLabel.text = preview.graphElement.title;
 		cell.previewProviderLabel.text = preview.graphElement.providerDisplayName;
 		
-		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
-		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
-		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
-		cell.previewImageBackground.layer.shadowRadius = 1.0f;
+//		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
+//		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
+//		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
+//		cell.previewImageBackground.layer.shadowRadius = 1.0f;
 	
 	} else if (postHasFiles) {
 
