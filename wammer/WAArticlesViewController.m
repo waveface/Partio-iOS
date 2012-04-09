@@ -77,7 +77,7 @@
 	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
 	fr.fetchBatchSize = 100;
 	fr.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
 	nil];
 		
 	self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];

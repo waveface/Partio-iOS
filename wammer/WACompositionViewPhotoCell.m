@@ -13,12 +13,13 @@
 
 @interface WACompositionViewPhotoCell ()
 @property (nonatomic, readwrite, retain) UIView *imageContainer;
+@property (nonatomic, readwrite, retain) UIView *highlightOverlay;	//	Placed in the image container
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation WACompositionViewPhotoCell
-@synthesize image, imageContainer, removeButton, onRemove;
+@synthesize image, imageContainer, removeButton, onRemove, highlightOverlay;
 @synthesize activityIndicator;
 @synthesize canRemove;
 
@@ -61,8 +62,15 @@
 	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
 	self.imageContainer.layer.shadowOpacity = 0.5f;
 	self.imageContainer.layer.shadowRadius = 2.0f;
-	//	self.imageContainer.layer.masksToBounds = YES;
+
 	[self.contentView addSubview:self.imageContainer];
+	
+	self.highlightOverlay = [[UIView alloc] initWithFrame:self.imageContainer.bounds];
+	self.highlightOverlay.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
+	self.highlightOverlay.userInteractionEnabled = NO;
+	self.highlightOverlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.highlightOverlay.hidden = YES;
+	[self.imageContainer addSubview:self.highlightOverlay];
 	
 	self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	self.removeButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
@@ -108,12 +116,14 @@
 	
 	if (newImage) {
 	
-		CGRect imageRect = IRGravitize(self.imageContainer.frame, newImage.size, kCAGravityResizeAspect);
+		CGRect imageRect = IRGravitize(self.imageContainer.bounds, newImage.size, kCAGravityResizeAspect);
 		self.removeButton.center = (CGPoint) {
 			CGRectGetMinX(imageRect) + 8,
 			CGRectGetMinY(imageRect) + 8
 		};
-	
+		
+		self.highlightOverlay.frame = imageRect;
+		
 	}
 	
 	[self setNeedsLayout];
@@ -147,6 +157,25 @@
 		self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.imageContainer.bounds].CGPath;
 	
 	}
+
+}
+
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+
+	[super setHighlighted:highlighted animated:animated];
+	
+	self.highlightOverlay.alpha = self.highlightOverlay.hidden ? 0 : 1;
+	self.highlightOverlay.hidden = NO;
+	
+	[UIView animateWithDuration:(animated ? 0.3 : 0) animations:^{
+
+		self.highlightOverlay.alpha = highlighted ? 1 : 0;
+		
+	} completion:^(BOOL finished) {
+	
+		self.highlightOverlay.hidden = !highlighted;
+		
+	}];
 
 }
 

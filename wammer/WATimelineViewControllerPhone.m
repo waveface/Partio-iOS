@@ -40,6 +40,9 @@
 #import "WANavigationBar.h"
 
 #import "WAArticleDraftsViewController.h"
+#import "WAViewController.h"
+#import "WARepresentedFilePickerViewController.h"
+#import "WAOverlayBezel.h"
 
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -457,7 +460,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell = makeCell(preview.thumbnail ? WAPostViewCellStyleWebLink : WAPostViewCellStyleWebLinkWithoutPhoto);
 		cell.post = post;
 		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
 		cell.extraInfoLabel.text = @"";
 	 
@@ -507,7 +510,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell = makeCell(WAPostViewCellStyleDefault);
 		cell.post = post;
 		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
+		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
 		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
 		cell.extraInfoLabel.text = @"";
 	 
@@ -617,7 +620,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			break;
 		}
 		case NSFetchedResultsChangeUpdate: {
-			NSParameterAssert(indexPath && !newIndexPath);
 			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			break;
 		}
@@ -641,8 +643,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	if ([menuController isMenuVisible])
+	if ([menuController isMenuVisible]) {
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+		if (indexPath)
+			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+		
 		return;
+		
+	}
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
@@ -889,13 +898,26 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) canPerformAction:(SEL)anAction withSender:(id)sender {
 
-	if ([super canPerformAction:anAction withSender:sender])
+	if (anAction == @selector(toggleFavorite:))
 		return YES;
 	
-	if ([self respondsToSelector:anAction])
+	if (anAction == @selector(editCoverImage:))
+		return YES;
+	
+	if (anAction == @selector(removeArticle:))
 		return YES;
 	
 	return NO;
+
+	//	In the future, this will prove handy
+	//
+	//	if ([super canPerformAction:anAction withSender:sender])
+	//		return YES;
+	//	
+	//	if ([self respondsToSelector:anAction])
+	//		return YES;
+	//	
+	//	return NO;
 
 }
 
@@ -909,7 +931,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSAssert1(didBecomeFirstResponder, @"%s must require cell to become first responder", __PRETTY_FUNCTION__);
 
 	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	
 	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:indexPath];
+	NSParameterAssert(cell.post == article);	//	Bleh
 	
 	if (![cell isSelected])
 		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -917,11 +942,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	menuController.arrowDirection = UIMenuControllerArrowDown;
 		
 	NSMutableArray *menuItems = [NSMutableArray array];
-	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Favorite" action:@selector(favorite:)]];
-	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(remove:)]];
+		
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:([article.favorite isEqual:(id)kCFBooleanTrue] ?
+		NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Action marking article as not favorite") :
+		NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Action marking article as favorite")) action:@selector(toggleFavorite:)]];
+	
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Action deleting an article") action:@selector(removeArticle:)]];
 	
 	if ([cell.post.files count] > 2)
-		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Choose Cover" action:@selector(cover:)]];
+		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Action changing representing file of an article") action:@selector(editCoverImage:)]];
 	
 	[menuController setMenuItems:menuItems];
 	[menuController update];
@@ -942,16 +971,57 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
-- (void) favorite:(id)sender {
-	NSLog(@"Cell was favorited");
+- (void) toggleFavorite:(id)sender {
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
 }
 
-- (void) cover:(id)sender {
-	NSLog(@"Cell was cover");
+- (void) editCoverImage:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	 
+	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController controllerWithObjectURI:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
+	
+		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		picker = nil;
+		
+		WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[bezel showWithAnimation:WAOverlayBezelAnimationFade];
+		
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+			
+			[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			
+		});
+		
+	}];
+	
+	picker.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+	
+		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		picker = nil;
+				
+	}];
+	
+	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:picker];
+	[self.navigationController presentViewController:navC animated:YES completion:nil];
+	
 }
 
-- (void) remove:(id)sender {
-	NSLog(@"Cell was removed");
+- (void) removeArticle:(id)sender {
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
 }
 
 @end
