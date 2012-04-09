@@ -44,6 +44,10 @@ enum {
 @property (retain, nonatomic) IBOutlet UILabel *previewProviderLabel;
 @property (retain, nonatomic) IBOutlet UIView *previewImageBackground;
 
+@property (strong, nonatomic) IBOutlet UILabel *dayLabel;
+@property (strong, nonatomic) IBOutlet UILabel *monthLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *tapestryView;
+
 @end
 
 @interface WAPostViewCellPhone (NibLoading)

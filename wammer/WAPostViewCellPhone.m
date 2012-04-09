@@ -31,6 +31,9 @@
 @synthesize previewTitleLabel;
 @synthesize previewProviderLabel;
 @synthesize previewImageBackground;
+@synthesize tapestryView;
+@synthesize dayLabel;
+@synthesize monthLabel;
 @synthesize post;
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {

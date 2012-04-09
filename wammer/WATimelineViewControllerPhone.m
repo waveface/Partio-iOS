@@ -477,6 +477,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.previewTitleLabel.text = preview.graphElement.title;
 		cell.previewProviderLabel.text = preview.graphElement.providerDisplayName;
 		
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+		dateFormatter.dateFormat = @"dd";
+		cell.dayLabel.text = [dateFormatter stringFromDate:post.timestamp];
+		dateFormatter.dateFormat = @"MMM";
+		cell.monthLabel.text = [[dateFormatter stringFromDate:post.timestamp] uppercaseString];
+		
 //		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
 //		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
 //		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
@@ -504,7 +510,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		cell.accessibilityLabel = @"Photo";
 		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
-  
+		
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+		dateFormatter.dateFormat = @"dd";
+		cell.dayLabel.text = [dateFormatter stringFromDate:post.timestamp];
+		dateFormatter.dateFormat = @"MMM";
+		cell.monthLabel.text = [[dateFormatter stringFromDate:post.timestamp] uppercaseString];
+	
   } else {
 		
 		cell = makeCell(WAPostViewCellStyleDefault);
@@ -516,6 +528,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	 
 		cell.accessibilityLabel = @"Text";
 		cell.accessibilityValue = post.text;
+		
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+		dateFormatter.dateFormat = @"dd";
+		cell.dayLabel.text = [dateFormatter stringFromDate:post.timestamp];
+		dateFormatter.dateFormat = @"MMM";
+		cell.monthLabel.text = [[dateFormatter stringFromDate:post.timestamp] uppercaseString];
 		
 	}
 		

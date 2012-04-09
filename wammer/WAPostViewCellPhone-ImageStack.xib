@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1179</string>
+			<string key="NS.object.0">1181</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -70,7 +70,6 @@
 								<string key="NSFrame">{{40, 186}, {272, 68}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:345</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -251,6 +250,30 @@
 					</object>
 					<int key="connectionID">36</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">dayLabel</string>
+						<reference key="source" ref="102746709"/>
+						<reference key="destination" ref="582968721"/>
+					</object>
+					<int key="connectionID">46</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">monthLabel</string>
+						<reference key="source" ref="102746709"/>
+						<reference key="destination" ref="70640495"/>
+					</object>
+					<int key="connectionID">47</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tapestryView</string>
+						<reference key="source" ref="102746709"/>
+						<reference key="destination" ref="696408900"/>
+					</object>
+					<int key="connectionID">48</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -375,7 +398,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">45</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -420,14 +443,17 @@
 							<string>contentTextView</string>
 							<string>dateLabel</string>
 							<string>dateOriginLabel</string>
+							<string>dayLabel</string>
 							<string>extraInfoLabel</string>
 							<string>imageStackView</string>
+							<string>monthLabel</string>
 							<string>originLabel</string>
 							<string>previewBadge</string>
 							<string>previewImageBackground</string>
 							<string>previewImageView</string>
 							<string>previewProviderLabel</string>
 							<string>previewTitleLabel</string>
+							<string>tapestryView</string>
 							<string>userNicknameLabel</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -439,13 +465,16 @@
 							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
+							<string>UILabel</string>
 							<string>WAImageStackView</string>
+							<string>UILabel</string>
 							<string>UILabel</string>
 							<string>WAPreviewBadge</string>
 							<string>UIView</string>
 							<string>UIImageView</string>
 							<string>UILabel</string>
 							<string>UILabel</string>
+							<string>UIImageView</string>
 							<string>UILabel</string>
 						</object>
 					</object>
@@ -459,14 +488,17 @@
 							<string>contentTextView</string>
 							<string>dateLabel</string>
 							<string>dateOriginLabel</string>
+							<string>dayLabel</string>
 							<string>extraInfoLabel</string>
 							<string>imageStackView</string>
+							<string>monthLabel</string>
 							<string>originLabel</string>
 							<string>previewBadge</string>
 							<string>previewImageBackground</string>
 							<string>previewImageView</string>
 							<string>previewProviderLabel</string>
 							<string>previewTitleLabel</string>
+							<string>tapestryView</string>
 							<string>userNicknameLabel</string>
 						</object>
 						<object class="NSArray" key="dict.values">
@@ -496,12 +528,20 @@
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">dayLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">extraInfoLabel</string>
 								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">imageStackView</string>
 								<string key="candidateClassName">WAImageStackView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">monthLabel</string>
+								<string key="candidateClassName">UILabel</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">originLabel</string>
@@ -526,6 +566,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">previewTitleLabel</string>
 								<string key="candidateClassName">UILabel</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tapestryView</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">userNicknameLabel</string>
@@ -564,6 +608,6 @@
 			<string key="NS.key.0">tagFavorite.png</string>
 			<string key="NS.object.0">{17, 40}</string>
 		</object>
-		<string key="IBCocoaTouchPluginVersion">1179</string>
+		<string key="IBCocoaTouchPluginVersion">1181</string>
 	</data>
 </archive>
