@@ -620,7 +620,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			break;
 		}
 		case NSFetchedResultsChangeUpdate: {
-			NSParameterAssert(indexPath && !newIndexPath);
 			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			break;
 		}

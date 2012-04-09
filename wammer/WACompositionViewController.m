@@ -73,12 +73,20 @@
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
-	if (anArticleURLOrNil)
-		returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
+	if (anArticleURLOrNil) {
+		
+		WAArticle *foundArticle = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
+		NSAssert1(foundArticle, @"Unable to dereference WAArticle reference at %@", anArticleURLOrNil);
+		returnedController.article = foundArticle;
 	
-	if (!returnedController.article) {
+	} else {
+	
+		//	Else, make a new one.
+		
 		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 		returnedController.article.draft = [NSNumber numberWithBool:YES];
+		returnedController.article.creationDate = [NSDate date];
+		
 	}
 	
 	returnedController.completionBlock = aBlock;
@@ -126,6 +134,8 @@
 }
 
 - (void) dealloc {
+
+	textAttributor.delegate = nil;
 
 	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
@@ -179,8 +189,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (void) viewWillAppear:(BOOL)animated {
 
   [super viewWillAppear:animated];
+	
+	__weak WACompositionViewController *wSelf = self;
   	
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
+	
+		if (!wSelf)
+			return;
 	
 		NSDictionary *userInfo = [aNotification userInfo];
 		CGRect newBounds = [[userInfo objectForKey:IRWindowInterfaceChangeNewBoundsKey] CGRectValue];
@@ -205,13 +220,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 			[UIView animateWithDuration:animationDuration delay:0 options:animationOptions animations:^{
 
-				[self adjustContainerViewWithInterfaceBounds:newBounds];
+				[wSelf adjustContainerViewWithInterfaceBounds:newBounds];
 				
 			} completion:nil];
 		
 		} else {
 
-			[self adjustContainerViewWithInterfaceBounds:newBounds];		
+			[wSelf adjustContainerViewWithInterfaceBounds:newBounds];		
 		
 		}
 		
@@ -279,7 +294,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (textAttributor)
 		return textAttributor;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WACompositionViewController *wSelf = self;
 	
 	textAttributor = [[IRTextAttributor alloc] init];
 	textAttributor.delegate = self;
@@ -298,7 +313,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			return;
 		}
 		
-		if ([[nrSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
+		if ([[wSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
 			
 			return [aPreview.url isEqualToString:attributedString];
 			
@@ -332,10 +347,12 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	NSString *capturedText = textView.text;
 	self.article.text = capturedText;
 	
+	__weak WACompositionViewController *wSelf = self;
+	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 	
 		if ([textView.text isEqualToString:capturedText])
-			self.textAttributor.attributedContent = [[NSMutableAttributedString alloc] initWithString:capturedText];
+			wSelf.textAttributor.attributedContent = [[NSMutableAttributedString alloc] initWithString:capturedText];
 			
 	});
 	
@@ -420,10 +437,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleDone:(UIBarButtonItem *)sender {
 
-	//	TBD save a draft
-	
 	self.article.text = self.contentTextView.text;
-  self.article.creationDate = [NSDate date];
+	self.article.modificationDate = [NSDate date];
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
@@ -463,24 +478,26 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	if (!actionSheetController) {
 	
+		__weak WACompositionViewController *wSelf = self;
+	
 		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
 			
-			if (self.completionBlock)
-				self.completionBlock(nil);
+			if (wSelf.completionBlock)
+				wSelf.completionBlock(nil);
 			
 		}];
 		
 		IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
 		
-			self.article.text = self.contentTextView.text;
-			self.article.creationDate = [NSDate date];
+			wSelf.article.text = wSelf.contentTextView.text;
+			wSelf.article.creationDate = [NSDate date];
 			
 			NSError *savingError = nil;
-			if (![self.managedObjectContext save:&savingError])
+			if (![wSelf.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 			
-			if (self.completionBlock)
-				self.completionBlock(nil);
+			if (wSelf.completionBlock)
+				wSelf.completionBlock(nil);
 		
 		}];
 			

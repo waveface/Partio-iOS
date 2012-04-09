@@ -23,6 +23,7 @@
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
+#import "WACompositionViewController.h"
 
 
 @interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate, WAArticleTextStackElementDelegate>
@@ -240,14 +241,11 @@
 		case UIUserInterfaceIdiomPad: {
 			
 			self.headerBarButtonItems = [NSArray arrayWithObjects:
-				
 				articleDateItem,
-				
 				[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-				
+				[self editButtonItem],
 				favoriteToggleItem,
 				commentsItem,
-				
 			nil];
 			
 			break;
@@ -257,7 +255,10 @@
 		case UIUserInterfaceIdiomPhone: {
 			
 			self.headerBarButtonItems = [NSArray arrayWithObjects:articleDateItem, nil];
-			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:commentsItem, nil];
+			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+				commentsItem,
+				[self editButtonItem],
+			nil];
 			
 			break;
 			
@@ -1090,7 +1091,6 @@
 	
 }
 
-
 #endif
 
 - (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
@@ -1156,6 +1156,108 @@
 - (BOOL) enablesTextStackElementFolding {
 
 	return NO;
+
+}
+
+- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
+
+	[super setEditing:editing animated:animated];
+	
+	__block void (^dismissBlock)(void) = nil;
+	
+	if (editing) {
+	
+		NSParameterAssert([self isViewLoaded] && self.view.window && !self.presentedViewController && (self.navigationController ? (self.navigationController.topViewController == self) : YES));
+	
+		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(NSURL *anArticleURLOrNil) {
+			
+			NSLog(@"Completed editing %@", anArticleURLOrNil);
+			
+			if (dismissBlock)
+				dismissBlock();
+			
+			if (!anArticleURLOrNil)
+				return;
+			
+			dispatch_async(dispatch_get_global_queue(0, 0), ^{
+				
+				NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
+				WAArticle *article = [moc irManagedObjectForURI:anArticleURLOrNil];
+				
+				__block WAOverlayBezel *bezel = nil;
+				
+				dispatch_sync(dispatch_get_main_queue(), ^{
+					
+					bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+					[bezel showWithAnimation:WAOverlayBezelAnimationFade];
+				
+				});
+				
+				[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+				
+					NSLog(@"Synced?  %x %@ %@ %@", didFinish, context, objects, error);
+					
+					dispatch_async(dispatch_get_main_queue(), ^{
+					
+						[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+						bezel = nil;
+						
+						//	probably error bezel here
+						
+					});
+					
+				}];
+			
+			});
+			
+		}];
+		
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+			
+			case UIUserInterfaceIdiomPad: {
+				
+				UINavigationController *navC = [compositionVC wrappingNavigationController];
+				navC.modalPresentationStyle = UIModalPresentationFormSheet;
+				[self presentViewController:navC animated:YES completion:nil];
+				
+				__weak UINavigationController *wNavC = navC;
+				__weak WAStackedArticleViewController *wSelf = self;
+				dismissBlock = [^ {
+					[wSelf setEditing:NO animated:NO];
+					[wNavC dismissViewControllerAnimated:YES completion:nil];
+					dismissBlock = nil;
+				} copy];
+				
+				break;
+				
+			}
+			
+			case UIUserInterfaceIdiomPhone: {
+			
+				NSParameterAssert(self.navigationController && (self == self.navigationController.topViewController));
+					
+				[self.navigationController pushViewController:compositionVC animated:YES];
+				
+				__weak WACompositionViewController *wCompositionVC = compositionVC;
+				__weak WAStackedArticleViewController *wSelf = self;
+				dismissBlock = [^ {
+					NSCParameterAssert(wCompositionVC.navigationController);
+					[wSelf setEditing:NO animated:NO];
+					[wCompositionVC.navigationController popViewControllerAnimated:YES];
+					dismissBlock = nil;
+				} copy];
+			
+				break;
+				
+			}
+		
+		}
+	
+	} else {
+	
+		//	?
+	
+	}
 
 }
 

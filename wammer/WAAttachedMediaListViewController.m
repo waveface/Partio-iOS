@@ -52,12 +52,12 @@
 	if (!self)
 		return nil;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAAttachedMediaListViewController *wSelf = self;
 	
 	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
-		if (nrSelf.callback)
-			nrSelf.callback();
+		if (wSelf.callback)
+			wSelf.callback();
 		
 	}];
 	
@@ -75,21 +75,18 @@
 	
 	self.articleFilesObservingsHelper =  [self.article irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 	
-		if (![nrSelf isViewLoaded])
+		if (![wSelf isViewLoaded])
 			return;
 		
-		if ([nrSelf isUndergoingProgrammaticEntityMutation])
+		if ([wSelf isUndergoingProgrammaticEntityMutation])
 			return;
 		
-		[nrSelf.tableView reloadData];
+		[wSelf.tableView reloadData];
 		
 		// Fixme: Use NSFRC
 		// Fixme: Also remove dupe KVO invocations
 		
-	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
-  
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-	
+	} forKeyPath:@"files" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	return self;
 
@@ -97,39 +94,8 @@
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
 	[article irRemoveObservingsHelper:self.articleFilesObservingsHelper];
 	
-}
-
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	if (![NSThread isMainThread]) {
-
-		dispatch_sync(dispatch_get_main_queue(), ^ {
-			[self handleManagedObjectContextDidSave:aNotification];
-		});
-		return;
-		
-	}
-	
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
-	
-	if (savedContext == self.managedObjectContext) {
-		if ([self isViewLoaded]) {
-			[self.tableView reloadData];
-		}
-		return;
-	}
-	
-	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
-	
-	if ([self isViewLoaded]) {
-		[self.tableView reloadData];
-	}
-
 }
 
 - (void) loadView {
@@ -151,31 +117,7 @@
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad();
-
-}
-
-- (void) viewDidUnload {
-
-	[super viewDidUnload];
-
-}
-
-- (void) viewWillAppear:(BOOL)animated {
-
-	[super viewWillAppear:animated];
 	
-	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]])
-		[(IRManagedObjectContext *)self.managedObjectContext irBeginMergingFromSavesAutomatically];
-
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-
-	[super viewWillDisappear:animated];
-	
-	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]])
-		[(IRManagedObjectContext *)self.managedObjectContext irStopMergingFromSavesAutomatically];
-
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -282,14 +224,16 @@
 
 }
 
--(BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 	
 	return YES;
 	
 }
 
--(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
-	
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+
+	self.undergoingProgrammaticEntityMutation = YES;
+
 	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
 	
 	NSMutableArray *order = [(NSArray *)self.article.fileOrder  mutableCopy];
@@ -298,6 +242,7 @@
 	[order insertObject:fromURL atIndex:[destinationIndexPath row]];
 	
 	self.article.fileOrder = order;
+	self.undergoingProgrammaticEntityMutation = NO;
 	
 }
 @end
