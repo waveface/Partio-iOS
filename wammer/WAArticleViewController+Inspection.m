@@ -16,6 +16,7 @@
 #import "WADefines.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAOverlayBezel.h"
+#import "WARemoteInterface.h"
 
 
 NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_inspectionDelegate";
@@ -219,10 +220,27 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 			WAArticle *article = wSelf.article;
 			
 			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
 			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
+				
+			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			} onFailure:^(NSError *error) {
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			}];
 
 		};
 	

@@ -195,18 +195,25 @@
 			WAArticle *article = wSelf.article;
 		
 			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
 			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 			
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] onSuccess:^{
+			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
-				NSLog(@":D");
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			} onFailure:^(NSError *error) {
-			
-				NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			}];
 			
@@ -1178,48 +1185,21 @@
 			
 			if (!anArticleURLOrNil)
 				return;
-			
-			WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-			[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-						
-			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil onSuccess:^{
-			
-				NSCParameterAssert(![NSThread isMainThread]);
-				dispatch_async(dispatch_get_main_queue(), ^ {
 				
-					[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-					
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 				
-					WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
-					[doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
-					
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-						[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					});
-					
-				});
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			} onFailure:^(NSError *error) {
 				
-				NSCParameterAssert(![NSThread isMainThread]);
-				dispatch_async(dispatch_get_main_queue(), ^ {
-				
-					[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-					
-					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-					
-					WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-					[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
-					
-					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-						[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					});
-				
-				});
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			}];
-			
+						
 		}];
 		
 		UINavigationController *navC = [compositionVC wrappingNavigationController];

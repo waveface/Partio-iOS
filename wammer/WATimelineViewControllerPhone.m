@@ -978,6 +978,29 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
 	
+	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+	article.modificationDate = [NSDate date];
+	
+	NSError *savingError = nil;
+	if (![article.managedObjectContext save:&savingError])
+		NSLog(@"Error saving: %@", savingError);
+	
+	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+	
+	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+		
+	nil] onSuccess:^{
+		
+		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
+	} onFailure:^(NSError *error) {
+		
+		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
+	}];
+
 }
 
 - (void) editCoverImage:(id)sender {

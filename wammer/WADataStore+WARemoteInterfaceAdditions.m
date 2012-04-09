@@ -10,6 +10,10 @@
 #import "WARemoteInterface.h"
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WAOverlayBezel.h"
+
+
+NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
@@ -85,10 +89,18 @@
 	} onFailure:aBlock];
 
 }
-
+          
 - (void) updateArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
+	[self updateArticle:anArticleURI withOptions:nil onSuccess:successBlock onFailure:failureBlock];
+
+}
+
+- (void) updateArticle:(NSURL *)anArticleURI withOptions:(NSDictionary *)options onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
+
 	NSParameterAssert([NSThread isMainThread]);
+	
+	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
 
 	__weak WADataStore *wSelf = self;
 	
@@ -97,22 +109,55 @@
 	
 	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
 	
+	WAOverlayBezel *busyBezel = nil;
+	if (usesBezels) {
+		busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
+	
 	[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+	
+		void (^fireCallback)(void) = ^ {
 		
-		if (!didFinish) {
+			NSCParameterAssert([NSThread isMainThread]);
+		
+			if (didFinish) {
+				
+				if (successBlock)
+					successBlock();
 			
-			if (failureBlock)
-				failureBlock(error);
+			} else {
+
+				if (failureBlock)
+					failureBlock(error);
+				
+			}
+			
+			[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+			
+		};
+		
+		if (usesBezels) {
+		
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			
+			WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
+			[resultBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+			
+				[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				
+				fireCallback();
+			
+			});
 			
 		} else {
-
-			if (successBlock)
-				successBlock();
+		
+			fireCallback();
 		
 		}
-		
-		[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
-		
+				
 	}];
 	
 }
@@ -217,3 +262,8 @@
 }
 
 @end
+
+
+void WADataStoreUpdateArticleWithFeedback (NSURL *articleURI) {
+
+}
