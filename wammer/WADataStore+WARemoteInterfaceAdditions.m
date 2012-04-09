@@ -14,7 +14,7 @@
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
 
-- (NSMutableSet *) articlesCurrentlyBeingUploaded;
+- (NSMutableSet *) articlesCurrentlyBeingUpdated;
 
 @end
 
@@ -77,7 +77,7 @@
 
 - (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(NSError *))aBlock {
 
-	[self uploadArticle:anArticleURI onSuccess:^ {
+	[self updateArticle:anArticleURI onSuccess:^ {
 	
 		if (aBlock)
 			aBlock(nil);
@@ -86,23 +86,18 @@
 
 }
 
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
+- (void) updateArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	NSParameterAssert([NSThread isMainThread]);
 
-	__block __typeof__(self) nrSelf = self;
-	__block NSManagedObjectContext *context = [self disposableMOC];
-	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
+	__weak WADataStore *wSelf = self;
 	
-	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
+	NSManagedObjectContext *context = [self disposableMOC];
+	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
-	void (^cleanup)() = ^ {
-		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
-	};
+	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
 	
-	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
-	
-	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+	[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 		
 		if (!didFinish) {
 			
@@ -116,15 +111,15 @@
 		
 		}
 		
-		cleanup();
+		[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
 		
 	}];
 	
 }
 
-- (BOOL) isUploadingArticle:(NSURL *)anObjectURI {
+- (BOOL) isUpdatingArticle:(NSURL *)anObjectURI {
 
-	return [[self articlesCurrentlyBeingUploaded] containsObject:anObjectURI];
+	return [[self articlesCurrentlyBeingUpdated] containsObject:anObjectURI];
 
 }
 
@@ -207,7 +202,7 @@
 
 @implementation WADataStore (WARemoteInterfaceAdditions_Private)
 
-- (NSMutableSet *) articlesCurrentlyBeingUploaded {
+- (NSMutableSet *) articlesCurrentlyBeingUpdated {
 
 	static NSString * const key = @"WADataStore_WARemoteInterfaceAdditions_articlesCurrentlyBeingUploaded";
 	

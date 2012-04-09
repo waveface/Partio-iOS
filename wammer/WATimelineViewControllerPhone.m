@@ -695,7 +695,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
 
-	return ![[WADataStore defaultStore] isUploadingArticle:anObjectURIOrNil];
+	return ![[WADataStore defaultStore] isUpdatingArticle:anObjectURIOrNil];
 
 }
 

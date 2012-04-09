@@ -110,7 +110,7 @@
 	[self.managedObjectContext save:nil];
 		
 	NSURL *articleURI = [[self.article objectID] URIRepresentation];
-	[[WADataStore defaultStore] uploadArticle:articleURI onSuccess: ^ {
+	[[WADataStore defaultStore] updateArticle:articleURI onSuccess: ^ {
 	
 		NSParameterAssert([NSThread isMainThread]);
 	

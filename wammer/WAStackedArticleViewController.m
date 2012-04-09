@@ -200,7 +200,7 @@
 			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 			
-			[[WADataStore defaultStore] uploadArticle:[[article objectID] URIRepresentation] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] onSuccess:^{
 			
 				NSLog(@":D");
 				
@@ -1195,8 +1195,6 @@
 				
 				[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 				
-					NSLog(@"Synced?  %x %@ %@ %@", didFinish, context, objects, error);
-					
 					dispatch_async(dispatch_get_main_queue(), ^{
 					
 						[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
