@@ -632,8 +632,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 	} completionBlock:^(id results) {
 	
-		NSLog(@"Done? %@", results);
-		
 		if ([results isKindOfClass:[NSDictionary class]]) {
 		
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -825,8 +823,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			//	TBD: Look at postRep, find the latest one, overwrite either part
 			
-			
-		
 			if (!completionBlock)
 				return;
 			
