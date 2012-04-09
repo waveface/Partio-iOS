@@ -14,3 +14,13 @@ BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObj
 	return (BOOL)(![anObject hasChanges] && ![[anObject objectID] isTemporaryID]);
 
 }
+
+
+id<NSCopying> const kWAMergePolicy = @"WAMergePolicy";
+
+id const kWAErrorMergePolicy = @"WAErrorMergePolicy";
+id const kWAMergeByPropertyRemoteTrumpMergePolicy = @"WAMergeByPropertyRemoteTrumpMergePolicy";
+id const kWAMergeByPropertyLocalTrumpMergePolicy = @"WAMergeByPropertyLocalTrumpMergePolicy";
+id const kWAOverwriteWithRemoteMergePolicy = @"WAOverwriteWithRemoteMergePolicy";
+id const kWAOverwriteWithLocalMergePolicy = @"WAOverwriteWithLocalMergePolicy";
+id const kWAOverwriteWithLatestMergePolicy = @"WAOverwriteWithLatestMergePolicy";

@@ -176,26 +176,27 @@
 
 - (IRTextAttributor *) textAttributor {
 
-	__block IRTextAttributor *returnedAttributor = [super textAttributor];
+	__weak IRTextAttributor *returnedAttributor = [super textAttributor];
 	
-	if (objc_getAssociatedObject(returnedAttributor, _cmd))
+	if (!objc_getAssociatedObject(returnedAttributor, _cmd))
 		return returnedAttributor;
 	
-	__block __typeof__(self) nrSelf = self;
-	__block id observer = [returnedAttributor.queue irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
+	NSOperationQueue *queue = returnedAttributor.queue;
+	__weak WACompositionViewControllerPhone *wSelf = self;
+	id observer = [queue irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
-
-			[nrSelf updateArticleAttachmentActivityView];
-		
+			
+			[wSelf updateArticleAttachmentActivityView];
+			
 		});
 		
 	} forKeyPath:@"operations" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	[returnedAttributor irPerformOnDeallocation:^{
-	
-	 [returnedAttributor irRemoveObservingsHelper:observer];
-		
+
+	 [queue irRemoveObservingsHelper:observer];
+	 
 	}];
 
 	NSCParameterAssert(!objc_getAssociatedObject(returnedAttributor, _cmd));
@@ -367,16 +368,17 @@
 
 - (WAAttachedMediaListViewController *) newMediaListViewController {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WACompositionViewControllerPhone *wSelf = self;
 	__block WAAttachedMediaListViewController *mediaList = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
 	
-		[nrSelf dismissMediaListViewController:mediaList animated:YES];
+		[wSelf dismissMediaListViewController:mediaList animated:YES];
+		mediaList = nil;
 		
 	}];
 	
 	mediaList.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAdd wiredAction:^(IRBarButtonItem *senderItem) {
 	
-		[nrSelf handleImageAttachmentInsertionRequestWithSender:senderItem];
+		[wSelf handleImageAttachmentInsertionRequestWithSender:senderItem];
 		
 	}];
 	
@@ -459,7 +461,7 @@
 	
 	if (showsDeleteConfirmation) {
 
-		__block __typeof__(self) nrSelf = self;
+		__weak WACompositionViewControllerPhone *wSelf = self;
 		
 		if (self.actionSheetController.managedActionSheet.visible)
 			return;
@@ -474,7 +476,7 @@
 				[removedPreview.article removePreviewsObject:removedPreview];
 				[inspector dismissModalViewControllerAnimated:YES];
 
-				nrSelf.actionSheetController = nil;
+				wSelf.actionSheetController = nil;
 				
 			}];
 			
