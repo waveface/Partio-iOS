@@ -15,7 +15,7 @@
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 	
 	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
@@ -28,6 +28,20 @@
 	
 	fetchRequest.fetchBatchSize = 20;
 	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImagesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+		article, @"Article",
+	nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
+	nil];
+
 	return fetchRequest;
 
 }
@@ -48,7 +62,7 @@
   NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
   
   fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+    [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
   nil];
   
   fetchRequest.fetchLimit = 1;
@@ -85,7 +99,7 @@
   nil]];
   
   fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+    [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
   nil];
   
   fetchRequest.fetchLimit = 1;

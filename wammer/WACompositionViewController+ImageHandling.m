@@ -145,7 +145,12 @@
 
 		WAArticle *capturedArticle = self.article;
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		stitchedFile.article = capturedArticle;
+		
+		NSError *error = nil;
+		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, nil] error:&error])
+			NSLog(@"Error obtaining permanent object ID: %@", error);
+
+		[capturedArticle addFilesObject:stitchedFile];
 		
 		NSURL *finalFileURL = nil;
 		
@@ -161,13 +166,9 @@
 			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
 		
 		}
-			
-		[stitchedFile.article willChangeValueForKey:@"fileOrder"];
-		
+					
 		stitchedFile.resourceType = (NSString *)kUTTypeImage;
 		stitchedFile.resourceFilePath = [finalFileURL path];
-		
-		[stitchedFile.article didChangeValueForKey:@"fileOrder"];
 		
 	}
 

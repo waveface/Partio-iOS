@@ -193,7 +193,7 @@
 	
 	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);
 	
-	bind(self.relativeCreationDateLabel, @"text", boundArticle, @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.relativeCreationDateLabel, @"text", boundArticle, @"creationDate", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
 	});
 	

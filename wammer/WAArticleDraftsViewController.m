@@ -33,7 +33,7 @@
   NSManagedObjectContext *moc = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   
   fr.sortDescriptors = [NSArray arrayWithObjects:
-    [NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
+    [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
   nil];
   
   fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:moc sectionNameKeyPath:nil cacheName:nil];
@@ -132,8 +132,8 @@
   else
     cell.textLabel.text = NSLocalizedString(@"DRAFT_STATE_NO_CONTENT", @"State for drafts without content text");
   
-  if (representedDraft.timestamp)
-    cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedDraft.timestamp];
+  if (representedDraft.creationDate)
+    cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:representedDraft.creationDate];
   else
     cell.detailTextLabel.text = NSLocalizedString(@"DRAFT_STATE_NO_TIMESTAMP", @"State for drafts without a timestamp");
 	
