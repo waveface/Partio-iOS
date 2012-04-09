@@ -288,6 +288,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	self.toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
 	self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	self.toolbar.barStyle = UIBarStyleBlackTranslucent;
+	self.toolbar.translucent = YES;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
 		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
@@ -364,11 +365,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 				
 		[navC setToolbarHidden:NO animated:YES];
 			
-		__block __typeof__(self) nrSelf = self;
+		__weak WAGalleryViewController *wSelf = self;
 		
 		self.onViewDidAppear = ^ (BOOL animated) {
 		
-			nrSelf.onViewDidAppear = nil;
+			wSelf.onViewDidAppear = nil;
 		
 		};
 		
@@ -383,21 +384,25 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 			navC.navigationBar.tintColor = [UIColor blackColor];
 			
 			[navC setToolbarHidden:toolbarWasHidden animated:animated];
+
+			wSelf.paginatedView.frame = [wSelf.paginatedView.superview convertRect:wSelf.view.window.bounds fromView:nil];
 			
-			nrSelf.onViewDidDisappear = ^ (BOOL animated) {
+			wSelf.onViewDidDisappear = ^ (BOOL animated) {
 			
 				navC.toolbar.barStyle = oldToolBarStyle;
 				navC.toolbar.translucent = oldToolBarWasTranslucent;
 				navC.navigationBar.tintColor = oldNavBarTintColor;
 				
-				if (nrSelf.onDismiss)
-					nrSelf.onDismiss();
+				wSelf.paginatedView.frame = wSelf.paginatedView.superview.bounds;
+				
+				if (wSelf.onDismiss)
+					wSelf.onDismiss();
 			
-				nrSelf.onViewDidDisappear = nil;
+				wSelf.onViewDidDisappear = nil;
 				
 			};
 			
-			nrSelf.onViewWillDisappear = nil;
+			wSelf.onViewWillDisappear = nil;
 		
 		};
 	
