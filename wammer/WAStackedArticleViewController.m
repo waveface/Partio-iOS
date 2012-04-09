@@ -1212,46 +1212,17 @@
 			
 		}];
 		
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-			
-			case UIUserInterfaceIdiomPad: {
-				
-				UINavigationController *navC = [compositionVC wrappingNavigationController];
-				navC.modalPresentationStyle = UIModalPresentationFormSheet;
-				[self presentViewController:navC animated:YES completion:nil];
-				
-				__weak UINavigationController *wNavC = navC;
-				__weak WAStackedArticleViewController *wSelf = self;
-				dismissBlock = [^ {
-					[wSelf setEditing:NO animated:NO];
-					[wNavC dismissViewControllerAnimated:YES completion:nil];
-					dismissBlock = nil;
-				} copy];
-				
-				break;
-				
-			}
-			
-			case UIUserInterfaceIdiomPhone: {
-			
-				NSParameterAssert(self.navigationController && (self == self.navigationController.topViewController));
-					
-				[self.navigationController pushViewController:compositionVC animated:YES];
-				
-				__weak WACompositionViewController *wCompositionVC = compositionVC;
-				__weak WAStackedArticleViewController *wSelf = self;
-				dismissBlock = [^ {
-					NSCParameterAssert(wCompositionVC.navigationController);
-					[wSelf setEditing:NO animated:NO];
-					[wCompositionVC.navigationController popViewControllerAnimated:YES];
-					dismissBlock = nil;
-				} copy];
-			
-				break;
-				
-			}
+		UINavigationController *navC = [compositionVC wrappingNavigationController];
+		navC.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self presentViewController:navC animated:YES completion:nil];
 		
-		}
+		__weak UINavigationController *wNavC = navC;
+		__weak WAStackedArticleViewController *wSelf = self;
+		dismissBlock = [^ {
+			[wSelf setEditing:NO animated:NO];
+			[wNavC dismissViewControllerAnimated:YES completion:nil];
+			dismissBlock = nil;
+		} copy];
 	
 	} else {
 	
