@@ -8,22 +8,22 @@
 
 #import "WAStackedArticleViewController.h"
 
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+
 #import "WADefines.h"
-#import "WAArticleTextStackCell.h"
-#import "WAArticleTextEmphasisLabel.h"
 
-#import "WAArticleCommentsViewController.h"
-
+#import "WARemoteInterface.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAOverlayBezel.h"
-
 #import "WAArticleTextStackElement.h"
+#import "WAArticleTextStackCell.h"
+#import "WAArticleTextEmphasisLabel.h"
 
-#import "Foundation+IRAdditions.h"
-#import "UIKit+IRAdditions.h"
 #import "WACompositionViewController.h"
+#import "WAArticleCommentsViewController.h"
 
 
 @interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate, WAArticleTextStackElementDelegate>
@@ -195,18 +195,25 @@
 			WAArticle *article = wSelf.article;
 		
 			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
 			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 			
-			[[WADataStore defaultStore] uploadArticle:[[article objectID] URIRepresentation] onSuccess:^{
+			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
-				NSLog(@":D");
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			} onFailure:^(NSError *error) {
-			
-				NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			}];
 			
@@ -1169,47 +1176,30 @@
 	
 		NSParameterAssert([self isViewLoaded] && self.view.window && !self.presentedViewController && (self.navigationController ? (self.navigationController.topViewController == self) : YES));
 	
+		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+		
 		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(NSURL *anArticleURLOrNil) {
-			
-			NSLog(@"Completed editing %@", anArticleURLOrNil);
 			
 			if (dismissBlock)
 				dismissBlock();
 			
 			if (!anArticleURLOrNil)
 				return;
-			
-			dispatch_async(dispatch_get_global_queue(0, 0), ^{
 				
-				NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
-				WAArticle *article = [moc irManagedObjectForURI:anArticleURLOrNil];
+			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 				
-				__block WAOverlayBezel *bezel = nil;
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
 				
-				dispatch_sync(dispatch_get_main_queue(), ^{
-					
-					bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-					[bezel showWithAnimation:WAOverlayBezelAnimationFade];
+			nil] onSuccess:^{
 				
-				});
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
-				[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+			} onFailure:^(NSError *error) {
 				
-					NSLog(@"Synced?  %x %@ %@ %@", didFinish, context, objects, error);
-					
-					dispatch_async(dispatch_get_main_queue(), ^{
-					
-						[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						bezel = nil;
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			}];
 						
-						//	probably error bezel here
-						
-					});
-					
-				}];
-			
-			});
-			
 		}];
 		
 		UINavigationController *navC = [compositionVC wrappingNavigationController];
@@ -1218,10 +1208,13 @@
 		
 		__weak UINavigationController *wNavC = navC;
 		__weak WAStackedArticleViewController *wSelf = self;
+		
 		dismissBlock = [^ {
+			
 			[wSelf setEditing:NO animated:NO];
 			[wNavC dismissViewControllerAnimated:YES completion:nil];
 			dismissBlock = nil;
+			
 		} copy];
 	
 	} else {
