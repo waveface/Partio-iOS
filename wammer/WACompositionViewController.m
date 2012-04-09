@@ -237,9 +237,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
-	
-	[self.contentTextView becomeFirstResponder];
-	
+		
 }	
 
 - (void) viewDidAppear:(BOOL)animated {

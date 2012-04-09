@@ -8,22 +8,22 @@
 
 #import "WAStackedArticleViewController.h"
 
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+
 #import "WADefines.h"
-#import "WAArticleTextStackCell.h"
-#import "WAArticleTextEmphasisLabel.h"
 
-#import "WAArticleCommentsViewController.h"
-
+#import "WARemoteInterface.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAOverlayBezel.h"
-
 #import "WAArticleTextStackElement.h"
+#import "WAArticleTextStackCell.h"
+#import "WAArticleTextEmphasisLabel.h"
 
-#import "Foundation+IRAdditions.h"
-#import "UIKit+IRAdditions.h"
 #import "WACompositionViewController.h"
+#import "WAArticleCommentsViewController.h"
 
 
 @interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate, WAArticleTextStackElementDelegate>
@@ -1169,9 +1169,9 @@
 	
 		NSParameterAssert([self isViewLoaded] && self.view.window && !self.presentedViewController && (self.navigationController ? (self.navigationController.topViewController == self) : YES));
 	
+		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+		
 		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(NSURL *anArticleURLOrNil) {
-			
-			NSLog(@"Completed editing %@", anArticleURLOrNil);
 			
 			if (dismissBlock)
 				dismissBlock();
@@ -1179,34 +1179,46 @@
 			if (!anArticleURLOrNil)
 				return;
 			
-			dispatch_async(dispatch_get_global_queue(0, 0), ^{
+			WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+			[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+						
+			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil onSuccess:^{
+			
+				NSCParameterAssert(![NSThread isMainThread]);
+				dispatch_async(dispatch_get_main_queue(), ^ {
 				
-				NSManagedObjectContext *moc = [[WADataStore defaultStore] disposableMOC];
-				WAArticle *article = [moc irManagedObjectForURI:anArticleURLOrNil];
-				
-				__block WAOverlayBezel *bezel = nil;
-				
-				dispatch_sync(dispatch_get_main_queue(), ^{
+					[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 					
-					bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-					[bezel showWithAnimation:WAOverlayBezelAnimationFade];
+					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+				
+					WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+					[doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
+					
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+						[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					});
+					
+				});
+				
+			} onFailure:^(NSError *error) {
+				
+				NSCParameterAssert(![NSThread isMainThread]);
+				dispatch_async(dispatch_get_main_queue(), ^ {
+				
+					[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+					
+					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+					
+					WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+					[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
+					
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+						[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					});
 				
 				});
 				
-				[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
-				
-					dispatch_async(dispatch_get_main_queue(), ^{
-					
-						[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						bezel = nil;
-						
-						//	probably error bezel here
-						
-					});
-					
-				}];
-			
-			});
+			}];
 			
 		}];
 		
@@ -1216,10 +1228,13 @@
 		
 		__weak UINavigationController *wNavC = navC;
 		__weak WAStackedArticleViewController *wSelf = self;
+		
 		dismissBlock = [^ {
+			
 			[wSelf setEditing:NO animated:NO];
 			[wNavC dismissViewControllerAnimated:YES completion:nil];
 			dismissBlock = nil;
+			
 		} copy];
 	
 	} else {
