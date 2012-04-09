@@ -58,6 +58,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			@"creationDeviceName", @"code_name",
 			@"group", @"group",	//	wraps @"group_id"
 			@"creationDate", @"timestamp",
+			@"modificationDate", @"update_time",
 			@"text", @"content",
 			@"comments", @"comments",
 			@"files", @"attachments",
@@ -390,12 +391,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString * const kPostAttachmentIDs = @"postAttachmentIDs";
 	NSString * const kPostCoverPhoto = @"postCoverPhotoID";
 	
-	
 	NSString * const postID = self.identifier;
 	NSString * const groupID = self.group.identifier;
+	NSDate * const postCreationDate = self.creationDate;
+	
+	[context setObject:self.group.identifier forKey:kPostGroupID];
+	[context setObject:self.text forKey:kPostText];
+	
 	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier);
 	
 	if (!isDraft) {
+	
+		NSLog(@"Article not draft: Fetching remote state for potential merging");
 		
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 		
@@ -413,9 +420,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			if ([results isKindOfClass:[NSDictionary class]]) {
 
-				NSLog(@"context was %@", context);
 				[context setObject:results forKey:kPostExistingRemoteRep];
-				NSLog(@"context is %@", context);
 				
 			}
 			
@@ -434,49 +439,120 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		//	Compare timestamp, return boxed nscomparisonresult
 		
-		//	[WAArticle remoteDictionaryConfigurationMapping]
-		//	[WAArticle transformedValue:￼ fromRemoteKeyPath:￼ toLocalKeyPath:￼]
+		NSDictionary *mapping = [WAArticle remoteDictionaryConfigurationMapping];
 		
-	} completionBlock:^(id results) {
-	
+		id (^mappedValue)(NSString *) = ^ (NSString *localKeyPath) {
+
+			return [WAArticle transformedValue:[postExistingRemoteRep objectForKey:localKeyPath] fromRemoteKeyPath:[mapping objectForKey:localKeyPath] toLocalKeyPath:localKeyPath];
 		
+		};
 		
-	}]];
+		NSDate *remoteCreationDate = mappedValue(@"creationDate");
+		NSDate *remoteModificationDate = mappedValue(@"modificationDate");
+		
+		NSDate *comparedDate = remoteModificationDate ? remoteModificationDate : remoteCreationDate;
+		NSComparisonResult comparisonResult = [comparedDate compare:postCreationDate];
+		if (comparisonResult == NSOrderedSame) {
+			callback(nil);
+			return;
+		}
+		
+		callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
+		
+	} completionBlock:nil]];
 	
 	
 	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 	
-		callback(groupID);
+		NSLog(@"Context %@", context);
+		callback(kCFBooleanTrue);
 	
-	} completionBlock:^(id results) {
+	} completionBlock:^(id result) {
 	
-		if ([results isKindOfClass:[NSString class]])
-			[context setObject:groupID forKey:kPostGroupID];
+		NSLog(@"Result %@", result);
 		
 	}]];
 	
 	
-	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-	
-		//	?
-	
-	} completionBlock:^(id results) {
-	
-		//	?
+	[self.fileOrder enumerateObjectsUsingBlock: ^ (NSURL *aFileURL, NSUInteger idx, BOOL *stop) {
 		
-	}]];
-	
-	
-	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-	
-		//	?
-	
-	} completionBlock:^(id results) {
-	
-		//	?
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 		
-	}]];
+			//	Re-fetch for clarity, use the shared MOC to avoid duplicating state, as long as we are careful NOT to mutate anything.
+		
+			NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+			WAFile *representedFile = (WAFile *)[context irManagedObjectForURI:aFileURL];
+			if (!representedFile) {
+				aCallback(WAArticleEntitySyncingError(0, [NSString stringWithFormat:@"Unable to find WAFile entity at %@", aFileURL], nil));
+				return;
+			}
+			
+			if (representedFile.identifier) {
+				aCallback(representedFile.identifier);
+				return;
+			}
+			
+			[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+				
+				if (!didFinish) {
+					aCallback(error);
+					return;
+				}
+			
+				NSCParameterAssert([objects count] == 1);
+				
+				WAFile *savedFile = (WAFile *)[objects lastObject];
+				NSCParameterAssert(savedFile.article);
+				NSCParameterAssert(savedFile.identifier);
+				aCallback(savedFile.identifier);
+				
+			}];
+			
+		} completionBlock:^(id result) {
+		
+			if (![result isKindOfClass:[NSString class]])
+				return;
+			
+			NSMutableArray *attachmentIDs = [context objectForKey:kPostAttachmentIDs];
+			if (!attachmentIDs) {
+				attachmentIDs = [NSMutableArray array];
+				[context setObject:attachmentIDs forKey:kPostAttachmentIDs];
+			}
+			
+			NSParameterAssert([attachmentIDs isKindOfClass:[NSMutableArray class]]);
+			[attachmentIDs addObject:result];
+		
+		}]];
+		
+	}];
 	
+	[operations enumerateObjectsUsingBlock: ^ (IRAsyncBarrierOperation *operation, NSUInteger idx, BOOL *stop) {
+	
+		if (idx > 0)
+			[operation addDependency:[operations objectAtIndex:(idx - 1)]];
+		
+	}];
+	
+	__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
+	[operationQueue setSuspended:YES];
+	[operationQueue setMaxConcurrentOperationCount:1];
+	
+	NSOperation *cleanupOp = [NSBlockOperation blockOperationWithBlock:^{
+	
+		NSLog(@"Done");
+		operationQueue = nil;
+		
+	}];
+	
+	for (NSOperation *op in operations)
+		[cleanupOp addDependency:op];
+	
+	[operationQueue addOperation:cleanupOp];
+	[operationQueue setSuspended:NO];
+	
+	return;
+	
+	//	Legacy stuff to be deleted here
 	
 	if (isDraft) {
 	
@@ -548,60 +624,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		}
 		
-		[self.fileOrder enumerateObjectsUsingBlock: ^ (NSURL *aFileURL, NSUInteger idx, BOOL *stop) {
 		
-			__block IRAsyncOperation *nrFileOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
-				
-				if (dependentOperationCancelledOrFailed(nrFileOperation)) {
-					aCallback(dependentOperationCancelledOrFailedError);
-					return;
-				}
-				
-				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-				WAFile *representedFile = (WAFile *)[context irManagedObjectForURI:aFileURL];
-				if (!representedFile) {
-					aCallback(nil);
-					return;
-				}
-				
-				NSCParameterAssert(representedFile.managedObjectContext);
-
-				[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
-					
-					if (!didFinish) {
-						
-						aCallback(error);
-
-					} else {
-				
-						NSCParameterAssert([objects count] == 1);
-						WAFile *savedFile = (WAFile *)[objects lastObject];
-						
-						NSCParameterAssert(savedFile.article);
-						aCallback(savedFile.identifier);
-					
-					}
-					
-				}];
-				
-			} completionBlock:^(id results) {
-			
-				if ([results isKindOfClass:[NSError class]])
-					return;
-			
-				NSMutableArray *fileIdentifiers = [resultsDictionary objectForKey:@"fileIdentifiers"];
-				if (!fileIdentifiers) {
-					fileIdentifiers = [NSMutableArray array];
-					[resultsDictionary setObject:fileIdentifiers forKey:@"fileIdentifiers"];
-				}
-				
-				[fileIdentifiers addObject:results];
-			
-			}];
-			
-			[operationQueue addOperation:nrFileOperation];
-			
-		}];
 		
 		__block IRAsyncOperation *nrFinalOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 		
