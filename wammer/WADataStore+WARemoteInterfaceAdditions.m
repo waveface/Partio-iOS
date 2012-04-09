@@ -10,11 +10,15 @@
 #import "WARemoteInterface.h"
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WAOverlayBezel.h"
+
+
+NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
 
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
 
-- (NSMutableSet *) articlesCurrentlyBeingUploaded;
+- (NSMutableSet *) articlesCurrentlyBeingUpdated;
 
 @end
 
@@ -77,7 +81,7 @@
 
 - (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(NSError *))aBlock {
 
-	[self uploadArticle:anArticleURI onSuccess:^ {
+	[self updateArticle:anArticleURI onSuccess:^ {
 	
 		if (aBlock)
 			aBlock(nil);
@@ -85,46 +89,82 @@
 	} onFailure:aBlock];
 
 }
+          
+- (void) updateArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
+	[self updateArticle:anArticleURI withOptions:nil onSuccess:successBlock onFailure:failureBlock];
+
+}
+
+- (void) updateArticle:(NSURL *)anArticleURI withOptions:(NSDictionary *)options onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	NSParameterAssert([NSThread isMainThread]);
+	
+	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
 
-	__block __typeof__(self) nrSelf = self;
-	__block NSManagedObjectContext *context = [self disposableMOC];
-	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
+	__weak WADataStore *wSelf = self;
 	
-	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
+	NSManagedObjectContext *context = [self disposableMOC];
+	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
-	void (^cleanup)() = ^ {
-		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
-	};
+	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
 	
-	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
+	WAOverlayBezel *busyBezel = nil;
+	if (usesBezels) {
+		busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
 	
-	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+	[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+	
+		void (^fireCallback)(void) = ^ {
 		
-		if (!didFinish) {
+			NSCParameterAssert([NSThread isMainThread]);
+		
+			if (didFinish) {
+				
+				if (successBlock)
+					successBlock();
 			
-			if (failureBlock)
-				failureBlock(error);
+			} else {
+
+				if (failureBlock)
+					failureBlock(error);
+				
+			}
+			
+			[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+			
+		};
+		
+		if (usesBezels) {
+		
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			
+			WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
+			[resultBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+			
+				[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				
+				fireCallback();
+			
+			});
 			
 		} else {
-
-			if (successBlock)
-				successBlock();
+		
+			fireCallback();
 		
 		}
-		
-		cleanup();
-		
+				
 	}];
 	
 }
 
-- (BOOL) isUploadingArticle:(NSURL *)anObjectURI {
+- (BOOL) isUpdatingArticle:(NSURL *)anObjectURI {
 
-	return [[self articlesCurrentlyBeingUploaded] containsObject:anObjectURI];
+	return [[self articlesCurrentlyBeingUpdated] containsObject:anObjectURI];
 
 }
 
@@ -207,7 +247,7 @@
 
 @implementation WADataStore (WARemoteInterfaceAdditions_Private)
 
-- (NSMutableSet *) articlesCurrentlyBeingUploaded {
+- (NSMutableSet *) articlesCurrentlyBeingUpdated {
 
 	static NSString * const key = @"WADataStore_WARemoteInterfaceAdditions_articlesCurrentlyBeingUploaded";
 	
@@ -222,3 +262,8 @@
 }
 
 @end
+
+
+void WADataStoreUpdateArticleWithFeedback (NSURL *articleURI) {
+
+}
