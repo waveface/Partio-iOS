@@ -22,7 +22,7 @@
 
 }
 
-+ (WARepresentedFilePickerViewController *) defaultAutoSubmittingControllerForArticle:(NSURL *)anArticleURI completion:(void(^)(NSURL *))aBlock {
++ (WARepresentedFilePickerViewController *) defaultAutoSubmittingControllerForArticle:(NSURL *)anArticleURI completion:(void(^)(NSURL *fileEntityURI))aBlock {
 
 	if (![self canPresentRepresentedFilePickerControllerForArticle:anArticleURI])
 		return nil;
@@ -50,10 +50,17 @@
 		
 		NSError *savingError = nil;
 		if (![article.managedObjectContext save:&savingError]) {
+			
 			NSLog(@"Error saving: %@", savingError);
-			//	Callback?
-			abort();	//	Foolish
+			
+			if (aBlock)
+				aBlock(nil);
+			
+			return;
+			
 		}
+		
+		aBlock(selectedFileURI);
 		
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 	
@@ -66,14 +73,12 @@
 			NSParameterAssert([NSThread isMainThread]);
 			
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-			aBlock(selectedFileURI);
 			
 		} onFailure:^(NSError *error) {
 			
 			NSParameterAssert([NSThread isMainThread]);
 
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-			aBlock(selectedFileURI);
 			
 		}];
 

@@ -26,6 +26,8 @@
 @interface WAArticleViewController (Inspection)
 
 @property (nonatomic, readwrite, weak) id<WAArticleViewControllerInspection> inspectionDelegate;
+@property (nonatomic, readwrite, strong) IRActionSheetController *inspectionActionSheetController;
+@property (nonatomic, readwrite, strong) UIPopoverController *coverPhotoSwitchPopoverController;
 
 - (UILongPressGestureRecognizer *) newInspectionGestureRecognizer;
 - (NSArray *) newInspectionActions;
@@ -33,5 +35,7 @@
 - (IRAction *) newInspectionAction;
 - (IRAction *) newFavoriteStatusToggleAction;
 - (IRAction *) newCoverPhotoSwitchAction;	//	May return nil if the action can’t be done, for example if the acticle does not have more than 1 photo the action would ultimately do nothing sensible
+
+- (void) inspectionCleanup;	//	Called from base class to dispose objects that are no longer in use, for example lingering action sheets
 
 @end

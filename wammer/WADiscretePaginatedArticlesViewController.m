@@ -619,7 +619,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
 		WAArticle *representedArticle = (WAArticle *)item;
-			[((WAArticle *)item).representedFile thumbnailImage];
+		[((WAArticle *)item).representingFile thumbnailImage];
 				
 		for (WAPreview *aPreview in representedArticle.previews)
 			[aPreview.graphElement thumbnail];

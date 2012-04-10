@@ -45,7 +45,7 @@
 
 }
 
-+ (NSSet *) keyPathsForValuesAffectingRepresentedFile {
++ (NSSet *) keyPathsForValuesAffectingRepresentingFile {
 
 	return [NSSet setWithObjects:
 	
@@ -56,12 +56,19 @@
 
 }
 
-- (WAFile *) representedFile {
+- (WAFile *) representingFile {
 
-	if (![self.fileOrder count])
-		return nil;
+	[self willAccessValueForKey:@"representingFile"];
+	WAFile *file = [self primitiveValueForKey:@"representingFile"];
+	[self didAccessValueForKey:@"representingFile"];
 	
-	return (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
+	if (file)
+		return file;
+	
+	if ([self.fileOrder count])
+		file = (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
+
+	return file;
 
 }
 
