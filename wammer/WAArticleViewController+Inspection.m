@@ -17,9 +17,13 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
+#import "WARepresentedFilePickerViewController.h"
+#import "WARepresentedFilePickerViewController+CustomUI.h"
 
 
-NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_inspectionDelegate";
+static NSString * const kInspectionDelegate = @"-[WAArticleViewController(Inspection) inspectionDelegate]";
+static NSString * const kInspectionActionSheetController = @"-[WAArticleViewController(Inspection) inspectionActionSheetController]";
+static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewController(Inspection)] coverPhotoSwitchPopoverController]";
 
 
 @implementation WAArticleViewController (Inspection)
@@ -52,6 +56,10 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 		
 	nil];
 	
+	IRAction *coverPhotoSwitchAction = [self newCoverPhotoSwitchAction];
+	if (coverPhotoSwitchAction)
+		[baseActions addObject:coverPhotoSwitchAction];
+	
 	if (WAAdvancedFeaturesEnabled())
 		[baseActions addObject:[self newInspectionAction]];
 	
@@ -66,25 +74,13 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 
 	if (longPressRecognizer.state != UIGestureRecognizerStateRecognized)
 		return;
-
-	static NSString * const kGlobalInspectActionSheet = @"kGlobalInspectActionSheet";
 	
-	__block IRActionSheetController *controller = objc_getAssociatedObject(self, &kGlobalInspectActionSheet);
-	
-	if (controller)
-	if ([(UIActionSheet *)[controller managedActionSheet] isVisible])
+	IRActionSheetController *controller = objc_getAssociatedObject(self, &kInspectionActionSheetController);
+	if ([controller.managedActionSheet isVisible])
 		return;
 	
-	NSArray *actions = [self newInspectionActions];
-	
-	if (![actions count])
-		return;
-	
-	controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:actions];
-
-	objc_setAssociatedObject(self, &kGlobalInspectActionSheet, controller, OBJC_ASSOCIATION_RETAIN);
-	
-	[(UIActionSheet *)[controller managedActionSheet] showFromRect:(CGRect){
+	self.inspectionActionSheetController = nil;
+	[self.inspectionActionSheetController.managedActionSheet showFromRect:(CGRect){
 		(CGPoint){
 			CGRectGetMidX(self.view.bounds),
 			CGRectGetMidY(self.view.bounds)
@@ -92,7 +88,33 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 		(CGSize){ 2, 2 }
 	} inView:self.view animated:YES];
 	
-	((IRActionSheet *)[controller managedActionSheet]).dismissesOnOrientationChange = YES;
+}
+
+- (IRActionSheetController *) inspectionActionSheetController {
+
+	IRActionSheetController *controller = objc_getAssociatedObject(self, &kInspectionActionSheetController);
+	
+	if (!controller) {
+
+		NSArray *actions = [self newInspectionActions];
+		
+		if (![actions count])
+			return nil;
+
+		controller = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:actions];
+		controller.managedActionSheet.dismissesOnOrientationChange = YES;
+		
+		self.inspectionActionSheetController = controller;
+		
+	}
+	
+	return controller;
+
+}
+
+- (void) setInspectionActionSheetController:(IRActionSheetController *)controller {
+
+	objc_setAssociatedObject(self, &kInspectionActionSheetController, controller, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
@@ -267,6 +289,60 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 			action();
 	
 	}];
+
+}
+
+- (IRAction *) newCoverPhotoSwitchAction {
+
+	__weak WAArticleViewController *wSelf = self;
+	
+	NSURL *objectURI = [[self.article objectID] URIRepresentation];
+	
+	if (![WARepresentedFilePickerViewController canPresentRepresentedFilePickerControllerForArticle:objectURI])
+		return nil;
+	
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Title for the action responsible for presenting a controller changing the representing file of an article") block:^{
+	
+		UIPopoverController *popoverController = wSelf.coverPhotoSwitchPopoverController;
+		if ([popoverController isPopoverVisible])
+			return;
+		
+		[popoverController presentPopoverFromRect:self.view.bounds inView:wSelf.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		
+	}];
+
+}
+
+- (UIPopoverController *) coverPhotoSwitchPopoverController {
+
+	UIPopoverController *popoverController = objc_getAssociatedObject(self, &kCoverPhotoSwitchPopoverController);
+	if (!popoverController) {
+
+		NSURL *objectURI = [[self.article objectID] URIRepresentation];
+		
+		__weak WAArticleViewController *wSelf = self;
+	
+		WARepresentedFilePickerViewController *controller = [WARepresentedFilePickerViewController defaultAutoSubmittingControllerForArticle:objectURI completion: ^ (NSURL *selectedFileURI) {
+			
+			UIPopoverController *foundPopoverController = wSelf ? objc_getAssociatedObject(wSelf, &kCoverPhotoSwitchPopoverController) : nil;
+			if ([foundPopoverController isPopoverVisible])
+				[foundPopoverController dismissPopoverAnimated:YES];
+			
+		}];
+		
+		UINavigationController *navC = [controller wrappingNavigationController];
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
+		self.coverPhotoSwitchPopoverController = popoverController;
+	
+	}
+	
+	return popoverController;
+
+}
+
+- (void) setCoverPhotoSwitchPopoverController:(UIPopoverController *)coverPhotoSwitchPopoverController {
+
+	objc_setAssociatedObject(self, &kCoverPhotoSwitchPopoverController, coverPhotoSwitchPopoverController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 

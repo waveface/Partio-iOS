@@ -7,7 +7,8 @@
    Cancel. */
 "ACTION_CANCEL" = "取消";
 
-/* Action changing representing file of an article */
+/* Action changing representing file of an article
+   Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
 /* Action deleting an article */

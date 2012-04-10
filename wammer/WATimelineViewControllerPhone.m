@@ -6,43 +6,41 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
-#import <objc/runtime.h>
-
-#import "WADefines.h"
-
-#import "WADataStore.h"
 #import "WATimelineViewControllerPhone.h"
-#import "WACompositionViewController.h"
-#import "WAPaginationSlider.h"
 
-#import "WARemoteInterface.h"
+#import <objc/runtime.h>
 
 #import "UIKit+IRAdditions.h"
 
-#import "WAArticleViewController.h"
-#import "WAPostViewControllerPhone.h"
-
-#import "WAArticleCommentsViewCell.h"
-#import "WAPostViewCellPhone.h"
-
-#import "WAGalleryViewController.h"
-#import "WAPulldownRefreshView.h"
-
-#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
-
-#import "WAUserInfoViewController.h"
-#import "WANavigationController.h"
-#import "IASKAppSettingsViewController.h"
-
+#import "WADefines.h"
+#import "WARemoteInterface.h"
+#import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
-#import "WACompositionViewController+CustomUI.h"
-#import "WANavigationBar.h"
+#import "WAGalleryViewController.h"
+#import "WAPostViewControllerPhone.h"
 
 #import "WAArticleDraftsViewController.h"
+#import "WACompositionViewController.h"
+#import "WACompositionViewController+CustomUI.h"
+
+#import "WAArticleViewController.h"
+
+#import "WAUserInfoViewController.h"
+#import "IASKAppSettingsViewController.h"
+
+#import "WANavigationController.h"
+#import "WANavigationBar.h"
 #import "WAViewController.h"
-#import "WARepresentedFilePickerViewController.h"
+#import "WAPaginationSlider.h"
+#import "WAArticleCommentsViewCell.h"
+#import "WAPostViewCellPhone.h"
+#import "WAPulldownRefreshView.h"
 #import "WAOverlayBezel.h"
+#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
+
+#import "WARepresentedFilePickerViewController.h"
+#import "WARepresentedFilePickerViewController+CustomUI.h"
 
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
@@ -949,7 +947,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Action deleting an article") action:@selector(removeArticle:)]];
 	
-	if ([cell.post.files count] > 2)
+	if ([cell.post.files count] > 1)
 		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Action changing representing file of an article") action:@selector(editCoverImage:)]];
 	
 	[menuController setMenuItems:menuItems];
@@ -1009,20 +1007,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
 	
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
-	 
-	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController controllerWithObjectURI:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
+	
+	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController defaultAutoSubmittingControllerForArticle:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
 	
 		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
 		picker = nil;
-		
-		WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-		[bezel showWithAnimation:WAOverlayBezelAnimationFade];
-		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-			
-			[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			
-		});
 		
 	}];
 	

@@ -13,7 +13,6 @@
 #import "WAGalleryViewController.h"
 #import "IRPaginatedView.h"
 #import "IRLifetimeHelper.h"
-#import "IRActionSheet.h"
 
 #import "WAViewController.h"
 #import "WAPaginatedArticlesViewController.h"
@@ -188,10 +187,10 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (void) viewDidUnload {
 
-	//	[self.imageStackView irRemoveObserverBlocksForKeyPath:@"state"];
-	
 	self.managedObjectContext = nil;
 	self.article = nil;
+	self.inspectionActionSheetController = nil;
+	self.coverPhotoSwitchPopoverController = nil;
 	
 	[super viewDidUnload];
 

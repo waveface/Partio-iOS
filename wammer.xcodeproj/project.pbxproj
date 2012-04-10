@@ -83,8 +83,14 @@
 		FF1305EC14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1305EB14FD5539004BD3D6 /* WADiscretePaginatedArticlesViewController+ContextPresenting.m */; };
 		FF14886014977E4500D8B0AD /* WATiledImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14885F14977E4500D8B0AD /* WATiledImageView.m */; };
 		FF14886714978C5800D8B0AD /* WAAsyncImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14886614978C5800D8B0AD /* WAAsyncImageView.m */; };
+		FF149FD71533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FF149FD61533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m */; };
+		FF14FD181533149D0013410C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14FD171533149D0013410C /* WAArticle.m */; };
+		FF14FD191533149D0013410C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14FD171533149D0013410C /* WAArticle.m */; };
+		FF14FD1A1533149D0013410C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14FD171533149D0013410C /* WAArticle.m */; };
+		FF14FD1D1533149E0013410C /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14FD1C1533149E0013410C /* WAFile.m */; };
+		FF14FD1E1533149E0013410C /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14FD1C1533149E0013410C /* WAFile.m */; };
+		FF14FD1F1533149E0013410C /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF14FD1C1533149E0013410C /* WAFile.m */; };
 		FF154658148E06D600352428 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
-		FF16B99D14BB249B00E1C2B8 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF16B99C14BB249B00E1C2B8 /* WAFile.m */; };
 		FF1A10571462AD54004FD00D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10561462AD54004FD00D /* AVFoundation.framework */; };
 		FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10511462ACDB004FD00D /* libFinch.a */; };
 		FF1A105A1462B0F0004FD00D /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A10591462B0F0004FD00D /* CoreAudio.framework */; };
@@ -459,7 +465,6 @@
 		FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
 		FFCEF41615199F000021AECB /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FFCEF41815199F000021AECB /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
-		FFCEF41A15199F000021AECB /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF16B99C14BB249B00E1C2B8 /* WAFile.m */; };
 		FFCEF41B15199F000021AECB /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
 		FFCEF41C15199F000021AECB /* WAGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F463E14691A7D00D65864 /* WAGroup.m */; };
 		FFCEF41D15199F000021AECB /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
@@ -525,13 +530,9 @@
 		FFCFE0E8142111E100B9E6AF /* WAComposeCommentViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */; };
 		FFCFE0E9142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WADiscretePaginatedArticlesViewController.xib */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
-		FFD21B0E151313C400FDC0EF /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF16B99C14BB249B00E1C2B8 /* WAFile.m */; };
 		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
-		FFE3899A15328E9C00A26948 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3899915328E9C00A26948 /* WAArticle.m */; };
-		FFE3899B15328E9C00A26948 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3899915328E9C00A26948 /* WAArticle.m */; };
-		FFE3899C15328E9C00A26948 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE3899915328E9C00A26948 /* WAArticle.m */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
 		FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF72C188142789FA00B5D838 /* IRFoundationsX.framework */; };
@@ -1095,11 +1096,15 @@
 		FF14885F14977E4500D8B0AD /* WATiledImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATiledImageView.m; sourceTree = "<group>"; };
 		FF14886514978C5800D8B0AD /* WAAsyncImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAsyncImageView.h; sourceTree = "<group>"; };
 		FF14886614978C5800D8B0AD /* WAAsyncImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAsyncImageView.m; sourceTree = "<group>"; };
+		FF149FD61533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARepresentedFilePickerViewController+CustomUI.m"; sourceTree = "<group>"; };
+		FF14FD10153313450013410C /* WAModel 21.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 21.xcdatamodel"; sourceTree = "<group>"; };
+		FF14FD161533149D0013410C /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
+		FF14FD171533149D0013410C /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
+		FF14FD1B1533149E0013410C /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
+		FF14FD1C1533149E0013410C /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FF154657148E06D600352428 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAuthenticationRequestViewController.h; sourceTree = "<group>"; };
 		FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAuthenticationRequestViewController.m; sourceTree = "<group>"; };
-		FF16B99B14BB249B00E1C2B8 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
-		FF16B99C14BB249B00E1C2B8 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		FF1A10461462ACDB004FD00D /* Finch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Finch.xcodeproj; path = external/Finch/Finch.xcodeproj; sourceTree = "<group>"; };
 		FF1A10561462AD54004FD00D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FF1A10591462B0F0004FD00D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -1160,6 +1165,7 @@
 		FF4FA01A13E13D44002C627F /* WAImageStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStackView.m; sourceTree = "<group>"; };
 		FF51509B14835A030073386D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		FF5401581534125700FFF871 /* WARepresentedFilePickerViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARepresentedFilePickerViewController+CustomUI.h"; sourceTree = "<group>"; };
 		FF54C360152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.h"; sourceTree = "<group>"; };
 		FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.m"; sourceTree = "<group>"; };
 		FF54C4BB15206B0D00301887 /* WARemoteInterface+Usertracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Usertracks.h"; sourceTree = "<group>"; };
@@ -1556,8 +1562,6 @@
 		FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreview.m; sourceTree = "<group>"; };
 		FFE2E60A150F336D00555C16 /* WADiscreteLayoutHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADiscreteLayoutHelpers.h; path = wammer/WADiscreteLayoutHelpers.h; sourceTree = "<group>"; };
 		FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADiscreteLayoutHelpers.m; path = wammer/WADiscreteLayoutHelpers.m; sourceTree = "<group>"; };
-		FFE3899815328E9C00A26948 /* WAArticle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticle.h; sourceTree = "<group>"; };
-		FFE3899915328E9C00A26948 /* WAArticle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticle.m; sourceTree = "<group>"; };
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -2175,9 +2179,11 @@
 		FF97382213D821C1003D1722 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				FF14FD1B1533149E0013410C /* WAFile.h */,
+				FF14FD1C1533149E0013410C /* WAFile.m */,
+				FF14FD161533149D0013410C /* WAArticle.h */,
+				FF14FD171533149D0013410C /* WAArticle.m */,
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
-				FFE3899815328E9C00A26948 /* WAArticle.h */,
-				FFE3899915328E9C00A26948 /* WAArticle.m */,
 				FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */,
 				FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */,
 				FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */,
@@ -2190,8 +2196,6 @@
 				FF97382413D821DF003D1722 /* WADataStore.m */,
 				FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */,
 				FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */,
-				FF16B99B14BB249B00E1C2B8 /* WAFile.h */,
-				FF16B99C14BB249B00E1C2B8 /* WAFile.m */,
 				FF7997A71490A23C000CE08D /* WAFilePageElement.h */,
 				FF7997A81490A23C000CE08D /* WAFilePageElement.m */,
 				FF8F463D14691A7D00D65864 /* WAGroup.h */,
@@ -2340,6 +2344,8 @@
 				FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */,
 				FF6D75D5152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.h */,
 				FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */,
+				FF5401581534125700FFF871 /* WARepresentedFilePickerViewController+CustomUI.h */,
+				FF149FD61533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m */,
 			);
 			name = "File Operations";
 			path = wammer;
@@ -3512,7 +3518,6 @@
 				FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */,
 				FFCEF41615199F000021AECB /* WAComment.m in Sources */,
 				FFCEF41815199F000021AECB /* WADataStore.m in Sources */,
-				FFCEF41A15199F000021AECB /* WAFile.m in Sources */,
 				FFCEF41B15199F000021AECB /* WAFilePageElement.m in Sources */,
 				FFCEF41C15199F000021AECB /* WAGroup.m in Sources */,
 				FFCEF41D15199F000021AECB /* WAOpenGraphElement.m in Sources */,
@@ -3556,7 +3561,8 @@
 				FF586C731519B9F300F308E2 /* WADiscreteLayoutHelpers.m in Sources */,
 				FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */,
 				FF54C5161520947100301887 /* WADataStoreTest.m in Sources */,
-				FFE3899B15328E9C00A26948 /* WAArticle.m in Sources */,
+				FF14FD191533149D0013410C /* WAArticle.m in Sources */,
+				FF14FD1E1533149E0013410C /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3607,9 +3613,9 @@
 				FF61CCB3149D40E500A6EB0B /* WAComposition.m in Sources */,
 				FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */,
 				FF73351314A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */,
-				FFD21B0E151313C400FDC0EF /* WAFile.m in Sources */,
 				FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */,
-				FFE3899C15328E9C00A26948 /* WAArticle.m in Sources */,
+				FF14FD1A1533149D0013410C /* WAArticle.m in Sources */,
+				FF14FD1F1533149E0013410C /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3710,7 +3716,6 @@
 				FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */,
 				FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */,
 				FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */,
-				FF16B99D14BB249B00E1C2B8 /* WAFile.m in Sources */,
 				FF72EAE514BDC30F0093EAB7 /* WAGestureWindow.m in Sources */,
 				FF0505EF14C08900002EA455 /* WAButton.m in Sources */,
 				FFB44D5A14D692AA00080F07 /* WAArticleViewController_Preview.m in Sources */,
@@ -3762,7 +3767,9 @@
 				FF946023152D7EF10034D540 /* WAAppearance.m in Sources */,
 				FF5ACC22152D917E00F1DF3D /* WANavigationState.m in Sources */,
 				FF6D75D7152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m in Sources */,
-				FFE3899A15328E9C00A26948 /* WAArticle.m in Sources */,
+				FF149FD71533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m in Sources */,
+				FF14FD181533149D0013410C /* WAArticle.m in Sources */,
+				FF14FD1D1533149E0013410C /* WAFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4002,7 +4009,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 309;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4057,7 +4064,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 308;
+				CURRENT_PROJECT_VERSION = 309;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -4269,6 +4276,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FF14FD10153313450013410C /* WAModel 21.xcdatamodel */,
 				FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */,
 				FF92CC4E1511C964001E0A4F /* WAModel 19.xcdatamodel */,
 				FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */,
@@ -4290,7 +4298,7 @@
 				FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */;
+			currentVersion = FF14FD10153313450013410C /* WAModel 21.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -2,7 +2,7 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by Evadne Wu on 1/9/12.
+//  Created by Evadne Wu on 4/9/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -17,7 +17,9 @@
 @property (nonatomic, retain) NSString * codeName;
 @property (nonatomic, retain) NSString * creationDeviceIdentifier;
 @property (nonatomic, retain) NSString * identifier;
-@property (nonatomic, retain) id pageElementOrder;
+@property (nonatomic, retain) NSString * largeThumbnailFilePath;
+@property (nonatomic, retain) NSString * largeThumbnailURL;
+@property (nonatomic, retain) NSArray * pageElementOrder;
 @property (nonatomic, retain) NSString * remoteFileName;
 @property (nonatomic, retain) NSNumber * remoteFileSize;
 @property (nonatomic, retain) NSString * remoteRepresentedImage;
@@ -27,16 +29,15 @@
 @property (nonatomic, retain) NSString * resourceType;
 @property (nonatomic, retain) NSString * resourceURL;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) id thumbnail;
+@property (nonatomic, retain) UIImage * thumbnail;
 @property (nonatomic, retain) NSString * thumbnailFilePath;
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * largeThumbnailFilePath;
-@property (nonatomic, retain) NSString * largeThumbnailURL;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *pageElements;
+@property (nonatomic, retain) WAArticle *representedArticle;
 @end
 
 @interface WAFile (CoreDataGeneratedAccessors)
@@ -47,5 +48,6 @@
 - (void)removePageElements:(NSSet *)values;
 
 @end
+
 
 #import "WAFile+WAAdditions.h"
