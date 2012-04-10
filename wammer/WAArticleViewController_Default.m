@@ -97,22 +97,36 @@
 
 	[super viewWillAppear:animated];
 	
-	if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
-		[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
-		
-	for (UIWindow *aWindow in [UIApplication sharedApplication].windows) {
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-		UIViewController *rootVC = aWindow.rootViewController;
-		if ([rootVC isViewLoaded])
-			[rootVC.view layoutSubviews];
+		case UIUserInterfaceIdiomPad: {
+	
+			if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
+				[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
+				
+			for (UIWindow *aWindow in [UIApplication sharedApplication].windows) {
+			
+				UIViewController *rootVC = aWindow.rootViewController;
+				if ([rootVC isViewLoaded])
+					[rootVC.view layoutSubviews];
+				
+				UINavigationController *rootNavC = [rootVC isKindOfClass:[UINavigationController class]] ? (UINavigationController *)rootVC : nil;
+				if (rootNavC) {
+					BOOL navBarHidden = rootNavC.navigationBarHidden;
+					[rootNavC setNavigationBarHidden:YES animated:NO];
+					[rootNavC setNavigationBarHidden:NO animated:NO];
+					[rootNavC setNavigationBarHidden:YES animated:NO];
+					[rootNavC setNavigationBarHidden:navBarHidden animated:NO];
+				}
+			
+			}
+			
+			break;
 		
-		UINavigationController *rootNavC = [rootVC isKindOfClass:[UINavigationController class]] ? (UINavigationController *)rootVC : nil;
-		if (rootNavC) {
-			BOOL navBarHidden = rootNavC.navigationBarHidden;
-			[rootNavC setNavigationBarHidden:YES animated:NO];
-			[rootNavC setNavigationBarHidden:NO animated:NO];
-			[rootNavC setNavigationBarHidden:YES animated:NO];
-			[rootNavC setNavigationBarHidden:navBarHidden animated:NO];
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+			break;
 		}
 	
 	}
@@ -190,25 +204,43 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	CGRect gvBounds = aGV.bounds;
-	CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-	NSUInteger numberOfItems = [self.article.fileOrder count];
-	if (numberOfItems > 4) {
+		case UIUserInterfaceIdiomPad: {
+
+			CGRect gvBounds = aGV.bounds;
+			CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
+			
+			NSUInteger numberOfItems = [self.article.fileOrder count];
+			if (numberOfItems > 4) {
+			
+				CGFloat edgeLength = floorf(gvWidth / 3);
+				return (CGSize){ edgeLength, edgeLength };
+				
+			} else if (numberOfItems > 1) {
+				
+				CGFloat edgeLength = floorf(gvWidth / 2);
+				return (CGSize){ edgeLength, edgeLength };
+				
+			} else {
+				
+				CGFloat edgeLength = MIN(gvWidth, gvHeight);
+				return (CGSize){ edgeLength, edgeLength };
+				
+			}
+			
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			return (CGSize){ 100, 100 };
+		
+			break;
+		
+		}
 	
-		CGFloat edgeLength = floorf(gvWidth / 3);
-		return (CGSize){ edgeLength, edgeLength };
-		
-	} else if (numberOfItems > 1) {
-		
-		CGFloat edgeLength = floorf(gvWidth / 2);
-		return (CGSize){ edgeLength, edgeLength };
-		
-	} else {
-		
-		CGFloat edgeLength = MIN(gvWidth, gvHeight);
-		return (CGSize){ edgeLength, edgeLength };
-		
 	}
 	
 }
@@ -290,13 +322,38 @@
 	
 	nil]];
 	
-	galleryVC.onDismiss = ^ {
-		
-		[galleryVC dismissModalViewControllerAnimated:NO];
-		
-	};
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-	[self presentModalViewController:galleryVC animated:NO];
+		case UIUserInterfaceIdiomPhone: {
+		
+			galleryVC.onDismiss = ^ {
+				
+				[galleryVC.navigationController popViewControllerAnimated:YES];
+				
+			};
+			
+			[self.navigationController pushViewController:galleryVC animated:YES];
+
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPad: {
+		
+			galleryVC.onDismiss = ^ {
+				
+				[galleryVC dismissModalViewControllerAnimated:NO];
+				
+			};
+			
+			[self presentModalViewController:galleryVC animated:NO];
+
+			break;
+		
+		}
+	
+	}
+	
 	[aGV deselectItemAtIndex:index animated:NO];
 
 }
