@@ -52,6 +52,10 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 		
 	nil];
 	
+	IRAction *coverPhotoSwitchAction = [self newCoverPhotoSwitchAction];
+	if (coverPhotoSwitchAction)
+		[baseActions addObject:coverPhotoSwitchAction];
+	
 	if (WAAdvancedFeaturesEnabled())
 		[baseActions addObject:[self newInspectionAction]];
 	
@@ -266,6 +270,20 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 		if (!hasRunAction)
 			action();
 	
+	}];
+
+}
+
+- (IRAction *) newCoverPhotoSwitchAction {
+
+	__weak WAArticleViewController *wSelf = self;
+
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Title for the action responsible for presenting a controller changing the representing file of an article") block:^{
+	
+		//	wSelf
+	
+		//	?
+		
 	}];
 
 }

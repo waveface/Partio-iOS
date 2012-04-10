@@ -32,5 +32,6 @@
 
 - (IRAction *) newInspectionAction;
 - (IRAction *) newFavoriteStatusToggleAction;
+- (IRAction *) newCoverPhotoSwitchAction;	//	May return nil if the action can’t be done, for example if the acticle does not have more than 1 photo the action would ultimately do nothing sensible
 
 @end
