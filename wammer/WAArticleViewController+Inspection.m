@@ -75,19 +75,18 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 	if (longPressRecognizer.state != UIGestureRecognizerStateRecognized)
 		return;
 	
-	IRActionSheetController *controller = self.inspectionActionSheetController;
+	IRActionSheetController *controller = objc_getAssociatedObject(self, &kInspectionActionSheetController);
+	if ([controller.managedActionSheet isVisible])
+		return;
 	
-	if (![controller.managedActionSheet isVisible]) {
-	
-		[controller.managedActionSheet showFromRect:(CGRect){
-			(CGPoint){
-				CGRectGetMidX(self.view.bounds),
-				CGRectGetMidY(self.view.bounds)
-			},
-			(CGSize){ 2, 2 }
-		} inView:self.view animated:YES];
-	
-	}
+	self.inspectionActionSheetController = nil;
+	[self.inspectionActionSheetController.managedActionSheet showFromRect:(CGRect){
+		(CGPoint){
+			CGRectGetMidX(self.view.bounds),
+			CGRectGetMidY(self.view.bounds)
+		},
+		(CGSize){ 2, 2 }
+	} inView:self.view animated:YES];
 	
 }
 

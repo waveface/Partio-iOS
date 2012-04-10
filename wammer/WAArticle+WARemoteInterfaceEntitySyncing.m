@@ -470,7 +470,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
 		switch (comparisonResult) {
 		
-			case NSOrderedAscending: {
+			case NSOrderedDescending: {
 				NSLog(@"Remote date %@ newer than local date %@", remoteDate, localDate);
 				break;
 			}
@@ -481,7 +481,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
-			case NSOrderedDescending: {
+			case NSOrderedAscending: {
 				NSLog(@"Remote date %@ older than local date %@", remoteDate, localDate);
 				break;
 			}
@@ -610,7 +610,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
 		
-			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments	mainAttachment:postCoverPhotoID	preview:preview favorite:isFavorite replacingDataWithDate:lastPostModDate	onSuccess:^(NSDictionary *postRep) {
+			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
 			
 				callback(postRep);
 				
