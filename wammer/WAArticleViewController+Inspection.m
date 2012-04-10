@@ -17,6 +17,8 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
+#import "WARepresentedFilePickerViewController.h"
+#import "WARepresentedFilePickerViewController+CustomUI.h"
 
 
 NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_inspectionDelegate";
@@ -280,10 +282,15 @@ NSString * const kInspectionDelegate = @"WAArticleViewController_Inspection_insp
 
 	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Title for the action responsible for presenting a controller changing the representing file of an article") block:^{
 	
-		//	wSelf
-	
-		//	?
+		NSURL *objectURI = [[wSelf.article objectID] URIRepresentation];
+		WARepresentedFilePickerViewController *controller = [WARepresentedFilePickerViewController controllerWithObjectURI:objectURI completion:^(NSURL *selectedFileURI) {
+			
+			//	?
+			
+		}];
 		
+		[controller wrappings]
+	
 	}];
 
 }
