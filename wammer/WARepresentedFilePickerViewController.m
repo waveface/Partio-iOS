@@ -173,10 +173,4 @@
 
 }
 
-- (void) dealloc {
-
-	NSLog(@"Bye");
-
-}
-
 @end

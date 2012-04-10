@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
-#import "IRManagedObject.h"
+#import "CoreData+IRAdditions.h"
 
 @class WAComment, WAFile, WAGroup, WAPreview, WAUser;
 
@@ -29,6 +28,7 @@
 @property (nonatomic, retain) WAGroup *group;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *previews;
+@property (nonatomic, retain) WAFile *representingFile;
 @end
 
 @interface WAArticle (CoreDataGeneratedAccessors)
