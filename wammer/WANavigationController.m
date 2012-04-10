@@ -101,7 +101,7 @@
 				CATransition *transition = [CATransition animation];
 				transition.type = kCATransitionFade;
 				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-				transition.duration = 0.75;
+				transition.duration = 0.5;
 				
 				return transition;
 			

@@ -255,6 +255,8 @@
 				commentsItem,
 			nil];
 			
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+			
 			break;
 			
 		}
@@ -270,10 +272,9 @@
 			break;
 			
 		}
+	
 	}
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
-	
+		
 	self.foldsTextStackCell = [self enablesTextStackElementFolding];
 		
 	return self;
@@ -1120,18 +1121,34 @@
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
-	if (scrollView == self.stackView) {
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-		WAStackView *sv = self.stackView;
-		CGPoint oldSVOffset = sv.contentOffset;
-		CGPoint newSVOffset = (CGPoint){
-			oldSVOffset.x,
-			MIN(sv.contentSize.height - CGRectGetHeight(sv.bounds), oldSVOffset.y)
-		};
+		case UIUserInterfaceIdiomPad: {
+
+			if (scrollView == self.stackView) {
 			
-		if (!CGPointEqualToPoint(oldSVOffset, newSVOffset))
-			[sv setContentOffset:newSVOffset animated:NO];
+				WAStackView *sv = self.stackView;
+				CGPoint oldSVOffset = sv.contentOffset;
+				CGPoint newSVOffset = (CGPoint){
+					oldSVOffset.x,
+					MIN(sv.contentSize.height - CGRectGetHeight(sv.bounds), oldSVOffset.y)
+				};
+					
+				if (!CGPointEqualToPoint(oldSVOffset, newSVOffset))
+					[sv setContentOffset:newSVOffset animated:NO];
+				
+			}
+			
+			break;
 		
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			break;
+		
+		}
+	
 	}
 	
 }

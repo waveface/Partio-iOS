@@ -664,15 +664,17 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	else 
 		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
 		
-	if (photoPost) {
-		
-		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
-	
-	} else {
-		
-		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
-	
-	}
+	pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+
+	//	if (photoPost) {
+	//		
+	//		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
+	//	
+	//	} else {
+	//		
+	//		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+	//	
+	//	}
 		
  	[self.navigationController pushViewController:pushedVC animated:YES];
 
