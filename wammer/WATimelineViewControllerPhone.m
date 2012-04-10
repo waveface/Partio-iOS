@@ -1009,20 +1009,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
 	
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
-	 
-	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController controllerWithObjectURI:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
+	
+	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController defaultAutoSubmittingControllerForArticle:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
 	
 		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
 		picker = nil;
-		
-		WAOverlayBezel *bezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-		[bezel showWithAnimation:WAOverlayBezelAnimationFade];
-		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-			
-			[bezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			
-		});
 		
 	}];
 	
