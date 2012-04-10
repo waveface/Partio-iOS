@@ -12,7 +12,7 @@
 #import "IRGradientView.h"
 #import "IRLabel.h"
 #import "WAArticle.h"
-
+#import "WATapestryView.h"
 enum {
 	WAPostViewCellStyleDefault,
 	WAPostViewCellStyleImageStack,
@@ -46,7 +46,7 @@ enum {
 
 @property (strong, nonatomic) IBOutlet UILabel *dayLabel;
 @property (strong, nonatomic) IBOutlet UILabel *monthLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *tapestryView;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 @end
 

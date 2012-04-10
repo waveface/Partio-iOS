@@ -19,6 +19,11 @@
 
 
 @implementation WAPostViewCellPhone
+
+@synthesize backgroundImageView;
+@synthesize dayLabel;
+@synthesize monthLabel;
+
 @synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
@@ -31,9 +36,6 @@
 @synthesize previewTitleLabel;
 @synthesize previewProviderLabel;
 @synthesize previewImageBackground;
-@synthesize tapestryView;
-@synthesize dayLabel;
-@synthesize monthLabel;
 @synthesize post;
 
 - (id) initWithStyle:(UITableViewCellStyle)aStyle reuseIdentifier:(NSString *)reuseIdentifier {
