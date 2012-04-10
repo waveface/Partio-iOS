@@ -262,8 +262,3 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 }
 
 @end
-
-
-void WADataStoreUpdateArticleWithFeedback (NSURL *articleURI) {
-
-}

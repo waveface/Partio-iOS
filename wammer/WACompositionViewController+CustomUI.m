@@ -33,7 +33,7 @@
 
 + (WACompositionViewController *) defaultAutoSubmittingCompositionViewControllerForArticle:(NSURL *)anArticleURI completion:(void(^)(NSURL *))aBlock {
 
-	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:anArticleURI completion:^(NSURL *anArticleURLOrNil) {
+	return [WACompositionViewController controllerWithArticle:anArticleURI completion:^(NSURL *anArticleURLOrNil) {
 	
 		if (aBlock)
 			aBlock(anArticleURLOrNil);
@@ -100,8 +100,6 @@
 		}];
 	
 	}];
-	
-	return compositionVC;
 
 }
 
