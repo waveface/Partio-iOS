@@ -279,10 +279,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	NSParameterAssert(self.navigationItem);
 	
 	[self.navigationBar pushNavigationItem:self.previousNavigationItem animated:NO];
-	
-	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(handlePhotoEdit:)];
-	
 	[self.navigationBar pushNavigationItem:self.navigationItem animated:NO];
 	
 	self.toolbar = [[UIToolbar alloc] initWithFrame:(CGRect){ 0.0f, CGRectGetHeight(self.view.bounds) - 44.0f, CGRectGetWidth(self.view.bounds), 44.0f }];
@@ -907,18 +903,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[operationQueue cancelAllOperations];
 	[operationQueue waitUntilAllOperationsAreFinished];
 
-}
-
-- (void) handlePhotoEdit: (UIBarButtonItem *)sender {
-
-	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:[self.article.objectID URIRepresentation] completion:^(NSURL *anURI) {
-	
-		[compositionVC dismissModalViewControllerAnimated:YES];
-		
-	}];
-	
-  [self presentModalViewController:[compositionVC wrappingNavigationController] animated:YES];
-	
 }
 
 @end
