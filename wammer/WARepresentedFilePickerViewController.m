@@ -11,7 +11,7 @@
 #import "WADataStore.h"
 #import "WAImageView.h"
 #import "WACompositionViewPhotoCell.h"
-
+#import "UIImage+IRAdditions.h"
 
 @interface WARepresentedFilePickerViewController () <NSFetchedResultsControllerDelegate, AQGridViewDelegate, AQGridViewDataSource>
 @property (nonatomic, strong) AQGridView *view;
@@ -85,7 +85,7 @@
 		return nil;
 	
 	self.navigationItem.title = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_TITLE", @"Title for Cover Image picker");
-	self.navigationItem.prompt = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_PROMPT", @"Prompt for Cover Image picker");
+	//self.navigationItem.prompt = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_PROMPT", @"Prompt for Cover Image picker");
 	
 	return self;
 
@@ -100,7 +100,7 @@
 - (void) loadView {
 
 	self.view = [[AQGridView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWood"]];
+	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.dataSource = self;
 	self.view.delegate = self;
 	
@@ -123,11 +123,11 @@
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	
 	if (![cell isKindOfClass:[WACompositionViewPhotoCell class]]) {
-		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 106.0f, 106.0f } } reuseIdentifier:identifier];
+		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 80.0f, 80.0f } } reuseIdentifier:identifier];
 	}
 	
 	cell.canRemove = NO;
-	cell.image = representedFile.thumbnailImage;
+	cell.image = [representedFile.thumbnailImage irScaledImageWithSize:(CGSize){80.0, 80.0}];
 	[cell setNeedsLayout];
 	
 	return cell;
@@ -136,7 +136,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 106.0f, 106.0f };
+	return (CGSize){ 80.0f, 80.0f };
 
 }
 
