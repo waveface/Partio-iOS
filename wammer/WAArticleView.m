@@ -205,15 +205,15 @@
 		nil]] lastObject];
 	});
 	
-	bind(self.imageStackView, @"images", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.imageStackView, @"images", boundArticle, @"representingFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [NSArray arrayWithObject:inNewValue] : nil;
 	});
 	
-	bind(self.mainImageView, @"image", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"image", boundArticle, @"representingFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue;
 	});
 	
-	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representingFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
 	});
 	

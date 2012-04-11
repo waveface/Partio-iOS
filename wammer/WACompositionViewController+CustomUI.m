@@ -33,7 +33,7 @@
 
 + (WACompositionViewController *) defaultAutoSubmittingCompositionViewControllerForArticle:(NSURL *)anArticleURI completion:(void(^)(NSURL *))aBlock {
 
-	__block WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:anArticleURI completion:^(NSURL *anArticleURLOrNil) {
+	return [WACompositionViewController controllerWithArticle:anArticleURI completion:^(NSURL *anArticleURLOrNil) {
 	
 		if (aBlock)
 			aBlock(anArticleURLOrNil);
@@ -44,7 +44,7 @@
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 		[busyBezel show];
 	
-		[[WADataStore defaultStore] uploadArticle:anArticleURLOrNil onSuccess: ^ {
+		[[WADataStore defaultStore] updateArticle:anArticleURLOrNil onSuccess: ^ {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
@@ -100,8 +100,6 @@
 		}];
 	
 	}];
-	
-	return compositionVC;
 
 }
 

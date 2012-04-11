@@ -391,13 +391,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString * const kPostExistingRemoteRepDate = @"postExistingRemoteRepDate";
 	NSString * const kPostWebPreview = @"postWebPreview";
 	NSString * const kPostAttachmentIDs = @"postAttachmentIDs";
-	NSString * const kPostCoverPhoto = @"postCoverPhotoID";
 	NSString * const kPostLocalModDate = @"postLocalModDate";
 	
 	NSURL * const postEntityURL = [[self objectID] URIRepresentation];
 	NSString * const postID = self.identifier;
 	NSString * const postText = self.text;
 	NSString * const groupID = self.group.identifier ? self.group.identifier : ri.primaryGroupIdentifier;
+	NSString * const postCoverPhotoID = self.representingFile.identifier;
 	NSDate * const postCreationDate = self.creationDate;
 	NSDate * const postModificationDate = self.modificationDate;
 	
@@ -470,7 +470,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
 		switch (comparisonResult) {
 		
-			case NSOrderedAscending: {
+			case NSOrderedDescending: {
 				NSLog(@"Remote date %@ newer than local date %@", remoteDate, localDate);
 				break;
 			}
@@ -481,7 +481,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
-			case NSOrderedDescending: {
+			case NSOrderedAscending: {
 				NSLog(@"Remote date %@ older than local date %@", remoteDate, localDate);
 				break;
 			}
@@ -495,8 +495,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	[self.fileOrder enumerateObjectsUsingBlock: ^ (NSURL *aFileURL, NSUInteger idx, BOOL *stop) {
 	
-		NSLog(@"Emiting operation for WAFile at %@", aFileURL);
-		
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
 		
 			//	Re-fetch for clarity, use the shared MOC to avoid duplicating state, as long as we are careful NOT to mutate anything.
@@ -527,8 +525,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSCParameterAssert(savedFile.identifier);
 				aCallback(savedFile.identifier);
 				
-				NSLog(@"synchronized file %@ with identifier %@", savedFile, savedFile.identifier);
-				
 			}];
 			
 		} completionBlock:^(id result) {
@@ -556,7 +552,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if (previewURL) {
 	
-		NSLog(@"Emitting operation for preview at %@", previewURL);
 		NSString * const previewImageURL = anyPreview.graphElement.primaryImage.imageRemoteURL;
 	
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
@@ -596,10 +591,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 	
-		NSLog(@"handling article update or creation with context %@", context);
-		
 		NSArray *attachments = [context objectForKey:kPostAttachmentIDs];
-		NSString *mainAttachmentID = [context objectForKey:kPostCoverPhoto];
 		NSDictionary *preview = [context objectForKey:kPostWebPreview];
 		
 		if (isDraft) {
@@ -618,7 +610,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
 		
-			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments	mainAttachment:mainAttachmentID	preview:preview favorite:isFavorite replacingDataWithDate:lastPostModDate	onSuccess:^(NSDictionary *postRep) {
+			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
 			
 				callback(postRep);
 				
@@ -632,8 +624,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 	} completionBlock:^(id results) {
 	
-		NSLog(@"Done? %@", results);
-		
 		if ([results isKindOfClass:[NSDictionary class]]) {
 		
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -685,174 +675,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	[operationQueue addOperations:operations waitUntilFinished:NO];
 	[operationQueue addOperation:cleanupOp];
 	[operationQueue setSuspended:NO];
-	
-	return;
-	
-	//	Legacy stuff to be deleted here
-	
-	if (isDraft) {
-	
-		NSURL *ownURL = [[self objectID] URIRepresentation];
-	
-		__block NSOperationQueue *operationQueue = [[NSOperationQueue alloc] init];
-		__block NSMutableDictionary *resultsDictionary = [NSMutableDictionary dictionary];
-		
-		if (self.text)
-			[resultsDictionary setObject:self.text forKey:@"postText"];
-		
-		if (self.group.identifier)
-			[resultsDictionary setObject:self.group.identifier forKey:@"postGroupIdentifier"];
-		else
-			[resultsDictionary setObject:ri.primaryGroupIdentifier forKey:@"postGroupIdentifier"];
-		
-		[operationQueue setSuspended:YES];
-		
-		operationQueue.maxConcurrentOperationCount = 1;
-		
-		BOOL (^dependentOperationCancelledOrFailed)(IRAsyncOperation *) = ^ (IRAsyncOperation *self) {
-			
-			for (IRAsyncOperation *op in self.dependencies)
-			if ([op isCancelled] || ([op isFinished] && (!op.results || [op.results isKindOfClass:[NSError class]])))
-				return YES;
-			
-			return NO;
-			
-		};
-		
-		NSError *dependentOperationCancelledOrFailedError = WAArticleEntitySyncingError(0, @"ARTICLE_SYNC_ERROR_DEPENDENT_OPERATION_FAILED_TITLE", @"ARTICLE_SYNC_ERROR_DEPENDENT_OPERATION_FAILED_DESCRIPTION");
-	
-		WAPreview *aPreview = [self.previews anyObject];
-		NSURL *previewURL = [NSURL URLWithString:(aPreview.graphElement.url ? aPreview.graphElement.url : aPreview.url)];
-		
-		if (previewURL) {
-		
-			NSString *primaryImageURL = aPreview.graphElement.primaryImage.imageRemoteURL;
-			if (primaryImageURL)
-				[resultsDictionary setObject:primaryImageURL forKey:@"previewImageURL"];
-			
-			__block IRAsyncOperation *nrPreviewOp = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
-			
-				[ri retrievePreviewForURL:previewURL onSuccess:^(NSDictionary *aPreviewRep) {
-				
-					aCallback(aPreviewRep);
-					
-				} onFailure: ^ (NSError *error) {
-				
-					aCallback(error);
-					
-				}];
-				
-			} completionBlock: ^ (id results) {
-			
-				if ([results isKindOfClass:[NSError class]])
-					return;
-				
-				[resultsDictionary setObject:results forKey:@"previewEntity"];
-				
-			}];
-			
-			[operationQueue addOperation:nrPreviewOp];
-		
-		}
-		
-		
-		
-		__block IRAsyncOperation *nrFinalOperation = [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id results)) {
-		
-			if (dependentOperationCancelledOrFailed(nrFinalOperation)) {
-			
-				for (IRAsyncOperation *dependentOp in nrFinalOperation.dependencies) {
-					if ([dependentOp.results isKindOfClass:[NSError class]]) {					
-						aCallback((NSError *)dependentOp.results);
-						return;
-					}
-				}
-			
-				aCallback(dependentOperationCancelledOrFailedError);
-				return;
-				
-			}
-		
-			NSString *postGroupIdentifier = [resultsDictionary objectForKey:@"postGroupIdentifier"];
-			NSString *postText = [resultsDictionary objectForKey:@"postText"];
-			NSArray *attachmentIdentifiers = [resultsDictionary objectForKey:@"fileIdentifiers"];
-			NSMutableDictionary *previewEntity = [[resultsDictionary objectForKey:@"previewEntity"] mutableCopy];
-			NSString *previewImageURL = [resultsDictionary objectForKey:@"previewImageURL"];
-			
-			if (previewEntity && previewImageURL)
-				[previewEntity setObject:previewImageURL forKey:@"thumbnail_url"];
-			
-			[ri createPostInGroup:postGroupIdentifier withContentText:postText attachments:attachmentIdentifiers preview:previewEntity onSuccess:^(NSDictionary *postRep) {
-				
-				aCallback(postRep);
-				
-			} onFailure: ^ (NSError *error) {
-			
-				aCallback(error);
-				
-			}];
-			
-		} completionBlock: ^ (id results) {
-		
-			if ([results isKindOfClass:[NSDictionary class]]) {
-			
-				
-			
-			} else {
-			
-				completionBlock(NO, nil, nil, results);
-			
-			}
-		
-		}];
-		
-		NSArray *allOps = operationQueue.operations;
-		[allOps enumerateObjectsUsingBlock: ^ (NSOperation *anOperation, NSUInteger idx, BOOL *stop) {
-		
-			if (idx != 0)
-				[anOperation addDependency:[allOps objectAtIndex:(idx - 1)]];
-
-			[nrFinalOperation addDependency:anOperation];
-			
-		}];
-		
-		[operationQueue addOperation:nrFinalOperation];
-		[operationQueue setSuspended:NO];
-	
-	} else {
-	
-		[ri retrievePost:self.identifier inGroup:self.group.identifier onSuccess:^(NSDictionary *postRep) {
-		
-			//	TBD: Look at postRep, find the latest one, overwrite either part
-			
-			
-		
-			if (!completionBlock)
-				return;
-			
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
-			
-			NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:postRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-			
-			WAArticle *savedPost = (WAArticle *)[touchedObjects lastObject];
-			savedPost.draft = (id)kCFBooleanFalse;
-			
-			NSError *savingError = nil;
-			BOOL didSave = [context save:&savingError];
-			
-			completionBlock(didSave, context, [NSArray arrayWithObject:savedPost], didSave ? nil : savingError);	
-			
-		} onFailure:^(NSError *error) {
-		
-			if (!completionBlock)
-				return;
-				
-			completionBlock(NO, nil, nil, error);
-			
-		}];
-	
-	}
 
 }
 

@@ -237,9 +237,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
-	
-	[self.contentTextView becomeFirstResponder];
-	
+		
 }	
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -458,14 +456,15 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	if (![self.article hasChanges] || ![self.article hasMeaningfulContent]) {
+	if (!([self.article hasChanges] && [[self.article changedValues] count]) || ![self.article hasMeaningfulContent]) {
 	
 		if (self.completionBlock)
 			self.completionBlock(nil);
 		
-		//	Delete things that are not meaningful
+		//	Delete things that are not meaningful if it’s a draft
 		
 		if (![self.article hasMeaningfulContent])
+		if ([self.article.draft isEqualToNumber:(NSNumber *)kCFBooleanTrue])
 			[self.article.managedObjectContext deleteObject:self.article];
 		
 		return;

@@ -2,7 +2,7 @@
 //  WAFile.m
 //  wammer
 //
-//  Created by Evadne Wu on 1/9/12.
+//  Created by Evadne Wu on 4/9/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -17,6 +17,8 @@
 @dynamic codeName;
 @dynamic creationDeviceIdentifier;
 @dynamic identifier;
+@dynamic largeThumbnailFilePath;
+@dynamic largeThumbnailURL;
 @dynamic pageElementOrder;
 @dynamic remoteFileName;
 @dynamic remoteFileSize;
@@ -32,10 +34,9 @@
 @dynamic thumbnailURL;
 @dynamic timestamp;
 @dynamic title;
-@dynamic largeThumbnailFilePath;
-@dynamic largeThumbnailURL;
 @dynamic article;
 @dynamic owner;
 @dynamic pageElements;
+@dynamic representedArticle;
 
 @end
