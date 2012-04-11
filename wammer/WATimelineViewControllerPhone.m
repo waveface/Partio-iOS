@@ -474,12 +474,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		cell.previewImageView.image = preview.thumbnail;
 		cell.previewTitleLabel.text = preview.graphElement.title;
 		cell.previewProviderLabel.text = preview.graphElement.providerDisplayName;
-		
-//		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
-//		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
-//		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
-//		cell.previewImageBackground.layer.shadowRadius = 1.0f;
-	
+			
 	} else if (postHasFiles) {
 
 		cell = makeCell(WAPostViewCellStyleImageStack);
@@ -502,7 +497,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		cell.accessibilityLabel = @"Photo";
 		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
-  
+		
   } else {
 		
 		cell = makeCell(WAPostViewCellStyleDefault);
@@ -517,6 +512,39 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}
 		
+
+		
+	cell.commentLabel.text = post.text;
+	
+	cell.extraInfoLabel.text = @"5 minutes ago from iPhone";
+	
+	UIColor *textColor;
+	UIColor *shadowColor;
+
+	if([post.favorite isEqual:(id)kCFBooleanTrue]) {
+		cell.backgroundImageView.image = [UIImage imageNamed:@"tagFavorite"];
+		textColor = [UIColor whiteColor];
+		shadowColor = [UIColor colorWithHue:155/360 saturation:0.0 brightness:0.8 alpha:1.0];
+	} else {
+		cell.backgroundImageView.image = [UIImage imageNamed:@"tagDefault"];
+		textColor = [UIColor colorWithHue:111/360 saturation:0.0 brightness:0.56 alpha:1.0];
+		shadowColor = [UIColor colorWithHue:111/360 saturation:0.0 brightness:1.0 alpha:1.0];
+		
+	} 
+	
+	cell.dayLabel.textColor = textColor;
+	cell.dayLabel.shadowColor = shadowColor;
+	cell.monthLabel.textColor = textColor;
+	cell.monthLabel.shadowColor = shadowColor;
+	
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+	dateFormatter.dateFormat = @"dd";
+	cell.dayLabel.text = [dateFormatter stringFromDate:post.creationDate];
+	dateFormatter.dateFormat = @"MMM";
+	cell.monthLabel.text = [[dateFormatter stringFromDate:post.creationDate] uppercaseString];
+	
+	[cell setNeedsLayout];
+	
 	return cell;
 }
 
@@ -524,7 +552,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	UIFont *baseFont = [UIFont fontWithName:@"Helvetica" size:14.0];
+	UIFont *baseFont = [UIFont fontWithName:@"Georgia" size:18.0];
   CGFloat height = [post.text sizeWithFont:baseFont constrainedToSize:(CGSize){
 		CGRectGetWidth(tableView.frame) - 80,
 		140.0  // 6 lines
@@ -1000,7 +1028,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 		
 	}];
-
+	
+	
 }
 
 - (void) editCoverImage:(id)sender {

@@ -19,6 +19,11 @@
 
 
 @implementation WAPostViewCellPhone
+
+@synthesize backgroundImageView;
+@synthesize dayLabel;
+@synthesize monthLabel;
+
 @synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
