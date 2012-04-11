@@ -127,7 +127,7 @@
 	}
 	
 	cell.canRemove = NO;
-	cell.image = [representedFile.thumbnailImage irScaledImageWithSize:(CGSize){80.0, 80.0}];
+	cell.image = representedFile.thumbnailImage;
 	[cell setNeedsLayout];
 	
 	return cell;
