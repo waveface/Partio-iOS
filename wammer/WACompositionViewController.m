@@ -31,6 +31,7 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
+@property (nonatomic, readwrite, retain) IRActionSheetController *cancellationActionSheetController;
 
 @end
 
@@ -43,6 +44,7 @@
 @synthesize completionBlock;
 @synthesize usesTransparentBackground;
 @synthesize textAttributor;
+@synthesize cancellationActionSheetController;
 
 + (id) alloc {
 
@@ -150,13 +152,11 @@
 	self.contentTextView.delegate = nil;
 	self.contentTextView = nil;
 	
+	self.cancellationActionSheetController = nil;
+	
 	[super viewDidUnload];
 
 }
-
-
-
-
 
 - (void) viewDidLoad {
 
@@ -470,11 +470,19 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	}
 	
-	IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
+	IRActionSheetController *actionSheetController = self.cancellationActionSheetController;
 	if ([[actionSheetController managedActionSheet] isVisible])
 		return;
 	
-	if (!actionSheetController) {
+	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
+	
+	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
+	
+}
+
+- (IRActionSheetController *) cancellationActionSheetController {
+
+	if (!cancellationActionSheetController) {
 	
 		__weak WACompositionViewController *wSelf = self;
 	
@@ -499,25 +507,25 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 		}];
 			
-		actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
+		cancellationActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
 			saveAsDraftAction,
 		nil]];
 			
-		objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
+		cancellationActionSheetController.onActionSheetCancel = ^ {
 		
-		actionSheetController.onActionSheetCancel = ^ {
-			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+			wSelf.cancellationActionSheetController = nil;
+		
 		};
 		
-		actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
-			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+		cancellationActionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+			
+			wSelf.cancellationActionSheetController = nil;
+				
 		};
 	
 	}
 	
-	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
-	
-	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
+	return cancellationActionSheetController;
 	
 }
 
