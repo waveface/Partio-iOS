@@ -23,10 +23,12 @@ enum {
 
 @interface WAPostViewCellPhone : UITableViewCell
 
++ (WAPostViewCellStyle) styleForArticle:(WAArticle *)article;
+
 - (id) initWithPostViewCellStyle:(WAPostViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
-@property (nonatomic, retain, readwrite) WAArticle *post;
-@property (nonatomic, retain) IBOutlet WAImageStackView *imageStackView;
+@property (nonatomic, readwrite, retain) WAArticle *post;
+@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *contentDescriptionLabel;
