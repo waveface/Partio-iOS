@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
-#import "WAView.h"
+#import "UIKit+IRAdditions.h"
 
 #define WAGalleryViewController_UsesProxyOverlay 0
 
@@ -19,7 +19,7 @@ extern NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI;
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI;
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI context:(NSDictionary *)context;
 
-@property (nonatomic, readwrite, retain) WAView *view;
+@property (nonatomic, readwrite, retain) IRView *view;
 @property (nonatomic, readonly, assign) BOOL contextControlsShown;
 @property (nonatomic, readwrite, copy) void (^onDismiss)();
 

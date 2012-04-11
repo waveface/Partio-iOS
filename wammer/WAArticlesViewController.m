@@ -24,17 +24,10 @@
 #import "WAOverlayBezel.h"
 #import "UIApplication+CrashReporting.h"
 
-#import "WAView.h"
-#import "UIImage+IRAdditions.h"
-
 #import "WARefreshActionView.h"
-
 #import "WAArticleDraftsViewController.h"
-
 #import "WAUserInfoViewController.h"
-
 #import "WANavigationController.h"
-
 #import "IASKAppSettingsViewController.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>

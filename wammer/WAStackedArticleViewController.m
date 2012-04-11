@@ -363,13 +363,13 @@
 	if (textStackCellFoldingToggleWrapperView)
 		return textStackCellFoldingToggleWrapperView;
 		
-	textStackCellFoldingToggleWrapperView = [[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 0 }}];
+	textStackCellFoldingToggleWrapperView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 0 }}];
 	[textStackCellFoldingToggleWrapperView addSubview:self.textStackCellFoldingToggle];
 	
 	__block __typeof__(textStackCellFoldingToggleWrapperView) nrWrapper = textStackCellFoldingToggleWrapperView;
 	__block __typeof__(self.textStackCellFoldingToggle) nrToggle = self.textStackCellFoldingToggle;
 	
-	[(WAView *)textStackCellFoldingToggleWrapperView setOnHitTestWithEvent: ^ (CGPoint point, UIEvent *event, UIView *superAnswer) {
+	[(IRView *)textStackCellFoldingToggleWrapperView setOnHitTestWithEvent: ^ (CGPoint point, UIEvent *event, UIView *superAnswer) {
 		return [nrToggle hitTest:[nrToggle convertPoint:point fromView:nrWrapper] withEvent:event];
 	}];
 
@@ -533,44 +533,6 @@
 	
 	commentsVC = [WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]];
 	commentsVC.delegate = self;
-	
-	//	__block __typeof__(commentsVC) nrCommentsVC = commentsVC;
-
-	//	commentsVC.onViewDidLoad = ^ {
-	//		
-	//		nrCommentsVC.view.clipsToBounds = YES;
-	//		nrCommentsVC.view.layer.shadowOpacity = 0;
-	//		
-	//		nrCommentsVC.commentsRevealingActionContainerView.hidden = YES;
-	//		nrCommentsVC.commentsView.backgroundColor = nil;
-	//		nrCommentsVC.commentsView.bounces = NO;
-	//		nrCommentsVC.commentsView.opaque = NO;
-	//		nrCommentsVC.commentsView.frame = CGRectInset(nrCommentsVC.commentsView.frame, 64, 0);
-	//		
-	//		nrCommentsVC.compositionAccessoryView.frame = CGRectInset(nrCommentsVC.compositionAccessoryView.frame, 64, 0);
-	//		
-	//		WAView *compositionBackgroundView = nrCommentsVC.compositionAccessoryBackgroundView;
-	//		for (UIView *aSubview in compositionBackgroundView.subviews)
-	//			[aSubview removeFromSuperview];
-	//		
-	//		compositionBackgroundView.backgroundColor = [UIColor whiteColor];
-	//		
-	//		UIView *backgroundView = WAStandardArticleStackCellCenterBackgroundView();
-	//		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	//		
-	//		UIView *backgroundWrapperView = [[[UIView alloc] initWithFrame:nrCommentsVC.commentsView.bounds] autorelease];
-	//		backgroundWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	//		backgroundView.frame = CGRectInset(backgroundWrapperView.bounds, -64, 0);
-	//		[backgroundWrapperView addSubview:backgroundView];
-	//				
-	//		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
-	//		nrCommentsVC.commentsView.backgroundColor = nil;
-	//		nrCommentsVC.commentsView.opaque = NO;
-	//		nrCommentsVC.commentsView.clipsToBounds = NO;
-	//		
-	//		[backgroundView.superview sendSubviewToBack:backgroundView]; 
-	//		
-	//	};
 	
 	return commentsVC;
 	

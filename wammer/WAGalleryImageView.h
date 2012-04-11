@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WAView.h"
+#import "UIKit+IRAdditions.h"
 
 @class WAGalleryImageView;
 @protocol WAGalleryImageViewDelegate <NSObject>
@@ -17,7 +17,7 @@
 @end
 
 
-@interface WAGalleryImageView : WAView
+@interface WAGalleryImageView : IRView
 
 + (WAGalleryImageView *) viewForImage:(UIImage *)image;
 

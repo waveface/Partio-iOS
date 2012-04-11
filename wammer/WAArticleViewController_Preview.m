@@ -448,7 +448,7 @@ enum {
 	if (webViewWrapper)
 		return webViewWrapper;
 	
-	webViewWrapper = [[WAView alloc] initWithFrame:CGRectZero];
+	webViewWrapper = [[IRView alloc] initWithFrame:CGRectZero];
 	webViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 
 	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
@@ -460,7 +460,7 @@ enum {
 	[webViewWrapper addSubview:topShadow];
 	
 	__weak WAArticleViewController_Preview *nrSelf = self;
-	__weak WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
+	__weak IRView * nrWebViewWrapper = (IRView *)webViewWrapper;
 	
 	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	

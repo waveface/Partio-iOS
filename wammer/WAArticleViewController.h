@@ -10,7 +10,6 @@
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "WAView.h"
 #import "WAArticleTextEmphasisLabel.h"
 
 #import "WAPreviewBadge.h"

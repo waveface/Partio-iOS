@@ -467,7 +467,6 @@
 		FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
 		FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
 		FFCFE098142111E100B9E6AF /* WATimelineViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */; };
-		FFCFE099142111E100B9E6AF /* WAView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3ACA8F13E6ACFB000F608C /* WAView.m */; };
 		FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
 		FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
 		FFCFE0A0142111E100B9E6AF /* WAArticleCommentsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF55C23713F5256B00F38861 /* WAArticleCommentsViewCell.m */; };
@@ -1116,8 +1115,6 @@
 		FF35892714EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF35892914EE82EF005B452C /* WAOpenGraphElementImage+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAOpenGraphElementImage+WAAdditions.h"; sourceTree = "<group>"; };
 		FF35892A14EE82F0005B452C /* WAOpenGraphElementImage+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAOpenGraphElementImage+WAAdditions.m"; sourceTree = "<group>"; };
-		FF3ACA8E13E6ACFB000F608C /* WAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAView.h; sourceTree = "<group>"; };
-		FF3ACA8F13E6ACFB000F608C /* WAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAView.m; sourceTree = "<group>"; };
 		FF3AEEF614A30EEB00FC4E19 /* WAArticleViewController_Default.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_Default.h; sourceTree = "<group>"; };
 		FF3AEEF714A30EEB00FC4E19 /* WAArticleViewController_Default.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_Default.m; sourceTree = "<group>"; };
 		FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewIE.css; path = external/synergised/Source/WFPreviewIE.css; sourceTree = SOURCE_ROOT; };
@@ -1810,8 +1807,6 @@
 				FF14885F14977E4500D8B0AD /* WATiledImageView.m */,
 				FF14886514978C5800D8B0AD /* WAAsyncImageView.h */,
 				FF14886614978C5800D8B0AD /* WAAsyncImageView.m */,
-				FF3ACA8E13E6ACFB000F608C /* WAView.h */,
-				FF3ACA8F13E6ACFB000F608C /* WAView.m */,
 				FFA87D02143F01450074AAE4 /* WANavigationController.h */,
 				FFA87D03143F01450074AAE4 /* WANavigationController.m */,
 				FF5ACC20152D917E00F1DF3D /* WANavigationState.h */,
@@ -3550,7 +3545,6 @@
 				FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */,
 				FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */,
 				FFCFE098142111E100B9E6AF /* WATimelineViewControllerPhone.m in Sources */,
-				FFCFE099142111E100B9E6AF /* WAView.m in Sources */,
 				FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */,
 				FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */,
 				FFCFE0A0142111E100B9E6AF /* WAArticleCommentsViewCell.m in Sources */,
