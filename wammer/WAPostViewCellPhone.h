@@ -12,7 +12,7 @@
 #import "IRGradientView.h"
 #import "IRLabel.h"
 #import "WAArticle.h"
-#import "WATapestryView.h"
+
 enum {
 	WAPostViewCellStyleDefault,
 	WAPostViewCellStyleImageStack,

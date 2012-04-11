@@ -521,7 +521,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	UIColor *textColor;
 	UIColor *shadowColor;
 
-	if(post.favorite != 0) {
+	if([post.favorite isEqual:(id)kCFBooleanTrue]) {
 		cell.backgroundImageView.image = [UIImage imageNamed:@"tagFavorite"];
 		textColor = [UIColor whiteColor];
 		shadowColor = [UIColor colorWithHue:155/360 saturation:0.0 brightness:0.8 alpha:1.0];
@@ -1026,7 +1026,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 		
 	}];
-
+	
+	
 }
 
 - (void) editCoverImage:(id)sender {
