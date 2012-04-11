@@ -480,7 +480,6 @@
 		FFCFE0A4142111E100B9E6AF /* WAPostViewCellPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */; };
 		FFCFE0A5142111E100B9E6AF /* WAImageStreamPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */; };
 		FFCFE0A6142111E100B9E6AF /* WAAttachedMediaListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAA7B73140773F9006F88DC /* WAAttachedMediaListViewController.m */; };
-		FFCFE0A7142111E100B9E6AF /* WATableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF92796314079593007BEB65 /* WATableViewCell.m */; };
 		FFCFE0A8142111E100B9E6AF /* WAAuthenticationRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */; };
 		FFCFE0A9142111E100B9E6AF /* WAArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */; };
 		FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBA66E0140E0E4300BE5A1D /* WADiscretePaginatedArticlesViewController.m */; };
@@ -1269,8 +1268,6 @@
 		FF8F463E14691A7D00D65864 /* WAGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGroup.m; sourceTree = "<group>"; };
 		FF91960B14AB09C400352E4D /* WADimmingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADimmingView.h; sourceTree = "<group>"; };
 		FF91960C14AB09C400352E4D /* WADimmingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADimmingView.m; sourceTree = "<group>"; };
-		FF92796214079593007BEB65 /* WATableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATableViewCell.h; sourceTree = "<group>"; };
-		FF92796314079593007BEB65 /* WATableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATableViewCell.m; sourceTree = "<group>"; };
 		FF92CC4E1511C964001E0A4F /* WAModel 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 19.xcdatamodel"; sourceTree = "<group>"; };
 		FF945EE8152D72510034D540 /* UIKit+IRAdditions.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = "UIKit+IRAdditions.bundle"; path = "external/IRFoundations/IRFoundations/Resources/UIKit+IRAdditions.bundle"; sourceTree = "<group>"; };
 		FF945EEA152D747F0034D540 /* WASoundRefreshEnded.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshEnded.caf; path = Resources/WASoundRefreshEnded.caf; sourceTree = "<group>"; };
@@ -1649,8 +1646,6 @@
 				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
 				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
 				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
-				FF92796214079593007BEB65 /* WATableViewCell.h */,
-				FF92796314079593007BEB65 /* WATableViewCell.m */,
 			);
 			name = iPhone;
 			path = wammer;
@@ -3581,7 +3576,6 @@
 				FFCFE0A4142111E100B9E6AF /* WAPostViewCellPhone.m in Sources */,
 				FFCFE0A5142111E100B9E6AF /* WAImageStreamPickerView.m in Sources */,
 				FFCFE0A6142111E100B9E6AF /* WAAttachedMediaListViewController.m in Sources */,
-				FFCFE0A7142111E100B9E6AF /* WATableViewCell.m in Sources */,
 				FFCFE0A8142111E100B9E6AF /* WAAuthenticationRequestViewController.m in Sources */,
 				FFCFE0A9142111E100B9E6AF /* WAArticlesViewController.m in Sources */,
 				FFCFE0AA142111E100B9E6AF /* WADiscretePaginatedArticlesViewController.m in Sources */,

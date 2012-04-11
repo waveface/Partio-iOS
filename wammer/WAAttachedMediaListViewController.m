@@ -9,7 +9,6 @@
 #import "WAAttachedMediaListViewController.h"
 #import "WAView.h"
 #import "WADataStore.h"
-#import "WATableViewCell.h"
 
 #import "QuartzCore+IRAdditions.h"
 
@@ -173,10 +172,9 @@
 
 	static NSString *identifier = @"Identifier";
 	
-	WATableViewCell *cell = (WATableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:identifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
-		
-		cell = [[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
