@@ -17,7 +17,6 @@
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
-#import "WAViewController.h"
 #import "WANavigationController.h"
 
 #import "WAAuthenticationRequestViewController.h"
@@ -214,13 +213,15 @@
 	
 	dismissModal(rootVC);
 
-	WAViewController *bottomMostViewController = [[WAViewController alloc] init];
+	IRViewController *bottomMostViewController = [[IRViewController alloc] init];
+	__weak IRViewController *wBottomMostViewController = bottomMostViewController;
 	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
 		return YES;
 	};
-	bottomMostViewController.onLoadview = ^ (WAViewController *self) {
-		self.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
+	
+	bottomMostViewController.onLoadView = ^ () {
+		wBottomMostViewController.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
+		wBottomMostViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
 	};
 	
 	self.window.rootViewController = bottomMostViewController;

@@ -9,7 +9,6 @@
 #import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
 #import "WADataStore.h"
 #import "WAArticleViewController.h"
-#import "WAView.h"
 
 #import "IRDiscreteLayoutManager.h"
 #import "WAEightPartLayoutGrid.h"
@@ -119,7 +118,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (UIView *) newPageContainerView {
 
-	WAView *returnedView = [[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }];
+	IRView *returnedView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }];
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
 	returnedView.clipsToBounds = NO;
 	returnedView.layer.shouldRasterize = YES;

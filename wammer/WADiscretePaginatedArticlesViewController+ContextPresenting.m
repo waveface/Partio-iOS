@@ -329,12 +329,14 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 				
 					[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
 					
-						WAView *enclosingView = [[WAView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
+						IRView *enclosingView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
+						
+						enclosingView.opaque = NO;
 												
 						CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
 						toolbarRect.size.height = 44;
 						
-						__block UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
+						UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
 						[enclosingView addSubview:toolbar];
 						
 						toolbar.backgroundColor = [UIColor colorWithWhite:245.0/255.0 alpha:1];

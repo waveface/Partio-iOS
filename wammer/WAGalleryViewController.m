@@ -252,7 +252,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	__block __typeof__(self) nrSelf = self;
 
-	self.view = [[WAView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }];
+	self.view = [[IRView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }];
 	self.view.backgroundColor = [UIColor blackColor];
 	self.view.onLayoutSubviews = ^ {
 		[nrSelf waSubviewWillLayout];

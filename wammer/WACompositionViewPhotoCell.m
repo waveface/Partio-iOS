@@ -6,7 +6,6 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
-#import "WAView.h"
 #import "WACompositionViewPhotoCell.h"
 #import "QuartzCore+IRAdditions.h"
 

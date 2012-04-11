@@ -358,7 +358,7 @@
 
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement])
 		return YES;
@@ -367,7 +367,7 @@
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
 		return (CGSize){

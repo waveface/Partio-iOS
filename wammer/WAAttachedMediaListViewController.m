@@ -7,9 +7,8 @@
 //
 
 #import "WAAttachedMediaListViewController.h"
-#import "WAView.h"
+#import "IRView.h"
 #import "WADataStore.h"
-#import "WATableViewCell.h"
 
 #import "QuartzCore+IRAdditions.h"
 
@@ -100,7 +99,7 @@
 
 - (void) loadView {
 
-	self.view = [[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds];
+	self.view = [[IRView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds];
 	
 	tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	self.tableView.delegate = self;
@@ -173,10 +172,9 @@
 
 	static NSString *identifier = @"Identifier";
 	
-	WATableViewCell *cell = (WATableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:identifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
-		
-		cell = [[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}

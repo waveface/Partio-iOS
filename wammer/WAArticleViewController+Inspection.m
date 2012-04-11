@@ -9,7 +9,6 @@
 #import <objc/runtime.h>
 #import "WAArticleViewController+Inspection.h"
 #import "WADataStore.h"
-#import "WAViewController.h"
 #import "UIApplication+CrashReporting.h"
 #import "UIKit+IRAdditions.h"
 #import "WAArticleFilesListViewController.h"
@@ -132,14 +131,16 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			
 			if (nrSelf.onPresentingViewController) {
 
-				__block WAViewController *shownViewController = [[WAViewController alloc] init];
-				shownViewController.onLoadview = ^ (WAViewController *self) {
-					self.view = [[UIView alloc] initWithFrame:CGRectZero];
+				IRViewController *shownViewController = [[IRViewController alloc] init];
+				__weak IRViewController *wShownViewController = shownViewController;
+				
+				shownViewController.onLoadView = ^ {
+					wShownViewController.view = [[UIView alloc] initWithFrame:CGRectZero];
 					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
 					textView.text = inspectionText;
 					textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 					textView.editable = NO;
-					[self.view addSubview:textView];
+					[wShownViewController.view addSubview:textView];
 				};
 				
 				shownViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {

@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WAViewController.h"
+#import "IRViewController.h"
 
-@interface WARepresentedFilePickerViewController : WAViewController
+@interface WARepresentedFilePickerViewController : IRViewController
 
 + (id) controllerWithObjectURI:(NSURL *)objectURI completion:(void(^)(NSURL *selectedFileURI))block;
 

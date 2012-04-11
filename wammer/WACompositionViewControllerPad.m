@@ -11,7 +11,6 @@
 #import "WAPreviewBadge.h"
 #import "WADataStore.h"
 #import "WACompositionViewPhotoCell.h"
-#import "WAViewController.h"
 
 @interface WACompositionViewControllerPad () <AQGridViewDelegate, AQGridViewDataSource>
 

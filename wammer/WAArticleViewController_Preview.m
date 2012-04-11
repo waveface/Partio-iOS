@@ -8,11 +8,10 @@
 
 #import "WAArticleViewController_Preview.h"
 #import "WADataStore.h"
-#import "WAScrollView.h"
 #import "WADefines.h"
 #import "WAArticleTextStackCell.h"
 
-#import <UIKit/UIGestureRecognizerSubclass.h>
+#import <UIKit/UIKit.h>
 
 #import "UIKit+IRAdditions.h"
 
@@ -449,7 +448,7 @@ enum {
 	if (webViewWrapper)
 		return webViewWrapper;
 	
-	webViewWrapper = [[WAView alloc] initWithFrame:CGRectZero];
+	webViewWrapper = [[IRView alloc] initWithFrame:CGRectZero];
 	webViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 
 	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
@@ -461,7 +460,7 @@ enum {
 	[webViewWrapper addSubview:topShadow];
 	
 	__weak WAArticleViewController_Preview *nrSelf = self;
-	__weak WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
+	__weak IRView * nrWebViewWrapper = (IRView *)webViewWrapper;
 	
 	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
@@ -736,7 +735,7 @@ enum {
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	CGFloat minWrappedViewHeight = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 384 : CGRectGetHeight(aStackView.bounds);
 	
@@ -771,7 +770,7 @@ enum {
 
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 	if ([[self wrappedView] isDescendantOfView:anElement])
 		return YES;
