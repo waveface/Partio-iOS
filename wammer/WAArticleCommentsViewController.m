@@ -130,9 +130,14 @@
 		return;
  
 	if (!window) {
+		
 		self.wrapperView.frame = self.view.bounds;
-		[self.view setNeedsLayout];
+		
+		if (self.view.window)
+			[self.view setNeedsLayout];
+		
 		return;
+		
 	}
 
 	CGRect ownRectInWindow = [window convertRect:self.view.bounds fromView:self.view];
@@ -308,15 +313,10 @@
 		UIEdgeInsets commentsViewScrollIndicatorInsets = nrCommentsView.scrollIndicatorInsets;
 		commentsViewScrollIndicatorInsets.bottom = accessoryViewHeight;
 		
-//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
-
 		nrCommentsView.contentInset = commentsViewContentInset;
 		nrCommentsView.scrollIndicatorInsets = commentsViewScrollIndicatorInsets;
 		
-//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
-
 		CGRect oldWrapperViewBounds = nrSelf.wrapperView.bounds;
-		NSLog(@"nrSelf.wrapperView.bounds was %@", NSStringFromCGRect(nrSelf.wrapperView.bounds));
 		
 		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
 
