@@ -57,8 +57,8 @@
 
 - (void) configureWithNavigationState:(WANavigationState *)state {
 
-	UIApplication *app = [UIApplication sharedApplication];
-	UINavigationController *navC = self.navigationController;
+	//	UIApplication * const app = [UIApplication sharedApplication];
+	//	UINavigationController * const navC = self.navigationController;
 
 }
 

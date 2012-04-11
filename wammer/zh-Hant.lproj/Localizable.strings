@@ -293,13 +293,16 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "40"; */
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "45"; */
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "57"; */
 "FEB" = "FEB";
 
-/* Class = "IBUILabel"; text = "FEB"; ObjectID = "72"; */
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "88"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "92"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */

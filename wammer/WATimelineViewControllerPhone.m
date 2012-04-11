@@ -681,29 +681,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
-	BOOL photoPost = (BOOL)!![post.files count];
 	
 	__block UIViewController *pushedVC = nil;
   
 	if([post.previews count])
-		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
+		WAPostAppEvent(@"View Preview Post", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
 	else if([post.files count])
-		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
+		WAPostAppEvent(@"View Photo Post", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
 	else 
-		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
-		
+		WAPostAppEvent(@"View Text Post", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
+	
 	pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
 
-	//	if (photoPost) {
-	//		
-	//		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
-	//	
-	//	} else {
-	//		
-	//		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
-	//	
-	//	}
-		
  	[self.navigationController pushViewController:pushedVC animated:YES];
 
 }
