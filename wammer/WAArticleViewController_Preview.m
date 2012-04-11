@@ -8,11 +8,10 @@
 
 #import "WAArticleViewController_Preview.h"
 #import "WADataStore.h"
-#import "WAScrollView.h"
 #import "WADefines.h"
 #import "WAArticleTextStackCell.h"
 
-#import <UIKit/UIGestureRecognizerSubclass.h>
+#import <UIKit/UIKit.h>
 
 #import "UIKit+IRAdditions.h"
 
@@ -736,7 +735,7 @@ enum {
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	CGFloat minWrappedViewHeight = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 384 : CGRectGetHeight(aStackView.bounds);
 	
@@ -771,7 +770,7 @@ enum {
 
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 	if ([[self wrappedView] isDescendantOfView:anElement])
 		return YES;

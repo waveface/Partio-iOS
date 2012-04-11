@@ -576,7 +576,7 @@
 	
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 //	if ([commentsVC isViewLoaded])
 //	if (anElement == commentsVC.view)
@@ -586,7 +586,7 @@
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	CGSize elementAnswer = [anElement sizeThatFits:(CGSize){
 		CGRectGetWidth(aStackView.bounds),
@@ -762,7 +762,7 @@
 		if (![contentView isDescendantOfView:currentWrappedView])
 			return [contentView isKindOfClass:[UIControl class]];
 			
-		WAStackView *sv = nrSelf.stackView;
+		IRStackView *sv = nrSelf.stackView;
 		UIView *svContainer = nrSelf.stackView.superview;
 		
 		if (CGRectContainsRect([svContainer convertRect:sv.bounds fromView:sv], [svContainer convertRect:currentWrapperView.bounds fromView:currentWrapperView]))
@@ -1127,7 +1127,7 @@
 
 			if (scrollView == self.stackView) {
 			
-				WAStackView *sv = self.stackView;
+				IRStackView *sv = self.stackView;
 				CGPoint oldSVOffset = sv.contentOffset;
 				CGPoint newSVOffset = (CGPoint){
 					oldSVOffset.x,

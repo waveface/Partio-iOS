@@ -21,7 +21,6 @@
 #import "WACompositionViewPhotoCell.h"
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
-#import "WAViewController.h"
 #import "WAPreviewBadge.h"
 
 

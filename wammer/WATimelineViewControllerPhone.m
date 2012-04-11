@@ -30,7 +30,7 @@
 
 #import "WANavigationController.h"
 #import "WANavigationBar.h"
-#import "WAViewController.h"
+
 #import "WAPaginationSlider.h"
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
