@@ -330,6 +330,8 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 					[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
 					
 						IRView *enclosingView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
+						
+						enclosingView.opaque = NO;
 												
 						CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
 						toolbarRect.size.height = 44;
