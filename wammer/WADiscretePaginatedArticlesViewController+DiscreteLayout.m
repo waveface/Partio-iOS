@@ -119,24 +119,26 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (UIView *) newPageContainerView {
 
 	IRView *returnedView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }];
+	returnedView.backgroundColor = nil;
+	returnedView.opaque = NO;
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
 	returnedView.clipsToBounds = NO;
 	returnedView.layer.shouldRasterize = YES;
 	returnedView.layer.rasterizationScale = [UIScreen mainScreen].scale;
 	
-	__block UIView *backdropView = [[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -12, -12)];
-	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	backdropView.layer.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:240.0f/255.0f blue:234.0f/255.0f alpha:1].CGColor;
-	backdropView.layer.cornerRadius = 4;
-	backdropView.layer.shadowOpacity = 0.35;
-	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
-	[returnedView addSubview:backdropView];
-	
-	returnedView.onLayoutSubviews = ^ {
-	
-		backdropView.layer.shadowPath = [UIBezierPath bezierPathWithRect:backdropView.bounds].CGPath;
-	
-	};
+	//	__block UIView *backdropView = [[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -12, -12)];
+	//	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	//	backdropView.layer.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:240.0f/255.0f blue:234.0f/255.0f alpha:1].CGColor;
+	//	backdropView.layer.cornerRadius = 4;
+	//	backdropView.layer.shadowOpacity = 0.35;
+	//	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
+	//	[returnedView addSubview:backdropView];
+	//	
+	//	returnedView.onLayoutSubviews = ^ {
+	//	
+	//		backdropView.layer.shadowPath = [UIBezierPath bezierPathWithRect:backdropView.bounds].CGPath;
+	//	
+	//	};
 	
 	[returnedView setNeedsLayout];
 	
@@ -175,13 +177,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	UIView *returnedView = [self cachedArticleViewControllerForArticle:anArticle].view;
 	
-	returnedView.layer.cornerRadius = 2;
-
-	returnedView.layer.backgroundColor = [UIColor whiteColor].CGColor;
-	returnedView.layer.masksToBounds = YES;
-	
-	returnedView.layer.borderWidth = 1;
-	returnedView.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.05].CGColor;
+	//	returnedView.layer.cornerRadius = 2;
+	//
+	//	returnedView.layer.backgroundColor = [UIColor whiteColor].CGColor;
+	//	returnedView.layer.masksToBounds = YES;
+	//	
+	//	returnedView.layer.borderWidth = 1;
+	//	returnedView.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.05].CGColor;
 	
 	return returnedView;
 	

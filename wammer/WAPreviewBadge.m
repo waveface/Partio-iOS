@@ -186,11 +186,11 @@
 	[self.backgroundView addSubview:innerBackgroundView];
 	
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAPreviewBadge *wSelf = self;
 	
 	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		
-		[nrSelf setNeedsLayout];
+		[wSelf setNeedsLayout];
 		
 	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
@@ -353,11 +353,13 @@
 		}, imageRect, 0.0f, YES),
 		imageRect,
 		//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
-		irTopLeft, 
+		irTopLeft,
 		YES
 	);
 	
-	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	//	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	
+	BOOL verticalLayout = YES;
 	
 	if (verticalLayout) {
 		actualImageRect.size.height = MIN(actualImageRect.size.height, 0.55f * usableRect.size.height);
@@ -370,7 +372,7 @@
 	CGRect labelRect, tempRect;
 	CGRectDivide(self.bounds, &tempRect, &labelRect,
 		verticalLayout ? actualImageRect.size.height : actualImageRect.size.width,
-		verticalLayout ? CGRectMinYEdge : CGRectMinXEdge
+		verticalLayout ? CGRectMinYEdge: CGRectMinXEdge
 	);
 	labelRect.origin.x += verticalLayout ? 8 : 16;
 	labelRect.origin.y += verticalLayout ? 16 : 8;
@@ -506,7 +508,7 @@
 }
 
 - (void) setPreview:(WAPreview *)newPreview {
-
+	
 	if (preview == newPreview)
 		return;
 
