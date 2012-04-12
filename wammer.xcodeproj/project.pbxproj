@@ -526,6 +526,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FF0E3D191537594B005B1FF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF6380D8153754430023C7AB;
+			remoteInfo = IRFoundationsTouchTest;
+		};
+		FF0E3D1B1537594B005B1FF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF3BE06715375564004C5244;
+			remoteInfo = IRFoundationsTouchTestHost;
+		};
 		FF1A10501462ACDB004FD00D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
@@ -2048,6 +2062,8 @@
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
 				FF72C188142789FA00B5D838 /* IRFoundationsX.framework */,
 				FF543F3D14C30A15005D3F7D /* IRFoundationsTest.octest */,
+				FF0E3D1A1537594B005B1FF8 /* IRFoundationsTouchTest.octest */,
+				FF0E3D1C1537594B005B1FF8 /* IRFoundationsTouchTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2829,6 +2845,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FF0E3D1A1537594B005B1FF8 /* IRFoundationsTouchTest.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IRFoundationsTouchTest.octest;
+			remoteRef = FF0E3D191537594B005B1FF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF0E3D1C1537594B005B1FF8 /* IRFoundationsTouchTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = IRFoundationsTouchTestHost.app;
+			remoteRef = FF0E3D1B1537594B005B1FF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FF1A10511462ACDB004FD00D /* libFinch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3913,7 +3943,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 312;
+				CURRENT_PROJECT_VERSION = 314;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3968,7 +3998,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 312;
+				CURRENT_PROJECT_VERSION = 314;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

@@ -173,4 +173,20 @@
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingContentSizeForViewInPopover {
+
+	return [NSSet setWithObjects:
+	
+		@"view.contentSize",
+	
+	nil];
+
+}
+
+- (CGSize) contentSizeForViewInPopover {
+
+	return self.view.contentSize;
+
+}
+
 @end
