@@ -160,11 +160,16 @@
 	} else if (postHasFiles) {
 
 		self.accessibilityValue = post.text;
-			
-		[self.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 3) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
+		
+		
+		NSMutableArray *imagesForTimeline = [NSMutableArray arrayWithArray:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 4) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
 			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
 			return file.thumbnailImage;
-		}] asynchronously:YES withDecodingCompletion:nil];
+		}]];
+		[imagesForTimeline removeObject:post.representingFile.thumbnailImage];
+		[imagesForTimeline insertObject:post.representingFile.thumbnailImage atIndex:0];
+		
+		[self.imageStackView setImages:imagesForTimeline asynchronously:YES withDecodingCompletion:nil];
 		
 		if ([post.files count] > 3) {
 			self.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
