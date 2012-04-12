@@ -186,11 +186,11 @@
 	[self.backgroundView addSubview:innerBackgroundView];
 	
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAPreviewBadge *wSelf = self;
 	
 	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		
-		[nrSelf setNeedsLayout];
+		[wSelf setNeedsLayout];
 		
 	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
@@ -506,7 +506,7 @@
 }
 
 - (void) setPreview:(WAPreview *)newPreview {
-
+	
 	if (preview == newPreview)
 		return;
 
