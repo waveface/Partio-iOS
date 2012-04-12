@@ -139,7 +139,7 @@
 	BOOL postHasPreview = (BOOL)!![post.previews count];
 
 	self.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
-	self.commentLabel.text = post.text;
+	self.commentLabel.text = ([post.text length]>0)? post.text : @"My life is a tapestry for rich and royal you.";
 	
 	if (postHasPreview) {
 	
