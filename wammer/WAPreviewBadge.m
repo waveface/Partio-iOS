@@ -353,11 +353,13 @@
 		}, imageRect, 0.0f, YES),
 		imageRect,
 		//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
-		irTopLeft, 
+		irTopLeft,
 		YES
 	);
 	
-	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	//	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	
+	BOOL verticalLayout = YES;
 	
 	if (verticalLayout) {
 		actualImageRect.size.height = MIN(actualImageRect.size.height, 0.55f * usableRect.size.height);
@@ -370,7 +372,7 @@
 	CGRect labelRect, tempRect;
 	CGRectDivide(self.bounds, &tempRect, &labelRect,
 		verticalLayout ? actualImageRect.size.height : actualImageRect.size.width,
-		verticalLayout ? CGRectMinYEdge : CGRectMinXEdge
+		verticalLayout ? CGRectMinYEdge: CGRectMinXEdge
 	);
 	labelRect.origin.x += verticalLayout ? 8 : 16;
 	labelRect.origin.y += verticalLayout ? 16 : 8;
