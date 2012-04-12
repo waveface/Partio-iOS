@@ -376,11 +376,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	*/
 
-	id mergePolicy = [options objectForKey:kWAMergePolicy];
+	id mergePolicy = [options objectForKey:WAMergePolicyKey];
 	if (!mergePolicy)
-		mergePolicy = kWAOverwriteWithLatestMergePolicy;
+		mergePolicy = WAOverwriteWithLatestMergePolicy;
 	
-	NSAssert1(mergePolicy == kWAOverwriteWithLatestMergePolicy, @"Merge policies (got %@) other than kWAOverwriteWithLatestMergePolicy are not implemented", mergePolicy);
+	NSAssert1(mergePolicy == WAOverwriteWithLatestMergePolicy, @"Merge policies (got %@) other than kWAOverwriteWithLatestMergePolicy are not implemented", mergePolicy);
 	
 	
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];

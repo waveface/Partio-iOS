@@ -16,14 +16,14 @@ typedef void (^WAEntitySyncCallback)(BOOL didFinish, NSManagedObjectContext *con
 
 extern BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject);
 
-extern id<NSCopying> const kWAMergePolicy;
+extern id<NSCopying> const WAMergePolicyKey;
 
-extern id const kWAErrorMergePolicy;
-extern id const kWAMergeByPropertyRemoteTrumpMergePolicy;
-extern id const kWAMergeByPropertyLocalTrumpMergePolicy;
-extern id const kWAOverwriteWithRemoteMergePolicy;
-extern id const kWAOverwriteWithLocalMergePolicy;
-extern id const kWAOverwriteWithLatestMergePolicy;
+extern id const WAErrorMergePolicy;
+extern id const WAMergeByPropertyRemoteTrumpMergePolicy;
+extern id const WAMergeByPropertyLocalTrumpMergePolicy;
+extern id const WAOverwriteWithRemoteMergePolicy;
+extern id const WAOverwriteWithLocalMergePolicy;
+extern id const WAOverwriteWithLatestMergePolicy;
 
 
 @protocol WARemoteInterfaceEntitySyncing <NSObject>
