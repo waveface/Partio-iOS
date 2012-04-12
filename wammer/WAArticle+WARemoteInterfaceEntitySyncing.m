@@ -64,6 +64,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			@"files", @"attachments",
 			@"previews", @"previews",
 			
+			@"representingFile", @"representingFile",	//	wraps @"cover_attach"
+			
 			@"summary", @"soul",
 			
 		nil];
@@ -98,6 +100,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		@"WAUser", @"owner",
 		@"WAPreview", @"previews",
 		@"WAFile", @"attachments",
+		@"WAFile", @"representingFile",
 	
 	nil];
 
@@ -110,12 +113,16 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *creatorID = [incomingRepresentation objectForKey:@"creator_id"];
 	NSString *articleID = [incomingRepresentation objectForKey:@"post_id"];
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
+	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
 	if (creatorID)
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
 
 	if (groupID)
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:groupID forKey:@"group_id"] forKey:@"group"];
+	
+	if (representingFileID)
+		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:representingFileID forKey:@"object_id"] forKey:@"representingFile"];
 	
 	NSArray *comments = [incomingRepresentation objectForKey:@"comments"];
 	if ([comments count] && articleID) {
