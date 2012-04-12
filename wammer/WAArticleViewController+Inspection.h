@@ -23,7 +23,7 @@
 
 
 @class IRAction;
-@interface WAArticleViewController (Inspection)
+@interface WAArticleViewController (Inspection) <UIPopoverControllerDelegate>
 
 @property (nonatomic, readwrite, weak) id<WAArticleViewControllerInspection> inspectionDelegate;
 @property (nonatomic, readwrite, strong) IRActionSheetController *inspectionActionSheetController;

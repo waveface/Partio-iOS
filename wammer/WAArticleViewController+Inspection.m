@@ -43,6 +43,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 	UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleInspectionGestureRecognizer:)];
 	
+	recognizer.minimumPressDuration = 0.125;
+	
 	return recognizer;
 
 }
@@ -71,7 +73,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 - (void) handleInspectionGestureRecognizer:(UILongPressGestureRecognizer *)longPressRecognizer {
 
-	if (longPressRecognizer.state != UIGestureRecognizerStateRecognized)
+	if (longPressRecognizer.state != UIGestureRecognizerStateBegan)
 		return;
 	
 	IRActionSheetController *controller = objc_getAssociatedObject(self, &kInspectionActionSheetController);
@@ -79,13 +81,12 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 		return;
 	
 	self.inspectionActionSheetController = nil;
-	[self.inspectionActionSheetController.managedActionSheet showFromRect:(CGRect){
-		(CGPoint){
-			CGRectGetMidX(self.view.bounds),
-			CGRectGetMidY(self.view.bounds)
-		},
-		(CGSize){ 2, 2 }
-	} inView:self.view animated:YES];
+	[self.inspectionActionSheetController.managedActionSheet showFromRect:CGRectOffset((CGRect){
+		
+		[longPressRecognizer locationInView:self.view],
+		(CGSize){ 44, 44 }
+		
+	}, -22, -22) inView:self.view animated:YES];
 	
 }
 
@@ -276,11 +277,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 				
 				hasRunAction = YES;
 				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					
-					[parentViewController enqueueInterfaceUpdate:action sender:wSelf];
-				
-				});
+				[parentViewController enqueueInterfaceUpdate:action sender:wSelf];
 
 			});
 		
@@ -333,7 +330,32 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 		
 		UINavigationController *navC = [controller wrappingNavigationController];
 		popoverController = [[UIPopoverController alloc] initWithContentViewController:navC];
+		
 		self.coverPhotoSwitchPopoverController = popoverController;
+		
+		__weak UIPopoverController *wPopoverController = popoverController;
+		
+		__block id orientationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidChangeStatusBarOrientationNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		
+			if (![wPopoverController isPopoverVisible])
+				return;
+			
+			[wPopoverController dismissPopoverAnimated:NO];
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				
+				[wPopoverController presentPopoverFromRect:wSelf.view.bounds inView:wSelf.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+			
+			});
+			
+		}];
+		
+		[popoverController irPerformOnDeallocation:^{
+			
+			[[NSNotificationCenter defaultCenter] removeObserver:orientationObserver];
+			orientationObserver = nil;
+			
+		}];
 	
 	}
 	
