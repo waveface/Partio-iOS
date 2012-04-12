@@ -18,7 +18,6 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAGalleryViewController.h"
-#import "WAPostViewControllerPhone.h"
 
 #import "WAArticleDraftsViewController.h"
 #import "WACompositionViewController.h"
@@ -31,7 +30,7 @@
 
 #import "WANavigationController.h"
 #import "WANavigationBar.h"
-#import "WAViewController.h"
+
 #import "WAPaginationSlider.h"
 #import "WAArticleCommentsViewCell.h"
 #import "WAPostViewCellPhone.h"
@@ -402,136 +401,20 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	
-	return [[UIView alloc] initWithFrame:CGRectZero];
-
-}
-
-- (UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	
-	return [[UIView alloc] initWithFrame:CGRectZero];
-
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-
-	return 4;
-
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-
-	return 4;
-
-}
-
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  
-  BOOL postHasFiles = (BOOL)!![post.files count];
-  BOOL postHasPreview = (BOOL)!![post.previews count];
-  
-	WAPostViewCellPhone *cell;
 	
-	WAPostViewCellPhone * (^makeCell)(WAPostViewCellStyle) = ^ (WAPostViewCellStyle style) {
+	return [WAPostViewCellPhone cellRepresentingObject:post inTableView:tableView];
 	
-		NSString *identifier = ((NSString * []){
-			[WAPostViewCellStyleDefault] = @"PostCell-TextOnly",
-			[WAPostViewCellStyleImageStack] = @"PostCell-Stacked",
-			[WAPostViewCellStyleWebLink] = @"PostCell-WebLink",
-			[WAPostViewCellStyleWebLinkWithoutPhoto] = @"PostCell-WebLinkNoPhoto"
-		})[style];
-		
-		WAPostViewCellPhone *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-		if (!cell)
-			cell = [[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier];
-		
-		return cell;
-		
-	};
-	
-	if (postHasPreview) {
-	
-		WAPreview *preview = [post.previews anyObject];
-		cell = makeCell(preview.thumbnail ? WAPostViewCellStyleWebLink : WAPostViewCellStyleWebLinkWithoutPhoto);
-		cell.post = post;
-		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
-		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-		cell.extraInfoLabel.text = @"";
-	 
-		cell.accessibilityLabel = @"Text";
-		cell.accessibilityValue = post.text;
-
-		cell.previewBadge.preview = preview;
-		
-		cell.accessibilityLabel = @"Preview";
-		cell.accessibilityHint = preview.graphElement.title;
-		cell.accessibilityValue = preview.graphElement.text;
-		
-		cell.previewImageView.image = preview.thumbnail;
-		cell.previewTitleLabel.text = preview.graphElement.title;
-		cell.previewProviderLabel.text = preview.graphElement.providerDisplayName;
-		
-//		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
-//		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
-//		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
-//		cell.previewImageBackground.layer.shadowRadius = 1.0f;
-	
-	} else if (postHasFiles) {
-
-		cell = makeCell(WAPostViewCellStyleImageStack);
-		cell.imageStackView.delegate = self;
-		cell.commentLabel.userInteractionEnabled = YES;
-		cell.post = post;
-		cell.accessibilityLabel = @"Text";
-		cell.accessibilityValue = post.text;
-			
-		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 3) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
-			return file.thumbnailImage;
-		}] asynchronously:YES withDecodingCompletion:nil];
-		
-		if ([post.files count] > 3) {
-			cell.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
-		}
-	
-		cell.accessibilityLabel = @"Photo";
-		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
-  
-  } else {
-		
-		cell = makeCell(WAPostViewCellStyleDefault);
-		cell.post = post;
-		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
-		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-		cell.extraInfoLabel.text = @"";
-	 
-		cell.accessibilityLabel = @"Text";
-		cell.accessibilityValue = post.text;
-		
-	}
-		
-	return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	UIFont *baseFont = [UIFont fontWithName:@"Helvetica" size:14.0];
-  CGFloat height = [post.text sizeWithFont:baseFont constrainedToSize:(CGSize){
-		CGRectGetWidth(tableView.frame) - 80,
-		140.0  // 6 lines
-	} lineBreakMode:UILineBreakModeWordWrap].height;
-
-	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 48);
-	
+	return [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
+		
 }
 
 - (IBAction) actionSettings:(id)sender {
@@ -638,7 +521,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	if ([menuController isMenuVisible]) {
@@ -653,29 +536,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
-	BOOL photoPost = (BOOL)!![post.files count];
 	
 	__block UIViewController *pushedVC = nil;
   
 	if([post.previews count])
-		WAPostAppEvent(@"Create Preview", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
+		WAPostAppEvent(@"View Preview Post", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
 	else if([post.files count])
-		WAPostAppEvent(@"Create Photo", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
+		WAPostAppEvent(@"View Photo Post", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
 	else 
-		WAPostAppEvent(@"Create Text", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
-		
+		WAPostAppEvent(@"View Text Post", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
+	
 	pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
 
-	//	if (photoPost) {
-	//		
-	//		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
-	//	
-	//	} else {
-	//		
-	//		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
-	//	
-	//	}
-		
  	[self.navigationController pushViewController:pushedVC animated:YES];
 
 }
@@ -762,8 +634,17 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
-  
-	NSURL *representedObjectURI = objc_getAssociatedObject(aStackView, &WAPostsViewControllerPhone_RepresentedObjectURI);
+
+	NSIndexPath *cellIndexPath = [self.tableView indexPathForRowAtPoint:[self.tableView convertPoint:aStackView.center fromView:aStackView.superview]];
+	
+	if (!cellIndexPath)
+		return;
+	
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:cellIndexPath];
+	if (![cell isKindOfClass:[WAPostViewCellPhone class]])
+		return;
+	
+	NSURL *representedObjectURI = [[cell.representedObject objectID] URIRepresentation];
 	
 	__block __typeof__(self) nrSelf = self;
 	__block WAGalleryViewController *galleryViewController = nil;
@@ -909,16 +790,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	return NO;
 
-	//	In the future, this will prove handy
-	//
-	//	if ([super canPerformAction:anAction withSender:sender])
-	//		return YES;
-	//	
-	//	if ([self respondsToSelector:anAction])
-	//		return YES;
-	//	
-	//	return NO;
-
 }
 
 - (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
@@ -934,7 +805,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
 	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:indexPath];
-	NSParameterAssert(cell.post == article);	//	Bleh
+	NSParameterAssert(cell.article == article);	//	Bleh
 	
 	if (![cell isSelected])
 		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
@@ -949,7 +820,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Action deleting an article") action:@selector(removeArticle:)]];
 	
-	if ([cell.post.files count] > 1)
+	if ([cell.article.files count] > 1)
 		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Action changing representing file of an article") action:@selector(editCoverImage:)]];
 	
 	[menuController setMenuItems:menuItems];
@@ -1000,7 +871,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 		
 	}];
-
+	
+	
 }
 
 - (void) editCoverImage:(id)sender {

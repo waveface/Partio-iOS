@@ -26,8 +26,8 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewCell *cellPrototype;
-@property (nonatomic, readwrite, retain) WAView *compositionAccessoryTextWellBackgroundView;
-@property (nonatomic, readwrite, retain) WAView *compositionAccessoryBackgroundView;
+@property (nonatomic, readwrite, retain) IRView *compositionAccessoryTextWellBackgroundView;
+@property (nonatomic, readwrite, retain) IRView *compositionAccessoryBackgroundView;
 
 - (void) refreshView;
 
@@ -130,9 +130,14 @@
 		return;
  
 	if (!window) {
+		
 		self.wrapperView.frame = self.view.bounds;
-		[self.view setNeedsLayout];
+		
+		if (self.view.window)
+			[self.view setNeedsLayout];
+		
 		return;
+		
 	}
 
 	CGRect ownRectInWindow = [window convertRect:self.view.bounds fromView:self.view];
@@ -277,12 +282,12 @@
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -3, 0, 0, 0 });
 	
-	self.compositionAccessoryTextWellBackgroundView = [[WAView alloc] initWithFrame:textWellBackgroundView.bounds];
+	self.compositionAccessoryTextWellBackgroundView = [[IRView alloc] initWithFrame:textWellBackgroundView.bounds];
 	self.compositionAccessoryTextWellBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.compositionAccessoryTextWellBackgroundView addSubview:textWellBackgroundView];
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
 	
-	self.compositionAccessoryBackgroundView = [[WAView alloc] initWithFrame:backgroundView.bounds];
+	self.compositionAccessoryBackgroundView = [[IRView alloc] initWithFrame:backgroundView.bounds];
 	self.compositionAccessoryBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.compositionAccessoryBackgroundView addSubview:backgroundView];
 	[self.compositionAccessoryView insertSubview:compositionAccessoryBackgroundView atIndex:0];
@@ -308,15 +313,10 @@
 		UIEdgeInsets commentsViewScrollIndicatorInsets = nrCommentsView.scrollIndicatorInsets;
 		commentsViewScrollIndicatorInsets.bottom = accessoryViewHeight;
 		
-//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
-
 		nrCommentsView.contentInset = commentsViewContentInset;
 		nrCommentsView.scrollIndicatorInsets = commentsViewScrollIndicatorInsets;
 		
-//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
-
 		CGRect oldWrapperViewBounds = nrSelf.wrapperView.bounds;
-		NSLog(@"nrSelf.wrapperView.bounds was %@", NSStringFromCGRect(nrSelf.wrapperView.bounds));
 		
 		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
 

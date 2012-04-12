@@ -14,7 +14,6 @@
 #import "IRPaginatedView.h"
 #import "IRLifetimeHelper.h"
 
-#import "WAViewController.h"
 #import "WAPaginatedArticlesViewController.h"
 
 #import "UIApplication+CrashReporting.h"

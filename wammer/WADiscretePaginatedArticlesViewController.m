@@ -28,7 +28,6 @@
 #import "WADataStore.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
-#import "WAViewController.h"
 #import "WAGestureWindow.h"
 #import "WAButton.h"
 

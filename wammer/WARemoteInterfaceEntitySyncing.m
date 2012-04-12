@@ -16,11 +16,11 @@ BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObj
 }
 
 
-id<NSCopying> const kWAMergePolicy = @"WAMergePolicy";
+id<NSCopying> const WAMergePolicyKey = @"mergePolicy";
 
-id const kWAErrorMergePolicy = @"WAErrorMergePolicy";
-id const kWAMergeByPropertyRemoteTrumpMergePolicy = @"WAMergeByPropertyRemoteTrumpMergePolicy";
-id const kWAMergeByPropertyLocalTrumpMergePolicy = @"WAMergeByPropertyLocalTrumpMergePolicy";
-id const kWAOverwriteWithRemoteMergePolicy = @"WAOverwriteWithRemoteMergePolicy";
-id const kWAOverwriteWithLocalMergePolicy = @"WAOverwriteWithLocalMergePolicy";
-id const kWAOverwriteWithLatestMergePolicy = @"WAOverwriteWithLatestMergePolicy";
+id const WAErrorMergePolicy = @"WAErrorMergePolicy";
+id const WAMergeByPropertyRemoteTrumpMergePolicy = @"WAMergeByPropertyRemoteTrumpMergePolicy";
+id const WAMergeByPropertyLocalTrumpMergePolicy = @"WAMergeByPropertyLocalTrumpMergePolicy";
+id const WAOverwriteWithRemoteMergePolicy = @"WAOverwriteWithRemoteMergePolicy";
+id const WAOverwriteWithLocalMergePolicy = @"WAOverwriteWithLocalMergePolicy";
+id const WAOverwriteWithLatestMergePolicy = @"WAOverwriteWithLatestMergePolicy";
