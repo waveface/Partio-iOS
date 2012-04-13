@@ -526,6 +526,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		FF0E3D191537594B005B1FF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF6380D8153754430023C7AB;
+			remoteInfo = IRFoundationsTouchTest;
+		};
+		FF0E3D1B1537594B005B1FF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF3BE06715375564004C5244;
+			remoteInfo = IRFoundationsTouchTestHost;
+		};
 		FF1A10501462ACDB004FD00D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF1A10461462ACDB004FD00D /* Finch.xcodeproj */;
@@ -1506,8 +1520,8 @@
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
-		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewBadge.h; sourceTree = "<group>"; };
-		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewBadge.m; sourceTree = "<group>"; };
+		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPreviewBadge.h; path = wammer/WAPreviewBadge.h; sourceTree = "<group>"; };
+		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPreviewBadge.m; path = wammer/WAPreviewBadge.m; sourceTree = "<group>"; };
 		FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IRManagedObject+WAFileHandling.h"; sourceTree = "<group>"; };
 		FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IRManagedObject+WAFileHandling.m"; sourceTree = "<group>"; };
 		FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreview.h; sourceTree = "<group>"; };
@@ -1819,8 +1833,6 @@
 				FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */,
 				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
 				FF269E5913D84A420085E20A /* WAPaginationSlider.m */,
-				FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */,
-				FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */,
 			);
 			name = Views;
 			path = wammer;
@@ -1967,6 +1979,7 @@
 				FFDE86A714397064009E04D9 /* Composition */,
 				FF55C23513F5251D00F38861 /* Gallery */,
 				FFA9512714077BE800BD3302 /* File Operations */,
+				FF93163A153803F300662F16 /* Web Preview */,
 				FF3ACA9113E6AD1C000F608C /* Views */,
 				FF97382213D821C1003D1722 /* Model */,
 				FF97384613D82771003D1722 /* Remote Interface */,
@@ -2048,6 +2061,8 @@
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
 				FF72C188142789FA00B5D838 /* IRFoundationsX.framework */,
 				FF543F3D14C30A15005D3F7D /* IRFoundationsTest.octest */,
+				FF0E3D1A1537594B005B1FF8 /* IRFoundationsTouchTest.octest */,
+				FF0E3D1C1537594B005B1FF8 /* IRFoundationsTouchTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2106,6 +2121,15 @@
 				FF8A71C414B3504000EC6D66 /* finish_installation.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		FF93163A153803F300662F16 /* Web Preview */ = {
+			isa = PBXGroup;
+			children = (
+				FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */,
+				FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */,
+			);
+			name = "Web Preview";
 			sourceTree = "<group>";
 		};
 		FF946020152D7EDD0034D540 /* Appearance */ = {
@@ -2829,6 +2853,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FF0E3D1A1537594B005B1FF8 /* IRFoundationsTouchTest.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = IRFoundationsTouchTest.octest;
+			remoteRef = FF0E3D191537594B005B1FF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF0E3D1C1537594B005B1FF8 /* IRFoundationsTouchTestHost.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = IRFoundationsTouchTestHost.app;
+			remoteRef = FF0E3D1B1537594B005B1FF8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FF1A10511462ACDB004FD00D /* libFinch.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3913,7 +3951,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 311;
+				CURRENT_PROJECT_VERSION = 318;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3968,7 +4006,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 311;
+				CURRENT_PROJECT_VERSION = 318;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

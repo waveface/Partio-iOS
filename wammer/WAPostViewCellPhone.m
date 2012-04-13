@@ -161,16 +161,27 @@
 
 		self.accessibilityValue = post.text;
 		
-		// Prepare for imageStackView: cover image, photo 1, and photo 2.
-		NSMutableArray *imagesForTimeline = [NSMutableArray arrayWithArray:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 4) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
-			return file.thumbnailImage;
-		}]];
+		NSArray *allFileURIs = post.fileOrder;
+		NSMutableArray *usedFileURIs = [[allFileURIs subarrayWithRange:(NSRange){ 0, MIN(3, [allFileURIs count])}] mutableCopy];
 		
-		if ([imagesForTimeline count]>= 2) {
-			[imagesForTimeline removeObject:post.representingFile.thumbnailImage];
-			[imagesForTimeline insertObject:post.representingFile.thumbnailImage atIndex:0];
-		}
+		NSURL *representingFileURI = [[post.representingFile objectID] URIRepresentation];
+		
+		if ([usedFileURIs containsObject:representingFileURI])
+			[usedFileURIs removeObject:representingFileURI];
+		
+		[usedFileURIs insertObject:representingFileURI atIndex:0];
+		
+		NSArray *imagesForTimeline = [usedFileURIs irMap:^(NSURL *fileURI, NSUInteger index, BOOL *stop) {
+			
+			if (index > 2) {
+				*stop = YES;
+				return (id)nil;
+			}
+			
+			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:fileURI];
+			return (id)file.thumbnailImage;
+			
+		}];
 		
 		[self.imageStackView setImages:imagesForTimeline asynchronously:YES withDecodingCompletion:nil];
 		

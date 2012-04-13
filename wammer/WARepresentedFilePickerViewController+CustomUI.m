@@ -48,6 +48,8 @@
 		article.representingFile = pickedFile;
 		article.modificationDate = [NSDate date];
 		
+		NSCParameterAssert(article.representingFile == pickedFile);
+		
 		NSError *savingError = nil;
 		if (![article.managedObjectContext save:&savingError]) {
 			

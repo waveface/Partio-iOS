@@ -119,12 +119,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
+//	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
+	self.view.backgroundColor = [UIColor colorWithRed:235.5/256.0 green:235.5/256.0 blue:235.5/256.0 alpha:1];
 	self.view.opaque = YES;
 	
 	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
 	self.paginatedView.backgroundColor = nil;
-	self.paginatedView.horizontalSpacing = 32.0f;
+	self.paginatedView.horizontalSpacing = 0.0f;
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {

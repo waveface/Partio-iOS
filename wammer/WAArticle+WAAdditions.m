@@ -62,13 +62,70 @@
 	WAFile *file = [self primitiveValueForKey:@"representingFile"];
 	[self didAccessValueForKey:@"representingFile"];
 	
-	if (file)
-		return file;
-	
-	if ([self.fileOrder count])
+	if (!file && [self.fileOrder count]) {
 		file = (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
+	}
 
 	return file;
+
+}
+
+- (void) setRepresentingFile:(WAFile *)representingFile {
+
+	if (representingFile) {
+	
+		[self willAccessValueForKey:@"files"];
+		NSSet *files = [self primitiveValueForKey:@"files"];
+		[self didAccessValueForKey:@"files"];
+		
+		NSParameterAssert([files containsObject:representingFile]);
+	
+	}
+	
+	[self willChangeValueForKey:@"representingFile"];
+	[self setPrimitiveValue:representingFile forKey:@"representingFile"];
+	[self didChangeValueForKey:@"representingFile"];
+
+}
+
+- (void) setFiles:(NSSet *)files {
+
+	[self willChangeValueForKey:@"files"];
+	[self setPrimitiveValue:files forKey:@"files"];
+
+	[self willAccessValueForKey:@"representingFile"];
+	WAFile *representingFile = [self primitiveValueForKey:@"representingFile"];
+	[self didAccessValueForKey:@"representingFile"];
+		
+	if (![files containsObject:representingFile]) {
+		[self willChangeValueForKey:@"representingFile"];
+		[self setPrimitiveValue:nil forKey:@"representingFile"];
+		[self didChangeValueForKey:@"representingFile"];
+	}		
+	
+	[self didChangeValueForKey:@"files"];
+
+}
+
+- (void) setFileOrder:(NSArray *)fileOrder {
+
+	[self willChangeValueForKey:@"fileOrder"];
+	[self setPrimitiveValue:fileOrder forKey:@"fileOrder"];
+	
+	[self willAccessValueForKey:@"representingFile"];
+	WAFile *representingFile = [self primitiveValueForKey:@"representingFile"];
+	[self didAccessValueForKey:@"representingFile"];
+	
+	if ([[representingFile objectID] isTemporaryID])
+		[representingFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:representingFile] error:nil];
+	
+	if (![fileOrder containsObject:[[representingFile objectID] URIRepresentation]]) {
+		[self willChangeValueForKey:@"representingFile"];
+		[self setPrimitiveValue:nil forKey:@"representingFile"];
+		[self didChangeValueForKey:@"representingFile"];
+	}
+	
+	[self didChangeValueForKey:@"fileOrder"];
 
 }
 
