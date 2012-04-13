@@ -265,6 +265,8 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	} else {
 		reachability = SCNetworkReachabilityCreateWithAddress(NULL, (const struct sockaddr *)&hostAddress);
 	}
+	
+	NSAssert1(reachability, @"Must have created a SCNetworkReachabilityRef with URL %@", hostURL);
 
   SCNetworkReachabilityContext context = { 0, (__bridge void *)(self), NULL, NULL, NULL };
   SCNetworkReachabilitySetCallback(reachability, WASCReachabilityCallback, &context);
