@@ -114,12 +114,13 @@
 		FF2981BE14F6DFF2004F6893 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF61635E141618BD004738D3 /* MessageUI.framework */; };
 		FF2981BF14F6DFF2004F6893 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF21C8D113E14B4E009B980D /* MobileCoreServices.framework */; };
 		FF2981C014F6DFF2004F6893 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1A105D1462B10C004FD00D /* OpenAL.framework */; };
-		FF2981C114F6DFF2004F6893 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
 		FF2981C214F6DFF2004F6893 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4570E31488F362005B5905 /* QuickLook.framework */; };
 		FF2981C314F6DFF2004F6893 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF666C2F140CD31C00C35CED /* Security.framework */; };
 		FF2981C414F6DFF2004F6893 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF154657148E06D600352428 /* SystemConfiguration.framework */; };
 		FF2E82FC14EE48FB000C6044 /* WAPreview+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FB14EE48FB000C6044 /* WAPreview+WAAdditions.m */; };
 		FF2E82FF14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */; };
+		FF2EA24115384CAB003B965A /* WAOverlayBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */; };
+		FF2EA24215384CEB003B965A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A69913D6E08800D54EC6 /* QuartzCore.framework */; };
 		FF315A45146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */; };
 		FF3588F714EE7207005B452C /* WAOpenGraphElement+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3588F614EE7207005B452C /* WAOpenGraphElement+WAAdditions.m */; };
 		FF35892214EE7F8F005B452C /* WAOpenGraphElementImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */; };
@@ -1571,10 +1572,10 @@
 				FF2981BE14F6DFF2004F6893 /* MessageUI.framework in Frameworks */,
 				FF2981BF14F6DFF2004F6893 /* MobileCoreServices.framework in Frameworks */,
 				FF2981C014F6DFF2004F6893 /* OpenAL.framework in Frameworks */,
-				FF2981C114F6DFF2004F6893 /* QuartzCore.framework in Frameworks */,
 				FF2981C214F6DFF2004F6893 /* QuickLook.framework in Frameworks */,
 				FF2981C314F6DFF2004F6893 /* Security.framework in Frameworks */,
 				FF2981C414F6DFF2004F6893 /* SystemConfiguration.framework in Frameworks */,
+				FF2EA24215384CEB003B965A /* QuartzCore.framework in Frameworks */,
 				FF0C25E715204B5E00036B8F /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3511,6 +3512,7 @@
 				FF54C5161520947100301887 /* WADataStoreTest.m in Sources */,
 				FF14FD191533149D0013410C /* WAArticle.m in Sources */,
 				FF14FD1E1533149E0013410C /* WAFile.m in Sources */,
+				FF2EA24115384CAB003B965A /* WAOverlayBezel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3951,7 +3953,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 319;
+				CURRENT_PROJECT_VERSION = 320;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4006,7 +4008,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 319;
+				CURRENT_PROJECT_VERSION = 320;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

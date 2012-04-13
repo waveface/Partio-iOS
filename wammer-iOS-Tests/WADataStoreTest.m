@@ -95,4 +95,29 @@
 
 }
 
+- (void) testRepresentingFile {
+
+	NSManagedObjectContext *context = nil;
+	WAArticle *article = [self disposableArticleWithContext:&context];
+	STAssertNil(article.representingFile, @"Article %@ should not have a representing file when created");
+
+	WAFile *file1 = [self newFileInContext:context];
+	[article addFilesObject:file1];
+	
+	WAFile *file2 = [self newFileInContext:context];
+	[article addFilesObject:file2];
+	
+	STAssertEqualObjects(file1, article.representingFile, @"Article should use the first file in the files array as an implicit represented file");
+	
+	WAFile *file3 = [self newFileInContext:context];
+	article.representingFile = file3;
+	
+	STAssertTrue([article.files containsObject:file3], @"Associating a representing file should implicitly add it to the article");
+	
+	[article removeFilesObject:file3];
+	
+	STAssertEqualObjects([article irObjectAtIndex:0 inArrayKeyed:@"fileOrder"], article.representingFile, @"Removing a representing file from the article’s file collection should revert the implicit representing file to the first one in fileOrder");
+	
+}
+
 @end
