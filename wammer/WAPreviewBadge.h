@@ -17,7 +17,6 @@ enum {
 	WAPreviewBadgeImageAndTextStyle,
 	WAPreviewBadgeTextOnlyStyle,
 	WAPreviewBadgeImageOnlyStyle,
-	
 	WAPreviewBadgeTextOverImageStyle,
 	
 	WAPreviewBadgeDefaultStyle = WAPreviewBadgeAutomaticStyle

@@ -62,8 +62,9 @@
 	WAFile *file = [self primitiveValueForKey:@"representingFile"];
 	[self didAccessValueForKey:@"representingFile"];
 	
-	if ([self.fileOrder count])
+	if (!file && [self.fileOrder count]) {
 		file = (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
+	}
 
 	return file;
 
@@ -71,20 +72,19 @@
 
 - (void) setRepresentingFile:(WAFile *)representingFile {
 
-	[self willChangeValueForKey:@"representingFile"];
-	[self setPrimitiveValue:representingFile forKey:@"representingFile"];
-	[self didChangeValueForKey:@"representingFile"];
-	
 	if (representingFile) {
 	
 		[self willAccessValueForKey:@"files"];
 		NSSet *files = [self primitiveValueForKey:@"files"];
 		[self didAccessValueForKey:@"files"];
 		
-		if (![files containsObject:representingFile])
-			[self addFilesObject:representingFile];
+		NSParameterAssert([files containsObject:representingFile]);
 	
 	}
+	
+	[self willChangeValueForKey:@"representingFile"];
+	[self setPrimitiveValue:representingFile forKey:@"representingFile"];
+	[self didChangeValueForKey:@"representingFile"];
 
 }
 
