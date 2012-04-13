@@ -78,7 +78,10 @@
 		NSSet *files = [self primitiveValueForKey:@"files"];
 		[self didAccessValueForKey:@"files"];
 		
-		NSParameterAssert([files containsObject:representingFile]);
+		if (![files containsObject:representingFile]) {
+			[self addFilesObject:representingFile];
+			NSParameterAssert([files containsObject:representingFile]);
+		}
 	
 	}
 	
