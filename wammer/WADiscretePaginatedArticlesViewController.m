@@ -820,6 +820,30 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}]];
 	
+	[returnedActions addObject:[IRAction actionWithTitle:@"Pounce" block: ^ {
+	
+		__block void (^pounce)(void) = [^ {
+	
+			IRPaginatedView *ownPaginatedView = nrSelf.paginatedView;
+			
+			if (ownPaginatedView.currentPage == 0) {
+			
+				[ownPaginatedView scrollToPageAtIndex:(ownPaginatedView.numberOfPages - 1) animated:YES];
+			
+			} else {
+
+				[ownPaginatedView scrollToPageAtIndex:0 animated:YES];
+			
+			}
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), pounce);
+		
+		} copy];
+		
+		pounce();
+		
+	}]];
+	
 	return returnedActions;
 	
 }
