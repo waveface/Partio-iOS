@@ -12,7 +12,15 @@
 NSString * const kWAAdvancedFeaturesEnabled = @"WAAdvancedFeaturesEnabled";
 
 BOOL WAAdvancedFeaturesEnabled (void) {
+
+#if TARGET_IPHONE_SIMULATOR
+
+	return YES;
+
+#endif
+
   return [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+	
 };
 
 
