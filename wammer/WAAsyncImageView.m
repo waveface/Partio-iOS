@@ -27,11 +27,13 @@
 
 - (void) setImage:(UIImage *)newImage withOptions:(WAImageViewOptions)options {
 
-	if (lastImagePtr == (__bridge void *)(newImage))
+	void * imagePtr = (__bridge void *)newImage;
+
+	if (lastImagePtr == imagePtr)
 		return;
   
-  lastImagePtr = (__bridge void *)(newImage);
-
+  lastImagePtr = imagePtr;
+	
   if (!newImage) {
   
     [super setImage:nil];
@@ -50,11 +52,10 @@
     UIImage *decodedImage = [newImage irDecodedImage];
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
-		//	CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
 			
-      if (self.lastImagePtr != (__bridge void *)(decodedImage))
+      if (self.lastImagePtr != imagePtr)
 				return;
-    
+			
       [super setImage:decodedImage];
       [self.delegate imageViewDidUpdate:self];
 		
