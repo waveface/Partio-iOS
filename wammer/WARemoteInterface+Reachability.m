@@ -231,9 +231,11 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
     [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
+		
+			NSLog(@"stationReps %@", stationReps);
     
       dispatch_async(dispatch_get_main_queue(), ^ {
-      
+		
         nrSelf.monitoredHosts = [[NSArray arrayWithObject:nrSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
         
           //  Even if the station is not connected as reported by Cloud, we want to track it anyway
@@ -246,20 +248,23 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
             return (id)nil;
           
           NSURL *baseURL = nrSelf.engine.context.baseURL;
-          
+				
           NSURL *givenURL = [NSURL URLWithString:stationURLString];
           if (!givenURL)
             return (id)nil;
+						
+					if (![givenURL host])
+						return (id)nil;
           
           NSString *baseURLString = [[NSArray arrayWithObjects:
 		
-            [givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
-              [baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
-            [baseURL host] ? [givenURL host] : @"",
-            [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
-            [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
-            [baseURL path] ? [baseURL path] : @"",
-              @"/", //  path needs trailing slash
+						[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+						[baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
+						[baseURL host] ? [givenURL host] : @"",
+						[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
+						[baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
+						[baseURL path] ? [baseURL path] : @"",
+						@"/", //  path needs trailing slash
             
             //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
             //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
