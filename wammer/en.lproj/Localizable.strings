@@ -4,14 +4,16 @@
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
-   Cancel. */
+   Cancel.
+   Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
 
 /* Action changing representing file of an article
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
-/* Action deleting an article */
+/* Action deleting an article
+   Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "Delete";
 
 /* Action title for discarding a draft */
@@ -117,6 +119,9 @@
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
+
+/* Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_TITLE" = "Delete this Post?";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
