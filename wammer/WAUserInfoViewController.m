@@ -133,9 +133,17 @@
   if (![self isViewLoaded])
     return;
   
-  [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
-  [self.tableView endUpdates];
+  @try {
+
+		[self.tableView beginUpdates];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView endUpdates];
+  
+  } @catch (NSException *exception) {
+
+    [self.tableView reloadData];
+    
+  }
 
 }
 
@@ -146,35 +154,18 @@
   if (![self isViewLoaded])
     return;
 
-#if 1
-		
-  [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
-  [self.tableView endUpdates];
-
-#else
-	
-  WAReachabilityDetector *targetDetector = aNotification.object;
-  NSURL *updatedHost = targetDetector.hostURL;
-  
   @try {
-  
-    NSUInteger displayIndexOfHost = [monitoredHosts indexOfObject:updatedHost]; //  USE OLD STUFF
-    if (displayIndexOfHost == NSNotFound)
-      return;
-    
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:displayIndexOfHost inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];   
 
+		[self.tableView beginUpdates];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView endUpdates];
+  
   } @catch (NSException *exception) {
 
     [self.tableView reloadData];
     
   }
 
-#endif
-  
 }
 
 - (NSArray *) monitoredHosts {
@@ -203,10 +194,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-	if (WAAdvancedFeaturesEnabled())
-		return 4;
-	
-  return 3;
+	return 4;
 
 }
 
@@ -224,7 +212,7 @@
       return 3;
 		
 		case 3:
-			return 1;
+			return WAAdvancedFeaturesEnabled() ? 1 : 0;
 			
     default:
       return 0;
