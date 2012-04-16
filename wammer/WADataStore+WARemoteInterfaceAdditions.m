@@ -14,6 +14,7 @@
 
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
+NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleUpdateVisibilityOnly";
 
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
@@ -101,6 +102,8 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 	NSParameterAssert([NSThread isMainThread]);
 	
 	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
+	
+	BOOL updateVisibilityOnly = [[options objectForKey:kWADataStoreArticleUpdateVisibilityOnly] isEqual:(id)kCFBooleanTrue];
 
 	__weak WADataStore *wSelf = self;
 	
@@ -115,30 +118,30 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	}
 	
-	[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+	void (^fireCallback)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
+			
+		NSCParameterAssert([NSThread isMainThread]);
 	
-		void (^fireCallback)(void) = ^ {
-		
-			NSCParameterAssert([NSThread isMainThread]);
-		
-			if (didFinish) {
-				
-				if (successBlock)
-					successBlock();
+		if (didFinish) {
 			
-			} else {
+			if (successBlock)
+				successBlock();
+		
+		} else {
 
-				if (failureBlock)
-					failureBlock(error);
-				
-			}
+			if (failureBlock)
+				failureBlock(error);
 			
-			[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
-			
-		};
+		}
 		
+		[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
+		
+	};
+	
+	void (^handleResult)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
+	
 		if (usesBezels) {
-		
+			
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
 			WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
@@ -148,17 +151,40 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 			
 				[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				
-				fireCallback();
+				fireCallback(didFinish, error);
 			
 			});
 			
 		} else {
 		
-			fireCallback();
+			fireCallback(didFinish, error);
 		
 		}
-				
-	}];
+		
+	};
+	
+	
+	if (updateVisibilityOnly) {
+	
+		[[WARemoteInterface sharedInterface] configurePost:article.identifier inGroup:article.group.identifier withVisibilityStatus:![article.hidden isEqual:(id)kCFBooleanTrue] onSuccess:^{
+
+			handleResult(YES, nil);
+			
+		} onFailure:^(NSError *error) {
+		
+			handleResult(NO, error);
+			
+		}];
+	
+	} else {
+	
+		[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+			
+			handleResult(didFinish, error);
+					
+		}];
+		
+	}
 	
 }
 
