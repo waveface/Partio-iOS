@@ -52,7 +52,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	NSURL *objectURI = [[article objectID] URIRepresentation];
 	
 	WAArticleViewControllerPresentationStyle style = [WAArticleViewController suggestedDiscreteStyleForArticle:article];
-	WAArticleViewController *articleViewController = [WAArticleViewController controllerForArticle:objectURI usingPresentationStyle:style];
+	WAArticleViewController *articleViewController = [WAArticleViewController controllerForArticle:article context:article.managedObjectContext presentationStyle:style];
 	
 	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
 		

@@ -246,13 +246,15 @@
 	
 	[self bringSubviewToFront:self.slider];
 	
-	NSString * const kWAPaginationSliderAnnotationView_HostAnnotation = @"WAPaginationSliderAnnotationView_HostAnnotation";
+	static NSString * const kWAPaginationSliderAnnotationView_HostAnnotation = @"WAPaginationSliderAnnotationView_HostAnnotation";
 	
 	for (UIView *aSubview in self.subviews) {
 		if (aSubview.tag == annotationViewTag) {
-			if (![self.annotations containsObject:objc_getAssociatedObject(aSubview, (__bridge const void *)(kWAPaginationSliderAnnotationView_HostAnnotation))]) {
+
+			if (![self.annotations containsObject:objc_getAssociatedObject(aSubview, &kWAPaginationSliderAnnotationView_HostAnnotation)]) {
 				[aSubview removeFromSuperview];
 			}
+			
 		}
 	}
 	
@@ -263,7 +265,7 @@
 			if (anAnnotationView.tag != annotationViewTag)
 				return NO;
 			
-			if (anAnnotation == objc_getAssociatedObject(anAnnotationView, (__bridge const void *)(kWAPaginationSliderAnnotationView_HostAnnotation)))
+			if (anAnnotation == objc_getAssociatedObject(anAnnotationView, &kWAPaginationSliderAnnotationView_HostAnnotation))
 				return YES;
 			
 			return NO;
@@ -274,8 +276,11 @@
 		
 		UIView *annotationView = [allFittingAnnotationViews lastObject];
 		
-		if (!annotationView)
+		if (!annotationView) {
 			annotationView = [self.delegate viewForAnnotation:anAnnotation inPaginationSlider:self];
+			annotationView.tag = annotationViewTag;
+			objc_setAssociatedObject(annotationView, &kWAPaginationSliderAnnotationView_HostAnnotation, anAnnotation, OBJC_ASSOCIATION_ASSIGN);
+		}
 		
 		NSAssert1(annotationView, @"Delegate must return a valid annotation view for annotation %@", anAnnotation);
 		
