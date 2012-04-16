@@ -447,12 +447,6 @@
 					appSettingsViewController.delegate = self;
 					appSettingsViewController.showDoneButton = NO;
 					appSettingsViewController.showCreditsFooter = NO;
-					appSettingsViewController.navigationItem.hidesBackButton = YES;
-					
-					__weak IASKAppSettingsViewController *wAppSettingsVC = appSettingsViewController;
-					appSettingsViewController.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, self.title, ^ {
-						[wAppSettingsVC.navigationController popViewControllerAnimated:YES];
-					});
 					
 					[self.navigationController pushViewController:appSettingsViewController animated:YES];
 				

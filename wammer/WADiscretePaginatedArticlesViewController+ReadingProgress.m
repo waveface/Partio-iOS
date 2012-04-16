@@ -157,10 +157,17 @@ NSString * const kLastReadingProgressAnnotationView = @"WADiscretePaginatedArtic
 - (void) updateLastReadingProgressAnnotation {
 
 	WAPaginationSliderAnnotation *annotation = self.lastReadingProgressAnnotation;
+	WAPaginationSlider *slider = self.paginationSlider;
+	
 	if (annotation) {
-		[self.paginationSlider addAnnotationsObject:annotation];
+	
+		if (![slider.annotations containsObject:annotation])
+			[self.paginationSlider addAnnotationsObject:annotation];
+			
 	} else {
+	
 		[self.paginationSlider removeAnnotations:[NSSet setWithArray:self.paginationSlider.annotations]];
+		
 	}
 	
 	[self.paginationSlider setNeedsAnnotationsLayout];
