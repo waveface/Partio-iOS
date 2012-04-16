@@ -70,6 +70,7 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 + (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
++ (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
 @property (nonatomic, readonly, retain) WAArticle *article;

@@ -133,9 +133,9 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
-+ (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
++ (Class) classForPresentationStyle:(WAArticleViewControllerPresentationStyle)style nibName:(NSString **)outNibName bundle:(NSBundle **)outBundle {
 
-	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@", NSStringFromWAArticleViewControllerPresentationStyle(aStyle)];
+	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@", NSStringFromWAArticleViewControllerPresentationStyle(style)];
 	NSString *loadedNibName = preferredClassName;
 	
 	Class loadedClass = NSClassFromString(preferredClassName);
@@ -149,9 +149,44 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
   if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
     loadedNibName = nil;
 	
+	if (outNibName)
+		*outNibName = loadedNibName;
+	
+	if (outBundle)
+		*outBundle = usedBundle;
+	
+	return loadedClass;
+
+}
+
++ (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
+
+	NSString *loadedNibName = nil;
+	NSBundle *usedBundle = nil;
+	Class loadedClass = [self classForPresentationStyle:aStyle nibName:&loadedNibName bundle:&usedBundle];
+	
 	WAArticleViewController *returnedController = [[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle];
+	
 	returnedController.presentationStyle = aStyle;
 	returnedController.representedObjectURI = articleObjectURL;
+	
+	return returnedController;
+
+}
+
++ (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
+
+	NSString *loadedNibName = nil;
+	NSBundle *usedBundle = nil;
+	Class loadedClass = [self classForPresentationStyle:aStyle nibName:&loadedNibName bundle:&usedBundle];
+	
+	WAArticleViewController *returnedController = [[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle];
+	
+	returnedController.presentationStyle = aStyle;
+	returnedController.article = article;
+	returnedController.managedObjectContext = context;
+	returnedController.representedObjectURI = [[article objectID] URIRepresentation];
+	
 	return returnedController;
 
 }
