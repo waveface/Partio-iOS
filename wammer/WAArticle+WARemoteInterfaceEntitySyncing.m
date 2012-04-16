@@ -65,6 +65,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			@"previews", @"previews",
 			
 			@"representingFile", @"representingFile",	//	wraps @"cover_attach"
+			@"favorite", @"favorite",
 			
 			@"summary", @"soul",
 			
@@ -86,6 +87,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if ([aLocalKeyPath isEqualToString:@"identifier"])
 		return IRWebAPIKitStringValue(aValue);
+	
+	if ([aLocalKeyPath isEqualToString:@"favorite"])
+		return ([aValue isEqual:@"0"] || [aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanFalse : (id)kCFBooleanTrue;
 	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
