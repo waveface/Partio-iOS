@@ -47,9 +47,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 - (WAArticleViewController *) newDiscreteArticleViewControllerForArticle:(WAArticle *)article NS_RETURNS_RETAINED {
 
-	__block __typeof__(self) nrSelf = self;
-	
-	NSURL *objectURI = [[article objectID] URIRepresentation];
+	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
 	
 	WAArticleViewControllerPresentationStyle style = [WAArticleViewController suggestedDiscreteStyleForArticle:article];
 	WAArticleViewController *articleViewController = [WAArticleViewController controllerForArticle:article context:article.managedObjectContext presentationStyle:style];
@@ -62,14 +60,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
 		
-		action((UIViewController<WAArticleViewControllerPresenting> *)nrSelf);
+		action((UIViewController<WAArticleViewControllerPresenting> *)wSelf);
 		
 	};
 	
 	articleViewController.onViewTap = ^ {
 	
-		[nrSelf updateLatestReadingProgressWithIdentifier:articleViewController.article.identifier completion:nil];
-		[nrSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];
+		[wSelf updateLatestReadingProgressWithIdentifier:articleViewController.article.identifier completion:nil];
+		[wSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];
 		
 	};
 	

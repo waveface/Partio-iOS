@@ -924,6 +924,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 			
 			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+			(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
 			
 		nil] onSuccess:^{
 			

@@ -414,6 +414,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	BOOL isDraft = ([self.draft isEqualToNumber:(id)kCFBooleanTrue] || !self.identifier);
 	BOOL isFavorite = [self.favorite isEqualToNumber:(id)kCFBooleanTrue];
+	BOOL isHidden = [self.hidden isEqualToNumber:(id)kCFBooleanTrue];
 	
 	if (!isDraft) {
 	
@@ -621,7 +622,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
 		
-			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
+			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
 			
 				callback(postRep);
 				
