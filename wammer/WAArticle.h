@@ -2,7 +2,7 @@
 //  WAArticle.h
 //  wammer
 //
-//  Created by Evadne Wu on 4/9/12.
+//  Created by Evadne Wu on 4/16/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSNumber * hidden;
 @property (nonatomic, retain) NSSet *comments;
 @property (nonatomic, retain) NSSet *files;
 @property (nonatomic, retain) WAGroup *group;

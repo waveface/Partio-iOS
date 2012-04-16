@@ -902,12 +902,47 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (void) removeArticle:(id)sender {
-	
+
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
 	
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
 	
+	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Title for cancelling an action") block:nil];
+	
+	IRAction *deleteAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Title for deleting an article from the Timeline") block:^ {
+	
+		article.hidden = (id)kCFBooleanTrue;
+		article.modificationDate = [NSDate date];
+		
+		NSError *savingError = nil;
+		if (![article.managedObjectContext save:&savingError])
+			NSLog(@"Error saving: %@", savingError);
+		
+		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+		
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			
+			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+			
+		nil] onSuccess:^{
+			
+			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+			
+		} onFailure:^(NSError *error) {
+			
+			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+			
+		}];
+	
+	}];
+	
+	NSString *deleteTitle = NSLocalizedString(@"DELETE_POST_CONFIRMATION_TITLE", @"Title for confirming a post deletion");
+	
+	IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:deleteTitle cancelAction:cancelAction destructiveAction:deleteAction otherActions:nil];
+	
+	[[controller managedActionSheet] showInView:self.view];
+		
 }
 
 @end
