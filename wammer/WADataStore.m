@@ -8,6 +8,13 @@
 
 #import "WADataStore.h"
 
+
+@interface WADataStore ()
+
++ (NSDateFormatter *) threadLocalDateFormatter;
+
+@end
+
 @implementation WADataStore
 
 + (WADataStore *) defaultStore {
@@ -28,43 +35,43 @@
 
 }
 
++ (NSDateFormatter *) threadLocalDateFormatter {
+
+	static NSString * const key = @"-[WADataStore threadLocalDateFormatter]";
+	NSMutableDictionary *dictionary = [[NSThread currentThread] threadDictionary];
+	
+	NSDateFormatter *df = [dictionary objectForKey:key];
+	if (!df) {
+		df = [[NSDateFormatter alloc] init];
+		df.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+		df.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		df.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+		[dictionary setObject:df forKey:key];
+	}
+	
+	return df;
+
+}
+
 - (NSDate *) dateFromISO8601String:(NSString *)aValue {
 
-	static NSDateFormatter *sharedFormatter = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		sharedFormatter = [[NSDateFormatter alloc] init];
-		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-		sharedFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-		sharedFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-	});
+	if (![aValue isKindOfClass:[NSString class]])
+		return nil;
+
+	NSDate *returned = nil;
+	NSError *error = nil;
 	
-	if ([aValue isKindOfClass:[NSString class]]) {
-		NSDate *returned = nil;
-		NSError *error = nil;
-		if (![sharedFormatter getObjectValue:&returned forString:aValue range:NULL error:&error]){
-			NSLog(@"Error parsing date %@", error);
-		}
-		NSParameterAssert(returned);
-		return returned;
+	if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aValue range:NULL error:&error]){
+		NSLog(@"Error parsing date %@", error);
 	}
-		
-	return nil;
+	
+	return returned;
 
 }
 
 - (NSString *) ISO8601StringFromDate:(NSDate *)date {
 
-	static NSDateFormatter *sharedFormatter = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		sharedFormatter = [[NSDateFormatter alloc] init];
-		sharedFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-		sharedFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-		sharedFormatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
-	});
-	
-	return [sharedFormatter stringFromDate:date];
+	return [[[self class] threadLocalDateFormatter] stringFromDate:date];
 
 }
 
