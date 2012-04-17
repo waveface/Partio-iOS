@@ -89,7 +89,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		return IRWebAPIKitStringValue(aValue);
 	
 	if ([aLocalKeyPath isEqualToString:@"favorite"])
-		return ([aValue isEqual:@"0"] || [aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanFalse : (id)kCFBooleanTrue;
+		return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
+	
+	if ([aLocalKeyPath isEqualToString:@"hidden"])
+		return (![aValue isEqual:@"false"] && ![aValue isEqual:@"0"] && ![aValue isEqual:[NSNumber numberWithInt:0]]) ? (id)kCFBooleanTrue : (id)kCFBooleanFalse;
 	
 	return [super transformedValue:aValue fromRemoteKeyPath:aRemoteKeyPath toLocalKeyPath:aLocalKeyPath];
 
@@ -119,13 +122,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
-	if (creatorID)
+	if ([creatorID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
 
-	if (groupID)
+	if ([groupID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:groupID forKey:@"group_id"] forKey:@"group"];
 	
-	if (representingFileID)
+	if ([representingFileID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:representingFileID forKey:@"object_id"] forKey:@"representingFile"];
 	
 	NSArray *comments = [incomingRepresentation objectForKey:@"comments"];
@@ -644,9 +647,23 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
 			savedPost.draft = (id)kCFBooleanFalse;
 			
-			NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
+			if (!savedPost.identifier) {
+			
+				NSDictionary *mapping = [WAArticle remoteDictionaryConfigurationMapping];
+				NSString *identifierHostKey = @"identifier";
+				NSString *identifierNetworkKey = [[mapping allKeysForObject:identifierHostKey] lastObject];
+				
+				NSString *identifier = [WAArticle transformedValue:[results objectForKey:identifierNetworkKey] fromRemoteKeyPath:identifierNetworkKey toLocalKeyPath:identifierHostKey];
+				
+				savedPost.identifier = identifier;
+			
+			}			
 			
 			NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+
+			if (savedPost)
+				NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
+			
 			NSParameterAssert([touchedObjects count]);
 			
 			NSError *savingError = nil;
