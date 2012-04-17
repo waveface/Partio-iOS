@@ -139,6 +139,8 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	};
 	
 	void (^handleResult)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
+		
+		NSCParameterAssert([NSThread isMainThread]);
 	
 		if (usesBezels) {
 			
@@ -167,12 +169,16 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	if (updateVisibilityOnly) {
 	
 		[[WARemoteInterface sharedInterface] configurePost:article.identifier inGroup:article.group.identifier withVisibilityStatus:![article.hidden isEqual:(id)kCFBooleanTrue] onSuccess:^{
-
-			handleResult(YES, nil);
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+				handleResult(YES, nil);
+			});
 			
 		} onFailure:^(NSError *error) {
 		
-			handleResult(NO, error);
+			dispatch_async(dispatch_get_main_queue(), ^{
+				handleResult(NO, error);
+			});
 			
 		}];
 	

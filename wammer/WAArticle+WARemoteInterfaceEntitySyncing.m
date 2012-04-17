@@ -54,20 +54,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 		
 			@"identifier", @"post_id",
-			@"owner", @"owner",	//	wraps @"creator_id"
-			@"creationDeviceName", @"code_name",
 			@"group", @"group",	//	wraps @"group_id"
+			@"owner", @"owner",	//	wraps @"creator_id"
+			@"files", @"attachments",
+			@"previews", @"previews",
+			@"representingFile", @"representingFile",	//	wraps @"cover_attach"
+			
+			@"creationDeviceName", @"code_name",
 			@"creationDate", @"timestamp",
 			@"modificationDate", @"update_time",
 			@"text", @"content",
 			@"comments", @"comments",
-			@"files", @"attachments",
-			@"previews", @"previews",
-			
-			@"representingFile", @"representingFile",	//	wraps @"cover_attach"
-			@"favorite", @"favorite",
-			
 			@"summary", @"soul",
+			@"favorite", @"favorite",
+			@"hidden", @"hidden",			
 			
 		nil];
 		

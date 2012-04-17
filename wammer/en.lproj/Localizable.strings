@@ -13,6 +13,7 @@
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
 /* Action deleting an article
+   Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "Delete";
 
@@ -120,8 +121,12 @@
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
 
+/* Description for confirming a post deletion
+   Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "If you changed your mind, recover this Post from our Web client.";
+
 /* Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_TITLE" = "Delete this Post?";
+"DELETE_POST_CONFIRMATION_TITLE" = "Delete Post";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
