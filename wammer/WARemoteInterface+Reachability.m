@@ -220,23 +220,21 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock {
 
-  __weak WARemoteInterface *nrSelf = self;
+  __weak WARemoteInterface *wSelf = self;
 
   return ^ {
   
-    if (!nrSelf.userToken)
+    if (!wSelf.userToken)
       return;
       
-    [nrSelf beginPostponingDataRetrievalTimerFiring];
+    [wSelf beginPostponingDataRetrievalTimerFiring];
     [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
-    [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
+    [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
 		
-			NSLog(@"stationReps %@", stationReps);
-    
       dispatch_async(dispatch_get_main_queue(), ^ {
 		
-        nrSelf.monitoredHosts = [[NSArray arrayWithObject:nrSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
+        wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
         
           //  Even if the station is not connected as reported by Cloud, we want to track it anyway
           //  NSString *stationStatus = [aStationRep valueForKeyPath:@"status"];
@@ -247,7 +245,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
           if (!stationURLString)
             return (id)nil;
           
-          NSURL *baseURL = nrSelf.engine.context.baseURL;
+          NSURL *baseURL = wSelf.engine.context.baseURL;
 				
           NSURL *givenURL = [NSURL URLWithString:stationURLString];
           if (!givenURL)
@@ -277,7 +275,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
           
         }]];
         
-        [nrSelf endPostponingDataRetrievalTimerFiring];
+        [wSelf endPostponingDataRetrievalTimerFiring];
 				
 				[AppDelegate() endNetworkActivity];
       
@@ -285,11 +283,11 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     } onFailure:^(NSError *error) {
     
-      NSLog(@"Error retrieving associated stations for current user: %@", nrSelf.userIdentifier);
+      NSLog(@"Error retrieving associated stations for current user: %@", wSelf.userIdentifier);
       
       dispatch_async(dispatch_get_main_queue(), ^ {
       
-        [nrSelf endPostponingDataRetrievalTimerFiring];
+        [wSelf endPostponingDataRetrievalTimerFiring];
 
         [AppDelegate() endNetworkActivity];
       
