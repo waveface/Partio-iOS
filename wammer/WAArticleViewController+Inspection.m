@@ -43,7 +43,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 	UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleInspectionGestureRecognizer:)];
 	
-	recognizer.minimumPressDuration = 0.125;
+	recognizer.minimumPressDuration = 0.3;
 	
 	return recognizer;
 

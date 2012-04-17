@@ -287,51 +287,55 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 							
 						}];
 						
-            if (shouldContinue) {
-						
-							NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-							context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-						
-							NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+						dispatch_async(dispatch_get_main_queue(), ^{
 							
-							NSError *savingError = nil;
-							if ([context save:&savingError]) {
+							if (shouldContinue) {
 							
-								[objectURIs addObjectsFromArray:[touchedObjects irMap: ^ (NSManagedObject *obj, NSUInteger index, BOOL *stop) {
-									
-									return [[obj objectID] URIRepresentation];
-									
-								}]];
+								NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+								context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+							
+								NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 								
-								dispatch_async(dispatch_get_main_queue(), ^{
+								NSError *savingError = nil;
+								if ([context save:&savingError]) {
+								
+									[objectURIs addObjectsFromArray:[touchedObjects irMap: ^ (NSManagedObject *obj, NSUInteger index, BOOL *stop) {
+										
+										return [[obj objectID] URIRepresentation];
+										
+									}]];
 									
-									[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
-									
-								});
+									dispatch_async(dispatch_get_main_queue(), ^{
+										
+										[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
+										
+									});
 
+								} else {
+								
+									if (completionBlock)
+										completionBlock(NO, context, objectURIs, savingError);
+								
+								}
+															
 							} else {
 							
+								NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+								NSArray *savedObjects = [objectURIs irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
+									
+									return [context irManagedObjectForURI:anObjectURI];
+									
+								}];
+								
 								if (completionBlock)
-									completionBlock(NO, context, objectURIs, savingError);
-							
+									completionBlock(YES, context, savedObjects, nil);
+								
+								dispatch_release(sessionQueue);
+								
 							}
-							              
-            } else {
-						
-							NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-							NSArray *savedObjects = [objectURIs irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-								
-								return [context irManagedObjectForURI:anObjectURI];
-								
-							}];
-							
-              if (completionBlock)
-                completionBlock(YES, context, savedObjects, nil);
-              
-              dispatch_release(sessionQueue);
-							
-						}
             
+						});
+					
           });
         
         } onFailure:^(NSError *error) {

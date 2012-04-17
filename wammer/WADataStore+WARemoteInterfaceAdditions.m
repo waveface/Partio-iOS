@@ -107,7 +107,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 
 	__weak WADataStore *wSelf = self;
 	
-	NSManagedObjectContext *context = [self disposableMOC];
+	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];	//	Sigh
 	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
