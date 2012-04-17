@@ -425,8 +425,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if (!isDraft) {
 	
-		NSLog(@"Article not draft: Fetching remote state for potential merging");
-		
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 		
 			[ri retrievePost:postID inGroup:groupID onSuccess:^(NSDictionary *postRep) {
@@ -490,18 +488,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		switch (comparisonResult) {
 		
 			case NSOrderedDescending: {
-				NSLog(@"Remote date %@ newer than local date %@", remoteDate, localDate);
 				break;
 			}
 			
 			case NSOrderedSame: {
-				NSLog(@"Remote date %@ equivalent to local date %@", remoteDate, localDate);
 				callback(nil);
 				return;
 			}
 			
 			case NSOrderedAscending: {
-				NSLog(@"Remote date %@ older than local date %@", remoteDate, localDate);
 				break;
 			}
 		

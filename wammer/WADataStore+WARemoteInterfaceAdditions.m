@@ -202,8 +202,8 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
 	
-	__block NSManagedObjectContext *context = [self disposableMOC];
-	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
+	NSManagedObjectContext *context = [self disposableMOC];
+	WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	NSString *postIdentifier = updatedArticle.identifier;
 	NSString *groupIdentifier = updatedArticle.group.identifier;
@@ -247,21 +247,25 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	NSString *userIdentifier = ri.userIdentifier;
 	NSParameterAssert(userIdentifier);
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WADataStore *wSelf = self;
 	
 	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep, NSArray *groupReps) {
 	
-		NSManagedObjectContext *context = [nrSelf disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		dispatch_async(dispatch_get_main_queue(), ^ {
+	
+			NSManagedObjectContext *context = [wSelf disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 		
-		[WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
+			[WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 			
-		if (successBlock)
-			successBlock();
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
+				
+			if (successBlock)
+				successBlock();
+			
+		});
 		
 	} onFailure:^(NSError *error) {
 	

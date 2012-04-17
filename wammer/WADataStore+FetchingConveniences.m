@@ -108,7 +108,6 @@
   NSArray *fetchedArticles = [aContext executeFetchRequest:fetchRequest error:&fetchingError];
   
   if (![fetchedArticles count]) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, fetchingError);
     callback(nil, nil);
     return;
   }
