@@ -61,6 +61,10 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 	if (coverPhotoSwitchAction)
 		[baseActions addObject:coverPhotoSwitchAction];
 	
+	IRAction *deleteAction = [self newDeleteArticleAction];
+	if (deleteAction)
+		[baseActions addObject:deleteAction];
+	
 	if (WAAdvancedFeaturesEnabled())
 		[baseActions addObject:[self newInspectionAction]];
 	
@@ -120,7 +124,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 - (IRAction *) newInspectionAction {
 
-	__weak WAArticleViewController *nrSelf = self;
+	__weak WAArticleViewController *wSelf = self;
 
 	return [IRAction actionWithTitle:@"Inspect" block: ^ {
 		
@@ -130,14 +134,14 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			NSURL *articleURI = [[self.article objectID] URIRepresentation];
 			BOOL articleHasFiles = !![self.article.fileOrder count];
 			
-			if (nrSelf.onPresentingViewController) {
+			if (wSelf.onPresentingViewController) {
 
 				IRViewController *shownViewController = [[IRViewController alloc] init];
 				__weak IRViewController *wShownViewController = shownViewController;
 				
 				shownViewController.onLoadView = ^ {
 					wShownViewController.view = [[UIView alloc] initWithFrame:CGRectZero];
-					UITextView *textView = [[UITextView alloc] initWithFrame:self.view.bounds];
+					UITextView *textView = [[UITextView alloc] initWithFrame:wShownViewController.view.bounds];
 					textView.text = inspectionText;
 					textView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 					textView.editable = NO;
@@ -212,7 +216,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 					
 				}];
 				
-				nrSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
+				wSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
 					[parentViewController presentModalViewController:shownNavController animated:YES];
 				});
 			
@@ -309,6 +313,59 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 		
 	}];
 
+}
+
+- (IRAction *) newDeleteArticleAction {
+
+	__weak WAArticleViewController *wSelf = self;
+	
+	NSString *deleteActionTitle = NSLocalizedString(@"ACTION_DELETE", @"Title for deleting an article from the Overview");
+	NSString *cancelActionTitle = NSLocalizedString(@"ACTION_CANCEL", @"Title for cancelling an action");
+	NSString *deleteConfirmationTitle = NSLocalizedString(@"DELETE_POST_CONFIRMATION_TITLE", @"Title for confirming a post deletion");
+	NSString *deleteConfirmationMessage = NSLocalizedString(@"DELETE_POST_CONFIRMATION_DESCRIPTION", @"Description for confirming a post deletion");
+
+	return [IRAction actionWithTitle:deleteActionTitle block:^{
+	
+		IRAction *deleteAction = [IRAction actionWithTitle:deleteActionTitle block:^ {
+		
+			WAArticle *article = wSelf.article;
+		
+			article.hidden = (id)kCFBooleanTrue;
+			article.modificationDate = [NSDate date];
+			
+			NSError *savingError = nil;
+			if (![article.managedObjectContext save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			} onFailure:^(NSError *error) {
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			}];
+		
+		}];
+		
+		IRAction *cancelAction = [IRAction actionWithTitle:cancelActionTitle block:nil];
+		
+		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+			
+			[[IRAlertView alertViewWithTitle:deleteConfirmationTitle message:deleteConfirmationMessage cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:deleteAction, nil]] show];
+			
+		});
+		
+	}];
+	
 }
 
 - (UIPopoverController *) coverPhotoSwitchPopoverController {
