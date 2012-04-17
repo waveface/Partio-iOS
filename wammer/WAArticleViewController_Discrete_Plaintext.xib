@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
-		<int key="IBDocument.SystemTarget">1280</int>
+		<int key="IBDocument.SystemTarget">1296</int>
 		<string key="IBDocument.SystemVersion">12A154q</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2429</string>
 		<string key="IBDocument.AppKitVersion">1162.3</string>
@@ -45,6 +45,7 @@
 						<string key="NSFrame">{{20, 20}, {70, 80}}</string>
 						<reference key="NSSuperview" ref="275414550"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="984947516"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -79,10 +80,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUILabel" id="221942940">
 								<reference key="NSNextResponder" ref="228681309"/>
-								<int key="NSvFlags">290</int>
+								<int key="NSvFlags">265</int>
 								<string key="NSFrame">{{64, 0}, {156, 14}}</string>
 								<reference key="NSSuperview" ref="228681309"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:120</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="233225988">
 									<int key="NSColorSpace">3</int>
@@ -118,6 +120,7 @@
 						<string key="NSFrame">{{144, 232}, {220, 14}}</string>
 						<reference key="NSSuperview" ref="275414550"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="221942940"/>
 						<string key="NSReuseIdentifierKey">_NS:49</string>
 						<reference key="IBUIBackgroundColor" ref="233225988"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -141,7 +144,7 @@
 				<string key="NSFrameSize">{384, 256}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="984947516"/>
+				<reference key="NSNextKeyView" ref="333953685"/>
 				<string key="NSReuseIdentifierKey">_NS:49</string>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -495,7 +498,7 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1280" key="NS.object.0"/>
+			<real value="1296" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
