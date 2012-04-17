@@ -13,6 +13,7 @@
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
 /* Action deleting an article
+   Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
 "ACTION_DELETE" = "丟棄";
 
@@ -119,6 +120,10 @@
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
+
+/* Description for confirming a post deletion
+   Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "DELETE_POST_CONFIRMATION_DESCRIPTION";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";

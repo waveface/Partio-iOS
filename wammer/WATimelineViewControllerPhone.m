@@ -938,7 +938,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	}];
 	
-	NSString *deleteTitle = NSLocalizedString(@"DELETE_POST_CONFIRMATION_TITLE", @"Title for confirming a post deletion");
+	NSString *deleteTitle = NSLocalizedString(@"DELETE_POST_CONFIRMATION_DESCRIPTION", @"Title for confirming a post deletion");
 	
 	IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:deleteTitle cancelAction:cancelAction destructiveAction:deleteAction otherActions:nil];
 	

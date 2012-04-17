@@ -250,12 +250,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	NSParameterAssert(self.article);
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WAGalleryViewController *wSelf = self;
 
 	self.view = [[IRView alloc] initWithFrame:(CGRect){ 0, 0, 512, 512 }];
 	self.view.backgroundColor = [UIColor blackColor];
 	self.view.onLayoutSubviews = ^ {
-		[nrSelf waSubviewWillLayout];
+		[wSelf waSubviewWillLayout];
 	};
 	
 	NSString *articleTitle = self.article.text;
