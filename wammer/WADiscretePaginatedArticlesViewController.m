@@ -251,7 +251,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 				
 			if (!self.requiresRecalculationOnFetchedResultsChangeEnd)
 			if ([anObject isKindOfClass:[WAArticle class]])
-			if ([[[(WAArticle *)anObject changedValues] allKeys] containsObject:@"favorite"])
+//			if ([[[(WAArticle *)anObject changedValues] allKeys] containsObject:@"favorite"])
 				self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
 			
 			break;
@@ -274,10 +274,10 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 
 	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
-			
+	
 		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 			[super controllerDidChangeContent:controller];
-	
+			
 	}
 
 }

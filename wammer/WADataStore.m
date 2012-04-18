@@ -119,11 +119,16 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 	if (!timeInterval)
 		return nil;
 	
-	return [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+	NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+	NSLog(@"%s -> %@", __PRETTY_FUNCTION__, date);
+	
+	return date;
 
 }
 
 - (void) setLastContentSyncDate:(NSDate *)date {
+	
+	NSLog(@"%s -> %@", __PRETTY_FUNCTION__, date);
 
 	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
 	
