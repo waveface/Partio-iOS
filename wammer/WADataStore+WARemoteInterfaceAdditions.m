@@ -57,7 +57,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
-		kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
+		kWAArticleSyncFullyFetchStrategy, kWAArticleSyncStrategy,
 	//	kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
 		
 	nil];

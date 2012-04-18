@@ -21,7 +21,7 @@ NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey
 
 NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
 NSString * const kWAArticleSyncDefaultStrategy = @"WAArticleSyncMergeLastBatchStrategy";
-NSString * const kWAArticleSyncFullyFetchOnlyStrategy = @"WAArticleSyncFullyFetchOnlyStrategy";
+NSString * const kWAArticleSyncFullyFetchStrategy = @"WAArticleSyncFullyFetchOnlyStrategy";
 NSString * const kWAArticleSyncMergeLastBatchStrategy = @"WAArticleSyncMergeLastBatchStrategy";
 
 NSString * const kWAArticleSyncRangeStart = @"WAArticleSyncRangeStart";
@@ -229,7 +229,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
     
     }];
     
-  } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchOnlyStrategy]) {
+  } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchStrategy]) {
 	
     NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
     
