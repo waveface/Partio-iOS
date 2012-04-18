@@ -401,6 +401,17 @@
 		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
 		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
 		FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */; };
+		FFBEF151153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */; };
+		FFBEF154153F624500CF2203 /* WAUser+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */; };
+		FFBEF157153F629B00CF2203 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF156153F629B00CF2203 /* WAUser.m */; };
+		FFBEF158153F629B00CF2203 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF156153F629B00CF2203 /* WAUser.m */; };
+		FFBEF159153F629B00CF2203 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF156153F629B00CF2203 /* WAUser.m */; };
+		FFBEF15C153F629B00CF2203 /* WAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF15B153F629B00CF2203 /* WAStorage.m */; };
+		FFBEF15D153F629B00CF2203 /* WAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF15B153F629B00CF2203 /* WAStorage.m */; };
+		FFBEF15E153F629B00CF2203 /* WAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF15B153F629B00CF2203 /* WAStorage.m */; };
+		FFBEF161153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
+		FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
+		FFBEF163153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
 		FFC0FCEB153C4A8E0058DC5C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC0FCEA153C4A8E0058DC5C /* WAArticle.m */; };
 		FFC0FCEC153C4A8E0058DC5C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC0FCEA153C4A8E0058DC5C /* WAArticle.m */; };
 		FFC0FCED153C4A8E0058DC5C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC0FCEA153C4A8E0058DC5C /* WAArticle.m */; };
@@ -434,7 +445,6 @@
 		FFC6487A1445E99000593E5E /* WATimelineWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC648601445E92B00593E5E /* WATimelineWindow.xib */; };
 		FFC6487B1445E99400593E5E /* WATimelineWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC648621445E92B00593E5E /* WATimelineWindowController.m */; };
 		FFC648821445EA2600593E5E /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
-		FFC648841445EA2600593E5E /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C013DFF88F00D6B28B /* WAUser.m */; };
 		FFC648851445EA2600593E5E /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
 		FFC648861445EA2600593E5E /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FFC6488E1445EA5700593E5E /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
@@ -454,7 +464,6 @@
 		FFCEF41D15199F000021AECB /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
 		FFCEF42015199F000021AECB /* WAOpenGraphElementImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */; };
 		FFCEF42215199F000021AECB /* WAPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */; };
-		FFCEF42315199F000021AECB /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C013DFF88F00D6B28B /* WAUser.m */; };
 		FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
@@ -463,7 +472,6 @@
 		FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
 		FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
-		FFCFE092142111E100B9E6AF /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C013DFF88F00D6B28B /* WAUser.m */; };
 		FFCFE094142111E100B9E6AF /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
 		FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
@@ -1417,8 +1425,6 @@
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
 		FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTextEmphasisLabel.h; sourceTree = "<group>"; };
 		FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextEmphasisLabel.m; sourceTree = "<group>"; };
-		FF9DA0BF13DFF88F00D6B28B /* WAUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUser.h; sourceTree = "<group>"; };
-		FF9DA0C013DFF88F00D6B28B /* WAUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUser.m; sourceTree = "<group>"; };
 		FF9DA0C513DFF89000D6B28B /* WAComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComment.h; sourceTree = "<group>"; };
 		FF9DA0C613DFF89000D6B28B /* WAComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComment.m; sourceTree = "<group>"; };
 		FF9E136E14A3018500524CA0 /* WAStackedArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStackedArticleViewController.h; sourceTree = "<group>"; };
@@ -1462,6 +1468,17 @@
 		FFBACA75146BCF8B007DF1E5 /* WARegisterRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterRequestViewController.h; sourceTree = "<group>"; };
 		FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterRequestViewController.m; sourceTree = "<group>"; };
 		FFBD444713FDA6E000F535D2 /* WAArticleViewController_Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_Plaintext.xib; sourceTree = "<group>"; };
+		FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 24.xcdatamodel"; sourceTree = "<group>"; };
+		FFBEF14F153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WARemoteEntitySyncing.h"; sourceTree = "<group>"; };
+		FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WARemoteEntitySyncing.m"; sourceTree = "<group>"; };
+		FFBEF152153F624500CF2203 /* WAUser+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WAAdditions.h"; sourceTree = "<group>"; };
+		FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WAAdditions.m"; sourceTree = "<group>"; };
+		FFBEF155153F629B00CF2203 /* WAUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUser.h; sourceTree = "<group>"; };
+		FFBEF156153F629B00CF2203 /* WAUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUser.m; sourceTree = "<group>"; };
+		FFBEF15A153F629B00CF2203 /* WAStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStorage.h; sourceTree = "<group>"; };
+		FFBEF15B153F629B00CF2203 /* WAStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStorage.m; sourceTree = "<group>"; };
+		FFBEF15F153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAStorage+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
+		FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAStorage+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 23.xcdatamodel"; sourceTree = "<group>"; };
 		FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 20.xcdatamodel"; sourceTree = "<group>"; };
 		FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 22.xcdatamodel"; sourceTree = "<group>"; };
@@ -2149,6 +2166,10 @@
 			isa = PBXGroup;
 			children = (
 				FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */,
+				FFBEF15A153F629B00CF2203 /* WAStorage.h */,
+				FFBEF15B153F629B00CF2203 /* WAStorage.m */,
+				FFBEF155153F629B00CF2203 /* WAUser.h */,
+				FFBEF156153F629B00CF2203 /* WAUser.m */,
 				FF14FD1B1533149E0013410C /* WAFile.h */,
 				FF14FD1C1533149E0013410C /* WAFile.m */,
 				FFC0FCE9153C4A8D0058DC5C /* WAArticle.h */,
@@ -2181,10 +2202,10 @@
 				FF2E82FB14EE48FB000C6044 /* WAPreview+WAAdditions.m */,
 				FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */,
 				FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */,
-				FF9DA0BF13DFF88F00D6B28B /* WAUser.h */,
-				FF9DA0C013DFF88F00D6B28B /* WAUser.m */,
 				FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */,
 				FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */,
+				FFBEF152153F624500CF2203 /* WAUser+WAAdditions.h */,
+				FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */,
 			);
 			name = Model;
 			path = wammer;
@@ -2246,6 +2267,8 @@
 				FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */,
 				FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */,
 				FF7997AA1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.h */,
+				FFBEF15F153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.h */,
+				FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */,
 				FF7997AB1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m */,
 				FF315A43146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.h */,
 				FF315A44146A8DDB004DCB96 /* WAGroup+WARemoteInterfaceEntitySyncing.m */,
@@ -2255,6 +2278,8 @@
 				FF35892414EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m */,
 				FF35892614EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.h */,
 				FF35892714EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m */,
+				FFBEF14F153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.h */,
+				FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */,
 			);
 			name = "Data Store Additions";
 			sourceTree = "<group>";
@@ -3474,7 +3499,6 @@
 				FFCEF41D15199F000021AECB /* WAOpenGraphElement.m in Sources */,
 				FFCEF42015199F000021AECB /* WAOpenGraphElementImage.m in Sources */,
 				FFCEF42215199F000021AECB /* WAPreview.m in Sources */,
-				FFCEF42315199F000021AECB /* WAUser.m in Sources */,
 				FF586B911519B4ED00F308E2 /* WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF586B921519B4ED00F308E2 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FF586B931519B4ED00F308E2 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */,
@@ -3515,6 +3539,9 @@
 				FF14FD1E1533149E0013410C /* WAFile.m in Sources */,
 				FF2EA24115384CAB003B965A /* WAOverlayBezel.m in Sources */,
 				FFC0FCEC153C4A8E0058DC5C /* WAArticle.m in Sources */,
+				FFBEF158153F629B00CF2203 /* WAUser.m in Sources */,
+				FFBEF15D153F629B00CF2203 /* WAStorage.m in Sources */,
+				FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3530,7 +3557,6 @@
 				FFC648791445E98D00593E5E /* WATimelineCellView.m in Sources */,
 				FFC6487B1445E99400593E5E /* WATimelineWindowController.m in Sources */,
 				FFC648821445EA2600593E5E /* WAComment.m in Sources */,
-				FFC648841445EA2600593E5E /* WAUser.m in Sources */,
 				FFC648851445EA2600593E5E /* WAPreview.m in Sources */,
 				FFC648861445EA2600593E5E /* WADataStore.m in Sources */,
 				FFC6488E1445EA5700593E5E /* WARemoteInterface.m in Sources */,
@@ -3568,6 +3594,9 @@
 				FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */,
 				FF14FD1F1533149E0013410C /* WAFile.m in Sources */,
 				FFC0FCED153C4A8E0058DC5C /* WAArticle.m in Sources */,
+				FFBEF159153F629B00CF2203 /* WAUser.m in Sources */,
+				FFBEF15E153F629B00CF2203 /* WAStorage.m in Sources */,
+				FFBEF163153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3582,7 +3611,6 @@
 				FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */,
 				FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */,
 				FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */,
-				FFCFE092142111E100B9E6AF /* WAUser.m in Sources */,
 				FFCFE094142111E100B9E6AF /* WAComment.m in Sources */,
 				FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */,
 				FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */,
@@ -3716,6 +3744,11 @@
 				FF149FD71533100A0025B397 /* WARepresentedFilePickerViewController+CustomUI.m in Sources */,
 				FF14FD1D1533149E0013410C /* WAFile.m in Sources */,
 				FFC0FCEB153C4A8E0058DC5C /* WAArticle.m in Sources */,
+				FFBEF151153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m in Sources */,
+				FFBEF154153F624500CF2203 /* WAUser+WAAdditions.m in Sources */,
+				FFBEF157153F629B00CF2203 /* WAUser.m in Sources */,
+				FFBEF15C153F629B00CF2203 /* WAStorage.m in Sources */,
+				FFBEF161153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3955,7 +3988,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 330;
+				CURRENT_PROJECT_VERSION = 331;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4010,7 +4043,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 330;
+				CURRENT_PROJECT_VERSION = 331;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -4222,9 +4255,10 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */,
 				FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */,
-				FF14FD10153313450013410C /* WAModel 21.xcdatamodel */,
 				FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */,
+				FF14FD10153313450013410C /* WAModel 21.xcdatamodel */,
 				FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */,
 				FF92CC4E1511C964001E0A4F /* WAModel 19.xcdatamodel */,
 				FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */,
@@ -4232,21 +4266,21 @@
 				FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */,
 				FF3588E814EE4FC4005B452C /* WAModel 15.xcdatamodel */,
 				FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */,
-				FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */,
-				FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */,
-				FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */,
 				FFCD324514B997B70035C4F5 /* WAModel 13.xcdatamodel */,
-				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
-				FFCD324714B997B70035C4F5 /* WAModel 3.xcdatamodel */,
-				FFCD324814B997B70035C4F5 /* WAModel 4.xcdatamodel */,
-				FFCD324914B997B70035C4F5 /* WAModel 5.xcdatamodel */,
-				FFCD324A14B997B70035C4F5 /* WAModel 6.xcdatamodel */,
-				FFCD324B14B997B70035C4F5 /* WAModel 7.xcdatamodel */,
-				FFCD324C14B997B70035C4F5 /* WAModel 8.xcdatamodel */,
+				FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */,
+				FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */,
+				FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */,
 				FFCD324D14B997B70035C4F5 /* WAModel 9.xcdatamodel */,
+				FFCD324C14B997B70035C4F5 /* WAModel 8.xcdatamodel */,
+				FFCD324B14B997B70035C4F5 /* WAModel 7.xcdatamodel */,
+				FFCD324A14B997B70035C4F5 /* WAModel 6.xcdatamodel */,
+				FFCD324914B997B70035C4F5 /* WAModel 5.xcdatamodel */,
+				FFCD324814B997B70035C4F5 /* WAModel 4.xcdatamodel */,
+				FFCD324714B997B70035C4F5 /* WAModel 3.xcdatamodel */,
+				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */;
+			currentVersion = FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

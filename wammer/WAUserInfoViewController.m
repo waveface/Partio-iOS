@@ -99,18 +99,8 @@
 	
   self.monitoredHosts = nil;
   [self.tableView reloadData];
-  
-	NSError *fetchingError = nil;
-  NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-    [WARemoteInterface sharedInterface].userIdentifier, @"identifier",
-  nil]] error:&fetchingError];
-  
-  if (!fetchedUser)
-    NSLog(@"Fetching failed: %@", fetchingError);
-  
-  self.user = [fetchedUser lastObject];
 	
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachableHostsDidChange:) name:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil];  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachableHostsDidChange:) name:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachabilityDetectorDidUpdate:) name:kWAReachabilityDetectorDidUpdateStatusNotification object:nil];
   
 }
@@ -351,10 +341,9 @@
 		  
 		cell = anyCell();
 		
-		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
-		NSNumber *used = [storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"];
-		NSNumber *all = [storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"];
-				
+		NSNumber *used = self.user.mainStorage.numberOfObjectsCreatedInInterval;
+		NSNumber *all = self.user.mainStorage.numberOfObjectsAllowedInInterval;
+						
 		switch ([indexPath row]) {
 			
 			case 0: {
@@ -383,7 +372,7 @@
 					return [[NSCalendar currentCalendar] ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:aDate];
 				};
 				
-				NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]];
+				NSDate *endDate = self.user.mainStorage.intervalEndDate;
 				NSInteger daysLeft = dayOrdinality(endDate) - dayOrdinality([NSDate date]);
 			
 				cell.textLabel.text = NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT", nil);
@@ -395,9 +384,7 @@
 				
 			case 3: {
 				cell.textLabel.text = NSLocalizedString(@"STORATE_QUOTA_INTERVAL_END_DATE", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
-					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]]
-				];
+				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:self.user.mainStorage.intervalEndDate];
 				break;
 			}
 			
@@ -471,6 +458,16 @@
     
   managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   return managedObjectContext;
+
+}
+
+- (WAUser *) user {
+
+	if (user)
+		return user;
+	
+	user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+	return user;
 
 }
 

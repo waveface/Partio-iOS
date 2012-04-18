@@ -9,6 +9,7 @@
 #import "CoreData+IRAdditions.h"
 
 
+@class WAUser;
 @interface WADataStore : IRDataStore
 
 + (WADataStore *) defaultStore;
@@ -16,6 +17,16 @@
 
 - (NSDate *) dateFromISO8601String:(NSString *)aString;
 - (NSString *) ISO8601StringFromDate:(NSDate *)date;
+
+- (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
+- (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
+
+- (NSDate *) lastContentSyncDate;
+- (void) setLastContentSyncDate:(NSDate *)date;
+
+//	For the default persistent store, might incur write
+- (NSDictionary *) metadata;
+- (void) setMetadata:(NSDictionary *)metadata;
 
 @end
 
@@ -28,10 +39,12 @@
 #import "WAArticle+WAAdditions.h"
 #import "WAGroup.h"
 #import "WAUser.h"
+#import "WAUser+WAAdditions.h"
 #import "WAPreview.h"
 #import "WAOpenGraphElement.h"
 #import "WAFilePageElement.h"
 #import "WAGroup.h"
+#import "WAStorage.h"
 #import "WAUser.h"
 #import "WAPreview.h"
 #import "WAPreview+WAAdditions.h"

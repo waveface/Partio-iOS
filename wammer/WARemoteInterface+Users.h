@@ -10,11 +10,14 @@
 
 @interface WARemoteInterface (Users)
 
+//	Massage
++ (NSDictionary *) userEntityFromRepresentation:(NSDictionary *)remoteResponse;
+
 //	POST auth/signup
 - (void) registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	GET users/get
-- (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *userRep, NSArray *groupReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	POST users/update
 - (void) updateUser:(NSString *)anIdentifier withNickname:(NSString *)aNewNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;

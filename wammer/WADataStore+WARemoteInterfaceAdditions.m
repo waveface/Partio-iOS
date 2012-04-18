@@ -57,8 +57,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
-		kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-	//	kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
 		
 	nil];
 	
@@ -249,19 +248,27 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 	__weak WADataStore *wSelf = self;
 	
-	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep, NSArray *groupReps) {
+	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep) {
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 	
 			NSManagedObjectContext *context = [wSelf disposableMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-		
-			[WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+			
+			WAUser *user = [wSelf mainUserInContext:context];
+			NSCParameterAssert(user);
+			
+			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:0];
+			
+			NSCParameterAssert([touchedUsers count] == 1);
+			NSCParameterAssert([touchedUsers containsObject:user]);
 			
 			NSError *savingError = nil;
 			if (![context save:&savingError])
 				NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
-				
+			
+			NSLog(@"main storage %@ %@", user.mainStorage, user.mainStorage.displayName);
+			
 			if (successBlock)
 				successBlock();
 			
