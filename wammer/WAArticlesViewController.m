@@ -193,10 +193,8 @@
 	NSParameterAssert([NSThread isMainThread]);
 	
 	if ([self isViewLoaded]) {
+		
 		[self reloadViewContents];
-	
-//		[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(reloadViewContents) object:nil];
-//		[self performSelector:@selector(reloadViewContents) withObject:nil afterDelay:0.01];
 		
 	}
 	

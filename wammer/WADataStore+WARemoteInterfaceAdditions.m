@@ -251,7 +251,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep) {
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
-	
+			
 			NSManagedObjectContext *context = [wSelf disposableMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 			
@@ -275,7 +275,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 		});
 		
 	} onFailure:^(NSError *error) {
-	
+			
 		NSLog(@"%@: %@", NSStringFromSelector(_cmd), error);
 		
 		if (failureBlock)

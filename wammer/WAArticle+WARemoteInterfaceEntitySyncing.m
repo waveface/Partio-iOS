@@ -385,24 +385,58 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]){
 	
-		NSDate *lastDate = [[WADataStore defaultStore] lastContentSyncDate];
-	
-		[ri retrieveChangedArticlesSince:lastDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
+		NSDate *usedDate = [[[WADataStore defaultStore] lastContentSyncDate] dateByAddingTimeInterval:1];
 		
+		__block BOOL haveChangesSinceLastDate = NO;
+		__block NSDate *knownLatestDate = usedDate;
+		
+		NSLog(@"Finding changes later than date %@", usedDate);
+		
+		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
+		
+			NSLog(@"Got new article reps %@", changedArticleReps);
+
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			
-			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+			NSArray *articles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 			
 			[context save:nil];
 			
+			haveChangesSinceLastDate = YES;
+			
+			for (WAArticle *article in articles) {
+				
+				NSDate *timestamp = article.modificationDate;
+				if (!timestamp)
+					timestamp = article.creationDate;
+				
+				if (timestamp)
+					knownLatestDate = [knownLatestDate laterDate:timestamp];
+				
+				NSLog(@"moving known latest date to %@", knownLatestDate);
+				
+			}
+			
 		} onSuccess:^{
 		
-			[[WADataStore defaultStore] setLastContentSyncDate:[NSDate date]];
+			NSLog(@"Finalizing");
+		
+			//	Otherwise, async changes will be ignored, which is very bad
+			
+			if (haveChangesSinceLastDate) {
+				NSLog(@"recognizing date %@ as the latest cursor", knownLatestDate);
+				[[WADataStore defaultStore] setLastContentSyncDate:knownLatestDate];
+			}
+			
+			knownLatestDate = nil;
 			
 			if (completionBlock)
 				completionBlock(YES, nil, nil, nil);
 			
 		} onFailure:^(NSError *error) {
+		
+			NSLog(@"FAIL!");
+			
+			knownLatestDate = nil;
 
 			if (completionBlock)
 				completionBlock(NO, nil, nil, error);
