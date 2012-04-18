@@ -13,11 +13,12 @@ extern NSString * const kWAArticleEntitySyncingErrorDomain;
 extern NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey, NSString *reasonKey);
 
 extern NSString * const kWAArticleSyncStrategy; //  key
-typedef NSString * const WAArticleSyncStrategy;
+typedef NSString * WAArticleSyncStrategy;
 
 extern NSString * const kWAArticleSyncDefaultStrategy;
-extern NSString * const kWAArticleSyncFullyFetchOnlyStrategy;
+extern NSString * const kWAArticleSyncFullyFetchStrategy;
 extern NSString * const kWAArticleSyncMergeLastBatchStrategy;
+extern NSString * const kWAArticleSyncDeltaFetchStrategy;
 
 extern NSString * const kWAArticleSyncRangeStart;
 //  Object identifier — if exist, fetch only things newer than this object identifier, including the mentioned identifier

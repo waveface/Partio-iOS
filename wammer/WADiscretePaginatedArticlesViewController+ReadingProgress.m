@@ -341,7 +341,7 @@ NSString * const kLastReadingProgressAnnotationView = @"WADiscretePaginatedArtic
 				
 				[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 					
-					kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
+					kWAArticleSyncFullyFetchStrategy, kWAArticleSyncStrategy,
 					
 				nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
 				
