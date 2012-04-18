@@ -21,6 +21,9 @@
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
 
+- (NSDate *) lastContentSyncDate;
+- (void) setLastContentSyncDate:(NSDate *)date;
+
 //	For the default persistent store, might incur write
 - (NSDictionary *) metadata;
 - (void) setMetadata:(NSDictionary *)metadata;

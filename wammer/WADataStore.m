@@ -10,6 +10,7 @@
 
 
 NSString * const kMainUserEntityURIString = @"kMainUserEntityURIString";
+NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyncDateInTimeIntervalSince1970";
 
 
 @interface WADataStore ()
@@ -108,6 +109,27 @@ NSString * const kMainUserEntityURIString = @"kMainUserEntityURIString";
 	[metadata setObject:userEntityURIString forKey:kMainUserEntityURIString];
 	
 	[self setMetadata:metadata];
+
+}
+
+- (NSDate *) lastContentSyncDate {
+
+	NSDictionary *metadata = [self metadata];
+	NSNumber *timeInterval = [metadata objectForKey:kLastContentSyncDateInTimeIntervalSince1970];
+	if (!timeInterval)
+		return nil;
+	
+	return [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
+
+}
+
+- (void) setLastContentSyncDate:(NSDate *)date {
+
+	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
+	
+	[metadata setObject:[NSNumber numberWithDouble:[date timeIntervalSince1970]] forKey:kLastContentSyncDateInTimeIntervalSince1970];
+	
+	[self setMedatata:metadata];
 
 }
 
