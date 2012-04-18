@@ -389,8 +389,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 		[ri retrieveChangedArticlesSince:lastDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
 		
-			NSLog(@"changed %@", changedArticleReps);
-			
 			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
 			
 			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
@@ -399,6 +397,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		} onSuccess:^{
 		
+			[[WADataStore defaultStore] setLastContentSyncDate:[NSDate date]];
+			
 			if (completionBlock)
 				completionBlock(YES, nil, nil, nil);
 			

@@ -30,6 +30,10 @@
 		NSArray *changedArticleIDs = [inResponseOrNil valueForKeyPath:@"post_id_list"];
 		NSArray *changeOperations = [inResponseOrNil valueForKeyPath:@"usertrack_list"];
 		NSString *continuationString = [inResponseOrNil valueForKeyPath:@"latest_timestamp"];
+		
+		if (![continuationString length])
+			continuationString = nil;
+		
 		NSDate *continuation = [[WADataStore defaultStore] dateFromISO8601String:continuationString];
 		
 		if (successBlock)
@@ -47,7 +51,7 @@
 	__block void (^fetchAndProcessArticlesSince)(NSDate *) = [^ (NSDate *sinceDate) {
 
 		[self retrieveChangedArticlesSince:sinceDate inGroup:groupID withEntities:NO onSuccess:^(NSArray *changedArticleIDs, NSArray *changes, NSDate *continuation) {
-			
+		
 			if (![changedArticleIDs count] || !continuation || [continuation isEqual:sinceDate]) {
 				
 				if (successBlock)
@@ -118,15 +122,8 @@
 			
 			for (NSOperation *operation in articleOperations)
 				[articleOperationQueue addOperation:operation];
-
-//			if (progressBlock)
-//				progressBlock(changes);
-			
-//			fetchAndProcessArticlesSince(continuation);
 			
 		} onFailure:^(NSError *error) {
-			
-			//	?
 			
 			if (failureBlock)
 				failureBlock(error);
@@ -134,11 +131,10 @@
 			fetchAndProcessArticlesSince = nil;
 			
 		}];
-
 	
-	} copy];	
+	} copy];
+	
 	fetchAndProcessArticlesSince(date);
-
 
 }
 
