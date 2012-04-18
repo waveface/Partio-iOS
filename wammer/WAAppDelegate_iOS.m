@@ -62,6 +62,8 @@
 - (void) recreateViewHierarchy;
 - (void) handleDebugModeToggled;
 
+- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier;
+
 @end
 
 
@@ -172,8 +174,9 @@
 	[self.window makeKeyAndVisible];
 	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
-		
-		[WADataStore defaultStore].persistentStoreName = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
+	
+		NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
+		[self bootstrapPersistentStoreWithUserIdentifier:identifier];
 		
 		[self recreateViewHierarchy];
 	
@@ -186,7 +189,7 @@
 		NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
 		
 		if (lastAuthenticatedUserIdentifier)
-			[WADataStore defaultStore].persistentStoreName = [lastAuthenticatedUserIdentifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
 		
 		[self recreateViewHierarchy];
 		
@@ -259,7 +262,7 @@
 		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 			
 		} runningOnboardingProcess:YES];
 		
@@ -278,7 +281,7 @@
 		[self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 			
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 			
 		} runningOnboardingProcess:NO];
 
@@ -920,6 +923,47 @@ static unsigned int networkActivityStackingCount = 0;
 	
 	nil]);
 
+}
+
+- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier {
+
+	NSParameterAssert(identifier);
+	WADataStore * const ds = [WADataStore defaultStore];
+	
+	ds.persistentStoreName = [identifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	
+	NSManagedObjectContext *context = [ds disposableMOC];
+	WAUser *user = [ds mainUserInContext:context];
+	
+	if (!user) {
+		
+		user = [[WAUser alloc] initWithEntity:[WAUser entityDescriptionForContext:context] insertIntoManagedObjectContext:context];
+		user.identifier = identifier;
+		
+		[context obtainPermanentIDsForObjects:[NSArray arrayWithObject:user] error:nil];
+		
+		if ([context save:nil]) {
+			[ds setMainUser:user inContext:context];
+			[context save:nil];
+		}
+		
+	}
+	
+	NSParameterAssert([user.identifier isEqual:identifier]);
+	
+#if DEBUG
+
+	do {
+	
+		NSManagedObjectContext *context = [ds disposableMOC];
+		WAUser *user = [ds mainUserInContext:context];
+		
+		NSParameterAssert([user.identifier isEqual:identifier]);
+	
+	} while (0);
+	
+#endif
+	
 }
 
 @end

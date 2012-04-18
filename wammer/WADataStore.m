@@ -9,6 +9,9 @@
 #import "WADataStore.h"
 
 
+NSString * const kMainUserEntityURIString = @"kMainUserEntityURIString";
+
+
 @interface WADataStore ()
 
 + (NSDateFormatter *) threadLocalDateFormatter;
@@ -72,6 +75,71 @@
 - (NSString *) ISO8601StringFromDate:(NSDate *)date {
 
 	return [[[self class] threadLocalDateFormatter] stringFromDate:date];
+
+}
+
+- (WAUser *) mainUserInContext:(NSManagedObjectContext *)context {
+
+	NSDictionary *metadata = [self metadata];
+	NSString *userEntityURIString = [metadata objectForKey:kMainUserEntityURIString];
+	NSURL *userEntityURI = [NSURL URLWithString:userEntityURIString];
+	
+	if (!userEntityURI)
+		return nil;
+		
+	WAUser *user = (WAUser *)[context irManagedObjectForURI:userEntityURI];
+	NSParameterAssert([user isKindOfClass:[WAUser class]]);
+	
+	return user;
+	
+}
+
+- (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context {
+
+	#pragma unused(context)
+	
+	NSParameterAssert(user);
+	NSParameterAssert(![[user objectID] isTemporaryID]);
+
+	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
+	NSURL *userEntityURI = [[user objectID] URIRepresentation];
+	NSString *userEntityURIString = [userEntityURI absoluteString];
+	
+	[metadata setObject:userEntityURIString forKey:kMainUserEntityURIString];
+	
+	[self setMetadata:metadata];
+
+}
+
+- (NSDictionary *) metadata {
+
+	NSPersistentStoreCoordinator *psc = self.persistentStoreCoordinator;
+	NSArray *stores = psc.persistentStores;
+	
+	if (![stores count])
+		return nil;
+	
+	NSPersistentStore *firstStore = [stores objectAtIndex:0];
+	NSDictionary *metadata = [psc metadataForPersistentStore:firstStore];
+	
+	return metadata;
+	
+}
+
+- (void) setMetadata:(NSDictionary *)metadata {
+
+	NSPersistentStoreCoordinator *psc = self.persistentStoreCoordinator;
+	NSArray *stores = psc.persistentStores;
+	
+	if (![stores count])
+		return;
+	
+	NSPersistentStore *firstStore = [stores objectAtIndex:0];
+	
+	[psc setMetadata:metadata forPersistentStore:firstStore];
+	
+	NSManagedObjectContext *context = [self disposableMOC];
+	[context save:nil];
 
 }
 

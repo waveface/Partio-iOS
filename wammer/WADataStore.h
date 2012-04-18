@@ -9,6 +9,7 @@
 #import "CoreData+IRAdditions.h"
 
 
+@class WAUser;
 @interface WADataStore : IRDataStore
 
 + (WADataStore *) defaultStore;
@@ -16,6 +17,13 @@
 
 - (NSDate *) dateFromISO8601String:(NSString *)aString;
 - (NSString *) ISO8601StringFromDate:(NSDate *)date;
+
+- (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
+- (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
+
+//	For the default persistent store, might incur write
+- (NSDictionary *) metadata;
+- (void) setMetadata:(NSDictionary *)metadata;
 
 @end
 
