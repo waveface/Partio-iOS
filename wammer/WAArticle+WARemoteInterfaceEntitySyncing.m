@@ -23,6 +23,7 @@ NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
 NSString * const kWAArticleSyncDefaultStrategy = @"WAArticleSyncMergeLastBatchStrategy";
 NSString * const kWAArticleSyncFullyFetchStrategy = @"WAArticleSyncFullyFetchOnlyStrategy";
 NSString * const kWAArticleSyncMergeLastBatchStrategy = @"WAArticleSyncMergeLastBatchStrategy";
+NSString * const kWAArticleSyncDeltaFetchStrategy = @"WAArticleSyncDeltaFetchStrategy";
 
 NSString * const kWAArticleSyncRangeStart = @"WAArticleSyncRangeStart";
 NSString * const kWAArticleSyncRangeEnd = @"WAArticleSyncRangeEnd";
@@ -182,7 +183,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
   [self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
   
-    kWAArticleSyncMergeLastBatchStrategy, kWAArticleSyncStrategy,
+    kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
   
   nil] completion:completionBlock];
 
@@ -190,7 +191,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
 
-  WAArticleSyncStrategy syncStrategy =	[options objectForKey:kWAArticleSyncStrategy];
+  WAArticleSyncStrategy wantedStrategy = [options objectForKey:kWAArticleSyncStrategy];
+	WAArticleSyncStrategy syncStrategy = wantedStrategy;
+	
+	if ([wantedStrategy isEqual:kWAArticleSyncDefaultStrategy]) {
+		
+		if ([[WADataStore defaultStore] lastContentSyncDate]) {
+			syncStrategy = kWAArticleSyncDeltaFetchStrategy;
+		}
+		
+	} else {
+	
+		syncStrategy = kWAArticleSyncFullyFetchStrategy;
+		
+	}
   
   WARemoteInterface *ri = [WARemoteInterface sharedInterface];
   WADataStore *ds = [WADataStore defaultStore];
@@ -202,6 +216,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			@"Article sync requires a primary group identifier", NSLocalizedDescriptionKey,
 		nil]]);
 		return;
+	}
+	
+	if ([syncStrategy isEqual:kWAArticleSyncDefaultStrategy]) {
+		
+		if ([[WADataStore defaultStore] lastContentSyncDate]) {
+			
+			syncStrategy = kWAArticleSyncDeltaFetchStrategy;
+			
+		} else {
+
+			syncStrategy = kWAArticleSyncFullyFetchStrategy;
+		
+		}
+		
 	}
   
   if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
@@ -219,6 +247,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if ([context save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 							
+			[[WADataStore defaultStore] setLastContentSyncDate:[NSDate date]];
+
       if (completionBlock)
         completionBlock(YES, context, touchedObjects, nil);
       
@@ -327,6 +357,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 									
 								}];
 								
+								[[WADataStore defaultStore] setLastContentSyncDate:[NSDate date]];
+								
 								if (completionBlock)
 									completionBlock(YES, context, savedObjects, nil);
 								
@@ -351,6 +383,32 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
     });
       
+  } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]){
+	
+		NSDate *lastDate = [[WADataStore defaultStore] lastContentSyncDate];
+	
+		[ri retrieveChangedArticlesSince:lastDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
+		
+			NSLog(@"changed %@", changedArticleReps);
+			
+			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+			
+			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+			
+			[context save:nil];
+			
+		} onSuccess:^{
+		
+			if (completionBlock)
+				completionBlock(YES, nil, nil, nil);
+			
+		} onFailure:^(NSError *error) {
+
+			if (completionBlock)
+				completionBlock(NO, nil, nil, error);
+			
+		}];
+				
   } else {
   
     NSParameterAssert(NO);

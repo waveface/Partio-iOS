@@ -129,7 +129,7 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 	
 	[metadata setObject:[NSNumber numberWithDouble:[date timeIntervalSince1970]] forKey:kLastContentSyncDateInTimeIntervalSince1970];
 	
-	[self setMedatata:metadata];
+	[self setMetadata:metadata];
 
 }
 
