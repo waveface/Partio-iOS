@@ -145,17 +145,8 @@
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
+		NSDictionary *userEntity = [[self class] userEntityFromRepresentation:inResponseOrNil];
 		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
-		NSMutableDictionary *userEntity = [[inResponseOrNil valueForKeyPath:@"user"] mutableCopy];
-		
-		if (!userEntity)
-			userEntity = [NSMutableDictionary dictionary];
-		
-		if ([inResponseOrNil valueForKeyPath:@"groups"])
-			[userEntity setObject:[inResponseOrNil valueForKeyPath:@"groups"] forKey:@"groups"];
-			
-		if ([inResponseOrNil valueForKeyPath:@"stations"])
-			[userEntity setObject:[inResponseOrNil valueForKeyPath:@"stations"] forKey:@"stations"];
 		
 		if (successBlock) {
 			successBlock(userEntity, incomingToken);
