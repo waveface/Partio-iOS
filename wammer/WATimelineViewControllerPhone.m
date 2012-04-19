@@ -54,7 +54,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData;
 
-- (void) beginCompositionSessionWithURL:(NSURL *)anURL;
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL onCompositionViewDidAppear:(void(^)(WACompositionViewController *compositionVC))callback;
+
+- (void) handleCompose:(UIBarButtonItem *)sender;
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender;
+- (void) handleFilter:(UIBarButtonItem *)sender;
+- (void) handleCameraCapture:(UIBarButtonItem *)sender;
+- (void) handleUserInfo:(UIBarButtonItem *)sender;
 
 @end
 
@@ -87,9 +94,29 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 	
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WASettingsGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleSettings:)];
-	
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
+	
+	self.toolbarItems = [NSArray arrayWithObjects:
+	
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		
+		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WACalendarGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
+		
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+
+		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WAFilterGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleFilter:)],
+
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		
+		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WACameraGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleCameraCapture:)],
+
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		
+		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WAUserGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
+		
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+	
+	nil];
 		
 	return self;
   
@@ -323,7 +350,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) viewWillAppear:(BOOL)animated {
   
 	[super viewWillAppear:animated];
-  [self refreshData];
+	[self.navigationController setToolbarHidden:NO animated:animated];
+  
+	[self refreshData];
 	
 	self.tableView.contentInset = UIEdgeInsetsZero;
 	
@@ -554,6 +583,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
 
+	[self beginCompositionSessionWithURL:anURL onCompositionViewDidAppear:nil];
+
+}
+
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
+
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
 	
 		[compositionVC dismissModalViewControllerAnimated:YES];
@@ -561,7 +596,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-  [self presentModalViewController:[compositionVC wrappingNavigationController] animated:YES];
+  [self presentViewController:[compositionVC wrappingNavigationController] animated:YES completion:^{
+		
+		if (callback)
+			callback(compositionVC);
+		
+	}];
 	
 }
 
@@ -599,7 +639,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			
 		}];
 		
-		[self presentModalViewController:navC animated:YES];
+		[self presentViewController:navC animated:YES completion:nil];
 	
 	} else {
 
@@ -607,30 +647,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	}
   
-}
-
-- (void) handleSettings:(UIBarButtonItem *)sender  {
-
-	WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
-	
-	__weak WATimelineViewControllerPhone *wSelf = self;
-	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
-	
-	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
-		
-		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
-		
-	}];
-	
-	userInfoVC.navigationItem.rightBarButtonItem =	[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
-	
-		[wSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:wUserInfoVC.navigationItem.rightBarButtonItem animated:YES];
-			
-	}];
-	
-	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
-	[self presentViewController:wrappingNavC animated:YES completion:nil];
-	
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
@@ -944,6 +960,63 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[controller managedActionSheet] showInView:self.view];
 		
+}
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+
+}
+
+- (void) handleFilter:(UIBarButtonItem *)sender {
+
+}
+
+- (void) handleCameraCapture:(UIBarButtonItem *)sender  {
+
+	__weak WATimelineViewControllerPhone *wSelf = self;
+
+	[self beginCompositionSessionWithURL:nil onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
+	
+		[compositionVC handleImageAttachmentInsertionRequestWithSender:compositionVC.view];
+	
+	}];
+
+}
+
+- (void) handleUserInfo:(UIBarButtonItem *)sender  {
+
+	WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
+	
+	__weak WATimelineViewControllerPhone *wSelf = self;
+	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
+	
+	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+		
+		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+		
+	}];
+	
+	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
+
+		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+		
+		NSString *alertTitle = NSLocalizedString(@"ACTION_SIGN_OUT", nil);
+		NSString *alertText = NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil);
+		
+		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
+			
+			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
+				
+				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+				
+			}],
+			
+		nil]] show];
+		
+	}];
+	
+	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
+	[self presentViewController:wrappingNavC animated:YES completion:nil];
+	
 }
 
 @end
