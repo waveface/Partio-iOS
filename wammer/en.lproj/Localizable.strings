@@ -179,6 +179,21 @@
 /* Title for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_TITLE" = "Can’t Register";
 
+/* Display title for a fetch request working against all the articles */
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
+
+/* Display title for a fetch request working against the articles with Photos */
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Posts";
+
+/* Display title for a fetch request working against the articles with Plain Text */
+"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Posts";
+
+/* Display title for a fetch request working against the articles with Web Previews */
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Posts";
+
+/* Display title for a fetch request working against the latest article on a particular date */
+"FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 

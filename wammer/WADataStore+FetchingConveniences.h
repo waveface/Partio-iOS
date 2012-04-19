@@ -19,6 +19,10 @@
 - (NSFetchRequest *) newFetchRequestForNewestArticle;
 - (NSFetchRequest *) newFetchRequestForNewestArticleOnDate:(NSDate *)date;
 
+- (NSFetchRequest *) newFetchRequestForArticlesWithPreviews;
+- (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;
+- (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos;
+
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
 - (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;

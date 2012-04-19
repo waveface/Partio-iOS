@@ -29,6 +29,8 @@
 	
 	fetchRequest.fetchBatchSize = 20;
 	
+	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE", @"Display title for a fetch request working against all the articles");
+	
 	return fetchRequest;
 
 }
@@ -111,7 +113,61 @@
 	fetchRequest.fetchBatchSize = 1;
 	fetchRequest.fetchLimit = 1;
 	
+	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE", @"Display title for a fetch request working against the latest article on a particular date");
+	
 	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesWithPreviews {
+
+	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
+	
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fr.predicate,
+		[NSPredicate predicateWithFormat:@"previews.@count > 0"],
+	
+	nil]];
+	
+	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Web Previews");
+	
+	return fr;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesWithPhotos {
+
+	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
+	
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fr.predicate,
+		[NSPredicate predicateWithFormat:@"files.@count > 0"],
+	
+	nil]];
+	
+	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Photos");
+	
+	return fr;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos {
+
+	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
+	
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fr.predicate,
+		[NSPredicate predicateWithFormat:@"previews.@count == 0"],
+		[NSPredicate predicateWithFormat:@"files.@count == 0"],
+	
+	nil]];
+	
+	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Plain Text");
+	
+	return fr;
 
 }
 

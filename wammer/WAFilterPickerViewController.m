@@ -7,16 +7,20 @@
 //
 
 #import "WAFilterPickerViewController.h"
+#import "WADataStore.h"
+#import "CoreData+IRAdditions.h"
 
 @interface WAFilterPickerViewController ()
 
 @property (nonatomic, readwrite, copy) void(^callback)(NSFetchRequest *);
+@property (nonatomic, readwrite, strong) NSArray *fetchRequests;
 
 @end
 
 @implementation WAFilterPickerViewController
 @synthesize callback;
 @synthesize pickerView;
+@synthesize fetchRequests;
 
 + (id) controllerWithCompletion:(void(^)(NSFetchRequest *))block {
 
@@ -26,6 +30,27 @@
 	
 	controller.callback = block;
 	return controller;
+
+}
+
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+	
+	WADataStore *ds = [WADataStore defaultStore];
+	
+	fetchRequests = [NSArray arrayWithObjects:
+	
+		[ds newFetchRequestForAllArticles],
+		[ds newFetchRequestForArticlesWithPreviews],
+		[ds newFetchRequestForArticlesWithPhotos],
+		[ds newFetchRequestForArticlesWithoutPreviewsOrPhotos],
+		
+	nil];
+	
+	return self;
 
 }
 
@@ -44,19 +69,16 @@
 
 - (NSInteger) pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
 
-	return 20;
+	return [self.fetchRequests count];
 
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
 
-	return [NSString stringWithFormat:@"%lu %lu", component, row];
-
-}
-
-- (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-
-	NSLog(@"%s %@ %lu %lu", __PRETTY_FUNCTION__, pickerView, row, component);
+	NSFetchRequest *fr = [self.fetchRequests objectAtIndex:row];
+	NSString *displayTitle = fr.displayTitle;
+	
+	return displayTitle ? displayTitle : [fr.predicate predicateFormat];
 
 }
 
@@ -75,8 +97,19 @@
 
 	[self runDismissingAnimationWithCompletion:^{
 	
-		if (self.callback)
-			self.callback(nil);
+		NSInteger rowIndex = [self.pickerView selectedRowInComponent:0];
+		
+		if (rowIndex != -1) {
+		
+			if (self.callback)
+				self.callback([self.fetchRequests objectAtIndex:rowIndex]);
+		
+		} else {
+		
+			if (self.callback)
+				self.callback(nil);
+			
+		}
 		
 	}];
 

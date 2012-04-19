@@ -1037,6 +1037,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) handleFilter:(UIBarButtonItem *)sender {
 
 	__block WAFilterPickerViewController *fpVC = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fr) {
+	
+		if (fr) {
+		
+			self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			
+			self.fetchedResultsController.delegate = self;
+			[self.fetchedResultsController performFetch:nil];
+			
+			[self.tableView setContentOffset:CGPointZero animated:NO];
+			[self.tableView reloadData];
+		
+		}
 		
 		[fpVC willMoveToParentViewController:nil];
 		[fpVC removeFromParentViewController];
