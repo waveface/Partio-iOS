@@ -563,6 +563,27 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 + (NSSet *) keyPathsForValuesAffectingPresentableImage {
 
 	return [NSSet setWithObjects:
+		@"bestPresentableImage",
+	nil];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingBestPresentableImage {
+
+	return [NSSet setWithObjects:
+		kWAFileThumbnailURL,
+		kWAFileThumbnailFilePath,
+		kWAFileLargeThumbnailURL,
+		kWAFileLargeThumbnailFilePath,
+		kWAFileResourceURL,
+		kWAFileResourceFilePath,
+	nil];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingSmallestPresentableImage {
+
+	return [NSSet setWithObjects:
 		kWAFileThumbnailURL,
 		kWAFileThumbnailFilePath,
 		kWAFileLargeThumbnailURL,
@@ -574,6 +595,30 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 }
 
 - (UIImage *) presentableImage {
+
+	return [self bestPresentableImage];
+
+}
+
+- (UIImage *) smallestPresentableImage {
+
+	if ([self thumbnailFilePath])
+	if (self.thumbnailImage)
+		return self.thumbnailImage;
+	
+	if ([self largeThumbnailFilePath])
+	if (self.largeThumbnailImage)
+		return self.largeThumbnailImage;
+	
+	if ([self resourceFilePath])
+	if (self.resourceImage)
+		return self.resourceImage;
+	
+	return nil;
+	
+}
+
+- (UIImage *) bestPresentableImage {
 
 	if ([self resourceFilePath])
 	if (self.resourceImage)

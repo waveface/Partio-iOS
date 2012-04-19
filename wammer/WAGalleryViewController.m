@@ -622,7 +622,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		
 	} else {
 		
-		[aView setImage:aFile.presentableImage animated:NO synchronized:forceSynchronousImageDecode];
+		[aView setImage:aFile.bestPresentableImage animated:NO synchronized:forceSynchronousImageDecode];
 		
 	}
 	

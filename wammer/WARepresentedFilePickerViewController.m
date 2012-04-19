@@ -84,6 +84,7 @@
 	if (!self)
 		return nil;
 	
+	
 	self.navigationItem.title = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_TITLE", @"Title for Cover Image picker");
 	//self.navigationItem.prompt = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_PROMPT", @"Prompt for Cover Image picker");
 	
@@ -99,10 +100,15 @@
 
 - (void) loadView {
 
+	[self fetchedResultsController];	//	Although we don’t use it, we want change tracking to go on
+	
 	self.view = [[AQGridView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.dataSource = self;
 	self.view.delegate = self;
+	self.view.leftContentInset = 2;
+	self.view.rightContentInset = 2;
+	self.view.contentInset = (UIEdgeInsets){ 2, 0, 0, 0 };
 	
 	self.view.alwaysBounceVertical = YES;
 	
@@ -123,11 +129,13 @@
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	
 	if (![cell isKindOfClass:[WACompositionViewPhotoCell class]]) {
-		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 80.0f, 80.0f } } reuseIdentifier:identifier];
+		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 72.0f, 72.0f } } reuseIdentifier:identifier];
 	}
 	
 	cell.canRemove = NO;
-	cell.image = representedFile.thumbnailImage;
+	cell.image = representedFile.smallestPresentableImage;
+	cell.style = WACompositionViewPhotoCellBorderedPlainStyle;
+	
 	[cell setNeedsLayout];
 	
 	return cell;
@@ -136,7 +144,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 80.0f, 80.0f };
+	return (CGSize){ 79.0f, 79.0f };
 
 }
 
