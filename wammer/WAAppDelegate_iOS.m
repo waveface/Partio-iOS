@@ -33,7 +33,9 @@
 #import "IRAlertView.h"
 #import "IRAction.h"
 
+#import "WADiscretePaginatedArticlesViewController.h"
 #import "WATimelineViewControllerPhone.h"
+#import "WAUserInfoViewController.h"
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
@@ -45,6 +47,7 @@
 #import "IASKSettingsReader.h"
 
 #import	"DCIntrospect.h"
+#import "UIKit+IRAdditions.h"
 
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
@@ -237,17 +240,106 @@
 	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
 	[queue cancelAllOperations];
 	
-	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
-		@"WADiscretePaginatedArticlesViewController" :
-		@"WATimelineViewControllerPhone";
+	switch (UI_USER_INTERFACE_IDIOM()) {
 	
-	NSParameterAssert(rootViewControllerClassName);
-	
-	UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
-	self.window.rootViewController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+		case UIUserInterfaceIdiomPad: {
 		
-	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
-		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
+			WADiscretePaginatedArticlesViewController *presentedViewController = [[WADiscretePaginatedArticlesViewController alloc] init];
+			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+			
+			[presentedViewController setDelegate:self];
+			
+			self.window.rootViewController = rootNavC;
+		
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+			
+			UITabBarController *tabBarController = [[UITabBarController alloc] init];
+			
+			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
+			[timelineVC setDelegate:self];
+			
+			UIViewController * (^placeholder)(NSString *) = ^ (NSString *title) {
+			
+				IRViewController *vc = [[IRViewController alloc] init];
+				vc.title = title;
+				
+				__weak IRViewController *wVC = vc;
+				vc.onLoadView = ^ {
+				
+					wVC.view = [[UIView alloc] initWithFrame:CGRectZero];
+					wVC.view.backgroundColor = [UIColor whiteColor];
+					
+					UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+					label.text = title;
+					[label sizeToFit];
+					
+					label.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
+					
+					label.center = (CGPoint){
+						CGRectGetMidX(wVC.view.bounds),
+						CGRectGetMidY(wVC.view.bounds)
+					};
+					
+					[wVC.view addSubview:label];
+				
+				};
+				
+				return vc;
+			
+			};
+			
+			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:timelineVC];
+			timelineNavC.tabBarItem.title = @"Timeline";
+			timelineNavC.tabBarItem.image = [UIImage imageNamed:@"WATimelineGlyphLarge"];
+			
+			WANavigationController *calendarNavC = [[WANavigationController alloc] initWithRootViewController:placeholder(@"Calendar")];
+			calendarNavC.tabBarItem.title = @"Calendar";
+			calendarNavC.tabBarItem.image = [UIImage imageNamed:@"WACalendarGlyphLarge"];
+			
+			WANavigationController *cameraItemNavC = [[WANavigationController alloc] initWithRootViewController:placeholder(@"Camera Action")];
+			cameraItemNavC.tabBarItem.title = @"Capture";
+			cameraItemNavC.tabBarItem.image = [UIImage imageNamed:@"WACameraGlyphLarge"];
+			
+			WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
+			WANavigationController *accountNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
+			accountNavC.tabBarItem.title = @"Account";
+			accountNavC.tabBarItem.image = [UIImage imageNamed:@"WAUserGlyphLarge"];
+			
+			WANavigationController *filterNavC = [[WANavigationController alloc] initWithRootViewController:placeholder(@"Filter")];
+			filterNavC.tabBarItem.title = @"Filter";
+			filterNavC.tabBarItem.image = [UIImage imageNamed:@"WAFilterGlyphLarge"];
+			
+			tabBarController.viewControllers = [NSArray arrayWithObjects:
+				timelineNavC,
+				calendarNavC,
+				cameraItemNavC,
+				accountNavC,
+				filterNavC,
+			nil];
+			
+			self.window.rootViewController = tabBarController;
+		
+			break;
+		
+		}
+	
+	}
+	
+//	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
+//		@"WADiscretePaginatedArticlesViewController" :
+//		@"WATimelineViewControllerPhone";
+//	
+//	NSParameterAssert(rootViewControllerClassName);
+//	
+//	UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
+//	self.window.rootViewController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+//		
+//	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+//		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 			
 }
 

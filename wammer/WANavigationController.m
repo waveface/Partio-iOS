@@ -41,7 +41,8 @@
   if (!self)
     return nil;
   
-  [self setViewControllers:[NSArray arrayWithObject:presentedViewController]];
+	if (presentedViewController)
+		[self setViewControllers:[NSArray arrayWithObject:presentedViewController]];
 	
   return self;
 
