@@ -118,14 +118,42 @@
 
 - (CGFloat) heightForRowRepresentingObject:(WAArticle *)object inTableView:(UITableView *)tableView {
 
-	UIFont *baseFont = [UIFont fontWithName:@"Georgia" size:18.0];
-  CGFloat height = [object.text sizeWithFont:baseFont constrainedToSize:(CGSize){
-		CGRectGetWidth(tableView.frame) - 80,
-		140.0  // 6 lines
-	} lineBreakMode:UILineBreakModeWordWrap].height;
-
-	return height + ([object.files count] ? 250 : [object.previews count] ? 128 : 48);
-
+//	BOOL isWebPost = !![object.previews count];
+//	BOOL isPhotoPost = !![object.files count];
+//	if (isWebPost)
+//		return 158;
+	
+	NSString *identifier = [[self class] identifierRepresentingObject:object];
+	WAPostViewCellPhone *prototype = (WAPostViewCellPhone *)[[self class] prototypeForIdentifier:identifier];
+	NSParameterAssert([prototype isKindOfClass:[WAPostViewCellPhone class]]);
+	prototype.frame = (CGRect){
+		CGPointZero,
+		(CGSize){
+			CGRectGetWidth(tableView.bounds),
+			CGRectGetHeight(prototype.bounds)
+		}
+	};
+	
+	CGRect oldLabelFrame = prototype.commentLabel.frame;
+	CGFloat cellLabelHeightDelta = CGRectGetHeight(prototype.bounds) - CGRectGetHeight(oldLabelFrame);
+	
+	prototype.commentLabel.frame = (CGRect){
+		CGPointZero,
+		(CGSize){
+			CGRectGetWidth(prototype.commentLabel.bounds),
+			0
+		}
+	};
+	
+	prototype.commentLabel.text = object.text;
+	
+	[prototype.commentLabel sizeToFit];
+	
+	CGFloat answer = roundf(MIN(prototype.commentLabel.font.leading * 3, CGRectGetHeight(prototype.commentLabel.bounds)) + cellLabelHeightDelta);
+	prototype.commentLabel.frame = oldLabelFrame;
+	
+	return MAX(answer, CGRectGetHeight(prototype.bounds));
+	
 }
 
 - (void) setRepresentedObject:(id)representedObject {
@@ -203,7 +231,11 @@
 	}
 		
 	self.commentLabel.text = post.text;
-	self.extraInfoLabel.text = @"5 minutes ago from iPhone";
+	
+	self.originLabel.text = [NSString stringWithFormat:@"%@ from %@",
+		[[IRRelativeDateFormatter sharedFormatter] stringFromDate:(post.modificationDate ? post.modificationDate : post.creationDate)],
+		post.creationDeviceName
+	];
 	
 	UIColor *textColor;
 	UIColor *shadowColor;
