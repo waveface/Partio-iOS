@@ -14,7 +14,9 @@
 @property (nonatomic, readonly, retain) UIImage *largeThumbnailImage;
 @property (nonatomic, readonly, retain) UIImage *thumbnailImage;
 
-- (UIImage *) presentableImage;	//	Conforms to KVO; automatically chooses the highest resolution thing
+- (UIImage *) smallestPresentableImage;	//	Conforms to KVO; automatically chooses the highest resolution thing
+- (UIImage *) bestPresentableImage;	//	Conforms to KVO; automatically chooses the lowest resolution thing
+- (UIImage *) presentableImage DEPRECATED_ATTRIBUTE;	//	bestPresentableImage
 
 + (dispatch_queue_t) sharedResourceHandlingQueue;
 

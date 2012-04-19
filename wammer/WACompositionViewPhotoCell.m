@@ -18,6 +18,7 @@
 @end
 
 @implementation WACompositionViewPhotoCell
+@synthesize style;
 @synthesize image, imageContainer, removeButton, onRemove, highlightOverlay;
 @synthesize activityIndicator;
 @synthesize canRemove;
@@ -54,13 +55,10 @@
 	
 	self.contentView.clipsToBounds = NO;
 	
-	self.imageContainer = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })];
+	self.imageContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
 	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;//kCAGravityResizeAspect;
+	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
-	self.imageContainer.layer.shadowOpacity = 0.5f;
-	self.imageContainer.layer.shadowRadius = 2.0f;
 
 	[self.contentView addSubview:self.imageContainer];
 	
@@ -115,7 +113,7 @@
 	
 	if (newImage) {
 	
-		CGRect imageRect = IRGravitize(self.imageContainer.bounds, newImage.size, kCAGravityResizeAspect);
+		CGRect imageRect = IRGravitize(self.imageContainer.bounds, newImage.size, self.imageContainer.layer.contentsGravity);
 		self.removeButton.center = (CGPoint) {
 			CGRectGetMinX(imageRect) + 8,
 			CGRectGetMinY(imageRect) + 8
@@ -129,9 +127,41 @@
 
 }
 
+- (void) setStyle:(WACompositionViewPhotoCellStyle)aStyle {
+
+	style = aStyle;
+	
+	[self setNeedsLayout];
+
+}
+
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
+	
+	switch (self.style) {
+	
+		case WACompositionViewPhotoCellShadowedStyle: {
+			self.imageContainer.frame = UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
+			self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
+			self.imageContainer.layer.shadowOpacity = 0.5f;
+			self.imageContainer.layer.shadowRadius = 2.0f;
+			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+			self.imageContainer.layer.borderColor = nil;
+			self.imageContainer.layer.borderWidth = 0;
+			break;
+		}
+		
+		case WACompositionViewPhotoCellBorderedPlainStyle: {
+			self.imageContainer.frame = self.contentView.bounds;
+			self.imageContainer.layer.shadowOpacity = 0.0f;
+			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspectFill;
+			self.imageContainer.layer.borderColor = [UIColor colorWithWhite:0.7 alpha:1].CGColor;
+			self.imageContainer.layer.borderWidth = 1.0f;
+			break;
+		}
+	
+	}
 	
 	if (canRemove) {
 		self.removeButton.alpha = 1;
