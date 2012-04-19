@@ -256,11 +256,13 @@
 	self.monthLabel.textColor = textColor;
 	self.monthLabel.shadowColor = shadowColor;
 	
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+	NSDate *usedDate = post.modificationDate ? post.modificationDate : post.creationDate;
+	
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	dateFormatter.dateFormat = @"dd";
-	self.dayLabel.text = [dateFormatter stringFromDate:post.creationDate];
+	self.dayLabel.text = [dateFormatter stringFromDate:usedDate];
 	dateFormatter.dateFormat = @"MMM";
-	self.monthLabel.text = [[dateFormatter stringFromDate:post.creationDate] uppercaseString];
+	self.monthLabel.text = [[dateFormatter stringFromDate:usedDate] uppercaseString];
 	
 	[self setNeedsLayout];
 	

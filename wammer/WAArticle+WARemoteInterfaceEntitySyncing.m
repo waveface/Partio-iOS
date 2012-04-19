@@ -385,48 +385,58 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]){
 	
+		NSString *nonce = IRDataStoreNonce();
+	
 		NSDate *usedDate = [[[WADataStore defaultStore] lastContentSyncDate] dateByAddingTimeInterval:1];
+		NSCParameterAssert(usedDate);
 		
 		__block BOOL haveChangesSinceLastDate = NO;
 		__block NSDate *knownLatestDate = usedDate;
 		
-		NSLog(@"Finding changes later than date %@", usedDate);
+		NSLog(@"%@ Finding changes later than date %@", nonce, usedDate);
 		
 		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
 		
-			NSLog(@"Got new article reps %@", changedArticleReps);
+			NSLog(@"%@ Got new article reps %@", nonce, changedArticleReps);
+			
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				
+				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
+				NSArray *articles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				
+				[context save:nil];
+				
+				haveChangesSinceLastDate = YES;
+				
+				for (WAArticle *article in articles) {
+					
+					NSDate *timestamp = article.modificationDate;
+					if (!timestamp)
+						timestamp = article.creationDate;
+					
+					if (timestamp)
+						knownLatestDate = [knownLatestDate laterDate:timestamp];
+					
+					NSCParameterAssert(knownLatestDate);
+					
+					NSLog(@"%@ moving known latest date to %@", nonce, knownLatestDate);
+					
+				}
+			
+			});
 
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			NSArray *articles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-			
-			[context save:nil];
-			
-			haveChangesSinceLastDate = YES;
-			
-			for (WAArticle *article in articles) {
-				
-				NSDate *timestamp = article.modificationDate;
-				if (!timestamp)
-					timestamp = article.creationDate;
-				
-				if (timestamp)
-					knownLatestDate = [knownLatestDate laterDate:timestamp];
-				
-				NSLog(@"moving known latest date to %@", knownLatestDate);
-				
-			}
-			
 		} onSuccess:^{
 		
-			NSLog(@"Finalizing");
+			NSLog(@"%@ Finalizing", nonce);
 		
 			//	Otherwise, async changes will be ignored, which is very bad
 			
 			if (haveChangesSinceLastDate) {
-				NSLog(@"recognizing date %@ as the latest cursor", knownLatestDate);
+				NSLog(@"%@ recognizing date %@ as the latest cursor", knownLatestDate, nonce);
 				[[WADataStore defaultStore] setLastContentSyncDate:knownLatestDate];
 			}
 			
+			NSLog(@"%@ niling knownLatestDate", nonce);
 			knownLatestDate = nil;
 			
 			if (completionBlock)
@@ -434,7 +444,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		} onFailure:^(NSError *error) {
 		
-			NSLog(@"FAIL!");
+			NSLog(@"%@ FAIL!", nonce);
 			
 			knownLatestDate = nil;
 

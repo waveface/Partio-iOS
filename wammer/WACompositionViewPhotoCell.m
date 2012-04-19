@@ -59,6 +59,7 @@
 	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
+	self.imageContainer.clipsToBounds = YES;
 
 	[self.contentView addSubview:self.imageContainer];
 	
