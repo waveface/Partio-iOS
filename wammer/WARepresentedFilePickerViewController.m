@@ -106,6 +106,9 @@
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.dataSource = self;
 	self.view.delegate = self;
+	self.view.leftContentInset = 2;
+	self.view.rightContentInset = 2;
+	self.view.contentInset = (UIEdgeInsets){ 2, 0, 0, 0 };
 	
 	self.view.alwaysBounceVertical = YES;
 	
@@ -126,11 +129,13 @@
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	
 	if (![cell isKindOfClass:[WACompositionViewPhotoCell class]]) {
-		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 80.0f, 80.0f } } reuseIdentifier:identifier];
+		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 72.0f, 72.0f } } reuseIdentifier:identifier];
 	}
 	
 	cell.canRemove = NO;
 	cell.image = representedFile.smallestPresentableImage;
+	cell.style = WACompositionViewPhotoCellBorderedPlainStyle;
+	
 	[cell setNeedsLayout];
 	
 	return cell;
@@ -139,7 +144,7 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	return (CGSize){ 80.0f, 80.0f };
+	return (CGSize){ 79.0f, 79.0f };
 
 }
 
