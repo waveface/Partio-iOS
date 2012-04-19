@@ -84,6 +84,7 @@
 	if (!self)
 		return nil;
 	
+	
 	self.navigationItem.title = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_TITLE", @"Title for Cover Image picker");
 	//self.navigationItem.prompt = NSLocalizedString(@"CHANGE_REPRESENTING_FILE_PROMPT", @"Prompt for Cover Image picker");
 	
@@ -99,6 +100,8 @@
 
 - (void) loadView {
 
+	[self fetchedResultsController];	//	Although we don’t use it, we want change tracking to go on
+	
 	self.view = [[AQGridView alloc] initWithFrame:(CGRect){ 0, 0, 320, 320 }];
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.view.dataSource = self;
@@ -127,7 +130,7 @@
 	}
 	
 	cell.canRemove = NO;
-	cell.image = representedFile.thumbnailImage;
+	cell.image = representedFile.smallestPresentableImage;
 	[cell setNeedsLayout];
 	
 	return cell;
