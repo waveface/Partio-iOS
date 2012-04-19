@@ -68,22 +68,33 @@
 			
 			for (NSString *articleID in changedArticleIDs) {
 			
+				NSLog(@"emiting worker for article %@", articleID);
+			
 				[articleOperations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 				
+					NSLog(@"starting worker for article %@", articleID);
+
 					[[WARemoteInterface sharedInterface] retrievePost:articleID inGroup:groupID onSuccess:^(NSDictionary *postRep){
 					
+						if (progressBlock)
+							progressBlock([NSArray arrayWithObjects:postRep, nil]);
+						
 						callback(postRep);
 					
+						NSLog(@"done: worker for article %@", articleID);
+
 					} onFailure:^(NSError *error) {
 					
 						callback(error);
 					
+						NSLog(@"failed: worker for article %@", articleID);
+						
 					}];
 					
 				} completionBlock:^(id results) {
-				
-					if ([results isKindOfClass:[NSDictionary class]])
-						progressBlock([NSArray arrayWithObject:results]);
+					
+					//	?
+					NSLog(@"completion: worker for article %@", articleID);
 					
 				}]];
 			
@@ -91,6 +102,7 @@
 			
 			[articleOperations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 			
+				NSLog(@"final barrier hit");
 				callback((id)kCFBooleanTrue);
 				
 			} completionBlock:^(id results) {
@@ -113,16 +125,19 @@
 			
 			[articleOperations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *currentOp, NSUInteger idx, BOOL *stop) {
 				
-				if (idx != 0)
-				if (idx != ([articleOperations count] - 1)) {
+				if (idx != 0) {
 					IRAsyncBarrierOperation *lastOperation = [articleOperations objectAtIndex:(idx - 1)];
 					[currentOp addDependency:lastOperation];
 				}
 				
 			}];
 			
+			[articleOperationQueue setSuspended:YES];
+			
 			for (NSOperation *operation in articleOperations)
 				[articleOperationQueue addOperation:operation];
+			
+			[articleOperationQueue setSuspended:NO];
 			
 		} onFailure:^(NSError *error) {
 			

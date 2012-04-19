@@ -180,14 +180,6 @@ enum {
 
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-
-	[super viewWillDisappear:animated];
-	
-	[self.navigationController setToolbarHidden:YES animated:animated];
-
-}
-
 - (UIWebView *) webView {
 
 	if (webView)

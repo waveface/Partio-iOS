@@ -29,7 +29,145 @@
 	
 	fetchRequest.fetchBatchSize = 20;
 	
+	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE", @"Display title for a fetch request working against all the articles");
+	
 	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForOldestArticle {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:YES],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForNewestArticle {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForNewestArticleOnDate:(NSDate *)date {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	NSDate *datum = [date dateByAddingTimeInterval:86400];
+	
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fetchRequest.predicate,
+	
+		[NSPredicate predicateWithFormat:@"((modificationDate == nil) AND (creationDate <= %@)) OR (modificationDate <= %@)", datum, datum],
+	
+	nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE", @"Display title for a fetch request working against the latest article on a particular date");
+	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesWithPreviews {
+
+	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
+	
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fr.predicate,
+		[NSPredicate predicateWithFormat:@"previews.@count > 0"],
+	
+	nil]];
+	
+	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Web Previews");
+	
+	return fr;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesWithPhotos {
+
+	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
+	
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fr.predicate,
+		[NSPredicate predicateWithFormat:@"files.@count > 0"],
+	
+	nil]];
+	
+	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Photos");
+	
+	return fr;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos {
+
+	NSFetchRequest *fr = [self newFetchRequestForAllArticles];
+	
+	fr.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fr.predicate,
+		[NSPredicate predicateWithFormat:@"previews.@count == 0"],
+		[NSPredicate predicateWithFormat:@"files.@count == 0"],
+	
+	nil]];
+	
+	fr.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE", @"Display title for a fetch request working against the articles with Plain Text");
+	
+	return fr;
 
 }
 
