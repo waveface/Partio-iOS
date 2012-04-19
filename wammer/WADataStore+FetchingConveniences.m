@@ -15,6 +15,7 @@
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
 		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 	
@@ -62,6 +63,7 @@
   NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
   
   fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
     [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
   nil];
   
