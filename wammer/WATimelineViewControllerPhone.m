@@ -41,6 +41,9 @@
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
 
+#import "WADatePickerViewController.h"
+#import "WAFilterPickerViewController.h"
+
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -100,19 +103,19 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 		
-		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WACalendarGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
+		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WACalendarGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
 		
 		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 
-		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WAFilterGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleFilter:)],
+		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WAFilterGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleFilter:)],
 
 		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 		
-		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WACameraGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleCameraCapture:)],
+		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WACameraGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCameraCapture:)],
 
 		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 		
-		[[UIBarButtonItem alloc] initWithImage:WABarButtonImageFromImageNamed(@"WAUserGlyph") style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
+		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WAUserGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
 		
 		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
 	
@@ -964,15 +967,99 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {
 
+	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
+	
+		if (date) {
+
+			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:date];
+			
+			WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:fr error:nil] lastObject];
+			
+			if (article) {
+				
+				NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:article];
+				
+				if (indexPath) {
+				
+					[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+				
+				}
+				
+			}
+		
+		}
+	
+		[dpVC willMoveToParentViewController:nil];
+		[dpVC removeFromParentViewController];
+		[dpVC.view removeFromSuperview];
+		[dpVC didMoveToParentViewController:nil];
+		
+		dpVC = nil;
+		
+	}];
+	
+		
+	NSFetchedResultsController *frc = self.fetchedResultsController;
+	NSFetchRequest *fr = frc.fetchRequest;
+	NSPredicate *currentPredicate = fr.predicate;
+
+	WADataStore *ds = [WADataStore defaultStore];
+	NSFetchRequest *oldestArticleFR = [ds newFetchRequestForOldestArticle];
+	oldestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:oldestArticleFR.predicate, currentPredicate, nil]];
+	
+	NSFetchRequest *newestArticleFR = [ds newFetchRequestForNewestArticle];
+	newestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:newestArticleFR.predicate, currentPredicate, nil]];
+	
+	WAArticle *oldestArticle = [[self.managedObjectContext executeFetchRequest:oldestArticleFR error:nil] lastObject];
+	
+	WAArticle *newestArticle = [[self.managedObjectContext executeFetchRequest:newestArticleFR error:nil] lastObject];
+	
+	NSDate *minDate = oldestArticle.modificationDate ? oldestArticle.modificationDate : oldestArticle.creationDate;
+	
+	NSDate *maxDate = newestArticle.modificationDate ? newestArticle.modificationDate : newestArticle.creationDate;
+	
+	NSCParameterAssert(minDate && maxDate);
+	dpVC.minDate = minDate;
+	dpVC.maxDate = maxDate;
+	
+	UIViewController *hostingVC = self.navigationController;
+	if (!hostingVC)
+		hostingVC = self;
+	
+	[hostingVC addChildViewController:dpVC];
+	
+	dpVC.view.frame = hostingVC.view.bounds;
+	[hostingVC.view addSubview:dpVC.view];
+	[dpVC didMoveToParentViewController:hostingVC];
+
 }
 
 - (void) handleFilter:(UIBarButtonItem *)sender {
 
+	__block WAFilterPickerViewController *fpVC = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fr) {
+		
+		[fpVC willMoveToParentViewController:nil];
+		[fpVC removeFromParentViewController];
+		[fpVC.view removeFromSuperview];
+		[fpVC didMoveToParentViewController:nil];
+		
+		fpVC = nil;
+		
+	}];
+	
+	UIViewController *hostingVC = self.navigationController;
+	if (!hostingVC)
+		hostingVC = self;
+	
+	[hostingVC addChildViewController:fpVC];
+	
+	fpVC.view.frame = hostingVC.view.bounds;
+	[hostingVC.view addSubview:fpVC.view];
+	[fpVC didMoveToParentViewController:hostingVC];
+
 }
 
 - (void) handleCameraCapture:(UIBarButtonItem *)sender  {
-
-	__weak WATimelineViewControllerPhone *wSelf = self;
 
 	[self beginCompositionSessionWithURL:nil onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
 	

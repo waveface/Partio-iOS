@@ -33,6 +33,88 @@
 
 }
 
+- (NSFetchRequest *) newFetchRequestForOldestArticle {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:YES],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForNewestArticle {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	return fetchRequest;
+
+}
+
+- (NSFetchRequest *) newFetchRequestForNewestArticleOnDate:(NSDate *)date {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
+	
+	NSDate *datum = [date dateByAddingTimeInterval:86400];
+	
+	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
+	
+		fetchRequest.predicate,
+	
+		[NSPredicate predicateWithFormat:@"((modificationDate == nil) AND (creationDate <= %@)) OR (modificationDate <= %@)", datum, datum],
+	
+	nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+	nil];
+	
+	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
+		@"files",
+		@"files.pageElements",
+		@"previews",
+		@"previews.graphElement",
+		@"previews.graphElement.images",
+	nil];
+	
+	fetchRequest.fetchBatchSize = 1;
+	fetchRequest.fetchLimit = 1;
+	
+	return fetchRequest;
+
+}
+
 - (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article {
 
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImagesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:

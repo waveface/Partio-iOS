@@ -403,6 +403,9 @@
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
+		FFA2585815408CDD00FE661C /* WAPickerPaneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA2585715408CDD00FE661C /* WAPickerPaneViewController.m */; };
+		FFA2585C15408D6D00FE661C /* WAFilterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA2585A15408D6C00FE661C /* WAFilterPickerViewController.m */; };
+		FFA2585D15408D6D00FE661C /* WAFilterPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA2585B15408D6C00FE661C /* WAFilterPickerViewController.xib */; };
 		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
 		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
@@ -539,6 +542,8 @@
 		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
+		FFE55FCC15404BAE001BE72A /* WADatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE55FCA15404BAE001BE72A /* WADatePickerViewController.m */; };
+		FFE55FCD15404BAE001BE72A /* WADatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFE55FCB15404BAE001BE72A /* WADatePickerViewController.xib */; };
 		FFE6E485149E794900D88D52 /* WAProgressIndicatorWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */; };
 		FFF556B81456A64A0077DFFB /* WARefreshActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF556B71456A64A0077DFFB /* WARefreshActionView.m */; };
 		FFF7F506149E55C6004EFB1B /* IRFoundationsX.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF72C188142789FA00B5D838 /* IRFoundationsX.framework */; };
@@ -1331,6 +1336,7 @@
 		FF4FA01A13E13D44002C627F /* WAImageStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStackView.m; sourceTree = "<group>"; };
 		FF51509B14835A030073386D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		FF539B0D154096EF003BFD66 /* WAModel 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 25.xcdatamodel"; sourceTree = "<group>"; };
 		FF5401581534125700FFF871 /* WARepresentedFilePickerViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARepresentedFilePickerViewController+CustomUI.h"; sourceTree = "<group>"; };
 		FF54C360152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.h"; sourceTree = "<group>"; };
 		FF54C361152055E200301887 /* WADiscretePaginatedArticlesViewController+ReadingProgress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADiscretePaginatedArticlesViewController+ReadingProgress.m"; sourceTree = "<group>"; };
@@ -1469,6 +1475,11 @@
 		FFA06555143B227B00145079 /* WANavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANavigationBar.m; sourceTree = "<group>"; };
 		FFA0B1AA145FF786008760C1 /* WACompositionViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+CustomUI.h"; sourceTree = "<group>"; };
 		FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WACompositionViewController+CustomUI.m"; sourceTree = "<group>"; };
+		FFA2585615408CDD00FE661C /* WAPickerPaneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPickerPaneViewController.h; sourceTree = "<group>"; };
+		FFA2585715408CDD00FE661C /* WAPickerPaneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPickerPaneViewController.m; sourceTree = "<group>"; };
+		FFA2585915408D6C00FE661C /* WAFilterPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFilterPickerViewController.h; sourceTree = "<group>"; };
+		FFA2585A15408D6C00FE661C /* WAFilterPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFilterPickerViewController.m; sourceTree = "<group>"; };
+		FFA2585B15408D6C00FE661C /* WAFilterPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFilterPickerViewController.xib; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReachabilityDetector.h; sourceTree = "<group>"; };
 		FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReachabilityDetector.m; sourceTree = "<group>"; };
@@ -1584,6 +1595,9 @@
 		FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreview.m; sourceTree = "<group>"; };
 		FFE2E60A150F336D00555C16 /* WADiscreteLayoutHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADiscreteLayoutHelpers.h; path = wammer/WADiscreteLayoutHelpers.h; sourceTree = "<group>"; };
 		FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADiscreteLayoutHelpers.m; path = wammer/WADiscreteLayoutHelpers.m; sourceTree = "<group>"; };
+		FFE55FC915404BAE001BE72A /* WADatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADatePickerViewController.h; sourceTree = "<group>"; };
+		FFE55FCA15404BAE001BE72A /* WADatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADatePickerViewController.m; sourceTree = "<group>"; };
+		FFE55FCB15404BAE001BE72A /* WADatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WADatePickerViewController.xib; sourceTree = "<group>"; };
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
@@ -1704,6 +1718,14 @@
 				4BBCADCB140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.h */,
 				4BBCADCC140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.m */,
 				4BBCADCD140F6E7400BA8E36 /* WAComposeCommentViewControllerPhone.xib */,
+				FFA2585615408CDD00FE661C /* WAPickerPaneViewController.h */,
+				FFA2585715408CDD00FE661C /* WAPickerPaneViewController.m */,
+				FFE55FC915404BAE001BE72A /* WADatePickerViewController.h */,
+				FFE55FCA15404BAE001BE72A /* WADatePickerViewController.m */,
+				FFE55FCB15404BAE001BE72A /* WADatePickerViewController.xib */,
+				FFA2585915408D6C00FE661C /* WAFilterPickerViewController.h */,
+				FFA2585A15408D6C00FE661C /* WAFilterPickerViewController.m */,
+				FFA2585B15408D6C00FE661C /* WAFilterPickerViewController.xib */,
 			);
 			name = iPhone;
 			path = wammer;
@@ -3438,6 +3460,8 @@
 				FF09084B1540377500465513 /* WAUserGlyph@2x.png in Resources */,
 				FF09084C1540377500465513 /* WAUserGlyphLarge.png in Resources */,
 				FF09084D1540377500465513 /* WAUserGlyphLarge@2x.png in Resources */,
+				FFE55FCD15404BAE001BE72A /* WADatePickerViewController.xib in Resources */,
+				FFA2585D15408D6D00FE661C /* WAFilterPickerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3821,6 +3845,9 @@
 				FFBEF157153F629B00CF2203 /* WAUser.m in Sources */,
 				FFBEF15C153F629B00CF2203 /* WAStorage.m in Sources */,
 				FFBEF161153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
+				FFE55FCC15404BAE001BE72A /* WADatePickerViewController.m in Sources */,
+				FFA2585815408CDD00FE661C /* WAPickerPaneViewController.m in Sources */,
+				FFA2585C15408D6D00FE661C /* WAFilterPickerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
