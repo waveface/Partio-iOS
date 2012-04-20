@@ -66,7 +66,7 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 	NSError *error = nil;
 	
 	if (![[[self class] threadLocalDateFormatter] getObjectValue:&returned forString:aValue range:NULL error:&error]){
-		NSLog(@"%s: %@ -> %@", aValue, error);
+		NSLog(@"%s: %@ -> %@", __PRETTY_FUNCTION__, aValue, error);
 	}
 	
 	return returned;

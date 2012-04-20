@@ -20,7 +20,7 @@ NSError * WAArticleEntitySyncingError (NSUInteger code, NSString *descriptionKey
 }
 
 NSString * const kWAArticleSyncStrategy = @"WAArticleSyncStrategy";
-NSString * const kWAArticleSyncDefaultStrategy = @"WAArticleSyncMergeLastBatchStrategy";
+NSString * const kWAArticleSyncDefaultStrategy = @"WAArticleSyncDefaultStrategy";
 NSString * const kWAArticleSyncFullyFetchStrategy = @"WAArticleSyncFullyFetchOnlyStrategy";
 NSString * const kWAArticleSyncMergeLastBatchStrategy = @"WAArticleSyncMergeLastBatchStrategy";
 NSString * const kWAArticleSyncDeltaFetchStrategy = @"WAArticleSyncDeltaFetchStrategy";
@@ -292,7 +292,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				[sessionInfo setObject:objectURIs forKey:kObjectURIs];
       }
 			
-      [ds fetchLatestArticleInGroup:usedGroupIdentifier onSuccess:^(NSString *identifier, WAArticle *article) {
+      [ds fetchLatestCreatedArticleInGroup:usedGroupIdentifier onSuccess:^(NSString *identifier, WAArticle *article) {
 			
         NSString *referencedPostIdentifier = identifier;
         NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
@@ -304,7 +304,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
         [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
 				
-          dispatch_async(sessionQueue, ^ {
+					dispatch_async(sessionQueue, ^ {
 					
 						__block BOOL shouldContinue = NO;
 						
@@ -318,7 +318,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 						}];
 						
 						dispatch_async(dispatch_get_main_queue(), ^{
-							
+						
 							if (shouldContinue) {
 							
 								NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -385,20 +385,14 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
       
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]){
 	
-		NSString *nonce = IRDataStoreNonce();
-	
 		NSDate *usedDate = [[[WADataStore defaultStore] lastContentSyncDate] dateByAddingTimeInterval:1];
 		NSCParameterAssert(usedDate);
 		
 		__block BOOL haveChangesSinceLastDate = NO;
 		__block NSDate *knownLatestDate = usedDate;
 		
-		NSLog(@"%@ Finding changes later than date %@", nonce, usedDate);
-		
 		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
 		
-			NSLog(@"%@ Got new article reps %@", nonce, changedArticleReps);
-			
 			dispatch_sync(dispatch_get_main_queue(), ^{
 				
 				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
@@ -419,24 +413,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					
 					NSCParameterAssert(knownLatestDate);
 					
-					NSLog(@"%@ moving known latest date to %@", nonce, knownLatestDate);
-					
 				}
 			
 			});
 
 		} onSuccess:^{
 		
-			NSLog(@"%@ Finalizing", nonce);
-		
 			//	Otherwise, async changes will be ignored, which is very bad
 			
 			if (haveChangesSinceLastDate) {
-				NSLog(@"%@ recognizing date %@ as the latest cursor", knownLatestDate, nonce);
 				[[WADataStore defaultStore] setLastContentSyncDate:knownLatestDate];
 			}
 			
-			NSLog(@"%@ niling knownLatestDate", nonce);
 			knownLatestDate = nil;
 			
 			if (completionBlock)
@@ -444,8 +432,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		} onFailure:^(NSError *error) {
 		
-			NSLog(@"%@ FAIL!", nonce);
-			
 			knownLatestDate = nil;
 
 			if (completionBlock)

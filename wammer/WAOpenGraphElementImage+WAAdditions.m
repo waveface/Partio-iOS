@@ -66,7 +66,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 				
 			WAOpenGraphElementImage *updatedObject = (WAOpenGraphElementImage *)[[WADataStore defaultStore] updateObjectAtURI:ownURL inContext:nil takingBlobFromTemporaryFile:[tempFileURLOrNil path] usingResourceType:nil forKeyPath:@"imageFilePath" matchingURL:imageURL forKeyPath:@"imageRemoteURL"];
 			
-			if (updatedObject) {
+			if ([updatedObject hasChanges]) {
 			
 				NSError *savingError = nil;
 				if (![updatedObject.managedObjectContext save:&savingError])
