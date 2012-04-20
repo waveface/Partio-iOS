@@ -4118,6 +4118,7 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-fno-objc-default-synthesize-properties";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
@@ -4170,7 +4171,10 @@
 					"\"$(PROJECT_DIR)/external/JSONKit\"/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CFLAGS = (
+					"-fno-objc-default-synthesize-properties",
+					"-DNS_BLOCK_ASSERTIONS=1",
+				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
