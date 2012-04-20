@@ -48,9 +48,10 @@
   [super irConfigure];
   
   self.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
-  
-	WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
+	self.tableViewStyle = UITableViewStyleGrouped;
 	
+	WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
+		
 	self.tableView.pullDownHeaderView = pulldownHeader;
 	self.tableView.onPullDownMove = ^ (CGFloat progress) {
 		[pulldownHeader setProgress:progress animated:YES];	
@@ -66,7 +67,6 @@
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
-	self.tableViewStyle = UITableViewStyleGrouped;
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
 
