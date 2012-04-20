@@ -262,8 +262,8 @@
 	}
 	
 	if (section == 2) {
-		
-		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] debugVersionString]];
+	
+		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] displayVersionString]];
 		
 	}
 	
