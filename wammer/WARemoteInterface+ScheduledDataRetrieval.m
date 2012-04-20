@@ -161,7 +161,7 @@
 
 	return [NSArray arrayWithObjects:
 	
-		^ {
+		[^ {
 		
 			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
@@ -187,7 +187,35 @@
 				
 			}];
 		
-		},
+		} copy],
+		
+		[^ {
+		
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
+				return;
+				
+			[AppDelegate() beginNetworkActivity];
+
+			[wSelf beginPerformingAutomaticRemoteUpdates];		
+			[wSelf beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
+
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+
+				[AppDelegate() endNetworkActivity];
+				
+			} onFailure: ^ {
+			
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+				
+				[AppDelegate() endNetworkActivity];
+				
+			}];
+		
+		} copy],
     
     [self defaultScheduledMonitoredHostsUpdatingBlock],
 	

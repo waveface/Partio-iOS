@@ -21,7 +21,7 @@ extern NSString * const kWADataStoreArticleUpdateVisibilityOnly;	//	pass kCFBool
 - (BOOL) hasDraftArticles;
 - (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
 
-- (void) updateArticle:(NSURL *)articleURIF onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) updateArticle:(NSURL *)articleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 - (void) updateArticle:(NSURL *)articleURI withOptions:(NSDictionary *)options onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 - (BOOL) isUpdatingArticle:(NSURL *)anObjectURI;	//	Really?
