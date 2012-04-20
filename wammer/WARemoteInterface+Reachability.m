@@ -222,7 +222,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
   __weak WARemoteInterface *wSelf = self;
 
-  return ^ {
+  return [^ {
   
     if (!wSelf.userToken)
       return;
@@ -295,7 +295,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
         
     }];
   
-  };
+  } copy];
 
 }
 
@@ -303,7 +303,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
   __weak WARemoteInterface *nrSelf = self;
 
-	return ^ (NSDictionary *inOriginalContext) {
+	return [^ (NSDictionary *inOriginalContext) {
 	
     NSString *originalMethodName = [inOriginalContext objectForKey:kIRWebAPIEngineIncomingMethodName];
     NSURL *originalURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
@@ -344,7 +344,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 		
 		return (NSDictionary *)returnedContext;
 	
-	};
+	} copy];
 
 }
 

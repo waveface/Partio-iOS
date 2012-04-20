@@ -185,13 +185,13 @@
 
 }
 
-- (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
+- (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
 
-  [self fetchLatestArticleInGroup:aGroupIdentifier usingContext:[self disposableMOC] onSuccess:callback];
+  [self fetchLatestCreatedArticleInGroup:aGroupIdentifier usingContext:[self disposableMOC] onSuccess:callback];
 
 }
 
-- (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)context onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
+- (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)context onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback {
 
 	NSParameterAssert(context);
   
@@ -201,7 +201,7 @@
   NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
   
   fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
+//    [NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
     [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
   nil];
   

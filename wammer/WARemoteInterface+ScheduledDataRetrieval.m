@@ -49,7 +49,10 @@
 
 - (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
 
-	NSParameterAssert(![self isPostponingDataRetrievalTimerFiring]);
+	if ([self isPostponingDataRetrievalTimerFiring]) {
+		NSLog(@"%s: is postponing timer firing, should NOT fire", __PRETTY_FUNCTION__);
+		return;
+	}
 
 	NSLog(@"%s %@", __PRETTY_FUNCTION__, timer);
 
@@ -154,37 +157,65 @@
 
 - (NSArray *) defaultDataRetrievalBlocks {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WARemoteInterface *wSelf = self;
 
 	return [NSArray arrayWithObjects:
 	
-		^ {
+		[^ {
 		
-			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
 				
 			[AppDelegate() beginNetworkActivity];
 
-			[nrSelf beginPerformingAutomaticRemoteUpdates];		
-			[nrSelf beginPostponingDataRetrievalTimerFiring];
+			[wSelf beginPerformingAutomaticRemoteUpdates];		
+			[wSelf beginPostponingDataRetrievalTimerFiring];
 			
 			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
 
-				[nrSelf endPerformingAutomaticRemoteUpdates];		
-				[nrSelf endPostponingDataRetrievalTimerFiring];
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
 
 				[AppDelegate() endNetworkActivity];
 				
 			} onFailure: ^ (NSError *error) {
 			
-				[nrSelf endPerformingAutomaticRemoteUpdates];		
-				[nrSelf endPostponingDataRetrievalTimerFiring];
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
 				
 				[AppDelegate() endNetworkActivity];
 				
 			}];
 		
-		},
+		} copy],
+		
+		[^ {
+		
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
+				return;
+				
+			[AppDelegate() beginNetworkActivity];
+
+			[wSelf beginPerformingAutomaticRemoteUpdates];		
+			[wSelf beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
+
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+
+				[AppDelegate() endNetworkActivity];
+				
+			} onFailure: ^ {
+			
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+				
+				[AppDelegate() endNetworkActivity];
+				
+			}];
+		
+		} copy],
     
     [self defaultScheduledMonitoredHostsUpdatingBlock],
 	
