@@ -343,8 +343,14 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 						
 						UIImage *toolbarBackground = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackground"] resizableImageWithCapInsets:UIEdgeInsetsZero];
 						UIImage *toolbarBackgroundLandscapePhone = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackgroundLandscapePhone"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+						
+						NSCParameterAssert(toolbarBackground);
+						NSCParameterAssert(toolbarBackgroundLandscapePhone);
+						
 						[toolbar setBackgroundImage:toolbarBackground forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 						[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
+						
+						NSLog(@"toolbar %@, -> %@, %@", toolbar, toolbarBackground, toolbarBackgroundLandscapePhone);
 						
 						toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 						
