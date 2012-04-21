@@ -418,7 +418,7 @@
 	}
 	
 	cell.alpha = 1;
-	cell.image = representedFile.thumbnail;
+	cell.image = [representedFile smallestPresentableImage];
 	cell.clipsToBounds = NO;
 	
 	cell.onRemove = ^ {

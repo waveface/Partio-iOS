@@ -14,6 +14,7 @@
 
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
@@ -48,25 +49,47 @@
   [super irConfigure];
   
   self.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
-  
-	WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
-	
-	self.tableView.pullDownHeaderView = pulldownHeader;
-	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		[pulldownHeader setProgress:progress animated:YES];	
-	};
-	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
-		if (didFinish) {
-			pulldownHeader.progress = 0;
-			[pulldownHeader setBusy:YES animated:YES];
-			[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		}
-	};
-	self.tableView.onPullDownReset = ^ {
-		[pulldownHeader setBusy:NO animated:YES];
-	};
-	
 	self.tableViewStyle = UITableViewStyleGrouped;
+	
+	WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
+	self.tableView.pullDownHeaderView = pulldownHeader;
+	
+	self.tableView.onPullDownMove = ^ (CGFloat progress) {
+		
+		[pulldownHeader setProgress:progress animated:YES];
+		
+	};
+	
+	__weak IRTableView *wTV = self.tableView;
+	__weak WAPulldownRefreshView *wPulldownHeader = pulldownHeader;
+	
+	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
+		
+		if (didFinish) {
+			
+			wPulldownHeader.progress = 0;
+			[wPulldownHeader setBusy:YES animated:YES];
+			
+			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
+				
+				[wTV resetPullDown];
+				
+			} onFailure:^{
+				
+				[wTV resetPullDown];
+				
+			}];
+			
+		}
+		
+	};
+	
+	self.tableView.onPullDownReset = ^ {
+		
+		[wPulldownHeader setBusy:NO animated:YES];
+		
+	};
+	
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
 

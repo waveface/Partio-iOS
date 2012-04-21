@@ -17,6 +17,7 @@
 @implementation WADatePickerViewController
 @synthesize callback;
 @synthesize datePicker;
+@synthesize minDate, maxDate;
 
 + (id) controllerWithCompletion:(void(^)(NSDate *))block {
 
