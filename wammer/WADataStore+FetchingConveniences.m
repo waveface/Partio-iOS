@@ -10,6 +10,20 @@
 
 @implementation WADataStore (FetchingConveniences)
 
+- (NSFetchRequest *) newFetchRequestForUsersWithIdentifier:(NSString *)identifier {
+
+	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
+		identifier, @"Identifier",
+	nil]];
+	
+	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
+    [NSSortDescriptor sortDescriptorWithKey:@"identifier" ascending:NO],
+	nil];
+	
+	return fetchRequest;
+
+}
+
 - (NSFetchRequest *) newFetchRequestForAllArticles {
 
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
