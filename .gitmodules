@@ -55,9 +55,9 @@
 [submodule "external/C3PO"]
 	path = external/C3PO
 	url = git://github.com/jamessa/C3PO.git
-[submodule "external/synergised"]
-	path = external/synergised
-	url = git://github.com/waveface/synergised.git
 [submodule "external/DCIntrospect"]
 	path = external/DCIntrospect
 	url = https://github.com/domesticcatsoftware/DCIntrospect.git
+[submodule "external/WFPresentation"]
+	path = external/WFPresentation
+	url = git://github.com/waveface/WFPresentation.git
