@@ -12,6 +12,8 @@
 
 @interface WADataStore (FetchingConveniences)
 
+- (NSFetchRequest *) newFetchRequestForUsersWithIdentifier:(NSString *)identifier;
+
 - (NSFetchRequest *) newFetchRequestForAllArticles NS_RETURNS_RETAINED;
 - (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article;
 
