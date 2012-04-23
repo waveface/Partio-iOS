@@ -87,27 +87,52 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 	
 	if (!userEntityURI)
 		return nil;
+	
+	@try {
+	
+		WAUser *user = (WAUser *)[context irManagedObjectForURI:userEntityURI];
+		NSParameterAssert([user isKindOfClass:[WAUser class]]);
+	
+		return user;
 		
-	WAUser *user = (WAUser *)[context irManagedObjectForURI:userEntityURI];
-	NSParameterAssert([user isKindOfClass:[WAUser class]]);
+	} @catch (NSException *e) {
+    
+		if ([[e name] isEqual:NSObjectInaccessibleException]) {
+		
+			NSLog(@"%s: %@", __PRETTY_FUNCTION__, e);
+			[self setMainUser:nil inContext:context];
+			
+		}
+		
+		@throw e;
+		
+	}
 	
-	return user;
-	
+	return nil;
+		
 }
 
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context {
 
 	#pragma unused(context)
 	
-	NSParameterAssert(user);
-	NSParameterAssert(![[user objectID] isTemporaryID]);
-
 	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
-	NSURL *userEntityURI = [[user objectID] URIRepresentation];
-	NSString *userEntityURIString = [userEntityURI absoluteString];
 	
-	[metadata setObject:userEntityURIString forKey:kMainUserEntityURIString];
+	if (user) {
 	
+		NSParameterAssert(![[user objectID] isTemporaryID]);
+
+		NSURL *userEntityURI = [[user objectID] URIRepresentation];
+		NSString *userEntityURIString = [userEntityURI absoluteString];
+		
+		[metadata setObject:userEntityURIString forKey:kMainUserEntityURIString];
+	
+	} else {
+	
+		[metadata removeObjectForKey:kMainUserEntityURIString];
+		
+	}
+
 	[self setMetadata:metadata];
 
 }

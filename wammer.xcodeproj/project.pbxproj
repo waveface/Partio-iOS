@@ -1390,6 +1390,7 @@
 		FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARepresentedFilePickerViewController.m; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
 		FF6FFCC413F86445000C582D /* WAGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryViewController.m; sourceTree = "<group>"; };
+		FF712131154588A000F64AB7 /* WAModel 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 25.xcdatamodel"; sourceTree = "<group>"; };
 		FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 17.xcdatamodel"; sourceTree = "<group>"; };
 		FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticlesViewController.h; sourceTree = "<group>"; };
 		FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticlesViewController.m; sourceTree = "<group>"; };
@@ -4402,6 +4403,7 @@
 			isa = XCVersionGroup;
 			children = (
 				FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */,
+				FF712131154588A000F64AB7 /* WAModel 25.xcdatamodel */,
 				FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */,
 				FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */,
 				FF14FD10153313450013410C /* WAModel 21.xcdatamodel */,
@@ -4426,7 +4428,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */;
+			currentVersion = FF712131154588A000F64AB7 /* WAModel 25.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
