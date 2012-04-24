@@ -27,10 +27,11 @@
 		</ul>
 		<h1>Custom API Endpoint</h1>
 		<form name="input" action="waveface://x-callback-url/setRemoteEndpointURL" method="get">
-			Server: <input type="text" name="url" /><br>
-			examples: http://192.168.1.1:8080/v2/
+			Server: <input type="text" name="url" size="50" />
+			
 			<input type="hidden" name="RegistrationUrl" value="http%3A%2F%2Fdevelop.waveface.com%3A4343%2Fsignup"/>
 			<input type="hidden" name="PasswordResetUrl" value="http%3A%2F%2Fdevelop.waveface.com%3A4343%2Fuser%2Fpassword%2Fforgot%2Fhtml" />
+			examples: http://192.168.1.1:8080/v2/
 			<input type="submit" value="Set" />
 		</form>
 
