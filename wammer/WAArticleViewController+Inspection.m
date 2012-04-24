@@ -134,7 +134,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			NSURL *articleURI = [[self.article objectID] URIRepresentation];
 			BOOL articleHasFiles = !![self.article.fileOrder count];
 			
-			if (wSelf.onPresentingViewController) {
+			if (wSelf.hostingViewController) {
 
 				IRViewController *shownViewController = [[IRViewController alloc] init];
 				__weak IRViewController *wShownViewController = shownViewController;
@@ -216,9 +216,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 					
 				}];
 				
-				wSelf.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-					[parentViewController presentModalViewController:shownNavController animated:YES];
-				});
+				[wSelf.hostingViewController presentModalViewController:shownNavController animated:YES];
 			
 			} else {
 		
@@ -241,11 +239,12 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 	
 	return [IRAction actionWithTitle:actionTitle block:^{
 	
-		__block BOOL hasRunAction = NO;
-		
 		void (^action)(void) = ^ {
 		
 			WAArticle *article = wSelf.article;
+			
+			//	Inject run-once handler for layout instance preference override (?)
+			//	Or, create -isBeingInspected on article items	
 			
 			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
 			article.modificationDate = [NSDate date];
@@ -272,23 +271,15 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 		};
 	
-		if (wSelf.onPresentingViewController) {
+		if ([wSelf.hostingViewController respondsToSelector:@selector(enqueueInterfaceUpdate:sender:)]) {
 		
-			wSelf.onPresentingViewController(^(UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-				
-				if (![parentViewController respondsToSelector:@selector(enqueueInterfaceUpdate:sender:)])
-					return;
-				
-				hasRunAction = YES;
-				
-				[parentViewController enqueueInterfaceUpdate:action sender:wSelf];
-
-			});
+			[wSelf.hostingViewController enqueueInterfaceUpdate:action sender:wSelf];
+		
+		} else {
+		
+			action();
 		
 		}
-		
-		if (!hasRunAction)
-			action();
 	
 	}];
 

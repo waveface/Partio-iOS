@@ -696,9 +696,7 @@
 		return;
 	}
 	
-	//	[self.fetchedResultsController performFetch:nil];
-	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAPaginatedArticlesViewController *wSelf = self;
 	
 	NSArray *oldArticleViewControllers = [self.articleViewControllers mutableCopy];
 	NSArray *oldArticleObjectIDs = [oldArticleViewControllers irMap: ^ (WAArticleViewController *aVC, NSUInteger index, BOOL *stop) {
@@ -726,13 +724,9 @@
 				WAFullFramePlaintextArticleStyle
 			)];
 
-			articleVC.onPresentingViewController = ^ (void(^action)(UIViewController *parentViewController)) {
-				if (action)
-					action(nrSelf);
-			};
+			articleVC.hostingViewController = wSelf;
 
 		}
-			
 		
 		return articleVC;
 		

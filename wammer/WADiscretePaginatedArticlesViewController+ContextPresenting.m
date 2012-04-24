@@ -73,11 +73,12 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 	__block WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
 	__block WADiscretePaginatedArticlesViewController *nrSelf = self;
 	__block WAArticleViewController *articleViewController = [self cachedArticleViewControllerForArticle:article];
-	__block UIViewController<WAArticleViewControllerPresenting> *shownArticleVC = [self newContextViewControllerForArticle:articleURI];
+	__block WAArticleViewController *shownArticleVC = [self newContextViewControllerForArticle:articleURI];
 	
 	self.presentedArticle = article;
 	
 	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
+	shownArticleVC.hostingViewController = enqueuedNavController;
 	
 	__block void (^presentBlock)(void) = nil;
 	__block void (^dismissBlock)(void) = nil;
@@ -513,39 +514,19 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 
 - (UIViewController<WAArticleViewControllerPresenting> *) newContextViewControllerForArticle:(NSURL *)articleURI {
 
-	__block __typeof__(self) nrSelf = self;
-	__block UIViewController<WAArticleViewControllerPresenting> *returnedVC = nil;
-
-	#if USES_PAGINATED_CONTEXT
-		
-		returnedVC = nrSelf.paginatedArticlesViewController;
-		
-		((WAPaginatedArticlesViewController *)returnedVC).context = [NSDictionary dictionaryWithObjectsAndKeys:
-			articleURI, @"lastVisitedObjectURI",
-		nil];
-
-	#else
+	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
 	
-		WAArticleViewControllerPresentationStyle style = WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:(WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI]]);
+	WAArticleViewControllerPresentationStyle style = WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:(WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI]]);
 
-		returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:style];
+	WAArticleViewController *returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:style];
+	returnedVC.hostingViewController = self;
 		
-		((WAArticleViewController *)returnedVC).onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
-			if ([returnedVC.navigationController conformsToProtocol:@protocol(WAArticleViewControllerPresenting)]) {
-				action((UIViewController <WAArticleViewControllerPresenting> *)returnedVC.navigationController);
-			} else {
-				action((UIViewController <WAArticleViewControllerPresenting> *)nrSelf);
-			}
-		};
-		
-	#endif
-	
 	if (!returnedVC.navigationItem.leftBarButtonItem) {
 				
 		returnedVC.navigationItem.hidesBackButton = NO;
 		returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 
-			[nrSelf dismissArticleContextViewController:returnedVC];
+			[wSelf dismissArticleContextViewController:returnedVC];
 
 		});
 	

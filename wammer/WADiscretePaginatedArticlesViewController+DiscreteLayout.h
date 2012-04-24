@@ -7,9 +7,10 @@
 //
 
 #import "WADiscretePaginatedArticlesViewController.h"
+#import "WAArticleViewController.h"
 
 @class WAArticleViewController, WAArticle;
-@interface WADiscretePaginatedArticlesViewController (DiscreteLayout)
+@interface WADiscretePaginatedArticlesViewController (DiscreteLayout) <WAArticleViewControllerPresenting>
 
 @property (nonatomic, readwrite, retain) NSArray *lastUsedLayoutGrids;
 

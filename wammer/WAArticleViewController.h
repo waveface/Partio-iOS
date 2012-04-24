@@ -79,7 +79,8 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WAArticleViewController *self, UIView *loadedView);
 @property (nonatomic, readwrite, copy) void (^onViewTap)();
 @property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
-@property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
+
+@property (nonatomic, readwrite, weak) UIViewController<WAArticleViewControllerPresenting> *hostingViewController;
 
 @property (nonatomic, retain) UIView<WAArticleView> *view;
 

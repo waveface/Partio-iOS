@@ -108,7 +108,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize onPresentingViewController, onViewDidLoad, onViewTap, onViewPinch;
+@synthesize hostingViewController, onViewDidLoad, onViewTap, onViewPinch;
 
 + (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle {
 
@@ -260,8 +260,12 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
-	__block __typeof__(self) nrSelf = self;
-	__block BOOL (^wrappedIn)(UIView *, Class) = ^ (UIView *aView, Class aClass) {
+	if ([touch.view isKindOfClass:[UIControl class]])
+		return NO;
+	
+	__weak WAArticleViewController *wSelf = self;
+	
+	__block BOOL (^wrappedIn)(UIView *, Class) = [^ (UIView *aView, Class aClass) {
 	
 		if ([aView isKindOfClass:aClass])
 			return YES;
@@ -269,20 +273,17 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		if (!aView.superview)
 			return NO;
 		
-		if (aView == nrSelf.view)
+		if (aView == wSelf.view)
 			return NO;
 		
 		return wrappedIn(aView.superview, aClass);
 		
-	};
-
-	if ([touch.view isKindOfClass:[UIButton class]])
-		return NO;
+	} copy];
 	
-	if (wrappedIn(touch.view, [UIScrollView class]))
-		return NO;
+	BOOL wrappedInScrollView = wrappedIn(touch.view, [UIScrollView class]));
+	wrappedIn = nil;
 	
-	return YES;
+	return !wrappedInScrollView;
 
 }
 
@@ -344,16 +345,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	
 	[CATransaction commit];
 		
-}
-
-
-
-
-
-- (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
-	return 0;
-
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
@@ -576,11 +567,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 					
 				};
 				
-				if (self.onPresentingViewController) {
-					self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-						[parentViewController presentModalViewController:galleryViewController animated:NO];
-					});
-				}
+				[self.hostingViewController presentModalViewController:galleryViewController animated:NO];
 			
 			});
 
@@ -592,21 +579,15 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (void) imageStackView:(WAImageStackView *)aStackView didChangeInteractionStateToState:(WAImageStackViewInteractionState)newState {
 
-	if (self.onPresentingViewController) {
-		self.onPresentingViewController( ^ (UIViewController <WAArticleViewControllerPresenting> *parentViewController) {
-		
-			switch (newState) {
-				case WAImageStackViewInteractionNormal: {			
-					[parentViewController setContextControlsVisible:YES animated:YES];
-					break;
-				}
-				case WAImageStackViewInteractionZoomInPossible: {			
-					[parentViewController setContextControlsVisible:NO animated:YES];
-					break;
-				}
-			}
-	
-		});
+	switch (newState) {
+		case WAImageStackViewInteractionNormal: {
+			[self.hostingViewController setContextControlsVisible:YES animated:YES];
+			break;
+		}
+		case WAImageStackViewInteractionZoomInPossible: {			
+			[self.hostingViewController setContextControlsVisible:NO animated:YES];
+			break;
+		}
 	}
 
 }
@@ -616,10 +597,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	return YES;
 
 }
-
-
-
-
 
 - (WANavigationController *) wrappingNavController {
 
