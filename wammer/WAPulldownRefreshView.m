@@ -72,6 +72,7 @@
 	
 	UIView *pulldownHeaderBackground = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })];
 	pulldownHeaderBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	pulldownHeaderBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
 	[self addSubview:pulldownHeaderBackground];
 	[self sendSubviewToBack:pulldownHeaderBackground];
