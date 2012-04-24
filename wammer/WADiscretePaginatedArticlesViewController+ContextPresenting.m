@@ -48,11 +48,10 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
 	
 	WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
+	self.presentedArticle = article;
 	
 	WAArticleViewController *shownArticleVC = [self newContextViewControllerForArticle:articleURI];
 	shownArticleVC.hostingViewController = self;
-	
-	self.presentedArticle = article;
 	
 	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
 	
@@ -106,10 +105,6 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 		
 		}
 		
-		//		if ([shownArticleVC.navigationController.viewControllers containsObject:shownArticleVC])
-		//		if (shownArticleVC.navigationController.topViewController != shownArticleVC)
-		//			return NO;
-	
 		CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
 		
 		if ([shownArticleVC isKindOfClass:[WAStackedArticleViewController class]])
@@ -121,124 +116,93 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 	
 	[enqueuedNavController setNavigationBarHidden:YES animated:NO];
 	
-	if ([shownArticleVC isKindOfClass:[WAStackedArticleViewController class]]) {
+	__weak UINavigationController *nrEnqueuedNavController = enqueuedNavController;
+	__weak WAStackedArticleViewController *shownStackedArticleVC = [shownArticleVC isKindOfClass:[WAStackedArticleViewController class]] ? (WAStackedArticleViewController *)shownArticleVC : nil;
+
+	shownStackedArticleVC.onViewDidLoad = ^ (WAArticleViewController *self, UIView *ownView) {
 	
-		__weak UINavigationController *nrEnqueuedNavController = enqueuedNavController;
-		__weak WAStackedArticleViewController *shownStackedArticleVC = (WAStackedArticleViewController *)shownArticleVC;
-	
-		shownStackedArticleVC.onViewDidLoad = ^ (WAArticleViewController *self, UIView *ownView) {
+		IRCATransact(^{
 		
-			IRCATransact(^{
+			shownArticleVC.view.backgroundColor = [UIColor clearColor];
+			[nrEnqueuedNavController.view layoutSubviews];
 			
-				shownArticleVC.view.backgroundColor = [UIColor clearColor];
-				[nrEnqueuedNavController.view layoutSubviews];
-				
-				[shownStackedArticleVC handlePreferredInterfaceRect:shownArticleVC.view.bounds];
-				
-				__block void (^poke)(UIView *) = ^ (UIView *aView) {
-				
-					[aView layoutSubviews];
-					
-					for (UIView *aSubview in aView.subviews)
-						poke(aSubview);
-					
-				};
-				
-				poke(shownArticleVC.view);
-				poke = nil;
+			[shownStackedArticleVC handlePreferredInterfaceRect:shownArticleVC.view.bounds];
 			
-			});							
+			__block void (^poke)(UIView *) = ^ (UIView *aView) {
+			
+				[aView layoutSubviews];
+				
+				for (UIView *aSubview in aView.subviews)
+					poke(aSubview);
+				
+			};
+			
+			poke(shownArticleVC.view);
+			poke = nil;
+		
+		});							
+	
+	};
+	
+	if ([shownStackedArticleVC isViewLoaded])
+		shownStackedArticleVC.onViewDidLoad(shownStackedArticleVC, shownStackedArticleVC.view);
+	
+	shownStackedArticleVC.onPullTop = ^ (UIScrollView *aSV) {
+		
+		[aSV setContentOffset:aSV.contentOffset animated:NO];
+		[wSelf dismissArticleContextViewController:shownArticleVC];
+		
+	};
+	
+	shownStackedArticleVC.headerView = ((^ {
+		
+		IRView *enclosingView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
+		
+		enclosingView.opaque = NO;
+								
+		CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
+		toolbarRect.size.height = 44;
+		
+		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
+		[enclosingView addSubview:toolbar];
+		
+		toolbar.backgroundColor = [UIColor colorWithWhite:245.0/255.0 alpha:1];
+		
+		UIImage *toolbarBackground = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackground"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+		UIImage *toolbarBackgroundLandscapePhone = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackgroundLandscapePhone"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+		
+		NSCParameterAssert(toolbarBackground);
+		NSCParameterAssert(toolbarBackgroundLandscapePhone);
+		
+		[toolbar setBackgroundImage:toolbarBackground forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+		[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
+						
+		toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+		toolbar.items = shownStackedArticleVC.headerBarButtonItems;
+		
+		enclosingView.onLayoutSubviews = ^ {
+		
+			[toolbar layoutSubviews];
 		
 		};
 		
-		if ([shownStackedArticleVC isViewLoaded])
-			shownStackedArticleVC.onViewDidLoad(shownStackedArticleVC, shownStackedArticleVC.view);
+		__block WAButton *nrCloseButton = [WAButton buttonWithType:UIButtonTypeCustom];
+		[enclosingView addSubview:nrCloseButton];
+		[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
+		[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
+		[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
+		nrCloseButton.frame = enclosingView.bounds;
+		nrCloseButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
+		nrCloseButton.action = ^ {
 		
-	}
-	
-	if ([shownArticleVC respondsToSelector:@selector(setOnPullTop:)]) {
-		
-		[shownArticleVC performSelector:@selector(setOnPullTop:) withObject:(id)(^ (UIScrollView *aSV){
-		
-			[aSV setContentOffset:aSV.contentOffset animated:NO];
 			[wSelf dismissArticleContextViewController:shownArticleVC];
-			
-		})];
+			nrCloseButton.action = nil;
 		
-	}
-	
-	if ([shownArticleVC respondsToSelector:@selector(setHeaderView:)]) {
-	
-		[shownArticleVC performSelector:@selector(setHeaderView:) withObject:((^ {
+		};
 		
-			IRView *enclosingView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
-			
-			enclosingView.opaque = NO;
+		return enclosingView;
 									
-			CGRect toolbarRect = UIEdgeInsetsInsetRect(enclosingView.bounds, (UIEdgeInsets){ 0, 28, 0, 0 });
-			toolbarRect.size.height = 44;
-			
-			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
-			[enclosingView addSubview:toolbar];
-			
-			toolbar.backgroundColor = [UIColor colorWithWhite:245.0/255.0 alpha:1];
-			
-			UIImage *toolbarBackground = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackground"] resizableImageWithCapInsets:UIEdgeInsetsZero];
-			UIImage *toolbarBackgroundLandscapePhone = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackgroundLandscapePhone"] resizableImageWithCapInsets:UIEdgeInsetsZero];
-			
-			NSCParameterAssert(toolbarBackground);
-			NSCParameterAssert(toolbarBackgroundLandscapePhone);
-			
-			[toolbar setBackgroundImage:toolbarBackground forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-			[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
-							
-			toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-			
-			toolbar.items = ((^ {
-			
-				if ([shownArticleVC respondsToSelector:@selector(headerBarButtonItems)])
-					return (NSArray *)[shownArticleVC performSelector:@selector(headerBarButtonItems)];
-			
-				NSMutableArray *items = [NSMutableArray array];
-				UINavigationItem *navItem = shownArticleVC.navigationItem;
-				
-				if (navItem.leftBarButtonItems)
-					[items addObjectsFromArray:shownArticleVC.navigationItem.leftBarButtonItems];
-				
-				[items addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
-
-				if (navItem.rightBarButtonItems)
-					[items addObjectsFromArray:shownArticleVC.navigationItem.rightBarButtonItems];
-				
-				return (NSArray *)items;
-			
-			})());
-			
-			enclosingView.onLayoutSubviews = ^ {
-			
-				[toolbar layoutSubviews];
-			
-			};
-			
-			__block WAButton *nrCloseButton = [WAButton buttonWithType:UIButtonTypeCustom];
-			[enclosingView addSubview:nrCloseButton];
-			[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
-			[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
-			[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
-			nrCloseButton.frame = enclosingView.bounds;
-			nrCloseButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-			nrCloseButton.action = ^ {
-			
-				[wSelf dismissArticleContextViewController:shownArticleVC];
-				nrCloseButton.action = nil;
-			
-			};
-			
-			return enclosingView;
-										
-		})())];
-	
-	}
+	})());
 	
 	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
 	
