@@ -166,4 +166,10 @@
 
 }
 
+- (NSDate *) presentationDate {
+
+	return self.creationDate;
+
+}
+
 @end

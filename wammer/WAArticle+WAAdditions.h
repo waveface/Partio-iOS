@@ -12,4 +12,6 @@
 
 - (BOOL) hasMeaningfulContent;
 
+@property (nonatomic, readonly, strong) NSDate *presentationDate;
+
 @end

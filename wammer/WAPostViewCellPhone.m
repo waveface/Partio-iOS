@@ -165,12 +165,15 @@
 
 	BOOL postHasFiles = (BOOL)!![post.files count];
 	BOOL postHasPreview = (BOOL)!![post.previews count];
+	
+	NSDate *postDate = post.presentationDate;
+	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
 
-	self.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.creationDate] lowercaseString];
+	self.dateLabel.text = [relativeDateString lowercaseString];
 	self.commentLabel.text = ([post.text length]>0)? post.text : @"My life is a tapestry for rich and royal you.";
 	
 	if (postHasPreview) {
-	
+
 		WAPreview *preview = [post.previews anyObject];
 		
 		self.extraInfoLabel.text = @"";
@@ -233,7 +236,7 @@
 	self.commentLabel.text = post.text;
 	
 	self.originLabel.text = [NSString stringWithFormat:@"%@ from %@",
-		[[IRRelativeDateFormatter sharedFormatter] stringFromDate:(post.modificationDate ? post.modificationDate : post.creationDate)],
+		relativeDateString,
 		post.creationDeviceName
 	];
 	
@@ -256,13 +259,15 @@
 	self.monthLabel.textColor = textColor;
 	self.monthLabel.shadowColor = shadowColor;
 	
-	NSDate *usedDate = post.modificationDate ? post.modificationDate : post.creationDate;
+	//	TBD: optimize if slow
 	
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	
 	dateFormatter.dateFormat = @"dd";
-	self.dayLabel.text = [dateFormatter stringFromDate:usedDate];
+	self.dayLabel.text = [dateFormatter stringFromDate:postDate];
+	
 	dateFormatter.dateFormat = @"MMM";
-	self.monthLabel.text = [[dateFormatter stringFromDate:usedDate] uppercaseString];
+	self.monthLabel.text = [[dateFormatter stringFromDate:postDate] uppercaseString];
 	
 	[self setNeedsLayout];
 	
