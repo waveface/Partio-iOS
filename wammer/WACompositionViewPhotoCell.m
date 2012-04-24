@@ -59,7 +59,6 @@
 	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-	self.imageContainer.clipsToBounds = YES;
 
 	[self.contentView addSubview:self.imageContainer];
 	
@@ -150,6 +149,7 @@
 			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
 			self.imageContainer.layer.borderColor = nil;
 			self.imageContainer.layer.borderWidth = 0;
+			self.imageContainer.clipsToBounds = NO;
 			break;
 		}
 		
@@ -159,6 +159,7 @@
 			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspectFill;
 			self.imageContainer.layer.borderColor = [UIColor colorWithWhite:0.7 alpha:1].CGColor;
 			self.imageContainer.layer.borderWidth = 1.0f;
+			self.imageContainer.clipsToBounds = YES;
 			break;
 		}
 	

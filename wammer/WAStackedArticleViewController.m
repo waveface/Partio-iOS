@@ -1012,57 +1012,6 @@
 
 }
 
-#if 0
-
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-	self.stackView.backgroundColor = [UIColor whiteColor];
-
-}
-
-- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-	self.stackView.backgroundColor = nil;
-
-}
-
-- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-
-	if (scrollView == self.stackView) {
-	
-		[self.stackView beginPostponingStackElementLayout];
-	
-	}
-
-}
-
-- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-
-	if (scrollView == self.stackView) {
-	
-		if (!decelerate)
-			[self.stackView endPostponingStackElementLayout];
-		
-	}
-	
-}
-
-- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-
-	if (scrollView == self.stackView) {
-	
-		[self.stackView endPostponingStackElementLayout];
-	
-	}
-	
-}
-
-#endif
-
 - (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
 
 	if (scrollView == self.stackView) {

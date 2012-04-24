@@ -38,4 +38,7 @@
 
 @property (nonatomic, readonly, retain) NSArray *headerBarButtonItems;
 
+- (void) handlePreferredInterfaceRect:(CGRect)aRect;
+- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint;
+
 @end
