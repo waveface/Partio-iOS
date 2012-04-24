@@ -24,18 +24,6 @@
 @class WAImageStackView;
 @class WAArticleViewController;
 
-@protocol WAArticleViewControllerPresenting
-- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
-
-@optional
-- (void) enqueueInterfaceUpdate:(void(^)(void))anAction sender:(WAArticleViewController *)controller;
-- (void) handlePreferredInterfaceRect:(CGRect)aRect;
-- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint;
-- (void) presentArticleViewController:(WAArticleViewController *)controller animated:(BOOL)animated completion:(void(^)(void))callback;
-
-@end
-
-
 #ifndef __WAArticleViewController__
 #define __WAArticleViewController__
 
@@ -63,14 +51,16 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 #endif
 
-@class WANavigationController;
-@interface WAArticleViewController : UIViewController <WAArticleViewControllerPresenting>
+@class WANavigationController, WADiscretePaginatedArticlesViewController;
+@interface WAArticleViewController : UIViewController
 
 + (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle DEPRECATED_ATTRIBUTE;
 + (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 + (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
+
+- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
 @property (nonatomic, readonly, retain) WAArticle *article;
@@ -80,7 +70,7 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 @property (nonatomic, readwrite, copy) void (^onViewTap)();
 @property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
 
-@property (nonatomic, readwrite, weak) UIViewController<WAArticleViewControllerPresenting> *hostingViewController;
+@property (nonatomic, readwrite, weak) WADiscretePaginatedArticlesViewController *hostingViewController;
 
 @property (nonatomic, retain) UIView<WAArticleView> *view;
 

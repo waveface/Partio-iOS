@@ -499,7 +499,6 @@
 		FFCEF43F15199F550021AECB /* libIRFoundationsTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */; };
 		FFCFE086142111E100B9E6AF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A54E13D6C2CD00D54EC6 /* main.m */; };
 		FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */; };
-		FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */; };
 		FFCFE089142111E100B9E6AF /* WACompositionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */; };
 		FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97382413D821DF003D1722 /* WADataStore.m */; };
 		FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = FF97384813D8278E003D1722 /* WARemoteInterface.m */; };
@@ -1407,8 +1406,6 @@
 		FF73A55013D6C2CD00D54EC6 /* wammer-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "wammer-iOS-Prefix.pch"; sourceTree = "<group>"; };
 		FF73A55113D6C2CD00D54EC6 /* WAAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WAAppDelegate.h; sourceTree = "<group>"; };
 		FF73A55213D6C2CD00D54EC6 /* WAAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WAAppDelegate.m; sourceTree = "<group>"; };
-		FF73A56A13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginatedArticlesViewController.h; sourceTree = "<group>"; };
-		FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginatedArticlesViewController.m; sourceTree = "<group>"; };
 		FF73A56D13D6CD4100D54EC6 /* WACompositionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewController.h; sourceTree = "<group>"; };
 		FF73A56E13D6CD4100D54EC6 /* WACompositionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewController.m; sourceTree = "<group>"; };
 		FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRFoundations.xcodeproj; path = external/IRFoundations/IRFoundations/IRFoundations.xcodeproj; sourceTree = "<group>"; };
@@ -2132,8 +2129,6 @@
 		FF73A54813D6C2CC00D54EC6 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
-				FF73A56A13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.h */,
-				FF73A56B13D6CD2200D54EC6 /* WAPaginatedArticlesViewController.m */,
 				FFDE86A814397071009E04D9 /* Overview */,
 				FFDE86A614397055009E04D9 /* Article View */,
 			);
@@ -3746,7 +3741,6 @@
 			files = (
 				FFCFE086142111E100B9E6AF /* main.m in Sources */,
 				FFCFE087142111E100B9E6AF /* WAAppDelegate.m in Sources */,
-				FFCFE088142111E100B9E6AF /* WAPaginatedArticlesViewController.m in Sources */,
 				FFCFE089142111E100B9E6AF /* WACompositionViewController.m in Sources */,
 				FFCFE08E142111E100B9E6AF /* WADataStore.m in Sources */,
 				FFCFE08F142111E100B9E6AF /* WARemoteInterface.m in Sources */,

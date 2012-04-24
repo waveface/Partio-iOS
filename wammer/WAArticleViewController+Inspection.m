@@ -18,6 +18,7 @@
 #import "WARemoteInterface.h"
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
+#import "WADiscretePaginatedArticlesViewController.h"
 
 
 static NSString * const kInspectionDelegate = @"-[WAArticleViewController(Inspection) inspectionDelegate]";
@@ -271,16 +272,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 		};
 	
-		if ([wSelf.hostingViewController respondsToSelector:@selector(enqueueInterfaceUpdate:sender:)]) {
+		[wSelf.hostingViewController enqueueInterfaceUpdate:action sender:wSelf];
 		
-			[wSelf.hostingViewController enqueueInterfaceUpdate:action sender:wSelf];
-		
-		} else {
-		
-			action();
-		
-		}
-	
 	}];
 
 }

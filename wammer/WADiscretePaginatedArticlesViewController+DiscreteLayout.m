@@ -63,7 +63,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	articleViewController.onViewTap = ^ {
 	
 		[wSelf updateLatestReadingProgressWithIdentifier:articleViewController.article.identifier completion:nil];
-		[wSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];
+		[wSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation]];
 		
 	};
 	

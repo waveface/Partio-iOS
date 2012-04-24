@@ -11,7 +11,7 @@
 #import "IRPaginatedView.h"
 #import "IRBarButtonItem.h"
 
-@class WAArticle;
+@class WAArticle, WAArticleViewController;
 @interface WADiscretePaginatedArticlesViewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IBOutlet WAPaginationSlider *paginationSlider;
@@ -19,6 +19,8 @@
 @property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
 
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
+
+- (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller;
 
 @end
 
