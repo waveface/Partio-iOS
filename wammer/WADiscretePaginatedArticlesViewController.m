@@ -15,7 +15,6 @@
 
 #import "WADataStore.h"
 #import "WAArticleViewController.h"
-#import "WAPaginatedArticlesViewController.h"
 #import "WAOverlayBezel.h"
 
 #import "UIKit+IRAdditions.h"
@@ -35,7 +34,7 @@
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 
 
-@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, WAArticleViewControllerPresenting, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
+@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
 
 - (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification;
 - (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification;

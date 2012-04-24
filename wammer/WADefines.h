@@ -30,7 +30,6 @@ extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
 
 extern NSString * const kWADebugLastScanSyncBezelsVisible;
-extern NSString * const kWADebugUsesDiscreteArticleFlip;
 extern NSString * const kWADebugPersistentStoreName;
 
 extern NSString * const kWACompositionSessionRequestedNotification;

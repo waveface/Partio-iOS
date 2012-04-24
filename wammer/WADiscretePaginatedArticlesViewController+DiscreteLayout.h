@@ -7,6 +7,7 @@
 //
 
 #import "WADiscretePaginatedArticlesViewController.h"
+#import "WAArticleViewController.h"
 
 @class WAArticleViewController, WAArticle;
 @interface WADiscretePaginatedArticlesViewController (DiscreteLayout)

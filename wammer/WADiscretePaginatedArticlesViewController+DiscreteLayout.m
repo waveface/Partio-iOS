@@ -58,16 +58,12 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 	};
 	
-	articleViewController.onPresentingViewController = ^ (void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController)) {
-		
-		action((UIViewController<WAArticleViewControllerPresenting> *)wSelf);
-		
-	};
+	articleViewController.hostingViewController = self;
 	
 	articleViewController.onViewTap = ^ {
 	
 		[wSelf updateLatestReadingProgressWithIdentifier:articleViewController.article.identifier completion:nil];
-		[wSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation] animated:YES];
+		[wSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation]];
 		
 	};
 	
