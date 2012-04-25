@@ -1,12 +1,12 @@
 //
-//  WALayoutManagerTest.m
+//  WALayoutManagerTestBase.m
 //  wammer
 //
 //  Created by Evadne Wu on 3/21/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WALayoutManagerTest.h"
+#import "WALayoutManagerTestBase.h"
 #import "IRDiscreteLayoutManager.h"
 #import "IRDiscreteLayoutGrid.h"
 
@@ -15,11 +15,11 @@
 #import "WADiscreteLayoutHelpers.h"
 
 
-@interface WALayoutManagerTest () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource>
+@interface WALayoutManagerTestBase () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource>
 
-@property (nonatomic, strong) IRDiscreteLayoutManager *layoutManager;
-@property (nonatomic, strong) NSArray *layoutGrids;
-@property (nonatomic, strong) NSArray *layoutItems;
+@property (nonatomic, readwrite, strong) IRDiscreteLayoutManager *layoutManager;
+@property (nonatomic, readwrite, strong) NSArray *layoutGrids;
+@property (nonatomic, readwrite, strong) NSArray *layoutItems;
 
 //	Creation conveniences, not for actual test cases
 - (IRDiscreteLayoutManager *) newLayoutManager;
@@ -28,57 +28,10 @@
 
 @end
 
-@implementation WALayoutManagerTest
+@implementation WALayoutManagerTestBase
 @synthesize layoutManager = _layoutManager;
 @synthesize layoutGrids = _layoutGrids;
 @synthesize layoutItems = _layoutItems;
-
-- (void) testGridGeneration {
-
-	IRDiscreteLayoutResult *result = [self.layoutManager calculatedResult];
-	
-	STAssertNotNil(result, @"Layout should generate result.");
-
-}
-
-- (void) testItemExhaustion {
-
-	IRDiscreteLayoutResult *result = [self.layoutManager calculatedResult];
-	
-	NSMutableSet *resultItems = [NSMutableSet set];
-	
-	[result.grids enumerateObjectsUsingBlock: ^ (IRDiscreteLayoutGrid *grid, NSUInteger idx, BOOL *stop) {
-	
-		[grid enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
-		
-			if (item)
-				[resultItems addObject:item];
-			
-		}];
-		
-	}];
-	
-	STAssertTrue([[NSSet setWithArray:self.layoutItems] isEqualToSet:resultItems], @"Layout result should exhaust all items, and not introduce unknown items.");
-
-}
-
-- (void) testRelevancyGrouping {
-
-	//	?
-
-}
-
-- (void) testCohesiveness {
-
-	//	?
-
-}
-
-- (void) testResultMutation {
-
-	//	?
-
-}
 
 - (NSUInteger) numberOfItemsForLayoutManager:(IRDiscreteLayoutManager *)manager {
 
@@ -218,6 +171,16 @@
 		};
 		
 		return answer;
+
+}
+
+- (IRDiscreteLayoutGrid *) layoutGridNamed:(NSString *)gridID {
+
+	for (IRDiscreteLayoutGrid *aGrid in self.layoutGrids)
+		if ([aGrid.identifier isEqualToString:gridID])
+			return aGrid;
+	
+	return nil;
 
 }
 

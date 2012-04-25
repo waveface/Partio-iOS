@@ -428,7 +428,9 @@
 		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
 		FFB44D5A14D692AA00080F07 /* WAArticleViewController_Preview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB44D5914D692AA00080F07 /* WAArticleViewController_Preview.m */; };
 		FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD14F0514C5E24C0053116F /* Crashlytics.framework */; };
-		FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTest.m */; };
+		FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTestBase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */; };
+		FFB7D3AB1546CFAD00CE005C /* WALayoutManagerTestGeneric.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */; };
+		FFB7D3AE1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7D3AD1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m */; };
 		FFB81F42148C8AA000FB11B1 /* WASingleFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */; };
 		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
 		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
@@ -1522,8 +1524,12 @@
 		FFB44D5814D692AA00080F07 /* WAArticleViewController_Preview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_Preview.h; sourceTree = "<group>"; };
 		FFB44D5914D692AA00080F07 /* WAArticleViewController_Preview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_Preview.m; sourceTree = "<group>"; };
 		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTest.h; sourceTree = "<group>"; };
-		FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTest.m; sourceTree = "<group>"; };
+		FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTestBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTestBase.h; sourceTree = "<group>"; };
+		FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTestBase.m; sourceTree = "<group>"; };
+		FFB7D3A91546CFAD00CE005C /* WALayoutManagerTestGeneric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTestGeneric.h; sourceTree = "<group>"; };
+		FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTestGeneric.m; sourceTree = "<group>"; };
+		FFB7D3AC1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTestFavoriteMutation.h; sourceTree = "<group>"; };
+		FFB7D3AD1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTestFavoriteMutation.m; sourceTree = "<group>"; };
 		FFB81F3F148C8AA000FB11B1 /* WASingleFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASingleFileViewController.h; sourceTree = "<group>"; };
 		FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASingleFileViewController.m; sourceTree = "<group>"; };
 		FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASingleFileViewController.xib; sourceTree = "<group>"; };
@@ -1848,8 +1854,7 @@
 			children = (
 				4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */,
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
-				FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTest.h */,
-				FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTest.m */,
+				FFE978641546CC94002DD303 /* Layout Manager Tests */,
 				FF54C5141520947100301887 /* WADataStoreTest.h */,
 				FF54C5151520947100301887 /* WADataStoreTest.m */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
@@ -2774,6 +2779,19 @@
 			name = Overview;
 			sourceTree = "<group>";
 		};
+		FFE978641546CC94002DD303 /* Layout Manager Tests */ = {
+			isa = PBXGroup;
+			children = (
+				FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTestBase.h */,
+				FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */,
+				FFB7D3A91546CFAD00CE005C /* WALayoutManagerTestGeneric.h */,
+				FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */,
+				FFB7D3AC1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.h */,
+				FFB7D3AD1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m */,
+			);
+			name = "Layout Manager Tests";
+			sourceTree = "<group>";
+		};
 		FFFC76391487761700247099 /* User Info */ = {
 			isa = PBXGroup;
 			children = (
@@ -3624,7 +3642,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B8CA97714BBE7BA006E06BB /* WATests_iOS.m in Sources */,
-				FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTest.m in Sources */,
+				FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTestBase.m in Sources */,
 				FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */,
 				FFCEF41615199F000021AECB /* WAComment.m in Sources */,
@@ -3677,6 +3695,8 @@
 				FFBEF158153F629B00CF2203 /* WAUser.m in Sources */,
 				FFBEF15D153F629B00CF2203 /* WAStorage.m in Sources */,
 				FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
+				FFB7D3AB1546CFAD00CE005C /* WALayoutManagerTestGeneric.m in Sources */,
+				FFB7D3AE1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
