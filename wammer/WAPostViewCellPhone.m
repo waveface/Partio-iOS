@@ -168,7 +168,12 @@
 	
 	NSDate *postDate = post.presentationDate;
 	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
-
+	
+	self.originLabel.text = [NSString stringWithFormat:@"%@ from %@",
+		relativeDateString,
+		post.creationDeviceName
+	];
+	
 	self.dateLabel.text = [relativeDateString lowercaseString];
 	self.commentLabel.text = ([post.text length]>0)? post.text : @"My life is a tapestry for rich and royal you.";
 	
@@ -221,7 +226,8 @@
 		}
 	
 		self.accessibilityLabel = @"Photo";
-		self.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
+		self.accessibilityHint = [NSString stringWithFormat:@"%d photo(s) ", [post.files count]];
+		self.originLabel.text = [self.accessibilityHint stringByAppendingString:self.originLabel.text];
 		
   } else {
 		
@@ -234,11 +240,6 @@
 	}
 		
 	self.commentLabel.text = post.text;
-	
-	self.originLabel.text = [NSString stringWithFormat:@"%@ from %@",
-		relativeDateString,
-		post.creationDeviceName
-	];
 	
 	UIColor *textColor;
 	UIColor *shadowColor;
