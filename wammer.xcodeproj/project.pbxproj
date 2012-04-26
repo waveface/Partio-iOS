@@ -447,6 +447,7 @@
 		FFBDD8A115499862006E2666 /* Fontin_Sans_I_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89C15499862006E2666 /* Fontin_Sans_I_45b.otf */; };
 		FFBDD8A215499862006E2666 /* Fontin_Sans_R_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89D15499862006E2666 /* Fontin_Sans_R_45b.otf */; };
 		FFBDD8A315499862006E2666 /* Fontin_Sans_SC_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89E15499862006E2666 /* Fontin_Sans_SC_45b.otf */; };
+		FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */; };
 		FFBEF151153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */; };
 		FFBEF154153F624500CF2203 /* WAUser+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */; };
 		FFBEF157153F629B00CF2203 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF156153F629B00CF2203 /* WAUser.m */; };
@@ -1580,6 +1581,7 @@
 		FFBDD89C15499862006E2666 /* Fontin_Sans_I_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_I_45b.otf; path = Resources/Fontin_Sans_I_45b.otf; sourceTree = "<group>"; };
 		FFBDD89D15499862006E2666 /* Fontin_Sans_R_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_R_45b.otf; path = Resources/Fontin_Sans_R_45b.otf; sourceTree = "<group>"; };
 		FFBDD89E15499862006E2666 /* Fontin_Sans_SC_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_SC_45b.otf; path = Resources/Fontin_Sans_SC_45b.otf; sourceTree = "<group>"; };
+		FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewStripePattern.png; path = external/WFPresentation/Source/WAPreviewStripePattern.png; sourceTree = "<group>"; };
 		FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 24.xcdatamodel"; sourceTree = "<group>"; };
 		FFBEF14F153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WARemoteEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WARemoteEntitySyncing.m"; sourceTree = "<group>"; };
@@ -2360,6 +2362,7 @@
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
 				FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */,
 				FFED705F15497F3A00E01FFB /* WFPreviewTemplateDiscrete.html */,
+				FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */,
 			);
 			name = "iOS External Resources";
 			sourceTree = "<group>";
@@ -3617,6 +3620,7 @@
 				FFBDD8A115499862006E2666 /* Fontin_Sans_I_45b.otf in Resources */,
 				FFBDD8A215499862006E2666 /* Fontin_Sans_R_45b.otf in Resources */,
 				FFBDD8A315499862006E2666 /* Fontin_Sans_SC_45b.otf in Resources */,
+				FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

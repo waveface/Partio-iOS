@@ -88,7 +88,7 @@ NSArray * WADefaultLayoutGrids (void) {
 		return (IRDiscreteLayoutGridAreaLayoutBlock)[^ (IRDiscreteLayoutGrid *grid, id<IRDiscreteLayoutItem>item) {
 		
 			CGRect answer = prototype(grid, item);
-			return CGRectInset(answer, 8, 8);
+			return CGRectInset(answer, 16, 16);
 		
 		} copy];
 	
