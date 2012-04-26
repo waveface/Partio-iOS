@@ -74,6 +74,11 @@
 	<array>
 		<string>Sansus Webissimo-Italic.otf</string>
 		<string>Sansus Webissimo-Regular.otf</string>
+		<string>Fontin_Sans_B_45b.otf</string>
+		<string>Fontin_Sans_BI_45b.otf</string>
+		<string>Fontin_Sans_I_45b.otf</string>
+		<string>Fontin_Sans_R_45b.otf</string>
+		<string>Fontin_Sans_SC_45b.otf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>

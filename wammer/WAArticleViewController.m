@@ -236,10 +236,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	[self.view addGestureRecognizer:globalPinchRecognizer];
 	[self.view addGestureRecognizer:globalInspectRecognizer];
 	
-	self.view.article = self.article;
-	
-	if ([self.view isKindOfClass:[WAArticleView class]])
-		((WAArticleView *)self.view).presentationStyle = self.presentationStyle;
+	[self.view configureWithArticle:article];
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
@@ -298,7 +295,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	article = newArticle;
 	
 	if ([self isViewLoaded])
-		self.view.article = newArticle;
+		[self.view configureWithArticle:article];
 
 }
 
