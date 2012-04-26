@@ -118,14 +118,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 //    UIBarButtonItem *buttonBarShare = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_icon_share.png"] style:UIBarButtonItemStylePlain target:self action:@selector(buttonSharePressed:)];
 		
 	UIImage *cameraPressed = [UIImage imageNamed:@"CameraPressed"];
-	UIButton *cameraButton= [[UIButton alloc] initWithFrame:(CGRect){8,1, cameraPressed.size.width, cameraPressed.size.height}];
+	UIButton *cameraButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,cameraPressed.size.width,cameraPressed.size.height}];
 	[cameraButton setBackgroundImage:cameraPressed forState:UIControlStateHighlighted];
 	[cameraButton addTarget:self action:@selector(handleCameraCapture:) forControlEvents:UIControlEventTouchUpInside];
 	[cameraButton setShowsTouchWhenHighlighted:YES];
 	
 	
 	UIImage *notePressed = [UIImage imageNamed:@"NotePressed"];
-	UIButton *noteButton= [[UIButton alloc] initWithFrame:(CGRect){0,0, notePressed.size.width, notePressed.size.height}];
+	UIButton *noteButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,notePressed.size.width,notePressed.size.height}];
 	[noteButton setBackgroundImage:notePressed forState:UIControlStateHighlighted];
 	[noteButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
 	[noteButton setShowsTouchWhenHighlighted:YES];
@@ -134,7 +134,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	alphaSpacer.width = 14.0;
 	
 	UIBarButtonItem *omegaSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-	omegaSpacer.width = 50.0;
+	omegaSpacer.width = 34.0;
 	
 	UIBarButtonItem *zeroSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	zeroSpacer.width = -10;
@@ -395,6 +395,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	[super viewWillAppear:animated];
 	
+	[self.navigationController.toolbar setTintColor:[UIColor whiteColor]];
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController setToolbarHidden:NO animated:animated];
 	
