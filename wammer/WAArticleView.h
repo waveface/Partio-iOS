@@ -14,7 +14,7 @@
 
 @interface WAArticleView : UIView
 
-@property (nonatomic, readwrite, retain) WAArticle *article;
+- (void) configureWithArticle:(WAArticle *)article;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
 @property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
@@ -27,5 +27,6 @@
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contextTextView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *mainImageView;
+@property (nonatomic, readwrite, retain) IBOutlet UIWebView *contextWebView;
 
 @end
