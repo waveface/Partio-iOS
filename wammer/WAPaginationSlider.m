@@ -13,14 +13,19 @@
 
 
 @interface WAPaginationSlider ()
-@property (nonatomic, readwrite, retain) UISlider *slider; 
+
+@property (nonatomic, readwrite, retain) UISlider *slider;
 @property (nonatomic, readwrite, retain) UILabel *pageIndicatorLabel; 
 @property (nonatomic, readwrite, retain) NSArray *annotations;
+
 + (UIImage *) transparentImage;
 - (void) sharedInit;
 - (NSMutableArray *) mutableAnnotations;
 - (CGFloat) positionForPageNumber:(NSUInteger)aPageNumber;
 @property (nonatomic, readwrite, assign) BOOL needsAnnotationsLayout;
+
+- (void) updateSliderLabelText;
+
 @end
 
 
@@ -329,6 +334,17 @@
 
 }
 
+- (void) updateSliderLabelText {
+
+	NSString *baseCaption = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];;
+	
+	if ([self.delegate respondsToSelector:@selector(captionForProposedCaption:forPageAtIndex:inPaginationSlider:)])
+		baseCaption = [self.delegate captionForProposedCaption:baseCaption forPageAtIndex:self.currentPage inPaginationSlider:self];
+	
+	self.pageIndicatorLabel.text = baseCaption;
+
+}
+
 - (CGRect) currentSliderThumbRect {
 
 	CGRect sliderBounds = self.slider.bounds;
@@ -346,7 +362,8 @@
 	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
 	[self didChangeValueForKey:@"currentPage"];
 	
-	self.pageIndicatorLabel.text = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];
+	[self updateSliderLabelText];
+	
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 
@@ -366,7 +383,8 @@
 	currentPage = [self estimatedPageNumberForPosition:aSlider.value];
 	[self didChangeValueForKey:@"currentPage"];
 	
-	self.pageIndicatorLabel.text = [NSString stringWithFormat:@"%i of %i", (self.currentPage + 1), self.numberOfPages];
+	[self updateSliderLabelText];
+	
 	[self.pageIndicatorLabel sizeToFit];
 	self.pageIndicatorLabel.frame = UIEdgeInsetsInsetRect(self.pageIndicatorLabel.frame, (UIEdgeInsets){ -4, -4, -4, -4 });
 	

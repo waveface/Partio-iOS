@@ -15,7 +15,6 @@
 @interface WADiscretePaginatedArticlesViewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IBOutlet WAPaginationSlider *paginationSlider;
-@property (retain, nonatomic) IBOutlet IRConcaveView *paginationSliderSlot;
 @property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
 
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
@@ -25,5 +24,4 @@
 @end
 
 #import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
-#import "WADiscretePaginatedArticlesViewController+ReadingProgress.h"
 #import "WADiscretePaginatedArticlesViewController+ContextPresenting.h"

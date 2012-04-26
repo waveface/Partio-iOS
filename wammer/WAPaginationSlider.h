@@ -33,6 +33,7 @@ enum WAPaginationSliderLayoutStrategy {
 
 @optional
 - (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider;
+- (NSString *) captionForProposedCaption:(NSString *)proposedCaption forPageAtIndex:(NSUInteger)index inPaginationSlider:(WAPaginationSlider *)aSlider;
 
 @end
 
