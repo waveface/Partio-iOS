@@ -71,7 +71,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-	self.view.backgroundColor = [UIColor colorWithRed:235.5/256.0 green:235.5/256.0 blue:235.5/256.0 alpha:1];
+	self.view.backgroundColor = [UIColor colorWithRed:242.0/256.0 green:242.0/256.0 blue:242.0/256.0 alpha:1];
 	self.view.opaque = YES;
 	
 	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
@@ -195,9 +195,15 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		case NSFetchedResultsChangeUpdate: {
 				
 			if (!self.requiresRecalculationOnFetchedResultsChangeEnd)
-			if ([anObject isKindOfClass:[WAArticle class]])
-//			if ([[[(WAArticle *)anObject changedValues] allKeys] containsObject:@"favorite"])
+			if ([anObject isKindOfClass:[WAArticle class]]) {
+				
+				WAArticleViewController *articleVC = [self cachedArticleViewControllerForArticle:anObject];
+				if ([articleVC isViewLoaded])
+					[articleVC.view configureWithArticle:articleVC.article];
+				
 				self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+				
+			}
 			
 			break;
 			
