@@ -72,7 +72,7 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 @property (nonatomic, readwrite, weak) WADiscretePaginatedArticlesViewController *hostingViewController;
 
-@property (nonatomic, retain) UIView<WAArticleView> *view;
+@property (nonatomic, retain) WAArticleView *view;
 
 - (WANavigationController *) wrappingNavController;
 
