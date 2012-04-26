@@ -226,7 +226,11 @@
 		}
 	
 		self.accessibilityLabel = @"Photo";
-		self.accessibilityHint = [NSString stringWithFormat:@"%d photo(s) ", [post.files count]];
+		
+		NSString *photoInfo = @"%d photos ";
+		if ( [post.files count]==1 )
+			photoInfo = @"%d photo ";
+		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
 		self.originLabel.text = [self.accessibilityHint stringByAppendingString:self.originLabel.text];
 		
   } else {

@@ -25,6 +25,10 @@
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4B582E6C1549347E009B460C /* ToolbarWithButtons.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6A1549347E009B460C /* ToolbarWithButtons.png */; };
+		4B582E6D1549347E009B460C /* ToolbarWithButtons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */; };
+		4B582E70154935C9009B460C /* Toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6E154935C9009B460C /* Toolbar.png */; };
+		4B582E71154935C9009B460C /* Toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6F154935C9009B460C /* Toolbar@2x.png */; };
 		4B6253981548F0F3009F7624 /* CameraPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253941548F0F3009F7624 /* CameraPressed.png */; };
 		4B6253991548F0F3009F7624 /* CameraPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253951548F0F3009F7624 /* CameraPressed@2x.png */; };
 		4B62539A1548F0F3009F7624 /* NotePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253961548F0F3009F7624 /* NotePressed.png */; };
@@ -50,8 +54,6 @@
 		4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */; };
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
-		4B8260761547F115002F734C /* toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8260741547F115002F734C /* toolbar.png */; };
-		4B8260771547F115002F734C /* toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8260751547F115002F734C /* toolbar@2x.png */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8CA97714BBE7BA006E06BB /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */; };
@@ -1034,6 +1036,10 @@
 		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
 		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B582E6A1549347E009B460C /* ToolbarWithButtons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ToolbarWithButtons.png; path = Resources/ToolbarWithButtons.png; sourceTree = "<group>"; };
+		4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ToolbarWithButtons@2x.png"; path = "Resources/ToolbarWithButtons@2x.png"; sourceTree = "<group>"; };
+		4B582E6E154935C9009B460C /* Toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Toolbar.png; path = Resources/Toolbar.png; sourceTree = "<group>"; };
+		4B582E6F154935C9009B460C /* Toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Toolbar@2x.png"; path = "Resources/Toolbar@2x.png"; sourceTree = "<group>"; };
 		4B6253941548F0F3009F7624 /* CameraPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CameraPressed.png; path = Resources/CameraPressed.png; sourceTree = "<group>"; };
 		4B6253951548F0F3009F7624 /* CameraPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CameraPressed@2x.png"; path = "Resources/CameraPressed@2x.png"; sourceTree = "<group>"; };
 		4B6253961548F0F3009F7624 /* NotePressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotePressed.png; path = Resources/NotePressed.png; sourceTree = "<group>"; };
@@ -1074,8 +1080,6 @@
 		4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSTextFieldSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
-		4B8260741547F115002F734C /* toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = toolbar.png; path = Resources/toolbar.png; sourceTree = "<group>"; };
-		4B8260751547F115002F734C /* toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "toolbar@2x.png"; path = "Resources/toolbar@2x.png"; sourceTree = "<group>"; };
 		4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wammer-iOS-Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8CA97114BBE7BA006E06BB /* wammer-iOS-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wammer-iOS-Tests-Info.plist"; sourceTree = "<group>"; };
@@ -2475,8 +2479,10 @@
 				FF0907261540377400465513 /* tagFavorite@2x.png */,
 				FF0907271540377400465513 /* timelineDefault.png */,
 				FF0907281540377400465513 /* timelineFavorite.png */,
-				4B8260741547F115002F734C /* toolbar.png */,
-				4B8260751547F115002F734C /* toolbar@2x.png */,
+				4B582E6E154935C9009B460C /* Toolbar.png */,
+				4B582E6F154935C9009B460C /* Toolbar@2x.png */,
+				4B582E6A1549347E009B460C /* ToolbarWithButtons.png */,
+				4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */,
 				FF0907291540377400465513 /* WAActionGlyph.png */,
 				FF09072A1540377400465513 /* WAActionGlyph@2x.png */,
 				FF51B6471542C34C00874C05 /* WAArticleStackElementDropdownTag.png */,
@@ -3519,12 +3525,14 @@
 				FF51B65E1542C36900874C05 /* WADownDoubleArrowGlyph@2x.png in Resources */,
 				FF51B6611542C37100874C05 /* WAUpDoubleArrowGlyph.png in Resources */,
 				FF51B6621542C37100874C05 /* WAUpDoubleArrowGlyph@2x.png in Resources */,
-				4B8260761547F115002F734C /* toolbar.png in Resources */,
-				4B8260771547F115002F734C /* toolbar@2x.png in Resources */,
 				4B6253981548F0F3009F7624 /* CameraPressed.png in Resources */,
 				4B6253991548F0F3009F7624 /* CameraPressed@2x.png in Resources */,
 				4B62539A1548F0F3009F7624 /* NotePressed.png in Resources */,
 				4B62539B1548F0F3009F7624 /* NotePressed@2x.png in Resources */,
+				4B582E6C1549347E009B460C /* ToolbarWithButtons.png in Resources */,
+				4B582E6D1549347E009B460C /* ToolbarWithButtons@2x.png in Resources */,
+				4B582E70154935C9009B460C /* Toolbar.png in Resources */,
+				4B582E71154935C9009B460C /* Toolbar@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
