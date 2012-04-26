@@ -442,6 +442,11 @@
 		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
 		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
 		FFBACA77146BCF8B007DF1E5 /* WARegisterRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */; };
+		FFBDD89F15499862006E2666 /* Fontin_Sans_B_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89A15499862006E2666 /* Fontin_Sans_B_45b.otf */; };
+		FFBDD8A015499862006E2666 /* Fontin_Sans_BI_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89B15499862006E2666 /* Fontin_Sans_BI_45b.otf */; };
+		FFBDD8A115499862006E2666 /* Fontin_Sans_I_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89C15499862006E2666 /* Fontin_Sans_I_45b.otf */; };
+		FFBDD8A215499862006E2666 /* Fontin_Sans_R_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89D15499862006E2666 /* Fontin_Sans_R_45b.otf */; };
+		FFBDD8A315499862006E2666 /* Fontin_Sans_SC_45b.otf in Resources */ = {isa = PBXBuildFile; fileRef = FFBDD89E15499862006E2666 /* Fontin_Sans_SC_45b.otf */; };
 		FFBEF151153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */; };
 		FFBEF154153F624500CF2203 /* WAUser+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF153153F624500CF2203 /* WAUser+WAAdditions.m */; };
 		FFBEF157153F629B00CF2203 /* WAUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF156153F629B00CF2203 /* WAUser.m */; };
@@ -1570,6 +1575,11 @@
 		FFBACA75146BCF8B007DF1E5 /* WARegisterRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARegisterRequestViewController.h; sourceTree = "<group>"; };
 		FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARegisterRequestViewController.m; sourceTree = "<group>"; };
 		FFBD444713FDA6E000F535D2 /* WAArticleViewController_Plaintext.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_Plaintext.xib; sourceTree = "<group>"; };
+		FFBDD89A15499862006E2666 /* Fontin_Sans_B_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_B_45b.otf; path = Resources/Fontin_Sans_B_45b.otf; sourceTree = "<group>"; };
+		FFBDD89B15499862006E2666 /* Fontin_Sans_BI_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_BI_45b.otf; path = Resources/Fontin_Sans_BI_45b.otf; sourceTree = "<group>"; };
+		FFBDD89C15499862006E2666 /* Fontin_Sans_I_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_I_45b.otf; path = Resources/Fontin_Sans_I_45b.otf; sourceTree = "<group>"; };
+		FFBDD89D15499862006E2666 /* Fontin_Sans_R_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_R_45b.otf; path = Resources/Fontin_Sans_R_45b.otf; sourceTree = "<group>"; };
+		FFBDD89E15499862006E2666 /* Fontin_Sans_SC_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_SC_45b.otf; path = Resources/Fontin_Sans_SC_45b.otf; sourceTree = "<group>"; };
 		FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 24.xcdatamodel"; sourceTree = "<group>"; };
 		FFBEF14F153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WARemoteEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WARemoteEntitySyncing.m"; sourceTree = "<group>"; };
@@ -2485,6 +2495,11 @@
 				FF0907171540377400465513 /* Default-Portrait.png */,
 				FF0907181540377400465513 /* Default.png */,
 				FF0907191540377400465513 /* Default@2x.png */,
+				FFBDD89A15499862006E2666 /* Fontin_Sans_B_45b.otf */,
+				FFBDD89B15499862006E2666 /* Fontin_Sans_BI_45b.otf */,
+				FFBDD89C15499862006E2666 /* Fontin_Sans_I_45b.otf */,
+				FFBDD89D15499862006E2666 /* Fontin_Sans_R_45b.otf */,
+				FFBDD89E15499862006E2666 /* Fontin_Sans_SC_45b.otf */,
 				FF09071A1540377400465513 /* Icon-72.png */,
 				4B582ECF15493DEF009B460C /* Icon-72@2x.png */,
 				FF09071B1540377400465513 /* Icon.png */,
@@ -3597,6 +3612,11 @@
 				4B582E70154935C9009B460C /* Toolbar.png in Resources */,
 				4B582E71154935C9009B460C /* Toolbar@2x.png in Resources */,
 				FFED706015497F3A00E01FFB /* WFPreviewTemplateDiscrete.html in Resources */,
+				FFBDD89F15499862006E2666 /* Fontin_Sans_B_45b.otf in Resources */,
+				FFBDD8A015499862006E2666 /* Fontin_Sans_BI_45b.otf in Resources */,
+				FFBDD8A115499862006E2666 /* Fontin_Sans_I_45b.otf in Resources */,
+				FFBDD8A215499862006E2666 /* Fontin_Sans_R_45b.otf in Resources */,
+				FFBDD8A315499862006E2666 /* Fontin_Sans_SC_45b.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

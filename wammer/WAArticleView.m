@@ -67,12 +67,17 @@
 			
 		};
 		
-		hook(@"$TITLE", @"");
-		hook(@"$ADDITIONAL_STYLES", @"");
+		hook(@"$ADDITIONAL_HTML_CLASSES", [[NSArray arrayWithObjects:
+			(shownPreview ? @"preview" : @"no-preview"),
+			([article.text length] ? @"body" : @"no-body"),
+		nil] componentsJoinedByString:@" "]);
+		
+		hook(@"$TITLE", nil);
+		hook(@"$ADDITIONAL_STYLES", nil);
 		hook(@"$BODY", article.text);
 		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
 		hook(@"$PREVIEW_SOURCE", shownPreview.graphElement.providerName);
-		hook(@"$PREVIEW_TEXT", shownPreview.graphElement.description);
+		hook(@"$PREVIEW_IMAGE_SRC", shownPreview.graphElement.primaryImage.imageRemoteURL);
 		hook(@"$PREVIEW_TEXT", shownPreview.graphElement.text);
 		hook(@"$TIMESTAMP", relativeDateString);
 		
