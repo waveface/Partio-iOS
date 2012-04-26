@@ -44,7 +44,6 @@
 #import "WADatePickerViewController.h"
 #import "WAFilterPickerViewController.h"
 
-
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
@@ -97,30 +96,72 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	self.navigationItem.titleView = WAStandardTitleView();
 	
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
+//	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
+	
+	
+	 CGRect rect = (CGRect){0.0, 0.0, 1.0, 1.0};
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    CGContextSetFillColorWithColor(context, [[UIColor colorWithWhite:0 alpha:0] CGColor]);
+    CGContextFillRect(context, rect);
+
+    UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+		
+//	buttonImage = [UIImage imageNamed:@"top_icon_share.png"];
+//UIButton *buttonShare = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
+//[buttonShare setBackgroundImage:buttonImage forState:UIControlStateNormal];
+//[buttonShare addTarget:self action:@selector(buttonSharePressed)
+//      forControlEvents:UIControlEventTouchUpInside];
+//[buttonShare setShowsTouchWhenHighlighted:YES];];
+//    UIBarButtonItem *buttonBarShare = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_icon_share.png"] style:UIBarButtonItemStylePlain target:self action:@selector(buttonSharePressed:)];
+		
+	UIImage *cameraPressed = [UIImage imageNamed:@"CameraPressed"];
+	UIButton *cameraButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,cameraPressed.size.width,cameraPressed.size.height}];
+	[cameraButton setBackgroundImage:cameraPressed forState:UIControlStateHighlighted];
+	[cameraButton addTarget:self action:@selector(handleCameraCapture:) forControlEvents:UIControlEventTouchUpInside];
+	[cameraButton setShowsTouchWhenHighlighted:YES];
+	
+	
+	UIImage *notePressed = [UIImage imageNamed:@"NotePressed"];
+	UIButton *noteButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,notePressed.size.width,notePressed.size.height}];
+	[noteButton setBackgroundImage:notePressed forState:UIControlStateHighlighted];
+	[noteButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
+	[noteButton setShowsTouchWhenHighlighted:YES];
+	
+	UIBarButtonItem *alphaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	alphaSpacer.width = 14.0;
+	
+	UIBarButtonItem *omegaSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	omegaSpacer.width = 34.0;
+	
+	UIBarButtonItem *zeroSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	zeroSpacer.width = -10;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
 	
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		alphaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WACalendarGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
+		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
 		
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		omegaSpacer,
+		
+		[[UIBarButtonItem alloc] initWithCustomView:noteButton],
 
-		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WAFilterGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleFilter:)],
+		zeroSpacer,
+		
+		[[UIBarButtonItem alloc] initWithCustomView:cameraButton],
 
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		omegaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WACameraGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleCameraCapture:)],
-
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
 		
-		[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"WAUserGlyph"] style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
-		
-		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+		alphaSpacer,
 	
 	nil];
-		
+	
+	 
 	return self;
   
 }
@@ -353,7 +394,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) viewWillAppear:(BOOL)animated {
   
 	[super viewWillAppear:animated];
+	
+	[self.navigationController.toolbar setTintColor:[UIColor whiteColor]];
+	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController setToolbarHidden:NO animated:animated];
+	
   
 	[self refreshData];
 	
@@ -365,6 +410,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) viewWillDisappear:(BOOL)animated {
 
+	[self.navigationController setToolbarHidden:YES animated:animated];
+	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[[UISegmentedControl appearance] setTintColor:[UIColor colorWithWhite:213/255.0 alpha:1]];
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
 
 	NSArray *shownArticleIndexPaths = [self.tableView indexPathsForVisibleRows];
@@ -457,7 +506,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
   
-	return newOrientation != UIInterfaceOrientationPortraitUpsideDown;
+	return newOrientation == UIInterfaceOrientationPortraitUpsideDown;
 	
 }
 
