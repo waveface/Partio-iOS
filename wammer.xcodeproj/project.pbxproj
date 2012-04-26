@@ -928,6 +928,13 @@
 			remoteGlobalIDString = FF2228291463C77300541E31;
 			remoteInfo = IRRecurrenceMachine;
 		};
+		FFA9990A1549A308004C9B52 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF7120F61545501F00F64AB7;
+			remoteInfo = WFPresentation;
+		};
 		FFB117C4147F8B34002094E5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
@@ -2984,6 +2991,7 @@
 				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07F142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE081142111E100B9E6AF /* PBXTargetDependency */,
+				FFA9990B1549A308004C9B52 /* PBXTargetDependency */,
 				FFCFE083142111E100B9E6AF /* PBXTargetDependency */,
 			);
 			name = "wammer-iOS";
@@ -4083,6 +4091,11 @@
 			target = FFCFE078142111E100B9E6AF /* wammer-iOS */;
 			targetProxy = FFA53E3414D934C7001E7B6B /* PBXContainerItemProxy */;
 		};
+		FFA9990B1549A308004C9B52 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = WFPresentation;
+			targetProxy = FFA9990A1549A308004C9B52 /* PBXContainerItemProxy */;
+		};
 		FFB117C5147F8B34002094E5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRRecurrenceMachine;
@@ -4246,7 +4259,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 343;
+				CURRENT_PROJECT_VERSION = 344;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4303,7 +4316,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 343;
+				CURRENT_PROJECT_VERSION = 344;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
