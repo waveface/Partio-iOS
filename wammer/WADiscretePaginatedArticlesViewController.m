@@ -195,9 +195,15 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		case NSFetchedResultsChangeUpdate: {
 				
 			if (!self.requiresRecalculationOnFetchedResultsChangeEnd)
-			if ([anObject isKindOfClass:[WAArticle class]])
-//			if ([[[(WAArticle *)anObject changedValues] allKeys] containsObject:@"favorite"])
+			if ([anObject isKindOfClass:[WAArticle class]]) {
+				
+				WAArticleViewController *articleVC = [self cachedArticleViewControllerForArticle:anObject];
+				if ([articleVC isViewLoaded])
+					[articleVC.view configureWithArticle:articleVC.article];
+				
 				self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+				
+			}
 			
 			break;
 			
