@@ -56,6 +56,14 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 		
 		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
 		
+		UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(loadedVC.view.bounds, -9, -9)];
+		borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		borderView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1].CGColor;
+		borderView.layer.borderWidth = 1;
+		
+		[loadedVC.view addSubview:borderView];
+		[borderView.superview sendSubviewToBack:borderView];
+		
 	};
 	
 	articleViewController.hostingViewController = self;
@@ -115,7 +123,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	returnedView.backgroundColor = nil;
 	returnedView.opaque = NO;
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
-	returnedView.clipsToBounds = NO;
+	returnedView.clipsToBounds = YES;
 	returnedView.layer.shouldRasterize = YES;
 	returnedView.layer.rasterizationScale = [UIScreen mainScreen].scale;
 	
@@ -169,14 +177,6 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
 
 	UIView *returnedView = [self cachedArticleViewControllerForArticle:anArticle].view;
-	
-	//	returnedView.layer.cornerRadius = 2;
-	//
-	//	returnedView.layer.backgroundColor = [UIColor whiteColor].CGColor;
-	//	returnedView.layer.masksToBounds = YES;
-	//	
-	//	returnedView.layer.borderWidth = 1;
-	//	returnedView.layer.borderColor = [UIColor colorWithWhite:0 alpha:0.05].CGColor;
 	
 	return returnedView;
 	
