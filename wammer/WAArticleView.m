@@ -32,6 +32,14 @@
 
 @synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView;
 
+- (void) awakeFromNib {
+
+	[super awakeFromNib];
+	
+	self.articleDescriptionLabel.font = [UIFont fontWithName:@"FontinSans-Italic" size:20.0f];
+
+}
+
 - (WFPresentationTemplate *) presentationTemplate {
 
 	return [WFPresentationTemplate templateNamed:@"WFPreviewTemplateDiscrete"];
