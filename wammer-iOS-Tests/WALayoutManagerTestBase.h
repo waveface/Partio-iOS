@@ -9,11 +9,13 @@
 #import <SenTestingKit/SenTestingKit.h>
 
 @class IRDiscreteLayoutManager, IRDiscreteLayoutGrid;
-@interface WALayoutManagerTestBase : SenTestCase
+@protocol IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource;
+
+@interface WALayoutManagerTestBase : SenTestCase <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource>
 
 @property (nonatomic, readonly, strong) IRDiscreteLayoutManager *layoutManager;
-@property (nonatomic, readonly, strong) NSArray *layoutGrids;
-@property (nonatomic, readonly, strong) NSArray *layoutItems;
+@property (nonatomic, readwrite, strong) NSArray *layoutGrids;
+@property (nonatomic, readwrite, strong) NSArray *layoutItems;
 
 - (IRDiscreteLayoutGrid *) layoutGridNamed:(NSString *)name;
 

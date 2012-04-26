@@ -15,11 +15,9 @@
 #import "WADiscreteLayoutHelpers.h"
 
 
-@interface WALayoutManagerTestBase () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource>
+@interface WALayoutManagerTestBase ()
 
 @property (nonatomic, readwrite, strong) IRDiscreteLayoutManager *layoutManager;
-@property (nonatomic, readwrite, strong) NSArray *layoutGrids;
-@property (nonatomic, readwrite, strong) NSArray *layoutItems;
 
 //	Creation conveniences, not for actual test cases
 - (IRDiscreteLayoutManager *) newLayoutManager;
@@ -32,6 +30,12 @@
 @synthesize layoutManager = _layoutManager;
 @synthesize layoutGrids = _layoutGrids;
 @synthesize layoutItems = _layoutItems;
+
+- (void) failWithException:(NSException *)anException {
+
+	[super failWithException:anException];
+
+}
 
 - (NSUInteger) numberOfItemsForLayoutManager:(IRDiscreteLayoutManager *)manager {
 
