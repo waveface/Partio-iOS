@@ -25,11 +25,11 @@
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		4B582ED015493DEF009B460C /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582ECF15493DEF009B460C /* Icon-72@2x.png */; };
 		4B582E6C1549347E009B460C /* ToolbarWithButtons.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6A1549347E009B460C /* ToolbarWithButtons.png */; };
 		4B582E6D1549347E009B460C /* ToolbarWithButtons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */; };
 		4B582E70154935C9009B460C /* Toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6E154935C9009B460C /* Toolbar.png */; };
 		4B582E71154935C9009B460C /* Toolbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6F154935C9009B460C /* Toolbar@2x.png */; };
+		4B582ED015493DEF009B460C /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582ECF15493DEF009B460C /* Icon-72@2x.png */; };
 		4B6253981548F0F3009F7624 /* CameraPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253941548F0F3009F7624 /* CameraPressed.png */; };
 		4B6253991548F0F3009F7624 /* CameraPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253951548F0F3009F7624 /* CameraPressed@2x.png */; };
 		4B62539A1548F0F3009F7624 /* NotePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253961548F0F3009F7624 /* NotePressed.png */; };
@@ -1037,11 +1037,11 @@
 		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
 		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
-		4B582ECF15493DEF009B460C /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "Resources/Icon-72@2x.png"; sourceTree = "<group>"; };
 		4B582E6A1549347E009B460C /* ToolbarWithButtons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ToolbarWithButtons.png; path = Resources/ToolbarWithButtons.png; sourceTree = "<group>"; };
 		4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ToolbarWithButtons@2x.png"; path = "Resources/ToolbarWithButtons@2x.png"; sourceTree = "<group>"; };
 		4B582E6E154935C9009B460C /* Toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Toolbar.png; path = Resources/Toolbar.png; sourceTree = "<group>"; };
 		4B582E6F154935C9009B460C /* Toolbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Toolbar@2x.png"; path = "Resources/Toolbar@2x.png"; sourceTree = "<group>"; };
+		4B582ECF15493DEF009B460C /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "Resources/Icon-72@2x.png"; sourceTree = "<group>"; };
 		4B6253941548F0F3009F7624 /* CameraPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CameraPressed.png; path = Resources/CameraPressed.png; sourceTree = "<group>"; };
 		4B6253951548F0F3009F7624 /* CameraPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CameraPressed@2x.png"; path = "Resources/CameraPressed@2x.png"; sourceTree = "<group>"; };
 		4B6253961548F0F3009F7624 /* NotePressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotePressed.png; path = Resources/NotePressed.png; sourceTree = "<group>"; };
