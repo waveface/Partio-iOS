@@ -7,20 +7,23 @@
 //
 
 #import "WAArticleView.h"
+
 #import "WAImageStackView.h"
 #import "WAPreviewBadge.h"
 #import "WAArticleTextEmphasisLabel.h"
 #import "WADataStore.h"
 
-#import "IRRelativeDateFormatter.h"
-#import "WAArticleViewController.h"
+#import "Foundation+IRAdditions.h"
+#import "QuartzCore+IRAdditions.h"
 
-#import "IRLifetimeHelper.h"
+#import "WFPresentation.h"
 
 
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
+
+- (WFPresentationTemplate *) presentationTemplate;
 
 @end
 
@@ -29,14 +32,21 @@
 
 @synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView;
 
+- (WFPresentationTemplate *) presentationTemplate {
+
+	return [WFPresentationTemplate templateNamed:@"WFPreviewTemplateDiscrete"];
+
+}
+
 - (void) configureWithArticle:(WAArticle *)article {
 
 	UIImage *representingImage = article.representingFile.thumbnailImage;
-	
+	NSString *relativeDateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
-	relativeCreationDateLabel.text = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+	relativeCreationDateLabel.text = relativeDateString;
 	articleDescriptionLabel.text = article.text;
-	previewBadge.preview = [article.previews anyObject];
+	previewBadge.preview = shownPreview;
 	imageStackView.images = representingImage ? [NSArray arrayWithObject:representingImage] : nil;
 	mainImageView.image = representingImage;
 	mainImageView.backgroundColor = representingImage ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
@@ -45,6 +55,33 @@
 	textEmphasisView.text = article.text;
 	textEmphasisView.hidden = !!(BOOL)[article.files count];
 	contextInfoContainer.hidden = ![article.text length];
+	
+	if (contextWebView) {
+	
+		WFPresentationTemplate *pt = [self presentationTemplate];
+		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
+		
+		void (^hook)(NSString *, NSString *) = ^ (NSString *key, NSString *value) {
+			
+			[replacements setObject:(value ? value : @"")	forKey:key];
+			
+		};
+		
+		hook(@"$TITLE", @"");
+		hook(@"$ADDITIONAL_STYLES", @"");
+		hook(@"$BODY", article.text);
+		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
+		hook(@"$PREVIEW_SOURCE", shownPreview.graphElement.providerName);
+		hook(@"$PREVIEW_TEXT", shownPreview.graphElement.description);
+		hook(@"$PREVIEW_TEXT", shownPreview.graphElement.text);
+		hook(@"$TIMESTAMP", relativeDateString);
+		
+		NSString *string = [pt documentWithReplacementVariables:replacements];
+		NSLog(@"pr string %@", string);
+		
+		[contextWebView loadHTMLString:string baseURL:pt.baseURL];
+	
+	}
 	
 }
 
