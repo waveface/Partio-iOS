@@ -1,0 +1,2234 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAFile Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAFile Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/article">&nbsp;&nbsp;&nbsp;&nbsp;article</option>
+	
+	<option value="//api/name/attemptsBlobRetrieval">&nbsp;&nbsp;&nbsp;&nbsp;attemptsBlobRetrieval</option>
+	
+	<option value="//api/name/codeName">&nbsp;&nbsp;&nbsp;&nbsp;codeName</option>
+	
+	<option value="//api/name/creationDeviceIdentifier">&nbsp;&nbsp;&nbsp;&nbsp;creationDeviceIdentifier</option>
+	
+	<option value="//api/name/identifier">&nbsp;&nbsp;&nbsp;&nbsp;identifier</option>
+	
+	<option value="//api/name/largeThumbnailFilePath">&nbsp;&nbsp;&nbsp;&nbsp;largeThumbnailFilePath</option>
+	
+	<option value="//api/name/largeThumbnailImage">&nbsp;&nbsp;&nbsp;&nbsp;largeThumbnailImage</option>
+	
+	<option value="//api/name/largeThumbnailURL">&nbsp;&nbsp;&nbsp;&nbsp;largeThumbnailURL</option>
+	
+	<option value="//api/name/owner">&nbsp;&nbsp;&nbsp;&nbsp;owner</option>
+	
+	<option value="//api/name/pageElementOrder">&nbsp;&nbsp;&nbsp;&nbsp;pageElementOrder</option>
+	
+	<option value="//api/name/pageElements">&nbsp;&nbsp;&nbsp;&nbsp;pageElements</option>
+	
+	<option value="//api/name/remoteFileName">&nbsp;&nbsp;&nbsp;&nbsp;remoteFileName</option>
+	
+	<option value="//api/name/remoteFileSize">&nbsp;&nbsp;&nbsp;&nbsp;remoteFileSize</option>
+	
+	<option value="//api/name/remoteRepresentedImage">&nbsp;&nbsp;&nbsp;&nbsp;remoteRepresentedImage</option>
+	
+	<option value="//api/name/remoteResourceHash">&nbsp;&nbsp;&nbsp;&nbsp;remoteResourceHash</option>
+	
+	<option value="//api/name/remoteResourceType">&nbsp;&nbsp;&nbsp;&nbsp;remoteResourceType</option>
+	
+	<option value="//api/name/resourceFilePath">&nbsp;&nbsp;&nbsp;&nbsp;resourceFilePath</option>
+	
+	<option value="//api/name/resourceImage">&nbsp;&nbsp;&nbsp;&nbsp;resourceImage</option>
+	
+	<option value="//api/name/resourceType">&nbsp;&nbsp;&nbsp;&nbsp;resourceType</option>
+	
+	<option value="//api/name/resourceURL">&nbsp;&nbsp;&nbsp;&nbsp;resourceURL</option>
+	
+	<option value="//api/name/text">&nbsp;&nbsp;&nbsp;&nbsp;text</option>
+	
+	<option value="//api/name/thumbnail">&nbsp;&nbsp;&nbsp;&nbsp;thumbnail</option>
+	
+	<option value="//api/name/thumbnailFilePath">&nbsp;&nbsp;&nbsp;&nbsp;thumbnailFilePath</option>
+	
+	<option value="//api/name/thumbnailImage">&nbsp;&nbsp;&nbsp;&nbsp;thumbnailImage</option>
+	
+	<option value="//api/name/thumbnailURL">&nbsp;&nbsp;&nbsp;&nbsp;thumbnailURL</option>
+	
+	<option value="//api/name/timestamp">&nbsp;&nbsp;&nbsp;&nbsp;timestamp</option>
+	
+	<option value="//api/name/title">&nbsp;&nbsp;&nbsp;&nbsp;title</option>
+	
+	<option value="//api/name/validatesLargeThumbnailImage">&nbsp;&nbsp;&nbsp;&nbsp;validatesLargeThumbnailImage</option>
+	
+	<option value="//api/name/validatesResourceImage">&nbsp;&nbsp;&nbsp;&nbsp;validatesResourceImage</option>
+	
+	<option value="//api/name/validatesThumbnailImage">&nbsp;&nbsp;&nbsp;&nbsp;validatesThumbnailImage</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/defaultHierarchicalEntityMapping">&nbsp;&nbsp;&nbsp;&nbsp;+ defaultHierarchicalEntityMapping</option>
+	
+	<option value="//api/name/keyPathHoldingUniqueValue">&nbsp;&nbsp;&nbsp;&nbsp;+ keyPathHoldingUniqueValue</option>
+	
+	<option value="//api/name/keyPathsForValuesAffectingPresentableImage">&nbsp;&nbsp;&nbsp;&nbsp;+ keyPathsForValuesAffectingPresentableImage</option>
+	
+	<option value="//api/name/keyPathsForValuesAffectingResourceImage">&nbsp;&nbsp;&nbsp;&nbsp;+ keyPathsForValuesAffectingResourceImage</option>
+	
+	<option value="//api/name/keyPathsForValuesAffectingThumbnailImage">&nbsp;&nbsp;&nbsp;&nbsp;+ keyPathsForValuesAffectingThumbnailImage</option>
+	
+	<option value="//api/name/remoteDictionaryConfigurationMapping">&nbsp;&nbsp;&nbsp;&nbsp;+ remoteDictionaryConfigurationMapping</option>
+	
+	<option value="//api/name/sharedResourceHandlingQueue">&nbsp;&nbsp;&nbsp;&nbsp;+ sharedResourceHandlingQueue</option>
+	
+	<option value="//api/name/skipsNonexistantRemoteKey">&nbsp;&nbsp;&nbsp;&nbsp;+ skipsNonexistantRemoteKey</option>
+	
+	<option value="//api/name/synchronizeWithCompletion:">&nbsp;&nbsp;&nbsp;&nbsp;+ synchronizeWithCompletion:</option>
+	
+	<option value="//api/name/synchronizeWithOptions:completion:">&nbsp;&nbsp;&nbsp;&nbsp;+ synchronizeWithOptions:completion:</option>
+	
+	<option value="//api/name/transformedRepresentationForRemoteRepresentation:">&nbsp;&nbsp;&nbsp;&nbsp;+ transformedRepresentationForRemoteRepresentation:</option>
+	
+	<option value="//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:">&nbsp;&nbsp;&nbsp;&nbsp;+ transformedValue:fromRemoteKeyPath:toLocalKeyPath:</option>
+	
+	<option value="//api/name/validateImageAtPath:error:">&nbsp;&nbsp;&nbsp;&nbsp;+ validateImageAtPath:error:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/absolutePathFromPath:">&nbsp;&nbsp;&nbsp;&nbsp;- absolutePathFromPath:</option>
+	
+	<option value="//api/name/addPageElements:">&nbsp;&nbsp;&nbsp;&nbsp;- addPageElements:</option>
+	
+	<option value="//api/name/addPageElementsObject:">&nbsp;&nbsp;&nbsp;&nbsp;- addPageElementsObject:</option>
+	
+	<option value="//api/name/associateObject:usingKey:associationPolicy:notify:usingKey:">&nbsp;&nbsp;&nbsp;&nbsp;- associateObject:usingKey:associationPolicy:notify:usingKey:</option>
+	
+	<option value="//api/name/attemptsBlobRetrieval">&nbsp;&nbsp;&nbsp;&nbsp;- attemptsBlobRetrieval</option>
+	
+	<option value="//api/name/canScheduleBlobRetrieval">&nbsp;&nbsp;&nbsp;&nbsp;- canScheduleBlobRetrieval</option>
+	
+	<option value="//api/name/canScheduleExpensiveBlobRetrieval">&nbsp;&nbsp;&nbsp;&nbsp;- canScheduleExpensiveBlobRetrieval</option>
+	
+	<option value="//api/name/configureWithRemoteDictionary:">&nbsp;&nbsp;&nbsp;&nbsp;- configureWithRemoteDictionary:</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/didChangeValueForKey:withSetMutation:usingObjects:">&nbsp;&nbsp;&nbsp;&nbsp;- didChangeValueForKey:withSetMutation:usingObjects:</option>
+	
+	<option value="//api/name/handleDidReceiveMemoryWarning:">&nbsp;&nbsp;&nbsp;&nbsp;- handleDidReceiveMemoryWarning:</option>
+	
+	<option value="//api/name/initWithEntity:insertIntoManagedObjectContext:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithEntity:insertIntoManagedObjectContext:</option>
+	
+	<option value="//api/name/largeThumbnailFilePath">&nbsp;&nbsp;&nbsp;&nbsp;- largeThumbnailFilePath</option>
+	
+	<option value="//api/name/pageElementOrder">&nbsp;&nbsp;&nbsp;&nbsp;- pageElementOrder</option>
+	
+	<option value="//api/name/performBlockSuppressingBlobRetrieval:">&nbsp;&nbsp;&nbsp;&nbsp;- performBlockSuppressingBlobRetrieval:</option>
+	
+	<option value="//api/name/prepareForDeletion">&nbsp;&nbsp;&nbsp;&nbsp;- prepareForDeletion</option>
+	
+	<option value="//api/name/presentableImage">&nbsp;&nbsp;&nbsp;&nbsp;- presentableImage</option>
+	
+	<option value="//api/name/previewItemTitle">&nbsp;&nbsp;&nbsp;&nbsp;- previewItemTitle</option>
+	
+	<option value="//api/name/previewItemURL">&nbsp;&nbsp;&nbsp;&nbsp;- previewItemURL</option>
+	
+	<option value="//api/name/primitiveLargeThumbnailFilePath">&nbsp;&nbsp;&nbsp;&nbsp;- primitiveLargeThumbnailFilePath</option>
+	
+	<option value="//api/name/primitiveLargeThumbnailURL">&nbsp;&nbsp;&nbsp;&nbsp;- primitiveLargeThumbnailURL</option>
+	
+	<option value="//api/name/primitiveResourceFilePath">&nbsp;&nbsp;&nbsp;&nbsp;- primitiveResourceFilePath</option>
+	
+	<option value="//api/name/primitiveResourceURL">&nbsp;&nbsp;&nbsp;&nbsp;- primitiveResourceURL</option>
+	
+	<option value="//api/name/primitiveThumbnailFilePath">&nbsp;&nbsp;&nbsp;&nbsp;- primitiveThumbnailFilePath</option>
+	
+	<option value="//api/name/primitiveThumbnailURL">&nbsp;&nbsp;&nbsp;&nbsp;- primitiveThumbnailURL</option>
+	
+	<option value="//api/name/relativePathFromPath:">&nbsp;&nbsp;&nbsp;&nbsp;- relativePathFromPath:</option>
+	
+	<option value="//api/name/removePageElements:">&nbsp;&nbsp;&nbsp;&nbsp;- removePageElements:</option>
+	
+	<option value="//api/name/removePageElementsObject:">&nbsp;&nbsp;&nbsp;&nbsp;- removePageElementsObject:</option>
+	
+	<option value="//api/name/resourceFilePath">&nbsp;&nbsp;&nbsp;&nbsp;- resourceFilePath</option>
+	
+	<option value="//api/name/scheduleLargeThumbnailRetrievalIfPermitted">&nbsp;&nbsp;&nbsp;&nbsp;- scheduleLargeThumbnailRetrievalIfPermitted</option>
+	
+	<option value="//api/name/scheduleResourceRetrievalIfPermitted">&nbsp;&nbsp;&nbsp;&nbsp;- scheduleResourceRetrievalIfPermitted</option>
+	
+	<option value="//api/name/scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:">&nbsp;&nbsp;&nbsp;&nbsp;- scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:</option>
+	
+	<option value="//api/name/scheduleThumbnailRetrievalIfPermitted">&nbsp;&nbsp;&nbsp;&nbsp;- scheduleThumbnailRetrievalIfPermitted</option>
+	
+	<option value="//api/name/setAttemptsBlobRetrieval:">&nbsp;&nbsp;&nbsp;&nbsp;- setAttemptsBlobRetrieval:</option>
+	
+	<option value="//api/name/setAttemptsBlobRetrieval:notify:">&nbsp;&nbsp;&nbsp;&nbsp;- setAttemptsBlobRetrieval:notify:</option>
+	
+	<option value="//api/name/setLargeThumbnailFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;- setLargeThumbnailFilePath:</option>
+	
+	<option value="//api/name/setPrimitiveLargeThumbnailFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;- setPrimitiveLargeThumbnailFilePath:</option>
+	
+	<option value="//api/name/setPrimitiveLargeThumbnailURL:">&nbsp;&nbsp;&nbsp;&nbsp;- setPrimitiveLargeThumbnailURL:</option>
+	
+	<option value="//api/name/setPrimitiveResourceFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;- setPrimitiveResourceFilePath:</option>
+	
+	<option value="//api/name/setPrimitiveResourceURL:">&nbsp;&nbsp;&nbsp;&nbsp;- setPrimitiveResourceURL:</option>
+	
+	<option value="//api/name/setPrimitiveThumbnailFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;- setPrimitiveThumbnailFilePath:</option>
+	
+	<option value="//api/name/setPrimitiveThumbnailURL:">&nbsp;&nbsp;&nbsp;&nbsp;- setPrimitiveThumbnailURL:</option>
+	
+	<option value="//api/name/setResourceFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;- setResourceFilePath:</option>
+	
+	<option value="//api/name/setThumbnailFilePath:">&nbsp;&nbsp;&nbsp;&nbsp;- setThumbnailFilePath:</option>
+	
+	<option value="//api/name/setValidatesLargeThumbnailImage:notify:">&nbsp;&nbsp;&nbsp;&nbsp;- setValidatesLargeThumbnailImage:notify:</option>
+	
+	<option value="//api/name/setValidatesResourceImage:notify:">&nbsp;&nbsp;&nbsp;&nbsp;- setValidatesResourceImage:notify:</option>
+	
+	<option value="//api/name/setValidatesThumbnailImage:notify:">&nbsp;&nbsp;&nbsp;&nbsp;- setValidatesThumbnailImage:notify:</option>
+	
+	<option value="//api/name/synchronizeWithCompletion:">&nbsp;&nbsp;&nbsp;&nbsp;- synchronizeWithCompletion:</option>
+	
+	<option value="//api/name/synchronizeWithOptions:completion:">&nbsp;&nbsp;&nbsp;&nbsp;- synchronizeWithOptions:completion:</option>
+	
+	<option value="//api/name/takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:">&nbsp;&nbsp;&nbsp;&nbsp;- takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:</option>
+	
+	<option value="//api/name/thumbnailFilePath">&nbsp;&nbsp;&nbsp;&nbsp;- thumbnailFilePath</option>
+	
+	<option value="//api/name/validateForDelete:">&nbsp;&nbsp;&nbsp;&nbsp;- validateForDelete:</option>
+	
+	<option value="//api/name/validateForInsert:">&nbsp;&nbsp;&nbsp;&nbsp;- validateForInsert:</option>
+	
+	<option value="//api/name/validateForUpdate:">&nbsp;&nbsp;&nbsp;&nbsp;- validateForUpdate:</option>
+	
+	<option value="//api/name/validateImages:">&nbsp;&nbsp;&nbsp;&nbsp;- validateImages:</option>
+	
+	<option value="//api/name/validateImagesIfNeeded:">&nbsp;&nbsp;&nbsp;&nbsp;- validateImagesIfNeeded:</option>
+	
+	<option value="//api/name/validateLargeThumbnailImage:">&nbsp;&nbsp;&nbsp;&nbsp;- validateLargeThumbnailImage:</option>
+	
+	<option value="//api/name/validateLargeThumbnailImageIfNeeded:">&nbsp;&nbsp;&nbsp;&nbsp;- validateLargeThumbnailImageIfNeeded:</option>
+	
+	<option value="//api/name/validateResourceImage:">&nbsp;&nbsp;&nbsp;&nbsp;- validateResourceImage:</option>
+	
+	<option value="//api/name/validateResourceImageIfNeeded:">&nbsp;&nbsp;&nbsp;&nbsp;- validateResourceImageIfNeeded:</option>
+	
+	<option value="//api/name/validateThumbnailImage:">&nbsp;&nbsp;&nbsp;&nbsp;- validateThumbnailImage:</option>
+	
+	<option value="//api/name/validateThumbnailImageIfNeeded:">&nbsp;&nbsp;&nbsp;&nbsp;- validateThumbnailImageIfNeeded:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_QuickLook Methods">QuickLook Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_WAAdditions_Accessors Methods">WAAdditions_Accessors Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_CoreDataGeneratedAccessors Methods">CoreDataGeneratedAccessors Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_WAAdditions Methods">WAAdditions Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_CoreDataGeneratedPrimitiveAccessors Methods">CoreDataGeneratedPrimitiveAccessors Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_WAAdditions_Validators Methods">WAAdditions_Validators Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_WARemoteInterfaceEntitySyncing Methods">WARemoteInterfaceEntitySyncing Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_WAAdditions_RemoteBlobRetrieval Methods">WAAdditions_RemoteBlobRetrieval Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/article">article</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/attemptsBlobRetrieval">attemptsBlobRetrieval</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/codeName">codeName</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/creationDeviceIdentifier">creationDeviceIdentifier</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/identifier">identifier</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/largeThumbnailFilePath">largeThumbnailFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/largeThumbnailImage">largeThumbnailImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/largeThumbnailURL">largeThumbnailURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/owner">owner</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/pageElementOrder">pageElementOrder</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/pageElements">pageElements</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteFileName">remoteFileName</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteFileSize">remoteFileSize</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteRepresentedImage">remoteRepresentedImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteResourceHash">remoteResourceHash</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteResourceType">remoteResourceType</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resourceFilePath">resourceFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resourceImage">resourceImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resourceType">resourceType</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resourceURL">resourceURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/text">text</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/thumbnail">thumbnail</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/thumbnailFilePath">thumbnailFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/thumbnailImage">thumbnailImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/thumbnailURL">thumbnailURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/timestamp">timestamp</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/title">title</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validatesLargeThumbnailImage">validatesLargeThumbnailImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validatesResourceImage">validatesResourceImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validatesThumbnailImage">validatesThumbnailImage</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/defaultHierarchicalEntityMapping">defaultHierarchicalEntityMapping</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/keyPathHoldingUniqueValue">keyPathHoldingUniqueValue</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/keyPathsForValuesAffectingPresentableImage">keyPathsForValuesAffectingPresentableImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/keyPathsForValuesAffectingResourceImage">keyPathsForValuesAffectingResourceImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/keyPathsForValuesAffectingThumbnailImage">keyPathsForValuesAffectingThumbnailImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/remoteDictionaryConfigurationMapping">remoteDictionaryConfigurationMapping</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/sharedResourceHandlingQueue">sharedResourceHandlingQueue</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/skipsNonexistantRemoteKey">skipsNonexistantRemoteKey</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/synchronizeWithCompletion:">synchronizeWithCompletion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/synchronizeWithOptions:completion:">synchronizeWithOptions:completion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/transformedRepresentationForRemoteRepresentation:">transformedRepresentationForRemoteRepresentation:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:">transformedValue:fromRemoteKeyPath:toLocalKeyPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateImageAtPath:error:">validateImageAtPath:error:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/absolutePathFromPath:">absolutePathFromPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/addPageElements:">addPageElements:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/addPageElementsObject:">addPageElementsObject:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/associateObject:usingKey:associationPolicy:notify:usingKey:">associateObject:usingKey:associationPolicy:notify:usingKey:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/attemptsBlobRetrieval">attemptsBlobRetrieval</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/canScheduleBlobRetrieval">canScheduleBlobRetrieval</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/canScheduleExpensiveBlobRetrieval">canScheduleExpensiveBlobRetrieval</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/configureWithRemoteDictionary:">configureWithRemoteDictionary:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didChangeValueForKey:withSetMutation:usingObjects:">didChangeValueForKey:withSetMutation:usingObjects:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleDidReceiveMemoryWarning:">handleDidReceiveMemoryWarning:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithEntity:insertIntoManagedObjectContext:">initWithEntity:insertIntoManagedObjectContext:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/largeThumbnailFilePath">largeThumbnailFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/pageElementOrder">pageElementOrder</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/performBlockSuppressingBlobRetrieval:">performBlockSuppressingBlobRetrieval:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/prepareForDeletion">prepareForDeletion</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentableImage">presentableImage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/previewItemTitle">previewItemTitle</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/previewItemURL">previewItemURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/primitiveLargeThumbnailFilePath">primitiveLargeThumbnailFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/primitiveLargeThumbnailURL">primitiveLargeThumbnailURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/primitiveResourceFilePath">primitiveResourceFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/primitiveResourceURL">primitiveResourceURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/primitiveThumbnailFilePath">primitiveThumbnailFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/primitiveThumbnailURL">primitiveThumbnailURL</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/relativePathFromPath:">relativePathFromPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removePageElements:">removePageElements:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removePageElementsObject:">removePageElementsObject:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/resourceFilePath">resourceFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/scheduleLargeThumbnailRetrievalIfPermitted">scheduleLargeThumbnailRetrievalIfPermitted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/scheduleResourceRetrievalIfPermitted">scheduleResourceRetrievalIfPermitted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:">scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/scheduleThumbnailRetrievalIfPermitted">scheduleThumbnailRetrievalIfPermitted</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAttemptsBlobRetrieval:">setAttemptsBlobRetrieval:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setAttemptsBlobRetrieval:notify:">setAttemptsBlobRetrieval:notify:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setLargeThumbnailFilePath:">setLargeThumbnailFilePath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPrimitiveLargeThumbnailFilePath:">setPrimitiveLargeThumbnailFilePath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPrimitiveLargeThumbnailURL:">setPrimitiveLargeThumbnailURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPrimitiveResourceFilePath:">setPrimitiveResourceFilePath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPrimitiveResourceURL:">setPrimitiveResourceURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPrimitiveThumbnailFilePath:">setPrimitiveThumbnailFilePath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setPrimitiveThumbnailURL:">setPrimitiveThumbnailURL:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setResourceFilePath:">setResourceFilePath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setThumbnailFilePath:">setThumbnailFilePath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setValidatesLargeThumbnailImage:notify:">setValidatesLargeThumbnailImage:notify:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setValidatesResourceImage:notify:">setValidatesResourceImage:notify:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setValidatesThumbnailImage:notify:">setValidatesThumbnailImage:notify:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/synchronizeWithCompletion:">synchronizeWithCompletion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/synchronizeWithOptions:completion:">synchronizeWithOptions:completion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:">takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/thumbnailFilePath">thumbnailFilePath</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateForDelete:">validateForDelete:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateForInsert:">validateForInsert:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateForUpdate:">validateForUpdate:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateImages:">validateImages:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateImagesIfNeeded:">validateImagesIfNeeded:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateLargeThumbnailImage:">validateLargeThumbnailImage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateLargeThumbnailImageIfNeeded:">validateLargeThumbnailImageIfNeeded:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateResourceImage:">validateResourceImage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateResourceImageIfNeeded:">validateResourceImageIfNeeded:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateThumbnailImage:">validateThumbnailImage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/validateThumbnailImageIfNeeded:">validateThumbnailImageIfNeeded:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAFile Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAFile Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">IRManagedObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAFile.h<br />WAFile.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/codeName">&nbsp;&nbsp;codeName</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/creationDeviceIdentifier">&nbsp;&nbsp;creationDeviceIdentifier</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/identifier">&nbsp;&nbsp;identifier</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/pageElementOrder">&nbsp;&nbsp;pageElementOrder</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteFileName">&nbsp;&nbsp;remoteFileName</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteFileSize">&nbsp;&nbsp;remoteFileSize</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteRepresentedImage">&nbsp;&nbsp;remoteRepresentedImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteResourceHash">&nbsp;&nbsp;remoteResourceHash</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteResourceType">&nbsp;&nbsp;remoteResourceType</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/resourceFilePath">&nbsp;&nbsp;resourceFilePath</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/resourceType">&nbsp;&nbsp;resourceType</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/resourceURL">&nbsp;&nbsp;resourceURL</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/text">&nbsp;&nbsp;text</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/thumbnail">&nbsp;&nbsp;thumbnail</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/thumbnailFilePath">&nbsp;&nbsp;thumbnailFilePath</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/thumbnailURL">&nbsp;&nbsp;thumbnailURL</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/timestamp">&nbsp;&nbsp;timestamp</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/title">&nbsp;&nbsp;title</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/largeThumbnailFilePath">&nbsp;&nbsp;largeThumbnailFilePath</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/largeThumbnailURL">&nbsp;&nbsp;largeThumbnailURL</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/article">&nbsp;&nbsp;article</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/owner">&nbsp;&nbsp;owner</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/pageElements">&nbsp;&nbsp;pageElements</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="QuickLook Methods" name="task_QuickLook Methods"></a>
+						<h3 class="subsubtitle task-title">QuickLook Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/previewItemTitle">&ndash;&nbsp;previewItemTitle</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/previewItemURL">&ndash;&nbsp;previewItemURL</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="WAAdditions_Accessors Methods" name="task_WAAdditions_Accessors Methods"></a>
+						<h3 class="subsubtitle task-title">WAAdditions_Accessors Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/resourceImage">&nbsp;&nbsp;resourceImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/largeThumbnailImage">&nbsp;&nbsp;largeThumbnailImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/thumbnailImage">&nbsp;&nbsp;thumbnailImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/associateObject:usingKey:associationPolicy:notify:usingKey:">&ndash;&nbsp;associateObject:usingKey:associationPolicy:notify:usingKey:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="CoreDataGeneratedAccessors Methods" name="task_CoreDataGeneratedAccessors Methods"></a>
+						<h3 class="subsubtitle task-title">CoreDataGeneratedAccessors Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/addPageElementsObject:">&ndash;&nbsp;addPageElementsObject:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removePageElementsObject:">&ndash;&nbsp;removePageElementsObject:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/addPageElements:">&ndash;&nbsp;addPageElements:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removePageElements:">&ndash;&nbsp;removePageElements:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="WAAdditions Methods" name="task_WAAdditions Methods"></a>
+						<h3 class="subsubtitle task-title">WAAdditions Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentableImage">&ndash;&nbsp;presentableImage</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/sharedResourceHandlingQueue">+&nbsp;sharedResourceHandlingQueue</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithEntity:insertIntoManagedObjectContext:">&ndash;&nbsp;initWithEntity:insertIntoManagedObjectContext:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleDidReceiveMemoryWarning:">&ndash;&nbsp;handleDidReceiveMemoryWarning:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/pageElementOrder">&ndash;&nbsp;pageElementOrder</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didChangeValueForKey:withSetMutation:usingObjects:">&ndash;&nbsp;didChangeValueForKey:withSetMutation:usingObjects:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/attemptsBlobRetrieval">&ndash;&nbsp;attemptsBlobRetrieval</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setAttemptsBlobRetrieval:">&ndash;&nbsp;setAttemptsBlobRetrieval:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setAttemptsBlobRetrieval:notify:">&ndash;&nbsp;setAttemptsBlobRetrieval:notify:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/performBlockSuppressingBlobRetrieval:">&ndash;&nbsp;performBlockSuppressingBlobRetrieval:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/canScheduleBlobRetrieval">&ndash;&nbsp;canScheduleBlobRetrieval</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/canScheduleExpensiveBlobRetrieval">&ndash;&nbsp;canScheduleExpensiveBlobRetrieval</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/scheduleResourceRetrievalIfPermitted">&ndash;&nbsp;scheduleResourceRetrievalIfPermitted</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/scheduleThumbnailRetrievalIfPermitted">&ndash;&nbsp;scheduleThumbnailRetrievalIfPermitted</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/scheduleLargeThumbnailRetrievalIfPermitted">&ndash;&nbsp;scheduleLargeThumbnailRetrievalIfPermitted</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:">&ndash;&nbsp;scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:">&ndash;&nbsp;takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/relativePathFromPath:">&ndash;&nbsp;relativePathFromPath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/absolutePathFromPath:">&ndash;&nbsp;absolutePathFromPath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setResourceFilePath:">&ndash;&nbsp;setResourceFilePath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setThumbnailFilePath:">&ndash;&nbsp;setThumbnailFilePath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setLargeThumbnailFilePath:">&ndash;&nbsp;setLargeThumbnailFilePath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/resourceFilePath">&ndash;&nbsp;resourceFilePath</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/thumbnailFilePath">&ndash;&nbsp;thumbnailFilePath</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/largeThumbnailFilePath">&ndash;&nbsp;largeThumbnailFilePath</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateForDelete:">&ndash;&nbsp;validateForDelete:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateForInsert:">&ndash;&nbsp;validateForInsert:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateForUpdate:">&ndash;&nbsp;validateForUpdate:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/prepareForDeletion">&ndash;&nbsp;prepareForDeletion</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/keyPathsForValuesAffectingPresentableImage">+&nbsp;keyPathsForValuesAffectingPresentableImage</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/keyPathsForValuesAffectingResourceImage">+&nbsp;keyPathsForValuesAffectingResourceImage</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/keyPathsForValuesAffectingThumbnailImage">+&nbsp;keyPathsForValuesAffectingThumbnailImage</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="CoreDataGeneratedPrimitiveAccessors Methods" name="task_CoreDataGeneratedPrimitiveAccessors Methods"></a>
+						<h3 class="subsubtitle task-title">CoreDataGeneratedPrimitiveAccessors Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPrimitiveResourceFilePath:">&ndash;&nbsp;setPrimitiveResourceFilePath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/primitiveResourceFilePath">&ndash;&nbsp;primitiveResourceFilePath</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPrimitiveResourceURL:">&ndash;&nbsp;setPrimitiveResourceURL:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/primitiveResourceURL">&ndash;&nbsp;primitiveResourceURL</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPrimitiveThumbnailFilePath:">&ndash;&nbsp;setPrimitiveThumbnailFilePath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/primitiveThumbnailFilePath">&ndash;&nbsp;primitiveThumbnailFilePath</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPrimitiveThumbnailURL:">&ndash;&nbsp;setPrimitiveThumbnailURL:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/primitiveThumbnailURL">&ndash;&nbsp;primitiveThumbnailURL</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPrimitiveLargeThumbnailFilePath:">&ndash;&nbsp;setPrimitiveLargeThumbnailFilePath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/primitiveLargeThumbnailFilePath">&ndash;&nbsp;primitiveLargeThumbnailFilePath</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setPrimitiveLargeThumbnailURL:">&ndash;&nbsp;setPrimitiveLargeThumbnailURL:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/primitiveLargeThumbnailURL">&ndash;&nbsp;primitiveLargeThumbnailURL</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="WAAdditions_Validators Methods" name="task_WAAdditions_Validators Methods"></a>
+						<h3 class="subsubtitle task-title">WAAdditions_Validators Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validatesResourceImage">&nbsp;&nbsp;validatesResourceImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validatesLargeThumbnailImage">&nbsp;&nbsp;validatesLargeThumbnailImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validatesThumbnailImage">&nbsp;&nbsp;validatesThumbnailImage</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setValidatesResourceImage:notify:">&ndash;&nbsp;setValidatesResourceImage:notify:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setValidatesLargeThumbnailImage:notify:">&ndash;&nbsp;setValidatesLargeThumbnailImage:notify:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setValidatesThumbnailImage:notify:">&ndash;&nbsp;setValidatesThumbnailImage:notify:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateImagesIfNeeded:">&ndash;&nbsp;validateImagesIfNeeded:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateImages:">&ndash;&nbsp;validateImages:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateResourceImageIfNeeded:">&ndash;&nbsp;validateResourceImageIfNeeded:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateResourceImage:">&ndash;&nbsp;validateResourceImage:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateLargeThumbnailImageIfNeeded:">&ndash;&nbsp;validateLargeThumbnailImageIfNeeded:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateLargeThumbnailImage:">&ndash;&nbsp;validateLargeThumbnailImage:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateThumbnailImageIfNeeded:">&ndash;&nbsp;validateThumbnailImageIfNeeded:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateThumbnailImage:">&ndash;&nbsp;validateThumbnailImage:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/validateImageAtPath:error:">+&nbsp;validateImageAtPath:error:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="WARemoteInterfaceEntitySyncing Methods" name="task_WARemoteInterfaceEntitySyncing Methods"></a>
+						<h3 class="subsubtitle task-title">WARemoteInterfaceEntitySyncing Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/configureWithRemoteDictionary:">&ndash;&nbsp;configureWithRemoteDictionary:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/keyPathHoldingUniqueValue">+&nbsp;keyPathHoldingUniqueValue</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/skipsNonexistantRemoteKey">+&nbsp;skipsNonexistantRemoteKey</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/remoteDictionaryConfigurationMapping">+&nbsp;remoteDictionaryConfigurationMapping</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/defaultHierarchicalEntityMapping">+&nbsp;defaultHierarchicalEntityMapping</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/transformedRepresentationForRemoteRepresentation:">+&nbsp;transformedRepresentationForRemoteRepresentation:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:">+&nbsp;transformedValue:fromRemoteKeyPath:toLocalKeyPath:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/synchronizeWithCompletion:">+&nbsp;synchronizeWithCompletion:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/synchronizeWithOptions:completion:">+&nbsp;synchronizeWithOptions:completion:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/synchronizeWithCompletion:">&ndash;&nbsp;synchronizeWithCompletion:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/synchronizeWithOptions:completion:">&ndash;&nbsp;synchronizeWithOptions:completion:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="WAAdditions_RemoteBlobRetrieval Methods" name="task_WAAdditions_RemoteBlobRetrieval Methods"></a>
+						<h3 class="subsubtitle task-title">WAAdditions_RemoteBlobRetrieval Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/attemptsBlobRetrieval">&nbsp;&nbsp;attemptsBlobRetrieval</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/article" title="article"></a>
+	<h3 class="subsubtitle method-title">article</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/attemptsBlobRetrieval" title="attemptsBlobRetrieval"></a>
+	<h3 class="subsubtitle method-title">attemptsBlobRetrieval</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/codeName" title="codeName"></a>
+	<h3 class="subsubtitle method-title">codeName</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/creationDeviceIdentifier" title="creationDeviceIdentifier"></a>
+	<h3 class="subsubtitle method-title">creationDeviceIdentifier</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/identifier" title="identifier"></a>
+	<h3 class="subsubtitle method-title">identifier</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/largeThumbnailFilePath" title="largeThumbnailFilePath"></a>
+	<h3 class="subsubtitle method-title">largeThumbnailFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/largeThumbnailImage" title="largeThumbnailImage"></a>
+	<h3 class="subsubtitle method-title">largeThumbnailImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/largeThumbnailURL" title="largeThumbnailURL"></a>
+	<h3 class="subsubtitle method-title">largeThumbnailURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/owner" title="owner"></a>
+	<h3 class="subsubtitle method-title">owner</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/pageElementOrder" title="pageElementOrder"></a>
+	<h3 class="subsubtitle method-title">pageElementOrder</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/pageElements" title="pageElements"></a>
+	<h3 class="subsubtitle method-title">pageElements</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteFileName" title="remoteFileName"></a>
+	<h3 class="subsubtitle method-title">remoteFileName</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteFileSize" title="remoteFileSize"></a>
+	<h3 class="subsubtitle method-title">remoteFileSize</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteRepresentedImage" title="remoteRepresentedImage"></a>
+	<h3 class="subsubtitle method-title">remoteRepresentedImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteResourceHash" title="remoteResourceHash"></a>
+	<h3 class="subsubtitle method-title">remoteResourceHash</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteResourceType" title="remoteResourceType"></a>
+	<h3 class="subsubtitle method-title">remoteResourceType</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/resourceFilePath" title="resourceFilePath"></a>
+	<h3 class="subsubtitle method-title">resourceFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/resourceImage" title="resourceImage"></a>
+	<h3 class="subsubtitle method-title">resourceImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/resourceType" title="resourceType"></a>
+	<h3 class="subsubtitle method-title">resourceType</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/resourceURL" title="resourceURL"></a>
+	<h3 class="subsubtitle method-title">resourceURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/text" title="text"></a>
+	<h3 class="subsubtitle method-title">text</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/thumbnail" title="thumbnail"></a>
+	<h3 class="subsubtitle method-title">thumbnail</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/thumbnailFilePath" title="thumbnailFilePath"></a>
+	<h3 class="subsubtitle method-title">thumbnailFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/thumbnailImage" title="thumbnailImage"></a>
+	<h3 class="subsubtitle method-title">thumbnailImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/thumbnailURL" title="thumbnailURL"></a>
+	<h3 class="subsubtitle method-title">thumbnailURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/timestamp" title="timestamp"></a>
+	<h3 class="subsubtitle method-title">timestamp</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/title" title="title"></a>
+	<h3 class="subsubtitle method-title">title</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validatesLargeThumbnailImage" title="validatesLargeThumbnailImage"></a>
+	<h3 class="subsubtitle method-title">validatesLargeThumbnailImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validatesResourceImage" title="validatesResourceImage"></a>
+	<h3 class="subsubtitle method-title">validatesResourceImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validatesThumbnailImage" title="validatesThumbnailImage"></a>
+	<h3 class="subsubtitle method-title">validatesThumbnailImage</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/defaultHierarchicalEntityMapping" title="defaultHierarchicalEntityMapping"></a>
+	<h3 class="subsubtitle method-title">defaultHierarchicalEntityMapping</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/keyPathHoldingUniqueValue" title="keyPathHoldingUniqueValue"></a>
+	<h3 class="subsubtitle method-title">keyPathHoldingUniqueValue</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/keyPathsForValuesAffectingPresentableImage" title="keyPathsForValuesAffectingPresentableImage"></a>
+	<h3 class="subsubtitle method-title">keyPathsForValuesAffectingPresentableImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/keyPathsForValuesAffectingResourceImage" title="keyPathsForValuesAffectingResourceImage"></a>
+	<h3 class="subsubtitle method-title">keyPathsForValuesAffectingResourceImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/keyPathsForValuesAffectingThumbnailImage" title="keyPathsForValuesAffectingThumbnailImage"></a>
+	<h3 class="subsubtitle method-title">keyPathsForValuesAffectingThumbnailImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/remoteDictionaryConfigurationMapping" title="remoteDictionaryConfigurationMapping"></a>
+	<h3 class="subsubtitle method-title">remoteDictionaryConfigurationMapping</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/sharedResourceHandlingQueue" title="sharedResourceHandlingQueue"></a>
+	<h3 class="subsubtitle method-title">sharedResourceHandlingQueue</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/skipsNonexistantRemoteKey" title="skipsNonexistantRemoteKey"></a>
+	<h3 class="subsubtitle method-title">skipsNonexistantRemoteKey</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/synchronizeWithCompletion:" title="synchronizeWithCompletion:"></a>
+	<h3 class="subsubtitle method-title">synchronizeWithCompletion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/synchronizeWithOptions:completion:" title="synchronizeWithOptions:completion:"></a>
+	<h3 class="subsubtitle method-title">synchronizeWithOptions:completion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/transformedRepresentationForRemoteRepresentation:" title="transformedRepresentationForRemoteRepresentation:"></a>
+	<h3 class="subsubtitle method-title">transformedRepresentationForRemoteRepresentation:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/transformedValue:fromRemoteKeyPath:toLocalKeyPath:" title="transformedValue:fromRemoteKeyPath:toLocalKeyPath:"></a>
+	<h3 class="subsubtitle method-title">transformedValue:fromRemoteKeyPath:toLocalKeyPath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateImageAtPath:error:" title="validateImageAtPath:error:"></a>
+	<h3 class="subsubtitle method-title">validateImageAtPath:error:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/absolutePathFromPath:" title="absolutePathFromPath:"></a>
+	<h3 class="subsubtitle method-title">absolutePathFromPath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/addPageElements:" title="addPageElements:"></a>
+	<h3 class="subsubtitle method-title">addPageElements:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/addPageElementsObject:" title="addPageElementsObject:"></a>
+	<h3 class="subsubtitle method-title">addPageElementsObject:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/associateObject:usingKey:associationPolicy:notify:usingKey:" title="associateObject:usingKey:associationPolicy:notify:usingKey:"></a>
+	<h3 class="subsubtitle method-title">associateObject:usingKey:associationPolicy:notify:usingKey:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/attemptsBlobRetrieval" title="attemptsBlobRetrieval"></a>
+	<h3 class="subsubtitle method-title">attemptsBlobRetrieval</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/canScheduleBlobRetrieval" title="canScheduleBlobRetrieval"></a>
+	<h3 class="subsubtitle method-title">canScheduleBlobRetrieval</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/canScheduleExpensiveBlobRetrieval" title="canScheduleExpensiveBlobRetrieval"></a>
+	<h3 class="subsubtitle method-title">canScheduleExpensiveBlobRetrieval</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/configureWithRemoteDictionary:" title="configureWithRemoteDictionary:"></a>
+	<h3 class="subsubtitle method-title">configureWithRemoteDictionary:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didChangeValueForKey:withSetMutation:usingObjects:" title="didChangeValueForKey:withSetMutation:usingObjects:"></a>
+	<h3 class="subsubtitle method-title">didChangeValueForKey:withSetMutation:usingObjects:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleDidReceiveMemoryWarning:" title="handleDidReceiveMemoryWarning:"></a>
+	<h3 class="subsubtitle method-title">handleDidReceiveMemoryWarning:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithEntity:insertIntoManagedObjectContext:" title="initWithEntity:insertIntoManagedObjectContext:"></a>
+	<h3 class="subsubtitle method-title">initWithEntity:insertIntoManagedObjectContext:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/largeThumbnailFilePath" title="largeThumbnailFilePath"></a>
+	<h3 class="subsubtitle method-title">largeThumbnailFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/pageElementOrder" title="pageElementOrder"></a>
+	<h3 class="subsubtitle method-title">pageElementOrder</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/performBlockSuppressingBlobRetrieval:" title="performBlockSuppressingBlobRetrieval:"></a>
+	<h3 class="subsubtitle method-title">performBlockSuppressingBlobRetrieval:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/prepareForDeletion" title="prepareForDeletion"></a>
+	<h3 class="subsubtitle method-title">prepareForDeletion</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentableImage" title="presentableImage"></a>
+	<h3 class="subsubtitle method-title">presentableImage</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/previewItemTitle" title="previewItemTitle"></a>
+	<h3 class="subsubtitle method-title">previewItemTitle</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/previewItemURL" title="previewItemURL"></a>
+	<h3 class="subsubtitle method-title">previewItemURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/primitiveLargeThumbnailFilePath" title="primitiveLargeThumbnailFilePath"></a>
+	<h3 class="subsubtitle method-title">primitiveLargeThumbnailFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/primitiveLargeThumbnailURL" title="primitiveLargeThumbnailURL"></a>
+	<h3 class="subsubtitle method-title">primitiveLargeThumbnailURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/primitiveResourceFilePath" title="primitiveResourceFilePath"></a>
+	<h3 class="subsubtitle method-title">primitiveResourceFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/primitiveResourceURL" title="primitiveResourceURL"></a>
+	<h3 class="subsubtitle method-title">primitiveResourceURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/primitiveThumbnailFilePath" title="primitiveThumbnailFilePath"></a>
+	<h3 class="subsubtitle method-title">primitiveThumbnailFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/primitiveThumbnailURL" title="primitiveThumbnailURL"></a>
+	<h3 class="subsubtitle method-title">primitiveThumbnailURL</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/relativePathFromPath:" title="relativePathFromPath:"></a>
+	<h3 class="subsubtitle method-title">relativePathFromPath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removePageElements:" title="removePageElements:"></a>
+	<h3 class="subsubtitle method-title">removePageElements:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removePageElementsObject:" title="removePageElementsObject:"></a>
+	<h3 class="subsubtitle method-title">removePageElementsObject:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/resourceFilePath" title="resourceFilePath"></a>
+	<h3 class="subsubtitle method-title">resourceFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/scheduleLargeThumbnailRetrievalIfPermitted" title="scheduleLargeThumbnailRetrievalIfPermitted"></a>
+	<h3 class="subsubtitle method-title">scheduleLargeThumbnailRetrievalIfPermitted</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/scheduleResourceRetrievalIfPermitted" title="scheduleResourceRetrievalIfPermitted"></a>
+	<h3 class="subsubtitle method-title">scheduleResourceRetrievalIfPermitted</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:" title="scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:"></a>
+	<h3 class="subsubtitle method-title">scheduleRetrievalForBlobURL:blobKeyPath:filePathKeyPath:usingPriority:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/scheduleThumbnailRetrievalIfPermitted" title="scheduleThumbnailRetrievalIfPermitted"></a>
+	<h3 class="subsubtitle method-title">scheduleThumbnailRetrievalIfPermitted</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setAttemptsBlobRetrieval:" title="setAttemptsBlobRetrieval:"></a>
+	<h3 class="subsubtitle method-title">setAttemptsBlobRetrieval:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setAttemptsBlobRetrieval:notify:" title="setAttemptsBlobRetrieval:notify:"></a>
+	<h3 class="subsubtitle method-title">setAttemptsBlobRetrieval:notify:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setLargeThumbnailFilePath:" title="setLargeThumbnailFilePath:"></a>
+	<h3 class="subsubtitle method-title">setLargeThumbnailFilePath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setPrimitiveLargeThumbnailFilePath:" title="setPrimitiveLargeThumbnailFilePath:"></a>
+	<h3 class="subsubtitle method-title">setPrimitiveLargeThumbnailFilePath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setPrimitiveLargeThumbnailURL:" title="setPrimitiveLargeThumbnailURL:"></a>
+	<h3 class="subsubtitle method-title">setPrimitiveLargeThumbnailURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setPrimitiveResourceFilePath:" title="setPrimitiveResourceFilePath:"></a>
+	<h3 class="subsubtitle method-title">setPrimitiveResourceFilePath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setPrimitiveResourceURL:" title="setPrimitiveResourceURL:"></a>
+	<h3 class="subsubtitle method-title">setPrimitiveResourceURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setPrimitiveThumbnailFilePath:" title="setPrimitiveThumbnailFilePath:"></a>
+	<h3 class="subsubtitle method-title">setPrimitiveThumbnailFilePath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setPrimitiveThumbnailURL:" title="setPrimitiveThumbnailURL:"></a>
+	<h3 class="subsubtitle method-title">setPrimitiveThumbnailURL:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setResourceFilePath:" title="setResourceFilePath:"></a>
+	<h3 class="subsubtitle method-title">setResourceFilePath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setThumbnailFilePath:" title="setThumbnailFilePath:"></a>
+	<h3 class="subsubtitle method-title">setThumbnailFilePath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setValidatesLargeThumbnailImage:notify:" title="setValidatesLargeThumbnailImage:notify:"></a>
+	<h3 class="subsubtitle method-title">setValidatesLargeThumbnailImage:notify:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setValidatesResourceImage:notify:" title="setValidatesResourceImage:notify:"></a>
+	<h3 class="subsubtitle method-title">setValidatesResourceImage:notify:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setValidatesThumbnailImage:notify:" title="setValidatesThumbnailImage:notify:"></a>
+	<h3 class="subsubtitle method-title">setValidatesThumbnailImage:notify:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/synchronizeWithCompletion:" title="synchronizeWithCompletion:"></a>
+	<h3 class="subsubtitle method-title">synchronizeWithCompletion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/synchronizeWithOptions:completion:" title="synchronizeWithOptions:completion:"></a>
+	<h3 class="subsubtitle method-title">synchronizeWithOptions:completion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:" title="takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:"></a>
+	<h3 class="subsubtitle method-title">takeBlobFromTemporaryFile:forKeyPath:matchingURL:forKeyPath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/thumbnailFilePath" title="thumbnailFilePath"></a>
+	<h3 class="subsubtitle method-title">thumbnailFilePath</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateForDelete:" title="validateForDelete:"></a>
+	<h3 class="subsubtitle method-title">validateForDelete:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateForInsert:" title="validateForInsert:"></a>
+	<h3 class="subsubtitle method-title">validateForInsert:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateForUpdate:" title="validateForUpdate:"></a>
+	<h3 class="subsubtitle method-title">validateForUpdate:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateImages:" title="validateImages:"></a>
+	<h3 class="subsubtitle method-title">validateImages:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateImagesIfNeeded:" title="validateImagesIfNeeded:"></a>
+	<h3 class="subsubtitle method-title">validateImagesIfNeeded:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateLargeThumbnailImage:" title="validateLargeThumbnailImage:"></a>
+	<h3 class="subsubtitle method-title">validateLargeThumbnailImage:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateLargeThumbnailImageIfNeeded:" title="validateLargeThumbnailImageIfNeeded:"></a>
+	<h3 class="subsubtitle method-title">validateLargeThumbnailImageIfNeeded:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateResourceImage:" title="validateResourceImage:"></a>
+	<h3 class="subsubtitle method-title">validateResourceImage:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateResourceImageIfNeeded:" title="validateResourceImageIfNeeded:"></a>
+	<h3 class="subsubtitle method-title">validateResourceImageIfNeeded:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateThumbnailImage:" title="validateThumbnailImage:"></a>
+	<h3 class="subsubtitle method-title">validateThumbnailImage:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/validateThumbnailImageIfNeeded:" title="validateThumbnailImageIfNeeded:"></a>
+	<h3 class="subsubtitle method-title">validateThumbnailImageIfNeeded:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

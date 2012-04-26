@@ -39,6 +39,8 @@
 
 - (void) performAutomaticRemoteUpdatesNow {
 
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
 	[self.dataRetrievalTimer fire];
 	[self.dataRetrievalTimer invalidate];
 	[self rescheduleAutomaticRemoteUpdates];
@@ -47,6 +49,13 @@
 
 - (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
 
+	if ([self isPostponingDataRetrievalTimerFiring]) {
+		NSLog(@"%s: is postponing timer firing, should NOT fire", __PRETTY_FUNCTION__);
+		return;
+	}
+
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, timer);
+
 	[self.dataRetrievalBlocks irExecuteAllObjectsAsBlocks];
 	[self rescheduleAutomaticRemoteUpdates];
 
@@ -54,9 +63,11 @@
 
 - (void) beginPostponingDataRetrievalTimerFiring {
 
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self beginPostponingDataRetrievalTimerFiring];
 		});
 		return;
 	}
@@ -74,9 +85,11 @@
 
 - (void) endPostponingDataRetrievalTimerFiring {
 	
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self endPostponingDataRetrievalTimerFiring];
 		});
 		return;
 	}
@@ -94,15 +107,19 @@
 
 - (BOOL) isPostponingDataRetrievalTimerFiring {
 
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
 	return !!(self.dataRetrievalTimerPostponingCount);
 
 }
 
 - (void) beginPerformingAutomaticRemoteUpdates {
 
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self beginPerformingAutomaticRemoteUpdates];
 		});
 		return;
 	}
@@ -115,9 +132,11 @@
 
 - (void) endPerformingAutomaticRemoteUpdates {
 
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self endPerformingAutomaticRemoteUpdates];
 		});
 		return;
 	}
@@ -138,37 +157,65 @@
 
 - (NSArray *) defaultDataRetrievalBlocks {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WARemoteInterface *wSelf = self;
 
 	return [NSArray arrayWithObjects:
 	
-		[[ ^ {
+		[^ {
 		
-			if (!nrSelf.userToken || !nrSelf.apiKey || !nrSelf.primaryGroupIdentifier)
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
-        
-      [AppDelegate() beginNetworkActivity];
+				
+			[AppDelegate() beginNetworkActivity];
 
-			[nrSelf beginPerformingAutomaticRemoteUpdates];		
-			[nrSelf beginPostponingDataRetrievalTimerFiring];
+			[wSelf beginPerformingAutomaticRemoteUpdates];		
+			[wSelf beginPostponingDataRetrievalTimerFiring];
 			
 			[[WADataStore defaultStore] updateArticlesOnSuccess:^{
 
-				[nrSelf endPerformingAutomaticRemoteUpdates];		
-				[nrSelf endPostponingDataRetrievalTimerFiring];
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
 
-        [AppDelegate() endNetworkActivity];
+				[AppDelegate() endNetworkActivity];
 				
-			} onFailure: ^ {
+			} onFailure: ^ (NSError *error) {
 			
-				[nrSelf endPerformingAutomaticRemoteUpdates];		
-				[nrSelf endPostponingDataRetrievalTimerFiring];
-        
-        [AppDelegate() endNetworkActivity];
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+				
+				[AppDelegate() endNetworkActivity];
 				
 			}];
 		
-		} copy] autorelease],
+		} copy],
+		
+		[^ {
+		
+			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
+				return;
+				
+			[AppDelegate() beginNetworkActivity];
+
+			[wSelf beginPerformingAutomaticRemoteUpdates];		
+			[wSelf beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
+
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+
+				[AppDelegate() endNetworkActivity];
+				
+			} onFailure: ^ {
+			
+				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPostponingDataRetrievalTimerFiring];
+				
+				[AppDelegate() endNetworkActivity];
+				
+			}];
+		
+		} copy],
     
     [self defaultScheduledMonitoredHostsUpdatingBlock],
 	
@@ -195,57 +242,80 @@
 @implementation WARemoteInterface (ScheduledDataRetrieval_Private)
 @dynamic performingAutomaticRemoteUpdates;
 
+static NSString * const kDataRetrievalInterval = @"dataRetrievalInterval";
+static NSString * const kDataRetrievalBlocks = @"dataRetrievalBlocks";
+static NSString * const kDataRetrievalTimer = @"dataRetrievalTimer";
+static NSString * const kDataRetrievalTimerPostponingCount = @"dataRetrievalTimerPostponingCount";
+static NSString * const kDataRetrievalTimerPerformingCount = @"dataRetrievalTimerPerformingCount";
+
 - (void) setDataRetrievalInterval:(NSTimeInterval)newDataRetrievalInterval {
-	if (self.dataRetrievalInterval != newDataRetrievalInterval)
-		objc_setAssociatedObject(self, &@selector(dataRetrievalInterval), [NSNumber numberWithDouble:newDataRetrievalInterval], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+	objc_setAssociatedObject(self, &kDataRetrievalInterval, [NSNumber numberWithDouble:newDataRetrievalInterval], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
 }
 
 - (NSTimeInterval) dataRetrievalInterval {
-	NSNumber *value = objc_getAssociatedObject(self, &@selector(dataRetrievalInterval));
+	
+	NSNumber *value = objc_getAssociatedObject(self, &kDataRetrievalInterval);
 	return value ? [value doubleValue] : 30;
+	
 }
 
 - (void) setDataRetrievalBlocks:(NSArray *)newDataRetrievalBlocks {
-	if (self.dataRetrievalBlocks != newDataRetrievalBlocks)
-		objc_setAssociatedObject(self, &@selector(dataRetrievalBlocks), newDataRetrievalBlocks, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+	objc_setAssociatedObject(self, &kDataRetrievalBlocks, newDataRetrievalBlocks, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
 }
 
 - (NSArray *) dataRetrievalBlocks {
-	NSArray *value = objc_getAssociatedObject(self, &@selector(dataRetrievalBlocks));
+	
+	NSArray *value = objc_getAssociatedObject(self, &kDataRetrievalBlocks);
 	if (!value) {
+		
 		value = [NSArray array];
-		objc_setAssociatedObject(self, &@selector(dataRetrievalBlocks), value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		objc_setAssociatedObject(self, &kDataRetrievalBlocks, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+		
 	}
+	
 	return value;
 }
 
 - (void) setDataRetrievalTimer:(NSTimer *)newDataRetrievalTimer {
-	if (self.dataRetrievalTimer != newDataRetrievalTimer)
-		objc_setAssociatedObject(self, &@selector(dataRetrievalTimer), newDataRetrievalTimer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+	objc_setAssociatedObject(self, &kDataRetrievalTimer, newDataRetrievalTimer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
 }
 
 - (NSTimer *) dataRetrievalTimer {
-	return objc_getAssociatedObject(self, &@selector(dataRetrievalTimer));
+	
+	return objc_getAssociatedObject(self, &kDataRetrievalTimer);
+	
 }
 
 - (void) setDataRetrievalTimerPostponingCount:(int)newDataRetrievalTimerPostponingCount {
-	if (self.dataRetrievalTimerPostponingCount != newDataRetrievalTimerPostponingCount)
-		objc_setAssociatedObject(self, &@selector(dataRetrievalTimerPostponingCount), [NSNumber numberWithInt:newDataRetrievalTimerPostponingCount], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	objc_setAssociatedObject(self, &kDataRetrievalTimerPostponingCount, [NSNumber numberWithInt:newDataRetrievalTimerPostponingCount], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
 }
 
 - (int) dataRetrievalTimerPostponingCount {
-	NSNumber *value = objc_getAssociatedObject(self, &@selector(dataRetrievalTimerPostponingCount));
+	
+	NSNumber *value = objc_getAssociatedObject(self, &kDataRetrievalTimerPostponingCount);
 	return value ? [value intValue] : 0;
+	
 }
 
 - (void) setAutomaticRemoteUpdatesPerformingCount:(int)newAutomaticRemoteUpdatesPerformingCount {
-	if (self.automaticRemoteUpdatesPerformingCount != newAutomaticRemoteUpdatesPerformingCount)
-		objc_setAssociatedObject(self, &@selector(automaticRemoteUpdatesPerformingCount), [NSNumber numberWithInt:newAutomaticRemoteUpdatesPerformingCount], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
+	objc_setAssociatedObject(self, &kDataRetrievalTimerPerformingCount, [NSNumber numberWithInt:newAutomaticRemoteUpdatesPerformingCount], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
 }
 
 - (int) automaticRemoteUpdatesPerformingCount {
-	NSNumber *value = objc_getAssociatedObject(self, &@selector(automaticRemoteUpdatesPerformingCount));
+	
+	NSNumber *value = objc_getAssociatedObject(self, &kDataRetrievalTimerPerformingCount);
 	return value ? [value intValue] : 0;
+	
 }
 
 @end

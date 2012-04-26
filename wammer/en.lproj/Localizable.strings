@@ -4,20 +4,34 @@
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
-   Cancel. */
+   Cancel.
+   Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
+
+/* Action changing representing file of an article
+   Title for the action responsible for presenting a controller changing the representing file of an article */
+"ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
+
+/* Action deleting an article
+   Title for deleting an article from the Overview
+   Title for deleting an article from the Timeline */
+"ACTION_DELETE" = "Delete";
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
 
-/* Action title for done */
-"ACTION_DONE" = "Done";
-
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";
 
+/* Button title for showing an image picker */
+"ACTION_INSERT_PHOTO_FROM_LIBRARY" = "Photo Library";
+
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
+
+/* Action marking article as favorite
+   Bar button item title to mark the article as a favorite */
+"ACTION_MARK_FAVORITE" = "Favorite";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
@@ -54,6 +68,13 @@
    Action title for signing the user out */
 "ACTION_SIGN_OUT" = "Sign Out";
 
+/* Button title for showing a camera capture controller */
+"ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
+
+/* Action marking article as not favorite
+   Bar button item title to unmark the article as a favorite */
+"ACTION_UNMARK_FAVORITE" = "Unfavorite";
+
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";
 
@@ -68,10 +89,25 @@
 
 /* Application Title
    Title for application */
-"APP_TITLE" = "Waveface";
+"APP_TITLE" = "Stream";
 
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "Welcome";
+
+/* Prompt for Cover Image picker */
+"CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
+
+/* Title for Cover Image picker */
+"CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
+
+/* “%@ Comments” */
+"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";
+
+/* “%@ Comment” */
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Comment";
+
+/* “%@ Comment” or “No Comment” */
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comment";
 
 /* No comment provided by engineer. */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
@@ -84,6 +120,13 @@
 
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
+
+/* Description for confirming a post deletion
+   Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "If you changed your mind, recover this Post from our Web client.";
+
+/* Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_TITLE" = "Delete Post";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
@@ -106,6 +149,18 @@
 /* Text to show when Cloud is available, but the Station is not responsive */
 "ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "We’re having trouble connecting to your Station.";
 
+/* Article entity sync failure alert message for no underlying error */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly.  The post has been saved as a draft.";
+
+/* Article entity sync failure alert title */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
+
+/* Failed, underlying error %@ with reason %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — the post has been saved as a draft.";
+
+/* Failed, underlying error description %@ */
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — the post has been saved as a draft.";
+
 /* Description for authentication failure */
 "ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface has trouble authenticating your account: ";
 
@@ -123,6 +178,21 @@
 
 /* Title for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_TITLE" = "Can’t Register";
+
+/* Display title for a fetch request working against all the articles */
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
+
+/* Display title for a fetch request working against the articles with Photos */
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Posts";
+
+/* Display title for a fetch request working against the articles with Plain Text */
+"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Posts";
+
+/* Display title for a fetch request working against the articles with Web Previews */
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Posts";
+
+/* Display title for a fetch request working against the latest article on a particular date */
+"FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -218,6 +288,12 @@
 /* No comment provided by engineer. */
 "STORATE_QUOTA_INTERVAL_END_DATE" = "Ends";
 
+/* Title on the text stack more / less toggle button for “Less” */
+"TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
+
+/* Title on the text stack more / less toggle button for “More” */
+"TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+
 /* Title in User Section */
 "USER_INFO_ACCOUNT_SECTION_TITLE" = "Account";
 
@@ -230,11 +306,29 @@
 /* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
 "ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";
 
+/* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
+"ACTION_SEND" = "Send";
+
+/* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
+
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "No Photos";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "Add some photos to this post.";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
+"FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";

@@ -123,6 +123,12 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 @implementation WAFile (WAAdditions)
 
++ (void) load {
+
+	[self configureSimulatedOrderedRelationship];
+
+}
+
 - (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
 
 	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
@@ -152,8 +158,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	[super dealloc];
-
 }
 
 
@@ -163,26 +167,24 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
   [super awakeFromFetch];
   
-  [self irReconcileObjectOrderWithKey:@"pageElements" usingArrayKeyed:@"pageElementOrder"];
-	
 	//	TBD: We’re assuming that everthing is restorable, might not be true if users pound on local drafts more
-	
-	NSFileManager * const fileManager = [NSFileManager defaultManager];	
+	//	TBD: Create sanitary worker
+	//	NSFileManager * const fileManager = [NSFileManager defaultManager];	
 	
 	[self performBlockSuppressingBlobRetrieval:^{
 		
 		if (![self validateThumbnailImageIfNeeded:nil]) {
-			[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
+			//	[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
 			self.thumbnailFilePath = nil;
 		}
 		
-		if (![self validateThumbnailImageIfNeeded:nil]) {
-			[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
+		if (![self validateLargeThumbnailImageIfNeeded:nil]) {
+			//	[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
 			self.largeThumbnailFilePath = nil;
 		}
 			
-		if (![self validateThumbnailImageIfNeeded:nil]) {
-			[fileManager removeItemAtPath:self.resourceFilePath error:nil];
+		if (![self validateResourceImageIfNeeded:nil]) {
+			//	[fileManager removeItemAtPath:self.resourceFilePath error:nil];
 			self.resourceFilePath = nil;
 		}
 		
@@ -190,21 +192,25 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	
 }
 
-- (NSArray *) pageElementOrder {
++ (NSSet *) keyPathsForValuesAffectingPageElements {
 
-  return [self irBackingOrderArrayKeyed:@"pageElementOrder"];
+	return [NSSet setWithObjects:@"pageElementOrder", nil];
 
 }
 
-- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
++ (NSSet *) keyPathsForValuesAffectingPageElementOrder {
 
-  [super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
-  
-  if ([inKey isEqualToString:@"pageElements"]) {
-    
-    [self irUpdateObjects:inObjects withRelationshipKey:@"pageElements" usingOrderArray:@"pageElementOrder" withSetMutation:inMutationKind];
-    
-  }
+	return [NSSet setWithObjects:@"pageElements", nil];
+
+}
+
++ (NSDictionary *) orderedRelationships {
+
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		
+		@"pageElementOrder", @"pageElements",
+		
+	nil];
 
 }
 
@@ -329,7 +335,16 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (BOOL) takeBlobFromTemporaryFile:(NSString *)aPath forKeyPath:(NSString *)fileKeyPath matchingURL:(NSURL *)anURL forKeyPath:(NSString *)urlKeyPath {
 
-	return [[WADataStore defaultStore] updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath];
+	NSError *error = nil;
+
+	if (![[WADataStore defaultStore] updateObject:self inContext:self.managedObjectContext takingBlobFromTemporaryFile:aPath usingResourceType:self.resourceType forKeyPath:fileKeyPath matchingURL:anURL forKeyPath:urlKeyPath error:&error]) {
+		
+		NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+		return NO;
+		
+	}
+	
+	return YES;
 
 }
 
@@ -412,9 +427,12 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 - (NSString *) thumbnailFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:@"thumbnailFilePath"];
+//	NSParameterAssert((![[NSFileManager defaultManager] fileExistsAtPath:primitivePath]));
 	
-	if (primitivePath)
+	if (primitivePath) {
+//		NSParameterAssert(([[NSFileManager defaultManager] fileExistsAtPath:[self absolutePathFromPath:primitivePath]]));
 		return [self absolutePathFromPath:primitivePath];
+	}
 	
 	if (!self.thumbnailURL)
 		return nil;
@@ -545,6 +563,27 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 + (NSSet *) keyPathsForValuesAffectingPresentableImage {
 
 	return [NSSet setWithObjects:
+		@"bestPresentableImage",
+	nil];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingBestPresentableImage {
+
+	return [NSSet setWithObjects:
+		kWAFileThumbnailURL,
+		kWAFileThumbnailFilePath,
+		kWAFileLargeThumbnailURL,
+		kWAFileLargeThumbnailFilePath,
+		kWAFileResourceURL,
+		kWAFileResourceFilePath,
+	nil];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingSmallestPresentableImage {
+
+	return [NSSet setWithObjects:
 		kWAFileThumbnailURL,
 		kWAFileThumbnailFilePath,
 		kWAFileLargeThumbnailURL,
@@ -556,6 +595,30 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 }
 
 - (UIImage *) presentableImage {
+
+	return [self bestPresentableImage];
+
+}
+
+- (UIImage *) smallestPresentableImage {
+
+	if ([self thumbnailFilePath])
+	if (self.thumbnailImage)
+		return self.thumbnailImage;
+	
+	if ([self largeThumbnailFilePath])
+	if (self.largeThumbnailImage)
+		return self.largeThumbnailImage;
+	
+	if ([self resourceFilePath])
+	if (self.resourceImage)
+		return self.resourceImage;
+	
+	return nil;
+	
+}
+
+- (UIImage *) bestPresentableImage {
 
 	if ([self resourceFilePath])
 	if (self.resourceImage)
@@ -753,7 +816,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	
 }
 
-- (void) setValidatesLargeThumbnailImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
+- (void) setValidatesThumbnailImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
 
 	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileValidatesThumbnailImage];
 
@@ -771,7 +834,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	
 }
 
-- (void) setValidatesThumbnailImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
+- (void) setValidatesLargeThumbnailImage:(BOOL)newFlag notify:(BOOL)firesKVONotifications {
 
 	[self associateObject:(id)(newFlag ? kCFBooleanTrue : kCFBooleanFalse) usingKey:&kWAFileValidatesLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:firesKVONotifications usingKey:kWAFileValidatesLargeThumbnailImage];
 

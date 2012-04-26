@@ -14,20 +14,40 @@
 #import "IRRemoteResourcesManager.h"
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
+#import "IRManagedObject+WAFileHandling.h"
 
 NSString * kWAOpenGraphElementImageFilePath = @"imageFilePath";
 NSString * kWAOpenGraphElementImageRemoteURL = @"imageRemoteURL";
 NSString * kWAOpenGraphElementImageImage = @"image";
 
+
+@interface WAOpenGraphElementImage (CoreDataGeneratedPrimitiveAccessors)
+
+- (void) setPrimitiveImageFilePath:(NSString *)newImageFilePath;
+- (NSString *) primitiveImageFilePath;
+
+@end
+
+
 @implementation WAOpenGraphElementImage (WAAdditions)
+
+- (void) setImageFilePath:(NSString *)newImageFilePath {
+
+	[self willChangeValueForKey:@"imageFilePath"];
+	[self setPrimitiveImageFilePath:[self relativePathFromPath:newImageFilePath]];
+	[self didChangeValueForKey:@"imageFilePath"];
+		
+	[self setImage:nil];
+
+}
 
 - (NSString *) imageFilePath {
 
 	NSString *primitivePath = [self primitiveValueForKey:kWAOpenGraphElementImageFilePath];
 	
 	if (primitivePath)
-		return primitivePath;
-	
+		return [self absolutePathFromPath:primitivePath];
+		
 	if (!self.imageRemoteURL)
 		return nil;
 	
@@ -46,7 +66,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 				
 			WAOpenGraphElementImage *updatedObject = (WAOpenGraphElementImage *)[[WADataStore defaultStore] updateObjectAtURI:ownURL inContext:nil takingBlobFromTemporaryFile:[tempFileURLOrNil path] usingResourceType:nil forKeyPath:@"imageFilePath" matchingURL:imageURL forKeyPath:@"imageRemoteURL"];
 			
-			if (updatedObject) {
+			if ([updatedObject hasChanges]) {
 			
 				NSError *savingError = nil;
 				if (![updatedObject.managedObjectContext save:&savingError])
@@ -96,7 +116,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 	image = [UIImage imageWithData:[NSData dataWithContentsOfMappedFile:imageFilePath]];
 	image.irRepresentedObject = [NSValue valueWithNonretainedObject:self];
 
-	[self irAssociateObject:image usingKey:kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
+	[self irAssociateObject:image usingKey:&kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:nil];
 	
 	return image;
 	
@@ -104,7 +124,7 @@ NSString * kWAOpenGraphElementImageImage = @"image";
 
 - (void) setImage:(UIImage *)newImage {
 
-	[self irAssociateObject:newImage usingKey:kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAOpenGraphElementImageImage];
+	[self irAssociateObject:newImage usingKey:&kWAOpenGraphElementImageImage policy:OBJC_ASSOCIATION_RETAIN_NONATOMIC changingObservedKey:kWAOpenGraphElementImageImage];
 
 }
 

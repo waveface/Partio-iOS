@@ -6,46 +6,49 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
-#import <objc/runtime.h>
-
-#import "WADefines.h"
-
-#import "WADataStore.h"
 #import "WATimelineViewControllerPhone.h"
-#import "WACompositionViewController.h"
-#import "WAPaginationSlider.h"
 
-#import "WARemoteInterface.h"
+#import <objc/runtime.h>
 
 #import "UIKit+IRAdditions.h"
 
-#import "WAArticleViewController.h"
-#import "WAPostViewControllerPhone.h"
-
-#import "WAArticleCommentsViewCell.h"
-#import "WAPostViewCellPhone.h"
-
-#import "WAGalleryViewController.h"
-#import "WAPulldownRefreshView.h"
-
-#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
-
-#import "WAUserInfoViewController.h"
-#import "WANavigationController.h"
-#import "IASKAppSettingsViewController.h"
-
+#import "WADefines.h"
+#import "WARemoteInterface.h"
+#import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
+#import "WAGalleryViewController.h"
+
+#import "WAArticleDraftsViewController.h"
+#import "WACompositionViewController.h"
 #import "WACompositionViewController+CustomUI.h"
+
+#import "WAArticleViewController.h"
+
+#import "WAUserInfoViewController.h"
+#import "IASKAppSettingsViewController.h"
+
+#import "WANavigationController.h"
 #import "WANavigationBar.h"
+
+#import "WAPaginationSlider.h"
+#import "WAArticleCommentsViewCell.h"
+#import "WAPostViewCellPhone.h"
+#import "WAPulldownRefreshView.h"
+#import "WAOverlayBezel.h"
+#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
+
+#import "WARepresentedFilePickerViewController.h"
+#import "WARepresentedFilePickerViewController+CustomUI.h"
+
+#import "WADatePickerViewController.h"
+#import "WAFilterPickerViewController.h"
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate>
+@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
-
-@property (nonatomic, readwrite, retain) WAApplicationDidReceiveReadingProgressUpdateNotificationView *readingProgressUpdateNotificationView;
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
@@ -53,15 +56,14 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData;
 
-- (void) beginCompositionSessionWithURL:(NSURL *)anURL;
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL onCompositionViewDidAppear:(void(^)(WACompositionViewController *compositionVC))callback;
 
-@property (nonatomic, readwrite, retain) NSString *lastScannedObjectIdentifier;
-@property (nonatomic, readwrite, retain) NSString *lastUserReactedScannedObjectIdentifier;
-- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback;
-- (void) retrieveLastScannedObjectWithCompletion:(void(^)(NSString *articleIdentifier, WAArticle *anArticleOrNil))callback;
+- (void) handleCompose:(UIBarButtonItem *)sender;
 
-- (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)anIdentifier;
-- (void) scrollToArticle:(WAArticle *)anArticle;
+- (void) handleDateSelect:(UIBarButtonItem *)sender;
+- (void) handleFilter:(UIBarButtonItem *)sender;
+- (void) handleCameraCapture:(UIBarButtonItem *)sender;
+- (void) handleUserInfo:(UIBarButtonItem *)sender;
 
 @end
 
@@ -71,21 +73,11 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize settingsActionSheetController;
-@synthesize readingProgressUpdateNotificationView;
-@synthesize lastScannedObjectIdentifier, lastUserReactedScannedObjectIdentifier;
 
 - (void) dealloc {
 	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[readingProgressUpdateNotificationView release];
-  [lastScannedObjectIdentifier release];
-	[lastUserReactedScannedObjectIdentifier release];
-
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kWACompositionSessionRequestedNotification object:nil];
 	[[WARemoteInterface sharedInterface] removeObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring"];
-		
-	[super dealloc];
   
 }
 
@@ -102,58 +94,74 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
 	
-	if (YES) {
+	self.navigationItem.titleView = WAStandardTitleView();
 	
-		__block __typeof__(self) nrSelf = self;
+//	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
 	
-		self.navigationItem.titleView = WAStandardTitleView();
-		
-		self.navigationItem.leftBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WASettingsGlyph"], nil, ^{
-			
-			[nrSelf handleSettings:nil];
-							
-		}),
-		
-		self.navigationItem.rightBarButtonItem = WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-			
-			[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-			
-		});
 	
-	} else {
+	 CGRect rect = (CGRect){0.0, 0.0, 1.0, 1.0};
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    CGContextSetFillColorWithColor(context, [[UIColor colorWithWhite:0 alpha:0] CGColor]);
+    CGContextFillRect(context, rect);
+
+    UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+		
+//	buttonImage = [UIImage imageNamed:@"top_icon_share.png"];
+//UIButton *buttonShare = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
+//[buttonShare setBackgroundImage:buttonImage forState:UIControlStateNormal];
+//[buttonShare addTarget:self action:@selector(buttonSharePressed)
+//      forControlEvents:UIControlEventTouchUpInside];
+//[buttonShare setShowsTouchWhenHighlighted:YES];];
+//    UIBarButtonItem *buttonBarShare = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_icon_share.png"] style:UIBarButtonItemStylePlain target:self action:@selector(buttonSharePressed:)];
+		
+	UIImage *cameraPressed = [UIImage imageNamed:@"CameraPressed"];
+	UIButton *cameraButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,cameraPressed.size.width,cameraPressed.size.height}];
+	[cameraButton setBackgroundImage:cameraPressed forState:UIControlStateHighlighted];
+	[cameraButton addTarget:self action:@selector(handleCameraCapture:) forControlEvents:UIControlEventTouchUpInside];
+	[cameraButton setShowsTouchWhenHighlighted:YES];
 	
-		self.navigationItem.titleView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-		
-		self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithCustomView:WAStandardTitleView()];
-		
-		self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithCustomView:((^ {
-		
-			__block __typeof__(self) nrSelf = self;
-				
-			IRTransparentToolbar *toolbar = [[[IRTransparentToolbar alloc] initWithFrame:(CGRect){ 0, 0, 110, 44 }] autorelease];
-			
-			toolbar.items = [NSArray arrayWithObjects:
-			
-				WABarButtonItem([UIImage imageNamed:@"WAUserGlyph"], nil, ^{
-					
-						[nrSelf handleSettings:nil];
-									
-				}),
-				
-				WABarButtonItem([UIImage imageNamed:@"WACompose"], nil, ^{
-					
-					[nrSelf performSelector:@selector(handleCompose:) withObject:nil];
-					
-				}),
-			
-			nil];
-			
-			return toolbar;
-		
-		})())];
 	
-	}
-			
+	UIImage *notePressed = [UIImage imageNamed:@"NotePressed"];
+	UIButton *noteButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,notePressed.size.width,notePressed.size.height}];
+	[noteButton setBackgroundImage:notePressed forState:UIControlStateHighlighted];
+	[noteButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
+	[noteButton setShowsTouchWhenHighlighted:YES];
+	
+	UIBarButtonItem *alphaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	alphaSpacer.width = 14.0;
+	
+	UIBarButtonItem *omegaSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	omegaSpacer.width = 34.0;
+	
+	UIBarButtonItem *zeroSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	zeroSpacer.width = -10;
+	
+	self.toolbarItems = [NSArray arrayWithObjects:
+	
+		alphaSpacer,
+		
+		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
+		
+		omegaSpacer,
+		
+		[[UIBarButtonItem alloc] initWithCustomView:noteButton],
+
+		zeroSpacer,
+		
+		[[UIBarButtonItem alloc] initWithCustomView:cameraButton],
+
+		omegaSpacer,
+		
+		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
+		
+		alphaSpacer,
+	
+	nil];
+	
+	 
 	return self;
   
 }
@@ -290,7 +298,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (settingsActionSheetController)
 		return settingsActionSheetController;
 	
-	__block __typeof(self) nrSelf = self;
+	__weak WATimelineViewControllerPhone *nrSelf = self;
 	
 	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:^{
@@ -310,7 +318,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-	settingsActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil] retain];
+	settingsActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:cancelAction destructiveAction:signOutAction otherActions:nil];
 
 	return settingsActionSheetController;
 
@@ -321,7 +329,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (managedObjectContext)
 		return managedObjectContext;
 	
-	managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+	managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 
 	return managedObjectContext;
 
@@ -332,7 +340,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (fetchedResultsController)
 		return fetchedResultsController;
 
-	NSFetchRequest *fr = [[[WADataStore defaultStore] newFetchRequestForAllArticles] autorelease];
+	NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForAllArticles];
 
 	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	
@@ -346,40 +354,16 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
-- (void) viewDidUnload {
-		
-	self.readingProgressUpdateNotificationView = nil;
-	
-	[super viewDidUnload];
-	
-}
-
 - (WAPulldownRefreshView *) defaultPulldownRefreshView {
 
-	__block WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
-	
-	return pulldownHeader;
+	return [WAPulldownRefreshView viewFromNib];
 		
-}
-
-- (WAApplicationDidReceiveReadingProgressUpdateNotificationView *) readingProgressUpdateNotificationView {
-
-	if (readingProgressUpdateNotificationView)
-		return readingProgressUpdateNotificationView;
-		
-	readingProgressUpdateNotificationView = [[WAApplicationDidReceiveReadingProgressUpdateNotificationView viewFromNib] retain];
-	readingProgressUpdateNotificationView.hidden = YES;
-	
-	return readingProgressUpdateNotificationView;
-
 }
 
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
 		
-	__block __typeof__(self) nrSelf = self;
-	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
 	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
@@ -399,283 +383,38 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		[pulldownHeader setBusy:NO animated:YES];
 	};
 	
+	self.tableView.separatorColor = [UIColor colorWithRed:232.0/255.0 green:232/255.0 blue:226/255.0 alpha:1.0];
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	
-	__block UIView *backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-	self.tableView.backgroundView = backgroundView;
-	
-	__block UIView *actualBackgroundView = [[[UIView alloc] initWithFrame:backgroundView.bounds] autorelease];
-	[backgroundView addSubview:actualBackgroundView];
-	UIImage *backgroundImage = [UIImage imageNamed:@"WABackground"];
-	CGSize backgroundImageSize = backgroundImage.size;
-	actualBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	actualBackgroundView.backgroundColor = [UIColor colorWithPatternImage:backgroundImage];
-	
-	__block WAApplicationDidReceiveReadingProgressUpdateNotificationView *progressUpdateNotification = [self readingProgressUpdateNotificationView];
-	
-	progressUpdateNotification.bounds = (CGRect){
-		CGPointZero,
-		(CGSize){
-			CGRectGetWidth(self.tableView.bounds),
-			progressUpdateNotification.bounds.size.height
-		}
-	};
-	
-	[self.tableView addSubview:progressUpdateNotification];
-	
-	
-	self.tableView.onLayoutSubviews = ^ {
-	
-		CGRect tableViewBounds = nrSelf.tableView.bounds;
-		CGPoint tableViewContentOffset = nrSelf.tableView.contentOffset;
-		UIEdgeInsets tableViewContentInset = [nrSelf.tableView actualContentInset];
-		
-		nrSelf.tableView.scrollIndicatorInsets = tableViewContentInset;
-		
-		actualBackgroundView.bounds = (CGRect){
-			CGPointZero,
-			(CGSize){
-				CGRectGetWidth(tableViewBounds),
-				backgroundImageSize.height * ceilf((3 * CGRectGetHeight(tableViewBounds)) / backgroundImageSize.height)
-			}
-		};
-		
-		actualBackgroundView.center = (CGPoint){
-			
-			0.5 * CGRectGetWidth(tableViewBounds),
-
-			backgroundImageSize.height + remainderf(
-				0.5 * CGRectGetHeight(actualBackgroundView.bounds) - remainderf(tableViewContentOffset.y, backgroundImageSize.height),
-				backgroundImageSize.height
-			)
-			
-		};
-		
-		nrSelf.readingProgressUpdateNotificationView.center = (CGPoint){
-			tableViewContentOffset.x + 0.5 * CGRectGetWidth(tableViewBounds),
-			tableViewContentOffset.y + 0.5 * CGRectGetHeight(nrSelf.readingProgressUpdateNotificationView.bounds)
-		};
-		
-	};
+	UILongPressGestureRecognizer *longPressGR = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenu:)];
+	[self.tableView addGestureRecognizer:longPressGR];
 	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
   
 	[super viewWillAppear:animated];
-  [self refreshData];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animated];
+	[self.navigationController.toolbar setTintColor:[UIColor whiteColor]];
+	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[self.navigationController setToolbarHidden:NO animated:animated];
 	
-	self.readingProgressUpdateNotificationView.hidden = YES;
-	self.tableView.contentInset = UIEdgeInsetsZero;
-
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
+  
+	[self refreshData];
 	
 	self.tableView.contentInset = UIEdgeInsetsZero;
-	self.readingProgressUpdateNotificationView.hidden = YES;
-	self.readingProgressUpdateNotificationView.onAction = nil;
-	self.readingProgressUpdateNotificationView.onClear = nil;
-
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
 	
-	CFAbsoluteTime beforeLastScannedObjectRetrieval = CFAbsoluteTimeGetCurrent();
-	
-	void (^presentInterface)(NSString *) = ^ (NSString *incomingIdentifier) {
-	
-		CFAbsoluteTime currentTime = CFAbsoluteTimeGetCurrent();
-		CFTimeInterval elapsedTime = (currentTime - beforeLastScannedObjectRetrieval);
-		
-		if (![nrSelf handleIncomingLastScannedObjectIdentifier:incomingIdentifier])
-			return;
-			
-		if (elapsedTime <= 3) {
-		
-			if (![nrSelf.lastUserReactedScannedObjectIdentifier isEqualToString:incomingIdentifier]) {
-		
-				NSLog(@"autoscroll, nrSelf.lastUserReactedScannedObjectIdentifier -> %@", incomingIdentifier);
-				
-				nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-				
-				[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-
-					[nrSelf.fetchedResultsController performFetch:nil];
-					[nrSelf.tableView reloadData];
-					
-					[nrSelf scrollToArticle:article];
-					
-				}];
-			
-			}
-			
-			return;
-			
-		} else {
-		
-			if (nrNotificationView.hidden) {
-			
-				[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-				
-				[nrNotificationView enqueueAnimationForVisibility:YES withAdditionalAnimation:^{
-				
-					UIEdgeInsets newInsets = self.tableView.contentInset;
-					newInsets.top += CGRectGetHeight(nrNotificationView.bounds);
-					self.tableView.contentInset = newInsets;
-					[nrSelf.tableView layoutSubviews];
-								
-				} completion: ^ (BOOL didFinish) {
-
-					[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-					
-				}];
-			
-			}
-		
-		}
-		
-	};
-	
-	[self retrieveLastScannedObjectWithCompletion: ^ (NSString *incomingIdentifier, WAArticle *anArticleOrNil) {
-	
-		NSLog(@"retrieveLastScannedObjectWithCompletion -> %@", incomingIdentifier);
-	
-		if (!incomingIdentifier)
-			return;
-	
-		nrSelf.lastScannedObjectIdentifier = anArticleOrNil.identifier;
-	
-		if (![nrSelf isViewLoaded])
-			return;
-		
-		if (anArticleOrNil) {
-			presentInterface(incomingIdentifier);
-			return;
-		}
-		
-		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
-		
-		[WAArticle synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-		nil] completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				
-				if (didFinish) {
-				
-					NSError *savingError = nil;
-					if (![temporalContext save:&savingError])
-						NSLog(@"Error saving: %@", savingError);
-					
-					[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:temporalContext onSuccess:^(NSString *identifier, WAArticle *article) {
-					
-						if (!article) {
-							nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-							return;
-						}
-						
-						presentInterface(incomingIdentifier);
-						
-					}];
-				
-				}
-				
-				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-			
-			});
-			
-		}];
-		
-		//	?
-		
-	}];
-
-}
-
-- (BOOL) handleIncomingLastScannedObjectIdentifier:(NSString *)incomingIdentifier {
-
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self.readingProgressUpdateNotificationView) nrNotificationView = self.readingProgressUpdateNotificationView;
-	
-	if ([self.lastUserReactedScannedObjectIdentifier isEqualToString:self.lastScannedObjectIdentifier])
-		return NO;
-	
-	nrNotificationView.onAction = ^ {
-	
-		NSLog(@"self.lastUserReactedScannedObjectIdentifier -> %@", nrSelf.lastUserReactedScannedObjectIdentifier);
-		nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-	
-		[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
-			
-			UIEdgeInsets newInsets = self.tableView.contentInset;
-			newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
-			self.tableView.contentInset = newInsets;
-			[nrSelf.tableView layoutSubviews];
-			
-		} completion:nil];
-		
-		[[WADataStore defaultStore] fetchArticleWithIdentifier:incomingIdentifier usingContext:nrSelf.managedObjectContext onSuccess:^(NSString *identifier, WAArticle *article) {
-		
-			//	Fixme: MOMENTARILY HIGHLGIGHT THE CELL
-		
-			[nrSelf scrollToArticle:article];
-			
-		}];
-		
-		nrNotificationView.onAction = nil;
-		
-	};
-	
-	nrNotificationView.onClear = ^ {
-	
-		NSLog(@"self.lastUserReactedScannedObjectIdentifier -> %@", nrSelf.lastUserReactedScannedObjectIdentifier);
-		nrSelf.lastUserReactedScannedObjectIdentifier = incomingIdentifier;
-		
-		[nrNotificationView enqueueAnimationForVisibility:NO withAdditionalAnimation:^{
-			
-			UIEdgeInsets newInsets = nrSelf.tableView.contentInset;
-			newInsets.top -= CGRectGetHeight(nrNotificationView.bounds);
-			nrSelf.tableView.contentInset = newInsets;
-			[nrSelf.tableView layoutSubviews];
-			
-		} completion:nil];
-		
-		nrNotificationView.onClear = nil;
-		
-	};
-	
-	return YES;
-	
-}
-
-- (void) scrollToArticle:(WAArticle *)anArticleOrNil {
-
-	NSParameterAssert(anArticleOrNil.managedObjectContext == self.managedObjectContext);
-	NSIndexPath *objectIndexPath = [self.fetchedResultsController indexPathForObject:anArticleOrNil];
-	
-	if (objectIndexPath) {
-	
-			CGRect objectRect = [self.tableView rectForRowAtIndexPath:objectIndexPath];
-			
-			if (CGRectEqualToRect(CGRectIntersection(objectRect, self.tableView.bounds), CGRectNull)) {
-			
-				//	Only scroll if the cell is not already shown
-			
-				[self.tableView setContentOffset:(CGPoint){
-					self.tableView.contentOffset.x,
-					MAX(0, objectRect.origin.y - 24)
-				} animated:YES];
-			
-			}
-			
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMenuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
 
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
+
+	[self.navigationController setToolbarHidden:YES animated:animated];
+	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	[[UISegmentedControl appearance] setTintColor:[UIColor colorWithWhite:213/255.0 alpha:1]];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
 
 	NSArray *shownArticleIndexPaths = [self.tableView indexPathsForVisibleRows];
 
@@ -704,20 +443,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		}];
 	
 	}
-	
-	//	NSString *newLastScannedObjectIdentifier = sentArticle.identifier;
-	
-	[self setLastScannedObject:sentArticle completion:^(BOOL didFinish) {
 		
-		//	Don’t go back to what we have said
-		//	self.lastScannedObjectIdentifier = newLastScannedObjectIdentifier;
-		//	self.lastUserReactedScannedObjectIdentifier = newLastScannedObjectIdentifier;
-		
-	}];
-	
-	self.readingProgressUpdateNotificationView.onAction = nil;
-	self.readingProgressUpdateNotificationView.onClear = nil;
-	
 	[self.tableView resetPullDown];
 	//	self.tableView.contentOffset = UIEdgeInsetsZero;
 	
@@ -756,151 +482,20 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
-- (UIView *) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	
-	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-
-}
-
-- (UIView *) tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	
-	return [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-
-	return 4;
-
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-
-	return 4;
-
-}
-
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	static NSString *textOnlyCellIdentifier = @"PostCell-TextOnly";
-	static NSString *imageCellIdentifier = @"PostCell-Stacked";
-	static NSString *webLinkCellIdentifier = @"PostCell-WebLink";
-  static NSString *webLinkCellWithoutPhotoIdentifier = @"PostCell-WebLinkNoPhoto";
-  
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-  
-  BOOL postHasFiles = (BOOL)!![post.files count];
-  BOOL postHasPreview = (BOOL)!![post.previews count];
-  
-  NSString *identifier;
-	WAPostViewCellStyle style;
-	WAPostViewCellPhone *cell;
 	
-	// TODO: put these logic into cell.
-	if (postHasPreview) {
-		WAPreview *latestPreview = (WAPreview *)[[[post.previews allObjects] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
-			[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-		nil]] lastObject];
-		
-		identifier = webLinkCellIdentifier;
-		style = WAPostViewCellStyleWebLink;
-  	if(latestPreview.thumbnail == 0){
-			identifier = webLinkCellWithoutPhotoIdentifier;
-			style = WAPostViewCellStyleWebLinkWithoutPhoto;
-		}
-		
-		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:identifier];
-		if (!cell) {
-			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:style reuseIdentifier:identifier] autorelease];
-			cell.commentLabel.userInteractionEnabled = YES;
-		}
-		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
-		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-		cell.extraInfoLabel.text = @"";
-	 
-		cell.accessibilityLabel = @"Text";
-		cell.accessibilityValue = post.text;
-
-		cell.previewBadge.preview = latestPreview;
-		
-		cell.accessibilityLabel = @"Preview";
-		cell.accessibilityHint = latestPreview.graphElement.title;
-		cell.accessibilityValue = latestPreview.graphElement.text;
-		
-		cell.previewImageView.image = latestPreview.thumbnail;
-		cell.previewTitleLabel.text = latestPreview.graphElement.title;
-		cell.previewProviderLabel.text = latestPreview.graphElement.providerURL;
-		
-		cell.previewImageBackground.layer.shadowColor = [[UIColor grayColor] CGColor];
-		cell.previewImageBackground.layer.shadowOffset = CGSizeMake(0, 1.0);
-		cell.previewImageBackground.layer.shadowOpacity = 1.0f;
-		cell.previewImageBackground.layer.shadowRadius = 1.0f;
+	return [WAPostViewCellPhone cellRepresentingObject:post inTableView:tableView];
 	
-	} else if (postHasFiles) {
-	
-		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:imageCellIdentifier];
-		if (!cell) {
-			
-			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleImageStack reuseIdentifier:imageCellIdentifier] autorelease];
-			cell.imageStackView.delegate = self;
-			cell.commentLabel.userInteractionEnabled = YES;
-					
-		}
-		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
-		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-		cell.extraInfoLabel.text = @"";
-	 
-		cell.accessibilityLabel = @"Text";
-		cell.accessibilityValue = post.text;
-			
-		objc_setAssociatedObject(cell.imageStackView, &WAPostsViewControllerPhone_RepresentedObjectURI, [[post objectID] URIRepresentation], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
-		[cell.imageStackView setImages:[[post.fileOrder subarrayWithRange:(NSRange){ 0, MIN([post.fileOrder count], 3) }] irMap: ^ (id inObject, NSUInteger index, BOOL *stop) {
-			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:inObject];
-			return file.thumbnailImage;
-		}] asynchronously:YES withDecodingCompletion:nil];
-		
-		if ([post.files count] > 3){
-			cell.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
-		}
-	
-		cell.accessibilityLabel = @"Photo";
-		cell.accessibilityHint = [NSString stringWithFormat:@"%d photo(s)", [post.files count]];
-  
-  } else {
-		cell = (WAPostViewCellPhone *)[tableView dequeueReusableCellWithIdentifier:textOnlyCellIdentifier];
-		if (!cell) {
-			
-			cell = [[[WAPostViewCellPhone alloc] initWithPostViewCellStyle:WAPostViewCellStyleDefault reuseIdentifier:textOnlyCellIdentifier] autorelease];
-			cell.imageStackView.delegate = self;
-			cell.commentLabel.userInteractionEnabled = YES;
-					
-		}
-		
-		cell.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:post.timestamp] lowercaseString];
-		cell.commentLabel.attributedText = [cell.commentLabel attributedStringForString:post.text];
-		cell.extraInfoLabel.text = @"";
-	 
-		cell.accessibilityLabel = @"Text";
-		cell.accessibilityValue = post.text;
-	}
-	return cell;
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
   
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	UIFont *baseFont = [UIFont fontWithName:@"Helvetica" size:14.0];
-  CGFloat height = [post.text sizeWithFont:baseFont constrainedToSize:(CGSize){
-		CGRectGetWidth(tableView.frame) - 80,
-		9999.0
-	} lineBreakMode:UILineBreakModeWordWrap].height;
-
-	return height + ([post.files count] ? 250 : [post.previews count] ? 128 : 36);
-	
+	return [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
+		
 }
 
 - (IBAction) actionSettings:(id)sender {
@@ -911,7 +506,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
   
-  return newOrientation == UIInterfaceOrientationPortrait;	
+	return newOrientation != UIInterfaceOrientationPortraitUpsideDown;
 	
 }
 
@@ -987,7 +582,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			break;
 		}
 		case NSFetchedResultsChangeUpdate: {
-			NSParameterAssert(indexPath && !newIndexPath);
 			[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 			break;
 		}
@@ -1008,99 +602,117 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	UIMenuController *menuController = [UIMenuController sharedMenuController];
+	if ([menuController isMenuVisible]) {
+		
+		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+		if (indexPath)
+			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+		
+		return;
+		
+	}
+	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
-	BOOL photoPost = (BOOL)!![post.files count];
 	
 	__block UIViewController *pushedVC = nil;
   
-	if (photoPost) {
-		
-		pushedVC = [WAGalleryViewController controllerRepresentingArticleAtURI:postURL];
+	if([post.previews count])
+		WAPostAppEvent(@"View Preview Post", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
+	else if([post.files count])
+		WAPostAppEvent(@"View Photo Post", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
+	else 
+		WAPostAppEvent(@"View Text Post", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
 	
-	} else {
-		
-		pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
-	
-	}
+	pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
 
-	//	Instead of this…
-	//	
-	//		NSString *articleTitle = post.text;
-	//		if (![[articleTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length])
-	//			articleTitle = @"Post";
-	//		
-	//		self.navigationItem.backBarButtonItem = [IRBarButtonItem itemWithTitle:articleTitle action:nil];
-	//		
-	//		__block __typeof__(self) nrSelf = self; 
-	//		galleryViewController.onDismiss = ^ {
-	//			
-	//			nrSelf.navigationItem.backBarButtonItem = nil;
-	//			
-	//		};
-
-	pushedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem([UIImage imageNamed:@"WABackGlyph"], nil, ^ {
-		
-		[pushedVC.navigationController popViewControllerAnimated:YES];
-	
-	});
-		
-	pushedVC.navigationItem.hidesBackButton = YES;
-		
-	[self.navigationController pushViewController:pushedVC animated:YES];
+ 	[self.navigationController pushViewController:pushedVC animated:YES];
 
 }
 
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL {
 
+	[self beginCompositionSessionWithURL:anURL onCompositionViewDidAppear:nil];
+
+}
+
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
+
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
 	
 		[compositionVC dismissModalViewControllerAnimated:YES];
+		compositionVC = nil;
 		
 	}];
 	
-  [self presentModalViewController:[compositionVC wrappingNavigationController] animated:YES];
+  [self presentViewController:[compositionVC wrappingNavigationController] animated:YES completion:^{
+		
+		if (callback)
+			callback(compositionVC);
+		
+	}];
 	
+}
+
+- (BOOL) articleDraftsViewController:(WAArticleDraftsViewController *)aController shouldEnableArticle:(NSURL *)anObjectURIOrNil {
+
+	return ![[WADataStore defaultStore] isUpdatingArticle:anObjectURIOrNil];
+
+}
+
+- (void) articleDraftsViewController:(WAArticleDraftsViewController *)aController didSelectArticle:(NSURL *)anObjectURIOrNil {
+
+  [aController dismissViewControllerAnimated:YES completion:^{
+
+		[self beginCompositionSessionWithURL:anObjectURIOrNil];
+		
+	}];
+
 }
 
 - (void) handleCompose:(UIBarButtonItem *)sender {
 
-	[self beginCompositionSessionWithURL:nil];
-  
-}
-
-- (void) handleSettings:(UIBarButtonItem *)sender  {
-
-	WAUserInfoViewController *userInfoVC = [[[WAUserInfoViewController alloc] init] autorelease];
-	UINavigationController *wrappingNavC = [[[WANavigationController alloc] initWithRootViewController:userInfoVC] autorelease];
-	
-	__block __typeof__(self) nrSelf = self;
-	
-	userInfoVC.navigationItem.leftBarButtonItem = WABarButtonItem(nil, NSLocalizedString(@"ACTION_DONE", nil), ^{
+	if ([[WADataStore defaultStore] hasDraftArticles]) {
 		
-		[wrappingNavC dismissModalViewControllerAnimated:YES];
+		WAArticleDraftsViewController *draftsVC = [[WAArticleDraftsViewController alloc] init];
+		draftsVC.delegate = self;
 		
-	});
-	
-	__block UIBarButtonItem *actionItem = WABarButtonItem([UIImage imageNamed:@"WAActionGlyph"], nil, ^{
+		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
+		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
-		[nrSelf.settingsActionSheetController.managedActionSheet showFromBarButtonItem:actionItem animated:YES];
+		__block __typeof__(self) nrSelf = self;
+				
+		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
 			
-	});
+			[nrSelf dismissViewControllerAnimated:YES completion:nil];
+			
+		}];
+		
+		[self presentViewController:navC animated:YES completion:nil];
 	
-	userInfoVC.navigationItem.rightBarButtonItem = actionItem;
+	} else {
+
+		[self beginCompositionSessionWithURL:nil];
 	
-	wrappingNavC.navigationBar.tintColor = [UIColor brownColor];
-	[((WANavigationBar *)wrappingNavC.navigationBar) setCustomBackgroundView:[WANavigationBar defaultPatternBackgroundView]];
-	[self presentModalViewController:wrappingNavC animated:YES];
-	
+	}
+  
 }
 
 - (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
-  
-	NSURL *representedObjectURI = objc_getAssociatedObject(aStackView, &WAPostsViewControllerPhone_RepresentedObjectURI);
+
+	NSIndexPath *cellIndexPath = [self.tableView indexPathForRowAtPoint:[self.tableView convertPoint:aStackView.center fromView:aStackView.superview]];
+	
+	if (!cellIndexPath)
+		return;
+	
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:cellIndexPath];
+	if (![cell isKindOfClass:[WAPostViewCellPhone class]])
+		return;
+	
+	NSURL *representedObjectURI = [[cell.representedObject objectID] URIRepresentation];
 	
 	__block __typeof__(self) nrSelf = self;
 	__block WAGalleryViewController *galleryViewController = nil;
@@ -1205,7 +817,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 				if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
 					return anArticle;
 				
-				return nil;
+				return (WAArticle *)nil;
 				
 			}] lastObject];
 			
@@ -1225,6 +837,334 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 
+}
+
+- (BOOL) canBecomeFirstResponder {
+
+	return [self isViewLoaded];
+
+}
+
+- (BOOL) canPerformAction:(SEL)anAction withSender:(id)sender {
+
+	if (anAction == @selector(toggleFavorite:))
+		return YES;
+	
+	if (anAction == @selector(editCoverImage:))
+		return YES;
+	
+	if (anAction == @selector(removeArticle:))
+		return YES;
+	
+	return NO;
+
+}
+
+- (void) handleMenu:(UILongPressGestureRecognizer *)longPress {
+
+	UIMenuController * const menuController = [UIMenuController sharedMenuController];
+	if (menuController.menuVisible)
+		return;
+	
+	BOOL didBecomeFirstResponder = [self becomeFirstResponder];
+	NSAssert1(didBecomeFirstResponder, @"%s must require cell to become first responder", __PRETTY_FUNCTION__);
+
+	NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[longPress locationInView:self.tableView]];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	
+	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:indexPath];
+	NSParameterAssert(cell.article == article);	//	Bleh
+	
+	if (![cell isSelected])
+		[self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	
+	menuController.arrowDirection = UIMenuControllerArrowDown;
+		
+	NSMutableArray *menuItems = [NSMutableArray array];
+		
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:([article.favorite isEqual:(id)kCFBooleanTrue] ?
+		NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Action marking article as not favorite") :
+		NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Action marking article as favorite")) action:@selector(toggleFavorite:)]];
+	
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Action deleting an article") action:@selector(removeArticle:)]];
+	
+	if ([cell.article.files count] > 1)
+		[menuItems addObject:[[UIMenuItem alloc] initWithTitle:NSLocalizedString(@"ACTION_CHANGE_REPRESENTING_FILE", @"Action changing representing file of an article") action:@selector(editCoverImage:)]];
+	
+	[menuController setMenuItems:menuItems];
+	[menuController update];
+	
+	CGRect onScreenCellBounds = CGRectIntersection(cell.bounds, [self.tableView convertRect:self.tableView.bounds toView:cell]);
+	
+	[menuController setTargetRect:IRGravitize(onScreenCellBounds, (CGSize){ 8, 8}, kCAGravityCenter) inView:cell];
+	[menuController setMenuVisible:YES animated:NO];
+	
+}
+
+- (void) handleMenuWillHide:(NSNotification *)note {
+
+	NSIndexPath *selectedRowIndexPath = [self.tableView indexPathForSelectedRow];
+
+	if (selectedRowIndexPath)
+		[self.tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+
+}
+
+- (void) toggleFavorite:(id)sender {
+	
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
+	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+	article.modificationDate = [NSDate date];
+	
+	NSError *savingError = nil;
+	if (![article.managedObjectContext save:&savingError])
+		NSLog(@"Error saving: %@", savingError);
+	
+	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+	
+	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+		(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+		
+	nil] onSuccess:^{
+		
+		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
+	} onFailure:^(NSError *error) {
+		
+		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+		
+	}];
+	
+	
+}
+
+- (void) editCoverImage:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
+	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController defaultAutoSubmittingControllerForArticle:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
+	
+		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		picker = nil;
+		
+	}];
+	
+	picker.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
+	
+		[picker.navigationController dismissViewControllerAnimated:YES completion:nil];
+		picker = nil;
+				
+	}];
+	
+	WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:picker];
+	[self.navigationController presentViewController:navC animated:YES completion:nil];
+	
+}
+
+- (void) removeArticle:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
+	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Title for cancelling an action") block:nil];
+	
+	IRAction *deleteAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Title for deleting an article from the Timeline") block:^ {
+	
+		article.hidden = (id)kCFBooleanTrue;
+		article.modificationDate = [NSDate date];
+		
+		NSError *savingError = nil;
+		if (![article.managedObjectContext save:&savingError])
+			NSLog(@"Error saving: %@", savingError);
+		
+		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+		
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			
+			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+			(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
+			
+		nil] onSuccess:^{
+			
+			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+			
+		} onFailure:^(NSError *error) {
+			
+			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+			
+		}];
+	
+	}];
+	
+	NSString *deleteTitle = NSLocalizedString(@"DELETE_POST_CONFIRMATION_DESCRIPTION", @"Title for confirming a post deletion");
+	
+	IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:deleteTitle cancelAction:cancelAction destructiveAction:deleteAction otherActions:nil];
+	
+	[[controller managedActionSheet] showInView:self.view];
+		
+}
+
+- (void) handleDateSelect:(UIBarButtonItem *)sender {
+
+	__block WADatePickerViewController *dpVC = [WADatePickerViewController controllerWithCompletion:^(NSDate *date) {
+	
+		if (date) {
+
+			NSFetchRequest *fr = [[WADataStore defaultStore] newFetchRequestForNewestArticleOnDate:date];
+			
+			WAArticle *article = (WAArticle *)[[self.managedObjectContext executeFetchRequest:fr error:nil] lastObject];
+			
+			if (article) {
+				
+				NSIndexPath *indexPath = [self.fetchedResultsController indexPathForObject:article];
+				
+				if (indexPath) {
+				
+					[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+				
+				}
+				
+			}
+		
+		}
+	
+		[dpVC willMoveToParentViewController:nil];
+		[dpVC removeFromParentViewController];
+		[dpVC.view removeFromSuperview];
+		[dpVC didMoveToParentViewController:nil];
+		
+		dpVC = nil;
+		
+	}];
+	
+		
+	NSFetchedResultsController *frc = self.fetchedResultsController;
+	NSFetchRequest *fr = frc.fetchRequest;
+	NSPredicate *currentPredicate = fr.predicate;
+
+	WADataStore *ds = [WADataStore defaultStore];
+	NSFetchRequest *oldestArticleFR = [ds newFetchRequestForOldestArticle];
+	oldestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:oldestArticleFR.predicate, currentPredicate, nil]];
+	
+	NSFetchRequest *newestArticleFR = [ds newFetchRequestForNewestArticle];
+	newestArticleFR.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:newestArticleFR.predicate, currentPredicate, nil]];
+	
+	WAArticle *oldestArticle = [[self.managedObjectContext executeFetchRequest:oldestArticleFR error:nil] lastObject];
+	
+	WAArticle *newestArticle = [[self.managedObjectContext executeFetchRequest:newestArticleFR error:nil] lastObject];
+	
+	NSDate *minDate = oldestArticle.modificationDate ? oldestArticle.modificationDate : oldestArticle.creationDate;
+	
+	NSDate *maxDate = newestArticle.modificationDate ? newestArticle.modificationDate : newestArticle.creationDate;
+	
+	NSCParameterAssert(minDate && maxDate);
+	dpVC.minDate = minDate;
+	dpVC.maxDate = maxDate;
+	
+	UIViewController *hostingVC = self.navigationController;
+	if (!hostingVC)
+		hostingVC = self;
+	
+	[hostingVC addChildViewController:dpVC];
+	
+	dpVC.view.frame = hostingVC.view.bounds;
+	[hostingVC.view addSubview:dpVC.view];
+	[dpVC didMoveToParentViewController:hostingVC];
+
+}
+
+- (void) handleFilter:(UIBarButtonItem *)sender {
+
+	__block WAFilterPickerViewController *fpVC = [WAFilterPickerViewController controllerWithCompletion:^(NSFetchRequest *fr) {
+	
+		if (fr) {
+		
+			self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fr managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+			
+			self.fetchedResultsController.delegate = self;
+			[self.fetchedResultsController performFetch:nil];
+			
+			[self.tableView setContentOffset:CGPointZero animated:NO];
+			[self.tableView reloadData];
+		
+		}
+		
+		[fpVC willMoveToParentViewController:nil];
+		[fpVC removeFromParentViewController];
+		[fpVC.view removeFromSuperview];
+		[fpVC didMoveToParentViewController:nil];
+		
+		fpVC = nil;
+		
+	}];
+	
+	UIViewController *hostingVC = self.navigationController;
+	if (!hostingVC)
+		hostingVC = self;
+	
+	[hostingVC addChildViewController:fpVC];
+	
+	fpVC.view.frame = hostingVC.view.bounds;
+	[hostingVC.view addSubview:fpVC.view];
+	[fpVC didMoveToParentViewController:hostingVC];
+
+}
+
+- (void) handleCameraCapture:(UIBarButtonItem *)sender  {
+
+	[self beginCompositionSessionWithURL:nil onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
+	
+		[compositionVC handleImageAttachmentInsertionRequestWithSender:compositionVC.view];
+	
+	}];
+
+}
+
+- (void) handleUserInfo:(UIBarButtonItem *)sender  {
+
+	WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
+	
+	__weak WATimelineViewControllerPhone *wSelf = self;
+	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
+	
+	userInfoVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
+		
+		[wUserInfoVC.navigationController dismissViewControllerAnimated:YES completion:nil];
+		
+	}];
+	
+	userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) action:^{
+
+		IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
+		
+		NSString *alertTitle = NSLocalizedString(@"ACTION_SIGN_OUT", nil);
+		NSString *alertText = NSLocalizedString(@"SIGN_OUT_CONFIRMATION", nil);
+		
+		[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:
+			
+			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
+				
+				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+				
+			}],
+			
+		nil]] show];
+		
+	}];
+	
+	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
+	[self presentViewController:wrappingNavC animated:YES completion:nil];
+	
 }
 
 @end

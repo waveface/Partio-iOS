@@ -10,6 +10,43 @@
 
 @implementation WARemoteInterface (Posts)
 
++ (NSDictionary *) postEntityWithGroupID:(NSString *)groupID postID:(NSString *)postID text:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)previewRep isFavorite:(BOOL)isFavorite isHidden:(BOOL)isHidden {
+
+	NSMutableDictionary *sentData = [NSMutableDictionary dictionary];
+
+	[sentData setObject:@"text" forKey:@"type"];
+
+	if (groupID)
+		[sentData setObject:groupID forKey:@"group_id"];
+	
+	if (postID)
+		[sentData setObject:postID forKey:@"post_id"];
+	
+	if (text)
+		[sentData setObject:IRWebAPIKitStringValue(text) forKey:@"content"];
+	
+	if ([attachmentIDs count]) {
+		[sentData setObject:[attachmentIDs JSONString] forKey:@"attachment_id_array"];
+		[sentData setObject:@"image" forKey:@"type"];
+	}
+	
+	if (mainAttachmentID)
+		[sentData setObject:mainAttachmentID forKey:@"cover_attach"];
+	
+	if (previewRep) {
+		[sentData setObject:[previewRep JSONString] forKey:@"preview"];
+		[sentData setObject:@"link" forKey:@"type"];
+	}
+	
+	//	This is fubar, we should NOT use 1 to 5 for fave and string literals for hidden status
+	
+	[sentData setObject:(isHidden ? @"true" : @"false") forKey:@"hidden"];
+	[sentData setObject:(isFavorite ? @"1" : @"0") forKey:@"favorite"];
+	
+	return sentData;
+
+}
+
 - (void) retrievePost:(NSString *)anIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(anIdentifier);
@@ -42,9 +79,9 @@
 	NSString *datum = referencedPostOrNil;
 	if (!datum) {
 	
-		NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 		formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
-		formatter.locale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"] autorelease];
+		formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
 		formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
 		datum = [formatter stringFromDate:referencedDateOrNil];
 	
@@ -55,7 +92,7 @@
 		aGroupIdentifier, @"group_id",
 		datum, @"datum",
     
-                [NSString stringWithFormat:@"%@%lu", 
+                [NSString stringWithFormat:@"%@%i", 
                   (positiveOrNegativeNumberOfPostsToExpandSearching > 0) ? @"+" : @"",
                   positiveOrNegativeNumberOfPostsToExpandSearching
                 ], @"limit",
@@ -101,32 +138,38 @@
 
 	NSParameterAssert(aGroupIdentifier);
 	
-	NSString *usedType = @"text";
-	
-	NSMutableDictionary *sentData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-	
-		aGroupIdentifier, @"group_id",
-	
-	nil];
-	
-	if (contentTextOrNil)
-		[sentData setObject:IRWebAPIKitStringValue(contentTextOrNil) forKey:@"content"];
-	
-	if (attachmentIdentifiersOrNil) {
-		[sentData setObject:[attachmentIdentifiersOrNil JSONString] forKey:@"attachment_id_array"];
-		if ([attachmentIdentifiersOrNil count]) {
-			usedType = @"image";
-		}
-	}
-	
-	if (aPreviewRep) {
-		[sentData setObject:[aPreviewRep JSONString] forKey:@"preview"];
-		usedType = @"link";
-	}
-	
-	[sentData setObject:usedType forKey:@"type"];
+	NSDictionary *postEntity = [[self class] postEntityWithGroupID:aGroupIdentifier postID:nil text:contentTextOrNil attachments:attachmentIdentifiersOrNil mainAttachment:nil preview:aPreviewRep isFavorite:NO isHidden:NO];
 
-	[self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(sentData, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	[self.engine fireAPIRequestNamed:@"posts/new" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+		
+		if (!successBlock)
+			return;
+		
+		successBlock(
+			[inResponseOrNil valueForKey:@"post"]
+		);
+		
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) updatePost:(NSString *)postID inGroup:(NSString *)groupID withText:(NSString *)text attachments:(NSArray *)attachmentIDs mainAttachment:(NSString *)mainAttachmentID preview:(NSDictionary *)preview favorite:(BOOL)isFavorite hidden:(BOOL)isHidden replacingDataWithDate:(NSDate *)lastKnownModificationDate onSuccess:(void(^)(NSDictionary *postRep))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	NSMutableDictionary *postEntity = [[[self class] postEntityWithGroupID:groupID postID:postID text:text attachments:attachmentIDs mainAttachment:mainAttachmentID preview:preview isFavorite:isFavorite isHidden:isHidden] mutableCopy];
+	
+	if (lastKnownModificationDate) {
+	
+		NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss'Z'";
+		formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		formatter.timeZone = [NSTimeZone timeZoneForSecondsFromGMT:0];
+
+		NSString *lastKnownModificationDateString = [formatter stringFromDate:lastKnownModificationDate];
+		[postEntity setObject:lastKnownModificationDateString forKey:@"last_update_time"];
+	
+	}
+	
+	[self.engine fireAPIRequestNamed:@"posts/update" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(postEntity, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
 		if (!successBlock)
 			return;
@@ -226,13 +269,14 @@
 
 }
 
-- (void) configurePost:(NSString *)aPostIdentifier withVisibilityStatus:(BOOL)willBeVisible onSuccess:(void (^)(void))aSuccessBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void) configurePost:(NSString *)postID inGroup:(NSString *)groupID withVisibilityStatus:(BOOL)willBeVisible onSuccess:(void (^)(void))aSuccessBlock onFailure:(void (^)(NSError *))failureBlock {
 
-  NSString *methodName = willBeVisible ? @"posts/hide" : @"posts/unhide";
+  NSString *methodName = willBeVisible ? @"posts/unhide" : @"posts/hide";
 
 	[self.engine fireAPIRequestNamed:methodName withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
-		aPostIdentifier, @"post_id",
+		postID, @"post_id",
+		groupID, @"group_id",
 	
 	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		

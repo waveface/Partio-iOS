@@ -7,6 +7,7 @@
 //
 
 #import "WADiscretePaginatedArticlesViewController.h"
+#import "WAArticleViewController.h"
 
 @class WAArticleViewController, WAArticle;
 @interface WADiscretePaginatedArticlesViewController (DiscreteLayout)
@@ -18,5 +19,8 @@
 - (void) removeCachedArticleViewControllers;
 
 - (UIView *) newPageContainerView NS_RETURNS_RETAINED;
+- (NSArray *) newLayoutGrids NS_RETURNS_RETAINED;
+
+- (UIView *) representingViewForItem:(WAArticle *)anArticle;
 
 @end

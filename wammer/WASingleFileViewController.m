@@ -43,7 +43,7 @@
 
 + (id) controllerForFile:(NSURL *)aFileURI {
 
-  WASingleFileViewController *returnedController = [[[self alloc] init] autorelease];
+  WASingleFileViewController *returnedController = [[self alloc] init];
   returnedController.fileURI = aFileURI;
   
   return returnedController;
@@ -79,29 +79,14 @@
   if (managedObjectContext)
     return managedObjectContext;
   
-  managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+  managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   return managedObjectContext;
 
 }
 
 - (void) dealloc {
 
-  [fileURI release];
-  
-  [file release];
-  [managedObjectContext release];
-  
-  [onFinishLoad release];
-  
   [[NSNotificationCenter defaultCenter] removeObserver:downloadProgressListener];
-  [downloadProgressListener release];
-  
-  [overlayView release];
-	[progressView release];
-	[fileLoadingLabel release];
-	[fileLoadingProgressLabel release];
-	
-  [super dealloc];
 
 }
 
@@ -125,11 +110,11 @@
 
 	[super viewDidLoad];
   
-  UIView *oldView = [[self.view retain] autorelease];
-  
+  UIView *oldView = self.view;
   UINib *ownNib = [UINib nibWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
   [ownNib instantiateWithOwner:self options:nil];
-  self.overlayView = [[self.view retain] autorelease];
+ 
+	self.overlayView = self.view;
   self.overlayView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
   
   self.view = oldView;
@@ -276,7 +261,7 @@
 
 + (void(^)(WASingleFileViewController *self)) defaultQuickLookFinishLoadHandler {
 
-  return [[ ^ (WASingleFileViewController *self) {
+  return ^ (WASingleFileViewController *self) {
     
     if (!self.navigationController)
       return;
@@ -291,7 +276,7 @@
     
     self.onFinishLoad = nil;
   
-  } copy] autorelease];
+  };
 
 }
 

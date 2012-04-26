@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAImageView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAImageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageView.h</DeclaredIn>
+			
+			<NodeRef refid="45"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAImageView/preferredClusterClass</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageView.h</DeclaredIn>			
+			
+			<Declaration>+ (Class)preferredClusterClass</Declaration>
+			
+			
+			<Anchor>//api/name/preferredClusterClass</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAImageView/delegate</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) id&lt;WAImageViewDelegate&gt; delegate</Declaration>
+			
+			
+			<Anchor>//api/name/delegate</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAImageView/setImage:withOptions:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageView.h</DeclaredIn>			
+			
+			<Declaration>- (void)setImage:(UIImage *)anImage withOptions:(WAImageViewOptions)options</Declaration>
+			
+			
+			<Anchor>//api/name/setImage:withOptions:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAImageView/alloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageView.m</DeclaredIn>			
+			
+			<Declaration>+ (id)alloc</Declaration>
+			
+			
+			<Anchor>//api/name/alloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAImageView/allocWithZone:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAImageView.m</DeclaredIn>			
+			
+			<Declaration>+ (id)allocWithZone:(NSZone *)zone</Declaration>
+			
+			
+			<Anchor>//api/name/allocWithZone:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

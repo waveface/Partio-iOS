@@ -6,25 +6,26 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
-#import "WAView.h"
 #import "WACompositionViewPhotoCell.h"
 #import "QuartzCore+IRAdditions.h"
 
 
 @interface WACompositionViewPhotoCell ()
 @property (nonatomic, readwrite, retain) UIView *imageContainer;
+@property (nonatomic, readwrite, retain) UIView *highlightOverlay;	//	Placed in the image container
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
 @end
 
 @implementation WACompositionViewPhotoCell
-@synthesize image, imageContainer, removeButton, onRemove;
+@synthesize style;
+@synthesize image, imageContainer, removeButton, onRemove, highlightOverlay;
 @synthesize activityIndicator;
 @synthesize canRemove;
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
-	WACompositionViewPhotoCell *returnedCell = [[[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier] autorelease];
+	WACompositionViewPhotoCell *returnedCell = [[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier];
 	
 	return returnedCell;
 
@@ -54,15 +55,19 @@
 	
 	self.contentView.clipsToBounds = NO;
 	
-	self.imageContainer = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 })] autorelease];
+	self.imageContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
 	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;//kCAGravityResizeAspect;
+	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
-	self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
-	self.imageContainer.layer.shadowOpacity = 0.5f;
-	self.imageContainer.layer.shadowRadius = 2.0f;
-	//	self.imageContainer.layer.masksToBounds = YES;
+
 	[self.contentView addSubview:self.imageContainer];
+	
+	self.highlightOverlay = [[UIView alloc] initWithFrame:self.imageContainer.bounds];
+	self.highlightOverlay.backgroundColor = [UIColor colorWithWhite:0 alpha:0.25];
+	self.highlightOverlay.userInteractionEnabled = NO;
+	self.highlightOverlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	self.highlightOverlay.hidden = YES;
+	[self.imageContainer addSubview:self.highlightOverlay];
 	
 	self.removeButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	self.removeButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
@@ -73,7 +78,7 @@
 	self.removeButton.imageView.contentMode = UIViewContentModeCenter;
 	[self.contentView addSubview:self.removeButton];
 	
-	self.activityIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray] autorelease];
+	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 	self.activityIndicator.center = (CGPoint){ CGRectGetMidX(self.imageContainer.bounds), CGRectGetMidY(self.imageContainer.bounds) };
 	self.activityIndicator.frame = CGRectIntegral(self.activityIndicator.frame);
@@ -101,21 +106,30 @@
 		return;
 	
 	[self willChangeValueForKey:@"image"];
-	[image release];
-	image = [newImage retain];
+	image = newImage;
 	[self didChangeValueForKey:@"image"];
 	
 	self.imageContainer.layer.contents = (id)newImage.CGImage;
 	
 	if (newImage) {
 	
-		CGRect imageRect = IRGravitize(self.imageContainer.frame, newImage.size, kCAGravityResizeAspect);
+		CGRect imageRect = IRGravitize(self.imageContainer.bounds, newImage.size, self.imageContainer.layer.contentsGravity);
 		self.removeButton.center = (CGPoint) {
 			CGRectGetMinX(imageRect) + 8,
 			CGRectGetMinY(imageRect) + 8
 		};
-	
+		
+		self.highlightOverlay.frame = imageRect;
+		
 	}
+	
+	[self setNeedsLayout];
+
+}
+
+- (void) setStyle:(WACompositionViewPhotoCellStyle)aStyle {
+
+	style = aStyle;
 	
 	[self setNeedsLayout];
 
@@ -124,6 +138,32 @@
 - (void) layoutSubviews {
 
 	[super layoutSubviews];
+	
+	switch (self.style) {
+	
+		case WACompositionViewPhotoCellShadowedStyle: {
+			self.imageContainer.frame = UIEdgeInsetsInsetRect(self.contentView.bounds, (UIEdgeInsets){ 8, 8, 8, 8 });
+			self.imageContainer.layer.shadowOffset = (CGSize){ 0, 1 };
+			self.imageContainer.layer.shadowOpacity = 0.5f;
+			self.imageContainer.layer.shadowRadius = 2.0f;
+			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+			self.imageContainer.layer.borderColor = nil;
+			self.imageContainer.layer.borderWidth = 0;
+			self.imageContainer.clipsToBounds = NO;
+			break;
+		}
+		
+		case WACompositionViewPhotoCellBorderedPlainStyle: {
+			self.imageContainer.frame = self.contentView.bounds;
+			self.imageContainer.layer.shadowOpacity = 0.0f;
+			self.imageContainer.layer.contentsGravity = kCAGravityResizeAspectFill;
+			self.imageContainer.layer.borderColor = [UIColor colorWithWhite:0.7 alpha:1].CGColor;
+			self.imageContainer.layer.borderWidth = 1.0f;
+			self.imageContainer.clipsToBounds = YES;
+			break;
+		}
+	
+	}
 	
 	if (canRemove) {
 		self.removeButton.alpha = 1;
@@ -151,20 +191,28 @@
 
 }
 
-- (void) prepareForReuse {
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
 
-	self.image = nil;
+	[super setHighlighted:highlighted animated:animated];
+	
+	self.highlightOverlay.alpha = self.highlightOverlay.hidden ? 0 : 1;
+	self.highlightOverlay.hidden = NO;
+	
+	[UIView animateWithDuration:(animated ? 0.3 : 0) animations:^{
+
+		self.highlightOverlay.alpha = highlighted ? 1 : 0;
+		
+	} completion:^(BOOL finished) {
+	
+		self.highlightOverlay.hidden = !highlighted;
+		
+	}];
 
 }
 
-- (void) dealloc {
+- (void) prepareForReuse {
 
-	[onRemove release];
-	[imageContainer release];
-	[image release];
-	[removeButton release];
-	[activityIndicator release];
-	[super dealloc];
+	self.image = nil;
 
 }
 

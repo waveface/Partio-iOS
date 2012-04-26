@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAOpenGraphElement.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAOpenGraphElement</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>
+			
+			<NodeRef refid="49"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/imageOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSArray *imageOrder</Declaration>
+			
+			
+			<Anchor>//api/name/imageOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/providerDisplayName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *providerDisplayName</Declaration>
+			
+			
+			<Anchor>//api/name/providerDisplayName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/providerName</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *providerName</Declaration>
+			
+			
+			<Anchor>//api/name/providerName</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/providerURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *providerURL</Declaration>
+			
+			
+			<Anchor>//api/name/providerURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/text</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *text</Declaration>
+			
+			
+			<Anchor>//api/name/text</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/title</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *title</Declaration>
+			
+			
+			<Anchor>//api/name/title</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/type</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *type</Declaration>
+			
+			
+			<Anchor>//api/name/type</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/url</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSString *url</Declaration>
+			
+			
+			<Anchor>//api/name/url</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/primaryImageURI</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSURL *primaryImageURI</Declaration>
+			
+			
+			<Anchor>//api/name/primaryImageURI</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/images</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) NSSet *images</Declaration>
+			
+			
+			<Anchor>//api/name/images</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/preview</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, retain) WAPreview *preview</Declaration>
+			
+			
+			<Anchor>//api/name/preview</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/thumbnail</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) UIImage *thumbnail</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnail</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/DEPRECATED_ATTRIBUTE</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSString *DEPRECATED_ATTRIBUTE</Declaration>
+			
+			
+			<Anchor>//api/name/DEPRECATED_ATTRIBUTE</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/providerCaption</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, retain) NSString *providerCaption</Declaration>
+			
+			
+			<Anchor>//api/name/providerCaption</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAOpenGraphElement/primaryImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAOpenGraphElementImage *primaryImage</Declaration>
+			
+			
+			<Anchor>//api/name/primaryImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/automaticallyNotifiesObserversForKey:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key</Declaration>
+			
+			
+			<Anchor>//api/name/automaticallyNotifiesObserversForKey:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingImages</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingImages</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingImages</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingImageOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingImageOrder</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingImageOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/irAwake</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)irAwake</Declaration>
+			
+			
+			<Anchor>//api/name/irAwake</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/imageOrder</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSArray *)imageOrder</Declaration>
+			
+			
+			<Anchor>//api/name/imageOrder</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/didChangeValueForKey:withSetMutation:usingObjects:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (void)didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects</Declaration>
+			
+			
+			<Anchor>//api/name/didChangeValueForKey:withSetMutation:usingObjects:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/skipsNonexistantRemoteKey</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (BOOL)skipsNonexistantRemoteKey</Declaration>
+			
+			
+			<Anchor>//api/name/skipsNonexistantRemoteKey</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingRepresentedImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingRepresentedImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingRepresentedImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/representedImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (WAOpenGraphElementImage *)representedImage</Declaration>
+			
+			
+			<Anchor>//api/name/representedImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingThumbnail</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingThumbnail</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingThumbnail</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingThumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingThumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingThumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/thumbnailURL</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)thumbnailURL</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailURL</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingThumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingThumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingThumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/thumbnailFilePath</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (NSString *)thumbnailFilePath</Declaration>
+			
+			
+			<Anchor>//api/name/thumbnailFilePath</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingProviderCaption</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingProviderCaption</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingProviderCaption</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathsForValuesAffectingPrimaryImage</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>+ (NSSet *)keyPathsForValuesAffectingPrimaryImage</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathsForValuesAffectingPrimaryImage</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/openGraphElementImageAtIndex:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WAAdditions.m</DeclaredIn>			
+			
+			<Declaration>- (WAOpenGraphElementImage *)openGraphElementImageAtIndex:(NSUInteger)anIndex</Declaration>
+			
+			
+			<Anchor>//api/name/openGraphElementImageAtIndex:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/keyPathHoldingUniqueValue</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSString *)keyPathHoldingUniqueValue</Declaration>
+			
+			
+			<Anchor>//api/name/keyPathHoldingUniqueValue</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/defaultHierarchicalEntityMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)defaultHierarchicalEntityMapping</Declaration>
+			
+			
+			<Anchor>//api/name/defaultHierarchicalEntityMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/remoteDictionaryConfigurationMapping</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)remoteDictionaryConfigurationMapping</Declaration>
+			
+			
+			<Anchor>//api/name/remoteDictionaryConfigurationMapping</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAOpenGraphElement/transformedRepresentationForRemoteRepresentation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m</DeclaredIn>			
+			
+			<Declaration>+ (NSDictionary *)transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation</Declaration>
+			
+			
+			<Anchor>//api/name/transformedRepresentationForRemoteRepresentation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/addImagesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>- (void)addImagesObject:(WAOpenGraphElementImage *)value</Declaration>
+			
+			
+			<Anchor>//api/name/addImagesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/removeImagesObject:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeImagesObject:(WAOpenGraphElementImage *)value</Declaration>
+			
+			
+			<Anchor>//api/name/removeImagesObject:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/addImages:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>- (void)addImages:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/addImages:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAOpenGraphElement/removeImages:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAOpenGraphElement.h</DeclaredIn>			
+			
+			<Declaration>- (void)removeImages:(NSSet *)values</Declaration>
+			
+			
+			<Anchor>//api/name/removeImages:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

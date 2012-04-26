@@ -35,7 +35,7 @@
   self.avatarView.layer.borderColor = [UIColor colorWithWhite:1 alpha:0.25].CGColor;
   self.avatarView.layer.borderWidth = 2;
   [self.avatarView.superview insertSubview:((^ {
-    UIView *returnedView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+    UIView *returnedView = [[UIView alloc] initWithFrame:self.avatarView.frame];
     returnedView.layer.backgroundColor = [UIColor grayColor].CGColor;
     returnedView.layer.cornerRadius = self.avatarView.layer.cornerRadius;
     returnedView.layer.shadowOpacity = 0.25;
@@ -55,18 +55,18 @@
   
   self.backgroundView = ((^ {
     
-    IRGradientView *returnedView = [[[IRGradientView alloc] initWithFrame:(CGRect){ CGPointZero, ownSize }] autorelease];
+    IRGradientView *returnedView = [[IRGradientView alloc] initWithFrame:(CGRect){ CGPointZero, ownSize }];
     
-    IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 3 }, kCAGravityTop)] autorelease];
+    IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 3 }, kCAGravityTop)];
     [returnedView addSubview:topShadow];
     
-    IRGradientView *bottomShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 2 }, kCAGravityBottom)] autorelease];
+    IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 2 }, kCAGravityBottom)];
     [returnedView addSubview:bottomShadow];
     
-    UIView *topGlare = [[[UIView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 1 }, kCAGravityTop)] autorelease];
+    UIView *topGlare = [[UIView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 1 }, kCAGravityTop)];
     [returnedView addSubview:topGlare];
     
-    UIView *bottomGlare = [[[UIView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 1 }, kCAGravityBottom)] autorelease];
+    UIView *bottomGlare = [[UIView alloc] initWithFrame:IRGravitize(ownBounds, (CGSize){ ownSize.width, 1 }, kCAGravityBottom)];
     [returnedView addSubview:bottomGlare];
     
     void (^gradient)(IRGradientView *, UIColor *, UIColor *) = ^ (IRGradientView *aView, UIColor *fromColor, UIColor *toColor) {
@@ -93,15 +93,6 @@
     
   })());
 
-}
-
-- (void) dealloc {
-
-  [avatarView release];
-  [userNameLabel release];
-  [userEmailLabel release];
-  [super dealloc];
-	
 }
 
 @end

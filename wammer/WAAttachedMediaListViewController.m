@@ -7,9 +7,8 @@
 //
 
 #import "WAAttachedMediaListViewController.h"
-#import "WAView.h"
+#import "IRView.h"
 #import "WADataStore.h"
-#import "WATableViewCell.h"
 
 #import "QuartzCore+IRAdditions.h"
 
@@ -34,12 +33,6 @@
 @synthesize onViewDidLoad;
 @synthesize undergoingProgrammaticEntityMutation;
 
-+ (WAAttachedMediaListViewController *) controllerWithArticleURI:(NSURL *)anArticleURI completion:(void(^)(void))aBlock {
-
-	return [[[self alloc] initWithArticleURI:anArticleURI completion:aBlock] autorelease];
-
-}
-
 - (id) init {
 
 	return [self initWithArticleURI:nil completion:nil];
@@ -58,12 +51,12 @@
 	if (!self)
 		return nil;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAAttachedMediaListViewController *wSelf = self;
 	
 	self.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemDone wiredAction:^(IRBarButtonItem *senderItem) {
 		
-		if (nrSelf.callback)
-			nrSelf.callback();
+		if (wSelf.callback)
+			wSelf.callback();
 		
 	}];
 	
@@ -74,27 +67,25 @@
 		self.managedObjectContext = aContext;
 	} else {
 		self.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-		self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;		
+		self.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	}
 	
 	self.article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:anArticleURI];
 	
 	self.articleFilesObservingsHelper =  [self.article irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 	
-		if (![nrSelf isViewLoaded])
+		if (![wSelf isViewLoaded])
 			return;
 		
-		if ([nrSelf isUndergoingProgrammaticEntityMutation])
+		if ([wSelf isUndergoingProgrammaticEntityMutation])
 			return;
 		
-		[nrSelf.tableView reloadData];
+		[wSelf.tableView reloadData];
 		
 		// Fixme: Use NSFRC
 		// Fixme: Also remove dupe KVO invocations
 		
-	} forKeyPath:@"files" options:NSKeyValueObservingOptionNew context:nil];
-  
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleManagedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+	} forKeyPath:@"files" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	return self;
 
@@ -102,62 +93,21 @@
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
 	[article irRemoveObservingsHelper:self.articleFilesObservingsHelper];
 	
-	[articleFilesObservingsHelper release];
-
-	[managedObjectContext release];
-	[article release];
-
-	[callback release];
-	
-	[onViewDidLoad release];
-	
-	[super dealloc];
-
-}
-
-- (void) handleManagedObjectContextDidSave:(NSNotification *)aNotification {
-
-	if (![NSThread isMainThread]) {
-
-		dispatch_sync(dispatch_get_main_queue(), ^ {
-			[self handleManagedObjectContextDidSave:aNotification];
-		});
-		return;
-		
-	}
-	
-	NSManagedObjectContext *savedContext = (NSManagedObjectContext *)[aNotification object];
-	
-	if (savedContext == self.managedObjectContext) {
-		if ([self isViewLoaded]) {
-			[self.tableView reloadData];
-		}
-		return;
-	}
-	
-	[self.managedObjectContext mergeChangesFromContextDidSaveNotification:aNotification];
-	[self.managedObjectContext refreshObject:self.article mergeChanges:YES];
-	
-	if ([self isViewLoaded]) {
-		[self.tableView reloadData];
-	}
-
 }
 
 - (void) loadView {
 
-	self.view = [[[WAView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds] autorelease]; // dummy size for autoresizing
+	self.view = [[IRView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.rootViewController.view.bounds];
 	
-	tableView = [[[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain] autorelease];
+	tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	self.tableView.delegate = self;
 	self.tableView.dataSource = self;
 	self.tableView.rowHeight = 76.0f; // plus 1 to get UIImageView in right size
 	self.navigationController.navigationBar.tintColor = [UIColor darkGrayColor];
 	[self.view addSubview:self.tableView];
+	
 }
 
 - (void) viewDidLoad {
@@ -166,13 +116,7 @@
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad();
-
-}
-
-- (void) viewDidUnload {
-
-	[super viewDidUnload];
-
+	
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -228,24 +172,11 @@
 
 	static NSString *identifier = @"Identifier";
 	
-	WATableViewCell *cell = (WATableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:identifier];
+	UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
 	if (!cell) {
-		
-		cell = [[[WATableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier] autorelease];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
 		cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		cell.indentationWidth = 8.0f;
-    
-		cell.onSetEditing = ^ (WATableViewCell *self, BOOL editing, BOOL animated) {
-
-			if (editing) {
-				self.indentationLevel = 1;
-			} else {
-				self.indentationLevel = 0;
-			}
-		
-		};
-
 	}
 	
 	NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
@@ -260,22 +191,56 @@
 		
 	}] anyObject];
 	
-	UIImage *actualImage = representedFile.resourceImage;
-  
-  cell.imageView.image = representedFile.thumbnail;
+	UIImage *resourceImage = representedFile.resourceImage;
+	
 	cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
+
+	if (resourceImage) {
   
-	cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
-    actualImage.size.width,
-    actualImage.size.height
-  ];
+		cell.imageView.image = representedFile.thumbnail;
+		
+		cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
+			resourceImage.size.width,
+			resourceImage.size.height
+		];
   
-  NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
-  long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
- 	cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
+		long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
+		cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+	
+	} else {
+	
+		//	TBD: When the Data Store stores metadata, use stored metadat in place
+		
+		cell.imageView.image = representedFile.thumbnailImage;
+		cell.textLabel.text = @"";
+		cell.detailTextLabel.text = @"File not loaded";
+	
+	}
 	
 	return cell;
 
 }
 
+- (BOOL) tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	
+	return YES;
+	
+}
+
+- (void) tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
+
+	self.undergoingProgrammaticEntityMutation = YES;
+
+	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
+	
+	NSMutableArray *order = [(NSArray *)self.article.fileOrder  mutableCopy];
+	
+	[order removeObjectAtIndex:[sourceIndexPath row]];
+	[order insertObject:fromURL atIndex:[destinationIndexPath row]];
+	
+	self.article.fileOrder = order;
+	self.undergoingProgrammaticEntityMutation = NO;
+	
+}
 @end

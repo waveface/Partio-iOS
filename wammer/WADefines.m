@@ -12,7 +12,15 @@
 NSString * const kWAAdvancedFeaturesEnabled = @"WAAdvancedFeaturesEnabled";
 
 BOOL WAAdvancedFeaturesEnabled (void) {
+
+#if TARGET_IPHONE_SIMULATOR
+
+	return YES;
+
+#endif
+
   return [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+	
 };
 
 
@@ -32,7 +40,6 @@ NSString * const kWADebugAutologinUserIdentifier = @"WADebugAutologinUserIdentif
 NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword";
 
 NSString * const kWADebugLastScanSyncBezelsVisible = @"WADebugLastScanSyncBezelsVisible";
-NSString * const kWADebugUsesDiscreteArticleFlip = @"WADebugUsesDiscreteArticleFlip";
 NSString * const kWADebugPersistentStoreName = @"WADebugPersistentStoreName";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
@@ -55,8 +62,6 @@ NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"showMeTheMoney"
 NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
-
-NSString * const kWAUserStorageInfo = @"UserStoragesInfo";
 
 void WARegisterUserDefaults () {
 
@@ -109,7 +114,7 @@ BOOL WADeviceIdentifierReset (void) {
 	if (!uuidRef)
     return NO;
 	
-	NSString *uuid = [NSMakeCollectable(CFUUIDCreateString(kCFAllocatorDefault, uuidRef)) autorelease];
+	NSString *uuid = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
 	CFRelease(uuidRef);
 
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWACurrentGeneratedDeviceIdentifier];
@@ -137,7 +142,7 @@ NSString * const kWAAppEventTitle = @"WAAppEventTitle";
 
 void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
 
-	NSMutableDictionary *sentUserInfo = [[userInfo mutableCopy] autorelease];
+	NSMutableDictionary *sentUserInfo = [userInfo mutableCopy];
 	if (!sentUserInfo)
 		sentUserInfo = [NSMutableDictionary dictionary];
 	

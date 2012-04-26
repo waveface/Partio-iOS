@@ -72,10 +72,7 @@
 
 - (void) dealloc {
 
-	[recurrenceMachine release];
-
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
 
 }
 
@@ -137,7 +134,7 @@
 			};
 			
 			enqueue([NSBlockOperation blockOperationWithBlock:^{
-				context = [[[WADataStore defaultStore] disposableMOC] retain];
+				context = [[WADataStore defaultStore] disposableMOC];
 			}]);
 
 			[[WADataStore defaultStore] enumerateFilesWithSyncableBlobsInContext:nil usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
@@ -156,13 +153,9 @@
 						
 						kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
 						
-					nil] completion: ^ (BOOL didFinish, NSManagedObjectContext *temporalContext, NSManagedObject *prospectiveUnsavedObject, NSError *anError) {
-					
-						if (didFinish) {
-							didFinish = [temporalContext save:nil];
-						}
+					nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 						
-						callback(didFinish ? (id)kCFBooleanTrue : anError);
+						callback(didFinish ? (id)kCFBooleanTrue : error);
 						
 					}];
 
@@ -176,10 +169,10 @@
 			
 			enqueue([NSBlockOperation blockOperationWithBlock:^{
 			
-				[context release];
+				context = nil;
 				
 				dispatch_async(dispatch_get_main_queue(), ^{					
-					[tempQueue autorelease];
+					tempQueue = nil;
 				});
 				
 			}]);

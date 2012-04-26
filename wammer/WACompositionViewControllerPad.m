@@ -11,7 +11,6 @@
 #import "WAPreviewBadge.h"
 #import "WADataStore.h"
 #import "WACompositionViewPhotoCell.h"
-#import "WAViewController.h"
 
 @interface WACompositionViewControllerPad () <AQGridViewDelegate, AQGridViewDataSource>
 
@@ -64,7 +63,7 @@
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
 	
 	WAPreview *usedPreview = [self.article.previews anyObject];
 	
@@ -118,7 +117,7 @@
 		self.imagePickerPopover.contentViewController = controller;
 	
 		if (!self.imagePickerPopover)
-			self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:controller] autorelease];
+			self.imagePickerPopover = [[UIPopoverController alloc] initWithContentViewController:controller];
 					
 		if (!self.imagePickerPopoverPresentingSender)
 			self.imagePickerPopoverPresentingSender = sender;
@@ -127,7 +126,7 @@
 				
 	} @catch (NSException *exception) {
 
-		[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+		[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 	
 	}
 
@@ -237,7 +236,9 @@
 
 	[super viewDidLoad];
 	
-	UIView *photosViewWrapper = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
+	
+	UIView *photosViewWrapper = [[UIView alloc] initWithFrame:self.photosView.frame];
 	photosViewWrapper.autoresizingMask = self.photosView.autoresizingMask;
 	photosViewWrapper.clipsToBounds = NO;
 	[self.photosView.superview addSubview:photosViewWrapper];
@@ -312,7 +313,7 @@
 	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, 0, -20 });
 	
-	UIView *contextTextShadowView = [[[UIView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	UIView *contextTextShadowView = [[UIView alloc] initWithFrame:self.contentTextView.frame];
 	contextTextShadowView.autoresizingMask = self.contentTextView.autoresizingMask;
 	contextTextShadowView.layer.shadowOffset = (CGSize){ 0, 2 };
 	contextTextShadowView.layer.shadowRadius = 2;
@@ -321,7 +322,7 @@
 	contextTextShadowView.layer.backgroundColor = [UIColor blackColor].CGColor;
 	[self.contentTextView.superview insertSubview:contextTextShadowView belowSubview:self.contentTextView];
 	
-	IRConcaveView *contentTextBackgroundView = [[[IRConcaveView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	IRConcaveView *contentTextBackgroundView = [[IRConcaveView alloc] initWithFrame:self.contentTextView.frame];
 	contentTextBackgroundView.autoresizingMask = self.contentTextView.autoresizingMask;
 	contentTextBackgroundView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25] offset:(CGSize){ 0, 2 } spread:4];
 	contentTextBackgroundView.userInteractionEnabled = NO;
@@ -330,7 +331,7 @@
 	contentTextBackgroundView.layer.masksToBounds = YES;
 	[self.contentTextView.superview insertSubview:contentTextBackgroundView belowSubview:self.contentTextView];
 	
-	self.previewBadge = [[[WAPreviewBadge alloc] initWithFrame:photosViewWrapper.frame] autorelease];
+	self.previewBadge = [[WAPreviewBadge alloc] initWithFrame:photosViewWrapper.frame];
 	self.previewBadge.autoresizingMask = photosViewWrapper.autoresizingMask;
 	self.previewBadge.frame = UIEdgeInsetsInsetRect(self.previewBadge.frame, (UIEdgeInsets){ 0, 8, 8, -48 });
 	self.previewBadge.alpha = 0;
@@ -372,23 +373,6 @@
 	[super viewDidUnload];
 
 }
-
-- (void) dealloc {
-
-	[imagePickerPopover release];
-	
-	[photosView release];
-	[noPhotoReminderView release];
-	[toolbar release];
-	[noPhotoReminderViewElements release];
-	
-	[previewBadge release];
-	[previewBadgeButton release];
-	
-	[super dealloc];
-
-}
-
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
@@ -434,7 +418,7 @@
 	}
 	
 	cell.alpha = 1;
-	cell.image = representedFile.thumbnail;
+	cell.image = [representedFile smallestPresentableImage];
 	cell.clipsToBounds = NO;
 	
 	cell.onRemove = ^ {
@@ -459,7 +443,7 @@
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind {
 
 	dispatch_async(dispatch_get_main_queue(), ^ {
 	

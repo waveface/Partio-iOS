@@ -8,18 +8,22 @@
 
 #import "WAStackedArticleViewController.h"
 
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+
 #import "WADefines.h"
-#import "WAArticleTextStackCell.h"
-#import "WAArticleTextEmphasisLabel.h"
 
-#import "WAArticleCommentsViewController.h"
-
+#import "WARemoteInterface.h"
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAOverlayBezel.h"
-
 #import "WAArticleTextStackElement.h"
+#import "WAArticleTextStackCell.h"
+#import "WAArticleTextEmphasisLabel.h"
+
+#import "WACompositionViewController.h"
+#import "WAArticleCommentsViewController.h"
 
 
 @interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate, WAArticleTextStackElementDelegate>
@@ -34,6 +38,11 @@
 
 @property (nonatomic, readwrite, retain) UIView *wrapperView;
 
+@property (nonatomic, readwrite, retain) UIView *textStackCellFoldingToggleWrapperView;
+@property (nonatomic, readwrite, retain) UIButton *textStackCellFoldingToggle;
+
+@property (nonatomic, readwrite, retain) NSArray *headerBarButtonItems;
+
 - (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)newInterfaceBounds animated:(BOOL)animate;
 
 @end
@@ -42,6 +51,8 @@
 @implementation WAStackedArticleViewController
 @synthesize headerView;
 @synthesize topCell, textStackCell, foldsTextStackCell, textStackCellLabel, commentsVC, commentsPopover, stackView, wrapperView, onViewDidLoad, onPullTop, footerCell;
+@synthesize textStackCellFoldingToggleWrapperView, textStackCellFoldingToggle;
+@synthesize headerBarButtonItems;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -49,51 +60,264 @@
 	if (!self)
 		return nil;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAStackedArticleViewController *wSelf = self;
 	
-	__block UIBarButtonItem *commentsItem = WABarButtonItem(nil, @"comments", ^ {
-	
-		[nrSelf presentCommentsViewController:[[nrSelf newArticleCommentsController] autorelease] sender:commentsItem];
+	IRBarButtonItem *articleDateItem = [IRBarButtonItem itemWithCustomView:((^ {
+					
+		IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
+		label.opaque = NO;
+		label.backgroundColor = nil;
 		
-	});
+		__weak IRLabel *wLabel = label;
+		[label irBind:@"attributedText" toObject:wSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			
+				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.creationDate];
+				NSString *device = wSelf.article.creationDeviceName;
+				NSString *string = [NSString stringWithFormat:@"%@ (%@)", relDate, device];
+				
+				UIFont * const font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
+				UIColor * const color = [UIColor colorWithWhite:0.5 alpha:1];
+
+				return [wLabel attributedStringForString:string font:font color:color];
+			
+			} copy], kIRBindingsValueTransformerBlock,
+		
+		nil]];
+		
+		[wSelf irPerformOnDeallocation:^{
+		
+			[label irUnbind:@"attributedText"];
+			
+		}];
+		
+		return label;
+		
+	})())];
 	
-//	__block UIBarButtonItem *actionItem = WABarButtonItem([UIImage imageNamed:@"WAActionGlyph"], nil, ^{
-//	
-//		//	?
-//		
-//	});
+	IRBarButtonItem *commentsItem = ((^ {
 	
-	self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+		IRBarButtonItem *commentsItem = [[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil];
 	
-		commentsItem,
-		//	actionItem,
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+			case UIUserInterfaceIdiomPad: {
+				
+				[commentsItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
+					[UIColor clearColor], UITextAttributeTextShadowColor,
+					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
+				nil] forState:UIControlStateNormal];
+				
+				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+				
+				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+				
+				break;
+				
+			}
+			
+			case UIUserInterfaceIdiomPhone: {
+			
+				break;
+			
+			}
+		
+		}
+		
+		__weak IRBarButtonItem *nrCommentsItem = commentsItem;
+		
+		commentsItem.block = ^ {
+		
+			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:nrCommentsItem];
+			
+		};
+		
+		[commentsItem irBind:@"title" toObject:self keyPath:@"commentCount" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			
+				NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
+				
+				return [NSString stringWithFormat:(numberOfComments == 0) ?
+					NSLocalizedString(@"COMMENTS_COUNT_ZERO_FORMAT_STRING", @"“%@ Comment” or “No Comment”") :
+						(numberOfComments == 1) ?
+							NSLocalizedString(@"COMMENTS_COUNT_ONE_FORMAT_STRING", @"“%@ Comment”") :
+								NSLocalizedString(@"COMMENTS_COUNT_MANY_FORMAT_STRING", @"“%@ Comments”"), inNewValue];
+			
+			} copy], kIRBindingsValueTransformerBlock,
+		
+		nil]];
+		
+		[self irPerformOnDeallocation:^{
+		
+			[commentsItem irUnbind:@"title"];
+			
+		}];
+		
+		return commentsItem;
 	
-	nil];
+	})());
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+	__block IRBarButtonItem *favoriteToggleItem = ((^ {
 	
-	self.foldsTextStackCell = YES;
+		IRBarButtonItem *favoriteToggleItem = [[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil];
+	
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+			case UIUserInterfaceIdiomPad: {
+				
+				[favoriteToggleItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
+					[UIColor clearColor], UITextAttributeTextShadowColor,
+					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
+				nil] forState:UIControlStateNormal];
+				
+				[favoriteToggleItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+				
+				[favoriteToggleItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+				
+				break;
+				
+			}
+			
+			case UIUserInterfaceIdiomPhone: {
+			
+				break;
+			
+			}
+		
+		}
+		
+		favoriteToggleItem.block = ^ {
+		
+			WAArticle *article = wSelf.article;
+		
+			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			article.modificationDate = [NSDate date];
+			
+			NSError *savingError = nil;
+			if (![article.managedObjectContext save:&savingError])
+				NSLog(@"Error saving: %@", savingError);
+			
+			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+			
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			} onFailure:^(NSError *error) {
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			}];
+			
+		};
+		
+		[favoriteToggleItem irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
+			
+				BOOL articleMarkedFavorite = [inNewValue isEqual:(id)kCFBooleanTrue];
+			
+				return (articleMarkedFavorite) ?
+					NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Bar button item title to unmark the article as a favorite") : 
+					NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Bar button item title to mark the article as a favorite");
+				
+			} copy], kIRBindingsValueTransformerBlock,
+		
+		nil]];
+		
+		[self irPerformOnDeallocation:^{
+		
+			[favoriteToggleItem irUnbind:@"title"];
+			
+		}];
+		
+		return favoriteToggleItem;
+	
+	})());
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+		case UIUserInterfaceIdiomPad: {
+			
+			self.headerBarButtonItems = [NSArray arrayWithObjects:
+				articleDateItem,
+				[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+				[self editButtonItem],
+				favoriteToggleItem,
+				commentsItem,
+			nil];
+			
+			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
+			
+			break;
+			
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+			
+			self.headerBarButtonItems = [NSArray arrayWithObjects:articleDateItem, nil];
+			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+				commentsItem,
+				[self editButtonItem],
+			nil];
+			
+			break;
+			
+		}
+	
+	}
+		
+	self.foldsTextStackCell = [self enablesTextStackElementFolding];
 		
 	return self;
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingIsFavorite {
+
+	return [NSSet setWithObjects:
+	
+		@"article.favorite",
+	
+	nil];
+
+}
+
+- (BOOL) isFavorite {
+
+	return [self.article.favorite isEqual:(id)kCFBooleanTrue];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingCommentCount {
+
+	return [NSSet setWithObjects:
+	
+		@"article.comments.@count",
+	
+	nil];
+
+}
+
+- (NSUInteger) commentCount {
+
+	return [self.article.comments count];
 
 }
 
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-	[headerView release];
-	[topCell release];
-	[textStackCell release];
-	[commentsVC release];
-	[commentsPopover release];
-	[stackView release];
-	[wrapperView release];
-	[onViewDidLoad release];
-	[onPullTop release];
-	[footerCell release];
 	
-	[super dealloc];
+	[commentsPopover dismissPopoverAnimated:NO];
 
 }
 
@@ -102,7 +326,7 @@
 	if (textStackCell)
 		return textStackCell;
 		
-	textStackCell = [[WAArticleTextStackElement cellFromNib] retain];
+	textStackCell = [WAArticleTextStackElement cellFromNib];
 	
 	[textStackCell.textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
@@ -134,9 +358,115 @@
 
 }
 
+- (UIView *) textStackCellFoldingToggleWrapperView {
+
+	if (textStackCellFoldingToggleWrapperView)
+		return textStackCellFoldingToggleWrapperView;
+		
+	textStackCellFoldingToggleWrapperView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 0 }}];
+	[textStackCellFoldingToggleWrapperView addSubview:self.textStackCellFoldingToggle];
+	
+	__block __typeof__(textStackCellFoldingToggleWrapperView) nrWrapper = textStackCellFoldingToggleWrapperView;
+	__block __typeof__(self.textStackCellFoldingToggle) nrToggle = self.textStackCellFoldingToggle;
+	
+	[(IRView *)textStackCellFoldingToggleWrapperView setOnHitTestWithEvent: ^ (CGPoint point, UIEvent *event, UIView *superAnswer) {
+		return [nrToggle hitTest:[nrToggle convertPoint:point fromView:nrWrapper] withEvent:event];
+	}];
+
+	self.textStackCellFoldingToggle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin;	
+	self.textStackCellFoldingToggle.frame = CGRectOffset(IRGravitize(textStackCellFoldingToggleWrapperView.bounds, self.textStackCellFoldingToggle.bounds.size, kCAGravityTopRight), -8, 24);
+	
+	return textStackCellFoldingToggleWrapperView;
+
+}
+
+- (UIButton *) textStackCellFoldingToggle {
+
+	if (textStackCellFoldingToggle)
+		return textStackCellFoldingToggle;
+		
+	textStackCellFoldingToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+	[textStackCellFoldingToggle addTarget:self action:@selector(handleTextStackCellFoldingToggleTap:) forControlEvents:UIControlEventTouchUpInside];
+	
+	[self.textStackCellFoldingToggle setContentEdgeInsets:(UIEdgeInsets){ 0, 16, 0, 16 }];
+	[self.textStackCellFoldingToggle setTitleEdgeInsets:(UIEdgeInsets){ -2, -4, 2, 4 }];
+	[self.textStackCellFoldingToggle setImageEdgeInsets:(UIEdgeInsets){ -2, -4, 2, 4 }];
+	[self.textStackCellFoldingToggle setTitleColor:[UIColor colorWithWhite:0.5 alpha:1] forState:UIControlStateNormal];
+	//	[self.textStackCellFoldingToggle setTitleColor:[UIColor colorWithWhite:1 alpha:1] forState:UIControlStateHighlighted];
+	[self.textStackCellFoldingToggle setAdjustsImageWhenHighlighted:NO];
+	[self.textStackCellFoldingToggle.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
+	
+	UIImage *normalImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTag"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
+	UIImage *pressedImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTagPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
+	UIImage *disabledImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTagDisabled"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
+	
+	[self.textStackCellFoldingToggle setBackgroundImage:normalImage forState:UIControlStateNormal];
+	[self.textStackCellFoldingToggle setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
+	[self.textStackCellFoldingToggle setBackgroundImage:disabledImage forState:UIControlStateDisabled];
+	
+	[self configureTextStackCellFoldingToggle];
+	
+	return textStackCellFoldingToggle;
+
+}
+
+- (void) configureTextStackCellFoldingToggle {
+
+	if (self.foldsTextStackCell) {
+	
+		NSString *title = NSLocalizedString(@"TEXT_ELEMENT_TOGGLE_MORE_TITLE", @"Title on the text stack more / less toggle button for “More”");
+
+		[self.textStackCellFoldingToggle setTitle:title forState:UIControlStateNormal];
+		[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WADownDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:0.5 alpha:1] shadow:nil] forState:UIControlStateNormal];
+		//	[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WADownDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:1 alpha:1] shadow:nil] forState:UIControlStateHighlighted];
+	
+	} else {
+	
+		NSString *title = NSLocalizedString(@"TEXT_ELEMENT_TOGGLE_LESS_TITLE", @"Title on the text stack more / less toggle button for “Less”");
+		
+		[self.textStackCellFoldingToggle setTitle:title forState:UIControlStateNormal];
+		[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WAUpDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:0.5 alpha:1] shadow:nil] forState:UIControlStateNormal];
+		//	[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WAUpDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:1 alpha:1] shadow:nil] forState:UIControlStateHighlighted];
+	
+	}
+	
+	CGSize fittingSize = [self.textStackCellFoldingToggle sizeThatFits:self.textStackCellFoldingToggle.bounds.size];
+	fittingSize.height = MAX(44, fittingSize.height);
+	
+	self.textStackCellFoldingToggle.bounds = (CGRect){ CGPointZero, fittingSize };
+	[self.textStackCellFoldingToggle.superview layoutSubviews];
+
+}
+
+- (void) handleTextStackCellFoldingToggleTap:(id)sender {
+
+	self.foldsTextStackCell = !self.foldsTextStackCell;
+
+	[self configureTextStackCellFoldingToggle];	
+	
+	BOOL hecklesContentOffset = self.foldsTextStackCell;
+	
+	CGFloat oldContentHeightLeft = self.stackView.contentSize.height - self.stackView.contentOffset.y;
+	
+	[self.stackView layoutSubviews];
+	
+	if (hecklesContentOffset) {
+
+		[self.stackView setContentOffset:(CGPoint){
+			self.stackView.contentOffset.x,
+			MAX(0, self.stackView.contentSize.height - oldContentHeightLeft)
+		} animated:NO];
+	
+	}
+	
+	if (self.foldsTextStackCell)
+		[self.stackView setContentOffset:CGPointZero animated:YES];
+
+}
+
 - (WAArticleCommentsViewController *) newArticleCommentsController {
 
-	return [self.commentsVC retain];
+	return self.commentsVC;
 
 }
 
@@ -201,52 +531,14 @@
 	if (commentsVC)
 		return commentsVC;
 	
-	commentsVC = [[WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]] retain];
+	commentsVC = [WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]];
 	commentsVC.delegate = self;
-	
-	//	__block __typeof__(commentsVC) nrCommentsVC = commentsVC;
-
-	//	commentsVC.onViewDidLoad = ^ {
-	//		
-	//		nrCommentsVC.view.clipsToBounds = YES;
-	//		nrCommentsVC.view.layer.shadowOpacity = 0;
-	//		
-	//		nrCommentsVC.commentsRevealingActionContainerView.hidden = YES;
-	//		nrCommentsVC.commentsView.backgroundColor = nil;
-	//		nrCommentsVC.commentsView.bounces = NO;
-	//		nrCommentsVC.commentsView.opaque = NO;
-	//		nrCommentsVC.commentsView.frame = CGRectInset(nrCommentsVC.commentsView.frame, 64, 0);
-	//		
-	//		nrCommentsVC.compositionAccessoryView.frame = CGRectInset(nrCommentsVC.compositionAccessoryView.frame, 64, 0);
-	//		
-	//		WAView *compositionBackgroundView = nrCommentsVC.compositionAccessoryBackgroundView;
-	//		for (UIView *aSubview in compositionBackgroundView.subviews)
-	//			[aSubview removeFromSuperview];
-	//		
-	//		compositionBackgroundView.backgroundColor = [UIColor whiteColor];
-	//		
-	//		UIView *backgroundView = WAStandardArticleStackCellCenterBackgroundView();
-	//		backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	//		
-	//		UIView *backgroundWrapperView = [[[UIView alloc] initWithFrame:nrCommentsVC.commentsView.bounds] autorelease];
-	//		backgroundWrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	//		backgroundView.frame = CGRectInset(backgroundWrapperView.bounds, -64, 0);
-	//		[backgroundWrapperView addSubview:backgroundView];
-	//				
-	//		nrCommentsVC.commentsView.backgroundView = backgroundWrapperView;
-	//		nrCommentsVC.commentsView.backgroundColor = nil;
-	//		nrCommentsVC.commentsView.opaque = NO;
-	//		nrCommentsVC.commentsView.clipsToBounds = NO;
-	//		
-	//		[backgroundView.superview sendSubviewToBack:backgroundView]; 
-	//		
-	//	};
 	
 	return commentsVC;
 	
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 //	if ([commentsVC isViewLoaded])
 //	if (anElement == commentsVC.view)
@@ -256,7 +548,7 @@
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	CGSize elementAnswer = [anElement sizeThatFits:(CGSize){
 		CGRectGetWidth(aStackView.bounds),
@@ -296,32 +588,35 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 
-	__block WAOverlayBezel *nrBezel = [[WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle] retain];
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	
+	[busyBezel irPerformOnDeallocation:^{
+	
+		NSLog(@"busy bezel dying");
+		
+	}];
 	
 	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:^{
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			[nrBezel autorelease];
-			
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+						
 		});
 		
 	} onFailure:^{
 	
 		dispatch_async(dispatch_get_main_queue(), ^{
 		
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationNone];		
-			[nrBezel autorelease];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
-			nrBezel = [[WAOverlayBezel bezelWithStyle:WAErrorBezelStyle] retain];
-			[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
 			
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				
-				[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				[nrBezel autorelease];
+				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				
 			});
 			
@@ -404,7 +699,7 @@
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	self.wrapperView = [[[UIView alloc] initWithFrame:self.stackView.frame] autorelease];
+	self.wrapperView = [[UIView alloc] initWithFrame:self.stackView.frame];
 	[self.stackView.superview addSubview:self.wrapperView];
 	[self.wrapperView addSubview:self.stackView];
 	self.stackView.frame = self.wrapperView.bounds;
@@ -418,6 +713,45 @@
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
 	
+	self.stackView.delaysContentTouches = NO;
+	self.stackView.canCancelContentTouches = YES;
+	self.stackView.onTouchesShouldBeginWithEventInContentView = ^ (NSSet *touches, UIEvent *event, UIView *contentView) {
+	
+		UIView *currentWrapperView = [nrSelf scrollableStackElementWrapper];
+		UIView *currentWrappedView = [nrSelf scrollableStackElement];
+		
+		if (contentView != currentWrappedView)
+		if (![contentView isDescendantOfView:currentWrappedView])
+			return [contentView isKindOfClass:[UIControl class]];
+			
+		IRStackView *sv = nrSelf.stackView;
+		UIView *svContainer = nrSelf.stackView.superview;
+		
+		if (CGRectContainsRect([svContainer convertRect:sv.bounds fromView:sv], [svContainer convertRect:currentWrapperView.bounds fromView:currentWrapperView]))
+			return YES;
+		
+		return NO;
+	
+	};
+	
+	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
+	
+		return NO;
+	
+	};
+	
+	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
+	
+		if ((otherGR.view == [nrSelf scrollableStackElementWrapper]) || [otherGR.view isDescendantOfView:[nrSelf scrollableStackElementWrapper]])
+			return NO;
+		
+		return YES;
+	
+	};
+	
+	self.stackView.panGestureRecognizer.delaysTouchesBegan = NO;
+	self.stackView.panGestureRecognizer.delaysTouchesEnded = NO;
+	
 	if (headerView) {
 	
 		NSMutableArray *stackElements = [self.stackView mutableStackElements];
@@ -427,7 +761,7 @@
 		
 		[stackElements insertObject:headerView atIndex:0];
 		
-		UIView *enclosingView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(headerView.bounds), 0 }] autorelease];
+		UIView *enclosingView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, CGRectGetWidth(headerView.bounds), 0 }];
 		UIView *topBackgroundView = WAStandardArticleStackCellTopBackgroundView();
 		[enclosingView addSubview:topBackgroundView];
 		topBackgroundView.frame = IRGravitize(enclosingView.bounds, headerView.bounds.size, kCAGravityBottom);
@@ -436,48 +770,50 @@
 		[stackElements insertObject:enclosingView atIndex:1];
 	
 	} else {
+	
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
-		WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
-		topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
-		topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
+			case UIUserInterfaceIdiomPad: {
+			
+				WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
+				topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
+				topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
+				
+				self.headerView = topTextStackCell;
+				
+				break;
+			
+			}
+			
+			case UIUserInterfaceIdiomPhone: {
+			
+				WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
+				topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
+				topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 24 }};
+				
+				self.headerView = topTextStackCell;
+				
+				break;
+			
+			}
 		
-		self.headerView = topTextStackCell;
+		}
 		
 	}
-	
-	UIView *titleStackCell = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
-	[titleStackCell addSubview:((^ {
-		UIView *container = [[[UIView alloc] initWithFrame:(CGRect){
-			(CGPoint){ 0, -64, },
-			(CGSize){ CGRectGetHeight(titleStackCell.bounds), 64 }}] autorelease];
-		container.backgroundColor = nil;
-		container.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 		
-		NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:self.article.timestamp];
-		NSString *device = self.article.creationDeviceName;
-		
-		IRLabel *label = [[[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 24, 32 }, (CGSize){ CGRectGetWidth(container.bounds) - 48 , 24 } }] autorelease];
-		label.opaque = NO;
-		label.backgroundColor = nil;
-		label.attributedText = [label attributedStringForString:(
-			
-			[NSString stringWithFormat:@"%@ (%@)", relDate, device]
-			
-		) font:[UIFont boldSystemFontOfSize:14.0] color:[UIColor colorWithWhite:0.5 alpha:1]];
-		
-		label.autoresizingMask = UIViewAutoresizingFlexibleWidth;//|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
-		
-		[container addSubview:label];
-		return container;
-		
-	})())];
-	[self.stackView addStackElementsObject:titleStackCell];
-	
 	BOOL hasText = [self.article.text length];
 	BOOL showsComments = NO;
 	
 	if (hasText) {
+		
 		[self.stackView addStackElementsObject:self.textStackCell];
+		
+		CGFloat currentTextStackCellHeight = [self sizeThatFitsElement:self.textStackCell inStackView:self.stackView].height;
+		CGFloat idealTextStackCellHeight = [self.textStackCell sizeThatFits:(CGSize){ CGRectGetWidth(self.stackView.bounds), 0 }].height;
+		
+		if ([self enablesTextStackElementFolding] && (idealTextStackCellHeight > currentTextStackCellHeight))
+			[self.stackView addStackElementsObject:self.textStackCellFoldingToggleWrapperView];
+		
 	}
 	
 	if (showsComments) {
@@ -512,36 +848,36 @@
 	
 	self.stackView.backgroundColor = nil;
 	self.wrapperView.backgroundColor = nil;
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 
-		case UIUserInterfaceIdiomPad: {
+	self.stackView.onDidLayoutSubviews = ^ {
 		
-			self.stackView.onDidLayoutSubviews = ^ {
-				
+		[nrSelf.textStackCellFoldingToggleWrapperView.superview bringSubviewToFront:nrSelf.textStackCellFoldingToggleWrapperView];
+		
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+			case UIUserInterfaceIdiomPad: {
+			
 				[nrSelf.headerView.superview bringSubviewToFront:nrSelf.headerView];
-				
-				UIView *ownHeaderView = nrSelf.headerView;
 				
 				nrSelf.headerView.center = (CGPoint){
 					nrSelf.headerView.center.x,
 					MAX(0, nrSelf.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(nrSelf.headerView.bounds)
 				};
 				
-			};
+				break;
 			
-			break;
+			}
 			
+			case UIUserInterfaceIdiomPhone: {
+			
+				break;
+			
+			}
+		
 		}
 		
-		case UIUserInterfaceIdiomPhone: {
-		
-			break;
-		
-		}
-	
-	}
-	
+	};
+
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	
@@ -559,8 +895,7 @@
 		[allStackElements removeObject:headerView];
 	}
 	
-	[headerView release];
-	headerView = [newHeaderView retain];
+	headerView = newHeaderView;
 	
 	if (![allStackElements containsObject:headerView]) {
 		[allStackElements insertObject:headerView atIndex:0];
@@ -599,6 +934,9 @@
 	self.stackView = nil;
 	self.commentsVC = nil;
 	self.commentsPopover = nil;
+	
+	self.textStackCellFoldingToggleWrapperView = nil;
+	self.textStackCellFoldingToggle = nil;
 	
 	[super viewDidUnload];
 	
@@ -656,9 +994,9 @@
 	self.stackView.frame = intersection;
 	self.stackView.contentInset = (UIEdgeInsets){
 		CGRectGetMinY(intersection) - CGRectGetMinY(aRect),
-		0,
-		0,
-		0
+		CGRectGetMinX(intersection) - CGRectGetMinX(aRect),
+		CGRectGetMaxY(intersection) - CGRectGetMaxY(aRect),
+		CGRectGetMaxX(intersection) - CGRectGetMaxX(aRect)
 	};
 	
 }
@@ -674,79 +1012,55 @@
 
 }
 
-#if 0
-
-- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
-	self.stackView.backgroundColor = [UIColor whiteColor];
-
-}
-
-- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-	self.stackView.backgroundColor = nil;
-
-}
-
-- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-
-	NSParameterAssert(scrollView == self.stackView);
-	
-	[self.stackView beginPostponingStackElementLayout];
-
-}
-
-- (void) scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-
-	NSParameterAssert(scrollView == self.stackView);
-	
-	if (!decelerate)
-		[self.stackView endPostponingStackElementLayout];
-	
-}
-
-- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-
-	NSParameterAssert(scrollView == self.stackView);
-	
-	[self.stackView endPostponingStackElementLayout];
-	
-}
-
-
-#endif
-
 - (void) scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
 
-	NSParameterAssert(scrollView == self.stackView);
+	if (scrollView == self.stackView) {
+
+		NSParameterAssert(scrollView == self.stackView);
+		
+		CGPoint contentOffset = self.stackView.contentOffset;
+		CGFloat cap = -200.0f;
+		
+		if (contentOffset.y < cap) {
+			if (self.onPullTop)
+				self.onPullTop(self.stackView);
+		}
 	
-	CGPoint contentOffset = self.stackView.contentOffset;
-	CGFloat cap = -200.0f;
-	
-	if (contentOffset.y < cap) {
-		if (self.onPullTop)
-			self.onPullTop(self.stackView);
 	}
 	
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
+
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-	NSParameterAssert(scrollView == self.stackView);
-	
-	WAStackView *sv = self.stackView;
-	CGPoint oldSVOffset = sv.contentOffset;
-	CGPoint newSVOffset = (CGPoint){
-		oldSVOffset.x,
-		MIN(sv.contentSize.height - CGRectGetHeight(sv.bounds), oldSVOffset.y)
-	};
+		case UIUserInterfaceIdiomPad: {
+
+			if (scrollView == self.stackView) {
+			
+				IRStackView *sv = self.stackView;
+				CGPoint oldSVOffset = sv.contentOffset;
+				CGPoint newSVOffset = (CGPoint){
+					oldSVOffset.x,
+					MIN(sv.contentSize.height - CGRectGetHeight(sv.bounds), oldSVOffset.y)
+				};
+					
+				if (!CGPointEqualToPoint(oldSVOffset, newSVOffset))
+					[sv setContentOffset:newSVOffset animated:NO];
+				
+			}
+			
+			break;
 		
-	if (!CGPointEqualToPoint(oldSVOffset, newSVOffset))
-		[sv setContentOffset:newSVOffset animated:NO];
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			break;
+		
+		}
+	
+	}
 	
 }
 
@@ -771,6 +1085,71 @@
 - (UIScrollView *) scrollableStackElement {
 
 	return nil;
+
+}
+
+- (BOOL) enablesTextStackElementFolding {
+
+	return NO;
+
+}
+
+- (void) setEditing:(BOOL)editing animated:(BOOL)animated {
+
+	[super setEditing:editing animated:animated];
+	
+	__block void (^dismissBlock)(void) = nil;
+	
+	if (editing) {
+	
+		NSParameterAssert([self isViewLoaded] && self.view.window && !self.presentedViewController && (self.navigationController ? (self.navigationController.topViewController == self) : YES));
+	
+		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
+		
+		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(NSURL *anArticleURLOrNil) {
+			
+			if (dismissBlock)
+				dismissBlock();
+			
+			if (!anArticleURLOrNil)
+				return;
+				
+			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
+				
+			nil] onSuccess:^{
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			} onFailure:^(NSError *error) {
+				
+				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
+				
+			}];
+						
+		}];
+		
+		UINavigationController *navC = [compositionVC wrappingNavigationController];
+		navC.modalPresentationStyle = UIModalPresentationFormSheet;
+		[self presentViewController:navC animated:YES completion:nil];
+		
+		__weak UINavigationController *wNavC = navC;
+		__weak WAStackedArticleViewController *wSelf = self;
+		
+		dismissBlock = [^ {
+			
+			[wSelf setEditing:NO animated:NO];
+			[wNavC dismissViewControllerAnimated:YES completion:nil];
+			dismissBlock = nil;
+			
+		} copy];
+	
+	} else {
+	
+		//	?
+	
+	}
 
 }
 

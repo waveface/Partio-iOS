@@ -9,28 +9,15 @@
 #import "WADiscretePaginatedArticlesViewController.h"
 
 
-enum WADiscretePaginatedArticlesViewControllerAnimation {
-	
-	WAArticleContextAnimationNone = 0,
-	WAArticleContextAnimationFlipAndScale = 1,
-	WAArticleContextAnimationFadeAndZoom = 2,
-	WAArticleContextAnimationCoverVertically = 3,
-	
-	WAArticleContextAnimationDefault = WAArticleContextAnimationCoverVertically
-	
-}; typedef NSUInteger WAArticleContextAnimation;
-
-
-@protocol WAArticleViewControllerPresenting;
+@class WAArticleViewController;
 @interface WADiscretePaginatedArticlesViewController (ContextPresenting)
 
-- (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI;
-- (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI animated:(BOOL)animated;
-- (UIViewController<WAArticleViewControllerPresenting> *) presentDetailedContextForArticle:(NSURL *)anObjectURI usingAnimation:(WAArticleContextAnimation)animation;
+@property (nonatomic, readonly, retain) WAArticle *presentedArticle;
 
-- (void) dismissArticleContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
+- (WAArticleViewController *) presentDetailedContextForArticle:(NSURL *)anObjectURI;
+- (void) dismissArticleContextViewController:(WAArticleViewController *)controller;
 
-- (UIViewController<WAArticleViewControllerPresenting> *) newContextViewControllerForArticle:(NSURL *)anObjectURI NS_RETURNS_RETAINED;
-- (UINavigationController *) wrappingNavigationControllerForContextViewController:(UIViewController<WAArticleViewControllerPresenting> *)controller;
+- (WAArticleViewController *) newContextViewControllerForArticle:(NSURL *)anObjectURI;
+- (UINavigationController *) wrappingNavigationControllerForContextViewController:(WAArticleViewController *)controller;
 
 @end

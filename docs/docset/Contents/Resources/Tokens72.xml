@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAStationDiscoveryFeedbackViewController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAStationDiscoveryFeedbackViewController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.h</DeclaredIn>
+			
+			<NodeRef refid="72"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAStationDiscoveryFeedbackViewController/interfaceLabels</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (retain, nonatomic) IBOutletCollection ( UILabel ) NSArray *interfaceLabels</Declaration>
+			
+			
+			<Anchor>//api/name/interfaceLabels</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAStationDiscoveryFeedbackViewController/dismissalAction</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IRAction *dismissalAction</Declaration>
+			
+			
+			<Anchor>//api/name/dismissalAction</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStationDiscoveryFeedbackViewController/wrappingNavigationController</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.h</DeclaredIn>			
+			
+			<Declaration>- (UINavigationController *)wrappingNavigationController</Declaration>
+			
+			
+			<Anchor>//api/name/wrappingNavigationController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStationDiscoveryFeedbackViewController/initWithNibName:bundle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil</Declaration>
+			
+			
+			<Anchor>//api/name/initWithNibName:bundle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStationDiscoveryFeedbackViewController/shouldAutorotateToInterfaceOrientation:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.m</DeclaredIn>			
+			
+			<Declaration>- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation</Declaration>
+			
+			
+			<Anchor>//api/name/shouldAutorotateToInterfaceOrientation:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStationDiscoveryFeedbackViewController/viewDidLoad</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidLoad</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidLoad</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStationDiscoveryFeedbackViewController/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAStationDiscoveryFeedbackViewController/viewDidUnload</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAStationDiscoveryFeedbackViewController.m</DeclaredIn>			
+			
+			<Declaration>- (void)viewDidUnload</Declaration>
+			
+			
+			<Anchor>//api/name/viewDidUnload</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

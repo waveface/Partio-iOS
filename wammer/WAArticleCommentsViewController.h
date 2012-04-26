@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-#import "WAView.h"
+#import "UIKit+IRAdditions.h"
 #import "WAArticleCommentsViewCell.h"
 
 
@@ -37,7 +37,7 @@ typedef enum {
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL;
 
-@property (nonatomic, readwrite, retain) IBOutlet WAView *view;
+@property (nonatomic, readwrite, retain) IBOutlet IRView *view;
 
 @property (nonatomic, readwrite, retain) NSURL *representedArticleURI;
 @property (nonatomic, readwrite, assign) id<WAArticleCommentsViewControllerDelegate> delegate;
@@ -53,11 +53,11 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *compositionContentField;
 @property (nonatomic, readwrite, retain) IBOutlet UIButton *compositionSendButton;
 
-@property (nonatomic, readwrite, retain) IBOutlet WAView *compositionAccessoryView;
-@property (nonatomic, readonly, retain) WAView *compositionAccessoryTextWellBackgroundView;
-@property (nonatomic, readonly, retain) WAView *compositionAccessoryBackgroundView;
+@property (nonatomic, readwrite, retain) IBOutlet IRView *compositionAccessoryView;
+@property (nonatomic, readonly, retain) IRView *compositionAccessoryTextWellBackgroundView;
+@property (nonatomic, readonly, retain) IRView *compositionAccessoryBackgroundView;
 
-@property (nonatomic, readwrite, retain) IBOutlet WAView *commentsRevealingActionContainerView;
+@property (nonatomic, readwrite, retain) IBOutlet IRView *commentsRevealingActionContainerView;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *coachmarkOverlay;
 
@@ -72,6 +72,6 @@ typedef enum {
 @property (nonatomic, readwrite, assign) BOOL scrollsToLastRowOnChange;
 
 @property (nonatomic, readwrite, assign) BOOL adjustsContainerViewOnInterfaceBoundsChange;	//	Default is YES
-- (void) adjustWrapperViewBoundsWithWindowInterfaceBounds:(CGRect)bounds animated:(BOOL)animated;	//Called on interface bounds change
+- (void) adjustWrapperViewBoundsWithWindow:(UIWindow *)window interfaceBounds:(CGRect)bounds animated:(BOOL)animated;	//Called on interface bounds change
 
 @end

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Protocols/WAArticleViewControllerPresenting.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intf/WAArticleViewControllerPresenting</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>
+			
+			<NodeRef refid="91"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleViewControllerPresenting/setContextControlsVisible:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setContextControlsVisible:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleViewControllerPresenting/enqueueInterfaceUpdate:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)enqueueInterfaceUpdate:(void ( ^ ) ( void ))anAction</Declaration>
+			
+			
+			<Anchor>//api/name/enqueueInterfaceUpdate:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleViewControllerPresenting/handlePreferredInterfaceRect:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>- (void)handlePreferredInterfaceRect:(CGRect)aRect</Declaration>
+			
+			
+			<Anchor>//api/name/handlePreferredInterfaceRect:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/WAArticleViewControllerPresenting/isPointInsideInterfaceRect:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleViewController.h</DeclaredIn>			
+			
+			<Declaration>- (BOOL)isPointInsideInterfaceRect:(CGPoint)aPoint</Declaration>
+			
+			
+			<Anchor>//api/name/isPointInsideInterfaceRect:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

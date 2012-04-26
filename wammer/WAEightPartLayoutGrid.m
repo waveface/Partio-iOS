@@ -9,6 +9,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WAEightPartLayoutGrid.h"
 #import "Foundation+IRAdditions.h"
+#import "IRDiscreteLayout.h"
 
 
 @interface WAEightPartLayoutPlacementCandidate : NSObject
@@ -23,7 +24,7 @@
 @implementation WAEightPartLayoutPlacementCandidate
 @synthesize pattern, occurrence;
 + (id) candidateWithPattern:(unsigned char)aPattern occurance:(float_t)anOccurrence {
-	WAEightPartLayoutPlacementCandidate *returnedInstance = [[[self alloc] init] autorelease];
+	WAEightPartLayoutPlacementCandidate *returnedInstance = [[self alloc] init];
 	returnedInstance.pattern = aPattern;
 	returnedInstance.occurrence = anOccurrence;
 	return returnedInstance;
@@ -104,7 +105,7 @@
 	
 	[self willChangeValueForKey:@"defaultTilingPatternGroups"];
 	
-	defaultTilingPatternGroups = [[NSDictionary dictionaryWithObjectsAndKeys:
+	defaultTilingPatternGroups = [NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[NSArray arrayWithObjects:
 				[NSNumber numberWithUnsignedChar:0b11001100],
@@ -134,7 +135,7 @@
 				[NSNumber numberWithUnsignedChar:0b00000001],
 			nil], @"singleTile",
 			
-		nil] retain];
+		nil];
 		
 		[self didChangeValueForKey:@"defaultTilingPatternGroups"];
 		
@@ -152,44 +153,18 @@
 	
 	//	Item introspection helpers
 	
-	NSMutableArray *availableItems = [[[items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN([items count], 8) }]] mutableCopy] autorelease];
+	NSMutableArray *availableItems = [[items objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN([items count], 8) }]] mutableCopy];
 	
 	id<IRDiscreteLayoutItem> (^nextItem)() = ^ {
 	
 		if (![availableItems count])
 			return (id<IRDiscreteLayoutItem>)nil;
 		
-		id<IRDiscreteLayoutItem> returnedItem = [[[availableItems objectAtIndex:0] retain] autorelease];
+		id<IRDiscreteLayoutItem> returnedItem = [availableItems objectAtIndex:0];
 		[availableItems removeObjectAtIndex:0];
 		
 		return returnedItem;
 		
-	};
-	
-	BOOL (^itemHasMediaOfType)(id<IRDiscreteLayoutItem>, CFStringRef) = ^ (id<IRDiscreteLayoutItem> anItem, CFStringRef aMediaType) {
-		
-		for (id aMediaItem in [anItem representedMediaItems])
-			if (UTTypeConformsTo((CFStringRef)[anItem typeForRepresentedMediaItem:aMediaItem], aMediaType))
-				return YES;
-		
-		return NO;
-
-	};
-	
-	BOOL (^isImageItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return itemHasMediaOfType(anItem, kUTTypeImage);
-	};
-	
-	BOOL (^isLinkItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return itemHasMediaOfType(anItem, kUTTypeURL);
-	};
-	
-//	BOOL (^isTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-//		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
-//	};
-	
-	BOOL (^isLongTextItem)(id<IRDiscreteLayoutItem>) = ^ (id<IRDiscreteLayoutItem> anItem) {
-		return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
 	};
 	
 	//	Layout progress introspection helpers
@@ -226,19 +201,17 @@
 		
 		NSMutableArray *usablePatterns = [NSMutableArray array];
 		
-		if (isImageItem(currentItem) ) {
+		if (WADiscreteLayoutItemHasImage(currentItem)) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"fourTiles"]];
 		}
 		
-		if (isImageItem(currentItem) || isLongTextItem(currentItem)) {
+		if (WADiscreteLayoutItemHasImage(currentItem) || WADiscreteLayoutItemHasLongText(currentItem) || WADiscreteLayoutItemHasLink(currentItem) ) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
 		
-		//	isLinkItem(currentItem) || is removed because now its -representedText contains the description from its preview
-		
-		// increase probablity
-		if (isLongTextItem(currentItem)) {
+		// increase web preview 2 cell 
+		if (WADiscreteLayoutItemHasLink(currentItem)) {
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"verticalCombo"]];
 			[usablePatterns addObjectsFromArray:[self patternsInGroupNamed:@"horizontalCombo"]];
 		}
@@ -310,15 +283,6 @@
 	
 	cleanup();
 	return returnedInstance;
-
-}
-
-- (void) dealloc {
-
-	[validatorBlock release];
-	[displayBlock release];
-	[defaultTilingPatternGroups release];
-	[super dealloc];
 
 }
 

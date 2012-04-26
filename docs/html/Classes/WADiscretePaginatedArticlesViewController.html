@@ -1,0 +1,2046 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WADiscretePaginatedArticlesViewController Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WADiscretePaginatedArticlesViewController Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/articleViewControllersCache">&nbsp;&nbsp;&nbsp;&nbsp;articleViewControllersCache</option>
+	
+	<option value="//api/name/discreteLayoutManager">&nbsp;&nbsp;&nbsp;&nbsp;discreteLayoutManager</option>
+	
+	<option value="//api/name/discreteLayoutResult">&nbsp;&nbsp;&nbsp;&nbsp;discreteLayoutResult</option>
+	
+	<option value="//api/name/lastHandledReadObjectIdentifier">&nbsp;&nbsp;&nbsp;&nbsp;lastHandledReadObjectIdentifier</option>
+	
+	<option value="//api/name/lastReadObjectIdentifier">&nbsp;&nbsp;&nbsp;&nbsp;lastReadObjectIdentifier</option>
+	
+	<option value="//api/name/lastReadingProgressAnnotation">&nbsp;&nbsp;&nbsp;&nbsp;lastReadingProgressAnnotation</option>
+	
+	<option value="//api/name/lastReadingProgressAnnotationView">&nbsp;&nbsp;&nbsp;&nbsp;lastReadingProgressAnnotationView</option>
+	
+	<option value="//api/name/lastUsedLayoutGrids">&nbsp;&nbsp;&nbsp;&nbsp;lastUsedLayoutGrids</option>
+	
+	<option value="//api/name/layoutGrids">&nbsp;&nbsp;&nbsp;&nbsp;layoutGrids</option>
+	
+	<option value="//api/name/paginatedArticlesViewController">&nbsp;&nbsp;&nbsp;&nbsp;paginatedArticlesViewController</option>
+	
+	<option value="//api/name/paginatedView">&nbsp;&nbsp;&nbsp;&nbsp;paginatedView</option>
+	
+	<option value="//api/name/paginationSlider">&nbsp;&nbsp;&nbsp;&nbsp;paginationSlider</option>
+	
+	<option value="//api/name/paginationSliderSlot">&nbsp;&nbsp;&nbsp;&nbsp;paginationSliderSlot</option>
+	
+	<option value="//api/name/requiresRecalculationOnFetchedResultsChangeEnd">&nbsp;&nbsp;&nbsp;&nbsp;requiresRecalculationOnFetchedResultsChangeEnd</option>
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/adjustPageView:usingGridAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- adjustPageView:usingGridAtIndex:</option>
+	
+	<option value="//api/name/adjustPageViewAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- adjustPageViewAtIndex:</option>
+	
+	<option value="//api/name/adjustPageViewAtIndex:withAdditionalAdjustments:">&nbsp;&nbsp;&nbsp;&nbsp;- adjustPageViewAtIndex:withAdditionalAdjustments:</option>
+	
+	<option value="//api/name/cachedArticleViewControllerForArticle:">&nbsp;&nbsp;&nbsp;&nbsp;- cachedArticleViewControllerForArticle:</option>
+	
+	<option value="//api/name/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:">&nbsp;&nbsp;&nbsp;&nbsp;- controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</option>
+	
+	<option value="//api/name/controller:didChangeSection:atIndex:forChangeType:">&nbsp;&nbsp;&nbsp;&nbsp;- controller:didChangeSection:atIndex:forChangeType:</option>
+	
+	<option value="//api/name/controllerDidChangeContent:">&nbsp;&nbsp;&nbsp;&nbsp;- controllerDidChangeContent:</option>
+	
+	<option value="//api/name/controllerWillChangeContent:">&nbsp;&nbsp;&nbsp;&nbsp;- controllerWillChangeContent:</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/debugActionSheetControllerActions">&nbsp;&nbsp;&nbsp;&nbsp;- debugActionSheetControllerActions</option>
+	
+	<option value="//api/name/discreteLayoutManager">&nbsp;&nbsp;&nbsp;&nbsp;- discreteLayoutManager</option>
+	
+	<option value="//api/name/dismissArticleContextViewController:">&nbsp;&nbsp;&nbsp;&nbsp;- dismissArticleContextViewController:</option>
+	
+	<option value="//api/name/dismissBlockForArticleContextViewController:">&nbsp;&nbsp;&nbsp;&nbsp;- dismissBlockForArticleContextViewController:</option>
+	
+	<option value="//api/name/gestureRecognizer:shouldReceiveTouch:">&nbsp;&nbsp;&nbsp;&nbsp;- gestureRecognizer:shouldReceiveTouch:</option>
+	
+	<option value="//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">&nbsp;&nbsp;&nbsp;&nbsp;- gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</option>
+	
+	<option value="//api/name/gridIndexOfArticle:">&nbsp;&nbsp;&nbsp;&nbsp;- gridIndexOfArticle:</option>
+	
+	<option value="//api/name/gridIndexOfLastReadArticle">&nbsp;&nbsp;&nbsp;&nbsp;- gridIndexOfLastReadArticle</option>
+	
+	<option value="//api/name/handleApplicationDidBecomeActive:">&nbsp;&nbsp;&nbsp;&nbsp;- handleApplicationDidBecomeActive:</option>
+	
+	<option value="//api/name/handleApplicationDidEnterBackground:">&nbsp;&nbsp;&nbsp;&nbsp;- handleApplicationDidEnterBackground:</option>
+	
+	<option value="//api/name/init">&nbsp;&nbsp;&nbsp;&nbsp;- init</option>
+	
+	<option value="//api/name/lastReadingProgressAnnotation">&nbsp;&nbsp;&nbsp;&nbsp;- lastReadingProgressAnnotation</option>
+	
+	<option value="//api/name/lastReadingProgressAnnotationView">&nbsp;&nbsp;&nbsp;&nbsp;- lastReadingProgressAnnotationView</option>
+	
+	<option value="//api/name/layoutGrids">&nbsp;&nbsp;&nbsp;&nbsp;- layoutGrids</option>
+	
+	<option value="//api/name/layoutManager:itemAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- layoutManager:itemAtIndex:</option>
+	
+	<option value="//api/name/layoutManager:layoutGridAtIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- layoutManager:layoutGridAtIndex:</option>
+	
+	<option value="//api/name/layoutManager:nextGridForContentsUsingGrid:">&nbsp;&nbsp;&nbsp;&nbsp;- layoutManager:nextGridForContentsUsingGrid:</option>
+	
+	<option value="//api/name/newContextViewControllerForArticle:">&nbsp;&nbsp;&nbsp;&nbsp;- newContextViewControllerForArticle:</option>
+	
+	<option value="//api/name/newDiscreteArticleViewControllerForArticle:">&nbsp;&nbsp;&nbsp;&nbsp;- newDiscreteArticleViewControllerForArticle:</option>
+	
+	<option value="//api/name/newPageContainerView">&nbsp;&nbsp;&nbsp;&nbsp;- newPageContainerView</option>
+	
+	<option value="//api/name/numberOfItemsForLayoutManager:">&nbsp;&nbsp;&nbsp;&nbsp;- numberOfItemsForLayoutManager:</option>
+	
+	<option value="//api/name/numberOfLayoutGridsForLayoutManager:">&nbsp;&nbsp;&nbsp;&nbsp;- numberOfLayoutGridsForLayoutManager:</option>
+	
+	<option value="//api/name/numberOfViewsInPaginatedView:">&nbsp;&nbsp;&nbsp;&nbsp;- numberOfViewsInPaginatedView:</option>
+	
+	<option value="//api/name/paginatedArticlesViewController">&nbsp;&nbsp;&nbsp;&nbsp;- paginatedArticlesViewController</option>
+	
+	<option value="//api/name/paginatedView:didShowView:atIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- paginatedView:didShowView:atIndex:</option>
+	
+	<option value="//api/name/paginationSlider:didMoveToPage:">&nbsp;&nbsp;&nbsp;&nbsp;- paginationSlider:didMoveToPage:</option>
+	
+	<option value="//api/name/performReadingProgressSync">&nbsp;&nbsp;&nbsp;&nbsp;- performReadingProgressSync</option>
+	
+	<option value="//api/name/presentDetailedContextForArticle:">&nbsp;&nbsp;&nbsp;&nbsp;- presentDetailedContextForArticle:</option>
+	
+	<option value="//api/name/presentDetailedContextForArticle:animated:">&nbsp;&nbsp;&nbsp;&nbsp;- presentDetailedContextForArticle:animated:</option>
+	
+	<option value="//api/name/presentDetailedContextForArticle:usingAnimation:">&nbsp;&nbsp;&nbsp;&nbsp;- presentDetailedContextForArticle:usingAnimation:</option>
+	
+	<option value="//api/name/refreshData">&nbsp;&nbsp;&nbsp;&nbsp;- refreshData</option>
+	
+	<option value="//api/name/reloadViewContents">&nbsp;&nbsp;&nbsp;&nbsp;- reloadViewContents</option>
+	
+	<option value="//api/name/removeCachedArticleViewControllers">&nbsp;&nbsp;&nbsp;&nbsp;- removeCachedArticleViewControllers</option>
+	
+	<option value="//api/name/representingViewForItem:">&nbsp;&nbsp;&nbsp;&nbsp;- representingViewForItem:</option>
+	
+	<option value="//api/name/retrieveLatestReadingProgress">&nbsp;&nbsp;&nbsp;&nbsp;- retrieveLatestReadingProgress</option>
+	
+	<option value="//api/name/retrieveLatestReadingProgressWithCompletion:">&nbsp;&nbsp;&nbsp;&nbsp;- retrieveLatestReadingProgressWithCompletion:</option>
+	
+	<option value="//api/name/setContextControlsVisible:animated:">&nbsp;&nbsp;&nbsp;&nbsp;- setContextControlsVisible:animated:</option>
+	
+	<option value="//api/name/setDismissBlock:forArticleContextViewController:">&nbsp;&nbsp;&nbsp;&nbsp;- setDismissBlock:forArticleContextViewController:</option>
+	
+	<option value="//api/name/setLastReadObjectIdentifier:">&nbsp;&nbsp;&nbsp;&nbsp;- setLastReadObjectIdentifier:</option>
+	
+	<option value="//api/name/shouldAutorotateToInterfaceOrientation:">&nbsp;&nbsp;&nbsp;&nbsp;- shouldAutorotateToInterfaceOrientation:</option>
+	
+	<option value="//api/name/updateLastReadingProgressAnnotation">&nbsp;&nbsp;&nbsp;&nbsp;- updateLastReadingProgressAnnotation</option>
+	
+	<option value="//api/name/updateLatestReadingProgressWithIdentifier:">&nbsp;&nbsp;&nbsp;&nbsp;- updateLatestReadingProgressWithIdentifier:</option>
+	
+	<option value="//api/name/updateLatestReadingProgressWithIdentifier:completion:">&nbsp;&nbsp;&nbsp;&nbsp;- updateLatestReadingProgressWithIdentifier:completion:</option>
+	
+	<option value="//api/name/viewControllerForSubviewAtIndex:inPaginatedView:">&nbsp;&nbsp;&nbsp;&nbsp;- viewControllerForSubviewAtIndex:inPaginatedView:</option>
+	
+	<option value="//api/name/viewDidAppear:">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidAppear:</option>
+	
+	<option value="//api/name/viewDidLoad">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidLoad</option>
+	
+	<option value="//api/name/viewDidUnload">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidUnload</option>
+	
+	<option value="//api/name/viewForAnnotation:inPaginationSlider:">&nbsp;&nbsp;&nbsp;&nbsp;- viewForAnnotation:inPaginationSlider:</option>
+	
+	<option value="//api/name/viewForPaginatedView:atIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- viewForPaginatedView:atIndex:</option>
+	
+	<option value="//api/name/viewWillAppear:">&nbsp;&nbsp;&nbsp;&nbsp;- viewWillAppear:</option>
+	
+	<option value="//api/name/willAnimateRotationToInterfaceOrientation:duration:">&nbsp;&nbsp;&nbsp;&nbsp;- willAnimateRotationToInterfaceOrientation:duration:</option>
+	
+	<option value="//api/name/wrappingNavigationControllerForContextViewController:">&nbsp;&nbsp;&nbsp;&nbsp;- wrappingNavigationControllerForContextViewController:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_ContextPresenting Methods">ContextPresenting Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_DiscreteLayout Methods">DiscreteLayout Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_ContextPresenting_Private Methods">ContextPresenting_Private Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Extension Methods">Extension Methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_DiscreteLayout_Private Methods">DiscreteLayout_Private Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleViewControllersCache">articleViewControllersCache</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/discreteLayoutManager">discreteLayoutManager</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/discreteLayoutResult">discreteLayoutResult</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastHandledReadObjectIdentifier">lastHandledReadObjectIdentifier</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastReadObjectIdentifier">lastReadObjectIdentifier</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastReadingProgressAnnotation">lastReadingProgressAnnotation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastReadingProgressAnnotationView">lastReadingProgressAnnotationView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastUsedLayoutGrids">lastUsedLayoutGrids</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutGrids">layoutGrids</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginatedArticlesViewController">paginatedArticlesViewController</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginatedView">paginatedView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginationSlider">paginationSlider</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginationSliderSlot">paginationSliderSlot</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/requiresRecalculationOnFetchedResultsChangeEnd">requiresRecalculationOnFetchedResultsChangeEnd</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adjustPageView:usingGridAtIndex:">adjustPageView:usingGridAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adjustPageViewAtIndex:">adjustPageViewAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/adjustPageViewAtIndex:withAdditionalAdjustments:">adjustPageViewAtIndex:withAdditionalAdjustments:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cachedArticleViewControllerForArticle:">cachedArticleViewControllerForArticle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:">controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/controller:didChangeSection:atIndex:forChangeType:">controller:didChangeSection:atIndex:forChangeType:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/controllerDidChangeContent:">controllerDidChangeContent:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/controllerWillChangeContent:">controllerWillChangeContent:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/debugActionSheetControllerActions">debugActionSheetControllerActions</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/discreteLayoutManager">discreteLayoutManager</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dismissArticleContextViewController:">dismissArticleContextViewController:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dismissBlockForArticleContextViewController:">dismissBlockForArticleContextViewController:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/gestureRecognizer:shouldReceiveTouch:">gestureRecognizer:shouldReceiveTouch:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/gridIndexOfArticle:">gridIndexOfArticle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/gridIndexOfLastReadArticle">gridIndexOfLastReadArticle</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleApplicationDidBecomeActive:">handleApplicationDidBecomeActive:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleApplicationDidEnterBackground:">handleApplicationDidEnterBackground:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/init">init</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastReadingProgressAnnotation">lastReadingProgressAnnotation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/lastReadingProgressAnnotationView">lastReadingProgressAnnotationView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutGrids">layoutGrids</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutManager:itemAtIndex:">layoutManager:itemAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutManager:layoutGridAtIndex:">layoutManager:layoutGridAtIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/layoutManager:nextGridForContentsUsingGrid:">layoutManager:nextGridForContentsUsingGrid:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/newContextViewControllerForArticle:">newContextViewControllerForArticle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/newDiscreteArticleViewControllerForArticle:">newDiscreteArticleViewControllerForArticle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/newPageContainerView">newPageContainerView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/numberOfItemsForLayoutManager:">numberOfItemsForLayoutManager:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/numberOfLayoutGridsForLayoutManager:">numberOfLayoutGridsForLayoutManager:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/numberOfViewsInPaginatedView:">numberOfViewsInPaginatedView:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginatedArticlesViewController">paginatedArticlesViewController</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginatedView:didShowView:atIndex:">paginatedView:didShowView:atIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginationSlider:didMoveToPage:">paginationSlider:didMoveToPage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/performReadingProgressSync">performReadingProgressSync</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentDetailedContextForArticle:">presentDetailedContextForArticle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentDetailedContextForArticle:animated:">presentDetailedContextForArticle:animated:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/presentDetailedContextForArticle:usingAnimation:">presentDetailedContextForArticle:usingAnimation:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/refreshData">refreshData</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/reloadViewContents">reloadViewContents</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/removeCachedArticleViewControllers">removeCachedArticleViewControllers</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/representingViewForItem:">representingViewForItem:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/retrieveLatestReadingProgress">retrieveLatestReadingProgress</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/retrieveLatestReadingProgressWithCompletion:">retrieveLatestReadingProgressWithCompletion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setContextControlsVisible:animated:">setContextControlsVisible:animated:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setDismissBlock:forArticleContextViewController:">setDismissBlock:forArticleContextViewController:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setLastReadObjectIdentifier:">setLastReadObjectIdentifier:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/shouldAutorotateToInterfaceOrientation:">shouldAutorotateToInterfaceOrientation:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/updateLastReadingProgressAnnotation">updateLastReadingProgressAnnotation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/updateLatestReadingProgressWithIdentifier:">updateLatestReadingProgressWithIdentifier:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/updateLatestReadingProgressWithIdentifier:completion:">updateLatestReadingProgressWithIdentifier:completion:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewControllerForSubviewAtIndex:inPaginatedView:">viewControllerForSubviewAtIndex:inPaginatedView:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidAppear:">viewDidAppear:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidLoad">viewDidLoad</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidUnload">viewDidUnload</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewForAnnotation:inPaginationSlider:">viewForAnnotation:inPaginationSlider:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewForPaginatedView:atIndex:">viewForPaginatedView:atIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewWillAppear:">viewWillAppear:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/willAnimateRotationToInterfaceOrientation:duration:">willAnimateRotationToInterfaceOrientation:duration:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/wrappingNavigationControllerForContextViewController:">wrappingNavigationControllerForContextViewController:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WADiscretePaginatedArticlesViewController Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WADiscretePaginatedArticlesViewController Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value"><a href="../Classes/WAArticlesViewController.html">WAArticlesViewController</a> : UIViewController</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">IRPaginatedViewDelegate<br /><a href="../Protocols/WAPaginationSliderDelegate.html">WAPaginationSliderDelegate</a></td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WADiscretePaginatedArticlesViewController.h<br />WADiscretePaginatedArticlesViewController.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginationSlider">&nbsp;&nbsp;paginationSlider</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginationSliderSlot">&nbsp;&nbsp;paginationSliderSlot</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginatedView">&nbsp;&nbsp;paginatedView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginatedArticlesViewController">&ndash;&nbsp;paginatedArticlesViewController</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/init">&ndash;&nbsp;init</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleApplicationDidBecomeActive:">&ndash;&nbsp;handleApplicationDidBecomeActive:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleApplicationDidEnterBackground:">&ndash;&nbsp;handleApplicationDidEnterBackground:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidLoad">&ndash;&nbsp;viewDidLoad</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/representingViewForItem:">&ndash;&nbsp;representingViewForItem:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setContextControlsVisible:animated:">&ndash;&nbsp;setContextControlsVisible:animated:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutManager:nextGridForContentsUsingGrid:">&ndash;&nbsp;layoutManager:nextGridForContentsUsingGrid:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/discreteLayoutManager">&ndash;&nbsp;discreteLayoutManager</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutGrids">&ndash;&nbsp;layoutGrids</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidUnload">&ndash;&nbsp;viewDidUnload</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/shouldAutorotateToInterfaceOrientation:">&ndash;&nbsp;shouldAutorotateToInterfaceOrientation:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/refreshData">&ndash;&nbsp;refreshData</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewWillAppear:">&ndash;&nbsp;viewWillAppear:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidAppear:">&ndash;&nbsp;viewDidAppear:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/performReadingProgressSync">&ndash;&nbsp;performReadingProgressSync</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/controllerWillChangeContent:">&ndash;&nbsp;controllerWillChangeContent:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:">&ndash;&nbsp;controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/controller:didChangeSection:atIndex:forChangeType:">&ndash;&nbsp;controller:didChangeSection:atIndex:forChangeType:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/controllerDidChangeContent:">&ndash;&nbsp;controllerDidChangeContent:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/reloadViewContents">&ndash;&nbsp;reloadViewContents</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/numberOfItemsForLayoutManager:">&ndash;&nbsp;numberOfItemsForLayoutManager:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutManager:itemAtIndex:">&ndash;&nbsp;layoutManager:itemAtIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/numberOfLayoutGridsForLayoutManager:">&ndash;&nbsp;numberOfLayoutGridsForLayoutManager:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutManager:layoutGridAtIndex:">&ndash;&nbsp;layoutManager:layoutGridAtIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/numberOfViewsInPaginatedView:">&ndash;&nbsp;numberOfViewsInPaginatedView:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewForPaginatedView:atIndex:">&ndash;&nbsp;viewForPaginatedView:atIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginatedView:didShowView:atIndex:">&ndash;&nbsp;paginatedView:didShowView:atIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewControllerForSubviewAtIndex:inPaginatedView:">&ndash;&nbsp;viewControllerForSubviewAtIndex:inPaginatedView:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adjustPageViewAtIndex:">&ndash;&nbsp;adjustPageViewAtIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adjustPageView:usingGridAtIndex:">&ndash;&nbsp;adjustPageView:usingGridAtIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/adjustPageViewAtIndex:withAdditionalAdjustments:">&ndash;&nbsp;adjustPageViewAtIndex:withAdditionalAdjustments:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/willAnimateRotationToInterfaceOrientation:duration:">&ndash;&nbsp;willAnimateRotationToInterfaceOrientation:duration:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/updateLastReadingProgressAnnotation">&ndash;&nbsp;updateLastReadingProgressAnnotation</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/gridIndexOfLastReadArticle">&ndash;&nbsp;gridIndexOfLastReadArticle</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/gridIndexOfArticle:">&ndash;&nbsp;gridIndexOfArticle:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastReadingProgressAnnotation">&ndash;&nbsp;lastReadingProgressAnnotation</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastReadingProgressAnnotationView">&ndash;&nbsp;lastReadingProgressAnnotationView</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewForAnnotation:inPaginationSlider:">&ndash;&nbsp;viewForAnnotation:inPaginationSlider:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginationSlider:didMoveToPage:">&ndash;&nbsp;paginationSlider:didMoveToPage:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/gestureRecognizer:shouldReceiveTouch:">&ndash;&nbsp;gestureRecognizer:shouldReceiveTouch:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">&ndash;&nbsp;gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/debugActionSheetControllerActions">&ndash;&nbsp;debugActionSheetControllerActions</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setLastReadObjectIdentifier:">&ndash;&nbsp;setLastReadObjectIdentifier:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/updateLatestReadingProgressWithIdentifier:">&ndash;&nbsp;updateLatestReadingProgressWithIdentifier:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/updateLatestReadingProgressWithIdentifier:completion:">&ndash;&nbsp;updateLatestReadingProgressWithIdentifier:completion:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/retrieveLatestReadingProgress">&ndash;&nbsp;retrieveLatestReadingProgress</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/retrieveLatestReadingProgressWithCompletion:">&ndash;&nbsp;retrieveLatestReadingProgressWithCompletion:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="ContextPresenting Methods" name="task_ContextPresenting Methods"></a>
+						<h3 class="subsubtitle task-title">ContextPresenting Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentDetailedContextForArticle:">&ndash;&nbsp;presentDetailedContextForArticle:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentDetailedContextForArticle:animated:">&ndash;&nbsp;presentDetailedContextForArticle:animated:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/presentDetailedContextForArticle:usingAnimation:">&ndash;&nbsp;presentDetailedContextForArticle:usingAnimation:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dismissArticleContextViewController:">&ndash;&nbsp;dismissArticleContextViewController:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/newContextViewControllerForArticle:">&ndash;&nbsp;newContextViewControllerForArticle:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/wrappingNavigationControllerForContextViewController:">&ndash;&nbsp;wrappingNavigationControllerForContextViewController:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="DiscreteLayout Methods" name="task_DiscreteLayout Methods"></a>
+						<h3 class="subsubtitle task-title">DiscreteLayout Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastUsedLayoutGrids">&nbsp;&nbsp;lastUsedLayoutGrids</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/newDiscreteArticleViewControllerForArticle:">&ndash;&nbsp;newDiscreteArticleViewControllerForArticle:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cachedArticleViewControllerForArticle:">&ndash;&nbsp;cachedArticleViewControllerForArticle:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/removeCachedArticleViewControllers">&ndash;&nbsp;removeCachedArticleViewControllers</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/newPageContainerView">&ndash;&nbsp;newPageContainerView</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="ContextPresenting_Private Methods" name="task_ContextPresenting_Private Methods"></a>
+						<h3 class="subsubtitle task-title">ContextPresenting_Private Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dismissBlockForArticleContextViewController:">&ndash;&nbsp;dismissBlockForArticleContextViewController:</a></code>
+		
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setDismissBlock:forArticleContextViewController:">&ndash;&nbsp;setDismissBlock:forArticleContextViewController:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Extension Methods" name="task_Extension Methods"></a>
+						<h3 class="subsubtitle task-title">Extension Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/discreteLayoutManager">&nbsp;&nbsp;discreteLayoutManager</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/discreteLayoutResult">&nbsp;&nbsp;discreteLayoutResult</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/layoutGrids">&nbsp;&nbsp;layoutGrids</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/requiresRecalculationOnFetchedResultsChangeEnd">&nbsp;&nbsp;requiresRecalculationOnFetchedResultsChangeEnd</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginatedArticlesViewController">&nbsp;&nbsp;paginatedArticlesViewController</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastReadObjectIdentifier">&nbsp;&nbsp;lastReadObjectIdentifier</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastHandledReadObjectIdentifier">&nbsp;&nbsp;lastHandledReadObjectIdentifier</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastReadingProgressAnnotation">&nbsp;&nbsp;lastReadingProgressAnnotation</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/lastReadingProgressAnnotationView">&nbsp;&nbsp;lastReadingProgressAnnotationView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="DiscreteLayout_Private Methods" name="task_DiscreteLayout_Private Methods"></a>
+						<h3 class="subsubtitle task-title">DiscreteLayout_Private Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleViewControllersCache">&nbsp;&nbsp;articleViewControllersCache</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/articleViewControllersCache" title="articleViewControllersCache"></a>
+	<h3 class="subsubtitle method-title">articleViewControllersCache</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/discreteLayoutManager" title="discreteLayoutManager"></a>
+	<h3 class="subsubtitle method-title">discreteLayoutManager</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/discreteLayoutResult" title="discreteLayoutResult"></a>
+	<h3 class="subsubtitle method-title">discreteLayoutResult</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastHandledReadObjectIdentifier" title="lastHandledReadObjectIdentifier"></a>
+	<h3 class="subsubtitle method-title">lastHandledReadObjectIdentifier</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastReadObjectIdentifier" title="lastReadObjectIdentifier"></a>
+	<h3 class="subsubtitle method-title">lastReadObjectIdentifier</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastReadingProgressAnnotation" title="lastReadingProgressAnnotation"></a>
+	<h3 class="subsubtitle method-title">lastReadingProgressAnnotation</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastReadingProgressAnnotationView" title="lastReadingProgressAnnotationView"></a>
+	<h3 class="subsubtitle method-title">lastReadingProgressAnnotationView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastUsedLayoutGrids" title="lastUsedLayoutGrids"></a>
+	<h3 class="subsubtitle method-title">lastUsedLayoutGrids</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutGrids" title="layoutGrids"></a>
+	<h3 class="subsubtitle method-title">layoutGrids</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginatedArticlesViewController" title="paginatedArticlesViewController"></a>
+	<h3 class="subsubtitle method-title">paginatedArticlesViewController</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginatedView" title="paginatedView"></a>
+	<h3 class="subsubtitle method-title">paginatedView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginationSlider" title="paginationSlider"></a>
+	<h3 class="subsubtitle method-title">paginationSlider</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginationSliderSlot" title="paginationSliderSlot"></a>
+	<h3 class="subsubtitle method-title">paginationSliderSlot</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/requiresRecalculationOnFetchedResultsChangeEnd" title="requiresRecalculationOnFetchedResultsChangeEnd"></a>
+	<h3 class="subsubtitle method-title">requiresRecalculationOnFetchedResultsChangeEnd</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/adjustPageView:usingGridAtIndex:" title="adjustPageView:usingGridAtIndex:"></a>
+	<h3 class="subsubtitle method-title">adjustPageView:usingGridAtIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/adjustPageViewAtIndex:" title="adjustPageViewAtIndex:"></a>
+	<h3 class="subsubtitle method-title">adjustPageViewAtIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/adjustPageViewAtIndex:withAdditionalAdjustments:" title="adjustPageViewAtIndex:withAdditionalAdjustments:"></a>
+	<h3 class="subsubtitle method-title">adjustPageViewAtIndex:withAdditionalAdjustments:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/cachedArticleViewControllerForArticle:" title="cachedArticleViewControllerForArticle:"></a>
+	<h3 class="subsubtitle method-title">cachedArticleViewControllerForArticle:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:" title="controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:"></a>
+	<h3 class="subsubtitle method-title">controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/controller:didChangeSection:atIndex:forChangeType:" title="controller:didChangeSection:atIndex:forChangeType:"></a>
+	<h3 class="subsubtitle method-title">controller:didChangeSection:atIndex:forChangeType:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/controllerDidChangeContent:" title="controllerDidChangeContent:"></a>
+	<h3 class="subsubtitle method-title">controllerDidChangeContent:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/controllerWillChangeContent:" title="controllerWillChangeContent:"></a>
+	<h3 class="subsubtitle method-title">controllerWillChangeContent:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/debugActionSheetControllerActions" title="debugActionSheetControllerActions"></a>
+	<h3 class="subsubtitle method-title">debugActionSheetControllerActions</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/discreteLayoutManager" title="discreteLayoutManager"></a>
+	<h3 class="subsubtitle method-title">discreteLayoutManager</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dismissArticleContextViewController:" title="dismissArticleContextViewController:"></a>
+	<h3 class="subsubtitle method-title">dismissArticleContextViewController:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dismissBlockForArticleContextViewController:" title="dismissBlockForArticleContextViewController:"></a>
+	<h3 class="subsubtitle method-title">dismissBlockForArticleContextViewController:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/gestureRecognizer:shouldReceiveTouch:" title="gestureRecognizer:shouldReceiveTouch:"></a>
+	<h3 class="subsubtitle method-title">gestureRecognizer:shouldReceiveTouch:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:" title="gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"></a>
+	<h3 class="subsubtitle method-title">gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/gridIndexOfArticle:" title="gridIndexOfArticle:"></a>
+	<h3 class="subsubtitle method-title">gridIndexOfArticle:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/gridIndexOfLastReadArticle" title="gridIndexOfLastReadArticle"></a>
+	<h3 class="subsubtitle method-title">gridIndexOfLastReadArticle</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleApplicationDidBecomeActive:" title="handleApplicationDidBecomeActive:"></a>
+	<h3 class="subsubtitle method-title">handleApplicationDidBecomeActive:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleApplicationDidEnterBackground:" title="handleApplicationDidEnterBackground:"></a>
+	<h3 class="subsubtitle method-title">handleApplicationDidEnterBackground:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/init" title="init"></a>
+	<h3 class="subsubtitle method-title">init</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastReadingProgressAnnotation" title="lastReadingProgressAnnotation"></a>
+	<h3 class="subsubtitle method-title">lastReadingProgressAnnotation</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/lastReadingProgressAnnotationView" title="lastReadingProgressAnnotationView"></a>
+	<h3 class="subsubtitle method-title">lastReadingProgressAnnotationView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutGrids" title="layoutGrids"></a>
+	<h3 class="subsubtitle method-title">layoutGrids</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutManager:itemAtIndex:" title="layoutManager:itemAtIndex:"></a>
+	<h3 class="subsubtitle method-title">layoutManager:itemAtIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutManager:layoutGridAtIndex:" title="layoutManager:layoutGridAtIndex:"></a>
+	<h3 class="subsubtitle method-title">layoutManager:layoutGridAtIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/layoutManager:nextGridForContentsUsingGrid:" title="layoutManager:nextGridForContentsUsingGrid:"></a>
+	<h3 class="subsubtitle method-title">layoutManager:nextGridForContentsUsingGrid:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/newContextViewControllerForArticle:" title="newContextViewControllerForArticle:"></a>
+	<h3 class="subsubtitle method-title">newContextViewControllerForArticle:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/newDiscreteArticleViewControllerForArticle:" title="newDiscreteArticleViewControllerForArticle:"></a>
+	<h3 class="subsubtitle method-title">newDiscreteArticleViewControllerForArticle:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/newPageContainerView" title="newPageContainerView"></a>
+	<h3 class="subsubtitle method-title">newPageContainerView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/numberOfItemsForLayoutManager:" title="numberOfItemsForLayoutManager:"></a>
+	<h3 class="subsubtitle method-title">numberOfItemsForLayoutManager:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/numberOfLayoutGridsForLayoutManager:" title="numberOfLayoutGridsForLayoutManager:"></a>
+	<h3 class="subsubtitle method-title">numberOfLayoutGridsForLayoutManager:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/numberOfViewsInPaginatedView:" title="numberOfViewsInPaginatedView:"></a>
+	<h3 class="subsubtitle method-title">numberOfViewsInPaginatedView:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginatedArticlesViewController" title="paginatedArticlesViewController"></a>
+	<h3 class="subsubtitle method-title">paginatedArticlesViewController</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginatedView:didShowView:atIndex:" title="paginatedView:didShowView:atIndex:"></a>
+	<h3 class="subsubtitle method-title">paginatedView:didShowView:atIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginationSlider:didMoveToPage:" title="paginationSlider:didMoveToPage:"></a>
+	<h3 class="subsubtitle method-title">paginationSlider:didMoveToPage:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/performReadingProgressSync" title="performReadingProgressSync"></a>
+	<h3 class="subsubtitle method-title">performReadingProgressSync</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentDetailedContextForArticle:" title="presentDetailedContextForArticle:"></a>
+	<h3 class="subsubtitle method-title">presentDetailedContextForArticle:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentDetailedContextForArticle:animated:" title="presentDetailedContextForArticle:animated:"></a>
+	<h3 class="subsubtitle method-title">presentDetailedContextForArticle:animated:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/presentDetailedContextForArticle:usingAnimation:" title="presentDetailedContextForArticle:usingAnimation:"></a>
+	<h3 class="subsubtitle method-title">presentDetailedContextForArticle:usingAnimation:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/refreshData" title="refreshData"></a>
+	<h3 class="subsubtitle method-title">refreshData</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/reloadViewContents" title="reloadViewContents"></a>
+	<h3 class="subsubtitle method-title">reloadViewContents</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/removeCachedArticleViewControllers" title="removeCachedArticleViewControllers"></a>
+	<h3 class="subsubtitle method-title">removeCachedArticleViewControllers</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/representingViewForItem:" title="representingViewForItem:"></a>
+	<h3 class="subsubtitle method-title">representingViewForItem:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/retrieveLatestReadingProgress" title="retrieveLatestReadingProgress"></a>
+	<h3 class="subsubtitle method-title">retrieveLatestReadingProgress</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/retrieveLatestReadingProgressWithCompletion:" title="retrieveLatestReadingProgressWithCompletion:"></a>
+	<h3 class="subsubtitle method-title">retrieveLatestReadingProgressWithCompletion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setContextControlsVisible:animated:" title="setContextControlsVisible:animated:"></a>
+	<h3 class="subsubtitle method-title">setContextControlsVisible:animated:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setDismissBlock:forArticleContextViewController:" title="setDismissBlock:forArticleContextViewController:"></a>
+	<h3 class="subsubtitle method-title">setDismissBlock:forArticleContextViewController:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setLastReadObjectIdentifier:" title="setLastReadObjectIdentifier:"></a>
+	<h3 class="subsubtitle method-title">setLastReadObjectIdentifier:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/shouldAutorotateToInterfaceOrientation:" title="shouldAutorotateToInterfaceOrientation:"></a>
+	<h3 class="subsubtitle method-title">shouldAutorotateToInterfaceOrientation:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/updateLastReadingProgressAnnotation" title="updateLastReadingProgressAnnotation"></a>
+	<h3 class="subsubtitle method-title">updateLastReadingProgressAnnotation</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/updateLatestReadingProgressWithIdentifier:" title="updateLatestReadingProgressWithIdentifier:"></a>
+	<h3 class="subsubtitle method-title">updateLatestReadingProgressWithIdentifier:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/updateLatestReadingProgressWithIdentifier:completion:" title="updateLatestReadingProgressWithIdentifier:completion:"></a>
+	<h3 class="subsubtitle method-title">updateLatestReadingProgressWithIdentifier:completion:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewControllerForSubviewAtIndex:inPaginatedView:" title="viewControllerForSubviewAtIndex:inPaginatedView:"></a>
+	<h3 class="subsubtitle method-title">viewControllerForSubviewAtIndex:inPaginatedView:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidAppear:" title="viewDidAppear:"></a>
+	<h3 class="subsubtitle method-title">viewDidAppear:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidLoad" title="viewDidLoad"></a>
+	<h3 class="subsubtitle method-title">viewDidLoad</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidUnload" title="viewDidUnload"></a>
+	<h3 class="subsubtitle method-title">viewDidUnload</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewForAnnotation:inPaginationSlider:" title="viewForAnnotation:inPaginationSlider:"></a>
+	<h3 class="subsubtitle method-title">viewForAnnotation:inPaginationSlider:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewForPaginatedView:atIndex:" title="viewForPaginatedView:atIndex:"></a>
+	<h3 class="subsubtitle method-title">viewForPaginatedView:atIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewWillAppear:" title="viewWillAppear:"></a>
+	<h3 class="subsubtitle method-title">viewWillAppear:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/willAnimateRotationToInterfaceOrientation:duration:" title="willAnimateRotationToInterfaceOrientation:duration:"></a>
+	<h3 class="subsubtitle method-title">willAnimateRotationToInterfaceOrientation:duration:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/wrappingNavigationControllerForContextViewController:" title="wrappingNavigationControllerForContextViewController:"></a>
+	<h3 class="subsubtitle method-title">wrappingNavigationControllerForContextViewController:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

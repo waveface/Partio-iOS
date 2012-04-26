@@ -61,11 +61,13 @@
 
 - (void) waInit {
 
+	self.exclusiveTouch = YES;
+
 	if (self.avatarView) {
 
 		self.avatarView.layer.masksToBounds = YES;
 		self.avatarView.backgroundColor = [UIColor colorWithRed:0.85f green:0.85f blue:0.85f alpha:1];
-		UIView *avatarContainingView = [[[UIView alloc] initWithFrame:self.avatarView.frame] autorelease];
+		UIView *avatarContainingView = [[UIView alloc] initWithFrame:self.avatarView.frame];
 		avatarContainingView.autoresizingMask = self.avatarView.autoresizingMask;
 		self.avatarView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		[self.avatarView.superview insertSubview:avatarContainingView belowSubview:self.avatarView];
@@ -84,11 +86,11 @@
 	
 	if (self.textEmphasisView) {
 	
-		self.textEmphasisView.backgroundView = [[[UIView alloc] initWithFrame:self.textEmphasisView.bounds] autorelease];
+		self.textEmphasisView.backgroundView = [[UIView alloc] initWithFrame:self.textEmphasisView.bounds];
 		self.textEmphasisView.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		self.textEmphasisView.font = [UIFont fontWithName:@"HelevticaNeue-Light" size:16.0];
 		
-		UIView *bubbleView = [[[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds] autorelease];
+		UIView *bubbleView = [[UIView alloc] initWithFrame:self.textEmphasisView.backgroundView.bounds];
 		bubbleView.layer.contents = (id)[UIImage imageNamed:@"WASpeechBubble"].CGImage;
 		bubbleView.layer.contentsCenter = (CGRect){ 80.0/128.0, 32.0/88.0, 1.0/128.0, 8.0/88.0 };
 		bubbleView.frame = UIEdgeInsetsInsetRect(bubbleView.frame, (UIEdgeInsets){ -28, -32, -44, -32 });
@@ -96,30 +98,12 @@
 		[self.textEmphasisView.backgroundView addSubview:bubbleView];
 	
 	}
-	
-	if (!articleDescriptionLabel.font)	//	Compromise
-		articleDescriptionLabel.font = [UIFont fontWithName:@"Sansus Webissimo" size:16.0f];
 
 }
 
 - (void) dealloc {
 
 	[self disassociateBindings];
-
-	[article release];
-
-	[contextInfoContainer release];
-	[imageStackView release];
-	[previewBadge release];
-	[textEmphasisView release];
-	[avatarView release];
-	[relativeCreationDateLabel release];
-	[userNameLabel release];
-	[articleDescriptionLabel release];
-	[contextTextView release];
-	[mainImageView release];
-
-	[super dealloc];
 
 }
 
@@ -153,6 +137,9 @@
 			self.previewBadge.backgroundView = nil;
 			self.previewBadge.titleColor = [UIColor grayColor];
 			self.previewBadge.userInteractionEnabled = NO;			
+			self.previewBadge.titlePlaceholder = nil;
+			self.previewBadge.providerNamePlaceholder = nil;
+			self.previewBadge.textPlaceholder = nil;
 			break;
 		}
 		
@@ -175,8 +162,7 @@
 	
 	[self disassociateBindings];
 	
-	[article release];
-	article = [newArticle retain];
+	article = newArticle;
 	
 	[self associateBindings];
 	
@@ -185,7 +171,7 @@
 
 - (void) associateBindings {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleView *nrSelf = self;
 	
 	[self disassociateBindings];
 	
@@ -198,14 +184,14 @@
 	
 		[object irBind:objectKeyPath toObject:boundObject keyPath:boundKeypath options:[NSDictionary dictionaryWithObjectsAndKeys:
 			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			[[transformerBlock copy] autorelease], kIRBindingsValueTransformerBlock,
+			[transformerBlock copy], kIRBindingsValueTransformerBlock,
 		nil]];
 		
 	};
 	
 	bind(self.userNameLabel, @"text", boundArticle, @"owner.nickname", nil);
 	
-	bind(self.relativeCreationDateLabel, @"text", boundArticle, @"timestamp", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.relativeCreationDateLabel, @"text", boundArticle, @"creationDate", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return [[[nrSelf class] relativeDateFormatter] stringFromDate:inNewValue];
 	});
 	
@@ -217,15 +203,15 @@
 		nil]] lastObject];
 	});
 	
-	bind(self.imageStackView, @"images", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.imageStackView, @"images", boundArticle, @"representingFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [NSArray arrayWithObject:inNewValue] : nil;
 	});
 	
-	bind(self.mainImageView, @"image", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"image", boundArticle, @"representingFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue;
 	});
 	
-	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representedFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	bind(self.mainImageView, @"backgroundColor", boundArticle, @"representingFile.thumbnailImage", ^ (id inOldValue, id inNewValue, NSString *changeKind) {
 		return inNewValue ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
 	});
 	
@@ -267,13 +253,11 @@
 
 	[super layoutSubviews];
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleView *wSelf = self;
 
 	CGPoint centerOffset = CGPointZero;
 
-	CGRect usableRect = UIEdgeInsetsInsetRect(nrSelf.bounds, (UIEdgeInsets){ 10, 10, 32, 10 });
-//	const CGFloat maximumTextWidth = MIN(CGRectGetWidth(usableRect), 480);
-//	const CGFloat minimumTextWidth = MIN(maximumTextWidth, MAX(CGRectGetWidth(usableRect), 280));
+	CGRect usableRect = UIEdgeInsetsInsetRect(wSelf.bounds, (UIEdgeInsets){ 10, 10, 32, 10 });
 	
 	const CGFloat maximumTextWidth = CGRectGetWidth(usableRect);
 	const CGFloat minimumTextWidth = CGRectGetWidth(usableRect);
@@ -288,7 +272,7 @@
 	textRect.size.height = 1;
 	textEmphasisView.frame = textRect;
 	[textEmphasisView sizeToFit];
-	textRect = nrSelf.textEmphasisView.frame;
+	textRect = wSelf.textEmphasisView.frame;
 	textRect.size.height = MIN(textRect.size.height, usableRect.size.height - 16 );
 	textEmphasisView.frame = textRect;
 	
@@ -298,7 +282,7 @@
 	
 		case WAFullFramePlaintextArticleStyle: {
 			
-			centerOffset.y -= 0.5f * CGRectGetHeight(nrSelf.contextInfoContainer.frame) + 24;
+			centerOffset.y -= 0.5f * CGRectGetHeight(wSelf.contextInfoContainer.frame) + 24;
 			contextInfoAnchorsPlaintextBubble = NO;
 			//	Fall through
 			
@@ -306,8 +290,8 @@
 		case WAFullFrameImageStackArticleStyle:
 		case WAFullFramePreviewArticleStyle: {
 			
-			nrSelf.previewBadge.minimumAcceptibleFullFrameAspectRatio = 0.01f;
-			nrSelf.imageStackView.maxNumberOfImages = 2;
+			wSelf.previewBadge.minimumAcceptibleFullFrameAspectRatio = 0.01f;
+			wSelf.imageStackView.maxNumberOfImages = 2;
 			
 			break;
 		
@@ -315,7 +299,7 @@
 
 		case WADiscretePlaintextArticleStyle: {
 		
-			nrSelf.imageStackView.maxNumberOfImages = 1;
+			wSelf.imageStackView.maxNumberOfImages = 1;
 			centerOffset.y -= 16;
 		
 			previewBadge.frame = UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 0, 0, 32, 0 });
@@ -339,11 +323,11 @@
 			
 			previewBadge.style = WAPreviewBadgeImageAndTextStyle;
 			
-			previewBadge.titleFont = [UIFont fontWithName:@"HelveticaNeue-CondensedBold" size:22.0];
+			previewBadge.titleFont = [UIFont fontWithName:@"Georgia-BoldItalic" size:18.0];
 			previewBadge.titleColor = [UIColor colorWithWhite:0.25 alpha:1];
-			previewBadge.providerNameFont = [UIFont systemFontOfSize:14.0];
+			previewBadge.providerNameFont = [UIFont fontWithName:@"HelveticaNeue-Regular" size:18.0];
 			
-			previewBadge.textFont = [UIFont fontWithName:@"Palatino-Roman" size:16.0];
+			previewBadge.textFont = [UIFont fontWithName:@"Georgia" size:18.0];
 			
 			break;
 			
@@ -354,22 +338,38 @@
 	}
 	
 	CGPoint center = (CGPoint){
-		roundf(CGRectGetMidX(nrSelf.bounds)),
-		roundf(CGRectGetMidY(nrSelf.bounds))
+		roundf(CGRectGetMidX(wSelf.bounds)),
+		roundf(CGRectGetMidY(wSelf.bounds))
 	};
 	
-	nrSelf.textEmphasisView.center = irCGPointAddPoint(center, centerOffset);
-	nrSelf.textEmphasisView.frame = CGRectIntegral(nrSelf.textEmphasisView.frame);
+	wSelf.textEmphasisView.center = irCGPointAddPoint(center, centerOffset);
+	wSelf.textEmphasisView.frame = CGRectIntegral(wSelf.textEmphasisView.frame);
 	
 	if (contextInfoAnchorsPlaintextBubble) {
-		nrSelf.contextInfoContainer.frame = (CGRect){
+		wSelf.contextInfoContainer.frame = (CGRect){
 			(CGPoint){
-				CGRectGetMinX(nrSelf.textEmphasisView.frame),
-				CGRectGetMaxY(nrSelf.textEmphasisView.frame) + 32
+				CGRectGetMinX(wSelf.textEmphasisView.frame),
+				CGRectGetMaxY(wSelf.textEmphasisView.frame) + 32
 			},
-			nrSelf.contextInfoContainer.frame.size
+			wSelf.contextInfoContainer.frame.size
 		};
 	}
+	
+	CGRect oldDescriptionFrame = wSelf.articleDescriptionLabel.frame;
+	
+	CGSize fitSize = [wSelf.articleDescriptionLabel sizeThatFits:(CGSize){
+		wSelf.contextInfoContainer.frame.size.width - 16,
+		64
+	}];
+	
+	fitSize.height = MAX(24, MIN(fitSize.height, 64));
+	CGFloat heightDelta = fitSize.height - CGRectGetHeight(wSelf.articleDescriptionLabel.frame);
+	wSelf.articleDescriptionLabel.frame = IRGravitize(oldDescriptionFrame, fitSize, kCAGravityBottomLeft);
+	
+	CGSize newContextInfoContainerSize = wSelf.contextInfoContainer.frame.size;
+	newContextInfoContainerSize.height += heightDelta;
+	
+	wSelf.contextInfoContainer.frame = IRGravitize(wSelf.contextInfoContainer.frame, newContextInfoContainerSize, kCAGravityBottomLeft);
 
 }
 

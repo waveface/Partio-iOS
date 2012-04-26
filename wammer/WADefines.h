@@ -30,7 +30,6 @@ extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
 
 extern NSString * const kWADebugLastScanSyncBezelsVisible;
-extern NSString * const kWADebugUsesDiscreteArticleFlip;
 extern NSString * const kWADebugPersistentStoreName;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
@@ -53,8 +52,6 @@ extern NSString * const kWACallbackActionSetAdvancedFeaturesEnabled;
 extern NSString * const kWACallbackActionSetRemoteEndpointURL;
 extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
 extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
-
-extern NSString * const kWAUserStorageInfo;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);

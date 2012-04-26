@@ -1,0 +1,1144 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>WAPaginatedArticlesViewController Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 737)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">Waveface iOS </a></h1>
+				<a id="developerHome" href="../index.html">Waveface Inc.</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">WAPaginatedArticlesViewController Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/articleCommentsDismissalButton">&nbsp;&nbsp;&nbsp;&nbsp;articleCommentsDismissalButton</option>
+	
+	<option value="//api/name/articleCommentsViewController">&nbsp;&nbsp;&nbsp;&nbsp;articleCommentsViewController</option>
+	
+	<option value="//api/name/articleViewControllers">&nbsp;&nbsp;&nbsp;&nbsp;articleViewControllers</option>
+	
+	<option value="//api/name/coachmarkView">&nbsp;&nbsp;&nbsp;&nbsp;coachmarkView</option>
+	
+	<option value="//api/name/context">&nbsp;&nbsp;&nbsp;&nbsp;context</option>
+	
+	<option value="//api/name/paginatedView">&nbsp;&nbsp;&nbsp;&nbsp;paginatedView</option>
+	
+	<option value="//api/name/paginationSlider">&nbsp;&nbsp;&nbsp;&nbsp;paginationSlider</option>
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/articleCommentsViewController:canSendComment:">&nbsp;&nbsp;&nbsp;&nbsp;- articleCommentsViewController:canSendComment:</option>
+	
+	<option value="//api/name/articleCommentsViewController:didFinishComposingComment:">&nbsp;&nbsp;&nbsp;&nbsp;- articleCommentsViewController:didFinishComposingComment:</option>
+	
+	<option value="//api/name/articleCommentsViewController:wantsState:onFulfillment:">&nbsp;&nbsp;&nbsp;&nbsp;- articleCommentsViewController:wantsState:onFulfillment:</option>
+	
+	<option value="//api/name/dealloc">&nbsp;&nbsp;&nbsp;&nbsp;- dealloc</option>
+	
+	<option value="//api/name/gestureRecognizer:shouldReceiveTouch:">&nbsp;&nbsp;&nbsp;&nbsp;- gestureRecognizer:shouldReceiveTouch:</option>
+	
+	<option value="//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">&nbsp;&nbsp;&nbsp;&nbsp;- gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</option>
+	
+	<option value="//api/name/handleArticleContentsDismissal:">&nbsp;&nbsp;&nbsp;&nbsp;- handleArticleContentsDismissal:</option>
+	
+	<option value="//api/name/handleCommentViewPan:">&nbsp;&nbsp;&nbsp;&nbsp;- handleCommentViewPan:</option>
+	
+	<option value="//api/name/handlePinch:">&nbsp;&nbsp;&nbsp;&nbsp;- handlePinch:</option>
+	
+	<option value="//api/name/inferredArticleCommentsVisible">&nbsp;&nbsp;&nbsp;&nbsp;- inferredArticleCommentsVisible</option>
+	
+	<option value="//api/name/initWithNibName:bundle:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithNibName:bundle:</option>
+	
+	<option value="//api/name/loadView">&nbsp;&nbsp;&nbsp;&nbsp;- loadView</option>
+	
+	<option value="//api/name/numberOfViewsInPaginatedView:">&nbsp;&nbsp;&nbsp;&nbsp;- numberOfViewsInPaginatedView:</option>
+	
+	<option value="//api/name/observeValueForKeyPath:ofObject:change:context:">&nbsp;&nbsp;&nbsp;&nbsp;- observeValueForKeyPath:ofObject:change:context:</option>
+	
+	<option value="//api/name/paginationSlider:didMoveToPage:">&nbsp;&nbsp;&nbsp;&nbsp;- paginationSlider:didMoveToPage:</option>
+	
+	<option value="//api/name/refreshPaginatedViewPages">&nbsp;&nbsp;&nbsp;&nbsp;- refreshPaginatedViewPages</option>
+	
+	<option value="//api/name/reloadViewContents">&nbsp;&nbsp;&nbsp;&nbsp;- reloadViewContents</option>
+	
+	<option value="//api/name/setContextControlsVisible:animated:">&nbsp;&nbsp;&nbsp;&nbsp;- setContextControlsVisible:animated:</option>
+	
+	<option value="//api/name/shouldAutorotateToInterfaceOrientation:">&nbsp;&nbsp;&nbsp;&nbsp;- shouldAutorotateToInterfaceOrientation:</option>
+	
+	<option value="//api/name/updateLayoutForCommentsVisible:">&nbsp;&nbsp;&nbsp;&nbsp;- updateLayoutForCommentsVisible:</option>
+	
+	<option value="//api/name/viewControllerForSubviewAtIndex:inPaginatedView:">&nbsp;&nbsp;&nbsp;&nbsp;- viewControllerForSubviewAtIndex:inPaginatedView:</option>
+	
+	<option value="//api/name/viewDidAppear:">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidAppear:</option>
+	
+	<option value="//api/name/viewDidDisappear:">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidDisappear:</option>
+	
+	<option value="//api/name/viewDidLoad">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidLoad</option>
+	
+	<option value="//api/name/viewDidUnload">&nbsp;&nbsp;&nbsp;&nbsp;- viewDidUnload</option>
+	
+	<option value="//api/name/viewForPaginatedView:atIndex:">&nbsp;&nbsp;&nbsp;&nbsp;- viewForPaginatedView:atIndex:</option>
+	
+	<option value="//api/name/viewWillAppear:">&nbsp;&nbsp;&nbsp;&nbsp;- viewWillAppear:</option>
+	
+	<option value="//api/name/viewWillDisappear:">&nbsp;&nbsp;&nbsp;&nbsp;- viewWillDisappear:</option>
+	
+	<option value="//api/name/willAnimateRotationToInterfaceOrientation:duration:">&nbsp;&nbsp;&nbsp;&nbsp;- willAnimateRotationToInterfaceOrientation:duration:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Extension Methods">Extension Methods</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleCommentsDismissalButton">articleCommentsDismissalButton</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleCommentsViewController">articleCommentsViewController</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleViewControllers">articleViewControllers</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/coachmarkView">coachmarkView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/context">context</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginatedView">paginatedView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginationSlider">paginationSlider</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleCommentsViewController:canSendComment:">articleCommentsViewController:canSendComment:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleCommentsViewController:didFinishComposingComment:">articleCommentsViewController:didFinishComposingComment:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/articleCommentsViewController:wantsState:onFulfillment:">articleCommentsViewController:wantsState:onFulfillment:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/dealloc">dealloc</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/gestureRecognizer:shouldReceiveTouch:">gestureRecognizer:shouldReceiveTouch:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleArticleContentsDismissal:">handleArticleContentsDismissal:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handleCommentViewPan:">handleCommentViewPan:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/handlePinch:">handlePinch:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/inferredArticleCommentsVisible">inferredArticleCommentsVisible</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithNibName:bundle:">initWithNibName:bundle:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/loadView">loadView</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/numberOfViewsInPaginatedView:">numberOfViewsInPaginatedView:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/observeValueForKeyPath:ofObject:change:context:">observeValueForKeyPath:ofObject:change:context:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/paginationSlider:didMoveToPage:">paginationSlider:didMoveToPage:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/refreshPaginatedViewPages">refreshPaginatedViewPages</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/reloadViewContents">reloadViewContents</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/setContextControlsVisible:animated:">setContextControlsVisible:animated:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/shouldAutorotateToInterfaceOrientation:">shouldAutorotateToInterfaceOrientation:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/updateLayoutForCommentsVisible:">updateLayoutForCommentsVisible:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewControllerForSubviewAtIndex:inPaginatedView:">viewControllerForSubviewAtIndex:inPaginatedView:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidAppear:">viewDidAppear:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidDisappear:">viewDidDisappear:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidLoad">viewDidLoad</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewDidUnload">viewDidUnload</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewForPaginatedView:atIndex:">viewForPaginatedView:atIndex:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewWillAppear:">viewWillAppear:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/viewWillDisappear:">viewWillDisappear:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/willAnimateRotationToInterfaceOrientation:duration:">willAnimateRotationToInterfaceOrientation:duration:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="WAPaginatedArticlesViewController Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">WAPaginatedArticlesViewController Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value"><a href="../Classes/WAArticlesViewController.html">WAArticlesViewController</a> : UIViewController</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value"><a href="../Protocols/WAArticleViewControllerPresenting.html">WAArticleViewControllerPresenting</a></td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">WAPaginatedArticlesViewController.h<br />WAPaginatedArticlesViewController.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/context">&nbsp;&nbsp;context</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithNibName:bundle:">&ndash;&nbsp;initWithNibName:bundle:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/dealloc">&ndash;&nbsp;dealloc</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/loadView">&ndash;&nbsp;loadView</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidLoad">&ndash;&nbsp;viewDidLoad</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidUnload">&ndash;&nbsp;viewDidUnload</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewWillAppear:">&ndash;&nbsp;viewWillAppear:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidAppear:">&ndash;&nbsp;viewDidAppear:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewWillDisappear:">&ndash;&nbsp;viewWillDisappear:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewDidDisappear:">&ndash;&nbsp;viewDidDisappear:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/setContextControlsVisible:animated:">&ndash;&nbsp;setContextControlsVisible:animated:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/observeValueForKeyPath:ofObject:change:context:">&ndash;&nbsp;observeValueForKeyPath:ofObject:change:context:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/numberOfViewsInPaginatedView:">&ndash;&nbsp;numberOfViewsInPaginatedView:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewForPaginatedView:atIndex:">&ndash;&nbsp;viewForPaginatedView:atIndex:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/viewControllerForSubviewAtIndex:inPaginatedView:">&ndash;&nbsp;viewControllerForSubviewAtIndex:inPaginatedView:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginationSlider:didMoveToPage:">&ndash;&nbsp;paginationSlider:didMoveToPage:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleArticleContentsDismissal:">&ndash;&nbsp;handleArticleContentsDismissal:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/willAnimateRotationToInterfaceOrientation:duration:">&ndash;&nbsp;willAnimateRotationToInterfaceOrientation:duration:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/shouldAutorotateToInterfaceOrientation:">&ndash;&nbsp;shouldAutorotateToInterfaceOrientation:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/inferredArticleCommentsVisible">&ndash;&nbsp;inferredArticleCommentsVisible</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/updateLayoutForCommentsVisible:">&ndash;&nbsp;updateLayoutForCommentsVisible:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleCommentsViewController:canSendComment:">&ndash;&nbsp;articleCommentsViewController:canSendComment:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleCommentsViewController:wantsState:onFulfillment:">&ndash;&nbsp;articleCommentsViewController:wantsState:onFulfillment:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleCommentsViewController:didFinishComposingComment:">&ndash;&nbsp;articleCommentsViewController:didFinishComposingComment:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/gestureRecognizer:shouldReceiveTouch:">&ndash;&nbsp;gestureRecognizer:shouldReceiveTouch:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:">&ndash;&nbsp;gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handleCommentViewPan:">&ndash;&nbsp;handleCommentViewPan:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/handlePinch:">&ndash;&nbsp;handlePinch:</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/refreshPaginatedViewPages">&ndash;&nbsp;refreshPaginatedViewPages</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/reloadViewContents">&ndash;&nbsp;reloadViewContents</a></code>
+		
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Extension Methods" name="task_Extension Methods"></a>
+						<h3 class="subsubtitle task-title">Extension Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginatedView">&nbsp;&nbsp;paginatedView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/coachmarkView">&nbsp;&nbsp;coachmarkView</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/paginationSlider">&nbsp;&nbsp;paginationSlider</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleViewControllers">&nbsp;&nbsp;articleViewControllers</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleCommentsDismissalButton">&nbsp;&nbsp;articleCommentsDismissalButton</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/articleCommentsViewController">&nbsp;&nbsp;articleCommentsViewController</a></code>
+		
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/articleCommentsDismissalButton" title="articleCommentsDismissalButton"></a>
+	<h3 class="subsubtitle method-title">articleCommentsDismissalButton</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/articleCommentsViewController" title="articleCommentsViewController"></a>
+	<h3 class="subsubtitle method-title">articleCommentsViewController</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/articleViewControllers" title="articleViewControllers"></a>
+	<h3 class="subsubtitle method-title">articleViewControllers</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/coachmarkView" title="coachmarkView"></a>
+	<h3 class="subsubtitle method-title">coachmarkView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/context" title="context"></a>
+	<h3 class="subsubtitle method-title">context</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginatedView" title="paginatedView"></a>
+	<h3 class="subsubtitle method-title">paginatedView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginationSlider" title="paginationSlider"></a>
+	<h3 class="subsubtitle method-title">paginationSlider</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/articleCommentsViewController:canSendComment:" title="articleCommentsViewController:canSendComment:"></a>
+	<h3 class="subsubtitle method-title">articleCommentsViewController:canSendComment:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/articleCommentsViewController:didFinishComposingComment:" title="articleCommentsViewController:didFinishComposingComment:"></a>
+	<h3 class="subsubtitle method-title">articleCommentsViewController:didFinishComposingComment:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/articleCommentsViewController:wantsState:onFulfillment:" title="articleCommentsViewController:wantsState:onFulfillment:"></a>
+	<h3 class="subsubtitle method-title">articleCommentsViewController:wantsState:onFulfillment:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/dealloc" title="dealloc"></a>
+	<h3 class="subsubtitle method-title">dealloc</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/gestureRecognizer:shouldReceiveTouch:" title="gestureRecognizer:shouldReceiveTouch:"></a>
+	<h3 class="subsubtitle method-title">gestureRecognizer:shouldReceiveTouch:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:" title="gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:"></a>
+	<h3 class="subsubtitle method-title">gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleArticleContentsDismissal:" title="handleArticleContentsDismissal:"></a>
+	<h3 class="subsubtitle method-title">handleArticleContentsDismissal:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handleCommentViewPan:" title="handleCommentViewPan:"></a>
+	<h3 class="subsubtitle method-title">handleCommentViewPan:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/handlePinch:" title="handlePinch:"></a>
+	<h3 class="subsubtitle method-title">handlePinch:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/inferredArticleCommentsVisible" title="inferredArticleCommentsVisible"></a>
+	<h3 class="subsubtitle method-title">inferredArticleCommentsVisible</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithNibName:bundle:" title="initWithNibName:bundle:"></a>
+	<h3 class="subsubtitle method-title">initWithNibName:bundle:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/loadView" title="loadView"></a>
+	<h3 class="subsubtitle method-title">loadView</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/numberOfViewsInPaginatedView:" title="numberOfViewsInPaginatedView:"></a>
+	<h3 class="subsubtitle method-title">numberOfViewsInPaginatedView:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/observeValueForKeyPath:ofObject:change:context:" title="observeValueForKeyPath:ofObject:change:context:"></a>
+	<h3 class="subsubtitle method-title">observeValueForKeyPath:ofObject:change:context:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/paginationSlider:didMoveToPage:" title="paginationSlider:didMoveToPage:"></a>
+	<h3 class="subsubtitle method-title">paginationSlider:didMoveToPage:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/refreshPaginatedViewPages" title="refreshPaginatedViewPages"></a>
+	<h3 class="subsubtitle method-title">refreshPaginatedViewPages</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/reloadViewContents" title="reloadViewContents"></a>
+	<h3 class="subsubtitle method-title">reloadViewContents</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/setContextControlsVisible:animated:" title="setContextControlsVisible:animated:"></a>
+	<h3 class="subsubtitle method-title">setContextControlsVisible:animated:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/shouldAutorotateToInterfaceOrientation:" title="shouldAutorotateToInterfaceOrientation:"></a>
+	<h3 class="subsubtitle method-title">shouldAutorotateToInterfaceOrientation:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/updateLayoutForCommentsVisible:" title="updateLayoutForCommentsVisible:"></a>
+	<h3 class="subsubtitle method-title">updateLayoutForCommentsVisible:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewControllerForSubviewAtIndex:inPaginatedView:" title="viewControllerForSubviewAtIndex:inPaginatedView:"></a>
+	<h3 class="subsubtitle method-title">viewControllerForSubviewAtIndex:inPaginatedView:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidAppear:" title="viewDidAppear:"></a>
+	<h3 class="subsubtitle method-title">viewDidAppear:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidDisappear:" title="viewDidDisappear:"></a>
+	<h3 class="subsubtitle method-title">viewDidDisappear:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidLoad" title="viewDidLoad"></a>
+	<h3 class="subsubtitle method-title">viewDidLoad</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewDidUnload" title="viewDidUnload"></a>
+	<h3 class="subsubtitle method-title">viewDidUnload</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewForPaginatedView:atIndex:" title="viewForPaginatedView:atIndex:"></a>
+	<h3 class="subsubtitle method-title">viewForPaginatedView:atIndex:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewWillAppear:" title="viewWillAppear:"></a>
+	<h3 class="subsubtitle method-title">viewWillAppear:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/viewWillDisappear:" title="viewWillDisappear:"></a>
+	<h3 class="subsubtitle method-title">viewWillDisappear:</h3>
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/willAnimateRotationToInterfaceOrientation:duration:" title="willAnimateRotationToInterfaceOrientation:duration:"></a>
+	<h3 class="subsubtitle method-title">willAnimateRotationToInterfaceOrientation:duration:</h3>
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2012 Waveface Inc.. All rights reserved. (Last updated: 2012-03-07)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 737)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+		</script>
+	</body>
+</html>

@@ -43,20 +43,9 @@
 		returnedImage = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		
-		[returnedImage retain];
-			
 	});
 
 	return returnedImage;
-
-}
-
-- (void) dealloc {
-
-	[slider release];
-	[annotations release];
-	
-	[super dealloc];
 
 }
 
@@ -94,7 +83,7 @@
 	self.currentPage = 0;
 	self.snapsToPages = YES;
 	
-	self.slider = [[[UISlider alloc] initWithFrame:self.bounds] autorelease];
+	self.slider = [[UISlider alloc] initWithFrame:self.bounds];
 	self.slider.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	self.slider.value = 0;
 	
@@ -111,7 +100,7 @@
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpInside];
 	[self.slider addTarget:self action:@selector(sliderTouchDidEnd:) forControlEvents:UIControlEventTouchUpOutside];
 	
-	self.pageIndicatorLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	self.pageIndicatorLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	self.pageIndicatorLabel.font = [UIFont boldSystemFontOfSize:14.0f];
 	self.pageIndicatorLabel.textColor = [UIColor whiteColor];
 	self.pageIndicatorLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
@@ -230,7 +219,7 @@
 	
 	if (numberOfRequiredNewDots)
 	for (int i = 0; i < numberOfRequiredNewDots; i++) {
-		UIView *dotView = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, self.dotRadius, self.dotRadius }] autorelease];
+		UIView *dotView = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, self.dotRadius, self.dotRadius }];
 		dotView.tag = dotTag;
 		dotView.layer.contents = (id)dotImage.CGImage;
 		[dequeuedDots addObject:dotView];
@@ -241,7 +230,7 @@
 
 	int i; for (i = 0; i < numberOfDots; i++) {
 	
-		UIView *dotView = [[(UIView *)[dequeuedDots anyObject] retain] autorelease];
+		UIView *dotView = (UIView *)[dequeuedDots anyObject];
 		[dequeuedDots removeObject:dotView];
 		
 		dotView.frame = (CGRect){ roundf(offsetX), roundf(offsetY), self.dotRadius, self.dotRadius }; 
@@ -257,13 +246,15 @@
 	
 	[self bringSubviewToFront:self.slider];
 	
-	NSString * const kWAPaginationSliderAnnotationView_HostAnnotation = @"WAPaginationSliderAnnotationView_HostAnnotation";
+	static NSString * const kWAPaginationSliderAnnotationView_HostAnnotation = @"WAPaginationSliderAnnotationView_HostAnnotation";
 	
 	for (UIView *aSubview in self.subviews) {
 		if (aSubview.tag == annotationViewTag) {
-			if (![self.annotations containsObject:objc_getAssociatedObject(aSubview, kWAPaginationSliderAnnotationView_HostAnnotation)]) {
+
+			if (![self.annotations containsObject:objc_getAssociatedObject(aSubview, &kWAPaginationSliderAnnotationView_HostAnnotation)]) {
 				[aSubview removeFromSuperview];
 			}
+			
 		}
 	}
 	
@@ -274,7 +265,7 @@
 			if (anAnnotationView.tag != annotationViewTag)
 				return NO;
 			
-			if (anAnnotation == objc_getAssociatedObject(anAnnotationView, kWAPaginationSliderAnnotationView_HostAnnotation))
+			if (anAnnotation == objc_getAssociatedObject(anAnnotationView, &kWAPaginationSliderAnnotationView_HostAnnotation))
 				return YES;
 			
 			return NO;
@@ -285,10 +276,13 @@
 		
 		UIView *annotationView = [allFittingAnnotationViews lastObject];
 		
-		if (!annotationView)
+		if (!annotationView) {
 			annotationView = [self.delegate viewForAnnotation:anAnnotation inPaginationSlider:self];
+			annotationView.tag = annotationViewTag;
+			objc_setAssociatedObject(annotationView, &kWAPaginationSliderAnnotationView_HostAnnotation, anAnnotation, OBJC_ASSOCIATION_ASSIGN);
+		}
 		
-		NSParameterAssert(annotationView);
+		NSAssert1(annotationView, @"Delegate must return a valid annotation view for annotation %@", anAnnotation);
 		
 		annotationView.center = (CGPoint){
 			anAnnotation.centerOffset.x + usedInsets.left + roundf(usableWidth * [self positionForPageNumber:anAnnotation.pageIndex]),
@@ -496,12 +490,5 @@
 
 @implementation WAPaginationSliderAnnotation : NSObject
 @synthesize title, pageIndex, centerOffset;
-
-- (void) dealloc {
-
-	[title release];
-	[super dealloc];
-
-}
 
 @end

@@ -40,7 +40,7 @@
     if (WASCNetworkReachableDirectly(detector.networkStateFlags))
       return detector;
     
-    return nil;
+    return (WAReachabilityDetector *)nil;
     
   }] count];
 

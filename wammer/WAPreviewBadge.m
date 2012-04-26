@@ -96,7 +96,7 @@
 
 - (NSAttributedString *) attributedText {
 
-	NSMutableAttributedString *returnedString = [[[NSMutableAttributedString alloc] initWithString:@""] autorelease];
+	NSMutableAttributedString *returnedString = [[NSMutableAttributedString alloc] initWithString:@""];
 	
 	NSAttributedString * (^append)(NSString *, NSString *, UIFont *, UIColor *, UIColor *, NSDictionary *) = ^ (NSString *string, NSString *placeholder, UIFont *font, UIColor *color, UIColor *placeholderColor, NSDictionary *otherAttrs) {
 	
@@ -116,23 +116,26 @@
 		
 		NSDictionary * const usedAttrs = [[[NSAttributedString irAttributesForFont:font color:usedColor] irDictionaryByMergingWithDictionary:baseAttrs] irDictionaryByMergingWithDictionary:otherAttrs];
 		
-		NSAttributedString *appendedString = [[[NSAttributedString alloc] initWithString:usedString attributes:usedAttrs] autorelease];
+		NSAttributedString *appendedString = [[NSAttributedString alloc] initWithString:usedString attributes:usedAttrs];
 		[returnedString appendAttributedString:appendedString];
-		
+
 		return appendedString;
 		
 	};
 	
-	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
+	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor, [NSDictionary dictionaryWithObjectsAndKeys:
+		
+			self.link, kIRTextLinkAttribute,
+			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:(self.titleFont.leading - 4)], kCTParagraphStyleAttributeName,
+		
+	nil]);
 	
-	if (providerElement)
+	if (titleElement)
 		append(@"\n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
 			(id)[UIFont irFixedLineHeightParagraphStyleForHeight:1.0], kCTParagraphStyleAttributeName,
 		nil]);
-		
-	id titleElement = append(self.title, self.titlePlaceholder, self.titleFont, self.titleColor, self.titlePlaceholderColor,
-		(self.link ? [NSDictionary dictionaryWithObject:self.link forKey:kIRTextLinkAttribute] : nil)
-	);
+			
+	id providerElement = append(self.providerName, self.providerNamePlaceholder, self.providerNameFont, self.providerNameColor, self.providerNamePlaceholderColor, nil);
 	
 	if (titleElement || providerElement) {
 		append(@"\n \n", nil, [UIFont systemFontOfSize:self.gutterWidth], [UIColor clearColor], nil, [NSDictionary dictionaryWithObjectsAndKeys:
@@ -157,8 +160,8 @@
 	self.titlePlaceholderColor = [UIColor grayColor];
 	
 	self.providerNamePlaceholder = NSLocalizedString(@"PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER", @"Text to show for previews without a provider name");
-	self.providerNameFont = [UIFont boldSystemFontOfSize:14.0f];
-	self.providerNameColor = [UIColor colorWithWhite:0.3 alpha:1];
+	self.providerNameFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0];
+	self.providerNameColor = [UIColor colorWithWhite:0.65 alpha:1];
 	self.providerNamePlaceholderColor = [UIColor grayColor];
 	
 	self.textPlaceholder = NSLocalizedString(@"PREVIEW_BADGE_TEXT_PLACEHOLDER", @"Text to show for previews without body text");
@@ -169,12 +172,12 @@
 	self.backgroundColor = nil;
 	self.opaque = NO;
 	
-	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+	self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
 	self.backgroundView.opaque = NO;
 	self.backgroundView.backgroundColor = nil;
 	self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	UIView *innerBackgroundView = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 })] autorelease];
+	UIView *innerBackgroundView = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 })];
 	innerBackgroundView.layer.contents = (id)[UIImage imageNamed:@"WAPreviewBadge"].CGImage;
 	innerBackgroundView.layer.contentsCenter = (CGRect){ 10.0/24.0, 10.0/24.0, 4.0/24.0, 4.0/24.0 };
 	innerBackgroundView.opaque = NO;
@@ -183,13 +186,13 @@
 	[self.backgroundView addSubview:innerBackgroundView];
 	
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAPreviewBadge *wSelf = self;
 	
 	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-	
-		[nrSelf setNeedsLayout];
 		
-	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil];
+		[wSelf setNeedsLayout];
+		
+	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	[self setNeedsLayout];
 
@@ -268,9 +271,7 @@
 		return;
 	
 	[backgroundView removeFromSuperview];
-	[backgroundView release];
-	
-	backgroundView = [newBackgroundView retain];
+	backgroundView = newBackgroundView;
 	[self addSubview:backgroundView];
 
 }
@@ -347,16 +348,18 @@
 	
 	CGRect actualImageRect = IRCGRectAlignToRect(
 		IRCGSizeGetCenteredInRect((CGSize) {
-			self.imageView.image.size.width * 128,
-			self.imageView.image.size.height * 128
+			self.image.size.width * 128,
+			self.image.size.height * 128
 		}, imageRect, 0.0f, YES),
 		imageRect,
 		//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
-		irTopLeft, 
+		irTopLeft,
 		YES
 	);
 	
-	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	//	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	
+	BOOL verticalLayout = YES;
 	
 	if (verticalLayout) {
 		actualImageRect.size.height = MIN(actualImageRect.size.height, 0.55f * usableRect.size.height);
@@ -369,7 +372,7 @@
 	CGRect labelRect, tempRect;
 	CGRectDivide(self.bounds, &tempRect, &labelRect,
 		verticalLayout ? actualImageRect.size.height : actualImageRect.size.width,
-		verticalLayout ? CGRectMinYEdge : CGRectMinXEdge
+		verticalLayout ? CGRectMinYEdge: CGRectMinXEdge
 	);
 	labelRect.origin.x += verticalLayout ? 8 : 16;
 	labelRect.origin.y += verticalLayout ? 16 : 8;
@@ -412,7 +415,7 @@
 	
 	if (![self.imageView.subviews count]) {
 	
-		UIView *overlay = [[[UIView alloc] initWithFrame:self.imageView.bounds] autorelease];
+		UIView *overlay = [[UIView alloc] initWithFrame:self.imageView.bounds];
 		overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		overlay.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
 		
@@ -505,12 +508,11 @@
 }
 
 - (void) setPreview:(WAPreview *)newPreview {
-
+	
 	if (preview == newPreview)
 		return;
 
-	[preview release];
-	preview = [newPreview retain];
+	preview = newPreview;
 		
 	[self setNeedsLayout];
 
@@ -574,31 +576,7 @@
 - (void) dealloc {
 
 	[self irRemoveObserverBlocksForKeyPath:@"suggestedStyle"];
-
-	[preview release];
-
-	[titleFont release];
-	[titleColor release];
-	[titlePlaceholder release];
-	[titlePlaceholderColor release];
 	
-	[providerNameFont release];
-	[providerNameColor release];
-	[providerNamePlaceholder release];
-	[providerNamePlaceholderColor release];
-	
-	[textFont release];
-	[textColor release];
-	[textPlaceholder release];
-	[textPlaceholderColor release];
-	
-	[imageView release];
-	[label release];
-	
-	[backgroundView release];
-
-	[super dealloc];
-
 }
 
 @end

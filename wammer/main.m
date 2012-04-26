@@ -10,11 +10,8 @@
 
 #import "WAAppDelegate.h"
 
-int main(int argc, char *argv[])
-{
-	int retVal = 0;
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	retVal = UIApplicationMain(argc, argv, nil, NSStringFromClass([WAAppDelegate class]));
-	[pool drain];
-	return retVal;
+int main(int argc, char *argv[]) {
+	@autoreleasepool {
+		return UIApplicationMain(argc, argv, nil, NSStringFromClass([WAAppDelegate class]));
+	}
 }

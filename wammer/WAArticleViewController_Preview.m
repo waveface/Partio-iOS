@@ -8,17 +8,12 @@
 
 #import "WAArticleViewController_Preview.h"
 #import "WADataStore.h"
-
-#import "WAScrollView.h"
-
 #import "WADefines.h"
-
-#import "UIView+IRAdditions.h"
-#import "UIScrollView+IRAdditions.h"
-
 #import "WAArticleTextStackCell.h"
 
-#import <UIKit/UIGestureRecognizerSubclass.h>
+#import <UIKit/UIKit.h>
+
+#import "UIKit+IRAdditions.h"
 
 
 enum {
@@ -40,6 +35,8 @@ enum {
 @property (nonatomic, readwrite, retain) UIWebView *webView;
 @property (nonatomic, readwrite, retain) UIWebView *summaryWebView;
 @property (nonatomic, readwrite, retain) UIView *webViewWrapper;
+
+- (void) loadSummary;
 
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *webViewActivityIndicator;
 @property (nonatomic, readwrite, retain) IRBarButtonItem *webViewBackBarButtonItem;
@@ -82,23 +79,6 @@ enum {
 	webView.delegate = nil;
 	summaryWebView.delegate = nil;
 	
-	[webView release];
-	[summaryWebView release];
-	[webViewWrapper release];
-	
-	[webViewActivityIndicator release];
-	[webViewBackBarButtonItem release];
-	[webViewForwardBarButtonItem release];
-	[webViewActivityIndicatorBarButtonItem release];
-	[webViewReloadBarButtonItem release];
-
-	[previewBadge release];
-	[previewBadgeWrapper release];
-	
-	[previewActionSheetController release];
-	
-	[super dealloc];
-
 }
 
 - (void) didReceiveMemoryWarning {
@@ -151,8 +131,6 @@ enum {
 
 	[super viewDidLoad];
 	
-	__block __typeof__(self) nrSelf = self;
-	
 	WAPreview *anyPreview = [self preview];
 	
 	if (!anyPreview)
@@ -162,45 +140,6 @@ enum {
 	
 	[stackElements addObject:self.webViewWrapper];
 	
-	self.stackView.delaysContentTouches = NO;
-	self.stackView.canCancelContentTouches = YES;
-	self.stackView.onTouchesShouldBeginWithEventInContentView = ^ (NSSet *touches, UIEvent *event, UIView *contentView) {
-	
-		UIView *currentWrapperView = [nrSelf scrollableStackElementWrapper];
-		UIView *currentWrappedView = [nrSelf scrollableStackElement];
-		
-		if (contentView != currentWrappedView)
-		if (![contentView isDescendantOfView:currentWrappedView])
-			return [contentView isKindOfClass:[UIControl class]];
-			
-		WAStackView *sv = nrSelf.stackView;
-		UIView *svContainer = nrSelf.stackView.superview;
-		
-		if (CGRectContainsRect([svContainer convertRect:sv.bounds fromView:sv], [svContainer convertRect:currentWrapperView.bounds fromView:currentWrapperView]))
-			return YES;
-		
-		return NO;
-	
-	};
-	
-	self.stackView.onTouchesShouldCancelInContentView = ^ (UIView *view) {
-	
-		return NO;
-	
-	};
-	
-	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
-	
-		if ((otherGR.view == [nrSelf scrollableStackElementWrapper]) || [otherGR.view isDescendantOfView:[nrSelf scrollableStackElementWrapper]])
-			return NO;
-		
-		return YES;
-	
-	};
-	
-	self.stackView.panGestureRecognizer.delaysTouchesBegan = NO;
-	self.stackView.panGestureRecognizer.delaysTouchesEnded = NO;
-		
 	if ([self isViewLoaded])
 		[self updateWrapperView];
 
@@ -241,14 +180,6 @@ enum {
 
 }
 
-- (void) viewWillDisappear:(BOOL)animated {
-
-	[super viewWillDisappear:animated];
-	
-	[self.navigationController setToolbarHidden:YES animated:animated];
-
-}
-
 - (UIWebView *) webView {
 
 	if (webView)
@@ -277,6 +208,14 @@ enum {
 	summaryWebView.delegate = self;
 	summaryWebView.scrollView.directionalLockEnabled = NO;
 	
+	[self loadSummary];
+				
+	return summaryWebView;
+
+}
+
+- (void) loadSummary {
+
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
 	
 		@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(unescape(\"%@\"));",
@@ -305,13 +244,13 @@ enum {
 	NSString *templatedSummary = [NSString stringWithContentsOfFile:summaryTemplatePath usedEncoding:NULL error:nil];
 	NSURL *summaryTemplateBaseURL = templatedSummary ? [NSURL fileURLWithPath:summaryTemplateDirectoryPath] : nil;
 		
+	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$ADDITIONAL_STYLES" withString:@""];
+
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$BODY" withString:(usedSummary ? usedSummary : @"")];
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$TITLE" withString:(usedTitle ? usedTitle : @"")];
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$SOURCE" withString:(usedProviderName ? usedProviderName : @"")];
 	
 	[summaryWebView loadHTMLString:(templatedSummary ? templatedSummary : usedSummary) baseURL:summaryTemplateBaseURL];
-	
-	return summaryWebView;
 
 }
 
@@ -322,12 +261,23 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 	
-	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
-				
+	UIColor *glyphColor = nil;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {	
+		case UIUserInterfaceIdiomPad: {
+			glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+			break;
+		}		
+		case UIUserInterfaceIdiomPhone: {
+			glyphColor = [UIColor whiteColor];
+			break;
+		}
+	}
+	
 	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
-	webViewBackBarButtonItem = [[IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
+	webViewBackBarButtonItem = [IRBarButtonItem itemWithCustomImage:leftImage landscapePhoneImage:leftLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil];
 	
 	webViewBackBarButtonItem.block = ^ {
 	
@@ -335,6 +285,14 @@ enum {
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
+			
+		if (nrSelf.state == WAArticleViewControllerSummaryState)
+		if (!currentWebView.canGoBack) {
+		
+			[nrSelf loadSummary];
+			return;
+		
+		}
 		
 		[currentWebView goBack];
 	
@@ -351,12 +309,23 @@ enum {
 	
 	__block __typeof__(self) nrSelf = self;
 		
-	UIColor *glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+	UIColor *glyphColor = nil;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {	
+		case UIUserInterfaceIdiomPad: {
+			glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
+			break;
+		}		
+		case UIUserInterfaceIdiomPhone: {
+			glyphColor = [UIColor whiteColor];
+			break;
+		}
+	}
 	
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
 		
-	webViewForwardBarButtonItem = [[IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil] retain];
+	webViewForwardBarButtonItem = [IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil];
 	
 	webViewForwardBarButtonItem.block = ^ {
 	
@@ -390,7 +359,7 @@ enum {
 	if (webViewActivityIndicatorBarButtonItem)
 		return webViewActivityIndicatorBarButtonItem;
 	
-	webViewActivityIndicatorBarButtonItem = [[IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator] retain];
+	webViewActivityIndicatorBarButtonItem = [IRBarButtonItem itemWithCustomView:self.webViewActivityIndicator];
 	
 	return webViewActivityIndicatorBarButtonItem;
 
@@ -434,7 +403,20 @@ enum {
 	
 	self.webViewBackBarButtonItem.enabled = currentWebView.canGoBack;
 	self.webViewForwardBarButtonItem.enabled = currentWebView.canGoForward;
+	
+	if (self.state == WAArticleViewControllerSummaryState)
+	if (!currentWebView.canGoBack) {
 
+		NSString *locationHref = [currentWebView stringByEvaluatingJavaScriptFromString:@"document.location.href"];
+		if (!locationHref)
+			return;
+		
+		NSURL *pageURL = [NSURL URLWithString:locationHref];
+		if (pageURL && ![pageURL isFileURL])
+			self.webViewBackBarButtonItem.enabled = YES;
+	
+	}
+	
 }
 
 - (UIView *) wrappedView {
@@ -458,19 +440,19 @@ enum {
 	if (webViewWrapper)
 		return webViewWrapper;
 	
-	webViewWrapper = [[[WAView alloc] initWithFrame:CGRectZero] autorelease];
+	webViewWrapper = [[IRView alloc] initWithFrame:CGRectZero];
 	webViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 
-	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
+	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(webViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(webViewWrapper.bounds),
 		3
-	}, kCAGravityTop)] autorelease];
+	}, kCAGravityTop)];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[webViewWrapper addSubview:topShadow];
 	
-	__block __typeof__(self) nrSelf = self;
-	__block WAView * nrWebViewWrapper = (WAView *)webViewWrapper;
+	__weak WAArticleViewController_Preview *nrSelf = self;
+	__weak IRView * nrWebViewWrapper = (IRView *)webViewWrapper;
 	
 	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
@@ -527,13 +509,13 @@ enum {
 	if (previewBadgeWrapper)
 		return previewBadgeWrapper;
 	
-	previewBadgeWrapper = [[[UIView alloc] initWithFrame:(CGRect){
+	previewBadgeWrapper = [[UIView alloc] initWithFrame:(CGRect){
 		CGPointZero,
 		(CGSize){
 			384,
 			384
 		}
-	}] autorelease];
+	}];
 	UIView *backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = previewBadgeWrapper.bounds;
@@ -560,7 +542,7 @@ enum {
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithCustomView:((^ {
 		
-			UISegmentedControl *segmentedControl = [[[UISegmentedControl alloc] initWithItems:nil] autorelease];
+			UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:nil];
 			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
 			[segmentedControl addTarget:nrSelf action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 			
@@ -581,15 +563,16 @@ enum {
 		if (isPhone) {
 			
 			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
+			//	[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
 			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
-			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
 
 		} else {
 			
 			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
-			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}]]];
 			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
-			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}] autorelease]]];
+			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}]]];
 			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
 			
 		}
@@ -622,7 +605,7 @@ enum {
 	if (previewActionSheetController)
 		return previewActionSheetController;
 	
-	previewActionSheetController = [[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:nil] retain];
+	previewActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:nil otherActions:nil];
 	
 	return previewActionSheetController;
 
@@ -704,7 +687,7 @@ enum {
 	if ([contentView isDescendantOfView:wrapperView])
 		return;
 	
-	for (UIView *aSubview in [[wrapperView.subviews copy] autorelease])
+	for (UIView *aSubview in [wrapperView.subviews copy])
 	if (aSubview == summaryWebView || aSubview == webView)
 		[aSubview removeFromSuperview];
 	
@@ -744,7 +727,7 @@ enum {
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	CGFloat minWrappedViewHeight = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 384 : CGRectGetHeight(aStackView.bounds);
 	
@@ -779,7 +762,7 @@ enum {
 
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 	if ([[self wrappedView] isDescendantOfView:anElement])
 		return YES;
@@ -794,6 +777,12 @@ enum {
 - (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+}
+
+- (BOOL) enablesTextStackElementFolding {
+
+	return YES;
 
 }
 

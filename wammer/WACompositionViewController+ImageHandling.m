@@ -18,11 +18,11 @@
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self) nrSender = sender;
 	
-	return [[IRAction actionWithTitle:@"Photo Library" block: ^ {
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[nrSelf presentImagePickerController:[[nrSelf newImagePickerController] autorelease] sender:nrSender];
+		[nrSelf presentImagePickerController:[nrSelf newImagePickerController] sender:nrSender];
 	
-	}] retain];
+	}];
 
 }
 
@@ -38,7 +38,7 @@
 	
 	nrImagePickerController.usesAssetsLibrary = NO;
 	
-	return [nrImagePickerController retain];
+	return nrImagePickerController;
 
 }
 
@@ -59,7 +59,7 @@
 		
 	};
 	
-	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:animated];
+	[topNonModalVC(self) presentModalViewController:[self newImagePickerController] animated:animated];
 
 }
 
@@ -79,12 +79,12 @@
 
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(self) nrSender = sender;
-		
-	return [[IRAction actionWithTitle:@"Take Photo" block: ^ {
 	
-		[nrSelf presentCameraCapturePickerController:[[nrSelf newCameraCapturePickerController] autorelease] sender:nrSender];
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_TAKE_PHOTO_WITH_CAMERA", @"Button title for showing a camera capture controller") block: ^ {
 	
-	}] retain];
+		[nrSelf presentCameraCapturePickerController:[nrSelf newCameraCapturePickerController] sender:nrSender];
+	
+	}];
 
 }
 
@@ -102,7 +102,7 @@
 	nrPickerController.usesAssetsLibrary = NO;
 	nrPickerController.savesCameraImageCapturesToSavedPhotos = YES;
 	
-	return [nrPickerController retain];
+	return nrPickerController;
 
 }
 
@@ -145,7 +145,12 @@
 
 		WAArticle *capturedArticle = self.article;
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		stitchedFile.article = capturedArticle;
+		
+		NSError *error = nil;
+		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, nil] error:&error])
+			NSLog(@"Error obtaining permanent object ID: %@", error);
+
+		[capturedArticle addFilesObject:stitchedFile];
 		
 		NSURL *finalFileURL = nil;
 		
@@ -161,13 +166,9 @@
 			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
 		
 		}
-			
-		[stitchedFile.article willChangeValueForKey:@"fileOrder"];
-		
+					
 		stitchedFile.resourceType = (NSString *)kUTTypeImage;
 		stitchedFile.resourceFilePath = [finalFileURL path];
-		
-		[stitchedFile.article didChangeValueForKey:@"fileOrder"];
 		
 	}
 
@@ -177,10 +178,10 @@
 		
 	NSMutableArray *availableActions = [NSMutableArray array]; 
 	
-	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];
+	[availableActions addObject:[self newPresentImagePickerControllerActionWithSender:sender]];
 	
 	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
-		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
+		[availableActions addObject:[self newPresentCameraCaptureControllerActionWithSender:sender]];
 	
 	if ([availableActions count] == 1) {
 		
@@ -205,7 +206,7 @@
 			
 		} else {
 			
-			[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do."];
+			[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do.", sender];
 		
 		}
 		

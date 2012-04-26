@@ -14,11 +14,13 @@
 
 #import "WAReachabilityDetector.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
 
 #import "IASKAppSettingsViewController.h"
+#import "WAPulldownRefreshView.h"
 
 
 #define kConnectivitySection 1
@@ -47,8 +49,47 @@
   [super irConfigure];
   
   self.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
-  
 	self.tableViewStyle = UITableViewStyleGrouped;
+	
+	WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
+	self.tableView.pullDownHeaderView = pulldownHeader;
+	
+	self.tableView.onPullDownMove = ^ (CGFloat progress) {
+		
+		[pulldownHeader setProgress:progress animated:YES];
+		
+	};
+	
+	__weak IRTableView *wTV = self.tableView;
+	__weak WAPulldownRefreshView *wPulldownHeader = pulldownHeader;
+	
+	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
+		
+		if (didFinish) {
+			
+			wPulldownHeader.progress = 0;
+			[wPulldownHeader setBusy:YES animated:YES];
+			
+			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
+				
+				[wTV resetPullDown];
+				
+			} onFailure:^{
+				
+				[wTV resetPullDown];
+				
+			}];
+			
+		}
+		
+	};
+	
+	self.tableView.onPullDownReset = ^ {
+		
+		[wPulldownHeader setBusy:NO animated:YES];
+		
+	};
+	
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
 
@@ -81,28 +122,12 @@
   [super viewDidLoad];
 	
   [self.tableView reloadData];
-//	[self irBind:@"contentSizeForViewInPopover" toObject:self.tableView keyPath:@"contentSize" options:[NSDictionary dictionaryWithObjectsAndKeys:
-//	
-//		[[ ^ (id inOldValue, id inNewValue, NSString *changeKind) {
-//		
-//			CGSize inSize = [inNewValue CGSizeValue];
-//			
-//			return [NSValue valueWithCGSize:(CGSize){
-//			
-//				320,
-//				inSize.height
-//			
-//			}];
-//		
-//		} copy] autorelease], kIRBindingsValueTransformerBlock,
-//	
-//	nil]];
 	
 	self.tableView.sectionHeaderHeight = 56;
 	
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone){
 		
-		self.tableView.backgroundView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];		
+		self.tableView.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 		self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
 		
 	}
@@ -115,18 +140,8 @@
 	
   self.monitoredHosts = nil;
   [self.tableView reloadData];
-  
-	NSError *fetchingError = nil;
-  NSArray *fetchedUser = [self.managedObjectContext executeFetchRequest:[self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRUser" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-    [WARemoteInterface sharedInterface].userIdentifier, @"identifier",
-  nil]] error:&fetchingError];
-  
-  if (!fetchedUser)
-    NSLog(@"Fetching failed: %@", fetchingError);
-  
-  self.user = [fetchedUser lastObject];
 	
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachableHostsDidChange:) name:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil];  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachableHostsDidChange:) name:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReachabilityDetectorDidUpdate:) name:kWAReachabilityDetectorDidUpdateStatusNotification object:nil];
   
 }
@@ -149,9 +164,17 @@
   if (![self isViewLoaded])
     return;
   
-  [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
-  [self.tableView endUpdates];
+  @try {
+
+		[self.tableView beginUpdates];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView endUpdates];
+  
+  } @catch (NSException *exception) {
+
+    [self.tableView reloadData];
+    
+  }
 
 }
 
@@ -162,35 +185,18 @@
   if (![self isViewLoaded])
     return;
 
-#if 1
-		
-  [self.tableView beginUpdates];
-  [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
-  [self.tableView endUpdates];
-
-#else
-	
-  WAReachabilityDetector *targetDetector = aNotification.object;
-  NSURL *updatedHost = targetDetector.hostURL;
-  
   @try {
-  
-    NSUInteger displayIndexOfHost = [monitoredHosts indexOfObject:updatedHost]; //  USE OLD STUFF
-    if (displayIndexOfHost == NSNotFound)
-      return;
-    
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:displayIndexOfHost inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];   
 
+		[self.tableView beginUpdates];
+		[self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kConnectivitySection] withRowAnimation:UITableViewRowAnimationFade];
+		[self.tableView endUpdates];
+  
   } @catch (NSException *exception) {
 
     [self.tableView reloadData];
     
   }
 
-#endif
-  
 }
 
 - (NSArray *) monitoredHosts {
@@ -212,18 +218,14 @@
     return;
   
   [self willChangeValueForKey:@"monitoredHosts"];
-  [monitoredHosts release];
-  monitoredHosts = [newMonitoredHosts retain];
+  monitoredHosts = newMonitoredHosts;
   [self didChangeValueForKey:@"monitoredHosts"];
 
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-	if (WAAdvancedFeaturesEnabled())
-		return 4;
-	
-  return 3;
+	return 4;
 
 }
 
@@ -241,7 +243,7 @@
       return 3;
 		
 		case 3:
-			return 1;
+			return WAAdvancedFeaturesEnabled() ? 1 : 0;
 			
     default:
       return 0;
@@ -301,8 +303,8 @@
 	}
 	
 	if (section == 2) {
-		
-		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] debugVersionString]];
+	
+		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] displayVersionString]];
 		
 	}
 	
@@ -320,7 +322,7 @@
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:anIdentifier];
 		if (!cell) {
-			cell = [[[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier] autorelease];
+			cell = [[UITableViewCell alloc] initWithStyle:aStyle reuseIdentifier:anIdentifier];
 		}
 		
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -380,10 +382,9 @@
 		  
 		cell = anyCell();
 		
-		NSDictionary *storageInfo = (NSDictionary *)[[NSUserDefaults standardUserDefaults] objectForKey:kWAUserStorageInfo];
-		NSNumber *used = [storageInfo valueForKeyPath:@"waveface.usage.month_total_objects"];
-		NSNumber *all = [storageInfo valueForKeyPath:@"waveface.quota.month_total_objects"];
-				
+		NSNumber *used = self.user.mainStorage.numberOfObjectsCreatedInInterval;
+		NSNumber *all = self.user.mainStorage.numberOfObjectsAllowedInInterval;
+						
 		switch ([indexPath row]) {
 			
 			case 0: {
@@ -412,7 +413,7 @@
 					return [[NSCalendar currentCalendar] ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:aDate];
 				};
 				
-				NSDate *endDate = [NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]];
+				NSDate *endDate = self.user.mainStorage.intervalEndDate;
 				NSInteger daysLeft = dayOrdinality(endDate) - dayOrdinality([NSDate date]);
 			
 				cell.textLabel.text = NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT", nil);
@@ -424,9 +425,7 @@
 				
 			case 3: {
 				cell.textLabel.text = NSLocalizedString(@"STORATE_QUOTA_INTERVAL_END_DATE", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:
-					[NSDate dateWithTimeIntervalSince1970:[[storageInfo valueForKeyPath:@"waveface.interval.quota_interval_end"] doubleValue]]
-				];
+				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:self.user.mainStorage.intervalEndDate];
 				break;
 			}
 			
@@ -471,17 +470,11 @@
 			
 				case 0: {
 				
-					__block IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					IASKAppSettingsViewController *appSettingsViewController = [[IASKAppSettingsViewController alloc] initWithNibName:@"IASKAppSettingsView" bundle:nil];
+					
 					appSettingsViewController.delegate = self;
 					appSettingsViewController.showDoneButton = NO;
 					appSettingsViewController.showCreditsFooter = NO;
-					
-					appSettingsViewController.navigationItem.hidesBackButton = YES;
-					appSettingsViewController.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, self.title, ^ {
-					
-						[appSettingsViewController.navigationController popViewControllerAnimated:YES];
-					
-					});
 					
 					[self.navigationController pushViewController:appSettingsViewController animated:YES];
 				
@@ -504,8 +497,18 @@
   if (managedObjectContext)
     return managedObjectContext;
     
-  managedObjectContext = [[[WADataStore defaultStore] defaultAutoUpdatedMOC] retain];
+  managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
   return managedObjectContext;
+
+}
+
+- (WAUser *) user {
+
+	if (user)
+		return user;
+	
+	user = [[WADataStore defaultStore] mainUserInContext:self.managedObjectContext];
+	return user;
 
 }
 
@@ -531,17 +534,6 @@
 
   [super viewDidUnload];	
 	
-}
-
-- (void) dealloc {
-
-  [monitoredHosts release];
-  [managedObjectContext release];
-  
-//	[self irUnbind:@"contentSize"];
-  
-  [super dealloc];
-
 }
 
 @end

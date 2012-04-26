@@ -13,7 +13,7 @@
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
-	NSMutableDictionary *transformedRepresentation = [[incomingRepresentation mutableCopy] autorelease];
+	NSMutableDictionary *transformedRepresentation = [incomingRepresentation mutableCopy];
 	NSString *foundCreatorID = [transformedRepresentation valueForKeyPath:@"creator_id"];
 
 	if ([foundCreatorID isKindOfClass:[NSString class]])
@@ -52,8 +52,6 @@
 			@"article", @"article",
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;
@@ -70,8 +68,6 @@
 			@"WAUser", @"owner",
 			@"WAArticle", @"article",
 		nil];
-		
-		[mapping retain];
 		
 	});
 

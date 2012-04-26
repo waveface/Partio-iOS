@@ -44,8 +44,6 @@
 			@"images", @"images",
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;
@@ -64,7 +62,7 @@
 		if (![primaryImageURI isKindOfClass:[NSString class]])
 			return incomingRepresentation;
 	
-		NSMutableDictionary *transformedRepresentation = [[incomingRepresentation mutableCopy] autorelease];
+		NSMutableDictionary *transformedRepresentation = [incomingRepresentation mutableCopy];
 		[transformedRepresentation setObject:[NSArray arrayWithObject:[NSDictionary dictionaryWithObject:primaryImageURI forKey:@"url"]] forKey:@"images"];
 		
 		return transformedRepresentation;

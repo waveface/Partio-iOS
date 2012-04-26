@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleView.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>
+			
+			<NodeRef refid="14"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/article</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) WAArticle *article</Declaration>
+			
+			
+			<Anchor>//api/name/article</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/contextInfoContainer</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer</Declaration>
+			
+			
+			<Anchor>//api/name/contextInfoContainer</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/imageStackView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView</Declaration>
+			
+			
+			<Anchor>//api/name/imageStackView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/previewBadge</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge</Declaration>
+			
+			
+			<Anchor>//api/name/previewBadge</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/textEmphasisView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet WAArticleTextEmphasisLabel *textEmphasisView</Declaration>
+			
+			
+			<Anchor>//api/name/textEmphasisView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/avatarView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView</Declaration>
+			
+			
+			<Anchor>//api/name/avatarView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/relativeCreationDateLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *relativeCreationDateLabel</Declaration>
+			
+			
+			<Anchor>//api/name/relativeCreationDateLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/userNameLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *userNameLabel</Declaration>
+			
+			
+			<Anchor>//api/name/userNameLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/articleDescriptionLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *articleDescriptionLabel</Declaration>
+			
+			
+			<Anchor>//api/name/articleDescriptionLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/deviceDescriptionLabel</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UILabel *deviceDescriptionLabel</Declaration>
+			
+			
+			<Anchor>//api/name/deviceDescriptionLabel</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/contextTextView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UITextView *contextTextView</Declaration>
+			
+			
+			<Anchor>//api/name/contextTextView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/mainImageView</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, retain) IBOutlet UIImageView *mainImageView</Declaration>
+			
+			
+			<Anchor>//api/name/mainImageView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/initWithFrame:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithFrame:(CGRect)frame</Declaration>
+			
+			
+			<Anchor>//api/name/initWithFrame:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/waInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)waInit</Declaration>
+			
+			
+			<Anchor>//api/name/waInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/setPresentationStyle:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)setPresentationStyle:(WAArticleViewControllerPresentationStyle)newPresentationStyle</Declaration>
+			
+			
+			<Anchor>//api/name/setPresentationStyle:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/associateBindings</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)associateBindings</Declaration>
+			
+			
+			<Anchor>//api/name/associateBindings</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/disassociateBindings</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)disassociateBindings</Declaration>
+			
+			
+			<Anchor>//api/name/disassociateBindings</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleView/layoutSubviews</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>- (void)layoutSubviews</Declaration>
+			
+			
+			<Anchor>//api/name/layoutSubviews</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleView/relativeDateFormatter</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>+ (IRRelativeDateFormatter *)relativeDateFormatter</Declaration>
+			
+			
+			<Anchor>//api/name/relativeDateFormatter</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleView/presentationStyle</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleView.m</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle</Declaration>
+			
+			
+			<Anchor>//api/name/presentationStyle</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

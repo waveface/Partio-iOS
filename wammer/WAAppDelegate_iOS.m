@@ -17,7 +17,6 @@
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
-#import "WAViewController.h"
 #import "WANavigationController.h"
 
 #import "WAAuthenticationRequestViewController.h"
@@ -27,9 +26,6 @@
 
 #import "WAApplicationRootViewControllerDelegate.h"
 
-#import "UIApplication+CrashReporting.h"
-#import "WASetupViewController.h"
-
 #import "WANavigationBar.h"
 
 #import "UIView+IRAdditions.h"
@@ -37,7 +33,9 @@
 #import "IRAlertView.h"
 #import "IRAction.h"
 
+#import "WADiscretePaginatedArticlesViewController.h"
 #import "WATimelineViewControllerPhone.h"
+#import "WAUserInfoViewController.h"
 
 #import "WAStationDiscoveryFeedbackViewController.h"
 
@@ -49,12 +47,10 @@
 #import "IASKSettingsReader.h"
 
 #import	"DCIntrospect.h"
+#import "UIKit+IRAdditions.h"
 
-#import "GANTracker.h"
-		
-@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate, WASetupViewControllerDelegate>
 
-- (void) presentSetupViewControllerAnimated:(BOOL)animated;
+@interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
 - (void) handleObservedAuthenticationFailure:(NSNotification *)aNotification;
 - (void) handleObservedRemoteURLNotification:(NSNotification *)aNotification;
@@ -69,6 +65,8 @@
 - (void) recreateViewHierarchy;
 - (void) handleDebugModeToggled;
 
+- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier;
+
 @end
 
 
@@ -81,8 +79,12 @@
   //  This is so not going to happen
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[[GANTracker sharedTracker] stopTracker];
-  [super dealloc];
+	
+	WF_GOOGLEANALYTICS(^ {
+		
+		[[GANTracker sharedTracker] stopTracker];
+		
+	});
 
 }
 
@@ -101,10 +103,6 @@
 		[WARemoteInterface sharedInterface].apiKey = kWARemoteEndpointApplicationKeyPhone;
 	}
 
-	[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjectsAndKeys:
-		(id)kCFBooleanTrue, [[UIApplication sharedApplication] crashReportingEnabledUserDefaultsKey],
-	nil]];
-	
 	if (!WAApplicationHasDebuggerAttached()) {
 	
 		WF_TESTFLIGHT(^ {
@@ -143,11 +141,16 @@
 			NSLog(@"Using Google Analytics");
 					
 			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
-						
+			[GANTracker sharedTracker].debug = YES;
+			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 				
-				NSString *eventTitle = [[note userInfo] objectForKey:kWAAppEventTitle];
-				[[GANTracker sharedTracker] trackEvent:eventTitle action:@"observed" label:nil value:-1 withError:nil];
+				[[GANTracker sharedTracker] 
+					trackEvent: [[note userInfo] objectForKey:@"category"]
+					action:	[[note userInfo] objectForKey:@"action"]
+					label:	[[note userInfo] objectForKey:@"label"]
+					value:	(NSInteger)[[note userInfo] objectForKey:@"value"]
+					withError:nil];
 				
 			}];
 			
@@ -161,111 +164,49 @@
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
 	
-	WAPostAppEvent(@"bootstrap-finished", nil);
-
+	WADefaultBarButtonInitialize();
+	
 }
 
 - (BOOL) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
 	[self bootstrap];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
-	
-	
-	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor blackColor];
 	[self.window makeKeyAndVisible];
 	
-			
-	void (^initializeInterface)() = ^ {
+	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
 	
-		if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
-			
-			[WADataStore defaultStore].persistentStoreName = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
-			
-			[self recreateViewHierarchy];
+		NSString *identifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName];
+		[self bootstrapPersistentStoreWithUserIdentifier:identifier];
 		
-		} else if (![self hasAuthenticationData]) {
-		
-			[self applicationRootViewControllerDidRequestReauthentication:nil];
-						
-		} else {
-		
-			NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
-			
-			if (lastAuthenticatedUserIdentifier)
-				[WADataStore defaultStore].persistentStoreName = [lastAuthenticatedUserIdentifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-			
-			[self recreateViewHierarchy];
-			
-		}
-    
-	};
+		[self recreateViewHierarchy];
 	
-#if WF_USES_CRASHLYTICS || WF_USES_TESTFLIGHT
-
-	initializeInterface();
-
-#else
+	} else if (![self hasAuthenticationData]) {
 	
-	if (WAApplicationHasDebuggerAttached()) {
-	
-    //  Disable for GDB / LLDB
-		
-		initializeInterface();
-	
-	} else if ([[UIDevice currentDevice].model rangeOfString:@"Simulator"].location != NSNotFound) {
-	
-    //  Never send crash reports thru the Simulator since it won’t actually matter
-
-		initializeInterface();
-	
+		[self applicationRootViewControllerDidRequestReauthentication:nil];
+					
 	} else {
 	
-		NSLog(@"Preparing environment for custom crash handling");
-  
-		[self clearViewHierarchy];
-	
-		//  Only enable crash reporting as an advanced feature
-
-		[[UIApplication sharedApplication] handlePendingCrashReportWithCompletionBlock: ^ (BOOL didHandle) {
-			if ([[UIApplication sharedApplication] crashReportingEnabled]) {
-				[[UIApplication sharedApplication] enableCrashReporterWithCompletionBlock: ^ (BOOL didEnable) {
-					[[UIApplication sharedApplication] setCrashReportingEnabled:didEnable];
-					initializeInterface();
-				}];
-			} else {
-				initializeInterface();
-			}
-		}];
-    
+		NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+		
+		if (lastAuthenticatedUserIdentifier)
+			[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
+		
+		[self recreateViewHierarchy];
+		
 	}
 
-#endif
+	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 
-	#if TARGET_IPHONE_SIMULATOR
-	// create a custom tap gesture recognizer so introspection can be invoked from a device
-	// this one is a three finger double tap
-	UITapGestureRecognizer *defaultGestureRecognizer = [[[UITapGestureRecognizer alloc] init] autorelease];
-	defaultGestureRecognizer.cancelsTouchesInView = NO;
-	defaultGestureRecognizer.delaysTouchesBegan = NO;
-	defaultGestureRecognizer.delaysTouchesEnded = NO;
-	defaultGestureRecognizer.numberOfTapsRequired = 3;
-	defaultGestureRecognizer.numberOfTouchesRequired = 2;
-	[DCIntrospect sharedIntrospector].invokeGestureRecognizer = defaultGestureRecognizer;
-
-	// always insert this AFTER makeKeyAndVisible so statusBarOrientation is reported correctly.
-	[[DCIntrospect sharedIntrospector] start];
-	#endif
-	
   return YES;
 	
 }
 
 - (void) clearViewHierarchy {
 
-	__block void (^dismissModal)(UIViewController *aVC);
-	dismissModal = ^ (UIViewController *aVC) {
+	__block void (^dismissModal)(UIViewController *) = ^ (UIViewController *aVC) {
 		
 		if (aVC.modalViewController)
 			dismissModal(aVC.modalViewController);
@@ -278,13 +219,15 @@
 	
 	dismissModal(rootVC);
 
-	WAViewController *bottomMostViewController = [[[WAViewController alloc] init] autorelease];
+	IRViewController *bottomMostViewController = [[IRViewController alloc] init];
+	__weak IRViewController *wBottomMostViewController = bottomMostViewController;
 	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
 		return YES;
 	};
-	bottomMostViewController.onLoadview = ^ (WAViewController *self) {
-		self.view = [[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }] autorelease];
-		self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
+	
+	bottomMostViewController.onLoadView = ^ () {
+		wBottomMostViewController.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
+		wBottomMostViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
 	};
 	
 	self.window.rootViewController = bottomMostViewController;
@@ -297,68 +240,48 @@
 	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
 	[queue cancelAllOperations];
 	
-	
-
-	NSString *rootViewControllerClassName = nil;
-		
 	switch (UI_USER_INTERFACE_IDIOM()) {
+	
 		case UIUserInterfaceIdiomPad: {
-			rootViewControllerClassName = @"WADiscretePaginatedArticlesViewController";
+		
+			WADiscretePaginatedArticlesViewController *presentedViewController = [[WADiscretePaginatedArticlesViewController alloc] init];
+			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+			
+			[presentedViewController setDelegate:self];
+			
+			self.window.rootViewController = rootNavC;
+		
 			break;
+		
 		}
-		default:
+		
 		case UIUserInterfaceIdiomPhone: {
-			rootViewControllerClassName = @"WATimelineViewControllerPhone";
+			
+			WATimelineViewControllerPhone *timelineVC = [[WATimelineViewControllerPhone alloc] init];
+			WANavigationController *timelineNavC = [[WANavigationController alloc] initWithRootViewController:timelineVC];
+			
+			[timelineVC setDelegate:self];
+						
+			self.window.rootViewController = timelineNavC;
+		
 			break;
+		
 		}
+	
 	}
 	
-	NSParameterAssert(rootViewControllerClassName);
-	
-	__block UIViewController *presentedViewController = [[(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init] autorelease];
-	
-	self.window.rootViewController = (( ^ {
-	
-		__block WANavigationController *navController = [[[WANavigationController alloc] initWithRootViewController:presentedViewController] autorelease];
-		
-		navController.onViewDidLoad = ^ (WANavigationController *self) {
+//	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
+//		@"WADiscretePaginatedArticlesViewController" :
+//		@"WATimelineViewControllerPhone";
+//	
+//	NSParameterAssert(rootViewControllerClassName);
+//	
+//	UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
+//	self.window.rootViewController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
+//		
+//	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
+//		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
 			
-			self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternThickShrunkPaper"]];
-			
-			__block WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-			
-			navigationBar.tintColor = [UIColor brownColor];
-			navigationBar.customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
-			
-			navigationBar.onBarStyleContextChanged = ^ {
-			
-				[UIView animateWithDuration:0.3 animations:^{
-					
-					BOOL isTranslucent = (navigationBar.barStyle == UIBarStyleBlackTranslucent) || ((navigationBar.barStyle == UIBarStyleBlack) && navigationBar.translucent);
-					
-					navigationBar.customBackgroundView.alpha = isTranslucent ? 0 : 1;
-					navigationBar.suppressesDefaultAppearance = isTranslucent ? NO : YES;
-					
-					navigationBar.tintColor = isTranslucent ? nil : [UIColor brownColor];
-			
-				}];
-			
-			};
-			
-		};
-		
-		if ([navController isViewLoaded])
-			navController.onViewDidLoad(navController);
-		
-		return navController;
-		
-	})());
-	
-	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
-		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
-			
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
-
 }
 
 
@@ -372,7 +295,7 @@
 		[self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:YES clearingNavigationHierarchy:YES onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 		
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 			
 		} runningOnboardingProcess:YES];
 		
@@ -391,7 +314,7 @@
 		[self presentAuthenticationRequestWithReason:[error localizedDescription] allowingCancellation:YES removingPriorData:NO clearingNavigationHierarchy:NO onAuthSuccess:^(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier) {
 			
 			[self updateCurrentCredentialsWithUserIdentifier:userIdentifier token:userToken primaryGroup:primaryGroupIdentifier];
-			[WADataStore defaultStore].persistentStoreName = userIdentifier;
+			[self bootstrapPersistentStoreWithUserIdentifier:userIdentifier];
 			
 		} runningOnboardingProcess:NO];
 
@@ -614,7 +537,7 @@
 	
 	void (^presentWrappedAuthRequestVC)(WAAuthenticationRequestViewController *authVC, BOOL animated) = ^ (WAAuthenticationRequestViewController *authVC, BOOL animated) {
 	
-		WANavigationController *authRequestWrappingVC = [[[WANavigationController alloc] initWithRootViewController:authVC] autorelease];
+		WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authVC];
 		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 	
@@ -715,7 +638,7 @@
 			BOOL userIdentifierHasChanged = userIdentifierChanged();
 			
 			if (userIdentifierHasChanged || zapEverything) {
-				UINavigationController *navC = [[self.navigationController retain] autorelease];
+				UINavigationController *navC = self.navigationController;
 				[self dismissModalViewControllerAnimated:NO];
 				[nrAppDelegate recreateViewHierarchy];
 				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
@@ -790,10 +713,10 @@
 	
 	UIView *overlayView = ((^ {
 	
-		UIView *returnedView = [[[UIView alloc] initWithFrame:rootView.bounds] autorelease];
+		UIView *returnedView = [[UIView alloc] initWithFrame:rootView.bounds];
 		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		
-		UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+		UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 		
 		spinner.center = (CGPoint){
 			CGRectGetMidX(returnedView.bounds),
@@ -854,7 +777,7 @@
           
           dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 					
-						[[WARemoteInterface sharedInterface] retrieveUser:[WARemoteInterface sharedInterface].userIdentifier onSuccess:^(NSDictionary *userRep, NSArray *groupReps) {
+						[[WARemoteInterface sharedInterface] retrieveUser:[WARemoteInterface sharedInterface].userIdentifier onSuccess:^(NSDictionary *userRep) {
 							
 							BOOL userNeedsStation = [[userRep valueForKeyPath:@"state"] isEqual:@"station_required"];
 							
@@ -870,7 +793,7 @@
                 
                 } else {
                 
-                  WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[[WAStationDiscoveryFeedbackViewController alloc] init] autorelease];
+                  WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[WAStationDiscoveryFeedbackViewController alloc] init];
                   UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
                   stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for signing the user out") block:^{
                     
@@ -973,43 +896,6 @@
 
 }
 
-- (void) applicationRootViewControllerDidRequestChangeAPIURL:(id<WAApplicationRootViewController>)controller {
-	
-	[self presentSetupViewControllerAnimated:YES];
-	
-}
-
-- (void) presentSetupViewControllerAnimated:(BOOL)animated {
-	
-	WASetupViewController *setupVC = [[[WASetupViewController alloc] initWithAPIURLString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]] autorelease];
-	setupVC.delegate = self;
-	[setupVC presentModallyOn:self.window.rootViewController animated:animated];
-	
-}
-
-- (void) setupViewController:(WASetupViewController *)controller didChooseString:(NSString *)string {
-
-	NSParameterAssert(controller);
-	NSParameterAssert(string);
-  
-  [[NSUserDefaults standardUserDefaults] setObject:string forKey:kWARemoteEndpointURL];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-
-  //	TODO
-	//	Update remote interface context here. Right now the API update only works when the app is killed and restarted.	
-	
-	//	This will work:
-	//	[[WARemoteInterface sharedInterface].engine performSelector:@selector(setContext:) withObject:[WARemoteInterfaceContext context]];
-	
-  [controller dismissModalViewControllerAnimated:YES];
-
-}
-
-- (void) setupViewControllerDidCancel:(WASetupViewController *)controller{
-	
-	[controller dismissModalViewControllerAnimated:YES];
-	
-}
 
 #pragma mark - Network Activity
 
@@ -1019,7 +905,7 @@ static unsigned int networkActivityStackingCount = 0;
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self beginNetworkActivity];
 		});
 		return;
 	}
@@ -1035,7 +921,7 @@ static unsigned int networkActivityStackingCount = 0;
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
-			[self performSelector:_cmd];
+			[self endNetworkActivity];
 		});
 		return;
 	}
@@ -1066,10 +952,104 @@ static unsigned int networkActivityStackingCount = 0;
 
 	WAPostAppEvent(@"did-receive-memory-warning", [NSDictionary dictionaryWithObjectsAndKeys:
 	
-		
+		//	TBD
 	
 	nil]);
 
+}
+
+- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier {
+
+	NSParameterAssert(identifier);
+	WADataStore * const ds = [WADataStore defaultStore];
+	
+	ds.persistentStoreName = [identifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	
+	NSManagedObjectContext *context = [ds disposableMOC];
+
+	NSArray *existingUsers = [context executeFetchRequest:[ds newFetchRequestForUsersWithIdentifier:identifier] error:nil];
+	NSUInteger numberOfExistingUsers = [existingUsers count];
+	if (numberOfExistingUsers > 1) {
+		
+		WAUser *tentativeUser = [existingUsers lastObject];
+		
+		NSLog(@"Found duplicate user entity, using %@ as the main entity", tentativeUser);
+	
+		[existingUsers enumerateObjectsUsingBlock: ^ (WAUser *otherUser, NSUInteger idx, BOOL *stop) {
+		
+			if (otherUser == tentativeUser)
+				return;
+				
+			NSLog(@"Patching erroneous duplicate user entity %@", otherUser);
+			
+			[tentativeUser addArticles:otherUser.articles];
+			[tentativeUser addComments:otherUser.articles];
+			[tentativeUser addFiles:otherUser.articles];
+			[tentativeUser addGroups:otherUser.articles];
+			[tentativeUser addPreviews:otherUser.articles];
+			[tentativeUser addStorages:otherUser.articles];
+			
+			[otherUser.managedObjectContext deleteObject:otherUser];
+			
+		}];
+		
+		[context save:nil];
+		
+		[ds setMainUser:tentativeUser inContext:context];
+		
+	}
+	
+	WAUser *user = [ds mainUserInContext:context];
+	
+	@try {
+	
+		[user willAccessValueForKey:nil];
+	
+	} @catch (NSException *e) {
+	
+		user = nil;
+	
+	}
+	
+	if (!user) {
+		
+		NSArray *foundUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
+		
+			[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				identifier, @"user_id",
+			
+			nil],
+		
+		nil] usingMapping:nil options:0];
+		
+		NSCParameterAssert([foundUsers count] == 1);	
+		user = [foundUsers lastObject];
+		
+		[context obtainPermanentIDsForObjects:[NSArray arrayWithObject:user] error:nil];
+		
+		if ([context save:nil]) {
+			[ds setMainUser:user inContext:context];
+			[context save:nil];
+		}
+		
+	}
+	
+	NSParameterAssert([user.identifier isEqual:identifier]);
+	
+#if DEBUG
+
+	do {
+	
+		NSManagedObjectContext *context = [ds disposableMOC];
+		WAUser *user = [ds mainUserInContext:context];
+		
+		NSParameterAssert([user.identifier isEqual:identifier]);
+	
+	} while (0);
+	
+#endif
+	
 }
 
 @end

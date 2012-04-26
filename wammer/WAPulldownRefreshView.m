@@ -27,11 +27,11 @@
 
 	[super awakeFromNib];
 	
-	UIView *highlight = [[[UIView alloc] initWithFrame:IRGravitize(
+	UIView *highlight = [[UIView alloc] initWithFrame:IRGravitize(
 		self.bounds, 
 		(CGSize){ CGRectGetWidth(self.bounds), 1},
 		kCAGravityBottom
-	)] autorelease];
+	)];
 	
 	highlight.frame = CGRectOffset(highlight.frame, 0, 1);
 	highlight.backgroundColor = [UIColor colorWithWhite:1 alpha:0.125];
@@ -41,11 +41,11 @@
 	[self sendSubviewToBack:highlight];
 	
 	
-	UIView *lining = [[[UIView alloc] initWithFrame:IRGravitize(
+	UIView *lining = [[UIView alloc] initWithFrame:IRGravitize(
 		self.bounds, 
 		(CGSize){ CGRectGetWidth(self.bounds), 1},
 		kCAGravityBottom
-	)] autorelease];
+	)];
 	
 	lining.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
 	lining.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
@@ -54,11 +54,11 @@
 	[self sendSubviewToBack:lining];
 	
 		
-	IRGradientView *pulldownHeaderBackgroundShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(
+	IRGradientView *pulldownHeaderBackgroundShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(
 		self.bounds,
 		(CGSize){ CGRectGetWidth(self.bounds), 3 },
 		kCAGravityBottom
-	)] autorelease];
+	)];
 	
 	pulldownHeaderBackgroundShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	
@@ -70,8 +70,9 @@
 	[self sendSubviewToBack:pulldownHeaderBackgroundShadow];
 	
 	
-	UIView *pulldownHeaderBackground = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })] autorelease];
+	UIView *pulldownHeaderBackground = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ -256, 0, 0, 0 })];
 	pulldownHeaderBackground.backgroundColor = [UIColor colorWithWhite:0 alpha:0.125];
+	pulldownHeaderBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
 	[self addSubview:pulldownHeaderBackground];
 	[self sendSubviewToBack:pulldownHeaderBackground];
@@ -164,14 +165,6 @@
     self.spinner.alpha = 0;
   
   }
-
-}
-
-- (void) dealloc {
-  
-  [arrowView release];
-  [spinner release];
-  [super dealloc];
 
 }
 

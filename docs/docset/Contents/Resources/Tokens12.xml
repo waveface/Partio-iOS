@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/WAArticleTextStackCell.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/WAArticleTextStackCell</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.h</DeclaredIn>
+			
+			<NodeRef refid="12"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/clm/WAArticleTextStackCell/cellFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.h</DeclaredIn>			
+			
+			<Declaration>+ (id)cellFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/cellFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/sizeThatFits:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.h</DeclaredIn>			
+			
+			<Declaration>- (CGSize)sizeThatFits:(CGSize)size</Declaration>
+			
+			
+			<Anchor>//api/name/sizeThatFits:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/WAArticleTextStackCell/onSizeThatFits</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, copy) CGSize ( ^ ) ( CGSize proposedSize , CGSize superAnswer ) onSizeThatFits</Declaration>
+			
+			
+			<Anchor>//api/name/onSizeThatFits</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/dealloc</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)dealloc</Declaration>
+			
+			
+			<Anchor>//api/name/dealloc</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/initWithStyle:reuseIdentifier:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.m</DeclaredIn>			
+			
+			<Declaration>- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier</Declaration>
+			
+			
+			<Anchor>//api/name/initWithStyle:reuseIdentifier:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/awakeFromNib</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)awakeFromNib</Declaration>
+			
+			
+			<Anchor>//api/name/awakeFromNib</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/waInit</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)waInit</Declaration>
+			
+			
+			<Anchor>//api/name/waInit</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/setSelected:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)setSelected:(BOOL)selecte animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setSelected:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/WAArticleTextStackCell/setHighlighted:animated:</TokenIdentifier>
+			<Abstract></Abstract>
+			<DeclaredIn>WAArticleTextStackCell.m</DeclaredIn>			
+			
+			<Declaration>- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated</Declaration>
+			
+			
+			<Anchor>//api/name/setHighlighted:animated:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

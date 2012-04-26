@@ -48,8 +48,6 @@
 			@"graphElement", @"og",
 		nil];
 		
-		[mapping retain];
-		
 	});
 
 	return mapping;
@@ -65,8 +63,6 @@
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 			@"WAOpenGraphElement", @"og",
 		nil];
-		
-		[mapping retain];
 		
 	});
 
