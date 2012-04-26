@@ -31,7 +31,7 @@
 
 /* Action marking article as favorite
    Bar button item title to mark the article as a favorite */
-"ACTION_MARK_FAVORITE" = "Fave";
+"ACTION_MARK_FAVORITE" = "Favorite";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
@@ -73,7 +73,7 @@
 
 /* Action marking article as not favorite
    Bar button item title to unmark the article as a favorite */
-"ACTION_UNMARK_FAVORITE" = "Unfave";
+"ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";
