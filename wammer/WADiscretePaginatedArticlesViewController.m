@@ -36,9 +36,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 @interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
 
-- (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification;
-- (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification;
-
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
@@ -54,52 +51,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 
 @implementation WADiscretePaginatedArticlesViewController
-@synthesize paginationSliderSlot;
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize requiresRecalculationOnFetchedResultsChangeEnd;
-
-- (id) init {
-
-	self = [self initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
-	if (!self)
-		return nil;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	
-	return self;
-
-}
-
-- (void) handleApplicationDidBecomeActive:(NSNotification *)aNotification {
-
-	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
-	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
-
-}
-
-- (void) handleApplicationDidEnterBackground:(NSNotification *)aNotification {
-
-	if (![self isViewLoaded])
-		return;
-		
-	NSArray *allGrids = self.discreteLayoutResult.grids;
-	if (![allGrids count])
-		return;
-
-	IRDiscreteLayoutGrid *grid = [allGrids objectAtIndex:self.paginatedView.currentPage];
-	
-	NSString *lastArticleID = ((WAArticle *)[grid layoutItemForAreaNamed:[grid.layoutAreaNames lastObject]]).identifier;
-	if (!lastArticleID)
-		return;
-	
-	__block UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
-	taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:nil];
-	[self updateLatestReadingProgressWithIdentifier:lastArticleID completion:^(BOOL didUpdate) {
-		[[UIApplication sharedApplication] endBackgroundTask:taskID];
-	}];
-	
-}
 
 - (void) viewDidLayoutSubviews {
 
@@ -118,13 +71,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-//	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternLinedWood"]];
 	self.view.backgroundColor = [UIColor colorWithRed:235.5/256.0 green:235.5/256.0 blue:235.5/256.0 alpha:1];
 	self.view.opaque = YES;
 	
 	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
 	self.paginatedView.backgroundColor = nil;
-	self.paginatedView.horizontalSpacing = 0.0f;
+	self.paginatedView.horizontalSpacing = 4.0f;
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
@@ -146,12 +98,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginationSlider.instantaneousCallbacks = YES;
 	self.paginationSlider.layoutStrategy = WAPaginationSliderLessDotsLayoutStrategy;
 	[self.paginationSlider irBind:@"currentPage" toObject:self.paginatedView keyPath:@"currentPage" options:nil];
-	
-	self.paginationSliderSlot.backgroundColor = [UIColor colorWithRed:0.75 green:0.55 blue:0.55 alpha:0.125];
-	self.paginationSliderSlot.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithWhite:0 alpha:0.625] offset:(CGSize){ 0, 2 } spread:6];
-	self.paginationSliderSlot.layer.cornerRadius = 4.0f;
-	self.paginationSliderSlot.layer.masksToBounds = YES;
-	
+		
 }
 
 - (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
@@ -190,7 +137,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.discreteLayoutManager = nil;
 	self.discreteLayoutResult = nil;	//	TBD: Not really?
 	
-	[self setPaginationSliderSlot:nil];
 	[super viewDidUnload];
 
 }
@@ -216,14 +162,14 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 }
 
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
-	
-	[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
-	[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
-	
-}
+//	- (void) viewDidAppear:(BOOL)animated {
+//
+//		[super viewDidAppear:animated];
+//		
+//		[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
+//		[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
+//		
+//	}
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 
@@ -764,6 +710,50 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
+- (NSString *) captionForProposedCaption:(NSString *)proposedCaption forPageAtIndex:(NSUInteger)index inPaginationSlider:(WAPaginationSlider *)aSlider {
+
+	if (self.discreteLayoutResult) {
+		
+		IRDiscreteLayoutGrid *targetGrid = [self.discreteLayoutResult.grids objectAtIndex:index];
+		NSMutableArray *allItems = [NSMutableArray arrayWithCapacity:[targetGrid.layoutAreaNames count]];
+		
+		[targetGrid enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
+			
+			if (item)
+				[allItems addObject:item];
+			
+		}];
+		
+		NSArray *sortedItems = [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+		
+			[NSSortDescriptor sortDescriptorWithKey:@"presentationDate" ascending:YES],
+		
+		nil]];
+		
+		if ([sortedItems count]) {
+		
+			NSDate *fromDate = ((WAArticle *)[sortedItems objectAtIndex:0]).presentationDate;
+			NSDate *toDate = ((WAArticle *)[sortedItems lastObject]).presentationDate;
+			
+			if ([fromDate isEqualToDate:toDate])
+				return [fromDate description];
+			
+			NSString *fromDateString = [NSDateFormatter localizedStringFromDate:fromDate dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterNoStyle];
+			NSString *toDateString = [NSDateFormatter localizedStringFromDate:toDate dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterNoStyle];
+			
+			if ([fromDateString isEqualToString:toDateString])
+				return fromDateString;
+			
+			return [NSString stringWithFormat:@"%@ – %@", fromDateString, toDateString];
+		
+		}
+		
+	}
+	
+	return proposedCaption;
+
+}
+
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
 	NSParameterAssert(destinationPage >= 0);
@@ -772,23 +762,24 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (self.paginatedView.currentPage == destinationPage)
 		return;
 	
-	if ([slider.slider isTracking]) {
+	if (![slider.slider isTracking]) {
+	
 		UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState;
 		[UIView animateWithDuration:0.3 delay:0 options:options animations:^{
 			[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];			
 		} completion:nil];
-		return;
+		
 	}
-	
-	[self.paginatedView scrollToPageAtIndex:destinationPage animated:YES];
 	
 }
 
 - (UIView *) viewForAnnotation:(WAPaginationSliderAnnotation *)anAnnotation inPaginationSlider:(WAPaginationSlider *)aSlider {
 
-	NSParameterAssert(anAnnotation == self.lastReadingProgressAnnotation);
-	
-	return self.lastReadingProgressAnnotationView;
+	return nil;
+
+	//	NSParameterAssert(anAnnotation == self.lastReadingProgressAnnotation);
+	//	
+	//	return self.lastReadingProgressAnnotationView;
 
 }
 
