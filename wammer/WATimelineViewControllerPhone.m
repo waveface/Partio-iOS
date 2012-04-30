@@ -395,8 +395,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	[super viewWillAppear:animated];
 	
-	[self.navigationController.toolbar setTintColor:[UIColor whiteColor]];
+	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	
 	[self.navigationController setToolbarHidden:NO animated:animated];
 	
   
@@ -410,9 +411,21 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	[self.navigationController setToolbarHidden:YES animated:animated];
-	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-	[[UISegmentedControl appearance] setTintColor:[UIColor colorWithWhite:213/255.0 alpha:1]];
+	UIToolbar *toolbar = self.navigationController.toolbar;
+
+	[toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+	
+	[toolbar setNeedsLayout];
+	
+	[toolbar.layer addAnimation:((^ {
+		
+		CATransition *transition = [CATransition animation];
+		transition.duration = animated ? 0.5 : 0;
+		transition.type = kCATransitionFade;
+		
+		return transition;
+	
+	})()) forKey:kCATransition];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
 
@@ -506,7 +519,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)newOrientation {
   
-	return newOrientation == UIInterfaceOrientationPortraitUpsideDown;
+	return newOrientation == UIInterfaceOrientationPortrait;
 	
 }
 
