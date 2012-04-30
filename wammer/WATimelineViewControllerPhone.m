@@ -395,7 +395,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	[super viewWillAppear:animated];
 	
-	[self.navigationController.toolbar setTintColor:[UIColor whiteColor]];
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	[self.navigationController setToolbarHidden:NO animated:animated];
 	
@@ -411,8 +410,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) viewWillDisappear:(BOOL)animated {
 
 	[self.navigationController setToolbarHidden:YES animated:animated];
-	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"Toolbar"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
-	[[UISegmentedControl appearance] setTintColor:[UIColor colorWithWhite:213/255.0 alpha:1]];
+	[self.navigationController.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIMenuControllerWillHideMenuNotification object:nil];
 
