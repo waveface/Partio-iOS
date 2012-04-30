@@ -38,6 +38,8 @@ enum {
 
 - (void) loadSummary;
 
+- (UIColor *) tintColor;
+
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *webViewActivityIndicator;
 @property (nonatomic, readwrite, retain) IRBarButtonItem *webViewBackBarButtonItem;
 @property (nonatomic, readwrite, retain) IRBarButtonItem *webViewForwardBarButtonItem;
@@ -254,25 +256,34 @@ enum {
 
 }
 
+- (UIColor *) tintColor {
+
+	UIColor *color = self.navigationController.toolbar.tintColor;
+	if (color)
+		return color;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		
+		case UIUserInterfaceIdiomPad:
+			return [UIColor colorWithWhite:0.3 alpha:1];
+		
+		case UIUserInterfaceIdiomPhone:
+			return [UIColor whiteColor];
+		
+	}
+	
+	return nil;
+
+}
+
 - (IRBarButtonItem *) webViewBackBarButtonItem {
 
 	if (webViewBackBarButtonItem)
 		return webViewBackBarButtonItem;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleViewController_Preview *wSelf = self;
 	
-	UIColor *glyphColor = nil;
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {	
-		case UIUserInterfaceIdiomPad: {
-			glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
-			break;
-		}		
-		case UIUserInterfaceIdiomPhone: {
-			glyphColor = [UIColor whiteColor];
-			break;
-		}
-	}
+	UIColor *glyphColor = [self tintColor];
 	
 	UIImage *leftImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeft", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *leftLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowLeftLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
@@ -281,15 +292,15 @@ enum {
 	
 	webViewBackBarButtonItem.block = ^ {
 	
-		UIWebView *currentWebView = (UIWebView *)[nrSelf wrappedView];
+		UIWebView *currentWebView = (UIWebView *)[wSelf wrappedView];
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
 			
-		if (nrSelf.state == WAArticleViewControllerSummaryState)
+		if (wSelf.state == WAArticleViewControllerSummaryState)
 		if (!currentWebView.canGoBack) {
 		
-			[nrSelf loadSummary];
+			[wSelf loadSummary];
 			return;
 		
 		}
@@ -307,29 +318,17 @@ enum {
 	if (webViewForwardBarButtonItem)
 		return webViewForwardBarButtonItem;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleViewController_Preview *wSelf = self;
 		
-	UIColor *glyphColor = nil;
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {	
-		case UIUserInterfaceIdiomPad: {
-			glyphColor = [UIColor colorWithWhite:0.3 alpha:1];
-			break;
-		}		
-		case UIUserInterfaceIdiomPhone: {
-			glyphColor = [UIColor whiteColor];
-			break;
-		}
-	}
-	
+	UIColor *glyphColor = [self tintColor];
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
 	UIImage *rightLandscapePhoneImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRightLandscape", glyphColor, kWADefaultBarButtonTitleShadow);
-		
+	
 	webViewForwardBarButtonItem = [IRBarButtonItem itemWithCustomImage:rightImage landscapePhoneImage:rightLandscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil];
 	
 	webViewForwardBarButtonItem.block = ^ {
 	
-		UIWebView *currentWebView = (UIWebView *)[nrSelf wrappedView];
+		UIWebView *currentWebView = (UIWebView *)[wSelf wrappedView];
 		
 		if (![currentWebView isKindOfClass:[UIWebView class]])
 			return;
@@ -534,7 +533,7 @@ enum {
 	if ([[super toolbarItems] count])
 		return [super toolbarItems];
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleViewController_Preview *wSelf = self;
 	
 	self.toolbarItems = ((^ {
 	
@@ -544,7 +543,7 @@ enum {
 		
 			UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:nil];
 			segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar;
-			[segmentedControl addTarget:nrSelf action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+			[segmentedControl addTarget:wSelf action:@selector(handleSegmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 			
 			[segmentedControl insertSegmentWithTitle:@"Summary" atIndex:0 animated:NO];
 			[segmentedControl insertSegmentWithTitle:@"Web" atIndex:1 animated:NO];
@@ -562,35 +561,49 @@ enum {
 		
 		if (isPhone) {
 			
-			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:wSelf.webViewBackBarButtonItem];
 			[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 			//	[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
-			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
+			[returnedArray addObject:wSelf.webViewForwardBarButtonItem];
 
 		} else {
 			
-			[returnedArray addObject:nrSelf.webViewBackBarButtonItem];
+			[returnedArray addObject:wSelf.webViewBackBarButtonItem];
 			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}]]];
-			[returnedArray addObject:nrSelf.webViewActivityIndicatorBarButtonItem];
+			[returnedArray addObject:wSelf.webViewActivityIndicatorBarButtonItem];
 			[returnedArray addObject:[IRBarButtonItem itemWithCustomView:[[UIView alloc] initWithFrame:(CGRect){ 0, 0, 10, 44}]]];
-			[returnedArray addObject:nrSelf.webViewForwardBarButtonItem];
+			[returnedArray addObject:wSelf.webViewForwardBarButtonItem];
 			
 		}
 		
 		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil]];
 		
-		[returnedArray addObject:[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
+		[returnedArray addObject:((^ {
 		
-			IRActionSheet *actionSheet = nrSelf.previewActionSheetController.managedActionSheet;
+			UIColor *tintColor = [wSelf tintColor];
+			UIImage *image = [IRUIKitImage(@"UIButtonBarAction") irSolidImageWithFillColor:tintColor shadow:nil];
+			UIImage *landscapePhoneImage = [IRUIKitImage(@"UIButtonBarActionSmall") irSolidImageWithFillColor:tintColor shadow:nil];
 			
-			if (![actionSheet isVisible]) {
+			IRBarButtonItem *item = [IRBarButtonItem itemWithCustomImage:image landscapePhoneImage:landscapePhoneImage highlightedImage:nil highlightedLandscapePhoneImage:nil];
+		
+			__weak IRBarButtonItem *senderItem = item;
 			
-				nrSelf.previewActionSheetController.otherActions = [self previewActionsWithSender:senderItem];
-				[nrSelf.previewActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+			item.block = ^ {
+			
+				IRActionSheet *actionSheet = wSelf.previewActionSheetController.managedActionSheet;
 				
-			}
+				if (![actionSheet isVisible]) {
+				
+					wSelf.previewActionSheetController.otherActions = [self previewActionsWithSender:senderItem];
+					[wSelf.previewActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
+					
+				}
+			
+			};
+			
+			return item;
 		
-		}]];
+		})())];
 		
 		return returnedArray;
 	
@@ -613,13 +626,13 @@ enum {
 
 - (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender {
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAArticleViewController_Preview *wSelf = self;
 
 	NSMutableArray *returnedActions = [NSMutableArray arrayWithObjects:
 	
 		[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OPEN_IN_SAFARI", nil) block:^{
 
-			[[UIApplication sharedApplication] openURL:[nrSelf externallyVisibleURL]];
+			[[UIApplication sharedApplication] openURL:[wSelf externallyVisibleURL]];
 			
 		}],
 	
@@ -630,7 +643,7 @@ enum {
 		[returnedActions addObject:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_PRINT", nil) block:^{
 			
 			UIPrintInteractionController *printIC = [UIPrintInteractionController sharedPrintController];
-			printIC.printFormatter = [[nrSelf wrappedView] viewPrintFormatter];
+			printIC.printFormatter = [[wSelf wrappedView] viewPrintFormatter];
 			
 			UIPrintInteractionCompletionHandler completionHandler = ^ (UIPrintInteractionController *controller, BOOL completed, NSError *error) {
 			
