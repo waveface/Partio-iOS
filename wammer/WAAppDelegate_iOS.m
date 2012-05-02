@@ -33,7 +33,7 @@
 #import "IRAlertView.h"
 #import "IRAction.h"
 
-#import "WADiscretePaginatedArticlesViewController.h"
+#import "WAOverviewController.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WAUserInfoViewController.h"
 
@@ -244,7 +244,7 @@
 	
 		case UIUserInterfaceIdiomPad: {
 		
-			WADiscretePaginatedArticlesViewController *presentedViewController = [[WADiscretePaginatedArticlesViewController alloc] init];
+			WAOverviewController *presentedViewController = [[WAOverviewController alloc] init];
 			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
 			
 			[presentedViewController setDelegate:self];
@@ -271,7 +271,7 @@
 	}
 	
 //	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
-//		@"WADiscretePaginatedArticlesViewController" :
+//		@"WAOverviewController" :
 //		@"WATimelineViewControllerPhone";
 //	
 //	NSParameterAssert(rootViewControllerClassName);

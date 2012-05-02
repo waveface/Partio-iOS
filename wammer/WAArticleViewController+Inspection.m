@@ -18,7 +18,7 @@
 #import "WARemoteInterface.h"
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
-#import "WADiscretePaginatedArticlesViewController.h"
+#import "WAOverviewController.h"
 
 
 static NSString * const kInspectionDelegate = @"-[WAArticleViewController(Inspection) inspectionDelegate]";

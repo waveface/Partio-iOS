@@ -1,16 +1,16 @@
 //
-//  WADiscretePaginatedArticlesViewController+DiscreteLayout.h
+//  WAOverviewController+DiscreteLayout.h
 //  wammer
 //
 //  Created by Evadne Wu on 2/29/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WADiscretePaginatedArticlesViewController.h"
+#import "WAOverviewController.h"
 #import "WAArticleViewController.h"
 
 @class WAArticleViewController, WAArticle;
-@interface WADiscretePaginatedArticlesViewController (DiscreteLayout)
+@interface WAOverviewController (DiscreteLayout)
 
 @property (nonatomic, readwrite, retain) NSArray *lastUsedLayoutGrids;
 

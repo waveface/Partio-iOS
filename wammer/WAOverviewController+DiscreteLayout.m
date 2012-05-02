@@ -1,12 +1,12 @@
 //
-//  WADiscretePaginatedArticlesViewController+DiscreteLayout.m
+//  WAOverviewController+DiscreteLayout.m
 //  wammer
 //
 //  Created by Evadne Wu on 2/29/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
+#import "WAOverviewController+DiscreteLayout.h"
 #import "WADataStore.h"
 #import "WAArticleViewController.h"
 
@@ -19,11 +19,10 @@
 #import "WAArticle+DiscreteLayoutAdditions.h"
 
 
-static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
-static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
+static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(DiscreteLayout) lastUsedLayoutGrids]";
 
 
-@interface WADiscretePaginatedArticlesViewController (DiscreteLayout_Private) <WAArticleViewControllerDelegate>
+@interface WAOverviewController (DiscreteLayout_Private) <WAArticleViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readonly, retain) NSCache *articleViewControllersCache;
@@ -31,11 +30,11 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 @end
 
 
-@implementation WADiscretePaginatedArticlesViewController (DiscreteLayout)
+@implementation WAOverviewController (DiscreteLayout)
 
 - (NSArray *) lastUsedLayoutGrids {
 
-	return objc_getAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids);
+	return objc_getAssociatedObject(self, &kLastUsedLayoutGrids);
 
 }
 
@@ -44,13 +43,13 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	if ([self lastUsedLayoutGrids] == newGrids)
 		return;
 	
-	objc_setAssociatedObject(self, &kWADiscreteArticlesViewLastUsedLayoutGrids, newGrids, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kLastUsedLayoutGrids, newGrids, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
 - (WAArticleViewController *) newDiscreteArticleViewControllerForArticle:(WAArticle *)article NS_RETURNS_RETAINED {
 
-	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
+	__weak WAOverviewController *wSelf = self;
 	
 	WAArticleViewControllerPresentationStyle style = [WAArticleViewController suggestedDiscreteStyleForArticle:article];
 	WAArticleViewController *articleViewController = [WAArticleViewController controllerForArticle:article context:article.managedObjectContext presentationStyle:style];
@@ -152,7 +151,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 	NSArray *returnedArray = WADefaultLayoutGrids();
 	
-	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
+	__weak WAOverviewController *wSelf = self;
 	
 	IRDiscreteLayoutGridAreaDisplayBlock displayBlock = [ ^ (IRDiscreteLayoutGrid *self, id anItem) {
 	
@@ -200,14 +199,9 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 
 }
 
-@end
-
-
-@implementation WADiscretePaginatedArticlesViewController (DiscreteLayout_Private)
-
 - (NSCache *) articleViewControllersCache {
 
-	static NSString * key = @"WADiscretePaginatedArticlesViewController_DiscreteLayout_Private_articleViewControllersCache";
+	static NSString * key = @"WAOverviewController_DiscreteLayout_Private_articleViewControllersCache";
 	
 	NSCache *currentCache = objc_getAssociatedObject(self, &key);
 	if (currentCache)

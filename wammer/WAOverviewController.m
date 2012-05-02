@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "WADiscretePaginatedArticlesViewController.h"
+#import "WAOverviewController.h"
 #import "IRDiscreteLayout.h"
 
 #import "WADataStore.h"
@@ -34,7 +34,7 @@
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 
 
-@interface WADiscretePaginatedArticlesViewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
+@interface WAOverviewController () <IRDiscreteLayoutManagerDelegate, IRDiscreteLayoutManagerDataSource, UIGestureRecognizerDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
@@ -50,7 +50,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @end
 
 
-@implementation WADiscretePaginatedArticlesViewController
+@implementation WAOverviewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize requiresRecalculationOnFetchedResultsChangeEnd;
 
@@ -807,7 +807,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (!WAAdvancedFeaturesEnabled())
 		return returnedActions;
 		
-	__weak WADiscretePaginatedArticlesViewController *nrSelf = self;
+	__weak WAOverviewController *nrSelf = self;
 
 	[returnedActions addObject:[IRAction actionWithTitle:@"Reflow" block: ^ {
 		
