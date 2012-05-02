@@ -16,13 +16,16 @@
 
 #import "WADiscreteLayoutHelpers.h"
 
+#import "WAArticle+DiscreteLayoutAdditions.h"
+
 
 static NSString * const kWADiscreteArticleViewControllerOnItem = @"kWADiscreteArticleViewControllerOnItem";
 static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscreteArticlesViewLastUsedLayoutGrids";
 
 
-@interface WADiscretePaginatedArticlesViewController (DiscreteLayout_Private)
+@interface WADiscretePaginatedArticlesViewController (DiscreteLayout_Private) <WAArticleViewControllerDelegate>
 
+@property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readonly, retain) NSCache *articleViewControllersCache;
 
 @end
@@ -178,6 +181,23 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	return returnedView;
 	
+}
+
+- (NSString *) presentationTemplateNameForArticleViewController:(WAArticleViewController *)controller {
+
+	WAArticle *article = controller.article;
+	if (!article)
+		return nil;
+	
+	IRDiscreteLayoutGrid *grid = [self.discreteLayoutResult gridContainingItem:article];
+	NSString *prototypeName = grid.identifier;
+	NSString *areaName = [grid layoutAreaNameForItem:article];
+	
+	if (!areaName)
+		return nil;
+	
+	return @"WFPreviewTemplate_Discrete_Plaintext";
+
 }
 
 @end

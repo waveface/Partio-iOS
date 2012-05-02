@@ -292,6 +292,10 @@
 		FF426FC7155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */; };
 		FF426FC8155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */; };
 		FF426FC9155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */; };
+		FF426FCC15510DCD0053D1CA /* WFPreview.js in Sources */ = {isa = PBXBuildFile; fileRef = FF426FCA15510DCD0053D1CA /* WFPreview.js */; };
+		FF426FCD15510DCD0053D1CA /* WFPreviewDebug.js in Sources */ = {isa = PBXBuildFile; fileRef = FF426FCB15510DCD0053D1CA /* WFPreviewDebug.js */; };
+		FF426FCE15510DF50053D1CA /* WFPreview.js in Resources */ = {isa = PBXBuildFile; fileRef = FF426FCA15510DCD0053D1CA /* WFPreview.js */; };
+		FF426FCF15510DFC0053D1CA /* WFPreviewDebug.js in Resources */ = {isa = PBXBuildFile; fileRef = FF426FCB15510DCD0053D1CA /* WFPreviewDebug.js */; };
 		FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFA774C814ADBE6B0044674B /* libTestFlight.a */; };
 		FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF42755B14F4E8D200824505 /* libz.dylib */; };
 		FF45704F1488A786005B5905 /* WAUserInfoHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */; };
@@ -1376,11 +1380,13 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/WFPresentation/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/WFPresentation/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
-		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = "<group>"; };
-		FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_Image.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_Image.html; sourceTree = "<group>"; };
-		FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html; sourceTree = "<group>"; };
-		FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html"; sourceTree = "<group>"; };
-		FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html"; sourceTree = "<group>"; };
+		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = SOURCE_ROOT; };
+		FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_Image.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_Image.html; sourceTree = SOURCE_ROOT; };
+		FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html; sourceTree = SOURCE_ROOT; };
+		FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html"; sourceTree = SOURCE_ROOT; };
+		FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html"; sourceTree = SOURCE_ROOT; };
+		FF426FCA15510DCD0053D1CA /* WFPreview.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WFPreview.js; path = external/WFPresentation/Source/WFPreview.js; sourceTree = SOURCE_ROOT; };
+		FF426FCB15510DCD0053D1CA /* WFPreviewDebug.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WFPreviewDebug.js; path = external/WFPresentation/Source/WFPreviewDebug.js; sourceTree = SOURCE_ROOT; };
 		FF42755B14F4E8D200824505 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		FF45704D1488A786005B5905 /* WAUserInfoHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserInfoHeaderCell.h; sourceTree = "<group>"; };
 		FF45704E1488A786005B5905 /* WAUserInfoHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoHeaderCell.m; sourceTree = "<group>"; };
@@ -1598,7 +1604,7 @@
 		FFBDD89C15499862006E2666 /* Fontin_Sans_I_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_I_45b.otf; path = Resources/Fontin_Sans_I_45b.otf; sourceTree = "<group>"; };
 		FFBDD89D15499862006E2666 /* Fontin_Sans_R_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_R_45b.otf; path = Resources/Fontin_Sans_R_45b.otf; sourceTree = "<group>"; };
 		FFBDD89E15499862006E2666 /* Fontin_Sans_SC_45b.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Fontin_Sans_SC_45b.otf; path = Resources/Fontin_Sans_SC_45b.otf; sourceTree = "<group>"; };
-		FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewStripePattern.png; path = external/WFPresentation/Source/WAPreviewStripePattern.png; sourceTree = "<group>"; };
+		FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewStripePattern.png; path = external/WFPresentation/Source/WAPreviewStripePattern.png; sourceTree = SOURCE_ROOT; };
 		FFBEF14E153F551A00CF2203 /* WAModel 24.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 24.xcdatamodel"; sourceTree = "<group>"; };
 		FFBEF14F153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAUser+WARemoteEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAUser+WARemoteEntitySyncing.m"; sourceTree = "<group>"; };
@@ -1685,7 +1691,7 @@
 		FFE6E483149E794900D88D52 /* WAProgressIndicatorWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAProgressIndicatorWindow.h; sourceTree = "<group>"; };
 		FFE6E484149E794900D88D52 /* WAProgressIndicatorWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAProgressIndicatorWindow.m; sourceTree = "<group>"; };
 		FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = WFPresentation.xcodeproj; path = "external/WFPresentation/Bindings/Objective-C/WFPresentation.xcodeproj"; sourceTree = "<group>"; };
-		FFEF58321549F5E900722D91 /* WAPreviewQuoteBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewQuoteBackdrop.png; path = external/WFPresentation/Source/WAPreviewQuoteBackdrop.png; sourceTree = "<group>"; };
+		FFEF58321549F5E900722D91 /* WAPreviewQuoteBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewQuoteBackdrop.png; path = external/WFPresentation/Source/WAPreviewQuoteBackdrop.png; sourceTree = SOURCE_ROOT; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
 		FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOverlayBezel.m; sourceTree = "<group>"; };
 		FFF556B61456A64A0077DFFB /* WARefreshActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARefreshActionView.h; sourceTree = "<group>"; };
@@ -2374,6 +2380,8 @@
 			children = (
 				FF51509C14835A030073386D /* Localizable.strings */,
 				FF945EE8152D72510034D540 /* UIKit+IRAdditions.bundle */,
+				FF426FCA15510DCD0053D1CA /* WFPreview.js */,
+				FF426FCB15510DCD0053D1CA /* WFPreviewDebug.js */,
 				FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */,
 				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
@@ -3452,10 +3460,6 @@
 				FF0AC0CD149F7A8C00AA5611 /* WAArticleViewController_Discrete_Preview.xib in Resources */,
 				FF0AC0CE149F7A8C00AA5611 /* WAArticleViewController_Preview.xib in Resources */,
 				FF0AC0D3149F865E00AA5611 /* WAArticleTextStackCell.xib in Resources */,
-				FF3B1B2814EBA3C7009CFFD1 /* WFPreviewIE.css in Resources */,
-				FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */,
-				FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */,
-				FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */,
 				4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */,
 				FF0527EB14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib in Resources */,
 				FF945EE9152D72510034D540 /* UIKit+IRAdditions.bundle in Resources */,
@@ -3642,13 +3646,19 @@
 				FFBDD8A115499862006E2666 /* Fontin_Sans_I_45b.otf in Resources */,
 				FFBDD8A215499862006E2666 /* Fontin_Sans_R_45b.otf in Resources */,
 				FFBDD8A315499862006E2666 /* Fontin_Sans_SC_45b.otf in Resources */,
-				FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */,
-				FFEF58331549F5E900722D91 /* WAPreviewQuoteBackdrop.png in Resources */,
+				FF426FCE15510DF50053D1CA /* WFPreview.js in Resources */,
+				FF426FCF15510DFC0053D1CA /* WFPreviewDebug.js in Resources */,
+				FF3B1B2814EBA3C7009CFFD1 /* WFPreviewIE.css in Resources */,
+				FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */,
+				FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */,
+				FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */,
 				FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */,
 				FF426FC6155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html in Resources */,
 				FF426FC7155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html in Resources */,
 				FF426FC8155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html in Resources */,
 				FF426FC9155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html in Resources */,
+				FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */,
+				FFEF58331549F5E900722D91 /* WAPreviewQuoteBackdrop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4035,6 +4045,8 @@
 				FFE55FCC15404BAE001BE72A /* WADatePickerViewController.m in Sources */,
 				FFA2585815408CDD00FE661C /* WAPickerPaneViewController.m in Sources */,
 				FFA2585C15408D6D00FE661C /* WAFilterPickerViewController.m in Sources */,
+				FF426FCC15510DCD0053D1CA /* WFPreview.js in Sources */,
+				FF426FCD15510DCD0053D1CA /* WFPreviewDebug.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

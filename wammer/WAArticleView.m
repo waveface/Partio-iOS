@@ -68,8 +68,6 @@
 	
 	if (contextWebView) {
 	
-		contextWebView.userInteractionEnabled = YES;
-	
 		WFPresentationTemplate *pt = [self presentationTemplate];
 		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
 		
@@ -131,21 +129,6 @@
 	
 	self.contextInfoContainer.frame = IRGravitize(self.contextInfoContainer.frame, newContextInfoContainerSize, kCAGravityBottomLeft);
 
-}
-
-- (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-
-	NSString *requestString = [[[request URL] absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	if ([requestString hasPrefix:@"wf-presnetation:"]) {
-		
-		NSString* logString = [[requestString componentsSeparatedByString:@":#iOS#"] objectAtIndex:1];
-		NSLog(@"UIWebView console: %@", logString);
-		return NO;
-		
-	}
-
-	return YES;
-	
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {

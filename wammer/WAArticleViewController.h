@@ -38,7 +38,15 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 #endif
 
 
-@class WAArticle, WAArticleView, WANavigationController, WADiscretePaginatedArticlesViewController;
+@class WAArticle, WAArticleView, WANavigationController, WADiscretePaginatedArticlesViewController, WAArticleViewController;
+
+@protocol WAArticleViewControllerDelegate <NSObject>
+
+- (NSString *) presentationTemplateNameForArticleViewController:(WAArticleViewController *)controller;
+
+@end
+
+
 @interface WAArticleViewController : UIViewController
 
 + (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle DEPRECATED_ATTRIBUTE;
@@ -56,6 +64,7 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 @property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
 
 @property (nonatomic, readwrite, weak) WADiscretePaginatedArticlesViewController *hostingViewController;
+@property (nonatomic, readwrite, weak) id<WAArticleViewControllerDelegate> delegate;
 
 - (void) reloadData;
 

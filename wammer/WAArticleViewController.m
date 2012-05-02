@@ -93,7 +93,8 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize hostingViewController, onViewDidLoad, onViewTap, onViewPinch;
+@synthesize onViewDidLoad, onViewTap, onViewPinch;
+@synthesize hostingViewController, delegate;
 
 + (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle {
 
@@ -226,9 +227,7 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	globalTapRecognizer.delegate = self;
 	globalPinchRecognizer.delegate = self;
 	globalInspectRecognizer.delegate = self;
-	
-	self.view.presentationTemplateName = @"WFPreviewTemplate_Discrete_Plaintext";
-	
+		
 	[self.view addGestureRecognizer:globalTapRecognizer];
 	[self.view addGestureRecognizer:globalPinchRecognizer];
 	[self.view addGestureRecognizer:globalInspectRecognizer];
@@ -244,8 +243,13 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 	if ([self isViewLoaded]) {
 	
-		NSLog(@"has view", self, self.article);
-
+		NSString *templateName = @"WFPreviewTemplate_Discrete_Plaintext";
+		
+		if (self.delegate)
+			templateName = [self.delegate presentationTemplateNameForArticleViewController:self];
+	
+		self.view.presentationTemplateName = templateName;
+			
 		[self.view configureWithArticle:self.article];
 	
 	}
