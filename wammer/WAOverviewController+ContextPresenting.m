@@ -1,12 +1,12 @@
 //
-//  WADiscretePaginatedArticlesViewController+ContextPresenting.m
+//  WAOverviewController+ContextPresenting.m
 //  wammer
 //
 //  Created by Evadne Wu on 2/29/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WADiscretePaginatedArticlesViewController+ContextPresenting.h"
+#import "WAOverviewController+ContextPresenting.h"
 #import "WAArticleViewController.h"
 #import "WADataStore.h"
 #import "WAFauxRootNavigationController.h"
@@ -16,10 +16,10 @@
 #import "IRTransparentToolbar.h"
 #import "WAStackedArticleViewController.h"
 
-NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController_presentedArticle";
+NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 
 
-@interface WADiscretePaginatedArticlesViewController (ContextPresenting_Private)
+@interface WAOverviewController (ContextPresenting_Private)
 
 - (void(^)(void)) dismissBlockForArticleContextViewController:(WAArticleViewController *)controller;
 - (void) setDismissBlock:(void(^)(void))aBlock forArticleContextViewController:(WAArticleViewController *)controller;
@@ -27,7 +27,7 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 @end
 
 
-@implementation WADiscretePaginatedArticlesViewController (ContextPresenting)
+@implementation WAOverviewController (ContextPresenting)
 
 - (WAArticle *) presentedArticle {
 
@@ -45,7 +45,7 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 	
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
-	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
+	__weak WAOverviewController *wSelf = self;
 	
 	WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
 	self.presentedArticle = article;
@@ -302,7 +302,7 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 
 - (WAArticleViewController *) newContextViewControllerForArticle:(NSURL *)articleURI {
 
-	__weak WADiscretePaginatedArticlesViewController *wSelf = self;
+	__weak WAOverviewController *wSelf = self;
 	
 	WAArticleViewControllerPresentationStyle style = WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:(WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI]]);
 
@@ -329,8 +329,8 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 	WANavigationController *returnedNavC = nil;
 	
 	if ([controller isKindOfClass:[WAArticleViewController class]]) {
-		
-		returnedNavC = [(WAArticleViewController *)controller wrappingNavController];
+	
+		returnedNavC = [[WANavigationController alloc] initWithRootViewController:controller];
 		
 	} else {
 
@@ -353,13 +353,13 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 @end
 
 
-@implementation WADiscretePaginatedArticlesViewController (ContextPresenting_Private)
+@implementation WAOverviewController (ContextPresenting_Private)
 
-NSString * const kWADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock = @"WADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock";
+NSString * const kWAOverviewController_ContextPresenting_Private_DismissBlock = @"WAOverviewController_ContextPresenting_Private_DismissBlock";
 
 - (void(^)(void)) dismissBlockForArticleContextViewController:(WAArticleViewController *)controller {
 
-	return objc_getAssociatedObject(controller, &kWADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock);
+	return objc_getAssociatedObject(controller, &kWAOverviewController_ContextPresenting_Private_DismissBlock);
 
 }
 
@@ -368,7 +368,7 @@ NSString * const kWADiscretePaginatedArticlesViewController_ContextPresenting_Pr
 	if (aBlock == [self dismissBlockForArticleContextViewController:controller])
 		return;
 
-	objc_setAssociatedObject(controller, &kWADiscretePaginatedArticlesViewController_ContextPresenting_Private_DismissBlock, aBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
+	objc_setAssociatedObject(controller, &kWAOverviewController_ContextPresenting_Private_DismissBlock, aBlock, OBJC_ASSOCIATION_COPY_NONATOMIC);
 
 }
 

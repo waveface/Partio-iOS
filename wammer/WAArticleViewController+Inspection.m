@@ -18,7 +18,7 @@
 #import "WARemoteInterface.h"
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
-#import "WADiscretePaginatedArticlesViewController.h"
+#import "WAOverviewController.h"
 
 
 static NSString * const kInspectionDelegate = @"-[WAArticleViewController(Inspection) inspectionDelegate]";
@@ -253,6 +253,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			NSError *savingError = nil;
 			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
+				
+			[wSelf reloadData];
 				
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			

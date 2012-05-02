@@ -1,16 +1,16 @@
 //
-//  WADiscretePaginatedArticlesViewController+ContextPresenting.h
+//  WAOverviewController+ContextPresenting.h
 //  wammer
 //
 //  Created by Evadne Wu on 2/29/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WADiscretePaginatedArticlesViewController.h"
+#import "WAOverviewController.h"
 
 
 @class WAArticleViewController;
-@interface WADiscretePaginatedArticlesViewController (ContextPresenting)
+@interface WAOverviewController (ContextPresenting)
 
 @property (nonatomic, readonly, retain) WAArticle *presentedArticle;
 

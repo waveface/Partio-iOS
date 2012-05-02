@@ -6,22 +6,15 @@
 //  Copyright 2011 Waveface. All rights reserved.
 //
 
-#import "QuartzCore+IRAdditions.h"
 #import "WAArticleViewController.h"
+
+#import "QuartzCore+IRAdditions.h"
 #import "WADataStore.h"
-#import "WAGalleryViewController.h"
-
-#import "WAArticleFilesListViewController.h"
-
-#import "WANavigationController.h"
-#import "WANavigationBar.h"
 
 #import "WAArticleViewController+Subclasses.h"
+#import "WAArticleViewController+Inspection.h"
 
-
-@interface WAArticleView (PrivateStuff)
-@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
-@end
+#import "WAArticleView.h"
 
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate>
@@ -30,6 +23,8 @@
 @property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) WAArticle *article;
+
+@property (nonatomic, retain) WAArticleView *view;
 
 @end
 
@@ -98,7 +93,8 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 @synthesize representedObjectURI, presentationStyle;
 @synthesize managedObjectContext, article;
-@synthesize hostingViewController, onViewDidLoad, onViewTap, onViewPinch;
+@synthesize onViewDidLoad, onViewTap, onViewPinch;
+@synthesize hostingViewController, delegate;
 
 + (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle {
 
@@ -231,16 +227,33 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	globalTapRecognizer.delegate = self;
 	globalPinchRecognizer.delegate = self;
 	globalInspectRecognizer.delegate = self;
-	
+		
 	[self.view addGestureRecognizer:globalTapRecognizer];
 	[self.view addGestureRecognizer:globalPinchRecognizer];
 	[self.view addGestureRecognizer:globalInspectRecognizer];
 	
-	[self.view configureWithArticle:article];
+	[self reloadData];
 	
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	
+}
+
+- (void) reloadData {
+
+	if ([self isViewLoaded]) {
+	
+		NSString *templateName = @"WFPreviewTemplate_Discrete_Plaintext";
+		
+		if (self.delegate)
+			templateName = [self.delegate presentationTemplateNameForArticleViewController:self];
+	
+		self.view.presentationTemplateName = templateName;
+			
+		[self.view configureWithArticle:self.article];
+	
+	}
+
 }
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -286,7 +299,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
-
 - (void) setArticle:(WAArticle *)newArticle {
 
 	if (article == newArticle)
@@ -305,23 +317,11 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
-- (WANavigationController *) wrappingNavController {
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 
-	NSParameterAssert(!self.navigationController);
-	WANavigationController *controller = [[WANavigationController alloc] initWithRootViewController:self];
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	
-	return controller;
-
-}
-
-- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated {
-
-	if ([self.navigationController topViewController] != self)
-		return;
-	
-	WANavigationBar *navBar = (WANavigationBar *)self.navigationController.navigationBar;
-	if ([navBar isKindOfClass:[WANavigationBar class]])
-		navBar.alpha = contextControlsVisible ? 1 : 0.03;
+	[self reloadData];
 
 }
 

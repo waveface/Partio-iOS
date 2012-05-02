@@ -12,7 +12,7 @@
 @class WAArticle;
 @class WAImageStackView, WAPreviewBadge, WAArticleTextEmphasisLabel;
 
-@interface WAArticleView : UIView
+@interface WAArticleView : UIView <UIWebViewDelegate>
 
 - (void) configureWithArticle:(WAArticle *)article;
 
@@ -28,5 +28,7 @@
 @property (nonatomic, readwrite, retain) IBOutlet UITextView *contextTextView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *mainImageView;
 @property (nonatomic, readwrite, retain) IBOutlet UIWebView *contextWebView;
+
+@property (nonatomic, readwrite, copy) NSString *presentationTemplateName;
 
 @end
