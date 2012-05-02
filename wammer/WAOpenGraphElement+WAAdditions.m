@@ -39,6 +39,12 @@
 
 }
 
++ (NSString *) keyPathHoldingUniqueValue {
+
+	return @"url";
+
+}
+
 + (NSSet *) keyPathsForValuesAffectingImages {
 
 	return [NSSet setWithObjects:@"imageOrder", nil];

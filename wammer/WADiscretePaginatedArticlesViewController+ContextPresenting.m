@@ -329,8 +329,8 @@ NSString * const kPresentedArticle = @"WADiscretePaginatedArticlesViewController
 	WANavigationController *returnedNavC = nil;
 	
 	if ([controller isKindOfClass:[WAArticleViewController class]]) {
-		
-		returnedNavC = [(WAArticleViewController *)controller wrappingNavController];
+	
+		returnedNavC = [[WANavigationController alloc] initWithRootViewController:controller];
 		
 	} else {
 

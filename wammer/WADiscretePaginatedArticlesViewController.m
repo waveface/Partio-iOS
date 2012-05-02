@@ -198,8 +198,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			if ([anObject isKindOfClass:[WAArticle class]]) {
 				
 				WAArticleViewController *articleVC = [self cachedArticleViewControllerForArticle:anObject];
-				if ([articleVC isViewLoaded])
-					[articleVC.view configureWithArticle:articleVC.article];
+				[articleVC reloadData];
 				
 				self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
 				

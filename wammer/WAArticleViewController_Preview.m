@@ -14,6 +14,7 @@
 #import <UIKit/UIKit.h>
 
 #import "UIKit+IRAdditions.h"
+#import "WAPreviewBadge.h"
 
 
 enum {

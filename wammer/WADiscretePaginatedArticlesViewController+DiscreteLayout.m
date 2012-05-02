@@ -54,9 +54,7 @@ static NSString * const kWADiscreteArticlesViewLastUsedLayoutGrids = @"kWADiscre
 	
 	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
 		
-		((UIView *)loadedVC.view.imageStackView).userInteractionEnabled = NO;
-		
-		UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(loadedVC.view.bounds, -9, -9)];
+		UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(loadedVC.view.bounds, 0, 0)];
 		borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		borderView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1].CGColor;
 		borderView.layer.borderWidth = 1;

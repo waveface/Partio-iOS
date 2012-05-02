@@ -30,7 +30,7 @@
 
 @implementation WAArticleView
 
-@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView;
+@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView, presentationTemplateName;
 
 - (void) awakeFromNib {
 
@@ -42,7 +42,9 @@
 
 - (WFPresentationTemplate *) presentationTemplate {
 
-	return [WFPresentationTemplate templateNamed:@"WFPreviewTemplateDiscrete"];
+	NSParameterAssert(self.presentationTemplateName);
+	
+	return [WFPresentationTemplate templateNamed:self.presentationTemplateName];
 
 }
 
@@ -65,6 +67,8 @@
 	contextInfoContainer.hidden = ![article.text length];
 	
 	if (contextWebView) {
+	
+		contextWebView.userInteractionEnabled = YES;
 	
 		WFPresentationTemplate *pt = [self presentationTemplate];
 		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
@@ -90,8 +94,7 @@
 		hook(@"$TIMESTAMP", relativeDateString);
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
-		NSLog(@"pr string %@", string);
-		
+				
 		[contextWebView loadHTMLString:string baseURL:pt.baseURL];
 	
 	}
@@ -128,6 +131,21 @@
 	
 	self.contextInfoContainer.frame = IRGravitize(self.contextInfoContainer.frame, newContextInfoContainerSize, kCAGravityBottomLeft);
 
+}
+
+- (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+
+	NSString *requestString = [[[request URL] absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	if ([requestString hasPrefix:@"wf-presnetation:"]) {
+		
+		NSString* logString = [[requestString componentsSeparatedByString:@":#iOS#"] objectAtIndex:1];
+		NSLog(@"UIWebView console: %@", logString);
+		return NO;
+		
+	}
+
+	return YES;
+	
 }
 
 + (IRRelativeDateFormatter *) relativeDateFormatter {
