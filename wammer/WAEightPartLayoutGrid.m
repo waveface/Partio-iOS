@@ -43,12 +43,6 @@
 @synthesize displayBlock;
 @synthesize defaultTilingPatternGroups;
 
-+ (WAEightPartLayoutGrid *) prototype {
-
-	return (WAEightPartLayoutGrid *)[super prototype];
-
-}
-
 - (NSArray *) patternsInGroupNamed:(NSString *)aName {
 
 	return [[self defaultTilingPatternGroups] objectForKey:aName];
@@ -182,10 +176,10 @@
 		return (BOOL) ( !(tileMap & bitMask) && (bitMask & nextTile) ) ;
 	};	
 	
-	IRDiscreteLayoutGrid *portraitPrototype = [IRDiscreteLayoutGrid prototype];
+	IRDiscreteLayoutGrid *portraitPrototype = [IRDiscreteLayoutGrid new];
 	portraitPrototype.contentSize = (CGSize){ 768, 1024 };
 	
-	IRDiscreteLayoutGrid *landscapePrototype = [IRDiscreteLayoutGrid prototype];
+	IRDiscreteLayoutGrid *landscapePrototype = [IRDiscreteLayoutGrid new];
 	landscapePrototype.contentSize = (CGSize){ 1024, 768 };
 	
 	NSMutableDictionary *layoutAreaNamesToItems = [NSMutableDictionary dictionary];

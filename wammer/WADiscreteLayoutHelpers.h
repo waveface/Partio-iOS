@@ -7,6 +7,7 @@
 //
 
 #import "IRDiscreteLayout.h"
+#import "WADiscreteLayoutArea.h"
 
 extern BOOL WADiscreteLayoutItemHasMediaOfType (id<IRDiscreteLayoutItem> anItem, CFStringRef aMediaType);
 extern BOOL WADiscreteLayoutItemHasImage (id<IRDiscreteLayoutItem> anItem);

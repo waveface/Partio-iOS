@@ -10,20 +10,6 @@
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "WAArticleTextEmphasisLabel.h"
-
-#import "WAPreviewBadge.h"
-
-#import "IRAlertView.h"
-#import "IRActionSheetController.h"
-#import "IRBarButtonItem.h"
-
-#import "WAArticleView.h"
-
-
-@class WAImageStackView;
-@class WAArticleViewController;
-
 #ifndef __WAArticleViewController__
 #define __WAArticleViewController__
 
@@ -51,7 +37,16 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 #endif
 
-@class WANavigationController, WADiscretePaginatedArticlesViewController;
+
+@class WAArticle, WAArticleView, WANavigationController, WAOverviewController, WAArticleViewController;
+
+@protocol WAArticleViewControllerDelegate <NSObject>
+
+- (NSString *) presentationTemplateNameForArticleViewController:(WAArticleViewController *)controller;
+
+@end
+
+
 @interface WAArticleViewController : UIViewController
 
 + (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle DEPRECATED_ATTRIBUTE;
@@ -59,8 +54,6 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 + (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
-
-- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
 @property (nonatomic, readonly, retain) WAArticle *article;
@@ -70,12 +63,9 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 @property (nonatomic, readwrite, copy) void (^onViewTap)();
 @property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
 
-@property (nonatomic, readwrite, weak) WADiscretePaginatedArticlesViewController *hostingViewController;
+@property (nonatomic, readwrite, weak) WAOverviewController *hostingViewController;
+@property (nonatomic, readwrite, weak) id<WAArticleViewControllerDelegate> delegate;
 
-@property (nonatomic, retain) WAArticleView *view;
-
-- (WANavigationController *) wrappingNavController;
+- (void) reloadData;
 
 @end
-
-#import "WAArticleViewController+Inspection.h"

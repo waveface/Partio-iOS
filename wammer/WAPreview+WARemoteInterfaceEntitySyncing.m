@@ -13,7 +13,7 @@
 
 + (NSString *) keyPathHoldingUniqueValue {
 
-	return nil;
+	return @"url";
 
 }
 

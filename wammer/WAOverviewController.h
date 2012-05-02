@@ -12,7 +12,7 @@
 #import "IRBarButtonItem.h"
 
 @class WAArticle, WAArticleViewController;
-@interface WADiscretePaginatedArticlesViewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
+@interface WAOverviewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
 @property (nonatomic, readwrite, retain) IBOutlet WAPaginationSlider *paginationSlider;
 @property (nonatomic, readwrite, retain) IBOutlet IRPaginatedView *paginatedView;
@@ -23,5 +23,5 @@
 
 @end
 
-#import "WADiscretePaginatedArticlesViewController+DiscreteLayout.h"
-#import "WADiscretePaginatedArticlesViewController+ContextPresenting.h"
+#import "WAOverviewController+DiscreteLayout.h"
+#import "WAOverviewController+ContextPresenting.h"

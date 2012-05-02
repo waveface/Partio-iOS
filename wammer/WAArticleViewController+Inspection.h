@@ -7,6 +7,7 @@
 //
 
 #import "WAArticleViewController.h"
+#import "UIKit+IRAdditions.h"
 
 
 //	The Inspection additions is included as a category providing additional inspection actions that can be invoked by long pressing the view, if the provided long press gesture recognizer has been installed on the view correctly.
