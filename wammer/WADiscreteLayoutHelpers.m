@@ -76,19 +76,19 @@ NSArray * WADefaultLayoutGridsMake (void) {
 	
 	};
 	
-	IRDiscreteLayoutAreaValidatorBlock defaultNonFavoriteValidator = ^ (IRDiscreteLayoutArea *self, id anItem) {
+	IRDiscreteLayoutAreaValidatorBlock notFave = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
 		return (BOOL)!itemIsFavorite(anItem);
 	
 	};
 	
-	IRDiscreteLayoutAreaValidatorBlock defaultFavoriteValidator = ^ (IRDiscreteLayoutArea *self, id anItem) {
+	IRDiscreteLayoutAreaValidatorBlock fave = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
 		return (BOOL)itemIsFavorite(anItem);
 	
 	};
 	
-	IRDiscreteLayoutAreaValidatorBlock comboValidator = ^ (IRDiscreteLayoutArea *self, id anItem) {
+	IRDiscreteLayoutAreaValidatorBlock combo = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
 		if (itemIsFavorite(anItem))
 			return NO;
@@ -164,8 +164,7 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		@"WFPreviewTemplate_Discrete_Plaintext",
 		@"WFPreviewTemplate_Discrete_Web_Image",
 		@"WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal");
-	
-	
+		
 	return [NSArray arrayWithObjects:
 	
 		pair(
@@ -176,7 +175,8 @@ NSArray * WADefaultLayoutGridsMake (void) {
 				area(@"C", nil, layoutBlock(2, 3, 0, 1, 1, 1), singleYStack),
 				area(@"D", nil, layoutBlock(2, 3, 1, 1, 1, 1), singleYStack),
 				area(@"E", nil, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
-				area(@"F", nil, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack), nil]],
+				area(@"F", nil, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
+			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", nil, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
@@ -189,38 +189,26 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			
 		),
 		
-//		((^{
-//		
-//			IRDiscreteLayoutGrid *grid = [IRDiscreteLayoutGrid prototype];
-//			grid.identifier = @"5_non_faves_A_portrait";
-//			grid.contentSize = portraitSize;
-//			[grid registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(2, 3, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
-//			[grid registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(2, 3, 0, 1, 1, 1) displayBlock:genericDisplayBlock];
-//			[grid registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(2, 3, 0, 2, 1, 1) displayBlock:genericDisplayBlock];
-//			[grid registerLayoutAreaNamed:@"D" validatorBlock:comboValidator layoutBlock:layoutBlockForProportions(2, 3, 1, 0, 1, 2) displayBlock:genericDisplayBlock];
-//			[grid registerLayoutAreaNamed:@"E" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(2, 3, 1, 2, 1, 1) displayBlock:genericDisplayBlock];
-//			
-//			IRDiscreteLayoutGrid *gridH = [IRDiscreteLayoutGrid prototype];
-//			gridH.contentSize = landscapeSize;
-//			gridH.identifier = @"5_non_faves_A_landscape";
-//			[gridH registerLayoutAreaNamed:@"A" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(3, 2, 0, 0, 1, 1) displayBlock:genericDisplayBlock];
-//			[gridH registerLayoutAreaNamed:@"B" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(3, 2, 1, 0, 1, 1) displayBlock:genericDisplayBlock];
-//			[gridH registerLayoutAreaNamed:@"C" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(3, 2, 2, 0, 1, 1) displayBlock:genericDisplayBlock];
-//			[gridH registerLayoutAreaNamed:@"D" validatorBlock:comboValidator layoutBlock:layoutBlockForProportions(3, 2, 0, 1, 2, 1) displayBlock:genericDisplayBlock];
-//			[gridH registerLayoutAreaNamed:@"E" validatorBlock:defaultNonFavoriteValidator layoutBlock:layoutBlockForProportions(3, 2, 2, 1, 1, 1) displayBlock:genericDisplayBlock];
-//			
-//			[[grid class] markAreaNamed:@"A" inGridPrototype:grid asEquivalentToAreaNamed:@"A" inGridPrototype:gridH];
-//			[[grid class] markAreaNamed:@"B" inGridPrototype:grid asEquivalentToAreaNamed:@"B" inGridPrototype:gridH];
-//			[[grid class] markAreaNamed:@"C" inGridPrototype:grid asEquivalentToAreaNamed:@"C" inGridPrototype:gridH];
-//			[[grid class] markAreaNamed:@"D" inGridPrototype:grid asEquivalentToAreaNamed:@"D" inGridPrototype:gridH];
-//			[[grid class] markAreaNamed:@"E" inGridPrototype:grid asEquivalentToAreaNamed:@"E" inGridPrototype:gridH];
-//			
-//			return grid;
-//				
-//		})()),
-//		
-//		((^{
-//		
+		pair(
+		
+			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_A_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
+				area(@"A", notFave, layoutBlock(2, 3, 0, 0, 1, 1), singleYStack),
+				area(@"B", notFave, layoutBlock(2, 3, 0, 1, 1, 1), singleYStack),
+				area(@"C", notFave, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
+				area(@"D", combo, layoutBlock(2, 3, 1, 0, 1, 2), singleYStack),
+				area(@"E", notFave, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
+			nil]],
+			
+			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_A_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
+				area(@"A", notFave, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
+				area(@"B", notFave, layoutBlock(3, 2, 1, 0, 1, 1), singleXStack),
+				area(@"C", notFave, layoutBlock(3, 2, 2, 0, 1, 1), singleXStack),
+				area(@"D", combo, layoutBlock(3, 2, 0, 1, 2, 1), singleXStack),
+				area(@"E", notFave, layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
+			nil]]
+			
+		),
+		
 //			IRDiscreteLayoutGrid *grid = [IRDiscreteLayoutGrid prototype];
 //			grid.contentSize = portraitSize;
 //			grid.identifier = @"5_non_faves_B_portrait";
