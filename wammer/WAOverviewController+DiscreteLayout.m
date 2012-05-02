@@ -11,7 +11,6 @@
 #import "WAArticleViewController.h"
 
 #import "IRDiscreteLayoutManager.h"
-#import "WAEightPartLayoutGrid.h"
 #import "IRDiscreteLayoutGrid+Transforming.h"
 
 #import "WADiscreteLayoutHelpers.h"
@@ -67,6 +66,7 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 	};
 	
 	articleViewController.hostingViewController = self;
+	articleViewController.delegate = self;
 	
 	articleViewController.onViewTap = ^ {
 	
@@ -149,29 +149,22 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 
 - (NSArray *) newLayoutGrids {
 
-	NSArray *returnedArray = WADefaultLayoutGrids();
+	NSArray *grids = WADefaultLayoutGrids();
 	
 	__weak WAOverviewController *wSelf = self;
 	
-	IRDiscreteLayoutGridAreaDisplayBlock displayBlock = [ ^ (IRDiscreteLayoutGrid *self, id anItem) {
+	IRDiscreteLayoutAreaDisplayBlock displayBlock = ^ (IRDiscreteLayoutArea *self, id anItem) {
 	
-		NSCParameterAssert(wSelf);
 		return [wSelf representingViewForItem:anItem];
 	
-	} copy];
+	};
 	
-	return [returnedArray irMap: ^ (IRDiscreteLayoutGrid *grid, NSUInteger index, BOOL *stop) {
+	for (IRDiscreteLayoutGrid *grid in grids)
+		for (IRDiscreteLayoutArea *area in grid.layoutAreas)
+			area.displayBlock = displayBlock;
 	
-		[grid enumerateLayoutAreaNamesWithBlock:^(NSString *anAreaName) {
-		
-			[grid setDisplayBlock:displayBlock forAreaNamed:anAreaName];
-			
-		}];
-		
-		return grid;
-		
-	}];
-
+	return grids;
+	
 }
 
 - (UIView *) representingViewForItem:(WAArticle *)anArticle {
@@ -190,12 +183,14 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 	
 	IRDiscreteLayoutGrid *grid = [self.discreteLayoutResult gridContainingItem:article];
 	NSString *prototypeName = grid.identifier;
-	NSString *areaName = [grid layoutAreaNameForItem:article];
 	
-	if (!areaName)
-		return nil;
+	WADiscreteLayoutArea *area = (WADiscreteLayoutArea *)[grid areaForItem:article];
+	NSParameterAssert([area isKindOfClass:[WADiscreteLayoutArea class]]);
 	
-	return @"WFPreviewTemplate_Discrete_Plaintext";
+	if (area.templateNameBlock)
+		return area.templateNameBlock(area);
+	
+	return nil;
 
 }
 

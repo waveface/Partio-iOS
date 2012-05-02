@@ -86,10 +86,10 @@
 		hook(@"$ADDITIONAL_STYLES", nil);
 		hook(@"$BODY", article.text);
 		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
-		hook(@"$PREVIEW_SOURCE", shownPreview.graphElement.providerName);
-		hook(@"$PREVIEW_IMAGE_SRC", shownPreview.graphElement.primaryImage.imageRemoteURL);
-		hook(@"$PREVIEW_TEXT", shownPreview.graphElement.text);
-		hook(@"$TIMESTAMP", relativeDateString);
+		hook(@"$PREVIEW_PROVIDER", shownPreview.graphElement.providerName);
+		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.primaryImage.imageRemoteURL);
+		hook(@"$PREVIEW_BODY", shownPreview.graphElement.text);
+		hook(@"$FOOTER", relativeDateString);
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
 				

@@ -425,6 +425,7 @@
 		FF945EE9152D72510034D540 /* UIKit+IRAdditions.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF945EE8152D72510034D540 /* UIKit+IRAdditions.bundle */; };
 		FF946023152D7EF10034D540 /* WAAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = FF946022152D7EF00034D540 /* WAAppearance.m */; };
 		FF96BDC8152420C3007B6405 /* WAArticleViewController+Inspection.m in Sources */ = {isa = PBXBuildFile; fileRef = FF96BDC7152420C3007B6405 /* WAArticleViewController+Inspection.m */; };
+		FF9737661551292200D6E7A9 /* WADiscreteLayoutArea.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
@@ -470,7 +471,6 @@
 		FFC0FCEC153C4A8E0058DC5C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC0FCEA153C4A8E0058DC5C /* WAArticle.m */; };
 		FFC0FCED153C4A8E0058DC5C /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC0FCEA153C4A8E0058DC5C /* WAArticle.m */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
-		FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */; };
 		FFC6200E149CF03A0097C377 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FFC6200F149CF0EE0097C377 /* WARemoteInterfaceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */; };
 		FFC62010149CF1840097C377 /* WARemoteInterface+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */; };
@@ -1539,6 +1539,8 @@
 		FF946022152D7EF00034D540 /* WAAppearance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAppearance.m; sourceTree = "<group>"; };
 		FF96BDC6152420C3007B6405 /* WAArticleViewController+Inspection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticleViewController+Inspection.h"; sourceTree = "<group>"; };
 		FF96BDC7152420C3007B6405 /* WAArticleViewController+Inspection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticleViewController+Inspection.m"; sourceTree = "<group>"; };
+		FF9737641551292200D6E7A9 /* WADiscreteLayoutArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADiscreteLayoutArea.h; path = wammer/WADiscreteLayoutArea.h; sourceTree = "<group>"; };
+		FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADiscreteLayoutArea.m; path = wammer/WADiscreteLayoutArea.m; sourceTree = "<group>"; };
 		FF97382313D821DF003D1722 /* WADataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStore.h; sourceTree = "<group>"; };
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
@@ -2038,6 +2040,8 @@
 			children = (
 				FFE2E60A150F336D00555C16 /* WADiscreteLayoutHelpers.h */,
 				FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */,
+				FF9737641551292200D6E7A9 /* WADiscreteLayoutArea.h */,
+				FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */,
 				FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */,
 				FFC59BA2142B2B2200E44F1B /* WAEightPartLayoutGrid.m */,
 			);
@@ -3925,7 +3929,6 @@
 				FFCFE0B0142111E100B9E6AF /* WAPreviewBadge.m in Sources */,
 				FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */,
 				FF0DD00C142A3FBE0037FC4A /* WAPulldownRefreshView.m in Sources */,
-				FFC59BA3142B2B2200E44F1B /* WAEightPartLayoutGrid.m in Sources */,
 				FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				FF584C4D1435CB320058E109 /* WAImageView.m in Sources */,
 				FF0B2A2D14388FF000309F0E /* WADefines.m in Sources */,
@@ -4043,6 +4046,7 @@
 				FFE55FCC15404BAE001BE72A /* WADatePickerViewController.m in Sources */,
 				FFA2585815408CDD00FE661C /* WAPickerPaneViewController.m in Sources */,
 				FFA2585C15408D6D00FE661C /* WAFilterPickerViewController.m in Sources */,
+				FF9737661551292200D6E7A9 /* WADiscreteLayoutArea.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

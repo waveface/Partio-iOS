@@ -30,6 +30,8 @@
 #import "WAGestureWindow.h"
 #import "WAButton.h"
 
+#import "WAArticle+DiscreteLayoutAdditions.h"
+
 
 static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePageElements";
 
@@ -329,18 +331,19 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	//	Every single item should have at least one backing view — either it swaps in, or out, or so
 	
-	[changeSet enumerateChangesWithBlock: ^ (id item, IRDiscreteLayoutItemChangeType changeType) {
+	[changeSet enumerateChangesWithBlock: ^ (WAArticle *item, IRDiscreteLayoutItemChangeType changeType) {
 	
-		NSString *fromAreaName = [fromGrid layoutAreaNameForItem:item];
-		NSString *toAreaName = [toGrid layoutAreaNameForItem:item];
-		
-		UIView *itemView = [item isKindOfClass:[WAArticle class]] ? [self representingViewForItem:(WAArticle *)item] : toAreaName ? [toGrid displayBlockForAreaNamed:toAreaName](toGrid, item) : [fromGrid displayBlockForAreaNamed:fromAreaName](fromGrid, item);
+		NSCParameterAssert([item isKindOfClass:[WAArticle class]]);
 	
-		NSParameterAssert(itemView);
+		IRDiscreteLayoutArea *fromArea = [fromGrid areaForItem:item];
+		IRDiscreteLayoutArea *toArea = [toGrid areaForItem:item];
 		
-		CGRect fromRect = fromAreaName ? [fromGrid layoutBlockForAreaNamed:fromAreaName](fromGrid, item) : CGRectNull;
-		CGRect toRect = toAreaName ? [toGrid layoutBlockForAreaNamed:toAreaName](toGrid, item) : CGRectNull;
-				
+		UIView *itemView = [self representingViewForItem:item];
+		NSCParameterAssert(itemView);
+		
+		CGRect fromRect = fromArea.layoutBlock ? fromArea.layoutBlock(fromArea, item) : CGRectNull;
+		CGRect toRect = toArea.layoutBlock ? toArea.layoutBlock(toArea, item) : CGRectNull;
+		
 		[preconditionBlocks irEnqueueBlock:^{
 
 			[pageView addSubview:itemView];
@@ -529,25 +532,26 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
 	
-	NSMutableArray *pageElements = [NSMutableArray arrayWithCapacity:[viewGrid.layoutAreaNames count]];
+	NSMutableArray *pageElements = [NSMutableArray arrayWithCapacity:[viewGrid.layoutAreas count]];
 	
 	CGSize oldContentSize = viewGrid.contentSize;
 	viewGrid.contentSize = aPaginatedView.frame.size;
 	
-	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
+	for (IRDiscreteLayoutArea *area in viewGrid.layoutAreas) {
+		
+		if (area.item) {
 	
-		if (!item)
-			return;
+			UIView *placedSubview = (UIView *)(area.displayBlock(area, area.item));
+			NSParameterAssert(placedSubview);
+			placedSubview.frame = area.layoutBlock(area, area.item);
+			placedSubview.autoresizingMask = UIViewAutoresizingNone;
+			[pageElements addObject:placedSubview];
+			[returnedView addSubview:placedSubview];
 	
-		UIView *placedSubview = (UIView *)displayBlock(viewGrid, item);
-		NSParameterAssert(placedSubview);
-		placedSubview.frame = layoutBlock(viewGrid, item);
-		placedSubview.autoresizingMask = UIViewAutoresizingNone;
-		[pageElements addObject:placedSubview];
-		[returnedView addSubview:placedSubview];
-				
-	}];
-
+		}
+		
+	}
+	
 	viewGrid.contentSize = oldContentSize;
 	
 	objc_setAssociatedObject(returnedView, &kWADiscreteArticlePageElements, pageElements, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -566,16 +570,19 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		return;
 	
 	IRDiscreteLayoutGrid *viewGrid = (IRDiscreteLayoutGrid *)[self.discreteLayoutResult.grids objectAtIndex:index];
-	[viewGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
-		WAArticle *representedArticle = (WAArticle *)item;
-		[((WAArticle *)item).representingFile thumbnailImage];
+	for (IRDiscreteLayoutArea *area in viewGrid.layoutAreas) {
+	
+		WAArticle *article = (WAArticle *)area.item;
+		NSCParameterAssert([article isKindOfClass:[WAArticle class]]);
+		
+		[article.representingFile thumbnailImage];
 				
-		for (WAPreview *aPreview in representedArticle.previews)
+		for (WAPreview *aPreview in article.previews)
 			[aPreview.graphElement thumbnail];
 	
-	}];
-
+	}
+	
 }
 
 - (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
@@ -642,32 +649,26 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	CGSize oldContentSize = transformedGrid.contentSize;
 	transformedGrid.contentSize = self.paginatedView.frame.size;
-			
-	[transformedGrid enumerateLayoutAreasWithBlock: ^ (NSString *name, id item, BOOL(^validatorBlock)(IRDiscreteLayoutGrid *self, id anItem), CGRect(^layoutBlock)(IRDiscreteLayoutGrid *self, id anItem), id(^displayBlock)(IRDiscreteLayoutGrid *self, id anItem)) {
 	
-		if (!item)
+	[transformedGrid.layoutAreas enumerateObjectsUsingBlock:^(IRDiscreteLayoutArea *area, NSUInteger idx, BOOL *stop) {
+	
+		if (!area.item)
 			return;
-			
-		NSUInteger objectIndex = [currentPageGrid.layoutAreaNames indexOfObject:name];
-		if (objectIndex != NSNotFound)
-		if ([currentPageElements count] > objectIndex) {
-
-			UIView *itemView = (UIView *)[currentPageElements objectAtIndex:objectIndex];
-			CGRect itemViewFrame = layoutBlock(transformedGrid, item);
-			
-			if (itemView.alpha != 1)
-				itemView.alpha = 1;
-			
-			if (![itemView isDescendantOfView:currentPageView])
-				[currentPageView addSubview:itemView];
-			
-			if (!CGRectEqualToRect(itemView.frame, itemViewFrame))
-				itemView.frame = itemViewFrame;
-			
-		}
+		
+		UIView *itemView = (UIView *)[currentPageElements objectAtIndex:idx];
+		CGRect itemViewFrame = area.layoutBlock(area, area.item);
+		
+		if (itemView.alpha != 1)
+			itemView.alpha = 1;
+		
+		if (![itemView isDescendantOfView:currentPageView])
+			[currentPageView addSubview:itemView];
+		
+		if (!CGRectEqualToRect(itemView.frame, itemViewFrame))
+			itemView.frame = itemViewFrame;
 		
 	}];
-	
+							
 	transformedGrid.contentSize = oldContentSize;
 
 }
@@ -690,28 +691,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle {
 
-	__block NSUInteger containingGridIndex = NSNotFound;
-
-	IRDiscreteLayoutResult *lastLayoutResult = self.discreteLayoutResult;
-	[lastLayoutResult.grids enumerateObjectsUsingBlock:^(IRDiscreteLayoutGrid *aGridInstance, NSUInteger gridIndex, BOOL *stop) {
+	NSArray *grids = self.discreteLayoutResult.grids;
 	
-		__block BOOL canStop = NO;
-		
-		[aGridInstance enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
-			
-			if ([item isEqual:anArticle]) {
-				containingGridIndex = gridIndex;
-				*stop = YES;
-				canStop = YES;
-			}
-			
-		}];
-		
-		*stop = canStop;
-		
-	}];
+	for (IRDiscreteLayoutGrid *grid in grids)
+		if ([grid areaForItem:anArticle])
+			return [grids indexOfObject:grid];
 	
-	return containingGridIndex;
+	return NSNotFound;
 
 }
 
@@ -720,16 +706,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (self.discreteLayoutResult) {
 		
 		IRDiscreteLayoutGrid *targetGrid = [self.discreteLayoutResult.grids objectAtIndex:index];
-		NSMutableArray *allItems = [NSMutableArray arrayWithCapacity:[targetGrid.layoutAreaNames count]];
-		
-		[targetGrid enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
-			
-			if (item)
-				[allItems addObject:item];
-			
-		}];
-		
-		NSArray *sortedItems = [allItems sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
+		NSArray *sortedItems = [[targetGrid items] sortedArrayUsingDescriptors:[NSArray arrayWithObjects:
 		
 			[NSSortDescriptor sortDescriptorWithKey:@"presentationDate" ascending:YES],
 		
