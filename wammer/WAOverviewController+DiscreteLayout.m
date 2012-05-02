@@ -106,6 +106,7 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 	
 	WAArticleViewController *createdVC = [self newDiscreteArticleViewControllerForArticle:article];
 	[self.articleViewControllersCache setObject:createdVC forKey:objectValue];
+	[self addChildViewController:createdVC];
 	
 	return createdVC;
 

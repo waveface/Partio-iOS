@@ -254,6 +254,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			if (![article.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 				
+			[wSelf reloadData];
+				
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
 			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:

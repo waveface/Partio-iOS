@@ -237,7 +237,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 - (void) reloadViewContents {
 
 	//	Should never be called when the paginated view is busy
-	NSParameterAssert([self isViewLoaded] && !self.paginatedView.hidden);
+	if (![self isViewLoaded])
+		return;
+	
+	if (self.paginatedView.hidden) {
+		[self performSelector:_cmd withObject:nil afterDelay:0.5];
+		return;
+	}
 
 	NSError *layoutError = nil;
 	IRDiscreteLayoutResult *result = [self.discreteLayoutManager calculatedResultWithReference:self.discreteLayoutResult strategy:IRCompareScoreLayoutStrategy error:&layoutError];
@@ -574,12 +580,16 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	for (IRDiscreteLayoutArea *area in viewGrid.layoutAreas) {
 	
 		WAArticle *article = (WAArticle *)area.item;
-		NSCParameterAssert([article isKindOfClass:[WAArticle class]]);
+		if (article) {
+
+			NSCParameterAssert([article isKindOfClass:[WAArticle class]]);
+			
+			[article.representingFile thumbnailImage];
+					
+			for (WAPreview *aPreview in article.previews)
+				[aPreview.graphElement thumbnail];
 		
-		[article.representingFile thumbnailImage];
-				
-		for (WAPreview *aPreview in article.previews)
-			[aPreview.graphElement thumbnail];
+		}
 	
 	}
 	
