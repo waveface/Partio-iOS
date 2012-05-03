@@ -256,6 +256,9 @@
 		FF22283B1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283A1463D18A00541E31 /* WADataStore+WARemoteInterfaceAdditions.m */; };
 		FF22283E1463D2BE00541E31 /* WARemoteInterfaceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */; };
 		FF2228411463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */; };
+		FF24B3B31552AC6600DD9379 /* libc++abi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF24B3B21552AC6600DD9379 /* libc++abi.dylib */; };
+		FF24B3B51552AC6D00DD9379 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF24B3B41552AC6D00DD9379 /* libc++.dylib */; };
+		FF24B3B71552AC7100DD9379 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF24B3B61552AC7100DD9379 /* libstdc++.dylib */; };
 		FF2981B414F6DFEB004F6893 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54413D6C2CC00D54EC6 /* Foundation.framework */; };
 		FF2981B514F6DFEB004F6893 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73A54213D6C2CC00D54EC6 /* UIKit.framework */; };
 		FF2981B614F6DFF1004F6893 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC813C213EB8F7E007B0683 /* AssetsLibrary.framework */; };
@@ -1355,6 +1358,9 @@
 		FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterfaceContext.m; sourceTree = "<group>"; };
 		FF22283F1463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+ScheduledDataRetrieval.h"; sourceTree = "<group>"; };
 		FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+ScheduledDataRetrieval.m"; sourceTree = "<group>"; };
+		FF24B3B21552AC6600DD9379 /* libc++abi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++abi.dylib"; path = "usr/lib/libc++abi.dylib"; sourceTree = SDKROOT; };
+		FF24B3B41552AC6D00DD9379 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		FF24B3B61552AC7100DD9379 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		FF269E5813D84A420085E20A /* WAPaginationSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPaginationSlider.h; sourceTree = "<group>"; };
 		FF269E5913D84A420085E20A /* WAPaginationSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPaginationSlider.m; sourceTree = "<group>"; };
 		FF2E82FA14EE48FB000C6044 /* WAPreview+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAPreview+WAAdditions.h"; sourceTree = "<group>"; };
@@ -1786,6 +1792,9 @@
 				FF4570E41488F362005B5905 /* QuickLook.framework in Frameworks */,
 				FF154658148E06D600352428 /* SystemConfiguration.framework in Frameworks */,
 				FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */,
+				FF24B3B51552AC6D00DD9379 /* libc++.dylib in Frameworks */,
+				FF24B3B31552AC6600DD9379 /* libc++abi.dylib in Frameworks */,
+				FF24B3B71552AC7100DD9379 /* libstdc++.dylib in Frameworks */,
 				4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */,
 				FF42755C14F4E8D200824505 /* libz.dylib in Frameworks */,
 				FFCFE0C2142111E100B9E6AF /* libxml2.2.7.3.dylib in Frameworks */,
@@ -2914,6 +2923,9 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				FF24B3B61552AC7100DD9379 /* libstdc++.dylib */,
+				FF24B3B41552AC6D00DD9379 /* libc++.dylib */,
+				FF24B3B21552AC6600DD9379 /* libc++abi.dylib */,
 				4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */,
 				FF73A60013D6DDF800D54EC6 /* libxml2.2.7.3.dylib */,
 				FF42755B14F4E8D200824505 /* libz.dylib */,
