@@ -506,6 +506,8 @@
 		FFC648921445EC4500593E5E /* IRWebAPIKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF59A3AD1441C97000BB1FDC /* IRWebAPIKitX.framework */; };
 		FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFC9D96814FF28B2004197EC /* libGoogleAnalytics.a */; };
 		FFC9DB1D14FF46EE004197EC /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
+		FFCB9B2C155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html in Resources */ = {isa = PBXBuildFile; fileRef = FFCB9B2B155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html */; };
+		FFCB9B2E155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html in Resources */ = {isa = PBXBuildFile; fileRef = FFCB9B2D155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html */; };
 		FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
 		FFCEF41215199ED10021AECB /* libIRDiscreteLayoutManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBA66EB140E12AD00BE5A1D /* libIRDiscreteLayoutManager.a */; };
@@ -1660,6 +1662,8 @@
 		FFC9DB1A14FF45BD004197EC /* WAModel 18.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 18.xcdatamodel"; sourceTree = "<group>"; };
 		FFC9DB1B14FF46EE004197EC /* WAOpenGraphElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOpenGraphElement.h; sourceTree = "<group>"; };
 		FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOpenGraphElement.m; sourceTree = "<group>"; };
+		FFCB9B2B155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html"; sourceTree = SOURCE_ROOT; };
+		FFCB9B2D155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html"; sourceTree = SOURCE_ROOT; };
 		FFCD324214B997B70035C4F5 /* WAModel 10.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 10.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324314B997B70035C4F5 /* WAModel 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 11.xcdatamodel"; sourceTree = "<group>"; };
 		FFCD324414B997B70035C4F5 /* WAModel 12.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 12.xcdatamodel"; sourceTree = "<group>"; };
@@ -2392,6 +2396,8 @@
 				FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */,
 				FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */,
 				FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */,
+				FFCB9B2D155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html */,
+				FFCB9B2B155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html */,
 				FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */,
 				FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */,
 				FFEF58321549F5E900722D91 /* WAPreviewQuoteBackdrop.png */,
@@ -3661,6 +3667,8 @@
 				FF426FC9155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html in Resources */,
 				FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */,
 				FFEF58331549F5E900722D91 /* WAPreviewQuoteBackdrop.png in Resources */,
+				FFCB9B2C155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html in Resources */,
+				FFCB9B2E155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

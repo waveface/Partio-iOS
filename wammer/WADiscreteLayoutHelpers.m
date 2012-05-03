@@ -93,7 +93,7 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		if (itemIsFavorite(anItem))
 			return NO;
 	
-		return (BOOL)((WADiscreteLayoutItemHasLink(anItem) && WADiscreteLayoutItemHasLongText(anItem)) || WADiscreteLayoutItemHasImage(anItem));
+		return (BOOL)((WADiscreteLayoutItemHasLink(anItem) && WADiscreteLayoutItemHasLongText(anItem) && WADiscreteLayoutItemHasImage(anItem)) || WADiscreteLayoutItemHasImage(anItem));
 	
 	};
 	
@@ -165,11 +165,16 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		@"WFPreviewTemplate_Discrete_Web_Image",
 		@"WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal");
 		
-	WALayoutAreaTemplateNameBlock annotationTop = templateName(
+	WALayoutAreaTemplateNameBlock annotationTop_verticalFave = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
-		@"WFPreviewTemplate_Discrete_Web_Image",
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave",
 		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop");
 		
+	WALayoutAreaTemplateNameBlock annotationTop_horizontalFave = templateName(
+		@"WFPreviewTemplate_Discrete_Plaintext",
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave",
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop");
+	
 	return [NSArray arrayWithObjects:
 	
 		pair(
@@ -244,10 +249,10 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"4_non_faves_A_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", combo, layoutBlock(3, 2, 0, 0, 2, 1), annotationTop),
+				area(@"A", combo, layoutBlock(3, 2, 0, 0, 2, 1), annotationTop_verticalFave),
 				area(@"B", notFave, layoutBlock(3, 2, 2, 0, 1, 1), singleXStack),
 				area(@"C", notFave, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
-				area(@"D", combo, layoutBlock(3, 2, 1, 1, 2, 1), annotationTop),
+				area(@"D", combo, layoutBlock(3, 2, 1, 1, 2, 1), annotationTop_verticalFave),
 			nil]]
 			
 		),
@@ -263,8 +268,8 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"4_non_faves_B_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", combo, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
-				area(@"B", notFave, layoutBlock(3, 2, 1, 0, 2, 1), annotationTop),
-				area(@"C", notFave, layoutBlock(3, 2, 0, 1, 2, 1), annotationTop),
+				area(@"B", notFave, layoutBlock(3, 2, 1, 0, 2, 1), annotationTop_verticalFave),
+				area(@"C", notFave, layoutBlock(3, 2, 0, 1, 2, 1), annotationTop_verticalFave),
 				area(@"D", combo, layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
 			nil]]
 			
@@ -273,7 +278,7 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"1_fave_with_4_non_faves_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(2, 4, 0, 0, 2, 2), annotationTop),
+				area(@"A", fave, layoutBlock(2, 4, 0, 0, 2, 2), annotationTop_horizontalFave),
 				area(@"B", notFave, layoutBlock(2, 4, 0, 2, 1, 1), singleYStack),
 				area(@"C", notFave, layoutBlock(2, 4, 1, 2, 1, 1), singleYStack),
 				area(@"D", notFave, layoutBlock(2, 4, 0, 3, 1, 1), singleYStack),
@@ -281,7 +286,7 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"1_fave_with_4_non_faves_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(4, 2, 0, 0, 2, 2), singleXStack),
+				area(@"A", fave, layoutBlock(4, 2, 0, 0, 2, 2), annotationTop_verticalFave),
 				area(@"B", notFave, layoutBlock(4, 2, 2, 0, 1, 1), singleYStack),
 				area(@"C", notFave, layoutBlock(4, 2, 2, 1, 1, 1), singleYStack),
 				area(@"D", notFave, layoutBlock(4, 2, 3, 0, 1, 1), singleYStack),
@@ -293,17 +298,17 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"1_fave_with_3_non_faves_A_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(2, 4, 0, 0, 2, 2), annotationTop),
+				area(@"A", fave, layoutBlock(2, 4, 0, 0, 2, 2), annotationTop_horizontalFave),
 				area(@"B", notFave, layoutBlock(2, 4, 0, 2, 1, 1), singleYStack),
 				area(@"C", notFave, layoutBlock(2, 4, 0, 3, 1, 1), singleYStack),
 				area(@"D", combo, layoutBlock(2, 4, 1, 2, 1, 2), singleYStack),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"1_fave_with_3_non_faves_A_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(4, 2, 0, 0, 2, 2), singleXStack),
+				area(@"A", fave, layoutBlock(4, 2, 0, 0, 2, 2), annotationTop_verticalFave),
 				area(@"B", notFave, layoutBlock(4, 2, 2, 0, 1, 1), singleYStack),
 				area(@"C", notFave, layoutBlock(4, 2, 3, 0, 1, 1), singleYStack),
-				area(@"D", combo, layoutBlock(4, 2, 2, 1, 1, 2), singleYStack),
+				area(@"D", combo, layoutBlock(4, 2, 2, 1, 2, 1), singleYStack),
 			nil]]
 			
 		),
@@ -311,14 +316,14 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"1_fave_with_3_non_faves_B_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(2, 4, 0, 0, 2, 2), annotationTop),
+				area(@"A", fave, layoutBlock(2, 4, 0, 0, 2, 2), annotationTop_horizontalFave),
 				area(@"B", combo, layoutBlock(2, 4, 0, 2, 1, 2), singleYStack),
 				area(@"C", notFave, layoutBlock(2, 4, 1, 2, 1, 1), singleYStack),
 				area(@"D", notFave, layoutBlock(2, 4, 1, 3, 1, 1), singleYStack),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"1_fave_with_3_non_faves_B_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(4, 2, 0, 0, 2, 2), singleYStack),
+				area(@"A", fave, layoutBlock(4, 2, 0, 0, 2, 2), annotationTop_verticalFave),
 				area(@"B", combo, layoutBlock(4, 2, 2, 0, 2, 1), singleYStack),
 				area(@"C", notFave, layoutBlock(4, 2, 2, 1, 1, 1), singleYStack),
 				area(@"D", notFave, layoutBlock(4, 2, 3, 1, 1, 1), singleYStack),
@@ -329,13 +334,13 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"2_faves_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(1, 2, 0, 0, 1, 1), annotationTop),
-				area(@"B", fave, layoutBlock(1, 2, 0, 1, 1, 1), annotationTop),
+				area(@"A", fave, layoutBlock(1, 2, 0, 0, 1, 1), annotationTop_horizontalFave),
+				area(@"B", fave, layoutBlock(1, 2, 0, 1, 1, 1), annotationTop_horizontalFave),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"2_faves_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", fave, layoutBlock(2, 1, 0, 0, 1, 1), singleYStack),
-				area(@"B", fave, layoutBlock(2, 1, 1, 0, 1, 1), singleYStack),
+				area(@"A", fave, layoutBlock(2, 1, 0, 0, 1, 1), annotationTop_verticalFave),
+				area(@"B", fave, layoutBlock(2, 1, 1, 0, 1, 1), annotationTop_verticalFave),
 			nil]]
 			
 		),

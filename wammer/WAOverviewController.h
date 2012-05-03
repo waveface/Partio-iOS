@@ -20,6 +20,7 @@
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
 
 - (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller;
+- (CGFloat) currentAspectRatio;
 
 @end
 

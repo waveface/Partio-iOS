@@ -92,7 +92,7 @@
 		hook(@"$FOOTER", relativeDateString);
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
-				
+		
 		[contextWebView loadHTMLString:string baseURL:pt.baseURL];
 	
 	}
