@@ -50,7 +50,7 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 
 - (NSString *) representedText {
 
-	NSString *previewDescription = ((WAPreview *)[self.previews anyObject]).graphElement.description;
+	NSString *previewDescription = ((WAPreview *)[self.previews anyObject]).graphElement.text;
 
 	if (previewDescription)
 		return [[self text] stringByAppendingString:previewDescription];
