@@ -81,6 +81,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginatedView.horizontalSpacing = 4.0f;
 	self.paginatedView.clipsToBounds = NO;
 	self.paginatedView.scrollView.clipsToBounds = NO;
+	self.paginatedView.scrollView.pagingEnabled = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
 		CGPoint convertedPoint = [nrPaginatedView.scrollView convertPoint:aPoint fromView:nrPaginatedView];
@@ -748,20 +749,22 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) paginationSlider:(WAPaginationSlider *)slider didMoveToPage:(NSUInteger)destinationPage {
 
+	if ([slider.slider isTracking])
+		return;
+
 	NSParameterAssert(destinationPage >= 0);
 	NSParameterAssert(destinationPage < self.paginatedView.numberOfPages);
 
-	if (self.paginatedView.currentPage == destinationPage)
+	NSUInteger currentPage = self.paginatedView.currentPage;
+	if (currentPage == destinationPage)
 		return;
 	
-	if (![slider.slider isTracking]) {
-	
-		UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState;
-		[UIView animateWithDuration:0.3 delay:0 options:options animations:^{
-			[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];			
-		} completion:nil];
+	UIViewAnimationOptions options = UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState;
+	[UIView animateWithDuration:0.3f delay:0 options:options animations:^{
 		
-	}
+		[self.paginatedView scrollToPageAtIndex:destinationPage animated:NO];
+		
+	} completion:nil];
 	
 }
 

@@ -85,8 +85,6 @@
 
 - (void) endPostponingDataRetrievalTimerFiring {
 	
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			[self endPostponingDataRetrievalTimerFiring];
@@ -107,16 +105,12 @@
 
 - (BOOL) isPostponingDataRetrievalTimerFiring {
 
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
 	return !!(self.dataRetrievalTimerPostponingCount);
 
 }
 
 - (void) beginPerformingAutomaticRemoteUpdates {
 
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			[self beginPerformingAutomaticRemoteUpdates];

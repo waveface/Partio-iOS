@@ -52,8 +52,6 @@
 
 		[self retrieveChangedArticlesSince:sinceDate inGroup:groupID withEntities:NO onSuccess:^(NSArray *changedArticleIDs, NSArray *changes, NSDate *continuation) {
 		
-			NSLog(@"Since %@, changed %@, %@, %@", sinceDate, changedArticleIDs, changes, continuation);
-		
 			if (![changedArticleIDs count] || !continuation || [continuation isEqual:sinceDate]) {				
 				if (successBlock)
 					successBlock();
@@ -68,33 +66,24 @@
 			
 			for (NSString *articleID in changedArticleIDs) {
 			
-				NSLog(@"emiting worker for article %@", articleID);
-			
 				[articleOperations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 				
-					NSLog(@"starting worker for article %@", articleID);
-
 					[[WARemoteInterface sharedInterface] retrievePost:articleID inGroup:groupID onSuccess:^(NSDictionary *postRep){
 					
 						if (progressBlock)
 							progressBlock([NSArray arrayWithObjects:postRep, nil]);
 						
 						callback(postRep);
-					
-						NSLog(@"done: worker for article %@", articleID);
 
 					} onFailure:^(NSError *error) {
 					
 						callback(error);
 					
-						NSLog(@"failed: worker for article %@", articleID);
-						
 					}];
 					
 				} completionBlock:^(id results) {
 					
 					//	?
-					NSLog(@"completion: worker for article %@", articleID);
 					
 				}]];
 			
@@ -102,7 +91,6 @@
 			
 			[articleOperations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 			
-				NSLog(@"final barrier hit");
 				callback((id)kCFBooleanTrue);
 				
 			} completionBlock:^(id results) {

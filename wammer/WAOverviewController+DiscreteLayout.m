@@ -183,13 +183,15 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 		return nil;
 	
 	IRDiscreteLayoutGrid *grid = [self.discreteLayoutResult gridContainingItem:article];
-	NSString *prototypeName = grid.identifier;
+	grid = [grid transformedGridWithPrototype:[grid bestCounteprartPrototypeForAspectRatio:[self currentAspectRatio]]];
 	
 	WADiscreteLayoutArea *area = (WADiscreteLayoutArea *)[grid areaForItem:article];
 	NSParameterAssert([area isKindOfClass:[WADiscreteLayoutArea class]]);
 	
-	if (area.templateNameBlock)
-		return area.templateNameBlock(area);
+	if (area.templateNameBlock) {
+		NSString *answer = area.templateNameBlock(area);
+		return answer;
+	}
 	
 	return nil;
 
