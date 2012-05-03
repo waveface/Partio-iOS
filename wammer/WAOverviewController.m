@@ -186,25 +186,23 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
 		[super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
 	
+	self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+	
 	switch (type) {
 		
 		case NSFetchedResultsChangeDelete:
 		case NSFetchedResultsChangeInsert:
 		case NSFetchedResultsChangeMove: {
-			self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
+			
 			break;
+			
 		}
 		
 		case NSFetchedResultsChangeUpdate: {
 				
-			if (!self.requiresRecalculationOnFetchedResultsChangeEnd)
 			if ([anObject isKindOfClass:[WAArticle class]]) {
-				
 				WAArticleViewController *articleVC = [self cachedArticleViewControllerForArticle:anObject];
 				[articleVC reloadData];
-				
-				self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
-				
 			}
 			
 			break;
