@@ -26,13 +26,10 @@
 	
 	[result.grids enumerateObjectsUsingBlock: ^ (IRDiscreteLayoutGrid *grid, NSUInteger idx, BOOL *stop) {
 	
-		[grid enumerateLayoutAreasWithBlock:^(NSString *name, id item, IRDiscreteLayoutGridAreaValidatorBlock validatorBlock, IRDiscreteLayoutGridAreaLayoutBlock layoutBlock, IRDiscreteLayoutGridAreaDisplayBlock displayBlock) {
-		
-			if (item)
-				[resultItems addObject:item];
+		for (IRDiscreteLayoutArea *area in grid.layoutAreas)
+			if (area.item)
+				[resultItems addObject:area.item];
 			
-		}];
-		
 	}];
 	
 	STAssertTrue([[NSSet setWithArray:self.layoutItems] isEqualToSet:resultItems], @"Layout result should exhaust all items, and not introduce unknown items.");

@@ -10,6 +10,7 @@
 #import "IRDiscreteLayout.h"
 #import "WADataStore.h"
 #import "WAArticle+DiscreteLayoutAdditions.h"
+#import "WADiscreteLayoutHelpers.h"
 
 
 NSString * const kGrid_6_any_portrait = @"6_any_portrait";
@@ -132,7 +133,7 @@ NSString * const kGrid_2_faves_portrait = @"2_faves_portrait";
 	void (^squash)(void) = ^ {
 		
 		if ([currentItems count])
-			[instances addObject:[currentGrid instantiatedGridWithAvailableItems:currentItems]];
+			[instances addObject:[currentGrid instanceWithItems:currentItems error:nil]];
 		
 		[currentItems removeAllObjects];
 		
@@ -196,7 +197,7 @@ NSString * const kGrid_2_faves_portrait = @"2_faves_portrait";
 
 - (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager targetGridForEnqueueingProposedGrid:(IRDiscreteLayoutGrid *)proposedGrid fromCandidates:(NSArray *)candidatesSortedByScore toResult:(IRDiscreteLayoutResult *)result {
 	
-	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, manager, proposedGrid, candidatesSortedByScore, result);
+	//	NSLog(@"%s %@ %@ %@ %@", __PRETTY_FUNCTION__, manager, proposedGrid, candidatesSortedByScore, result);
 	
 	return proposedGrid;
 
@@ -206,7 +207,7 @@ NSString * const kGrid_2_faves_portrait = @"2_faves_portrait";
 
 	self.layoutItems = [self arrayWithNumberOfArticles:6];
 	
-	IRDiscreteLayoutGrid *fromInstance = [[self layoutGridNamed:kGrid_6_any_portrait] instantiatedGridWithAvailableItems:self.layoutItems];
+	IRDiscreteLayoutGrid *fromInstance = [[self layoutGridNamed:kGrid_6_any_portrait] instanceWithItems:self.layoutItems error:nil];
 	IRDiscreteLayoutResult *fromResult = [IRDiscreteLayoutResult resultWithGrids:[NSArray arrayWithObject:fromInstance]];
 	
 	WAArticle *changedItem = ((WAArticle *)[self.layoutItems randomObject]);
@@ -228,7 +229,7 @@ NSString * const kGrid_2_faves_portrait = @"2_faves_portrait";
 	
 	NSError *error = nil;
 	IRDiscreteLayoutGrid *fromPrototype = [self layoutGridNamed:kGrid_5_non_faves_A_portrait];
-	IRDiscreteLayoutGrid *fromInstance = [fromPrototype instantiatedGridWithAvailableItems:self.layoutItems error:&error];
+	IRDiscreteLayoutGrid *fromInstance = [fromPrototype instanceWithItems:self.layoutItems error:&error];
 	IRDiscreteLayoutResult *fromResult = [IRDiscreteLayoutResult resultWithGrids:[NSArray arrayWithObject:fromInstance]];
 	
 	WAArticle *changedItem = ((WAArticle *)[self.layoutItems randomObject]);
