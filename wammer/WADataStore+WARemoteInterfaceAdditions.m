@@ -267,8 +267,6 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 			if (![context save:&savingError])
 				NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
 			
-			NSLog(@"main storage %@ %@", user.mainStorage, user.mainStorage.displayName);
-			
 			if (successBlock)
 				successBlock();
 			

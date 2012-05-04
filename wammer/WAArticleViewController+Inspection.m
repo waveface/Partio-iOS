@@ -19,6 +19,7 @@
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
 #import "WAOverviewController.h"
+#import "WAArticle+DiscreteLayoutAdditions.h"
 
 
 static NSString * const kInspectionDelegate = @"-[WAArticleViewController(Inspection) inspectionDelegate]";
@@ -240,7 +241,9 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 	
 	return [IRAction actionWithTitle:actionTitle block:^{
 	
-		void (^action)(void) = ^ {
+		WAArticle *article = wSelf.article;
+	
+		[wSelf.hostingViewController enqueueInterfaceUpdate:^{
 		
 			WAArticle *article = wSelf.article;
 			
@@ -258,6 +261,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 				
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
+		} maintainingPositionForLayoutItem:article sender:wSelf completion:^{
+
 			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 				
 				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
@@ -271,10 +276,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
 			}];
-
-		};
-	
-		[wSelf.hostingViewController enqueueInterfaceUpdate:action sender:wSelf];
+		
+		}];
 		
 	}];
 
