@@ -318,7 +318,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	if (!aBlock)
 		return;
 		
-	self.actionedArticle = object;
+	self.actionedArticle = (WAArticle *)object;
 
 	NSParameterAssert([self isViewLoaded]);
 	NSParameterAssert(self.discreteLayoutResult);
@@ -565,10 +565,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			
 			for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
 				if ([candidate isEqual:gridInLastResult])
+				if (![candidate.identifier hasPrefix:@"6_any"])
 					return candidate;
 			
 			for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
 				if (![candidate areaForItem:actionedArticle])
+				if (![candidate.identifier hasPrefix:@"6_any"])
 					return candidate;
 		
 		}
@@ -582,21 +584,23 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			
 		}];
 		
-		if ([candidatesContainingActionedArticle count]) {
-			//	NSParameterAssert([interimResult.grids count] == fixedGridIndex);
-			actionedArticle = nil;
-			return [candidatesContainingActionedArticle objectAtIndex:0];
-		}
+		for (IRDiscreteLayoutGrid *candidate in candidatesContainingActionedArticle)
+			if (![candidate.identifier hasPrefix:@"6_any"]) {
+				actionedArticle = nil;
+				return candidate;
+			}
 	
 	} else {
 	
 		for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
 			if ([candidate isEqual:replacedGrid])
+			if ([candidate.identifier hasPrefix:@"6_any"])
 				return candidate;
 		
 		for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
 			if ([candidate.identifier isEqualToString:replacedGrid.identifier])
-				return candidate;		
+			if ([candidate.identifier hasPrefix:@"6_any"])
+				return candidate;
 		
 	}
 	

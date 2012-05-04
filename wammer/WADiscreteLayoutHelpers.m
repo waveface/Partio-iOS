@@ -9,7 +9,6 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WADiscreteLayoutHelpers.h"
 #import "WADiscreteLayoutArea.h"
-#import "WADiscreteLayoutGrid.h"
 #import "WAArticle.h"
 
 NSArray * WADefaultLayoutGridsMake (void);
@@ -177,46 +176,27 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave",
 		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop");
 		
-	WADiscreteLayoutGrid * (^notFull)(WADiscreteLayoutGrid *) = ^ (WADiscreteLayoutGrid *grid) {
-	
-		grid.eligibilityBlock = ^ (IRDiscreteLayoutGrid *self, BOOL permitted) {
-		
-			if (!permitted)
-				return NO;
-			
-			if (![[self items] count])
-				return NO;
-			
-			BOOL answer = (BOOL)([[self items] count] != [self.layoutAreas count]);
-			return answer;
-		
-		};
-		
-		return grid;
-
-	};
-	
 	return [NSArray arrayWithObjects:
 	
 		pair(
 		
-			notFull([[WADiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
+			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", nil, layoutBlock(2, 3, 0, 0, 1, 1), singleYStack),
 				area(@"B", nil, layoutBlock(2, 3, 1, 0, 1, 1), singleYStack),
 				area(@"C", nil, layoutBlock(2, 3, 0, 1, 1, 1), singleYStack),
 				area(@"D", nil, layoutBlock(2, 3, 1, 1, 1, 1), singleYStack),
 				area(@"E", nil, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
 				area(@"F", nil, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
-			nil]]),
+			nil]],
 			
-			notFull([[WADiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
+			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", nil, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
 				area(@"B", nil, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
 				area(@"C", nil, layoutBlock(3, 2, 1, 0, 1, 1), singleXStack),
 				area(@"D", nil, layoutBlock(3, 2, 1, 1, 1, 1), singleXStack),
 				area(@"E", nil, layoutBlock(3, 2, 2, 0, 1, 1), singleXStack),
 				area(@"F", nil, layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
-			nil]])
+			nil]]
 			
 		),
 		
