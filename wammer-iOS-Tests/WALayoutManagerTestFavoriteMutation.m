@@ -205,7 +205,7 @@ NSString * const kGrid_2_faves_portrait = @"2_faves_portrait";
 
 - (void) testMutationConstraintsFromFavingInGrid_6_any_portrait {
 
-	self.layoutItems = [self arrayWithNumberOfArticles:6];
+	self.layoutItems = [self arrayWithNumberOfArticles:5];
 	
 	IRDiscreteLayoutGrid *fromInstance = [[self layoutGridNamed:kGrid_6_any_portrait] instanceWithItems:self.layoutItems error:nil];
 	IRDiscreteLayoutResult *fromResult = [IRDiscreteLayoutResult resultWithGrids:[NSArray arrayWithObject:fromInstance]];

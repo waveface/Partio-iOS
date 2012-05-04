@@ -57,7 +57,6 @@
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
-		4B8CA97714BBE7BA006E06BB /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
@@ -331,7 +330,6 @@
 		FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF460D7F149CFC0600DB7F0B /* IRKeychainX.framework */; };
 		FF460DB6149D001200DB7F0B /* NSBlockOperation+NSCopying.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */; };
 		FF460DB8149D15F100DB7F0B /* wammer-OSX-Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF460DB7149D15F100DB7F0B /* wammer-OSX-Entitlements.plist */; };
-		FF4C71B21554104E0017AA7C /* WADiscreteLayoutGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4C71B11554104E0017AA7C /* WADiscreteLayoutGrid.m */; };
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF51B64D1542C34C00874C05 /* WAArticleStackElementDropdownTag.png in Resources */ = {isa = PBXBuildFile; fileRef = FF51B6471542C34C00874C05 /* WAArticleStackElementDropdownTag.png */; };
@@ -349,7 +347,6 @@
 		FF51B6611542C37100874C05 /* WAUpDoubleArrowGlyph.png in Resources */ = {isa = PBXBuildFile; fileRef = FF51B65F1542C37100874C05 /* WAUpDoubleArrowGlyph.png */; };
 		FF51B6621542C37100874C05 /* WAUpDoubleArrowGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF51B6601542C37100874C05 /* WAUpDoubleArrowGlyph@2x.png */; };
 		FF54C4BD15206B0D00301887 /* WARemoteInterface+Usertracks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */; };
-		FF54C5161520947100301887 /* WADataStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C5151520947100301887 /* WADataStoreTest.m */; };
 		FF558421142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */; };
 		FF584C4D1435CB320058E109 /* WAImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF584C4C1435CB320058E109 /* WAImageView.m */; };
 		FF586B911519B4ED00F308E2 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
@@ -455,7 +452,6 @@
 		FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD14F0514C5E24C0053116F /* Crashlytics.framework */; };
 		FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTestBase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */; };
 		FFB7D3AB1546CFAD00CE005C /* WALayoutManagerTestGeneric.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */; };
-		FFB7D3AE1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7D3AD1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m */; };
 		FFB81F42148C8AA000FB11B1 /* WASingleFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */; };
 		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
 		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
@@ -1406,8 +1402,6 @@
 		FF4570E71488F381005B5905 /* WAFile+QuickLook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+QuickLook.m"; sourceTree = "<group>"; };
 		FF460D0D149CF86400DB7F0B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		FF460DB7149D15F100DB7F0B /* wammer-OSX-Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "wammer-OSX-Entitlements.plist"; sourceTree = "<group>"; };
-		FF4C71B01554104E0017AA7C /* WADiscreteLayoutGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADiscreteLayoutGrid.h; path = wammer/WADiscreteLayoutGrid.h; sourceTree = "<group>"; };
-		FF4C71B11554104E0017AA7C /* WADiscreteLayoutGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADiscreteLayoutGrid.m; path = wammer/WADiscreteLayoutGrid.m; sourceTree = "<group>"; };
 		FF4CCE94149A07B30049B83C /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
 		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
@@ -2066,8 +2060,6 @@
 				FF1305E814FD4FC6004BD3D6 /* WAOverviewController+DiscreteLayout.m */,
 				FFE2E60A150F336D00555C16 /* WADiscreteLayoutHelpers.h */,
 				FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */,
-				FF4C71B01554104E0017AA7C /* WADiscreteLayoutGrid.h */,
-				FF4C71B11554104E0017AA7C /* WADiscreteLayoutGrid.m */,
 				FF9737641551292200D6E7A9 /* WADiscreteLayoutArea.h */,
 				FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */,
 				FFC59BA1142B2B2200E44F1B /* WAEightPartLayoutGrid.h */,
@@ -3804,7 +3796,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B8CA97714BBE7BA006E06BB /* WATests_iOS.m in Sources */,
 				FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTestBase.m in Sources */,
 				FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */,
@@ -3851,7 +3842,6 @@
 				FF586BB31519B52A00F308E2 /* WADefines+iOS.m in Sources */,
 				FF586C731519B9F300F308E2 /* WADiscreteLayoutHelpers.m in Sources */,
 				FF586C741519BB2A00F308E2 /* WAModel.xcdatamodeld in Sources */,
-				FF54C5161520947100301887 /* WADataStoreTest.m in Sources */,
 				FF14FD1E1533149E0013410C /* WAFile.m in Sources */,
 				FF2EA24115384CAB003B965A /* WAOverlayBezel.m in Sources */,
 				FFC0FCEC153C4A8E0058DC5C /* WAArticle.m in Sources */,
@@ -3859,7 +3849,6 @@
 				FFBEF15D153F629B00CF2203 /* WAStorage.m in Sources */,
 				FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
 				FFB7D3AB1546CFAD00CE005C /* WALayoutManagerTestGeneric.m in Sources */,
-				FFB7D3AE1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m in Sources */,
 				FF24B4FE1552B32500DD9379 /* WADiscreteLayoutArea.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4068,7 +4057,6 @@
 				FFA2585815408CDD00FE661C /* WAPickerPaneViewController.m in Sources */,
 				FFA2585C15408D6D00FE661C /* WAFilterPickerViewController.m in Sources */,
 				FF9737661551292200D6E7A9 /* WADiscreteLayoutArea.m in Sources */,
-				FF4C71B21554104E0017AA7C /* WADiscreteLayoutGrid.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
