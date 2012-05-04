@@ -39,8 +39,6 @@
 
 - (void) performAutomaticRemoteUpdatesNow {
 
-	NSLog(@"%s", __PRETTY_FUNCTION__);
-	
 	[self.dataRetrievalTimer fire];
 	[self.dataRetrievalTimer invalidate];
 	[self rescheduleAutomaticRemoteUpdates];
@@ -49,12 +47,8 @@
 
 - (void) handleDataRetrievalTimerDidFire:(NSTimer *)timer {
 
-	if ([self isPostponingDataRetrievalTimerFiring]) {
-		NSLog(@"%s: is postponing timer firing, should NOT fire", __PRETTY_FUNCTION__);
+	if ([self isPostponingDataRetrievalTimerFiring])
 		return;
-	}
-
-	NSLog(@"%s %@", __PRETTY_FUNCTION__, timer);
 
 	[self.dataRetrievalBlocks irExecuteAllObjectsAsBlocks];
 	[self rescheduleAutomaticRemoteUpdates];
@@ -62,8 +56,6 @@
 }
 
 - (void) beginPostponingDataRetrievalTimerFiring {
-
-	NSLog(@"%s", __PRETTY_FUNCTION__);
 
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {
@@ -125,8 +117,6 @@
 }
 
 - (void) endPerformingAutomaticRemoteUpdates {
-
-	NSLog(@"%s", __PRETTY_FUNCTION__);
 	
 	if (![NSThread isMainThread]) {
 		dispatch_async(dispatch_get_main_queue(), ^ {

@@ -11,6 +11,7 @@
 #import "IRPaginatedView.h"
 #import "IRBarButtonItem.h"
 
+@protocol IRDiscreteLayoutItem;
 @class WAArticle, WAArticleViewController;
 @interface WAOverviewController : WAArticlesViewController <IRPaginatedViewDelegate, WAPaginationSliderDelegate>
 
@@ -20,6 +21,8 @@
 - (NSUInteger) gridIndexOfArticle:(WAArticle *)anArticle;
 
 - (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller;
+- (void) enqueueInterfaceUpdate:(void(^)(void))aBlock maintainingPositionForLayoutItem:(id<IRDiscreteLayoutItem>)object sender:(WAArticleViewController *)controller completion:(void(^)(void))block;
+
 - (CGFloat) currentAspectRatio;
 
 @end

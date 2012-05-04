@@ -145,7 +145,6 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 		return nil;
 	
 	NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
-	NSLog(@"%s -> %@", __PRETTY_FUNCTION__, date);
 	
 	return date;
 
@@ -153,8 +152,6 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 
 - (void) setLastContentSyncDate:(NSDate *)date {
 	
-	NSLog(@"%s -> %@", __PRETTY_FUNCTION__, date);
-
 	NSMutableDictionary *metadata = [[self metadata] mutableCopy];
 	
 	[metadata setObject:[NSNumber numberWithDouble:[date timeIntervalSince1970]] forKey:kLastContentSyncDateInTimeIntervalSince1970];
