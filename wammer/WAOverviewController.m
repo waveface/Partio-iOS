@@ -43,6 +43,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
 @property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd;
 
+@property (nonatomic, readwrite, weak) WAArticle *actionedArticle;
+
 - (void) adjustPageViewAtIndex:(NSUInteger)anIndex;
 - (void) adjustPageView:(UIView *)aPageView usingGridAtIndex:(NSUInteger)anIndex;
 - (void) adjustPageView:(UIView *)aPageView withGrid:(IRDiscreteLayoutGrid *)grid;	//	Will use the best transformation destination for the grid with matching aspect ratio of current application frame
@@ -55,6 +57,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @implementation WAOverviewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
 @synthesize requiresRecalculationOnFetchedResultsChangeEnd;
+@synthesize actionedArticle;
 
 - (void) viewDidLayoutSubviews {
 
@@ -269,9 +272,10 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 	}
 	
-	self.discreteLayoutResult = result;
-	
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;
+	IRDiscreteLayoutGrid *lastPageGrid = [self.discreteLayoutResult.grids objectAtIndex:self.paginatedView.currentPage];
+	
+	self.discreteLayoutResult = result;
 	
 	[self.paginatedView reloadViews];
 	self.paginationSlider.numberOfPages = self.paginatedView.numberOfPages;
@@ -286,8 +290,18 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 	} else {
 	
-		if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
-			[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
+		if (lastPageGrid) {
+			
+			IRDiscreteLayoutGrid *bestGrid = [result bestGridMatchingItemsInInstance:lastPageGrid];
+			if (bestGrid)
+				[self.paginatedView scrollToPageAtIndex:[result.grids indexOfObject:bestGrid] animated:NO];
+		
+		} else {
+	
+			if ((self.paginatedView.numberOfPages - 1) >= lastCurrentPage)
+				[self.paginatedView scrollToPageAtIndex:lastCurrentPage animated:NO];
+		
+		}
 		
 	}
 
@@ -295,8 +309,16 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller {
 
+	[self enqueueInterfaceUpdate:aBlock maintainingPositionForLayoutItem:nil sender:controller completion:nil];
+
+}
+
+- (void) enqueueInterfaceUpdate:(void(^)(void))aBlock maintainingPositionForLayoutItem:(id<IRDiscreteLayoutItem>)object sender:(WAArticleViewController *)controller completion:(void(^)(void))callback {
+
 	if (!aBlock)
 		return;
+		
+	self.actionedArticle = object;
 
 	NSParameterAssert([self isViewLoaded]);
 	NSParameterAssert(self.discreteLayoutResult);
@@ -458,7 +480,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		[pageView removeFromSuperview];
 		self.paginatedView.hidden = NO;
 		
-		[self reloadViewContents];
+//		[self reloadViewContents];
+		
+		self.actionedArticle = nil;
+		
+		if (callback)
+			callback();
 		
 	}];
 	
@@ -521,6 +548,59 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 - (NSInteger) layoutManager:(IRDiscreteLayoutManager *)manager indexOfLayoutGrid:(IRDiscreteLayoutGrid *)grid {
 
 	return [self.layoutGrids indexOfObject:grid];
+
+}
+
+- (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager targetForProposedGrid:(IRDiscreteLayoutGrid *)proposedGrid amongCandidates:(NSArray *)candidatesSortedByScore addedToResult:(IRDiscreteLayoutResult *)interimResult replacingGrid:(IRDiscreteLayoutGrid *)replacedGrid inReference:(IRDiscreteLayoutResult *)lastResult {
+	
+	if (actionedArticle) {
+	
+		IRDiscreteLayoutGrid *lastFixedGrid = [lastResult gridContainingItem:actionedArticle];
+		NSUInteger fixedGridIndex = [lastResult.grids indexOfObject:lastFixedGrid];
+		
+		if (fixedGridIndex != NSNotFound)
+		if ([interimResult.grids count] < fixedGridIndex) {
+		
+			IRDiscreteLayoutGrid *gridInLastResult = [lastResult.grids objectAtIndex:[interimResult.grids count]];
+			
+			for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
+				if ([candidate isEqual:gridInLastResult])
+					return candidate;
+			
+			for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
+				if (![candidate areaForItem:actionedArticle])
+					return candidate;
+		
+		}
+	
+		NSArray *candidatesContainingActionedArticle = [candidatesSortedByScore irMap:^(IRDiscreteLayoutGrid *grid, NSUInteger index, BOOL *stop) {
+			
+			if ([grid areaForItem:actionedArticle])
+				return grid;
+			
+			return (IRDiscreteLayoutGrid *)nil;
+			
+		}];
+		
+		if ([candidatesContainingActionedArticle count]) {
+			//	NSParameterAssert([interimResult.grids count] == fixedGridIndex);
+			actionedArticle = nil;
+			return [candidatesContainingActionedArticle objectAtIndex:0];
+		}
+	
+	} else {
+	
+		for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
+			if ([candidate isEqual:replacedGrid])
+				return candidate;
+		
+		for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
+			if ([candidate.identifier isEqualToString:replacedGrid.identifier])
+				return candidate;		
+		
+	}
+	
+	return proposedGrid;
 
 }
 
