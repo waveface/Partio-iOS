@@ -141,9 +141,14 @@ static const NSString *kWAImageStackViewElementImage = @"kWAImageStackViewElemen
 	if (images == newImages)
 		return;
 
+	BOOL needsReplacement = ![images isEqual:newImages];
+	
 	[self willChangeValueForKey:@"images"];
 	images = newImages;
 	[self didChangeValueForKey:@"images"];
+	
+	if (!needsReplacement)
+		return;
 	
 	NSArray *decodedImages = [self.images objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, MIN(3, [self.images count]) }]];
 

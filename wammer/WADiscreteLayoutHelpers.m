@@ -63,8 +63,6 @@ NSArray * WADefaultLayoutGrids (void) {
 
 NSArray * WADefaultLayoutGridsMake (void) {
 
-	IRDiscreteLayoutAreaDisplayBlock genericDisplayBlock = nil;
-	
 	CGSize portraitSize = (CGSize){ 768, 1024 };
 	CGSize landscapeSize = (CGSize){ 1024, 768 };
 	
