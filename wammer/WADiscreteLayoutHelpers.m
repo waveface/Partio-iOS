@@ -168,8 +168,8 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		
 	WALayoutAreaTemplateNameBlock annotationTop_verticalFave = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
-		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave",
-		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop");
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical",
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave");
 		
 	WALayoutAreaTemplateNameBlock annotationTop_horizontalFave = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
@@ -190,12 +190,12 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", nil, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
-				area(@"B", nil, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
-				area(@"C", nil, layoutBlock(3, 2, 1, 0, 1, 1), singleXStack),
-				area(@"D", nil, layoutBlock(3, 2, 1, 1, 1, 1), singleXStack),
-				area(@"E", nil, layoutBlock(3, 2, 2, 0, 1, 1), singleXStack),
-				area(@"F", nil, layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
+				area(@"A", nil, layoutBlock(3, 2, 0, 0, 1, 1), singleYStack),
+				area(@"B", nil, layoutBlock(3, 2, 0, 1, 1, 1), singleYStack),
+				area(@"C", nil, layoutBlock(3, 2, 1, 0, 1, 1), singleYStack),
+				area(@"D", nil, layoutBlock(3, 2, 1, 1, 1, 1), singleYStack),
+				area(@"E", nil, layoutBlock(3, 2, 2, 0, 1, 1), singleYStack),
+				area(@"F", nil, layoutBlock(3, 2, 2, 1, 1, 1), singleYStack),
 			nil]]
 			
 		),
