@@ -82,7 +82,7 @@
 			([article.text length] ? @"body" : @"no-body"),
 		nil] componentsJoinedByString:@" "]);
 		
-		hook(@"$TITLE", nil);
+		hook(@"$TITLE", [article.text substringToIndex: MIN( 120, [article.text length])] );
 		hook(@"$ADDITIONAL_STYLES", nil);
 		hook(@"$BODY", article.text);
 		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
