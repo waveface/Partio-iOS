@@ -148,9 +148,9 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 - (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
 
-	[self associateObject:nil usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileThumbnailImage];
-	[self associateObject:nil usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileLargeThumbnailImage];
-	[self associateObject:nil usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:YES usingKey:kWAFileResourceImage];
+	[self associateObject:nil usingKey:&kWAFileThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:NO usingKey:kWAFileThumbnailImage];
+	[self associateObject:nil usingKey:&kWAFileLargeThumbnailImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:NO usingKey:kWAFileLargeThumbnailImage];
+	[self associateObject:nil usingKey:&kWAFileResourceImage associationPolicy:OBJC_ASSOCIATION_ASSIGN notify:NO usingKey:kWAFileResourceImage];
 
 }
 
