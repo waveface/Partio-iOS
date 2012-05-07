@@ -551,8 +551,14 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
+- (NSArray *) layoutManager:(IRDiscreteLayoutManager *)manager targetItemsForProposedItems:(NSArray *)proposedItems instantiatingGrid:(IRDiscreteLayoutGrid *)prototype addedToResult:(IRDiscreteLayoutResult *)interimResult replacingGrid:(IRDiscreteLayoutGrid *)replacedGrid inReference:(IRDiscreteLayoutResult *)lastResult {
+
+	return proposedItems;
+
+}
+
 - (IRDiscreteLayoutGrid *) layoutManager:(IRDiscreteLayoutManager *)manager targetForProposedGrid:(IRDiscreteLayoutGrid *)proposedGrid amongCandidates:(NSArray *)candidatesSortedByScore addedToResult:(IRDiscreteLayoutResult *)interimResult replacingGrid:(IRDiscreteLayoutGrid *)replacedGrid inReference:(IRDiscreteLayoutResult *)lastResult {
-	
+
 	if (actionedArticle) {
 	
 		IRDiscreteLayoutGrid *lastFixedGrid = [lastResult gridContainingItem:actionedArticle];
@@ -586,7 +592,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 		for (IRDiscreteLayoutGrid *candidate in candidatesContainingActionedArticle)
 			if (![candidate.identifier hasPrefix:@"6_any"]) {
-				actionedArticle = nil;
+//				actionedArticle = nil;
 				return candidate;
 			}
 	
