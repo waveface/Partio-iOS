@@ -157,12 +157,12 @@ NSArray * WADefaultLayoutGridsMake (void) {
 	WALayoutAreaTemplateNameBlock singleYStack = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
 		@"WFPreviewTemplate_Discrete_Web_Image",
-		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical");
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal");
 		
 	WALayoutAreaTemplateNameBlock singleXStack = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
 		@"WFPreviewTemplate_Discrete_Web_Image",
-		@"WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal");
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical");
 		
 	WALayoutAreaTemplateNameBlock annotationTop_verticalFave = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",

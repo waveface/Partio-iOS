@@ -297,7 +297,7 @@
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
 		FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */; };
 		FF426FC6155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */; };
-		FF426FC7155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */; };
+		FF426FC7155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC2155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html */; };
 		FF426FC8155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */; };
 		FF426FC9155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */; };
 		FF426FCE15510DF50053D1CA /* WFPreview.js in Resources */ = {isa = PBXBuildFile; fileRef = FF426FCA15510DCD0053D1CA /* WFPreview.js */; };
@@ -1386,7 +1386,7 @@
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
 		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = SOURCE_ROOT; };
 		FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_Image.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_Image.html; sourceTree = SOURCE_ROOT; };
-		FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html; sourceTree = SOURCE_ROOT; };
+		FF426FC2155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html"; sourceTree = SOURCE_ROOT; };
 		FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html"; sourceTree = SOURCE_ROOT; };
 		FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html"; sourceTree = SOURCE_ROOT; };
 		FF426FCA15510DCD0053D1CA /* WFPreview.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = WFPreview.js; path = external/WFPresentation/Source/WFPreview.js; sourceTree = SOURCE_ROOT; };
@@ -2397,21 +2397,21 @@
 			children = (
 				FF51509C14835A030073386D /* Localizable.strings */,
 				FF945EE8152D72510034D540 /* UIKit+IRAdditions.bundle */,
+				FFEF58321549F5E900722D91 /* WAPreviewQuoteBackdrop.png */,
+				FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */,
 				FF426FCA15510DCD0053D1CA /* WFPreview.js */,
 				FF426FCB15510DCD0053D1CA /* WFPreviewDebug.js */,
 				FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */,
 				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
+				FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */,
+				FF426FC2155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html */,
+				FFCB9B2D155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html */,
+				FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */,
+				FFCB9B2B155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html */,
 				FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */,
 				FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */,
 				FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */,
-				FF426FC2155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html */,
-				FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */,
-				FFCB9B2D155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html */,
-				FFCB9B2B155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html */,
-				FF426FC4155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html */,
-				FFBDD8A415499F62006E2666 /* WAPreviewStripePattern.png */,
-				FFEF58321549F5E900722D91 /* WAPreviewQuoteBackdrop.png */,
 			);
 			name = "iOS External Resources";
 			sourceTree = "<group>";
@@ -3667,7 +3667,7 @@
 				FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */,
 				FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */,
 				FF426FC6155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html in Resources */,
-				FF426FC7155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_ImageWithDescription_Horizontal.html in Resources */,
+				FF426FC7155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html in Resources */,
 				FF426FC8155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html in Resources */,
 				FF426FC9155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical.html in Resources */,
 				FFBDD8A515499F62006E2666 /* WAPreviewStripePattern.png in Resources */,
