@@ -18,11 +18,15 @@ typedef void (^WARegisterRequestViewControllerCallback) (WARegisterRequestViewCo
 
 + (WARegisterRequestViewController *) controllerWithCompletion:(WARegisterRequestViewControllerCallback)aBlock;
 
-@property (nonatomic, readwrite, retain) NSString *username;
-@property (nonatomic, readwrite, retain) NSString *nickname;
-@property (nonatomic, readwrite, retain) NSString *password;
-@property (nonatomic, readwrite, assign) CGFloat labelWidth;
+@property (nonatomic, readonly, copy) NSString *username;
+@property (nonatomic, readonly, copy) NSString *userID;
+@property (nonatomic, readonly, copy) NSString *nickname;
+@property (nonatomic, readonly, copy) NSString *password;
+@property (nonatomic, readonly, copy) NSString *token;
+@property (nonatomic, readonly, assign) CGFloat labelWidth;
 
 @property (nonatomic, readonly, copy) WARegisterRequestViewControllerCallback completionBlock;
+
+- (void) presentError:(NSError *)error completion:(void(^)(void))block;
 
 @end
