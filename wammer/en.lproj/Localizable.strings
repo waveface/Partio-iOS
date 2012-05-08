@@ -36,8 +36,7 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
-/* Action title for accepting what happened reluctantly
-   Fine! */
+/* Fine! */
 "ACTION_OKAY" = "Okay";
 
 /* No comment provided by engineer. */
@@ -64,8 +63,7 @@
 /* Action title for signing in */
 "ACTION_SIGN_IN" = "Sign In";
 
-/* Action title for Signing Out
-   Action title for signing the user out */
+/* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Sign Out";
 
 /* Button title for showing a camera capture controller */
