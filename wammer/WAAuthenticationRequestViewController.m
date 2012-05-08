@@ -11,12 +11,9 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WAOverlayBezel.h"
-
 #import "WADefines.h"
 
-#import "IRAction.h"
-
-#import "UIView+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
 
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
@@ -35,7 +32,7 @@
 @implementation WAAuthenticationRequestViewController
 @synthesize labelWidth;
 @synthesize usernameField, passwordField;
-@synthesize username, password, completionBlock;
+@synthesize username, userID, password, token, completionBlock;
 @synthesize performsAuthenticationOnViewDidAppear;
 @synthesize actions;
 @synthesize validForAuthentication;
@@ -373,7 +370,7 @@
 	self.username = self.usernameField.text;
 	self.password = self.passwordField.text;
   
-  self.validForAuthentication = [self.username length] && [self.password length];
+  self.validForAuthentication = ([self.username length] || [self.userID length]) && ([self.password length] || [self.token length]);
 
 }
 
@@ -399,15 +396,12 @@
 	
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
+	
+	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *userID, NSString *userToken, NSString *userGroupID) {
 
-	[[WARemoteInterface sharedInterface] retrieveTokenForUser:self.username password:self.password onSuccess:^(NSDictionary *userRep, NSString *token) {
-		
-		[WARemoteInterface sharedInterface].userIdentifier = [userRep objectForKey:@"user_id"];
-		[WARemoteInterface sharedInterface].userToken = token;
-		
-		NSArray *allGroups = [userRep objectForKey:@"groups"];
-		if ([allGroups count])
-			[WARemoteInterface sharedInterface].primaryGroupIdentifier = [[allGroups objectAtIndex:0] valueForKeyPath:@"group_id"];
+		[WARemoteInterface sharedInterface].userIdentifier = userID;
+		[WARemoteInterface sharedInterface].userToken = userToken;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = userGroupID;
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
@@ -418,9 +412,11 @@
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
 		});
+	
+	};
+	
+	void (^handleAuthFailure)(NSError *) = ^ (NSError *error) {
 
-	} onFailure: ^ (NSError *error) {
-		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			if (self.completionBlock)
@@ -430,8 +426,44 @@
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
 		});
+	
+	};
+	
+	if ([self.userID length] && ![self.password length] && [self.token length]) {
+	
+		[WARemoteInterface sharedInterface].userIdentifier = self.userID;
+		[WARemoteInterface sharedInterface].userToken = self.token;
+		
+		[[WARemoteInterface sharedInterface] retrieveUser:self.userID onSuccess:^(NSDictionary *userRep) {
 			
-	}];		
+			NSArray *allGroups = [userRep objectForKey:@"groups"];
+			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+			
+			handleAuthSuccess(self.userID, self.token, groupID);
+			
+		} onFailure:^(NSError *error) {
+			
+			handleAuthFailure(error);
+			
+		}];
+	
+	} else {
+	
+		[[WARemoteInterface sharedInterface] retrieveTokenForUser:self.username password:self.password onSuccess:^(NSDictionary *userRep, NSString *inToken) {
+		
+			NSString *inUserID = [userRep objectForKey:@"user_id"];
+			NSArray *allGroups = [userRep objectForKey:@"groups"];
+			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+			
+			handleAuthSuccess(inUserID, inToken, groupID);
+			
+		} onFailure: ^ (NSError *error) {
+			
+			handleAuthFailure(error);
+				
+		}];
+	
+	}
 
 }
 
@@ -469,6 +501,62 @@
     }
   
   }
+
+}
+
+- (IRAction *) newSignInAction {
+
+	__weak WAAuthenticationRequestViewController *wSelf = self;
+	
+	IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_IN", @"Action title for signing in") block:^{
+    
+    [wSelf authenticate];
+    
+  }];
+	
+	[signInUserAction irBind:@"enabled" toObject:self keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
+    (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+  nil]];
+	
+  [self irPerformOnDeallocation:^{
+    [signInUserAction irUnbind:@"enabled"];
+  }];
+	
+	return signInUserAction;
+
+}
+
+- (void) presentError:(NSError *)error completion:(void(^)(void))block {
+
+	__weak WAAuthenticationRequestViewController *wSelf = self;
+	
+	NSString *resetPasswordTitle = NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password");
+	IRAction *resetPasswordAction = [IRAction actionWithTitle:resetPasswordTitle block: ^ {
+	
+		wSelf.password = nil;
+		[wSelf assignFirstResponderStatusToBestMatchingField];
+
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
+	
+  }];
+
+	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure");
+	NSString *alertText = [[NSArray arrayWithObjects:
+		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_DESCRIPTION", @"Description for authentication failure"),
+		[NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
+		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION", @"Recovery notion for authentication failure recovery"),
+	nil] componentsJoinedByString:@""];
+	
+	[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling") block:^{
+	
+		wSelf.password = nil;
+		[wSelf assignFirstResponderStatusToBestMatchingField];
+		
+	}] otherActions:[NSArray arrayWithObjects:
+		
+		resetPasswordAction,
+		
+	nil]] show];
 
 }
 

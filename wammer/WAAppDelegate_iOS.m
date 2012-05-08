@@ -49,6 +49,8 @@
 #import	"DCIntrospect.h"
 #import "UIKit+IRAdditions.h"
 
+#import "WARegisterRequestViewController+SubclassEyesOnly.h"
+
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -57,15 +59,14 @@
 - (void) handleIASKSettingsChanged:(NSNotification *)aNotification;
 - (void) handleIASKSettingsDidRequestAction:(NSNotification *)aNotification;
 
-- (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)self;
-
 @property (nonatomic, readwrite, assign) BOOL alreadyRequestingAuthentication;
 
 - (void) clearViewHierarchy;
 - (void) recreateViewHierarchy;
 - (void) handleDebugModeToggled;
 
-- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier;
+- (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block;
+- (BOOL) isRunningAuthRequest;
 
 @end
 
@@ -73,20 +74,6 @@
 @implementation WAAppDelegate_iOS
 @synthesize window = _window;
 @synthesize alreadyRequestingAuthentication;
-
-- (void) dealloc {
-
-  //  This is so not going to happen
-  
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	WF_GOOGLEANALYTICS(^ {
-		
-		[[GANTracker sharedTracker] stopTracker];
-		
-	});
-
-}
 
 - (void) bootstrap {
 	
@@ -107,10 +94,7 @@
 	
 		WF_TESTFLIGHT(^ {
 		
-			NSLog(@"Using Testflight");
-					
 			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				//	(id)kCFBooleanFalse, @"reinstallCrashHandlers",
 				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
 			nil]];
 			
@@ -129,8 +113,6 @@
 		
 		WF_CRASHLYTICS(^ {
 			
-			NSLog(@"Using Crashlytics");
-			
 			[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
 			[Crashlytics sharedInstance].debugMode = YES;
 			
@@ -138,8 +120,6 @@
 	
 		WF_GOOGLEANALYTICS(^ {
 		
-			NSLog(@"Using Google Analytics");
-					
 			[[GANTracker sharedTracker] startTrackerWithAccountID:kWAGoogleAnalyticsAccountID dispatchPeriod:kWAGoogleAnalyticsDispatchInterval delegate:nil];
 			[GANTracker sharedTracker].debug = YES;
 			
@@ -206,39 +186,32 @@
 
 - (void) clearViewHierarchy {
 
-	__block void (^dismissModal)(UIViewController *) = ^ (UIViewController *aVC) {
-		
-		if (aVC.modalViewController)
-			dismissModal(aVC.modalViewController);
-		else
-			[aVC dismissModalViewControllerAnimated:NO];
-	
-	};
-	
 	UIViewController *rootVC = self.window.rootViewController;
+	IRViewController *emptyVC = [[IRViewController alloc] init];
+	__weak IRViewController *wEmptyVC = emptyVC;
 	
-	dismissModal(rootVC);
-
-	IRViewController *bottomMostViewController = [[IRViewController alloc] init];
-	__weak IRViewController *wBottomMostViewController = bottomMostViewController;
-	bottomMostViewController.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+	emptyVC.onShouldAutorotateToInterfaceOrientation = ^ (UIInterfaceOrientation toOrientation) {
+		
 		return YES;
+		
 	};
 	
-	bottomMostViewController.onLoadView = ^ () {
-		wBottomMostViewController.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
-		wBottomMostViewController.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
+	emptyVC.onLoadView = ^ {
+	
+		wEmptyVC.view = [[UIView alloc] initWithFrame:(CGRect){ 0, 0, 1024, 1024 }];
+		wEmptyVC.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternBlackPaper"]];
+		
 	};
 	
-	self.window.rootViewController = bottomMostViewController;
-	[rootVC didReceiveMemoryWarning];	//	Kill it now
+	self.window.rootViewController = emptyVC;
+	
+	[rootVC didReceiveMemoryWarning];
 	
 }
 
 - (void) recreateViewHierarchy {
 
-	NSOperationQueue *queue = [IRRemoteResourcesManager sharedManager].queue;
-	[queue cancelAllOperations];
+	[[IRRemoteResourcesManager sharedManager].queue cancelAllOperations];
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 	
@@ -299,8 +272,6 @@
 			
 		} runningOnboardingProcess:YES];
 		
-		NSParameterAssert(self.alreadyRequestingAuthentication);
-			
 	});
 
 }
@@ -392,7 +363,7 @@
 	
 	if ([action isEqualToString:@"WASettingsActionResetDefaults"]) {
 	
-		__block __typeof__(self) nrSelf = self;
+		__weak WAAppDelegate_iOS *wSelf = self;
 		
 		NSString *alertTitle = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_TITLE", nil);
 		NSString *alertText = NSLocalizedString(@"RESET_SETTINGS_CONFIRMATION_DESCRIPTION", nil);
@@ -407,8 +378,8 @@
 				
 			[defaults synchronize];
 			
-			[nrSelf clearViewHierarchy];
-			[nrSelf recreateViewHierarchy];
+			[wSelf clearViewHierarchy];
+			[wSelf recreateViewHierarchy];
 		
 		}];
 		
@@ -426,7 +397,7 @@
 
 - (void) handleDebugModeToggled {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WAAppDelegate_iOS *wSelf = self;
 	
 	BOOL isNowEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
 	
@@ -437,11 +408,11 @@
 	void (^zapAndRequestReauthentication)() = ^ {
 	
 		if (self.alreadyRequestingAuthentication) {
-			nrSelf.alreadyRequestingAuthentication = NO;
-			[nrSelf clearViewHierarchy];
+			wSelf.alreadyRequestingAuthentication = NO;
+			[wSelf clearViewHierarchy];
 		}
 		
-		[nrSelf applicationRootViewControllerDidRequestReauthentication:nil];
+		[wSelf applicationRootViewControllerDidRequestReauthentication:nil];
 		
 	};
 	
@@ -487,28 +458,10 @@
 
 }
 
-- (BOOL) presentAuthenticationRequestRemovingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
-
-  return [self presentAuthenticationRequestWithReason:nil allowingCancellation:NO removingPriorData:eraseAuthInfo clearingNavigationHierarchy:zapEverything runningOnboardingProcess:shouldRunOnboardingChecksIfUserUnchanged];
-
-}
-
-- (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
-
-	return [self presentAuthenticationRequestWithReason:aReason allowingCancellation:allowsCancellation removingPriorData:eraseAuthInfo clearingNavigationHierarchy:zapEverything onAuthSuccess:nil runningOnboardingProcess:shouldRunOnboardingChecksIfUserUnchanged];
-
-}
-
 - (BOOL) presentAuthenticationRequestWithReason:(NSString *)aReason allowingCancellation:(BOOL)allowsCancellation removingPriorData:(BOOL)eraseAuthInfo clearingNavigationHierarchy:(BOOL)zapEverything onAuthSuccess:(void (^)(NSString *userIdentifier, NSString *userToken, NSString *primaryGroupIdentifier))successBlock runningOnboardingProcess:(BOOL)shouldRunOnboardingChecksIfUserUnchanged {
 
-  @synchronized (self) {
-    
-    if (self.alreadyRequestingAuthentication)
-      return NO;
-    
-    self.alreadyRequestingAuthentication = YES;
-  
-  }
+	if ([self isRunningAuthRequest])
+		return NO;
 	
   if (allowsCancellation)
     NSParameterAssert(!eraseAuthInfo);
@@ -519,67 +472,81 @@
 	if (zapEverything)
 		[self clearViewHierarchy];
 	
+	[self handleAuthRequest:aReason withOptions:nil completion:^(BOOL didFinish, NSError *error) {
 	
-  NSString *capturedCurrentUserIdentifier = [WARemoteInterface sharedInterface].userIdentifier;
-  BOOL (^userIdentifierChanged)() = ^ {
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	
+		if (didFinish)
+			if (successBlock)
+				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
+		
+	}];
+	
+	return YES;
+
+}
+
+- (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block {
+
+	NSParameterAssert(!self.alreadyRequestingAuthentication);
+	self.alreadyRequestingAuthentication = YES;
+
+  NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
+  BOOL (^userIDChanged)() = ^ {
 	
 		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
-	
-		NSLog(@"Old ID: %@", capturedCurrentUserIdentifier);
-		NSLog(@"New ID: %@", currentID);
+    return (BOOL)![currentID isEqualToString:lastUserID];
 		
-    return (BOOL)![currentID isEqualToString:capturedCurrentUserIdentifier];
-		
-  };  
+  };
 	
+  __weak WAAppDelegate_iOS *wAppDelegate = self;
 	
-  __block WAAuthenticationRequestViewController *authRequestVC;
+	void (^handleAuthSuccess)(void) = ^ {
 	
-	void (^presentWrappedAuthRequestVC)(WAAuthenticationRequestViewController *authVC, BOOL animated) = ^ (WAAuthenticationRequestViewController *authVC, BOOL animated) {
-	
-		WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authVC];
-		authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-		authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
-	
-		[self.window.rootViewController presentModalViewController:authRequestWrappingVC animated:animated];
+		if (block)
+			block(YES, nil);
 			
+		wAppDelegate.alreadyRequestingAuthentication = NO;
+		
 	};
+	
+  __weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
   
-  IRAction *resetPasswordAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password") block: ^ {
-  
-    authRequestVC.password = nil;
-    [authRequestVC assignFirstResponderStatusToBestMatchingField];
-    
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
-  
-  }];
+		if (anError) {
+			
+			[authRequestVC presentError:anError completion:nil];
+			return;
 
-  IRAction *registerUserAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_REGISTER_USER", @"Action title for registering") block: ^ {
+		}
+
+		if (userIDChanged()) {
+			UINavigationController *navC = self.navigationController;
+			[self dismissModalViewControllerAnimated:NO];
+			[wAppDelegate recreateViewHierarchy];
+			[wAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
+		}
+
+		handleAuthSuccess();
+		
+		[self dismissModalViewControllerAnimated:YES];
+
+  }];
+	
+	
+	NSString *registerUserTitle = NSLocalizedString(@"ACTION_REGISTER_USER", @"Action title for registering");
+  IRAction *registerUserAction = [IRAction actionWithTitle:registerUserTitle block: ^ {
   
-    __block WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+    __weak WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
     
       if (error) {
-        
-        NSString *alertTitle = NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_TITLE", @"Title for registration failure");
-        
-        NSString *alertText = [[NSArray arrayWithObjects:
-          NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION", @"Description for registration failure"),
-          [NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
-          NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION", @"Recovery notion for registration failure recovery"),
-        nil] componentsJoinedByString:@""];
-
-        [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
-        
-          [IRAction actionWithTitle:@"OK" block:nil],
-        
-        nil]] show];
-        
-        return;
-      
+				[registerRequestVC presentError:error completion:nil];
+				return;
       }
-      
+			
       authRequestVC.username = self.username;
       authRequestVC.password = self.password;
+      authRequestVC.token = self.token;
+      authRequestVC.userID = self.userID;
       authRequestVC.performsAuthenticationOnViewDidAppear = YES;
 
       [authRequestVC.tableView reloadData];
@@ -589,90 +556,16 @@
   
     registerRequestVC.username = authRequestVC.username;
     registerRequestVC.password = authRequestVC.password;
+    registerRequestVC.token = authRequestVC.token;
+    registerRequestVC.userID = authRequestVC.userID;
     
     [authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
   
   }];
+	
+	authRequestVC.navigationItem.prompt = reason;
   
-  IRAction *signInUserAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_IN", @"Action title for signing in") block:^{
-    
-    [authRequestVC authenticate];
-    
-  }];
-  
-  
-  __block __typeof__(self) nrAppDelegate = self;
-  
-  authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
-  
-      if (anError) {
-      
-        NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure");
-        NSString *alertText = [[NSArray arrayWithObjects:
-          NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_DESCRIPTION", @"Description for authentication failure"),
-          [NSString stringWithFormat:@"“%@”.", [anError localizedDescription]], @"\n\n",
-          NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION", @"Recovery notion for authentication failure recovery"),
-        nil] componentsJoinedByString:@""];
-        
-        [[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling") block:^{
-        
-          authRequestVC.password = nil;
-          [authRequestVC assignFirstResponderStatusToBestMatchingField];
-          
-        }] otherActions:[NSArray arrayWithObjects:
-          
-          resetPasswordAction,
-          registerUserAction,
-          
-        nil]] show];
-        
-        return;
-      
-      }
-			
-			WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-			
-			if (successBlock)
-				successBlock(ri.userIdentifier, ri.userToken, ri.primaryGroupIdentifier);
-				
-			BOOL userIdentifierHasChanged = userIdentifierChanged();
-			
-			if (userIdentifierHasChanged || zapEverything) {
-				UINavigationController *navC = self.navigationController;
-				[self dismissModalViewControllerAnimated:NO];
-				[nrAppDelegate recreateViewHierarchy];
-				[nrAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
-			}
-  
-			if (userIdentifierHasChanged || shouldRunOnboardingChecksIfUserUnchanged) {
-        [nrAppDelegate performUserOnboardingUsingAuthRequestViewController:self];
-      } else {
-        [self dismissModalViewControllerAnimated:YES];
-      }
-            
-			nrAppDelegate.alreadyRequestingAuthentication = NO;
-
-  }];
-  
-  if (aReason)
-    authRequestVC.navigationItem.prompt = aReason;
-  
-  if (allowsCancellation) {
-    authRequestVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
-		
-      [authRequestVC.navigationController dismissModalViewControllerAnimated:YES];
-			
-			nrAppDelegate.alreadyRequestingAuthentication = NO;
-			
-    }];
-  }
-  
-  [signInUserAction irBind:@"enabled" toObject:authRequestVC keyPath:@"validForAuthentication" options:[NSDictionary dictionaryWithObjectsAndKeys:
-    (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-  nil]];
-  [authRequestVC irPerformOnDeallocation:^{
-    [signInUserAction irUnbind:@"enabled"];
-  }];
+  IRAction *signInUserAction = [authRequestVC newSignInAction];
   
   NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
     
@@ -692,212 +585,27 @@
 		}]];
 		
 	}
-
+	
 	authRequestVC.actions = authRequestActions;
 
-	presentWrappedAuthRequestVC(authRequestVC, NO);
+	WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authRequestVC];
+	authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
+	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 
-	return YES;
-
-}
-
-- (void) performUserOnboardingUsingAuthRequestViewController:(WAAuthenticationRequestViewController *)authVC {
-
-	NSParameterAssert([NSThread isMainThread]);
-
-	__block __typeof__(self) nrAppDelegate = self;
-
-	UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-	UIViewController *rootVC = keyWindow.rootViewController;
-	UIView *rootView = rootVC.view;
-	
-	UIView *overlayView = ((^ {
-	
-		UIView *returnedView = [[UIView alloc] initWithFrame:rootView.bounds];
-		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:YES completion:^{
 		
-		UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+		//	?
 		
-		spinner.center = (CGPoint){
-			CGRectGetMidX(returnedView.bounds),
-			CGRectGetMidY(returnedView.bounds)
-		};
-		
-		spinner.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-		
-		[spinner startAnimating];
-		
-		[returnedView addSubview:spinner];
-		returnedView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.75f];
-	
-		return returnedView;
-	
-	})());
-	
-	void (^addOverlayView)(void) = ^ {
-	
-		[rootVC.view addSubview:overlayView];	
-		overlayView.frame = rootVC.view.bounds;
-	
-	};
-	
-	void (^removeOverlayView)(BOOL) = ^ (BOOL animated) {
-		
-		[UIView animateWithDuration:(animated ? 0.3f : 0.0f) delay:0.0f options:0 animations:^{
-		
-			overlayView.alpha = 0.0f;
-			
-		} completion:^(BOOL finished) {
-		
-			[overlayView removeFromSuperview];
-			
-		}];
-		
-	};
-	
-	
-	__block WAOverlayBezel *nrBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[nrBezel showWithAnimation:WAOverlayBezelAnimationNone];
-	
-	
-	//	Always request reauth beyond this point
-	
-	[[NSUserDefaults standardUserDefaults] setBool:YES forKey:kWAUserRequiresReauthentication];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-	
-	
-	[[WADataStore defaultStore] updateCurrentUserOnSuccess: ^ {
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-            
-      void (^operations)() = ^ {
-          
-					addOverlayView();	
-          [keyWindow.rootViewController dismissModalViewControllerAnimated:YES];
-          
-          dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-					
-						[[WARemoteInterface sharedInterface] retrieveUser:[WARemoteInterface sharedInterface].userIdentifier onSuccess:^(NSDictionary *userRep) {
-							
-							BOOL userNeedsStation = [[userRep valueForKeyPath:@"state"] isEqual:@"station_required"];
-							
-              dispatch_async(dispatch_get_main_queue(), ^ {
-              
-                if (!userNeedsStation) {
-                
-                  [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
-                  [[NSUserDefaults standardUserDefaults] synchronize];
-
-                  removeOverlayView(YES);
-									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-                
-                } else {
-                
-                  WAStationDiscoveryFeedbackViewController *stationDiscoveryFeedbackVC = [[WAStationDiscoveryFeedbackViewController alloc] init];
-                  UINavigationController *stationDiscoveryNavC = [stationDiscoveryFeedbackVC wrappingNavigationController];
-                  stationDiscoveryFeedbackVC.dismissalAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", @"Action title for signing the user out") block:^{
-                    
-                    removeOverlayView(NO);
-                    [stationDiscoveryNavC dismissModalViewControllerAnimated:NO];
-                    [nrAppDelegate applicationRootViewControllerDidRequestReauthentication:nil];
-                    
-                  }];
-									
-									void (^finalizeOnboarding)(void) = ^ {
-									
-										[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kWAUserRequiresReauthentication];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    
-                    [stationDiscoveryFeedbackVC dismissModalViewControllerAnimated:YES];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-                      removeOverlayView(YES);
-                    });
-									
-									};
-									
-									if (WAAdvancedFeaturesEnabled()) {
-									
-										//	Alright!
-										
-										stationDiscoveryFeedbackVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithTitle:@"I don’t care" action:^{
-											finalizeOnboarding();
-										}];
-										
-									}
-                  
-									[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-                  [rootVC presentModalViewController:stationDiscoveryNavC animated:YES];
-                  
-                  __block id notificationListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWARemoteInterfaceReachableHostsDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
-                  
-                    WARemoteInterface *interface = [note object];
-                    
-                    if ([interface.monitoredHosts count] <= 1) {
-                    
-                      return;
-                    
-                      //  Damned shabby check
-                      //  Should refactor
-                    
-                    }
-                    
-                   finalizeOnboarding();
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                    
-                      [[NSNotificationCenter defaultCenter] removeObserver:notificationListener];
-                      objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, nil, OBJC_ASSOCIATION_ASSIGN);
-                      
-                    });
-                    
-                  }];
-                
-                  objc_setAssociatedObject(stationDiscoveryFeedbackVC, &kWARemoteInterfaceReachableHostsDidChangeNotification, notificationListener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-                
-                }
-              
-              });
-              
-            } onFailure:^(NSError *error) {
-            
-              dispatch_async(dispatch_get_main_queue(), ^ {
-            
-                NSLog(@"Error retrieving user information: %@", error);  //  FAIL
-                removeOverlayView(YES);
-								[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-              
-              });
-              
-            }];
-            
-          });
-          
-      };
-      
-      dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0f * NSEC_PER_SEC), dispatch_get_main_queue(), operations);
-    
-    });
-    
-  } onFailure: ^ {
-  
-    dispatch_async(dispatch_get_main_queue(), ^{
-
-      [IRAlertView alertViewWithTitle:@"Error Retrieving User Information" message:@"Unable to retrieve user metadata." cancelAction:nil otherActions:[NSArray arrayWithObjects:
-      
-        [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Action title for accepting what happened reluctantly") block:nil],
-      
-      nil]];
-    
-			[nrBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			
-    });
-    
-  }];
+	}];
 
 }
 
 
-#pragma mark - Network Activity
+- (BOOL) isRunningAuthRequest {
+
+	return self.alreadyRequestingAuthentication;
+
+}
 
 static unsigned int networkActivityStackingCount = 0;
 
@@ -956,100 +664,6 @@ static unsigned int networkActivityStackingCount = 0;
 	
 	nil]);
 
-}
-
-- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier {
-
-	NSParameterAssert(identifier);
-	WADataStore * const ds = [WADataStore defaultStore];
-	
-	ds.persistentStoreName = [identifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-	
-	NSManagedObjectContext *context = [ds disposableMOC];
-
-	NSArray *existingUsers = [context executeFetchRequest:[ds newFetchRequestForUsersWithIdentifier:identifier] error:nil];
-	NSUInteger numberOfExistingUsers = [existingUsers count];
-	if (numberOfExistingUsers > 1) {
-		
-		WAUser *tentativeUser = [existingUsers lastObject];
-		
-		NSLog(@"Found duplicate user entity, using %@ as the main entity", tentativeUser);
-	
-		[existingUsers enumerateObjectsUsingBlock: ^ (WAUser *otherUser, NSUInteger idx, BOOL *stop) {
-		
-			if (otherUser == tentativeUser)
-				return;
-				
-			NSLog(@"Patching erroneous duplicate user entity %@", otherUser);
-			
-			[tentativeUser addArticles:otherUser.articles];
-			[tentativeUser addComments:otherUser.articles];
-			[tentativeUser addFiles:otherUser.articles];
-			[tentativeUser addGroups:otherUser.articles];
-			[tentativeUser addPreviews:otherUser.articles];
-			[tentativeUser addStorages:otherUser.articles];
-			
-			[otherUser.managedObjectContext deleteObject:otherUser];
-			
-		}];
-		
-		[context save:nil];
-		
-		[ds setMainUser:tentativeUser inContext:context];
-		
-	}
-	
-	WAUser *user = [ds mainUserInContext:context];
-	
-	@try {
-	
-		[user willAccessValueForKey:nil];
-	
-	} @catch (NSException *e) {
-	
-		user = nil;
-	
-	}
-	
-	if (!user) {
-		
-		NSArray *foundUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
-		
-			[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				identifier, @"user_id",
-			
-			nil],
-		
-		nil] usingMapping:nil options:0];
-		
-		NSCParameterAssert([foundUsers count] == 1);	
-		user = [foundUsers lastObject];
-		
-		[context obtainPermanentIDsForObjects:[NSArray arrayWithObject:user] error:nil];
-		
-		if ([context save:nil]) {
-			[ds setMainUser:user inContext:context];
-			[context save:nil];
-		}
-		
-	}
-	
-	NSParameterAssert([user.identifier isEqual:identifier]);
-	
-#if DEBUG
-
-	do {
-	
-		NSManagedObjectContext *context = [ds disposableMOC];
-		WAUser *user = [ds mainUserInContext:context];
-		
-		NSParameterAssert([user.identifier isEqual:identifier]);
-	
-	} while (0);
-	
-#endif
-	
 }
 
 @end

@@ -13,6 +13,9 @@
 #import "WADefines.h"
 
 #import "WARegisterRequestWebViewController.h"
+#import "WARegisterRequestViewController+SubclassEyesOnly.h"
+
+#import "UIKit+IRAdditions.h"
 
 
 @interface WARegisterRequestViewController () <UITextFieldDelegate>
@@ -21,6 +24,13 @@
 @property (nonatomic, readwrite, retain) UITextField *nicknameField;
 @property (nonatomic, readwrite, retain) UITextField *passwordField;
 @property (nonatomic, readwrite, retain) UITextField *passwordConfirmationField;
+
+@property (nonatomic, readwrite, copy) NSString *username;
+@property (nonatomic, readwrite, copy) NSString *userID;
+@property (nonatomic, readwrite, copy) NSString *nickname;
+@property (nonatomic, readwrite, copy) NSString *password;
+@property (nonatomic, readwrite, copy) NSString *token;
+@property (nonatomic, readwrite, assign) CGFloat labelWidth;
 
 @property (nonatomic, readwrite, copy) WARegisterRequestViewControllerCallback completionBlock;
 
@@ -33,7 +43,7 @@
 @implementation WARegisterRequestViewController
 @synthesize labelWidth;
 @synthesize usernameField, nicknameField, passwordField, passwordConfirmationField;
-@synthesize username, nickname, password, completionBlock;
+@synthesize username, userID, nickname, password, token, completionBlock;
 
 + (WARegisterRequestViewController *) controllerWithCompletion:(WARegisterRequestViewControllerCallback)aBlock {
 
@@ -354,6 +364,24 @@
 		});
 		
 	}];
+
+}
+
+- (void) presentError:(NSError *)error completion:(void(^)(void))block {
+
+	NSString *alertTitle = NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_TITLE", @"Title for registration failure");
+	
+	NSString *alertText = [[NSArray arrayWithObjects:
+		NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION", @"Description for registration failure"),
+		[NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
+		NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION", @"Recovery notion for registration failure recovery"),
+	nil] componentsJoinedByString:@""];
+
+	[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"OK" block:block],
+	
+	nil]] show];
 
 }
 

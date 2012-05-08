@@ -1154,6 +1154,7 @@
 		FF0528B21508D1A100F585D7 /* WALocalizedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedLabel.h; sourceTree = "<group>"; };
 		FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedLabel.m; sourceTree = "<group>"; };
 		FF06363814B346CB00E7AF78 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		FF0841471558E18900C47CC3 /* WARegisterRequestViewController+SubclassEyesOnly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARegisterRequestViewController+SubclassEyesOnly.h"; sourceTree = "<group>"; };
 		FF0907161540377400465513 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape.png"; path = "Resources/Default-Landscape.png"; sourceTree = "<group>"; };
 		FF0907171540377400465513 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
 		FF0907181540377400465513 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = Resources/Default.png; sourceTree = "<group>"; };
@@ -2288,6 +2289,7 @@
 				FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */,
 				FFBACA75146BCF8B007DF1E5 /* WARegisterRequestViewController.h */,
 				FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */,
+				FF0841471558E18900C47CC3 /* WARegisterRequestViewController+SubclassEyesOnly.h */,
 				FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */,
 				FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */,
 			);

@@ -12,6 +12,11 @@
 #import "IRWebAPIKitDefines.h"
 #import "IRWebAPIHelpers.h"
 
+#import "WARegisterRequestViewController+SubclassEyesOnly.h"
+
+#import "WARemoteInterface.h"
+#import "IRWebAPIEngine+FormURLEncoding.h"
+
 
 @interface WARegisterRequestWebViewController () <UIWebViewDelegate>
 @property (nonatomic, readwrite, retain) UIWebView *view;
@@ -48,12 +53,30 @@
     [[NSLocale currentLocale] localeIdentifier], @"locale",
     @"ios", @"device",
 		@"waveface://x-callback-url/didFinishUserRegistration?account_type=%(account_type)s&api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s&device_id=%(device_id)s&session_token=%(session_token)s&email=%(email)s&password=%(password)s&user_id=%(user_id)s", @"xurl",
+		
+		[WARemoteInterface sharedInterface].apiKey, @"api_key",
+				
   nil];
   
   NSURL *registrationURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserRegistrationEndpointURL]];
-  NSURL *usedRegistrationURL = IRWebAPIRequestURLWithQueryParameters(registrationURL, registrationQueryParams);
-  
-  NSURLRequest *registrationRequest = [[NSURLRequest alloc] initWithURL:usedRegistrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
+ 
+	NSMutableURLRequest *registrationRequest = [[NSMutableURLRequest alloc] initWithURL:registrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
+	
+	registrationRequest.HTTPMethod = @"POST";
+	registrationRequest.HTTPBody = IRWebAPIEngineFormURLEncodedDataWithDictionary(registrationQueryParams);
+	registrationRequest.allHTTPHeaderFields = ((^ {
+	
+		NSMutableDictionary *fields = [registrationRequest.allHTTPHeaderFields mutableCopy];
+		if (fields)
+			fields = [NSMutableDictionary dictionary];
+	
+		[fields setObject:@"8bit" forKey:@"Content-Transfer-Encoding"];
+		[fields setObject:@"application/x-www-form-urlencoded" forKey:@"Content-Type"];
+		
+		return fields;
+	
+	})());
+
   
   [[self view] loadRequest:registrationRequest];
 
@@ -63,20 +86,22 @@
   
   [super viewDidLoad];
   
-  __block __typeof__(self) nrSelf = self;
+  __weak WARegisterRequestWebViewController *wSelf = self;
   
   id incomingRegistrationCompletionListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWAApplicationDidReceiveRemoteURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
   
-    if (![nrSelf isViewLoaded])
+    if (![wSelf isViewLoaded])
       return;
   
     NSURL *incomingURL = [note object];
     NSDictionary *incomingQuery = IRQueryParametersFromString([incomingURL query]);
-    nrSelf.username = [incomingQuery objectForKey:@"username"];
-    nrSelf.password = [incomingQuery objectForKey:@"password"];
-    
-    if (nrSelf.completionBlock)
-      nrSelf.completionBlock(nrSelf, nil);
+    wSelf.username = [incomingQuery objectForKey:@"email"];
+    wSelf.userID = [incomingQuery objectForKey:@"user_id"];
+    wSelf.password = [incomingQuery objectForKey:@"password"];
+    wSelf.token = [incomingQuery objectForKey:@"session_token"];
+		
+    if (wSelf.completionBlock)
+      wSelf.completionBlock(wSelf, nil);
     
   }];
   
@@ -107,6 +132,23 @@
     return NO;
   
   }
+	
+	if ([[openedURL host] isEqualToString:@"localhost"]) {
+	
+	
+		NSURL *overriddenURL = [NSURL URLWithString:[[openedURL absoluteString] stringByReplacingOccurrencesOfString:@"://localhost" withString:[NSString stringWithFormat:@"://%@",
+		
+			[[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserRegistrationEndpointURL]] host]
+//			[[[[[WARemoteInterface sharedInterface] engine] context] baseURL] host]
+		
+		
+		]]];
+	
+		[webView loadRequest:[NSURLRequest requestWithURL:overriddenURL]];
+	
+		return NO;
+	
+	}
 
   return YES;
 
