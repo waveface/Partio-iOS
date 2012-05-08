@@ -187,6 +187,19 @@
 - (void) clearViewHierarchy {
 
 	UIViewController *rootVC = self.window.rootViewController;
+	
+	__block void (^zapModal)(UIViewController *) = [^ (UIViewController *aVC) {
+	
+		if (aVC.presentedViewController)
+			zapModal(aVC.presentedViewController);
+		
+		[aVC dismissViewControllerAnimated:NO completion:nil];
+	
+	} copy];
+	
+	zapModal(rootVC);
+	
+	
 	IRViewController *emptyVC = [[IRViewController alloc] init];
 	__weak IRViewController *wEmptyVC = emptyVC;
 	
@@ -488,6 +501,8 @@
 
 - (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block {
 
+	__weak WAAppDelegate_iOS *wAppDelegate = self;
+
 	NSParameterAssert(!self.alreadyRequestingAuthentication);
 	self.alreadyRequestingAuthentication = YES;
 
@@ -499,7 +514,6 @@
 		
   };
 	
-  __weak WAAppDelegate_iOS *wAppDelegate = self;
 	
 	void (^handleAuthSuccess)(void) = ^ {
 	
@@ -514,21 +528,32 @@
   
 		if (anError) {
 			
-			[authRequestVC presentError:anError completion:nil];
+			[self presentError:anError completion:nil];
 			return;
 
 		}
 
 		if (userIDChanged()) {
-			UINavigationController *navC = self.navigationController;
-			[self dismissModalViewControllerAnimated:NO];
-			[wAppDelegate recreateViewHierarchy];
-			[wAppDelegate.window.rootViewController presentModalViewController:navC animated:NO];
-		}
-
-		handleAuthSuccess();
 		
-		[self dismissModalViewControllerAnimated:YES];
+			UINavigationController *navC = self.navigationController;
+
+			[wAppDelegate clearViewHierarchy];
+
+			handleAuthSuccess();
+
+			[wAppDelegate recreateViewHierarchy];
+			
+			[wAppDelegate.window.rootViewController presentViewController:navC animated:NO completion:nil];
+
+			[self dismissViewControllerAnimated:YES completion:nil];			
+
+		} else {
+		
+			handleAuthSuccess();
+			
+			[self dismissViewControllerAnimated:YES completion:nil];
+		
+		}
 
   }];
 	
@@ -592,11 +617,7 @@
 	authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 
-	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:YES completion:^{
-		
-		//	?
-		
-	}];
+	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:NO completion:nil];
 
 }
 
