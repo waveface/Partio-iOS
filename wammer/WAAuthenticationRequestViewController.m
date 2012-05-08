@@ -15,6 +15,11 @@
 
 #import "UIKit+IRAdditions.h"
 
+#import "WARegisterRequestViewController.h"
+#import "WARegisterRequestViewController+SubclassEyesOnly.h"
+
+#import "WAAuthenticationRequestWebViewController.h"
+
 
 @interface WAAuthenticationRequestViewController () <UITextFieldDelegate>
 
@@ -41,6 +46,31 @@
 
 	WAAuthenticationRequestViewController *returnedVC = [[self alloc] initWithStyle:UITableViewStyleGrouped];
 	returnedVC.completionBlock = aBlock;
+	
+	NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
+    
+    [returnedVC newSignInAction],
+    [returnedVC newSignInWithFacebookAction],
+    [returnedVC newRegisterAction],
+    
+  nil];
+
+  if (WAAdvancedFeaturesEnabled()) {
+	
+		__weak WAAuthenticationRequestViewController *authRequestVC = returnedVC;
+		
+		[authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
+
+			authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
+			authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
+			[authRequestVC authenticate];
+
+		}]];
+		
+	}
+	
+	returnedVC.actions = authRequestActions;
+	
 	return returnedVC;
 
 }
@@ -397,11 +427,11 @@
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 	
-	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *userID, NSString *userToken, NSString *userGroupID) {
+	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
 
-		[WARemoteInterface sharedInterface].userIdentifier = userID;
-		[WARemoteInterface sharedInterface].userToken = userToken;
-		[WARemoteInterface sharedInterface].primaryGroupIdentifier = userGroupID;
+		[WARemoteInterface sharedInterface].userIdentifier = inUserID;
+		[WARemoteInterface sharedInterface].userToken = inUserToken;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = inUserGroupID;
 		
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
@@ -523,6 +553,75 @@
   }];
 	
 	return signInUserAction;
+
+}
+
+- (IRAction *) newSignInWithFacebookAction {
+
+	NSString *signInWithFacebookTitle = NSLocalizedString(@"ACTION_SIGN_IN_WITH_FACEBOOK", @"Action title for signing in thru Facebook");
+	
+	__weak WAAuthenticationRequestViewController *wSelf = self;
+	
+	return [IRAction actionWithTitle:signInWithFacebookTitle block:^{
+	
+		__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self, NSError *error) {
+		
+			if (error) {
+				[authRequestVC presentError:error completion:nil];
+				return;
+			}
+			
+      wSelf.username = self.username;
+      wSelf.password = self.password;
+      wSelf.token = self.token;
+      wSelf.userID = self.userID;
+      wSelf.performsAuthenticationOnViewDidAppear = YES;
+
+      [wSelf.tableView reloadData];
+      [wSelf.navigationController popToViewController:wSelf animated:YES];
+			
+		}];
+		
+		[wSelf.navigationController pushViewController:authRequestVC animated:YES];
+	
+	}];
+
+}
+
+- (IRAction *) newRegisterAction {
+
+	NSString *registerUserTitle = NSLocalizedString(@"ACTION_REGISTER_USER", @"Action title for registering");
+	
+	__weak WAAuthenticationRequestViewController *wSelf = self;
+	
+  return [IRAction actionWithTitle:registerUserTitle block: ^ {
+  
+    __weak WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+    
+      if (error) {
+				[registerRequestVC presentError:error completion:nil];
+				return;
+      }
+			
+      wSelf.username = self.username;
+      wSelf.password = self.password;
+      wSelf.token = self.token;
+      wSelf.userID = self.userID;
+      wSelf.performsAuthenticationOnViewDidAppear = YES;
+
+      [wSelf.tableView reloadData];
+      [wSelf.navigationController popToViewController:wSelf animated:YES];
+
+    }];
+  
+    registerRequestVC.username = wSelf.username;
+    registerRequestVC.password = wSelf.password;
+    registerRequestVC.token = wSelf.token;
+    registerRequestVC.userID = wSelf.userID;
+    
+    [wSelf.navigationController pushViewController:registerRequestVC animated:YES];
+  
+  }];
 
 }
 

@@ -17,6 +17,8 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 @interface WAAuthenticationRequestViewController : UITableViewController
 
 + (WAAuthenticationRequestViewController *) controllerWithCompletion:(WAAuthenticationRequestViewControllerCallback)aBlock;
+@property (nonatomic, readonly, copy) WAAuthenticationRequestViewControllerCallback completionBlock;
+
 - (void) authenticate;
 
 @property (nonatomic, readwrite, copy) NSString *username;
@@ -32,6 +34,8 @@ typedef void (^WAAuthenticationRequestViewControllerCallback) (WAAuthenticationR
 
 @property (nonatomic, readwrite, retain) NSArray *actions;  //  Use IRAction objects
 - (IRAction *) newSignInAction;
+- (IRAction *) newSignInWithFacebookAction;
+- (IRAction *) newRegisterAction;
 
 - (void) presentError:(NSError *)error completion:(void(^)(void))block;
 

@@ -63,6 +63,9 @@
 /* Action title for signing in */
 "ACTION_SIGN_IN" = "登入";
 
+/* Action title for signing in thru Facebook */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
+
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "登出";
 

@@ -32,6 +32,7 @@ NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthen
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 NSString * const kWAUserRegistrationUsesWebVersion = @"WAUserRegistrationUsesWebVersion";
 NSString * const kWAUserRegistrationEndpointURL = @"WAUserRegistrationEndpointURL";
+NSString * const kWAUserFacebookAuthenticationEndpointURL = @"WAUserFacebookAuthenticationEndpointURL";
 NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthentication";
 NSString * const kWAUserPasswordResetEndpointURL = @"WAUserPasswordResetEndpointURL";
 NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpensiveRemoteOperations";

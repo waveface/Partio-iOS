@@ -508,12 +508,11 @@
 
   NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
   BOOL (^userIDChanged)() = ^ {
-	
+		
 		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
     return (BOOL)![currentID isEqualToString:lastUserID];
 		
   };
-	
 	
 	void (^handleAuthSuccess)(void) = ^ {
 	
@@ -524,95 +523,35 @@
 		
 	};
 	
-  __weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
+  WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
   
 		if (anError) {
-			
 			[self presentError:anError completion:nil];
 			return;
-
 		}
 
 		if (userIDChanged()) {
 		
 			UINavigationController *navC = self.navigationController;
-
 			[wAppDelegate clearViewHierarchy];
-
-			handleAuthSuccess();
-
-			[wAppDelegate recreateViewHierarchy];
 			
+			handleAuthSuccess();
+			
+			[wAppDelegate recreateViewHierarchy];
 			[wAppDelegate.window.rootViewController presentViewController:navC animated:NO completion:nil];
-
-			[self dismissViewControllerAnimated:YES completion:nil];			
 
 		} else {
 		
 			handleAuthSuccess();
 			
-			[self dismissViewControllerAnimated:YES completion:nil];
-		
 		}
 
-  }];
-	
-	
-	NSString *registerUserTitle = NSLocalizedString(@"ACTION_REGISTER_USER", @"Action title for registering");
-  IRAction *registerUserAction = [IRAction actionWithTitle:registerUserTitle block: ^ {
-  
-    __weak WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
-    
-      if (error) {
-				[registerRequestVC presentError:error completion:nil];
-				return;
-      }
-			
-      authRequestVC.username = self.username;
-      authRequestVC.password = self.password;
-      authRequestVC.token = self.token;
-      authRequestVC.userID = self.userID;
-      authRequestVC.performsAuthenticationOnViewDidAppear = YES;
-
-      [authRequestVC.tableView reloadData];
-      [authRequestVC.navigationController popToViewController:authRequestVC animated:YES];
-
-    }];
-  
-    registerRequestVC.username = authRequestVC.username;
-    registerRequestVC.password = authRequestVC.password;
-    registerRequestVC.token = authRequestVC.token;
-    registerRequestVC.userID = authRequestVC.userID;
-    
-    [authRequestVC.navigationController pushViewController:registerRequestVC animated:YES];
-  
+		[self dismissViewControllerAnimated:YES completion:nil];
+		
   }];
 	
 	authRequestVC.navigationItem.prompt = reason;
   
-  IRAction *signInUserAction = [authRequestVC newSignInAction];
-  
-  NSMutableArray *authRequestActions = [NSMutableArray arrayWithObjects:
-    
-    signInUserAction,
-    registerUserAction,
-    
-  nil];
-
-  if (WAAdvancedFeaturesEnabled()) {
-		
-		[authRequestActions addObject:[IRAction actionWithTitle:@"Debug Fill" block:^{
-
-			authRequestVC.username = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserIdentifier];
-			authRequestVC.password = [[NSUserDefaults standardUserDefaults] stringForKey:kWADebugAutologinUserPassword];
-			[authRequestVC authenticate];
-
-		}]];
-		
-	}
-	
-	authRequestVC.actions = authRequestActions;
-
 	WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authRequestVC];
 	authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
 	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
@@ -620,7 +559,6 @@
 	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:NO completion:nil];
 
 }
-
 
 - (BOOL) isRunningAuthRequest {
 

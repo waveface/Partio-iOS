@@ -55,13 +55,16 @@
 "ACTION_RESET" = "Reset";
 
 /* Action title for resetting password */
-"ACTION_RESET_PASSWORD" = "Reset Password";
+"ACTION_RESET_PASSWORD" = "Forgot";
 
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
 "ACTION_SIGN_IN" = "Sign In";
+
+/* Action title for signing in thru Facebook */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link With Facebook";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Sign Out";
