@@ -16,6 +16,8 @@
 #import "WAAppDelegate.h"
 #import "WADefines.h"
 #import "WARemoteInterface.h"
+#import "WADataStore.h"
+
 #import "IRKeychainManager.h"
 #import "IRRelativeDateFormatter.h"
 
@@ -235,6 +237,96 @@
 	originalRequest.HTTPBodyStream = transformedRequest.HTTPBodyStream;
 	originalRequest.HTTPBody = transformedRequest.HTTPBody;
 
+}
+
+- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier {
+
+	NSParameterAssert(identifier);
+	WADataStore * const ds = [WADataStore defaultStore];
+	
+	ds.persistentStoreName = [identifier stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+	
+	NSManagedObjectContext *context = [ds disposableMOC];
+
+	NSArray *existingUsers = [context executeFetchRequest:[ds newFetchRequestForUsersWithIdentifier:identifier] error:nil];
+	NSUInteger numberOfExistingUsers = [existingUsers count];
+	if (numberOfExistingUsers > 1) {
+		
+		WAUser *tentativeUser = [existingUsers lastObject];
+		
+		[existingUsers enumerateObjectsUsingBlock: ^ (WAUser *otherUser, NSUInteger idx, BOOL *stop) {
+		
+			if (otherUser == tentativeUser)
+				return;
+				
+			[tentativeUser addArticles:otherUser.articles];
+			[tentativeUser addComments:otherUser.articles];
+			[tentativeUser addFiles:otherUser.articles];
+			[tentativeUser addGroups:otherUser.articles];
+			[tentativeUser addPreviews:otherUser.articles];
+			[tentativeUser addStorages:otherUser.articles];
+			
+			[otherUser.managedObjectContext deleteObject:otherUser];
+			
+		}];
+		
+		[context save:nil];
+		
+		[ds setMainUser:tentativeUser inContext:context];
+		
+	}
+	
+	WAUser *user = [ds mainUserInContext:context];
+	
+	@try {
+	
+		[user willAccessValueForKey:nil];
+	
+	} @catch (NSException *e) {
+	
+		user = nil;
+	
+	}
+	
+	if (!user) {
+		
+		NSArray *foundUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObjects:
+		
+			[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				identifier, @"user_id",
+			
+			nil],
+		
+		nil] usingMapping:nil options:0];
+		
+		NSCParameterAssert([foundUsers count] == 1);	
+		user = [foundUsers lastObject];
+		
+		[context obtainPermanentIDsForObjects:[NSArray arrayWithObject:user] error:nil];
+		
+		if ([context save:nil]) {
+			[ds setMainUser:user inContext:context];
+			[context save:nil];
+		}
+		
+	}
+	
+	NSParameterAssert([user.identifier isEqual:identifier]);
+	
+#if DEBUG
+
+	do {
+	
+		NSManagedObjectContext *context = [ds disposableMOC];
+		WAUser *user = [ds mainUserInContext:context];
+		
+		NSParameterAssert([user.identifier isEqual:identifier]);
+	
+	} while (0);
+	
+#endif
+	
 }
 
 @end

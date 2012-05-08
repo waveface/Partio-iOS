@@ -1,30 +1,24 @@
 //
-//  WARegisterRequestWebViewController.m
+//  WAAuthenticationRequestWebViewController.m
 //  wammer
 //
-//  Created by Evadne Wu on 11/29/11.
-//  Copyright (c) 2011 Waveface. All rights reserved.
+//  Created by Evadne Wu on 5/8/12.
+//  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import <objc/runtime.h>
-#import "WARegisterRequestWebViewController.h"
-#import "WADefines.h"
-#import "IRWebAPIKitDefines.h"
-#import "IRWebAPIHelpers.h"
-
-#import "WARegisterRequestViewController+SubclassEyesOnly.h"
-
+#import "WAAuthenticationRequestWebViewController.h"
 #import "WARemoteInterface.h"
+#import "WADefines.h"
 #import "IRWebAPIEngine+FormURLEncoding.h"
 
 
-@interface WARegisterRequestWebViewController () <UIWebViewDelegate>
+@interface WAAuthenticationRequestWebViewController () <UIWebViewDelegate>
 @property (nonatomic, readwrite, retain) UIWebView *view;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *spinner;
 @end
 
 
-@implementation WARegisterRequestWebViewController
+@implementation WAAuthenticationRequestWebViewController
 @dynamic view;
 @synthesize spinner;
 
@@ -46,27 +40,27 @@
 
 - (void) loadView {
 
-  [self setView:[[UIWebView alloc] initWithFrame:CGRectZero]];
+	[self setView:[[UIWebView alloc] initWithFrame:CGRectZero]];
   [[self view] setDelegate:self];
-  
-  NSDictionary *registrationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
+
+  NSDictionary *authenticationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
     [[NSLocale currentLocale] localeIdentifier], @"locale",
     @"ios", @"device",
-		@"waveface://x-callback-url/didFinishUserRegistration?account_type=%(account_type)s&api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s&device_id=%(device_id)s&session_token=%(session_token)s&email=%(email)s&password=%(password)s&user_id=%(user_id)s", @"xurl",
+		@"waveface://x-callback-url/didFinishUserFacebookLogin?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s&device_id=%(device_id)s&session_token=%(session_token)s&user_id=%(user_id)s", @"xurl",
 		
 		[WARemoteInterface sharedInterface].apiKey, @"api_key",
 				
   nil];
   
-  NSURL *registrationURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserRegistrationEndpointURL]];
+  NSURL *authenticationURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserFacebookAuthenticationEndpointURL]];
  
-	NSMutableURLRequest *registrationRequest = [[NSMutableURLRequest alloc] initWithURL:registrationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
+	NSMutableURLRequest *authenticationRequest = [[NSMutableURLRequest alloc] initWithURL:authenticationURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:15];
 	
-	registrationRequest.HTTPMethod = @"POST";
-	registrationRequest.HTTPBody = IRWebAPIEngineFormURLEncodedDataWithDictionary(registrationQueryParams);
-	registrationRequest.allHTTPHeaderFields = ((^ {
+	authenticationRequest.HTTPMethod = @"POST";
+	authenticationRequest.HTTPBody = IRWebAPIEngineFormURLEncodedDataWithDictionary(authenticationQueryParams);
+	authenticationRequest.allHTTPHeaderFields = ((^ {
 	
-		NSMutableDictionary *fields = [registrationRequest.allHTTPHeaderFields mutableCopy];
+		NSMutableDictionary *fields = [authenticationRequest.allHTTPHeaderFields mutableCopy];
 		if (fields)
 			fields = [NSMutableDictionary dictionary];
 	
@@ -78,7 +72,7 @@
 	})());
 
   
-  [[self view] loadRequest:registrationRequest];
+  [[self view] loadRequest:authenticationRequest];
 
 }
 
@@ -86,9 +80,9 @@
   
   [super viewDidLoad];
   
-  __weak WARegisterRequestWebViewController *wSelf = self;
+  __weak WAAuthenticationRequestWebViewController *wSelf = self;
   
-  id incomingRegistrationCompletionListener = [[NSNotificationCenter defaultCenter] addObserverForName:kWAApplicationDidReceiveRemoteURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+  id listener = [[NSNotificationCenter defaultCenter] addObserverForName:kWAApplicationDidReceiveRemoteURLNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
   
     if (![wSelf isViewLoaded])
       return;
@@ -105,7 +99,7 @@
     
   }];
   
-  objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, incomingRegistrationCompletionListener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, listener, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
 
@@ -113,8 +107,8 @@
 
   [super viewDidUnload];
   
-  id incomingRegistrationCompletionListener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
-  [[NSNotificationCenter defaultCenter] removeObserver:incomingRegistrationCompletionListener];
+  id listener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
+  [[NSNotificationCenter defaultCenter] removeObserver:listener];
   objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, nil, OBJC_ASSOCIATION_ASSIGN);
 
 }
@@ -166,8 +160,8 @@
 
 - (void) dealloc {
 
-  id incomingRegistrationCompletionListener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
-  [[NSNotificationCenter defaultCenter] removeObserver:incomingRegistrationCompletionListener];
+  id listener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
+  [[NSNotificationCenter defaultCenter] removeObserver:listener];
   objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, nil, OBJC_ASSOCIATION_ASSIGN);
 
 }
