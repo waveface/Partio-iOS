@@ -11,12 +11,6 @@
 
 @implementation WAPreview (WAAdditions)
 
-+ (NSString *) keyPathHoldingUniqueValue {
-
-	return @"url";
-
-}
-
 + (NSSet *) keyPathsForValuesAffectingThumbnail {
 
 	return [NSSet setWithObject:@"graphElement.thumbnail"];
