@@ -135,10 +135,10 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	if (!self)
 		return nil;
 	
-	[self setValidatesResourceImage:YES notify:NO];
-	[self setValidatesLargeThumbnailImage:YES notify:NO];
-	[self setValidatesThumbnailImage:YES notify:NO];
-	[self setAttemptsBlobRetrieval:YES notify:NO];
+	[self setValidatesResourceImage:NO notify:NO];
+	[self setValidatesLargeThumbnailImage:NO notify:NO];
+	[self setValidatesThumbnailImage:NO notify:NO];
+	[self setAttemptsBlobRetrieval:NO notify:NO];
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 	
@@ -169,7 +169,14 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
   
 	//	TBD: We’re assuming that everthing is restorable, might not be true if users pound on local drafts more
 	//	TBD: Create sanitary worker
-	//	NSFileManager * const fileManager = [NSFileManager defaultManager];	
+	//	NSFileManager * const fileManager = [NSFileManager defaultManager];
+	
+	BOOL canRetrieveBlobImplicitly = [NSThread isMainThread] && ![self.objectID isTemporaryID];
+	
+	[self setValidatesResourceImage:canRetrieveBlobImplicitly notify:NO];
+	[self setValidatesLargeThumbnailImage:canRetrieveBlobImplicitly notify:NO];
+	[self setValidatesThumbnailImage:canRetrieveBlobImplicitly notify:NO];
+	[self setAttemptsBlobRetrieval:canRetrieveBlobImplicitly notify:NO];
 	
 	[self performBlockSuppressingBlobRetrieval:^{
 		

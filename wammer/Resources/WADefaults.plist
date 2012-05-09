@@ -21,7 +21,7 @@
 	<key>WAAlwaysAllowExpensiveRemoteOperations</key>
 	<false/>
 	<key>WAAlwaysDenyExpensiveRemoteOperations</key>
-	<false/>
+	<true/>
 	<key>WADebugAutologinUserIdentifier</key>
 	<string>haskell@master.waveface.com</string>
 	<key>WADebugAutologinUserPassword</key>
