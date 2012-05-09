@@ -1,3 +1,6 @@
+/* In account information */
+"ABOUT_HEADER" = "ABOUT_HEADER";
+
 /* attachment activity view */
 "ACTION_ADD" = "加";
 
@@ -135,8 +138,8 @@
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
 
-/* Endpoint Status */
-"ENDPOINT_CONNECTIVITY_STATUS_TITLE" = "連線狀況";
+/* email in account info */
+"EMAIL" = "EMAIL";
 
 /* Text to show when Cloud and Station are both available */
 "ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "能連上 Waveface Cloud 與您的 Station。所有物件都可被同步。";
@@ -195,6 +198,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
+/* in Account Information */
+"LAST_SYNCED_TIME" = "LAST_SYNCED_TIME";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
 
@@ -220,11 +226,15 @@
 "NOUN_STORAGE_QUOTA" = "可用配額";
 
 /* Noun for Username
-   Title for username */
+   Title for username
+   username in account info */
 "NOUN_USERNAME" = "Email";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
+
+/* in Account Information */
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "OBJECTS_NOT_SYNCED_IN_QUEUE";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
@@ -262,9 +272,6 @@
 /* No comment provided by engineer. */
 "SETTINGS_TITLE" = "設定";
 
-/* Production Disclaimer */
-"SHORT_LEGAL_DISCLAIMER" = "Waveface Inc.";
-
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
@@ -272,22 +279,10 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
 /* No comment provided by engineer. */
-"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE" = "可用物件";
-
-/* No comment provided by engineer. */
-"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE" = "已用物件";
-
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT" = "剩餘日數";
-
-/* Number of days left in cycle */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "距下次重設還有 %d 天";
-
-/* No comment provided by engineer. */
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "無限制";
 
-/* No comment provided by engineer. */
-"STORATE_QUOTA_INTERVAL_END_DATE" = "結算日期";
+/* Synchronization Information in Account Info */
+"SYNCHRONIZATION_INFO" = "SYNCHRONIZATION_INFO";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -300,6 +295,9 @@
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "用戶";
+
+/* Version in account info */
+"VERSION" = "VERSION";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "預覽";

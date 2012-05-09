@@ -225,7 +225,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-	return 4;
+	return 5;
 
 }
 
@@ -240,9 +240,12 @@
 			return [self.monitoredHosts count];
 			
 		case 2:
-      return 3;
+      return 2;
 		
 		case 3:
+			return 2;
+			
+		case 4:
 			return WAAdvancedFeaturesEnabled() ? 1 : 0;
 			
     default:
@@ -274,12 +277,15 @@
     return NSLocalizedString(@"USER_INFO_ACCOUNT_SECTION_TITLE", @"Title in User Section");
   
 	if (section == kConnectivitySection)
-    return NSLocalizedString(@"ENDPOINT_CONNECTIVITY_STATUS_TITLE", @"Endpoint Status");
+    return NSLocalizedString(@"SYNCHRONIZATION_INFO", @"Synchronization Information in Account Info");
   
   if (section == 2)
     return NSLocalizedString(@"NOUN_STORAGE_QUOTA", @"Noun for storage quota.");
 	
-  return nil;
+  if (section == 3)
+    return NSLocalizedString(@"ABOUT_HEADER", @"In account information");
+
+ return nil;
 
 }
 
@@ -300,12 +306,6 @@
 		
 		return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION", @"Text to show when Cloud is available, but the Station is not responsive");
 
-	}
-	
-	if (section == 2) {
-	
-		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] displayVersionString]];
-		
 	}
 	
 	return nil;
@@ -347,16 +347,16 @@
 		switch (indexPath.row) {
 			
 			case 0: {
-				cell = createCell(kSubtitleCellIdentifier, UITableViewCellStyleSubtitle);
-				cell.textLabel.text = self.user.nickname;
+				cell = anyCell();
+				cell.textLabel.text = NSLocalizedString(@"EMAIL", @"email in account info");
 				cell.detailTextLabel.text = self.user.email;
 				break;
 			}
 			
 			case 1: {
 				cell = anyCell();
-				cell.textLabel.text = NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"This Device");
-				cell.detailTextLabel.text = [UIDevice currentDevice].name;
+				cell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"username in account info");
+				cell.detailTextLabel.text = self.user.nickname;
 				break;
 			}
 			
@@ -389,7 +389,7 @@
 			
 			case 0: {
 			
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE", nil);
+				cell.textLabel.text = NSLocalizedString(@"OBJECTS_NOT_SYNCED_IN_QUEUE", @"in Account Information");
 				cell.detailTextLabel.text = ([all isEqualToNumber:[NSNumber numberWithInteger:-1]]) ?
 					NSLocalizedString(@"STORAGE_QUOTA_UNLIMITED_TITLE", nil):
 					[NSString stringWithFormat:@"%@", all];
@@ -400,33 +400,11 @@
 			
 			case 1: {
 			
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", used];
+				cell.textLabel.text = NSLocalizedString(@"LAST_SYNCED_TIME", @"in Account Information");
+				cell.detailTextLabel.text = @"2 days ago";
 				
 				break;
 				
-			}
-			
-			case 2: {
-			
-				NSUInteger (^dayOrdinality)(NSDate *) = ^ (NSDate *aDate) {
-					return [[NSCalendar currentCalendar] ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:aDate];
-				};
-				
-				NSDate *endDate = self.user.mainStorage.intervalEndDate;
-				NSInteger daysLeft = dayOrdinality(endDate) - dayOrdinality([NSDate date]);
-			
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING", @"Number of days left in cycle"), daysLeft];
-				
-				break;
-				
-			}
-				
-			case 3: {
-				cell.textLabel.text = NSLocalizedString(@"STORATE_QUOTA_INTERVAL_END_DATE", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:self.user.mainStorage.intervalEndDate];
-				break;
 			}
 			
 			default:
@@ -435,6 +413,31 @@
 		}
 		
 	} else if (indexPath.section == 3) {
+	
+		cell = anyCell();
+		
+		switch (indexPath.row) {
+		
+			case 0: {
+			
+				cell.textLabel.text = NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"This Device");
+				cell.detailTextLabel.text = [UIDevice currentDevice].name;
+
+				break;
+				
+			}
+			
+			case 1: {
+			
+				cell.textLabel.text = NSLocalizedString(@"VERSION", @"Version in account info");
+				cell.detailTextLabel.text = [[NSBundle mainBundle] displayVersionString];
+
+				break;
+				
+			}
+		}
+	
+	} else if (indexPath.section == 4) {
 	
 		cell = anyCell();
 		
@@ -464,7 +467,7 @@
 
 	switch (indexPath.section) {
 	
-		case 3: {
+		case 4: {
 		
 			switch (indexPath.row) {
 			

@@ -1,3 +1,6 @@
+/* In account information */
+"ABOUT_HEADER" = "About";
+
 /* attachment activity view */
 "ACTION_ADD" = "Add";
 
@@ -135,8 +138,8 @@
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "(No Timestamp)";
 
-/* Endpoint Status */
-"ENDPOINT_CONNECTIVITY_STATUS_TITLE" = "Status";
+/* email in account info */
+"EMAIL" = "Email";
 
 /* Text to show when Cloud and Station are both available */
 "ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "Your Waveface Station is available.  Everything will be synchronized.";
@@ -195,6 +198,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
+/* in Account Information */
+"LAST_SYNCED_TIME" = "Last Synchronized at";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 
@@ -220,11 +226,15 @@
 "NOUN_STORAGE_QUOTA" = "Usage";
 
 /* Noun for Username
-   Title for username */
+   Title for username
+   username in account info */
 "NOUN_USERNAME" = "Username";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
+
+/* in Account Information */
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "Queued in Cloud";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -262,9 +272,6 @@
 /* No comment provided by engineer. */
 "SETTINGS_TITLE" = "Settings";
 
-/* Production Disclaimer */
-"SHORT_LEGAL_DISCLAIMER" = "Waveface Inc., 2011–";
-
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Really sign out?";
 
@@ -272,22 +279,10 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
 /* No comment provided by engineer. */
-"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE" = "Allotted";
-
-/* No comment provided by engineer. */
-"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE" = "Used";
-
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT" = "Days left";
-
-/* Number of days left in cycle */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "%d days left in cycle";
-
-/* No comment provided by engineer. */
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "∞";
 
-/* No comment provided by engineer. */
-"STORATE_QUOTA_INTERVAL_END_DATE" = "Ends";
+/* Synchronization Information in Account Info */
+"SYNCHRONIZATION_INFO" = "Synchronization Info";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -300,6 +295,9 @@
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
+
+/* Version in account info */
+"VERSION" = "Version";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
