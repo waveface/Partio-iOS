@@ -312,6 +312,33 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 }
 
+- (BOOL) networkRequiresConnection {
+
+	return WASCNetworkRequiresConnection(self.networkStateFlags);
+
+}
+
+- (BOOL) networkReachable {
+
+	return WASCNetworkReachable(self.networkStateFlags);
+
+}
+- (BOOL) networkReachableDirectly {
+
+	return WASCNetworkReachableDirectly(self.networkStateFlags);
+
+}
+- (BOOL) networkReachableViaWiFi {
+
+	return WASCNetworkReachableViaWifi(self.networkStateFlags);
+
+}
+- (BOOL) networkReachableViaWWAN {
+
+	return WASCNetworkReachableViaWWAN(self.networkStateFlags);
+
+}
+
 @end
 
 

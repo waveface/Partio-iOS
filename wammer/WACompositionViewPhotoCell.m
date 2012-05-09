@@ -11,7 +11,7 @@
 
 
 @interface WACompositionViewPhotoCell ()
-@property (nonatomic, readwrite, retain) UIView *imageContainer;
+@property (nonatomic, readwrite, retain) UIImageView *imageContainer;
 @property (nonatomic, readwrite, retain) UIView *highlightOverlay;	//	Placed in the image container
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
@@ -55,9 +55,10 @@
 	
 	self.contentView.clipsToBounds = NO;
 	
-	self.imageContainer = [[UIView alloc] initWithFrame:self.contentView.bounds];
+	self.imageContainer = [[UIImageView alloc] initWithImage:nil];
+	self.imageContainer.frame = self.contentView.bounds;
 	self.imageContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	self.imageContainer.layer.contentsGravity = kCAGravityResizeAspect;
+	self.imageContainer.contentMode = UIViewContentModeScaleAspectFit;
 	self.imageContainer.layer.minificationFilter = kCAFilterTrilinear;
 
 	[self.contentView addSubview:self.imageContainer];
@@ -109,7 +110,7 @@
 	image = newImage;
 	[self didChangeValueForKey:@"image"];
 	
-	self.imageContainer.layer.contents = (id)newImage.CGImage;
+	self.imageContainer.image = newImage;
 	
 	if (newImage) {
 	

@@ -61,7 +61,13 @@
 	if (!self)
 		return nil;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleNetworkReachabilityStatusChanged:) name:kWAReachabilityDetectorDidUpdateStatusNotification object:nil];
+	__weak WABlobSyncManager *wSelf = self;
+	
+	[[WARemoteInterface sharedInterface] irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
+	
+		[wSelf handleNetworkReachabilityStatusChanged:nil];
+		
+	} forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
 	[self.recurrenceMachine beginPostponingOperations];
 	[self handleNetworkReachabilityStatusChanged:nil];
@@ -194,23 +200,20 @@
 
 - (void) handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification {
 
-	if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed]) {
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	IRRecurrenceMachine * const rm = self.recurrenceMachine;
 	
-		if ([self.recurrenceMachine isPostponingOperations]) {
-		
-			[self.recurrenceMachine endPostponingOperations];
-		
-		}
+	BOOL const endpointAvailable = [ri hasReachableStation] || [ri hasReachableCloud];
+	BOOL const hasWiFiConnection = [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachable];
+	BOOL const canSync = endpointAvailable && hasWiFiConnection;
 	
-	} else {
-	
-		//	Stop if have been working, cancel all stuff too
-
-		if (![self.recurrenceMachine isPostponingOperations]) {
-			
-			[self.recurrenceMachine beginPostponingOperations];
+	if (canSync && [rm isPostponingOperations]) {
 		
-		}
+		[rm endPostponingOperations];
+		
+	} else if (!canSync && ![rm isPostponingOperations]) {
+		
+		[rm beginPostponingOperations];
 		
 	}
 
@@ -235,7 +238,8 @@
 	nil];
 	
 	[[context executeFetchRequest:fr error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
-	
+
+		NSLog(@"Invoking sync block for file %@", aFile);
 		block(aFile, idx, stop);
 		
 	}];
