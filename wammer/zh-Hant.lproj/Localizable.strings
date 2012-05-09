@@ -36,7 +36,7 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
 
-/* Fine! */
+/* No comment provided by engineer. */
 "ACTION_OKAY" = "好";
 
 /* No comment provided by engineer. */
@@ -94,6 +94,9 @@
 
 /* Title for the auth request controller */
 "AUTH_REQUEST_TITLE" = "歡迎使用 Waveface";
+
+/* Title for the Facebook linking controller */
+"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "AUTH_WITH_FACEBOOK_REQUEST_TITLE";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
