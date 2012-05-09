@@ -10,6 +10,7 @@
 #import "WARemoteInterface.h"
 #import "WADefines.h"
 #import "IRWebAPIEngine+FormURLEncoding.h"
+#import "UIKit+IRAdditions.h"
 
 
 @interface WAAuthenticationRequestWebViewController () <UIWebViewDelegate>
@@ -22,11 +23,13 @@
 @dynamic view;
 @synthesize spinner;
 
-- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (id) initWithStyle:(UITableViewStyle)style {
 
-  self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+  self = [super initWithStyle:style];
   if (!self)
     return nil;
+
+	self.title = NSLocalizedString(@"AUTH_WITH_FACEBOOK_REQUEST_TITLE", @"Title for the Facebook linking controller");
     
   self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
   self.spinner.hidesWhenStopped = NO;
@@ -149,9 +152,15 @@
 
 - (void) webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 
-  if (![[[[error userInfo] objectForKey:NSURLErrorFailingURLErrorKey] scheme] isEqualToString:@"waveface"])
-    [[[UIAlertView alloc] initWithTitle:@"Error" message:[error localizedDescription] delegate:nil cancelButtonTitle:NSLocalizedString(@"ACTION_OKAY", @"Fine!") otherButtonTitles:nil] show];
-  
+  if (![[[[error userInfo] objectForKey:NSURLErrorFailingURLErrorKey] scheme] isEqualToString:@"waveface"]) {
+		
+		NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, webView, error);
+		
+		if (self.completionBlock)
+			self.completionBlock(self, error);
+	
+	}
+	
   [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState animations:^{
     self.spinner.alpha = webView.loading ? 1.0f : 0.0f;
   } completion:nil];
@@ -163,6 +172,24 @@
   id listener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
   [[NSNotificationCenter defaultCenter] removeObserver:listener];
   objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, nil, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
+- (void) presentError:(NSError *)error completion:(void(^)(void))block {
+
+	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure");
+	
+	NSString *alertText = [[NSArray arrayWithObjects:
+		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_DESCRIPTION", @"Description for authentication failure"),
+		[NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
+		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION", @"Recovery notion for authentication failure recovery"),
+	nil] componentsJoinedByString:@""];
+
+	[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
+	
+		[IRAction actionWithTitle:@"OK" block:block],
+	
+	nil]] show];
 
 }
 

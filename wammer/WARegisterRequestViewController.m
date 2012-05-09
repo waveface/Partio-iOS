@@ -373,7 +373,7 @@
 	
 	NSString *alertText = [[NSArray arrayWithObjects:
 		NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION", @"Description for registration failure"),
-		[NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
+		[NSString stringWithFormat:@" “%@”.", [error localizedDescription]], @"\n\n",
 		NSLocalizedString(@"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION", @"Recovery notion for registration failure recovery"),
 	nil] componentsJoinedByString:@""];
 

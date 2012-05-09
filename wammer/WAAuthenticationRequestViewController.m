@@ -83,7 +83,6 @@
 	
 	self.labelWidth = 128.0f;
 	self.title = NSLocalizedString(@"AUTH_REQUEST_TITLE", @"Title for the auth request controller");
-  self.navigationItem.hidesBackButton = YES;
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -567,8 +566,16 @@
 		__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *self, NSError *error) {
 		
 			if (error) {
-				[authRequestVC presentError:error completion:nil];
+				
+				[self presentError:error completion:^{
+				
+					[wSelf.tableView reloadData];
+					[wSelf.navigationController popToViewController:wSelf animated:YES];
+				
+				}];
+				
 				return;
+				
 			}
 			
       wSelf.username = self.username;
@@ -596,11 +603,19 @@
 	
   return [IRAction actionWithTitle:registerUserTitle block: ^ {
   
-    __weak WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
+    WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *self, NSError *error) {
     
       if (error) {
-				[registerRequestVC presentError:error completion:nil];
+				
+				[self presentError:error completion:^{
+					
+					[wSelf.tableView reloadData];
+					[wSelf.navigationController popToViewController:wSelf animated:YES];
+				
+				}];
+				
 				return;
+				
       }
 			
       wSelf.username = self.username;
