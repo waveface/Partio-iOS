@@ -130,7 +130,7 @@
 "DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client";
 
 /* Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_TITLE" = "Are you sure?";
+"DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
@@ -154,7 +154,7 @@
 "ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "Your Station is currently unavailable.";
 
 /* Article entity sync failure alert message for no underlying error */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly.  Your post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly. Your post has been saved as a draft.";
 
 /* Article entity sync failure alert title */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
@@ -220,7 +220,7 @@
 "NOUN_PASSWORD_CONFIRMATION" = "Confirm Password";
 
 /* Noun for storage quota. */
-"NOUN_STORAGE_QUOTA" = "Usage";
+"NOUN_STORAGE_QUOTA" = "Monthly Usage";
 
 /* Noun for Username
    Title for username */
@@ -269,7 +269,7 @@
 "SHORT_LEGAL_DISCLAIMER" = "Waveface Inc., 2011–";
 
 /* Confirmation text for Signing Out */
-"SIGN_OUT_CONFIRMATION" = "Really sign out?";
+"SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -284,7 +284,7 @@
 "STORAGE_QUOTA_CYCLE_DAYS_LEFT" = "Days left";
 
 /* Number of days left in cycle */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "%d days left in cycle";
+"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "%d";
 
 /* No comment provided by engineer. */
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "∞";
