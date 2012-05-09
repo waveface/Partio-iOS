@@ -295,7 +295,7 @@
 		if (numberOfMonitoredHosts == 1)
 			return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION", @"Text to show when only Cloud is available");
 		
-		if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed])
+		if ([[WARemoteInterface sharedInterface] hasReachableStation])
 			return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION", @"Text to show when Cloud and Station are both available");
 		
 		return NSLocalizedString(@"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION", @"Text to show when Cloud is available, but the Station is not responsive");

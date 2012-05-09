@@ -26,9 +26,11 @@
 @end
 
 
-@implementation WARemoteInterface (Reachability)
+static NSString * const kAvailableHosts = @"-[WARemoteInterface(Reachability) availableHosts]";
+static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) networkState]";
 
-static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARemoteInterface)Reachability)-availableHosts";
+
+@implementation WARemoteInterface (Reachability)
 
 + (void) load {
 
@@ -69,7 +71,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (NSArray *) monitoredHosts {
 
-	return objc_getAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts);
+	return objc_getAssociatedObject(self, &kAvailableHosts);
 
 }
 
@@ -78,7 +80,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   if (self.monitoredHosts == newAvailableHosts)
     return;
 
-	objc_setAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kAvailableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
   [(NSDictionary *)[self.monitoredHostsToReachabilityDetectors copy] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
   
@@ -236,11 +238,6 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 		
         wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
         
-          //  Even if the station is not connected as reported by Cloud, we want to track it anyway
-          //  NSString *stationStatus = [aStationRep valueForKeyPath:@"status"];
-          //  if (![stationStatus isEqual:@"connected"])
-          //    return (id)nil;
-        
           NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
           if (!stationURLString)
             return (id)nil;
@@ -301,7 +298,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (IRWebAPIRequestContextTransformer) defaultHostSwizzlingTransformer {
 
-  __weak WARemoteInterface *nrSelf = self;
+  __weak WARemoteInterface *wSelf = self;
 
 	return [^ (NSDictionary *inOriginalContext) {
 	
@@ -320,7 +317,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       
     }
     
-    NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
+    NSURL *bestHostURL = [wSelf bestHostForRequestNamed:originalMethodName];
     NSParameterAssert(bestHostURL);
     
     NSURL *swizzledURL = [NSURL URLWithString:[[NSArray arrayWithObjects:
@@ -362,6 +359,29 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 }
 
+- (WANetworkState) networkState {
+
+  NSURL *cloudHost = self.engine.context.baseURL;
+	BOOL hasStationAvailable = NO, hasCloudAvailable = NO;
+	
+	for (NSURL *hostURL in self.monitoredHosts) {
+		if (WAReachabilityStateAvailable == [self reachabilityStateForHost:hostURL]) {
+			if ([hostURL isEqual:cloudHost]) {
+				hasCloudAvailable = YES;
+			} else {
+				hasStationAvailable = YES;
+			}
+		}
+	}
+	
+	BOOL answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
+	
+	NSLog(@"%s: Cloud %x, Station %x -> %x", __PRETTY_FUNCTION__, hasCloudAvailable, hasStationAvailable, answer);
+	
+	return answer;
+  
+}
+
 @end
 
 
@@ -384,7 +404,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (void) reachabilityDetectorDidUpdate:(WAReachabilityDetector *)aDetector {
 
-  //  NSLog(@"Updated: %@", aDetector);
+  NSLog(@"Updated: %@", aDetector);
+	
+	[self willChangeValueForKey:@"networkState"];
+
+	[self didChangeValueForKey:@"networkState"];
+
 
 }
 
