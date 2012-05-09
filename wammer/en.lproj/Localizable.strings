@@ -317,10 +317,10 @@
 "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
-"COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "No Photos";
+"COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
-"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "Add some photos to this post.";
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
