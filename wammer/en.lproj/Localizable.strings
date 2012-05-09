@@ -320,7 +320,7 @@
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
-"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "";
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
