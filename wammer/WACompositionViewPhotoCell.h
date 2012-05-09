@@ -23,7 +23,7 @@ enum {
 @property (nonatomic, readwrite, copy) void (^onRemove)();
 
 @property (nonatomic, readwrite, assign) BOOL canRemove;	//	Default is YES
-@property (nonatomic, readonly, retain) UIView *imageContainer;
+@property (nonatomic, readonly, retain) UIImageView *imageContainer;
 
 @property (nonatomic, readwrite, assign) WACompositionViewPhotoCellStyle style;
 
