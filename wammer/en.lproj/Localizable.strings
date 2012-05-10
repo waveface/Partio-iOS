@@ -123,7 +123,7 @@
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
-"COMPOSITION_TITLE" = "Compose";
+"COMPOSITION_TITLE" = "What's happening?";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
