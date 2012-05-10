@@ -23,7 +23,7 @@
 #import "WAPulldownRefreshView.h"
 
 
-#define kConnectivitySection 1
+#define kConnectivitySection 2
 
 @interface WAUserInfoViewController ()
 
@@ -32,6 +32,8 @@
 
 - (void) handleReachableHostsDidChange:(NSNotification *)aNotification;
 - (void) handleReachabilityDetectorDidUpdate:(NSNotification *)aNotification;
+
+- (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)isBusy;
 
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
@@ -51,51 +53,31 @@
   self.title = NSLocalizedString(@"USER_INFO_CONTROLLER_TITLE", @"Settings for User popover");
 	self.tableViewStyle = UITableViewStyleGrouped;
 	
-	WAPulldownRefreshView *pulldownHeader = [WAPulldownRefreshView viewFromNib];
-	self.tableView.pullDownHeaderView = pulldownHeader;
-	
-	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		
-		[pulldownHeader setProgress:progress animated:YES];
-		
-	};
-	
-	__weak IRTableView *wTV = self.tableView;
-	__weak WAPulldownRefreshView *wPulldownHeader = pulldownHeader;
-	
-	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
-		
-		if (didFinish) {
-			
-			wPulldownHeader.progress = 0;
-			[wPulldownHeader setBusy:YES animated:YES];
-			
-			[[WADataStore defaultStore] updateCurrentUserOnSuccess:^{
-				
-				[wTV resetPullDown];
-				
-			} onFailure:^{
-				
-				[wTV resetPullDown];
-				
-			}];
-			
-		}
-		
-	};
-	
-	self.tableView.onPullDownReset = ^ {
-		
-		[wPulldownHeader setBusy:NO animated:YES];
-		
-	};
-	
   self.persistsStateWhenViewWillDisappear = NO;
   self.restoresStateWhenViewDidAppear = NO;
+	
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	__weak WAUserInfoViewController *wSelf = self;
+	
+	id helper = [ri irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
+
+		[wSelf handleRemoteInterfaceUpdateStatusChanged:[inNewValue boolValue]];
+		
+	} forKeyPath:@"isPerformingAutomaticRemoteUpdates" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+	
+	__weak id wHelper = helper;
+	
+	[wSelf irPerformOnDeallocation:^{
+	
+		if (wHelper) {
+			[ri irRemoveObservingsHelper:wHelper];
+		}
+		
+	}];
 
 }
 
-+ (NSSet *) keyPathsForValuesAffectingContentSizeInPopover {
++ (NSSet *) keyPathsForValuesAffectingContentSizeForViewInPopover {
 
 	return [NSSet setWithObjects:
 	
@@ -199,6 +181,19 @@
 
 }
 
+- (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)isBusy {
+
+	if (![self isViewLoaded])
+		return;
+	
+	[self.tableView beginUpdates];
+	[self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:
+		[NSIndexPath indexPathForRow:0 inSection:0],
+	nil] withRowAnimation:UITableViewRowAnimationFade];
+	[self.tableView endUpdates];
+
+}
+
 - (NSArray *) monitoredHosts {
 
   if (monitoredHosts)
@@ -225,7 +220,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
 
-	return 4;
+	return 5;
 
 }
 
@@ -234,15 +229,21 @@
   switch (section) {
 			
     case 0:
-      return 2;
+      return 1;
+		
+    case 1:
+      return 1;
 			
 		case kConnectivitySection:
 			return [self.monitoredHosts count];
 			
-		case 2:
-      return 3;
-		
 		case 3:
+      return 2;
+		
+		case 4:
+			return 2;
+			
+		case 5:
 			return WAAdvancedFeaturesEnabled() ? 1 : 0;
 			
     default:
@@ -254,15 +255,34 @@
 
 - (CGFloat) tableView:(UITableView *)aTableView heightForHeaderInSection:(NSInteger)section {
 
-  return 48;
+	switch (section) {
+		
+		case 0:
+			return 16;
+		
+		default:
+			return aTableView.sectionHeaderHeight;
+	
+	}
 	
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	if (indexPath.section == 0)
-	if (indexPath.row == 0)
-		return 56;
+	switch (indexPath.section) {
+	
+		case 1: {
+		
+			switch (indexPath.row) {
+				
+				case 0:
+					return 56.0f;
+				
+			}
+			
+		}
+	
+	}
 	
 	return tableView.rowHeight;
 
@@ -271,15 +291,21 @@
 - (NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 
   if (section == 0)
+    return nil;
+	
+  if (section == 1)
     return NSLocalizedString(@"USER_INFO_ACCOUNT_SECTION_TITLE", @"Title in User Section");
   
 	if (section == kConnectivitySection)
-    return NSLocalizedString(@"ENDPOINT_CONNECTIVITY_STATUS_TITLE", @"Endpoint Status");
+    return NSLocalizedString(@"SYNCHRONIZATION_INFO", @"Synchronization Information in Account Info");
   
-  if (section == 2)
+  if (section == 3)
     return NSLocalizedString(@"NOUN_STORAGE_QUOTA", @"Noun for storage quota.");
 	
-  return nil;
+  if (section == 4)
+    return NSLocalizedString(@"ABOUT_HEADER", @"In account information");
+
+ return nil;
 
 }
 
@@ -302,12 +328,6 @@
 
 	}
 	
-	if (section == 2) {
-	
-		return [NSLocalizedString(@"SHORT_LEGAL_DISCLAIMER", @"Production Disclaimer") stringByAppendingFormat:@"\n%@", [[NSBundle mainBundle] displayVersionString]];
-		
-	}
-	
 	return nil;
 
 }
@@ -315,6 +335,7 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	__block UITableViewCell *cell = nil;
+	NSString * const kDefaultIdentifier = @"DefaultCell";
 	NSString * const kValue1Identifier = @"Value1Cell";
 	NSString * const kSubtitleCellIdentifier = @"SubtitleCell";
 	
@@ -343,6 +364,37 @@
 	};
 		
   if (indexPath.section == 0) {
+	
+		switch (indexPath.row) {
+		
+			case 0: {
+				
+				cell = createCell(kDefaultIdentifier, UITableViewCellStyleDefault);
+				
+				WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+				
+				if (ri.isPerformingAutomaticRemoteUpdates) {
+				
+					cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data");
+				
+					cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+				} else {
+				
+					cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_USABLE_TITLE", @"Caption to show when app is not syncing data, but sync is usable");
+					
+					cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+				
+				}
+				
+				cell.textLabel.textAlignment = UITextAlignmentCenter;
+				
+				break;
+			}
+		
+		}
+	
+  } else if (indexPath.section == 1) {
 		
 		switch (indexPath.row) {
 			
@@ -353,12 +405,12 @@
 				break;
 			}
 			
-			case 1: {
-				cell = anyCell();
-				cell.textLabel.text = NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"This Device");
-				cell.detailTextLabel.text = [UIDevice currentDevice].name;
-				break;
-			}
+//			case 1: {
+//				cell = anyCell();
+//				cell.textLabel.text = NSLocalizedString(@"NOUN_USERNAME", @"username in account info");
+//				cell.detailTextLabel.text = self.user.nickname;
+//				break;
+//			}
 			
 			default: {
 				break;
@@ -378,7 +430,7 @@
 			
 		}
 		
-	} else if (indexPath.section == 2) {
+	} else if (indexPath.section == 3) {
 		  
 		cell = anyCell();
 		
@@ -389,7 +441,7 @@
 			
 			case 0: {
 			
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE", nil);
+				cell.textLabel.text = NSLocalizedString(@"OBJECTS_NOT_SYNCED_IN_QUEUE", @"in Account Information");
 				cell.detailTextLabel.text = ([all isEqualToNumber:[NSNumber numberWithInteger:-1]]) ?
 					NSLocalizedString(@"STORAGE_QUOTA_UNLIMITED_TITLE", nil):
 					[NSString stringWithFormat:@"%@", all];
@@ -400,33 +452,11 @@
 			
 			case 1: {
 			
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", used];
+				cell.textLabel.text = NSLocalizedString(@"LAST_SYNCED_TIME", @"in Account Information");
+				cell.detailTextLabel.text = @"2 days ago";
 				
 				break;
 				
-			}
-			
-			case 2: {
-			
-				NSUInteger (^dayOrdinality)(NSDate *) = ^ (NSDate *aDate) {
-					return [[NSCalendar currentCalendar] ordinalityOfUnit:NSDayCalendarUnit inUnit:NSEraCalendarUnit forDate:aDate];
-				};
-				
-				NSDate *endDate = self.user.mainStorage.intervalEndDate;
-				NSInteger daysLeft = dayOrdinality(endDate) - dayOrdinality([NSDate date]);
-			
-				cell.textLabel.text = NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT", nil);
-				cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING", @"Number of days left in cycle"), daysLeft];
-				
-				break;
-				
-			}
-				
-			case 3: {
-				cell.textLabel.text = NSLocalizedString(@"STORATE_QUOTA_INTERVAL_END_DATE", nil);
-				cell.detailTextLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:self.user.mainStorage.intervalEndDate];
-				break;
 			}
 			
 			default:
@@ -434,7 +464,32 @@
 			
 		}
 		
-	} else if (indexPath.section == 3) {
+	} else if (indexPath.section == 4) {
+	
+		cell = anyCell();
+		
+		switch (indexPath.row) {
+		
+			case 0: {
+			
+				cell.textLabel.text = NSLocalizedString(@"NOUN_CURRENT_DEVICE", @"This Device");
+				cell.detailTextLabel.text = [UIDevice currentDevice].name;
+
+				break;
+				
+			}
+			
+			case 1: {
+			
+				cell.textLabel.text = NSLocalizedString(@"VERSION", @"Version in account info");
+				cell.detailTextLabel.text = [[NSBundle mainBundle] displayVersionString];
+
+				break;
+				
+			}
+		}
+	
+	} else if (indexPath.section == 5) {
 	
 		cell = anyCell();
 		
@@ -460,11 +515,30 @@
 
 }
 
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void) tableView:(UITableView *)inTableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	switch (indexPath.section) {
 	
-		case 3: {
+		case 0: {
+		
+			switch (indexPath.row) {
+			
+				case 0: {
+				
+					[inTableView deselectRowAtIndexPath:indexPath animated:YES];
+					[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+				
+					break;
+				
+				}
+			
+			}
+			
+			break;
+		
+		}
+	
+		case 5: {
 		
 			switch (indexPath.row) {
 			
@@ -485,9 +559,9 @@
 			}
 		
 			break;
+			
 		}
-	
-	
+		
 	}
 
 }

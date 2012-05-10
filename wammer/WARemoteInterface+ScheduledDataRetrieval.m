@@ -39,9 +39,13 @@
 
 - (void) performAutomaticRemoteUpdatesNow {
 
+	[self willChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
+	
 	[self.dataRetrievalTimer fire];
 	[self.dataRetrievalTimer invalidate];
 	[self rescheduleAutomaticRemoteUpdates];
+	
+	[self didChangeValueForKey:@"isPerformingAutomaticRemoteUpdates"];
 
 }
 
@@ -133,6 +137,16 @@
 	
 }
 
++ (NSSet *) keyPathsForValuesAffectingPerformingAutomaticRemoteUpdates {
+
+	return [NSSet setWithObjects:
+	
+		@"automaticRemoteUpdatesPerformingCount",
+	
+	nil];
+
+}
+
 - (BOOL) isPerformingAutomaticRemoteUpdates {
 
 	return !!(self.automaticRemoteUpdatesPerformingCount);
@@ -164,7 +178,7 @@
 				
 			} onFailure: ^ (NSError *error) {
 			
-				[wSelf endPerformingAutomaticRemoteUpdates];		
+				[wSelf endPerformingAutomaticRemoteUpdates];
 				[wSelf endPostponingDataRetrievalTimerFiring];
 				
 				[AppDelegate() endNetworkActivity];

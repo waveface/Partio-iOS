@@ -183,17 +183,19 @@
 				
 				aCallback(nil);
 				
+				dispatch_async(dispatch_get_main_queue(), ^{
+					
+					[wRecurrenceMachine endPostponingOperations];
+				
+				});
+				
 			}]);
 			
 			[tempQueue setSuspended:NO];
 			
 		});
 		
-	} completionBlock: ^ (id results) {
-	
-		[wRecurrenceMachine endPostponingOperations];
-		
-	}];
+	} completionBlock:nil];
 
 }
 
