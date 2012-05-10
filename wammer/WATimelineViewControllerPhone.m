@@ -1032,7 +1032,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:deleteTitle cancelAction:cancelAction destructiveAction:deleteAction otherActions:nil];
 	
-	[[controller managedActionSheet] showInView:self.view];
+	[[controller managedActionSheet] showInView:self.navigationController.view];
 		
 }
 
