@@ -271,7 +271,7 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 - (BOOL) canScheduleExpensiveBlobRetrieval {
 
 	if ([self canScheduleBlobRetrieval])
-	if (![[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed])
+	if ([[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed])
 		return YES;
 	
 	return NO;

@@ -368,6 +368,8 @@
 
 - (WAAttachedMediaListViewController *) newMediaListViewController {
 
+	[self.article.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:self.article] error:nil];
+	
 	__weak WACompositionViewControllerPhone *wSelf = self;
 	__block WAAttachedMediaListViewController *mediaList = [[WAAttachedMediaListViewController alloc] initWithArticleURI:[self.article.objectID URIRepresentation] usingContext:self.managedObjectContext completion: ^ {
 	

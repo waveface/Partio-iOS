@@ -77,13 +77,13 @@
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";
+"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_TITLE" = "Advanced Features Disabled";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Sign in again to make changes populate.";
+"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Sign in again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
@@ -111,7 +111,7 @@
 "COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Comment";
 
 /* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comment";
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comments";
 
 /* No comment provided by engineer. */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
@@ -123,14 +123,14 @@
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
-"COMPOSITION_TITLE" = "Compose";
+"COMPOSITION_TITLE" = "What’s happening?";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "If you changed your mind, recover this Post from our Web client.";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client";
 
 /* Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_TITLE" = "Delete Post";
+"DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
 
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
@@ -142,46 +142,46 @@
 "ENDPOINT_CONNECTIVITY_STATUS_TITLE" = "Status";
 
 /* Text to show when Cloud and Station are both available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "Your Waveface Station is available.  Everything will be synchronized.";
+"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "Your Waveface Station is currently available.";
 
 /* Text to show when only Cloud is available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION" = "You’re connected to Waveface Cloud.  Full-resolution pictures will be uploaded to your Station when you get home.";
+"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION" = "You’re connected to Waveface Cloud. Full-resolution pictures will be sent to your Station when it becomes available.";
 
 /* Text to show when not even Cloud is there — a rare case */
-"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION" = "Can’t locate any Waveface server.";
+"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION" = "Waveface server cannot be located.";
 
 /* Text to show when Cloud is available, but the Station is not responsive */
-"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "We’re having trouble connecting to your Station.";
+"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "Your Station is currently unavailable.";
 
 /* Article entity sync failure alert message for no underlying error */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly.  The post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly. Your post has been saved as a draft.";
 
 /* Article entity sync failure alert title */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
 
 /* Failed, underlying error %@ with reason %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — the post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — Your post has been saved as a draft.";
 
 /* Failed, underlying error description %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — the post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface has trouble authenticating your account: ";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface is unable to authenticate your account: ";
 
 /* Recovery notion for authentication failure recovery */
-"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "You can reset your password, or register a new account.";
+"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
 
 /* Title for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "Can’t Authenticate";
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "Unable to Authenticate";
 
 /* Description for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface had trouble registering your account: ";
+"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
 
 /* Recovery notion for registration failure recovery */
-"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "Please try registrating later.";
+"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "Please try registrating again later.";
 
 /* Title for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_TITLE" = "Can’t Register";
+"ERROR_USER_REGISTRATION_FAILED_TITLE" = "Unable to Register";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
@@ -220,7 +220,7 @@
 "NOUN_PASSWORD_CONFIRMATION" = "Confirm Password";
 
 /* Noun for storage quota. */
-"NOUN_STORAGE_QUOTA" = "Usage";
+"NOUN_STORAGE_QUOTA" = "Monthly Usage";
 
 /* Noun for Username
    Title for username */
@@ -248,16 +248,16 @@
 "REACHABILITY_STATE_AVAILABLE" = "Available";
 
 /* REACHABILITY_STATE_NOT_AVAILABLE */
-"REACHABILITY_STATE_NOT_AVAILABLE" = "Not Available";
+"REACHABILITY_STATE_NOT_AVAILABLE" = "Offline";
 
 /* REACHABILITY_STATE_UNKNOWN */
-"REACHABILITY_STATE_UNKNOWN" = "Unknown Availablity";
+"REACHABILITY_STATE_UNKNOWN" = "Offline";
 
 /* Title for registration request view */
 "REGISTER_REQUEST_TITLE" = "Register";
 
 /* No comment provided by engineer. */
-"RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "All settings will be reset.  Unsaved changes will be lost.";
+"RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "All settings will be reset. Unsaved changes will be lost.";
 
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
@@ -269,7 +269,7 @@
 "SHORT_LEGAL_DISCLAIMER" = "Waveface Inc., 2011–";
 
 /* Confirmation text for Signing Out */
-"SIGN_OUT_CONFIRMATION" = "Really sign out?";
+"SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -284,7 +284,7 @@
 "STORAGE_QUOTA_CYCLE_DAYS_LEFT" = "Days left";
 
 /* Number of days left in cycle */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "%d days left in cycle";
+"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "%d";
 
 /* No comment provided by engineer. */
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "∞";
@@ -350,11 +350,11 @@
 "ERROR_NO_STATION_FOUND_TITLE" = "No Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You’ll need Waveface Station installed to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "5"; */
 "ERROR_NO_STATION_FOUND_TITLE" = "No Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You’ll need Waveface Station installed to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 

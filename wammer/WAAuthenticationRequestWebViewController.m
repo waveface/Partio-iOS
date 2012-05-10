@@ -152,6 +152,9 @@
 
 - (void) webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 
+	if ([error code] == NSURLErrorCancelled)
+		return;
+
   if (![[[[error userInfo] objectForKey:NSURLErrorFailingURLErrorKey] scheme] isEqualToString:@"waveface"]) {
 		
 		NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, webView, error);
