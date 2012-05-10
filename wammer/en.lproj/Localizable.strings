@@ -1,5 +1,5 @@
 /* attachment activity view */
-"ACTION_ADD" = "Add";
+"ACTION_ADD" = "Stream!";
 
 /* Action title for Cancelling
    Action title for cancelling
@@ -311,7 +311,7 @@
 "ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
-"ACTION_SEND" = "Send";
+"ACTION_SEND" = "Stream!";
 
 /* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
 "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
