@@ -107,13 +107,12 @@
 	
 		fetchRequest.predicate,
 	
-		[NSPredicate predicateWithFormat:@"((modificationDate == nil) AND (creationDate <= %@)) OR (modificationDate <= %@)", datum, datum],
+		[NSPredicate predicateWithFormat:@"(creationDate <= %@)", datum],
 	
 	nil]];
 	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-    //[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
-		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+    [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 	
 	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:
