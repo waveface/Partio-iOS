@@ -130,7 +130,7 @@
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "DELETE_POST_CONFIRMATION_DESCRIPTION";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "是否要刪除貼文？";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "是否要刪除貼文？";
@@ -140,9 +140,6 @@
 
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
-
-/* email in account info */
-"EMAIL" = "EMAIL";
 
 /* Text to show when Cloud and Station are both available */
 "ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "能連上 Waveface Cloud 與您的 Station。所有物件都可被同步。";
@@ -284,8 +281,14 @@
 /* No comment provided by engineer. */
 "STORAGE_QUOTA_UNLIMITED_TITLE" = "無限制";
 
+/* Caption to show when app is syncing data */
+"SYNC_BUTTON_NORMAL_TITLE" = "正在同步…";
+
+/* Caption to show when app is not syncing data, but sync is usable */
+"SYNC_BUTTON_USABLE_TITLE" = "同步";
+
 /* Synchronization Information in Account Info */
-"SYNCHRONIZATION_INFO" = "SYNCHRONIZATION_INFO";
+"SYNCHRONIZATION_INFO" = "同步狀態";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
