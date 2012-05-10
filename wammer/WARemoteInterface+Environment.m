@@ -22,7 +22,7 @@
   if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAAlwaysDenyExpensiveRemoteOperations])
     return NO;
 	
-	return [self hasReachableStation];
+	return ([self hasReachableStation] || [self hasReachableCloud]) && [self hasWiFiConnection];
 	
 }
 
@@ -36,6 +36,12 @@
 
 	return (self.networkState & WACloudReachable);
 
+}
+
+- (BOOL) hasWiFiConnection {
+
+	return [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachable];
+	
 }
 
 @end
