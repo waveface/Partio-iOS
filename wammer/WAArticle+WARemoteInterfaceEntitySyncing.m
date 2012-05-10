@@ -613,7 +613,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
-			[representedFile synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+			[representedFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				kWAFileSyncReducedQualityStrategy, kWAFileSyncStrategy,
+			
+			nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
 			
 				if (!didFinish) {
 					aCallback(error);

@@ -21,7 +21,6 @@
 @interface WABlobSyncManager ()
 
 @property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine;
-- (void) handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification;
 
 - (IRAsyncOperation *) haulingOperationPrototype;
 
@@ -61,16 +60,7 @@
 	if (!self)
 		return nil;
 	
-	__weak WABlobSyncManager *wSelf = self;
-	
-	[[WARemoteInterface sharedInterface] irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-	
-		[wSelf handleNetworkReachabilityStatusChanged:nil];
-		
-	} forKeyPath:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
-	
-	[self.recurrenceMachine beginPostponingOperations];
-	[self handleNetworkReachabilityStatusChanged:nil];
+	[self recurrenceMachine];
 	
 	return self;
 
@@ -120,7 +110,24 @@
 
 - (IRAsyncOperation *) haulingOperationPrototype {
 
+	__weak IRRecurrenceMachine *wRecurrenceMachine = self.recurrenceMachine;
+
 	return [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
+	
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+		
+		BOOL const endpointAvailable = [ri hasReachableStation] || [ri hasReachableCloud];
+		BOOL const hasWiFiConnection = [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachable];
+		BOOL const canSync = endpointAvailable && hasWiFiConnection;
+		
+		if (!canSync) {
+		
+			aCallback(nil);
+			return;
+		
+		}
+		
+		[wRecurrenceMachine beginPostponingOperations];
 	
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		
@@ -165,57 +172,28 @@
 						
 					}];
 
-				} completionBlock:^(id results) {
-				
-					NSLog(@"Sync for file %@ returns: %@", fileURL, results);
-					
-				}]);
+				} completionBlock:nil]);
 				
 			}];
 			
 			enqueue([NSBlockOperation blockOperationWithBlock:^{
 			
 				context = nil;
+				tempQueue = nil;
 				
-				dispatch_async(dispatch_get_main_queue(), ^{					
-					tempQueue = nil;
-				});
+				aCallback(nil);
 				
 			}]);
 			
 			[tempQueue setSuspended:NO];
 			
-			aCallback(nil);
-			
 		});
 		
 	} completionBlock: ^ (id results) {
 	
-	//	NSLog(@"operation completion block called");
-	//	NSLog(@"Results %@", results);
+		[wRecurrenceMachine endPostponingOperations];
 		
 	}];
-
-}
-
-- (void) handleNetworkReachabilityStatusChanged:(NSNotification *)aNotification {
-
-	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	IRRecurrenceMachine * const rm = self.recurrenceMachine;
-	
-	BOOL const endpointAvailable = [ri hasReachableStation] || [ri hasReachableCloud];
-	BOOL const hasWiFiConnection = [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachable];
-	BOOL const canSync = endpointAvailable && hasWiFiConnection;
-	
-	if (canSync && [rm isPostponingOperations]) {
-		
-		[rm endPostponingOperations];
-		
-	} else if (!canSync && ![rm isPostponingOperations]) {
-		
-		[rm beginPostponingOperations];
-		
-	}
 
 }
 
@@ -239,7 +217,6 @@
 	
 	[[context executeFetchRequest:fr error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
 
-		NSLog(@"Invoking sync block for file %@", aFile);
 		block(aFile, idx, stop);
 		
 	}];
