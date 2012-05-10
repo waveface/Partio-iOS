@@ -101,13 +101,11 @@
 
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 	
-	NSDate *datum = [date dateByAddingTimeInterval:86400];
-	
 	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
 	
 		fetchRequest.predicate,
 	
-		[NSPredicate predicateWithFormat:@"(creationDate <= %@)", datum],
+		[NSPredicate predicateWithFormat:@"(creationDate <= %@)", date],
 	
 	nil]];
 	
