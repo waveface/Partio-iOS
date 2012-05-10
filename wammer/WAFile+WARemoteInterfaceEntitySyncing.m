@@ -264,7 +264,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
   [self synchronizeWithOptions:nil completion:completionBlock];
   
-}
+}	
 
 - (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
@@ -283,7 +283,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	BOOL needsSendingResourceImage = ([[NSURL URLWithString:self.resourceURL] isFileURL] || !self.resourceURL) && (self.resourceFilePath);
 	
 	BOOL canSendThumbnailImage = YES;
-	BOOL needsSendingThumbnailImage = ([[NSURL URLWithString:self.thumbnailURL] isFileURL] || !self.thumbnailURL) && (self.thumbnailFilePath);
+	BOOL needsSendingThumbnailImage = needsSendingResourceImage;
 	
 	
 	if ([syncStrategy isEqual:kWAFileSyncAdaptiveQualityStrategy]) {
