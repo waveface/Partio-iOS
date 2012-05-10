@@ -101,19 +101,16 @@
 
 	NSFetchRequest *fetchRequest = [self.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticles" substitutionVariables:[NSDictionary dictionary]];
 	
-	NSDate *datum = [date dateByAddingTimeInterval:86400];
-	
 	fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:
 	
 		fetchRequest.predicate,
 	
-		[NSPredicate predicateWithFormat:@"((modificationDate == nil) AND (creationDate <= %@)) OR (modificationDate <= %@)", datum, datum],
+		[NSPredicate predicateWithFormat:@"(creationDate <= %@)", date],
 	
 	nil]];
 	
 	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-    //[NSSortDescriptor sortDescriptorWithKey:@"modificationDate" ascending:NO],
-		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+    [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
 	nil];
 	
 	fetchRequest.relationshipKeyPathsForPrefetching = [NSArray arrayWithObjects:

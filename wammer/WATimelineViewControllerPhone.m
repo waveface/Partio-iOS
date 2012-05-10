@@ -612,7 +612,16 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[self restoreState];
 	
 	[UIView setAnimationsEnabled:YES];
+	
+	if (!CGRectEqualToRect(self.tableView.frame, [self.tableView.superview convertRect:self.tableView.bounds fromView:self.tableView.superview])) {
+	
+		NSArray *allVisibleIndexPaths = [self.tableView indexPathsForVisibleRows];
 		
+		if ([allVisibleIndexPaths count])
+			[self.tableView scrollToRowAtIndexPath:[allVisibleIndexPaths objectAtIndex:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	
+	}
+	
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -1023,7 +1032,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	IRActionSheetController *controller = [IRActionSheetController actionSheetControllerWithTitle:deleteTitle cancelAction:cancelAction destructiveAction:deleteAction otherActions:nil];
 	
-	[[controller managedActionSheet] showInView:self.view];
+	[[controller managedActionSheet] showInView:self.navigationController.view];
 		
 }
 
