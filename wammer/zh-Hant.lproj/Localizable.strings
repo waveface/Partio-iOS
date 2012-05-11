@@ -1,5 +1,5 @@
 /* In account information */
-"ABOUT_HEADER" = "ABOUT_HEADER";
+"ABOUT_HEADER" = "關於 Stream";
 
 /* attachment activity view */
 "ACTION_ADD" = "加";
@@ -99,7 +99,7 @@
 "AUTH_REQUEST_TITLE" = "歡迎使用 Waveface";
 
 /* Title for the Facebook linking controller */
-"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "AUTH_WITH_FACEBOOK_REQUEST_TITLE";
+"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "連接 Facebook";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
@@ -199,7 +199,7 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
 /* in Account Information */
-"LAST_SYNCED_TIME" = "LAST_SYNCED_TIME";
+"LAST_SYNCED_TIME" = "上次同步";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
@@ -234,7 +234,7 @@
 "NUMBER_OF_PHOTOS" = "%d 張照片";
 
 /* in Account Information */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "OBJECTS_NOT_SYNCED_IN_QUEUE";
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "未同步物件";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
