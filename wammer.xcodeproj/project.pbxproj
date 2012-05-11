@@ -63,6 +63,12 @@
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */; };
+		FF0239CE155CCF7B00BC7400 /* WASliderKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */; };
+		FF0239CF155CCF7B00BC7400 /* WASliderKnob@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */; };
+		FF0239D0155CCF7B00BC7400 /* WASliderKnobDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239CA155CCF7B00BC7400 /* WASliderKnobDisabled.png */; };
+		FF0239D1155CCF7B00BC7400 /* WASliderKnobDisabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239CB155CCF7B00BC7400 /* WASliderKnobDisabled@2x.png */; };
+		FF0239D2155CCF7B00BC7400 /* WASliderKnobPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239CC155CCF7B00BC7400 /* WASliderKnobPressed.png */; };
+		FF0239D3155CCF7B00BC7400 /* WASliderKnobPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239CD155CCF7B00BC7400 /* WASliderKnobPressed@2x.png */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
 		FF0527EB14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */; };
 		FF0527F614F3BF860030D099 /* WAArticleAttachmentActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */; };
@@ -203,9 +209,6 @@
 		FF0908381540377500465513 /* WASettingsGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF09079C1540377500465513 /* WASettingsGlyph@2x.png */; };
 		FF0908391540377500465513 /* WASettingsGlyph@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FF09079D1540377500465513 /* WASettingsGlyph@2x~iphone.png */; };
 		FF09083A1540377500465513 /* WASettingsGlyph~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FF09079E1540377500465513 /* WASettingsGlyph~iphone.png */; };
-		FF09083B1540377500465513 /* WASliderKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = FF09079F1540377500465513 /* WASliderKnob.png */; };
-		FF09083C1540377500465513 /* WASliderKnobDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0907A01540377500465513 /* WASliderKnobDisabled.png */; };
-		FF09083D1540377500465513 /* WASliderKnobPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0907A11540377500465513 /* WASliderKnobPressed.png */; };
 		FF09083E1540377500465513 /* WASoundRefreshEnded.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF0907A21540377500465513 /* WASoundRefreshEnded.caf */; };
 		FF09083F1540377500465513 /* WASoundRefreshStarted.caf in Resources */ = {isa = PBXBuildFile; fileRef = FF0907A31540377500465513 /* WASoundRefreshStarted.caf */; };
 		FF0908401540377500465513 /* WASpeechBubble.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0907A41540377500465513 /* WASpeechBubble.png */; };
@@ -1145,6 +1148,12 @@
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABlobSyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABlobSyncManager.m; sourceTree = "<group>"; };
+		FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnob.png; path = Resources/WASliderKnob.png; sourceTree = "<group>"; };
+		FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASliderKnob@2x.png"; path = "Resources/WASliderKnob@2x.png"; sourceTree = "<group>"; };
+		FF0239CA155CCF7B00BC7400 /* WASliderKnobDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobDisabled.png; path = Resources/WASliderKnobDisabled.png; sourceTree = "<group>"; };
+		FF0239CB155CCF7B00BC7400 /* WASliderKnobDisabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASliderKnobDisabled@2x.png"; path = "Resources/WASliderKnobDisabled@2x.png"; sourceTree = "<group>"; };
+		FF0239CC155CCF7B00BC7400 /* WASliderKnobPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobPressed.png; path = Resources/WASliderKnobPressed.png; sourceTree = "<group>"; };
+		FF0239CD155CCF7B00BC7400 /* WASliderKnobPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASliderKnobPressed@2x.png"; path = "Resources/WASliderKnobPressed@2x.png"; sourceTree = "<group>"; };
 		FF0505ED14C088FF002EA455 /* WAButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAButton.h; sourceTree = "<group>"; };
 		FF0505EE14C088FF002EA455 /* WAButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAButton.m; sourceTree = "<group>"; };
 		FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewControllerPhone.xib; sourceTree = "<group>"; };
@@ -1290,9 +1299,6 @@
 		FF09079C1540377500465513 /* WASettingsGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph@2x.png"; path = "Resources/WASettingsGlyph@2x.png"; sourceTree = "<group>"; };
 		FF09079D1540377500465513 /* WASettingsGlyph@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph@2x~iphone.png"; path = "Resources/WASettingsGlyph@2x~iphone.png"; sourceTree = "<group>"; };
 		FF09079E1540377500465513 /* WASettingsGlyph~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASettingsGlyph~iphone.png"; path = "Resources/WASettingsGlyph~iphone.png"; sourceTree = "<group>"; };
-		FF09079F1540377500465513 /* WASliderKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnob.png; path = Resources/WASliderKnob.png; sourceTree = "<group>"; };
-		FF0907A01540377500465513 /* WASliderKnobDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobDisabled.png; path = Resources/WASliderKnobDisabled.png; sourceTree = "<group>"; };
-		FF0907A11540377500465513 /* WASliderKnobPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobPressed.png; path = Resources/WASliderKnobPressed.png; sourceTree = "<group>"; };
 		FF0907A21540377500465513 /* WASoundRefreshEnded.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshEnded.caf; path = Resources/WASoundRefreshEnded.caf; sourceTree = "<group>"; };
 		FF0907A31540377500465513 /* WASoundRefreshStarted.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = WASoundRefreshStarted.caf; path = Resources/WASoundRefreshStarted.caf; sourceTree = "<group>"; };
 		FF0907A41540377500465513 /* WASpeechBubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASpeechBubble.png; path = Resources/WASpeechBubble.png; sourceTree = "<group>"; };
@@ -2695,9 +2701,12 @@
 				FF09079C1540377500465513 /* WASettingsGlyph@2x.png */,
 				FF09079D1540377500465513 /* WASettingsGlyph@2x~iphone.png */,
 				FF09079E1540377500465513 /* WASettingsGlyph~iphone.png */,
-				FF09079F1540377500465513 /* WASliderKnob.png */,
-				FF0907A01540377500465513 /* WASliderKnobDisabled.png */,
-				FF0907A11540377500465513 /* WASliderKnobPressed.png */,
+				FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */,
+				FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */,
+				FF0239CA155CCF7B00BC7400 /* WASliderKnobDisabled.png */,
+				FF0239CB155CCF7B00BC7400 /* WASliderKnobDisabled@2x.png */,
+				FF0239CC155CCF7B00BC7400 /* WASliderKnobPressed.png */,
+				FF0239CD155CCF7B00BC7400 /* WASliderKnobPressed@2x.png */,
 				FF0907A21540377500465513 /* WASoundRefreshEnded.caf */,
 				FF0907A31540377500465513 /* WASoundRefreshStarted.caf */,
 				FF0907A41540377500465513 /* WASpeechBubble.png */,
@@ -3618,9 +3627,6 @@
 				FF0908381540377500465513 /* WASettingsGlyph@2x.png in Resources */,
 				FF0908391540377500465513 /* WASettingsGlyph@2x~iphone.png in Resources */,
 				FF09083A1540377500465513 /* WASettingsGlyph~iphone.png in Resources */,
-				FF09083B1540377500465513 /* WASliderKnob.png in Resources */,
-				FF09083C1540377500465513 /* WASliderKnobDisabled.png in Resources */,
-				FF09083D1540377500465513 /* WASliderKnobPressed.png in Resources */,
 				FF09083E1540377500465513 /* WASoundRefreshEnded.caf in Resources */,
 				FF09083F1540377500465513 /* WASoundRefreshStarted.caf in Resources */,
 				FF0908401540377500465513 /* WASpeechBubble.png in Resources */,
@@ -3682,6 +3688,12 @@
 				FFEF58331549F5E900722D91 /* WAPreviewQuoteBackdrop.png in Resources */,
 				FFCB9B2C155281EC0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave.html in Resources */,
 				FFCB9B2E155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html in Resources */,
+				FF0239CE155CCF7B00BC7400 /* WASliderKnob.png in Resources */,
+				FF0239CF155CCF7B00BC7400 /* WASliderKnob@2x.png in Resources */,
+				FF0239D0155CCF7B00BC7400 /* WASliderKnobDisabled.png in Resources */,
+				FF0239D1155CCF7B00BC7400 /* WASliderKnobDisabled@2x.png in Resources */,
+				FF0239D2155CCF7B00BC7400 /* WASliderKnobPressed.png in Resources */,
+				FF0239D3155CCF7B00BC7400 /* WASliderKnobPressed@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
