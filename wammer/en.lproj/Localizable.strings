@@ -228,7 +228,7 @@
 /* Noun for Username
    Title for username
    username in account info */
-"NOUN_USERNAME" = "Username";
+"NOUN_USERNAME" = "Email";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
