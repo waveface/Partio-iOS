@@ -280,8 +280,6 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     
     } onFailure:^(NSError *error) {
     
-      NSLog(@"Error retrieving associated stations for current user: %@", wSelf.userIdentifier);
-      
       dispatch_async(dispatch_get_main_queue(), ^ {
       
         [wSelf endPostponingDataRetrievalTimerFiring];
@@ -376,8 +374,6 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 	
 	BOOL answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
 	
-	NSLog(@"%s: Cloud %x, Station %x -> %x", __PRETTY_FUNCTION__, hasCloudAvailable, hasStationAvailable, answer);
-	
 	return answer;
   
 }
@@ -404,8 +400,6 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 - (void) reachabilityDetectorDidUpdate:(WAReachabilityDetector *)aDetector {
 
-  NSLog(@"Updated: %@", aDetector);
-	
 	[self willChangeValueForKey:@"networkState"];
 
 	[self didChangeValueForKey:@"networkState"];

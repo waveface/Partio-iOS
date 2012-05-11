@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12A154q</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2429</string>
-		<string key="IBDocument.AppKitVersion">1162.3</string>
-		<string key="IBDocument.HIToolboxVersion">604.00</string>
+		<string key="IBDocument.SystemVersion">12A178q</string>
+		<string key="IBDocument.InterfaceBuilderVersion">2488</string>
+		<string key="IBDocument.AppKitVersion">1166.3</string>
+		<string key="IBDocument.HIToolboxVersion">609.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1421</string>
+			<string key="NS.object.0">1468</string>
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -47,13 +47,12 @@
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MSAxIDEAA</bytes>
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MCAwAA</bytes>
 						</object>
+						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<int key="IBUIDataDetectorTypes">1</int>
-						<bool key="IBUIDetectsPhoneNumbers">YES</bool>
 					</object>
 				</object>
 				<string key="NSFrameSize">{384, 256}</string>
@@ -402,6 +401,6 @@
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1421</string>
+		<string key="IBCocoaTouchPluginVersion">1468</string>
 	</data>
 </archive>
