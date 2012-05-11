@@ -335,7 +335,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 						NSManagedObjectContext *context = [ds disposableMOC];
 						WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 						file.identifier = attachmentIdentifier;
-						
+						file.thumbnailURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+
 						[context save:nil];
 						
 						callback(attachmentIdentifier);
