@@ -186,7 +186,7 @@ NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositio
 	BOOL usesCamera = [[options objectForKey:WACompositionImageInsertionUsesCamera] isEqual:(id)kCFBooleanTrue];
 	BOOL animate = ![[options objectForKey:WACompositionImageInsertionAnimatePresentation] isEqual:(id)kCFBooleanFalse];
 	
-	IRAction *photoPickerAction = [self newPresentCameraCaptureControllerActionAnimated:animate sender:sender];
+	IRAction *photoPickerAction = [self newPresentImagePickerControllerActionAnimated:animate sender:sender];
 	IRAction *cameraAction = [self newPresentCameraCaptureControllerActionAnimated:animate sender:sender];
 	
 	[availableActions addObject:photoPickerAction];
