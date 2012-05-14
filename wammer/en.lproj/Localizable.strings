@@ -9,7 +9,7 @@
    Action title for cancelling stuff
    Cancel.
    Title for cancelling an action */
-"ACTION_CANCEL" = "Close";
+"ACTION_CANCEL" = "Cancel";
 
 /* Action changing representing file of an article
    Title for the action responsible for presenting a controller changing the representing file of an article */
