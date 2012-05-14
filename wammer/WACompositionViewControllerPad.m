@@ -16,7 +16,6 @@
 
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 @property (nonatomic, readwrite, retain) UIButton *imagePickerPopoverPresentingSender;
-@property (nonatomic, readwrite, assign) CGRect lastAdjustedInterfaceBounds;
 
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
@@ -28,7 +27,7 @@
 
 @implementation WACompositionViewControllerPad
 @synthesize photosView, noPhotoReminderView, toolbar, noPhotoReminderViewElements, previewBadge, previewBadgeButton;
-@synthesize imagePickerPopover, imagePickerPopoverPresentingSender, lastAdjustedInterfaceBounds;
+@synthesize imagePickerPopover, imagePickerPopoverPresentingSender;
 
 - (id) init {
 
@@ -41,25 +40,6 @@
 	[super viewDidAppear:animated];
 	
 	[self.contentTextView becomeFirstResponder];
-
-}
-
-- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds {
-
-	[super adjustContainerViewWithInterfaceBounds:newBounds];
-	
-	if (!CGRectEqualToRect(self.lastAdjustedInterfaceBounds, newBounds))
-	if ([imagePickerPopover isPopoverVisible]) {
-		
-		//	[UIView animateWithDuration:5.0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
-		//		
-		//		[self presentImagePickerController:(IRImagePickerController *)imagePickerPopover.contentViewController sender:self.imagePickerPopoverPresentingSender];
-		//		
-		//	} completion:nil];
-		
-	}
-	
-	self.lastAdjustedInterfaceBounds = newBounds;
 
 }
 
@@ -110,7 +90,7 @@
 
 }
 
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender {
+- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender animated:(BOOL)animated {
 
 	@try {
 	
@@ -140,7 +120,7 @@
 
 }
 
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(controller) nrController = controller;
@@ -148,15 +128,8 @@
 	controller.showsCameraControls = NO;
 	controller.onViewDidAppear = ^ (BOOL animated) {
 		
-//		[nrController retain];
-//		
-//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			
-			nrController.showsCameraControls = YES;
-      nrController.view.frame = [nrController.view.window convertRect:[nrController.view.window.screen applicationFrame] fromWindow:nil];
-//			[nrController autorelease];
-//		
-//		});
+		nrController.showsCameraControls = YES;
+		nrController.view.frame = [nrController.view.window convertRect:[nrController.view.window.screen applicationFrame] fromWindow:nil];
 		
 	};
 	
