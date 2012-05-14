@@ -434,7 +434,7 @@
 		  
 		cell = anyCell();
 		
-		NSNumber *used = self.user.mainStorage.numberOfObjectsCreatedInInterval;
+//		NSNumber *used = self.user.mainStorage.numberOfObjectsCreatedInInterval;
 		NSNumber *all = self.user.mainStorage.numberOfObjectsAllowedInInterval;
 						
 		switch ([indexPath row]) {

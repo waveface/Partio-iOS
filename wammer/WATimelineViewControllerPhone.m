@@ -56,7 +56,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 
 - (void) refreshData;
 
-- (void) beginCompositionSessionWithURL:(NSURL *)anURL onCompositionViewDidAppear:(void(^)(WACompositionViewController *compositionVC))callback;
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void(^)(WACompositionViewController *compositionVC))callback;
 
 - (void) handleCompose:(UIBarButtonItem *)sender;
 
@@ -464,6 +464,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+
+	[super viewDidDisappear:animated];
+	[self didReceiveMemoryWarning];
+
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 
 	if ([self isViewLoaded])
@@ -479,7 +486,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		return;
 
 	NSURL *contentURL = [[incomingNotification userInfo] objectForKey:@"foundURL"];
-	[self beginCompositionSessionWithURL:contentURL];
+	[self beginCompositionSessionWithURL:contentURL animated:YES onCompositionViewDidAppear:nil];
 	
 }
 
@@ -504,7 +511,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-  
+
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
 	return [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
@@ -543,6 +550,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 
+	if (![self isViewLoaded])
+		return;
+	
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
 			[self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
@@ -561,6 +571,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
+	if (![self isViewLoaded])
+		return;
+	
 	NSParameterAssert([NSThread isMainThread]);
 
 	switch (type) {
@@ -655,13 +668,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 }
 
-- (void) beginCompositionSessionWithURL:(NSURL *)anURL {
-
-	[self beginCompositionSessionWithURL:anURL onCompositionViewDidAppear:nil];
-
-}
-
-- (void) beginCompositionSessionWithURL:(NSURL *)anURL onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
+- (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
 
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
 	
@@ -670,7 +677,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-  [self presentViewController:[compositionVC wrappingNavigationController] animated:YES completion:^{
+  [self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
 		
 		if (callback)
 			callback(compositionVC);
@@ -689,7 +696,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
   [aController dismissViewControllerAnimated:YES completion:^{
 
-		[self beginCompositionSessionWithURL:anObjectURIOrNil];
+		[self beginCompositionSessionWithURL:anObjectURIOrNil animated:YES onCompositionViewDidAppear:nil];
 		
 	}];
 
@@ -717,7 +724,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	} else {
 
-		[self beginCompositionSessionWithURL:nil];
+		[self beginCompositionSessionWithURL:nil animated:YES onCompositionViewDidAppear:nil];
 	
 	}
   
@@ -962,7 +969,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-	
 }
 
 - (void) editCoverImage:(id)sender {
@@ -1148,9 +1154,24 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) handleCameraCapture:(UIBarButtonItem *)sender  {
 
-	[self beginCompositionSessionWithURL:nil onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
+	[self beginCompositionSessionWithURL:nil animated:NO onCompositionViewDidAppear:^(WACompositionViewController *compositionVC) {
 	
-		[compositionVC handleImageAttachmentInsertionRequestWithSender:compositionVC.view];
+		[compositionVC handleImageAttachmentInsertionRequestWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
+			kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
+		
+		nil] sender:compositionVC.view];
+		
+		[[UIApplication sharedApplication].keyWindow.layer addAnimation:((^ {
+		
+			CATransition *transition = [CATransition animation];
+			transition.duration = 0.3f;
+			transition.type = kCATransitionFade;
+			
+			return transition;
+		
+		})()) forKey:kCATransition];
 	
 	}];
 
