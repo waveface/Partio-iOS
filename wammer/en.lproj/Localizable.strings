@@ -9,7 +9,7 @@
    Action title for cancelling stuff
    Cancel.
    Title for cancelling an action */
-"ACTION_CANCEL" = "Cancel";
+"ACTION_CANCEL" = "Close";
 
 /* Action changing representing file of an article
    Title for the action responsible for presenting a controller changing the representing file of an article */
@@ -40,7 +40,7 @@
 "ACTION_NEW_POST" = "New Post";
 
 /* No comment provided by engineer. */
-"ACTION_OKAY" = "Okay";
+"ACTION_OKAY" = "Stream!";
 
 /* No comment provided by engineer. */
 "ACTION_OPEN_IN_SAFARI" = "Open in Safari";
@@ -80,13 +80,13 @@
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to populate changes.";
+"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_TITLE" = "Advanced Features Disabled";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Sign in again to populate changes.";
+"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Login again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
@@ -96,7 +96,7 @@
 "APP_TITLE" = "Stream";
 
 /* Title for the auth request controller */
-"AUTH_REQUEST_TITLE" = "Welcome";
+"AUTH_REQUEST_TITLE" = "Login";
 
 /* Title for the Facebook linking controller */
 "AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
@@ -130,7 +130,7 @@
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client.";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
@@ -199,7 +199,7 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* in Account Information */
-"LAST_SYNCED_TIME" = "Last Synchronized at";
+"LAST_SYNCED_TIME" = "Last Synchronized";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -297,7 +297,7 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
 /* Title in User Section */
-"USER_INFO_ACCOUNT_SECTION_TITLE" = "Account";
+"USER_INFO_ACCOUNT_SECTION_TITLE" = "Account Name";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
