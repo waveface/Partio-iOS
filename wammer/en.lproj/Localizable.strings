@@ -64,13 +64,13 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Login";
 
 /* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link With Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
 
 /* Action title for Signing Out */
-"ACTION_SIGN_OUT" = "Sign Out";
+"ACTION_SIGN_OUT" = "Logout";
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
@@ -126,7 +126,7 @@
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
-"COMPOSITION_TITLE" = "What’s happening?";
+"COMPOSITION_TITLE" = "Compose?";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
@@ -285,7 +285,7 @@
 "SYNC_BUTTON_NORMAL_TITLE" = "Syncing…";
 
 /* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "Sync";
+"SYNC_BUTTON_USABLE_TITLE" = "Synced";
 
 /* Synchronization Information in Account Info */
 "SYNCHRONIZATION_INFO" = "Synchronization Info";
