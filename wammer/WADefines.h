@@ -59,7 +59,8 @@ extern NSDictionary * WAPresetDefaults (void);
 
 extern NSString * const kWACurrentGeneratedDeviceIdentifier;
 BOOL WADeviceIdentifierReset (void);
-NSString * WADeviceIdentifier (void);
+extern NSString * WADeviceIdentifier (void);
+extern NSString * WADeviceName (void);
 
 extern NSString * const kWAAppEventNotification;	//	Notification Center key
 extern NSString * const kWAAppEventTitle;	//	The eventTitle
