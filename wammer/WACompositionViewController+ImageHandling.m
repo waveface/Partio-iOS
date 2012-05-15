@@ -146,10 +146,12 @@ NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositio
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 		
 		NSError *error = nil;
-		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, nil] error:&error])
+		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, capturedArticle, nil] error:&error])
 			NSLog(@"Error obtaining permanent object ID: %@", error);
 
-		[capturedArticle addFilesObject:stitchedFile];
+		[capturedArticle willChangeValueForKey:@"files"];
+		[[capturedArticle mutableOrderedSetValueForKey:@"files"] addObject:stitchedFile];
+		[capturedArticle didChangeValueForKey:@"files"];
 		
 		NSURL *finalFileURL = nil;
 		
