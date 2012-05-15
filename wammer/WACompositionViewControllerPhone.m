@@ -233,24 +233,22 @@
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
+- (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super handleCurrentArticleFilesChangedFrom:fromValue to:toValue changeKind:changeKind];
-	
+	[super handleFilesChangeKind:kind oldValue:oldValue newValue:newValue indices:indices isPrior:isPrior];
+
 	dispatch_async(dispatch_get_main_queue(), ^{
 		
 		[self updateArticleAttachmentActivityView];
 
 	});
-
+	
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
+- (void) handlePreviewsChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super handleCurrentArticlePreviewsChangedFrom:fromValue to:toValue changeKind:changeKind];
-	
+	[super handlePreviewsChangeKind:kind oldValue:oldValue newValue:newValue indices:indices isPrior:isPrior];
+
 	dispatch_async(dispatch_get_main_queue(), ^{
 		
 		[self updateArticleAttachmentActivityView];

@@ -112,7 +112,7 @@
 
 }
 
-- (void) dismissImagePickerController:(IRImagePickerController *)controller {
+- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
 
 	self.imagePickerPopoverPresentingSender = nil;
 
@@ -171,7 +171,7 @@
 
 }
 
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
 
   [CATransaction begin];
   
@@ -371,6 +371,16 @@
 
 }
 
+- (void) gridViewDidEndUpdateAnimation:(AQGridView *)gridView {
+
+	[UIView animateWithDuration:0.3 animations:^{
+		
+		[self adjustPhotos];
+
+	}];
+
+}
+
 - (AQGridViewCell *) gridView:(AQGridView *)gridView cellForItemAtIndex:(NSUInteger)index {
 
 	static NSString * const identifier = @"photoCell";
@@ -388,35 +398,113 @@
 				
 	}
 	
-	cell.alpha = 1;
 	cell.image = [representedFile smallestPresentableImage];
 	cell.clipsToBounds = NO;
+	cell.selectionStyle = AQGridViewCellSelectionStyleNone;
+	
+	__weak WACompositionViewPhotoCell *wCell = cell;
 	
 	cell.onRemove = ^ {
+
+		if (!wCell)
+			return;
 	
-		[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		WAFile *file = wCell.representedFile;
+		WAArticle *article = file.article;
 		
-			cell.alpha = 0;
+		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+		[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5f];
 		
-		} completion: ^ (BOOL finished) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				
-				[representedFile.article removeFilesObject:representedFile];
-				
-			});
+		[article willChangeValueForKey:@"files"];
+		[[article mutableOrderedSetValueForKey:@"files"] removeObject:file];
+		[article didChangeValueForKey:@"files"];
 			
-		}];
-	
 	};
 	
 	return cell;
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind {
+- (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
-	dispatch_async(dispatch_get_main_queue(), ^ {
+	if (![self isViewLoaded])
+		return;
+	
+	self.noPhotoReminderView.hidden = !![self.article.files count];
+	
+	if ([oldValue isEqual:newValue])
+	if ([self.photosView numberOfItems] == [newValue count])
+		return;
+	
+	NSParameterAssert(![self.photosView isAnimatingUpdates]);
+	
+	switch (kind) {
+	
+		case NSKeyValueChangeSetting: {
+		
+			[self.photosView reloadData];
+			[self adjustPhotos];
+		
+			break;
+		}
+		
+		case NSKeyValueChangeInsertion: {
+		
+			[self.photosView beginUpdates];
+			
+			[self.photosView insertItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
+			
+			[self.photosView endUpdates];
+			
+			break;
+			
+		}
+		
+		case NSKeyValueChangeRemoval: {
+		
+			[self.photosView beginUpdates];
+			
+			[self.photosView deleteItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
+			
+			[self.photosView endUpdates];
+
+			break;
+			
+		}
+		
+		case NSKeyValueChangeReplacement: {
+		
+			[self.photosView beginUpdates];
+			
+			[self.photosView reloadItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
+			
+			[self.photosView endUpdates];
+			
+			break;
+			
+		}
+
+	}
+
+}
+
+- (void) handleCurrentArticleFilesChangedFrom:(NSOrderedSet *)fromValue to:(NSOrderedSet *)toValue changeKind:(NSKeyValueChange)changeKind {
+
+	[self.photosView reloadData];
+	[self adjustPhotos];
+
+	return;
+
+	NSCParameterAssert([fromValue isKindOfClass:[NSOrderedSet class]]);
+	NSCParameterAssert([toValue isKindOfClass:[NSOrderedSet class]]);
+
+	NSArray *fromFiles = (NSArray *)([fromValue isKindOfClass:[NSArray class]] ? fromValue : [fromValue isKindOfClass:[NSOrderedSet class]] ? [(NSOrderedSet *)fromValue array] : nil);
+
+	NSArray *toFiles = (NSArray *)([toValue isKindOfClass:[NSArray class]] ? toValue : [toValue isKindOfClass:[NSOrderedSet class]] ? [(NSOrderedSet *)toValue array] : nil);
+	
+	NSCParameterAssert([NSThread isMainThread]);
+	
+//	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		if (![self isViewLoaded])
 			return;
@@ -425,16 +513,16 @@
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				NSArray *removedObjects = [fromValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-					return ![toValue containsObject:evaluatedObject];
+				NSArray *removedObjects = [fromFiles filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+					return ![toFiles containsObject:evaluatedObject];
 				}]];
 				
-				NSIndexSet *removedObjectIndices = [fromValue indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				NSIndexSet *removedObjectIndices = [fromFiles indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 					return [removedObjects containsObject:obj];
 				}];
 				
-				NSArray *insertedObjects = [toValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-					return ![fromValue containsObject:evaluatedObject];
+				NSArray *insertedObjects = [toFiles filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+					return ![fromFiles containsObject:evaluatedObject];
 				}]];
 				
 				BOOL hasCellNumberChanges = ([insertedObjects count] || [removedObjects count]);
@@ -460,7 +548,7 @@
 				
 				NSMutableDictionary *oldFileURIsToCellRects = [NSMutableDictionary dictionary];
 				[oldShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[oldFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[fromValue objectAtIndex:idx]];
+					[oldFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[fromFiles objectAtIndex:idx]];
 				}];
 				
 				reload();
@@ -491,14 +579,14 @@
 				NSIndexSet *newShownCellIndices = [self.photosView visibleCellIndices];
 				NSMutableDictionary *newFileURIsToCellRects = [NSMutableDictionary dictionary];
 				[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[newFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[toValue objectAtIndex:idx]];
+					[newFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[toFiles objectAtIndex:idx]];
 				}];
 				
 				[animationBlocks irEnqueueBlock:^{
 					
 					[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 						
-						NSValue *oldRectValue = [oldFileURIsToCellRects objectForKey:[toValue objectAtIndex:idx]];
+						NSValue *oldRectValue = [oldFileURIsToCellRects objectForKey:[toFiles objectAtIndex:idx]];
 						if (!oldRectValue)
 							return;
 						
@@ -525,7 +613,7 @@
 					
 			});
 		
-	});
+//	});
 
 }
 

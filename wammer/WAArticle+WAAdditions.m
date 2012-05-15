@@ -84,7 +84,7 @@
 
 }
 
-- (void) setFiles:(NSSet *)files {
+- (void) setFiles:(NSOrderedSet *)files {
 
 	[self willChangeValueForKey:@"files"];
 	[self setPrimitiveValue:files forKey:@"files"];
@@ -111,7 +111,10 @@
 	if ([key isEqualToString:@"text"])
 		return YES;
 	
-	return NO;
+	if ([key isEqualToString:@"files"])
+		return YES;
+	
+	return YES;
 
 }
 

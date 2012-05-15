@@ -1175,6 +1175,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 			(id)kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
 			(id)kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
+			
+			//	TBD
+			//	(id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
 		
 		nil] sender:compositionVC.view];
 		
