@@ -275,9 +275,9 @@
 				
 				__weak WACompositionViewControllerPhone *nrSelf = self;
 				
-				NSArray *capturedFiles = [self.article.fileOrder copy];
+				NSOrderedSet *capturedFiles = [self.article.files copy];
 				BOOL (^filesChanged)(void) = ^ {
-					return (BOOL)![nrSelf.article.fileOrder isEqual:capturedFiles];
+					return (BOOL)![nrSelf.article.files isEqual:capturedFiles];
 				};
 				
 				CALayer *crossfadeLayer = nrSelf.view.window.layer;

@@ -65,7 +65,8 @@
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
   }
   
-  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:indexPath.row]]);
+  WAFile *representedFile = [self.article.files objectAtIndex:indexPath.row];
+	
   cell.imageView.image = representedFile.thumbnailImage;
   cell.textLabel.text = [NSString stringWithFormat:@"File (%@; %@)", representedFile.resourceType, representedFile.resourceURL];
     
@@ -75,8 +76,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-  NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
-  //  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:fileURI]);
+  NSURL *fileURI = [self.article.files objectAtIndex:indexPath.row];
     
   __block WASingleFileViewController *previewController = [WASingleFileViewController controllerForFile:fileURI];
   previewController.onFinishLoad = [[previewController class] defaultQuickLookFinishLoadHandler];
@@ -87,13 +87,14 @@
 
 - (NSInteger) numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller {
 
-  return [self.article.fileOrder count];
+  return [self.article.files count];
 
 }
 
 - (id <QLPreviewItem>) previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index {
 
-  WAFile *representedFile = (WAFile *)([self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]]);
+	WAFile *representedFile = [self.article.files objectAtIndex:index];
+	
   return representedFile;
 
 }

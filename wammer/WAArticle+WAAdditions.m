@@ -12,12 +12,6 @@
 
 @implementation WAArticle (WAAdditions)
 
-+ (void) load {
-
-	[self configureSimulatedOrderedRelationship];
-
-}
-
 + (NSSet *) keyPathsForValuesAffectingHasMeaningfulContent {
 
 	return [NSSet setWithObjects:
@@ -50,7 +44,6 @@
 	return [NSSet setWithObjects:
 	
 		@"files",
-		@"fileOrder",
 	
 	nil];
 
@@ -62,8 +55,8 @@
 	WAFile *file = [self primitiveValueForKey:@"representingFile"];
 	[self didAccessValueForKey:@"representingFile"];
 	
-	if (!file && [self.fileOrder count]) {
-		file = (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
+	if (!file && [self.files count]) {
+		file = [self.files objectAtIndex:0];
 	}
 
 	return file;
@@ -110,28 +103,6 @@
 
 }
 
-- (void) setFileOrder:(NSArray *)fileOrder {
-
-	[self willChangeValueForKey:@"fileOrder"];
-	[self setPrimitiveValue:fileOrder forKey:@"fileOrder"];
-	
-	[self willAccessValueForKey:@"representingFile"];
-	WAFile *representingFile = [self primitiveValueForKey:@"representingFile"];
-	[self didAccessValueForKey:@"representingFile"];
-	
-	if ([[representingFile objectID] isTemporaryID])
-		[representingFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:representingFile] error:nil];
-	
-	if (![fileOrder containsObject:[[representingFile objectID] URIRepresentation]]) {
-		[self willChangeValueForKey:@"representingFile"];
-		[self setPrimitiveValue:nil forKey:@"representingFile"];
-		[self didChangeValueForKey:@"representingFile"];
-	}
-	
-	[self didChangeValueForKey:@"fileOrder"];
-
-}
-
 + (BOOL) automaticallyNotifiesObserversForKey:(NSString *)key {
 
 	if ([super automaticallyNotifiesObserversForKey:key])
@@ -141,28 +112,6 @@
 		return YES;
 	
 	return NO;
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingFiles {
-
-	return [NSSet setWithObjects:@"fileOrder", nil];
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingFileOrder {
-
-	return [NSSet setWithObjects:@"files", nil];
-
-}
-
-+ (NSDictionary *) orderedRelationships {
-
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		
-		@"fileOrder", @"files",
-		
-	nil];
 
 }
 

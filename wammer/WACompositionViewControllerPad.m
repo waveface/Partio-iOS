@@ -326,7 +326,7 @@
     
   }];
 	
-	[self handleCurrentArticleFilesChangedFrom:self.article.fileOrder to:self.article.fileOrder changeKind:NSKeyValueChangeReplacement];
+	[self handleCurrentArticleFilesChangedFrom:self.article.files to:self.article.files changeKind:NSKeyValueChangeReplacement];
 	[self handleCurrentArticlePreviewsChangedFrom:self.article.previews to:self.article.previews changeKind:NSKeyValueChangeReplacement];
 	
 }
@@ -367,7 +367,7 @@
 
 - (NSUInteger) numberOfItemsInGridView:(AQGridView *)gridView {
 
-	return [self.article.fileOrder count];
+	return [self.article.files count];
 
 }
 
@@ -376,9 +376,7 @@
 	static NSString * const identifier = @"photoCell";
 	
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
-	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {
-		return [[[aFile objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:index]];
-	}] anyObject];
+	WAFile *representedFile = [self.article.files objectAtIndex:index];
 	
 	if (!cell) {
 	
@@ -423,18 +421,7 @@
 		if (![self isViewLoaded])
 			return;
 			
-		@try {
-		
-			self.noPhotoReminderView.hidden = ([self.article.fileOrder count] > 0);
-		
-		} @catch (NSException *e) {
-		
-			self.noPhotoReminderView.hidden = YES;
-		
-			if (![e.name isEqualToString:NSObjectInaccessibleException])
-				@throw e;
-			
-    } @finally {
+		self.noPhotoReminderView.hidden = !![self.article.files count];
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
@@ -537,8 +524,6 @@
 				} completion:nil];
 					
 			});
-		
-		}
 		
 	});
 
