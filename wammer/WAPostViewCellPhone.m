@@ -197,24 +197,23 @@
 
 		self.accessibilityValue = post.text;
 		
-		NSArray *allFileURIs = post.fileOrder;
-		NSMutableArray *usedFileURIs = [[allFileURIs subarrayWithRange:(NSRange){ 0, MIN(3, [allFileURIs count])}] mutableCopy];
+		NSArray *allFiles = [post.files array];
+		NSMutableArray *usedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(3, [allFiles count])}] mutableCopy];
 		
-		NSURL *representingFileURI = [[post.representingFile objectID] URIRepresentation];
+		WAFile *representingFile = post.representingFile;
+
+		if ([usedFiles containsObject:representingFile])
+			[usedFiles removeObject:representingFile];
 		
-		if ([usedFileURIs containsObject:representingFileURI])
-			[usedFileURIs removeObject:representingFileURI];
+		[usedFiles insertObject:representingFile atIndex:0];
 		
-		[usedFileURIs insertObject:representingFileURI atIndex:0];
-		
-		NSArray *imagesForTimeline = [usedFileURIs irMap:^(NSURL *fileURI, NSUInteger index, BOOL *stop) {
+		NSArray *imagesForTimeline = [usedFiles irMap:^(WAFile *file, NSUInteger index, BOOL *stop) {
 			
 			if (index > 2) {
 				*stop = YES;
 				return (id)nil;
 			}
 			
-			WAFile *file = (WAFile *)[post.managedObjectContext irManagedObjectForURI:fileURI];
 			return (id)file.thumbnailImage;
 			
 		}];

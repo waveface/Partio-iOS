@@ -118,7 +118,7 @@
 
 - (NSUInteger) numberOfItemsInGridView:(AQGridView *) gridView {
 
-	return [self.article.fileOrder count];
+	return [self.article.files count];
 
 }
 
@@ -159,16 +159,13 @@
 
 - (WAFile *) itemAtIndex:(NSUInteger)index {
 
-	if (index >= [self.article.fileOrder count])
-		return nil;
-	
-	return (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
+	return [self.article.files objectAtIndex:index];
 
 }
 
 - (NSUInteger) indexOfItem:(WAFile *)aFile {
 
-	return [self.article.fileOrder indexOfObject:[[aFile objectID] URIRepresentation]];
+	return [self.article.files indexOfObject:aFile];
 
 }
 

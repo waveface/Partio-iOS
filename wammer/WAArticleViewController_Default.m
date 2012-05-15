@@ -139,7 +139,7 @@
 	
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
-
+	
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
@@ -211,7 +211,7 @@
 			CGRect gvBounds = aGV.bounds;
 			CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
 			
-			NSUInteger numberOfItems = [self.article.fileOrder count];
+			NSUInteger numberOfItems = [self.article.files count];
 			if (numberOfItems > 4) {
 			
 				CGFloat edgeLength = floorf(gvWidth / 3);
@@ -247,16 +247,13 @@
 
 - (WAFile *) itemAtIndex:(NSUInteger)index {
 
-	if (index >= [self.article.fileOrder count])
-		return nil;
+	return [self.article.files objectAtIndex:index];
 	
-	return (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
-
 }
 
 - (NSUInteger) indexOfItem:(WAFile *)aFile {
 
-	return [self.article.fileOrder indexOfObject:[[aFile objectID] URIRepresentation]];
+	return [self.article.files indexOfObject:aFile];
 
 }
 

@@ -132,9 +132,9 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 		
 		dispatch_async(dispatch_get_current_queue(), ^ {
 		
-			NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nFileOrder: %@\nComments: %@", self.article, self.article.files, self.article.fileOrder, self.article.comments];
+			NSString *inspectionText = [NSString stringWithFormat:@"Article: %@\nFiles: %@\nComments: %@", self.article, self.article.files, self.article.comments];
 			NSURL *articleURI = [[self.article objectID] URIRepresentation];
-			BOOL articleHasFiles = !![self.article.fileOrder count];
+			BOOL articleHasFiles = !![self.article.files count];
 			
 			if (wSelf.hostingViewController) {
 

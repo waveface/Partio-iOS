@@ -600,12 +600,12 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	
 		for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
 			if ([candidate isEqual:replacedGrid])
-			if ([candidate.identifier hasPrefix:@"6_any"])
+			if (![candidate.identifier hasPrefix:@"6_any"])
 				return candidate;
 		
 		for (IRDiscreteLayoutGrid *candidate in candidatesSortedByScore)
 			if ([candidate.identifier isEqualToString:replacedGrid.identifier])
-			if ([candidate.identifier hasPrefix:@"6_any"])
+			if (![candidate.identifier hasPrefix:@"6_any"])
 				return candidate;
 		
 	}

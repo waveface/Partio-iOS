@@ -40,7 +40,7 @@
 "ACTION_NEW_POST" = "New Post";
 
 /* No comment provided by engineer. */
-"ACTION_OKAY" = "Okay";
+"ACTION_OKAY" = "Stream!";
 
 /* No comment provided by engineer. */
 "ACTION_OPEN_IN_SAFARI" = "Open in Safari";
@@ -64,13 +64,13 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Login";
 
 /* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link With Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
 
 /* Action title for Signing Out */
-"ACTION_SIGN_OUT" = "Sign Out";
+"ACTION_SIGN_OUT" = "Logout";
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
@@ -80,13 +80,13 @@
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to populate changes.";
+"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_TITLE" = "Advanced Features Disabled";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Sign in again to populate changes.";
+"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Login again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
@@ -96,7 +96,7 @@
 "APP_TITLE" = "Stream";
 
 /* Title for the auth request controller */
-"AUTH_REQUEST_TITLE" = "Welcome";
+"AUTH_REQUEST_TITLE" = "Login";
 
 /* Title for the Facebook linking controller */
 "AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
@@ -126,11 +126,11 @@
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
-"COMPOSITION_TITLE" = "What’s happening?";
+"COMPOSITION_TITLE" = "Compose?";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client.";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
@@ -199,7 +199,7 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* in Account Information */
-"LAST_SYNCED_TIME" = "Last Synchronized at";
+"LAST_SYNCED_TIME" = "Last Synchronized";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -285,7 +285,7 @@
 "SYNC_BUTTON_NORMAL_TITLE" = "Syncing…";
 
 /* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "Sync";
+"SYNC_BUTTON_USABLE_TITLE" = "Synced";
 
 /* Synchronization Information in Account Info */
 "SYNCHRONIZATION_INFO" = "Synchronization Info";
@@ -297,7 +297,7 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
 /* Title in User Section */
-"USER_INFO_ACCOUNT_SECTION_TITLE" = "Account";
+"USER_INFO_ACCOUNT_SECTION_TITLE" = "Account Name";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
