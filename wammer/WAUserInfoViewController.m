@@ -54,7 +54,7 @@
 	self.tableViewStyle = UITableViewStyleGrouped;
 	
   self.persistsStateWhenViewWillDisappear = NO;
-  self.restoresStateWhenViewDidAppear = NO;
+  self.restoresStateWhenViewWillAppear = NO;
 	
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	__weak WAUserInfoViewController *wSelf = self;

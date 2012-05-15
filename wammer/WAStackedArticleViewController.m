@@ -960,6 +960,18 @@
 	[super viewDidAppear:animated];
 	[self.commentsVC viewDidAppear:animated];
 	
+	if (![self.toolbarItems count]) {
+
+		if (!self.navigationController.toolbarHidden)
+			[self.navigationController setToolbarHidden:YES animated:YES];
+	
+	} else {
+	
+		if (self.navigationController.toolbarHidden)
+			[self.navigationController setToolbarHidden:NO animated:YES];
+	
+	}
+	
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
