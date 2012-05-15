@@ -98,7 +98,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 		if (preferredObjectURI) {
 		
-			NSUInteger fileIndex = [returnedController.article.fileOrder indexOfObject:preferredObjectURI];
+			NSUInteger fileIndex = [returnedController.article.files indexOfObject:preferredObjectURI];
 			if (fileIndex != NSNotFound) {
 			
 				//		FIXME: Actually fix IRPaginatedView.  We have copied this hack.
@@ -156,7 +156,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 		case NSFetchedResultsChangeUpdate: {
 			
-			NSUInteger index = [self.article.fileOrder indexOfObject:[[anObject objectID] URIRepresentation]];
+			NSUInteger index = [self.article.files indexOfObject:[[anObject objectID] URIRepresentation]];
 			if (index != NSNotFound) {
 				
 				WAGalleryImageView *imageView = nil;
@@ -211,10 +211,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (WAFile *) representedFileAtIndex:(NSUInteger)anIndex {
 
-	WAFile *returnedFile = (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:anIndex]];
-	NSParameterAssert([self.article.files containsObject:returnedFile]);
-	
-	return returnedFile;
+	return [self.article.files objectAtIndex:anIndex];
 
 }
 
@@ -699,35 +696,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 - (void) imageStreamPickerView:(WAImageStreamPickerView *)picker didSelectItem:(WAFile *)anItem {
 
-	NSUInteger index = [self.article.fileOrder indexOfObject:[[anItem objectID] URIRepresentation]];
-	
-	if (index == NSNotFound)
-		return;
-	
-	WAFile *representedFile = [self representedFileAtIndex:index];
-	NSParameterAssert(representedFile);
-	
-	NSUInteger selectedIndex = picker.selectedItemIndex;
-
-#if WAGalleryViewController_UsesProxyOverlay
-
-	self.swipeOverlay.hidden = NO;
-	[self configureGalleryImageView:self.swipeOverlay withFile:representedFile degradeQuality:YES forceSync:NO];
-	[self.swipeOverlay reset];
-	
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-		if (picker.selectedItemIndex == selectedIndex) {
-			[self.paginatedView scrollToPageAtIndex:selectedIndex animated:NO];
-			self.swipeOverlay.hidden = YES;
-		}
-	});
-
-#else
-	
-	[self.paginatedView scrollToPageAtIndex:selectedIndex animated:NO];
-
-#endif
-
+	[self.paginatedView scrollToPageAtIndex:picker.selectedItemIndex animated:NO];
 
 }
 

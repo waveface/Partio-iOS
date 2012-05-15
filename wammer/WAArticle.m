@@ -2,7 +2,7 @@
 //  WAArticle.m
 //  wammer
 //
-//  Created by Evadne Wu on 4/16/12.
+//  Created by Evadne Wu on 5/15/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -20,12 +20,11 @@
 @dynamic creationDeviceName;
 @dynamic draft;
 @dynamic favorite;
-@dynamic fileOrder;
+@dynamic hidden;
 @dynamic identifier;
 @dynamic modificationDate;
 @dynamic summary;
 @dynamic text;
-@dynamic hidden;
 @dynamic comments;
 @dynamic files;
 @dynamic group;

@@ -2,7 +2,7 @@
 //  WAArticle.h
 //  wammer
 //
-//  Created by Evadne Wu on 4/16/12.
+//  Created by Evadne Wu on 5/15/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -18,14 +18,13 @@
 @property (nonatomic, retain) NSString * creationDeviceName;
 @property (nonatomic, retain) NSNumber * draft;
 @property (nonatomic, retain) NSNumber * favorite;
-@property (nonatomic, retain) NSArray * fileOrder;
+@property (nonatomic, retain) NSNumber * hidden;
 @property (nonatomic, retain) NSString * identifier;
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * summary;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) NSNumber * hidden;
 @property (nonatomic, retain) NSSet *comments;
-@property (nonatomic, retain) NSSet *files;
+@property (nonatomic, retain) NSOrderedSet *files;
 @property (nonatomic, retain) WAGroup *group;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSSet *previews;
@@ -39,16 +38,19 @@
 - (void)addComments:(NSSet *)values;
 - (void)removeComments:(NSSet *)values;
 
+- (void)insertObject:(WAFile *)value inFilesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromFilesAtIndex:(NSUInteger)idx;
+- (void)insertFiles:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeFilesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInFilesAtIndex:(NSUInteger)idx withObject:(WAFile *)value;
+- (void)replaceFilesAtIndexes:(NSIndexSet *)indexes withFiles:(NSArray *)values;
 - (void)addFilesObject:(WAFile *)value;
 - (void)removeFilesObject:(WAFile *)value;
-- (void)addFiles:(NSSet *)values;
-- (void)removeFiles:(NSSet *)values;
-
+- (void)addFiles:(NSOrderedSet *)values;
+- (void)removeFiles:(NSOrderedSet *)values;
 - (void)addPreviewsObject:(WAPreview *)value;
 - (void)removePreviewsObject:(WAPreview *)value;
 - (void)addPreviews:(NSSet *)values;
 - (void)removePreviews:(NSSet *)values;
 
 @end
-
-#import "WAArticle+WAAdditions.h"

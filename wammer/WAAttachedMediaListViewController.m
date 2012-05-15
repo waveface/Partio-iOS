@@ -141,7 +141,7 @@
 	case UITableViewCellEditingStyleDelete: {
 		
 		NSUInteger deletedFileIndex = indexPath.row;
-		NSURL *deletedFileURI = [self.article.fileOrder objectAtIndex:deletedFileIndex];
+		NSURL *deletedFileURI = [self.article.files objectAtIndex:deletedFileIndex];
 		WAFile *removedFile = (WAFile *)[self.managedObjectContext irManagedObjectForURI:deletedFileURI];
 		
 		[self.tableView beginUpdates];
@@ -179,18 +179,7 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
 	
-	NSURL *fileURI = [self.article.fileOrder objectAtIndex:indexPath.row];
-	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (id obj, BOOL *stop) {
-	
-		BOOL objectMatches = [[[obj objectID] URIRepresentation] isEqual:fileURI];
-		
-		if (objectMatches)
-			*stop = YES;
-		
-		return objectMatches;
-		
-	}] anyObject];
-	
+	WAFile *representedFile = [self.article.files objectAtIndex:indexPath.row];
 	UIImage *resourceImage = representedFile.resourceImage;
 	
 	cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -232,14 +221,11 @@
 
 	self.undergoingProgrammaticEntityMutation = YES;
 
-	NSURL *fromURL = [self.article.fileOrder objectAtIndex:[sourceIndexPath row]];
+	NSMutableOrderedSet *newFiles = [self.article.files mutableCopy];
+	[newFiles moveObjectsAtIndexes:[NSIndexSet indexSetWithIndex:[sourceIndexPath row]] toIndex:[destinationIndexPath row]];
 	
-	NSMutableArray *order = [(NSArray *)self.article.fileOrder  mutableCopy];
+	self.article.files = newFiles;
 	
-	[order removeObjectAtIndex:[sourceIndexPath row]];
-	[order insertObject:fromURL atIndex:[destinationIndexPath row]];
-	
-	self.article.fileOrder = order;
 	self.undergoingProgrammaticEntityMutation = NO;
 	
 }

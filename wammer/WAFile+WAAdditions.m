@@ -123,12 +123,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 
 @implementation WAFile (WAAdditions)
 
-+ (void) load {
-
-	[self configureSimulatedOrderedRelationship];
-
-}
-
 - (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
 
 	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
@@ -181,17 +175,14 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 	[self performBlockSuppressingBlobRetrieval:^{
 		
 		if (![self validateThumbnailImageIfNeeded:nil]) {
-			//	[fileManager removeItemAtPath:self.thumbnailFilePath error:nil];
 			self.thumbnailFilePath = nil;
 		}
 		
 		if (![self validateLargeThumbnailImageIfNeeded:nil]) {
-			//	[fileManager removeItemAtPath:self.largeThumbnailFilePath error:nil];
 			self.largeThumbnailFilePath = nil;
 		}
 			
 		if (![self validateResourceImageIfNeeded:nil]) {
-			//	[fileManager removeItemAtPath:self.resourceFilePath error:nil];
 			self.resourceFilePath = nil;
 		}
 		
