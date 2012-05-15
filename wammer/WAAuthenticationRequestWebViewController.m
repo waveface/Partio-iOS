@@ -47,8 +47,13 @@
   [[self view] setDelegate:self];
 
   NSDictionary *authenticationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
-    [[NSLocale currentLocale] localeIdentifier], @"locale",
-    @"ios", @"device",
+		
+		[[NSLocale currentLocale] localeIdentifier], @"locale",
+   
+		@"ios", @"device",
+		WADeviceIdentifier(), @"device_id",
+		WADeviceName(), @"device_name",
+		
 		@"waveface://x-callback-url/didFinishUserFacebookLogin?api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s&device_id=%(device_id)s&session_token=%(session_token)s&user_id=%(user_id)s", @"xurl",
 		
 		[WARemoteInterface sharedInterface].apiKey, @"api_key",

@@ -50,7 +50,13 @@
   [[self view] setDelegate:self];
   
   NSDictionary *registrationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
-    [[NSLocale currentLocale] localeIdentifier], @"locale",
+		
+		[[NSLocale currentLocale] localeIdentifier], @"locale",
+		
+		@"ios", @"device",
+		WADeviceIdentifier(), @"device_id",
+		WADeviceName(), @"device_name",
+		
     @"ios", @"device",
 		@"waveface://x-callback-url/didFinishUserRegistration?account_type=%(account_type)s&api_ret_code=%(api_ret_code)d&api_ret_message=%(api_ret_message)s&device_id=%(device_id)s&session_token=%(session_token)s&email=%(email)s&password=%(password)s&user_id=%(user_id)s", @"xurl",
 		

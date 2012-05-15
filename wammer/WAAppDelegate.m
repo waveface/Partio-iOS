@@ -127,9 +127,8 @@
   [WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
   
   BOOL didEraseAuthData = [[NSUserDefaults standardUserDefaults] synchronize];
-  BOOL didResetDeviceIdentifier = WADeviceIdentifierReset();
-  
-  return didEraseAuthData && didResetDeviceIdentifier;
+	
+  return didEraseAuthData;
 
 }
 

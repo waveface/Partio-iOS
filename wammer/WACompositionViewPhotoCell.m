@@ -15,6 +15,9 @@
 @property (nonatomic, readwrite, retain) UIView *highlightOverlay;	//	Placed in the image container
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, readwrite, weak) WAFile *representedFile;
+@property (nonatomic, readwrite, strong) id representedFileHelper;
+
 @end
 
 @implementation WACompositionViewPhotoCell
@@ -22,12 +25,44 @@
 @synthesize image, imageContainer, removeButton, onRemove, highlightOverlay;
 @synthesize activityIndicator;
 @synthesize canRemove;
+@synthesize representedFile, representedFileHelper;
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)identifier {
 
 	WACompositionViewPhotoCell *returnedCell = [[self alloc] initWithFrame:(CGRect){ 0, 0, 128, 128 } reuseIdentifier:identifier];
+	returnedCell.representedFile = aFile;
 	
 	return returnedCell;
+
+}
+
+- (void) setRepresentedFile:(WAFile *)file {
+
+	if (representedFile == file)
+		return;
+	
+	if (self.representedFileHelper) {
+		[representedFile irRemoveObservingsHelper:self.representedFileHelper];
+		self.representedFileHelper = nil;
+	}
+	
+	representedFile = file;
+	
+	__weak WACompositionViewPhotoCell *wSelf = self;
+	
+	self.representedFileHelper = [file irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+		if (!toValue || [toValue isKindOfClass:[UIImage class]])
+			[wSelf setImage:toValue];
+		
+	}];
+
+}
+
+- (void) dealloc {
+
+	if (representedFile && representedFileHelper)
+		[representedFile irRemoveObservingsHelper:representedFileHelper];
 
 }
 

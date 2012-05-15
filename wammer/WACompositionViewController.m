@@ -115,22 +115,26 @@
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	[self willChangeValueForKey:@"article"];
-	
-	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
+	[article irRemoveObserverBlocksForKeyPath:@"files"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	article = newArticle;
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		[wSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
+	[article irObserve:@"files" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		[wSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+		[wSelf handleFilesChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
+		
+	}];
 	
-	[self didChangeValueForKey:@"article"];
+	[article irObserve:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+
+			[wSelf handlePreviewsChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
+			
+		});
+		
+	}];
 
 }
 
@@ -138,7 +142,7 @@
 
 	textAttributor.delegate = nil;
 
-	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
+	[article irRemoveObserverBlocksForKeyPath:@"files"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
@@ -411,21 +415,21 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind {
+- (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
 	//	No op
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
-	
+- (void) handlePreviewsChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
+
 	//	No op
 
 }
 
 - (void) handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSKeyValueChange)changeKind {
 
-	NSLog(@"%s %@ %@ %i", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
+	//	No op
 
 }
 

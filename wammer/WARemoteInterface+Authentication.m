@@ -123,14 +123,11 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
   
-  NSString *aDevice = [[UIDevice currentDevice] name];
-  
 	[self.engine fireAPIRequestNamed:@"auth/login" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
 		anIdentifier, @"email",
 		aPassword, @"password",
-    aDevice, @"device_name",
-    
+    WADeviceName(), @"device_name",
     WADeviceIdentifier(), @"device_id",
 
 	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
