@@ -398,14 +398,20 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	
-	[self.navigationController setToolbarHidden:NO animated:animated];
-	
-  
 	[self refreshData];
+	[self restoreState];
 	
 	self.tableView.contentInset = UIEdgeInsetsZero;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMenuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
+
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+
+	[super viewDidAppear:animated];
+	
+	[self.navigationController setToolbarHidden:NO animated:animated];
 
 }
 
@@ -620,18 +626,27 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	if (![self isViewLoaded])
 		return;
-		
-	[self.tableView endUpdates];
+	
+	UITableView *tv = self.tableView;
+	
+	[tv endUpdates];
 	[self restoreState];
 	
 	[UIView setAnimationsEnabled:YES];
 	
-	if (!CGRectEqualToRect(self.tableView.frame, [self.tableView.superview convertRect:self.tableView.bounds fromView:self.tableView.superview])) {
+	NSArray *allVisibleIndexPaths = [tv indexPathsForVisibleRows];
 	
-		NSArray *allVisibleIndexPaths = [self.tableView indexPathsForVisibleRows];
+	if ([allVisibleIndexPaths count]) {
+	
+		NSIndexPath *firstCellIndexPath = [allVisibleIndexPaths objectAtIndex:0];
+		CGRect firstCellRect = [tv rectForRowAtIndexPath:firstCellIndexPath];
 		
-		if ([allVisibleIndexPaths count])
-			[self.tableView scrollToRowAtIndexPath:[allVisibleIndexPaths objectAtIndex:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		if (tv.contentOffset.y < 0)
+		if (!CGPointEqualToPoint(tv.frame.origin, [tv.superview convertPoint:firstCellRect.origin fromView:tv])) {
+		
+			[tv setContentOffset:CGPointZero animated:YES];
+		
+		}
 	
 	}
 	
@@ -1158,8 +1173,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 		[compositionVC handleImageAttachmentInsertionRequestWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 		
-			kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
-			kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
+			(id)kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
+			(id)kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
 		
 		nil] sender:compositionVC.view];
 		

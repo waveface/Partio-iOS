@@ -355,8 +355,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		
 		[self.toolbar removeFromSuperview];
 		self.toolbar = nil;
-				
+		
 		[navC setToolbarHidden:NO animated:YES];
+		[navC.toolbar setBackgroundColor:nil];
+		[navC.toolbar setTintColor:nil];
+		[navC.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+		[navC.toolbar setBackgroundImage:nil forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
 			
 		__weak WAGalleryViewController *wSelf = self;
 		

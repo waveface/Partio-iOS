@@ -138,29 +138,33 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	};
 	
 	void (^handleResult)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
-		
-		NSCParameterAssert([NSThread isMainThread]);
 	
-		if (usesBezels) {
-			
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			
-			WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
-			[resultBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-			
-				[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+		dispatch_async(dispatch_get_main_queue(), ^{
+					
+			NSCParameterAssert([NSThread isMainThread]);
+		
+			if (usesBezels) {
 				
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+				
+				WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
+				[resultBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				
+					[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					
+					fireCallback(didFinish, error);
+				
+				});
+				
+			} else {
+			
 				fireCallback(didFinish, error);
 			
-			});
-			
-		} else {
+			}
 		
-			fireCallback(didFinish, error);
-		
-		}
+		});
 		
 	};
 	
@@ -219,17 +223,21 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 	[[WARemoteInterface sharedInterface] createCommentForPost:postIdentifier inGroup:groupIdentifier withContentText:commentText onSuccess:^(NSDictionary *updatedPostRep) {
 	
-		NSManagedObjectContext *context = [self disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		[self performBlock:^{
+			
+			NSManagedObjectContext *context = [self disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"Error Saving: %@", savingError);
+			
+			if (successBlock)
+				successBlock();
 		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Error Saving: %@", savingError);
-		
-		if (successBlock)
-			successBlock();
+		} waitUntilDone:NO];
 		
 	} onFailure:^(NSError *error) {
 	
@@ -250,7 +258,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep) {
 	
-		dispatch_async(dispatch_get_main_queue(), ^ {
+		[wSelf performBlock:^{
 			
 			NSManagedObjectContext *context = [wSelf disposableMOC];
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
@@ -270,8 +278,8 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 			if (successBlock)
 				successBlock();
 			
-		});
-		
+		} waitUntilDone:NO];
+			
 	} onFailure:^(NSError *error) {
 			
 		NSLog(@"%@: %@", NSStringFromSelector(_cmd), error);
