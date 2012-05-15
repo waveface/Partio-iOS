@@ -158,7 +158,12 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		@"WFPreviewTemplate_Discrete_Plaintext",
 		@"WFPreviewTemplate_Discrete_Web_Image",
 		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal");
-		
+	
+	WALayoutAreaTemplateNameBlock H5 = templateName(
+		@"WFPreviewTemplate_Discrete_Plaintext",
+		@"WFPreviewTemplate_Discrete_Web_Image",
+		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6");
+	
 	WALayoutAreaTemplateNameBlock singleXStack = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
 		@"WFPreviewTemplate_Discrete_Web_Image",
@@ -179,12 +184,12 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", nil, layoutBlock(2, 3, 0, 0, 1, 1), singleYStack),
-				area(@"B", nil, layoutBlock(2, 3, 1, 0, 1, 1), singleYStack),
-				area(@"C", nil, layoutBlock(2, 3, 0, 1, 1, 1), singleYStack),
-				area(@"D", nil, layoutBlock(2, 3, 1, 1, 1, 1), singleYStack),
-				area(@"E", nil, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
-				area(@"F", nil, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
+				area(@"A", nil, layoutBlock(2, 3, 0, 0, 1, 1), H5),
+				area(@"B", nil, layoutBlock(2, 3, 1, 0, 1, 1), H5),
+				area(@"C", nil, layoutBlock(2, 3, 0, 1, 1, 1), H5),
+				area(@"D", nil, layoutBlock(2, 3, 1, 1, 1, 1), H5),
+				area(@"E", nil, layoutBlock(2, 3, 0, 2, 1, 1), H5),
+				area(@"F", nil, layoutBlock(2, 3, 1, 2, 1, 1), H5),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"6_any_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
