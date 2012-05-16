@@ -142,7 +142,7 @@ NSString * const kLastContentSyncDateInTimeIntervalSince1970 = @"kLastContentSyn
 	NSDictionary *metadata = [self metadata];
 	NSNumber *timeInterval = [metadata objectForKey:kLastContentSyncDateInTimeIntervalSince1970];
 	if (!timeInterval)
-		return nil;
+		return [NSDate distantPast];
 	
 	NSDate *date = [NSDate dateWithTimeIntervalSince1970:[timeInterval doubleValue]];
 	
