@@ -54,7 +54,7 @@
 	url = git://github.com/iridia/IRDeployment.git
 [submodule "external/C3PO"]
 	path = external/C3PO
-	url = git://github.com/jamessa/C3PO.git
+	url = git://github.com/iridia/C3PO.git
 [submodule "external/DCIntrospect"]
 	path = external/DCIntrospect
 	url = https://github.com/domesticcatsoftware/DCIntrospect.git

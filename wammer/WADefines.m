@@ -58,6 +58,9 @@ NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c
 NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 
+NSString * const WAFeedbackRecipient = @"WAFeedbackRecipient";
+NSString * const WAStreamFeaturesURL = @"WAStreamFeaturesURL";
+
 NSString * const kWACallbackActionDidFinishUserRegistration = @"didFinishUserRegistration";
 NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"showMeTheMoney";
 NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";

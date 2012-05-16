@@ -104,5 +104,7 @@
 	<array/>
 	<key>UTImportedTypeDeclarations</key>
 	<array/>
+	<key>WAFeedbackRecipient</key>
+	<string>surfers@waveface.com</string>
 </dict>
 </plist>
