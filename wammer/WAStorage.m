@@ -2,7 +2,7 @@
 //  WAStorage.m
 //  wammer
 //
-//  Created by Evadne Wu on 4/19/12.
+//  Created by Evadne Wu on 5/16/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -12,15 +12,18 @@
 
 @implementation WAStorage
 
+@dynamic displayName;
 @dynamic intervalEndDate;
 @dynamic intervalStartDate;
-@dynamic displayName;
-@dynamic numberOfObjectsAllowedInInterval;
-@dynamic numberOfPicturesAllowedInInterval;
 @dynamic numberOfDocumentsAllowedInInterval;
 @dynamic numberOfDocumentsCreatedInInterval;
-@dynamic numberOfPicturesCreatedInInterval;
+@dynamic numberOfObjectsAllowedInInterval;
 @dynamic numberOfObjectsCreatedInInterval;
+@dynamic numberOfPicturesAllowedInInterval;
+@dynamic numberOfPicturesCreatedInInterval;
+@dynamic numberOfObjectsInQueue;
+@dynamic numberOfUnsyncedObjectsInQueue;
+@dynamic queueStatus;
 @dynamic owner;
 
 @end

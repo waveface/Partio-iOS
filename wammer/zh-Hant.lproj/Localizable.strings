@@ -1,6 +1,3 @@
-/* In account information */
-"ABOUT_HEADER" = "關於 Stream";
-
 /* attachment activity view */
 "ACTION_ADD" = "加";
 
@@ -35,6 +32,9 @@
 /* Action marking article as favorite
    Bar button item title to mark the article as a favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
+
+/* No comment provided by engineer. */
+"ACTION_MORE_INFO" = "ACTION_MORE_INFO";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
@@ -141,18 +141,6 @@
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
 
-/* Text to show when Cloud and Station are both available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "能連上 Waveface Cloud 與您的 Station。所有物件都可被同步。";
-
-/* Text to show when only Cloud is available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION" = "只能連接 Waveface Cloud。有些資料可能會稍晚纔能同步。";
-
-/* Text to show when not even Cloud is there — a rare case */
-"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION" = "無法連接任何 Waveface 伺服器。";
-
-/* Text to show when Cloud is available, but the Station is not responsive */
-"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "無法連上您的 Station。有些資料可能會稍晚纔能同步。";
-
 /* Article entity sync failure alert message for no underlying error */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION";
 
@@ -198,14 +186,10 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
-/* in Account Information */
-"LAST_SYNCED_TIME" = "上次同步";
-
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
 
-/* This Device
-   Title for Waveface Feedback */
+/* Title for Waveface Feedback */
 "NOUN_CURRENT_DEVICE" = "目前裝置";
 
 /* Plural noun for draft objects */
@@ -222,19 +206,12 @@
 /* Title for password confirmation */
 "NOUN_PASSWORD_CONFIRMATION" = "確認密碼";
 
-/* Noun for storage quota. */
-"NOUN_STORAGE_QUOTA" = "可用配額";
-
 /* Noun for Username
-   Title for username
-   username in account info */
+   Title for username */
 "NOUN_USERNAME" = "Email";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
-
-/* in Account Information */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "未同步物件";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
@@ -244,12 +221,6 @@
 
 /* Text to show for previews without a title */
 "PREVIEW_BADGE_TITLE_PLACEHOLDER" = "（無標題）";
-
-/* Short label for the Cloud */
-"PROPER_NOUN_WF_CLOUD" = "Cloud";
-
-/* Short label for a particular Station */
-"PROPER_NOUN_WF_STATION" = "Station";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "可用";
@@ -269,26 +240,23 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
 
-/* No comment provided by engineer. */
-"SETTINGS_TITLE" = "設定";
-
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_UNLIMITED_TITLE" = "無限制";
+/* Text for About Stream dialog */
+"STREAM_ABOUT_TEXT" = "STREAM_ABOUT_TEXT";
+
+/* Title for About Stream dialog */
+"STREAM_ABOUT_TITLE" = "STREAM_ABOUT_TITLE";
 
 /* Caption to show when app is syncing data */
-"SYNC_BUTTON_NORMAL_TITLE" = "正在同步…";
+"SYNC_BUTTON_NORMAL_TITLE" = "SYNC_BUTTON_NORMAL_TITLE";
 
 /* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "同步";
-
-/* Synchronization Information in Account Info */
-"SYNCHRONIZATION_INFO" = "同步狀態";
+"SYNC_BUTTON_USABLE_TITLE" = "SYNC_BUTTON_USABLE_TITLE";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -296,14 +264,32 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
 
-/* Title in User Section */
-"USER_INFO_ACCOUNT_SECTION_TITLE" = "用戶資訊";
-
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "用戶";
 
-/* Version in account info */
-"VERSION" = "版本";
+/* Title to show when user has a station but have not activated the account */
+"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "只要在 Wi-Fi 環境下，Stream 會幫您將原始檔案暫存在雲端上，並妥善送回 PC 中。";
+
+/* Title to show when user has no station and have not activated the account */
+"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "Stream 可以幫您將原始檔案妥善送回 PC 中, 請儘快下載與安裝 Station 至 PC 上";
+
+/* Title to show when user has a station, and still have ample storage on the Cloud */
+"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "您已有原始檔暫存在雲端上，請開啟 Station，讓我們將檔案送回您的 PC。";
+
+/* Title to show when user has no station, and still have ample storage on the Cloud */
+"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝 Station，讓我們將檔案送回您的 PC 上";
+
+/* Title to show when user has a station, and is using up most of the storage on the Cloud */
+"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "雲端暫存容量即將用完，請開啟 Station，讓我們將檔案送回您的 PC 中。";
+
+/* Title to show when user has no station, and is using up most of the storage on the Cloud */
+"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝 Station，讓我們將檔案送回您的 PC 中";
+
+/* Title to show when user has a station, and have exhausted storage on the Cloud */
+"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "雲端暫存容量已滿，超過的部分僅會保留七天，請立即開啟 Station，存放所有原始檔案。";
+
+/* Title to show when user has no station, and have exhausted storage on the Cloud */
+"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "您已有原始檔暫存在雲端上，請儘快下載與安裝 Station，讓我們將檔案送回您的 PC 中";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "預覽";
@@ -358,4 +344,34 @@
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
+
+/* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_HEADER" = "服務資訊";
+
+/* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "未同步物件";
+
+/* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
+"ACCOUNT_INFO_HEADER" = "用戶資訊";
+
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
+"VERSION" = "版本";
+
+/* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
+"LAST_SYNCED_TIME" = "上次同步";
+
+/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
+"LOCAL_PENDING_OBJECTS_TITLE" = "尚未上傳原檔";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
+"NOUN_NICKNAME" = "暱稱";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
+"NOUN_CURRENT_DEVICE" = "目前裝置";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_CONTACT_DEVELOPER" = "聯絡";
 

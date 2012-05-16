@@ -1,6 +1,3 @@
-/* In account information */
-"ABOUT_HEADER" = "About";
-
 /* attachment activity view */
 "ACTION_ADD" = "Stream!";
 
@@ -36,11 +33,14 @@
    Bar button item title to mark the article as a favorite */
 "ACTION_MARK_FAVORITE" = "Favorite";
 
+/* No comment provided by engineer. */
+"ACTION_MORE_INFO" = "More Info";
+
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
 /* No comment provided by engineer. */
-"ACTION_OKAY" = "Stream!";
+"ACTION_OKAY" = "OK";
 
 /* No comment provided by engineer. */
 "ACTION_OPEN_IN_SAFARI" = "Open in Safari";
@@ -141,18 +141,6 @@
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "(No Timestamp)";
 
-/* Text to show when Cloud and Station are both available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "Your Waveface Station is currently available.";
-
-/* Text to show when only Cloud is available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION" = "You’re connected to Waveface Cloud. Full-resolution pictures will be sent to your Station when it becomes available.";
-
-/* Text to show when not even Cloud is there — a rare case */
-"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION" = "Waveface server cannot be located.";
-
-/* Text to show when Cloud is available, but the Station is not responsive */
-"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "Your Station is currently unavailable.";
-
 /* Article entity sync failure alert message for no underlying error */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly. Your post has been saved as a draft.";
 
@@ -198,14 +186,10 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
-/* in Account Information */
-"LAST_SYNCED_TIME" = "Last Synchronized";
-
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 
-/* This Device
-   Title for Waveface Feedback */
+/* Title for Waveface Feedback */
 "NOUN_CURRENT_DEVICE" = "Device";
 
 /* Plural noun for draft objects */
@@ -222,19 +206,12 @@
 /* Title for password confirmation */
 "NOUN_PASSWORD_CONFIRMATION" = "Confirm Password";
 
-/* Noun for storage quota. */
-"NOUN_STORAGE_QUOTA" = "Monthly Usage";
-
 /* Noun for Username
-   Title for username
-   username in account info */
+   Title for username */
 "NOUN_USERNAME" = "Email";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
-
-/* in Account Information */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "Queued in Cloud";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -244,12 +221,6 @@
 
 /* Text to show for previews without a title */
 "PREVIEW_BADGE_TITLE_PLACEHOLDER" = "(No Title)";
-
-/* Short label for the Cloud */
-"PROPER_NOUN_WF_CLOUD" = "Cloud";
-
-/* Short label for a particular Station */
-"PROPER_NOUN_WF_STATION" = "Station";
 
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";
@@ -269,26 +240,23 @@
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
-/* No comment provided by engineer. */
-"SETTINGS_TITLE" = "Settings";
-
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_UNLIMITED_TITLE" = "∞";
+/* Text for About Stream dialog */
+"STREAM_ABOUT_TEXT" = "Stream saves all your photos taken on all your devices back to your desktop computer.";
+
+/* Title for About Stream dialog */
+"STREAM_ABOUT_TITLE" = "About Stream";
 
 /* Caption to show when app is syncing data */
-"SYNC_BUTTON_NORMAL_TITLE" = "Syncing…";
+"SYNC_BUTTON_NORMAL_TITLE" = "Syncing";
 
 /* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "Synced";
-
-/* Synchronization Information in Account Info */
-"SYNCHRONIZATION_INFO" = "Synchronization Info";
+"SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -296,14 +264,32 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
-/* Title in User Section */
-"USER_INFO_ACCOUNT_SECTION_TITLE" = "Account Name";
-
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
 
-/* Version in account info */
-"VERSION" = "Version";
+/* Title to show when user has a station but have not activated the account */
+"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "Run Station on your computer to save new files safely.";
+
+/* Title to show when user has no station and have not activated the account */
+"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "Install Station to save all your files safely to your computer.";
+
+/* Title to show when user has a station, and still have ample storage on the Cloud */
+"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have files on Waveface Cloud.  Run Station on your computer to save them.";
+
+/* Title to show when user has no station, and still have ample storage on the Cloud */
+"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have files on Waveface Cloud.  Install Station to save them to your computer.";
+
+/* Title to show when user has a station, and is using up most of the storage on the Cloud */
+"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your storage quota is nearly full.  Install Station to save them to your computer.";
+
+/* Title to show when user has no station, and is using up most of the storage on the Cloud */
+"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "You have files on Waveface Cloud.  Install Station to save them to your computer.";
+
+/* Title to show when user has a station, and have exhausted storage on the Cloud */
+"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your storage quota is full and old files may be purged after a week.  Install Station to save them to your computer.";
+
+/* Title to show when user has no station, and have exhausted storage on the Cloud */
+"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "You have files on Waveface Cloud.  Install Station to save them to your computer.";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
@@ -358,4 +344,34 @@
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+
+/* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_HEADER" = "Service Info";
+
+/* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "Queued in Cloud";
+
+/* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
+"ACCOUNT_INFO_HEADER" = "Account Info";
+
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
+"VERSION" = "Version";
+
+/* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
+"LAST_SYNCED_TIME" = "Last Synchronized";
+
+/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
+"LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
+"NOUN_NICKNAME" = "Nickname";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
+"NOUN_CURRENT_DEVICE" = "Device";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_CONTACT_DEVELOPER" = "Contact";
 
