@@ -1194,7 +1194,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) handleUserInfo:(UIBarButtonItem *)sender  {
 
-	WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
+	UINavigationController *navC = nil;
+	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&navC];
 	
 	__weak WATimelineViewControllerPhone *wSelf = self;
 	__weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
@@ -1224,8 +1225,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 	}];
 	
-	UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
-	[self presentViewController:wrappingNavC animated:YES completion:nil];
+	[self presentViewController:navC animated:YES completion:nil];
 	
 }
 

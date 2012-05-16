@@ -38,5 +38,7 @@
 	<false/>
 	<key>WADucklingsEnabled</key>
 	<false/>
+	<key>WAStreamFeaturesURL</key>
+	<string>http://waveface.com/stream/features</string>
 </dict>
 </plist>

@@ -242,19 +242,24 @@
   if (userInfoPopoverController)
     return userInfoPopoverController;
     
-  __block __typeof__(self) nrSelf = self;
-  __block WAUserInfoViewController *userInfoVC = [[WAUserInfoViewController alloc] init];
-  __block UINavigationController *wrappingNavC = [[WANavigationController alloc] initWithRootViewController:userInfoVC];
-  
+  UINavigationController *wrappingNavC = nil;
+	WAUserInfoViewController *userInfoVC = [WAUserInfoViewController controllerWithWrappingNavController:&wrappingNavC];
+ 
+	__weak WAArticlesViewController *wSelf = self;
+  __weak WAUserInfoViewController *wUserInfoVC = userInfoVC;
+	
   userInfoVC.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemAction wiredAction:^(IRBarButtonItem *senderItem) {
     
-    if ([nrSelf.debugActionSheetController.managedActionSheet isVisible])
-      [nrSelf.debugActionSheetController.managedActionSheet dismissWithClickedButtonIndex:0 animated:NO];
+		IRActionSheetController *asc = wSelf.debugActionSheetController;
+		IRActionSheet *as = asc.managedActionSheet;
+			
+    if ([as isVisible])
+      [as dismissWithClickedButtonIndex:0 animated:NO];
     
-    [nrSelf.debugActionSheetController.managedActionSheet showInView:userInfoVC.view];
+    [as showInView:wUserInfoVC.view];
     
   }];
-    
+	
   userInfoPopoverController = [[UIPopoverController alloc] initWithContentViewController:wrappingNavC];
   return userInfoPopoverController;
 

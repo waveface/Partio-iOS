@@ -20,6 +20,7 @@
 
 @interface WABlobSyncManager ()
 
+@property (readwrite, assign) NSUInteger numberOfFiles;
 @property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine;
 
 - (IRAsyncOperation *) haulingOperationPrototype;
@@ -28,7 +29,7 @@
 
 
 @implementation WABlobSyncManager
-@synthesize recurrenceMachine;
+@synthesize recurrenceMachine, numberOfFiles;
 
 + (void) load {
 
@@ -110,6 +111,7 @@
 
 - (IRAsyncOperation *) haulingOperationPrototype {
 
+	__weak WABlobSyncManager *wSelf = self;
 	__weak IRRecurrenceMachine *wRecurrenceMachine = self.recurrenceMachine;
 
 	return [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
@@ -132,6 +134,7 @@
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		
 			__block NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
+			__weak NSOperationQueue *wTempQueue = tempQueue;
 			tempQueue.maxConcurrentOperationCount = 1;
 			[tempQueue setSuspended:YES];
 			
@@ -151,6 +154,8 @@
 			}]);
 
 			[[WADataStore defaultStore] enumerateFilesWithSyncableBlobsInContext:nil usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
+			
+				wSelf.numberOfFiles = wSelf.numberOfFiles + 1;
 			
 				NSURL *fileURL = [[aFile objectID] URIRepresentation];
 				
@@ -172,7 +177,11 @@
 						
 					}];
 
-				} completionBlock:nil]);
+				} completionBlock:^(id results) {
+					
+					wSelf.numberOfFiles = wTempQueue.operationCount - 2;
+					
+				}]);
 				
 			}];
 			

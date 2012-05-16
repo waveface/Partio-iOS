@@ -59,4 +59,10 @@
 	
 }
 
++ (BOOL) automaticallyNotifiesObserversForKey:(NSString *)key {
+
+	return YES;
+
+}
+
 @end

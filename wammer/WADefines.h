@@ -54,6 +54,9 @@ extern NSString * const kWACallbackActionSetRemoteEndpointURL;
 extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
 extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
+extern NSString * const WAFeedbackRecipient;
+extern NSString * const WAStreamFeaturesURL;
+
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);
 
