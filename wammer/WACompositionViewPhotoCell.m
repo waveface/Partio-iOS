@@ -147,18 +147,6 @@
 	
 	self.imageContainer.image = newImage;
 	
-	if (newImage) {
-	
-		CGRect imageRect = IRGravitize(self.imageContainer.bounds, newImage.size, self.imageContainer.layer.contentsGravity);
-		self.removeButton.center = (CGPoint) {
-			CGRectGetMinX(imageRect) + 8,
-			CGRectGetMinY(imageRect) + 8
-		};
-		
-		self.highlightOverlay.frame = imageRect;
-		
-	}
-	
 	[self setNeedsLayout];
 
 }
@@ -215,6 +203,14 @@
 		self.activityIndicator.alpha = 0;
 		self.imageContainer.backgroundColor = nil;
 		self.imageContainer.layer.shadowPath = [UIBezierPath bezierPathWithRect:IRCGSizeGetCenteredInRect(self.image.size, self.imageContainer.bounds, 0.0f, YES)].CGPath;
+		
+		CGRect imageRect = IRGravitize(self.imageContainer.bounds, self.image.size, self.imageContainer.layer.contentsGravity);
+		self.removeButton.center = (CGPoint) {
+			CGRectGetMinX(imageRect) + 8,
+			CGRectGetMinY(imageRect) + 8
+		};
+		
+		self.highlightOverlay.frame = imageRect;
 	
 	} else {
 	
