@@ -247,13 +247,20 @@
 		
 		case UIUserInterfaceIdiomPad: {
 			
-			self.headerBarButtonItems = [NSArray arrayWithObjects:
+			NSMutableArray *barButtonItems = [NSMutableArray arrayWithObjects:
 				articleDateItem,
 				[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
-				[self editButtonItem],
+			nil];
+			
+			if (WAAdvancedFeaturesEnabled())
+				[barButtonItems addObject:[self editButtonItem]];
+			
+			[barButtonItems addObjectsFromArray:[NSArray arrayWithObjects:
 				favoriteToggleItem,
 				commentsItem,
-			nil];
+			nil]];
+			
+			self.headerBarButtonItems = barButtonItems;
 			
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleWindowInterfaceBoundsDidChange:) name:IRWindowInterfaceBoundsDidChangeNotification object:nil];
 			
@@ -264,10 +271,15 @@
 		case UIUserInterfaceIdiomPhone: {
 			
 			self.headerBarButtonItems = [NSArray arrayWithObjects:articleDateItem, nil];
-			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:
+
+			NSMutableArray *barButtonItems = [NSMutableArray arrayWithObjects:
 				commentsItem,
-				[self editButtonItem],
 			nil];
+			
+			if (WAAdvancedFeaturesEnabled())
+				[barButtonItems addObject:[self editButtonItem]];
+			
+			self.navigationItem.rightBarButtonItems = barButtonItems;
 			
 			break;
 			

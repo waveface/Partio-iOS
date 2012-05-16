@@ -206,11 +206,11 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_A_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", notFave, layoutBlock(2, 3, 0, 0, 1, 1), singleYStack),
-				area(@"B", notFave, layoutBlock(2, 3, 0, 1, 1, 1), singleYStack),
-				area(@"C", notFave, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
-				area(@"D", combo, layoutBlock(2, 3, 1, 0, 1, 2), singleYStack),
-				area(@"E", notFave, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
+				area(@"A", notFave, layoutBlock(2, 3, 0, 0, 1, 1), H5),
+				area(@"B", notFave, layoutBlock(2, 3, 0, 1, 1, 1), H5),
+				area(@"C", notFave, layoutBlock(2, 3, 0, 2, 1, 1), H5),
+				area(@"D", combo,   layoutBlock(2, 3, 1, 0, 1, 2), singleYStack),
+				area(@"E", notFave, layoutBlock(2, 3, 1, 2, 1, 1), H5),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_A_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
@@ -226,11 +226,11 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_B_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", combo, layoutBlock(2, 3, 0, 0, 1, 2), singleYStack),
-				area(@"B", notFave, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
-				area(@"C", notFave, layoutBlock(2, 3, 1, 0, 1, 1), singleYStack),
-				area(@"D", notFave, layoutBlock(2, 3, 1, 1, 1, 1), singleYStack),
-				area(@"E", notFave, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
+				area(@"A", combo,   layoutBlock(2, 3, 0, 0, 1, 2), singleYStack),
+				area(@"B", notFave, layoutBlock(2, 3, 0, 2, 1, 1), H5),
+				area(@"C", notFave, layoutBlock(2, 3, 1, 0, 1, 1), H5),
+				area(@"D", notFave, layoutBlock(2, 3, 1, 1, 1, 1), H5),
+				area(@"E", notFave, layoutBlock(2, 3, 1, 2, 1, 1), H5),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_B_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
@@ -247,8 +247,8 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"4_non_faves_A_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", combo,   layoutBlock(2, 3, 0, 0, 1, 2), singleYStack),
-				area(@"B", notFave, layoutBlock(2, 3, 0, 2, 1, 1), singleYStack),
-				area(@"C", notFave, layoutBlock(2, 3, 1, 0, 1, 1), singleYStack),
+				area(@"B", notFave, layoutBlock(2, 3, 0, 2, 1, 1), H5),
+				area(@"C", notFave, layoutBlock(2, 3, 1, 0, 1, 1), H5),
 				area(@"D", combo,   layoutBlock(2, 3, 1, 1, 1, 2), singleYStack),
 			nil]],
 			
@@ -264,10 +264,10 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		pair(
 		
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"4_non_faves_B_portrait" contentSize:portraitSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", notFave, layoutBlock(2, 3, 0, 0, 1, 1), singleYStack),
+				area(@"A", notFave, layoutBlock(2, 3, 0, 0, 1, 1), H5),
 				area(@"B", combo,   layoutBlock(2, 3, 0, 1, 1, 2), singleYStack),
 				area(@"C", combo,   layoutBlock(2, 3, 1, 0, 1, 2), singleYStack),
-				area(@"D", notFave, layoutBlock(2, 3, 1, 2, 1, 1), singleYStack),
+				area(@"D", notFave, layoutBlock(2, 3, 1, 2, 1, 1), H5),
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"4_non_faves_B_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:

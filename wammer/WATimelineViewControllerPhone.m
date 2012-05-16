@@ -194,7 +194,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (NSMutableDictionary *) persistenceRepresentation {
 
 	NSMutableDictionary *answer = [super persistenceRepresentation];
-	NSLog(@"%s: %@", __PRETTY_FUNCTION__, answer);
 	
 	if ([self isViewLoaded]) {
 	
@@ -656,11 +655,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	if ([menuController isMenuVisible]) {
-		
-		NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-		if (indexPath)
-			[self.tableView deselectRowAtIndexPath:indexPath animated:NO];
-		
+	
+		[menuController setMenuVisible:NO animated:YES];
 		return;
 		
 	}
@@ -991,7 +987,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
 	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
 	
-	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	if (!selectedIndexPath || !article)
+		return;
 	
 	__block WARepresentedFilePickerViewController *picker = [WARepresentedFilePickerViewController defaultAutoSubmittingControllerForArticle:[[article objectID] URIRepresentation] completion: ^ (NSURL *selectedFileURI) {
 	

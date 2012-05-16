@@ -37,6 +37,12 @@
 
 }
 
+- (void) dealloc {
+
+	fetchedResultsController.delegate = nil;
+
+}
+
 - (NSManagedObjectContext *) managedObjectContext {
 
 	if (!managedObjectContext) {
@@ -116,6 +122,15 @@
 
 }
 
+- (void) viewDidUnload {
+
+	[super viewDidUnload];
+	
+	fetchedResultsController.delegate = nil;
+	self.fetchedResultsController = nil;
+
+}
+
 - (NSUInteger) numberOfItemsInGridView:(AQGridView *) gridView {
 
 	return [self.article.files count];
@@ -148,12 +163,35 @@
 
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
 	if (![self isViewLoaded])
 		return;
 	
-	[self.view reloadData];
+	switch (type) {
+	
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeInsert: {
+			
+			[self.view reloadData];
+			break;
+
+		}
+		
+		case NSFetchedResultsChangeMove: {
+			
+			break;
+			
+		}
+		
+		case NSFetchedResultsChangeUpdate: {
+		
+			//	do nothing, cell self updates
+			break;
+		
+		}
+	
+	}
 
 }
 
