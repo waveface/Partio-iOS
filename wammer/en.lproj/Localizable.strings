@@ -126,7 +126,7 @@
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
-"COMPOSITION_TITLE" = "Compose?";
+"COMPOSITION_TITLE" = "Compose";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
@@ -154,7 +154,7 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface is unable to authenticate your account: ";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
 
 /* Recovery notion for authentication failure recovery */
 "ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
