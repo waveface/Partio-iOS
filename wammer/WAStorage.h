@@ -2,7 +2,7 @@
 //  WAStorage.h
 //  wammer
 //
-//  Created by Evadne Wu on 4/19/12.
+//  Created by Evadne Wu on 5/16/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -14,15 +14,18 @@
 
 @interface WAStorage : IRManagedObject
 
+@property (nonatomic, retain) NSString * displayName;
 @property (nonatomic, retain) NSDate * intervalEndDate;
 @property (nonatomic, retain) NSDate * intervalStartDate;
-@property (nonatomic, retain) NSString * displayName;
-@property (nonatomic, retain) NSNumber * numberOfObjectsAllowedInInterval;
-@property (nonatomic, retain) NSNumber * numberOfPicturesAllowedInInterval;
 @property (nonatomic, retain) NSNumber * numberOfDocumentsAllowedInInterval;
 @property (nonatomic, retain) NSNumber * numberOfDocumentsCreatedInInterval;
-@property (nonatomic, retain) NSNumber * numberOfPicturesCreatedInInterval;
+@property (nonatomic, retain) NSNumber * numberOfObjectsAllowedInInterval;
 @property (nonatomic, retain) NSNumber * numberOfObjectsCreatedInInterval;
+@property (nonatomic, retain) NSNumber * numberOfPicturesAllowedInInterval;
+@property (nonatomic, retain) NSNumber * numberOfPicturesCreatedInInterval;
+@property (nonatomic, retain) NSNumber * numberOfObjectsInQueue;
+@property (nonatomic, retain) NSNumber * numberOfUnsyncedObjectsInQueue;
+@property (nonatomic, retain) NSNumber * queueStatus;
 @property (nonatomic, retain) WAUser *owner;
 
 @end

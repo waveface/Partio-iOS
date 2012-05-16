@@ -30,15 +30,25 @@
 	dispatch_once(&onceToken, ^{
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
+			
 			@"displayName", @"display_name",
+			
 			@"intervalEndDate", @"interval.quota_interval_end",
 			@"intervalStartDate", @"interval.quota_interval_begin",
+			
 			@"numberOfDocumentsAllowedInInterval", @"quota.month_doc_objects",
 			@"numberOfDocumentsCreatedInInterval", @"usage.month_doc_objects",
+			
 			@"numberOfObjectsAllowedInInterval", @"quota.month_total_objects",
 			@"numberOfObjectsCreatedInInterval", @"usage.month_total_objects",
+			
 			@"numberOfPicturesAllowedInInterval", @"quota.month_image_objects",
 			@"numberOfPicturesCreatedInInterval", @"usage.month_image_objects",
+			
+			@"numberOfObjectsInQueue", @"objects_in_queue",
+			@"numberOfUnsyncedObjectsInQueue", @"queue.objects_not_synced_in_queue",
+			@"queueStatus", @"queue.status",
+			
 		nil];
 		
 	});

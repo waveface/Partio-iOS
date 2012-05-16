@@ -1714,6 +1714,7 @@
 		FFEF58321549F5E900722D91 /* WAPreviewQuoteBackdrop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAPreviewQuoteBackdrop.png; path = external/WFPresentation/Source/WAPreviewQuoteBackdrop.png; sourceTree = SOURCE_ROOT; };
 		FFF0C2CC15591861006883C4 /* WAAuthenticationRequestWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAuthenticationRequestWebViewController.h; sourceTree = "<group>"; };
 		FFF0C2CD15591861006883C4 /* WAAuthenticationRequestWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAuthenticationRequestWebViewController.m; sourceTree = "<group>"; };
+		FFF361BD1563C9C5004A4D57 /* WAModel 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 28.xcdatamodel"; sourceTree = "<group>"; };
 		FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAOverlayBezel.h; sourceTree = "<group>"; };
 		FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAOverlayBezel.m; sourceTree = "<group>"; };
 		FFF556B61456A64A0077DFFB /* WARefreshActionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARefreshActionView.h; sourceTree = "<group>"; };
@@ -4597,6 +4598,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFF361BD1563C9C5004A4D57 /* WAModel 28.xcdatamodel */,
 				FF2851F3156236B300D7F5A4 /* WAModel 27.xcdatamodel */,
 				FF113EC7155B4CAF00D5636D /* WAModel 26.xcdatamodel */,
 				FF712131154588A000F64AB7 /* WAModel 25.xcdatamodel */,
@@ -4625,7 +4627,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF2851F3156236B300D7F5A4 /* WAModel 27.xcdatamodel */;
+			currentVersion = FFF361BD1563C9C5004A4D57 /* WAModel 28.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
