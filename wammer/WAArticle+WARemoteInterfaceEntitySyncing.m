@@ -423,7 +423,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					
 				}
 
-			} waitUntilDone:NO];		
+			} waitUntilDone:YES];		
 
 		} onSuccess:^{
 		
