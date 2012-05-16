@@ -168,7 +168,7 @@
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="previews" inverseEntity="WAUser" syncable="YES"/>
     </entity>
     <entity name="WAStorage" representedClassName="WAStorage" syncable="YES">
-        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" maxValueString="100" syncable="YES"/>
         <attribute name="intervalEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="intervalStartDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="numberOfDocumentsAllowedInInterval" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -178,7 +178,7 @@
         <attribute name="numberOfObjectsInQueue" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="numberOfPicturesAllowedInInterval" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="numberOfPicturesCreatedInInterval" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="numberOfUnsyncedObjectsInQueue" optional="YES" attributeType="Integer 32" maxValueString="1" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberOfUnsyncedObjectsInQueue" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="queueStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="storages" inverseEntity="WAUser" syncable="YES"/>
     </entity>
