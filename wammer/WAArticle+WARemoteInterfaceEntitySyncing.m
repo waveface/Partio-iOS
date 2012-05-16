@@ -739,7 +739,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			[ds performBlock:^{
 				
 				NSManagedObjectContext *context = [ds disposableMOC];
-				context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+				context.mergePolicy = NSOverwriteMergePolicy;
 				
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
 				savedPost.draft = (id)kCFBooleanFalse;
