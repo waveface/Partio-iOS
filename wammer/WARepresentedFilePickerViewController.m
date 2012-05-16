@@ -37,6 +37,12 @@
 
 }
 
+- (void) dealloc {
+
+	fetchedResultsController.delegate = nil;
+
+}
+
 - (NSManagedObjectContext *) managedObjectContext {
 
 	if (!managedObjectContext) {
@@ -113,6 +119,15 @@
 	self.view.alwaysBounceVertical = YES;
 	
 	[self.view reloadData];
+
+}
+
+- (void) viewDidUnload {
+
+	[super viewDidUnload];
+	
+	fetchedResultsController.delegate = nil;
+	self.fetchedResultsController = nil;
 
 }
 
