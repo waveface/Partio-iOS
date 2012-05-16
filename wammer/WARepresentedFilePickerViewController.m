@@ -148,12 +148,35 @@
 
 }
 
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
 	if (![self isViewLoaded])
 		return;
 	
-	[self.view reloadData];
+	switch (type) {
+	
+		case NSFetchedResultsChangeDelete:
+		case NSFetchedResultsChangeInsert: {
+			
+			[self.view reloadData];
+			break;
+
+		}
+		
+		case NSFetchedResultsChangeMove: {
+			
+			break;
+			
+		}
+		
+		case NSFetchedResultsChangeUpdate: {
+		
+			//	do nothing, cell self updates
+			break;
+		
+		}
+	
+	}
 
 }
 
