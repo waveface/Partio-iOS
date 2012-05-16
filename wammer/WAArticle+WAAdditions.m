@@ -12,6 +12,37 @@
 
 @implementation WAArticle (WAAdditions)
 
+- (WAFile *) representingFile {
+
+	[self willAccessValueForKey:@"representingFile"];
+	WAFile *file = [self primitiveValueForKey:@"representingFile"];
+	[self didAccessValueForKey:@"representingFile"];
+	
+	if (!file) {
+	
+		[self willAccessValueForKey:@"files"];
+		NSOrderedSet *files = [self primitiveValueForKey:@"files"];
+		
+		if ([files count]) {
+			file = [[files array] objectAtIndex:0];
+		}
+
+		[self didAccessValueForKey:@"files"];
+	
+	}
+	
+	return file;
+
+}
+
+- (void) setRepresentingFile:(WAFile *)representingFile {
+
+	[self willChangeValueForKey:@"representingFile"];
+	[self setPrimitiveValue:representingFile forKey:@"representingFile"];
+	[self didChangeValueForKey:@"representingFile"];
+
+}
+
 + (NSSet *) keyPathsForValuesAffectingHasMeaningfulContent {
 
 	return [NSSet setWithObjects:
@@ -36,70 +67,6 @@
 		return YES;
 
 	return NO;
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingRepresentingFile {
-
-	return [NSSet setWithObjects:
-	
-		@"files",
-	
-	nil];
-
-}
-
-- (WAFile *) representingFile {
-
-	[self willAccessValueForKey:@"representingFile"];
-	WAFile *file = [self primitiveValueForKey:@"representingFile"];
-	[self didAccessValueForKey:@"representingFile"];
-	
-	if (!file && [self.files count]) {
-		file = [self.files objectAtIndex:0];
-	}
-
-	return file;
-
-}
-
-- (void) setRepresentingFile:(WAFile *)representingFile {
-
-	if (representingFile) {
-	
-		[self willAccessValueForKey:@"files"];
-		NSSet *files = [self primitiveValueForKey:@"files"];
-		[self didAccessValueForKey:@"files"];
-		
-		if (![files containsObject:representingFile]) {
-			[self addFilesObject:representingFile];
-			NSParameterAssert([files containsObject:representingFile]);
-		}
-	
-	}
-	
-	[self willChangeValueForKey:@"representingFile"];
-	[self setPrimitiveValue:representingFile forKey:@"representingFile"];
-	[self didChangeValueForKey:@"representingFile"];
-
-}
-
-- (void) setFiles:(NSOrderedSet *)files {
-
-	[self willChangeValueForKey:@"files"];
-	[self setPrimitiveValue:files forKey:@"files"];
-
-	[self willAccessValueForKey:@"representingFile"];
-	WAFile *representingFile = [self primitiveValueForKey:@"representingFile"];
-	[self didAccessValueForKey:@"representingFile"];
-		
-	if (![files containsObject:representingFile]) {
-		[self willChangeValueForKey:@"representingFile"];
-		[self setPrimitiveValue:nil forKey:@"representingFile"];
-		[self didChangeValueForKey:@"representingFile"];
-	}		
-	
-	[self didChangeValueForKey:@"files"];
 
 }
 
