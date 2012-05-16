@@ -496,7 +496,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	NSAssert1(mergePolicy == WAOverwriteWithLatestMergePolicy, @"Merge policies (got %@) other than kWAOverwriteWithLatestMergePolicy are not implemented", mergePolicy);
 	
-	
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	NSMutableArray *operations = [NSMutableArray array];
 	NSMutableDictionary *context = [NSMutableDictionary dictionary];
@@ -581,26 +580,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[context setObject:localDate forKey:kPostLocalModDate];
 		
 		NSComparisonResult comparisonResult = [remoteDate compare:localDate];
-		switch (comparisonResult) {
-		
-			case NSOrderedDescending: {
-				break;
-			}
-			
-			case NSOrderedSame: {
-				callback(nil);
-				return;
-			}
-			
-			case NSOrderedAscending: {
-				break;
-			}
-		
-		}
-
 		callback([NSValue valueWithBytes:&(NSComparisonResult){ comparisonResult } objCType:@encode(__typeof__(NSComparisonResult))]);
 		
-	} completionBlock:nil]];
+	} completionBlock: ^ (id results) {
+	
+		NSCParameterAssert(results);
+	
+	}]];
 	
 	
 	[[self.files array] enumerateObjectsUsingBlock: ^ (WAFile *file, NSUInteger idx, BOOL *stop) {
@@ -645,6 +631,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		} completionBlock:^(id result) {
 		
+			NSCParameterAssert(result);
+			
 			if (![result isKindOfClass:[NSString class]])
 				return;
 			
@@ -684,6 +672,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		} completionBlock:^(id results) {
 		
+			NSCParameterAssert(results);
+			
 			if (![results isKindOfClass:[NSDictionary class]])
 				return;
 			
@@ -740,6 +730,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 	} completionBlock:^(id results) {
 	
+		NSCParameterAssert(results);
+		
 		if ([results isKindOfClass:[NSDictionary class]]) {
 		
 			WADataStore *ds = [WADataStore defaultStore];
@@ -762,7 +754,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					
 					savedPost.identifier = identifier;
 				
-				}			
+				}
 				
 				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 
