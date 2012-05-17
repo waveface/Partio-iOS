@@ -34,7 +34,7 @@
 "ACTION_MARK_FAVORITE" = "設為最愛";
 
 /* No comment provided by engineer. */
-"ACTION_MORE_INFO" = "ACTION_MORE_INFO";
+"ACTION_MORE_INFO" = "瞭解更多";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
@@ -247,16 +247,16 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
 /* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "STREAM_ABOUT_TEXT";
+"STREAM_ABOUT_TEXT" = "Stream 的雲端服務，能在 Wi-Fi 環境下，自動幫您將所有的原始照片檔案送回您的 PC 中，只要從我們官網上安裝免費的 Station 至 PC 上，即可享受全自動的無線傳輸服務。";
 
 /* Title for About Stream dialog */
-"STREAM_ABOUT_TITLE" = "STREAM_ABOUT_TITLE";
+"STREAM_ABOUT_TITLE" = "詳細資訊";
 
 /* Caption to show when app is syncing data */
-"SYNC_BUTTON_NORMAL_TITLE" = "SYNC_BUTTON_NORMAL_TITLE";
+"SYNC_BUTTON_NORMAL_TITLE" = "正在同步";
 
 /* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "SYNC_BUTTON_USABLE_TITLE";
+"SYNC_BUTTON_USABLE_TITLE" = "現在同步";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
