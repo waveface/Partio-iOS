@@ -40,7 +40,7 @@
 
 - (BOOL) hasWiFiConnection {
 
-	return [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachable];
+	return [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachableDirectly];
 	
 }
 

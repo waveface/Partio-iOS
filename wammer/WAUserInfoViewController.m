@@ -199,7 +199,19 @@
 	
 	[self irObserveObject:wRemoteInterface keyPath:@"networkState" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-		wSelf.stationNagLabel.text = nagLabelTitle([wSelf.user.mainStorage.queueStatus integerValue], [wRemoteInterface hasReachableStation]);	
+		wSelf.stationNagLabel.text = nagLabelTitle([wSelf.user.mainStorage.queueStatus integerValue], [wRemoteInterface hasReachableStation]);
+		
+		if ([wSelf isViewLoaded]) {
+		
+			UITableView *tv = wSelf.tableView;
+			
+			[tv beginUpdates];
+			[tv reloadSections:[NSIndexSet indexSetWithIndex:[tv indexPathForCell:wSelf.syncTableViewCell].section] withRowAnimation:UITableViewRowAnimationAutomatic];
+			[tv endUpdates];
+			
+			wSelf.syncTableViewCell.alpha = 1;
+		
+		}
 		
 	}];
 	
@@ -307,11 +319,11 @@
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UITableViewCell *hitCell = [aTV cellForRowAtIndexPath:indexPath];
+	
 	if (hitCell == syncTableViewCell) {
 	
 		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		[aTV deselectRowAtIndexPath:indexPath animated:YES];
-	
+		
 	} else if (hitCell == stationNagCell) {
 	
 		NSString *title = NSLocalizedString(@"STREAM_ABOUT_TITLE", @"Title for About Stream dialog");
@@ -341,7 +353,7 @@
 		NSDictionary *infoDictionary = [bundle irInfoDictionary];
 		NSString *recipient = [infoDictionary objectForKey:WAFeedbackRecipient];
 		NSArray *recipients = [NSArray arrayWithObject:recipient];
-		NSString *subject = [bundle displayVersionString];
+		NSString *subject = nil;
 		NSString *body = nil;
 		
 		__weak WAUserInfoViewController *wSelf = self;
@@ -367,10 +379,10 @@
 		
 		[wSelf presentViewController:mcVC animated:YES completion:nil];
 	
-		[aTV deselectRowAtIndexPath:indexPath animated:YES];
-	
 	}
 
+	[aTV deselectRowAtIndexPath:indexPath animated:YES];
+	
 }
 
 - (UITableViewCell *) tableView:(UITableView *)aTV cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -394,6 +406,15 @@
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
 	NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
+	
+	if ([superAnswer isEqualToString:@"LOCAL_PENDING_OBJECT_DESCRIPTION"]) {
+	
+		if (![[WARemoteInterface sharedInterface] hasWiFiConnection])
+			return NSLocalizedString(@"LOCAL_PENDING_OBJECT_DESCRIPTION", @"Title to show explaining WiFi Sync");
+		
+		return nil;
+	
+	}
 	
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];

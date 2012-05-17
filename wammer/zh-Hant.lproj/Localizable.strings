@@ -34,7 +34,7 @@
 "ACTION_MARK_FAVORITE" = "設為最愛";
 
 /* No comment provided by engineer. */
-"ACTION_MORE_INFO" = "ACTION_MORE_INFO";
+"ACTION_MORE_INFO" = "瞭解更多";
 
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
@@ -142,7 +142,7 @@
 "DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
 
 /* Article entity sync failure alert message for no underlying error */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "上傳時發生錯誤";
 
 /* Article entity sync failure alert title */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "無法上傳";
@@ -186,18 +186,21 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
+/* Title to show explaining WiFi Sync */
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
 
 /* Title for Waveface Feedback */
-"NOUN_CURRENT_DEVICE" = "目前裝置";
+"NOUN_CURRENT_DEVICE" = "裝置名稱";
 
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
 
 /* Title for nick name
    Title for nickname */
-"NOUN_NICKNAME" = "暱稱";
+"NOUN_NICKNAME" = "使用者名稱";
 
 /* Noun for Password
    Title for password */
@@ -208,7 +211,7 @@
 
 /* Noun for Username
    Title for username */
-"NOUN_USERNAME" = "Email";
+"NOUN_USERNAME" = "電子郵件";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
@@ -247,16 +250,16 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
 /* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "STREAM_ABOUT_TEXT";
+"STREAM_ABOUT_TEXT" = "Stream 的雲端服務，能在 Wi-Fi 環境下，自動幫您將所有的原始照片檔案送回您的 PC 中，只要從我們官網上安裝免費的 Station 至 PC 上，即可享受全自動的無線傳輸服務。";
 
 /* Title for About Stream dialog */
-"STREAM_ABOUT_TITLE" = "STREAM_ABOUT_TITLE";
+"STREAM_ABOUT_TITLE" = "詳細資訊";
 
 /* Caption to show when app is syncing data */
-"SYNC_BUTTON_NORMAL_TITLE" = "SYNC_BUTTON_NORMAL_TITLE";
+"SYNC_BUTTON_NORMAL_TITLE" = "正在同步";
 
 /* Caption to show when app is not syncing data, but sync is usable */
-"SYNC_BUTTON_USABLE_TITLE" = "SYNC_BUTTON_USABLE_TITLE";
+"SYNC_BUTTON_USABLE_TITLE" = "現在同步";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -265,7 +268,7 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
 
 /* Settings for User popover */
-"USER_INFO_CONTROLLER_TITLE" = "用戶";
+"USER_INFO_CONTROLLER_TITLE" = "帳號資訊";
 
 /* Title to show when user has a station but have not activated the account */
 "USER_INFO_NAG_LEVEL_0_WITH_STATION" = "只要在 Wi-Fi 環境下，Stream 會幫您將原始檔案暫存在雲端上，並妥善送回 PC 中。";
@@ -349,7 +352,7 @@
 "SERVICE_INFO_HEADER" = "服務資訊";
 
 /* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "未同步物件";
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "尚未回傳至 Station 原檔數量";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "用戶資訊";
@@ -358,20 +361,23 @@
 "VERSION" = "版本";
 
 /* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
-"LAST_SYNCED_TIME" = "上次同步";
+"LAST_SYNCED_TIME" = "上次同步時間";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "尚未上傳原檔";
+"LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
+
+/* Class = "IBUITableViewSection"; footerTitle = "LOCAL_PENDING_OBJECT_DESCRIPTION"; ObjectID = "aHi-Wv-Eu2"; */
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
-"NOUN_NICKNAME" = "暱稱";
+"NOUN_NICKNAME" = "使用者名稱";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
-"NOUN_USERNAME" = "Email";
+"NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
-"NOUN_CURRENT_DEVICE" = "目前裝置";
+"NOUN_CURRENT_DEVICE" = "裝置名稱";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
-"ACTION_CONTACT_DEVELOPER" = "聯絡";
+"ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
