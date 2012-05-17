@@ -199,7 +199,19 @@
 	
 	[self irObserveObject:wRemoteInterface keyPath:@"networkState" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-		wSelf.stationNagLabel.text = nagLabelTitle([wSelf.user.mainStorage.queueStatus integerValue], [wRemoteInterface hasReachableStation]);	
+		wSelf.stationNagLabel.text = nagLabelTitle([wSelf.user.mainStorage.queueStatus integerValue], [wRemoteInterface hasReachableStation]);
+		
+		if ([wSelf isViewLoaded]) {
+		
+			UITableView *tv = wSelf.tableView;
+			
+			[tv beginUpdates];
+			[tv reloadSections:[NSIndexSet indexSetWithIndex:[tv indexPathForCell:wSelf.syncTableViewCell].section] withRowAnimation:UITableViewRowAnimationAutomatic];
+			[tv endUpdates];
+			
+			wSelf.syncTableViewCell.alpha = 1;
+		
+		}
 		
 	}];
 	
@@ -394,6 +406,15 @@
 - (NSString *) tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 
 	NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
+	
+	if ([superAnswer isEqualToString:@"LOCAL_PENDING_OBJECT_DESCRIPTION"]) {
+	
+		if (![[WARemoteInterface sharedInterface] hasWiFiConnection])
+			return NSLocalizedString(@"LOCAL_PENDING_OBJECT_DESCRIPTION", @"Title to show explaining WiFi Sync");
+		
+		return nil;
+	
+	}
 	
 	if ([superAnswer isEqualToString:@"VERSION"])
 		return [[NSBundle mainBundle] displayVersionString];
