@@ -575,6 +575,7 @@
 		FFCFE0E7142111E100B9E6AF /* WAPostViewCellPhone-ImageStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */; };
 		FFCFE0E9142111E100B9E6AF /* WAOverviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WAOverviewController.xib */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
+		FFD09CEB1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */; };
 		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
@@ -1686,6 +1687,8 @@
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WATimelineViewControllerPhone+RowHeightCaching.h"; sourceTree = "<group>"; };
+		FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WATimelineViewControllerPhone+RowHeightCaching.m"; sourceTree = "<group>"; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPreviewBadge.h; path = wammer/WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPreviewBadge.m; path = wammer/WAPreviewBadge.m; sourceTree = "<group>"; };
@@ -2131,6 +2134,8 @@
 			children = (
 				4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */,
 				4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */,
+				FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */,
+				FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */,
 				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
 				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
 				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
@@ -4064,6 +4069,7 @@
 				FFF0C2CE15591862006883C4 /* WAAuthenticationRequestWebViewController.m in Sources */,
 				FF11362E15627DEC0014AB32 /* WAArticle.m in Sources */,
 				FFF361C01563CA10004A4D57 /* WAStorage.m in Sources */,
+				FFD09CEB1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

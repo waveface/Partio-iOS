@@ -36,13 +36,15 @@
 #import "WAPostViewCellPhone.h"
 #import "WAPulldownRefreshView.h"
 #import "WAOverlayBezel.h"
-#import "WAApplicationDidReceiveReadingProgressUpdateNotificationView.h"
 
 #import "WARepresentedFilePickerViewController.h"
 #import "WARepresentedFilePickerViewController+CustomUI.h"
 
 #import "WADatePickerViewController.h"
 #import "WAFilterPickerViewController.h"
+
+#import "WATimelineViewControllerPhone+RowHeightCaching.h"
+
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
@@ -93,39 +95,24 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	[[WARemoteInterface sharedInterface] addObserver:self forKeyPath:@"isPostponingDataRetrievalTimerFiring" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionNew context:nil];
   
 	self.title = NSLocalizedString(@"APP_TITLE", @"Title for application");
-	
 	self.navigationItem.titleView = WAStandardTitleView();
 	
-//	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:IRUIKitImage(@"UINavigationBarAddButton") style:UIBarButtonItemStylePlain target:self action:@selector(handleCompose:)];
-	
-	
-	 CGRect rect = (CGRect){0.0, 0.0, 1.0, 1.0};
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
+	CGRect rect = (CGRect){ CGPointZero, (CGSize){ 1, 1 } };
+	UIGraphicsBeginImageContext(rect.size);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSetFillColorWithColor(context, [UIColor clearColor].CGColor);
+	CGContextFillRect(context, rect);
+	UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
 
-    CGContextSetFillColorWithColor(context, [[UIColor colorWithWhite:0 alpha:0] CGColor]);
-    CGContextFillRect(context, rect);
-
-    UIImage *transparentImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-		
-//	buttonImage = [UIImage imageNamed:@"top_icon_share.png"];
-//UIButton *buttonShare = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
-//[buttonShare setBackgroundImage:buttonImage forState:UIControlStateNormal];
-//[buttonShare addTarget:self action:@selector(buttonSharePressed)
-//      forControlEvents:UIControlEventTouchUpInside];
-//[buttonShare setShowsTouchWhenHighlighted:YES];];
-//    UIBarButtonItem *buttonBarShare = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"top_icon_share.png"] style:UIBarButtonItemStylePlain target:self action:@selector(buttonSharePressed:)];
-		
 	UIImage *cameraPressed = [UIImage imageNamed:@"CameraPressed"];
-	UIButton *cameraButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,cameraPressed.size.width,cameraPressed.size.height}];
+	UIButton *cameraButton = [[UIButton alloc] initWithFrame:(CGRect){ CGPointZero, cameraPressed.size }];
 	[cameraButton setBackgroundImage:cameraPressed forState:UIControlStateHighlighted];
 	[cameraButton addTarget:self action:@selector(handleCameraCapture:) forControlEvents:UIControlEventTouchUpInside];
-	[cameraButton setShowsTouchWhenHighlighted:YES];
-	
+	[cameraButton setShowsTouchWhenHighlighted:YES];	
 	
 	UIImage *notePressed = [UIImage imageNamed:@"NotePressed"];
-	UIButton *noteButton= [[UIButton alloc] initWithFrame:(CGRect){0,0,notePressed.size.width,notePressed.size.height}];
+	UIButton *noteButton = [[UIButton alloc] initWithFrame:(CGRect){ CGPointZero, notePressed.size }];
 	[noteButton setBackgroundImage:notePressed forState:UIControlStateHighlighted];
 	[noteButton addTarget:self action:@selector(handleCompose:) forControlEvents:UIControlEventTouchUpInside];
 	[noteButton setShowsTouchWhenHighlighted:YES];
@@ -133,10 +120,10 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	UIBarButtonItem *alphaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	alphaSpacer.width = 14.0;
 	
-	UIBarButtonItem *omegaSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	UIBarButtonItem *omegaSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	omegaSpacer.width = 34.0;
 	
-	UIBarButtonItem *zeroSpacer= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	UIBarButtonItem *zeroSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	zeroSpacer.width = -10;
 	
 	self.toolbarItems = [NSArray arrayWithObjects:
@@ -297,7 +284,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (settingsActionSheetController)
 		return settingsActionSheetController;
 	
-	__weak WATimelineViewControllerPhone *nrSelf = self;
+	__weak WATimelineViewControllerPhone *wSelf = self;
 	
 	IRAction *cancelAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", nil) block:nil];
 	IRAction *signOutAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block:^{
@@ -309,7 +296,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 			
 			[IRAction actionWithTitle:NSLocalizedString(@"ACTION_SIGN_OUT", nil) block: ^ {
 				
-				[nrSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
+				[wSelf.delegate applicationRootViewControllerDidRequestReauthentication:nil];
 				
 			}],
 			
@@ -369,7 +356,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	self.tableView.pullDownHeaderView = pulldownHeader;
 	self.tableView.onPullDownMove = ^ (CGFloat progress) {
-		[pulldownHeader setProgress:progress animated:YES];	
+		[pulldownHeader setProgress:progress animated:YES];
 	};
 	self.tableView.onPullDownEnd = ^ (BOOL didFinish) {
 		if (didFinish) {
@@ -472,7 +459,23 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) viewDidDisappear:(BOOL)animated {
 
 	[super viewDidDisappear:animated];
-	[self didReceiveMemoryWarning];
+
+	fetchedResultsController.delegate = nil;
+	self.fetchedResultsController = nil;
+	
+}
+
+- (void) viewDidUnload {
+
+	[super viewDidUnload];
+
+}
+
+- (void) didReceiveMemoryWarning {
+
+	[super didReceiveMemoryWarning];
+	
+	[self removeCachedRowHeights];
 
 }
 
@@ -519,7 +522,15 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	return [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
+	CGFloat height = [self cachedRowHeightForObject:post];
+	if (!height) {
+	
+		height = [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
+		[self cacheRowHeight:height forObject:post];
+	
+	}
+	
+	return height;
 		
 }
 
@@ -543,8 +554,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 
-	if (![self isViewLoaded])
-		return;
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
 		
 	[UIView setAnimationsEnabled:NO];
 	
@@ -555,8 +567,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 
-	if (![self isViewLoaded])
-		return;
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
 	
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
@@ -576,10 +589,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	if (![self isViewLoaded])
-		return;
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
 	
-	NSParameterAssert([NSThread isMainThread]);
+	[self removeCachedRowHeightForObject:anObject];
 
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
@@ -664,16 +678,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	NSURL *postURL = [[post objectID] URIRepresentation];
 	
-	__block UIViewController *pushedVC = nil;
-  
-	if([post.previews count])
+	if ([post.previews count])
 		WAPostAppEvent(@"View Preview Post", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
 	else if([post.files count])
 		WAPostAppEvent(@"View Photo Post", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
 	else 
 		WAPostAppEvent(@"View Text Post", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
 	
-	pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
 
  	[self.navigationController pushViewController:pushedVC animated:YES];
 
@@ -723,11 +735,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
 		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
-		__block __typeof__(self) nrSelf = self;
+		__weak WATimelineViewControllerPhone *wSelf = self;
 				
 		draftsVC.navigationItem.leftBarButtonItem = [IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemCancel wiredAction:^(IRBarButtonItem *senderItem) {
 			
-			[nrSelf dismissViewControllerAnimated:YES completion:nil];
+			[wSelf dismissViewControllerAnimated:YES completion:nil];
 			
 		}];
 		
@@ -739,144 +751,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	}
   
-}
-
-- (void) imageStackView:(WAImageStackView *)aStackView didRecognizePinchZoomGestureWithRepresentedImage:(UIImage *)representedImage contentRect:(CGRect)aRect transform:(CATransform3D)layerTransform {
-
-	NSIndexPath *cellIndexPath = [self.tableView indexPathForRowAtPoint:[self.tableView convertPoint:aStackView.center fromView:aStackView.superview]];
-	
-	if (!cellIndexPath)
-		return;
-	
-	WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[self.tableView cellForRowAtIndexPath:cellIndexPath];
-	if (![cell isKindOfClass:[WAPostViewCellPhone class]])
-		return;
-	
-	NSURL *representedObjectURI = [[cell.representedObject objectID] URIRepresentation];
-	
-	__block __typeof__(self) nrSelf = self;
-	__block WAGalleryViewController *galleryViewController = nil;
-	galleryViewController = [WAGalleryViewController controllerRepresentingArticleAtURI:representedObjectURI];
-	galleryViewController.hidesBottomBarWhenPushed = YES;
-	galleryViewController.onDismiss = ^ {
-    
-		CATransition *transition = [CATransition animation];
-		transition.duration = 0.3f;
-		transition.type = kCATransitionPush;
-		transition.subtype = ((^ {
-			switch (self.interfaceOrientation) {
-				case UIInterfaceOrientationPortrait:
-					return kCATransitionFromLeft;
-				case UIInterfaceOrientationPortraitUpsideDown:
-					return kCATransitionFromRight;
-				case UIInterfaceOrientationLandscapeLeft:
-					return kCATransitionFromTop;
-				case UIInterfaceOrientationLandscapeRight:
-					return kCATransitionFromBottom;
-			}
-		})());
-		transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-		transition.fillMode = kCAFillModeForwards;
-		transition.removedOnCompletion = YES;
-    
-		[galleryViewController.navigationController setNavigationBarHidden:NO animated:NO];
-		[galleryViewController.navigationController popViewControllerAnimated:NO];
-		
-		[nrSelf.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-	};
-	
-	CATransition *transition = [CATransition animation];
-	transition.duration = 0.3f;
-	transition.type = kCATransitionPush;
-	transition.subtype = ((^ {
-		switch (self.interfaceOrientation) {
-			case UIInterfaceOrientationPortrait:
-				return kCATransitionFromRight;
-			case UIInterfaceOrientationPortraitUpsideDown:
-				return kCATransitionFromLeft;
-			case UIInterfaceOrientationLandscapeLeft:
-				return kCATransitionFromBottom;
-			case UIInterfaceOrientationLandscapeRight:
-				return kCATransitionFromTop;
-		}
-	})());
-	transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-	transition.fillMode = kCAFillModeForwards;
-	transition.removedOnCompletion = YES;
-	
-	[self.navigationController setNavigationBarHidden:YES animated:NO];
-	[self.navigationController pushViewController:galleryViewController animated:NO];
-	
-	[self.navigationController.view.layer addAnimation:transition forKey:@"transition"];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-  
-	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, transition.duration * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
-	});
-	
-}
-
-- (void) setLastScannedObject:(WAArticle *)anArticle completion:(void(^)(BOOL didFinish))callback {
-
-	if (!anArticle)
-		return;
-
-	[[WARemoteInterface sharedInterface] updateLastScannedPostInGroup:anArticle.group.identifier withPost:anArticle.identifier onSuccess: ^ {
-	
-		if (callback)
-			callback(YES);
-		 
- } onFailure: ^ (NSError *error) {
- 
-		if (callback)
-		callback(NO);
-	 
- }];
-
-}
-
-- (void) retrieveLastScannedObjectWithCompletion:(void(^)(NSString *articleIdentifier, WAArticle *anArticleOrNil))callback {
-
-	NSString * aGroupIdentifier = [[NSSet setWithArray:[self.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
-		
-		return anArticle.group.identifier;
-		
-	}]] anyObject];
-
-	if (!aGroupIdentifier)
-		aGroupIdentifier = [WARemoteInterface sharedInterface].primaryGroupIdentifier;
-	
-	__block __typeof__(self) nrSelf = self;
-
-	[[WARemoteInterface sharedInterface] retrieveLastScannedPostInGroup:aGroupIdentifier onSuccess:^(NSString *lastScannedPostIdentifier) {
-	
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			WAArticle *matchingArticle = [[nrSelf.fetchedResultsController.fetchedObjects irMap: ^ (WAArticle *anArticle, NSUInteger index, BOOL *stop) {
-			
-				if ([anArticle.identifier isEqualToString:lastScannedPostIdentifier])
-					return anArticle;
-				
-				return (WAArticle *)nil;
-				
-			}] lastObject];
-			
-			if (callback)
-				callback(lastScannedPostIdentifier, matchingArticle);
-		
-		});
-
-	} onFailure:^(NSError *error) {
-	
-		dispatch_async(dispatch_get_main_queue(), ^{
-
-			if (callback)
-				callback(nil, nil);
-			
-		});
-		
-	}];
-
 }
 
 - (BOOL) canBecomeFirstResponder {
