@@ -319,11 +319,11 @@
 - (void) tableView:(UITableView *)aTV didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	UITableViewCell *hitCell = [aTV cellForRowAtIndexPath:indexPath];
+	
 	if (hitCell == syncTableViewCell) {
 	
 		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		[aTV deselectRowAtIndexPath:indexPath animated:YES];
-	
+		
 	} else if (hitCell == stationNagCell) {
 	
 		NSString *title = NSLocalizedString(@"STREAM_ABOUT_TITLE", @"Title for About Stream dialog");
@@ -379,10 +379,10 @@
 		
 		[wSelf presentViewController:mcVC animated:YES completion:nil];
 	
-		[aTV deselectRowAtIndexPath:indexPath animated:YES];
-	
 	}
 
+	[aTV deselectRowAtIndexPath:indexPath animated:YES];
+	
 }
 
 - (UITableViewCell *) tableView:(UITableView *)aTV cellForRowAtIndexPath:(NSIndexPath *)indexPath {
