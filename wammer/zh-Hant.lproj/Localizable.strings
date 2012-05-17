@@ -186,6 +186,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
+/* Title to show explaining WiFi Sync */
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
 
