@@ -186,6 +186,9 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
+/* Title to show explaining WiFi Sync */
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 
@@ -364,7 +367,7 @@
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
 
 /* Class = "IBUITableViewSection"; footerTitle = "LOCAL_PENDING_OBJECT_DESCRIPTION"; ObjectID = "aHi-Wv-Eu2"; */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ This only happens in Wi-Fi";
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "Nickname";
