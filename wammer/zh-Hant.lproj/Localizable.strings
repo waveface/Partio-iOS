@@ -190,14 +190,14 @@
 "NOUN_ACTIONS_OBJECT" = "動作";
 
 /* Title for Waveface Feedback */
-"NOUN_CURRENT_DEVICE" = "目前裝置";
+"NOUN_CURRENT_DEVICE" = "裝置名稱";
 
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
 
 /* Title for nick name
    Title for nickname */
-"NOUN_NICKNAME" = "暱稱";
+"NOUN_NICKNAME" = "使用者名稱";
 
 /* Noun for Password
    Title for password */
@@ -208,7 +208,7 @@
 
 /* Noun for Username
    Title for username */
-"NOUN_USERNAME" = "Email";
+"NOUN_USERNAME" = "電子郵件";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
@@ -334,7 +334,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Station";
+"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Waveface Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
