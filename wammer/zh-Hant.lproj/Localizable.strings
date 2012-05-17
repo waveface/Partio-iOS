@@ -334,7 +334,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Waveface Station";
+"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
@@ -349,7 +349,7 @@
 "SERVICE_INFO_HEADER" = "服務資訊";
 
 /* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "未同步物件";
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "尚未回傳至 Station 原檔數量";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "用戶資訊";
@@ -358,20 +358,20 @@
 "VERSION" = "版本";
 
 /* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
-"LAST_SYNCED_TIME" = "上次同步";
+"LAST_SYNCED_TIME" = "上次同步時間";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
-"LOCAL_PENDING_OBJECTS_TITLE" = "尚未上傳原檔";
+"LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
-"NOUN_NICKNAME" = "暱稱";
+"NOUN_NICKNAME" = "用戶名稱";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
-"NOUN_USERNAME" = "Email";
+"NOUN_USERNAME" = "帳號";
 
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
-"NOUN_CURRENT_DEVICE" = "目前裝置";
+"NOUN_CURRENT_DEVICE" = "裝置名稱";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
-"ACTION_CONTACT_DEVELOPER" = "聯絡";
+"ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
