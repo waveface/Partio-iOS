@@ -594,8 +594,6 @@
 		FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */; };
 		FFF7F512149E689F004EFB1B /* WAProgressIndicatorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */; };
 		FFFC763C1487762D00247099 /* WAUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFC763B1487762D00247099 /* WAUserInfoViewController.m */; };
-		FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */; };
-		FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1721,9 +1719,6 @@
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
 		FFFC763A1487762D00247099 /* WAUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserInfoViewController.h; sourceTree = "<group>"; };
 		FFFC763B1487762D00247099 /* WAUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoViewController.m; sourceTree = "<group>"; };
-		FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.h; sourceTree = "<group>"; };
-		FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.m; sourceTree = "<group>"; };
-		FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewControllerPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewControllerPad.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2139,9 +2134,6 @@
 				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
 				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
 				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
-				FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */,
-				FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */,
-				FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */,
 				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
 				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
 				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
@@ -3474,7 +3466,6 @@
 				FF8CADA91485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib in Resources */,
 				FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */,
 				FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */,
-				FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */,
 				4B733BB214987A81005CAE8D /* IASKAppSettingsView.xib in Resources */,
 				4B733BB314987A81005CAE8D /* IASKAppSettingsWebView.xib in Resources */,
 				4B733BB414987A81005CAE8D /* IASKPSSliderSpecifierViewCell.xib in Resources */,
@@ -3997,7 +3988,6 @@
 				FFADFDB6148F5E4C00292D93 /* WARemoteInterface+Environment.m in Sources */,
 				FF7997A91490A23C000CE08D /* WAFilePageElement.m in Sources */,
 				FF7997AC1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m in Sources */,
-				FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */,
 				FF14886014977E4500D8B0AD /* WATiledImageView.m in Sources */,
 				FF14886714978C5800D8B0AD /* WAAsyncImageView.m in Sources */,
 				FF0C7ABA14987FCA00632EF3 /* WADataStore+FetchingConveniences.m in Sources */,
