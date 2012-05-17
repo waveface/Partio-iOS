@@ -142,7 +142,7 @@
 "DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
 
 /* Article entity sync failure alert message for no underlying error */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "上傳時發生錯誤";
 
 /* Article entity sync failure alert title */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "無法上傳";
