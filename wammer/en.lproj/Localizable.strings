@@ -1,5 +1,5 @@
 /* attachment activity view */
-"ACTION_ADD" = "Stream!";
+"ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
    Action title for cancelling
@@ -19,6 +19,9 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
+
+/* In iPad composition view */
+"ACTION_DONE" = "Stream!";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";

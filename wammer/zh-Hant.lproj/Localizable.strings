@@ -20,6 +20,9 @@
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "丟棄草稿";
 
+/* In iPad composition view */
+"ACTION_DONE" = "完成";
+
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "迴響";
 
