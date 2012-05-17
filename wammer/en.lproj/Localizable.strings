@@ -133,7 +133,7 @@
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client.";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web version.";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
@@ -190,7 +190,7 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* Title to show explaining WiFi Sync */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files oan only be uploaded via Wi-Fi";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -253,7 +253,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
 /* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "Stream saves all your photos taken on all your devices back to your desktop computer.";
+"STREAM_ABOUT_TEXT" = "Stream saves all your photos on all your devices to your PC.";
 
 /* Title for About Stream dialog */
 "STREAM_ABOUT_TITLE" = "About Stream";
