@@ -341,7 +341,7 @@
 		NSDictionary *infoDictionary = [bundle irInfoDictionary];
 		NSString *recipient = [infoDictionary objectForKey:WAFeedbackRecipient];
 		NSArray *recipients = [NSArray arrayWithObject:recipient];
-		NSString *subject = [bundle displayVersionString];
+		NSString *subject = nil;
 		NSString *body = nil;
 		
 		__weak WAUserInfoViewController *wSelf = self;
