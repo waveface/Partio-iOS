@@ -265,7 +265,7 @@
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "更多";
 
 /* Settings for User popover */
-"USER_INFO_CONTROLLER_TITLE" = "用戶";
+"USER_INFO_CONTROLLER_TITLE" = "帳號資訊";
 
 /* Title to show when user has a station but have not activated the account */
 "USER_INFO_NAG_LEVEL_0_WITH_STATION" = "只要在 Wi-Fi 環境下，Stream 會幫您將原始檔案暫存在雲端上，並妥善送回 PC 中。";
@@ -364,10 +364,10 @@
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
-"NOUN_NICKNAME" = "用戶名稱";
+"NOUN_NICKNAME" = "使用者名稱";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
-"NOUN_USERNAME" = "帳號";
+"NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
