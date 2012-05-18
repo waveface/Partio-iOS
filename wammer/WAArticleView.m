@@ -8,7 +8,6 @@
 
 #import "WAArticleView.h"
 
-#import "WAImageStackView.h"
 #import "WAPreviewBadge.h"
 #import "WAArticleTextEmphasisLabel.h"
 #import "WADataStore.h"
@@ -29,7 +28,7 @@
 
 @implementation WAArticleView
 
-@synthesize contextInfoContainer, imageStackView, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView, presentationTemplateName;
+@synthesize contextInfoContainer, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView, presentationTemplateName;
 
 - (void) awakeFromNib {
 
@@ -66,9 +65,15 @@
 	relativeCreationDateLabel.text = [photoInformation stringByAppendingString:relativeDateString];
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
-	imageStackView.images = representingImage ? [NSArray arrayWithObject:representingImage] : nil;
 	mainImageView.image = representingImage;
-	mainImageView.backgroundColor = representingImage ? [UIColor clearColor] : [UIColor colorWithWhite:0.5 alpha:1];
+	
+	[mainImageView irUnbind:@"image"];
+	[mainImageView irBind:@"image" toObject:article keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+	
+	nil]];
+	
 	avatarView.image = article.owner.avatar;
 	deviceDescriptionLabel.text = article.creationDeviceName;
 	textEmphasisView.text = article.text;
@@ -102,7 +107,11 @@
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
 		
-		[contextWebView loadHTMLString:string baseURL:pt.baseURL];
+		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+
+			[contextWebView loadHTMLString:string baseURL:pt.baseURL];
+			
+		});
 	
 	}
 	

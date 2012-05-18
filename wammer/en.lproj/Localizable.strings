@@ -324,9 +324,6 @@
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
 
-/* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
-"ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";
-
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
 "ACTION_SEND" = "Stream!";
 
@@ -343,6 +340,12 @@
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
 "FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */

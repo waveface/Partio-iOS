@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WAImageStackView.h"
 
 enum {
 	WAArticleCommentsViewCellStyleDefault = 0,
@@ -19,7 +18,6 @@ enum {
 
 - (id) initWithCommentsViewCellStyle:(WAArticleCommentsViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
-@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *userNicknameLabel;
 @property (nonatomic, readwrite, retain) IBOutlet UILabel *contentTextLabel;

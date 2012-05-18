@@ -18,7 +18,7 @@
 @implementation WAArticleCommentsViewCell
 @synthesize style;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
+@synthesize avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
