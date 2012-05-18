@@ -17,7 +17,6 @@
 
 #import "WFPresentation.h"
 
-
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -53,7 +52,17 @@
 	NSString *relativeDateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
 	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
-	relativeCreationDateLabel.text = relativeDateString;
+	
+	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN ", @"In iPad overview");
+	 
+	if ([article.files count] >= 1) {
+	
+		photoInformation  = [NSString localizedStringWithFormat:
+			NSLocalizedString(@"PHOTOS_PLURAL ", @"In iPad overview"),
+			[article.files count] ];
+	}
+	
+	relativeCreationDateLabel.text = [photoInformation stringByAppendingString:relativeDateString];
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
 	mainImageView.image = representingImage;
