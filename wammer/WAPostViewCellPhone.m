@@ -12,7 +12,6 @@
 #import "QuartzCore+IRAdditions.h"
 
 #import "WADefines.h"
-#import "WAImageStackView.h"
 #import "WAPreviewBadge.h"
 
 
@@ -24,16 +23,17 @@
 @implementation WAPostViewCellPhone
 
 @synthesize backgroundImageView;
+@synthesize photoImageViews;
 @synthesize monthLabel, dayLabel;
 @synthesize extraInfoLabel;
 @synthesize contentTextView;
 @synthesize commentLabel;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel;
+@synthesize avatarView, userNicknameLabel, contentDescriptionLabel, dateOriginLabel, dateLabel, originLabel;
 @synthesize previewBadge, previewImageView, previewTitleLabel, previewProviderLabel, previewImageBackground;
 
 + (NSSet *) encodedObjectKeyPaths {
 
-	return [NSSet setWithObjects:@"backgroundImageView", @"monthLabel", @"dayLabel", @"extraInfoLabel", @"contentTextView", @"commentLabel", @"imageStackView", @"avatarView", @"userNicknameLabel", @"contentDescriptionLabel", @"dateOriginLabel", @"dateLabel", @"originLabel", @"previewBadge", @"previewImageView", @"previewTitleLabel", @"previewProviderLabel", @"previewImageBackground", nil];
+	return [NSSet setWithObjects:@"backgroundImageView", @"monthLabel", @"dayLabel", @"extraInfoLabel", @"contentTextView", @"commentLabel", @"avatarView", @"userNicknameLabel", @"contentDescriptionLabel", @"dateOriginLabel", @"dateLabel", @"originLabel", @"previewBadge", @"previewImageView", @"previewTitleLabel", @"previewProviderLabel", @"previewImageBackground", @"photoImageViews", nil];
 
 }
 
@@ -57,12 +57,26 @@
 
 	WAPostViewCellPhone *cell = nil;
 
-	if ([identifier isEqualToString:@"PostCell-Stacked"]) {
+	if ([identifier isEqualToString:@"PostCell-Stacked-1-Photo"]) {
 	
 		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageStack" bundle:[NSBundle mainBundle]];
 		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
 		
 		cell = [loadedObjects objectAtIndex:0];
+	
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-2-Photo"]) {
+	
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+		
+		cell = [loadedObjects objectAtIndex:1];
+	
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-3-Photo"]) {
+	
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+		
+		cell = [loadedObjects objectAtIndex:2];
 	
 	} else if ([identifier isEqualToString:@"PostCell-WebLink"]) {
 	
@@ -106,14 +120,36 @@
 
 + (NSString *) identifierRepresentingObject:(WAArticle *)article {
 
-	if (!![article.files count])
-		return @"PostCell-Stacked";
+	switch ([article.files count]) {
 	
-	if (!![article.previews count])
-		return (((WAPreview *)[article.previews anyObject]).thumbnail) ? @"PostCell-WebLink" : @"PostCell-WebLinkNoPhoto";
+		case 0: {
+		
+			WAPreview *anyPreview = [article.previews anyObject];
+			
+			if (anyPreview.text || anyPreview.url || anyPreview.graphElement.text || anyPreview.graphElement.title) {
+			
+				if (anyPreview.graphElement.primaryImage)
+					return @"PostCell-WebLink";
+			
+				return @"PostCell-WebLinkNoPhoto";
+			
+			}
+			
+			return @"PostCell-TextOnly";
+		
+		}
+		
+		case 1:
+			return @"PostCell-Stacked-1-Photo";
+		
+		case 2:
+			return @"PostCell-Stacked-2-Photo";
+		
+		default:
+			return @"PostCell-Stacked-3-Photo";
 	
-	return @"PostCell-TextOnly";
-
+	}
+	
 }
 
 - (CGFloat) heightForRowRepresentingObject:(WAArticle *)object inTableView:(UITableView *)tableView {
@@ -198,30 +234,45 @@
 		self.accessibilityValue = post.text;
 		
 		NSArray *allFiles = [post.files array];
-		NSMutableArray *usedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(3, [allFiles count])}] mutableCopy];
+		NSArray *allPhotoImageViews = self.photoImageViews;
+		NSUInteger numberOfFiles = [allFiles count];
+		NSUInteger numberOfPhotoImageViews = [allPhotoImageViews count];
 		
-		WAFile *representingFile = post.representingFile;
-
-		if ([usedFiles containsObject:representingFile])
-			[usedFiles removeObject:representingFile];
+		NSMutableArray *displayedFiles = [[allFiles subarrayWithRange:(NSRange){ 0, MIN(numberOfPhotoImageViews, numberOfFiles)}] mutableCopy];
 		
-		[usedFiles insertObject:representingFile atIndex:0];
-		
-		NSArray *imagesForTimeline = [usedFiles irMap:^(WAFile *file, NSUInteger index, BOOL *stop) {
+		WAFile *coverFile = post.representingFile;
+		if ([displayedFiles containsObject:coverFile]) {
 			
-			if (index > 2) {
-				*stop = YES;
-				return (id)nil;
-			}
+			[displayedFiles removeObject:coverFile];
+			[displayedFiles insertObject:coverFile atIndex:0];
 			
-			return (id)file.thumbnailImage;
+		} else {
+			
+			[displayedFiles insertObject:coverFile atIndex:0];
+			
+			if ([displayedFiles count] > numberOfPhotoImageViews)
+				[displayedFiles removeLastObject];
+			
+		}
+		
+		[allPhotoImageViews enumerateObjectsUsingBlock:^(UIImageView *iv, NSUInteger idx, BOOL *stop) {
+		
+			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
+			
+			[iv irUnbind:@"image"];
+			
+			[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+			
+				(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+			
+			nil]];
 			
 		}];
 		
-		[self.imageStackView setImages:imagesForTimeline asynchronously:YES withDecodingCompletion:nil];
-		
 		if ([post.files count] > 3) {
+			
 			self.extraInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS", @"Photo information in cell"), [post.files count]];
+			
 		}
 	
 		self.accessibilityLabel = @"Photo";

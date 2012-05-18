@@ -533,7 +533,6 @@
 		FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
 		FFCFE094142111E100B9E6AF /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
-		FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
 		FFCFE098142111E100B9E6AF /* WATimelineViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */; };
 		FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
 		FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
@@ -575,6 +574,7 @@
 		FFCFE0E7142111E100B9E6AF /* WAPostViewCellPhone-ImageStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */; };
 		FFCFE0E9142111E100B9E6AF /* WAOverviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF5B83B2140F935500A9D037 /* WAOverviewController.xib */; };
 		FFCFE0F3142111E100B9E6AF /* WAPostViewCellPhone-WebLink.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */; };
+		FFD09CEB1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */; };
 		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
@@ -594,8 +594,6 @@
 		FFF7F510149E678A004EFB1B /* WAUserInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F50F149E678A004EFB1B /* WAUserInfoView.xib */; };
 		FFF7F512149E689F004EFB1B /* WAProgressIndicatorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFF7F511149E689E004EFB1B /* WAProgressIndicatorWindow.xib */; };
 		FFFC763C1487762D00247099 /* WAUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFC763B1487762D00247099 /* WAUserInfoViewController.m */; };
-		FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */; };
-		FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1414,8 +1412,6 @@
 		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
-		FF4FA01913E13D43002C627F /* WAImageStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStackView.h; sourceTree = "<group>"; };
-		FF4FA01A13E13D44002C627F /* WAImageStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStackView.m; sourceTree = "<group>"; };
 		FF51509B14835A030073386D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		FF51B6471542C34C00874C05 /* WAArticleStackElementDropdownTag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackElementDropdownTag.png; path = Resources/WAArticleStackElementDropdownTag.png; sourceTree = "<group>"; };
@@ -1688,6 +1684,8 @@
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WATimelineViewControllerPhone+RowHeightCaching.h"; sourceTree = "<group>"; };
+		FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WATimelineViewControllerPhone+RowHeightCaching.m"; sourceTree = "<group>"; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
 		FFD2D913141F4D3600F21D22 /* WAPreviewBadge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WAPreviewBadge.h; path = wammer/WAPreviewBadge.h; sourceTree = "<group>"; };
 		FFD2D914141F4D3600F21D22 /* WAPreviewBadge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WAPreviewBadge.m; path = wammer/WAPreviewBadge.m; sourceTree = "<group>"; };
@@ -1721,9 +1719,6 @@
 		FFF9B7AD13E7DFFE002A9D7F /* WAArticleCommentsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleCommentsViewController.xib; sourceTree = "<group>"; };
 		FFFC763A1487762D00247099 /* WAUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAUserInfoViewController.h; sourceTree = "<group>"; };
 		FFFC763B1487762D00247099 /* WAUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUserInfoViewController.m; sourceTree = "<group>"; };
-		FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.h; sourceTree = "<group>"; };
-		FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.m; sourceTree = "<group>"; };
-		FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib; sourceTree = "<group>"; };
 		FFFFD9DA13EAABDB000E3D2D /* WACompositionViewControllerPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewControllerPad.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2018,8 +2013,6 @@
 				FF5ACC21152D917E00F1DF3D /* WANavigationState.m */,
 				FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */,
 				FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */,
-				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
-				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF7D466614024FD800C916F5 /* WAImageStreamPickerView.h */,
 				FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */,
 				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
@@ -2136,12 +2129,11 @@
 			children = (
 				4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */,
 				4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */,
+				FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */,
+				FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */,
 				FF0DD00A142A3FBE0037FC4A /* WAPulldownRefreshView.h */,
 				FF0DD00B142A3FBE0037FC4A /* WAPulldownRefreshView.m */,
 				FF0DD00D142A3FCB0037FC4A /* WAPulldownRefreshView.xib */,
-				FFFE2FB4149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.h */,
-				FFFE2FB5149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m */,
-				FFFE2FB714960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib */,
 				4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */,
 				4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */,
 				4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */,
@@ -3474,7 +3466,6 @@
 				FF8CADA91485FFD300C8BF04 /* WAStationDiscoveryFeedbackViewController.xib in Resources */,
 				FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */,
 				FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */,
-				FFFE2FB814960710002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.xib in Resources */,
 				4B733BB214987A81005CAE8D /* IASKAppSettingsView.xib in Resources */,
 				4B733BB314987A81005CAE8D /* IASKAppSettingsWebView.xib in Resources */,
 				4B733BB414987A81005CAE8D /* IASKPSSliderSpecifierViewCell.xib in Resources */,
@@ -3937,7 +3928,6 @@
 				FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */,
 				FFCFE094142111E100B9E6AF /* WAComment.m in Sources */,
 				FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */,
-				FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */,
 				FFCFE098142111E100B9E6AF /* WATimelineViewControllerPhone.m in Sources */,
 				FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */,
 				FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */,
@@ -3997,7 +3987,6 @@
 				FFADFDB6148F5E4C00292D93 /* WARemoteInterface+Environment.m in Sources */,
 				FF7997A91490A23C000CE08D /* WAFilePageElement.m in Sources */,
 				FF7997AC1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m in Sources */,
-				FFFE2FB6149606D8002EB04D /* WAApplicationDidReceiveReadingProgressUpdateNotificationView.m in Sources */,
 				FF14886014977E4500D8B0AD /* WATiledImageView.m in Sources */,
 				FF14886714978C5800D8B0AD /* WAAsyncImageView.m in Sources */,
 				FF0C7ABA14987FCA00632EF3 /* WADataStore+FetchingConveniences.m in Sources */,
@@ -4074,6 +4063,7 @@
 				FFF0C2CE15591862006883C4 /* WAAuthenticationRequestWebViewController.m in Sources */,
 				FF11362E15627DEC0014AB32 /* WAArticle.m in Sources */,
 				FFF361C01563CA10004A4D57 /* WAStorage.m in Sources */,
+				FFD09CEB1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4318,7 +4308,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 376;
+				CURRENT_PROJECT_VERSION = 377;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4375,7 +4365,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 376;
+				CURRENT_PROJECT_VERSION = 377;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

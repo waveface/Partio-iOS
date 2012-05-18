@@ -10,14 +10,13 @@
 #import <QuartzCore/QuartzCore.h>
 
 @class WAArticle;
-@class WAImageStackView, WAPreviewBadge, WAArticleTextEmphasisLabel;
+@class WAPreviewBadge, WAArticleTextEmphasisLabel;
 
 @interface WAArticleView : UIView <UIWebViewDelegate>
 
 - (void) configureWithArticle:(WAArticle *)article;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *contextInfoContainer;
-@property (nonatomic, readwrite, retain) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, retain) IBOutlet WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) IBOutlet WAArticleTextEmphasisLabel *textEmphasisView;
 @property (nonatomic, readwrite, retain) IBOutlet UIImageView *avatarView;
