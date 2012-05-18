@@ -249,27 +249,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	NSError *layoutError = nil;
 	IRDiscreteLayoutResult *result = [self.discreteLayoutManager calculatedResultWithReference:self.discreteLayoutResult strategy:IRCompareScoreLayoutStrategy error:&layoutError];
-	
 	if (!result) {
-	
-		//	Choked, probably gather data here?
-		
-		NSLog(@"Discrete layout manager choked on calculation with reference: %@", layoutError);
 		result = [self.discreteLayoutManager calculatedResultWithReference:nil strategy:IRCompareScoreLayoutStrategy error:&layoutError];
-		
 		if (!result) {
-			
-			NSLog(@"Layout manager choked on calculation with no reference: %@", layoutError);
 			result = [self.discreteLayoutManager calculatedResultWithReference:nil strategy:IRRandomLayoutStrategy error:&layoutError];
-			
 			if (!result) {
-			
-				NSLog(@"Layout manager choked at last resort: %@", layoutError);
-			
 			}
-			
 		}
-		
 	}
 	
 	NSUInteger lastCurrentPage = self.paginatedView.currentPage;

@@ -16,7 +16,6 @@
 
 @property (nonatomic, readonly, weak) WAArticle *article;	//	representedObject
 
-@property (nonatomic, readwrite, strong) IBOutlet WAImageStackView *imageStackView;
 @property (nonatomic, readwrite, strong) IBOutlet UIImageView *avatarView;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *userNicknameLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *contentDescriptionLabel;
@@ -36,5 +35,7 @@
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *dayLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UILabel *monthLabel;
 @property (nonatomic, readwrite, strong) IBOutlet UIImageView *backgroundImageView;
+
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *photoImageViews;
 
 @end

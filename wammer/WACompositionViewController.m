@@ -105,7 +105,9 @@
 	
 	self.title = NSLocalizedString(@"COMPOSITION_TITLE", @"Title for the composition view");
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DONE", @"In iPad composition view") style:UIBarButtonItemStyleDone target:self action:@selector(handleDone:)];
+	
+	//[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)];
 	
 	return self;
 
