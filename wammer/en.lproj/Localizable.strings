@@ -1,5 +1,5 @@
 /* attachment activity view */
-"ACTION_ADD" = "Stream!";
+"ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
    Action title for cancelling
@@ -19,6 +19,9 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
+
+/* In iPad composition view */
+"ACTION_DONE" = "Stream!";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";
@@ -130,7 +133,7 @@
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
-"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web client.";
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web version.";
 
 /* Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
@@ -187,7 +190,7 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* Title to show explaining WiFi Sync */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files oan only be uploaded via Wi-Fi";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -250,7 +253,7 @@
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
 /* Text for About Stream dialog */
-"STREAM_ABOUT_TEXT" = "Stream saves all your photos taken on all your devices back to your desktop computer.";
+"STREAM_ABOUT_TEXT" = "Stream saves all your photos on all your devices to your PC.";
 
 /* Title for About Stream dialog */
 "STREAM_ABOUT_TITLE" = "About Stream";
@@ -271,28 +274,28 @@
 "USER_INFO_CONTROLLER_TITLE" = "User";
 
 /* Title to show when user has a station but have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "Run Station on your computer to save new files safely.";
+"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "To transfer your photos, run Station on your PC.";
 
 /* Title to show when user has no station and have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "Install Station to save all your files safely to your computer.";
+"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "To transfer your photos, install Station on your PC.";
 
 /* Title to show when user has a station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have files on Waveface Cloud.  Run Station on your computer to save them.";
+"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have photos waiting on Stream Cloud.  Run Station on your PC to transfer them.";
 
 /* Title to show when user has no station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have files on Waveface Cloud.  Install Station to save them to your computer.";
+"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have photos waiting on Stream Cloud.  Install Station on your PC to transfer them.";
 
 /* Title to show when user has a station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your storage quota is nearly full.  Install Station to save them to your computer.";
+"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your cloud storage is nearly full.  Run Station on your PC to transfer your photos.";
 
 /* Title to show when user has no station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "You have files on Waveface Cloud.  Install Station to save them to your computer.";
+"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "Your cloud storage is nearly full.  Install Station on your PC to transfer your photos.";
 
 /* Title to show when user has a station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your storage quota is full and old files may be purged after a week.  Install Station to save them to your computer.";
+"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your cloud storage is full. Run Station on your PC, or older photos will disappear in 7 days.";
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "You have files on Waveface Cloud.  Install Station to save them to your computer.";
+"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full. Install and run Station on your PC, or older photos will disappear in 7 days.";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
@@ -364,7 +367,7 @@
 "VERSION" = "Version";
 
 /* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
-"LAST_SYNCED_TIME" = "Last Synchronized";
+"LAST_SYNCED_TIME" = "Last Synced";
 
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
