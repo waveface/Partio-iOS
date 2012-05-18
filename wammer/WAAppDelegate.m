@@ -19,7 +19,7 @@
 #import "WADataStore.h"
 
 #import "IRKeychainManager.h"
-#import "IRRelativeDateFormatter.h"
+#import "IRRelativeDateFormatter+WAAdditions.h"
 
 #import "IRRemoteResourcesManager.h"
 #import "IRRemoteResourceDownloadOperation.h"
