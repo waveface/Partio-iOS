@@ -46,12 +46,14 @@
 		[self.delegate imageViewDidUpdate:self];
 		return;
 	}
+	
+	[super setImage:nil];
 
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^ {
 
     UIImage *decodedImage = [newImage irDecodedImage];
 		
-		dispatch_async(dispatch_get_main_queue(), ^ {
+		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
 			
       if (self.lastImagePtr != imagePtr)
 				return;

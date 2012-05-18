@@ -533,7 +533,6 @@
 		FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = FF269E5913D84A420085E20A /* WAPaginationSlider.m */; };
 		FFCFE094142111E100B9E6AF /* WAComment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9DA0C613DFF89000D6B28B /* WAComment.m */; };
 		FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA00913E114F3002C627F /* WAArticleViewController.m */; };
-		FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4FA01A13E13D44002C627F /* WAImageStackView.m */; };
 		FFCFE098142111E100B9E6AF /* WATimelineViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */; };
 		FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF9B79D13E7D0D5002A9D7F /* WAArticleCommentsViewController.m */; };
 		FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */; };
@@ -1413,8 +1412,6 @@
 		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
-		FF4FA01913E13D43002C627F /* WAImageStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAImageStackView.h; sourceTree = "<group>"; };
-		FF4FA01A13E13D44002C627F /* WAImageStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAImageStackView.m; sourceTree = "<group>"; };
 		FF51509B14835A030073386D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FF51509D14835A0D0073386D /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		FF51B6471542C34C00874C05 /* WAArticleStackElementDropdownTag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WAArticleStackElementDropdownTag.png; path = Resources/WAArticleStackElementDropdownTag.png; sourceTree = "<group>"; };
@@ -2016,8 +2013,6 @@
 				FF5ACC21152D917E00F1DF3D /* WANavigationState.m */,
 				FFF4EAC71410EFE2007F444B /* WAOverlayBezel.h */,
 				FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */,
-				FF4FA01913E13D43002C627F /* WAImageStackView.h */,
-				FF4FA01A13E13D44002C627F /* WAImageStackView.m */,
 				FF7D466614024FD800C916F5 /* WAImageStreamPickerView.h */,
 				FF7D466714024FD800C916F5 /* WAImageStreamPickerView.m */,
 				FF269E5813D84A420085E20A /* WAPaginationSlider.h */,
@@ -3933,7 +3928,6 @@
 				FFCFE091142111E100B9E6AF /* WAPaginationSlider.m in Sources */,
 				FFCFE094142111E100B9E6AF /* WAComment.m in Sources */,
 				FFCFE096142111E100B9E6AF /* WAArticleViewController.m in Sources */,
-				FFCFE097142111E100B9E6AF /* WAImageStackView.m in Sources */,
 				FFCFE098142111E100B9E6AF /* WATimelineViewControllerPhone.m in Sources */,
 				FFCFE09A142111E100B9E6AF /* WAArticleCommentsViewController.m in Sources */,
 				FFCFE09D142111E100B9E6AF /* WACompositionViewPhotoCell.m in Sources */,

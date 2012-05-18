@@ -342,10 +342,6 @@ NSString * const kWAFileAttemptsBlobRetrieval = @"attemptsBlobRetrieval";
 		
 	}
 	
-	[self.article willChangeValueForKey:@"files"];
-	
-	[self.article didChangeValueForKey:@"files"];
-	
 	return YES;
 
 }

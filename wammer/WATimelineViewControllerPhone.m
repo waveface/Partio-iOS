@@ -48,7 +48,7 @@
 
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
-@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, WAImageStackViewDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
+@interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
 
 - (WAPulldownRefreshView *) defaultPulldownRefreshView;
 
@@ -349,7 +349,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-		
+	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
 	WAPulldownRefreshView *pulldownHeader = [self defaultPulldownRefreshView];
@@ -378,6 +378,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+
+	[self fetchedResultsController];
   
 	[super viewWillAppear:animated];
 	
@@ -514,24 +516,31 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
   WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	return [WAPostViewCellPhone cellRepresentingObject:post inTableView:tableView];
+	WAPostViewCellPhone *cell = [WAPostViewCellPhone cellRepresentingObject:post inTableView:tableView];
+	NSParameterAssert(cell.article == post);
+	
+	return cell;
 	
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-
-	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	
-	CGFloat height = [self cachedRowHeightForObject:post];
-	if (!height) {
-	
-		height = [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
-		[self cacheRowHeight:height forObject:post];
-	
-	}
-	
-	return height;
+	@autoreleasepool {
+    
+		WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
 		
+		CGFloat height = [self cachedRowHeightForObject:post];
+		if (!height) {
+		
+			height = [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
+			[self cacheRowHeight:height forObject:post];
+		
+		}
+	
+		return height;
+		
+	}
+
 }
 
 - (IBAction) actionSettings:(id)sender {
@@ -554,12 +563,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 
+	if (controller != fetchedResultsController)
+		return;
+
 	NSCParameterAssert([NSThread isMainThread]);
 	NSCParameterAssert([self isViewLoaded]);
 	NSCParameterAssert(self.view.window);
 		
-	[UIView setAnimationsEnabled:NO];
-	
 	[self persistState];
 	[self.tableView beginUpdates];
 
@@ -567,6 +577,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 
+	if (controller != fetchedResultsController)
+		return;
+	
 	NSCParameterAssert([NSThread isMainThread]);
 	NSCParameterAssert([self isViewLoaded]);
 	NSCParameterAssert(self.view.window);
@@ -589,6 +602,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
+	if (controller != fetchedResultsController)
+		return;
+	
 	NSCParameterAssert([NSThread isMainThread]);
 	NSCParameterAssert([self isViewLoaded]);
 	NSCParameterAssert(self.view.window);
@@ -632,10 +648,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		}
 		
 	}
-
+	
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	
+	if (controller != fetchedResultsController)
+		return;
 	
 	if (![self isViewLoaded])
 		return;
@@ -644,8 +663,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[tv endUpdates];
 	[self restoreState];
-	
-	[UIView setAnimationsEnabled:YES];
 	
 	NSArray *allVisibleIndexPaths = [tv indexPathsForVisibleRows];
 	
@@ -671,6 +688,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if ([menuController isMenuVisible]) {
 	
 		[menuController setMenuVisible:NO animated:YES];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		
 		return;
 		
 	}
