@@ -131,6 +131,18 @@
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
 
+/* in relative date format */
+"DATE_AFTER" = "%@ after";
+
+/* in relative date format */
+"DATE_AGO" = "%@ ago";
+
+/* No comment provided by engineer. */
+"DAY_NOUN" = "%d day";
+
+/* No comment provided by engineer. */
+"DAY_PLURAL" = "%d days";
+
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
 "DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web version.";
@@ -190,7 +202,13 @@
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
 /* Title to show explaining WiFi Sync */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files oan only be uploaded via Wi-Fi";
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+
+/* No comment provided by engineer. */
+"MONTH_NOUN" = "%d month";
+
+/* No comment provided by engineer. */
+"MONTH_PLURAL" = "%d months";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -218,6 +236,12 @@
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
+
+/* In iPad overview */
+"PHOTO_NOUN " = "1 photo ";
+
+/* In iPad overview */
+"PHOTOS_PLURAL " = "%d photos ";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";

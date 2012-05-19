@@ -25,6 +25,7 @@
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
 		4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
 		4B582E6C1549347E009B460C /* ToolbarWithButtons.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6A1549347E009B460C /* ToolbarWithButtons.png */; };
@@ -597,14 +598,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		FF0E3D191537594B005B1FF8 /* PBXContainerItemProxy */ = {
+		4B36253915662DCA00F07032 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = FF6380D8153754430023C7AB;
 			remoteInfo = IRFoundationsTouchTest;
 		};
-		FF0E3D1B1537594B005B1FF8 /* PBXContainerItemProxy */ = {
+		4B36253B15662DCA00F07032 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
 			proxyType = 2;
@@ -1078,6 +1079,8 @@
 		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
 		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRRelativeDateFormatter+WAAdditions.h"; path = "wammer/IRRelativeDateFormatter+WAAdditions.h"; sourceTree = "<group>"; };
+		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
 		4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
 		4B582E6A1549347E009B460C /* ToolbarWithButtons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ToolbarWithButtons.png; path = Resources/ToolbarWithButtons.png; sourceTree = "<group>"; };
@@ -2247,8 +2250,8 @@
 				FF73A59D13D6DC6500D54EC6 /* libIRFoundationsTouch.a */,
 				FF72C188142789FA00B5D838 /* IRFoundationsX.framework */,
 				FF543F3D14C30A15005D3F7D /* IRFoundationsTest.octest */,
-				FF0E3D1A1537594B005B1FF8 /* IRFoundationsTouchTest.octest */,
-				FF0E3D1C1537594B005B1FF8 /* IRFoundationsTouchTestHost.app */,
+				4B36253A15662DCA00F07032 /* IRFoundationsTouchTest.octest */,
+				4B36253C15662DCA00F07032 /* IRFoundationsTouchTestHost.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2953,6 +2956,8 @@
 				4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */,
 				FFB117C7147F9051002094E5 /* NSBlockOperation+NSCopying.h */,
 				4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */,
+				4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */,
+				4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */,
 				FFB117C8147F9051002094E5 /* NSBlockOperation+NSCopying.m */,
 				FF73A69513D6E07D00D54EC6 /* MobileCoreServices.framework */,
 			);
@@ -3128,18 +3133,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FF0E3D1A1537594B005B1FF8 /* IRFoundationsTouchTest.octest */ = {
+		4B36253A15662DCA00F07032 /* IRFoundationsTouchTest.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = IRFoundationsTouchTest.octest;
-			remoteRef = FF0E3D191537594B005B1FF8 /* PBXContainerItemProxy */;
+			remoteRef = 4B36253915662DCA00F07032 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF0E3D1C1537594B005B1FF8 /* IRFoundationsTouchTestHost.app */ = {
+		4B36253C15662DCA00F07032 /* IRFoundationsTouchTestHost.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = IRFoundationsTouchTestHost.app;
-			remoteRef = FF0E3D1B1537594B005B1FF8 /* PBXContainerItemProxy */;
+			remoteRef = 4B36253B15662DCA00F07032 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF1A10511462ACDB004FD00D /* libFinch.a */ = {
@@ -4063,6 +4068,7 @@
 				FFF0C2CE15591862006883C4 /* WAAuthenticationRequestWebViewController.m in Sources */,
 				FF11362E15627DEC0014AB32 /* WAArticle.m in Sources */,
 				FFF361C01563CA10004A4D57 /* WAStorage.m in Sources */,
+				4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */,
 				FFD09CEB1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4308,7 +4314,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 377;
+				CURRENT_PROJECT_VERSION = 378;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4365,7 +4371,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 377;
+				CURRENT_PROJECT_VERSION = 378;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -4508,7 +4514,7 @@
 					"\"$(SRCROOT)/external/CrashlyticsSDK\"",
 					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
 				);
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREFIX_HEADER = "wammer/wammer-iOS-Prefix.pch";
 				INFOPLIST_FILE = "wammer/wammer-iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

@@ -17,7 +17,6 @@
 
 #import "WFPresentation.h"
 
-
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
@@ -53,7 +52,17 @@
 	NSString *relativeDateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
 	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
-	relativeCreationDateLabel.text = relativeDateString;
+	
+	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN ", @"In iPad overview");
+	 
+	if ([article.files count] >= 1) {
+	
+		photoInformation  = [NSString localizedStringWithFormat:
+			NSLocalizedString(@"PHOTOS_PLURAL ", @"In iPad overview"),
+			[article.files count] ];
+	}
+	
+	relativeCreationDateLabel.text = [photoInformation stringByAppendingString:relativeDateString];
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
 	mainImageView.image = representingImage;
@@ -69,7 +78,7 @@
 	deviceDescriptionLabel.text = article.creationDeviceName;
 	textEmphasisView.text = article.text;
 	textEmphasisView.hidden = !!(BOOL)[article.files count];
-	contextInfoContainer.hidden = ![article.text length];
+	//contextInfoContainer.hidden = ![article.text length]; // if there's no note, display nothing.
 	
 	if (contextWebView) {
 	
@@ -112,16 +121,14 @@
 
 	[super layoutSubviews];
 	
-	if (userNameLabel && relativeCreationDateLabel && deviceDescriptionLabel) {
-		
-		[userNameLabel sizeToFit];
-		[relativeCreationDateLabel sizeToFit];
-		[relativeCreationDateLabel irPlaceBehindLabel:userNameLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
-		[deviceDescriptionLabel sizeToFit];
-		[deviceDescriptionLabel irPlaceBehindLabel:relativeCreationDateLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
-		
-	}
-	
+//	if (userNameLabel && relativeCreationDateLabel && deviceDescriptionLabel) {
+//		
+//		[userNameLabel sizeToFit];
+//		[deviceDescriptionLabel sizeToFit];
+//		[deviceDescriptionLabel irPlaceBehindLabel:relativeCreationDateLabel withEdgeInsets:(UIEdgeInsets){ 0, -8, 0, -8 }];
+//		
+//	}
+
 	CGRect oldDescriptionFrame = self.articleDescriptionLabel.frame;
 	
 	CGSize fitSize = [self.articleDescriptionLabel sizeThatFits:(CGSize){

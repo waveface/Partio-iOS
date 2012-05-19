@@ -41,7 +41,7 @@
 		@"previews.graphElement.images",
 	nil];
 	
-	fetchRequest.fetchBatchSize = 100;
+	fetchRequest.fetchBatchSize = 500;
 	
 	fetchRequest.displayTitle = NSLocalizedString(@"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE", @"Display title for a fetch request working against all the articles");
 	
