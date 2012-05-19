@@ -226,6 +226,8 @@
 		wSelf.userEmailLabel.text = (NSString *)toValue;
 
 	}];
+	
+	self.deviceNameLabel.text = WADeviceName();
   
 }
 
