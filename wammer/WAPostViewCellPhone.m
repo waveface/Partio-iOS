@@ -225,7 +225,16 @@
 		self.accessibilityHint = preview.graphElement.title;
 		self.accessibilityValue = preview.graphElement.text;
 		
-		self.previewImageView.image = preview.thumbnail;
+		UIImageView *piv = self.previewImageView;
+		
+		[piv irUnbind:@"image"];
+		
+		[piv irBind:@"image" toObject:preview keyPath:@"thumbnail" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+		
+		nil]];
+		
 		self.previewTitleLabel.text = preview.graphElement.title;
 		self.previewProviderLabel.text = preview.graphElement.providerDisplayName;
 			
