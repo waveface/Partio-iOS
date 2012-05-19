@@ -24,6 +24,9 @@ BOOL WADiscreteLayoutItemHasMediaOfType (id<IRDiscreteLayoutItem> anItem, CFStri
 };
 	
 BOOL WADiscreteLayoutItemHasImage (id<IRDiscreteLayoutItem> anItem) {
+
+	if ([anItem isKindOfClass:[WAArticle class]])
+		return [((WAArticle *)anItem).files count];
 	
 	return WADiscreteLayoutItemHasMediaOfType(anItem, kUTTypeImage);
 	
@@ -31,17 +34,26 @@ BOOL WADiscreteLayoutItemHasImage (id<IRDiscreteLayoutItem> anItem) {
 
 BOOL WADiscreteLayoutItemHasLink (id<IRDiscreteLayoutItem> anItem) {
 	
+	if ([anItem isKindOfClass:[WAArticle class]])
+		return [((WAArticle *)anItem).previews count];
+	
 	return WADiscreteLayoutItemHasMediaOfType(anItem, kUTTypeURL);
 	
 };
 
 BOOL WADiscreteLayoutItemHasShortText (id<IRDiscreteLayoutItem> anItem) {
 	
+	if ([anItem isKindOfClass:[WAArticle class]])
+		return ([((WAArticle *)anItem).text length] < 140);
+	
 	return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 140);
 
 }
 	
 BOOL WADiscreteLayoutItemHasLongText (id<IRDiscreteLayoutItem> anItem) {
+	
+	if ([anItem isKindOfClass:[WAArticle class]])
+		return ([((WAArticle *)anItem).text length] > 320);
 	
 	return (BOOL)([[[anItem representedText] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] > 320);
 	
@@ -271,10 +283,10 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			nil]],
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"4_non_faves_B_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
-				area(@"A", combo,   layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
-				area(@"B", notFave, layoutBlock(3, 2, 1, 0, 2, 1), annotationTop_verticalFave),
-				area(@"C", notFave, layoutBlock(3, 2, 0, 1, 2, 1), annotationTop_verticalFave),
-				area(@"D", combo,   layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
+				area(@"A", notFave, layoutBlock(3, 2, 1, 0, 2, 1), annotationTop_verticalFave),
+				area(@"B", combo,   layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
+				area(@"C", combo,   layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
+				area(@"D", notFave, layoutBlock(3, 2, 0, 1, 2, 1), annotationTop_verticalFave),
 			nil]]
 			
 		),
