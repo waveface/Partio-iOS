@@ -84,22 +84,24 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 		
-			//	@"article", @"article",
 			@"codeName", @"code_name",
-			//	@"owner", @"owner",
+			
 			@"text", @"description",
 			@"creationDeviceIdentifier", @"device_id",
 			@"remoteFileName", @"file_name",
 			@"remoteFileSize", @"file_size",
-			//	@"group", @"group",
+			
 			@"remoteRepresentedImage", @"image",
 			@"remoteResourceHash", @"md5",
 			@"resourceType", @"mime_type",
 			@"identifier", @"object_id",
 			@"title", @"title",
 			@"remoteResourceType", @"type",
+			
+			@"smallThumbnailURL", @"small_thumbnail_url",
 			@"thumbnailURL", @"thumbnail_url",
 			@"largeThumbnailURL", @"large_thumbnail_url",
+			
 			@"resourceURL", @"url",
 			@"timestamp", @"timestamp",
       
