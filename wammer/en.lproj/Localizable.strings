@@ -138,10 +138,10 @@
 "DATE_AGO" = "%@ ago";
 
 /* No comment provided by engineer. */
-"DAY_NOUN" = "%d day";
+"DAY_PLURAL" = "%d days";
 
 /* No comment provided by engineer. */
-"DAY_PLURAL" = "%d days";
+"DAY_SINGULAR" = "%d day";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
@@ -155,6 +155,12 @@
 
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "(No Timestamp)";
+
+/* No comment provided by engineer. */
+"ERA_PLURAL" = "%d eras";
+
+/* No comment provided by engineer. */
+"ERA_SINGULAR" = "%d era";
 
 /* Article entity sync failure alert message for no underlying error */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly. Your post has been saved as a draft.";
@@ -201,14 +207,26 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
 
+/* No comment provided by engineer. */
+"HOUR_PLURAL" = "%d hours";
+
+/* No comment provided by engineer. */
+"HOUR_SINGULAR" = "%d hour";
+
 /* Title to show explaining WiFi Sync */
 "LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
 
 /* No comment provided by engineer. */
-"MONTH_NOUN" = "%d month";
+"MINUTE_PLURAL" = "%d minutes";
+
+/* No comment provided by engineer. */
+"MINUTE_SINGULAR" = "%d minute";
 
 /* No comment provided by engineer. */
 "MONTH_PLURAL" = "%d months";
+
+/* No comment provided by engineer. */
+"MONTH_SINGULAR" = "%d month";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
@@ -237,8 +255,17 @@
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
+/* iPhone Timeline */
+"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@ from %2$@";
+
 /* In iPad overview */
 "PHOTO_NOUN " = "1 photo ";
+
+/* in iPhone timeline */
+"PHOTO_PLURAL" = "%d photos";
+
+/* in iPhone timeline */
+"PHOTO_SINGULAR" = "%d photo";
 
 /* In iPad overview */
 "PHOTOS_PLURAL " = "%d photos ";
@@ -269,6 +296,12 @@
 
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
+
+/* No comment provided by engineer. */
+"SECOND_PLURAL" = "%d seconds";
+
+/* No comment provided by engineer. */
+"SECOND_SINGULAR" = "%d second";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
@@ -323,6 +356,18 @@
 
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
+
+/* No comment provided by engineer. */
+"WEEK_PLURAL" = "%d weeks";
+
+/* No comment provided by engineer. */
+"WEEK_SINGULAR" = "%d week";
+
+/* No comment provided by engineer. */
+"YEAR_PLURAL" = "%d years";
+
+/* No comment provided by engineer. */
+"YEAR_SINGULAR" = "%d year";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
 "ACTION_SEND" = "Stream!";

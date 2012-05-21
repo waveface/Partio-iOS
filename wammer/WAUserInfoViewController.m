@@ -19,7 +19,7 @@
 #import "UIKit+IRAdditions.h"
 #import "WABlobSyncManager.h"
 #import "IRMailComposeViewController.h"
-
+#import "IRRelativeDateFormatter+WAAdditions.h"
 
 @interface WAUserInfoViewController ()
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;

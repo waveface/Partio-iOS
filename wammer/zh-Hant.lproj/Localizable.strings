@@ -138,10 +138,10 @@
 "DATE_AGO" = "%@前";
 
 /* No comment provided by engineer. */
-"DAY_NOUN" = "%d 天";
+"DAY_PLURAL" = "%d天";
 
 /* No comment provided by engineer. */
-"DAY_PLURAL" = "%d 天";
+"DAY_SINGULAR" = "%d天";
 
 /* Description for confirming a post deletion
    Title for confirming a post deletion */
@@ -155,6 +155,12 @@
 
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "（未知時間）";
+
+/* No comment provided by engineer. */
+"ERA_PLURAL" = "%d紀";
+
+/* No comment provided by engineer. */
+"ERA_SINGULAR" = "%d紀";
 
 /* Article entity sync failure alert message for no underlying error */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "上傳時發生錯誤";
@@ -201,14 +207,26 @@
 /* Display title for a fetch request working against the latest article on a particular date */
 "FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "某日貼文";
 
+/* No comment provided by engineer. */
+"HOUR_PLURAL" = "%d小時";
+
+/* No comment provided by engineer. */
+"HOUR_SINGULAR" = "%d小時";
+
 /* Title to show explaining WiFi Sync */
 "LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔";
 
 /* No comment provided by engineer. */
-"MONTH_NOUN" = "%d月";
+"MINUTE_PLURAL" = "%d分鐘";
+
+/* No comment provided by engineer. */
+"MINUTE_SINGULAR" = "%d分鐘";
 
 /* No comment provided by engineer. */
 "MONTH_PLURAL" = "%d月";
+
+/* No comment provided by engineer. */
+"MONTH_SINGULAR" = "%d月";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "動作";
@@ -235,13 +253,22 @@
 "NOUN_USERNAME" = "電子郵件";
 
 /* Photo information in cell */
-"NUMBER_OF_PHOTOS" = "%d 張照片";
+"NUMBER_OF_PHOTOS" = "%d張照片";
+
+/* iPhone Timeline */
+"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@從%2$@";
 
 /* In iPad overview */
-"PHOTO_NOUN " = "一張照片 ";
+"PHOTO_NOUN " = "一張照片";
+
+/* in iPhone timeline */
+"PHOTO_PLURAL" = "%d照片";
+
+/* in iPhone timeline */
+"PHOTO_SINGULAR" = "%d照片";
 
 /* In iPad overview */
-"PHOTOS_PLURAL " = "%d 張照片 ";
+"PHOTOS_PLURAL " = "%d張照片";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
@@ -269,6 +296,12 @@
 
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "清除設定";
+
+/* No comment provided by engineer. */
+"SECOND_PLURAL" = "%d秒";
+
+/* No comment provided by engineer. */
+"SECOND_SINGULAR" = "%d秒";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
@@ -323,6 +356,18 @@
 
 /* attachment activity view */
 "WEB_PREVIEW" = "預覽";
+
+/* No comment provided by engineer. */
+"WEEK_PLURAL" = "%d週";
+
+/* No comment provided by engineer. */
+"WEEK_SINGULAR" = "%d週";
+
+/* No comment provided by engineer. */
+"YEAR_PLURAL" = "%d年";
+
+/* No comment provided by engineer. */
+"YEAR_SINGULAR" = "%d年";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
 "ACTION_SEND" = "傳送";
