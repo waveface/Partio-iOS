@@ -18,18 +18,30 @@
 	
 		switch (inCalendarUnit) {
 	
-			case NSEraCalendarUnit: return [NSArray arrayWithObjects:@"%d era", @"%d eras", nil];
-			case NSYearCalendarUnit: return [NSArray arrayWithObjects:@"%d year", @"%d years", nil];
+			case NSEraCalendarUnit: return [NSArray arrayWithObjects:
+				NSLocalizedString(@"ERA_SINGULAR", nil),
+				NSLocalizedString(@"ERA_PLURAL", nil), nil];
+			case NSYearCalendarUnit: return [NSArray arrayWithObjects:
+				NSLocalizedString(@"YEAR_SINGULAR", nil),
+				NSLocalizedString(@"YEAR_PLURAL", nil), nil];
 			case NSMonthCalendarUnit: return [NSArray arrayWithObjects:
-				NSLocalizedString(@"MONTH_NOUN", nil),
+				NSLocalizedString(@"MONTH_SINGULAR", nil),
 				NSLocalizedString(@"MONTH_PLURAL", nil), nil];
 			case NSDayCalendarUnit: return [NSArray arrayWithObjects:
-				NSLocalizedString(@"DAY_NOUN", nil), 
+				NSLocalizedString(@"DAY_SINGULAR", nil), 
 				NSLocalizedString(@"DAY_PLURAL", nil), nil];
-			case NSHourCalendarUnit: return [NSArray arrayWithObjects:@"%d hour", @"%d hours", nil];
-			case NSMinuteCalendarUnit: return [NSArray arrayWithObjects:@"%d minute", @"%d minutes", nil];
-			case NSSecondCalendarUnit: return [NSArray arrayWithObjects:@"%d second", @"%d seconds", nil];
-			case NSWeekCalendarUnit: return [NSArray arrayWithObjects:@"%d week", @"%d weeks", nil];
+			case NSHourCalendarUnit: return [NSArray arrayWithObjects:
+				NSLocalizedString(@"HOUR_SINGULAR", nil),
+				NSLocalizedString(@"HOUR_PLURAL", nil), nil];
+			case NSMinuteCalendarUnit: return [NSArray arrayWithObjects:
+				NSLocalizedString(@"MINUTE_SINGULAR", nil),
+				NSLocalizedString(@"MINUTE_PLURAL", nil), nil];
+			case NSSecondCalendarUnit: return [NSArray arrayWithObjects:
+				NSLocalizedString(@"SECOND_SINGULAR", nil),
+				NSLocalizedString(@"SECOND_PLURAL", nil), nil];
+			case NSWeekCalendarUnit: return [NSArray arrayWithObjects:
+				NSLocalizedString(@"WEEK_SINGULAR", nil),
+				NSLocalizedString(@"WEEK_PLURAL", nil), nil];
 			case NSWeekdayCalendarUnit: return [NSArray arrayWithObjects:@"%d workday", @"%d workdays", nil];
 			case NSWeekdayOrdinalCalendarUnit: return [NSArray arrayWithObjects:@"%d Ordinal Workday", @"%d Ordinal Workdays", nil];
 			case NSQuarterCalendarUnit: return [NSArray arrayWithObjects:@"%d Quarter", @"%d Quarters", nil];

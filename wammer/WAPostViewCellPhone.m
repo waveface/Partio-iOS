@@ -205,7 +205,7 @@
 	NSDate *postDate = post.presentationDate;
 	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
 	
-	self.originLabel.text = [NSString stringWithFormat:@"%@ from %@",
+	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_FROM_DEVICE", @"iPhone Timeline"),
 		relativeDateString,
 		post.creationDeviceName
 	];
@@ -286,9 +286,9 @@
 	
 		self.accessibilityLabel = @"Photo";
 		
-		NSString *photoInfo = @"%d photos ";
+		NSString *photoInfo = NSLocalizedString(@"PHOTO_PLURAL", @"in iPhone timeline");
 		if ( [post.files count]==1 )
-			photoInfo = @"%d photo ";
+			photoInfo = NSLocalizedString(@"PHOTO_SINGULAR", @"in iPhone timeline");
 		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
 		self.originLabel.text = [self.accessibilityHint stringByAppendingString:self.originLabel.text];
 		
