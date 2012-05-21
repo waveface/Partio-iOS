@@ -334,25 +334,25 @@
 "USER_INFO_NAG_LEVEL_0_WITH_STATION" = "To sync your account, run Stream for Windows on your Station PC.";
 
 /* Title to show when user has no station and have not activated the account */
-"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "To sync your account, install and run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "To sync your account, install and run Stream for Windows on your PC.";
 
 /* Title to show when user has a station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have photos waiting to sync. Run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have photos waiting to sync. Run Stream for Windows on your PC.";
 
 /* Title to show when user has no station, and still have ample storage on the Cloud */
-"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have photos waiting to sync. Install and run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have photos waiting to sync. Install and run Stream for Windows on your PC.";
 
 /* Title to show when user has a station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your cloud storage is nearly full.  To sync, run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your cloud storage is nearly full.  To sync, run Stream for Windows on your PC.";
 
 /* Title to show when user has no station, and is using up most of the storage on the Cloud */
-"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "Your cloud storage is nearly full.  To sync, install and run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "Your cloud storage is nearly full.  To sync, install and run Stream for Windows on your PC.";
 
 /* Title to show when user has a station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your cloud storage is full. To sync, run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your cloud storage is full. To sync, run Stream for Windows on your PC.";
 
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
-"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your Station PC.";
+"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
