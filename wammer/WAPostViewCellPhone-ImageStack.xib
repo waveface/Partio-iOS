@@ -194,7 +194,6 @@
 								<string key="NSFrame">{{40, 207}, {260, 21}}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -240,6 +239,7 @@
 										<int key="NSID">2</int>
 									</object>
 								</object>
+								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -428,6 +428,8 @@
 									<bytes key="NSWhite">MC43NQA</bytes>
 									<reference key="NSCustomColorSpace" ref="319717156"/>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -444,6 +446,8 @@
 									<bytes key="NSWhite">MC43NQA</bytes>
 									<reference key="NSCustomColorSpace" ref="319717156"/>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -632,6 +636,8 @@
 									<bytes key="NSWhite">MC43NQA</bytes>
 									<reference key="NSCustomColorSpace" ref="319717156"/>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -648,6 +654,8 @@
 									<bytes key="NSWhite">MC43NQA</bytes>
 									<reference key="NSCustomColorSpace" ref="319717156"/>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -664,6 +672,8 @@
 									<bytes key="NSWhite">MC43NQA</bytes>
 									<reference key="NSCustomColorSpace" ref="319717156"/>
 								</object>
+								<bool key="IBUIClipsSubviews">YES</bool>
+								<int key="IBUIContentMode">2</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
