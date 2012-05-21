@@ -179,7 +179,7 @@
 
 				} completionBlock:^(id results) {
 					
-					wSelf.numberOfFiles = wTempQueue.operationCount - 2;
+					wSelf.numberOfFiles = wSelf.numberOfFiles - 1;
 					
 				}]);
 				
