@@ -127,6 +127,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
 	
+	NSString *smallImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.small.url"];
+	if ([smallImageRepURLString isKindOfClass:[NSString class]])
+    [returnedDictionary setObject:smallImageRepURLString forKey:@"small_thumbnail_url"];
+ 
 	NSString *mediumImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.medium.url"];
 	if ([mediumImageRepURLString isKindOfClass:[NSString class]])
     [returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
@@ -135,7 +139,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([largeImageRepURLString isKindOfClass:[NSString class]])
     [returnedDictionary setObject:largeImageRepURLString forKey:@"large_thumbnail_url"];
 	
-  NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
+	NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
@@ -234,7 +238,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	if ([aLocalKeyPath isEqualToString:@"resourceURL"] || 
 		[aLocalKeyPath isEqualToString:@"largeThumbnailURL"] || 
-		[aLocalKeyPath isEqualToString:@"thumbnailURL"]) {
+		[aLocalKeyPath isEqualToString:@"thumbnailURL"] ||
+		[aLocalKeyPath isEqualToString:@"smallThumbnailURL"]) {
 	
     if (![aValue length])
       return nil;

@@ -189,13 +189,20 @@
 
 	NSString * const identifier = @"Cell";
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
-	if (!dequeuedCell) {
+	
+	if (dequeuedCell) {
+	
+		dequeuedCell.representedFile = representedFile;
+	
+	} else {
+	
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		
 	}
 	
 	dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	dequeuedCell.canRemove = NO;
-	dequeuedCell.image = representedFile.thumbnailImage;
+	
 	[dequeuedCell setNeedsLayout];
 	
 	return dequeuedCell;
@@ -295,8 +302,6 @@
 	if (![currentCell isKindOfClass:[WACompositionViewPhotoCell class]])
 		return;	//	It will just show new stuff the next time it shows up
 	
-	currentCell.image = ((WAFile *)anObject).thumbnailImage;
-
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {

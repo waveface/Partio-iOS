@@ -19,7 +19,7 @@ enum {
 
 + (WACompositionViewPhotoCell *) cellRepresentingFile:(WAFile *)aFile reuseIdentifier:(NSString *)reuseIdentifier;
 
-@property (nonatomic, readonly, weak) WAFile *representedFile;
+@property (nonatomic, readwrite, weak) WAFile *representedFile;
 
 @property (nonatomic, readwrite, retain) UIImage *image;
 @property (nonatomic, readwrite, copy) void (^onRemove)();

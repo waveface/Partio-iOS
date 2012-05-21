@@ -134,7 +134,7 @@
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
 		
 			__block NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
-			__weak NSOperationQueue *wTempQueue = tempQueue;
+			
 			tempQueue.maxConcurrentOperationCount = 1;
 			[tempQueue setSuspended:YES];
 			
