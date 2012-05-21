@@ -324,6 +324,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				
 				UIImage *thumbnailImage = [originalImage irScaledImageWithSize:usedThumbnailSize];
 				NSString *sentThumbnailFilePath = [[ds persistentFileURLForData:UIImagePNGRepresentation(thumbnailImage) extension:@"png"] path];
+				file.thumbnailFilePath = sentThumbnailFilePath;
+				[file.managedObjectContext save:nil];
 				
 				NSParameterAssert(sentThumbnailFilePath);
 				
