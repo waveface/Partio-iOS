@@ -180,30 +180,35 @@
 	}
 	
 	WAFile *representedFile = [self.article.files objectAtIndex:indexPath.row];
-	UIImage *resourceImage = representedFile.resourceImage;
+	UIImage *fileImage = [representedFile smallestPresentableImage];
 	
 	cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
 
-	if (resourceImage) {
+	if (fileImage) {
   
-		cell.imageView.image = representedFile.thumbnail;
+		cell.imageView.image = fileImage;
 		
 		cell.textLabel.text = [NSString stringWithFormat:@"%1.0f × %1.0f", 
-			resourceImage.size.width,
-			resourceImage.size.height
+			fileImage.size.width,
+			fileImage.size.height
 		];
   
-		NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
-		long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
-		cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+		if (representedFile.resourceFilePath) {
+		
+			NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:representedFile.resourceFilePath error:nil];
+			long fileSize = [[fileAttributes objectForKey:NSFileSize] longValue];
+			cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0fK", (float)fileSize/(1024.0)];
+		
+		} else {
+		
+			cell.detailTextLabel.text = nil;
+		
+		}
 	
 	} else {
 	
-		//	TBD: When the Data Store stores metadata, use stored metadat in place
-		
-		cell.imageView.image = representedFile.thumbnailImage;
-		cell.textLabel.text = @"";
-		cell.detailTextLabel.text = @"File not loaded";
+		cell.textLabel.text = nil;
+		cell.detailTextLabel.text = @"(No File)";
 	
 	}
 	

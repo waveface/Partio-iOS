@@ -15,7 +15,6 @@
 @property (nonatomic, readwrite, retain) UIView *highlightOverlay;	//	Placed in the image container
 @property (nonatomic, readwrite, retain) UIButton *removeButton;
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, readwrite, weak) WAFile *representedFile;
 @property (nonatomic, readwrite, strong) id representedFileHelper;
 
 @end
@@ -38,8 +37,10 @@
 
 - (void) setRepresentedFile:(WAFile *)file {
 
-	if (representedFile == file)
+	if (representedFile == file) {
+		self.image = file.smallestPresentableImage;
 		return;
+	}
 	
 	if (self.representedFileHelper) {
 		[representedFile irRemoveObservingsHelper:self.representedFileHelper];
@@ -52,10 +53,13 @@
 	
 	self.representedFileHelper = [file irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
+		if (!isPrior)
 		if (!toValue || [toValue isKindOfClass:[UIImage class]])
 			[wSelf setImage:toValue];
 		
 	}];
+	
+	self.image = file.smallestPresentableImage;
 
 }
 
