@@ -96,7 +96,7 @@
 
 - (NSAttributedString *) attributedText {
 
-	NSMutableAttributedString *returnedString = [[[NSMutableAttributedString alloc] initWithString:@""] autorelease];
+	NSMutableAttributedString *returnedString = [[NSMutableAttributedString alloc] initWithString:@""];
 	
 	NSAttributedString * (^append)(NSString *, NSString *, UIFont *, UIColor *, UIColor *, NSDictionary *) = ^ (NSString *string, NSString *placeholder, UIFont *font, UIColor *color, UIColor *placeholderColor, NSDictionary *otherAttrs) {
 	
@@ -116,7 +116,7 @@
 		
 		NSDictionary * const usedAttrs = [[[NSAttributedString irAttributesForFont:font color:usedColor] irDictionaryByMergingWithDictionary:baseAttrs] irDictionaryByMergingWithDictionary:otherAttrs];
 		
-		NSAttributedString *appendedString = [[[NSAttributedString alloc] initWithString:usedString attributes:usedAttrs] autorelease];
+		NSAttributedString *appendedString = [[NSAttributedString alloc] initWithString:usedString attributes:usedAttrs];
 		[returnedString appendAttributedString:appendedString];
 
 		return appendedString;
@@ -172,12 +172,12 @@
 	self.backgroundColor = nil;
 	self.opaque = NO;
 	
-	self.backgroundView = [[[UIView alloc] initWithFrame:self.bounds] autorelease];
+	self.backgroundView = [[UIView alloc] initWithFrame:self.bounds];
 	self.backgroundView.opaque = NO;
 	self.backgroundView.backgroundColor = nil;
 	self.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	UIView *innerBackgroundView = [[[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 })] autorelease];
+	UIView *innerBackgroundView = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(self.backgroundView.bounds, (UIEdgeInsets){ -4, -4, -4, -4 })];
 	innerBackgroundView.layer.contents = (id)[UIImage imageNamed:@"WAPreviewBadge"].CGImage;
 	innerBackgroundView.layer.contentsCenter = (CGRect){ 10.0/24.0, 10.0/24.0, 4.0/24.0, 4.0/24.0 };
 	innerBackgroundView.opaque = NO;
@@ -186,11 +186,11 @@
 	[self.backgroundView addSubview:innerBackgroundView];
 	
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAPreviewBadge *wSelf = self;
 	
 	[self irAddObserverBlock: ^ (id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
 		
-		[nrSelf setNeedsLayout];
+		[wSelf setNeedsLayout];
 		
 	} forKeyPath:@"suggestedStyle" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
 	
@@ -271,9 +271,7 @@
 		return;
 	
 	[backgroundView removeFromSuperview];
-	[backgroundView release];
-	
-	backgroundView = [newBackgroundView retain];
+	backgroundView = newBackgroundView;
 	[self addSubview:backgroundView];
 
 }
@@ -355,11 +353,13 @@
 		}, imageRect, 0.0f, YES),
 		imageRect,
 		//	UIEdgeInsetsInsetRect(self.bounds, (UIEdgeInsets){ 8, 8, 8, 8}), 
-		irTopLeft, 
+		irTopLeft,
 		YES
 	);
 	
-	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	//	BOOL verticalLayout = (actualImageRect.size.width == usableRect.size.width);
+	
+	BOOL verticalLayout = YES;
 	
 	if (verticalLayout) {
 		actualImageRect.size.height = MIN(actualImageRect.size.height, 0.55f * usableRect.size.height);
@@ -372,7 +372,7 @@
 	CGRect labelRect, tempRect;
 	CGRectDivide(self.bounds, &tempRect, &labelRect,
 		verticalLayout ? actualImageRect.size.height : actualImageRect.size.width,
-		verticalLayout ? CGRectMinYEdge : CGRectMinXEdge
+		verticalLayout ? CGRectMinYEdge: CGRectMinXEdge
 	);
 	labelRect.origin.x += verticalLayout ? 8 : 16;
 	labelRect.origin.y += verticalLayout ? 16 : 8;
@@ -415,7 +415,7 @@
 	
 	if (![self.imageView.subviews count]) {
 	
-		UIView *overlay = [[[UIView alloc] initWithFrame:self.imageView.bounds] autorelease];
+		UIView *overlay = [[UIView alloc] initWithFrame:self.imageView.bounds];
 		overlay.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		overlay.backgroundColor = [UIColor colorWithWhite:1 alpha:0.85];
 		
@@ -508,12 +508,11 @@
 }
 
 - (void) setPreview:(WAPreview *)newPreview {
-
+	
 	if (preview == newPreview)
 		return;
 
-	[preview release];
-	preview = [newPreview retain];
+	preview = newPreview;
 		
 	[self setNeedsLayout];
 
@@ -578,30 +577,6 @@
 
 	[self irRemoveObserverBlocksForKeyPath:@"suggestedStyle"];
 	
-	[preview release];
-
-	[titleFont release];
-	[titleColor release];
-	[titlePlaceholder release];
-	[titlePlaceholderColor release];
-	
-	[providerNameFont release];
-	[providerNameColor release];
-	[providerNamePlaceholder release];
-	[providerNamePlaceholderColor release];
-	
-	[textFont release];
-	[textColor release];
-	[textPlaceholder release];
-	[textPlaceholderColor release];
-	
-	[imageView release];
-	[label release];
-	
-	[backgroundView release];
-
-	[super dealloc];
-
 }
 
 @end

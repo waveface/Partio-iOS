@@ -15,7 +15,7 @@
 	url = git://github.com/waveface/mockingBird.git
 [submodule "external/JSONKit"]
 	path = external/JSONKit
-	url = git://github.com/johnezang/JSONKit.git
+	url = git://github.com/iridia/JSONKit.git
 [submodule "external/IRKeychain"]
 	path = external/IRKeychain
 	url = git://github.com/iridia/IRKeychain.git
@@ -54,10 +54,13 @@
 	url = git://github.com/iridia/IRDeployment.git
 [submodule "external/C3PO"]
 	path = external/C3PO
-	url = git://github.com/jamessa/C3PO.git
-[submodule "external/synergised"]
-	path = external/synergised
-	url = git://github.com/waveface/synergised.git
+	url = git://github.com/iridia/C3PO.git
 [submodule "external/DCIntrospect"]
 	path = external/DCIntrospect
 	url = https://github.com/domesticcatsoftware/DCIntrospect.git
+[submodule "external/WFPresentation"]
+	path = external/WFPresentation
+	url = git://github.com/waveface/WFPresentation.git
+[submodule "external/MagicKit"]
+	path = external/MagicKit
+	url = git://github.com/iridia/MagicKit.git

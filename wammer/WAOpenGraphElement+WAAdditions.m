@@ -33,15 +33,15 @@
 
 @implementation WAOpenGraphElement (WAAdditions)
 
-+ (BOOL) automaticallyNotifiesObserversForKey:(NSString *)key {
++ (void) load {
 
-	if ([super automaticallyNotifiesObserversForKey:key])
-		return YES;
-	
-	if ([key isEqualToString:@"images"])
-		return YES;
-	
-	return NO;
+	[self configureSimulatedOrderedRelationship];
+
+}
+
++ (NSString *) keyPathHoldingUniqueValue {
+
+	return @"url";
 
 }
 
@@ -57,30 +57,14 @@
 
 }
 
-- (void) irAwake {
++ (NSDictionary *) orderedRelationships {
 
-	[super irAwake];
-	[self irReconcileObjectOrderWithKey:@"images" usingArrayKeyed:@"imageOrder"];
-	
-}
+	return [NSDictionary dictionaryWithObjectsAndKeys:
+		
+		@"imageOrder", @"images",
+		
+	nil];
 
-- (NSArray *) imageOrder {
-
-	return [self irBackingOrderArrayKeyed:@"imageOrder"];
-
-}
-
-- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
-
-	if ([inKey isEqualToString:@"images"]) {
-    
-    [self irUpdateObjects:inObjects withRelationshipKey:@"images" usingOrderArray:@"imageOrder" withSetMutation:inMutationKind];
-		return;
-    
-  }
-
-	[super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
-	
 }
 
 + (BOOL) skipsNonexistantRemoteKey {

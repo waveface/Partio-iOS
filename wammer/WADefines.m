@@ -12,7 +12,15 @@
 NSString * const kWAAdvancedFeaturesEnabled = @"WAAdvancedFeaturesEnabled";
 
 BOOL WAAdvancedFeaturesEnabled (void) {
+
+#if TARGET_IPHONE_SIMULATOR
+
+	return YES;
+
+#endif
+
   return [[NSUserDefaults standardUserDefaults] boolForKey:kWAAdvancedFeaturesEnabled];
+	
 };
 
 
@@ -24,6 +32,7 @@ NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier = @"WALastAuthen
 NSString * const kWALastAuthenticatedUserIdentifier = @"WALastAuthenticatedUserIdentifier";
 NSString * const kWAUserRegistrationUsesWebVersion = @"WAUserRegistrationUsesWebVersion";
 NSString * const kWAUserRegistrationEndpointURL = @"WAUserRegistrationEndpointURL";
+NSString * const kWAUserFacebookAuthenticationEndpointURL = @"WAUserFacebookAuthenticationEndpointURL";
 NSString * const kWAUserRequiresReauthentication = @"WAUserRequiresReauthentication";
 NSString * const kWAUserPasswordResetEndpointURL = @"WAUserPasswordResetEndpointURL";
 NSString * const kWAAlwaysAllowExpensiveRemoteOperations = @"WAAlwaysAllowExpensiveRemoteOperations";
@@ -32,7 +41,6 @@ NSString * const kWADebugAutologinUserIdentifier = @"WADebugAutologinUserIdentif
 NSString * const kWADebugAutologinUserPassword = @"WADebugAutologinUserPassword";
 
 NSString * const kWADebugLastScanSyncBezelsVisible = @"WADebugLastScanSyncBezelsVisible";
-NSString * const kWADebugUsesDiscreteArticleFlip = @"WADebugUsesDiscreteArticleFlip";
 NSString * const kWADebugPersistentStoreName = @"WADebugPersistentStoreName";
 
 NSString * const kWACompositionSessionRequestedNotification = @"WACompositionSessionRequestedNotification";
@@ -50,13 +58,14 @@ NSString * const kWARemoteEndpointApplicationKeyPhone = @"ca5c3c5c-287d-5805-93c
 NSString * const kWARemoteEndpointApplicationKeyPad = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 NSString * const kWARemoteEndpointApplicationKeyMac = @"ba15e628-44e6-51bc-8146-0611fdfa130b";
 
+NSString * const WAFeedbackRecipient = @"WAFeedbackRecipient";
+NSString * const WAStreamFeaturesURL = @"WAStreamFeaturesURL";
+
 NSString * const kWACallbackActionDidFinishUserRegistration = @"didFinishUserRegistration";
 NSString * const kWACallbackActionSetAdvancedFeaturesEnabled = @"showMeTheMoney";
 NSString * const kWACallbackActionSetRemoteEndpointURL = @"setRemoteEndpointURL";
 NSString * const kWACallbackActionSetUserRegistrationEndpointURL = @"setUserRegistrationEndpointURL";
 NSString * const kWACallbackActionSetUserPasswordResetEndpointURL = @"setUserPasswordResetEndpointURL";
-
-NSString * const kWAUserStorageInfo = @"UserStoragesInfo";
 
 void WARegisterUserDefaults () {
 
@@ -109,13 +118,19 @@ BOOL WADeviceIdentifierReset (void) {
 	if (!uuidRef)
     return NO;
 	
-	NSString *uuid = [NSMakeCollectable(CFUUIDCreateString(kCFAllocatorDefault, uuidRef)) autorelease];
+	NSString *uuid = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidRef);
 	CFRelease(uuidRef);
 
   [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWACurrentGeneratedDeviceIdentifier];
   [[NSUserDefaults standardUserDefaults] setObject:uuid forKey:kWACurrentGeneratedDeviceIdentifier];
   
   return [[NSUserDefaults standardUserDefaults] synchronize];
+
+}
+
+NSString * WADeviceName (void) {
+
+	return [[UIDevice currentDevice] name];
 
 }
 
@@ -137,7 +152,7 @@ NSString * const kWAAppEventTitle = @"WAAppEventTitle";
 
 void WAPostAppEvent (NSString *eventTitle, NSDictionary *userInfo) {
 
-	NSMutableDictionary *sentUserInfo = [[userInfo mutableCopy] autorelease];
+	NSMutableDictionary *sentUserInfo = [userInfo mutableCopy];
 	if (!sentUserInfo)
 		sentUserInfo = [NSMutableDictionary dictionary];
 	

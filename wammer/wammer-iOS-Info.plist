@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Waveface</string>
+	<string>Stream</string>
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>CFBundleExecutable</key>
@@ -15,6 +15,7 @@
 		<string>Icon-72.png</string>
 		<string>Icon@2x.png</string>
 		<string>Icon.png</string>
+		<string>Icon-72@2x.png</string>
 	</array>
 	<key>CFBundleIcons</key>
 	<dict>
@@ -25,6 +26,7 @@
 				<string>Icon-72.png</string>
 				<string>Icon@2x.png</string>
 				<string>Icon.png</string>
+				<string>Icon-72@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
@@ -48,7 +50,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.3</string>
+	<string>1.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -66,13 +68,22 @@
 	<string>${CURRENT_PROJECT_VERSION}</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© Waveface Inc.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Sansus Webissimo-Italic.otf</string>
 		<string>Sansus Webissimo-Regular.otf</string>
+		<string>Fontin_Sans_B_45b.otf</string>
+		<string>Fontin_Sans_BI_45b.otf</string>
+		<string>Fontin_Sans_I_45b.otf</string>
+		<string>Fontin_Sans_R_45b.otf</string>
+		<string>Fontin_Sans_SC_45b.otf</string>
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDefault</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -93,7 +104,7 @@
 	<array/>
 	<key>UTImportedTypeDeclarations</key>
 	<array/>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleBlackTranslucent</string>
+	<key>WAFeedbackRecipient</key>
+	<string>contact@waveface.com</string>
 </dict>
 </plist>

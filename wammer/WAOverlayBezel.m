@@ -30,17 +30,11 @@
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	[image release];
-	[accessoryView release];
-	[caption release];
-	[captionLabel release];
-	[super dealloc];
-
 }
 
 + (WAOverlayBezel *) bezelWithStyle:(WAOverlayBezelStyle)aStyle {
 
-	return [[(WAOverlayBezel *)[self alloc] initWithStyle:aStyle] autorelease];
+	return [(WAOverlayBezel *)[self alloc] initWithStyle:aStyle];
 
 }
 
@@ -57,7 +51,7 @@
 	switch (aStyle) {
 	
 		case WAActivityIndicatorBezelStyle: {
-			UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+			UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 			[spinner startAnimating];
 			self.accessoryView = spinner;;
 			break;
@@ -85,7 +79,7 @@
 	
 	}
 	
-	self.captionLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+	self.captionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	self.captionLabel.textColor = [UIColor whiteColor];
 	self.captionLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 	self.captionLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
@@ -119,11 +113,7 @@
 	if (newCaption == caption)
 		return;
 	
-	[self willChangeValueForKey:@"caption"];
-	[caption release];
 	caption = [newCaption copy];
-	[self didChangeValueForKey:@"caption"];
-	
 	[self setNeedsLayout];
 
 }
@@ -154,9 +144,15 @@
 	if (self.window)
 		[NSException raise:NSInternalInconsistencyException format:@"%s shall only be called when the current alert view is not on screen.", __PRETTY_FUNCTION__];
 	
-	UIWindow *window = [UIApplication sharedApplication].keyWindow;
-	if (!window)
+	UIApplication *app = [UIApplication sharedApplication];
+	UIWindow *window = app.keyWindow;
+	
+ 	if (!window.rootViewController)
+		window = app.delegate.window;
+	
+	if (!window.rootViewController)
 		window = [[UIApplication sharedApplication].windows objectAtIndex:0];
+	
 	NSParameterAssert(window);
 	
 	[window addSubview:self];
@@ -167,7 +163,7 @@
 }
 
 - (void) dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation {
-
+	
 	[self.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
 
 	void (^remove)() = ^ {
@@ -248,7 +244,7 @@
 	if (self.image) {
 		
 		if (!self.accessoryView)
-			self.accessoryView = [[[UIImageView alloc] initWithImage:self.image] autorelease];
+			self.accessoryView = [[UIImageView alloc] initWithImage:self.image];
 		
 		UIImageView *currentImageView = [self.accessoryView isKindOfClass:[UIImageView class]] ? (UIImageView *)self.accessoryView : nil;
 		

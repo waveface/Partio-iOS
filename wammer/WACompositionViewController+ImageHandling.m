@@ -11,61 +11,65 @@
 #import "AssetsLibrary+IRAdditions.h"
 #import "WADataStore.h"
 
+NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
+NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
+
+@interface WACompositionViewController (ImageHandling_Private)
+
+- (IRAction *) newPresentImagePickerControllerActionAnimated:(BOOL)animate sender:(id)sender;
+- (IRAction *) newPresentCameraCaptureControllerActionAnimated:(BOOL)animate sender:(id)sender;
+
+@end
+
+
 @implementation WACompositionViewController (ImageHandling)
 
-- (IRAction *) newPresentImagePickerControllerActionWithSender:(id)sender {
+- (IRAction *) newPresentImagePickerControllerActionAnimated:(BOOL)animate sender:(id)sender {
 
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self) nrSender = sender;
+	__weak WACompositionViewController *wSelf = self;
+	__weak id wSender = sender;
 	
-	return [[IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[nrSelf presentImagePickerController:[[nrSelf newImagePickerController] autorelease] sender:nrSender];
+		[wSelf presentImagePickerController:[wSelf newImagePickerController] sender:wSender animated:animate];
 	
-	}] retain];
+	}];
 
 }
 
 - (IRImagePickerController *) newImagePickerController {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WACompositionViewController *wSelf = self;
+	
 	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
-		[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-		[nrSelf dismissImagePickerController:nrImagePickerController];
+		[wSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[wSelf dismissImagePickerController:nrImagePickerController animated:YES];
+		
+		nrImagePickerController = nil;
 		
 	}];
 	
 	nrImagePickerController.usesAssetsLibrary = NO;
 	
-	return [nrImagePickerController retain];
-
-}
-
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender {
-
-	[self presentImagePickerController:controller sender:sender animated:YES];
+	return nrImagePickerController;
 
 }
 
 - (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
 
-	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
+	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
 		if (aVC.modalViewController)
 			return topNonModalVC(aVC.modalViewController);
 		
 		return aVC;
 		
-	};
+	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:[[self newImagePickerController] autorelease] animated:animated];
-
-}
-
-- (void) dismissImagePickerController:(IRImagePickerController *)controller {
-
-	[self dismissImagePickerController:controller animated:YES];
+	[topNonModalVC(self) presentModalViewController:[self newImagePickerController] animated:animated];
+	
+	topNonModalVC = nil;
 
 }
 
@@ -75,61 +79,56 @@
 
 }
 
-- (IRAction *) newPresentCameraCaptureControllerActionWithSender:(id)sender {
+- (IRAction *) newPresentCameraCaptureControllerActionAnimated:(BOOL)animate sender:(id)sender {
 
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self) nrSender = sender;
+	if (![IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
+		return nil;
 	
-	return [[IRAction actionWithTitle:NSLocalizedString(@"ACTION_TAKE_PHOTO_WITH_CAMERA", @"Button title for showing a camera capture controller") block: ^ {
+	__weak WACompositionViewController *wSelf = self;
+	__weak id wSender = sender;
 	
-		[nrSelf presentCameraCapturePickerController:[[nrSelf newCameraCapturePickerController] autorelease] sender:nrSender];
+	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_TAKE_PHOTO_WITH_CAMERA", @"Button title for showing a camera capture controller") block: ^ {
 	
-	}] retain];
+		[wSelf presentCameraCapturePickerController:[wSelf newCameraCapturePickerController] sender:wSender animated:animate];
+	
+	}];
 
 }
 
 - (IRImagePickerController *) newCameraCapturePickerController {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WACompositionViewController *wSelf = self;
 	
 	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
-		[nrSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
-		[nrSelf dismissCameraCapturePickerController:nrPickerController];
+		[wSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[wSelf dismissCameraCapturePickerController:nrPickerController animated:YES];
+		
+		nrPickerController = nil;
 		
 	}];
 	
 	nrPickerController.usesAssetsLibrary = NO;
 	nrPickerController.savesCameraImageCapturesToSavedPhotos = YES;
 	
-	return [nrPickerController retain];
-
-}
-
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
-
-	[self presentCameraCapturePickerController:controller sender:sender animated:YES];
+	return nrPickerController;
 
 }
 
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
 
-	__block UIViewController * (^topNonModalVC)(UIViewController *) = ^ (UIViewController *aVC) {
+	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
 		if (aVC.modalViewController)
 			return topNonModalVC(aVC.modalViewController);
 		
 		return aVC;
 		
-	};
+	} copy];
 	
 	[topNonModalVC(self) presentModalViewController:controller animated:animated];
-
-}
-
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
-
-	[self dismissCameraCapturePickerController:controller animated:YES];
+	
+	topNonModalVC = nil;
 
 }
 
@@ -145,12 +144,21 @@
 
 		WAArticle *capturedArticle = self.article;
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		stitchedFile.article = capturedArticle;
+		
+		NSError *error = nil;
+		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, capturedArticle, nil] error:&error])
+			NSLog(@"Error obtaining permanent object ID: %@", error);
+
+		[capturedArticle willChangeValueForKey:@"files"];
+		[[capturedArticle mutableOrderedSetValueForKey:@"files"] addObject:stitchedFile];
+		[capturedArticle didChangeValueForKey:@"files"];
 		
 		NSURL *finalFileURL = nil;
 		
-		if (selectedAssetURI)
+		if (selectedAssetURI) {
 			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+			NSCParameterAssert([finalFileURL pathExtension]);
+		}
 		
 		if (!finalFileURL)
 		if (!selectedAssetURI && representedAsset) {
@@ -161,28 +169,44 @@
 			finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:fullImageData extension:@"png"];
 		
 		}
-			
-		[stitchedFile.article willChangeValueForKey:@"fileOrder"];
-		
+					
 		stitchedFile.resourceType = (NSString *)kUTTypeImage;
 		stitchedFile.resourceFilePath = [finalFileURL path];
-		
-		[stitchedFile.article didChangeValueForKey:@"fileOrder"];
 		
 	}
 
 }
 
 - (void) handleImageAttachmentInsertionRequestWithSender:(id)sender {
+
+	[self handleImageAttachmentInsertionRequestWithOptions:nil sender:sender];
+
+}
+
+- (void) handleImageAttachmentInsertionRequestWithOptions:(NSDictionary *)options sender:(id)sender {
 		
-	NSMutableArray *availableActions = [NSMutableArray array]; 
+	NSMutableArray *availableActions = [NSMutableArray array];
 	
-	[availableActions addObject:[[self newPresentImagePickerControllerActionWithSender:sender] autorelease]];
+	BOOL usesCamera = [[options objectForKey:WACompositionImageInsertionUsesCamera] isEqual:(id)kCFBooleanTrue];
+	BOOL animate = ![[options objectForKey:WACompositionImageInsertionAnimatePresentation] isEqual:(id)kCFBooleanFalse];
 	
-	if ([IRImagePickerController isCameraDeviceAvailable:UIImagePickerControllerCameraDeviceRear])
-		[availableActions addObject:[[self newPresentCameraCaptureControllerActionWithSender:sender] autorelease]];
+	IRAction *photoPickerAction = [self newPresentImagePickerControllerActionAnimated:animate sender:sender];
+	IRAction *cameraAction = [self newPresentCameraCaptureControllerActionAnimated:animate sender:sender];
 	
-	if ([availableActions count] == 1) {
+	[availableActions addObject:photoPickerAction];
+	
+	if (cameraAction)
+		[availableActions addObject:cameraAction];
+	
+	if (usesCamera && cameraAction) {
+	
+		[cameraAction invoke];
+	
+	} else if (usesCamera && photoPickerAction) {
+	
+		[photoPickerAction invoke];
+	
+	} else if ([availableActions count] == 1) {
 		
 		//	With only one action we don’t even need to show the action sheet
 		
@@ -205,7 +229,7 @@
 			
 		} else {
 			
-			[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do."];
+			[NSException raise:NSInternalInconsistencyException format:@"Sender %@ is neither a view or a bar button item.  Don’t know what to do.", sender];
 		
 		}
 		

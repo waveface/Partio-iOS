@@ -1,20 +1,27 @@
 /* attachment activity view */
-"ACTION_ADD" = "Add";
-
-/* Action title for cancelling */
-"ACTION_BACK" = "Back";
+"ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
    Action title for cancelling
    Action title for cancelling stuff
-   Cancel. */
+   Cancel.
+   Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
+
+/* Action changing representing file of an article
+   Title for the action responsible for presenting a controller changing the representing file of an article */
+"ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
+
+/* Action deleting an article
+   Title for deleting an article from the Overview
+   Title for deleting an article from the Timeline */
+"ACTION_DELETE" = "Delete";
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "Discard";
 
-/* Action title for done */
-"ACTION_DONE" = "Done";
+/* In iPad composition view */
+"ACTION_DONE" = "Stream!";
 
 /* Action title for feedback composition */
 "ACTION_FEEDBACK" = "Feedback";
@@ -25,12 +32,18 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "Later";
 
+/* Action marking article as favorite
+   Bar button item title to mark the article as a favorite */
+"ACTION_MARK_FAVORITE" = "Favorite";
+
+/* No comment provided by engineer. */
+"ACTION_MORE_INFO" = "More Info";
+
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
-/* Action title for accepting what happened reluctantly
-   Fine! */
-"ACTION_OKAY" = "Okay";
+/* No comment provided by engineer. */
+"ACTION_OKAY" = "OK";
 
 /* No comment provided by engineer. */
 "ACTION_OPEN_IN_SAFARI" = "Open in Safari";
@@ -48,39 +61,54 @@
 "ACTION_RESET" = "Reset";
 
 /* Action title for resetting password */
-"ACTION_RESET_PASSWORD" = "Reset Password";
+"ACTION_RESET_PASSWORD" = "Forgot";
 
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Sign In";
+"ACTION_SIGN_IN" = "Login";
 
-/* Action title for Signing Out
-   Action title for signing the user out */
-"ACTION_SIGN_OUT" = "Sign Out";
+/* Action title for signing in thru Facebook */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
+
+/* Action title for Signing Out */
+"ACTION_SIGN_OUT" = "Logout";
 
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "Camera";
 
+/* Action marking article as not favorite
+   Bar button item title to unmark the article as a favorite */
+"ACTION_UNMARK_FAVORITE" = "Unfavorite";
+
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Sign in again to make changes populate.";
+"ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_TITLE" = "Advanced Features Disabled";
 
 /* No comment provided by engineer. */
-"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Sign in again to make changes populate.";
+"ADVANCED_FEATURES_ENABLED_DESCRIPTION" = "Advanced features are now enabled.  Login again to populate changes.";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_ENABLED_TITLE" = "Advanced Features Enabled";
 
 /* Application Title
    Title for application */
-"APP_TITLE" = "Waveface";
+"APP_TITLE" = "Stream";
 
 /* Title for the auth request controller */
-"AUTH_REQUEST_TITLE" = "Welcome";
+"AUTH_REQUEST_TITLE" = "Login";
+
+/* Title for the Facebook linking controller */
+"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
+
+/* Prompt for Cover Image picker */
+"CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
+
+/* Title for Cover Image picker */
+"CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
 /* “%@ Comments” */
 "COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";
@@ -89,7 +117,7 @@
 "COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Comment";
 
 /* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comment";
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comments";
 
 /* No comment provided by engineer. */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
@@ -103,62 +131,107 @@
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
 
+/* in relative date format */
+"DATE_AFTER" = "%@ after";
+
+/* in relative date format */
+"DATE_AGO" = "%@ ago";
+
+/* No comment provided by engineer. */
+"DAY_PLURAL" = "%d days";
+
+/* No comment provided by engineer. */
+"DAY_SINGULAR" = "%d day";
+
+/* Description for confirming a post deletion
+   Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_DESCRIPTION" = "Note: deleted posts can always be recovered from our Web version.";
+
+/* Title for confirming a post deletion */
+"DELETE_POST_CONFIRMATION_TITLE" = "Delete Now?";
+
 /* State for drafts without content text */
 "DRAFT_STATE_NO_CONTENT" = "(No Content)";
 
 /* State for drafts without a timestamp */
 "DRAFT_STATE_NO_TIMESTAMP" = "(No Timestamp)";
 
-/* Endpoint Status */
-"ENDPOINT_CONNECTIVITY_STATUS_TITLE" = "Status";
+/* No comment provided by engineer. */
+"ERA_PLURAL" = "%d eras";
 
-/* Text to show when Cloud and Station are both available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_AND_STATION_AVAILABLE_DESCRIPTION" = "Your Waveface Station is available.  Everything will be synchronized.";
-
-/* Text to show when only Cloud is available */
-"ENDPOINT_REACHABILITY_STATUS_CLOUD_ONLY_DESCRIPTION" = "You’re connected to Waveface Cloud.  Full-resolution pictures will be uploaded to your Station when you get home.";
-
-/* Text to show when not even Cloud is there — a rare case */
-"ENDPOINT_REACHABILITY_STATUS_NO_ENDPOINTS_DESCRIPTION" = "Can’t locate any Waveface server.";
-
-/* Text to show when Cloud is available, but the Station is not responsive */
-"ENDPOINT_REACHABILITY_STATUS_STATION_NOT_AVAILABLE_DESCRIPTION" = "We’re having trouble connecting to your Station.";
+/* No comment provided by engineer. */
+"ERA_SINGULAR" = "%d era";
 
 /* Article entity sync failure alert message for no underlying error */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly.  The post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_DESCRIPTION" = "A necessary task failed unexpectedly. Your post has been saved as a draft.";
 
 /* Article entity sync failure alert title */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_TITLE" = "Unable to Upload";
 
 /* Failed, underlying error %@ with reason %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — the post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_AND_REASON_FORMAT" = "A necessary task failed: %@ (%@) — Your post has been saved as a draft.";
 
 /* Failed, underlying error description %@ */
-"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — the post has been saved as a draft.";
+"ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Waveface has trouble authenticating your account: ";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Bad Email or Password";
 
 /* Recovery notion for authentication failure recovery */
-"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "You can reset your password, or register a new account.";
+"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
 
 /* Title for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "Can’t Authenticate";
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "Unable to Authenticate";
 
 /* Description for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface had trouble registering your account";
+"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
 
 /* Recovery notion for registration failure recovery */
-"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "Please try registrating later.";
+"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "Please try registrating again later.";
 
 /* Title for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_TITLE" = "Can’t Register";
+"ERROR_USER_REGISTRATION_FAILED_TITLE" = "Unable to Register";
+
+/* Display title for a fetch request working against all the articles */
+"FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
+
+/* Display title for a fetch request working against the articles with Photos */
+"FETCH_REQUEST_ARTICLES_WITH_PHOTOS_DISPLAY_TITLE" = "Photo Posts";
+
+/* Display title for a fetch request working against the articles with Plain Text */
+"FETCH_REQUEST_ARTICLES_WITH_PLAIN_TEXT_DISPLAY_TITLE" = "Text Posts";
+
+/* Display title for a fetch request working against the articles with Web Previews */
+"FETCH_REQUEST_ARTICLES_WITH_PREVIEWS_DISPLAY_TITLE" = "Web Posts";
+
+/* Display title for a fetch request working against the latest article on a particular date */
+"FETCH_REQUEST_NEWEST_ARTICLE_OF_PARTICULAR_DATE_DISPLAY_TITLE" = "Post on a particular date";
+
+/* No comment provided by engineer. */
+"HOUR_PLURAL" = "%d hours";
+
+/* No comment provided by engineer. */
+"HOUR_SINGULAR" = "%d hour";
+
+/* Title to show explaining WiFi Sync */
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+
+/* No comment provided by engineer. */
+"MINUTE_PLURAL" = "%d minutes";
+
+/* No comment provided by engineer. */
+"MINUTE_SINGULAR" = "%d minute";
+
+/* No comment provided by engineer. */
+"MONTH_PLURAL" = "%d months";
+
+/* No comment provided by engineer. */
+"MONTH_SINGULAR" = "%d month";
 
 /* Singluar noun for action objects */
 "NOUN_ACTIONS_OBJECT" = "Action";
 
-/* This Device
-   Title for Waveface Feedback */
+/* Title for Waveface Feedback */
 "NOUN_CURRENT_DEVICE" = "Device";
 
 /* Plural noun for draft objects */
@@ -166,7 +239,7 @@
 
 /* Title for nick name
    Title for nickname */
-"NOUN_NICKNAME" = "NOUN_NICKNAME";
+"NOUN_NICKNAME" = "Nickname";
 
 /* Noun for Password
    Title for password */
@@ -175,15 +248,27 @@
 /* Title for password confirmation */
 "NOUN_PASSWORD_CONFIRMATION" = "Confirm Password";
 
-/* Noun for storage quota. */
-"NOUN_STORAGE_QUOTA" = "Usage";
-
 /* Noun for Username
    Title for username */
-"NOUN_USERNAME" = "Username";
+"NOUN_USERNAME" = "Email";
 
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
+
+/* iPhone Timeline */
+"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@ from %2$@";
+
+/* In iPad overview */
+"PHOTO_NOUN " = "1 photo ";
+
+/* in iPhone timeline */
+"PHOTO_PLURAL" = "%d photos";
+
+/* in iPhone timeline */
+"PHOTO_SINGULAR" = "%d photo";
+
+/* In iPad overview */
+"PHOTOS_PLURAL " = "%d photos ";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
@@ -194,59 +279,47 @@
 /* Text to show for previews without a title */
 "PREVIEW_BADGE_TITLE_PLACEHOLDER" = "(No Title)";
 
-/* Short label for the Cloud */
-"PROPER_NOUN_WF_CLOUD" = "Cloud";
-
-/* Short label for a particular Station */
-"PROPER_NOUN_WF_STATION" = "Station";
-
 /* REACHABILITY_STATE_AVAILABLE */
 "REACHABILITY_STATE_AVAILABLE" = "Available";
 
 /* REACHABILITY_STATE_NOT_AVAILABLE */
-"REACHABILITY_STATE_NOT_AVAILABLE" = "Not Available";
+"REACHABILITY_STATE_NOT_AVAILABLE" = "Offline";
 
 /* REACHABILITY_STATE_UNKNOWN */
-"REACHABILITY_STATE_UNKNOWN" = "Unknown Availablity";
+"REACHABILITY_STATE_UNKNOWN" = "Offline";
 
 /* Title for registration request view */
 "REGISTER_REQUEST_TITLE" = "Register";
 
 /* No comment provided by engineer. */
-"RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "All settings will be reset.  Unsaved changes will be lost.";
+"RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "All settings will be reset. Unsaved changes will be lost.";
 
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_TITLE" = "Reset Settings?";
 
 /* No comment provided by engineer. */
-"SETTINGS_TITLE" = "Settings";
+"SECOND_PLURAL" = "%d seconds";
 
-/* Production Disclaimer */
-"SHORT_LEGAL_DISCLAIMER" = "Waveface Inc., 2011–";
+/* No comment provided by engineer. */
+"SECOND_SINGULAR" = "%d second";
 
 /* Confirmation text for Signing Out */
-"SIGN_OUT_CONFIRMATION" = "Really sign out?";
+"SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
-/* No comment provided by engineer. */
-"STORAGE_NUMBER_OF_ALLOTTED_OBJECTS_TITLE" = "Allotted";
+/* Text for About Stream dialog */
+"STREAM_ABOUT_TEXT" = "Stream saves all your photos on all your devices to your PC.";
 
-/* No comment provided by engineer. */
-"STORAGE_NUMBER_OF_USED_OBJECTS_TITLE" = "Used";
+/* Title for About Stream dialog */
+"STREAM_ABOUT_TITLE" = "About Stream";
 
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT" = "Days left";
+/* Caption to show when app is syncing data */
+"SYNC_BUTTON_NORMAL_TITLE" = "Syncing";
 
-/* Number of days left in cycle */
-"STORAGE_QUOTA_CYCLE_DAYS_LEFT_FORMAT_STRING" = "%d days left in cycle";
-
-/* No comment provided by engineer. */
-"STORAGE_QUOTA_UNLIMITED_TITLE" = "∞";
-
-/* No comment provided by engineer. */
-"STORATE_QUOTA_INTERVAL_END_DATE" = "Ends";
+/* Caption to show when app is not syncing data, but sync is usable */
+"SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -254,29 +327,77 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
-/* Title in User Section */
-"USER_INFO_ACCOUNT_SECTION_TITLE" = "Account";
-
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
+
+/* Title to show when user has a station but have not activated the account */
+"USER_INFO_NAG_LEVEL_0_WITH_STATION" = "To sync your account, run Stream for Windows on your Station PC.";
+
+/* Title to show when user has no station and have not activated the account */
+"USER_INFO_NAG_LEVEL_0_WITHOUT_STATION" = "To sync your account, install and run Stream for Windows on your PC.";
+
+/* Title to show when user has a station, and still have ample storage on the Cloud */
+"USER_INFO_NAG_LEVEL_1_WITH_STATION" = "You have photos waiting to sync. Run Stream for Windows on your PC.";
+
+/* Title to show when user has no station, and still have ample storage on the Cloud */
+"USER_INFO_NAG_LEVEL_1_WITHOUT_STATION" = "You have photos waiting to sync. Install and run Stream for Windows on your PC.";
+
+/* Title to show when user has a station, and is using up most of the storage on the Cloud */
+"USER_INFO_NAG_LEVEL_2_WITH_STATION" = "Your cloud storage is nearly full.  To sync, run Stream for Windows on your PC.";
+
+/* Title to show when user has no station, and is using up most of the storage on the Cloud */
+"USER_INFO_NAG_LEVEL_2_WITHOUT_STATION" = "Your cloud storage is nearly full.  To sync, install and run Stream for Windows on your PC.";
+
+/* Title to show when user has a station, and have exhausted storage on the Cloud */
+"USER_INFO_NAG_LEVEL_3_WITH_STATION" = "Your cloud storage is full. To sync, run Stream for Windows on your PC.";
+
+/* Title to show when user has no station, and have exhausted storage on the Cloud */
+"USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
 
 /* attachment activity view */
 "WEB_PREVIEW" = "Web Preview";
 
-/* Class = "IBUILabel"; text = "ACTION_GO_TO_LAST_READ_POSITION"; ObjectID = "13"; */
-"ACTION_GO_TO_LAST_READ_POSITION" = "Jump to Furthest Post";
+/* No comment provided by engineer. */
+"WEEK_PLURAL" = "%d weeks";
+
+/* No comment provided by engineer. */
+"WEEK_SINGULAR" = "%d week";
+
+/* No comment provided by engineer. */
+"YEAR_PLURAL" = "%d years";
+
+/* No comment provided by engineer. */
+"YEAR_SINGULAR" = "%d year";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
-"ACTION_SEND" = "Send";
+"ACTION_SEND" = "Stream!";
 
 /* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
 "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
-"COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "No Photos";
+"COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
-"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "Add some photos to this post.";
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "64"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "76"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "90"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
+"FEB" = "FEB";
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -294,11 +415,44 @@
 "ERROR_NO_STATION_FOUND_TITLE" = "No Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You’ll need Waveface Station installed to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "5"; */
 "ERROR_NO_STATION_FOUND_TITLE" = "No Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You’ll need Waveface Station installed to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
+
+/* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_HEADER" = "Service Info";
+
+/* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
+"OBJECTS_NOT_SYNCED_IN_QUEUE" = "Queued in Cloud";
+
+/* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
+"ACCOUNT_INFO_HEADER" = "Account Info";
+
+/* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
+"VERSION" = "Version";
+
+/* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
+"LAST_SYNCED_TIME" = "Last Synced";
+
+/* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
+"LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
+
+/* Class = "IBUITableViewSection"; footerTitle = "LOCAL_PENDING_OBJECT_DESCRIPTION"; ObjectID = "aHi-Wv-Eu2"; */
+"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
+"NOUN_NICKNAME" = "Nickname";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
+"NOUN_CURRENT_DEVICE" = "Device";
+
+/* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
+"ACTION_CONTACT_DEVELOPER" = "Contact";
 

@@ -26,8 +26,8 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
 @property (nonatomic, readwrite, retain) WAArticleCommentsViewCell *cellPrototype;
-@property (nonatomic, readwrite, retain) WAView *compositionAccessoryTextWellBackgroundView;
-@property (nonatomic, readwrite, retain) WAView *compositionAccessoryBackgroundView;
+@property (nonatomic, readwrite, retain) IRView *compositionAccessoryTextWellBackgroundView;
+@property (nonatomic, readwrite, retain) IRView *compositionAccessoryBackgroundView;
 
 - (void) refreshView;
 
@@ -48,7 +48,7 @@
 
 + (WAArticleCommentsViewController *) controllerRepresentingArticle:(NSURL *)articleObjectURL {
 
-	WAArticleCommentsViewController *returnedController =  [[[self alloc] initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]] autorelease];
+	WAArticleCommentsViewController *returnedController =  [[self alloc] initWithNibName:NSStringFromClass([self class]) bundle:[NSBundle bundleForClass:[self class]]];
 	
 	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
 	returnedController.representedArticleURI = articleObjectURL;
@@ -77,28 +77,6 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[commentsView removeObserver:self forKeyPath:@"contentSize"];
-
-	[commentsView release];
-	[commentRevealButton release];
-	[commentPostButton release];
-	[commentCloseButton release];
-	[compositionContentField release];
-	[compositionSendButton release];
-	[compositionAccessoryView release];
-	[commentsRevealingActionContainerView release];
-	
-	[cellPrototype release];
-	
-	[managedObjectContext release];
-	[fetchedResultsController release];
-	[article release];
-	
-	[onViewDidLoad release];
-	
-	[coachmarkOverlay release];
-	
-	[wrapperView release];
-	[super dealloc];
 
 }
 
@@ -152,9 +130,14 @@
 		return;
  
 	if (!window) {
+		
 		self.wrapperView.frame = self.view.bounds;
-		[self.view setNeedsLayout];
+		
+		if (self.view.window)
+			[self.view setNeedsLayout];
+		
 		return;
+		
 	}
 
 	CGRect ownRectInWindow = [window convertRect:self.view.bounds fromView:self.view];
@@ -273,38 +256,38 @@
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
 	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
 	
-	__block UIImageView *compositionSendButtonBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:20 topCapHeight:20]] autorelease];
+	__block UIImageView *compositionSendButtonBackgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:20 topCapHeight:20]];
 	compositionSendButtonBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	compositionSendButtonBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionSendButton.bounds, (UIEdgeInsets){ -8, -8, -8, -8 });
 	
 	[compositionSendButtonBackgroundView irBind:@"alpha" toObject:self.compositionSendButton keyPath:@"enabled" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-		[[^ (id oldValue, id newValue, NSKeyValueChange type) {
+		[^ (id oldValue, id newValue, NSKeyValueChange type) {
 		
 			return [newValue isEqual:(id)kCFBooleanTrue] ? [NSNumber numberWithFloat:1.0] : [NSNumber numberWithFloat:0.5];
 
-		} copy] autorelease], kIRBindingsValueTransformerBlock,
+		} copy], kIRBindingsValueTransformerBlock,
 	
 	nil]];
 	
 	[self.compositionSendButton insertSubview:compositionSendButtonBackgroundView atIndex:0];
 	
-	UIImageView *textWellBackgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:22 topCapHeight:20]] autorelease];
+	UIImageView *textWellBackgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionTextWellBackground"] stretchableImageWithLeftCapWidth:22 topCapHeight:20]];
 	NSParameterAssert(textWellBackgroundView.image);
 	textWellBackgroundView.autoresizingMask = self.compositionContentField.autoresizingMask;
 	textWellBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionContentField.frame, (UIEdgeInsets){ -8, -8, -8, -8 });
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
 		
-	UIImageView *backgroundView = [[[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:24]] autorelease];
+	UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionBarBackground"] stretchableImageWithLeftCapWidth:4 topCapHeight:24]];
 	backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	backgroundView.frame = UIEdgeInsetsInsetRect(self.compositionAccessoryView.bounds, (UIEdgeInsets){ -3, 0, 0, 0 });
 	
-	self.compositionAccessoryTextWellBackgroundView = [[[WAView alloc] initWithFrame:textWellBackgroundView.bounds] autorelease];
+	self.compositionAccessoryTextWellBackgroundView = [[IRView alloc] initWithFrame:textWellBackgroundView.bounds];
 	self.compositionAccessoryTextWellBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.compositionAccessoryTextWellBackgroundView addSubview:textWellBackgroundView];
 	[self.compositionAccessoryView insertSubview:textWellBackgroundView atIndex:0];
 	
-	self.compositionAccessoryBackgroundView = [[[WAView alloc] initWithFrame:backgroundView.bounds] autorelease];
+	self.compositionAccessoryBackgroundView = [[IRView alloc] initWithFrame:backgroundView.bounds];
 	self.compositionAccessoryBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.compositionAccessoryBackgroundView addSubview:backgroundView];
 	[self.compositionAccessoryView insertSubview:compositionAccessoryBackgroundView atIndex:0];
@@ -330,15 +313,10 @@
 		UIEdgeInsets commentsViewScrollIndicatorInsets = nrCommentsView.scrollIndicatorInsets;
 		commentsViewScrollIndicatorInsets.bottom = accessoryViewHeight;
 		
-//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
-
 		nrCommentsView.contentInset = commentsViewContentInset;
 		nrCommentsView.scrollIndicatorInsets = commentsViewScrollIndicatorInsets;
 		
-//		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
-
 		CGRect oldWrapperViewBounds = nrSelf.wrapperView.bounds;
-		NSLog(@"nrSelf.wrapperView.bounds was %@", NSStringFromCGRect(nrSelf.wrapperView.bounds));
 		
 		NSCParameterAssert(CGRectEqualToRect(oldWrapperViewBounds, nrSelf.wrapperView.bounds));
 
@@ -449,7 +427,7 @@
 	
 	[self.commentsRevealingActionContainerView insertSubview:((^ { 
 
-		UIView *commentsContainerBackgroundView = [[[UIView alloc] initWithFrame:self.view.bounds] autorelease];
+		UIView *commentsContainerBackgroundView = [[UIView alloc] initWithFrame:self.view.bounds];
 		commentsContainerBackgroundView.backgroundColor = [UIColor clearColor];
 		
 		[commentsContainerBackgroundView.layer addSublayer:((^ {
@@ -539,7 +517,7 @@
 	if (oldCommentsContainerShadowPath) {
 		[self.view.layer addAnimation:((^ {
 			CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
-			transition.fromValue = (id)oldCommentsContainerShadowPath;
+			transition.fromValue = (__bridge id)oldCommentsContainerShadowPath;
 			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 			transition.duration = duration;
 			return transition;
@@ -550,7 +528,7 @@
 	if (oldCommentsRevealingActionContainerShadowPath) {
 		[self.commentsRevealingActionContainerView.layer addAnimation:((^ {
 			CABasicAnimation *transition = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
-			transition.fromValue = (id)oldCommentsRevealingActionContainerShadowPath;
+			transition.fromValue = (__bridge id)oldCommentsRevealingActionContainerShadowPath;
 			transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
 			transition.duration = duration;
 			return transition;
@@ -639,13 +617,8 @@
 	if (newArticle == article)
 		return;
 	
-	[self willChangeValueForKey:@"article"];
-	[article release];
-	article = [newArticle retain];
-	
+	article = newArticle;
 	self.fetchedResultsController = nil;
-	
-	[self didChangeValueForKey:@"article"];
 	
 	[self refreshView];
 	
@@ -681,8 +654,7 @@
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
 	nil];
 	
-	self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil] autorelease];
-	
+	self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	self.fetchedResultsController.delegate = self;
 	
 	NSError *fetchingError = nil;
@@ -719,7 +691,7 @@
 	if (cellPrototype)
 		return cellPrototype;
 	
-	self.cellPrototype = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:nil] autorelease];
+	self.cellPrototype = [[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:nil];
 	
 	return cellPrototype;
 	
@@ -759,8 +731,8 @@
 	
 	WAArticleCommentsViewCell *cell = (WAArticleCommentsViewCell *)[aTableView dequeueReusableCellWithIdentifier:cellIdentifier];
 	if (!cell) {
-		cell = [[[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:cellIdentifier] autorelease];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell = [[WAArticleCommentsViewCell alloc] initWithCommentsViewCellStyle:WAArticleCommentsViewCellStyleDefault reuseIdentifier:cellIdentifier];
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	}
 	
 	cell.userNicknameLabel.text = representedComment.owner.nickname;

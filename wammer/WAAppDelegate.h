@@ -24,6 +24,7 @@
 - (BOOL) removeAuthenticationData;
 
 - (void) updateCurrentCredentialsWithUserIdentifier:(NSString *)anIdentifier token:(NSString *)aToken primaryGroup:(NSString *)aGroupID;
+- (void) bootstrapPersistentStoreWithUserIdentifier:(NSString *)identifier;
 
 @end
 

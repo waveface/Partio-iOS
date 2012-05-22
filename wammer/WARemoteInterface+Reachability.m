@@ -26,13 +26,15 @@
 @end
 
 
-@implementation WARemoteInterface (Reachability)
+static NSString * const kAvailableHosts = @"-[WARemoteInterface(Reachability) availableHosts]";
+static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) networkState]";
 
-static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARemoteInterface)Reachability)-availableHosts";
+
+@implementation WARemoteInterface (Reachability)
 
 + (void) load {
 
-	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	__weak NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	
 	__block id appLoaded = [center addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
 		
@@ -47,7 +49,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 			WARemoteInterface *ri = [WARemoteInterface sharedInterface];
 			
 			NSArray *monitoredHosts = ri.monitoredHosts;
-			NSMutableArray *updatedHosts = [[monitoredHosts mutableCopy] autorelease];
+			NSMutableArray *updatedHosts = [monitoredHosts mutableCopy];
 			
 			for (NSURL *anURL in ri.monitoredHosts)
 				if ([anURL isEqual:oldURL] || [anURL isEqual:newURL])
@@ -69,7 +71,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (NSArray *) monitoredHosts {
 
-	return objc_getAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts);
+	return objc_getAssociatedObject(self, &kAvailableHosts);
 
 }
 
@@ -78,9 +80,9 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   if (self.monitoredHosts == newAvailableHosts)
     return;
 
-	objc_setAssociatedObject(self, &kWARemoteInterface_Reachability_availableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	objc_setAssociatedObject(self, &kAvailableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   
-  [(NSDictionary *)[[self.monitoredHostsToReachabilityDetectors copy] autorelease] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
+  [(NSDictionary *)[self.monitoredHostsToReachabilityDetectors copy] enumerateKeysAndObjectsUsingBlock: ^ (NSURL *anURL, WAReachabilityDetector *reachabilityDetector, BOOL *stop) {
   
     if (![newAvailableHosts containsObject:anURL])
       [self.monitoredHostsToReachabilityDetectors removeObjectForKey:anURL];
@@ -141,7 +143,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   if (![self.monitoredHosts count])
     return self.engine.context.baseURL;
   
-  NSArray *usableHosts = [[[[self.monitoredHosts retain] autorelease] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(NSURL *aHost, NSDictionary *bindings) {
+  NSArray *usableHosts = [[self.monitoredHosts filteredArrayUsingPredicate:[NSPredicate predicateWithBlock: ^ (NSURL *aHost, NSDictionary *bindings) {
     
     return [self canHost:aHost handleRequestNamed:aRequestName];
     
@@ -220,50 +222,44 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (void(^)(void)) defaultScheduledMonitoredHostsUpdatingBlock {
 
-  __block __typeof__(self) nrSelf = self;
+  __weak WARemoteInterface *wSelf = self;
 
-  return [[ ^ {
+  return [^ {
   
-    if (!nrSelf.userToken)
+    if (!wSelf.userToken)
       return;
       
-    [nrSelf beginPostponingDataRetrievalTimerFiring];
+    [wSelf beginPostponingDataRetrievalTimerFiring];
     [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
-    [nrSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
-    
-      [nrSelf retain];
-    
+    [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
+		
       dispatch_async(dispatch_get_main_queue(), ^ {
-      
-        [nrSelf autorelease];
-        
-        nrSelf.monitoredHosts = [[NSArray arrayWithObject:nrSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
-        
-          //  Even if the station is not connected as reported by Cloud, we want to track it anyway
-          //  NSString *stationStatus = [aStationRep valueForKeyPath:@"status"];
-          //  if (![stationStatus isEqual:@"connected"])
-          //    return (id)nil;
+		
+        wSelf.monitoredHosts = [[NSArray arrayWithObject:wSelf.engine.context.baseURL] arrayByAddingObjectsFromArray:[stationReps irMap: ^ (NSDictionary *aStationRep, NSUInteger index, BOOL *stop) {
         
           NSString *stationURLString = [aStationRep valueForKeyPath:@"location"];
           if (!stationURLString)
             return (id)nil;
           
-          NSURL *baseURL = nrSelf.engine.context.baseURL;
-          
+          NSURL *baseURL = wSelf.engine.context.baseURL;
+				
           NSURL *givenURL = [NSURL URLWithString:stationURLString];
           if (!givenURL)
             return (id)nil;
+						
+					if (![givenURL host])
+						return (id)nil;
           
           NSString *baseURLString = [[NSArray arrayWithObjects:
 		
-            [givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
-              [baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
-            [baseURL host] ? [givenURL host] : @"",
-            [givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
-            [baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
-            [baseURL path] ? [baseURL path] : @"",
-              @"/", //  path needs trailing slash
+						[givenURL scheme] ? [[givenURL scheme] stringByAppendingString:@"://"] :
+						[baseURL scheme] ? [[baseURL scheme] stringByAppendingString:@"://"] : @"",
+						[baseURL host] ? [givenURL host] : @"",
+						[givenURL port] ? [@":" stringByAppendingString:[[givenURL port] stringValue]] : 
+						[baseURL port] ? [@":" stringByAppendingString:[[baseURL port] stringValue]] : @"",
+						[baseURL path] ? [baseURL path] : @"",
+						@"/", //  path needs trailing slash
             
             //	[givenURL query] ? [@"?" stringByAppendingString:[givenURL query]] : @"",
             //	[givenURL fragment] ? [@"#" stringByAppendingString:[givenURL fragment]] : @"",
@@ -276,7 +272,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
           
         }]];
         
-        [nrSelf endPostponingDataRetrievalTimerFiring];
+        [wSelf endPostponingDataRetrievalTimerFiring];
 				
 				[AppDelegate() endNetworkActivity];
       
@@ -284,11 +280,9 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     } onFailure:^(NSError *error) {
     
-      NSLog(@"Error retrieving associated stations for current user: %@", nrSelf.userIdentifier);
-      
       dispatch_async(dispatch_get_main_queue(), ^ {
       
-        [nrSelf endPostponingDataRetrievalTimerFiring];
+        [wSelf endPostponingDataRetrievalTimerFiring];
 
         [AppDelegate() endNetworkActivity];
       
@@ -296,15 +290,15 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
         
     }];
   
-  } copy] autorelease];
+  } copy];
 
 }
 
 - (IRWebAPIRequestContextTransformer) defaultHostSwizzlingTransformer {
 
-  __block __typeof__(self) nrSelf = self;
+  __weak WARemoteInterface *wSelf = self;
 
-	return [[ ^ (NSDictionary *inOriginalContext) {
+	return [^ (NSDictionary *inOriginalContext) {
 	
     NSString *originalMethodName = [inOriginalContext objectForKey:kIRWebAPIEngineIncomingMethodName];
     NSURL *originalURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
@@ -321,7 +315,7 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
       
     }
     
-    NSURL *bestHostURL = [nrSelf bestHostForRequestNamed:originalMethodName];
+    NSURL *bestHostURL = [wSelf bestHostForRequestNamed:originalMethodName];
     NSParameterAssert(bestHostURL);
     
     NSURL *swizzledURL = [NSURL URLWithString:[[NSArray arrayWithObjects:
@@ -340,11 +334,12 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
     
     nil] componentsJoinedByString:@""]];
     
-    NSMutableDictionary *returnedContext = [[inOriginalContext mutableCopy] autorelease];
-    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];    
-		return returnedContext;
+    NSMutableDictionary *returnedContext = [inOriginalContext mutableCopy];
+    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		
+		return (NSDictionary *)returnedContext;
 	
-	} copy] autorelease];
+	} copy];
 
 }
 
@@ -360,6 +355,27 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
   WAReachabilityDetector *detector = [self.monitoredHostsToReachabilityDetectors objectForKey:aBaseURL];
   return detector;
 
+}
+
+- (WANetworkState) networkState {
+
+  NSURL *cloudHost = self.engine.context.baseURL;
+	BOOL hasStationAvailable = NO, hasCloudAvailable = NO;
+	
+	for (NSURL *hostURL in self.monitoredHosts) {
+		if (WAReachabilityStateAvailable == [self reachabilityStateForHost:hostURL]) {
+			if ([hostURL isEqual:cloudHost]) {
+				hasCloudAvailable = YES;
+			} else {
+				hasStationAvailable = YES;
+			}
+		}
+	}
+	
+	BOOL answer = (hasCloudAvailable ? WACloudReachable : 0) | (hasStationAvailable ? WAStationReachable : 0);
+	
+	return answer;
+  
 }
 
 @end
@@ -384,7 +400,10 @@ static NSString * const kWARemoteInterface_Reachability_availableHosts = @"WARem
 
 - (void) reachabilityDetectorDidUpdate:(WAReachabilityDetector *)aDetector {
 
-  //  NSLog(@"Updated: %@", aDetector);
+	[self willChangeValueForKey:@"networkState"];
+
+	[self didChangeValueForKey:@"networkState"];
+
 
 }
 

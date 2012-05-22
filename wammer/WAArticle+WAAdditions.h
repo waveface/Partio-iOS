@@ -12,6 +12,6 @@
 
 - (BOOL) hasMeaningfulContent;
 
-- (WAFile *) representedFile;
+@property (nonatomic, readonly, strong) NSDate *presentationDate;
 
 @end

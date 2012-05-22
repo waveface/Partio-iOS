@@ -11,13 +11,11 @@
 #import "WAPreviewBadge.h"
 #import "WADataStore.h"
 #import "WACompositionViewPhotoCell.h"
-#import "WAViewController.h"
 
 @interface WACompositionViewControllerPad () <AQGridViewDelegate, AQGridViewDataSource>
 
 @property (nonatomic, readwrite, retain) UIPopoverController *imagePickerPopover;
 @property (nonatomic, readwrite, retain) UIButton *imagePickerPopoverPresentingSender;
-@property (nonatomic, readwrite, assign) CGRect lastAdjustedInterfaceBounds;
 
 @property (nonatomic, readwrite, retain) WAPreviewBadge *previewBadge;
 @property (nonatomic, readwrite, retain) UIButton *previewBadgeButton;
@@ -29,7 +27,7 @@
 
 @implementation WACompositionViewControllerPad
 @synthesize photosView, noPhotoReminderView, toolbar, noPhotoReminderViewElements, previewBadge, previewBadgeButton;
-@synthesize imagePickerPopover, imagePickerPopoverPresentingSender, lastAdjustedInterfaceBounds;
+@synthesize imagePickerPopover, imagePickerPopoverPresentingSender;
 
 - (id) init {
 
@@ -45,26 +43,7 @@
 
 }
 
-- (void) adjustContainerViewWithInterfaceBounds:(CGRect)newBounds {
-
-	[super adjustContainerViewWithInterfaceBounds:newBounds];
-	
-	if (!CGRectEqualToRect(self.lastAdjustedInterfaceBounds, newBounds))
-	if ([imagePickerPopover isPopoverVisible]) {
-		
-		//	[UIView animateWithDuration:5.0 delay:0 options:UIViewAnimationOptionOverrideInheritedCurve|UIViewAnimationOptionOverrideInheritedDuration animations:^{
-		//		
-		//		[self presentImagePickerController:(IRImagePickerController *)imagePickerPopover.contentViewController sender:self.imagePickerPopoverPresentingSender];
-		//		
-		//	} completion:nil];
-		
-	}
-	
-	self.lastAdjustedInterfaceBounds = newBounds;
-
-}
-
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSString *)changeKind {
+- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
 	
 	WAPreview *usedPreview = [self.article.previews anyObject];
 	
@@ -111,14 +90,14 @@
 
 }
 
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender {
+- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(UIButton *)sender animated:(BOOL)animated {
 
 	@try {
 	
 		self.imagePickerPopover.contentViewController = controller;
 	
 		if (!self.imagePickerPopover)
-			self.imagePickerPopover = [[[UIPopoverController alloc] initWithContentViewController:controller] autorelease];
+			self.imagePickerPopover = [[UIPopoverController alloc] initWithContentViewController:controller];
 					
 		if (!self.imagePickerPopoverPresentingSender)
 			self.imagePickerPopoverPresentingSender = sender;
@@ -127,13 +106,13 @@
 				
 	} @catch (NSException *exception) {
 
-		[[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+		[[[UIAlertView alloc] initWithTitle:@"Error Presenting Image Picker" message:@"There was an error presenting the image picker." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
 	
 	}
 
 }
 
-- (void) dismissImagePickerController:(IRImagePickerController *)controller {
+- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
 
 	self.imagePickerPopoverPresentingSender = nil;
 
@@ -141,7 +120,7 @@
 
 }
 
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender {
+- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	__block __typeof__(self) nrSelf = self;
 	__block __typeof__(controller) nrController = controller;
@@ -149,15 +128,8 @@
 	controller.showsCameraControls = NO;
 	controller.onViewDidAppear = ^ (BOOL animated) {
 		
-//		[nrController retain];
-//		
-//		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-			
-			nrController.showsCameraControls = YES;
-      nrController.view.frame = [nrController.view.window convertRect:[nrController.view.window.screen applicationFrame] fromWindow:nil];
-//			[nrController autorelease];
-//		
-//		});
+		nrController.showsCameraControls = YES;
+		nrController.view.frame = [nrController.view.window convertRect:[nrController.view.window.screen applicationFrame] fromWindow:nil];
 		
 	};
 	
@@ -199,7 +171,7 @@
 
 }
 
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller {
+- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
 
   [CATransaction begin];
   
@@ -237,7 +209,9 @@
 
 	[super viewDidLoad];
 	
-	UIView *photosViewWrapper = [[[UIView alloc] initWithFrame:self.photosView.frame] autorelease];
+	self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPatternWoodTexture"]];
+	
+	UIView *photosViewWrapper = [[UIView alloc] initWithFrame:self.photosView.frame];
 	photosViewWrapper.autoresizingMask = self.photosView.autoresizingMask;
 	photosViewWrapper.clipsToBounds = NO;
 	[self.photosView.superview addSubview:photosViewWrapper];
@@ -312,7 +286,7 @@
 	objc_setAssociatedObject(self.photosView, @"defaultInsets", [NSValue valueWithUIEdgeInsets:self.photosView.contentInset], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	self.photosView.frame = UIEdgeInsetsInsetRect(self.photosView.frame, (UIEdgeInsets){ 0, -20, 0, -20 });
 	
-	UIView *contextTextShadowView = [[[UIView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	UIView *contextTextShadowView = [[UIView alloc] initWithFrame:self.contentTextView.frame];
 	contextTextShadowView.autoresizingMask = self.contentTextView.autoresizingMask;
 	contextTextShadowView.layer.shadowOffset = (CGSize){ 0, 2 };
 	contextTextShadowView.layer.shadowRadius = 2;
@@ -321,7 +295,7 @@
 	contextTextShadowView.layer.backgroundColor = [UIColor blackColor].CGColor;
 	[self.contentTextView.superview insertSubview:contextTextShadowView belowSubview:self.contentTextView];
 	
-	IRConcaveView *contentTextBackgroundView = [[[IRConcaveView alloc] initWithFrame:self.contentTextView.frame] autorelease];
+	IRConcaveView *contentTextBackgroundView = [[IRConcaveView alloc] initWithFrame:self.contentTextView.frame];
 	contentTextBackgroundView.autoresizingMask = self.contentTextView.autoresizingMask;
 	contentTextBackgroundView.innerShadow = [IRShadow shadowWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25] offset:(CGSize){ 0, 2 } spread:4];
 	contentTextBackgroundView.userInteractionEnabled = NO;
@@ -330,7 +304,7 @@
 	contentTextBackgroundView.layer.masksToBounds = YES;
 	[self.contentTextView.superview insertSubview:contentTextBackgroundView belowSubview:self.contentTextView];
 	
-	self.previewBadge = [[[WAPreviewBadge alloc] initWithFrame:photosViewWrapper.frame] autorelease];
+	self.previewBadge = [[WAPreviewBadge alloc] initWithFrame:photosViewWrapper.frame];
 	self.previewBadge.autoresizingMask = photosViewWrapper.autoresizingMask;
 	self.previewBadge.frame = UIEdgeInsetsInsetRect(self.previewBadge.frame, (UIEdgeInsets){ 0, 8, 8, -48 });
 	self.previewBadge.alpha = 0;
@@ -352,7 +326,7 @@
     
   }];
 	
-	[self handleCurrentArticleFilesChangedFrom:self.article.fileOrder to:self.article.fileOrder changeKind:NSKeyValueChangeReplacement];
+	[self handleCurrentArticleFilesChangedFrom:self.article.files to:self.article.files changeKind:NSKeyValueChangeReplacement];
 	[self handleCurrentArticlePreviewsChangedFrom:self.article.previews to:self.article.previews changeKind:NSKeyValueChangeReplacement];
 	
 }
@@ -372,23 +346,6 @@
 	[super viewDidUnload];
 
 }
-
-- (void) dealloc {
-
-	[imagePickerPopover release];
-	
-	[photosView release];
-	[noPhotoReminderView release];
-	[toolbar release];
-	[noPhotoReminderViewElements release];
-	
-	[previewBadge release];
-	[previewBadgeButton release];
-	
-	[super dealloc];
-
-}
-
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
 
@@ -410,7 +367,17 @@
 
 - (NSUInteger) numberOfItemsInGridView:(AQGridView *)gridView {
 
-	return [self.article.fileOrder count];
+	return [self.article.files count];
+
+}
+
+- (void) gridViewDidEndUpdateAnimation:(AQGridView *)gridView {
+
+	[UIView animateWithDuration:0.3 animations:^{
+		
+		[self adjustPhotos];
+
+	}];
 
 }
 
@@ -419,9 +386,7 @@
 	static NSString * const identifier = @"photoCell";
 	
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
-	WAFile *representedFile = (WAFile *)[[self.article.files objectsPassingTest: ^ (WAFile *aFile, BOOL *stop) {
-		return [[[aFile objectID] URIRepresentation] isEqual:[self.article.fileOrder objectAtIndex:index]];
-	}] anyObject];
+	WAFile *representedFile = [self.article.files objectAtIndex:index];
 	
 	if (!cell) {
 	
@@ -433,64 +398,131 @@
 				
 	}
 	
-	cell.alpha = 1;
-	cell.image = representedFile.thumbnail;
+	cell.image = [representedFile smallestPresentableImage];
 	cell.clipsToBounds = NO;
+	cell.selectionStyle = AQGridViewCellSelectionStyleNone;
+	
+	__weak WACompositionViewPhotoCell *wCell = cell;
 	
 	cell.onRemove = ^ {
+
+		if (!wCell)
+			return;
 	
-		[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+		WAFile *file = wCell.representedFile;
+		WAArticle *article = file.article;
 		
-			cell.alpha = 0;
+		[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
+		[[UIApplication sharedApplication] performSelector:@selector(endIgnoringInteractionEvents) withObject:nil afterDelay:0.5f];
 		
-		} completion: ^ (BOOL finished) {
-		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				
-				[representedFile.article removeFilesObject:representedFile];
-				
-			});
+		[article willChangeValueForKey:@"files"];
+		[[article mutableOrderedSetValueForKey:@"files"] removeObject:file];
+		[article didChangeValueForKey:@"files"];
 			
-		}];
-	
 	};
 	
 	return cell;
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSString *)changeKind {
+- (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
-	dispatch_async(dispatch_get_main_queue(), ^ {
+	if (![self isViewLoaded])
+		return;
+	
+	self.noPhotoReminderView.hidden = !![self.article.files count];
+	
+	if ([oldValue isEqual:newValue])
+	if ([self.photosView numberOfItems] == [newValue count])
+		return;
+	
+	NSParameterAssert(![self.photosView isAnimatingUpdates]);
+	
+	switch (kind) {
+	
+		case NSKeyValueChangeSetting: {
+		
+			[self.photosView reloadData];
+			[self adjustPhotos];
+		
+			break;
+		}
+		
+		case NSKeyValueChangeInsertion: {
+		
+			[self.photosView beginUpdates];
+			
+			[self.photosView insertItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
+			
+			[self.photosView endUpdates];
+			
+			break;
+			
+		}
+		
+		case NSKeyValueChangeRemoval: {
+		
+			[self.photosView beginUpdates];
+			
+			[self.photosView deleteItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
+			
+			[self.photosView endUpdates];
+
+			break;
+			
+		}
+		
+		case NSKeyValueChangeReplacement: {
+		
+			[self.photosView beginUpdates];
+			
+			[self.photosView reloadItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
+			
+			[self.photosView endUpdates];
+			
+			break;
+			
+		}
+
+	}
+
+}
+
+- (void) handleCurrentArticleFilesChangedFrom:(NSOrderedSet *)fromValue to:(NSOrderedSet *)toValue changeKind:(NSKeyValueChange)changeKind {
+
+	[self.photosView reloadData];
+	[self adjustPhotos];
+
+	return;
+
+	NSCParameterAssert([fromValue isKindOfClass:[NSOrderedSet class]]);
+	NSCParameterAssert([toValue isKindOfClass:[NSOrderedSet class]]);
+
+	NSArray *fromFiles = (NSArray *)([fromValue isKindOfClass:[NSArray class]] ? fromValue : [fromValue isKindOfClass:[NSOrderedSet class]] ? [(NSOrderedSet *)fromValue array] : nil);
+
+	NSArray *toFiles = (NSArray *)([toValue isKindOfClass:[NSArray class]] ? toValue : [toValue isKindOfClass:[NSOrderedSet class]] ? [(NSOrderedSet *)toValue array] : nil);
+	
+	NSCParameterAssert([NSThread isMainThread]);
+	
+//	dispatch_async(dispatch_get_main_queue(), ^ {
 	
 		if (![self isViewLoaded])
 			return;
 			
-		@try {
-		
-			self.noPhotoReminderView.hidden = ([self.article.fileOrder count] > 0);
-		
-		} @catch (NSException *e) {
-		
-			self.noPhotoReminderView.hidden = YES;
-		
-			if (![e.name isEqualToString:NSObjectInaccessibleException])
-				@throw e;
-			
-    } @finally {
+		self.noPhotoReminderView.hidden = !![self.article.files count];
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			
-				NSArray *removedObjects = [fromValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-					return ![toValue containsObject:evaluatedObject];
+				NSArray *removedObjects = [fromFiles filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+					return ![toFiles containsObject:evaluatedObject];
 				}]];
 				
-				NSIndexSet *removedObjectIndices = [fromValue indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				NSIndexSet *removedObjectIndices = [fromFiles indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
 					return [removedObjects containsObject:obj];
 				}];
 				
-				NSArray *insertedObjects = [toValue filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-					return ![fromValue containsObject:evaluatedObject];
+				NSArray *insertedObjects = [toFiles filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+					return ![fromFiles containsObject:evaluatedObject];
 				}]];
 				
 				BOOL hasCellNumberChanges = ([insertedObjects count] || [removedObjects count]);
@@ -516,7 +548,7 @@
 				
 				NSMutableDictionary *oldFileURIsToCellRects = [NSMutableDictionary dictionary];
 				[oldShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[oldFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[fromValue objectAtIndex:idx]];
+					[oldFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[fromFiles objectAtIndex:idx]];
 				}];
 				
 				reload();
@@ -547,14 +579,14 @@
 				NSIndexSet *newShownCellIndices = [self.photosView visibleCellIndices];
 				NSMutableDictionary *newFileURIsToCellRects = [NSMutableDictionary dictionary];
 				[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[newFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[toValue objectAtIndex:idx]];
+					[newFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[toFiles objectAtIndex:idx]];
 				}];
 				
 				[animationBlocks irEnqueueBlock:^{
 					
 					[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
 						
-						NSValue *oldRectValue = [oldFileURIsToCellRects objectForKey:[toValue objectAtIndex:idx]];
+						NSValue *oldRectValue = [oldFileURIsToCellRects objectForKey:[toFiles objectAtIndex:idx]];
 						if (!oldRectValue)
 							return;
 						
@@ -581,9 +613,7 @@
 					
 			});
 		
-		}
-		
-	});
+//	});
 
 }
 

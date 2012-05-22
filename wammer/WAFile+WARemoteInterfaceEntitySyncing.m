@@ -33,7 +33,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 - (void) configureWithRemoteDictionary:(NSDictionary *)inDictionary {
  
-	NSMutableDictionary *usedDictionary = [[inDictionary mutableCopy] autorelease];
+	NSMutableDictionary *usedDictionary = [inDictionary mutableCopy];
   
   if ([[usedDictionary objectForKey:@"url"] isEqualToString:@""])
     [usedDictionary removeObjectForKey:@"url"];
@@ -45,8 +45,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     NSString *pathExtension = [self.remoteFileName pathExtension];
     if (pathExtension) {
       
-      CFStringRef preferredUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, NULL);
-      self.resourceType = (NSString *)[NSMakeCollectable(preferredUTI) autorelease];
+      CFStringRef preferredUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)pathExtension, NULL);
+      self.resourceType = (__bridge_transfer NSString *)preferredUTI;
 
     }
     
@@ -58,7 +58,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
   
   if (!self.resourceURL)
   if (self.identifier && self.remoteResourceHash)
-    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+    self.resourceURL = [[self class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", self.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
   
 }
 
@@ -84,30 +84,30 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
     
 		mapping = [NSDictionary dictionaryWithObjectsAndKeys:
 		
-			//	@"article", @"article",
 			@"codeName", @"code_name",
-			//	@"owner", @"owner",
+			
 			@"text", @"description",
 			@"creationDeviceIdentifier", @"device_id",
 			@"remoteFileName", @"file_name",
 			@"remoteFileSize", @"file_size",
-			//	@"group", @"group",
+			
 			@"remoteRepresentedImage", @"image",
 			@"remoteResourceHash", @"md5",
 			@"resourceType", @"mime_type",
 			@"identifier", @"object_id",
 			@"title", @"title",
 			@"remoteResourceType", @"type",
+			
+			@"smallThumbnailURL", @"small_thumbnail_url",
 			@"thumbnailURL", @"thumbnail_url",
 			@"largeThumbnailURL", @"large_thumbnail_url",
+			
 			@"resourceURL", @"url",
 			@"timestamp", @"timestamp",
       
-      @"pageElements", @"pageElements",
+			@"pageElements", @"pageElements",
 			
 		nil];
-		
-		[mapping retain];
 		
 	});
 
@@ -127,8 +127,12 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
-	NSMutableDictionary *returnedDictionary = [[incomingRepresentation mutableCopy] autorelease];
+	NSMutableDictionary *returnedDictionary = [incomingRepresentation mutableCopy];
 	
+	NSString *smallImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.small.url"];
+	if ([smallImageRepURLString isKindOfClass:[NSString class]])
+    [returnedDictionary setObject:smallImageRepURLString forKey:@"small_thumbnail_url"];
+ 
 	NSString *mediumImageRepURLString = [returnedDictionary valueForKeyPath:@"image_meta.medium.url"];
 	if ([mediumImageRepURLString isKindOfClass:[NSString class]])
     [returnedDictionary setObject:mediumImageRepURLString forKey:@"thumbnail_url"];
@@ -137,7 +141,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if ([largeImageRepURLString isKindOfClass:[NSString class]])
     [returnedDictionary setObject:largeImageRepURLString forKey:@"large_thumbnail_url"];
 	
-  NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
+	NSString *incomingFileType = [incomingRepresentation objectForKey:@"type"];
   
   if ([incomingFileType isEqualToString:@"image"]) {
   
@@ -214,15 +218,14 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		
 	if ([aLocalKeyPath isEqualToString:@"resourceType"]) {
 	
-		if (UTTypeConformsTo((CFStringRef)aValue, kUTTypeItem))
+		if (UTTypeConformsTo((__bridge CFStringRef)aValue, kUTTypeItem))
 			return aValue;
 		 
 		id returnedValue = IRWebAPIKitStringValue(aValue);
 		
-		NSArray *possibleTypes = [NSMakeCollectable(UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (CFStringRef)returnedValue, nil)) autorelease];
+		NSArray *possibleTypes = (__bridge_transfer NSArray *)UTTypeCreateAllIdentifiersForTag(kUTTagClassMIMEType, (__bridge CFStringRef)returnedValue, nil);
 		
 		if ([possibleTypes count]) {
-			//	NSLog(@"Warning: tried to set a MIME type for a UTI tag.");
 			returnedValue = [possibleTypes objectAtIndex:0];
 		}
     
@@ -237,7 +240,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	if ([aLocalKeyPath isEqualToString:@"resourceURL"] || 
 		[aLocalKeyPath isEqualToString:@"largeThumbnailURL"] || 
-		[aLocalKeyPath isEqualToString:@"thumbnailURL"]) {
+		[aLocalKeyPath isEqualToString:@"thumbnailURL"] ||
+		[aLocalKeyPath isEqualToString:@"smallThumbnailURL"]) {
 	
     if (![aValue length])
       return nil;
@@ -267,7 +271,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
   [self synchronizeWithOptions:nil completion:completionBlock];
   
-}
+}	
 
 - (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
@@ -277,223 +281,246 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	if (!syncStrategy)
 		syncStrategy = kWAFileSyncAdaptiveQualityStrategy;
 
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-	WADataStore *ds = [WADataStore defaultStore];
-	NSURL *ownURL = [[self objectID] URIRepresentation];
-
-	if (([[NSURL URLWithString:self.resourceURL] isFileURL] || !self.resourceURL) && (self.resourceFilePath)) {
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	WADataStore * const ds = [WADataStore defaultStore];
+	NSURL * const ownURL = [[self objectID] URIRepresentation];
+	NSFileManager * const fm = [NSFileManager defaultManager];
 	
-		//	Upload stuff
-		BOOL expensiveOperationsAllowed = [[WARemoteInterface sharedInterface] areExpensiveOperationsAllowed];
-		BOOL sendsThumbnailImage = YES;
-		BOOL sendsFullResolutionImage = expensiveOperationsAllowed;
+	BOOL areExpensiveOperationsAllowed = [ri areExpensiveOperationsAllowed];
+	
+	BOOL canSendResourceImage = NO;
+	BOOL canSendThumbnailImage = NO;
+	
+	if ([syncStrategy isEqual:kWAFileSyncAdaptiveQualityStrategy]) {
+	
+		canSendResourceImage = areExpensiveOperationsAllowed;
+		canSendThumbnailImage = YES;
+	
+	} else if ([syncStrategy isEqual:kWAFileSyncReducedQualityStrategy]) {
+	
+		canSendResourceImage = NO;
+		canSendThumbnailImage = YES;
+	
+	} else if ([syncStrategy isEqual:kWAFileSyncFullQualityStrategy]) {
+	
+		canSendResourceImage = YES;
+		canSendThumbnailImage = YES;
+	
+	}
+	
+	BOOL needsSendingResourceImage = !self.resourceURL;
+	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
+	
+	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
 		
-		if ([syncStrategy isEqual:kWAFileSyncAdaptiveQualityStrategy]) {
+		//	Bug with extensions:
+		//	“application/octet-stream”
+		//	crumbles our server
 		
-			//	No op
+		if (![[aPath pathExtension] length])
+			return NO;
 		
-		} else if ([syncStrategy isEqual:kWAFileSyncReducedQualityStrategy]) {
+		BOOL isDirectory = NO;
+		if (![[NSFileManager defaultManager] fileExistsAtPath:aPath isDirectory:&isDirectory])
+			return NO;
 		
-			sendsFullResolutionImage = NO;
-		
-		} else if ([syncStrategy isEqual:kWAFileSyncFullQualityStrategy]) {
-		
-			sendsFullResolutionImage = YES;
-		
-		}
-		
-		
-		__block NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-		__block NSString *usedObjectID = nil;
-		__block NSError *lastError = nil;
-		__block BOOL shouldContinue = YES;
-		
-		[queue setSuspended:YES];
-		[queue setMaxConcurrentOperationCount:1];
-		
-		void (^cleanup)(void) = ^ {
-			NSParameterAssert([NSThread isMainThread]);
-			[queue autorelease];
-			[usedObjectID autorelease];
-			[lastError autorelease];
-		};
-		
-		//	NSString *capturedResourcePath = self.resourceFilePath;
-		NSString *sentResourcePath = [[[WADataStore defaultStore] persistentFileURLForFileAtPath:self.resourceFilePath] path];
-		
-		if (sendsThumbnailImage) {
-		
-			[queue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
+		return (BOOL)!isDirectory;
+	
+	};
+	
+	if (!isValidPath(self.resourceFilePath)) {
+		NSLog(@"Resource file path %@ is not valid.  Skipping.", self.resourceFilePath);
+		canSendResourceImage = NO;
+	}
+	
+	NSMutableArray *operations = [NSMutableArray array];
+	NSManagedObjectContext *context = [ds disposableMOC];
+	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+	
+	if (needsSendingThumbnailImage && canSendThumbnailImage) {
+	
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
-				if (!shouldContinue) {
-					aCallback(lastError);
-					return;
-				}
+			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
 			
-				UIImage *originalImage = [UIImage imageWithContentsOfFile:sentResourcePath];
-				CGSize maxThumbnailSize = (CGSize){ 512, 512 };
-				CGSize usedThumbnailSize = IRGravitize((CGRect){ CGPointZero, maxThumbnailSize }, originalImage.size, kCAGravityResizeAspect).size;
-				UIImage *thumbnailImage = [originalImage irScaledImageWithSize:usedThumbnailSize];
-				
-				NSString *sentThumbnailFilePath = [[ds persistentFileURLForData:UIImagePNGRepresentation(thumbnailImage) extension:@"png"] path];
-				NSParameterAssert(sentThumbnailFilePath);
-				
-				NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-					[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
-					WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
-				nil];
-				
-				if (usedObjectID)
-					[options setObject:usedObjectID forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
-				
-				[ri createAttachmentWithFile:[NSURL fileURLWithPath:sentThumbnailFilePath] group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
-				
-					if (aCallback)
-						aCallback(attachmentIdentifier);
-					
-					[[NSFileManager defaultManager] removeItemAtPath:sentThumbnailFilePath error:nil];
-					
-				} onFailure: ^ (NSError *error) {
-				
-					NSCParameterAssert(error);
-				
-					if (aCallback)
-						aCallback(error);
-					
-					[[NSFileManager defaultManager] removeItemAtPath:sentThumbnailFilePath error:nil];
-					
-				}];
-				
-			} completionBlock: ^ (id results) {
+			NSString *thumbnailFilePath = file.thumbnailFilePath;
+			if (!isValidPath(thumbnailFilePath)) {
 			
-				if ([results isKindOfClass:[NSString class]]) {
+				UIImage *smallestImage = [file smallestPresentableImage];
+				CGSize usedThumbnailSize = IRGravitize((CGRect){ CGPointZero, (CGSize){ 512, 512 } }, smallestImage.size, kCAGravityResizeAspect).size;
 				
-					NSParameterAssert(!usedObjectID || [usedObjectID isEqual:results]);
-					
-					if (!usedObjectID)					
-						usedObjectID = [results retain];
+				UIImage *thumbnailImage = [smallestImage irScaledImageWithSize:usedThumbnailSize];
+				thumbnailFilePath = [[ds persistentFileURLForData:UIImagePNGRepresentation(thumbnailImage) extension:@"png"] path];
+				file.thumbnailFilePath = thumbnailFilePath;
 				
-				} else {
+				NSError *error = nil;
 				
-					shouldContinue = NO;
-					
-					if ([results isKindOfClass:[NSError class]])
-						lastError = [results retain];
-				
-				}
-				
-			}]];
-		
-		}
-		
-		if (sendsFullResolutionImage) {
-		
-			[queue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
-
-				if (!shouldContinue) {
-					aCallback(lastError);
-					return;
-				}
-			
-				NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-					[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
-					WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
-				nil];
-				
-				if (usedObjectID)
-					[options setObject:usedObjectID forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
-				
-				[ri createAttachmentWithFile:[NSURL fileURLWithPath:sentResourcePath] group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
-				
-					if (aCallback)
-						aCallback(attachmentIdentifier);
-					
-				} onFailure: ^ (NSError *error) {
-				
-					if (aCallback)
-						aCallback(error);
-					
-				}];
-				
-			} completionBlock: ^ (id results) {
-			
-				if ([results isKindOfClass:[NSString class]]) {
-					
-					NSParameterAssert(!usedObjectID || [usedObjectID isEqual:results]);
-					
-					usedObjectID = [results retain];
-				
-				} else {
-				
-					shouldContinue = NO;
-					
-					if ([results isKindOfClass:[NSError class]])
-						lastError = [results retain];
-				
-				}
-				
-			}]];
-		
-		}
-		
-		[queue addOperation:[IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
-		
-			if (usedObjectID) {
-			
-				NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-				context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
-				
-				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:ownURL];
-				savedFile.identifier = usedObjectID;
-				
-				NSError *savingError = nil;
-				BOOL didSave = [context save:&savingError];
-				
-				if (completionBlock)
-					completionBlock(didSave, context, [NSArray arrayWithObject:savedFile], didSave ? nil : savingError);
-				
-			} else {
-			
-				if (completionBlock)
-					completionBlock(NO, nil, nil, lastError);
+				BOOL didSave = [context save:&error];
+				NSCAssert1(didSave, @"Generated thumbnail could not be saved: %@", error);
 			
 			}
 			
-			if (aCallback)
-				aCallback(nil);
+			NSParameterAssert(thumbnailFilePath);
+			NSParameterAssert([[NSFileManager defaultManager] fileExistsAtPath:thumbnailFilePath]);
+			
+			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
+				WARemoteAttachmentMediumSubtype, kWARemoteAttachmentSubtype,
+				file.identifier, kWARemoteAttachmentUpdatedObjectIdentifier,
+			nil];
+			
+			[ri createAttachmentWithFile:[NSURL fileURLWithPath:thumbnailFilePath] group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
+			
+				[context performBlock:^{
+					
+					WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+					file.identifier = attachmentIdentifier;
+					file.thumbnailURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@&image_meta=medium", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"thumbnailURL"];
+					
+					NSError *error = nil;
+					BOOL didSave = [context save:&error];
+					NSCAssert1(didSave, @"Generated thumbnail uploaded but metadata is not saved correctly: %@", error);
+					
+					callback(attachmentIdentifier);
+					
+				}];
+									
+			} onFailure: ^ (NSError *error) {
+			
+				callback(error);
+									
+			}];
+							
+		} trampoline:^(IRAsyncOperationInvoker block) {
 		
-		} completionBlock: ^ (id results) {
+			[context performBlock:block];
+			
+		} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
 		
-			dispatch_async(dispatch_get_main_queue(), cleanup);
+			[context performBlock:block];
 			
 		}]];
-		
-		[queue setSuspended:NO];
-			
-	} else {
-	
-		[ri retrieveAttachment:self.identifier onSuccess:^(NSDictionary *attachmentRep) {
-			
-			NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-			context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
-			
-			WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:ownURL];
-			[savedFile configureWithRemoteDictionary:attachmentRep];
-			
-			NSError *savingError = nil;
-			BOOL didSave = [context save:&savingError];
-		
-			if (completionBlock)
-				completionBlock(didSave, context, [NSArray arrayWithObject:savedFile], didSave ? nil : savingError);
-			
-		} onFailure:^(NSError *error) {
-		
-			if (completionBlock)
-				completionBlock(NO, nil, nil, error);
-			
-		}];
 	
 	}
+	
+	if (needsSendingResourceImage && canSendResourceImage) {
+	
+		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+			
+			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+			
+			NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+				[NSNumber numberWithUnsignedInteger:WARemoteAttachmentImageType], kWARemoteAttachmentType,
+				WARemoteAttachmentOriginalSubtype, kWARemoteAttachmentSubtype,
+			nil];
+			
+			if (file.identifier)
+				[options setObject:file.identifier forKey:kWARemoteAttachmentUpdatedObjectIdentifier];
+			
+			NSString *sentResourcePath = file.resourceFilePath;
+			
+			[ri createAttachmentWithFile:[NSURL fileURLWithPath:sentResourcePath] group:ri.primaryGroupIdentifier options:options onSuccess: ^ (NSString *attachmentIdentifier) {
+			
+				[context performBlock:^{
+					
+					WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+					file.identifier = attachmentIdentifier;
+					file.resourceURL = [[file class] transformedValue:[@"/v2/attachments/view?object_id=" stringByAppendingFormat:@"%@", file.identifier] fromRemoteKeyPath:nil toLocalKeyPath:@"resourceURL"];
+					
+					[context save:nil];
+					
+					callback(attachmentIdentifier);
+
+				}];
+				
+			} onFailure: ^ (NSError *error) {
+			
+				callback(error);
+				
+			}];
+
+		} trampoline:^(IRAsyncOperationInvoker block) {
+			
+			[context performBlock:block];
+			
+		} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
+		
+			[context performBlock:block];
+			
+		}]];
+	
+	}
+	
+	[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+		
+		WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+
+		if (file.identifier) {
+		
+			[ri retrieveAttachment:file.identifier onSuccess:^(NSDictionary *attachmentRep) {
+				
+				callback(attachmentRep);
+
+			} onFailure:^(NSError *error) {
+			
+				callback(error);
+				
+			}];
+		
+		} else {
+		
+			callback(nil);
+		
+		}
+
+	} trampoline:^(IRAsyncOperationInvoker block) {
+	
+		[context performBlock:block];
+		
+	} callback:^(id results) {
+		
+		if ([results isKindOfClass:[NSDictionary class]]) {
+		
+			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+			[file configureWithRemoteDictionary:(NSDictionary *)results];
+			
+			NSError *error = nil;
+			BOOL didSave = [context save:&error];
+			NSCAssert1(didSave, @"File entity syncing should merge remote information: %@", error);
+		
+			if (completionBlock)
+				completionBlock(didSave, context, [NSArray arrayWithObject:file], didSave ? nil : error);
+
+		} else if ([results isKindOfClass:[NSError class]]){
+		
+			if (completionBlock)
+				completionBlock(NO, nil, nil, (NSError *)results);
+
+		} else {
+		
+			if (completionBlock)
+				completionBlock(NO, nil, nil, nil);
+
+		}
+
+	} callbackTrampoline:^(IRAsyncOperationInvoker block) {
+		
+		[context performBlock:block];
+
+	}]];
+	
+	
+	__block NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+	[operations addObject:[NSBlockOperation blockOperationWithBlock:^ {
+		queue = nil;
+	}]];
+	[queue setSuspended:YES];
+	[operations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *op, NSUInteger idx, BOOL *stop) {
+		if (idx > 0)
+			[op addDependency:(IRAsyncBarrierOperation *)[operations objectAtIndex:(idx - 1)]];
+	}];
+	[queue addOperations:operations waitUntilFinished:NO];
+	[queue setSuspended:NO];
 
 }
 

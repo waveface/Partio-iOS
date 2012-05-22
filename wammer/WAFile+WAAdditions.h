@@ -10,12 +10,6 @@
 
 @interface WAFile (WAAdditions)
 
-@property (nonatomic, readonly, retain) UIImage *resourceImage;
-@property (nonatomic, readonly, retain) UIImage *largeThumbnailImage;
-@property (nonatomic, readonly, retain) UIImage *thumbnailImage;
-
-- (UIImage *) presentableImage;	//	Conforms to KVO; automatically chooses the highest resolution thing
-
-+ (dispatch_queue_t) sharedResourceHandlingQueue;
-
 @end
+
+#import "WAFile+LazyImages.h"

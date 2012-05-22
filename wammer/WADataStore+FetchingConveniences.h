@@ -12,11 +12,23 @@
 
 @interface WADataStore (FetchingConveniences)
 
+- (NSFetchRequest *) newFetchRequestForUsersWithIdentifier:(NSString *)identifier;
+
 - (NSFetchRequest *) newFetchRequestForAllArticles NS_RETURNS_RETAINED;
+- (NSFetchRequest *) newFetchRequestForFilesInArticle:(WAArticle *)article;
 
-- (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
+- (NSFetchRequest *) newFetchRequestForOldestArticle;
+- (NSFetchRequest *) newFetchRequestForNewestArticle;
+- (NSFetchRequest *) newFetchRequestForNewestArticleOnDate:(NSDate *)date;
 
-- (void) fetchLatestArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
+- (NSFetchRequest *) newFetchRequestForArticlesWithPreviews;
+- (NSFetchRequest *) newFetchRequestForArticlesWithPhotos;
+- (NSFetchRequest *) newFetchRequestForArticlesWithoutPreviewsOrPhotos;
+
+- (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
+
+- (void) fetchLatestCreatedArticleInGroup:(NSString *)aGroupIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
+
 - (void) fetchArticleWithIdentifier:(NSString *)anArticleIdentifier usingContext:(NSManagedObjectContext *)aContext onSuccess:(void(^)(NSString *identifier, WAArticle *article))callback;
 
 @end

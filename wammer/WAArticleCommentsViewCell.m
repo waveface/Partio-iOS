@@ -18,7 +18,7 @@
 @implementation WAArticleCommentsViewCell
 @synthesize style;
 @dynamic reuseIdentifier;
-@synthesize imageStackView, avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
+@synthesize avatarView, userNicknameLabel, contentTextLabel, dateOriginLabel, dateLabel, originLabel;
 
 - (id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 
@@ -41,7 +41,7 @@
 		}
 	}
 
-	self = [[[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil] retain];
+	self = [[self class] cellFromNibNamed:loadedNibName instantiatingOwner:nil withOptions:nil];
 	
 	if (!self)
 		return nil;
@@ -53,20 +53,6 @@
 	self.avatarView.layer.masksToBounds = YES;
     
 	return self;
-	
-}
-
-- (void) dealloc {
-
-	[imageStackView release];
-	[avatarView release];
-	[userNicknameLabel release];
-	[contentTextLabel release];
-	[dateOriginLabel release];
-	[dateLabel release];
-	[originLabel release];
-	
-	[super dealloc];
 	
 }
 

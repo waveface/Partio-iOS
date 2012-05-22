@@ -14,70 +14,64 @@
 
 - (IRWebAPIRequestContextTransformer) defaultV2AuthenticationSignatureBlock {
 
-	__block __typeof__(self) nrSelf = self;
+	__weak WARemoteInterface *nrSelf = self;
 	
-	return [[ ^ (NSDictionary *inOriginalContext) {
+	return ^ (NSDictionary *inOriginalContext) {
 			
-		NSMutableDictionary *mutatedContext = [[inOriginalContext mutableCopy] autorelease];
-		NSMutableDictionary *originalFormMultipartFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
-		NSMutableDictionary *originalFormURLEncodedFields = [inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
+		NSMutableDictionary *mutatedContext = [inOriginalContext mutableCopy];
 		
 		BOOL shouldSign = YES;
 		
 		if ([[mutatedContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"auth/login"])
 			shouldSign = NO;
 		
-		if (originalFormMultipartFields) {
+		void (^sign)(NSMutableDictionary *) = ^ (NSMutableDictionary *fields) {
 		
-			NSMutableDictionary *mutatedFormMultipartFields = [[originalFormMultipartFields mutableCopy] autorelease];
-			[mutatedContext setObject:mutatedFormMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
-			
-			if (nrSelf.apiKey)
-				[mutatedFormMultipartFields setObject:nrSelf.apiKey forKey:@"apikey"];
+			if (nrSelf.apiKey) {
+				[fields setObject:nrSelf.apiKey forKey:@"apikey"];
+				[fields setObject:nrSelf.apiKey forKey:@"api_key"];
+			}
 			
 			if (shouldSign && nrSelf.userToken)
-				[mutatedFormMultipartFields setObject:nrSelf.userToken forKey:@"session_token"];
-			
-		} else if (originalFormURLEncodedFields) {
+				[fields setObject:nrSelf.userToken forKey:@"session_token"];
+
+		};
 		
-			NSMutableDictionary *mutatedFormURLEncodedFields = [[originalFormURLEncodedFields mutableCopy] autorelease];
-			[mutatedContext setObject:mutatedFormURLEncodedFields forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
+		NSMutableDictionary *formMultipartFields = [[inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey] mutableCopy];
+		if (formMultipartFields) {
 			
-			if (nrSelf.apiKey)
-				[mutatedFormURLEncodedFields setObject:nrSelf.apiKey forKey:@"apikey"];
+			sign(formMultipartFields);
+			[mutatedContext setObject:formMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
 			
-			if (shouldSign && nrSelf.userToken)
-				[mutatedFormURLEncodedFields setObject:nrSelf.userToken forKey:@"session_token"];
+		}
 		
-		} else {
+		NSMutableDictionary *formURLEncodedFields = [[inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey] mutableCopy];
+		if (formURLEncodedFields) {
 		
-			NSDictionary *originalQueryParams = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters];
-			NSMutableDictionary *mutatedQueryParams = [[originalQueryParams mutableCopy] autorelease];
-			
-			if (!mutatedQueryParams)
-					mutatedQueryParams = [NSMutableDictionary dictionary];
-			
-			[mutatedContext setObject:mutatedQueryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
-			
-			if (nrSelf.apiKey)
-				[mutatedQueryParams setObject:nrSelf.apiKey forKey:@"apikey"];
-			
-			if (shouldSign && nrSelf.userToken)
-				[mutatedQueryParams setObject:nrSelf.userToken forKey:@"session_token"];
+			sign(formURLEncodedFields);
+			[mutatedContext setObject:formURLEncodedFields forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
 		
 		}
 		
+		NSMutableDictionary *queryParams = [[inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters] mutableCopy];
+		
+		if (!queryParams)
+			queryParams = [NSMutableDictionary dictionary];
+		
+		sign(queryParams);
+		[mutatedContext setObject:queryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
+			
 		return (NSDictionary *)mutatedContext;
 	
-	} copy] autorelease];
+	};
 
 }
 
 - (IRWebAPIResponseContextTransformer) defaultV2AuthenticationListeningBlock {
 
-  __block __typeof__(self) nrSelf = self;
+  __weak WARemoteInterface *nrSelf = self;
 
-  return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+  return ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
   
     NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
 		
@@ -114,7 +108,7 @@
 		
     return inParsedResponse;
     
-  } copy] autorelease];
+  };
 
 }
 
@@ -123,14 +117,11 @@
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
   
-  NSString *aDevice = [[UIDevice currentDevice] name];
-  
 	[self.engine fireAPIRequestNamed:@"auth/login" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary([NSDictionary dictionaryWithObjectsAndKeys:
 	
 		anIdentifier, @"email",
 		aPassword, @"password",
-    aDevice, @"device_name",
-    
+    WADeviceName(), @"device_name",
     WADeviceIdentifier(), @"device_id",
 
 	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
@@ -145,17 +136,8 @@
 		
 	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
+		NSDictionary *userEntity = [[self class] userEntityFromRepresentation:inResponseOrNil];
 		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
-		NSMutableDictionary *userEntity = [[[inResponseOrNil valueForKeyPath:@"user"] mutableCopy] autorelease];
-		
-		if (!userEntity)
-			userEntity = [NSMutableDictionary dictionary];
-		
-		if ([inResponseOrNil valueForKeyPath:@"groups"])
-			[userEntity setObject:[inResponseOrNil valueForKeyPath:@"groups"] forKey:@"groups"];
-			
-		if ([inResponseOrNil valueForKeyPath:@"stations"])
-			[userEntity setObject:[inResponseOrNil valueForKeyPath:@"stations"] forKey:@"stations"];
 		
 		if (successBlock) {
 			successBlock(userEntity, incomingToken);

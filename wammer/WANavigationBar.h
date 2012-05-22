@@ -15,6 +15,7 @@
 
 + (UIView *) defaultGradientBackgroundView;
 + (UIView *) defaultPatternBackgroundView;
++ (UIView *) defaultShadowBackgroundView;
 
 @property (nonatomic, readwrite, copy) void (^onBarStyleContextChanged)(void);
 

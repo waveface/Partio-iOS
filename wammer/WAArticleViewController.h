@@ -10,31 +10,6 @@
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
 
-#import "WAView.h"
-#import "WAArticleTextEmphasisLabel.h"
-
-#import "WAPreviewBadge.h"
-
-#import "IRAlertView.h"
-#import "IRActionSheetController.h"
-#import "IRBarButtonItem.h"
-
-#import "WAArticleView.h"
-
-
-@class WAImageStackView;
-
-@protocol WAArticleViewControllerPresenting
-- (void) setContextControlsVisible:(BOOL)contextControlsVisible animated:(BOOL)animated;
-
-@optional
-- (void) enqueueInterfaceUpdate:(void(^)(void))anAction;
-- (void) handlePreferredInterfaceRect:(CGRect)aRect;
-- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint;
-
-@end
-
-
 #ifndef __WAArticleViewController__
 #define __WAArticleViewController__
 
@@ -62,13 +37,23 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 
 #endif
 
-@class WANavigationController;
-@interface WAArticleViewController : UIViewController <WAArticleViewControllerPresenting>
+
+@class WAArticle, WAArticleView, WANavigationController, WAOverviewController, WAArticleViewController;
+
+@protocol WAArticleViewControllerDelegate <NSObject>
+
+- (NSString *) presentationTemplateNameForArticleViewController:(WAArticleViewController *)controller;
+
+@end
+
+
+@interface WAArticleViewController : UIViewController
 
 + (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle DEPRECATED_ATTRIBUTE;
 + (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle;
 
 + (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
++ (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
 
 @property (nonatomic, readonly, retain) NSURL *representedObjectURI;
 @property (nonatomic, readonly, retain) WAArticle *article;
@@ -77,12 +62,10 @@ extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFr
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WAArticleViewController *self, UIView *loadedView);
 @property (nonatomic, readwrite, copy) void (^onViewTap)();
 @property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
-@property (nonatomic, readwrite, copy) void (^onPresentingViewController)(void(^action)(UIViewController <WAArticleViewControllerPresenting> *parentViewController));
 
-@property (nonatomic, retain) UIView<WAArticleView> *view;
+@property (nonatomic, readwrite, weak) WAOverviewController *hostingViewController;
+@property (nonatomic, readwrite, weak) id<WAArticleViewControllerDelegate> delegate;
 
-@property (nonatomic, readwrite, retain) NSArray *additionalDebugActions;
-
-- (WANavigationController *) wrappingNavController;
+- (void) reloadData;
 
 @end

@@ -7,13 +7,13 @@
 //
 
 #import "WAArticleViewController.h"
-#import "WAStackView.h"
+#import "IRStackView.h"
 
 @class WAArticleTextStackCell, WAArticleTextStackElement, WAArticleTextEmphasisLabel, WAArticleCommentsViewController;
 
-@interface WAStackedArticleViewController : WAArticleViewController <UITableViewDelegate, WAStackViewDelegate>
+@interface WAStackedArticleViewController : WAArticleViewController <UITableViewDelegate, IRStackViewDelegate>
 
-@property (nonatomic, readwrite, retain) IBOutlet WAStackView *stackView;
+@property (nonatomic, readwrite, retain) IBOutlet IRStackView *stackView;
 @property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WAArticleViewController *self, UIView *ownView); 
 @property (nonatomic, readwrite, copy) void (^onPullTop)(UIScrollView *pulledScrollView);
 
@@ -37,5 +37,8 @@
 - (BOOL) enablesTextStackElementFolding;
 
 @property (nonatomic, readonly, retain) NSArray *headerBarButtonItems;
+
+- (void) handlePreferredInterfaceRect:(CGRect)aRect;
+- (BOOL) isPointInsideInterfaceRect:(CGPoint)aPoint;
 
 @end

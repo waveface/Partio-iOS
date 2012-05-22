@@ -12,6 +12,37 @@
 
 @implementation WAArticle (WAAdditions)
 
+- (WAFile *) representingFile {
+
+	[self willAccessValueForKey:@"representingFile"];
+	WAFile *file = [self primitiveValueForKey:@"representingFile"];
+	[self didAccessValueForKey:@"representingFile"];
+	
+	if (!file) {
+	
+		[self willAccessValueForKey:@"files"];
+		NSOrderedSet *files = [self primitiveValueForKey:@"files"];
+		
+		if ([files count]) {
+			file = [[files array] objectAtIndex:0];
+		}
+
+		[self didAccessValueForKey:@"files"];
+	
+	}
+	
+	return file;
+
+}
+
+- (void) setRepresentingFile:(WAFile *)representingFile {
+
+	[self willChangeValueForKey:@"representingFile"];
+	[self setPrimitiveValue:representingFile forKey:@"representingFile"];
+	[self didChangeValueForKey:@"representingFile"];
+
+}
+
 + (NSSet *) keyPathsForValuesAffectingHasMeaningfulContent {
 
 	return [NSSet setWithObjects:
@@ -39,77 +70,25 @@
 
 }
 
-+ (NSSet *) keyPathsForValuesAffectingRepresentedFile {
-
-	return [NSSet setWithObjects:
-	
-		@"files",
-		@"fileOrder",
-	
-	nil];
-
-}
-
-- (WAFile *) representedFile {
-
-	if (![self.fileOrder count])
-		return nil;
-	
-	return (WAFile *)[self irObjectAtIndex:0 inArrayKeyed:@"fileOrder"];
-
-}
-
 + (BOOL) automaticallyNotifiesObserversForKey:(NSString *)key {
 
 	if ([super automaticallyNotifiesObserversForKey:key])
 		return YES;
 	
-	if ([key isEqualToString:@"files"])
-		return YES;
-	
 	if ([key isEqualToString:@"text"])
 		return YES;
 	
-	return NO;
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingFiles {
-
-	return [NSSet setWithObjects:@"fileOrder", nil];
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingFileOrder {
-
-	return [NSSet setWithObjects:@"files", nil];
-
-}
-
-- (void) irAwake {
-
-	[super irAwake];
-	[self irReconcileObjectOrderWithKey:@"files" usingArrayKeyed:@"fileOrder"];
+	if ([key isEqualToString:@"files"])
+		return YES;
 	
-}
-
-- (NSArray *) fileOrder {
-
-	return [self irBackingOrderArrayKeyed:@"fileOrder"];
+	return YES;
 
 }
 
-- (void) didChangeValueForKey:(NSString *)inKey withSetMutation:(NSKeyValueSetMutationKind)inMutationKind usingObjects:(NSSet *)inObjects {
+- (NSDate *) presentationDate {
 
-	if ([inKey isEqualToString:@"files"]) {
-    
-    [self irUpdateObjects:inObjects withRelationshipKey:@"files" usingOrderArray:@"fileOrder" withSetMutation:inMutationKind];
-		return;
-    
-  }
+	return self.creationDate;
 
-	[super didChangeValueForKey:inKey withSetMutation:inMutationKind usingObjects:inObjects];
-	
 }
 
 @end

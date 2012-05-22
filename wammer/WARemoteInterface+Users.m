@@ -12,6 +12,29 @@
 
 @implementation WARemoteInterface (Users)
 
++ (NSDictionary *) userEntityFromRepresentation:(NSDictionary *)remoteResponse {
+
+	NSMutableDictionary *userEntity = [[remoteResponse valueForKeyPath:@"user"] mutableCopy];
+		
+	if (![userEntity isKindOfClass:[NSDictionary class]])
+		userEntity = [NSMutableDictionary dictionary];
+	
+	NSArray *groupReps = [remoteResponse valueForKeyPath:@"groups"];
+	if (groupReps)
+		[userEntity setObject:groupReps forKey:@"groups"];
+	
+	NSArray *stationReps = [remoteResponse valueForKeyPath:@"stations"];
+	if (stationReps)
+		[userEntity setObject:stationReps forKey:@"stations"];
+	
+	NSArray *storageReps = [remoteResponse valueForKeyPath:@"storages"];
+	if (storageReps)
+		[userEntity setObject:storageReps forKey:@"storages"];
+	
+	return userEntity;
+
+}
+
 - (void) registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(anIdentifier);
@@ -32,7 +55,7 @@
 
 }
 
-- (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *, NSArray *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(anIdentifier);
 	
@@ -42,17 +65,8 @@
 				
 	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
-		if (!successBlock)
-			return;
-			
-		successBlock(
-			[inResponseOrNil valueForKeyPath:@"user"],
-			[inResponseOrNil valueForKeyPath:@"groups"]
-		);
-		
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		[userDefaults setValue:[inResponseOrNil valueForKeyPath:@"storages"] forKeyPath:kWAUserStorageInfo];
-		[userDefaults synchronize];
+		if (successBlock)
+			successBlock([[self class] userEntityFromRepresentation:inResponseOrNil]);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 
@@ -67,12 +81,8 @@
 				
 	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
-		if (!successBlock)
-			return;
-			
-		successBlock(
-			[inResponseOrNil valueForKeyPath:@"user"]
-		);
+		if (successBlock)
+			successBlock([[self class] userEntityFromRepresentation:inResponseOrNil]);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 

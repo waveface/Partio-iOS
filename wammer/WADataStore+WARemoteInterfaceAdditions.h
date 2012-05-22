@@ -12,16 +12,21 @@
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
 
 
+extern NSString * const kWADataStoreArticleUpdateShowsBezels;	//	pass kCFBooleanTrue or kCFBooleanFalse
+extern NSString * const kWADataStoreArticleUpdateVisibilityOnly;	//	pass kCFBooleanTrue
+
+
 @interface WADataStore (WARemoteInterfaceAdditions)
 
 - (BOOL) hasDraftArticles;
 - (void) updateArticlesOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
-- (BOOL) isUploadingArticle:(NSURL *)anObjectURI;	//	Really?
+- (void) updateArticle:(NSURL *)articleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) updateArticle:(NSURL *)articleURI withOptions:(NSDictionary *)options onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
+- (BOOL) isUpdatingArticle:(NSURL *)anObjectURI;	//	Really?
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
-
 - (void) updateCurrentUserOnSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock;
 
 @end

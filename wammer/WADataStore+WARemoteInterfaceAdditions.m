@@ -10,11 +10,16 @@
 #import "WARemoteInterface.h"
 
 #import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WAOverlayBezel.h"
+
+
+NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
+NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleUpdateVisibilityOnly";
 
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
 
-- (NSMutableSet *) articlesCurrentlyBeingUploaded;
+- (NSMutableSet *) articlesCurrentlyBeingUpdated;
 
 @end
 
@@ -52,8 +57,7 @@
 
 	NSMutableDictionary *options = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 		
-		kWAArticleSyncFullyFetchOnlyStrategy, kWAArticleSyncStrategy,
-	//	kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
+		kWAArticleSyncDefaultStrategy, kWAArticleSyncStrategy,
 		
 	nil];
 	
@@ -77,7 +81,7 @@
 
 - (void) uploadArticle:(NSURL *)anArticleURI withCompletion:(void(^)(NSError *))aBlock {
 
-	[self uploadArticle:anArticleURI onSuccess:^ {
+	[self updateArticle:anArticleURI onSuccess:^ {
 	
 		if (aBlock)
 			aBlock(nil);
@@ -85,83 +89,155 @@
 	} onFailure:aBlock];
 
 }
+          
+- (void) updateArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
-- (void) uploadArticle:(NSURL *)anArticleURI onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
+	[self updateArticle:anArticleURI withOptions:nil onSuccess:successBlock onFailure:failureBlock];
+
+}
+
+- (void) updateArticle:(NSURL *)anArticleURI withOptions:(NSDictionary *)options onSuccess:(void (^)(void))successBlock onFailure:(void (^)(NSError *error))failureBlock {
 
 	NSParameterAssert([NSThread isMainThread]);
+	
+	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
+	
+	BOOL updateVisibilityOnly = [[options objectForKey:kWADataStoreArticleUpdateVisibilityOnly] isEqual:(id)kCFBooleanTrue];
 
-	__block __typeof__(self) nrSelf = self;
-	__block NSManagedObjectContext *context = [[self disposableMOC] retain];
-	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
+	__weak WADataStore *wSelf = self;
 	
-	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
+	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];	//	Sigh
+	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
-	void (^cleanup)() = ^ {
-		[context autorelease];
-		[[nrSelf articlesCurrentlyBeingUploaded] removeObject:anArticleURI];
-	};
+	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
 	
-	[[nrSelf articlesCurrentlyBeingUploaded] addObject:anArticleURI];
+	WAOverlayBezel *busyBezel = nil;
+	if (usesBezels) {
+		busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	}
 	
-	[updatedArticle synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
-		
-		NSParameterAssert([NSThread isMainThread]);
-
-		if (!didFinish) {
+	void (^fireCallback)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
 			
-			if (failureBlock)
-				failureBlock(error);
+		NSCParameterAssert([NSThread isMainThread]);
+	
+		if (didFinish) {
 			
-		} else {
-
 			if (successBlock)
 				successBlock();
 		
+		} else {
+
+			if (failureBlock)
+				failureBlock(error);
+			
 		}
 		
-		cleanup();
+		[[wSelf articlesCurrentlyBeingUpdated] removeObject:anArticleURI];
 		
-	}];
+	};
+	
+	void (^handleResult)(BOOL, NSError *) = ^ (BOOL didFinish, NSError *error) {
+	
+		dispatch_async(dispatch_get_main_queue(), ^{
+					
+			NSCParameterAssert([NSThread isMainThread]);
+		
+			if (usesBezels) {
+				
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+				
+				WAOverlayBezel *resultBezel = [WAOverlayBezel bezelWithStyle:(didFinish ? WACheckmarkBezelStyle : WAErrorBezelStyle)];
+				[resultBezel showWithAnimation:WAOverlayBezelAnimationNone];
+				
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+				
+					[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					
+					fireCallback(didFinish, error);
+				
+				});
+				
+			} else {
+			
+				fireCallback(didFinish, error);
+			
+			}
+		
+		});
+		
+	};
+	
+	
+	if (updateVisibilityOnly) {
+	
+		[[WARemoteInterface sharedInterface] configurePost:article.identifier inGroup:article.group.identifier withVisibilityStatus:![article.hidden isEqual:(id)kCFBooleanTrue] onSuccess:^{
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+				handleResult(YES, nil);
+			});
+			
+		} onFailure:^(NSError *error) {
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+				handleResult(NO, error);
+			});
+			
+		}];
+	
+	} else {
+	
+		[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+			
+			handleResult(didFinish, error);
+					
+		}];
+		
+	}
 	
 }
 
-- (BOOL) isUploadingArticle:(NSURL *)anObjectURI {
+- (BOOL) isUpdatingArticle:(NSURL *)anObjectURI {
 
-	return [[self articlesCurrentlyBeingUploaded] containsObject:anObjectURI];
+	return [[self articlesCurrentlyBeingUpdated] containsObject:anObjectURI];
 
 }
 
 - (void) addComment:(NSString *)commentText onArticle:(NSURL *)anArticleURI onSuccess:(void(^)(void))successBlock onFailure:(void(^)(void))failureBlock {
 	
-	__block NSManagedObjectContext *context = [self disposableMOC];
-	__block WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
+	NSManagedObjectContext *context = [self disposableMOC];
+	WAArticle *updatedArticle = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	NSString *postIdentifier = updatedArticle.identifier;
 	NSString *groupIdentifier = updatedArticle.group.identifier;
 	
 	if (!postIdentifier) {
-		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not been saved, and was not assigned a remote identifier."];
+		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not been saved, and was not assigned a remote identifier.", updatedArticle];
 		return;
 	}
 	
 	if (!groupIdentifier) {
-		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not yet been assigned a group."];
+		[NSException raise:NSInternalInconsistencyException format:@"Article %@ has not yet been assigned a group.", updatedArticle];
 		return;
 	}
 	
 	[[WARemoteInterface sharedInterface] createCommentForPost:postIdentifier inGroup:groupIdentifier withContentText:commentText onSuccess:^(NSDictionary *updatedPostRep) {
 	
-		NSManagedObjectContext *context = [self disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+		[self performBlock:^{
+			
+			NSManagedObjectContext *context = [self disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"Error Saving: %@", savingError);
+			
+			if (successBlock)
+				successBlock();
 		
-		[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:updatedPostRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"Error Saving: %@", savingError);
-		
-		if (successBlock)
-			successBlock();
+		} waitUntilDone:NO];
 		
 	} onFailure:^(NSError *error) {
 	
@@ -178,24 +254,34 @@
 	NSString *userIdentifier = ri.userIdentifier;
 	NSParameterAssert(userIdentifier);
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WADataStore *wSelf = self;
 	
-	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep, NSArray *groupReps) {
+	[ri retrieveUser:userIdentifier onSuccess: ^ (NSDictionary *userRep) {
 	
-		NSManagedObjectContext *context = [nrSelf disposableMOC];
-		context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-		
-		[WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-		
-		NSError *savingError = nil;
-		if (![context save:&savingError])
-			NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
+		[wSelf performBlock:^{
 			
-		if (successBlock)
-			successBlock();
-		
+			NSManagedObjectContext *context = [wSelf disposableMOC];
+			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+			
+			WAUser *user = [wSelf mainUserInContext:context];
+			NSCParameterAssert(user);
+			
+			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:0];
+			
+			NSCParameterAssert([touchedUsers count] == 1);
+			NSCParameterAssert([touchedUsers containsObject:user]);
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"%@: %@", NSStringFromSelector(_cmd), savingError);
+			
+			if (successBlock)
+				successBlock();
+			
+		} waitUntilDone:NO];
+			
 	} onFailure:^(NSError *error) {
-	
+			
 		NSLog(@"%@: %@", NSStringFromSelector(_cmd), error);
 		
 		if (failureBlock)
@@ -210,7 +296,7 @@
 
 @implementation WADataStore (WARemoteInterfaceAdditions_Private)
 
-- (NSMutableSet *) articlesCurrentlyBeingUploaded {
+- (NSMutableSet *) articlesCurrentlyBeingUpdated {
 
 	static NSString * const key = @"WADataStore_WARemoteInterfaceAdditions_articlesCurrentlyBeingUploaded";
 	

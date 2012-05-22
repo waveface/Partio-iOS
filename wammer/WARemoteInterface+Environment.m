@@ -21,29 +21,27 @@
 
   if ([[NSUserDefaults standardUserDefaults] boolForKey:kWAAlwaysDenyExpensiveRemoteOperations])
     return NO;
-    
-  NSURL *cloudHost = self.engine.context.baseURL;
-  
-  if ([self.monitoredHosts count] <= 1)
-    return NO;
+	
+	return ([self hasReachableStation] || [self hasReachableCloud]) && [self hasWiFiConnection];
+	
+}
 
-  return (BOOL)!![[[self.monitoredHosts filteredArrayUsingPredicate:[NSPredicate predicateWithBlock: ^ (id evaluatedObject, NSDictionary *bindings) {
-  
-    return (BOOL)![evaluatedObject isEqual:cloudHost];
-    
-  }]] irMap: ^ (NSURL *aHostURL, NSUInteger index, BOOL *stop) {
-    
-    WAReachabilityDetector *detector = [self reachabilityDetectorForHost:aHostURL];
-    
-    if (detector)
-    if (detector.state == WAReachabilityStateAvailable)
-    if (WASCNetworkReachableDirectly(detector.networkStateFlags))
-      return detector;
-    
-    return nil;
-    
-  }] count];
+- (BOOL) hasReachableStation {
 
+	return (self.networkState & WAStationReachable);
+
+}
+
+- (BOOL) hasReachableCloud {
+
+	return (self.networkState & WACloudReachable);
+
+}
+
+- (BOOL) hasWiFiConnection {
+
+	return [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachableDirectly];
+	
 }
 
 @end

@@ -37,7 +37,7 @@
 
 - (UINavigationController *) wrappingNavigationController {
 
-  WANavigationController *returnedNavC = [[[WANavigationController alloc] initWithRootViewController:self] autorelease];
+  WANavigationController *returnedNavC = [[WANavigationController alloc] initWithRootViewController:self];
   
   switch ([UIDevice currentDevice].userInterfaceIdiom) {
     case UIUserInterfaceIdiomPad: { 
@@ -68,9 +68,9 @@
   self.view.backgroundColor = [UIColor clearColor];
   
   if (self.dismissalAction) {
-    __block __typeof__(self) nrSelf = self;
+    __weak WAStationDiscoveryFeedbackViewController *wSelf = self;
     self.navigationItem.rightBarButtonItem = [IRBarButtonItem itemWithTitle:self.dismissalAction.title action:^{
-      [nrSelf.dismissalAction invoke];
+      [wSelf.dismissalAction invoke];
     }];
   }
   
@@ -81,14 +81,6 @@
     aLabel.layer.shadowOffset = (CGSize){ 0, 2 };
   }
 
-}
-
-- (void) dealloc {
-  
-  [interfaceLabels release];
-  [dismissalAction release];
-  [super dealloc];
-  
 }
 
 - (void) viewDidUnload {

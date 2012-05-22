@@ -21,7 +21,6 @@
 #import "WACompositionViewPhotoCell.h"
 #import "WANavigationBar.h"
 #import "WANavigationController.h"
-#import "WAViewController.h"
 #import "WAPreviewBadge.h"
 
 
@@ -32,6 +31,7 @@
 @property (nonatomic, readwrite, retain) WAArticle *article;
 
 @property (nonatomic, readwrite, retain) IRTextAttributor *textAttributor;
+@property (nonatomic, readwrite, retain) IRActionSheetController *cancellationActionSheetController;
 
 @end
 
@@ -44,6 +44,7 @@
 @synthesize completionBlock;
 @synthesize usesTransparentBackground;
 @synthesize textAttributor;
+@synthesize cancellationActionSheetController;
 
 + (id) alloc {
 
@@ -69,16 +70,24 @@
 
 + (WACompositionViewController *) controllerWithArticle:(NSURL *)anArticleURLOrNil completion:(void(^)(NSURL *anArticleURLOrNil))aBlock {
 
-	WACompositionViewController *returnedController = [[[self alloc] init] autorelease];
+	WACompositionViewController *returnedController = [[self alloc] init];
 	returnedController.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	returnedController.managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 	
-	if (anArticleURLOrNil)
-		returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
+	if (anArticleURLOrNil) {
+		
+		WAArticle *foundArticle = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURLOrNil];
+		NSAssert1(foundArticle, @"Unable to dereference WAArticle reference at %@", anArticleURLOrNil);
+		returnedController.article = foundArticle;
 	
-	if (!returnedController.article) {
+	} else {
+	
+		//	Else, make a new one.
+		
 		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 		returnedController.article.draft = [NSNumber numberWithBool:YES];
+		returnedController.article.creationDate = [NSDate date];
+		
 	}
 	
 	returnedController.completionBlock = aBlock;
@@ -95,8 +104,10 @@
 		return nil;
 	
 	self.title = NSLocalizedString(@"COMPOSITION_TITLE", @"Title for the composition view");
-	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)] autorelease];
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)] autorelease];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(handleCancel:)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"ACTION_DONE", @"In iPad composition view") style:UIBarButtonItemStyleDone target:self action:@selector(handleDone:)];
+	
+	//[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(handleDone:)];
 	
 	return self;
 
@@ -104,46 +115,39 @@
 
 - (void) setArticle:(WAArticle *)newArticle {
 
-	__block __typeof__(self) nrSelf = self;
-
-	[self willChangeValueForKey:@"article"];
+	__weak WACompositionViewController *wSelf = self;
 	
-	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
+	[article irRemoveObserverBlocksForKeyPath:@"files"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
-	[article release];
 	
-	article = [newArticle retain];
+	article = newArticle;
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		[nrSelf handleCurrentArticleFilesChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"fileOrder" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];	
+	[article irObserve:@"files" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-	[article irAddObserverBlock:^(id inOldValue, id inNewValue, NSKeyValueChange changeKind) {
-		[nrSelf handleCurrentArticlePreviewsChangedFrom:inOldValue to:inNewValue changeKind:changeKind];
-	} forKeyPath:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil];
+		[wSelf handleFilesChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
+		
+	}];
 	
-	[self didChangeValueForKey:@"article"];
+	[article irObserve:@"previews" options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+
+			[wSelf handlePreviewsChangeKind:kind oldValue:fromValue newValue:toValue indices:indices isPrior:isPrior];
+			
+		});
+		
+	}];
 
 }
 
 - (void) dealloc {
 
-	[containerView release];	
-	[contentTextView release];
+	textAttributor.delegate = nil;
 
-	[article irRemoveObserverBlocksForKeyPath:@"fileOrder"];
+	[article irRemoveObserverBlocksForKeyPath:@"files"];
 	[article irRemoveObserverBlocksForKeyPath:@"previews"];
 	
 	[self.navigationItem.rightBarButtonItem irUnbind:@"enabled"];
-	
-	[managedObjectContext release];
-	[article release];
-	
-	[completionBlock release];
-	
-	[textAttributor release];
-	
-	[super dealloc];
 
 }
 
@@ -154,13 +158,11 @@
 	self.contentTextView.delegate = nil;
 	self.contentTextView = nil;
 	
+	self.cancellationActionSheetController = nil;
+	
 	[super viewDidUnload];
 
 }
-
-
-
-
 
 - (void) viewDidLoad {
 
@@ -192,8 +194,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 - (void) viewWillAppear:(BOOL)animated {
 
   [super viewWillAppear:animated];
+	
+	__weak WACompositionViewController *wSelf = self;
   	
 	id notificationObject = [[NSNotificationCenter defaultCenter] addObserverForName:IRWindowInterfaceBoundsDidChangeNotification object:self.view.window queue:nil usingBlock:^(NSNotification *aNotification) {
+	
+		if (!wSelf)
+			return;
 	
 		NSDictionary *userInfo = [aNotification userInfo];
 		CGRect newBounds = [[userInfo objectForKey:IRWindowInterfaceChangeNewBoundsKey] CGRectValue];
@@ -218,13 +225,13 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 		
 			[UIView animateWithDuration:animationDuration delay:0 options:animationOptions animations:^{
 
-				[self adjustContainerViewWithInterfaceBounds:newBounds];
+				[wSelf adjustContainerViewWithInterfaceBounds:newBounds];
 				
 			} completion:nil];
 		
 		} else {
 
-			[self adjustContainerViewWithInterfaceBounds:newBounds];		
+			[wSelf adjustContainerViewWithInterfaceBounds:newBounds];		
 		
 		}
 		
@@ -235,7 +242,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	[self.navigationItem.rightBarButtonItem irBind:@"enabled" toObject:self.article keyPath:@"hasMeaningfulContent" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
-			
+		
 }	
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -290,7 +297,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	if (textAttributor)
 		return textAttributor;
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WACompositionViewController *wSelf = self;
 	
 	textAttributor = [[IRTextAttributor alloc] init];
 	textAttributor.delegate = self;
@@ -309,7 +316,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 			return;
 		}
 		
-		if ([[nrSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
+		if ([[wSelf.article.previews objectsPassingTest: ^ (WAPreview *aPreview, BOOL *stop) {
 			
 			return [aPreview.url isEqualToString:attributedString];
 			
@@ -343,10 +350,12 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	NSString *capturedText = textView.text;
 	self.article.text = capturedText;
 	
+	__weak WACompositionViewController *wSelf = self;
+	
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0f * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 	
 		if ([textView.text isEqualToString:capturedText])
-			self.textAttributor.attributedContent = [[[NSMutableAttributedString alloc] initWithString:capturedText] autorelease];
+			wSelf.textAttributor.attributedContent = [[NSMutableAttributedString alloc] initWithString:capturedText];
 			
 	});
 	
@@ -408,21 +417,21 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSArray *)fromValue to:(NSArray *)toValue changeKind:(NSKeyValueChange)changeKind {
+- (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
 	//	No op
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
-	
+- (void) handlePreviewsChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
+
 	//	No op
 
 }
 
 - (void) handleCurrentTextChangedFrom:(NSString *)fromValue to:(NSString *)toValue changeKind:(NSKeyValueChange)changeKind {
 
-	NSLog(@"%s %@ %@ %@", __PRETTY_FUNCTION__, fromValue, toValue, changeKind);
+	//	No op
 
 }
 
@@ -431,10 +440,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleDone:(UIBarButtonItem *)sender {
 
-	//	TBD save a draft
-	
 	self.article.text = self.contentTextView.text;
-  self.article.timestamp = [NSDate date];
+	self.article.modificationDate = [NSDate date];
 	
 	NSError *savingError = nil;
 	if (![self.managedObjectContext save:&savingError])
@@ -454,66 +461,77 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 
 - (void) handleCancel:(UIBarButtonItem *)sender {
 
-	if (![self.article hasChanges] || ![self.article hasMeaningfulContent]) {
+	if (!([self.article hasChanges] && [[self.article changedValues] count]) || ![self.article hasMeaningfulContent]) {
 	
 		if (self.completionBlock)
 			self.completionBlock(nil);
 		
-		//	Delete things that are not meaningful
+		//	Delete things that are not meaningful if it’s a draft
 		
 		if (![self.article hasMeaningfulContent])
+		if ([self.article.draft isEqualToNumber:(NSNumber *)kCFBooleanTrue])
 			[self.article.managedObjectContext deleteObject:self.article];
 		
 		return;
 	
 	}
 	
-	IRActionSheetController *actionSheetController = objc_getAssociatedObject(sender, _cmd);
+	IRActionSheetController *actionSheetController = self.cancellationActionSheetController;
 	if ([[actionSheetController managedActionSheet] isVisible])
 		return;
 	
-	if (!actionSheetController) {
+	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
+	
+	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
+	
+}
+
+- (IRActionSheetController *) cancellationActionSheetController {
+
+	if (!cancellationActionSheetController) {
+	
+		__weak WACompositionViewController *wSelf = self;
 	
 		IRAction *discardAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DISCARD", @"Action title for discarding a draft") block:^{
 			
-			if (self.completionBlock)
-				self.completionBlock(nil);
+			if (wSelf.completionBlock)
+				wSelf.completionBlock(nil);
 			
 		}];
 		
 		IRAction *saveAsDraftAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_SAVE_DRAFT", @"Action title for saving a draft") block:^{
 		
-			self.article.text = self.contentTextView.text;
-			self.article.timestamp = [NSDate date];
+			wSelf.article.text = wSelf.contentTextView.text;
+			wSelf.article.creationDate = [NSDate date];
 			
 			NSError *savingError = nil;
-			if (![self.managedObjectContext save:&savingError])
+			if (![wSelf.managedObjectContext save:&savingError])
 				NSLog(@"Error saving: %@", savingError);
 			
-			if (self.completionBlock)
-				self.completionBlock(nil);
+			if (wSelf.completionBlock)
+				wSelf.completionBlock(nil);
 		
 		}];
 			
-		actionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
+		cancellationActionSheetController = [IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:discardAction otherActions:[NSArray arrayWithObjects:
 			saveAsDraftAction,
 		nil]];
 			
-		objc_setAssociatedObject(sender, _cmd, actionSheetController, OBJC_ASSOCIATION_ASSIGN);
+		cancellationActionSheetController.onActionSheetCancel = ^ {
 		
-		actionSheetController.onActionSheetCancel = ^ {
-			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+			wSelf.cancellationActionSheetController = nil;
+		
 		};
 		
-		actionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
-			objc_setAssociatedObject(sender, _cmd, nil, OBJC_ASSOCIATION_ASSIGN);
+		cancellationActionSheetController.onActionSheetDidDismiss = ^ (IRAction *invokedAction) {
+			
+			wSelf.cancellationActionSheetController = nil;
+				
 		};
 	
 	}
 	
-	NSParameterAssert(actionSheetController && ![actionSheetController.managedActionSheet isVisible]);
-	
-	[[actionSheetController managedActionSheet] showFromBarButtonItem:sender animated:YES];
+	return cancellationActionSheetController;
 	
 }
 
@@ -523,5 +541,12 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 }
 
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	[self adjustContainerViewWithInterfaceBounds:((UIWindow *)[[UIApplication sharedApplication].windows objectAtIndex:0]).irInterfaceBounds];
+
+}
 
 @end

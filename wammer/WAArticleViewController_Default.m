@@ -38,12 +38,7 @@
 - (void) dealloc {
 
 	fetchedResultsController.delegate = nil;
-	[fetchedResultsController release];
-	
 	gridView.delegate = nil;
-	[gridView release];
-	
-	[super dealloc];
 
 }
 
@@ -51,24 +46,24 @@
 
 	[super viewDidLoad];
 	
-	UIView *gridViewWrapper = [[[UIView alloc] initWithFrame:self.gridView.bounds] autorelease];
+	UIView *gridViewWrapper = [[UIView alloc] initWithFrame:self.gridView.bounds];
 	gridViewWrapper.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
 	[gridViewWrapper addSubview:self.gridView];
 	
 	self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	
-	IRGradientView *topShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
+	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		3
-	}, kCAGravityTop)] autorelease];
+	}, kCAGravityTop)];
 	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[gridViewWrapper addSubview:topShadow];
 	
-	IRGradientView *bottomShadow = [[[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
+	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
 		CGRectGetWidth(gridViewWrapper.bounds),
 		3
-	}, kCAGravityBottom)] autorelease];
+	}, kCAGravityBottom)];
 	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
 	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irBottom];
 	[gridViewWrapper addSubview:bottomShadow];
@@ -76,14 +71,10 @@
 	self.gridView.clipsToBounds = NO;
 	gridViewWrapper.clipsToBounds = YES;
 	
-//	[gridView reloadData];
-//	[gridView setNeedsLayout];
-	
 	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
 
 	UIView *footerCell = self.footerCell;
 	if ([allStackElements containsObject:footerCell]) {
-		[[footerCell retain] autorelease];
 		[allStackElements removeObject:footerCell];
 	}
 	
@@ -106,22 +97,36 @@
 
 	[super viewWillAppear:animated];
 	
-	if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
-		[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
-		
-	for (UIWindow *aWindow in [UIApplication sharedApplication].windows) {
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-		UIViewController *rootVC = aWindow.rootViewController;
-		if ([rootVC isViewLoaded])
-			[rootVC.view layoutSubviews];
+		case UIUserInterfaceIdiomPad: {
+	
+			if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
+				[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
+				
+			for (UIWindow *aWindow in [UIApplication sharedApplication].windows) {
+			
+				UIViewController *rootVC = aWindow.rootViewController;
+				if ([rootVC isViewLoaded])
+					[rootVC.view layoutSubviews];
+				
+				UINavigationController *rootNavC = [rootVC isKindOfClass:[UINavigationController class]] ? (UINavigationController *)rootVC : nil;
+				if (rootNavC) {
+					BOOL navBarHidden = rootNavC.navigationBarHidden;
+					[rootNavC setNavigationBarHidden:YES animated:NO];
+					[rootNavC setNavigationBarHidden:NO animated:NO];
+					[rootNavC setNavigationBarHidden:YES animated:NO];
+					[rootNavC setNavigationBarHidden:navBarHidden animated:NO];
+				}
+			
+			}
+			
+			break;
 		
-		UINavigationController *rootNavC = [rootVC isKindOfClass:[UINavigationController class]] ? (UINavigationController *)rootVC : nil;
-		if (rootNavC) {
-			BOOL navBarHidden = rootNavC.navigationBarHidden;
-			[rootNavC setNavigationBarHidden:YES animated:NO];
-			[rootNavC setNavigationBarHidden:NO animated:NO];
-			[rootNavC setNavigationBarHidden:YES animated:NO];
-			[rootNavC setNavigationBarHidden:navBarHidden animated:NO];
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+			break;
 		}
 	
 	}
@@ -134,7 +139,7 @@
 	
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
-
+	
 }
 
 - (NSFetchedResultsController *) fetchedResultsController {
@@ -142,13 +147,7 @@
 	if (fetchedResultsController)
 		return fetchedResultsController;
 		
-	NSFetchRequest *fetchRequest = [self.managedObjectContext.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRImagesForArticle" substitutionVariables:[NSDictionary dictionaryWithObjectsAndKeys:
-		self.article, @"Article",
-	nil]];
-	
-	fetchRequest.sortDescriptors = [NSArray arrayWithObjects:
-		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:YES],
-	nil];
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
 	
 	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	fetchedResultsController.delegate = self;
@@ -166,7 +165,7 @@
 	if (gridView)
 		return gridView;
 	
-	gridView = [[[AQGridView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 128 }}] autorelease];
+	gridView = [[AQGridView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 128 }}];
 	gridView.delegate = self;
 	gridView.dataSource = self;
 	
@@ -190,13 +189,20 @@
 
 	NSString * const identifier = @"Cell";
 	WACompositionViewPhotoCell *dequeuedCell = (WACompositionViewPhotoCell *)[aGV dequeueReusableCellWithIdentifier:identifier];
-	if (!dequeuedCell) {
+	
+	if (dequeuedCell) {
+	
+		dequeuedCell.representedFile = representedFile;
+	
+	} else {
+	
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		
 	}
 	
 	dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
 	dequeuedCell.canRemove = NO;
-	dequeuedCell.image = representedFile.thumbnailImage;
+	
 	[dequeuedCell setNeedsLayout];
 	
 	return dequeuedCell;
@@ -205,41 +211,56 @@
 
 - (CGSize) portraitGridCellSizeForGridView:(AQGridView *)aGV {
 
-	CGRect gvBounds = aGV.bounds;
-	CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-	NSUInteger numberOfItems = [self.article.fileOrder count];
-	if (numberOfItems > 4) {
+		case UIUserInterfaceIdiomPad: {
+
+			CGRect gvBounds = aGV.bounds;
+			CGFloat gvWidth = CGRectGetWidth(gvBounds), gvHeight = CGRectGetHeight(gvBounds);
+			
+			NSUInteger numberOfItems = [self.article.files count];
+			if (numberOfItems > 4) {
+			
+				CGFloat edgeLength = floorf(gvWidth / 3);
+				return (CGSize){ edgeLength, edgeLength };
+				
+			} else if (numberOfItems > 1) {
+				
+				CGFloat edgeLength = floorf(gvWidth / 2);
+				return (CGSize){ edgeLength, edgeLength };
+				
+			} else {
+				
+				CGFloat edgeLength = MIN(gvWidth, gvHeight);
+				return (CGSize){ edgeLength, edgeLength };
+				
+			}
+			
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPhone: {
+		
+			return (CGSize){ 100, 100 };
+		
+			break;
+		
+		}
 	
-		CGFloat edgeLength = floorf(gvWidth / 3);
-		return (CGSize){ edgeLength, edgeLength };
-		
-	} else if (numberOfItems > 1) {
-		
-		CGFloat edgeLength = floorf(gvWidth / 2);
-		return (CGSize){ edgeLength, edgeLength };
-		
-	} else {
-		
-		CGFloat edgeLength = MIN(gvWidth, gvHeight);
-		return (CGSize){ edgeLength, edgeLength };
-		
 	}
 	
 }
 
 - (WAFile *) itemAtIndex:(NSUInteger)index {
 
-	if (index >= [self.article.fileOrder count])
-		return nil;
+	return [self.article.files objectAtIndex:index];
 	
-	return (WAFile *)[self.article.managedObjectContext irManagedObjectForURI:[self.article.fileOrder objectAtIndex:index]];
-
 }
 
 - (NSUInteger) indexOfItem:(WAFile *)aFile {
 
-	return [self.article.fileOrder indexOfObject:[[aFile objectID] URIRepresentation]];
+	return [self.article.files indexOfObject:aFile];
 
 }
 
@@ -281,8 +302,6 @@
 	if (![currentCell isKindOfClass:[WACompositionViewPhotoCell class]])
 		return;	//	It will just show new stuff the next time it shows up
 	
-	currentCell.image = ((WAFile *)anObject).thumbnailImage;
-
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
@@ -297,7 +316,7 @@
 
 - (void) gridView:(AQGridView *)aGV didSelectItemAtIndex:(NSUInteger)index {
 
-	__block WAGalleryViewController *galleryVC = nil;
+	__weak WAGalleryViewController *galleryVC = nil;
 	
 	galleryVC = [WAGalleryViewController controllerRepresentingArticleAtURI:[[self.article objectID] URIRepresentation] context:[NSDictionary dictionaryWithObjectsAndKeys:
 	
@@ -305,18 +324,43 @@
 	
 	nil]];
 	
-	galleryVC.onDismiss = ^ {
-		
-		[galleryVC dismissModalViewControllerAnimated:NO];
-		
-	};
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 	
-	[self presentModalViewController:galleryVC animated:NO];
+		case UIUserInterfaceIdiomPhone: {
+		
+			galleryVC.onDismiss = ^ {
+				
+				[galleryVC.navigationController popViewControllerAnimated:YES];
+				
+			};
+			
+			[self.navigationController pushViewController:galleryVC animated:YES];
+
+			break;
+		
+		}
+		
+		case UIUserInterfaceIdiomPad: {
+		
+			galleryVC.onDismiss = ^ {
+				
+				[galleryVC dismissModalViewControllerAnimated:NO];
+				
+			};
+			
+			[self presentModalViewController:galleryVC animated:NO];
+
+			break;
+		
+		}
+	
+	}
+	
 	[aGV deselectItemAtIndex:index animated:NO];
 
 }
 
-- (BOOL) stackView:(WAStackView *)aStackView shouldStretchElement:(UIView *)anElement {
+- (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement])
 		return YES;
@@ -325,7 +369,7 @@
 
 }
 
-- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(WAStackView *)aStackView {
+- (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
 		return (CGSize){

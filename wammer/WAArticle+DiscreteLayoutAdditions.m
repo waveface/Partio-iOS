@@ -39,7 +39,7 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 
 - (CFStringRef) typeForRepresentedMediaItem:(id)anItem {
 	
-	CFStringRef returnedType = (CFStringRef)objc_getAssociatedObject(anItem, &WAArticle_DiscreteLayoutAdditions_ItemType);
+	CFStringRef returnedType = (__bridge CFStringRef)objc_getAssociatedObject(anItem, &WAArticle_DiscreteLayoutAdditions_ItemType);
 	
 	if (!returnedType)
 		returnedType = kUTTypeItem;
@@ -50,7 +50,7 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 
 - (NSString *) representedText {
 
-	NSString *previewDescription = ((WAPreview *)[self.previews anyObject]).graphElement.description;
+	NSString *previewDescription = ((WAPreview *)[self.previews anyObject]).graphElement.text;
 
 	if (previewDescription)
 		return [[self text] stringByAppendingString:previewDescription];
@@ -60,11 +60,15 @@ NSString * const WAArticle_DiscreteLayoutAdditions_ItemType = @"WAArticle_Discre
 }
 
 - (NSURL *) representedImageURI {
+	
 	return IRDiscreteLayoutItemContentMediaForUTIType(self, kUTTypeImage);
+	
 }
 
 - (NSURL *) representedVideoURI {
+	
 	return IRDiscreteLayoutItemContentMediaForUTIType(self, kUTTypeVideo);
+	
 }
 
 @end

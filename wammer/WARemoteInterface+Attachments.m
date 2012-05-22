@@ -26,6 +26,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 - (void) createAttachmentWithFile:(NSURL *)aFileURL group:(NSString *)aGroupIdentifier options:(NSDictionary *)options onSuccess:(void(^)(NSString *attachmentIdentifier))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSParameterAssert([aFileURL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[aFileURL path]]);
+	NSParameterAssert([[aFileURL pathExtension] length]);
 	NSParameterAssert(aGroupIdentifier);
 		
 	NSMutableDictionary *mergedOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -50,7 +51,7 @@ NSString * const WARemoteAttachmentSmallSubtype = @"small";
 		NSString *pathExtension = [aFileURL pathExtension];
 		BOOL fileIsImage = NO;
 		if (pathExtension) {
-			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)pathExtension, kUTTypeItem);
+			CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)pathExtension, kUTTypeItem);
 			if (fileUTI) {
 				fileIsImage = UTTypeConformsTo(fileUTI, kUTTypeImage);
 				CFRelease(fileUTI);

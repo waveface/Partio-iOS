@@ -48,7 +48,7 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 	//	Talk with defaults
 	
 	NSURL *baseURL = [NSURL URLWithString:preferredEndpointURLString];
-	return [[[self alloc] initWithBaseURL:baseURL] autorelease];
+	return [[self alloc] initWithBaseURL:baseURL];
 	
 }
 
@@ -58,7 +58,7 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
    
-		map = [[NSDictionary dictionaryWithObjectsAndKeys:
+		map = [NSDictionary dictionaryWithObjectsAndKeys:
 		
 			@"posts/fetch_all/", @"articles",
 			@"users/fetch_all/", @"users",
@@ -67,7 +67,7 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 			@"post/create_new_comment/", @"createComment",
 			@"users/latest_read_post_id/", @"lastReadArticleContext",
 			
-		nil] retain];
+		nil];
 		
 	});
 
@@ -91,7 +91,7 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 
 - (void) handleUserDefaultsDidChange:(NSNotification *)aNotification {
 
-	NSURL *oldBaseURL = [[self.baseURL retain] autorelease];
+	NSURL *oldBaseURL = [self.baseURL copy];
 	NSURL *newBaseURL = [NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWARemoteEndpointURL]];
 	
 	if ([self.baseURL isEqual:newBaseURL])
@@ -111,7 +111,6 @@ NSString * const kWARemoteInterfaceContextNewBaseURL = @"WARemoteInterfaceContex
 - (void) dealloc {
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[super dealloc];
 
 }
 

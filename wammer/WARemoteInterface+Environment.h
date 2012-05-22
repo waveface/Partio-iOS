@@ -11,5 +11,8 @@
 @interface WARemoteInterface (Environment)
 
 - (BOOL) areExpensiveOperationsAllowed;  //  By default, if the station is available and the device is on WiFi, returns YESs
+- (BOOL) hasReachableStation;
+- (BOOL) hasReachableCloud;
+- (BOOL) hasWiFiConnection;
 
 @end

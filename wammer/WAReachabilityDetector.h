@@ -59,6 +59,12 @@ typedef struct sockaddr_in WASocketAddress;
 
 @property (nonatomic, readonly, retain) IRRecurrenceMachine *recurrenceMachine;
 
+- (BOOL) networkRequiresConnection;
+- (BOOL) networkReachable;
+- (BOOL) networkReachableDirectly;
+- (BOOL) networkReachableViaWiFi;
+- (BOOL) networkReachableViaWWAN;
+
 @end
 
 

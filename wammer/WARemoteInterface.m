@@ -61,7 +61,6 @@
 	dispatch_once(&onceToken, ^{
 		JKParseOptionFlags sloppy = JKParseOptionComments|JKParseOptionUnicodeNewlines|JKParseOptionLooseUnicode|JKParseOptionPermitTextAfterValidJSON;
 		returnedDecoder = [JSONDecoder decoderWithParseOptions:sloppy];
-		[returnedDecoder retain];
 	});
 
 	return returnedDecoder;
@@ -78,7 +77,7 @@
 
 	__block __typeof__(self) nrSelf = self;
 
-	return [[ ^ (NSData *incomingData) {
+	return [ ^ (NSData *incomingData) {
 	
 		NSError *parsingError = nil;
 		id anObject = [[nrSelf sharedDecoder] objectWithData:incomingData error:&parsingError];
@@ -91,35 +90,34 @@
 		
 		return (NSDictionary *)([anObject isKindOfClass:[NSDictionary class]] ? anObject : [NSDictionary dictionaryWithObject:anObject forKey:@"response"]);
 	
-	} copy] autorelease];
+	} copy];
 
 }
 
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer {
 
-	return [[ ^ (NSDictionary *inOriginalContext) {
+	return ^ (NSDictionary *inOriginalContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
 		return inOriginalContext;
-	} copy] autorelease];
+	};
 
 }
 
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer {
 
-	return [[ ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+	return ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity]; });
 		return inParsedResponse;
-	} copy] autorelease];
+	};
 
 }
 
 + (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer {
 
-  return [[ ^ (NSDictionary *incomingContext) {
+  return ^ (NSDictionary *incomingContext) {
   
-    NSMutableDictionary *returnedContext = [[incomingContext mutableCopy] autorelease];
-    
-    NSMutableDictionary *headerFields = [[[returnedContext objectForKey:kIRWebAPIEngineRequestHTTPHeaderFields] mutableCopy] autorelease];
+    NSMutableDictionary *returnedContext = [incomingContext mutableCopy];
+    NSMutableDictionary *headerFields = [[returnedContext objectForKey:kIRWebAPIEngineRequestHTTPHeaderFields] mutableCopy];
     
     if (!headerFields) {
      headerFields = [NSMutableDictionary dictionary];
@@ -146,29 +144,17 @@
     
     return returnedContext;
   
-  } copy] autorelease];
-
-}
-
-- (void) dealloc {
-
-	[apiKey release];
-	
-	[userIdentifier release];
-	[userToken release];
-	[primaryGroupIdentifier release];
-		
-	[super dealloc];
+  };
 
 }
 
 - (id) init {
 
-	self = [self initWithEngine:[[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] autorelease] authenticator:nil];
+	self = [self initWithEngine:[[IRWebAPIEngine alloc] initWithContext:[WARemoteInterfaceContext context]] authenticator:nil];
 	if (!self)
 		return nil;
 	
-	self.defaultBatchSize = 10;
+	self.defaultBatchSize = 100;
 	self.dataRetrievalInterval = 30;
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];

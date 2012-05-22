@@ -22,6 +22,7 @@ extern NSString * const kWALastAuthenticatedUserPrimaryGroupIdentifier;
 extern NSString * const kWALastAuthenticatedUserIdentifier;
 extern NSString * const kWAUserRegistrationUsesWebVersion;
 extern NSString * const kWAUserRegistrationEndpointURL;
+extern NSString * const kWAUserFacebookAuthenticationEndpointURL;
 extern NSString * const kWAUserRequiresReauthentication;
 extern NSString * const kWAUserPasswordResetEndpointURL;
 extern NSString * const kWAAlwaysAllowExpensiveRemoteOperations;
@@ -30,7 +31,6 @@ extern NSString * const kWADebugAutologinUserIdentifier;
 extern NSString * const kWADebugAutologinUserPassword;
 
 extern NSString * const kWADebugLastScanSyncBezelsVisible;
-extern NSString * const kWADebugUsesDiscreteArticleFlip;
 extern NSString * const kWADebugPersistentStoreName;
 
 extern NSString * const kWACompositionSessionRequestedNotification;
@@ -54,14 +54,16 @@ extern NSString * const kWACallbackActionSetRemoteEndpointURL;
 extern NSString * const kWACallbackActionSetUserRegistrationEndpointURL;
 extern NSString * const kWACallbackActionSetUserPasswordResetEndpointURL;
 
-extern NSString * const kWAUserStorageInfo;
+extern NSString * const WAFeedbackRecipient;
+extern NSString * const WAStreamFeaturesURL;
 
 extern void WARegisterUserDefaults (void);
 extern NSDictionary * WAPresetDefaults (void);
 
 extern NSString * const kWACurrentGeneratedDeviceIdentifier;
 BOOL WADeviceIdentifierReset (void);
-NSString * WADeviceIdentifier (void);
+extern NSString * WADeviceIdentifier (void);
+extern NSString * WADeviceName (void);
 
 extern NSString * const kWAAppEventNotification;	//	Notification Center key
 extern NSString * const kWAAppEventTitle;	//	The eventTitle

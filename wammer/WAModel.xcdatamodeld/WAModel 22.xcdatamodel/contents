@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1416" systemVersion="12A154q" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="WAArticle" representedClassName="WAArticle">
+        <attribute name="creationDate" optional="YES" attributeType="Date" elementID="timestamp">
+            <userInfo/>
+        </attribute>
+        <attribute name="creationDeviceName" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="draft" attributeType="Boolean" defaultValueString="NO">
+            <userInfo/>
+        </attribute>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="fileOrder" optional="YES" attributeType="Transformable">
+            <userInfo/>
+        </attribute>
+        <attribute name="hidden" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAComment" inverseName="article" inverseEntity="WAComment">
+            <userInfo/>
+        </relationship>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAFile" inverseName="article" inverseEntity="WAFile">
+            <userInfo/>
+        </relationship>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="articles" inverseEntity="WAGroup" syncable="YES"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="articles" inverseEntity="WAUser">
+            <userInfo/>
+        </relationship>
+        <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="article" inverseEntity="WAPreview" syncable="YES"/>
+        <relationship name="representingFile" optional="YES" minCount="1" maxCount="1" deletionRule="Deny" destinationEntity="WAFile" inverseName="representedArticle" inverseEntity="WAFile" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <userInfo/>
+    </entity>
+    <entity name="WAComment" representedClassName="WAComment">
+        <attribute name="creationDeviceName" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="identifier" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="text" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="timestamp" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="comments" inverseEntity="WAArticle">
+            <userInfo/>
+        </relationship>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="comments" inverseEntity="WAUser">
+            <userInfo/>
+        </relationship>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <userInfo/>
+    </entity>
+    <entity name="WAFile" representedClassName="WAFile">
+        <attribute name="codeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creationDeviceIdentifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="identifier" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="largeThumbnailFilePath" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="largeThumbnailURL" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="pageElementOrder" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="remoteFileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteFileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="remoteRepresentedImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteResourceHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="remoteResourceType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="resourceFilePath" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="resourceType" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="resourceURL" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="text" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="thumbnail" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer">
+            <userInfo/>
+        </attribute>
+        <attribute name="thumbnailFilePath" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="timestamp" optional="YES" attributeType="Date">
+            <userInfo/>
+        </attribute>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="files" inverseEntity="WAArticle">
+            <userInfo/>
+        </relationship>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="files" inverseEntity="WAUser">
+            <userInfo/>
+        </relationship>
+        <relationship name="pageElements" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFilePageElement" inverseName="file" inverseEntity="WAFilePageElement" syncable="YES"/>
+        <relationship name="representedArticle" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="representingFile" inverseEntity="WAArticle" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <userInfo/>
+    </entity>
+    <entity name="WAFilePageElement" representedClassName="WAFilePageElement" syncable="YES">
+        <attribute name="thumbnailFilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="file" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAFile" inverseName="pageElements" inverseEntity="WAFile" syncable="YES"/>
+    </entity>
+    <entity name="WAGroup" representedClassName="WAGroup" syncable="YES">
+        <attribute name="identifier" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="group" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAUser" inverseName="groups" inverseEntity="WAUser" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
+    </entity>
+    <entity name="WAOpenGraphElement" representedClassName="WAOpenGraphElement" syncable="YES">
+        <attribute name="imageOrder" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="primaryImageURI" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="providerDisplayName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="providerName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="providerURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="images" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAOpenGraphElementImage" inverseName="owner" inverseEntity="WAOpenGraphElementImage" syncable="YES"/>
+        <relationship name="preview" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAPreview" inverseName="graphElement" inverseEntity="WAPreview" syncable="YES"/>
+    </entity>
+    <entity name="WAOpenGraphElementImage" representedClassName="WAOpenGraphElementImage" syncable="YES">
+        <attribute name="imageFilePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageRemoteURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAOpenGraphElement" inverseName="images" inverseEntity="WAOpenGraphElement" syncable="YES"/>
+    </entity>
+    <entity name="WAPreview" representedClassName="WAPreview" syncable="YES">
+        <attribute name="htmlSynopsis" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="article" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="previews" inverseEntity="WAArticle" syncable="YES"/>
+        <relationship name="graphElement" optional="YES" minCount="1" maxCount="1" deletionRule="Cascade" destinationEntity="WAOpenGraphElement" inverseName="preview" inverseEntity="WAOpenGraphElement" syncable="YES"/>
+        <relationship name="owner" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="WAUser" inverseName="previews" inverseEntity="WAUser" syncable="YES"/>
+    </entity>
+    <entity name="WAUser" representedClassName="WAUser">
+        <attribute name="avatar" optional="YES" attributeType="Transformable" valueTransformerName="IRImageUnarchiveFromDataTransformer">
+            <userInfo/>
+        </attribute>
+        <attribute name="avatarURL" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="email" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="identifier" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="nickname" optional="YES" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <relationship name="articles" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAArticle" inverseName="owner" inverseEntity="WAArticle">
+            <userInfo/>
+        </relationship>
+        <relationship name="comments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAComment" inverseName="owner" inverseEntity="WAComment">
+            <userInfo/>
+        </relationship>
+        <relationship name="files" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAFile" inverseName="owner" inverseEntity="WAFile">
+            <userInfo/>
+        </relationship>
+        <relationship name="groups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WAGroup" inverseName="users" inverseEntity="WAGroup" syncable="YES"/>
+        <relationship name="previews" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WAPreview" inverseName="owner" inverseEntity="WAPreview" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="identifier"/>
+            </compoundIndex>
+        </compoundIndexes>
+        <userInfo/>
+    </entity>
+    <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>
+    <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
+    <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="(draft != YES) AND ((hidden == NULL) OR (hidden == NO))"/>
+    <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
+    <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
+    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="resourceFilePath != &quot;&quot; AND resourceURL == &quot;&quot;"/>
+    <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
+    <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $identifier"/>
+    <elements>
+        <element name="WAArticle" positionX="0" positionY="0" width="0" height="270"/>
+        <element name="WAComment" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WAFile" positionX="0" positionY="0" width="0" height="405"/>
+        <element name="WAFilePageElement" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WAGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WAOpenGraphElement" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WAOpenGraphElementImage" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WAPreview" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="WAUser" positionX="0" positionY="0" width="0" height="0"/>
+    </elements>
+</model>

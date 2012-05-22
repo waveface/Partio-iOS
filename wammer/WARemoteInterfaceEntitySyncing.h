@@ -9,7 +9,21 @@
 #import <Foundation/Foundation.h>
 
 
+@class NSManagedObject, NSManagedObjectContext;
+@protocol WARemoteInterfaceEntitySyncing;
+
 typedef void (^WAEntitySyncCallback)(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error);
+
+extern BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject);
+
+extern id<NSCopying> const WAMergePolicyKey;
+
+extern id const WAErrorMergePolicy;
+extern id const WAMergeByPropertyRemoteTrumpMergePolicy;
+extern id const WAMergeByPropertyLocalTrumpMergePolicy;
+extern id const WAOverwriteWithRemoteMergePolicy;
+extern id const WAOverwriteWithLocalMergePolicy;
+extern id const WAOverwriteWithLatestMergePolicy;
 
 
 @protocol WARemoteInterfaceEntitySyncing <NSObject>
@@ -28,6 +42,3 @@ typedef void (^WAEntitySyncCallback)(BOOL didFinish, NSManagedObjectContext *con
 - (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock;
 
 @end
-
-
-extern BOOL WAIsSyncableObject (NSManagedObject <WARemoteInterfaceEntitySyncing> *anObject);
