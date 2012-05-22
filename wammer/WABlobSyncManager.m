@@ -160,21 +160,25 @@
 				NSURL *fileURL = [[aFile objectID] URIRepresentation];
 				
 				enqueue([IRAsyncOperation operationWithWorkerBlock:^(void(^callback)(id)) {
-				
-					WAFile *actualFile = (WAFile *)[context irManagedObjectForURI:fileURL];
-					if (!actualFile) {
-						callback(nil);
-						return;
-					}
 					
-					[actualFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+					[context performBlock:^{
 						
-						kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
+						WAFile *actualFile = (WAFile *)[context irManagedObjectForURI:fileURL];
+						if (!actualFile) {
+							callback(nil);
+							return;
+						}
 						
-					nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
-						
-						callback(didFinish ? (id)kCFBooleanTrue : error);
-						
+						[actualFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+							
+							kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
+							
+						nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+							
+							callback(didFinish ? (id)kCFBooleanTrue : error);
+							
+						}];
+					
 					}];
 
 				} completionBlock:^(id results) {
