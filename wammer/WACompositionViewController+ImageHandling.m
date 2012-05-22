@@ -155,8 +155,10 @@ NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositio
 		
 		NSURL *finalFileURL = nil;
 		
-		if (selectedAssetURI)
+		if (selectedAssetURI) {
 			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+			NSCParameterAssert([finalFileURL pathExtension]);
+		}
 		
 		if (!finalFileURL)
 		if (!selectedAssetURI && representedAsset) {
