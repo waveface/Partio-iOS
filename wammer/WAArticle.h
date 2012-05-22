@@ -38,16 +38,18 @@
 - (void)addComments:(NSSet *)values;
 - (void)removeComments:(NSSet *)values;
 
-- (void)insertObject:(WAFile *)value inFilesAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromFilesAtIndex:(NSUInteger)idx;
-- (void)insertFiles:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeFilesAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInFilesAtIndex:(NSUInteger)idx withObject:(WAFile *)value;
-- (void)replaceFilesAtIndexes:(NSIndexSet *)indexes withFiles:(NSArray *)values;
-- (void)addFilesObject:(WAFile *)value;
-- (void)removeFilesObject:(WAFile *)value;
-- (void)addFiles:(NSOrderedSet *)values;
-- (void)removeFiles:(NSOrderedSet *)values;
+//	DO NOT USE
+//	- (void)insertObject:(WAFile *)value inFilesAtIndex:(NSUInteger)idx;
+//	- (void)removeObjectFromFilesAtIndex:(NSUInteger)idx;
+//	- (void)insertFiles:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+//	- (void)removeFilesAtIndexes:(NSIndexSet *)indexes;
+//	- (void)replaceObjectInFilesAtIndex:(NSUInteger)idx withObject:(WAFile *)value;
+//	- (void)replaceFilesAtIndexes:(NSIndexSet *)indexes withFiles:(NSArray *)values;
+//	- (void)addFilesObject:(WAFile *)value;
+//	- (void)removeFilesObject:(WAFile *)value;
+//	- (void)addFiles:(NSOrderedSet *)values;
+//	- (void)removeFiles:(NSOrderedSet *)values;
+
 - (void)addPreviewsObject:(WAPreview *)value;
 - (void)removePreviewsObject:(WAPreview *)value;
 - (void)addPreviews:(NSSet *)values;
