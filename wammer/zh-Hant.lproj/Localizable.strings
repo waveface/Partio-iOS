@@ -253,22 +253,22 @@
 "NOUN_USERNAME" = "電子郵件";
 
 /* Photo information in cell */
-"NUMBER_OF_PHOTOS" = "%d張照片";
+"NUMBER_OF_PHOTOS" = "%d 張照片";
 
 /* iPhone Timeline */
-"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@從%2$@";
+"NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@來自%2$@";
 
 /* In iPad overview */
 "PHOTO_NOUN " = "一張照片";
 
 /* in iPhone timeline */
-"PHOTO_PLURAL" = "%d照片";
+"PHOTO_PLURAL" = "%d 張照片";
 
 /* in iPhone timeline */
-"PHOTO_SINGULAR" = "%d照片";
+"PHOTO_SINGULAR" = "%d 張照片";
 
 /* In iPad overview */
-"PHOTOS_PLURAL " = "%d張照片";
+"PHOTOS_PLURAL " = "%d 張照片";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";
@@ -412,10 +412,10 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "3"; */
-"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝Station";
+"ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Station";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "6"; */
-"ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com/Stream 下載 Windows Station，完成安裝與設定後即可使用行動版本。";
+"ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
 
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_TITLE"; ObjectID = "5"; */
 "ERROR_NO_STATION_FOUND_TITLE" = "尚未安裝 Station";
