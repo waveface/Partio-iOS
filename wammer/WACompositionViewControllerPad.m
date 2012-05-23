@@ -364,6 +364,9 @@
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	WAFile *representedFile = [self.article.files objectAtIndex:index];
 	
+	NSParameterAssert(representedFile);
+	NSParameterAssert(representedFile.article);
+	
 	if (!cell) {
 	
 		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
@@ -374,9 +377,13 @@
 				
 	}
 	
-	cell.image = [representedFile smallestPresentableImage];
+	cell.representedFile = representedFile;
+//	cell.image = [representedFile smallestPresentableImage];
 	cell.clipsToBounds = NO;
 	cell.selectionStyle = AQGridViewCellSelectionStyleNone;
+	
+	NSParameterAssert(cell.representedFile);
+	NSParameterAssert(cell.representedFile.article);
 	
 	__weak WACompositionViewPhotoCell *wCell = cell;
 	

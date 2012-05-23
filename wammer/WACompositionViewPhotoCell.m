@@ -49,15 +49,11 @@
 	
 	representedFile = file;
 	
-	__weak WACompositionViewPhotoCell *wSelf = self;
+	[self irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-	self.representedFileHelper = [file irObserve:@"smallestPresentableImage" options:NSKeyValueObservingOptionPrior|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	
-		if (!isPrior)
-		if (!toValue || [toValue isKindOfClass:[UIImage class]])
-			[wSelf setImage:toValue];
-		
-	}];
+	nil]];
 	
 	self.image = file.smallestPresentableImage;
 
@@ -65,8 +61,8 @@
 
 - (void) dealloc {
 
-	if (representedFile && representedFileHelper)
-		[representedFile irRemoveObservingsHelper:representedFileHelper];
+//	if (representedFile && representedFileHelper)
+//		[representedFile irRemoveObservingsHelper:representedFileHelper];
 
 }
 
