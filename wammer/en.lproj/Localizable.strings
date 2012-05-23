@@ -301,10 +301,10 @@
 "SECOND_SINGULAR" = "%d second";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "⚠ Stream uses Wi-Fi to send original size photos  back to your PC. \n\n If you don't have Stream installed on your PC or it's not up and running,\n\nwe keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITH_WIFI" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. \n\n If you don't have Stream installed on your PC or it's not up and running,\n\nwe keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream uses Wi-Fi to send original size photos  back to your PC. \n\n If you don't have Stream installed on your PC or it's not up and running,\n\nwe keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. \n\n If you don't have Stream installed on your PC or it's not up and running,\n\nwe keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
@@ -430,7 +430,7 @@
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos  back to your PC. \n\n If you don't have Stream installed on your PC or it's not up and running,\n\nwe keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. \n\n If you don't have Stream installed on your PC or it's not up and running,\n\nwe keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "Service Info";
