@@ -529,12 +529,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	@autoreleasepool {
     
 		WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		NSString *identifier = [WAPostViewCellPhone identifierRepresentingObject:post];
 		
-		CGFloat height = [self cachedRowHeightForObject:post];
-		if (!height) {
+		id context = nil;
+		CGFloat height = [self cachedRowHeightForObject:post context:&context];
+		if (!height || ![context isEqual:identifier]) {
 		
 			height = [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
-			[self cacheRowHeight:height forObject:post];
+			[self cacheRowHeight:height forObject:post context:identifier];
 		
 		}
 	
