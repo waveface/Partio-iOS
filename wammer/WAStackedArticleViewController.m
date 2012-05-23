@@ -126,11 +126,11 @@
 		
 		}
 		
-		__weak IRBarButtonItem *nrCommentsItem = commentsItem;
+		__weak IRBarButtonItem *wCommentsItem = commentsItem;
 		
 		commentsItem.block = ^ {
 		
-			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:nrCommentsItem];
+			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:wCommentsItem];
 			
 		};
 		
@@ -152,7 +152,7 @@
 		
 		[self irPerformOnDeallocation:^{
 		
-			[commentsItem irUnbind:@"title"];
+			[wCommentsItem irUnbind:@"title"];
 			
 		}];
 		
@@ -160,23 +160,23 @@
 	
 	})());
 	
-	__block IRBarButtonItem *favoriteToggleItem = ((^ {
+	IRBarButtonItem *favoriteToggleItem = ((^ {
 	
-		IRBarButtonItem *favoriteToggleItem = [[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil];
-	
+		IRBarButtonItem *item = [[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil];
+				
 		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
 			case UIUserInterfaceIdiomPad: {
 				
-				[favoriteToggleItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+				[item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
 					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
 					[UIColor clearColor], UITextAttributeTextShadowColor,
 					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
 				nil] forState:UIControlStateNormal];
 				
-				[favoriteToggleItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+				[item setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
 				
-				[favoriteToggleItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+				[item setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
 				
 				break;
 				
@@ -190,7 +190,7 @@
 		
 		}
 		
-		favoriteToggleItem.block = ^ {
+		item.block = ^ {
 		
 			WAArticle *article = wSelf.article;
 		
@@ -219,7 +219,7 @@
 			
 		};
 		
-		[favoriteToggleItem irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		[item irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
@@ -233,13 +233,13 @@
 		
 		nil]];
 		
-		[self irPerformOnDeallocation:^{
+		[wSelf irPerformOnDeallocation:^{
 		
-			[favoriteToggleItem irUnbind:@"title"];
+			[item irUnbind:@"title"];
 			
 		}];
 		
-		return favoriteToggleItem;
+		return item;
 	
 	})());
 	
@@ -378,11 +378,11 @@
 	textStackCellFoldingToggleWrapperView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 0 }}];
 	[textStackCellFoldingToggleWrapperView addSubview:self.textStackCellFoldingToggle];
 	
-	__block __typeof__(textStackCellFoldingToggleWrapperView) nrWrapper = textStackCellFoldingToggleWrapperView;
-	__block __typeof__(self.textStackCellFoldingToggle) nrToggle = self.textStackCellFoldingToggle;
+	__weak UIView *wWrapper = textStackCellFoldingToggleWrapperView;
+	__weak UIButton *wToggle = self.textStackCellFoldingToggle;
 	
 	[(IRView *)textStackCellFoldingToggleWrapperView setOnHitTestWithEvent: ^ (CGPoint point, UIEvent *event, UIView *superAnswer) {
-		return [nrToggle hitTest:[nrToggle convertPoint:point fromView:nrWrapper] withEvent:event];
+		return [wToggle hitTest:[wToggle convertPoint:point fromView:wWrapper] withEvent:event];
 	}];
 
 	self.textStackCellFoldingToggle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin;	
@@ -709,7 +709,7 @@
 
 	[super viewDidLoad];
 	
-	__block __typeof__(self) nrSelf = self;
+	__weak WAStackedArticleViewController *wSelf = self;
 	
 	self.wrapperView = [[UIView alloc] initWithFrame:self.stackView.frame];
 	[self.stackView.superview addSubview:self.wrapperView];
@@ -729,15 +729,15 @@
 	self.stackView.canCancelContentTouches = YES;
 	self.stackView.onTouchesShouldBeginWithEventInContentView = ^ (NSSet *touches, UIEvent *event, UIView *contentView) {
 	
-		UIView *currentWrapperView = [nrSelf scrollableStackElementWrapper];
-		UIView *currentWrappedView = [nrSelf scrollableStackElement];
+		UIView *currentWrapperView = [wSelf scrollableStackElementWrapper];
+		UIView *currentWrappedView = [wSelf scrollableStackElement];
 		
 		if (contentView != currentWrappedView)
 		if (![contentView isDescendantOfView:currentWrappedView])
 			return [contentView isKindOfClass:[UIControl class]];
 			
-		IRStackView *sv = nrSelf.stackView;
-		UIView *svContainer = nrSelf.stackView.superview;
+		IRStackView *sv = wSelf.stackView;
+		UIView *svContainer = wSelf.stackView.superview;
 		
 		if (CGRectContainsRect([svContainer convertRect:sv.bounds fromView:sv], [svContainer convertRect:currentWrapperView.bounds fromView:currentWrapperView]))
 			return YES;
@@ -754,7 +754,7 @@
 	
 	self.stackView.onGestureRecognizerShouldRecognizeSimultaneouslyWithGestureRecognizer = ^ (UIGestureRecognizer *aGR, UIGestureRecognizer *otherGR, BOOL superAnswer) {
 	
-		if ((otherGR.view == [nrSelf scrollableStackElementWrapper]) || [otherGR.view isDescendantOfView:[nrSelf scrollableStackElementWrapper]])
+		if ((otherGR.view == [wSelf scrollableStackElementWrapper]) || [otherGR.view isDescendantOfView:[wSelf scrollableStackElementWrapper]])
 			return NO;
 		
 		return YES;
@@ -863,17 +863,17 @@
 
 	self.stackView.onDidLayoutSubviews = ^ {
 		
-		[nrSelf.textStackCellFoldingToggleWrapperView.superview bringSubviewToFront:nrSelf.textStackCellFoldingToggleWrapperView];
+		[wSelf.textStackCellFoldingToggleWrapperView.superview bringSubviewToFront:wSelf.textStackCellFoldingToggleWrapperView];
 		
 		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
 			case UIUserInterfaceIdiomPad: {
 			
-				[nrSelf.headerView.superview bringSubviewToFront:nrSelf.headerView];
+				[wSelf.headerView.superview bringSubviewToFront:wSelf.headerView];
 				
-				nrSelf.headerView.center = (CGPoint){
-					nrSelf.headerView.center.x,
-					MAX(0, nrSelf.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(nrSelf.headerView.bounds)
+				wSelf.headerView.center = (CGPoint){
+					wSelf.headerView.center.x,
+					MAX(0, wSelf.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(wSelf.headerView.bounds)
 				};
 				
 				break;
@@ -1132,8 +1132,10 @@
 		
 		WACompositionViewController *compositionVC = [WACompositionViewController controllerWithArticle:[[self.article objectID] URIRepresentation] completion:^(NSURL *anArticleURLOrNil) {
 			
-			if (dismissBlock)
+			if (dismissBlock) {
 				dismissBlock();
+				dismissBlock = nil;
+			}
 			
 			if (!anArticleURLOrNil)
 				return;

@@ -382,6 +382,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	[super viewWillAppear:animated];
 	
+	self.navigationItem.titleView.alpha = 1;
+
 	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	
