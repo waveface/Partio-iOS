@@ -609,7 +609,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[self.galleryViewCache setObject:view forKey:file];
 	}
 	
-	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:NO];
+	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:YES];
 
 }
 
