@@ -82,6 +82,9 @@
 	
 //	if (footerCell)
 //		[allStackElements addObject:footerCell];
+
+	[self.stackView layoutSubviews];
+	[self.gridView reloadData];
 	
 }
 
@@ -130,10 +133,10 @@
 		}
 	
 	}
-		
+	
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
-
+	
 }
 
 //	- (void) viewDidAppear:(BOOL)animated {
