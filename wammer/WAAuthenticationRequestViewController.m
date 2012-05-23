@@ -547,10 +547,6 @@
     (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
   nil]];
 	
-  [self irPerformOnDeallocation:^{
-    [signInUserAction irUnbind:@"enabled"];
-  }];
-	
 	return signInUserAction;
 
 }
@@ -671,6 +667,13 @@
 		resetPasswordAction,
 		
 	nil]] show];
+
+}
+
+- (void) dealloc {
+
+	for (IRAction *action in self.actions)
+		[action removeObserver:self forKeyPath:@"enabled"];
 
 }
 
