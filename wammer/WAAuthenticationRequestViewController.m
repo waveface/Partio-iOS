@@ -82,7 +82,7 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
-	self.title = NSLocalizedString(@"AUTH_REQUEST_TITLE", @"Title for the auth request controller");
+	self.title = NSLocalizedString(@"AUTH_REQUEST_TITLE", @"Title for login view");
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		

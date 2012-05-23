@@ -98,8 +98,8 @@
    Title for application */
 "APP_TITLE" = "Stream";
 
-/* Title for the auth request controller */
-"AUTH_REQUEST_TITLE" = "Login";
+/* Title for login view */
+"AUTH_REQUEST_TITLE" = "Stream";
 
 /* Title for the Facebook linking controller */
 "AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
