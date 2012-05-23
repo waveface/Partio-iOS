@@ -145,6 +145,8 @@ NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositio
 		WAArticle *capturedArticle = self.article;
 		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 		
+		NSCParameterAssert(capturedArticle);
+		
 		NSError *error = nil;
 		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, capturedArticle, nil] error:&error])
 			NSLog(@"Error obtaining permanent object ID: %@", error);
