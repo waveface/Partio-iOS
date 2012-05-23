@@ -525,6 +525,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	NSParameterAssert([NSThread isMainThread]);
 	
 	@autoreleasepool {
     
@@ -659,8 +661,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (controller != fetchedResultsController)
 		return;
 	
-	if (![self isViewLoaded])
-		return;
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
 	
 	UITableView *tv = self.tableView;
 	
@@ -687,6 +690,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
+	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	if ([menuController isMenuVisible]) {
 	
