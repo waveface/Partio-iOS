@@ -623,11 +623,11 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	if (exclusivelyUsesThumbnail) {
 		
-		[aView setImage:aFile.thumbnailImage animated:NO synchronized:forceSynchronousImageDecode];
+		[aView setImage:[aFile smallestPresentableImage] animated:NO synchronized:forceSynchronousImageDecode];
 		
 	} else {
 		
-		[aView setImage:aFile.bestPresentableImage animated:NO synchronized:forceSynchronousImageDecode];
+		[aView setImage:[aFile bestPresentableImage] animated:NO synchronized:forceSynchronousImageDecode];
 		
 	}
 	
@@ -636,12 +636,12 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	if (exclusivelyUsesThumbnail) {
 		
 		aView.layer.borderColor = [UIColor greenColor].CGColor;
-		aView.layer.borderWidth = 2;
+		aView.layer.borderWidth = 32;
 	
 	} else {
 	
 		aView.layer.borderColor = [UIColor redColor].CGColor;
-		aView.layer.borderWidth = 2;
+		aView.layer.borderWidth = 32;
 	
 	}
 	
