@@ -43,30 +43,6 @@
 
 }
 
-- (void) handleCurrentArticlePreviewsChangedFrom:(id)fromValue to:(id)toValue changeKind:(NSKeyValueChange)changeKind {
-	
-	WAPreview *usedPreview = [self.article.previews anyObject];
-	
-	BOOL badgeShown = (BOOL)!!usedPreview;	
-
-	if (usedPreview)
-		self.previewBadge.preview = usedPreview;
-	
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
-
-		self.previewBadge.alpha = badgeShown ? 1 : 0;
-		self.previewBadgeButton.hidden = badgeShown ? NO : YES;
-		
-		self.photosView.alpha = badgeShown ? 0 : 1;
-		
-	} completion: ^ (BOOL finished) {
-	
-		self.previewBadge.preview = usedPreview;
-		
-	}];
-
-}
-
 - (IBAction) handlePreviewBadgeTap:(id)sender {
 
 	if (!self.previewBadge.preview)
@@ -326,8 +302,8 @@
     
   }];
 	
-	[self handleCurrentArticleFilesChangedFrom:self.article.files to:self.article.files changeKind:NSKeyValueChangeReplacement];
-	[self handleCurrentArticlePreviewsChangedFrom:self.article.previews to:self.article.previews changeKind:NSKeyValueChangeReplacement];
+	[self handleFilesChangeKind:NSKeyValueChangeSetting oldValue:nil newValue:self.article.files indices:nil isPrior:YES];
+	[self handlePreviewsChangeKind:NSKeyValueChangeSetting oldValue:nil newValue:self.article.previews indices:nil isPrior:YES];
 	
 }
 
@@ -441,19 +417,18 @@
 	switch (kind) {
 	
 		case NSKeyValueChangeSetting: {
-		
+			
 			[self.photosView reloadData];
 			[self adjustPhotos];
-		
+			
 			break;
+			
 		}
 		
 		case NSKeyValueChangeInsertion: {
-		
+			
 			[self.photosView beginUpdates];
-			
 			[self.photosView insertItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
-			
 			[self.photosView endUpdates];
 			
 			break;
@@ -463,9 +438,7 @@
 		case NSKeyValueChangeRemoval: {
 		
 			[self.photosView beginUpdates];
-			
 			[self.photosView deleteItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
-			
 			[self.photosView endUpdates];
 
 			break;
@@ -475,9 +448,7 @@
 		case NSKeyValueChangeReplacement: {
 		
 			[self.photosView beginUpdates];
-			
 			[self.photosView reloadItemsAtIndices:indices withAnimation:AQGridViewItemAnimationFade];
-			
 			[self.photosView endUpdates];
 			
 			break;
@@ -488,132 +459,27 @@
 
 }
 
-- (void) handleCurrentArticleFilesChangedFrom:(NSOrderedSet *)fromValue to:(NSOrderedSet *)toValue changeKind:(NSKeyValueChange)changeKind {
+- (void) handlePreviewsChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
 
-	[self.photosView reloadData];
-	[self adjustPhotos];
-
-	return;
-
-	NSCParameterAssert([fromValue isKindOfClass:[NSOrderedSet class]]);
-	NSCParameterAssert([toValue isKindOfClass:[NSOrderedSet class]]);
-
-	NSArray *fromFiles = (NSArray *)([fromValue isKindOfClass:[NSArray class]] ? fromValue : [fromValue isKindOfClass:[NSOrderedSet class]] ? [(NSOrderedSet *)fromValue array] : nil);
-
-	NSArray *toFiles = (NSArray *)([toValue isKindOfClass:[NSArray class]] ? toValue : [toValue isKindOfClass:[NSOrderedSet class]] ? [(NSOrderedSet *)toValue array] : nil);
+	WAPreview *usedPreview = [self.article.previews anyObject];
 	
-	NSCParameterAssert([NSThread isMainThread]);
+	BOOL badgeShown = (BOOL)!!usedPreview;	
+
+	if (usedPreview)
+		self.previewBadge.preview = usedPreview;
 	
-//	dispatch_async(dispatch_get_main_queue(), ^ {
-	
-		if (![self isViewLoaded])
-			return;
-			
-		self.noPhotoReminderView.hidden = !![self.article.files count];
+	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:^{
+
+		self.previewBadge.alpha = badgeShown ? 1 : 0;
+		self.previewBadgeButton.hidden = badgeShown ? NO : YES;
 		
-			dispatch_async(dispatch_get_main_queue(), ^ {
-			
-				NSArray *removedObjects = [fromFiles filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-					return ![toFiles containsObject:evaluatedObject];
-				}]];
-				
-				NSIndexSet *removedObjectIndices = [fromFiles indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-					return [removedObjects containsObject:obj];
-				}];
-				
-				NSArray *insertedObjects = [toFiles filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-					return ![fromFiles containsObject:evaluatedObject];
-				}]];
-				
-				BOOL hasCellNumberChanges = ([insertedObjects count] || [removedObjects count]);
-				
-				CGPoint oldOffset = self.photosView.contentOffset;
-				
-				NSIndexSet *oldShownCellIndices = [self.photosView visibleCellIndices];
-				NSMutableArray *oldShownCellRects = [NSMutableArray array];
-				[oldShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-						[oldShownCellRects addObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]]];
-				}];
-				
-				void (^reload)() = ^ {
-					[self.photosView reloadData];
-					[self adjustPhotos];
-				};
-				
-				if (!hasCellNumberChanges) {
-					reload();
-					//[self.photosView setContentOffset:oldOffset animated:NO];
-					return;
-				}
-				
-				NSMutableDictionary *oldFileURIsToCellRects = [NSMutableDictionary dictionary];
-				[oldShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[oldFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[fromFiles objectAtIndex:idx]];
-				}];
-				
-				reload();
-				
-				NSUInteger shownCenterItemIndex = (unsigned int)fabsf(ceilf(((float_t)self.photosView.numberOfItems / (float_t)2)));
-				
-				if ([removedObjectIndices count])
-					shownCenterItemIndex = [removedObjectIndices firstIndex];
-				
-				if ([insertedObjects count])
-					shownCenterItemIndex = (self.photosView.numberOfItems - 1);
-				
-				shownCenterItemIndex = MIN(self.photosView.numberOfItems, shownCenterItemIndex);
-				
-				CGRect newLastItemRect = (CGRect) {
-					[self.photosView rectForItemAtIndex:shownCenterItemIndex].origin,
-					[self portraitGridCellSizeForGridView:self.photosView]
-				};
-				
-				[self.photosView scrollRectToVisible:newLastItemRect animated:NO];
-				CGPoint newOffset = self.photosView.contentOffset;
-				
-				NSMutableArray *animationBlocks = [NSMutableArray array];
-				[animationBlocks irEnqueueBlock:^{
-					[self.photosView setContentOffset:newOffset animated:NO];;
-				}];
-				
-				NSIndexSet *newShownCellIndices = [self.photosView visibleCellIndices];
-				NSMutableDictionary *newFileURIsToCellRects = [NSMutableDictionary dictionary];
-				[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-					[newFileURIsToCellRects setObject:[NSValue valueWithCGRect:[self.photosView rectForItemAtIndex:idx]] forKey:[toFiles objectAtIndex:idx]];
-				}];
-				
-				[animationBlocks irEnqueueBlock:^{
-					
-					[newShownCellIndices enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-						
-						NSValue *oldRectValue = [oldFileURIsToCellRects objectForKey:[toFiles objectAtIndex:idx]];
-						if (!oldRectValue)
-							return;
-						
-						AQGridViewCell *cell = [self.photosView cellForItemAtIndex:idx];
-						if (!cell)
-							return;
-						
-						CGRect cellFrame = cell.frame;
-						
-						[self.photosView cellForItemAtIndex:idx].layer.frame = [oldRectValue CGRectValue];
-						cell.frame = cellFrame;
-						
-					}];
-					
-				}];
-				
-				[self.photosView setContentOffset:oldOffset animated:NO];
-				
-				[UIView animateWithDuration:0.3f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-					
-					[animationBlocks irExecuteAllObjectsAsBlocks];
-									
-				} completion:nil];
-					
-			});
+		self.photosView.alpha = badgeShown ? 0 : 1;
 		
-//	});
+	} completion: ^ (BOOL finished) {
+	
+		self.previewBadge.preview = usedPreview;
+		
+	}];
 
 }
 
