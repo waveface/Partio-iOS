@@ -131,16 +131,19 @@
 	
 	}
 		
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
-	
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
-	
+
 }
+
+//	- (void) viewDidAppear:(BOOL)animated {
+//
+//		[super viewDidAppear:animated];
+//		
+//		[self.stackView layoutSubviews];
+//		[self.gridView reloadData];
+//		
+//	}
 
 - (NSFetchedResultsController *) fetchedResultsController {
 

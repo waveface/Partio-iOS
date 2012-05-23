@@ -31,11 +31,7 @@
 	if (!self)
 		return nil;
 	
-	if ([NSThread isMainThread]) {
-	
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-	
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 	
 	return self;
 
@@ -51,11 +47,7 @@
 
 - (void) dealloc {
 
-	if ([NSThread isMainThread]) {
-		
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
-	
-	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 }
 
