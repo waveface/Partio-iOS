@@ -304,7 +304,7 @@
 "SERVICE_INFO_WITH_WIFI" = "在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。\n\n只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。\n\n只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存";
+"SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
