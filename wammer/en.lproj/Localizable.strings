@@ -213,9 +213,6 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
 
-/* Title to show explaining WiFi Sync */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
-
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
 
@@ -303,6 +300,12 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d second";
 
+/* Title to show explaining WiFi Sync */
+"SERVICE_INFO_WITH_WIFI" = "SERVICE_INFO_WITH_WIFI";
+
+/* Title to show explaining WiFi Sync */
+"SERVICE_INFO_WITHOUT_WIFI" = "SERVICE_INFO_WITHOUT_WIFI";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
@@ -320,6 +323,9 @@
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
+
+/* In Account Info Sync Section */
+"SYNC_INFO_FOOTER" = "SYNC_INFO_FOOTER";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -423,11 +429,11 @@
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 
+/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_FOOTER" = "SERVICE_INFO_FOOTER";
+
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "Service Info";
-
-/* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "Queued in Cloud";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
@@ -435,14 +441,11 @@
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
 "VERSION" = "Version";
 
-/* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
-"LAST_SYNCED_TIME" = "Last Synced";
-
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
 
-/* Class = "IBUITableViewSection"; footerTitle = "LOCAL_PENDING_OBJECT_DESCRIPTION"; ObjectID = "aHi-Wv-Eu2"; */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+/* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
+"SYNC_INFO_FOOTER" = "SYNC_INFO_FOOTER";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "Nickname";

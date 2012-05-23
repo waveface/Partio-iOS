@@ -15,6 +15,7 @@
 + (id) controllerWithWrappingNavController:(UINavigationController **)navController;
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *syncTableViewCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *serviceTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *contactTableViewCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *stationNagCell;
 

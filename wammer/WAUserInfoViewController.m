@@ -34,6 +34,7 @@
 @synthesize syncTableViewCell;
 @synthesize contactTableViewCell;
 @synthesize stationNagCell;
+@synthesize serviceTableViewCell;
 @synthesize lastSyncDateLabel;
 @synthesize numberOfPendingFilesLabel;
 @synthesize numberOfFilesNotOnStationLabel;
@@ -206,10 +207,10 @@
 			UITableView *tv = wSelf.tableView;
 			
 			[tv beginUpdates];
-			[tv reloadSections:[NSIndexSet indexSetWithIndex:[tv indexPathForCell:wSelf.syncTableViewCell].section] withRowAnimation:UITableViewRowAnimationAutomatic];
+			[tv reloadSections:[NSIndexSet indexSetWithIndex:[tv indexPathForCell:wSelf.serviceTableViewCell].section] withRowAnimation:UITableViewRowAnimationAutomatic];
 			[tv endUpdates];
 			
-			wSelf.syncTableViewCell.alpha = 1;
+			wSelf.serviceTableViewCell.alpha = 1;
 		
 		}
 		
@@ -297,6 +298,7 @@
 	[self setContactTableViewCell:nil];
 	
 	[self setStationNagCell:nil];
+	[self setServiceTableViewCell:nil];
   [super viewDidUnload];	
 	
 }
@@ -409,13 +411,21 @@
 
 	NSString *superAnswer = [super tableView:tableView titleForFooterInSection:section];
 	
-	if ([superAnswer isEqualToString:@"LOCAL_PENDING_OBJECT_DESCRIPTION"]) {
+	if ([superAnswer isEqualToString:@"SERVICE_INFO_FOOTER"]) {
 	
-		if (![[WARemoteInterface sharedInterface] hasWiFiConnection])
-			return NSLocalizedString(@"LOCAL_PENDING_OBJECT_DESCRIPTION", @"Title to show explaining WiFi Sync");
+		if ([[WARemoteInterface sharedInterface] hasWiFiConnection])
+			return NSLocalizedString(@"SERVICE_INFO_WITH_WIFI", @"Title to show explaining WiFi Sync");
+		else
+			return NSLocalizedString(@"SERVICE_INFO_WITHOUT_WIFI", @"Title to show explaining WiFi Sync");
 		
-		return nil;
+	}
 	
+	if ([superAnswer isEqualToString:@"SYNC_INFO_FOOTER"]) {
+		WADataStore *dataStore = [WADataStore defaultStore];
+		return [NSString stringWithFormat:
+			NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
+			[[IRRelativeDateFormatter sharedFormatter] stringFromDate:[dataStore lastContentSyncDate]]
+		];
 	}
 	
 	if ([superAnswer isEqualToString:@"VERSION"])

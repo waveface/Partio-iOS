@@ -213,9 +213,6 @@
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d小時";
 
-/* Title to show explaining WiFi Sync */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔";
-
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d分鐘";
 
@@ -303,6 +300,12 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d秒";
 
+/* Title to show explaining WiFi Sync */
+"SERVICE_INFO_WITH_WIFI" = "在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。\n\n只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存";
+
+/* Title to show explaining WiFi Sync */
+"SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。\n\n只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
@@ -320,6 +323,9 @@
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "現在同步";
+
+/* In Account Info Sync Section */
+"SYNC_INFO_FOOTER" = "上次同步%@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -423,11 +429,11 @@
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "請到 http://waveface.com 下載 Windows Waveface Station，完成安裝與設定後即可使用行動版本。";
 
+/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。\n\n只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
+
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "服務資訊";
-
-/* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "尚未回傳至 Station 原檔數量";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
@@ -435,14 +441,11 @@
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
 "VERSION" = "版本";
 
-/* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
-"LAST_SYNCED_TIME" = "上次同步時間";
-
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
-/* Class = "IBUITableViewSection"; footerTitle = "LOCAL_PENDING_OBJECT_DESCRIPTION"; ObjectID = "aHi-Wv-Eu2"; */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ 僅會在Wi-Fi連線時上傳原檔";
+/* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
+"SYNC_INFO_FOOTER" = "上次同步%@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "使用者名稱";
