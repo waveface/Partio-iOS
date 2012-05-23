@@ -347,10 +347,10 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			if (!isValidPath(thumbnailFilePath)) {
 			
 				UIImage *smallestImage = [file smallestPresentableImage];
-				CGSize usedThumbnailSize = IRGravitize((CGRect){ CGPointZero, (CGSize){ 512, 512 } }, smallestImage.size, kCAGravityResizeAspect).size;
+				CGSize usedThumbnailSize = IRGravitize((CGRect){ CGPointZero, (CGSize){ 1024, 1024 } }, smallestImage.size, kCAGravityResizeAspect).size;
 				
 				UIImage *thumbnailImage = [smallestImage irScaledImageWithSize:usedThumbnailSize];
-				thumbnailFilePath = [[ds persistentFileURLForData:UIImagePNGRepresentation(thumbnailImage) extension:@"png"] path];
+				thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 85.0f) extension:@"jpeg"] path];
 				file.thumbnailFilePath = thumbnailFilePath;
 				
 				NSError *error = nil;
