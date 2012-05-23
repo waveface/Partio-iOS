@@ -51,7 +51,7 @@
 	
 	[self willChangeValueForKey:filePathKey];
 	
-	[self setPrimitiveResourceFilePath:[self relativePathFromPath:newAbsoluteFilePath]];
+	[self setPrimitiveValue:[self relativePathFromPath:newAbsoluteFilePath] forKey:filePathKey];
 	[self irAssociateObject:nil usingKey:&imageKey policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:imageKey];
 	
 	[self didChangeValueForKey:filePathKey];

@@ -86,27 +86,31 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 + (WAGalleryViewController *) controllerRepresentingArticleAtURI:(NSURL *)anArticleURI context:(NSDictionary *)context {
 
-	__block WAGalleryViewController *returnedController = [[self alloc] init];
+	WAGalleryViewController *controller = [[self alloc] init];
 	
-	returnedController.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	returnedController.article = (WAArticle *)[returnedController.managedObjectContext irManagedObjectForURI:anArticleURI];
-	
+	controller.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+	controller.article = (WAArticle *)[controller.managedObjectContext irManagedObjectForURI:anArticleURI];
 	
 	NSURL *preferredObjectURI = [context objectForKey:kWAGalleryViewControllerContextPreferredFileObjectURI];
 	
-	returnedController.onViewDidLoad = ^ {
+	__weak WAGalleryViewController *wController = controller;
+	
+	controller.onViewDidLoad = ^ {
 	
 		if (preferredObjectURI) {
 		
-			NSUInteger fileIndex = [returnedController.article.files indexOfObject:preferredObjectURI];
+			IRPaginatedView *pv = wController.paginatedView;
+			WAFile *preferredFile = (WAFile *)[wController.managedObjectContext irManagedObjectForURI:preferredObjectURI];
+			NSUInteger fileIndex = [wController.article.files indexOfObject:preferredFile];
+			
 			if (fileIndex != NSNotFound) {
 			
 				//		FIXME: Actually fix IRPaginatedView.  We have copied this hack.
 
-				[returnedController.paginatedView layoutSubviews];
-				[returnedController.paginatedView scrollToPageAtIndex:fileIndex animated:NO];
-				[returnedController.paginatedView layoutSubviews];
-				[returnedController.paginatedView setNeedsLayout];
+				[pv layoutSubviews];
+				[pv scrollToPageAtIndex:fileIndex animated:NO];
+				[pv layoutSubviews];
+				[pv setNeedsLayout];
 
 			}
 		
@@ -114,10 +118,10 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	};
 	
-	if ([returnedController isViewLoaded])
-		returnedController.onViewDidLoad();
+	if ([controller isViewLoaded])
+		controller.onViewDidLoad();
 	
-	return returnedController;
+	return controller;
 
 }
 

@@ -138,32 +138,39 @@
 - (void) tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	switch (editingStyle) {
-	case UITableViewCellEditingStyleDelete: {
 		
-		NSUInteger deletedFileIndex = indexPath.row;
-		NSURL *deletedFileURI = [self.article.files objectAtIndex:deletedFileIndex];
-		WAFile *removedFile = (WAFile *)[self.managedObjectContext irManagedObjectForURI:deletedFileURI];
-		
-		[self.tableView beginUpdates];
-		
-		self.undergoingProgrammaticEntityMutation = YES;
-		
-		[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-		[self.article removeFilesObject:removedFile];
+		case UITableViewCellEditingStyleDelete: {
+			
+			NSUInteger deletedFileIndex = indexPath.row;
+			WAFile *removedFile = [self.article.files objectAtIndex:deletedFileIndex];
+			
+			[self.tableView beginUpdates];
+			
+			self.undergoingProgrammaticEntityMutation = YES;
+			
+			[self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+			[[self.article mutableOrderedSetValueForKey:@"files"] removeObject:removedFile];
 
-		self.undergoingProgrammaticEntityMutation = NO;
+			self.undergoingProgrammaticEntityMutation = NO;
+			
+			[self.tableView endUpdates];
+			
+			break;
+			
+		}
 		
-		[self.tableView endUpdates];
+		case UITableViewCellEditingStyleNone: {
+			
+			break;
+			
+		}
 		
-		break;
+		case UITableViewCellEditingStyleInsert: {
+			
+			break;
+			
+		}
 		
-	}
-	case UITableViewCellEditingStyleNone: {
-		break;
-	};
-	case UITableViewCellEditingStyleInsert: {
-		break;
-	}
 	}
 
 }
