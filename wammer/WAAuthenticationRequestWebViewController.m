@@ -185,7 +185,7 @@
 
 - (void) presentError:(NSError *)error completion:(void(^)(void))block {
 
-	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure");
+	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in web view");
 	
 	NSString *alertText = [[NSArray arrayWithObjects:
 		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_DESCRIPTION", @"Description for authentication failure"),
