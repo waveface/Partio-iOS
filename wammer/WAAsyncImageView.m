@@ -43,20 +43,25 @@
   lastImagePtr = imagePtr;
 	
   if (!newImage) {
-    [super setImage:nil];
+	
+		[self primitiveSetImage:nil];
     return;
+		
   }
 
 	if (options & WAImageViewForceSynchronousOption) {
-		[super setImage:newImage];
+	
+		[self primitiveSetImage:newImage];
 		[self.delegate imageViewDidUpdate:self];
+		
 		return;
+		
 	}
 	
 	BOOL shouldEmptyContents = ![self.image.irRepresentedObject isEqual:newImage.irRepresentedObject];
 	if (shouldEmptyContents) {
 		
-		[super setImage:nil];
+		[self primitiveSetImage:nil];
 		
 	}
 	
@@ -72,7 +77,6 @@
 		
 		UIImage *decodedImage = [newImage irDecodedImage];
 
-		//	CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			if (!wSelf)
@@ -80,7 +84,7 @@
 			
 			if (wSelf.lastImagePtr != imagePtr)
 				return;
-
+			
 			[wSelf primitiveSetImage:decodedImage];
 			[wSelf.delegate imageViewDidUpdate:wSelf];
 		
