@@ -2,8 +2,8 @@
 "ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
-   Action title for cancelling
    Action title for cancelling stuff
+   Cancel ation in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
@@ -60,7 +60,7 @@
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
 
-/* Action title for resetting password */
+/* Action title for resetting password in login view */
 "ACTION_RESET_PASSWORD" = "Forgot";
 
 /* Action title for saving a draft */
@@ -98,8 +98,8 @@
    Title for application */
 "APP_TITLE" = "Stream";
 
-/* Title for the auth request controller */
-"AUTH_REQUEST_TITLE" = "Login";
+/* Title for login view */
+"AUTH_REQUEST_TITLE" = "Stream";
 
 /* Title for the Facebook linking controller */
 "AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
@@ -175,13 +175,14 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Bad Email or Password";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
 
 /* Recovery notion for authentication failure recovery */
 "ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
 
-/* Title for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "Unable to Authenticate";
+/* Title for authentication failure in login view
+   Title for authentication failure in web view */
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "Email/password is invalid";
 
 /* Description for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
@@ -212,9 +213,6 @@
 
 /* No comment provided by engineer. */
 "HOUR_SINGULAR" = "%d hour";
-
-/* Title to show explaining WiFi Sync */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
 
 /* No comment provided by engineer. */
 "MINUTE_PLURAL" = "%d minutes";
@@ -303,6 +301,12 @@
 /* No comment provided by engineer. */
 "SECOND_SINGULAR" = "%d second";
 
+/* Title to show explaining WiFi Sync */
+"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+
+/* Title to show explaining WiFi Sync */
+"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos under Wi-Fi connection. \n\nIf you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
@@ -320,6 +324,9 @@
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
+
+/* In Account Info Sync Section */
+"SYNC_INFO_FOOTER" = "Last Sync %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -379,7 +386,7 @@
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
-"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
+"COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "add more photos";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
@@ -423,11 +430,11 @@
 /* Class = "IBUILabel"; text = "ERROR_NO_STATION_FOUND_DESCRIPTION"; ObjectID = "7"; */
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 
+/* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
+"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "Service Info";
-
-/* Class = "IBUILabel"; text = "OBJECTS_NOT_SYNCED_IN_QUEUE"; ObjectID = "D8F-gm-Ys2"; */
-"OBJECTS_NOT_SYNCED_IN_QUEUE" = "Queued in Cloud";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";
@@ -435,14 +442,11 @@
 /* Class = "IBUITableViewSection"; footerTitle = "VERSION"; ObjectID = "IP4-fz-MdU"; */
 "VERSION" = "Version";
 
-/* Class = "IBUILabel"; text = "LAST_SYNCED_TIME"; ObjectID = "Su4-1u-D5d"; */
-"LAST_SYNCED_TIME" = "Last Synced";
-
 /* Class = "IBUILabel"; text = "LOCAL_PENDING_OBJECTS_TITLE"; ObjectID = "Uku-UE-EAs"; */
 "LOCAL_PENDING_OBJECTS_TITLE" = "Objects Pending";
 
-/* Class = "IBUITableViewSection"; footerTitle = "LOCAL_PENDING_OBJECT_DESCRIPTION"; ObjectID = "aHi-Wv-Eu2"; */
-"LOCAL_PENDING_OBJECT_DESCRIPTION" = "⚠ Original files only syncs on Wi-Fi";
+/* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
+"SYNC_INFO_FOOTER" = "Last Sync %@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "Nickname";

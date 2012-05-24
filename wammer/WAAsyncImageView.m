@@ -14,10 +14,18 @@
 
 @property (nonatomic, readwrite, assign) void * lastImagePtr;
 
+- (void) primitiveSetImage:(UIImage *)image;
+
 @end
 
 @implementation WAAsyncImageView
 @synthesize lastImagePtr;
+@dynamic delegate;
+
+- (void) dealloc {
+
+
+}
 
 - (void) setImage:(UIImage *)newImage {
 
@@ -35,35 +43,56 @@
   lastImagePtr = imagePtr;
 	
   if (!newImage) {
-  
     [super setImage:nil];
     return;
-  
-  }  
+  }
 
 	if (options & WAImageViewForceSynchronousOption) {
-		[super setImage:nil];
+		[super setImage:newImage];
 		[self.delegate imageViewDidUpdate:self];
 		return;
 	}
 	
-	[super setImage:nil];
-
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^ {
-
-    UIImage *decodedImage = [newImage irDecodedImage];
+	BOOL shouldEmptyContents = ![self.image.irRepresentedObject isEqual:newImage.irRepresentedObject];
+	if (shouldEmptyContents) {
 		
-		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
-			
-      if (self.lastImagePtr != imagePtr)
+		[super setImage:nil];
+		
+	}
+	
+	__weak WAAsyncImageView *wSelf = self;
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^ {
+
+		if (!wSelf)
+			return;
+
+		if (wSelf.lastImagePtr != imagePtr)
+			return;
+		
+		UIImage *decodedImage = [newImage irDecodedImage];
+
+		//	CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+		dispatch_async(dispatch_get_main_queue(), ^ {
+		
+			if (!wSelf)
 				return;
 			
-      [super setImage:decodedImage];
-      [self.delegate imageViewDidUpdate:self];
+			if (wSelf.lastImagePtr != imagePtr)
+				return;
+
+			[wSelf primitiveSetImage:decodedImage];
+			[wSelf.delegate imageViewDidUpdate:wSelf];
 		
 		});
-  
-  });
+
+	});
+
+}
+
+- (void) primitiveSetImage:(UIImage *)image {
+
+	[super setImage:image];
 
 }
 
