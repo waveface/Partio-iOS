@@ -21,7 +21,7 @@
 @class WAPreview;
 @interface WAPreviewInspectionViewController : UIViewController
 
-+ (id) controllerWithPreview:(NSURL *)anURL;
++ (id) controllerWithPreview:(WAPreview *)preview;
 - (UINavigationController *) wrappingNavController;
 
 @property (nonatomic, readwrite, assign) id <WAPreviewInspectionViewControllerDelegate> delegate;

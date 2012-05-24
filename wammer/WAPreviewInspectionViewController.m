@@ -23,14 +23,11 @@
 @synthesize managedObjectContext;
 @synthesize deleteButton, previewBadge, preview, delegate;
 
-+ (id) controllerWithPreview:(NSURL *)anURL {
++ (id) controllerWithPreview:(WAPreview *)preview {
 
 	WAPreviewInspectionViewController *controller = [[self alloc] init];
-	controller.managedObjectContext = [[WADataStore defaultStore] disposableMOC];
-	controller.preview = (WAPreview *)[controller.managedObjectContext irManagedObjectForURI:anURL];
-	
-	if (![controller.preview isKindOfClass:[WAPreview class]])
-		return nil;
+	controller.managedObjectContext = preview.managedObjectContext;
+	controller.preview = preview;
 	
 	return controller;
 
@@ -56,35 +53,6 @@
 	
 	return self;
 	
-}
-
-- (void) viewDidAppear:(BOOL)animated {
-
-	[super viewDidAppear:animated];
-	
-	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]]) {
-	
-		//	Prepare for preview refreshes, such as image updates, if appropriate
-	
-		[(IRManagedObjectContext *)self.managedObjectContext irBeginMergingFromSavesAutomatically];
-		[self.managedObjectContext refreshObject:self.preview mergeChanges:YES];
-	
-	}
-
-}
-
-- (void) viewWillDisappear:(BOOL)animated {
-
-	if ([self.managedObjectContext isKindOfClass:[IRManagedObjectContext class]]) {
-	
-		//	Prepare for preview refreshes, such as image updates, if appropriate
-	
-		[(IRManagedObjectContext *)self.managedObjectContext irStopMergingFromSavesAutomatically];
-	
-	}
-
-	[super viewWillDisappear:animated];
-
 }
 
 - (void) viewDidLoad {
