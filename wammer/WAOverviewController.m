@@ -661,8 +661,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 			
 			[article.representingFile thumbnailImage];
 					
-			for (WAPreview *aPreview in article.previews)
-				[aPreview.graphElement thumbnail];
+			//	for (WAPreview *aPreview in article.previews)
+			//		[aPreview.graphElement thumbnail];
 		
 		}
 	

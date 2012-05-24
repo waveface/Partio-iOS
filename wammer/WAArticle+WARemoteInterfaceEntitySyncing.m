@@ -653,7 +653,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	
 	if (previewURL) {
 	
-		NSString * const previewImageURL = anyPreview.graphElement.primaryImage.imageRemoteURL;
+		NSString * const previewImageURL = anyPreview.graphElement.representingImage.imageRemoteURL;
 	
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 		
