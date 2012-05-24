@@ -393,6 +393,12 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	self.tableView.contentInset = UIEdgeInsetsZero;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMenuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
+	
+	IRTableView *tv = self.tableView;
+	
+	[tv beginUpdates];
+	[tv reloadRowsAtIndexPaths:[tv indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+	[tv endUpdates];
 
 }
 
