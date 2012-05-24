@@ -16,12 +16,6 @@
 
 @implementation WAOpenGraphElement (WAAdditions)
 
-+ (NSString *) keyPathHoldingUniqueValue {
-
-	return @"url";
-
-}
-
 + (BOOL) skipsNonexistantRemoteKey {
 
 	return YES;

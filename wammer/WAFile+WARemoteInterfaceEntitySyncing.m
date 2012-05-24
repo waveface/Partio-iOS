@@ -284,7 +284,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	WADataStore * const ds = [WADataStore defaultStore];
 	NSURL * const ownURL = [[self objectID] URIRepresentation];
-	NSFileManager * const fm = [NSFileManager defaultManager];
 	
 	BOOL areExpensiveOperationsAllowed = [ri areExpensiveOperationsAllowed];
 	
