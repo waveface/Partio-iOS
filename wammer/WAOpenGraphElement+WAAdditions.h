@@ -10,13 +10,7 @@
 
 @interface WAOpenGraphElement (WAAdditions)
 
-@property (nonatomic, readonly, retain) UIImage *thumbnail;
-@property (nonatomic, readonly, retain) NSString *thumbnailURL DEPRECATED_ATTRIBUTE;
-@property (nonatomic, readonly, retain) NSString *thumbnailFilePath DEPRECATED_ATTRIBUTE;
-
 @property (nonatomic, readonly, retain) NSString *providerCaption;
 //	$providerName ($providerDisplay), $providerName, $providerDisplay, or $providerURL in order of availability
-
-@property (nonatomic, readwrite, retain) WAOpenGraphElementImage *primaryImage;
 
 @end

@@ -482,13 +482,13 @@
 
 + (NSSet *) keyPathsForValuesAffectingImage {
 
-	return [NSSet setWithObject:@"preview.thumbnail"];
+	return [NSSet setWithObject:@"preview.graphElement.representingImage.image"];
 
 }
 
 - (UIImage *) image {
 
-	return self.preview.thumbnail;
+	return self.preview.graphElement.representingImage.image;
 
 }
 

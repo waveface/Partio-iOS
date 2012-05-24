@@ -144,11 +144,12 @@
 	WACompositionViewPhotoCell *cell = (WACompositionViewPhotoCell *)[gridView dequeueReusableCellWithIdentifier:identifier];
 	
 	if (![cell isKindOfClass:[WACompositionViewPhotoCell class]]) {
-		cell = [[WACompositionViewPhotoCell alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 72.0f, 72.0f } } reuseIdentifier:identifier];
+		cell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
+		cell.frame = (CGRect){ CGPointZero, (CGSize){ 72.0f, 72.0f } };
 	}
 	
 	cell.canRemove = NO;
-	cell.image = representedFile.smallestPresentableImage;
+	cell.representedFile = representedFile;
 	cell.style = WACompositionViewPhotoCellBorderedPlainStyle;
 	
 	[cell setNeedsLayout];

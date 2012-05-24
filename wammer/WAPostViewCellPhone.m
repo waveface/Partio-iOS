@@ -128,7 +128,7 @@
 			
 			if (anyPreview.text || anyPreview.url || anyPreview.graphElement.text || anyPreview.graphElement.title) {
 			
-				if (anyPreview.graphElement.primaryImage)
+				if (anyPreview.graphElement.representingImage.imageRemoteURL)
 					return @"PostCell-WebLink";
 			
 				return @"PostCell-WebLinkNoPhoto";
@@ -229,7 +229,7 @@
 		
 		[piv irUnbind:@"image"];
 		
-		[piv irBind:@"image" toObject:preview keyPath:@"thumbnail" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		[piv irBind:@"image" toObject:preview keyPath:@"graphElement.representingImage.image" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 		
