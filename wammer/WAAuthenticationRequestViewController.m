@@ -82,7 +82,7 @@
 		return nil;
 	
 	self.labelWidth = 128.0f;
-	self.title = NSLocalizedString(@"AUTH_REQUEST_TITLE", @"Title for the auth request controller");
+	self.title = NSLocalizedString(@"AUTH_REQUEST_TITLE", @"Title for login view");
 	
 	switch (UI_USER_INTERFACE_IDIOM()) {
 		
@@ -547,10 +547,6 @@
     (id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
   nil]];
 	
-  [self irPerformOnDeallocation:^{
-    [signInUserAction irUnbind:@"enabled"];
-  }];
-	
 	return signInUserAction;
 
 }
@@ -644,7 +640,8 @@
 
 	__weak WAAuthenticationRequestViewController *wSelf = self;
 	
-	NSString *resetPasswordTitle = NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password");
+	NSString *resetPasswordTitle = NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password in login view");
+	
 	IRAction *resetPasswordAction = [IRAction actionWithTitle:resetPasswordTitle block: ^ {
 	
 		wSelf.password = nil;
@@ -654,14 +651,9 @@
 	
   }];
 
-	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure");
-	NSString *alertText = [[NSArray arrayWithObjects:
-		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_DESCRIPTION", @"Description for authentication failure"),
-		[NSString stringWithFormat:@"“%@”.", [error localizedDescription]], @"\n\n",
-		NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION", @"Recovery notion for authentication failure recovery"),
-	nil] componentsJoinedByString:@""];
+	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in login view");
 	
-	[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Action title for cancelling") block:^{
+	[[IRAlertView alertViewWithTitle:alertTitle message:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel ation in login view") block:^{
 	
 		wSelf.password = nil;
 		[wSelf assignFirstResponderStatusToBestMatchingField];
@@ -670,7 +662,14 @@
 		
 		resetPasswordAction,
 		
-	nil]] show];
+	nil]]show];
+
+}
+
+- (void) dealloc {
+
+	for (IRAction *action in self.actions)
+		[action removeObserver:self forKeyPath:@"enabled"];
 
 }
 

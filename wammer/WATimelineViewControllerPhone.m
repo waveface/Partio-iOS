@@ -382,6 +382,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   
 	[super viewWillAppear:animated];
 	
+	self.navigationItem.titleView.alpha = 1;
+
 	[self.navigationController.toolbar setTintColor:[UIColor colorWithWhite:128.0/255.0 alpha:1]];
 	[self.navigationController.toolbar setBackgroundImage:[UIImage imageNamed:@"ToolbarWithButtons"] forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
 	
@@ -523,16 +525,20 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	NSParameterAssert([NSThread isMainThread]);
 	
 	@autoreleasepool {
     
 		WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		NSString *identifier = [WAPostViewCellPhone identifierRepresentingObject:post];
 		
-		CGFloat height = [self cachedRowHeightForObject:post];
-		if (!height) {
+		id context = nil;
+		CGFloat height = [self cachedRowHeightForObject:post context:&context];
+		if (!height || ![context isEqual:identifier]) {
 		
 			height = [WAPostViewCellPhone heightForRowRepresentingObject:post inTableView:tableView];
-			[self cacheRowHeight:height forObject:post];
+			[self cacheRowHeight:height forObject:post context:identifier];
 		
 		}
 	
@@ -655,8 +661,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (controller != fetchedResultsController)
 		return;
 	
-	if (![self isViewLoaded])
-		return;
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
 	
 	UITableView *tv = self.tableView;
 	
@@ -683,6 +690,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	NSCParameterAssert([NSThread isMainThread]);
+	NSCParameterAssert([self isViewLoaded]);
+	NSCParameterAssert(self.view.window);
+	
 	UIMenuController *menuController = [UIMenuController sharedMenuController];
 	if ([menuController isMenuVisible]) {
 	
