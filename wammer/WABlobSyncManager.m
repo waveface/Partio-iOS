@@ -21,15 +21,20 @@
 @interface WABlobSyncManager ()
 
 @property (readwrite, assign) NSUInteger numberOfFiles;
-@property (nonatomic, readwrite, retain) IRRecurrenceMachine *recurrenceMachine;
+@property (nonatomic, readwrite, strong) IRRecurrenceMachine *recurrenceMachine;
+@property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
 
 - (IRAsyncOperation *) haulingOperationPrototype;
+
+- (void) countFilesWithCompletion:(void(^)(NSUInteger count))block;
+- (void) countFilesInContext:(NSManagedObjectContext *)context withCompletion:(void(^)(NSUInteger count))block;
 
 @end
 
 
 @implementation WABlobSyncManager
 @synthesize recurrenceMachine, numberOfFiles;
+@synthesize operationQueue;
 
 + (void) load {
 
@@ -61,7 +66,29 @@
 	if (!self)
 		return nil;
 	
-	[self recurrenceMachine];
+	[[self recurrenceMachine] scheduleOperationsNow];
+	
+	//	[[WARemoteInterface sharedInterface] irObserve:@"networkState" options:NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionNew context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	//		
+	//		NSLog(@"networkState -> %@ — kind %i, from %@, indices %@, isPrior %x", toValue, kind, fromValue, indices, isPrior);
+	//
+	//	}];
+		
+	__weak WABlobSyncManager *wSelf = self;
+	
+	[self.operationQueue addOperations:[NSArray arrayWithObject:[NSBlockOperation blockOperationWithBlock:^{
+		
+		[wSelf countFilesWithCompletion:^(NSUInteger count) {
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+
+				wSelf.numberOfFiles = count;
+				
+			});
+			
+		}];
+		
+	}]] waitUntilFinished:YES];
 	
 	return self;
 
@@ -69,7 +96,21 @@
 
 - (void) dealloc {
 
+	[operationQueue cancelAllOperations];
+
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
+- (NSOperationQueue *) operationQueue {
+
+	if (operationQueue)
+		return operationQueue;
+	
+	operationQueue = [[NSOperationQueue alloc] init];
+	operationQueue.maxConcurrentOperationCount = 1;
+	
+	return operationQueue;
 
 }
 
@@ -80,7 +121,7 @@
 	
 	recurrenceMachine = [[IRRecurrenceMachine alloc] init];
 	recurrenceMachine.queue.maxConcurrentOperationCount = 1;
-	recurrenceMachine.recurrenceInterval = 30;
+	recurrenceMachine.recurrenceInterval = 5;
 	
 	[recurrenceMachine addRecurringOperation:[self haulingOperationPrototype]];
 	
@@ -123,104 +164,149 @@
 
 }
 
+- (void) setNumberOfFiles:(NSUInteger)newNumberOfFiles {
+
+	NSCParameterAssert([NSThread isMainThread]);
+		
+	numberOfFiles = newNumberOfFiles;
+
+}
+
 - (IRAsyncOperation *) haulingOperationPrototype {
 
 	__weak WABlobSyncManager *wSelf = self;
 	__weak IRRecurrenceMachine *wRecurrenceMachine = self.recurrenceMachine;
-
-	return [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
 	
+	__block NSManagedObjectContext *context = nil;
+	
+	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+	
+		NSCAssert2(!wSelf.operationQueue.operationCount, @"Operation queue %@ must have 0 operations when the recurrence machine hits, but has %i operations pending",wSelf.operationQueue, wSelf.operationQueue.operationCount);
+		
+		NSCAssert1(!context, @"Shared context reference should be nil, got %@", context);
+		
 		BOOL const canSync = [wSelf canPerformBlobSync];
 		if (!canSync) {
 		
-			aCallback(nil);
+			callback(nil);
 			return;
 		
 		}
 		
-		[wRecurrenceMachine beginPostponingOperations];
-	
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[wRecurrenceMachine beginPostponingOperations];
 		
-			__block NSOperationQueue *tempQueue = [[NSOperationQueue alloc] init];
-			
-			tempQueue.maxConcurrentOperationCount = 1;
-			[tempQueue setSuspended:YES];
-			
-			__block NSManagedObjectContext *context = nil;	//	Should be created on the operation queue so thread safety is maintained
-			__block NSOperation *lastAddedOperation = nil;	//	For dependencies
-			
-			void (^enqueue)(NSOperation *) = ^ (NSOperation *anOperation){
-				if (lastAddedOperation) {
-					[anOperation addDependency:lastAddedOperation];
-				}
-				[tempQueue addOperation:anOperation];
-				lastAddedOperation = anOperation;
-			};
-			
-			enqueue([NSBlockOperation blockOperationWithBlock:^{
-				context = [[WADataStore defaultStore] disposableMOC];
-			}]);
-
-			[[WADataStore defaultStore] enumerateFilesWithSyncableBlobsInContext:nil usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
-			
-				wSelf.numberOfFiles = wSelf.numberOfFiles + 1;
-			
-				NSURL *fileURL = [[aFile objectID] URIRepresentation];
-				
-				enqueue([IRAsyncOperation operationWithWorkerBlock:^(void(^callback)(id)) {
-				
-					if (![wSelf canPerformBlobSync])
-						return;
-					
-					[context performBlock:^{
-						
-						WAFile *actualFile = (WAFile *)[context irManagedObjectForURI:fileURL];
-						if (!actualFile) {
-							callback(nil);
-							return;
-						}
-						
-						[actualFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-							
-							kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
-							
-						nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
-							
-							callback(didFinish ? (id)kCFBooleanTrue : error);
-							
-						}];
-					
-					}];
-
-				} completionBlock:^(id results) {
-					
-					wSelf.numberOfFiles = wSelf.numberOfFiles - 1;
-					
-				}]);
-				
-			}];
-			
-			enqueue([NSBlockOperation blockOperationWithBlock:^{
-			
-				context = nil;
-				tempQueue = nil;
-				
-				aCallback(nil);
-				
-				dispatch_async(dispatch_get_main_queue(), ^{
-					
-					[wRecurrenceMachine endPostponingOperations];
-				
-				});
-				
-			}]);
-			
-			[tempQueue setSuspended:NO];
-			
 		});
 		
-	} completionBlock:nil];
+		WADataStore * const ds = [WADataStore defaultStore];
+		
+		context = [ds disposableMOC];
+		__weak NSManagedObjectContext *wContext = context;
+		
+		NSMutableArray *syncOperations = [NSMutableArray array];
+		
+		[context performBlockAndWait:^{
+		
+			[wSelf countFilesInContext:wContext withCompletion:^(NSUInteger count) {
+			
+				dispatch_async(dispatch_get_main_queue(), ^{
+					
+					wSelf.numberOfFiles = count;
+					
+				});
+
+			}];
+
+			[ds enumerateFilesWithSyncableBlobsInContext:wContext usingBlock:^(WAFile *aFile, NSUInteger index, BOOL *stop) {
+			
+				[syncOperations addObject:[IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+					
+					[aFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+						
+						kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
+						
+					nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+						
+						callback(didFinish ? (id)kCFBooleanTrue : error);
+						
+					}];
+					
+				} trampoline:^(IRAsyncOperationInvoker block) {
+				
+					[context performBlock:block];
+					
+				} callback:^(id results) {
+				
+					[wSelf countFilesInContext:wContext withCompletion:^(NSUInteger count) {
+					
+						dispatch_async(dispatch_get_main_queue(), ^{
+							
+							wSelf.numberOfFiles = count;
+							
+						});
+
+					}];
+					
+				} callbackTrampoline:^(IRAsyncOperationInvoker block) {
+					
+					[context performBlock:block];
+					
+				}]];
+			
+			}];
+			
+		}];
+		
+		NSOperation *tailOp = [NSBlockOperation blockOperationWithBlock:^{
+			
+			context = nil;
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				[wRecurrenceMachine endPostponingOperations];
+			
+			});
+			
+			callback(nil);
+			
+		}];
+		
+		for (IRAsyncOperation *op in syncOperations)
+			[tailOp addDependency:op];
+		
+		[syncOperations addObject:tailOp];
+		
+		[wSelf.operationQueue addOperations:syncOperations waitUntilFinished:NO];
+		
+	} trampoline:^(IRAsyncOperationInvoker block) {
+		
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), block);
+		
+	} callback:^(id results) {
+	
+		//	?
+		
+	} callbackTrampoline:^(IRAsyncOperationInvoker block) {
+	
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), block);
+		
+	}];
+
+}
+
+- (void) countFilesWithCompletion:(void (^)(NSUInteger))block {
+
+	[self countFilesInContext:nil withCompletion:block];
+
+}
+
+- (void) countFilesInContext:(NSManagedObjectContext *)context withCompletion:(void (^)(NSUInteger))block {
+
+	WADataStore *ds = [WADataStore defaultStore];
+	NSManagedObjectContext *usedContext = context ? context : [ds disposableMOC];
+	
+	block([ds numberOfFilesWithSyncableBlobsInContext:usedContext]);
 
 }
 
@@ -229,6 +315,12 @@
 
 @implementation WADataStore (BlobSyncingAdditions)
 
+- (NSFetchRequest *) fetchRequestForFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context {
+
+	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesWithSyncableBlobs" substitutionVariables:[NSDictionary dictionary]];
+
+}
+
 - (void) enumerateFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAFile *aFile, NSUInteger index, BOOL *stop))block {
 
 	NSParameterAssert(block);
@@ -236,18 +328,35 @@
 	if (!context)
 		context = [self disposableMOC];
 	
-	NSFetchRequest *fr = [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRFilesWithSyncableBlobs" substitutionVariables:[NSDictionary dictionary]];
+	NSFetchRequest *fr = [self fetchRequestForFilesWithSyncableBlobsInContext:context];
 	
 	fr.sortDescriptors = [NSArray arrayWithObjects:
 		[NSSortDescriptor sortDescriptorWithKey:@"timestamp" ascending:NO],
 	nil];
 	
-	[[context executeFetchRequest:fr error:nil] enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
-
+	NSArray *files = [context executeFetchRequest:fr error:nil];
+	
+	[files enumerateObjectsUsingBlock: ^ (WAFile *aFile, NSUInteger idx, BOOL *stop) {
+		
 		block(aFile, idx, stop);
 		
 	}];
 
+}
+
+- (NSUInteger) numberOfFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context {
+
+	if (!context)
+		context = [self disposableMOC];
+	
+	NSFetchRequest *fr = [self fetchRequestForFilesWithSyncableBlobsInContext:context];
+	
+	fr.includesPendingChanges = NO;
+	fr.includesPropertyValues = NO;
+	fr.includesSubentities = NO;
+	
+	return [context countForFetchRequest:fr error:nil];
+	
 }
 
 @end
