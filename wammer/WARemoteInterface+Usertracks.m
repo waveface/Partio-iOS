@@ -62,70 +62,19 @@
 				
 			}
 			
-			NSMutableArray *articleOperations = [NSMutableArray array];
+			[self retrievePostsInGroup:groupID withIdentifiers:changedArticleIDs onSuccess:^(NSArray *postReps) {
 			
-			for (NSString *articleID in changedArticleIDs) {
-			
-				[articleOperations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
+				if (progressBlock)
+					progressBlock(postReps);
+					
+				fetchAndProcessArticlesSince(continuation);
 				
-					[[WARemoteInterface sharedInterface] retrievePost:articleID inGroup:groupID onSuccess:^(NSDictionary *postRep){
-					
-						if (progressBlock)
-							progressBlock([NSArray arrayWithObjects:postRep, nil]);
-						
-						callback(postRep);
-
-					} onFailure:^(NSError *error) {
-					
-						callback(error);
-					
-					}];
-					
-				} completionBlock:^(id results) {
-					
-					//	?
-					
-				}]];
+			} onFailure:^(NSError *error) {
 			
-			}
-			
-			[articleOperations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-			
-				callback((id)kCFBooleanTrue);
-				
-			} completionBlock:^(id results) {
-			
-				if (!results || [results isKindOfClass:[NSError class]]) {
-				
-					if (failureBlock)
-						failureBlock(results);
-				
-				} else {
-					
-					fetchAndProcessArticlesSince(continuation);
-					
-				}
-				
-			}]];
-			
-			__block NSOperationQueue *articleOperationQueue = [[NSOperationQueue alloc] init];
-			articleOperationQueue.maxConcurrentOperationCount = 1;
-			
-			[articleOperations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *currentOp, NSUInteger idx, BOOL *stop) {
-				
-				if (idx != 0) {
-					IRAsyncBarrierOperation *lastOperation = [articleOperations objectAtIndex:(idx - 1)];
-					[currentOp addDependency:lastOperation];
-				}
+				if (failureBlock)
+					failureBlock(error);
 				
 			}];
-			
-			[articleOperationQueue setSuspended:YES];
-			
-			for (NSOperation *operation in articleOperations)
-				[articleOperationQueue addOperation:operation];
-			
-			[articleOperationQueue setSuspended:NO];
 			
 		} onFailure:^(NSError *error) {
 			

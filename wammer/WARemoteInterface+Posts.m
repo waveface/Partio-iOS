@@ -227,6 +227,27 @@
 
 }
 
+- (void) retrievePostsInGroup:(NSString *)groupID withIdentifiers:(NSArray *)postIDs onSuccess:(void(^)(NSArray *postReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	NSParameterAssert(groupID);
+	NSParameterAssert(postIDs);
+	
+	[self.engine fireAPIRequestNamed:@"posts/fetchByFilter" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		groupID, @"group_id",
+		[postIDs JSONString], @"post_id_list",
+	
+	nil] options:nil successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	
+    if (!successBlock)
+      return;
+    
+    successBlock([inResponseOrNil objectForKey:@"posts"]);
+		
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
 - (void) createSharableSnapshotForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void (^)(NSString *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
   NSParameterAssert(aPostIdentifier);
