@@ -33,6 +33,9 @@
 //  GET posts/fetchByFilter
 - (void) retrievePostsInGroup:(NSString *)aGroupIdentifier usingFilter:(id)aFilter onSuccess:(void(^)(NSArray *postReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
+//  GET posts/fetchByFilter with post_id_list
+- (void) retrievePostsInGroup:(NSString *)groupID withIdentifiers:(NSArray *)identifiers onSuccess:(void(^)(NSArray *postReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+
 //  POST posts/takeSnapshot
 - (void) createSharableSnapshotForPost:(NSString *)aPostIdentifier inGroup:(NSString *)aGroupIdentifier onSuccess:(void(^)(NSString *snapshotAccessToken))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
