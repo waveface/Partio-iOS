@@ -109,6 +109,20 @@
 
 }
 
+- (BOOL) canPerformBlobSync {
+
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	
+	BOOL const hasReachableCloud = [ri hasReachableCloud];
+	BOOL const hasReachableStation = [ri hasReachableStation];
+	BOOL const endpointAvailable = hasReachableStation || hasReachableCloud;
+	BOOL const hasWiFiConnection = [ri hasWiFiConnection];
+	BOOL const canSync = endpointAvailable && hasWiFiConnection;
+	
+	return canSync;
+
+}
+
 - (IRAsyncOperation *) haulingOperationPrototype {
 
 	__weak WABlobSyncManager *wSelf = self;
@@ -116,12 +130,7 @@
 
 	return [IRAsyncOperation operationWithWorkerBlock: ^ (void(^aCallback)(id)) {
 	
-		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-		
-		BOOL const endpointAvailable = [ri hasReachableStation] || [ri hasReachableCloud];
-		BOOL const hasWiFiConnection = [[WAReachabilityDetector sharedDetectorForLocalWiFi] networkReachable];
-		BOOL const canSync = endpointAvailable && hasWiFiConnection;
-		
+		BOOL const canSync = [wSelf canPerformBlobSync];
 		if (!canSync) {
 		
 			aCallback(nil);
@@ -160,6 +169,9 @@
 				NSURL *fileURL = [[aFile objectID] URIRepresentation];
 				
 				enqueue([IRAsyncOperation operationWithWorkerBlock:^(void(^callback)(id)) {
+				
+					if (![wSelf canPerformBlobSync])
+						return;
 					
 					[context performBlock:^{
 						
