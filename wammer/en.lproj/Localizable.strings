@@ -182,7 +182,7 @@
 
 /* Title for authentication failure in login view
    Title for authentication failure in web view */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "Email/password is invalid";
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "Email or password is invalid";
 
 /* Description for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
@@ -237,7 +237,7 @@
 
 /* Title for nick name
    Title for nickname */
-"NOUN_NICKNAME" = "Nickname";
+"NOUN_NICKNAME" = "Name";
 
 /* Noun for Password
    Title for password */
@@ -302,10 +302,10 @@
 "SECOND_SINGULAR" = "%d second";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos under Wi-Fi connection. \n\nIf you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
@@ -326,7 +326,7 @@
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Sync %@";
+"SYNC_INFO_FOOTER" = "Last Synced %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
@@ -431,7 +431,7 @@
 "ERROR_NO_STATION_FOUND_DESCRIPTION" = "You need to install Waveface Station to use this app.\nIf you haven’t done so, download Waveface Station for Windows at http://waveface.com.";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
-"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "Service Info";
@@ -449,7 +449,7 @@
 "SYNC_INFO_FOOTER" = "Last Sync %@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
-"NOUN_NICKNAME" = "Nickname";
+"NOUN_NICKNAME" = "Name";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "drm-tH-4is"; */
 "NOUN_USERNAME" = "Email";

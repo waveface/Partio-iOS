@@ -395,10 +395,14 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleMenuWillHide:) name:UIMenuControllerWillHideMenuNotification object:nil];
 	
 	IRTableView *tv = self.tableView;
+	NSFetchedResultsController *frc = self.fetchedResultsController;
 	
-	[tv beginUpdates];
-	[tv reloadRowsAtIndexPaths:[tv indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
-	[tv endUpdates];
+	for (NSIndexPath *ip in [tv indexPathsForVisibleRows]) {
+		WAPostViewCellPhone *cell = (WAPostViewCellPhone *)[tv cellForRowAtIndexPath:ip];
+		if ([cell isKindOfClass:[WAPostViewCellPhone class]]) {
+			[cell setRepresentedObject:[frc objectAtIndexPath:ip]];
+		}
+	}
 
 }
 
