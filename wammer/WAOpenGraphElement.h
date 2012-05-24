@@ -2,7 +2,7 @@
 //  WAOpenGraphElement.h
 //  wammer
 //
-//  Created by Evadne Wu on 3/1/12.
+//  Created by Evadne Wu on 5/24/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 
 @interface WAOpenGraphElement : IRManagedObject
 
-@property (nonatomic, retain) NSArray * imageOrder;
 @property (nonatomic, retain) NSString * providerDisplayName;
 @property (nonatomic, retain) NSString * providerName;
 @property (nonatomic, retain) NSString * providerURL;
@@ -22,16 +21,22 @@
 @property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSString * url;
-@property (nonatomic, retain) NSURL * primaryImageURI;
-@property (nonatomic, retain) NSSet * images;
+@property (nonatomic, retain) NSOrderedSet *images;
 @property (nonatomic, retain) WAPreview *preview;
+@property (nonatomic, retain) WAOpenGraphElementImage *representingImage;
 @end
 
 @interface WAOpenGraphElement (CoreDataGeneratedAccessors)
 
-- (void)addImagesObject:(WAOpenGraphElementImage *)value;
-- (void)removeImagesObject:(WAOpenGraphElementImage *)value;
-- (void)addImages:(NSSet *)values;
-- (void)removeImages:(NSSet *)values;
+//	- (void)insertObject:(WAOpenGraphElementImage *)value inImagesAtIndex:(NSUInteger)idx;
+//	- (void)removeObjectFromImagesAtIndex:(NSUInteger)idx;
+//	- (void)insertImages:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+//	- (void)removeImagesAtIndexes:(NSIndexSet *)indexes;
+//	- (void)replaceObjectInImagesAtIndex:(NSUInteger)idx withObject:(WAOpenGraphElementImage *)value;
+//	- (void)replaceImagesAtIndexes:(NSIndexSet *)indexes withImages:(NSArray *)values;
+//	- (void)addImagesObject:(WAOpenGraphElementImage *)value;
+//	- (void)removeImagesObject:(WAOpenGraphElementImage *)value;
+//	- (void)addImages:(NSOrderedSet *)values;
+//	- (void)removeImages:(NSOrderedSet *)values;
 
 @end

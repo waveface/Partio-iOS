@@ -10,6 +10,4 @@
 
 @interface WAPreview (WAAdditions)
 
-@property (nonatomic, readonly, retain) UIImage *thumbnail;
-
 @end

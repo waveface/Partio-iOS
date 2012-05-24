@@ -14,56 +14,11 @@
 #import "WAOpenGraphElementImage+WAAdditions.h"
 
 
-@interface WAOpenGraphElement (WAAdditions_OrderedCollections)
-
-- (WAOpenGraphElementImage *) openGraphElementImageAtIndex:(NSUInteger)anIndex;
-
-@end
-
-@implementation WAOpenGraphElement (WAAdditions_OrderedCollections)
-
-- (WAOpenGraphElementImage *) openGraphElementImageAtIndex:(NSUInteger)anIndex {
-
-	return (WAOpenGraphElementImage *)[self irObjectAtIndex:anIndex inArrayKeyed:@"imageOrder"];
-
-}
-
-@end
-
-
 @implementation WAOpenGraphElement (WAAdditions)
-
-+ (void) load {
-
-	[self configureSimulatedOrderedRelationship];
-
-}
 
 + (NSString *) keyPathHoldingUniqueValue {
 
 	return @"url";
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingImages {
-
-	return [NSSet setWithObjects:@"imageOrder", nil];
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingImageOrder {
-
-	return [NSSet setWithObjects:@"images", nil];
-
-}
-
-+ (NSDictionary *) orderedRelationships {
-
-	return [NSDictionary dictionaryWithObjectsAndKeys:
-		
-		@"imageOrder", @"images",
-		
-	nil];
 
 }
 
@@ -73,64 +28,33 @@
 	
 }
 
-+ (NSSet *) keyPathsForValuesAffectingRepresentedImage {
++ (NSSet *) keyPathsForValuesAffectingRepresentingImage {
 
-	return [NSSet setWithObject:@"imageOrder.@count"];
+	return [NSSet setWithObject:@"images"];
 
 }
 
-- (WAOpenGraphElementImage *) representedImage {
+- (WAOpenGraphElementImage *) representingImage {
 
-	if (![self.imageOrder count])
-		return nil;
+	[self willAccessValueForKey:@"representingImage"];
+	WAOpenGraphElementImage *image = [self primitiveValueForKey:@"representingImage"];
+	[self didAccessValueForKey:@"representingImage"];
 	
-	return [self openGraphElementImageAtIndex:0];
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingThumbnail {
-
-	return [NSSet setWithObject:@"representedImage.image"];
-
-}
-
-- (UIImage *) thumbnail {
-
-	return [self representedImage].image;
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingThumbnailURL {
-
-	return [NSSet setWithObjects:
+	if (!image) {
 	
-		@"representedImage",
-		@"representedImage.imageRemoteURL",
-				
-	nil];
-
-}
-
-- (NSString *) thumbnailURL {
-
-	return [self representedImage].imageRemoteURL;
-}
-
-+ (NSSet *) keyPathsForValuesAffectingThumbnailFilePath {
-
-	return [NSSet setWithObjects:
-	
-		@"representedImage",
-		@"representedImage.imageFilePath",
+		[self willAccessValueForKey:@"images"];
+		NSOrderedSet *images = [self primitiveValueForKey:@"images"];
 		
-	nil];
+		if ([images count]) {
+			image = [[images array] objectAtIndex:0];
+		}
 
-}
-
-- (NSString *) thumbnailFilePath {
-
-	return [self representedImage].imageFilePath;
+		[self didAccessValueForKey:@"images"];
 	
+	}
+	
+	return image;
+
 }
 
 + (NSSet *) keyPathsForValuesAffectingProviderCaption {
@@ -157,39 +81,6 @@
 		return self.providerDisplayName;
 	
 	return self.providerURL;
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingPrimaryImage {
-
-	return [NSSet setWithObjects:
-	
-		@"imageOrder.@count",
-		@"primaryImageURI",
-	
-	nil];
-
-}
-
-- (WAOpenGraphElementImage *) primaryImage {
-
-	if (self.primaryImageURI)
-		return (WAOpenGraphElementImage *)[self.managedObjectContext irManagedObjectForURI:self.primaryImageURI];
-	
-	if ([self.imageOrder count])
-		return (WAOpenGraphElementImage *)[self.managedObjectContext irManagedObjectForURI:[self.imageOrder objectAtIndex:0]];
-	
-	return nil;
-
-}
-
-- (void) setPrimaryImage:(WAOpenGraphElementImage *)newPrimaryImage {
-
-	if (newPrimaryImage == self.primaryImage)
-		return;
-	
-	NSParameterAssert([self.images containsObject:newPrimaryImage]);
-	self.primaryImageURI = [[newPrimaryImage objectID] URIRepresentation];
 
 }
 

@@ -103,7 +103,7 @@
 		hook(@"$BODY", article.text);
 		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
 		hook(@"$PREVIEW_PROVIDER", [shownPreview.graphElement providerCaption]);
-		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.primaryImage.imageRemoteURL);
+		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.representingImage.imageRemoteURL);
 		hook(@"$PREVIEW_BODY", shownPreview.graphElement.text);
 		hook(@"$FOOTER", relativeDateString);
 		

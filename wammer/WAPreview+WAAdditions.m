@@ -8,19 +8,20 @@
 
 #import "WAPreview+WAAdditions.h"
 #import "WAOpenGraphElement+WAAdditions.h"
+#import "WAOpenGraphElementImage+WAAdditions.h"
 
 @implementation WAPreview (WAAdditions)
 
 + (NSSet *) keyPathsForValuesAffectingThumbnail {
 
-	return [NSSet setWithObject:@"graphElement.thumbnail"];
+	return [NSSet setWithObject:@"graphElement.representingImage.image"];
 
 }
 
 
 - (UIImage *) thumbnail {
 
-	return self.graphElement.thumbnail;
+	return self.graphElement.representingImage.image;
 
 }
 
