@@ -302,10 +302,10 @@
 "SECOND_SINGULAR" = "%d second";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITH_WIFI" = "Stream uses Wi-Fi to send original size photos back to your PC. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title to show explaining WiFi Sync */
-"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos under Wi-Fi connection. \n\nIf you don't have Stream installed on your PC or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
+"SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
@@ -326,7 +326,7 @@
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Sync %@";
+"SYNC_INFO_FOOTER" = "Last Synced %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
