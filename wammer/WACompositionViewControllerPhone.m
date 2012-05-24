@@ -435,13 +435,9 @@
 	
 	NSCParameterAssert(aPreview.managedObjectContext == self.managedObjectContext);
 	
-	NSError *savingError = nil;
-	if (![self.managedObjectContext save:&savingError])
-		NSLog(@"Error saving preview: %@", savingError);
-
 	self.actionSheetController = nil;
 	
-	WAPreviewInspectionViewController *previewVC = [WAPreviewInspectionViewController controllerWithPreview:[[aPreview objectID] URIRepresentation]];
+	WAPreviewInspectionViewController *previewVC = [WAPreviewInspectionViewController controllerWithPreview:aPreview];
 	previewVC.delegate = self;
 	
 	UINavigationController *navC = [previewVC wrappingNavController];

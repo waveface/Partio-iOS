@@ -41,4 +41,6 @@ enum {
 
 - (void) enumerateFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAFile *aFile, NSUInteger index, BOOL *stop))block;
 
+- (NSUInteger) numberOfFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context;
+
 @end

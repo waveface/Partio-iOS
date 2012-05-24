@@ -26,15 +26,39 @@
 	
 }
 
++ (NSSet *) keyPathsForValuesAffectingHasReachableStation {
+
+	return [NSSet setWithObject:@"networkState"];
+
+}
+
 - (BOOL) hasReachableStation {
 
 	return (self.networkState & WAStationReachable);
 
 }
 
++ (NSSet *) keyPathsForValuesAffectingHasReachableCloud {
+
+	return [NSSet setWithObject:@"networkState"];
+
+}
+
 - (BOOL) hasReachableCloud {
 
 	return (self.networkState & WACloudReachable);
+
+}
+
+- (WAReachabilityDetector *) sharedDetectorForLocalWiFi {
+
+	return [WAReachabilityDetector sharedDetectorForLocalWiFi];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingHasWiFiConnection {
+
+	return [NSSet setWithObject:@"sharedDetectorForLocalWiFi.networkReachableDirectly"];
 
 }
 
