@@ -2,8 +2,8 @@
 "ACTION_ADD" = "加照片";
 
 /* Action title for Cancelling
-   Action title for cancelling
    Action title for cancelling stuff
+   Cancel ation in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
@@ -60,7 +60,7 @@
 /* No comment provided by engineer. */
 "ACTION_RESET" = "重設";
 
-/* Action title for resetting password */
+/* Action title for resetting password in login view */
 "ACTION_RESET_PASSWORD" = "重設密碼";
 
 /* Action title for saving a draft */
@@ -175,13 +175,14 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
 /* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Email帳戶或密碼錯誤 ";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
 
 /* Recovery notion for authentication failure recovery */
 "ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "您可以重設密碼或新增一個帳號";
 
-/* Title for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "無法認證";
+/* Title for authentication failure in login view
+   Title for authentication failure in web view */
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "無效的帳號密碼";
 
 /* Description for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Stream現在無法為您註冊";

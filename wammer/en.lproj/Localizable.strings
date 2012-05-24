@@ -2,8 +2,8 @@
 "ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
-   Action title for cancelling
    Action title for cancelling stuff
+   Cancel ation in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
@@ -60,7 +60,7 @@
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
 
-/* Action title for resetting password */
+/* Action title for resetting password in login view */
 "ACTION_RESET_PASSWORD" = "Forgot";
 
 /* Action title for saving a draft */
@@ -175,13 +175,14 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = "Bad Email or Password";
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
 
 /* Recovery notion for authentication failure recovery */
 "ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
 
-/* Title for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "Unable to Authenticate";
+/* Title for authentication failure in login view
+   Title for authentication failure in web view */
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "Email/password is invalid";
 
 /* Description for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
