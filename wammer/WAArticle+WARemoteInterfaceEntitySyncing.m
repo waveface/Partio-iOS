@@ -402,7 +402,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
 		
 			[ds performBlock:^{
-				
+			
 				NSManagedObjectContext *context = [ds disposableMOC];
 				NSArray *articles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
@@ -411,11 +411,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				haveChangesSinceLastDate = YES;
 				
 				for (WAArticle *article in articles) {
-					
-					NSDate *timestamp = article.modificationDate;
-					if (!timestamp)
-						timestamp = article.creationDate;
-					
+				
+					NSDate *timestamp = [article presentationDate];
 					if (timestamp)
 						knownLatestDate = [knownLatestDate laterDate:timestamp];
 					
