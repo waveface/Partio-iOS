@@ -1709,6 +1709,7 @@
 		FFCD325014B9EA4D0035C4F5 /* WAFile+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WAAdditions.h"; sourceTree = "<group>"; };
 		FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WAAdditions.m"; sourceTree = "<group>"; };
 		FFCFE0FB142111E100B9E6AF /* wammer-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "wammer-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFD09CE91564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WATimelineViewControllerPhone+RowHeightCaching.h"; sourceTree = "<group>"; };
 		FFD09CEA1564FB8D0052D555 /* WATimelineViewControllerPhone+RowHeightCaching.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WATimelineViewControllerPhone+RowHeightCaching.m"; sourceTree = "<group>"; };
 		FFD14F0514C5E24C0053116F /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = external/CrashlyticsSDK/Crashlytics.framework; sourceTree = "<group>"; };
@@ -4404,7 +4405,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 394;
+				CURRENT_PROJECT_VERSION = 395;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4461,7 +4462,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 394;
+				CURRENT_PROJECT_VERSION = 395;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
@@ -4674,6 +4675,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */,
 				FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */,
 				FF485CC0156A364C00A6175E /* WAModel 29.xcdatamodel */,
 				FFF361BD1563C9C5004A4D57 /* WAModel 28.xcdatamodel */,
@@ -4705,7 +4707,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */;
+			currentVersion = FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

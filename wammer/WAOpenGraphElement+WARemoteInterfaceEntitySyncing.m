@@ -42,6 +42,7 @@
 			@"url", @"url",
 			@"type", @"type",
 			@"images", @"images",
+			@"representingImage", @"representingImage",	//	wraps @"thumbnail_url"
 		nil];
 		
 	});
@@ -52,18 +53,11 @@
 
 + (NSDictionary *) transformedRepresentationForRemoteRepresentation:(NSDictionary *)incomingRepresentation {
 
-	NSArray *incomingImages = [incomingRepresentation objectForKey:@"images"];
-	
-	if (![incomingImages isKindOfClass:[NSArray array]]) {
-	
-		//	Bad API
-	
-		NSString *primaryImageURI = [incomingRepresentation objectForKey:@"thumbnail_url"];
-		if (![primaryImageURI isKindOfClass:[NSString class]])
-			return incomingRepresentation;
-	
+	NSString *primaryImageURI = [incomingRepresentation objectForKey:@"thumbnail_url"];
+	if ([primaryImageURI isKindOfClass:[NSString class]]) {
+
 		NSMutableDictionary *transformedRepresentation = [incomingRepresentation mutableCopy];
-		[transformedRepresentation setObject:[NSArray arrayWithObject:[NSDictionary dictionaryWithObject:primaryImageURI forKey:@"url"]] forKey:@"images"];
+		[transformedRepresentation setObject:[NSArray arrayWithObject:[NSDictionary dictionaryWithObject:primaryImageURI forKey:@"url"]] forKey:@"representingImage"];
 		
 		return transformedRepresentation;
 	

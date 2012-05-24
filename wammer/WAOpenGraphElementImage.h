@@ -2,7 +2,7 @@
 //  WAOpenGraphElementImage.h
 //  wammer
 //
-//  Created by Evadne Wu on 2/17/12.
+//  Created by Evadne Wu on 5/24/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
@@ -17,5 +17,6 @@
 @property (nonatomic, retain) NSString * imageFilePath;
 @property (nonatomic, retain) NSString * imageRemoteURL;
 @property (nonatomic, retain) WAOpenGraphElement *owner;
+@property (nonatomic, retain) WAOpenGraphElement *representedElement;
 
 @end
