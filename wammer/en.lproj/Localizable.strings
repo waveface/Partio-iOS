@@ -326,7 +326,7 @@
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "Last Synced %@";
+"SYNC_INFO_FOOTER" = "Last synced %@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "Less";
