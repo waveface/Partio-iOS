@@ -27,11 +27,44 @@ static NSString * const kMemoryWarningObserver = @"-[WAFile(WAAdditions) handleD
 
 @implementation WAFile (WAAdditions)
 
-- (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
+- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
 
-	self = [super initWithEntity:entity insertIntoManagedObjectContext:context];
-	if (!self)
-		return nil;
+	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+
+}
+
+- (void) dealloc {
+
+	[self removeMemoryWarningObserverIfAppropriate];
+
+}
+
+- (void) awakeFromFetch {
+
+  [super awakeFromFetch];
+	
+	if ([NSThread isMainThread] && ![self.objectID isTemporaryID])
+		[self setAttemptsBlobRetrieval:YES notify:NO];
+	
+	[self createMemoryWarningObserverIfAppropriate];
+	
+}
+
+- (void) willTurnIntoFault {
+
+	[super willTurnIntoFault];
+	
+	[self removeMemoryWarningObserverIfAppropriate];
+
+}
+
+- (void) createMemoryWarningObserverIfAppropriate {
+
+	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
+	if (observer)
+		return;
 	
 	if ([NSThread isMainThread]) {
 		
@@ -46,38 +79,18 @@ static NSString * const kMemoryWarningObserver = @"-[WAFile(WAAdditions) handleD
 		objc_setAssociatedObject(self, &kMemoryWarningObserver, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 	}
+
+}
+
+- (void) removeMemoryWarningObserverIfAppropriate {
 	
-	return self;
-
-}
-
-- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
-
-	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
-	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
-	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
-
-}
-
-- (void) dealloc {
-
 	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
 	
 	if (observer) {
-
 		[[NSNotificationCenter defaultCenter] removeObserver:observer];
-	
+		objc_setAssociatedObject(self, &kMemoryWarningObserver, nil, OBJC_ASSOCIATION_ASSIGN);
 	}
 
-}
-
-- (void) awakeFromFetch {
-
-  [super awakeFromFetch];
-	
-	if ([NSThread isMainThread] && ![self.objectID isTemporaryID])
-		[self setAttemptsBlobRetrieval:YES notify:NO];
-	
 }
 
 @end

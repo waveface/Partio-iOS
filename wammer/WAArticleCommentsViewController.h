@@ -40,7 +40,7 @@ typedef enum {
 @property (nonatomic, readwrite, retain) IBOutlet IRView *view;
 
 @property (nonatomic, readwrite, retain) NSURL *representedArticleURI;
-@property (nonatomic, readwrite, assign) id<WAArticleCommentsViewControllerDelegate> delegate;
+@property (nonatomic, readwrite, weak) id<WAArticleCommentsViewControllerDelegate> delegate;
 @property (nonatomic, readwrite, assign) WAArticleCommentsViewControllerState state;
 
 @property (nonatomic, readwrite, retain) IBOutlet UIView *wrapperView;
