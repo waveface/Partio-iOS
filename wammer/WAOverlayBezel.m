@@ -17,6 +17,8 @@
 @property (nonatomic, readwrite, retain) UILabel *captionLabel;
 @property (nonatomic, readwrite, assign) CATransform3D deviceOrientationTransform;
 
+@property (nonatomic, readwrite, weak) UIWindow *observedWindow;
+
 - (void) handleDeviceOrientationDidChange:(NSNotification *)notification;
 
 @end
@@ -25,6 +27,7 @@
 @implementation WAOverlayBezel
 
 @synthesize image, style, accessoryView, caption, captionLabel, deviceOrientationTransform;
+@synthesize observedWindow;
 
 - (void) dealloc {
 
@@ -159,12 +162,15 @@
 	
 	[window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionNew context:nil];
 	[self observeValueForKeyPath:@"irInterfaceBounds" ofObject:nil change:nil context:nil];
+	
+	self.observedWindow = window;
 
 }
 
 - (void) dismissWithAnimation:(WAOverlayBezelAnimation)anAnimation {
 	
-	[self.window removeObserver:self forKeyPath:@"irInterfaceBounds"];
+	[self.observedWindow removeObserver:self forKeyPath:@"irInterfaceBounds"];
+	self.observedWindow = nil;
 
 	void (^remove)() = ^ {
 		[self removeFromSuperview];

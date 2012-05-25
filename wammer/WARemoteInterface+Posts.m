@@ -237,7 +237,7 @@
 		groupID, @"group_id",
 		[postIDs JSONString], @"post_id_list",
 	
-	nil] options:nil successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 	
     if (!successBlock)
       return;

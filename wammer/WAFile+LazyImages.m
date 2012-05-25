@@ -79,6 +79,8 @@
 
 - (UIImage *) resourceImage {
 
+	NSCParameterAssert([NSThread isMainThread]);
+	
 	return [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
 	
 }
@@ -96,6 +98,8 @@
 }
 
 - (UIImage *) largeThumbnailImage {
+	
+	NSCParameterAssert([NSThread isMainThread]);
 	
 	return [self imageAssociatedWithKey:&kWAFileLargeThumbnailImage filePath:self.largeThumbnailFilePath];
 	
@@ -115,6 +119,8 @@
 
 - (UIImage *) thumbnailImage {
 
+	NSCParameterAssert([NSThread isMainThread]);
+	
 	return [self imageAssociatedWithKey:&kWAFileThumbnailImage filePath:self.thumbnailFilePath];
 		
 }
@@ -132,6 +138,8 @@
 }
 
 - (UIImage *) smallThumbnailImage {
+
+	NSCParameterAssert([NSThread isMainThread]);
 
 	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
 		
