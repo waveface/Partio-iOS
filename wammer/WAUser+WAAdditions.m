@@ -11,6 +11,12 @@
 
 @implementation WAUser (WAAdditions)
 
++ (NSSet *) keyPathsForValuesAffectingMainStorage {
+
+	return [NSSet setWithObject:@"self.storages"];
+
+}
+
 - (WAStorage *) mainStorage {
 
 	for (WAStorage *storage in self.storages)
