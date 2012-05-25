@@ -23,6 +23,8 @@
 #import "WAFile+LazyImages.h"
 
 
+static NSString * const kMemoryWarningObserver = @"-[WAFile(WAAdditions) handleDidReceiveMemoryWarning:]";
+
 @implementation WAFile (WAAdditions)
 
 - (id) initWithEntity:(NSEntityDescription *)entity insertIntoManagedObjectContext:(NSManagedObjectContext *)context {
@@ -31,7 +33,19 @@
 	if (!self)
 		return nil;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+	if ([NSThread isMainThread]) {
+		
+		__weak WAFile *wSelf = self;
+	
+		id observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		
+			[wSelf handleDidReceiveMemoryWarning:note];
+			
+		}];
+	
+		objc_setAssociatedObject(self, &kMemoryWarningObserver, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	}
 	
 	return self;
 
@@ -47,7 +61,13 @@
 
 - (void) dealloc {
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
+	
+	if (observer) {
+
+		[[NSNotificationCenter defaultCenter] removeObserver:observer];
+	
+	}
 
 }
 
