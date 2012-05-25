@@ -319,7 +319,10 @@
 /* Title for About Stream dialog */
 "STREAM_ABOUT_TITLE" = "詳細資訊";
 
-/* Caption to show when app is syncing data */
+/* Caption to show in account info when station is connected */
+"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在與 Station 同步中";
+
+/* Caption to show when app is syncing data without station */
 "SYNC_BUTTON_NORMAL_TITLE" = "正在同步";
 
 /* Caption to show when app is not syncing data, but sync is usable */
