@@ -873,7 +873,9 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 - (void) dealloc {
 
 	[self.paginatedView irRemoveObserverBlocksForKeyPath:@"currentPage"];
-	self.view.onLayoutSubviews = nil;
+	
+	if ([self isViewLoaded])
+		self.view.onLayoutSubviews = nil;
 
 	[paginatedView removeFromSuperview];	//	Also triggers page deallocation
 		
