@@ -75,8 +75,12 @@ IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator () {
 		answer &= ([((NSHTTPURLResponse *)[inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse]) statusCode] == 200);
 		
 		if (!answer) {
+		
+			NSDictionary *originalContext = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextOriginalRequestContext];
 			
-			NSLog(@"%@ %@: %@", [inResponseContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL], [inResponseContext objectForKey:kIRWebAPIEngineRequestHTTPMethod], inResponseOrNil);
+			NSDictionary *usedContext = originalContext ? originalContext : inResponseContext;
+			
+			NSLog(@"%@ %@: %@", [usedContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL], [usedContext objectForKey:kIRWebAPIEngineRequestHTTPMethod], inResponseOrNil);
 			
 		}
 		
