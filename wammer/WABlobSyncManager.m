@@ -20,7 +20,7 @@
 
 @interface WABlobSyncManager ()
 
-@property (readwrite, assign) NSUInteger numberOfFiles;
+@property (nonatomic, readwrite, assign) NSUInteger numberOfFiles;
 @property (nonatomic, readwrite, strong) IRRecurrenceMachine *recurrenceMachine;
 @property (nonatomic, readwrite, strong) NSOperationQueue *operationQueue;
 
