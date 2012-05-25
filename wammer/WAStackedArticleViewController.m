@@ -134,7 +134,7 @@
 			
 		};
 		
-		[commentsItem irBind:@"title" toObject:self keyPath:@"commentCount" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		[commentsItem irBind:@"title" toObject:self keyPath:@"article.comments.@count" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
@@ -219,7 +219,7 @@
 			
 		};
 		
-		[item irBind:@"title" toObject:self keyPath:@"isFavorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
+		[item irBind:@"title" toObject:self keyPath:@"article.favorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		
 			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
 			
@@ -290,38 +290,6 @@
 	self.foldsTextStackCell = [self enablesTextStackElementFolding];
 		
 	return self;
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingIsFavorite {
-
-	return [NSSet setWithObjects:
-	
-		@"article.favorite",
-	
-	nil];
-
-}
-
-- (BOOL) isFavorite {
-
-	return [self.article.favorite isEqual:(id)kCFBooleanTrue];
-
-}
-
-+ (NSSet *) keyPathsForValuesAffectingCommentCount {
-
-	return [NSSet setWithObjects:
-	
-		@"article.comments.@count",
-	
-	nil];
-
-}
-
-- (NSUInteger) commentCount {
-
-	return [self.article.comments count];
 
 }
 

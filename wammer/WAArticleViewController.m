@@ -325,4 +325,10 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
+- (void) dealloc {
+
+	self.representedObjectURI = nil;
+	
+}
+
 @end
