@@ -32,7 +32,7 @@ enum {
 - (void) endPostponingBlobSync;
 - (BOOL) isPerformingBlobSync;
 
-@property (readonly, assign) NSUInteger numberOfFiles;
+@property (nonatomic, readonly, assign) NSUInteger numberOfFiles;
 
 @end
 

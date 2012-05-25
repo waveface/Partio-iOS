@@ -13,17 +13,14 @@
 
 - (void) retrieveChangedArticlesSince:(NSDate *)date inGroup:(NSString *)groupID withEntities:(BOOL)includesEntities onSuccess:(void(^)(NSArray *changedArticleIDs, NSArray* changes, NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSParameterAssert([date isKindOfClass:[NSDate class]]);
-	NSParameterAssert(groupID);
-
-	NSString *dateString = [[WADataStore defaultStore] ISO8601StringFromDate:date];
-	NSParameterAssert(dateString);
-
+	NSDate *usedSinceDate = date ? date : [NSDate dateWithTimeIntervalSince1970:0];
+	NSString *dateString = [[WADataStore defaultStore] ISO8601StringFromDate:usedSinceDate];
+	
 	[self.engine fireAPIRequestNamed:@"usertracks/get" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		groupID, @"group_id",
-		[[WADataStore defaultStore] ISO8601StringFromDate:date], @"since",
-		includesEntities ? @"true" : @"false", @"include_entities",
+		(includesEntities ? @"true" : @"false"), @"include_entities",
+		dateString, @"since",
 
 	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 		
@@ -43,9 +40,8 @@
 
 }
 
-- (void) retrieveChangedArticlesSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *changedArticleReps))progressBlock onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) retrieveChangedArticlesSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *changedArticleReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	NSParameterAssert(date);
 	NSParameterAssert(groupID);
 
 	__block void (^fetchAndProcessArticlesSince)(NSDate *) = [^ (NSDate *sinceDate) {
@@ -54,7 +50,7 @@
 		
 			if (![changedArticleIDs count] || !continuation || [continuation isEqual:sinceDate]) {				
 				if (successBlock)
-					successBlock();
+					successBlock(continuation);
 				
 				fetchAndProcessArticlesSince = nil;
 				
@@ -65,7 +61,7 @@
 			[self retrievePostsInGroup:groupID withIdentifiers:changedArticleIDs onSuccess:^(NSArray *postReps) {
 			
 				if (progressBlock)
-					progressBlock(postReps);
+					progressBlock(postReps, continuation);
 					
 				fetchAndProcessArticlesSince(continuation);
 				

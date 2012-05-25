@@ -202,13 +202,13 @@
 	[self.wrapperView insertSubview:self.commentsRevealingActionContainerView atIndex:0];
 	[self.wrapperView addSubview:self.compositionAccessoryView];
 	
-	__block __typeof__(self) nrSelf = self;
-	__block __typeof__(self.view) nrView = self.view;
-	__block __typeof__(self.commentsView) nrCommentsView = self.commentsView;
-	__block __typeof__(self.commentsRevealingActionContainerView) nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
-	__block __typeof__(self.commentRevealButton) nrCommentRevealButton = self.commentRevealButton;
-	__block __typeof__(self.commentCloseButton) nrCommentCloseButton = self.commentCloseButton;
-	__block __typeof__(self.compositionAccessoryView) nrCompositionAccessoryView = self.compositionAccessoryView;
+	__weak WAArticleCommentsViewController *nrSelf = self;
+	__weak IRView *nrView = self.view;
+	__weak UITableView *nrCommentsView = self.commentsView;
+	__weak IRView *nrRevealingActionContainerView = self.commentsRevealingActionContainerView;
+	__weak UIButton *nrCommentRevealButton = self.commentRevealButton;
+	__weak UIButton *nrCommentCloseButton = self.commentCloseButton;
+	__weak IRView *nrCompositionAccessoryView = self.compositionAccessoryView;
 	
 	self.view.onSizeThatFits = ^ (CGSize proposedSize, CGSize superAnswer) {
 	
@@ -256,7 +256,7 @@
 	self.compositionContentField.backgroundColor = [UIColor clearColor];
 	self.compositionContentField.scrollIndicatorInsets = (UIEdgeInsets){ 2, 0, 2, 2 };
 	
-	__block UIImageView *compositionSendButtonBackgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:20 topCapHeight:20]];
+	UIImageView *compositionSendButtonBackgroundView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"WACompositionSendButtonBackground"] stretchableImageWithLeftCapWidth:20 topCapHeight:20]];
 	compositionSendButtonBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	compositionSendButtonBackgroundView.frame = UIEdgeInsetsInsetRect(self.compositionSendButton.bounds, (UIEdgeInsets){ -8, -8, -8, -8 });
 	

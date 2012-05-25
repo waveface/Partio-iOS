@@ -275,7 +275,16 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 - (void) synchronizeWithOptions:(NSDictionary *)options completion:(WAEntitySyncCallback)completionBlock {
 
-	NSParameterAssert(WAIsSyncableObject(self));
+	if (!WAIsSyncableObject(self)) {
+		
+		NSLog(@"%s: %@ is not syncable.", __PRETTY_FUNCTION__, self);
+		
+		if (completionBlock)
+			completionBlock(NO, nil, nil, nil);
+		
+		return;
+	
+	}
 	
 	WAFileSyncStrategy syncStrategy = [options objectForKey:kWAFileSyncStrategy];
 	if (!syncStrategy)
