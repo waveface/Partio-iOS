@@ -194,18 +194,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   WAArticleSyncStrategy wantedStrategy = [options objectForKey:kWAArticleSyncStrategy];
 	WAArticleSyncStrategy syncStrategy = wantedStrategy;
 	
-	if ([wantedStrategy isEqual:kWAArticleSyncDefaultStrategy]) {
-		
-		if ([[WADataStore defaultStore] lastContentSyncDate]) {
-			syncStrategy = kWAArticleSyncDeltaFetchStrategy;
-		}
-		
-	} else {
-	
-		syncStrategy = kWAArticleSyncFullyFetchStrategy;
-		
-	}
-  
   WARemoteInterface *ri = [WARemoteInterface sharedInterface];
   WADataStore *ds = [WADataStore defaultStore];
   NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
@@ -218,19 +206,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		return;
 	}
 	
-	if ([syncStrategy isEqual:kWAArticleSyncDefaultStrategy]) {
-		
-		if ([[WADataStore defaultStore] lastContentSyncDate]) {
-			
-			syncStrategy = kWAArticleSyncDeltaFetchStrategy;
-			
-		} else {
-
-			syncStrategy = kWAArticleSyncFullyFetchStrategy;
-		
-		}
-		
-	}
+	if ([syncStrategy isEqual:kWAArticleSyncDefaultStrategy])
+		syncStrategy = kWAArticleSyncDeltaFetchStrategy;
   
   if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
   
@@ -394,12 +371,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]){
 	
 		NSDate *usedDate = [[[WADataStore defaultStore] lastContentSyncDate] dateByAddingTimeInterval:1];
-		NSCParameterAssert(usedDate);
 		
-		__block BOOL haveChangesSinceLastDate = NO;
-		__block NSDate *knownLatestDate = usedDate;
-		
-		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps) {
+		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps, NSDate *continuation) {
 		
 			[ds performBlock:^{
 			
@@ -408,37 +381,25 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 				[context save:nil];
 				
-				haveChangesSinceLastDate = YES;
-				
-				for (WAArticle *article in articles) {
-				
-					NSDate *timestamp = [article presentationDate];
-					if (timestamp)
-						knownLatestDate = [knownLatestDate laterDate:timestamp];
-					
-					NSCParameterAssert(knownLatestDate);
-					
-				}
+			} waitUntilDone:YES];
+			
+//			NSParameterAssert(continuation);
+			
+			if (continuation)
+				[ds setLastContentSyncDate:continuation];
 
-			} waitUntilDone:YES];		
-
-		} onSuccess:^{
+		} onSuccess:^(NSDate *continuation) {
 		
-			//	Otherwise, async changes will be ignored, which is very bad
+//			NSParameterAssert(continuation);
 			
-			if (haveChangesSinceLastDate) {
-				[[WADataStore defaultStore] setLastContentSyncDate:knownLatestDate];
-			}
-			
-			knownLatestDate = nil;
+			if (continuation)
+				[ds setLastContentSyncDate:continuation];
 			
 			if (completionBlock)
 				completionBlock(YES, nil, nil, nil);
 			
 		} onFailure:^(NSError *error) {
 		
-			knownLatestDate = nil;
-
 			if (completionBlock)
 				completionBlock(NO, nil, nil, error);
 			
