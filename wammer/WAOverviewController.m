@@ -41,7 +41,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutManager *discreteLayoutManager;
 @property (nonatomic, readwrite, retain) IRDiscreteLayoutResult *discreteLayoutResult;
 @property (nonatomic, readwrite, retain) NSArray *layoutGrids;
-@property (nonatomic, readwrite, assign) BOOL requiresRecalculationOnFetchedResultsChangeEnd;
 
 @property (nonatomic, readwrite, weak) WAArticle *actionedArticle;
 
@@ -56,7 +55,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 @implementation WAOverviewController
 @synthesize paginationSlider, discreteLayoutManager, discreteLayoutResult, layoutGrids, paginatedView;
-@synthesize requiresRecalculationOnFetchedResultsChangeEnd;
 @synthesize actionedArticle;
 
 - (void) viewDidLayoutSubviews {
@@ -161,79 +159,13 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (void) viewWillAppear:(BOOL)animated {
 
+	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+
 	[super viewWillAppear:animated];
 	
 	if (self.paginatedView.numberOfPages)
 		[self adjustPageView:[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage] usingGridAtIndex:self.paginatedView.currentPage];
 	
-}
-
-//	- (void) viewDidAppear:(BOOL)animated {
-//
-//		[super viewDidAppear:animated];
-//		
-//		[[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(performReadingProgressSync) object:nil];
-//		[self performSelector:@selector(performReadingProgressSync) withObject:nil afterDelay:1];
-//		
-//	}
-
-- (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
-
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super controllerWillChangeContent:controller];
-
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
-	
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
-	
-	self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
-	
-	switch (type) {
-		
-		case NSFetchedResultsChangeDelete:
-		case NSFetchedResultsChangeInsert:
-		case NSFetchedResultsChangeMove: {
-			
-			break;
-			
-		}
-		
-		case NSFetchedResultsChangeUpdate: {
-				
-			if ([anObject isKindOfClass:[WAArticle class]]) {
-				WAArticleViewController *articleVC = [self cachedArticleViewControllerForArticle:anObject];
-				[articleVC reloadData];
-			}
-			
-			break;
-			
-		}
-				
-	}
-		
-}
-
-- (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
-
-	if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-		[super controller:controller didChangeSection:sectionInfo atIndex:sectionIndex forChangeType:type];
-	
-	self.requiresRecalculationOnFetchedResultsChangeEnd = YES;
-
-}
-
-- (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-
-	if (self.requiresRecalculationOnFetchedResultsChangeEnd) {
-	
-		if ([self irHasDifferentSuperInstanceMethodForSelector:_cmd])
-			[super controllerDidChangeContent:controller];
-			
-	}
-
 }
 
 - (void) reloadViewContents {
@@ -876,30 +808,6 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	[returnedActions addObject:[IRAction actionWithTitle:@"Reflow" block: ^ {
 		
 		[nrSelf reloadViewContents];
-		
-	}]];
-	
-	[returnedActions addObject:[IRAction actionWithTitle:@"Pounce" block: ^ {
-	
-		__block void (^pounce)(void) = [^ {
-	
-			IRPaginatedView *ownPaginatedView = nrSelf.paginatedView;
-			
-			if (ownPaginatedView.currentPage == 0) {
-			
-				[ownPaginatedView scrollToPageAtIndex:(ownPaginatedView.numberOfPages - 1) animated:YES];
-			
-			} else {
-
-				[ownPaginatedView scrollToPageAtIndex:0 animated:YES];
-			
-			}
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), pounce);
-		
-		} copy];
-		
-		pounce();
 		
 	}]];
 	
