@@ -266,6 +266,14 @@
 		
 		[allPhotoImageViews enumerateObjectsUsingBlock:^(UIImageView *iv, NSUInteger idx, BOOL *stop) {
 		
+			if ([displayedFiles count] < idx) {
+				
+				iv.image = nil;
+				
+				return;
+				
+			}
+				
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
 			
 			[iv irUnbind:@"image"];
