@@ -11,7 +11,56 @@
 
 #import "UIKit+IRAdditions.h"
 
+static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
+
 @implementation WAFile (LazyImages)
+
+- (void) createMemoryWarningObserverIfAppropriate {
+
+	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
+	if (!observer) {
+	
+		/*
+		
+			http://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html
+			
+			NSManagedObject has overridden -retain and -release causing __weak to fail
+			rather miserably
+		
+		*/
+		
+		__unsafe_unretained WAFile *wSelf = self;
+	
+		id observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		
+			[wSelf handleDidReceiveMemoryWarning:note];
+			
+		}];
+	
+		objc_setAssociatedObject(self, &kMemoryWarningObserver, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	
+	}
+
+}
+
+- (void) removeMemoryWarningObserverIfAppropriate {
+	
+	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
+	
+	if (observer) {
+		[[NSNotificationCenter defaultCenter] removeObserver:observer];
+		objc_setAssociatedObject(self, &kMemoryWarningObserver, nil, OBJC_ASSOCIATION_ASSIGN);
+	}
+
+}
+
+- (void) handleDidReceiveMemoryWarning:(NSNotification *)aNotification {
+
+	[self irAssociateObject:nil usingKey:&kWAFileThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileLargeThumbnailImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+	[self irAssociateObject:nil usingKey:&kWAFileResourceImage policy:OBJC_ASSOCIATION_ASSIGN changingObservedKey:nil];
+
+}
 
 + (NSSet *) keyPathsForValuesAffectingBestPresentableImage {
 
@@ -79,8 +128,8 @@
 
 - (UIImage *) resourceImage {
 
-	NSCParameterAssert([NSThread isMainThread]);
-	
+	[self createMemoryWarningObserverIfAppropriate];
+
 	return [self imageAssociatedWithKey:&kWAFileResourceImage filePath:self.resourceFilePath];
 	
 }
@@ -99,7 +148,7 @@
 
 - (UIImage *) largeThumbnailImage {
 	
-	NSCParameterAssert([NSThread isMainThread]);
+	[self createMemoryWarningObserverIfAppropriate];
 	
 	return [self imageAssociatedWithKey:&kWAFileLargeThumbnailImage filePath:self.largeThumbnailFilePath];
 	
@@ -119,7 +168,7 @@
 
 - (UIImage *) thumbnailImage {
 
-	NSCParameterAssert([NSThread isMainThread]);
+	[self createMemoryWarningObserverIfAppropriate];
 	
 	return [self imageAssociatedWithKey:&kWAFileThumbnailImage filePath:self.thumbnailFilePath];
 		
@@ -139,8 +188,8 @@
 
 - (UIImage *) smallThumbnailImage {
 
-	NSCParameterAssert([NSThread isMainThread]);
-
+	[self createMemoryWarningObserverIfAppropriate];
+	
 	return [self imageAssociatedWithKey:&kWAFileSmallThumbnailImage filePath:self.smallThumbnailFilePath];
 		
 }
