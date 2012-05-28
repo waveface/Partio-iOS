@@ -1,7 +1,7 @@
 #!/bin/bash --
 
 agvtool bump
-TAG =`agvtool what-version -terse`
+TAG=`agvtool what-version -terse`
 
 git commit -am 'CFBundleVersion + 1'
 git tag -m '$TAG' -a $TAG
