@@ -383,7 +383,7 @@
 "ACTION_SEND" = "Stream!";
 
 /* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
-"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Notes";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
