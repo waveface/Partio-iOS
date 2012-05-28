@@ -21,4 +21,7 @@
 - (void) createMemoryWarningObserverIfAppropriate;
 - (void) removeMemoryWarningObserverIfAppropriate;
 
+- (void) disableMemoryWarningObserverCreation;
+- (BOOL) isMemoryWarningObserverCreationDisabled;
+
 @end

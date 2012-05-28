@@ -12,22 +12,20 @@
 #import "UIKit+IRAdditions.h"
 
 static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDidReceiveMemoryWarning:]";
+static NSString * const kMemoryWarningObserverCreationDisabled = @"-[WAFile(LazyImages) isMemoryWarningObserverCreationDisabled]";
 
 @implementation WAFile (LazyImages)
 
 - (void) createMemoryWarningObserverIfAppropriate {
 
 	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
-	if (!observer) {
+	if (!observer && ![self isMemoryWarningObserverCreationDisabled]) {
 	
-		/*
+		//	http://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html
 		
-			http://www.mikeash.com/pyblog/friday-qa-2011-09-30-automatic-reference-counting.html
-			
-			NSManagedObject has overridden -retain and -release causing __weak to fail
-			rather miserably
-		
-		*/
+		//	__weak refs are not good:
+		//	NSManagedObject does
+		//	override -retain.
 		
 		__unsafe_unretained WAFile *wSelf = self;
 	
@@ -36,7 +34,7 @@ static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDi
 			[wSelf handleDidReceiveMemoryWarning:note];
 			
 		}];
-	
+		
 		objc_setAssociatedObject(self, &kMemoryWarningObserver, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	
 	}
@@ -48,9 +46,22 @@ static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDi
 	id observer = objc_getAssociatedObject(self, &kMemoryWarningObserver);
 	
 	if (observer) {
+	
 		[[NSNotificationCenter defaultCenter] removeObserver:observer];
 		objc_setAssociatedObject(self, &kMemoryWarningObserver, nil, OBJC_ASSOCIATION_ASSIGN);
 	}
+
+}
+
+- (void) disableMemoryWarningObserverCreation {
+
+	objc_setAssociatedObject(self, &kMemoryWarningObserverCreationDisabled, (id)kCFBooleanTrue, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
+- (BOOL) isMemoryWarningObserverCreationDisabled {
+
+	return (objc_getAssociatedObject(self, &kMemoryWarningObserverCreationDisabled) == (id)kCFBooleanTrue);
 
 }
 
