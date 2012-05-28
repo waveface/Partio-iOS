@@ -301,6 +301,7 @@
 		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
+		FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
 		FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */; };
 		FF426FC6155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */; };
 		FF426FC7155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC2155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html */; };
@@ -1405,6 +1406,8 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/WFPresentation/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/WFPresentation/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
+		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
+		FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageScrollView.m; sourceTree = "<group>"; };
 		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = SOURCE_ROOT; };
 		FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Web_Image.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Web_Image.html; sourceTree = SOURCE_ROOT; };
 		FF426FC2155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html"; sourceTree = SOURCE_ROOT; };
@@ -2179,6 +2182,8 @@
 			children = (
 				FF878C0613FA730100B76807 /* WAGalleryImageView.h */,
 				FF878C0713FA730100B76807 /* WAGalleryImageView.m */,
+				FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */,
+				FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */,
 				FF6FFCC313F86445000C582D /* WAGalleryViewController.h */,
 				FF6FFCC413F86445000C582D /* WAGalleryViewController.m */,
 			);
@@ -4165,6 +4170,7 @@
 				FF4BDEA3156A50D400C105D5 /* WAFile+Validation.m in Sources */,
 				FF4BDEA6156A518200C105D5 /* WAFile+LazyImages.m in Sources */,
 				FF4BDEA9156A52A000C105D5 /* WAFile+FilePaths.m in Sources */,
+				FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4409,7 +4415,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 401;
+				CURRENT_PROJECT_VERSION = 410;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4466,7 +4472,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 401;
+				CURRENT_PROJECT_VERSION = 410;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

@@ -12,6 +12,8 @@
 #import "CGGeometry+IRAdditions.h"
 #import "QuartzCore+IRAdditions.h"
 
+#import "WAGalleryImageScrollView.h"
+
 
 @interface WAGalleryImageView () <UIScrollViewDelegate, WAImageViewDelegate>
 @property (nonatomic, readwrite, retain) UIActivityIndicatorView *activityIndicator;
@@ -27,6 +29,7 @@
 
 
 @implementation WAGalleryImageView
+
 @synthesize activityIndicator, imageView, scrollView;
 @synthesize needsContentAdjustmentOnLayout, needsInsetAdjustmentOnLayout, needsOffsetAdjustmentOnLayout, revertsOnZoomEnd;
 @synthesize delegate;
@@ -35,17 +38,13 @@
 
 	WAGalleryImageView *returnedView = [[self alloc] init];
 	returnedView.image = image;
+	
 	return returnedView;
 
 }
 
 - (void) waInit {
 	
-	//	Host provides recognizer
-	//	UITapGestureRecognizer *doubleTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)] autorelease];
-	//	doubleTapRecognizer.numberOfTapsRequired = 2;
-	//	[self addGestureRecognizer:doubleTapRecognizer];
-
 	self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 	self.activityIndicator.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
 	self.activityIndicator.hidesWhenStopped = NO;
@@ -56,8 +55,8 @@
 	[self.activityIndicator startAnimating];
 	[self addSubview:self.activityIndicator];
 	
-	self.scrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
-	self.scrollView.minimumZoomScale = 0.01;
+	self.scrollView = [[WAGalleryImageScrollView alloc] initWithFrame:self.bounds];
+	self.scrollView.minimumZoomScale = 1.0f;
 	self.scrollView.maximumZoomScale = 4.0f;
 	self.scrollView.showsHorizontalScrollIndicator = NO;
 	self.scrollView.showsVerticalScrollIndicator = NO;
@@ -78,14 +77,11 @@
 		self.scrollView.clipsToBounds = NO;
 		self.imageView.clipsToBounds = NO;
 		
-		self.layer.borderColor = [UIColor redColor].CGColor;
-		self.layer.borderWidth = 1.0f;
-		
 		self.scrollView.layer.borderColor = [UIColor blueColor].CGColor;
 		self.scrollView.layer.borderWidth = 2.0f;
 		
 		self.imageView.layer.borderColor = [UIColor greenColor].CGColor;
-		self.imageView.layer.borderWidth = 4.0f;
+		self.imageView.layer.borderWidth = 1.0f;
 	
 	#endif
 	
@@ -98,8 +94,47 @@
 
 - (void) imageViewDidUpdate:(WAImageView *)anImageView {
 
-  [self layoutSubviews];
-  [self setNeedsLayout];
+	//	?
+
+}
+
+- (void) setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync {
+
+	NSTimeInterval duration = (animate ? 0.3f : 0.0f);
+	NSTimeInterval delay = 0.0f;
+	UIViewAnimationOptions options = UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction|UIViewAnimationOptionBeginFromCurrentState;
+
+	self.activityIndicator.hidden = !!newImage;
+	
+	[UIView animateWithDuration:duration delay:delay options:options animations:^{
+	
+		[self.imageView setImage:newImage withOptions:(sync ? WAImageViewForceSynchronousOption : WAImageViewForceAsynchronousOption)];
+				
+	} completion:nil];
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingImage {
+
+	return [NSSet setWithObject:@"imageView.image"];
+
+}
+
+- (UIImage *) image {
+
+	return self.imageView.image;
+
+}
+
+- (void) setImage:(UIImage *)newImage {
+
+	[self setImage:newImage animated:NO synchronized:NO];
+
+}
+
+- (UIView *) viewForZoomingInScrollView:(UIScrollView *)aScrollView {
+
+	return self.imageView;
 
 }
 
@@ -110,209 +145,9 @@
 	[super setFrame:newFrame];
 	
 	if (frameChanged) {
-	
-		self.needsContentAdjustmentOnLayout = YES;
-		self.needsInsetAdjustmentOnLayout = YES;
-		self.needsOffsetAdjustmentOnLayout = YES;
-
-		//	[self.scrollView setZoomScale:1 animated:NO];
-		//	[self layoutSubviews];
-		
-		CGPoint oldOffset = self.scrollView.contentOffset;
-		[self.scrollView setZoomScale:1 animated:NO];
-		[self.scrollView setContentOffset:oldOffset animated:NO];
-	
+		[self.scrollView setZoomScale:1.0f animated:NO];
+		[self layoutSubviews];
 	}
-
-}
-
-- (void) setBounds:(CGRect)newBounds {
-
-	BOOL boundsChanged = !CGRectEqualToRect(self.bounds, newBounds);
-
-	[super setBounds:newBounds];
-
-	if (boundsChanged) {
-
-		self.needsContentAdjustmentOnLayout = YES;
-		self.needsInsetAdjustmentOnLayout = YES;
-		self.needsOffsetAdjustmentOnLayout = YES;
-
-		//	[self.scrollView setZoomScale:1 animated:NO];
-		//	[self layoutSubviews];
-		
-		CGPoint oldOffset = self.scrollView.contentOffset;
-		[self.scrollView setZoomScale:1 animated:NO];
-		[self.scrollView setContentOffset:oldOffset animated:NO];
-
-	}
-
-}
-
-- (void) setImage:(UIImage *)newImage {
-
-	[self setImage:newImage animated:NO];
-
-}
-
-- (void) setImage:(UIImage *)newImage animated:(BOOL)animate {
-
-	[self setImage:newImage animated:animate synchronized:NO];
-
-}
-
-- (void) setImage:(UIImage *)newImage animated:(BOOL)animate synchronized:(BOOL)sync {
-
-	if (self.imageView.image == newImage)
-		return;
-
-	void (^operations)() = ^ {
-		
-    [self willChangeValueForKey:@"image"];
-		[self.imageView setImage:newImage withOptions:(sync ? WAImageViewForceSynchronousOption : WAImageViewForceAsynchronousOption)];
-		self.imageView.bounds = (CGRect) { CGPointZero, newImage.size } ;
-		self.activityIndicator.hidden = !!(newImage);
-    
-    self.needsContentAdjustmentOnLayout = YES;
-    self.needsInsetAdjustmentOnLayout = YES;
-    self.needsOffsetAdjustmentOnLayout = YES;
-    [self setNeedsLayout];
-    
-		[self didChangeValueForKey:@"image"];
-    
-	};
-
-	if (animate) {
-	
-		[UIView transitionWithView:self duration:0.3f options:UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionAllowUserInteraction animations:operations completion:nil];
-	
-	} else {
-	
-		operations();
-	
-	}
-
-}
-
-- (UIImage *) image {
-
-	return self.imageView.image;
-
-}
-
-- (UIView *) viewForZoomingInScrollView:(UIScrollView *)aScrollView {
-
-	return self.imageView;
-
-}
-
-- (void) scrollViewDidZoom:(UIScrollView *)aScrollView {
-
-	[self.delegate galleryImageViewDidBeginInteraction:self];
-  
-	if (aScrollView.pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
-		self.imageView.center = [aScrollView.pinchGestureRecognizer locationInView:aScrollView];
-	
-}
-
-- (void) scrollViewDidScroll:(UIScrollView *)scrollView {
-
-	[self.delegate galleryImageViewDidBeginInteraction:self];
-
-}
-
-- (void) scrollViewDidEndZooming:(UIScrollView *)aScrollView withView:(UIView *)view atScale:(float)scale {
-	
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations: ^ {
-	
-		if (scale > 1) {
-	
-			self.needsContentAdjustmentOnLayout = YES;
-			self.needsInsetAdjustmentOnLayout = YES;
-			self.needsOffsetAdjustmentOnLayout = YES;
-			
-			[self layoutSubviews];
-			
-		} else {
-    
-			self.needsContentAdjustmentOnLayout = YES;
-			self.needsInsetAdjustmentOnLayout = YES;
-			self.needsOffsetAdjustmentOnLayout = YES;
-			[aScrollView setZoomScale:1 animated:NO];
-			[aScrollView setContentOffset:CGPointZero animated:NO];
-			
-			[self layoutSubviews];
-      
-		}
-
-	} completion:nil];
-
-}
-
-- (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer {
-  
-	CGPoint locationInView = [aRecognizer locationInView:self];
-	CGPoint offsetFromCenter = (CGPoint) {
-		locationInView.x - CGRectGetMidX(self.bounds),
-		locationInView.y - CGRectGetMidY(self.bounds)
-	};
-
-	CGFloat scale = self.scrollView.zoomScale;
-	
-  __block CGFloat newScale = scale;
-  
-	[UIView animateWithDuration:0.3f animations: ^ {
-  
-    CGRect oldScrollViewBounds = self.scrollView.layer.bounds;
-     
-		if (scale < 1) {
-      newScale = 1;
-    } else if (scale >= self.scrollView.maximumZoomScale) {
-      newScale = 1;
-		} else {
-      newScale = self.scrollView.maximumZoomScale;
-    }
-		
-    [self.scrollView setZoomScale:newScale animated:NO];
-    
-    self.needsInsetAdjustmentOnLayout = YES;
-    
-    if (newScale > 1) {
-    
-      newScale = MIN(newScale, 2);
-      
-      CGPoint newOffsetFromCenter = (CGPoint){
-        offsetFromCenter.x * (newScale / scale),
-        offsetFromCenter.y * (newScale / scale)
-      };
-      
-      CGPoint newContentOffset = (CGPoint){
-        self.scrollView.contentOffset.x + newOffsetFromCenter.x,
-        self.scrollView.contentOffset.y + newOffsetFromCenter.y
-      };
-      
-      self.scrollView.layer.bounds = oldScrollViewBounds;
-      [self.scrollView.layer removeAnimationForKey:@"bounds"];
-      
-      [self.scrollView setContentOffset:newContentOffset animated:NO];
-
-    } else {
-
-      self.needsContentAdjustmentOnLayout = YES;
-      self.needsOffsetAdjustmentOnLayout = YES;
-      
-      self.scrollView.layer.bounds = oldScrollViewBounds;
-      [self.scrollView.layer removeAnimationForKey:@"bounds"];
-
-      [self layoutSubviews];
- 
-    }
-
-	} completion: ^ (BOOL finished) {
-  
-    //  ?
-    
-  }];
 
 }
 
@@ -320,109 +155,54 @@
 
 	[super layoutSubviews];
 	
-	if (!self.image)
+	UIScrollView *sv = self.scrollView;
+	UIImageView *iv = self.imageView;
+	CGFloat zs = sv.zoomScale;
+	
+	if (!iv.image)
 		return;
 	
-	id currentDelegate = self.delegate;
-	delegate = nil;
-	
-	CGRect const scrollViewBounds = self.bounds;
-	CGRect const presumedImageRect = IRGravitize(scrollViewBounds, self.image.size, kCAGravityResizeAspect);
-
-	if (self.needsContentAdjustmentOnLayout) {
-	
-		CGFloat zoomScale = self.scrollView.zoomScale;
-		CGRect newImageViewFrame = (CGRect){
-			CGPointZero,
-			(CGSize) {
-				presumedImageRect.size.width * zoomScale,
-				presumedImageRect.size.height * zoomScale
-			}
-		};
+	if (zs == 1) {
 		
-		CGSize newScrollViewContentSize = newImageViewFrame.size;
-		
-		if (!CGRectEqualToRect(self.imageView.frame, newImageViewFrame))
-			self.imageView.frame = newImageViewFrame;
-		
-		if (!CGSizeEqualToSize(self.scrollView.contentSize, newScrollViewContentSize))
-			self.scrollView.contentSize = newScrollViewContentSize;
-		
-	}
-	
-	if (self.needsContentAdjustmentOnLayout || self.needsInsetAdjustmentOnLayout) {
-	
-		UIEdgeInsets oldContentInset = self.scrollView.contentInset;
-		UIEdgeInsets newContentInset = UIEdgeInsetsZero;
-		
-		CGSize scrollViewContentSize = self.scrollView.contentSize;
-		CGSize scrollViewBoundsSize = scrollViewBounds.size;
-		
-		CGFloat horizontalPadding = scrollViewBoundsSize.width - scrollViewContentSize.width;
-		CGFloat verticalPadding = scrollViewBoundsSize.height - scrollViewContentSize.height;
-		
-		newContentInset = (UIEdgeInsets) {
-			MAX(0, 0.5f * verticalPadding),
-			MAX(0, 0.5f * horizontalPadding),
-			-1.0f * MAX(0, 0.5f * verticalPadding),
-			-1.0f * MAX(0, 0.5f * horizontalPadding)
-		};
-
-		if (!UIEdgeInsetsEqualToEdgeInsets(oldContentInset, newContentInset))
-			self.scrollView.contentInset = newContentInset;
-		
-	};
-	
-	if (self.needsContentAdjustmentOnLayout || self.needsOffsetAdjustmentOnLayout) {
-	
-		CGPoint oldContentOffset = self.scrollView.contentOffset;
-		CGPoint newContentOffset = oldContentOffset;
-	
-		if (self.scrollView.zoomScale <= 1) {
-			
-			newContentOffset = (CGPoint){
-			
-				-1 * self.scrollView.contentInset.left,
-				-1 * self.scrollView.contentInset.top
-			
-			};
-
-		}
-		
-		if (!CGPointEqualToPoint(oldContentOffset, newContentOffset))
-			self.scrollView.contentOffset = newContentOffset;
+		iv.frame = IRGravitize(sv.bounds, iv.image.size, kCAGravityResizeAspect);
+		sv.contentSize = sv.bounds.size;
 	
 	}
 	
-	self.needsContentAdjustmentOnLayout = NO;
-	self.needsInsetAdjustmentOnLayout = NO;
-	self.needsOffsetAdjustmentOnLayout = NO;
-	delegate = currentDelegate;
+}
+
+- (void) scrollViewDidScroll:(UIScrollView *)sv {
+
+	if (sv.panGestureRecognizer.state == UIGestureRecognizerStateChanged)
+		[self.delegate galleryImageViewDidReceiveUserInteraction:self];
+
+}
+
+- (void) scrollViewDidZoom:(UIScrollView *)sv {
+
+	if (sv.pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+		[self.delegate galleryImageViewDidReceiveUserInteraction:self];
+
+	UIImageView *iv = self.imageView;
+	CGFloat zs = sv.zoomScale;
 	
+	if (!iv.image)
+		return;
+	
+	if (zs == 1) {
+		
+		iv.frame = IRGravitize(sv.bounds, iv.image.size, kCAGravityResizeAspect);
+		sv.contentSize = sv.bounds.size;
+	
+	}
+
 }
 
 - (void) reset {
 
-	self.needsContentAdjustmentOnLayout = YES;
-	self.needsOffsetAdjustmentOnLayout = YES;
-	self.needsInsetAdjustmentOnLayout = YES;
+	[self.scrollView setZoomScale:1 animated:YES];
 	
-	if (self.scrollView.decelerating || self.scrollView.tracking || self.scrollView.dragging || self.scrollView.zoomBouncing || self.scrollView.zooming)
-		self.revertsOnZoomEnd = YES;
-	else
-		[self.scrollView setZoomScale:1 animated:NO];
-	
-	self.needsContentAdjustmentOnLayout = YES;
-	self.needsOffsetAdjustmentOnLayout = YES;
-	self.needsInsetAdjustmentOnLayout = YES;
-	
-	[self setNeedsLayout];
-
 }
-
-
-
-
 
 - (id) initWithFrame:(CGRect)frame {
 	
@@ -448,10 +228,103 @@
 
 }
 
-- (void) dealloc {
+- (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer {
 
-	imageView.delegate = nil;
+	[self.delegate galleryImageViewDidReceiveUserInteraction:self];
+
+	//	TBD: use me
+	//	CGPoint locationInImageView = [aRecognizer locationInView:self.imageView];
+	
+	UIScrollView *sv = self.scrollView;
+	CGFloat zsMin = sv.minimumZoomScale, zsMax = sv.maximumZoomScale, zs = sv.zoomScale;
+	
+	if (zs == 1) {
+	
+		NSTimeInterval duration = 0.3f;
+		NSTimeInterval delay = 0.0f;
+		UIViewAnimationOptions options = UIViewAnimationCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState;
+	
+		[UIView animateWithDuration:duration delay:delay options:options animations:^{
+			
+			[sv setZoomScale:zsMax animated:NO];
+			
+			//	TBD: Make sure point locationInImageView in image view is actually visible with best efforts
+
+		} completion:nil];
+	
+	} else if (zs > 1) {
+	
+		[sv setZoomScale:zsMin animated:YES];
+	
+	}
 
 }
+
+//	- (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer {
+//		
+//		CGPoint locationInView = [aRecognizer locationInView:self];
+//		CGPoint offsetFromCenter = (CGPoint) {
+//			locationInView.x - CGRectGetMidX(self.bounds),
+//			locationInView.y - CGRectGetMidY(self.bounds)
+//		};
+//
+//		CGFloat scale = self.scrollView.zoomScale;
+//		
+//		__block CGFloat newScale = scale;
+//		
+//		[UIView animateWithDuration:0.3f animations: ^ {
+//		
+//			CGRect oldScrollViewBounds = self.scrollView.layer.bounds;
+//			 
+//			if (scale < 1) {
+//				newScale = 1;
+//			} else if (scale >= self.scrollView.maximumZoomScale) {
+//				newScale = 1;
+//			} else {
+//				newScale = self.scrollView.maximumZoomScale;
+//			}
+//			
+//			[self.scrollView setZoomScale:newScale animated:NO];
+//			
+//			self.needsInsetAdjustmentOnLayout = YES;
+//			
+//			if (newScale > 1) {
+//			
+//				newScale = MIN(newScale, 2);
+//				
+//				CGPoint newOffsetFromCenter = (CGPoint){
+//					offsetFromCenter.x * (newScale / scale),
+//					offsetFromCenter.y * (newScale / scale)
+//				};
+//				
+//				CGPoint newContentOffset = (CGPoint){
+//					self.scrollView.contentOffset.x + newOffsetFromCenter.x,
+//					self.scrollView.contentOffset.y + newOffsetFromCenter.y
+//				};
+//				
+//				self.scrollView.layer.bounds = oldScrollViewBounds;
+//				[self.scrollView.layer removeAnimationForKey:@"bounds"];
+//				
+//				[self.scrollView setContentOffset:newContentOffset animated:NO];
+//
+//			} else {
+//
+//				self.needsContentAdjustmentOnLayout = YES;
+//				self.needsOffsetAdjustmentOnLayout = YES;
+//				
+//				self.scrollView.layer.bounds = oldScrollViewBounds;
+//				[self.scrollView.layer removeAnimationForKey:@"bounds"];
+//
+//				[self layoutSubviews];
+//	 
+//			}
+//
+//		} completion: ^ (BOOL finished) {
+//		
+//			//  ?
+//			
+//		}];
+//
+//	}
 
 @end

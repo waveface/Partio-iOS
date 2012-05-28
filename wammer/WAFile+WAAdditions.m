@@ -27,6 +27,7 @@
 
 - (void) dealloc {
 
+	[self disableMemoryWarningObserverCreation];
 	[self removeMemoryWarningObserverIfAppropriate];
 
 }
