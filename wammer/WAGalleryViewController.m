@@ -741,7 +741,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 	if (![currentPage isKindOfClass:[WAGalleryImageView class]])
 		return;
-		
+	
 	[currentPage handleDoubleTap:tapRecognizer];
 	
 }
