@@ -330,6 +330,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 	self.paginatedView.scrollView.delaysContentTouches = NO;
 	self.paginatedView.scrollView.canCancelContentTouches = NO;
+	
+	[self.paginatedView.scrollView.panGestureRecognizer addTarget:self action:@selector(handlePan:)];
 
 }
 
@@ -502,6 +504,16 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
+- (void) handlePan:(UIPanGestureRecognizer *)panGR {
+
+	if (panGR.state == UIGestureRecognizerStateChanged) {
+	
+		[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
+	
+	}
+
+}
+
 - (void) paginatedView:(IRPaginatedView *)aPaginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
 
 	self.streamPickerView.selectedItemIndex = index;
@@ -578,7 +590,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	
 }
 
-- (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView {
+- (void) galleryImageViewDidReceiveUserInteraction:(WAGalleryImageView *)imageView {
 
 	[self setContextControlsHidden:YES animated:YES barringInteraction:NO completion:nil];
 

@@ -12,7 +12,7 @@
 @class WAGalleryImageView;
 @protocol WAGalleryImageViewDelegate <NSObject>
 
-- (void) galleryImageViewDidBeginInteraction:(WAGalleryImageView *)imageView;
+- (void) galleryImageViewDidReceiveUserInteraction:(WAGalleryImageView *)imageView;
 
 @end
 
