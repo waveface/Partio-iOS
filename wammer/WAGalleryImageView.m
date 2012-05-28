@@ -171,7 +171,17 @@
 	
 }
 
+- (void) scrollViewDidScroll:(UIScrollView *)sv {
+
+	if (sv.panGestureRecognizer.state == UIGestureRecognizerStateChanged)
+		[self.delegate galleryImageViewDidReceiveUserInteraction:self];
+
+}
+
 - (void) scrollViewDidZoom:(UIScrollView *)sv {
+
+	if (sv.pinchGestureRecognizer.state == UIGestureRecognizerStateChanged)
+		[self.delegate galleryImageViewDidReceiveUserInteraction:self];
 
 	UIImageView *iv = self.imageView;
 	CGFloat zs = sv.zoomScale;
@@ -219,6 +229,8 @@
 }
 
 - (void) handleDoubleTap:(UITapGestureRecognizer *)aRecognizer {
+
+	[self.delegate galleryImageViewDidReceiveUserInteraction:self];
 
 	//	TBD: use me
 	//	CGPoint locationInImageView = [aRecognizer locationInView:self.imageView];
