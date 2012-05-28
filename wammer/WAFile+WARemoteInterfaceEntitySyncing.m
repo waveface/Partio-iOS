@@ -360,13 +360,13 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 				
 				if ((imageSize.width > sideLength) || (imageSize.height > sideLength)) {
 				
-					UIImage *thumbnailImage = [smallestImage irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, smallestImage.size, kCAGravityResizeAspect).size];
+					UIImage *thumbnailImage = [[smallestImage irStandardImage] irScaledImageWithSize:IRGravitize((CGRect){ CGPointZero, (CGSize){ sideLength, sideLength } }, smallestImage.size, kCAGravityResizeAspect).size];
 					
 					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(thumbnailImage, 85.0f) extension:@"jpeg"] path];
 					
 				} else {
 
-					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation(smallestImage, 85.0f) extension:@"jpeg"] path];
+					thumbnailFilePath = [[ds persistentFileURLForData:UIImageJPEGRepresentation([smallestImage irStandardImage], 85.0f) extension:@"jpeg"] path];
 				
 				}
 				

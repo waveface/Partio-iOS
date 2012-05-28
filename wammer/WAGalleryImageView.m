@@ -98,6 +98,8 @@
 
 - (void) imageViewDidUpdate:(WAImageView *)anImageView {
 
+	self.needsContentAdjustmentOnLayout = YES;
+
   [self layoutSubviews];
   [self setNeedsLayout];
 

@@ -609,6 +609,8 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[self.galleryViewCache setObject:view forKey:file];
 	}
 	
+	view.frame = (CGRect){ CGPointZero, aPaginatedView.bounds.size };
+	
 	return [self configureGalleryImageView:view withFile:file degradeQuality:YES forceSync:YES];
 
 }

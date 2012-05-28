@@ -228,7 +228,7 @@ static NSString * const kMemoryWarningObserver = @"-[WAFile(LazyImages) handleDi
 	if (!self.resourceImage)
 		return nil;
 	
-	primitiveThumbnail = [self.resourceImage irScaledImageWithSize:IRCGSizeGetCenteredInRect(self.resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 512, 512 } }, 0.0f, YES).size];
+	primitiveThumbnail = [[self.resourceImage irStandardImage] irScaledImageWithSize:IRCGSizeGetCenteredInRect(self.resourceImage.size, (CGRect){ CGPointZero, (CGSize){ 512, 512 } }, 0.0f, YES).size];
 	[self setPrimitiveValue:primitiveThumbnail forKey:@"thumbnail"];
 	
 	return self.thumbnail;
