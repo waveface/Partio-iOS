@@ -49,7 +49,15 @@
 - (void) configureWithArticle:(WAArticle *)article {
 
 	UIImage *representingImage = article.representingFile.thumbnailImage;
-	NSString *relativeDateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+	NSString *dateString = nil;
+	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
+		dateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+	}
+	else {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+		dateString = [dateFormatter stringFromDate:article.creationDate];
+	}
 	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
 	
@@ -62,7 +70,7 @@
 			[article.files count] ];
 	}
 	
-	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, relativeDateString, article.creationDeviceName];
+	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
 	relativeCreationDateLabel.text = postDescription;
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
