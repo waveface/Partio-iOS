@@ -1,7 +1,8 @@
 #!/bin/bash --
 
 if [ "`git branch --no-color 2> /dev/null | grep '*' | grep -c feature`" != "1" ]; then
-    echo 'You must build this from feature branch.'
+    echo 'You must build from feature branch.'
+    exit
 fi
 
 #TODO: need to make sure everything is checked in.
