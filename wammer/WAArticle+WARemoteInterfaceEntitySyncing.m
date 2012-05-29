@@ -377,21 +377,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			[ds performBlock:^{
 			
 				NSManagedObjectContext *context = [ds disposableMOC];
-				NSArray *articles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				
+				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
 				[context save:nil];
 				
 			} waitUntilDone:YES];
-			
-//			NSParameterAssert(continuation);
 			
 			if (continuation)
 				[ds setLastContentSyncDate:continuation];
 
 		} onSuccess:^(NSDate *continuation) {
 		
-//			NSParameterAssert(continuation);
-			
 			if (continuation)
 				[ds setLastContentSyncDate:continuation];
 			

@@ -567,27 +567,7 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		callback(nil);
 		
 	} completionBlock:nil]];
-	
-//	IRPaginatedView *paginatedView = self.paginatedView;
-//	NSUInteger currentPage = paginatedView.currentPage;
-//	
-//	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^ {
-//	
-//		if (paginatedView.currentPage != currentPage)
-//			return;
-//		
-//		WAGalleryImageView *pageView = [self.paginatedView existingPageAtIndex:currentPage];
-//		if (!pageView)
-//			return;
-//		
-//		WAFile *pageFile = [self representedFileAtIndex:currentPage];
-//		if (!pageFile)
-//			return;
-//		
-//		[self configureGalleryImageView:pageView withFile:pageFile degradeQuality:NO forceSync:NO];
-//	
-//	});
-	
+		
 }
 
 - (void) galleryImageViewDidReceiveUserInteraction:(WAGalleryImageView *)imageView {
@@ -644,33 +624,14 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 		[aView setImage:[aFile bestPresentableImage] animated:NO synchronized:forceSynchronousImageDecode];
 		
 	}
-	
-#if 0
-
-	if (exclusivelyUsesThumbnail) {
 		
-		aView.layer.borderColor = [UIColor greenColor].CGColor;
-		aView.layer.borderWidth = 32;
-	
-	} else {
-	
-		aView.layer.borderColor = [UIColor redColor].CGColor;
-		aView.layer.borderWidth = 32;
-	
-	}
-	
-#endif
-	
 	aView.delegate = self;
+	
   [aView reset];
 	
 	return aView;
 
 }
-
-
-
-
 
 - (WAImageStreamPickerView *) streamPickerView {
 
@@ -721,10 +682,6 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 	[self.paginatedView scrollToPageAtIndex:picker.selectedItemIndex animated:NO];
 
 }
-
-
-
-
 
 - (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
 
@@ -836,26 +793,17 @@ NSString * const kWAGalleryViewControllerContextPreferredFileObjectURI = @"WAGal
 
 }
 
-
-
-
-
 - (UIImage *) currentImage {
 
 	return ((WAGalleryImageView *)[self.paginatedView existingPageAtIndex:self.paginatedView.currentPage]).image;
 
 }
 
-
-
-
-
 - (void) didReceiveMemoryWarning {
 
 	[super didReceiveMemoryWarning];
 	
 	[self.galleryViewCache removeAllObjects];
-	
 
 }
 
