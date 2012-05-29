@@ -62,7 +62,8 @@
 			[article.files count] ];
 	}
 	
-	relativeCreationDateLabel.text = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, relativeDateString, article.creationDeviceName];
+	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, relativeDateString, article.creationDeviceName];
+	relativeCreationDateLabel.text = postDescription;
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
 	mainImageView.image = representingImage;
@@ -105,7 +106,7 @@
 		hook(@"$PREVIEW_PROVIDER", [shownPreview.graphElement providerCaption]);
 		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.representingImage.imageRemoteURL);
 		hook(@"$PREVIEW_BODY", shownPreview.graphElement.text);
-		hook(@"$FOOTER", relativeDateString);
+		hook(@"$FOOTER", postDescription);
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
 		
