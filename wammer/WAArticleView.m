@@ -53,16 +53,16 @@
 	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
 	
-	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN ", @"In iPad overview");
+	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN", @"In iPad overview");
 	 
-	if ([article.files count] >= 1) {
+	if ([article.files count] > 1) {
 	
 		photoInformation  = [NSString localizedStringWithFormat:
-			NSLocalizedString(@"PHOTOS_PLURAL ", @"In iPad overview"),
+			NSLocalizedString(@"PHOTOS_PLURAL", @"In iPad overview"),
 			[article.files count] ];
 	}
 	
-	relativeCreationDateLabel.text = [photoInformation stringByAppendingString:relativeDateString];
+	relativeCreationDateLabel.text = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, relativeDateString, article.creationDeviceName];
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
 	mainImageView.image = representingImage;

@@ -253,11 +253,14 @@
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
 
+/* In iPad overview */
+"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@, %2$@來自%3$@";
+
 /* iPhone Timeline */
 "NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@來自%2$@";
 
 /* In iPad overview */
-"PHOTO_NOUN " = "一張照片";
+"PHOTO_NOUN" = "一張照片";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d 張照片";
@@ -266,7 +269,7 @@
 "PHOTO_SINGULAR" = "%d 張照片";
 
 /* In iPad overview */
-"PHOTOS_PLURAL " = "%d 張照片";
+"PHOTOS_PLURAL" = "%d 張照片";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "（網址未知）";

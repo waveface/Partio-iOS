@@ -253,11 +253,14 @@
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
+/* In iPad overview */
+"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@, %2$@ from %3$@";
+
 /* iPhone Timeline */
 "NUMBER_OF_PHOTOS_FROM_DEVICE" = "%1$@ from %2$@";
 
 /* In iPad overview */
-"PHOTO_NOUN " = "1 photo ";
+"PHOTO_NOUN" = "1 photo";
 
 /* in iPhone timeline */
 "PHOTO_PLURAL" = "%d photos";
@@ -266,7 +269,7 @@
 "PHOTO_SINGULAR" = "%d photo";
 
 /* In iPad overview */
-"PHOTOS_PLURAL " = "%d photos ";
+"PHOTOS_PLURAL" = "%d photos";
 
 /* Text to show for previews without a provider name */
 "PREVIEW_BADGE_PROVIDER_NAME_PLACEHOLDER" = "(No Provider)";
