@@ -114,7 +114,7 @@
 "COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Notes";
 
 /* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Notes";
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Note";
 
 /* “%@ Comment” or “No Comment” */
 "COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Notes";
@@ -253,7 +253,8 @@
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
-/* In iPad overview */
+/* In iPad overview
+   iPhone Timeline */
 "NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@, %2$@ from %3$@";
 
 /* iPhone Timeline */

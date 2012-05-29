@@ -203,10 +203,14 @@
 	BOOL postHasPreview = (BOOL)!![post.previews count];
 	
 	NSDate *postDate = post.presentationDate;
+	NSDateFormatter *timeOnlyFormatter = [[NSDateFormatter alloc] init];
+	[timeOnlyFormatter setDateStyle:NSDateFormatterNoStyle];
+	[timeOnlyFormatter setTimeStyle:NSDateFormatterShortStyle];
+	NSString *timeOnlyDateString = [timeOnlyFormatter stringFromDate:postDate];
 	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
 	
 	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_FROM_DEVICE", @"iPhone Timeline"),
-		relativeDateString,
+		timeOnlyDateString,
 		post.creationDeviceName
 	];
 	
@@ -298,7 +302,11 @@
 		if ( [post.files count]==1 )
 			photoInfo = NSLocalizedString(@"PHOTO_SINGULAR", @"in iPhone timeline");
 		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
-		self.originLabel.text = [self.accessibilityHint stringByAppendingString:self.originLabel.text];
+		self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"),
+								 self.accessibilityHint,
+								 timeOnlyDateString,
+								 post.creationDeviceName
+								 ];
 		
   } else {
 		
