@@ -209,7 +209,7 @@
 	NSString *timeOnlyDateString = [timeOnlyFormatter stringFromDate:postDate];
 	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
 	
-	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_FROM_DEVICE", @"iPhone Timeline"),
+	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"),
 		timeOnlyDateString,
 		post.creationDeviceName
 	];
