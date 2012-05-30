@@ -292,13 +292,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 			} waitUntilDone:YES];
 			
-			if (continuation)
+			if (continuation) {
 				[ds setLastNewPostsUpdateDate:continuation];
+			}
 
 		} onSuccess:^(NSDate *continuation) {
 		
-			if (continuation)
+			if (continuation) {
 				[ds setLastNewPostsUpdateDate:continuation];
+			}
 			
 			if (completionBlock)
 				completionBlock(YES, nil);
@@ -326,13 +328,15 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				
 			} waitUntilDone:YES];
 			
-			if (continuation)
+			if (continuation) {
 				[ds setLastChangedPostsUpdateDate:continuation];
+			}
 
 		} onSuccess:^(NSDate *continuation) {
 		
-			if (continuation)
+			if (continuation) {
 				[ds setLastChangedPostsUpdateDate:continuation];
+			}
 			
 			if (completionBlock)
 				completionBlock(YES, nil);

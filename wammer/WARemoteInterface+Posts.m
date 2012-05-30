@@ -146,6 +146,17 @@
 			if (progressBlock)
 				progressBlock(postReps, latestTimestamp);
 			
+			if ([latestTimestamp isEqualToDate:continuation]) {
+			
+				if (successBlock)
+					successBlock(continuation);
+					
+				getSince = nil;
+				
+				return;
+			
+			}
+			
 			getSince(latestTimestamp);
 		
 		} onFailure:^ (NSError *error) {
