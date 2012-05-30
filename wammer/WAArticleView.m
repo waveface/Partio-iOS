@@ -102,8 +102,6 @@
 	
 	if (contextWebView) {
 	
-		self.layer.borderWidth = 1.0;
-		self.layer.borderColor = [[UIColor colorWithWhite:188.0/255.0 alpha:1.0] CGColor];
 		WFPresentationTemplate *pt = [self presentationTemplate];
 		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
 		
