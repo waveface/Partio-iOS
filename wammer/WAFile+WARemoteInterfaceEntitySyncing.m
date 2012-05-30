@@ -255,7 +255,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 }
 
-+ (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
++ (void) synchronizeWithCompletion:(void (^)(BOOL, NSError *))completionBlock {
 
   [self synchronizeWithOptions:nil completion:completionBlock];
   
@@ -280,7 +280,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		NSLog(@"%s: %@ is not syncable.", __PRETTY_FUNCTION__, self);
 		
 		if (completionBlock)
-			completionBlock(NO, nil, nil, nil);
+			completionBlock(NO, nil);
 		
 		return;
 	
@@ -508,17 +508,17 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSCAssert1(didSave, @"File entity syncing should merge remote information: %@", error);
 		
 			if (completionBlock)
-				completionBlock(didSave, context, [NSArray arrayWithObject:file], didSave ? nil : error);
+				completionBlock(didSave, error);
 
 		} else if ([results isKindOfClass:[NSError class]]){
 		
 			if (completionBlock)
-				completionBlock(NO, nil, nil, (NSError *)results);
+				completionBlock(NO, (NSError *)results);
 
 		} else {
 		
 			if (completionBlock)
-				completionBlock(NO, nil, nil, nil);
+				completionBlock(NO, nil);
 
 		}
 

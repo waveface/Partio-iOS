@@ -226,7 +226,7 @@
 						
 						kWAFileSyncFullQualityStrategy, kWAFileSyncStrategy,
 						
-					nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+					nil] completion:^(BOOL didFinish, NSError *error) {
 						
 						callback(didFinish ? (id)kCFBooleanTrue : error);
 						
