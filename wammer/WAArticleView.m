@@ -62,7 +62,8 @@
 	userNameLabel.text = article.owner.nickname;
 	
 	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN", @"In iPad overview");
-	 
+	
+	NSString *postDescription = nil;
 	if ([article.files count] > 1) {
 	
 		photoInformation  = [NSString localizedStringWithFormat:
@@ -70,7 +71,7 @@
 			[article.files count] ];
 	}
 	
-	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
+	postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
 	relativeCreationDateLabel.text = postDescription;
 	articleDescriptionLabel.text = article.text;
 	previewBadge.preview = shownPreview;
@@ -90,7 +91,7 @@
 	//contextInfoContainer.hidden = ![article.text length]; // if there's no note, display nothing.
 	
 	if (contextWebView) {
-	
+		postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"In iPad overview, (time, device)"), dateString, article.creationDeviceName];
 		self.layer.borderWidth = 1.0;
 		self.layer.borderColor = [[UIColor colorWithWhite:188.0/255.0 alpha:1.0] CGColor];
 		WFPresentationTemplate *pt = [self presentationTemplate];

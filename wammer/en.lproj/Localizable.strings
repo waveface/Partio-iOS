@@ -131,7 +131,8 @@
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "Compose";
 
-/* iPhone Timeline */
+/* In iPad overview, (time, device)
+   iPhone Timeline */
 "CREATE_TIME_FROM_DEVICE" = "Posted at %1$@ from %2$@";
 
 /* in relative date format */

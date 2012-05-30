@@ -131,7 +131,8 @@
 /* Title for the composition view */
 "COMPOSITION_TITLE" = "編輯";
 
-/* iPhone Timeline */
+/* In iPad overview, (time, device)
+   iPhone Timeline */
 "CREATE_TIME_FROM_DEVICE" = "%1$@來自 %2$@";
 
 /* in relative date format */
