@@ -171,7 +171,7 @@ NSString * const kLastChangedPostsUpdateDate = @"WALastChangedPostsUpdateDate";
 
 - (void) setLastChangedPostsUpdateDate:(NSDate *)date {
 
-	[self setMetadata:date forKey:kLastNewPostsUpdateDate];
+	[self setMetadata:date forKey:kLastChangedPostsUpdateDate];
 
 }
 
