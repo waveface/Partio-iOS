@@ -25,7 +25,10 @@
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
+- (BOOL) shouldDismissSelfOnCameraCancellation;
+
 @end
 
 extern NSString * const WACompositionImageInsertionUsesCamera;
 extern NSString * const WACompositionImageInsertionAnimatePresentation;
+extern NSString * const WACompositionImageInsertionCancellationTriggersSessionTermination;
