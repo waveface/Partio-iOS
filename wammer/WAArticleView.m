@@ -102,8 +102,7 @@
 	
 	if (contextWebView) {
 		postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"In iPad overview, (time, device)"), dateString, article.creationDeviceName];
-		self.layer.borderWidth = 1.0;
-		self.layer.borderColor = [[UIColor colorWithWhite:188.0/255.0 alpha:1.0] CGColor];
+		
 		WFPresentationTemplate *pt = [self presentationTemplate];
 		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
 		
