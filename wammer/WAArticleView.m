@@ -54,7 +54,7 @@
 
 	self.article = inArticle;
 
-	UIImage *representingImage = article.representingFile.thumbnailImage;
+	UIImage *representingImage = [article.representingFile smallestPresentableImage];
 	NSString *dateString = nil;
 	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
 		

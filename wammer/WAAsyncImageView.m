@@ -22,11 +22,6 @@
 @synthesize lastImagePtr;
 @dynamic delegate;
 
-- (void) dealloc {
-
-
-}
-
 - (void) setImage:(UIImage *)newImage {
 
 	[self setImage:newImage withOptions:WAImageViewForceAsynchronousOption];
