@@ -541,6 +541,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	@autoreleasepool {
     
 		WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
+		
 		NSString *identifier = [WAPostViewCellPhone identifierRepresentingObject:post];
 		
 		id context = nil;
