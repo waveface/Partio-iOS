@@ -241,7 +241,10 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	NSParameterAssert([self isViewLoaded]);
 	NSParameterAssert(self.discreteLayoutResult);
 	
-	CGSize const contentSize = self.paginatedView.frame.size;
+	CGFloat const padding = 8;
+	CGSize contentSize = self.paginatedView.frame.size;
+	contentSize.width += 2 * padding;
+	contentSize.height += 2 * padding;
 	
 	NSUInteger const fromPage = self.paginatedView.currentPage;
 	IRDiscreteLayoutGrid * const fromUntransformedGrid = [self.discreteLayoutResult.grids objectAtIndex:fromPage];
@@ -288,6 +291,9 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 		
 		CGRect fromRect = fromArea.layoutBlock ? fromArea.layoutBlock(fromArea, item) : CGRectNull;
 		CGRect toRect = toArea.layoutBlock ? toArea.layoutBlock(toArea, item) : CGRectNull;
+		
+		fromRect = CGRectOffset(fromRect, -1 * padding, -1 * padding);
+		toRect = CGRectOffset(toRect, -1 * padding, -1 * padding);
 		
 		[preconditionBlocks irEnqueueBlock:^{
 
