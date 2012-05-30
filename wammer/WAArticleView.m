@@ -144,7 +144,7 @@
 
 	[super willMoveToWindow:newWindow];
 	
-	if (self.article)
+	if (newWindow && self.article)
 		[self configureWithArticle:self.article];
 
 }
