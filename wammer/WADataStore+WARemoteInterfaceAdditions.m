@@ -61,7 +61,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 		
 	nil];
 	
-	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSManagedObjectContext *temporalContext, NSArray *prospectiveUnsavedObjects, NSError *anError) {
+	[WAArticle synchronizeWithOptions:options completion:^(BOOL didFinish, NSError *anError) {
 	
 		if (didFinish) {
 
@@ -187,7 +187,7 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 	} else {
 	
-		[article synchronizeWithCompletion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+		[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
 			
 			handleResult(didFinish, error);
 					

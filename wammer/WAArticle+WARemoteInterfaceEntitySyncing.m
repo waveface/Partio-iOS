@@ -179,7 +179,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 }
 
-+ (void) synchronizeWithCompletion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
++ (void) synchronizeWithCompletion:(void (^)(BOOL, NSError *))completionBlock {
 
   [self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
   
@@ -189,7 +189,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 }
 
-+ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSManagedObjectContext *, NSArray *, NSError *))completionBlock {
++ (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSError *))completionBlock {
 
   WAArticleSyncStrategy wantedStrategy = [options objectForKey:kWAArticleSyncStrategy];
 	WAArticleSyncStrategy syncStrategy = wantedStrategy;
@@ -200,7 +200,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
   NSUInteger usedBatchLimit = ri.defaultBatchSize;
 	
 	if (!usedGroupIdentifier) {
-		completionBlock(NO, nil, nil, [NSError errorWithDomain:@"com.waveface.wammer.dataStore.article" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
+		completionBlock(NO, [NSError errorWithDomain:@"com.waveface.wammer.dataStore.article" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
 			@"Article sync requires a primary group identifier", NSLocalizedDescriptionKey,
 		nil]]);
 		return;
@@ -220,7 +220,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSManagedObjectContext *context = [ds disposableMOC];
 				context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 
-				NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				[[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 
 				NSError *savingError = nil;
 				if ([context save:&savingError])
@@ -229,14 +229,14 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				[ds setLastContentSyncDate:[NSDate date]];
 
 				if (completionBlock)
-					completionBlock(YES, context, touchedObjects, nil);
+					completionBlock(YES, nil);
 			
 			} waitUntilDone:NO];
       
     } onFailure:^(NSError *error) {
     
       if (completionBlock)
-        completionBlock(NO, nil, nil, error);
+        completionBlock(NO, error);
     
     }];
     
@@ -327,7 +327,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 									} else {
 									
 										if (completionBlock)
-											completionBlock(NO, context, objectURIs, savingError);
+											completionBlock(NO, savingError);
 									
 									}
 									
@@ -335,17 +335,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 															
 							} else {
 							
-								NSManagedObjectContext *context = [[WADataStore defaultStore] disposableMOC];
-								NSArray *savedObjects = [objectURIs irMap: ^ (NSURL *anObjectURI, NSUInteger index, BOOL *stop) {
-									
-									return [context irManagedObjectForURI:anObjectURI];
-									
-								}];
-								
 								[[WADataStore defaultStore] setLastContentSyncDate:[NSDate date]];
 								
 								if (completionBlock)
-									completionBlock(YES, context, savedObjects, nil);
+									completionBlock(YES, nil);
 								
 								dispatch_release(sessionQueue);
 								
@@ -358,7 +351,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
         } onFailure:^(NSError *error) {
 				
           if (completionBlock)
-            completionBlock(NO, nil, nil, error);
+            completionBlock(NO, error);
             
           dispatch_release(sessionQueue);
           
@@ -393,12 +386,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				[ds setLastContentSyncDate:continuation];
 			
 			if (completionBlock)
-				completionBlock(YES, nil, nil, nil);
+				completionBlock(YES, nil);
 			
 		} onFailure:^(NSError *error) {
 		
 			if (completionBlock)
-				completionBlock(NO, nil, nil, error);
+				completionBlock(NO, error);
 			
 		}];
 				
@@ -564,20 +557,22 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				return;
 			}
 			
+			NSURL *fileURI = [[representedFile objectID] URIRepresentation];
+			
 			[representedFile synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 			
 				kWAFileSyncReducedQualityStrategy, kWAFileSyncStrategy,
 			
-			nil] completion:^(BOOL didFinish, NSManagedObjectContext *context, NSArray *objects, NSError *error) {
+			nil] completion:^(BOOL didFinish, NSError *error) {
 			
 				if (!didFinish) {
 					aCallback(error);
 					return;
 				}
 			
-				NSCParameterAssert([objects count] == 1);
+				NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+				WAFile *savedFile = (WAFile *)[context irManagedObjectForURI:fileURI];
 				
-				WAFile *savedFile = (WAFile *)[objects lastObject];
 				NSCParameterAssert(savedFile.article);
 				NSCParameterAssert(savedFile.identifier);
 				aCallback(savedFile.identifier);
@@ -721,14 +716,14 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				NSError *savingError = nil;
 				BOOL didSave = [context save:&savingError];
 				
-				completionBlock(didSave, context, [NSArray arrayWithObject:savedPost], didSave ? nil : savingError);
+				completionBlock(didSave, savingError);
 			
 			} waitUntilDone:NO];
 		
 		} else {
 		
 			NSError *error = (NSError *)([results isKindOfClass:[NSError class]] ? results : nil);
-			completionBlock(NO, nil, nil, error);
+			completionBlock(NO, error);
 			
 		}
 		
