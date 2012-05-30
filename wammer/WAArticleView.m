@@ -109,9 +109,12 @@
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
 		
+		__weak UIWebView *wContextWebView = contextWebView;
+		
 		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
-
-			[contextWebView loadHTMLString:string baseURL:pt.baseURL];
+			
+			if (wContextWebView.window)
+				[wContextWebView loadHTMLString:string baseURL:pt.baseURL];
 			
 		});
 	
