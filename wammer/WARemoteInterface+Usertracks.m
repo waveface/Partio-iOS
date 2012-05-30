@@ -49,6 +49,7 @@
 		[self retrieveChangedArticlesSince:sinceDate inGroup:groupID withEntities:NO onSuccess:^(NSArray *changedArticleIDs, NSArray *changes, NSDate *continuation) {
 		
 			if (![changedArticleIDs count] || !continuation || [continuation isEqual:sinceDate]) {				
+				
 				if (successBlock)
 					successBlock(continuation);
 				

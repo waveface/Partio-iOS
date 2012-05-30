@@ -21,12 +21,14 @@
 - (WAUser *) mainUserInContext:(NSManagedObjectContext *)context;
 - (void) setMainUser:(WAUser *)user inContext:(NSManagedObjectContext *)context;
 
-- (NSDate *) lastContentSyncDate;
-- (void) setLastContentSyncDate:(NSDate *)date;
+- (NSDate *) lastSyncSuccessDate;
+- (void) setLastSyncSuccessDate:(NSDate *)date;
 
-//	For the default persistent store, might incur write
-- (NSDictionary *) metadata;
-- (void) setMetadata:(NSDictionary *)metadata;
+- (NSDate *) lastNewPostsUpdateDate;
+- (void) setLastNewPostsUpdateDate:(NSDate *)date;
+
+- (NSDate *) lastChangedPostsUpdateDate;
+- (void) setLastChangedPostsUpdateDate:(NSDate *)date;
 
 @end
 

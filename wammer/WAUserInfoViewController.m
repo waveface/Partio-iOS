@@ -134,7 +134,7 @@
 	
 	[self irObserveObject:wDataStore keyPath:@"lastContentSyncDate" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 
-		wSelf.lastSyncDateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wDataStore.lastContentSyncDate];
+		wSelf.lastSyncDateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:[wDataStore lastSyncSuccessDate]];
 		
 	}];
 	
@@ -429,7 +429,7 @@
 		WADataStore *dataStore = [WADataStore defaultStore];
 		return [NSString stringWithFormat:
 			NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
-			[[IRRelativeDateFormatter sharedFormatter] stringFromDate:[dataStore lastContentSyncDate]]
+			[[IRRelativeDateFormatter sharedFormatter] stringFromDate:[dataStore lastSyncSuccessDate]]
 		];
 	}
 	

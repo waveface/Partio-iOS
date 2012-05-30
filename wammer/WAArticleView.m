@@ -20,8 +20,11 @@
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
++ (NSDateFormatter *) absoluteDateFormatter;
 
 - (WFPresentationTemplate *) presentationTemplate;
+
+@property (nonatomic, readwrite, weak) WAArticle *article;
 
 @end
 
@@ -29,6 +32,7 @@
 @implementation WAArticleView
 
 @synthesize contextInfoContainer, previewBadge, textEmphasisView, avatarView, relativeCreationDateLabel, userNameLabel, articleDescriptionLabel, deviceDescriptionLabel, contextTextView, mainImageView, contextWebView, presentationTemplateName;
+@synthesize article;
 
 - (void) awakeFromNib {
 
@@ -46,48 +50,54 @@
 
 }
 
-- (void) configureWithArticle:(WAArticle *)article {
+- (void) configureWithArticle:(WAArticle *)inArticle {
+
+	self.article = inArticle;
 
 	UIImage *representingImage = article.representingFile.thumbnailImage;
 	NSString *dateString = nil;
 	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
+		
 		dateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+		
+	} else {
+	
+		dateString = [[[self class] absoluteDateFormatter] stringFromDate:article.creationDate];
+	
 	}
-	else {
-		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		[dateFormatter setDateStyle:NSDateFormatterLongStyle];
-		dateString = [dateFormatter stringFromDate:article.creationDate];
-	}
+	
 	WAPreview *shownPreview = [article.previews anyObject];
 	userNameLabel.text = article.owner.nickname;
 	
 	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN", @"In iPad overview");
-	
+		
 	NSString *postDescription = nil;
 	if ([article.files count] > 1) {
 	
 		photoInformation  = [NSString localizedStringWithFormat:
 			NSLocalizedString(@"PHOTOS_PLURAL", @"In iPad overview"),
-			[article.files count] ];
+			[inArticle.files count]
+		];
+			
 	}
 	
 	postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
 	relativeCreationDateLabel.text = postDescription;
-	articleDescriptionLabel.text = article.text;
+	articleDescriptionLabel.text = inArticle.text;
 	previewBadge.preview = shownPreview;
 	mainImageView.image = representingImage;
 	
 	[mainImageView irUnbind:@"image"];
-	[mainImageView irBind:@"image" toObject:article keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	[mainImageView irBind:@"image" toObject:inArticle keyPath:@"representingFile.smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	
 	nil]];
 	
-	avatarView.image = article.owner.avatar;
-	deviceDescriptionLabel.text = article.creationDeviceName;
-	textEmphasisView.text = article.text;
-	textEmphasisView.hidden = !!(BOOL)[article.files count];
+	avatarView.image = inArticle.owner.avatar;
+	deviceDescriptionLabel.text = inArticle.creationDeviceName;
+	textEmphasisView.text = inArticle.text;
+	textEmphasisView.hidden = !!(BOOL)[inArticle.files count];
 	//contextInfoContainer.hidden = ![article.text length]; // if there's no note, display nothing.
 	
 	if (contextWebView) {
@@ -105,12 +115,12 @@
 		
 		hook(@"$ADDITIONAL_HTML_CLASSES", [[NSArray arrayWithObjects:
 			(shownPreview ? @"preview" : @"no-preview"),
-			([article.text length] ? @"body" : @"no-body"),
+			([inArticle.text length] ? @"body" : @"no-body"),
 		nil] componentsJoinedByString:@" "]);
 		
-		hook(@"$TITLE", [article.text substringToIndex: MIN( 120, [article.text length])] );
+		hook(@"$TITLE", [inArticle.text substringToIndex: MIN( 120, [inArticle.text length])] );
 		hook(@"$ADDITIONAL_STYLES", nil);
-		hook(@"$BODY", article.text);
+		hook(@"$BODY", inArticle.text);
 		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
 		hook(@"$PREVIEW_PROVIDER", [shownPreview.graphElement providerCaption]);
 		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.representingImage.imageRemoteURL);
@@ -119,14 +129,26 @@
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
 		
+		__weak UIWebView *wContextWebView = contextWebView;
+		
 		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
-
-			[contextWebView loadHTMLString:string baseURL:pt.baseURL];
+			
+			if (wContextWebView.window)
+				[wContextWebView loadHTMLString:string baseURL:pt.baseURL];
 			
 		});
 	
 	}
 	
+}
+
+- (void) willMoveToWindow:(UIWindow *)newWindow {
+
+	[super willMoveToWindow:newWindow];
+	
+	if (self.article)
+		[self configureWithArticle:self.article];
+
 }
 
 - (void) layoutSubviews {
@@ -167,6 +189,21 @@
 
 		formatter = [[IRRelativeDateFormatter alloc] init];
 		formatter.approximationMaxTokenCount = 1;
+			
+	});
+
+	return formatter;
+
+}
+
++ (NSDateFormatter *) absoluteDateFormatter {
+
+	static NSDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+	
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateStyle = NSDateFormatterLongStyle;
 			
 	});
 

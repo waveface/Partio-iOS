@@ -7,6 +7,7 @@
 //
 
 #import "WARemoteInterface+Posts.h"
+#import "WADataStore.h"
 
 @implementation WARemoteInterface (Posts)
 
@@ -109,6 +110,67 @@
 		);
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+
+}
+
+- (void) retrievePostsCreatedSince:(NSDate *)date inGroup:(NSString *)groupID onProgress:(void(^)(NSArray *postReps, NSDate *continuation))progressBlock onSuccess:(void(^)(NSDate *continuation))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	if (!date)
+		date = [NSDate dateWithTimeIntervalSince1970:0];
+
+	NSParameterAssert(groupID);
+	
+	__block void (^getSince)(NSDate *) = [^ (NSDate *continuation) {
+	
+		[self retrievePostsInGroup:groupID relativeToPost:nil date:continuation withSearchLimits:100 filter:nil onSuccess:^ (NSArray *postReps) {
+		
+			if (![postReps count]) {
+				
+				if (successBlock)
+					successBlock(continuation);
+				
+				getSince = nil;
+				
+				return;
+			
+			}
+			
+			NSDate *latestTimestamp = continuation;
+			
+			for (NSDictionary *postRep in postReps) {
+				NSDate *timestamp = [[WADataStore defaultStore] dateFromISO8601String:[postRep objectForKey:@"timestamp"]];
+				latestTimestamp = [latestTimestamp laterDate:timestamp];
+				NSCParameterAssert(latestTimestamp);
+			}
+			
+			if (progressBlock)
+				progressBlock(postReps, latestTimestamp);
+			
+			if ([latestTimestamp isEqualToDate:continuation]) {
+			
+				if (successBlock)
+					successBlock(continuation);
+					
+				getSince = nil;
+				
+				return;
+			
+			}
+			
+			getSince(latestTimestamp);
+		
+		} onFailure:^ (NSError *error) {
+		
+			if (failureBlock)
+				failureBlock(error);
+			
+			getSince = nil;
+		
+		}];
+		
+	} copy];
+	
+	getSince(date);
 
 }
 
