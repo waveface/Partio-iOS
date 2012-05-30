@@ -20,6 +20,7 @@
 @interface WAArticleView ()
 
 + (IRRelativeDateFormatter *) relativeDateFormatter;
++ (NSDateFormatter *) absoluteDateFormatter;
 
 - (WFPresentationTemplate *) presentationTemplate;
 
@@ -53,10 +54,20 @@
 
 	self.article = inArticle;
 
-	UIImage *representingImage = inArticle.representingFile.thumbnailImage;
-	NSString *relativeDateString = [[[self class] relativeDateFormatter] stringFromDate:inArticle.creationDate];
-	WAPreview *shownPreview = [inArticle.previews anyObject];
-	userNameLabel.text = inArticle.owner.nickname;
+	UIImage *representingImage = article.representingFile.thumbnailImage;
+	NSString *dateString = nil;
+	if ([article.creationDate compare:[NSDate dateWithTimeIntervalSinceNow:-24*60*60]] == NSOrderedDescending) {
+		
+		dateString = [[[self class] relativeDateFormatter] stringFromDate:article.creationDate];
+		
+	} else {
+	
+		dateString = [[[self class] absoluteDateFormatter] stringFromDate:article.creationDate];
+	
+	}
+	
+	WAPreview *shownPreview = [article.previews anyObject];
+	userNameLabel.text = article.owner.nickname;
 	
 	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN", @"In iPad overview");
 	 
@@ -64,10 +75,14 @@
 	
 		photoInformation  = [NSString localizedStringWithFormat:
 			NSLocalizedString(@"PHOTOS_PLURAL", @"In iPad overview"),
-			[inArticle.files count] ];
+			[inArticle.files count]
+		];
+			
 	}
 	
-	relativeCreationDateLabel.text = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, relativeDateString, inArticle.creationDeviceName];
+	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
+	
+	relativeCreationDateLabel.text = postDescription;
 	articleDescriptionLabel.text = inArticle.text;
 	previewBadge.preview = shownPreview;
 	mainImageView.image = representingImage;
@@ -110,7 +125,7 @@
 		hook(@"$PREVIEW_PROVIDER", [shownPreview.graphElement providerCaption]);
 		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.representingImage.imageRemoteURL);
 		hook(@"$PREVIEW_BODY", shownPreview.graphElement.text);
-		hook(@"$FOOTER", relativeDateString);
+		hook(@"$FOOTER", postDescription);
 		
 		NSString *string = [pt documentWithReplacementVariables:replacements];
 		
@@ -174,6 +189,21 @@
 
 		formatter = [[IRRelativeDateFormatter alloc] init];
 		formatter.approximationMaxTokenCount = 1;
+			
+	});
+
+	return formatter;
+
+}
+
++ (NSDateFormatter *) absoluteDateFormatter {
+
+	static NSDateFormatter *formatter = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+	
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateStyle = NSDateFormatterLongStyle;
 			
 	});
 
