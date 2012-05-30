@@ -187,6 +187,11 @@
 
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	//	TBD look at object and if the changes affect layout info, if not, skip re-layout
+
+}
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
 

@@ -191,13 +191,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 + (void) synchronizeWithOptions:(NSDictionary *)options completion:(void (^)(BOOL, NSError *))completionBlock {
 
-  WAArticleSyncStrategy wantedStrategy = [options objectForKey:kWAArticleSyncStrategy];
+	WAArticleSyncStrategy wantedStrategy = [options objectForKey:kWAArticleSyncStrategy];
 	WAArticleSyncStrategy syncStrategy = wantedStrategy;
 	
-  WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-  WADataStore *ds = [WADataStore defaultStore];
-  NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
-  NSUInteger usedBatchLimit = ri.defaultBatchSize;
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	WADataStore *ds = [WADataStore defaultStore];
+	NSString *usedGroupIdentifier = ri.primaryGroupIdentifier;
+	NSUInteger usedBatchLimit = ri.defaultBatchSize;
 	
 	if (!usedGroupIdentifier) {
 		completionBlock(NO, [NSError errorWithDomain:@"com.waveface.wammer.dataStore.article" code:0 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -206,17 +206,50 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		return;
 	}
 	
-	if ([syncStrategy isEqual:kWAArticleSyncDefaultStrategy])
-		syncStrategy = kWAArticleSyncDeltaFetchStrategy;
-  
-  if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
-  
-    //  Merging the last batch only, don’t care about the vaccum at all — this is less expensive but has the potential to leave lots of vacuum in the application
-    
-    [ri retrieveLatestPostsInGroup:usedGroupIdentifier withBatchLimit:usedBatchLimit onSuccess:^(NSArray *postReps) {
+	if ([syncStrategy isEqual:kWAArticleSyncDefaultStrategy]) {
+	
+		//	The default thing to do is to first get all the new stuff, then get all the changed stuff
 		
-			[ds performBlock:^{
+		[self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			kWAArticleSyncFullyFetchStrategy, kWAArticleSyncStrategy,
+		
+		nil] completion:^(BOOL didFinish, NSError *error) {
+		
+			if (!didFinish) {
+		
+				if (completionBlock)
+					completionBlock(didFinish, error);
+			
+				return;
 				
+			}
+		
+			[self synchronizeWithOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+		
+				kWAArticleSyncDeltaFetchStrategy, kWAArticleSyncStrategy,
+			
+			nil] completion:^(BOOL didFinish, NSError *error) {
+			
+				if (completionBlock)
+					completionBlock(didFinish, error);
+				
+			}];
+			
+		}];
+		
+		return;
+	
+	}
+  
+	if ([syncStrategy isEqual:kWAArticleSyncMergeLastBatchStrategy]) {
+
+		//  Merging the last batch only, don’t care about the vaccum at all — this is less expensive but has the potential to leave lots of vacuum in the application
+
+		[ri retrieveLatestPostsInGroup:usedGroupIdentifier withBatchLimit:usedBatchLimit onSuccess:^(NSArray *postReps) {
+
+			[ds performBlock:^{
+
 				NSManagedObjectContext *context = [ds disposableMOC];
 				context.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 
@@ -224,146 +257,59 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 				NSError *savingError = nil;
 				if ([context save:&savingError])
-					NSLog(@"Error saving: %@", savingError);
-								
-				[ds setLastContentSyncDate:[NSDate date]];
+				NSLog(@"Error saving: %@", savingError);
 
 				if (completionBlock)
 					completionBlock(YES, nil);
-			
+
 			} waitUntilDone:NO];
-      
-    } onFailure:^(NSError *error) {
+
+			[ds setLastSyncSuccessDate:[NSDate date]];
+
+		} onFailure:^(NSError *error) {
+
+			if (completionBlock)
+				completionBlock(NO, error);
+
+		}];
     
-      if (completionBlock)
-        completionBlock(NO, error);
-    
-    }];
-    
-  } else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchStrategy]) {
+	} else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchStrategy]) {
 	
-    NSMutableDictionary *sessionInfo = [options objectForKey:kWAArticleSyncSessionInfo];
-    
-    if (!sessionInfo)
-      sessionInfo = [NSMutableDictionary dictionary];
-      
-    NSMutableDictionary *optionsContinuation = [options mutableCopy];
-    [optionsContinuation setObject:sessionInfo forKey:kWAArticleSyncSessionInfo];
-    
-    dispatch_queue_t sessionQueue = ((^ {
-      
-      dispatch_queue_t returnedQueue = [[sessionInfo objectForKey:@"sessionQueue"] pointerValue];
-      if (!returnedQueue) {
-        returnedQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@.%@.temporaryQueue",NSStringFromClass([self class]), NSStringFromSelector(_cmd)] UTF8String], DISPATCH_QUEUE_SERIAL);
-        [sessionInfo setObject:[NSValue valueWithPointer:returnedQueue] forKey:@"sessionQueue"];
-      }
-      
-      return returnedQueue;
-      
-    })());
-    
-    dispatch_async(sessionQueue, ^{
+		NSDate *usedDate = [ds lastNewPostsUpdateDate];
 		
-			NSString * const kObjectURIs = @"objectURIs";
-    
-			NSMutableArray *objectURIs = [sessionInfo objectForKey:kObjectURIs];
-      
-      if (!objectURIs) {
-        objectURIs = [NSMutableArray array];
-				[sessionInfo setObject:objectURIs forKey:kObjectURIs];
-      }
+		[ri retrievePostsCreatedSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps, NSDate *continuation) {
+		
+			[ds performBlock:^{
 			
-      [ds fetchLatestCreatedArticleInGroup:usedGroupIdentifier onSuccess:^(NSString *identifier, WAArticle *article) {
+				NSManagedObjectContext *context = [ds disposableMOC];
+				
+				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				
+				[context save:nil];
+				
+			} waitUntilDone:YES];
 			
-        NSString *referencedPostIdentifier = identifier;
-        NSDate *referencedPostDate = identifier ? nil : [NSDate distantPast];
-        
-        if (article.creationDate) {
-          referencedPostDate = article.creationDate;
-          referencedPostIdentifier = nil;
-        }
-				
-        [ri retrievePostsInGroup:usedGroupIdentifier relativeToPost:referencedPostIdentifier date:referencedPostDate withSearchLimits:usedBatchLimit filter:nil onSuccess:^(NSArray *postReps) {
-				
-					dispatch_async(sessionQueue, ^ {
-					
-						__block BOOL shouldContinue = NO;
-						
-						[postReps enumerateObjectsUsingBlock: ^ (NSDictionary *aPost, NSUInteger idx, BOOL *stop) {
-							
-							if (![[aPost valueForKeyPath:@"post_id"] isEqual:identifier]) {
-								shouldContinue = YES;
-								*stop = YES;
-							}
-							
-						}];
-						
-						dispatch_async(dispatch_get_main_queue(), ^{
-						
-							if (shouldContinue) {
-							
-								[ds performBlock:^{
+			if (continuation)
+				[ds setLastNewPostsUpdateDate:continuation];
 
-									NSManagedObjectContext *context = [ds disposableMOC];
-									context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-								
-									NSArray *touchedObjects = [[self class] insertOrUpdateObjectsUsingContext:context withRemoteResponse:postReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-									
-									NSError *savingError = nil;
-									if ([context save:&savingError]) {
-									
-										[objectURIs addObjectsFromArray:[touchedObjects irMap: ^ (NSManagedObject *obj, NSUInteger index, BOOL *stop) {
-											
-											return [[obj objectID] URIRepresentation];
-											
-										}]];
-										
-										dispatch_async(dispatch_get_main_queue(), ^{
-											
-											[self synchronizeWithOptions:optionsContinuation completion:completionBlock];
-											
-										});
-
-									} else {
-									
-										if (completionBlock)
-											completionBlock(NO, savingError);
-									
-									}
-									
-								} waitUntilDone:NO];
-															
-							} else {
-							
-								[[WADataStore defaultStore] setLastContentSyncDate:[NSDate date]];
-								
-								if (completionBlock)
-									completionBlock(YES, nil);
-								
-								dispatch_release(sessionQueue);
-								
-							}
-            
-						});
-					
-          });
-        
-        } onFailure:^(NSError *error) {
-				
-          if (completionBlock)
-            completionBlock(NO, error);
-            
-          dispatch_release(sessionQueue);
-          
-        }];
-
-      }];
+		} onSuccess:^(NSDate *continuation) {
+		
+			if (continuation)
+				[ds setLastNewPostsUpdateDate:continuation];
+			
+			if (completionBlock)
+				completionBlock(YES, nil);
+			
+		} onFailure:^(NSError *error) {
+		
+			if (completionBlock)
+				completionBlock(NO, error);
+			
+		}];
       
-    });
-      
-  } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]){
+  } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]) {
 	
-		NSDate *usedDate = [[[WADataStore defaultStore] lastContentSyncDate] dateByAddingTimeInterval:1];
+		NSDate *usedDate = [ds lastChangedPostsUpdateDate];
 		
 		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps, NSDate *continuation) {
 		
@@ -378,12 +324,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			} waitUntilDone:YES];
 			
 			if (continuation)
-				[ds setLastContentSyncDate:continuation];
+				[ds setLastChangedPostsUpdateDate:continuation];
 
 		} onSuccess:^(NSDate *continuation) {
 		
 			if (continuation)
-				[ds setLastContentSyncDate:continuation];
+				[ds setLastChangedPostsUpdateDate:continuation];
 			
 			if (completionBlock)
 				completionBlock(YES, nil);
