@@ -132,9 +132,22 @@
 		
 	}];
 	
-	[self irObserveObject:wDataStore keyPath:@"lastContentSyncDate" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	[self irObserveObject:wDataStore keyPath:@"lastSyncSuccessDate" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+		NSDate *date = [wDataStore lastSyncSuccessDate];
 
-		wSelf.lastSyncDateLabel.text = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:[wDataStore lastSyncSuccessDate]];
+		wSelf.lastSyncDateLabel.text = date ? [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date] : nil;
+		
+		if ([wSelf isViewLoaded]) {
+			
+			IRTableView *tv = wSelf.tableView;
+			NSUInteger sectionIndex = [tv indexPathForCell:wSelf.syncTableViewCell].section;
+			
+			[tv beginUpdates];
+			[tv reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+			[tv endUpdates];
+			
+		}
 		
 	}];
 	
@@ -426,11 +439,23 @@
 	}
 	
 	if ([superAnswer isEqualToString:@"SYNC_INFO_FOOTER"]) {
+	
 		WADataStore *dataStore = [WADataStore defaultStore];
-		return [NSString stringWithFormat:
-			NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
-			[[IRRelativeDateFormatter sharedFormatter] stringFromDate:[dataStore lastSyncSuccessDate]]
-		];
+		NSDate *date = [dataStore lastSyncSuccessDate];
+		
+		if (date) {
+		
+			NSString *dateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date];
+			
+			return [NSString stringWithFormat:
+				NSLocalizedString(@"SYNC_INFO_FOOTER", @"In Account Info Sync Section"),
+				dateString
+			];
+		
+		}
+		
+		return nil;
+		
 	}
 	
 	if ([superAnswer isEqualToString:@"VERSION"])
