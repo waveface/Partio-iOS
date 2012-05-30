@@ -234,6 +234,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				if (completionBlock)
 					completionBlock(didFinish, error);
 				
+				if (didFinish)
+					[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
+				
 			}];
 			
 		}];
