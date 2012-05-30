@@ -11,8 +11,14 @@
 #import "AssetsLibrary+IRAdditions.h"
 #import "WADataStore.h"
 
+#import <objc/runtime.h>
+#import "WACompositionViewController+SubclassEyesOnly.h"
+
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
+NSString * const WACompositionImageInsertionCancellationTriggersSessionTermination = @"WACompositionImageInsertionCancellationTriggersSessionTermination";
+
+NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewController(ImageHandling) dismissesSelfIfCameraCancelled]";
 
 @interface WACompositionViewController (ImageHandling_Private)
 
@@ -175,7 +181,31 @@ NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositio
 		stitchedFile.resourceType = (NSString *)kUTTypeImage;
 		stitchedFile.resourceFilePath = [finalFileURL path];
 		
+	} else {
+		
+		//	If told to dismiss self, dismiss here if self has no changess
+		
+		BOOL shouldDismissSelfOnCameraCancellation = [objc_getAssociatedObject(self, &kDismissesSelfIfCameraCancelled) isEqual:(id)kCFBooleanTrue];
+		
+		if (shouldDismissSelfOnCameraCancellation) {
+			
+			if (![self.article hasMeaningfulContent]) {
+ 
+				self.completionBlock(nil);
+
+			}
+			
+		}
+		
 	}
+	
+	objc_setAssociatedObject(self, &kDismissesSelfIfCameraCancelled, nil, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
+- (BOOL) shouldDismissSelfOnCameraCancellation {
+	
+	return [objc_getAssociatedObject(self, &kDismissesSelfIfCameraCancelled) isEqual:(id)kCFBooleanTrue];
 
 }
 
@@ -191,6 +221,9 @@ NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositio
 	
 	BOOL usesCamera = [[options objectForKey:WACompositionImageInsertionUsesCamera] isEqual:(id)kCFBooleanTrue];
 	BOOL animate = ![[options objectForKey:WACompositionImageInsertionAnimatePresentation] isEqual:(id)kCFBooleanFalse];
+	BOOL dismissesSelfIfCameraCancelled = [[options objectForKey:WACompositionImageInsertionCancellationTriggersSessionTermination] isEqual:(id)kCFBooleanTrue];
+	
+	objc_setAssociatedObject(self, &kDismissesSelfIfCameraCancelled, (dismissesSelfIfCameraCancelled ? (id)kCFBooleanTrue : (id)kCFBooleanFalse), OBJC_ASSOCIATION_ASSIGN);
 	
 	IRAction *photoPickerAction = [self newPresentImagePickerControllerActionAnimated:animate sender:sender];
 	IRAction *cameraAction = [self newPresentCameraCaptureControllerActionAnimated:animate sender:sender];

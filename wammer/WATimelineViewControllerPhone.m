@@ -733,13 +733,56 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 - (void) beginCompositionSessionWithURL:(NSURL *)anURL animated:(BOOL)animate onCompositionViewDidAppear:(void (^)(WACompositionViewController *))callback {
 
 	__block WACompositionViewController *compositionVC = [WACompositionViewController defaultAutoSubmittingCompositionViewControllerForArticle:anURL completion:^(NSURL *anURI) {
+		
+		if (![compositionVC.article hasMeaningfulContent] && [compositionVC shouldDismissSelfOnCameraCancellation]) {
+			
+			__block void (^dismissModal)(UIViewController *) = [^ (UIViewController *aVC) {
+			
+				if (aVC.modalViewController) {
+					dismissModal(aVC.modalViewController);
+					return;
+				}
+				
+				[aVC dismissModalViewControllerAnimated:NO];
+			
+			} copy];
+			
+			UIWindow *usedWindow = [[UIApplication sharedApplication] keyWindow];
+			
+			if ([compositionVC isViewLoaded] && compositionVC.view.window)
+				usedWindow = compositionVC.view.window;
+			
+			NSCParameterAssert(usedWindow);
+			
+			[CATransaction begin];
+			
+			dismissModal(compositionVC);
+			dismissModal = nil;
+			
+			[compositionVC dismissModalViewControllerAnimated:NO];
+			
+			CATransition *fadeTransition = [CATransition animation];
+			fadeTransition.duration = 0.3f;
+			fadeTransition.type = kCATransitionFade;
+			fadeTransition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+			fadeTransition.removedOnCompletion = YES;
+			fadeTransition.fillMode = kCAFillModeForwards;
+			
+			[usedWindow.layer addAnimation:fadeTransition forKey:kCATransition];
+			
+			[CATransaction commit];
+			
+		} else {
 	
-		[compositionVC dismissModalViewControllerAnimated:YES];
+			[compositionVC dismissModalViewControllerAnimated:YES];
+			
+		}
+		
 		compositionVC = nil;
 		
 	}];
 	
-  [self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
+	[self presentViewController:[compositionVC wrappingNavigationController] animated:animate completion:^{
 		
 		if (callback)
 			callback(compositionVC);
@@ -1085,9 +1128,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 			(id)kCFBooleanTrue, WACompositionImageInsertionUsesCamera,
 			(id)kCFBooleanFalse, WACompositionImageInsertionAnimatePresentation,
-			
-			//	TBD
-			//	(id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
+			(id)kCFBooleanTrue, WACompositionImageInsertionCancellationTriggersSessionTermination,
 		
 		nil] sender:compositionVC.view];
 		
