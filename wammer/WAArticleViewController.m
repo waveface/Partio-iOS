@@ -237,6 +237,31 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	if (self.onViewDidLoad)
 		self.onViewDidLoad(self, self.view);
 	
+	switch (self.presentationStyle) {
+	
+		case WADiscretePlaintextArticleStyle:
+		case WADiscreteSingleImageArticleStyle:
+		case WADiscretePreviewArticleStyle:
+		case WADiscreteDocumentArticleStyle: {
+		
+			UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(self.view.bounds, -8, -8)];
+			borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+			borderView.userInteractionEnabled = NO;
+			borderView.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
+			borderView.layer.borderWidth = 1.0f;
+			
+			[self.view addSubview:borderView];
+			[self.view bringSubviewToFront:borderView];
+		
+			break;
+		
+		}
+		
+		default:
+			break;
+
+	}
+	
 }
 
 - (void) reloadData {
