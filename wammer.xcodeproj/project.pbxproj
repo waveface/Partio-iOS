@@ -345,6 +345,7 @@
 		FF4BDEA6156A518200C105D5 /* WAFile+LazyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA5156A518100C105D5 /* WAFile+LazyImages.m */; };
 		FF4BDEA9156A52A000C105D5 /* WAFile+FilePaths.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA8156A52A000C105D5 /* WAFile+FilePaths.m */; };
 		FF4CCE95149A07B30049B83C /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FF4CCE94149A07B30049B83C /* InAppSettings.bundle */; };
+		FF4F8372157799C100E03D5E /* WAPhotoQueueBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF4F8371157799C100E03D5E /* WAPhotoQueueBackground@2x.png */; };
 		FF51509A14835A030073386D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FF51509C14835A030073386D /* Localizable.strings */; };
 		FF51B64D1542C34C00874C05 /* WAArticleStackElementDropdownTag.png in Resources */ = {isa = PBXBuildFile; fileRef = FF51B6471542C34C00874C05 /* WAArticleStackElementDropdownTag.png */; };
 		FF51B64E1542C34C00874C05 /* WAArticleStackElementDropdownTag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF51B6481542C34C00874C05 /* WAArticleStackElementDropdownTag@2x.png */; };
@@ -1441,6 +1442,7 @@
 		FF4BDEA8156A52A000C105D5 /* WAFile+FilePaths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+FilePaths.m"; sourceTree = "<group>"; };
 		FF4CCE94149A07B30049B83C /* InAppSettings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = InAppSettings.bundle; sourceTree = "<group>"; };
 		FF4D102214F6BAC60047D666 /* WAModel 16.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 16.xcdatamodel"; sourceTree = "<group>"; };
+		FF4F8371157799C100E03D5E /* WAPhotoQueueBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAPhotoQueueBackground@2x.png"; path = "Resources/WAPhotoQueueBackground@2x.png"; sourceTree = "<group>"; };
 		FF4FA00813E114F3002C627F /* WAArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController.h; sourceTree = "<group>"; };
 		FF4FA00913E114F3002C627F /* WAArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController.m; sourceTree = "<group>"; };
 		FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 30.xcdatamodel"; sourceTree = "<group>"; };
@@ -2774,6 +2776,7 @@
 				FF09078E1540377500465513 /* WAPhoto.png */,
 				FF09078F1540377500465513 /* WAPhoto@2x.png */,
 				FF0907901540377500465513 /* WAPhotoQueueBackground.png */,
+				FF4F8371157799C100E03D5E /* WAPhotoQueueBackground@2x.png */,
 				FF0907911540377500465513 /* WAPlaintextArticleStackCellBackdrop.png */,
 				FF0907921540377500465513 /* WAPlaintextArticleStackCellBackdrop@2x.png */,
 				FF0907931540377500465513 /* WAPostBackground.png */,
@@ -3783,6 +3786,7 @@
 				4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */,
 				4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */,
 				FFF3615E1563AF44004A4D57 /* WAUserInfoViewController.storyboard in Resources */,
+				FF4F8372157799C100E03D5E /* WAPhotoQueueBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

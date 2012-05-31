@@ -104,7 +104,7 @@
 	cell.selectedBackgroundView = ((^ {
 	
 		UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
-		view.backgroundColor = [UIColor colorWithWhite:0.85 alpha:1];
+		view.backgroundColor = [UIColor colorWithWhite:0.65 alpha:1];
 		view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 		
 		return view;
@@ -154,14 +154,10 @@
 
 - (CGFloat) heightForRowRepresentingObject:(WAArticle *)object inTableView:(UITableView *)tableView {
 
-//	BOOL isWebPost = !![object.previews count];
-//	BOOL isPhotoPost = !![object.files count];
-//	if (isWebPost)
-//		return 158;
-	
 	NSString *identifier = [[self class] identifierRepresentingObject:object];
 	WAPostViewCellPhone *prototype = (WAPostViewCellPhone *)[[self class] prototypeForIdentifier:identifier];
 	NSParameterAssert([prototype isKindOfClass:[WAPostViewCellPhone class]]);
+	
 	prototype.frame = (CGRect){
 		CGPointZero,
 		(CGSize){
@@ -198,24 +194,17 @@
 	
 	WAArticle *post = representedObject;
 	NSParameterAssert([post isKindOfClass:[WAArticle class]]);
-
-	BOOL postHasFiles = (BOOL)!![post.files count];
-	BOOL postHasPreview = (BOOL)!![post.previews count];
+	
+	BOOL const postHasFiles = (BOOL)!![post.files count];
+	BOOL const postHasPreview = (BOOL)!![post.previews count];
 	
 	NSDate *postDate = post.presentationDate;
-	NSDateFormatter *timeOnlyFormatter = [[NSDateFormatter alloc] init];
-	[timeOnlyFormatter setDateStyle:NSDateFormatterNoStyle];
-	[timeOnlyFormatter setTimeStyle:NSDateFormatterShortStyle];
-	NSString *timeOnlyDateString = [timeOnlyFormatter stringFromDate:postDate];
-	NSString *relativeDateString = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate];
+	NSString *deviceName = post.creationDeviceName;
+	NSString *timeString = [[[self class] timeFormatter] stringFromDate:postDate];
 	
-	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"),
-		timeOnlyDateString,
-		post.creationDeviceName
-	];
-	
-	self.dateLabel.text = [relativeDateString lowercaseString];
-	self.commentLabel.text = ([post.text length]>0)? post.text : @"My life is a tapestry for rich and royal you.";
+	self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), timeString, deviceName];
+	self.dateLabel.text = [[[IRRelativeDateFormatter sharedFormatter] stringFromDate:postDate] lowercaseString];
+	self.commentLabel.text = post.text;
 	
 	if (postHasPreview) {
 
@@ -299,14 +288,11 @@
 		self.accessibilityLabel = @"Photo";
 		
 		NSString *photoInfo = NSLocalizedString(@"PHOTO_PLURAL", @"in iPhone timeline");
-		if ( [post.files count]==1 )
+		if ([post.files count] == 1)
 			photoInfo = NSLocalizedString(@"PHOTO_SINGULAR", @"in iPhone timeline");
+		
 		self.accessibilityHint = [NSString stringWithFormat:photoInfo, [post.files count]];
-		self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"),
-								 self.accessibilityHint,
-								 timeOnlyDateString,
-								 post.creationDeviceName
-								 ];
+		self.originLabel.text = [NSString stringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"iPhone Timeline"), self.accessibilityHint, timeString, deviceName];
 		
   } else {
 		
@@ -324,10 +310,13 @@
 	UIColor *shadowColor;
 
 	if ([post.favorite isEqual:(id)kCFBooleanTrue]) {
+		
 		self.backgroundImageView.image = [UIImage imageNamed:@"tagFavorite"];
 		textColor = [UIColor whiteColor];
 		shadowColor = [UIColor colorWithHue:155/360 saturation:0.0 brightness:0.8 alpha:1.0];
+		
 	} else {
+		
 		self.backgroundImageView.image = [UIImage imageNamed:@"tagDefault"];
 		textColor = [UIColor colorWithHue:111/360 saturation:0.0 brightness:0.56 alpha:1.0];
 		shadowColor = [UIColor colorWithHue:111/360 saturation:0.0 brightness:1.0 alpha:1.0];
@@ -336,21 +325,86 @@
 	
 	self.dayLabel.textColor = textColor;
 	self.dayLabel.shadowColor = shadowColor;
+	
 	self.monthLabel.textColor = textColor;
 	self.monthLabel.shadowColor = shadowColor;
 	
-	//	TBD: optimize if slow
-	
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	
-	dateFormatter.dateFormat = @"dd";
-	self.dayLabel.text = [dateFormatter stringFromDate:postDate];
-	
-	dateFormatter.dateFormat = @"MMM";
-	self.monthLabel.text = [[dateFormatter stringFromDate:postDate] uppercaseString];
+	self.dayLabel.text = [[[self class] dayFormatter] stringFromDate:postDate];
+	self.monthLabel.text = [[[[self class] monthFormatter] stringFromDate:postDate] uppercaseString];
 	
 	[self setNeedsLayout];
 	
+}
+
++ (NSDateFormatter *) monthFormatter {
+
+	static dispatch_once_t onceToken;
+	static NSDateFormatter *formatter;
+	dispatch_once(&onceToken, ^{
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"MMM";
+	});
+
+	return formatter;
+
+}
+
++ (NSDateFormatter *) dayFormatter {
+
+	static dispatch_once_t onceToken;
+	static NSDateFormatter *formatter;
+	dispatch_once(&onceToken, ^{
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateFormat = @"dd";
+	});
+
+	return formatter;
+
+}
+
++ (NSDateFormatter *) timeFormatter {
+
+	static dispatch_once_t onceToken;
+	static NSDateFormatter *formatter;
+	dispatch_once(&onceToken, ^{
+		formatter = [[NSDateFormatter alloc] init];
+		formatter.dateStyle = NSDateFormatterNoStyle;
+		formatter.timeStyle = NSDateFormatterShortStyle;
+	});
+
+	return formatter;
+
+}
+
+- (void) setActive:(BOOL)active animated:(BOOL)animated {
+
+	CGFloat alpha = active ? 0.65f : 1.0f;
+	UIColor *backgroundColor = [UIColor colorWithWhite:0.5 alpha:1];
+	
+	for (UIImageView *iv in self.photoImageViews) {
+		iv.alpha = alpha;
+		iv.backgroundColor = backgroundColor;
+	}
+	
+	self.previewImageView.alpha = alpha;
+	self.previewImageView.backgroundColor = backgroundColor;
+
+}
+
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+
+	[super setHighlighted:highlighted animated:animated];
+	
+	[self setActive:(self.highlighted || self.selected) animated:animated];
+
+}
+
+- (void) setSelected:(BOOL)selected animated:(BOOL)animated {
+
+	[super setSelected:selected animated:animated];
+	
+	[self setActive:(self.highlighted || self.selected) animated:animated];
+
 }
 
 @end

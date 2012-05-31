@@ -122,7 +122,7 @@
 	
 	__block void (^getSince)(NSDate *) = [^ (NSDate *continuation) {
 	
-		[self retrievePostsInGroup:groupID relativeToPost:nil date:continuation withSearchLimits:100 filter:nil onSuccess:^ (NSArray *postReps) {
+		[self retrievePostsInGroup:groupID relativeToPost:nil date:continuation withSearchLimits:self.defaultBatchSize filter:nil onSuccess:^ (NSArray *postReps) {
 		
 			if (![postReps count]) {
 				
