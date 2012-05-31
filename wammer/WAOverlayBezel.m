@@ -46,7 +46,9 @@
 	self = [super initWithFrame:(CGRect){ CGPointZero, (CGSize){ 128, 128 }}];
 	if (!self)
 		return nil;
-		
+	
+	self.userInteractionEnabled = NO;
+	
 	self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.65f];
 	self.layer.cornerRadius = 8.0f;
 	self.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
@@ -96,6 +98,12 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDeviceOrientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
 	
 	return self;
+
+}
+
+- (UIView *) hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+
+	return nil;
 
 }
 
