@@ -78,6 +78,7 @@
 		FF0528B11508D0FE00F585D7 /* WALocalizedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B01508D0FE00F585D7 /* WALocalizedButton.m */; };
 		FF0528B41508D1A100F585D7 /* WALocalizedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */; };
 		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
+		FF069E771576635500141CD9 /* WADataStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C5151520947100301887 /* WADataStoreTest.m */; };
 		FF0907B21540377500465513 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0907161540377400465513 /* Default-Landscape.png */; };
 		FF0907B31540377500465513 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0907171540377400465513 /* Default-Portrait.png */; };
 		FF0907B41540377500465513 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0907181540377400465513 /* Default.png */; };
@@ -3963,6 +3964,7 @@
 				FFCF28C0156B99AF00B70D63 /* WAFile+LazyImages.m in Sources */,
 				FF2AC3B9156FD8AC0033ADD6 /* WAStorage.m in Sources */,
 				FF2AC3BA156FD8B20033ADD6 /* WAArticle.m in Sources */,
+				FF069E771576635500141CD9 /* WADataStoreTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
