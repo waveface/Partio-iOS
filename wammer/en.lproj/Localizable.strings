@@ -328,7 +328,7 @@
 "SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "Syncing with Station";
 
 /* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "Syncing";
+"SYNC_BUTTON_NORMAL_TITLE" = "Syncing with Cloud";
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "Sync";
