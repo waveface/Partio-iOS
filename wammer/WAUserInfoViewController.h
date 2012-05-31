@@ -28,5 +28,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *deviceNameLabel;
+@property (strong, nonatomic) UIActivityIndicatorView *activity;
 
 @end
