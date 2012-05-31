@@ -325,10 +325,10 @@
 "STREAM_ABOUT_TITLE" = "詳細資訊";
 
 /* Caption to show in account info when station is connected */
-"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在與 Station 同步中";
+"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED" = "正在同步到 Station";
 
 /* Caption to show when app is syncing data without station */
-"SYNC_BUTTON_NORMAL_TITLE" = "正在同步";
+"SYNC_BUTTON_NORMAL_TITLE" = "正在同步到 Cloud";
 
 /* Caption to show when app is not syncing data, but sync is usable */
 "SYNC_BUTTON_USABLE_TITLE" = "現在同步";
