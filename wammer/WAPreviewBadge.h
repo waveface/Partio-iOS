@@ -27,7 +27,7 @@ enum {
 @class WAPreview;
 @interface WAPreviewBadge : UIView
 
-@property (nonatomic, readwrite, retain) WAPreview *preview;
+@property (nonatomic, readwrite, weak) WAPreview *preview;
 @property (nonatomic, readwrite, assign) WAPreviewBadgeStyle style;
 
 @property (nonatomic, readwrite, retain) UIFont *titleFont;
