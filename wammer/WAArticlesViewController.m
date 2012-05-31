@@ -29,6 +29,7 @@
 #import "WAUserInfoViewController.h"
 #import "WANavigationController.h"
 #import "IASKAppSettingsViewController.h"
+#import "WADiscreteLayoutHelpers.h"
 
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
@@ -189,7 +190,9 @@
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	//	TBD look at object and if the changes affect layout info, if not, skip re-layout
+	NSCParameterAssert([anObject conformsToProtocol:@protocol(IRDiscreteLayoutItem)]);
+	
+	WADiscreteLayoutResetCachedValuesForItem((id<IRDiscreteLayoutItem>)anObject);
 
 }
 
