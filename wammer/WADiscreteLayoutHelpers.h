@@ -14,5 +14,8 @@ extern BOOL WADiscreteLayoutItemHasImage (id<IRDiscreteLayoutItem> anItem);
 extern BOOL WADiscreteLayoutItemHasLink (id<IRDiscreteLayoutItem> anItem);
 extern BOOL WADiscreteLayoutItemHasShortText (id<IRDiscreteLayoutItem> anItem);
 extern BOOL WADiscreteLayoutItemHasLongText (id<IRDiscreteLayoutItem> anItem);
+extern BOOL WADiscreteLayoutItemIsFavorite (id<IRDiscreteLayoutItem> anItem);
+
+extern void WADiscreteLayoutResetCachedValuesForItem (id<IRDiscreteLayoutItem> item);
 
 extern NSArray * WADefaultLayoutGrids (void);

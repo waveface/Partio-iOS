@@ -441,19 +441,19 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 - (NSUInteger) numberOfItemsForLayoutManager:(IRDiscreteLayoutManager *)manager {
 
-  return [self.fetchedResultsController.fetchedObjects count];
+  return [(id<NSFetchedResultsSectionInfo>)[self.fetchedResultsController.sections objectAtIndex:0] numberOfObjects];
 
 }
 
 - (id<IRDiscreteLayoutItem>) layoutManager:(IRDiscreteLayoutManager *)manager itemAtIndex:(NSUInteger)index {
 
-  return (id<IRDiscreteLayoutItem>)[self.fetchedResultsController.fetchedObjects objectAtIndex:index];
+  return (id<IRDiscreteLayoutItem>)[self.fetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
 
 }
 
 - (NSInteger) layoutManager:(IRDiscreteLayoutManager *)manager indexOfLayoutItem:(id<IRDiscreteLayoutItem>)item {
 
-	return [self.fetchedResultsController.fetchedObjects indexOfObject:item];
+	return [self.fetchedResultsController indexPathForObject:item].row;
 
 }
 

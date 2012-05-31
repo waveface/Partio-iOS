@@ -71,7 +71,6 @@
 	
 	NSString *photoInformation = NSLocalizedString(@"PHOTO_NOUN", @"In iPad overview");
 		
-	NSString *postDescription = nil;
 	if ([article.files count] > 1) {
 	
 		photoInformation  = [NSString localizedStringWithFormat:
@@ -81,7 +80,7 @@
 			
 	}
 	
-	postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
+	NSString *postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE", @"In iPad overview"), photoInformation, dateString, article.creationDeviceName];
 	relativeCreationDateLabel.text = postDescription;
 	articleDescriptionLabel.text = inArticle.text;
 	previewBadge.preview = shownPreview;
@@ -101,36 +100,43 @@
 	//contextInfoContainer.hidden = ![article.text length]; // if there's no note, display nothing.
 	
 	if (contextWebView) {
-		postDescription = [NSString localizedStringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"In iPad overview, (time, device)"), dateString, article.creationDeviceName];
-		
-		WFPresentationTemplate *pt = [self presentationTemplate];
-		NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
-		
-		void (^hook)(NSString *, NSString *) = ^ (NSString *key, NSString *value) {
-			
-			[replacements setObject:(value ? value : @"")	forKey:key];
-			
-		};
-		
-		hook(@"$ADDITIONAL_HTML_CLASSES", [[NSArray arrayWithObjects:
-			(shownPreview ? @"preview" : @"no-preview"),
-			([inArticle.text length] ? @"body" : @"no-body"),
-		nil] componentsJoinedByString:@" "]);
-		
-		hook(@"$TITLE", [inArticle.text substringToIndex: MIN( 120, [inArticle.text length])] );
-		hook(@"$ADDITIONAL_STYLES", nil);
-		hook(@"$BODY", inArticle.text);
-		hook(@"$PREVIEW_TITLE", shownPreview.graphElement.title);
-		hook(@"$PREVIEW_PROVIDER", [shownPreview.graphElement providerCaption]);
-		hook(@"$PREVIEW_IMAGE", shownPreview.graphElement.representingImage.imageRemoteURL);
-		hook(@"$PREVIEW_BODY", shownPreview.graphElement.text);
-		hook(@"$FOOTER", postDescription);
-		
-		NSString *string = [pt documentWithReplacementVariables:replacements];
-		
+	
 		__weak UIWebView *wContextWebView = contextWebView;
+		__weak WAArticleView *wSelf = self;
+		__weak WAArticle *wArticle = inArticle;
+		__weak WAPreview *wPreview = shownPreview;
 		
 		CFRunLoopPerformBlock(CFRunLoopGetMain(), kCFRunLoopDefaultMode, ^{
+		
+			if (!wSelf || !wArticle || !wContextWebView)
+				return;
+			
+			NSString *footerText = [NSString localizedStringWithFormat:NSLocalizedString(@"CREATE_TIME_FROM_DEVICE", @"In iPad overview, (time, device)"), dateString, wArticle.creationDeviceName];
+			
+			WFPresentationTemplate *pt = [wSelf presentationTemplate];
+			NSMutableDictionary *replacements = [NSMutableDictionary dictionary];
+			
+			void (^hook)(NSString *, NSString *) = ^ (NSString *key, NSString *value) {
+				
+				[replacements setObject:(value ? value : @"")	forKey:key];
+				
+			};
+			
+			hook(@"$ADDITIONAL_HTML_CLASSES", [[NSArray arrayWithObjects:
+				(wPreview ? @"preview" : @"no-preview"),
+				([wArticle.text length] ? @"body" : @"no-body"),
+			nil] componentsJoinedByString:@" "]);
+			
+			hook(@"$TITLE", [wArticle.text substringToIndex: MIN( 120, [wArticle.text length])] );
+			hook(@"$ADDITIONAL_STYLES", nil);
+			hook(@"$BODY", wArticle.text);
+			hook(@"$PREVIEW_TITLE", wPreview.graphElement.title);
+			hook(@"$PREVIEW_PROVIDER", [wPreview.graphElement providerCaption]);
+			hook(@"$PREVIEW_IMAGE", wPreview.graphElement.representingImage.imageRemoteURL);
+			hook(@"$PREVIEW_BODY", wPreview.graphElement.text);
+			hook(@"$FOOTER", footerText);
+			
+			NSString *string = [pt documentWithReplacementVariables:replacements];
 			
 			if (wContextWebView.window)
 				[wContextWebView loadHTMLString:string baseURL:pt.baseURL];
@@ -147,6 +153,16 @@
 	
 	if (newWindow && self.article)
 		[self configureWithArticle:self.article];
+	
+	if (!newWindow)
+		[contextWebView stopLoading];
+
+}
+
+- (void) willMoveToSuperview:(UIView *)newSuperview {
+
+	if (!newSuperview)
+		[contextWebView stopLoading];
 
 }
 
