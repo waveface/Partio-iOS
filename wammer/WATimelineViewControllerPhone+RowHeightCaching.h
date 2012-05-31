@@ -18,4 +18,6 @@
 
 - (NSCache *) rowHeightCache;
 
+- (id) cacheKeyForObject:(id)object;
+
 @end

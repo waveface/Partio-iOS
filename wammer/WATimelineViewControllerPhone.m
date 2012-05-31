@@ -45,6 +45,8 @@
 
 #import "WATimelineViewControllerPhone+RowHeightCaching.h"
 
+#import "UIViewController+IRDelayedUpdateAdditions.h"
+
 static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPostsViewControllerPhone_RepresentedObjectURI";
 
 @interface WATimelineViewControllerPhone () <NSFetchedResultsControllerDelegate, UIActionSheetDelegate, IASKSettingsDelegate, WAArticleDraftsViewControllerDelegate>
@@ -334,7 +336,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
   NSError *fetchingError;
 	if (![fetchedResultsController performFetch:&fetchingError])
 		NSLog(@"error fetching: %@", fetchingError);
-		
+	
+	if ([self isViewLoaded])
+		[self.tableView reloadData];
+	
 	return fetchedResultsController;
 	
 }
@@ -345,9 +350,32 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 }
 
+- (void) debugCreateArticle:(NSTimer *)timer {
+
+	WADataStore *ds = [WADataStore defaultStore];
+	NSManagedObjectContext *ctx = [ds disposableMOC];
+	
+	[WAArticle insertOrUpdateObjectsUsingContext:ctx withRemoteResponse:[NSArray arrayWithObjects:
+	
+		[NSDictionary dictionaryWithObjectsAndKeys:
+		
+			IRDataStoreNonce(), @"content",
+			[ds ISO8601StringFromDate:[NSDate date]], @"timestamp",
+		
+		nil],
+	
+	nil] usingMapping:nil options:0];
+	
+	[ctx save:nil];
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
+	
+	//	NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(debugCreateArticle:) userInfo:nil repeats:YES];
+	//	[timer fire];
 	
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		
@@ -463,18 +491,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	}
 		
 	[self.tableView resetPullDown];
-	//	self.tableView.contentOffset = UIEdgeInsetsZero;
 	
 	[super viewWillDisappear:animated];
-	
-}
-
-- (void) viewDidDisappear:(BOOL)animated {
-
-	[super viewDidDisappear:animated];
-
-	fetchedResultsController.delegate = nil;
-	self.fetchedResultsController = nil;
 	
 }
 
@@ -580,13 +598,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controllerWillChangeContent:(NSFetchedResultsController *)controller {
 
-	if (controller != fetchedResultsController)
+	if (![self isViewLoaded])
 		return;
-
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-		
+	
 	[self persistState];
 	[self.tableView beginUpdates];
 
@@ -594,12 +608,8 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeSection:(id<NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
 
-	if (controller != fetchedResultsController)
+	if (![self isViewLoaded])
 		return;
-	
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
 	
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
@@ -619,15 +629,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 
 - (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
 
-	if (controller != fetchedResultsController)
-		return;
-	
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-	
 	[self removeCachedRowHeightForObject:anObject];
 
+	if (![self isViewLoaded])
+		return;
+	
 	switch (type) {
 		case NSFetchedResultsChangeDelete: {
 			NSParameterAssert(indexPath && !newIndexPath);
@@ -669,16 +675,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 }
 
 - (void) controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	
-	if (controller != fetchedResultsController)
+
+	if (![self isViewLoaded])
 		return;
 	
-	NSCParameterAssert([NSThread isMainThread]);
-	NSCParameterAssert([self isViewLoaded]);
-	NSCParameterAssert(self.view.window);
-	
 	UITableView *tv = self.tableView;
-	
 	[tv endUpdates];
 	[self restoreState];
 	
@@ -817,7 +818,6 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		draftsVC.delegate = self;
 		
 		WANavigationController *navC = [[WANavigationController alloc] initWithRootViewController:draftsVC];
-		//	((WANavigationBar *)navC.navigationBar).customBackgroundView = [WANavigationBar defaultPatternBackgroundView];
 		
 		__weak WATimelineViewControllerPhone *wSelf = self;
 				
