@@ -10,3 +10,4 @@ agvtool new-version $NextVersion
 git commit -a -m "Punt"
 git commit --amend
 git flow feature finish $NextVersion
+git tag $NextVersion
