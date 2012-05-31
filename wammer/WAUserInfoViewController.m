@@ -44,6 +44,7 @@
 @synthesize deviceNameLabel;
 @synthesize managedObjectContext;
 @synthesize user;
+@synthesize activity;
 
 + (id) controllerWithWrappingNavController:(UINavigationController **)outNavController {
 
@@ -102,10 +103,26 @@
 
   [super viewDidLoad];
 	
+	activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	
+	activity.hidesWhenStopped = YES;
+	activity.hidden = YES;
+	
+	activity.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |
+	UIViewAutoresizingFlexibleHeight |
+	UIViewAutoresizingFlexibleLeftMargin |
+	UIViewAutoresizingFlexibleRightMargin |
+	UIViewAutoresizingFlexibleTopMargin |
+	UIViewAutoresizingFlexibleWidth;
+	
+	activity.frame = CGRectMake(300.0-10.0-18.0, 14.0, 20.0, 20.0);	
+
+	[self.syncTableViewCell insertSubview:activity atIndex:0];
+	
   [self.tableView reloadData];
 	
 	switch (UI_USER_INTERFACE_IDIOM()){
-	
+			
 		case UIUserInterfaceIdiomPhone: {
 		
 			self.tableView.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -257,7 +274,7 @@
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
-
+	
 	[self.tableView reloadData];
 	
 }
@@ -328,12 +345,14 @@
 			cell.textLabel.text =NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
 
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		[self.activity startAnimating];
 		
 	} else {
 	
 		cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_USABLE_TITLE", @"Caption to show when app is not syncing data, but sync is usable");
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-	
+		[self.activity stopAnimating];
+		
 	}
 
 }
