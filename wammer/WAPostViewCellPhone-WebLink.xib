@@ -54,7 +54,7 @@
 									<object class="IBUIImageView" id="21348819">
 										<reference key="NSNextResponder" ref="1063580887"/>
 										<int key="NSvFlags">301</int>
-										<string key="NSFrame">{{0, -1}, {30, 63}}</string>
+										<string key="NSFrameSize">{30, 63}</string>
 										<reference key="NSSuperview" ref="1063580887"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="337631202"/>
@@ -142,7 +142,7 @@
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 								</object>
-								<string key="NSFrame">{{0, -1}, {30, 70}}</string>
+								<string key="NSFrameSize">{30, 70}</string>
 								<reference key="NSSuperview" ref="229656081"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="21348819"/>
@@ -264,7 +264,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4zNzI1NDkwMTk2IDAuNDc0NTA5ODAzOSAwLjU2MDc4NDMxMzcAA</bytes>
 								</object>
-								<nil key="IBUIHighlightedColor"/>
+								<reference key="IBUIHighlightedColor" ref="598127927"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
@@ -370,7 +370,7 @@
 									<object class="IBUIImageView" id="625373106">
 										<reference key="NSNextResponder" ref="836832875"/>
 										<int key="NSvFlags">301</int>
-										<string key="NSFrame">{{0, -1}, {30, 63}}</string>
+										<string key="NSFrameSize">{30, 63}</string>
 										<reference key="NSSuperview" ref="836832875"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="96977753"/>
@@ -435,7 +435,7 @@
 										<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 									</object>
 								</object>
-								<string key="NSFrame">{{0, -1}, {30, 70}}</string>
+								<string key="NSFrameSize">{30, 70}</string>
 								<reference key="NSSuperview" ref="276602418"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="625373106"/>
@@ -513,7 +513,7 @@
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4zNzI1NDkwMTk2IDAuNDc0NTA5ODAzOSAwLjU2MDc4NDMxMzcAA</bytes>
 								</object>
-								<nil key="IBUIHighlightedColor"/>
+								<reference key="IBUIHighlightedColor" ref="598127927"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
 								<int key="IBUINumberOfLines">0</int>
@@ -893,7 +893,6 @@
 					<string>137.IBPluginDependency</string>
 					<string>3.CustomClassName</string>
 					<string>3.IBPluginDependency</string>
-					<string>39.CustomClassName</string>
 					<string>39.IBPluginDependency</string>
 					<string>44.CustomClassName</string>
 					<string>44.IBPluginDependency</string>
@@ -926,7 +925,6 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WAPostViewCellPhone</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>IRLabel</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>WAAsyncImageView</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
