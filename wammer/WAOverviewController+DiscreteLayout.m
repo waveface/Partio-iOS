@@ -121,26 +121,10 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 - (UIView *) newPageContainerView {
 
 	IRView *returnedView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 320 } }];
-	returnedView.backgroundColor = nil;
-	returnedView.opaque = NO;
+	returnedView.backgroundColor = [UIColor colorWithWhite:242.0/256.0 alpha:1];
+	returnedView.opaque = YES;
 	returnedView.autoresizingMask = UIViewAutoresizingNone;
 	returnedView.clipsToBounds = YES;
-	returnedView.layer.shouldRasterize = YES;
-	returnedView.layer.rasterizationScale = [UIScreen mainScreen].scale;
-	
-	//	__block UIView *backdropView = [[UIView alloc] initWithFrame:CGRectInset(returnedView.bounds, -12, -12)];
-	//	backdropView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	//	backdropView.layer.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:240.0f/255.0f blue:234.0f/255.0f alpha:1].CGColor;
-	//	backdropView.layer.cornerRadius = 4;
-	//	backdropView.layer.shadowOpacity = 0.35;
-	//	backdropView.layer.shadowOffset = (CGSize){ 0, 2 };
-	//	[returnedView addSubview:backdropView];
-	//	
-	//	returnedView.onLayoutSubviews = ^ {
-	//	
-	//		backdropView.layer.shadowPath = [UIBezierPath bezierPathWithRect:backdropView.bounds].CGPath;
-	//	
-	//	};
 	
 	[returnedView setNeedsLayout];
 	

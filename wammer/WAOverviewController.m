@@ -74,7 +74,7 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-	self.view.backgroundColor = [UIColor colorWithRed:242.0/256.0 green:242.0/256.0 blue:242.0/256.0 alpha:1];
+	self.view.backgroundColor = [UIColor colorWithWhite:242.0/256.0 alpha:1];
 	self.view.opaque = YES;
 	
 	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
