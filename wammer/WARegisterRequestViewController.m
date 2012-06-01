@@ -379,7 +379,7 @@
 
 	[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:@"OK" block:block],
+		[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"OK action in registration failure alert") block:block],
 	
 	nil]] show];
 
