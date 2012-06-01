@@ -48,7 +48,13 @@
 
   NSDictionary *authenticationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
 		
-		[[NSLocale currentLocale] localeIdentifier], @"locale",
+		((^ {
+			NSArray *preferredLanguages = [NSLocale preferredLanguages];
+			if ([preferredLanguages count] > 0 && [[preferredLanguages objectAtIndex:0] isEqualToString:@"zh-Hant"]) {
+				return @"zh_TW";
+			}
+			return @"en";
+		})()), @"locale",
    
 		@"ios", @"device",
 		WADeviceIdentifier(), @"device_id",
@@ -195,7 +201,7 @@
 
 	[[IRAlertView alertViewWithTitle:alertTitle message:alertText cancelAction:nil otherActions:[NSArray arrayWithObjects:
 	
-		[IRAction actionWithTitle:@"OK" block:block],
+		[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"OK action in facebook login failure alert") block:block],
 	
 	nil]] show];
 
