@@ -356,4 +356,11 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+
+	[super viewDidDisappear:animated];
+	[self didReceiveMemoryWarning];
+	
+}
+
 @end
