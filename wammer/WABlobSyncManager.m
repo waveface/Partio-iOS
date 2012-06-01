@@ -121,7 +121,7 @@
 	
 	recurrenceMachine = [[IRRecurrenceMachine alloc] init];
 	recurrenceMachine.queue.maxConcurrentOperationCount = 1;
-	recurrenceMachine.recurrenceInterval = 5;
+	recurrenceMachine.recurrenceInterval = 30;
 	
 	[recurrenceMachine addRecurringOperation:[self haulingOperationPrototype]];
 	
@@ -186,6 +186,17 @@
 		NSCAssert1(!context, @"Shared context reference should be nil, got %@", context);
 		
 		BOOL const canSync = [wSelf canPerformBlobSync];
+		
+		[wSelf countFilesWithCompletion:^(NSUInteger count) {
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				wSelf.numberOfFiles = count;
+				
+			});
+			
+		}];
+
 		if (!canSync) {
 		
 			callback(nil);
