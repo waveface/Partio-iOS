@@ -191,6 +191,16 @@
 
 - (void) presentError:(NSError *)error completion:(void(^)(void))block {
 
+		// check if the error is caused by unreachable cloud
+	if (![[WARemoteInterface sharedInterface] hasReachableCloud])
+	{
+		NSString *alertTitleConnectionFailure = NSLocalizedString(@"ERROR_CONNECTION_FAILED_TITLE", @"Title for connection failure in login view");
+		[[IRAlertView alertViewWithTitle:alertTitleConnectionFailure message:NSLocalizedString(@"ERROR_CONNECTION_FAILED_RECOVERY_NOTION", @"Recovery notion for connection failure recovey") cancelAction:nil otherActions:[NSArray arrayWithObjects:
+				[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"OK action in connection failure alert") block:block], 
+			nil]] show];
+		return;
+	}
+
 	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in web view");
 	
 	NSString *alertText = [[NSArray arrayWithObjects:
