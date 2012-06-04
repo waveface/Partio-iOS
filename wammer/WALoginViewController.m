@@ -93,7 +93,7 @@
 			aButton.titleLabel.shadowOffset = (CGSize){0,1};
 
 		}
-	
+	self.signUpLabel.textAlignment = UITextAlignmentCenter;
 	self.signUpButton.titleLabel.textColor = self.signUpLabel.textColor;
 }
 
@@ -302,25 +302,41 @@
   }
 
 }
+
 - (void) presentError:(NSError *)error completion:(void(^)(void))block {
 
+	__weak WALoginViewController *wSelf = self;
+
+	// check if the error is caused by unreachable cloud
+	if (![[WARemoteInterface sharedInterface] hasReachableCloud])
+	{
+		NSString *alertTitleConnectionFailure = NSLocalizedString(@"ERROR_CONNECTION_FAILED_TITLE", @"Title for connection failure in login view");
+		[[IRAlertView alertViewWithTitle:alertTitleConnectionFailure message:NSLocalizedString(@"ERROR_CONNECTION_FAILED_RECOVERY_NOTION", @"Recovery notion for connection failure recovey") cancelAction:nil otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"OK action in connection failure alert") block:^{
+		
+			wSelf.password = nil;
+			[wSelf assignFirstResponderStatusToBestMatchingField];
+			
+		}], nil]] show];
+		return;
+	}
+	
 	NSString *resetPasswordTitle = NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password in login view");
 	
 	IRAction *resetPasswordAction = [IRAction actionWithTitle:resetPasswordTitle block: ^ {
 	
-		self.password = nil;
-		[self assignFirstResponderStatusToBestMatchingField];
+		wSelf.password = nil;
+		[wSelf assignFirstResponderStatusToBestMatchingField];
 
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
 	
   }];
 
-	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in login view");
+	NSString *alertTitleAuthFailure = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in login view");
 	
-	[[IRAlertView alertViewWithTitle:alertTitle message:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel ation in login view") block:^{
+	[[IRAlertView alertViewWithTitle:alertTitleAuthFailure message:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel action in login view") block:^{
 	
-		self.password = nil;
-		[self assignFirstResponderStatusToBestMatchingField];
+		wSelf.password = nil;
+		[wSelf assignFirstResponderStatusToBestMatchingField];
 		
 	}] otherActions:[NSArray arrayWithObjects:
 		

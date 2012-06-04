@@ -66,7 +66,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Email</string>
+						<string key="IBUIText">NOUN_USERNAME</string>
 						<object class="NSColor" key="IBUITextColor" id="848177060">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -83,6 +83,7 @@
 							<double key="NSSize">17</double>
 							<int key="NSfFlags">16</int>
 						</object>
+						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUITextField" id="231629345">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -97,7 +98,7 @@
 						<int key="IBUITag">1</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUIText">james.sa.2013@gmail.com</string>
+						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">NOUN_USERNAME</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">3</int>
@@ -130,7 +131,7 @@
 						<int key="IBUITag">2</int>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUIText">123456</string>
+						<string key="IBUIText"/>
 						<string key="IBUIPlaceholder">NOUN_PASSWORD</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">3</int>
@@ -201,13 +202,14 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Password</string>
+						<string key="IBUIText">NOUN_PASSWORD</string>
 						<reference key="IBUITextColor" ref="848177060"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
 						<float key="IBUIMinimumFontSize">10</float>
 						<reference key="IBUIFontDescription" ref="1065934377"/>
 						<reference key="IBUIFont" ref="867644221"/>
+						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUIButton" id="761713124">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -407,7 +409,6 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="159279155"/>
 							<reference ref="1066265197"/>
 							<reference ref="231629345"/>
 							<reference ref="761713124"/>
@@ -416,6 +417,7 @@
 							<reference ref="370120689"/>
 							<reference ref="609556465"/>
 							<reference ref="1023782059"/>
+							<reference ref="159279155"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
