@@ -69,7 +69,7 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Log in";
+"ACTION_SIGN_IN" = "Log In";
 
 /* Action title for signing in thru Facebook */
 "ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
@@ -408,10 +408,16 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
-"ACTION_SIGN_IN" = "Log in";
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "13"; */
+"NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
 "ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "15"; */
+"NOUN_USERNAME" = "Email";
 
 /* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
 "NOUN_PASSWORD" = "Password";
