@@ -13,7 +13,7 @@
 #import "WAAuthenticationRequestWebViewController.h"
 #import "WARegisterRequestViewController.h"
 
-@interface WALoginViewController ()
+@interface WALoginViewController () <UITextFieldDelegate>
 @property (nonatomic) BOOL performsAuthenticationOnViewDidAppear;
 @property NSString *username;
 @property NSString *password;
@@ -252,5 +252,33 @@
   
     [self.navigationController pushViewController:registerRequestVC animated:YES];
 }
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+
+	if (textField == self.usernameField) {
+		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
+		if (shouldReturn) {
+			dispatch_async(dispatch_get_current_queue(), ^ {
+				[self.passwordField becomeFirstResponder];
+			});
+		}
+		return shouldReturn;
+	}
+	
+	if (textField == self.passwordField) {
+		BOOL shouldReturn = ![self.passwordField.text isEqualToString:@""];
+		if (shouldReturn) {
+			dispatch_async(dispatch_get_current_queue(), ^ {
+				[self.passwordField resignFirstResponder];
+				[self authenticate];
+			});
+		}
+		return shouldReturn; 
+		
+	}
+	
+	return NO;
+}
+
 
 @end
