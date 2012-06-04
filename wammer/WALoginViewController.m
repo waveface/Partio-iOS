@@ -266,6 +266,15 @@
     [self.navigationController pushViewController:registerRequestVC animated:YES];
 }
 
+- (IBAction)swipeAction:(id)sender {
+	
+	if ( [self.usernameField isFirstResponder] )
+		[self.usernameField resignFirstResponder];
+	if ( [self.passwordField isFirstResponder] )
+		[self.passwordField resignFirstResponder];
+		
+}
+
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
 
 	if (textField == self.usernameField) {
