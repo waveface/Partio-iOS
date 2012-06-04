@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		4B0DAE641578C1130038E833 /* Authentication.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B0DAE631578C1130038E833 /* Authentication.png */; };
+		13D32FBC157B68680009B87B /* WARefreshGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D32FBB157B68680009B87B /* WARefreshGlyph@2x.png */; };
 		4B1C660014EE2C0D003398AF /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1088,6 +1089,7 @@
 /* Begin PBXFileReference section */
 		13579F281575EB4000F09C04 /* WACompositionViewController+SubclassEyesOnly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+SubclassEyesOnly.h"; sourceTree = "<group>"; };
 		4B0DAE631578C1130038E833 /* Authentication.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Authentication.png; path = Resources/Authentication.png; sourceTree = "<group>"; };
+		13D32FBB157B68680009B87B /* WARefreshGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WARefreshGlyph@2x.png"; path = "Resources/WARefreshGlyph@2x.png"; sourceTree = "<group>"; };
 		4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
 		4B1C65F714EE2C0C003398AF /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCrossHairView.h; sourceTree = "<group>"; };
@@ -2801,6 +2803,7 @@
 				FF0907951540377500465513 /* WARefreshArrow.png */,
 				FF0907961540377500465513 /* WARefreshArrow@2x.png */,
 				FF0907971540377500465513 /* WARefreshGlyph.png */,
+				13D32FBB157B68680009B87B /* WARefreshGlyph@2x.png */,
 				FF0907981540377500465513 /* WAReply.png */,
 				FF0907991540377500465513 /* WASend.png */,
 				FF09079A1540377500465513 /* WASend@2x.png */,
@@ -3808,6 +3811,7 @@
 				4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */,
 				4BD2C344157CAD300038E878 /* SignInButton.png in Resources */,
 				4BD2C345157CAD300038E878 /* SignInWithFacebookButton.png in Resources */,
+				13D32FBC157B68680009B87B /* WARefreshGlyph@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4445,7 +4449,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 425;
+				CURRENT_PROJECT_VERSION = 427;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4502,7 +4506,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 425;
+				CURRENT_PROJECT_VERSION = 427;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

@@ -3,7 +3,7 @@
 
 /* Action title for Cancelling
    Action title for cancelling stuff
-   Cancel ation in login view
+   Cancel action in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
@@ -42,7 +42,9 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
 
-/* No comment provided by engineer. */
+/* OK action in connection failure alert
+   OK action in facebook login failure alert
+   OK action in registration failure alert */
 "ACTION_OKAY" = "好";
 
 /* No comment provided by engineer. */
@@ -187,6 +189,12 @@
 /* Title for authentication failure in login view
    Title for authentication failure in web view */
 "ERROR_AUTHENTICATION_FAILED_TITLE" = "無效的帳號密碼";
+
+/* Recovery notion for connection failure recovey */
+"ERROR_CONNECTION_FAILED_RECOVERY_NOTION" = "請稍候再嘗試登入";
+
+/* Title for connection failure in login view */
+"ERROR_CONNECTION_FAILED_TITLE" = "無法連接網際網路";
 
 /* Description for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Stream現在無法為您註冊";
