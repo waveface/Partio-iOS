@@ -11,6 +11,7 @@
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
 #import "WAAuthenticationRequestWebViewController.h"
+#import "WARegisterRequestViewController.h"
 
 @interface WALoginViewController ()
 @property (nonatomic) BOOL performsAuthenticationOnViewDidAppear;
@@ -224,5 +225,32 @@
 }
 
 - (IBAction)registerAction:(id)sender {
+
+	WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *vc, NSError *error) {
+    
+      if (error) {
+				
+				[vc presentError:error completion:^{
+					
+					[self.navigationController popToViewController:self animated:YES];
+				
+				}];
+				
+				return;
+				
+      }
+			
+      self.username = vc.username;
+      self.password = vc.password;
+      self.token = vc.token;
+      self.userID = vc.userID;
+      self.performsAuthenticationOnViewDidAppear = YES;
+
+      [self.navigationController popToViewController:self animated:YES];
+
+    }];
+  
+    [self.navigationController pushViewController:registerRequestVC animated:YES];
 }
+
 @end
