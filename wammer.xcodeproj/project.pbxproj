@@ -2437,6 +2437,9 @@
 		FF890CAB1416297C00CD7D1F /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
+				4BD2C33D157C95150038E878 /* WALoginViewController.h */,
+				4BD2C33E157C95150038E878 /* WALoginViewController.m */,
+				4BD2C33F157C95150038E878 /* WALoginViewController.xib */,
 				FF164975140CC19900CAE824 /* WAAuthenticationRequestViewController.h */,
 				FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */,
 				FFF0C2CC15591861006883C4 /* WAAuthenticationRequestWebViewController.h */,
@@ -2446,9 +2449,6 @@
 				FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */,
 				FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */,
 				FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */,
-				4BD2C33D157C95150038E878 /* WALoginViewController.h */,
-				4BD2C33E157C95150038E878 /* WALoginViewController.m */,
-				4BD2C33F157C95150038E878 /* WALoginViewController.xib */,
 			);
 			name = Authentication;
 			path = wammer;
@@ -2646,8 +2646,6 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4BD2C342157CAD300038E878 /* SignInButton.png */,
-				4BD2C343157CAD300038E878 /* SignInWithFacebookButton.png */,
 				4B0DAE631578C1130038E833 /* Authentication.png */,
 				4B6253941548F0F3009F7624 /* CameraPressed.png */,
 				4B6253951548F0F3009F7624 /* CameraPressed@2x.png */,
@@ -2672,6 +2670,8 @@
 				FF0907201540377400465513 /* PLEmptyPhotoAlbum-Large~ipad.png */,
 				FF0907211540377400465513 /* Sansus Webissimo-Italic.otf */,
 				FF0907221540377400465513 /* Sansus Webissimo-Regular.otf */,
+				4BD2C342157CAD300038E878 /* SignInButton.png */,
+				4BD2C343157CAD300038E878 /* SignInWithFacebookButton.png */,
 				FF0907231540377400465513 /* tagDefault.png */,
 				FF0907241540377400465513 /* tagDefault@2x.png */,
 				FF0907251540377400465513 /* tagFavorite.png */,
