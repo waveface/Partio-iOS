@@ -83,10 +83,6 @@
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	
-	if(self.performsAuthenticationOnViewDidAppear){
-			self.performsAuthenticationOnViewDidAppear = NO;
-	}
-	
 	for (UIView* v in [self.view subviews]) 
 		if ([v isKindOfClass:[UIButton class]]) {
 			UIButton *aButton = (UIButton *)v;
@@ -100,7 +96,6 @@
 	
 	self.signUpButton.titleLabel.textColor = self.signUpLabel.textColor;
 }
-
 
 - (void) authenticate {
 	
@@ -196,32 +191,44 @@
 
 }
 
+- (void) viewDidAppear:(BOOL)animated {
+	
+	[super viewDidAppear:animated];
+	
+	if (self.performsAuthenticationOnViewDidAppear){
+		self.performsAuthenticationOnViewDidAppear = NO;
+		[self authenticate];
+	}
+	
+}
 
 - (IBAction)signInAction:(id)sender {
 	[self authenticate];
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
+	
+	__weak WALoginViewController *wSelf = self;
 	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
 		
 			if (error) {
 				
-				[self presentError:error completion:^{
+				[wSelf presentError:error completion:^{
 				
-				[self.navigationController popToViewController:self animated:YES];
+				[wSelf.navigationController popToViewController:wSelf animated:YES];
 				}];
 				
 				return;
 				
 			}
 			
-      self.username = vc.username;
-      self.password = vc.password;
-      self.token = vc.token;
-      self.userID = vc.userID;
-      self.performsAuthenticationOnViewDidAppear = YES;
+      wSelf.username = vc.username;
+      wSelf.password = vc.password;
+      wSelf.token = vc.token;
+      wSelf.userID = vc.userID;
+      wSelf.performsAuthenticationOnViewDidAppear = YES;
 
-      [self.navigationController popToViewController:self animated:YES];
+      [wSelf.navigationController popToViewController:wSelf animated:YES];
 			
 		}];
 		
@@ -231,13 +238,14 @@
 
 - (IBAction)registerAction:(id)sender {
 
+	__weak WALoginViewController *wSelf = self;
 	WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *vc, NSError *error) {
     
       if (error) {
 				
 				[vc presentError:error completion:^{
 					
-					[self.navigationController popToViewController:self animated:YES];
+					[wSelf.navigationController popToViewController:wSelf animated:YES];
 				
 				}];
 				
@@ -245,13 +253,13 @@
 				
       }
 			
-      self.username = vc.username;
-      self.password = vc.password;
-      self.token = vc.token;
-      self.userID = vc.userID;
-      self.performsAuthenticationOnViewDidAppear = YES;
+      wSelf.username = vc.username;
+      wSelf.password = vc.password;
+      wSelf.token = vc.token;
+      wSelf.userID = vc.userID;
+      wSelf.performsAuthenticationOnViewDidAppear = YES;
 
-      [self.navigationController popToViewController:self animated:YES];
+      [wSelf.navigationController popToViewController:wSelf animated:YES];
 
     }];
   
