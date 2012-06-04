@@ -69,10 +69,10 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Login";
+"ACTION_SIGN_IN" = "Log In";
 
 /* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Logout";
@@ -403,6 +403,30 @@
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "add more photos";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "11"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "13"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "15"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "22"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "23"; */
+"ACTION_SIGN_UP" = "Sign up now";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";

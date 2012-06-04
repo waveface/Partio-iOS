@@ -50,7 +50,7 @@
 #import "UIKit+IRAdditions.h"
 
 #import "WARegisterRequestViewController+SubclassEyesOnly.h"
-
+#import "WALoginViewController.h"
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -179,8 +179,8 @@
 	}
 
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
-
-  return YES;
+	
+	return YES;
 	
 }
 
@@ -524,6 +524,28 @@
 		
 	};
 	
+	WALoginViewController *loginVC = [[WALoginViewController alloc] init];
+	loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
+		if (error) {
+			//TODO: make me disappear
+			[self presentError:error completion:nil];
+			return;
+		}
+		if (userIDChanged()) {
+			handleAuthSuccess();
+			[wAppDelegate recreateViewHierarchy];
+		} else {
+			handleAuthSuccess();
+		}
+		[self dismissViewControllerAnimated:YES completion:nil];
+		};
+	
+	UINavigationController *naviC = [[UINavigationController alloc] initWithRootViewController:loginVC];
+	naviC.navigationBarHidden = YES;
+	[self.window.rootViewController presentViewController:naviC animated:NO completion:nil];
+	
+	return;
+	
   WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
   
 		if (anError) {
@@ -558,6 +580,10 @@
 	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 
 	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:NO completion:nil];
+	
+	
+	
+	
 
 }
 
