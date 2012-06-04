@@ -339,10 +339,15 @@
 	if (syncing) {
 		
 		WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-		if( 1 == [ri.monitoredHosts count] )
+		if ([ri hasReachableStation]) {
+			
+			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
+		
+		} else {
+
 			cell.textLabel.text = NSLocalizedString(@"SYNC_BUTTON_NORMAL_TITLE", @"Caption to show when app is syncing data without station");
-		else 
-			cell.textLabel.text =NSLocalizedString(@"SYNC_BUTTON_CAPTION_WITH_STATION_CONNECTED", @"Caption to show in account info when station is connected");
+		
+		}
 
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		[self.activity startAnimating];
