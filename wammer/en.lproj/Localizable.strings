@@ -396,6 +396,18 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "add more photos";
 
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "11"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
+"ACTION_SIGN_IN" = "Login";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
+"NOUN_PASSWORD" = "Password";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 

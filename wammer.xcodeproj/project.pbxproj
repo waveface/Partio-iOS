@@ -63,6 +63,10 @@
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
+		4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD2C33E157C95150038E878 /* WALoginViewController.m */; };
+		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
+		4BD2C344157CAD300038E878 /* SignInButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C342157CAD300038E878 /* SignInButton.png */; };
+		4BD2C345157CAD300038E878 /* SignInWithFacebookButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C343157CAD300038E878 /* SignInWithFacebookButton.png */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
@@ -1158,6 +1162,11 @@
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
+		4BD2C33D157C95150038E878 /* WALoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALoginViewController.h; sourceTree = "<group>"; };
+		4BD2C33E157C95150038E878 /* WALoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALoginViewController.m; sourceTree = "<group>"; };
+		4BD2C33F157C95150038E878 /* WALoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WALoginViewController.xib; sourceTree = "<group>"; };
+		4BD2C342157CAD300038E878 /* SignInButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInButton.png; path = Resources/SignInButton.png; sourceTree = "<group>"; };
+		4BD2C343157CAD300038E878 /* SignInWithFacebookButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInWithFacebookButton.png; path = Resources/SignInWithFacebookButton.png; sourceTree = "<group>"; };
 		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
@@ -2430,11 +2439,14 @@
 				FF164976140CC19900CAE824 /* WAAuthenticationRequestViewController.m */,
 				FFF0C2CC15591861006883C4 /* WAAuthenticationRequestWebViewController.h */,
 				FFF0C2CD15591861006883C4 /* WAAuthenticationRequestWebViewController.m */,
+				FF0841471558E18900C47CC3 /* WARegisterRequestViewController+SubclassEyesOnly.h */,
 				FFBACA75146BCF8B007DF1E5 /* WARegisterRequestViewController.h */,
 				FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */,
-				FF0841471558E18900C47CC3 /* WARegisterRequestViewController+SubclassEyesOnly.h */,
 				FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */,
 				FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */,
+				4BD2C33D157C95150038E878 /* WALoginViewController.h */,
+				4BD2C33E157C95150038E878 /* WALoginViewController.m */,
+				4BD2C33F157C95150038E878 /* WALoginViewController.xib */,
 			);
 			name = Authentication;
 			path = wammer;
@@ -2632,6 +2644,8 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4BD2C342157CAD300038E878 /* SignInButton.png */,
+				4BD2C343157CAD300038E878 /* SignInWithFacebookButton.png */,
 				4B0DAE631578C1130038E833 /* Authentication.png */,
 				4B6253941548F0F3009F7624 /* CameraPressed.png */,
 				4B6253951548F0F3009F7624 /* CameraPressed@2x.png */,
@@ -3791,6 +3805,9 @@
 				FFF3615E1563AF44004A4D57 /* WAUserInfoViewController.storyboard in Resources */,
 				FF4F8372157799C100E03D5E /* WAPhotoQueueBackground@2x.png in Resources */,
 				4B0DAE641578C1130038E833 /* Authentication.png in Resources */,
+				4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */,
+				4BD2C344157CAD300038E878 /* SignInButton.png in Resources */,
+				4BD2C345157CAD300038E878 /* SignInWithFacebookButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4183,6 +4200,7 @@
 				FF4BDEA6156A518200C105D5 /* WAFile+LazyImages.m in Sources */,
 				FF4BDEA9156A52A000C105D5 /* WAFile+FilePaths.m in Sources */,
 				FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */,
+				4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

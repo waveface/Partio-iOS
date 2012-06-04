@@ -396,6 +396,18 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "11"; */
+"NOUN_USERNAME" = "電子郵件";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
+"ACTION_SIGN_IN" = "登入";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
+"NOUN_PASSWORD" = "密碼";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 

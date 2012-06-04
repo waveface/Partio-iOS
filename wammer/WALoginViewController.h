@@ -8,6 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+//	Error reasons which can be found within the error sent to the controller’s completion block
+extern NSString * kWAAuthenticationRequestUserFailure;
+
+@class WALoginViewController, IRAction;
+typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSError *error);
+
 @interface WALoginViewController : UIViewController
+@property (strong, nonatomic) IBOutlet UITextField *usernameField;
+@property (strong, nonatomic) IBOutlet UITextField *passwordField;
+
+@property (strong, nonatomic)WALoginViewControllerCallback completionBlock;
+- (void) presentError:(NSError *)error completion:(void(^)(void))block;
+
+- (IBAction)signInAction:(id)sender;
+- (IBAction)facebookSignInAction:(id)sender;
+- (IBAction)registerAction:(id)sender;
 
 @end
