@@ -10,6 +10,7 @@
 
 #import "WAOverlayBezel.h"
 #import "WARemoteInterface.h"
+#import "WAAuthenticationRequestWebViewController.h"
 
 @interface WALoginViewController ()
 @property (nonatomic) BOOL performsAuthenticationOnViewDidAppear;
@@ -177,6 +178,31 @@
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
+	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
+		
+			if (error) {
+				
+				[self presentError:error completion:^{
+				
+				[self.navigationController popToViewController:self animated:YES];
+				}];
+				
+				return;
+				
+			}
+			
+      self.username = vc.username;
+      self.password = vc.password;
+      self.token = vc.token;
+      self.userID = vc.userID;
+      self.performsAuthenticationOnViewDidAppear = YES;
+
+      [self.navigationController popToViewController:self animated:YES];
+			
+		}];
+		
+		[self.navigationController pushViewController:authRequestVC animated:YES];
+		
 }
 
 - (IBAction)registerAction:(id)sender {

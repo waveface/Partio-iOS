@@ -540,7 +540,11 @@
 		[self dismissViewControllerAnimated:YES completion:nil];
 		};
 	
-	[self.window.rootViewController presentViewController:loginVC animated:NO completion:nil];
+	UINavigationController *naviC = [[UINavigationController alloc] initWithRootViewController:loginVC];
+	naviC.navigationBarHidden = YES;
+	[self.window.rootViewController presentViewController:naviC animated:NO completion:nil];
+	
+	return;
 	
   WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
   
