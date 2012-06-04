@@ -12,6 +12,11 @@
 #import "WARemoteInterface.h"
 #import "WAAuthenticationRequestWebViewController.h"
 #import "WARegisterRequestViewController.h"
+#import "WADefines.h"
+
+#import "IRAction.h"
+#import "IRAlertView.h"
+
 
 @interface WALoginViewController () <UITextFieldDelegate>
 @property (nonatomic) BOOL performsAuthenticationOnViewDidAppear;
@@ -280,5 +285,41 @@
 	return NO;
 }
 
+- (void) assignFirstResponderStatusToBestMatchingField {
+
+	if (![self.usernameField.text length]) {
+		[self.usernameField becomeFirstResponder];
+	} else if (![self.passwordField.text length]) {
+		[self.passwordField becomeFirstResponder];
+  }
+
+}
+- (void) presentError:(NSError *)error completion:(void(^)(void))block {
+
+	NSString *resetPasswordTitle = NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password in login view");
+	
+	IRAction *resetPasswordAction = [IRAction actionWithTitle:resetPasswordTitle block: ^ {
+	
+		self.password = nil;
+		[self assignFirstResponderStatusToBestMatchingField];
+
+		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[NSUserDefaults standardUserDefaults] stringForKey:kWAUserPasswordResetEndpointURL]]];
+	
+  }];
+
+	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in login view");
+	
+	[[IRAlertView alertViewWithTitle:alertTitle message:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel ation in login view") block:^{
+	
+		self.password = nil;
+		[self assignFirstResponderStatusToBestMatchingField];
+		
+	}] otherActions:[NSArray arrayWithObjects:
+		
+		resetPasswordAction,
+		
+	nil]]show];
+
+}
 
 @end
