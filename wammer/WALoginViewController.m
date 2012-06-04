@@ -23,6 +23,8 @@
 @implementation WALoginViewController
 @synthesize usernameField;
 @synthesize passwordField;
+@synthesize signUpLabel;
+@synthesize signUpButton;
 @synthesize username;
 @synthesize password;
 @synthesize userID;
@@ -46,12 +48,14 @@
 		if([v isKindOfClass:[UILabel class]]){
 			UILabel *aLabel = (UILabel *)v;
 			aLabel.text = NSLocalizedString(aLabel.text, nil);
-		}else if ([v isKindOfClass:[UITextField class]]) {
+		} else if ([v isKindOfClass:[UITextField class]]) {
 			UITextField *aField = (UITextField *)v;
 			aField.placeholder = NSLocalizedString(aField.placeholder, nil);
-		}else if ([v isKindOfClass:[UIButton class]]) {
+		} else if ([v isKindOfClass:[UIButton class]]) {
 			UIButton *aButton = (UIButton *)v;
-			aButton.titleLabel.text = NSLocalizedString(aButton.titleLabel.text, nil);
+			[aButton setTitle:NSLocalizedString(aButton.titleLabel.text, nil) forState:UIControlStateNormal];
+		} else {
+			// no op
 		}
 	
 }
@@ -60,6 +64,8 @@
 {
 	[self setUsernameField:nil];
 	[self setPasswordField:nil];
+	[self setSignUpButton:nil];
+	[self setSignUpLabel:nil];
 	[super viewDidUnload];
 }
 
@@ -73,8 +79,20 @@
 	
 	if(self.performsAuthenticationOnViewDidAppear){
 			self.performsAuthenticationOnViewDidAppear = NO;
-			
 	}
+	
+	for (UIView* v in [self.view subviews]) 
+		if ([v isKindOfClass:[UIButton class]]) {
+			UIButton *aButton = (UIButton *)v;
+			aButton.titleLabel.text = NSLocalizedString(aButton.titleLabel.text, nil);
+			aButton.titleLabel.textAlignment = UITextAlignmentCenter;
+			[aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+			[aButton setTitleShadowColor:[UIColor colorWithWhite:0.1 alpha:0.1] forState:UIControlStateNormal];
+			aButton.titleLabel.shadowOffset = (CGSize){0,1};
+
+		}
+	
+	self.signUpButton.titleLabel.textColor = self.signUpLabel.textColor;
 }
 
 

@@ -408,6 +408,12 @@
 /* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
 "NOUN_PASSWORD" = "密碼";
 
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "22"; */
+"ACTION_SIGN_UP_HELP" = "ACTION_SIGN_UP_HELP";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "23"; */
+"ACTION_SIGN_UP" = "ACTION_SIGN_UP";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 

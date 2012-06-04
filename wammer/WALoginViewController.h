@@ -17,6 +17,8 @@ typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSEr
 @interface WALoginViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
 @property (strong, nonatomic) IBOutlet UITextField *passwordField;
+@property (strong, nonatomic) IBOutlet UILabel *signUpLabel;
+@property (strong, nonatomic) IBOutlet UIButton *signUpButton;
 
 @property (strong, nonatomic)WALoginViewControllerCallback completionBlock;
 - (void) presentError:(NSError *)error completion:(void(^)(void))block;
