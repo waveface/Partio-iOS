@@ -1,5 +1,5 @@
 //
-//  WAArticleViewController_Preview.h
+//  WAArticleViewController_FullScreen_Preview.h
 //  wammer
 //
 //  Created by Evadne Wu on 1/30/12.
@@ -8,6 +8,6 @@
 
 #import "WAStackedArticleViewController.h"
 
-@interface WAArticleViewController_Preview : WAStackedArticleViewController
+@interface WAArticleViewController_FullScreen_Preview : WAStackedArticleViewController
 
 @end
