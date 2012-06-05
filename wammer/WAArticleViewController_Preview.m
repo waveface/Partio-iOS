@@ -218,11 +218,10 @@ enum {
 }
 
 - (void) loadSummary {
-
 	NSString *tidyString = [summaryWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:
 	
-		@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(unescape(\"%@\"));",
-		[self.article.summary stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+		@"(function tidy (string) { var element = document.createElement('DIV'); element.innerHTML = string; return element.innerHTML; })(\"%@\");",
+		[[self.article.summary stringByReplacingOccurrencesOfString:@"\\" withString:@"\\\\"] stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""]
 		
 	]];
 	
