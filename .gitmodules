@@ -65,5 +65,5 @@
 	path = external/MagicKit
 	url = git://github.com/iridia/MagicKit.git
 [submodule "external/IRObjectQueue"]
-	path = IRObjectQueue
+	path = external/IRObjectQueue
 	url = git://github.com/iridia/IRObjectQueue.git
