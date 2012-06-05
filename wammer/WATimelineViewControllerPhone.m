@@ -707,29 +707,25 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSCParameterAssert([self isViewLoaded]);
 	NSCParameterAssert(self.view.window);
 	
-	UIMenuController *menuController = [UIMenuController sharedMenuController];
-	if ([menuController isMenuVisible]) {
+	UIMenuController *mc = [UIMenuController sharedMenuController];
+	if ([mc isMenuVisible]) {
 	
-		[menuController setMenuVisible:NO animated:YES];
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		[mc setMenuVisible:NO animated:YES];
+		
+		NSIndexPath *selectedRowIP = [tableView indexPathForSelectedRow];
+		if (selectedRowIP)
+			[tableView deselectRowAtIndexPath:selectedRowIP animated:YES];
 		
 		return;
 		
 	}
 	
 	WAArticle *post = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	NSURL *postURL = [[post objectID] URIRepresentation];
+	NSCParameterAssert([post isKindOfClass:[WAArticle class]]);
 	
-	if ([post.previews count])
-		WAPostAppEvent(@"View Preview Post", [NSDictionary dictionaryWithObjectsAndKeys:@"link",@"category",@"consume", @"action", nil]);
-	else if([post.files count])
-		WAPostAppEvent(@"View Photo Post", [NSDictionary dictionaryWithObjectsAndKeys:@"photo",@"category",@"consume", @"action", nil]);
-	else 
-		WAPostAppEvent(@"View Text Post", [NSDictionary dictionaryWithObjectsAndKeys:@"text",@"category",@"consume", @"action", nil]);
-	
-	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:postURL usingPresentationStyle:WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:post])];
+	UIViewController *pushedVC = [WAArticleViewController controllerForArticle:post style:(WAFullScreenArticleStyle|WASuggestedStyleForArticle(post))];
 
- 	[self.navigationController pushViewController:pushedVC animated:YES];
+	[self.navigationController pushViewController:pushedVC animated:YES];
 
 }
 

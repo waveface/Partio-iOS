@@ -101,6 +101,8 @@
 	
 	if (contextWebView) {
 	
+		[contextWebView loadHTMLString:nil baseURL:nil];
+	
 		__weak UIWebView *wContextWebView = contextWebView;
 		__weak WAArticleView *wSelf = self;
 		__weak WAArticle *wArticle = inArticle;

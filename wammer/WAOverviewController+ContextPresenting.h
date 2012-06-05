@@ -14,10 +14,10 @@
 
 @property (nonatomic, readonly, retain) WAArticle *presentedArticle;
 
-- (WAArticleViewController *) presentDetailedContextForArticle:(NSURL *)anObjectURI;
+- (WAArticleViewController *) presentDetailedContextForArticle:(WAArticle *)article;
 - (void) dismissArticleContextViewController:(WAArticleViewController *)controller;
 
-- (WAArticleViewController *) newContextViewControllerForArticle:(NSURL *)anObjectURI;
+- (WAArticleViewController *) newContextViewControllerForArticle:(WAArticle *)article;
 - (UINavigationController *) wrappingNavigationControllerForContextViewController:(WAArticleViewController *)controller;
 
 @end
