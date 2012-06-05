@@ -1,12 +1,12 @@
 //
-//  WAArticleViewController_Preview.m
+//  WAArticleViewController_FullScreen_Preview.m
 //  wammer
 //
 //  Created by Evadne Wu on 1/30/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WAArticleViewController_Preview.h"
+#import "WAArticleViewController_FullScreen_Preview.h"
 #import "WADataStore.h"
 #import "WADefines.h"
 #import "WAArticleTextStackCell.h"
@@ -27,7 +27,7 @@ enum {
 }; typedef NSUInteger WAArticleViewControllerState;
 
 
-@interface WAArticleViewController_Preview () <UIWebViewDelegate, UIGestureRecognizerDelegate>
+@interface WAArticleViewController_FullScreen_Preview () <UIWebViewDelegate, UIGestureRecognizerDelegate>
 
 - (WAPreview *) preview;
 
@@ -61,7 +61,7 @@ enum {
 @end
 
 
-@implementation WAArticleViewController_Preview
+@implementation WAArticleViewController_FullScreen_Preview
 @synthesize state;
 @synthesize webView, summaryWebView, webViewWrapper, previewBadge, previewBadgeWrapper;
 @synthesize webViewActivityIndicator, webViewBackBarButtonItem, webViewForwardBarButtonItem, webViewActivityIndicatorBarButtonItem, webViewReloadBarButtonItem;
@@ -281,7 +281,7 @@ enum {
 	if (webViewBackBarButtonItem)
 		return webViewBackBarButtonItem;
 	
-	__weak WAArticleViewController_Preview *wSelf = self;
+	__weak WAArticleViewController_FullScreen_Preview *wSelf = self;
 	
 	UIColor *glyphColor = [self tintColor];
 	
@@ -318,7 +318,7 @@ enum {
 	if (webViewForwardBarButtonItem)
 		return webViewForwardBarButtonItem;
 	
-	__weak WAArticleViewController_Preview *wSelf = self;
+	__weak WAArticleViewController_FullScreen_Preview *wSelf = self;
 		
 	UIColor *glyphColor = [self tintColor];
 	UIImage *rightImage = WABarButtonImageWithOptions(@"UIButtonBarArrowRight", glyphColor, kWADefaultBarButtonTitleShadow);
@@ -450,7 +450,7 @@ enum {
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[webViewWrapper addSubview:topShadow];
 	
-	__weak WAArticleViewController_Preview *nrSelf = self;
+	__weak WAArticleViewController_FullScreen_Preview *nrSelf = self;
 	__weak IRView * nrWebViewWrapper = (IRView *)webViewWrapper;
 	
 	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
@@ -533,7 +533,7 @@ enum {
 	if ([[super toolbarItems] count])
 		return [super toolbarItems];
 	
-	__weak WAArticleViewController_Preview *wSelf = self;
+	__weak WAArticleViewController_FullScreen_Preview *wSelf = self;
 	
 	self.toolbarItems = ((^ {
 	
@@ -626,7 +626,7 @@ enum {
 
 - (NSArray *) previewActionsWithSender:(UIBarButtonItem *)sender {
 	
-	__weak WAArticleViewController_Preview *wSelf = self;
+	__weak WAArticleViewController_FullScreen_Preview *wSelf = self;
 
 	NSMutableArray *returnedActions = [NSMutableArray arrayWithObjects:
 	

@@ -41,16 +41,15 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 	
 }
 
-- (WAArticleViewController *) presentDetailedContextForArticle:(NSURL *)articleURI {
+- (WAArticleViewController *) presentDetailedContextForArticle:(WAArticle *)article {
 	
 	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
 	__weak WAOverviewController *wSelf = self;
 	
-	WAArticle *article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI];
 	self.presentedArticle = article;
 	
-	WAArticleViewController *shownArticleVC = [self newContextViewControllerForArticle:articleURI];
+	WAArticleViewController *shownArticleVC = [self newContextViewControllerForArticle:article];
 	shownArticleVC.hostingViewController = self;
 	
 	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
@@ -300,19 +299,21 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 
 }
 
-- (WAArticleViewController *) newContextViewControllerForArticle:(NSURL *)articleURI {
+- (WAArticleViewController *) newContextViewControllerForArticle:(WAArticle *)article {
 
 	__weak WAOverviewController *wSelf = self;
 	
-	WAArticleViewControllerPresentationStyle style = WAFullFrameArticleStyleFromDiscreteStyle([WAArticleViewController suggestedDiscreteStyleForArticle:(WAArticle *)[self.managedObjectContext irManagedObjectForURI:articleURI]]);
-
-	WAArticleViewController *returnedVC = [WAArticleViewController controllerForArticle:articleURI usingPresentationStyle:style];
+	WAArticleStyle style = WAFullScreenArticleStyle|WASuggestedStyleForArticle(article);
+	WAArticleViewController *returnedVC	= [WAArticleViewController controllerForArticle:article style:style];
+	
 	returnedVC.hostingViewController = self;
+	
+	UINavigationItem *navItem = returnedVC.navigationItem;
+	
+	if (!navItem.leftBarButtonItem) {
 		
-	if (!returnedVC.navigationItem.leftBarButtonItem) {
-				
-		returnedVC.navigationItem.hidesBackButton = NO;
-		returnedVC.navigationItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
+		navItem.hidesBackButton = NO;
+		navItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 
 			[wSelf dismissArticleContextViewController:returnedVC];
 

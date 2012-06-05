@@ -524,28 +524,30 @@
 		
 	};
 	
-	WALoginViewController *loginVC = [[WALoginViewController alloc] init];
-	loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
-		if (error) {
-			//TODO: make me disappear
-			[self presentError:error completion:nil];
-			return;
-		}
-		if (userIDChanged()) {
-			handleAuthSuccess();
-			[wAppDelegate recreateViewHierarchy];
-		} else {
-			handleAuthSuccess();
-		}
-		[self dismissViewControllerAnimated:YES completion:nil];
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone ) {
+		WALoginViewController *loginVC = [[WALoginViewController alloc] init];
+		loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
+			if (error) {
+				//TODO: make me disappear
+				[self presentError:error completion:nil];
+				return;
+			}
+			if (userIDChanged()) {
+				handleAuthSuccess();
+				[wAppDelegate recreateViewHierarchy];
+			} else {
+				handleAuthSuccess();
+			}
+			[self dismissViewControllerAnimated:YES completion:nil];
 		};
-	
-	UINavigationController *naviC = [[UINavigationController alloc] initWithRootViewController:loginVC];
-	naviC.navigationBarHidden = YES;
-	[self.window.rootViewController presentViewController:naviC animated:NO completion:nil];
-	
-	return;
-	
+		
+		UINavigationController *naviC = [[UINavigationController alloc] initWithRootViewController:loginVC];
+		[self.window.rootViewController presentViewController:naviC animated:NO completion:nil];
+		
+		return;
+	}
+
+	// iPad
   WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
   
 		if (anError) {
@@ -564,9 +566,7 @@
 			[wAppDelegate.window.rootViewController presentViewController:navC animated:NO completion:nil];
 
 		} else {
-		
 			handleAuthSuccess();
-			
 		}
 
 		[self dismissViewControllerAnimated:YES completion:nil];
@@ -580,11 +580,6 @@
 	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
 
 	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:NO completion:nil];
-	
-	
-	
-	
-
 }
 
 - (BOOL) isRunningAuthRequest {

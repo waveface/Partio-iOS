@@ -48,51 +48,54 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 
 - (WAArticleViewController *) newDiscreteArticleViewControllerForArticle:(WAArticle *)article NS_RETURNS_RETAINED {
 
-	__weak WAOverviewController *wSelf = self;
+	WAArticleStyle style = WACellArticleStyle|WASuggestedStyleForArticle(article);
+	WAArticleViewController *articleViewController = [WAArticleViewController controllerForArticle:article style:style];
 	
-	WAArticleViewControllerPresentationStyle style = [WAArticleViewController suggestedDiscreteStyleForArticle:article];
-	WAArticleViewController *articleViewController = [WAArticleViewController controllerForArticle:article context:article.managedObjectContext presentationStyle:style];
-	
-	articleViewController.onViewDidLoad = ^ (WAArticleViewController *loadedVC, UIView *loadedView) {
-		
-		UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(loadedVC.view.bounds, 0, 0)];
-		borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-		borderView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1].CGColor;
-		borderView.layer.borderWidth = 1;
-		
-		[loadedVC.view addSubview:borderView];
-		[borderView.superview sendSubviewToBack:borderView];
-		
-	};
-	
+	articleViewController.delegate = self;
 	articleViewController.hostingViewController = self;
 	articleViewController.delegate = self;
-	
-	articleViewController.onViewTap = ^ {
-	
-		[wSelf presentDetailedContextForArticle:[[articleViewController.article objectID] URIRepresentation]];
 		
-	};
-	
-	articleViewController.onViewPinch = ^ (UIGestureRecognizerState state, CGFloat scale, CGFloat velocity) {
-	
-		if (state == UIGestureRecognizerStateChanged)
-		if (scale > 1.05f)
-		if (velocity > 1.05f) {
-		
-			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
-				gestureRecognizer.enabled = NO;
-		
-			articleViewController.onViewTap();
-			
-			for (UIGestureRecognizer *gestureRecognizer in articleViewController.view.gestureRecognizers)
-				gestureRecognizer.enabled = YES;
-			
-		}
-	
-	};
-	
 	return articleViewController;
+
+}
+
+- (void) articleViewControllerDidLoadView:(WAArticleViewController *)controller {
+
+	UIView * const containerView = controller.view;
+	UIView * const borderView = [[UIView alloc] initWithFrame:containerView.bounds];
+	
+	borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	borderView.layer.borderColor = [UIColor colorWithWhite:0.9 alpha:1].CGColor;
+	borderView.layer.borderWidth = 1;
+	
+	[containerView addSubview:borderView];
+	[containerView sendSubviewToBack:borderView];
+
+}
+
+- (void) articleViewController:(WAArticleViewController *)controller didReceiveTap:(UITapGestureRecognizer *)tapGR {
+
+	[self presentDetailedContextForArticle:controller.article];
+		
+}
+
+- (void) articleViewController:(WAArticleViewController *)controller didReceivePinch:(UIPinchGestureRecognizer *)pinchGR {
+
+	if (pinchGR.state == UIGestureRecognizerStateChanged)
+	if (pinchGR.scale > 1.05f)
+	if (pinchGR.velocity > 1.05f) {
+	
+		NSArray *allGRs = controller.view.gestureRecognizers;
+	
+		for (UIGestureRecognizer *gestureRecognizer in allGRs)
+			gestureRecognizer.enabled = NO;
+			
+		[self presentDetailedContextForArticle:controller.article];
+		
+		for (UIGestureRecognizer *gestureRecognizer in allGRs)
+			gestureRecognizer.enabled = YES;
+		
+	}
 
 }
 
