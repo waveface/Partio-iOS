@@ -74,6 +74,12 @@
 		4BF98273157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826E157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png */; };
 		4BF98274157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826F157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png */; };
 		4BF98275157DC0ED00172C4B /* LoginBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */; };
+		4BF9827A157DF29000172C4B /* SignInButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98276157DF29000172C4B /* SignInButton.png */; };
+		4BF9827B157DF29000172C4B /* SignInButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98277157DF29000172C4B /* SignInButton@2x.png */; };
+		4BF9827C157DF29000172C4B /* SignInWithFacebookButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98278157DF29000172C4B /* SignInWithFacebookButton.png */; };
+		4BF9827D157DF29000172C4B /* SignInWithFacebookButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98279157DF29000172C4B /* SignInWithFacebookButton@2x.png */; };
+		4BF98280157DF71000172C4B /* FacebookLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9827E157DF71000172C4B /* FacebookLogo.png */; };
+		4BF98281157DF71000172C4B /* FacebookLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9827F157DF71000172C4B /* FacebookLogo@2x.png */; };
 		FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */; };
 		FF0239CE155CCF7B00BC7400 /* WASliderKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */; };
 		FF0239CF155CCF7B00BC7400 /* WASliderKnob@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */; };
@@ -1180,6 +1186,12 @@
 		4BF9826E157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInWithFacebookButtonPressed.png; path = Resources/SignInWithFacebookButtonPressed.png; sourceTree = "<group>"; };
 		4BF9826F157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SignInWithFacebookButtonPressed@2x.png"; path = "Resources/SignInWithFacebookButtonPressed@2x.png"; sourceTree = "<group>"; };
 		4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground@2x.png"; path = "Resources/LoginBackground@2x.png"; sourceTree = "<group>"; };
+		4BF98276157DF29000172C4B /* SignInButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInButton.png; path = Resources/SignInButton.png; sourceTree = "<group>"; };
+		4BF98277157DF29000172C4B /* SignInButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SignInButton@2x.png"; path = "Resources/SignInButton@2x.png"; sourceTree = "<group>"; };
+		4BF98278157DF29000172C4B /* SignInWithFacebookButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInWithFacebookButton.png; path = Resources/SignInWithFacebookButton.png; sourceTree = "<group>"; };
+		4BF98279157DF29000172C4B /* SignInWithFacebookButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SignInWithFacebookButton@2x.png"; path = "Resources/SignInWithFacebookButton@2x.png"; sourceTree = "<group>"; };
+		4BF9827E157DF71000172C4B /* FacebookLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FacebookLogo.png; path = Resources/FacebookLogo.png; sourceTree = "<group>"; };
+		4BF9827F157DF71000172C4B /* FacebookLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FacebookLogo@2x.png"; path = "Resources/FacebookLogo@2x.png"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABlobSyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABlobSyncManager.m; sourceTree = "<group>"; };
 		FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnob.png; path = Resources/WASliderKnob.png; sourceTree = "<group>"; };
@@ -2014,10 +2026,16 @@
 		4BAEBF4B157DA28400F16BD6 /* Log in */ = {
 			isa = PBXGroup;
 			children = (
+				4BF9827E157DF71000172C4B /* FacebookLogo.png */,
+				4BF9827F157DF71000172C4B /* FacebookLogo@2x.png */,
 				4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */,
 				4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */,
+				4BF98276157DF29000172C4B /* SignInButton.png */,
+				4BF98277157DF29000172C4B /* SignInButton@2x.png */,
 				4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */,
 				4BF9826D157DC0ED00172C4B /* SignInButtonPressed@2x.png */,
+				4BF98278157DF29000172C4B /* SignInWithFacebookButton.png */,
+				4BF98279157DF29000172C4B /* SignInWithFacebookButton@2x.png */,
 				4BF9826E157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png */,
 				4BF9826F157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png */,
 			);
@@ -3832,6 +3850,12 @@
 				4BF98273157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png in Resources */,
 				4BF98274157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png in Resources */,
 				4BF98275157DC0ED00172C4B /* LoginBackground@2x.png in Resources */,
+				4BF9827A157DF29000172C4B /* SignInButton.png in Resources */,
+				4BF9827B157DF29000172C4B /* SignInButton@2x.png in Resources */,
+				4BF9827C157DF29000172C4B /* SignInWithFacebookButton.png in Resources */,
+				4BF9827D157DF29000172C4B /* SignInWithFacebookButton@2x.png in Resources */,
+				4BF98280157DF71000172C4B /* FacebookLogo.png in Resources */,
+				4BF98281157DF71000172C4B /* FacebookLogo@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

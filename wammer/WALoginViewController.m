@@ -69,14 +69,22 @@
 	
 	// Dress up buttons
 	
-//	[self.signInButton 
-//		setImage:[[UIImage imageNamed:@"SignInButton"] resizableImageWithCapInsets:(UIEdgeInsets){16,6,16,6}] 
-//		forState:UIControlStateNormal];
-//	[self.signInButton
-//		setImage:[[UIImage imageNamed:@"SignInButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){16,6,16,6}]
-//	 forState: UIControlStateHighlighted];
+	[self.signInButton 
+		setBackgroundImage:[[UIImage imageNamed:@"SignInButton"] resizableImageWithCapInsets:(UIEdgeInsets){22, 5,22, 5}] 
+		forState:UIControlStateNormal];
+	[self.signInButton
+		setBackgroundImage:[[UIImage imageNamed:@"SignInButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){22, 5,22, 5}]
+	 forState: UIControlStateHighlighted];
 	 
 	
+	[self.signInWithFacebookButton
+		setBackgroundImage:[[UIImage imageNamed:@"SignInWithFacebookButton"] resizableImageWithCapInsets:(UIEdgeInsets){22,5,22,5}] 
+		forState:UIControlStateNormal];
+	[self.signInWithFacebookButton
+		setBackgroundImage:[[UIImage imageNamed:@"SignInWithFacebookButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){22,5,22,5}] 
+		forState:UIControlStateHighlighted];
+		
+		
 }
 
 - (void)viewDidUnload
