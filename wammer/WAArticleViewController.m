@@ -15,174 +15,95 @@
 #import "WAArticleViewController+Inspection.h"
 
 #import "WAArticleView.h"
+#import "WAArticleView+ReuseSupport.h"
+
+#import "WADefines.h"
+
+#import "IRObjectQueue.h"
+
+
+static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]";
 
 
 @interface WAArticleViewController () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, readwrite, retain) NSURL *representedObjectURI;
-@property (nonatomic, readwrite, assign) WAArticleViewControllerPresentationStyle presentationStyle;
-@property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, readwrite, retain) WAArticle *article;
++ (NSString *) literalForStyle:(WAArticleStyle)style;
++ (IRObjectQueue *) objectQueue;
 
+@property (nonatomic, readwrite, retain) WAArticle *article;
 @property (nonatomic, retain) WAArticleView *view;
 
 @end
 
 
-NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle) {
-
-	return ((NSString *[]){
-		
-		[WAFullFramePlaintextArticleStyle] = @"Plaintext",
-		[WAFullFrameImageStackArticleStyle] = @"Default",
-		[WAFullFramePreviewArticleStyle] = @"Preview",
-		[WADiscretePlaintextArticleStyle] = @"Discrete_Plaintext",
-		[WADiscreteSingleImageArticleStyle] = @"Discrete_Default",
-		[WADiscretePreviewArticleStyle] = @"Discrete_Preview"
-		
-	}[aStyle]);
-
-}
-
-WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString) {
-
-	NSNumber *answer = [[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		[NSNumber numberWithInt:WAFullFramePlaintextArticleStyle], @"Plaintext",
-		[NSNumber numberWithInt:WAFullFrameImageStackArticleStyle], @"Default",
-		[NSNumber numberWithInt:WAFullFramePreviewArticleStyle], @"Preview",
-		[NSNumber numberWithInt:WADiscretePlaintextArticleStyle], @"Discrete_Plaintext",
-		[NSNumber numberWithInt:WADiscreteSingleImageArticleStyle], @"Discrete_Default",
-		[NSNumber numberWithInt:WADiscretePreviewArticleStyle], @"Discrete_Preview",
-		
-	nil] objectForKey:aString];
-	
-	if (!answer)
-		return WAUnknownArticleStyle;
-	
-	return [answer intValue];
-
-}
-
-WAArticleViewControllerPresentationStyle WAFullFrameArticleStyleFromDiscreteStyle (WAArticleViewControllerPresentationStyle aStyle) {
-
-	return ((WAArticleViewControllerPresentationStyle[]){
-		[WADiscretePlaintextArticleStyle] = WAFullFramePlaintextArticleStyle,
-		[WADiscreteSingleImageArticleStyle] = WAFullFrameImageStackArticleStyle,
-		[WADiscretePreviewArticleStyle] = WAFullFramePreviewArticleStyle,
-		[WADiscreteDocumentArticleStyle] = WAFullFrameDocumentArticleStyle
-	})[aStyle];
-
-}
-
-WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyle (WAArticleViewControllerPresentationStyle aStyle) {
-
-	return ((WAArticleViewControllerPresentationStyle[]){
-		[WAFullFramePlaintextArticleStyle] = WADiscretePlaintextArticleStyle,
-		[WAFullFrameImageStackArticleStyle] = WADiscreteSingleImageArticleStyle,
-		[WAFullFramePreviewArticleStyle] = WADiscretePreviewArticleStyle,
-		[WAFullFrameDocumentArticleStyle] = WADiscreteDocumentArticleStyle
-	})[aStyle];
-
-}
-
-
 @implementation WAArticleViewController
-
 @dynamic view;
+@synthesize style, article, hostingViewController, delegate;
 
-@synthesize representedObjectURI, presentationStyle;
-@synthesize managedObjectContext, article;
-@synthesize onViewDidLoad, onViewTap, onViewPinch;
-@synthesize hostingViewController, delegate;
++ (NSString *) literalForStyle:(WAArticleStyle)style {
 
-+ (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle {
+	static NSMutableDictionary *lut;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		lut = [NSMutableDictionary dictionary];
+	});
+	
+	id key = [NSValue valueWithBytes:&style objCType:@encode(__typeof__(style))];
+	id obj = [lut objectForKey:key];
+	if (obj)
+		return obj;
 
-	if (!anArticle)
-		return WADiscretePlaintextArticleStyle;
+	obj = [[NSArray arrayWithObjects:
+	
+		NSStringFromClass([self class]),
 		
-	for (WAPreview *aPreview in anArticle.previews)
-		if (aPreview.text || aPreview.url || aPreview.graphElement.text || aPreview.graphElement.title)
-			return WADiscretePreviewArticleStyle;
-			
-	for (WAFile *aFile in anArticle.files)
-		if (aFile.resourceURL || aFile.thumbnailURL || [aFile.remoteResourceType isEqualToString:@"image"])
-			return WADiscreteSingleImageArticleStyle;
+		(style & WAFullScreenArticleStyle) ?
+			@"FullScreen" :
+		(style & WACellArticleStyle) ?
+			@"Cell" : @"Default",
+		
+		(style & WAPlaintextArticleStyle) ?
+			@"Plaintext" :
+		(style & WAPhotosArticleStyle) ?
+			@"Photo" :
+		(style & WAPreviewArticleStyle) ?
+			@"Preview" :
+		(style & WADocumentArticleStyle) ?
+			@"Document" : @"Default",		
 	
-	return WADiscretePlaintextArticleStyle;
+	nil] componentsJoinedByString:@"_"];
+	
+	[lut setObject:obj forKey:key];
+	
+	return obj;
 
 }
 
-+ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle {
++ (IRObjectQueue *) objectQueue {
 
-	return [self suggestedDiscreteStyleForArticle:anArticle];
+	IRObjectQueue *oq = objc_getAssociatedObject([self class], &kObjectQueue);
+	if (!oq) {
+		oq = [IRObjectQueue new];
+		objc_setAssociatedObject([self class], &kObjectQueue, oq, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	}
+	
+	return oq;
 
 }
 
-+ (Class) classForPresentationStyle:(WAArticleViewControllerPresentationStyle)style nibName:(NSString **)outNibName bundle:(NSBundle **)outBundle {
++ (WAArticleViewController *) controllerForArticle:(WAArticle *)article style:(WAArticleStyle)style {
 
-	NSString *preferredClassName = [NSStringFromClass([self class]) stringByAppendingFormat:@"_%@", NSStringFromWAArticleViewControllerPresentationStyle(style)];
-	NSString *loadedNibName = preferredClassName;
-	
-	Class loadedClass = NSClassFromString(preferredClassName);
-	if (!loadedClass)
-		loadedClass = [self class];
-	
-	NSBundle *usedBundle = [NSBundle bundleForClass:[self class]];
-	if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
-		loadedNibName = NSStringFromClass([self class]);
-  
-  if (![UINib nibWithNibName:loadedNibName bundle:usedBundle])
-    loadedNibName = nil;
-	
-	if (outNibName)
-		*outNibName = loadedNibName;
-	
-	if (outBundle)
-		*outBundle = usedBundle;
-	
-	return loadedClass;
+	NSCParameterAssert(article);
 
-}
-
-+ (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
-
-	NSString *loadedNibName = nil;
-	NSBundle *usedBundle = nil;
-	Class loadedClass = [self classForPresentationStyle:aStyle nibName:&loadedNibName bundle:&usedBundle];
+	NSString *literal = [self literalForStyle:style];
+	Class class = NSClassFromString(literal);
+	if (!class)
+		class = [self class];
 	
-	WAArticleViewController *returnedController = [[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle];
+	WAArticleViewController *articleVC = [[class alloc] initWithNibName:[self literalForStyle:style] bundle:nil];
+	articleVC.article = article;
 	
-	returnedController.presentationStyle = aStyle;
-	returnedController.representedObjectURI = articleObjectURL;
-	
-	return returnedController;
-
-}
-
-+ (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle {
-
-	NSString *loadedNibName = nil;
-	NSBundle *usedBundle = nil;
-	Class loadedClass = [self classForPresentationStyle:aStyle nibName:&loadedNibName bundle:&usedBundle];
-	
-	WAArticleViewController *returnedController = [[loadedClass alloc] initWithNibName:loadedNibName bundle:usedBundle];
-	
-	returnedController.presentationStyle = aStyle;
-	returnedController.article = article;
-	returnedController.managedObjectContext = context;
-	returnedController.representedObjectURI = [[article objectID] URIRepresentation];
-	
-	return returnedController;
-
-}
-
-- (NSManagedObjectContext *) managedObjectContext {
-
-	if (!managedObjectContext)
-		self.managedObjectContext = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
-	
-	return managedObjectContext;
+	return articleVC;
 
 }
 
@@ -196,23 +117,21 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 }
 
-- (WAArticle *) article {
+- (void) loadView {
 
-	if (!article && self.representedObjectURI)
-		article = (WAArticle *)[self.managedObjectContext irManagedObjectForURI:self.representedObjectURI];
+	NSString *reuseID = self.nibName;
+	WAArticleView *view = (WAArticleView *)[[[self class] objectQueue] dequeueObjectWithIdentifier:reuseID];
 	
-	return article;
-
-}
-
-- (void) viewDidUnload {
-
-	self.managedObjectContext = nil;
-	self.article = nil;
-	self.inspectionActionSheetController = nil;
-	self.coverPhotoSwitchPopoverController = nil;
+	if ([view isKindOfClass:[WAArticleView class]]) {
 	
-	[super viewDidUnload];
+		self.view = view;
+	
+	} else {
+	
+		[super loadView];
+		self.view.reuseIdentifier = reuseID;
+		
+	}
 
 }
 
@@ -227,44 +146,53 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	globalTapRecognizer.delegate = self;
 	globalPinchRecognizer.delegate = self;
 	globalInspectRecognizer.delegate = self;
-		
+	
 	[self.view addGestureRecognizer:globalTapRecognizer];
 	[self.view addGestureRecognizer:globalPinchRecognizer];
 	[self.view addGestureRecognizer:globalInspectRecognizer];
 	
 	[self reloadData];
 	
-	if (self.onViewDidLoad)
-		self.onViewDidLoad(self, self.view);
+	[self.delegate articleViewControllerDidLoadView:self];
 	
-	switch (self.presentationStyle) {
+	if (style & WACellArticleStyle) {
 	
-		case WADiscretePlaintextArticleStyle:
-		case WADiscreteSingleImageArticleStyle:
-		case WADiscretePreviewArticleStyle:
-		case WADiscreteDocumentArticleStyle: {
+		UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(self.view.bounds, -8, -8)];
+		borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		borderView.userInteractionEnabled = NO;
+		borderView.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
+		borderView.layer.borderWidth = 1.0f;
 		
-			UIView *borderView = [[UIView alloc] initWithFrame:CGRectInset(self.view.bounds, -8, -8)];
-			borderView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-			borderView.userInteractionEnabled = NO;
-			borderView.layer.borderColor = [UIColor colorWithWhite:0.85 alpha:1].CGColor;
-			borderView.layer.borderWidth = 1.0f;
-			
-			[self.view addSubview:borderView];
-			[self.view bringSubviewToFront:borderView];
-		
-			break;
-		
-		}
-		
-		default:
-			break;
-
+		[self.view addSubview:borderView];
+		[self.view bringSubviewToFront:borderView];
+	
 	}
 	
 }
 
+- (void) viewWillUnload {
+
+	[super viewWillUnload];
+	
+	for (UIGestureRecognizer *aGR in [self.view.gestureRecognizers copy])
+		[self.view removeGestureRecognizer:aGR];
+	
+	[[[self class] objectQueue] addObject:self.view];
+
+}
+
+- (void) viewDidUnload {
+
+	self.inspectionActionSheetController = nil;
+	self.coverPhotoSwitchPopoverController = nil;
+	
+	[super viewDidUnload];
+
+}
+
 - (void) reloadData {
+
+	NSCParameterAssert(self.article);
 
 	if ([self isViewLoaded]) {
 	
@@ -278,6 +206,29 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 		[self.view configureWithArticle:self.article];
 	
 	}
+
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	void (^postEvent)(NSString *, NSString *) = ^ (NSString *title, NSString *category) {
+		WAPostAppEvent(title, [NSDictionary dictionaryWithObjectsAndKeys:
+			category, @"category",
+			@"consume", @"action",
+		nil]);
+	};
+	
+	(style == WAPlaintextArticleStyle) ?
+		postEvent(@"View Text Post", @"text") :
+	(style == WAPhotosArticleStyle) ?
+		postEvent(@"View Photo Post", @"photo") :
+	(style == WAPreviewArticleStyle) ?
+		postEvent(@"View Preview Post", @"link") :
+	(style == WADocumentArticleStyle) ?
+		postEvent(@"View Document Post", @"document") :
+	nil;
 
 }
 
@@ -312,15 +263,13 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 
 - (void) handleGlobalTap:(UITapGestureRecognizer *)tapRecognizer {
 
-	if (self.onViewTap)
-		self.onViewTap();
+	[self.delegate articleViewController:self didReceiveTap:tapRecognizer];
 
 }
 
 - (void) handleGlobalPinch:(UIPinchGestureRecognizer *)pinchRecognizer {
 
-	if (self.onViewPinch)
-		self.onViewPinch(pinchRecognizer.state, pinchRecognizer.scale, pinchRecognizer.velocity);
+	[self.delegate articleViewController:self didReceivePinch:pinchRecognizer];
 
 }
 
@@ -348,12 +297,6 @@ WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyl
 	
 	[self reloadData];
 
-}
-
-- (void) dealloc {
-
-	self.representedObjectURI = nil;
-	
 }
 
 - (void) viewDidDisappear:(BOOL)animated {

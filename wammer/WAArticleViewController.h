@@ -9,63 +9,32 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <QuartzCore/QuartzCore.h>
+#import "WAArticleStyle.h"
 
-#ifndef __WAArticleViewController__
-#define __WAArticleViewController__
+@class WAArticle, WAArticleView, WAOverviewController;
 
-enum {
-
-	WAUnknownArticleStyle = -1,
-
-	WAFullFramePlaintextArticleStyle = 0,
-	WAFullFrameImageStackArticleStyle,
-	WAFullFramePreviewArticleStyle,
-  WAFullFrameDocumentArticleStyle,
-  
-	WADiscretePlaintextArticleStyle,
-	WADiscreteSingleImageArticleStyle,
-	WADiscretePreviewArticleStyle,
-  WADiscreteDocumentArticleStyle
-	
-}; typedef NSInteger WAArticleViewControllerPresentationStyle;
-
-extern NSString * NSStringFromWAArticleViewControllerPresentationStyle (WAArticleViewControllerPresentationStyle aStyle);
-extern WAArticleViewControllerPresentationStyle WAArticleViewControllerPresentationStyleFromString (NSString *aString);
-
-extern WAArticleViewControllerPresentationStyle WAFullFrameArticleStyleFromDiscreteStyle (WAArticleViewControllerPresentationStyle aStyle);
-extern WAArticleViewControllerPresentationStyle WADiscreteArticleStyleFromFullFrameStyle (WAArticleViewControllerPresentationStyle aStyle);
-
-#endif
-
-
-@class WAArticle, WAArticleView, WANavigationController, WAOverviewController, WAArticleViewController;
-
-@protocol WAArticleViewControllerDelegate <NSObject>
-
-- (NSString *) presentationTemplateNameForArticleViewController:(WAArticleViewController *)controller;
-
-@end
-
+@protocol WAArticleViewControllerDelegate;
 
 @interface WAArticleViewController : UIViewController
 
-+ (WAArticleViewControllerPresentationStyle) suggestedStyleForArticle:(WAArticle *)anArticle DEPRECATED_ATTRIBUTE;
-+ (WAArticleViewControllerPresentationStyle) suggestedDiscreteStyleForArticle:(WAArticle *)anArticle;
++ (WAArticleViewController *) controllerForArticle:(WAArticle *)article style:(WAArticleStyle)style;
 
-+ (WAArticleViewController *) controllerForArticle:(NSURL *)articleObjectURL usingPresentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
-+ (WAArticleViewController *) controllerForArticle:(WAArticle *)article context:(NSManagedObjectContext *)context presentationStyle:(WAArticleViewControllerPresentationStyle)aStyle;
-
-@property (nonatomic, readonly, retain) NSURL *representedObjectURI;
 @property (nonatomic, readonly, retain) WAArticle *article;
-
-@property (nonatomic, readonly, assign) WAArticleViewControllerPresentationStyle presentationStyle;
-@property (nonatomic, readwrite, copy) void (^onViewDidLoad)(WAArticleViewController *self, UIView *loadedView);
-@property (nonatomic, readwrite, copy) void (^onViewTap)();
-@property (nonatomic, readwrite, copy) void (^onViewPinch)(UIGestureRecognizerState state, CGFloat scale, CGFloat velocity);
+@property (nonatomic, readonly, assign) WAArticleStyle style;
 
 @property (nonatomic, readwrite, weak) WAOverviewController *hostingViewController;
 @property (nonatomic, readwrite, weak) id<WAArticleViewControllerDelegate> delegate;
 
 - (void) reloadData;
+
+@end
+
+@protocol WAArticleViewControllerDelegate <NSObject>
+
+- (NSString *) presentationTemplateNameForArticleViewController:(WAArticleViewController *)controller;
+
+- (void) articleViewControllerDidLoadView:(WAArticleViewController *)controller;
+- (void) articleViewController:(WAArticleViewController *)controller didReceiveTap:(UITapGestureRecognizer *)tapGR;
+- (void) articleViewController:(WAArticleViewController *)controller didReceivePinch:(UIPinchGestureRecognizer *)pinchGR;
 
 @end
