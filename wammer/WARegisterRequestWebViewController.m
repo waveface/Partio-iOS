@@ -131,6 +131,12 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+
+	self.navigationController.navigationBarHidden = NO;
+
+}
+
 - (BOOL) webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 
   NSURL *openedURL = [request URL];

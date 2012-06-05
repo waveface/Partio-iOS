@@ -31,6 +31,8 @@
 @synthesize passwordField;
 @synthesize signUpLabel;
 @synthesize signUpButton;
+@synthesize signInButton;
+@synthesize signInWithFacebookButton;
 @synthesize username;
 @synthesize password;
 @synthesize userID;
@@ -50,7 +52,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	for (UIView* v in [self.view subviews]) 
+	for (UIView* v in [self.view subviews]){
 		if([v isKindOfClass:[UILabel class]]){
 			UILabel *aLabel = (UILabel *)v;
 			aLabel.text = NSLocalizedString(aLabel.text, nil);
@@ -63,7 +65,26 @@
 		} else {
 			// no op
 		}
+	}
 	
+	// Dress up buttons
+	
+	[self.signInButton 
+		setBackgroundImage:[[UIImage imageNamed:@"SignInButton"] resizableImageWithCapInsets:(UIEdgeInsets){22, 5,22, 5}] 
+		forState:UIControlStateNormal];
+	[self.signInButton
+		setBackgroundImage:[[UIImage imageNamed:@"SignInButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){22, 5,22, 5}]
+	 forState: UIControlStateHighlighted];
+	 
+	
+	[self.signInWithFacebookButton
+		setBackgroundImage:[[UIImage imageNamed:@"SignInWithFacebookButton"] resizableImageWithCapInsets:(UIEdgeInsets){22,5,22,5}] 
+		forState:UIControlStateNormal];
+	[self.signInWithFacebookButton
+		setBackgroundImage:[[UIImage imageNamed:@"SignInWithFacebookButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){22,5,22,5}] 
+		forState:UIControlStateHighlighted];
+		
+		
 }
 
 - (void)viewDidUnload
@@ -72,6 +93,8 @@
 	[self setPasswordField:nil];
 	[self setSignUpButton:nil];
 	[self setSignUpLabel:nil];
+	[self setSignInButton:nil];
+	[self setSignInWithFacebookButton:nil];
 	[super viewDidUnload];
 }
 
@@ -82,6 +105,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
+	[self.navigationController setNavigationBarHidden:YES animated:YES];
 	
 	for (UIView* v in [self.view subviews]) 
 		if ([v isKindOfClass:[UIButton class]]) {
@@ -264,6 +288,15 @@
     }];
   
     [self.navigationController pushViewController:registerRequestVC animated:YES];
+}
+
+- (IBAction)swipeAction:(id)sender {
+	
+	if ( [self.usernameField isFirstResponder] )
+		[self.usernameField resignFirstResponder];
+	if ( [self.passwordField isFirstResponder] )
+		[self.passwordField resignFirstResponder];
+		
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
