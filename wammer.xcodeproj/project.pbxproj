@@ -63,14 +63,17 @@
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
-		4BAEBF49157DA27800F16BD6 /* SignInButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAEBF46157DA27800F16BD6 /* SignInButtonHighlighted.png */; };
 		4BAEBF4D157DA2D400F16BD6 /* LoginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */; };
-		4BAEBF51157DA3A300F16BD6 /* SignInWithFacebookButtonHighlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAEBF50157DA3A300F16BD6 /* SignInWithFacebookButtonHighlighted.png */; };
 		4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD2C33E157C95150038E878 /* WALoginViewController.m */; };
 		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
+		4BF98271157DC0ED00172C4B /* SignInButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */; };
+		4BF98272157DC0ED00172C4B /* SignInButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826D157DC0ED00172C4B /* SignInButtonPressed@2x.png */; };
+		4BF98273157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826E157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png */; };
+		4BF98274157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826F157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png */; };
+		4BF98275157DC0ED00172C4B /* LoginBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */; };
 		FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */; };
 		FF0239CE155CCF7B00BC7400 /* WASliderKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */; };
 		FF0239CF155CCF7B00BC7400 /* WASliderKnob@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */; };
@@ -1160,9 +1163,7 @@
 		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BAEBF46157DA27800F16BD6 /* SignInButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInButtonHighlighted.png; path = Resources/SignInButtonHighlighted.png; sourceTree = "<group>"; };
 		4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackground.png; path = Resources/LoginBackground.png; sourceTree = "<group>"; };
-		4BAEBF50157DA3A300F16BD6 /* SignInWithFacebookButtonHighlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInWithFacebookButtonHighlighted.png; path = Resources/SignInWithFacebookButtonHighlighted.png; sourceTree = "<group>"; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
@@ -1174,6 +1175,11 @@
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
 		4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRActionSheetController+WAAdditions.h"; path = "wammer/IRActionSheetController+WAAdditions.h"; sourceTree = "<group>"; };
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
+		4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInButtonPressed.png; path = Resources/SignInButtonPressed.png; sourceTree = "<group>"; };
+		4BF9826D157DC0ED00172C4B /* SignInButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SignInButtonPressed@2x.png"; path = "Resources/SignInButtonPressed@2x.png"; sourceTree = "<group>"; };
+		4BF9826E157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInWithFacebookButtonPressed.png; path = Resources/SignInWithFacebookButtonPressed.png; sourceTree = "<group>"; };
+		4BF9826F157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SignInWithFacebookButtonPressed@2x.png"; path = "Resources/SignInWithFacebookButtonPressed@2x.png"; sourceTree = "<group>"; };
+		4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground@2x.png"; path = "Resources/LoginBackground@2x.png"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABlobSyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABlobSyncManager.m; sourceTree = "<group>"; };
 		FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnob.png; path = Resources/WASliderKnob.png; sourceTree = "<group>"; };
@@ -2009,8 +2015,11 @@
 			isa = PBXGroup;
 			children = (
 				4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */,
-				4BAEBF46157DA27800F16BD6 /* SignInButtonHighlighted.png */,
-				4BAEBF50157DA3A300F16BD6 /* SignInWithFacebookButtonHighlighted.png */,
+				4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */,
+				4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */,
+				4BF9826D157DC0ED00172C4B /* SignInButtonPressed@2x.png */,
+				4BF9826E157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png */,
+				4BF9826F157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png */,
 			);
 			name = "Log in";
 			sourceTree = "<group>";
@@ -3817,9 +3826,12 @@
 				FF4F8372157799C100E03D5E /* WAPhotoQueueBackground@2x.png in Resources */,
 				4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */,
 				13D32FBC157B68680009B87B /* WARefreshGlyph@2x.png in Resources */,
-				4BAEBF49157DA27800F16BD6 /* SignInButtonHighlighted.png in Resources */,
 				4BAEBF4D157DA2D400F16BD6 /* LoginBackground.png in Resources */,
-				4BAEBF51157DA3A300F16BD6 /* SignInWithFacebookButtonHighlighted.png in Resources */,
+				4BF98271157DC0ED00172C4B /* SignInButtonPressed.png in Resources */,
+				4BF98272157DC0ED00172C4B /* SignInButtonPressed@2x.png in Resources */,
+				4BF98273157DC0ED00172C4B /* SignInWithFacebookButtonPressed.png in Resources */,
+				4BF98274157DC0ED00172C4B /* SignInWithFacebookButtonPressed@2x.png in Resources */,
+				4BF98275157DC0ED00172C4B /* LoginBackground@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

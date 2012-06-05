@@ -31,6 +31,8 @@
 @synthesize passwordField;
 @synthesize signUpLabel;
 @synthesize signUpButton;
+@synthesize signInButton;
+@synthesize signInWithFacebookButton;
 @synthesize username;
 @synthesize password;
 @synthesize userID;
@@ -50,7 +52,7 @@
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	for (UIView* v in [self.view subviews]) 
+	for (UIView* v in [self.view subviews]){
 		if([v isKindOfClass:[UILabel class]]){
 			UILabel *aLabel = (UILabel *)v;
 			aLabel.text = NSLocalizedString(aLabel.text, nil);
@@ -63,6 +65,17 @@
 		} else {
 			// no op
 		}
+	}
+	
+	// Dress up buttons
+	
+//	[self.signInButton 
+//		setImage:[[UIImage imageNamed:@"SignInButton"] resizableImageWithCapInsets:(UIEdgeInsets){16,6,16,6}] 
+//		forState:UIControlStateNormal];
+//	[self.signInButton
+//		setImage:[[UIImage imageNamed:@"SignInButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){16,6,16,6}]
+//	 forState: UIControlStateHighlighted];
+	 
 	
 }
 
@@ -72,6 +85,8 @@
 	[self setPasswordField:nil];
 	[self setSignUpButton:nil];
 	[self setSignUpLabel:nil];
+	[self setSignInButton:nil];
+	[self setSignInWithFacebookButton:nil];
 	[super viewDidUnload];
 }
 
