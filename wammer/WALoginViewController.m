@@ -83,8 +83,10 @@
 	[self.signInWithFacebookButton
 		setBackgroundImage:[[UIImage imageNamed:@"SignInWithFacebookButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){22,5,22,5}] 
 		forState:UIControlStateHighlighted];
-		
-		
+
+	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
+	}
+	
 }
 
 - (void)viewDidUnload
@@ -95,6 +97,7 @@
 	[self setSignUpLabel:nil];
 	[self setSignInButton:nil];
 	[self setSignInWithFacebookButton:nil];
+
 	[super viewDidUnload];
 }
 

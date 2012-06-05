@@ -64,9 +64,9 @@
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
 		4BAEBF4D157DA2D400F16BD6 /* LoginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */; };
+		4BB4F825157ECEA80077C5EE /* LoginBackgroundPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB4F823157ECEA80077C5EE /* LoginBackgroundPad.png */; };
+		4BB4F826157ECEA80077C5EE /* LoginBackgroundPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB4F824157ECEA80077C5EE /* LoginBackgroundPad@2x.png */; };
 		4BCE003F157E6ECD00E18D24 /* WALoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCE003E157E6ECD00E18D24 /* WALoginViewController~ipad.xib */; };
-		4BCE01D7157E744D00E18D24 /* LoginBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BCE01D5157E744D00E18D24 /* LoginBackground~ipad.png */; };
-		4BCE01D8157E744D00E18D24 /* LoginBackground~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BCE01D6157E744D00E18D24 /* LoginBackground~ipad@2x.png */; };
 		4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD2C33E157C95150038E878 /* WALoginViewController.m */; };
 		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
@@ -1173,12 +1173,12 @@
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
 		4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackground.png; path = Resources/LoginBackground.png; sourceTree = "<group>"; };
+		4BB4F823157ECEA80077C5EE /* LoginBackgroundPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundPad.png; path = Resources/LoginBackgroundPad.png; sourceTree = "<group>"; };
+		4BB4F824157ECEA80077C5EE /* LoginBackgroundPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundPad@2x.png"; path = "Resources/LoginBackgroundPad@2x.png"; sourceTree = "<group>"; };
 		4BCA9E9F13FCE9DC00978CE9 /* WAPostViewCellPhone-Default.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-Default.xib"; sourceTree = "<group>"; };
 		4BCA9EA013FCE9DC00978CE9 /* WAPostViewCellPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPostViewCellPhone.h; sourceTree = "<group>"; };
 		4BCA9EA113FCE9DC00978CE9 /* WAPostViewCellPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPostViewCellPhone.m; sourceTree = "<group>"; };
 		4BCE003E157E6ECD00E18D24 /* WALoginViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WALoginViewController~ipad.xib"; sourceTree = "<group>"; };
-		4BCE01D5157E744D00E18D24 /* LoginBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground~ipad.png"; path = "Resources/LoginBackground~ipad.png"; sourceTree = "<group>"; };
-		4BCE01D6157E744D00E18D24 /* LoginBackground~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground~ipad@2x.png"; path = "Resources/LoginBackground~ipad@2x.png"; sourceTree = "<group>"; };
 		4BD2C33D157C95150038E878 /* WALoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALoginViewController.h; sourceTree = "<group>"; };
 		4BD2C33E157C95150038E878 /* WALoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALoginViewController.m; sourceTree = "<group>"; };
 		4BD2C33F157C95150038E878 /* WALoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WALoginViewController.xib; sourceTree = "<group>"; };
@@ -2036,8 +2036,8 @@
 				4BF9827F157DF71000172C4B /* FacebookLogo@2x.png */,
 				4BAEBF4C157DA2D400F16BD6 /* LoginBackground.png */,
 				4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */,
-				4BCE01D5157E744D00E18D24 /* LoginBackground~ipad.png */,
-				4BCE01D6157E744D00E18D24 /* LoginBackground~ipad@2x.png */,
+				4BB4F823157ECEA80077C5EE /* LoginBackgroundPad.png */,
+				4BB4F824157ECEA80077C5EE /* LoginBackgroundPad@2x.png */,
 				4BF98276157DF29000172C4B /* SignInButton.png */,
 				4BF98277157DF29000172C4B /* SignInButton@2x.png */,
 				4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */,
@@ -3866,8 +3866,8 @@
 				4BF98280157DF71000172C4B /* FacebookLogo.png in Resources */,
 				4BF98281157DF71000172C4B /* FacebookLogo@2x.png in Resources */,
 				4BCE003F157E6ECD00E18D24 /* WALoginViewController~ipad.xib in Resources */,
-				4BCE01D7157E744D00E18D24 /* LoginBackground~ipad.png in Resources */,
-				4BCE01D8157E744D00E18D24 /* LoginBackground~ipad@2x.png in Resources */,
+				4BB4F825157ECEA80077C5EE /* LoginBackgroundPad.png in Resources */,
+				4BB4F826157ECEA80077C5EE /* LoginBackgroundPad@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
