@@ -545,40 +545,6 @@
 	UINavigationController *naviC = [[UINavigationController alloc] initWithRootViewController:loginVC];
 	[self.window.rootViewController presentViewController:naviC animated:NO completion:nil];
 	
-	return;
-		
-  WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestViewController controllerWithCompletion: ^ (WAAuthenticationRequestViewController *self, NSError *anError) {
-  
-		if (anError) {
-			[self presentError:anError completion:nil];
-			return;
-		}
-
-		if (userIDChanged()) {
-		
-			UINavigationController *navC = self.navigationController;
-			[wAppDelegate clearViewHierarchy];
-			
-			handleAuthSuccess();
-			
-			[wAppDelegate recreateViewHierarchy];
-			[wAppDelegate.window.rootViewController presentViewController:navC animated:NO completion:nil];
-
-		} else {
-			handleAuthSuccess();
-		}
-
-		[self dismissViewControllerAnimated:YES completion:nil];
-		
-  }];
-	
-	authRequestVC.navigationItem.prompt = reason;
-  
-	WANavigationController *authRequestWrappingVC = [[WANavigationController alloc] initWithRootViewController:authRequestVC];
-	authRequestWrappingVC.modalPresentationStyle = UIModalPresentationFormSheet;
-	authRequestWrappingVC.disablesAutomaticKeyboardDismissal = NO;
-
-	[self.window.rootViewController presentViewController:authRequestWrappingVC animated:NO completion:nil];
 }
 
 - (BOOL) isRunningAuthRequest {
