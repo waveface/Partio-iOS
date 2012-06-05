@@ -104,7 +104,7 @@
 
 	[super viewDidLoad];
   
-  self.tableView.sectionHeaderHeight = 32;
+  self.tableView.sectionHeaderHeight =70;
   
 	self.usernameField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.usernameField.delegate = self;
@@ -130,6 +130,8 @@
 	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
   self.passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	
+	self.navigationController.navigationBarHidden = YES;
 		
 }
 
@@ -190,6 +192,7 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Authentication.png"]] ;
   	
 }
 

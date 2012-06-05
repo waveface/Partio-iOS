@@ -31,6 +31,7 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 + (IRObjectQueue *) objectQueue;
 
 @property (nonatomic, readwrite, retain) WAArticle *article;
+@property (nonatomic, readwrite, assign) WAArticleStyle style;
 @property (nonatomic, retain) WAArticleView *view;
 
 @end
@@ -102,6 +103,7 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 	
 	WAArticleViewController *articleVC = [[class alloc] initWithNibName:[self literalForStyle:style] bundle:nil];
 	articleVC.article = article;
+	articleVC.style = style;
 	
 	return articleVC;
 
@@ -119,18 +121,26 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 
 - (void) loadView {
 
-	NSString *reuseID = self.nibName;
-	WAArticleView *view = (WAArticleView *)[[[self class] objectQueue] dequeueObjectWithIdentifier:reuseID];
-	
-	if ([view isKindOfClass:[WAArticleView class]]) {
-	
-		self.view = view;
+	if (self.style & WACellArticleStyle) {
+
+		NSString *reuseID = self.nibName;
+		WAArticleView *view = (WAArticleView *)[[[self class] objectQueue] dequeueObjectWithIdentifier:reuseID];
+		
+		if ([view isKindOfClass:[WAArticleView class]]) {
+		
+			self.view = view;
+		
+		} else {
+		
+			[super loadView];
+			self.view.reuseIdentifier = reuseID;
+			
+		}
 	
 	} else {
 	
 		[super loadView];
-		self.view.reuseIdentifier = reuseID;
-		
+	
 	}
 
 }
@@ -177,7 +187,11 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 	for (UIGestureRecognizer *aGR in [self.view.gestureRecognizers copy])
 		[self.view removeGestureRecognizer:aGR];
 	
-	[[[self class] objectQueue] addObject:self.view];
+	if (self.style & WACellArticleStyle) {
+	
+		[[[self class] objectQueue] addObject:self.view];
+	
+	}
 
 }
 
