@@ -428,6 +428,30 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "23"; */
 "ACTION_SIGN_UP" = "Sign up now";
 
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "5"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "6"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "10"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "11"; */
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "12"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "13"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "14"; */
+"ACTION_SIGN_UP" = "Sign up now";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 
