@@ -153,16 +153,12 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
 				
 					[resultBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-					
-					fireCallback(didFinish, error);
 				
 				});
 				
-			} else {
-			
-				fireCallback(didFinish, error);
-			
 			}
+			
+			fireCallback(didFinish, error);
 		
 		});
 		
