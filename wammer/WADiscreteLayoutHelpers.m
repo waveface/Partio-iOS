@@ -234,7 +234,7 @@ NSArray * WADefaultLayoutGridsMake (void) {
 		
 	WALayoutAreaTemplateNameBlock annotationTop_verticalFave = templateName(
 		@"WFPreviewTemplate_Discrete_Plaintext",
-		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical",
+		@"WFPreviewTemplate-Discrete_Web_Image_Vertical",
 		@"WFPreviewTemplate-Discrete_Web_ImageWithDescription_Vertical_Fave");
 		
 	WALayoutAreaTemplateNameBlock annotationTop_horizontalFave = templateName(
