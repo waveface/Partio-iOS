@@ -74,10 +74,10 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 	[super viewDidLoad];
 	
-	self.view.backgroundColor = [UIColor colorWithRed:242.0/256.0 green:242.0/256.0 blue:242.0/256.0 alpha:1];
+	self.view.backgroundColor = [UIColor colorWithWhite:242.0/256.0 alpha:1];
 	self.view.opaque = YES;
 	
-	__weak IRPaginatedView *nrPaginatedView = self.paginatedView;
+	__weak IRPaginatedView *wPaginatedView = self.paginatedView;
 	self.paginatedView.backgroundColor = nil;
 	self.paginatedView.horizontalSpacing = 16.0f;
 	self.paginatedView.clipsToBounds = NO;
@@ -85,8 +85,8 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 	self.paginatedView.scrollView.pagingEnabled = NO;
 	self.paginatedView.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
-		CGPoint convertedPoint = [nrPaginatedView.scrollView convertPoint:aPoint fromView:nrPaginatedView];
-		if ([nrPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
+		CGPoint convertedPoint = [wPaginatedView.scrollView convertPoint:aPoint fromView:wPaginatedView];
+		if ([wPaginatedView.scrollView pointInside:convertedPoint withEvent:anEvent])
 			return YES;
 		
 		return superAnswer;

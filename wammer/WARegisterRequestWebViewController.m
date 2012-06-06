@@ -51,7 +51,13 @@
   
   NSDictionary *registrationQueryParams = [NSDictionary dictionaryWithObjectsAndKeys:
 		
-		[[NSLocale currentLocale] localeIdentifier], @"locale",
+		((^ {
+			NSArray *preferredLanguages = [NSLocale preferredLanguages];
+			if ([preferredLanguages count] > 0 && [[preferredLanguages objectAtIndex:0] isEqualToString:@"zh-Hant"]) {
+				return @"zh_TW";
+			}
+			return @"en";
+		})()), @"locale",
 		
 		@"ios", @"device",
 		WADeviceIdentifier(), @"device_id",
@@ -122,6 +128,12 @@
   id incomingRegistrationCompletionListener = objc_getAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification);
   [[NSNotificationCenter defaultCenter] removeObserver:incomingRegistrationCompletionListener];
   objc_setAssociatedObject(self, &kWAApplicationDidReceiveRemoteURLNotification, nil, OBJC_ASSOCIATION_ASSIGN);
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+
+	self.navigationController.navigationBarHidden = NO;
 
 }
 

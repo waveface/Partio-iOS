@@ -1,5 +1,5 @@
 //
-//  WAArticleViewController_Plaintext.h
+//  WAArticleViewController_FullScreen_Plaintext.h
 //  wammer
 //
 //  Created by Evadne Wu on 12/19/11.
@@ -10,6 +10,6 @@
 #import "WAStackedArticleViewController.h"
 
 
-@interface WAArticleViewController_Plaintext : WAStackedArticleViewController
+@interface WAArticleViewController_FullScreen_Plaintext : WAStackedArticleViewController
 
 @end

@@ -104,7 +104,7 @@
 
 	[super viewDidLoad];
   
-  self.tableView.sectionHeaderHeight = 32;
+  self.tableView.sectionHeaderHeight =70;
   
 	self.usernameField = [[UITextField alloc] initWithFrame:(CGRect){ 0, 0, 256, 44 }];
 	self.usernameField.delegate = self;
@@ -130,6 +130,8 @@
 	self.passwordField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
   self.passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	
+	self.navigationController.navigationBarHidden = YES;
 		
 }
 
@@ -190,6 +192,7 @@
 	
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
+	self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Authentication.png"]] ;
   	
 }
 
@@ -639,6 +642,19 @@
 - (void) presentError:(NSError *)error completion:(void(^)(void))block {
 
 	__weak WAAuthenticationRequestViewController *wSelf = self;
+
+	// check if the error is caused by unreachable cloud
+	if (![[WARemoteInterface sharedInterface] hasReachableCloud])
+	{
+		NSString *alertTitleConnectionFailure = NSLocalizedString(@"ERROR_CONNECTION_FAILED_TITLE", @"Title for connection failure in login view");
+		[[IRAlertView alertViewWithTitle:alertTitleConnectionFailure message:NSLocalizedString(@"ERROR_CONNECTION_FAILED_RECOVERY_NOTION", @"Recovery notion for connection failure recovey") cancelAction:nil otherActions:[NSArray arrayWithObjects:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"OK action in connection failure alert") block:^{
+		
+			wSelf.password = nil;
+			[wSelf assignFirstResponderStatusToBestMatchingField];
+			
+		}], nil]] show];
+		return;
+	}
 	
 	NSString *resetPasswordTitle = NSLocalizedString(@"ACTION_RESET_PASSWORD", @"Action title for resetting password in login view");
 	
@@ -651,9 +667,9 @@
 	
   }];
 
-	NSString *alertTitle = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in login view");
+	NSString *alertTitleAuthFailure = NSLocalizedString(@"ERROR_AUTHENTICATION_FAILED_TITLE", @"Title for authentication failure in login view");
 	
-	[[IRAlertView alertViewWithTitle:alertTitle message:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel ation in login view") block:^{
+	[[IRAlertView alertViewWithTitle:alertTitleAuthFailure message:nil cancelAction:[IRAction actionWithTitle:NSLocalizedString(@"ACTION_CANCEL", @"Cancel action in login view") block:^{
 	
 		wSelf.password = nil;
 		[wSelf assignFirstResponderStatusToBestMatchingField];

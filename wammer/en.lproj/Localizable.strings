@@ -3,7 +3,7 @@
 
 /* Action title for Cancelling
    Action title for cancelling stuff
-   Cancel ation in login view
+   Cancel action in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
@@ -42,7 +42,9 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
-/* No comment provided by engineer. */
+/* OK action in connection failure alert
+   OK action in facebook login failure alert
+   OK action in registration failure alert */
 "ACTION_OKAY" = "OK";
 
 /* No comment provided by engineer. */
@@ -67,10 +69,10 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Login";
+"ACTION_SIGN_IN" = "Log In";
 
 /* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Link to Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Logout";
@@ -187,6 +189,12 @@
 /* Title for authentication failure in login view
    Title for authentication failure in web view */
 "ERROR_AUTHENTICATION_FAILED_TITLE" = "Email or password is invalid";
+
+/* Recovery notion for connection failure recovey */
+"ERROR_CONNECTION_FAILED_RECOVERY_NOTION" = "Please try login again later";
+
+/* Title for connection failure in login view */
+"ERROR_CONNECTION_FAILED_TITLE" = "Unable to connect to Internet";
 
 /* Description for registration failure */
 "ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
@@ -395,6 +403,54 @@
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "add more photos";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "11"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "13"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "15"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "22"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "23"; */
+"ACTION_SIGN_UP" = "Sign up now";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "5"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "6"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "10"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "11"; */
+"ACTION_SIGN_IN" = "Log In";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "12"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "13"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "14"; */
+"ACTION_SIGN_UP" = "Sign up now";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";

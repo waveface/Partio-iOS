@@ -6,8 +6,8 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import "WAArticleViewController_Plaintext.h"
+#import "WAArticleViewController_FullScreen_Plaintext.h"
 
-@implementation WAArticleViewController_Plaintext
+@implementation WAArticleViewController_FullScreen_Plaintext
 
 @end

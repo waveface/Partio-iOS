@@ -1,5 +1,5 @@
 //
-//  WAArticleViewController_Default.m
+//  WAArticleViewController_FullScreen_Photo.m
 //  wammer
 //
 //  Created by Evadne Wu on 12/22/11.
@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "WAArticleViewController_Default.h"
+#import "WAArticleViewController_FullScreen_Photo.h"
 #import "AQGridView.h"
 
 #import "WAArticleViewController+Subclasses.h"
@@ -19,7 +19,7 @@
 #import "WAArticle.h"
 
 
-@interface WAArticleViewController_Default () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
+@interface WAArticleViewController_FullScreen_Photo () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) AQGridView *gridView;
@@ -32,7 +32,7 @@
 @end
 
 
-@implementation WAArticleViewController_Default
+@implementation WAArticleViewController_FullScreen_Photo
 @synthesize fetchedResultsController, gridView, requiresGalleryReload;
 
 - (void) dealloc {
@@ -155,7 +155,7 @@
 		
 	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:self.article];
 	
-	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+	fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.article.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
 	fetchedResultsController.delegate = self;
 	
 	NSError *fetchError = nil;
