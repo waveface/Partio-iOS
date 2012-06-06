@@ -61,7 +61,7 @@
 	}];
 	
 	self.callback = aBlock;
-	self.title = @"Attachments";
+	self.title = NSLocalizedString(@"ATTACHMENTS_VIEW_TITLE", @"title in attachments view");
 	
 	if (aContext) {
 		self.managedObjectContext = aContext;

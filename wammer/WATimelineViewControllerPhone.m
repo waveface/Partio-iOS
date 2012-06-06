@@ -127,23 +127,36 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	UIBarButtonItem *zeroSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
 	zeroSpacer.width = -10;
 	
+	UIBarButtonItem *datePickUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)];
+	[datePickUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_PICK_DATE", @"Accessibility label for date picker in iPhone timeline")];
+
+	UIBarButtonItem *composeUIButton = [[UIBarButtonItem alloc] initWithCustomView:noteButton];
+	[composeUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_COMPOSE", @"Accessibility label for composer in iPhone timeline")];
+
+	UIBarButtonItem *cameraUIButton = [[UIBarButtonItem alloc] initWithCustomView:cameraButton];
+	[cameraButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_CAMERA", @"Accessibility label for camera in iPhone timeline")];
+
+	UIBarButtonItem *userInfoUIButton = [[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)];
+	[userInfoUIButton setAccessibilityLabel:NSLocalizedString(@"ACCESS_ACCOUNT_INFO", @"Accessibility label for account info in iPhone timeline")];
+
+	
 	self.toolbarItems = [NSArray arrayWithObjects:
 	
 		alphaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleDateSelect:)],
+		datePickUIButton,
 		
 		omegaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithCustomView:noteButton],
-
+		composeUIButton,
+						 
 		zeroSpacer,
 		
-		[[UIBarButtonItem alloc] initWithCustomView:cameraButton],
+		cameraUIButton,
 
 		omegaSpacer,
 		
-		[[UIBarButtonItem alloc] initWithImage:transparentImage style:UIBarButtonItemStylePlain target:self action:@selector(handleUserInfo:)],
+		userInfoUIButton,
 		
 		alphaSpacer,
 	

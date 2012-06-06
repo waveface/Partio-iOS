@@ -65,6 +65,7 @@
 		
 	deleteButton.titleLabel.shadowColor = [UIColor lightGrayColor];
 	deleteButton.titleLabel.shadowOffset = (CGSize){ 0, -1 };
+	[deleteButton setTitle:NSLocalizedString(@"COMPOSITION_REMOVE_CURRENT_PREVIEW", @"remove preview in iPhone composition view") forState:UIControlStateNormal];
 	
 	deleteButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	deleteButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;

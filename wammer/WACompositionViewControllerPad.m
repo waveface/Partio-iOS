@@ -50,7 +50,7 @@
 		
 	WAPreview *removedPreview = self.previewBadge.preview;
 	
-	[[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:[IRAction actionWithTitle:NSLocalizedString(@"COMPOSITION_REMOVE_CURRENT_PREVIEW", nil) block: ^ {
+	[[[IRActionSheetController actionSheetControllerWithTitle:nil cancelAction:nil destructiveAction:[IRAction actionWithTitle:NSLocalizedString(@"COMPOSITION_REMOVE_CURRENT_PREVIEW", @"remove preview in iPad composition view") block: ^ {
 	
 		self.article.previews = [self.article.previews objectsPassingTest: ^ (id obj, BOOL *stop) {
 			return (BOOL)![obj isEqual:removedPreview];
