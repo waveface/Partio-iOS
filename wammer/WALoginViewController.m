@@ -126,8 +126,6 @@
 			UIButton *aButton = (UIButton *)v;
 			aButton.titleLabel.text = NSLocalizedString(aButton.titleLabel.text, nil);
 			aButton.titleLabel.textAlignment = UITextAlignmentCenter;
-			[aButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-			[aButton setTitleShadowColor:[UIColor colorWithWhite:0.1 alpha:0.1] forState:UIControlStateNormal];
 			aButton.titleLabel.shadowOffset = (CGSize){0,1};
 
 		}
