@@ -144,7 +144,7 @@
 		self.password = self.passwordField.text;
 	}
   
-  if(!([self.username length] || [self.userID length]) && ([self.password length] || [self.token length]))
+  if( !(([self.username length] && [self.password length]) ||([self.userID length] && [self.token length])))
 		return;
 
 //	if (WAAdvancedFeaturesEnabled()) {

@@ -1,4 +1,22 @@
-/* attachment activity view */
+/* Accessibility label for account info in iPhone timeline */
+"ACCESS_ACCOUNT_INFO" = "Account Info";
+
+/* accessibility label for adding photos in composition view */
+"ACCESS_ADD_PHOTO" = "Add Photo";
+
+/* Accessibility label for camera in iPhone timeline */
+"ACCESS_CAMERA" = "Camera";
+
+/* Accessibility label for composer in iPhone timeline */
+"ACCESS_COMPOSE" = "Stream";
+
+/* Accessibility label for date picker in iPhone timeline */
+"ACCESS_PICK_DATE" = "Pick Date";
+
+/* accessibility label for webpage preview in composition view */
+"ACCESS_PREVIEW" = "Preview";
+
+/* add photo button in composition view */
 "ACTION_ADD" = "add photo";
 
 /* Action title for Cancelling
@@ -69,10 +87,10 @@
 "ACTION_SAVE_DRAFT" = "Save Draft";
 
 /* Action title for signing in */
-"ACTION_SIGN_IN" = "Log In";
+"ACTION_SIGN_IN" = "Login";
 
 /* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Logout";
@@ -100,6 +118,9 @@
    Title for application */
 "APP_TITLE" = "Stream";
 
+/* title in attachments view */
+"ATTACHMENTS_VIEW_TITLE" = "Attachments";
+
 /* Title for login view */
 "AUTH_REQUEST_TITLE" = "Stream";
 
@@ -121,13 +142,14 @@
 /* “%@ Comment” or “No Comment” */
 "COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Notes";
 
-/* No comment provided by engineer. */
+/* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 
-/* No comment provided by engineer. */
+/* add photo button in composition view */
 "COMPOSITION_ONE_PHOTO_BUTTON_CAPTION_FORMAT" = "%i Photo";
 
-/* No comment provided by engineer. */
+/* remove preview in iPad composition view
+   remove preview in iPhone composition view */
 "COMPOSITION_REMOVE_CURRENT_PREVIEW" = "Remove Preview";
 
 /* Title for the composition view */
@@ -377,7 +399,7 @@
 /* Title to show when user has no station, and have exhausted storage on the Cloud */
 "USER_INFO_NAG_LEVEL_3_WITHOUT_STATION" = "Your cloud storage is full.  To sync, install and run Stream for Windows on your PC.";
 
-/* attachment activity view */
+/* preview button in composition view */
 "WEB_PREVIEW" = "Web Preview";
 
 /* No comment provided by engineer. */
@@ -408,13 +430,13 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
-"ACTION_SIGN_IN" = "Log In";
+"ACTION_SIGN_IN" = "Login";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "13"; */
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "15"; */
 "NOUN_USERNAME" = "Email";
@@ -441,13 +463,13 @@
 "NOUN_USERNAME" = "Email";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "11"; */
-"ACTION_SIGN_IN" = "Log In";
+"ACTION_SIGN_IN" = "Login";
 
 /* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "12"; */
 "NOUN_PASSWORD" = "Password";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "13"; */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Log in with Facebook";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "14"; */
 "ACTION_SIGN_UP" = "Sign up now";
