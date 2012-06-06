@@ -19,11 +19,15 @@
 
 
 @interface WALoginViewController () <UITextFieldDelegate>
+
+- (void)localize:(UIView *) view;
+
 @property (nonatomic) BOOL performsAuthenticationOnViewDidAppear;
 @property NSString *username;
 @property NSString *password;
 @property NSString *userID;
 @property NSString *token;
+
 @end
 
 @implementation WALoginViewController
@@ -49,24 +53,30 @@
 	return self;
 }
 
+- (void)localize:(UIView *) view {
+	for (UIView* v in [view subviews]){
+			if([v isKindOfClass:[UILabel class]]){
+				UILabel *aLabel = (UILabel *)v;
+				aLabel.text = NSLocalizedString(aLabel.text, nil);
+			} else if ([v isKindOfClass:[UITextField class]]) {
+				UITextField *aField = (UITextField *)v;
+				aField.placeholder = NSLocalizedString(aField.placeholder, nil);
+			} else if ([v isKindOfClass:[UIButton class]]) {
+				UIButton *aButton = (UIButton *)v;
+				[aButton setTitle:NSLocalizedString(aButton.titleLabel.text, nil) forState:UIControlStateNormal];
+			} else if ([v isKindOfClass:[UIView class]]){
+				[self localize:v];
+			} else {
+				// no op
+			}
+		}
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	for (UIView* v in [self.view subviews]){
-		if([v isKindOfClass:[UILabel class]]){
-			UILabel *aLabel = (UILabel *)v;
-			aLabel.text = NSLocalizedString(aLabel.text, nil);
-		} else if ([v isKindOfClass:[UITextField class]]) {
-			UITextField *aField = (UITextField *)v;
-			aField.placeholder = NSLocalizedString(aField.placeholder, nil);
-		} else if ([v isKindOfClass:[UIButton class]]) {
-			UIButton *aButton = (UIButton *)v;
-			[aButton setTitle:NSLocalizedString(aButton.titleLabel.text, nil) forState:UIControlStateNormal];
-		} else {
-			// no op
-		}
-	}
 	
+	[self localize: self.view];
 	// Dress up buttons
 	
 	[self.signInButton 
@@ -87,6 +97,7 @@
 	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
 	}
 	
+	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.45 green:0.71 blue:0.78 alpha:1.0];
 }
 
 - (void)viewDidUnload
@@ -121,7 +132,7 @@
 
 		}
 	self.signUpLabel.textAlignment = UITextAlignmentCenter;
-	self.signUpButton.titleLabel.textColor = self.signUpLabel.textColor;
+//	self.signUpButton.titleLabel.textColor = self.signUpLabel.textColor;
 }
 
 - (void) authenticate {
@@ -290,7 +301,7 @@
 
     }];
   
-    [self.navigationController pushViewController:registerRequestVC animated:YES];
+		[self.navigationController pushViewController:registerRequestVC animated:YES];
 }
 
 - (IBAction)swipeAction:(id)sender {
