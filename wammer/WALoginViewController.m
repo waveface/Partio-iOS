@@ -141,8 +141,10 @@
 		[TestFlight passCheckpoint:@"SignIn"];	
 	});
 
-	self.username = self.usernameField.text;
-	self.password = self.passwordField.text;
+	if([self.usernameField.text length]) {
+		self.username = self.usernameField.text;
+		self.password = self.passwordField.text;
+	}
   
   if(!([self.username length] || [self.userID length]) && ([self.password length] || [self.token length]))
 		return;
@@ -246,6 +248,8 @@
 
 - (IBAction)facebookSignInAction:(id)sender {
 	
+	self.usernameField.text = nil;
+
 	__weak WALoginViewController *wSelf = self;
 	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
 		
@@ -275,6 +279,8 @@
 }
 
 - (IBAction)registerAction:(id)sender {
+
+	self.usernameField.text = nil;
 
 	__weak WALoginViewController *wSelf = self;
 	WARegisterRequestViewController *registerRequestVC = [WARegisterRequestViewController controllerWithCompletion:^(WARegisterRequestViewController *vc, NSError *error) {
