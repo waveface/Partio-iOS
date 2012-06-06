@@ -38,6 +38,8 @@
 		4B6253991548F0F3009F7624 /* CameraPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253951548F0F3009F7624 /* CameraPressed@2x.png */; };
 		4B62539A1548F0F3009F7624 /* NotePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253961548F0F3009F7624 /* NotePressed.png */; };
 		4B62539B1548F0F3009F7624 /* NotePressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6253971548F0F3009F7624 /* NotePressed@2x.png */; };
+		4B6C4936157EF7C600E45874 /* LoginBackgroundWithImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6C4934157EF7C600E45874 /* LoginBackgroundWithImage.png */; };
+		4B6C4937157EF7C600E45874 /* LoginBackgroundWithImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B6C4935157EF7C600E45874 /* LoginBackgroundWithImage@2x.png */; };
 		4B733BA314987A81005CAE8D /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7D14987A81005CAE8D /* IASKAppSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B733BA414987A81005CAE8D /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B7F14987A81005CAE8D /* IASKAppSettingsWebViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B733BA514987A81005CAE8D /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B733B8114987A81005CAE8D /* IASKSpecifierValuesViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1150,6 +1152,8 @@
 		4B6253951548F0F3009F7624 /* CameraPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CameraPressed@2x.png"; path = "Resources/CameraPressed@2x.png"; sourceTree = "<group>"; };
 		4B6253961548F0F3009F7624 /* NotePressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotePressed.png; path = Resources/NotePressed.png; sourceTree = "<group>"; };
 		4B6253971548F0F3009F7624 /* NotePressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "NotePressed@2x.png"; path = "Resources/NotePressed@2x.png"; sourceTree = "<group>"; };
+		4B6C4934157EF7C600E45874 /* LoginBackgroundWithImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImage.png; path = Resources/LoginBackgroundWithImage.png; sourceTree = "<group>"; };
+		4B6C4935157EF7C600E45874 /* LoginBackgroundWithImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImage@2x.png"; path = "Resources/LoginBackgroundWithImage@2x.png"; sourceTree = "<group>"; };
 		4B733B7C14987A81005CAE8D /* IASKAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsViewController.h; sourceTree = "<group>"; };
 		4B733B7D14987A81005CAE8D /* IASKAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IASKAppSettingsViewController.m; sourceTree = "<group>"; };
 		4B733B7E14987A81005CAE8D /* IASKAppSettingsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IASKAppSettingsWebViewController.h; sourceTree = "<group>"; };
@@ -2068,6 +2072,8 @@
 				4BF98270157DC0ED00172C4B /* LoginBackground@2x.png */,
 				4BB4F823157ECEA80077C5EE /* LoginBackgroundPad.png */,
 				4BB4F824157ECEA80077C5EE /* LoginBackgroundPad@2x.png */,
+				4B6C4934157EF7C600E45874 /* LoginBackgroundWithImage.png */,
+				4B6C4935157EF7C600E45874 /* LoginBackgroundWithImage@2x.png */,
 				4BF98276157DF29000172C4B /* SignInButton.png */,
 				4BF98277157DF29000172C4B /* SignInButton@2x.png */,
 				4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */,
@@ -3931,6 +3937,8 @@
 				4BCE003F157E6ECD00E18D24 /* WALoginViewController~ipad.xib in Resources */,
 				4BB4F825157ECEA80077C5EE /* LoginBackgroundPad.png in Resources */,
 				4BB4F826157ECEA80077C5EE /* LoginBackgroundPad@2x.png in Resources */,
+				4B6C4936157EF7C600E45874 /* LoginBackgroundWithImage.png in Resources */,
+				4B6C4937157EF7C600E45874 /* LoginBackgroundWithImage@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
