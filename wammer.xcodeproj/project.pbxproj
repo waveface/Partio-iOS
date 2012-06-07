@@ -73,6 +73,8 @@
 		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
+		4BF1CA791580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1CA771580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png */; };
+		4BF1CA7A1580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1CA781580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF98271157DC0ED00172C4B /* SignInButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */; };
 		4BF98272157DC0ED00172C4B /* SignInButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826D157DC0ED00172C4B /* SignInButtonPressed@2x.png */; };
@@ -1189,6 +1191,8 @@
 		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
+		4BF1CA771580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImageLandscape.png; path = Resources/LoginBackgroundWithImageLandscape.png; sourceTree = "<group>"; };
+		4BF1CA781580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImageLandscape@2x.png"; path = "Resources/LoginBackgroundWithImageLandscape@2x.png"; sourceTree = "<group>"; };
 		4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRActionSheetController+WAAdditions.h"; path = "wammer/IRActionSheetController+WAAdditions.h"; sourceTree = "<group>"; };
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
 		4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInButtonPressed.png; path = Resources/SignInButtonPressed.png; sourceTree = "<group>"; };
@@ -2044,6 +2048,8 @@
 				4BB4F824157ECEA80077C5EE /* LoginBackgroundPad@2x.png */,
 				4B6C4934157EF7C600E45874 /* LoginBackgroundWithImage.png */,
 				4B6C4935157EF7C600E45874 /* LoginBackgroundWithImage@2x.png */,
+				4BF1CA771580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png */,
+				4BF1CA781580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png */,
 				4BF98276157DF29000172C4B /* SignInButton.png */,
 				4BF98277157DF29000172C4B /* SignInButton@2x.png */,
 				4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */,
@@ -3876,6 +3882,8 @@
 				4BB4F826157ECEA80077C5EE /* LoginBackgroundPad@2x.png in Resources */,
 				4B6C4936157EF7C600E45874 /* LoginBackgroundWithImage.png in Resources */,
 				4B6C4937157EF7C600E45874 /* LoginBackgroundWithImage@2x.png in Resources */,
+				4BF1CA791580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png in Resources */,
+				4BF1CA7A1580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
