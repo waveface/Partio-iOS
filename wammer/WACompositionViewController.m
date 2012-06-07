@@ -261,6 +261,8 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 	
 	[self.contentTextView resignFirstResponder];
 	
+	[textAttributor.queue cancelAllOperations];
+	
 	[super viewWillDisappear:animated];
 
 }
