@@ -153,7 +153,8 @@
 	[self bootstrap];
 	
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.backgroundColor = [UIColor blackColor];
+	self.window.backgroundColor = [UIColor colorWithRed:0.87 green:0.87 blue:0.84 alpha:1.0];
+	
 	[self.window makeKeyAndVisible];
 	
 	if ([[NSUserDefaults standardUserDefaults] stringForKey:kWADebugPersistentStoreName]) {
@@ -542,8 +543,15 @@
 		[self dismissViewControllerAnimated:YES completion:nil];
 	};
 	
-	UINavigationController *naviC = [[UINavigationController alloc] initWithRootViewController:loginVC];
-	[self.window.rootViewController presentViewController:naviC animated:NO completion:nil];
+//	WANavigationController *authRequestWrapperVC = [[WANavigationController alloc] initWithRootViewController:loginVC];
+//	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
+//	authRequestWrapperVC.disablesAutomaticKeyboardDismissal = NO;
+	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:loginVC];
+//	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
+	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+	
+	
+	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
 	
 }
 

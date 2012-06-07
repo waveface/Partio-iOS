@@ -119,7 +119,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
 	
 	for (UIView* v in [self.view subviews]) 
 		if ([v isKindOfClass:[UIButton class]]) {
@@ -241,7 +241,11 @@
 }
 
 - (IBAction)signInAction:(id)sender {
-	[self authenticate];
+  [self resignAllFields:self];
+	
+	dispatch_async(dispatch_get_current_queue(), ^{
+		[self authenticate];
+	});
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
@@ -308,7 +312,7 @@
 		[self.navigationController pushViewController:registerRequestVC animated:YES];
 }
 
-- (IBAction)swipeAction:(id)sender {
+- (IBAction)resignAllFields:(id)sender {
 	
 	if ( [self.usernameField isFirstResponder] )
 		[self.usernameField resignFirstResponder];
@@ -322,9 +326,7 @@
 	if (textField == self.usernameField) {
 		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
 		if (shouldReturn) {
-			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField becomeFirstResponder];
-			});
 		}
 		return shouldReturn;
 	}
@@ -332,13 +334,12 @@
 	if (textField == self.passwordField) {
 		BOOL shouldReturn = ![self.passwordField.text isEqualToString:@""];
 		if (shouldReturn) {
-			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField resignFirstResponder];
+			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self authenticate];
 			});
 		}
 		return shouldReturn; 
-		
 	}
 	
 	return NO;
