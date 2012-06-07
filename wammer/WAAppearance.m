@@ -249,15 +249,17 @@ UIView * WAStandardArticleStackCellTopBackgroundView (void) {
 	
   [backgroundView addSubview:((^ {
   
-    UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
+		UIImage *image = [UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"];
+		UIView *returnedView = [[UIView alloc] initWithFrame:backgroundView.bounds];
+
 		returnedView.frame = UIEdgeInsetsInsetRect(returnedView.frame, (UIEdgeInsets){ 0, -32, 0, -32 });
-    returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-    returnedView.layer.contents = (id)[UIImage imageNamed:@"WAPlaintextArticleStackCellBackdrop"].CGImage;
-    returnedView.layer.contentsScale = [UIScreen mainScreen].scale;
+		returnedView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+		returnedView.layer.contents = (id)image.CGImage;
+		returnedView.layer.contentsScale = image.scale;
 		returnedView.layer.contentsRect = (CGRect){ 0.0/384.0, 32.0/128.0, 384.0/384.0, 16.0/128.0 };
 		returnedView.layer.contentsCenter = (CGRect){ 128.0/384.0, 40.0/48.0, 128.0/384.0, 8.0/48.0 };
-		
-    return returnedView;
+
+		return returnedView;
   
   })())];
 	
