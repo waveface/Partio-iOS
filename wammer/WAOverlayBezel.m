@@ -7,6 +7,7 @@
 //
 
 #import "WAOverlayBezel.h"
+#import "IRLifetimeHelper.h"
 
 
 @interface WAOverlayBezel ()
@@ -170,6 +171,14 @@
 	
 	[window addObserver:self forKeyPath:@"irInterfaceBounds" options:NSKeyValueObservingOptionNew context:nil];
 	[self observeValueForKeyPath:@"irInterfaceBounds" ofObject:nil change:nil context:nil];
+	
+	__weak WAOverlayBezel *wSelf = self;
+	
+	[window irPerformOnDeallocation:^ {
+	
+		wSelf.observedWindow = nil;
+	
+	}];
 	
 	self.observedWindow = window;
 
