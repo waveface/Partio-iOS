@@ -322,9 +322,7 @@
 	if (textField == self.usernameField) {
 		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
 		if (shouldReturn) {
-			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField becomeFirstResponder];
-			});
 		}
 		return shouldReturn;
 	}
@@ -332,13 +330,12 @@
 	if (textField == self.passwordField) {
 		BOOL shouldReturn = ![self.passwordField.text isEqualToString:@""];
 		if (shouldReturn) {
-			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField resignFirstResponder];
+			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self authenticate];
 			});
 		}
 		return shouldReturn; 
-		
 	}
 	
 	return NO;
