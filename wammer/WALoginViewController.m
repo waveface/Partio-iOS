@@ -241,7 +241,11 @@
 }
 
 - (IBAction)signInAction:(id)sender {
-	[self authenticate];
+  [self swipeAction:self];
+	
+	dispatch_async(dispatch_get_current_queue(), ^{
+		[self authenticate];
+	});
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
