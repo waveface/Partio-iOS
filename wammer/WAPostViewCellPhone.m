@@ -128,7 +128,7 @@
 			
 			if (anyPreview.text || anyPreview.url || anyPreview.graphElement.text || anyPreview.graphElement.title) {
 			
-				if (anyPreview.graphElement.representingImage.imageRemoteURL)
+				if ([anyPreview.graphElement.representingImage.imageRemoteURL length] != 0)
 					return @"PostCell-WebLink";
 			
 				return @"PostCell-WebLinkNoPhoto";
