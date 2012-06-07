@@ -119,7 +119,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
 	
 	for (UIView* v in [self.view subviews]) 
 		if ([v isKindOfClass:[UIButton class]]) {
