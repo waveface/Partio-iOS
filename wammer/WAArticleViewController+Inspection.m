@@ -411,6 +411,8 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 
 - (void) setCoverPhotoSwitchPopoverController:(UIPopoverController *)coverPhotoSwitchPopoverController {
 
+	[objc_getAssociatedObject(self, &kCoverPhotoSwitchPopoverController) dismissPopoverAnimated:NO];
+
 	objc_setAssociatedObject(self, &kCoverPhotoSwitchPopoverController, coverPhotoSwitchPopoverController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
 }
