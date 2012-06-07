@@ -16,6 +16,7 @@
 
 - (WAArticleViewController *) newDiscreteArticleViewControllerForArticle:(WAArticle *)article NS_RETURNS_RETAINED;
 - (WAArticleViewController *) cachedArticleViewControllerForArticle:(WAArticle *)article;
+- (void) removeCachedArticleViewController:(WAArticleViewController *)aVC;
 - (void) removeCachedArticleViewControllers;
 
 - (UIView *) newPageContainerView NS_RETURNS_RETAINED;

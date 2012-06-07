@@ -225,6 +225,37 @@ static NSString * const kWADiscreteArticlePageElements = @"kWADiscreteArticlePag
 
 }
 
+- (void) controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+
+	[super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
+	
+	if ([anObject isKindOfClass:[WAArticle class]]) {
+	
+		WAArticle *article = (WAArticle *)anObject;
+	
+		switch (type) {
+		
+			case NSFetchedResultsChangeInsert:
+			case NSFetchedResultsChangeUpdate: {
+			
+				WAArticleViewController *aVC = [self cachedArticleViewControllerForArticle:article];
+				
+				if (aVC)
+					[self removeCachedArticleViewController:aVC];
+				
+				break;
+			
+			}
+			
+			default:
+				break;
+		
+		}
+	
+	}
+
+}
+
 - (void) enqueueInterfaceUpdate:(void(^)(void))aBlock sender:(WAArticleViewController *)controller {
 
 	[self enqueueInterfaceUpdate:aBlock maintainingPositionForLayoutItem:nil sender:controller completion:nil];
