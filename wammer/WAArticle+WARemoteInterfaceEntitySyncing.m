@@ -498,8 +498,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			//	Re-fetch for clarity, use the shared MOC to avoid duplicating state, as long as we are careful NOT to mutate anything.
 		
-			NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+			NSManagedObjectContext *context = [[WADataStore defaultStore] newContextWithConcurrencyType:NSConfinementConcurrencyType];
 			WAFile *representedFile = (WAFile *)[context irManagedObjectForURI:aFileURL];
+			NSCParameterAssert(![representedFile hasChanges]);
 			if (!representedFile) {
 				aCallback(WAArticleEntitySyncingError(0, [NSString stringWithFormat:@"Unable to find WAFile entity at %@", aFileURL], nil));
 				return;
