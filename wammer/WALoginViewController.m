@@ -241,7 +241,7 @@
 }
 
 - (IBAction)signInAction:(id)sender {
-  [self swipeAction:self];
+  [self resignAllFields:self];
 	
 	dispatch_async(dispatch_get_current_queue(), ^{
 		[self authenticate];
@@ -312,7 +312,7 @@
 		[self.navigationController pushViewController:registerRequestVC animated:YES];
 }
 
-- (IBAction)swipeAction:(id)sender {
+- (IBAction)resignAllFields:(id)sender {
 	
 	if ( [self.usernameField isFirstResponder] )
 		[self.usernameField resignFirstResponder];

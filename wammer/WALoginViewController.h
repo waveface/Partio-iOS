@@ -28,6 +28,6 @@ typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSEr
 - (IBAction)signInAction:(id)sender;
 - (IBAction)facebookSignInAction:(id)sender;
 - (IBAction)registerAction:(id)sender;
-- (IBAction)swipeAction:(id)sender;
+- (IBAction)resignAllFields:(id)sender;
 
 @end
