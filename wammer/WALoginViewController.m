@@ -113,34 +113,40 @@
 	[super viewDidUnload];
 }
 
-// This is for an iPad root-level view controller.
-- (void)setupForOrientation:(UIInterfaceOrientation)orientation {
-  if (UIInterfaceOrientationIsPortrait(orientation)) {
-    self.backgroundImageView.frame = (CGRect){0, 0, 768, 1004};
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	
+	if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+		
+		self.backgroundImageView.frame = (CGRect){ 0, 0, 768, 1004 };
 		self.backgroundImageView.image = [UIImage imageNamed:@"LoginBackgroundWithImage"];
-		self.loginContainerView.frame  = (CGRect){104,182,559,640};
-  } else {
-    self.backgroundImageView.frame = (CGRect){0,0,1024,748};
+		self.loginContainerView.frame = (CGRect){ 104, 182, 559, 640 };
+		
+	} else {
+		
+		self.backgroundImageView.frame = (CGRect){ 0, 0, 1024, 748 };
 		self.backgroundImageView.image = [UIImage imageNamed:@"LoginBackgroundWithImageLandscape"];
-		self.loginContainerView.frame  = (CGRect){243,64,640,599};
-  }
-//  [self drawBackgroundForOrientation:orientation];
+		self.loginContainerView.frame = (CGRect){ 243, 64, 640, 599 };
+		
+	}
 	
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
 		return (interfaceOrientation == UIInterfaceOrientationPortrait);
 
-	[self setupForOrientation:interfaceOrientation];
-	
 	return YES;
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+	
+	[super viewDidAppear:animated];	
+	[self willAnimateRotationToInterfaceOrientation:self.interfaceOrientation duration:0];
+	
 	[self.navigationController setNavigationBarHidden:YES animated:NO];
 	
 	for (UIView* v in [self.view subviews]) 

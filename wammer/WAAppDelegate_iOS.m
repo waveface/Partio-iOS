@@ -259,17 +259,12 @@
 	
 	}
 	
-//	NSString *rootViewControllerClassName = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ?
-//		@"WAOverviewController" :
-//		@"WATimelineViewControllerPhone";
-//	
-//	NSParameterAssert(rootViewControllerClassName);
-//	
-//	UIViewController *presentedViewController = [(UIViewController *)[NSClassFromString(rootViewControllerClassName) alloc] init];
-//	self.window.rootViewController = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
-//		
-//	if ([presentedViewController conformsToProtocol:@protocol(WAApplicationRootViewController)])
-//		[(id<WAApplicationRootViewController>)presentedViewController setDelegate:self];
+	UIViewController *vc = self.window.rootViewController;
+	
+	[vc willRotateToInterfaceOrientation:vc.interfaceOrientation duration:0];
+	[vc willAnimateRotationToInterfaceOrientation:vc.interfaceOrientation duration:0];
+	[vc didRotateFromInterfaceOrientation:vc.interfaceOrientation];
+
 			
 }
 
@@ -510,13 +505,13 @@
 	NSParameterAssert(!self.alreadyRequestingAuthentication);
 	self.alreadyRequestingAuthentication = YES;
 
-  NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
-  BOOL (^userIDChanged)() = ^ {
+	NSString *lastUserID = [WARemoteInterface sharedInterface].userIdentifier;
+	BOOL (^userIDChanged)() = ^ {
 		
 		NSString *currentID = [WARemoteInterface sharedInterface].userIdentifier;
-    return (BOOL)![currentID isEqualToString:lastUserID];
+		return (BOOL)![currentID isEqualToString:lastUserID];
 		
-  };
+	};
 	
 	void (^handleAuthSuccess)(void) = ^ {
 	
@@ -529,27 +524,45 @@
 	
 	WALoginViewController *loginVC = [[WALoginViewController alloc] init];
 	loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
+		
 		if (error) {
-			//TODO: make me disappear
+
 			[self presentError:error completion:nil];
 			return;
+			
 		}
+		
 		if (userIDChanged()) {
+			
 			handleAuthSuccess();
 			[wAppDelegate recreateViewHierarchy];
+			
 		} else {
+			
 			handleAuthSuccess();
+			
 		}
-		[self dismissViewControllerAnimated:YES completion:nil];
+		
+		[self dismissViewControllerAnimated:NO completion:^{
+			
+			UIViewController *rootVC = wAppDelegate.window.rootViewController;
+			
+			[rootVC presentViewController:self.navigationController animated:NO completion:^{
+				
+				[self dismissViewControllerAnimated:YES completion:^{
+					
+					//	?
+					
+				}];
+				
+			}];
+			
+		}];
+
 	};
 	
-//	WANavigationController *authRequestWrapperVC = [[WANavigationController alloc] initWithRootViewController:loginVC];
-//	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
-//	authRequestWrapperVC.disablesAutomaticKeyboardDismissal = NO;
 	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:loginVC];
-//	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
 	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-	
 	
 	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
 	
