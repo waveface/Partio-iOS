@@ -450,12 +450,12 @@ enum {
 	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
 	[webViewWrapper addSubview:topShadow];
 	
-	__weak WAArticleViewController_FullScreen_Preview *nrSelf = self;
+	__weak WAArticleViewController_FullScreen_Preview *wSelf = self;
 	__weak IRView * nrWebViewWrapper = (IRView *)webViewWrapper;
 	
 	nrWebViewWrapper.onPointInsideWithEvent = ^ (CGPoint aPoint, UIEvent *anEvent, BOOL superAnswer) {
 	
-		UIView *wrappedView = [nrSelf wrappedView];
+		UIView *wrappedView = [wSelf wrappedView];
 		
 		if (!wrappedView)
 			return superAnswer;
@@ -472,7 +472,7 @@ enum {
 		if (![nrWebViewWrapper pointInside:aPoint withEvent:anEvent])
 			return superAnswer;
 		
-		UIView *wrappedView = [nrSelf wrappedView];
+		UIView *wrappedView = [wSelf wrappedView];
 		if (!wrappedView)
 			return superAnswer;
 		
@@ -594,7 +594,7 @@ enum {
 				
 				if (![actionSheet isVisible]) {
 				
-					wSelf.previewActionSheetController.otherActions = [self previewActionsWithSender:senderItem];
+					wSelf.previewActionSheetController.otherActions = [wSelf previewActionsWithSender:senderItem];
 					[wSelf.previewActionSheetController.managedActionSheet showFromBarButtonItem:senderItem animated:YES];
 					
 				}

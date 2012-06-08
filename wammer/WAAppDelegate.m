@@ -78,7 +78,9 @@
 	[IRRemoteResourcesManager sharedManager].onRemoteResourceDownloadOperationWillBegin = ^ (IRRemoteResourceDownloadOperation *anOperation) {
 		[nrSelf configureRemoteResourceDownloadOperation:anOperation];
 	};
-
+	
+	[[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain];
+	
 }
 
 - (BOOL) hasAuthenticationData {
@@ -118,17 +120,22 @@
 
 - (BOOL) removeAuthenticationData {
 
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserIdentifier];
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
-  
-  [WARemoteInterface sharedInterface].userIdentifier = nil;
-  [WARemoteInterface sharedInterface].userToken = nil;
-  [WARemoteInterface sharedInterface].primaryGroupIdentifier = nil;
-  
-  BOOL didEraseAuthData = [[NSUserDefaults standardUserDefaults] synchronize];
-	
-  return didEraseAuthData;
+	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+
+	NSHTTPCookieStorage *cs = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+	for (NSHTTPCookie *cookie in [[cs cookies] copy])
+		[cs deleteCookie:cookie];
+
+	[sud removeObjectForKey:kWALastAuthenticatedUserTokenKeychainItem];
+	[sud removeObjectForKey:kWALastAuthenticatedUserIdentifier];
+	[sud removeObjectForKey:kWALastAuthenticatedUserPrimaryGroupIdentifier];
+
+	ri.userIdentifier = nil;
+	ri.userToken = nil;
+	ri.primaryGroupIdentifier = nil;
+
+	return [sud synchronize];
 
 }
 

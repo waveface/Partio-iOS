@@ -37,6 +37,8 @@
 @synthesize signUpButton;
 @synthesize signInButton;
 @synthesize signInWithFacebookButton;
+@synthesize backgroundImageView;
+@synthesize loginContainerView;
 @synthesize username;
 @synthesize password;
 @synthesize userID;
@@ -94,9 +96,6 @@
 		setBackgroundImage:[[UIImage imageNamed:@"SignInWithFacebookButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){22,5,22,5}] 
 		forState:UIControlStateHighlighted];
 
-	if( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ){
-	}
-	
 	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.45 green:0.71 blue:0.78 alpha:1.0];
 }
 
@@ -109,17 +108,40 @@
 	[self setSignInButton:nil];
 	[self setSignInWithFacebookButton:nil];
 
+	[self setBackgroundImageView:nil];
+	[self setLoginContainerView:nil];
 	[super viewDidUnload];
 }
 
+// This is for an iPad root-level view controller.
+- (void)setupForOrientation:(UIInterfaceOrientation)orientation {
+  if (UIInterfaceOrientationIsPortrait(orientation)) {
+    self.backgroundImageView.frame = (CGRect){0, 0, 768, 1004};
+		self.backgroundImageView.image = [UIImage imageNamed:@"LoginBackgroundWithImage"];
+		self.loginContainerView.frame  = (CGRect){104,182,559,640};
+  } else {
+    self.backgroundImageView.frame = (CGRect){0,0,1024,748};
+		self.backgroundImageView.image = [UIImage imageNamed:@"LoginBackgroundWithImageLandscape"];
+		self.loginContainerView.frame  = (CGRect){243,64,640,599};
+  }
+//  [self drawBackgroundForOrientation:orientation];
+	
+}
+
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+		return (interfaceOrientation == UIInterfaceOrientationPortrait);
+
+	[self setupForOrientation:interfaceOrientation];
+	
+	return YES;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
-	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	[self.navigationController setNavigationBarHidden:YES animated:NO];
 	
 	for (UIView* v in [self.view subviews]) 
 		if ([v isKindOfClass:[UIButton class]]) {
@@ -241,7 +263,11 @@
 }
 
 - (IBAction)signInAction:(id)sender {
-	[self authenticate];
+  [self resignAllFields:self];
+	
+	dispatch_async(dispatch_get_current_queue(), ^{
+		[self authenticate];
+	});
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
@@ -308,7 +334,7 @@
 		[self.navigationController pushViewController:registerRequestVC animated:YES];
 }
 
-- (IBAction)swipeAction:(id)sender {
+- (IBAction)resignAllFields:(id)sender {
 	
 	if ( [self.usernameField isFirstResponder] )
 		[self.usernameField resignFirstResponder];
@@ -322,9 +348,7 @@
 	if (textField == self.usernameField) {
 		BOOL shouldReturn = ![self.usernameField.text isEqualToString:@""];
 		if (shouldReturn) {
-			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField becomeFirstResponder];
-			});
 		}
 		return shouldReturn;
 	}
@@ -332,13 +356,12 @@
 	if (textField == self.passwordField) {
 		BOOL shouldReturn = ![self.passwordField.text isEqualToString:@""];
 		if (shouldReturn) {
-			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self.passwordField resignFirstResponder];
+			dispatch_async(dispatch_get_current_queue(), ^ {
 				[self authenticate];
 			});
 		}
 		return shouldReturn; 
-		
 	}
 	
 	return NO;

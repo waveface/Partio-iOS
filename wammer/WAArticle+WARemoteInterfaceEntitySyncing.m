@@ -498,8 +498,9 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 			//	Re-fetch for clarity, use the shared MOC to avoid duplicating state, as long as we are careful NOT to mutate anything.
 		
-			NSManagedObjectContext *context = [[WADataStore defaultStore] defaultAutoUpdatedMOC];
+			NSManagedObjectContext *context = [[WADataStore defaultStore] newContextWithConcurrencyType:NSConfinementConcurrencyType];
 			WAFile *representedFile = (WAFile *)[context irManagedObjectForURI:aFileURL];
+			NSCParameterAssert(![representedFile hasChanges]);
 			if (!representedFile) {
 				aCallback(WAArticleEntitySyncingError(0, [NSString stringWithFormat:@"Unable to find WAFile entity at %@", aFileURL], nil));
 				return;
@@ -558,9 +559,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSURL * const previewURL = previewURLString ? [NSURL URLWithString:previewURLString] : nil;
 	
 	if (previewURL) {
-	
-		NSString * const previewImageURL = anyPreview.graphElement.representingImage.imageRemoteURL;
-	
+
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
 		
 			[ri retrievePreviewForURL:previewURL onSuccess:^(NSDictionary *aPreviewRep) {
@@ -580,10 +579,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if (![results isKindOfClass:[NSDictionary class]])
 				return;
 			
-			if (previewImageURL) {
+			if ([anyPreview.graphElement.images count]) {
 			
 				NSMutableDictionary *previewEntity = [(NSDictionary *)results mutableCopy];
-				[previewEntity setObject:previewImageURL forKey:@"thumbnail_url"];
+				[previewEntity setObject:[[[anyPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
 				
 				[context setObject:previewEntity forKey:kPostWebPreview];
 			

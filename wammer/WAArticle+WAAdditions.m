@@ -21,10 +21,14 @@
 	if (!file) {
 	
 		[self willAccessValueForKey:@"files"];
+		
 		NSOrderedSet *files = [self primitiveValueForKey:@"files"];
 		
 		if ([files count]) {
+		
 			file = [[files array] objectAtIndex:0];
+			[self setPrimitiveValue:file forKey:@"representingFile"];
+			
 		}
 
 		[self didAccessValueForKey:@"files"];

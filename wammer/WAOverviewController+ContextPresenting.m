@@ -75,19 +75,22 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 	containerWindow.opaque = NO;
 	containerWindow.rootViewController = enqueuedNavController;
 	
+	__weak WAArticleViewController *wShownArticleVC = shownArticleVC;
+	
 	containerWindow.onTap = ^ {
 		
-		[wSelf dismissArticleContextViewController:shownArticleVC];
+		[wSelf dismissArticleContextViewController:wShownArticleVC];
 		containerWindow.onTap = nil;
 		
 	};
-			
+	
+	
 	containerWindow.onGestureRecognizeShouldReceiveTouch = ^ (UIGestureRecognizer *recognizer, UITouch *touch) {
 	
-		if (shownArticleVC.modalViewController)
+		if (wShownArticleVC.modalViewController)
 			return NO;
 		
-		UINavigationController *navC = shownArticleVC.navigationController;
+		UINavigationController *navC = wShownArticleVC.navigationController;
 		
 		if (navC) {
 		
@@ -104,10 +107,10 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		
 		}
 		
-		CGPoint locationInShownArticleVC = [touch locationInView:shownArticleVC.view];
+		CGPoint locationInShownArticleVC = [touch locationInView:wShownArticleVC.view];
 		
-		if ([shownArticleVC isKindOfClass:[WAStackedArticleViewController class]])
-			return (BOOL)![(WAStackedArticleViewController *)shownArticleVC isPointInsideInterfaceRect:locationInShownArticleVC];
+		if ([wShownArticleVC isKindOfClass:[WAStackedArticleViewController class]])
+			return (BOOL)![(WAStackedArticleViewController *)wShownArticleVC isPointInsideInterfaceRect:locationInShownArticleVC];
 		
 		return NO;
 	
@@ -115,17 +118,17 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 	
 	[enqueuedNavController setNavigationBarHidden:YES animated:NO];
 	
-	__weak UINavigationController *nrEnqueuedNavController = enqueuedNavController;
-	__weak WAStackedArticleViewController *shownStackedArticleVC = [shownArticleVC isKindOfClass:[WAStackedArticleViewController class]] ? (WAStackedArticleViewController *)shownArticleVC : nil;
+	__weak UINavigationController *wEnqueuedNavController = enqueuedNavController;
+	__weak WAStackedArticleViewController *wShownStackedArticleVC = [shownArticleVC isKindOfClass:[WAStackedArticleViewController class]] ? (WAStackedArticleViewController *)shownArticleVC : nil;
 
-	shownStackedArticleVC.onViewDidLoad = ^ (WAArticleViewController *self, UIView *ownView) {
+	wShownStackedArticleVC.onViewDidLoad = ^ (WAArticleViewController *self, UIView *ownView) {
 	
 		IRCATransact(^{
 		
-			shownArticleVC.view.backgroundColor = [UIColor clearColor];
-			[nrEnqueuedNavController.view layoutSubviews];
+			wShownArticleVC.view.backgroundColor = [UIColor clearColor];
+			[wEnqueuedNavController.view layoutSubviews];
 			
-			[shownStackedArticleVC handlePreferredInterfaceRect:shownArticleVC.view.bounds];
+			[wShownStackedArticleVC handlePreferredInterfaceRect:wShownArticleVC.view.bounds];
 			
 			__block void (^poke)(UIView *) = ^ (UIView *aView) {
 			
@@ -136,24 +139,24 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 				
 			};
 			
-			poke(shownArticleVC.view);
+			poke(wShownArticleVC.view);
 			poke = nil;
 		
 		});							
 	
 	};
 	
-	if ([shownStackedArticleVC isViewLoaded])
-		shownStackedArticleVC.onViewDidLoad(shownStackedArticleVC, shownStackedArticleVC.view);
+	if ([wShownStackedArticleVC isViewLoaded])
+		wShownStackedArticleVC.onViewDidLoad(wShownStackedArticleVC, wShownStackedArticleVC.view);
 	
-	shownStackedArticleVC.onPullTop = ^ (UIScrollView *aSV) {
+	wShownStackedArticleVC.onPullTop = ^ (UIScrollView *aSV) {
 		
 		[aSV setContentOffset:aSV.contentOffset animated:NO];
-		[wSelf dismissArticleContextViewController:shownArticleVC];
+		[wSelf dismissArticleContextViewController:wShownArticleVC];
 		
 	};
 	
-	shownStackedArticleVC.headerView = ((^ {
+	wShownStackedArticleVC.headerView = ((^ {
 		
 		IRView *enclosingView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
 		
@@ -163,6 +166,7 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		toolbarRect.size.height = 44;
 		
 		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:toolbarRect];
+		__weak UIToolbar *wToolbar = toolbar;
 		[enclosingView addSubview:toolbar];
 		
 		toolbar.backgroundColor = [UIColor colorWithWhite:245.0/255.0 alpha:1];
@@ -177,25 +181,29 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
 						
 		toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-		toolbar.items = shownStackedArticleVC.headerBarButtonItems;
+		toolbar.items = wShownStackedArticleVC.headerBarButtonItems;
 		
 		enclosingView.onLayoutSubviews = ^ {
 		
-			[toolbar layoutSubviews];
+			[wToolbar layoutSubviews];
 		
 		};
 		
-		__block WAButton *nrCloseButton = [WAButton buttonWithType:UIButtonTypeCustom];
-		[enclosingView addSubview:nrCloseButton];
-		[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
-		[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
-		[nrCloseButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
-		nrCloseButton.frame = enclosingView.bounds;
-		nrCloseButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-		nrCloseButton.action = ^ {
+		WAButton *closeButton = [WAButton buttonWithType:UIButtonTypeCustom];
+		[enclosingView addSubview:closeButton];
+		[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButton"] forState:UIControlStateNormal];
+		[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateHighlighted];
+		[closeButton setImage:[UIImage imageNamed:@"WACornerCloseButtonActive"] forState:UIControlStateSelected];
+		closeButton.frame = enclosingView.bounds;
+		closeButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 		
-			[wSelf dismissArticleContextViewController:shownArticleVC];
-			nrCloseButton.action = nil;
+		__weak WAButton *wCloseButton = closeButton;
+		__weak WAArticleViewController *wShownArticleVC = shownArticleVC;
+		
+		closeButton.action = ^ {
+		
+			[wSelf dismissArticleContextViewController:wShownArticleVC];
+			wCloseButton.action = nil;
 		
 		};
 		
@@ -308,6 +316,7 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 	
 	returnedVC.hostingViewController = self;
 	
+	__weak WAArticleViewController *wReturnedVC = returnedVC;
 	UINavigationItem *navItem = returnedVC.navigationItem;
 	
 	if (!navItem.leftBarButtonItem) {
@@ -315,7 +324,7 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		navItem.hidesBackButton = NO;
 		navItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 
-			[wSelf dismissArticleContextViewController:returnedVC];
+			[wSelf dismissArticleContextViewController:wReturnedVC];
 
 		});
 	

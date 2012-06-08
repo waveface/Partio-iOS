@@ -29,6 +29,7 @@
 		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
 		4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
+		4B57F2F9157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */; };
 		4B582E6C1549347E009B460C /* ToolbarWithButtons.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6A1549347E009B460C /* ToolbarWithButtons.png */; };
 		4B582E6D1549347E009B460C /* ToolbarWithButtons@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */; };
 		4B582E70154935C9009B460C /* Toolbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B582E6E154935C9009B460C /* Toolbar.png */; };
@@ -73,6 +74,8 @@
 		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
+		4BF1CA791580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1CA771580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png */; };
+		4BF1CA7A1580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF1CA781580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF98271157DC0ED00172C4B /* SignInButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */; };
 		4BF98272157DC0ED00172C4B /* SignInButtonPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9826D157DC0ED00172C4B /* SignInButtonPressed@2x.png */; };
@@ -1143,6 +1146,7 @@
 		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
 		4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; sourceTree = "<group>"; };
 		4B52734315625B3500C6F55D /* ProviderIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ProviderIcon.png; path = external/WFPresentation/Source/ProviderIcon.png; sourceTree = "<group>"; };
+		4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_Image_Vertical.html"; sourceTree = "<group>"; };
 		4B582E6A1549347E009B460C /* ToolbarWithButtons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ToolbarWithButtons.png; path = Resources/ToolbarWithButtons.png; sourceTree = "<group>"; };
 		4B582E6B1549347E009B460C /* ToolbarWithButtons@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ToolbarWithButtons@2x.png"; path = "Resources/ToolbarWithButtons@2x.png"; sourceTree = "<group>"; };
 		4B582E6E154935C9009B460C /* Toolbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Toolbar.png; path = Resources/Toolbar.png; sourceTree = "<group>"; };
@@ -1213,6 +1217,8 @@
 		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
+		4BF1CA771580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImageLandscape.png; path = Resources/LoginBackgroundWithImageLandscape.png; sourceTree = "<group>"; };
+		4BF1CA781580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImageLandscape@2x.png"; path = "Resources/LoginBackgroundWithImageLandscape@2x.png"; sourceTree = "<group>"; };
 		4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRActionSheetController+WAAdditions.h"; path = "wammer/IRActionSheetController+WAAdditions.h"; sourceTree = "<group>"; };
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
 		4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SignInButtonPressed.png; path = Resources/SignInButtonPressed.png; sourceTree = "<group>"; };
@@ -2074,6 +2080,8 @@
 				4BB4F824157ECEA80077C5EE /* LoginBackgroundPad@2x.png */,
 				4B6C4934157EF7C600E45874 /* LoginBackgroundWithImage.png */,
 				4B6C4935157EF7C600E45874 /* LoginBackgroundWithImage@2x.png */,
+				4BF1CA771580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png */,
+				4BF1CA781580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png */,
 				4BF98276157DF29000172C4B /* SignInButton.png */,
 				4BF98277157DF29000172C4B /* SignInButton@2x.png */,
 				4BF9826C157DC0ED00172C4B /* SignInButtonPressed.png */,
@@ -2605,6 +2613,7 @@
 				FF3B1B2414EBA3C7009CFFD1 /* WFPreviewIE.css */,
 				FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */,
 				FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */,
+				4B57F2F8157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html */,
 				FF426FC3155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_AnnotationTop.html */,
 				FF426FC2155102AF0053D1CA /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal.html */,
 				FFCB9B2D155287CE0006DFA5 /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_Fave.html */,
@@ -3939,6 +3948,9 @@
 				4BB4F826157ECEA80077C5EE /* LoginBackgroundPad@2x.png in Resources */,
 				4B6C4936157EF7C600E45874 /* LoginBackgroundWithImage.png in Resources */,
 				4B6C4937157EF7C600E45874 /* LoginBackgroundWithImage@2x.png in Resources */,
+				4B57F2F9157F5D4300467AD4 /* WFPreviewTemplate-Discrete_Web_Image_Vertical.html in Resources */,
+				4BF1CA791580ADA500AB7706 /* LoginBackgroundWithImageLandscape.png in Resources */,
+				4BF1CA7A1580ADA500AB7706 /* LoginBackgroundWithImageLandscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4583,7 +4595,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 436;
+				CURRENT_PROJECT_VERSION = 444;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4641,7 +4653,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 436;
+				CURRENT_PROJECT_VERSION = 444;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",

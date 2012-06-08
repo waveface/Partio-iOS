@@ -88,7 +88,7 @@
 		
 		[wSelf irPerformOnDeallocation:^{
 		
-			[label irUnbind:@"attributedText"];
+			[wLabel irUnbind:@"attributedText"];
 			
 		}];
 		
@@ -150,7 +150,7 @@
 		
 		nil]];
 		
-		[self irPerformOnDeallocation:^{
+		[wSelf irPerformOnDeallocation:^{
 		
 			[wCommentsItem irUnbind:@"title"];
 			
@@ -163,6 +163,8 @@
 	IRBarButtonItem *favoriteToggleItem = ((^ {
 	
 		IRBarButtonItem *item = [[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil];
+		
+		__weak IRBarButtonItem *wItem = item;
 				
 		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
@@ -235,7 +237,7 @@
 		
 		[wSelf irPerformOnDeallocation:^{
 		
-			[item irUnbind:@"title"];
+			[wItem irUnbind:@"title"];
 			
 		}];
 		
@@ -510,7 +512,7 @@
 
 	if (commentsVC)
 		return commentsVC;
-	
+		
 	commentsVC = [WAArticleCommentsViewController controllerRepresentingArticle:[[self.article objectID] URIRepresentation]];
 	commentsVC.delegate = self;
 	
@@ -676,7 +678,7 @@
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
-	
+		
 	__weak WAStackedArticleViewController *wSelf = self;
 	
 	self.wrapperView = [[UIView alloc] initWithFrame:self.stackView.frame];

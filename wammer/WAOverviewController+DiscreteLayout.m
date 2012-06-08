@@ -115,6 +115,17 @@ static NSString * const kLastUsedLayoutGrids = @"-[WAOverviewController(Discrete
 
 }
 
+- (void) removeCachedArticleViewController:(WAArticleViewController *)aVC {
+
+	NSCParameterAssert(self == aVC.parentViewController);
+	[aVC removeFromParentViewController];
+	
+	NSValue *objectValue = [NSValue valueWithNonretainedObject:aVC.article];
+	
+	[self.articleViewControllersCache removeObjectForKey:objectValue];
+
+}
+
 - (void) removeCachedArticleViewControllers {
 
 	[self.articleViewControllersCache removeAllObjects];

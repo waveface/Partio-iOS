@@ -21,6 +21,8 @@ typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSEr
 @property (strong, nonatomic) IBOutlet UIButton *signUpButton;
 @property (strong, nonatomic) IBOutlet UIButton *signInButton;
 @property (strong, nonatomic) IBOutlet UIButton *signInWithFacebookButton;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (strong, nonatomic) IBOutlet UIView *loginContainerView;
 
 @property (strong, nonatomic)WALoginViewControllerCallback completionBlock;
 - (void) presentError:(NSError *)error completion:(void(^)(void))block;
@@ -28,6 +30,6 @@ typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSEr
 - (IBAction)signInAction:(id)sender;
 - (IBAction)facebookSignInAction:(id)sender;
 - (IBAction)registerAction:(id)sender;
-- (IBAction)swipeAction:(id)sender;
+- (IBAction)resignAllFields:(id)sender;
 
 @end
