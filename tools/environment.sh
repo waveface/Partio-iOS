@@ -29,10 +29,9 @@ TF_DIST_LISTS="CI Responder"
 
 function AFTER_BUILD () {
 
-	if [ $VERSION_BUILD == $GIT_LATEST_TAG ]; then
+	if [ $VERSION_BUILD != $GIT_LATEST_TAG ]; then
 
 		git tag $VERSION_BUILD
-
 		git push origin $VERSION_BUILD
 
 		xcodebuild build -target "wammer-iOS-Test" -configuration $BUILD_CONFIGURATION -sdk iphonesimulator SYMROOT="$TEMP_DIR"
