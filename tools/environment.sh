@@ -20,7 +20,7 @@ IPA_NAME="$PROJECT_NAME.app.ipa"
 DSYM_ZIP_NAME="$PROJECT_NAME.app.dSYM.zip"
 
 GIT_LATEST_TAG="`git describe --abbrev=0 --tags`"
-GIT_INFO="`git show $GIT_LATEST_TAG`"
+GIT_INFO="`git log --stat --summary HEAD...$GIT_LATEST_TAG`"
 
 TF_API_URI="http://testflightapp.com/api/builds.json"
 TF_NOTES="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) # $COMMIT_SHA\n$GIT_INFO"
