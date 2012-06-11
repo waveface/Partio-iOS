@@ -42,6 +42,9 @@ function AFTER_BUILD () {
 	
 		curl -F key="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) $COMMIT_SHA.ipa" -F file="@$IPA_NAME" -F AWSAccessKeyId=AKIAJHAB2VXT477YWXRA -F acl=public-read -F filename="$IPA_NAME" -F policy="CnsiZXhwaXJhdGlvbiI6ICIyMDIwLTAxLTAxVDAwOjAwOjAwWiIsCiAgImNvbmRpdGlvbnMiOiBbIAogICAgeyJidWNrZXQiOiAid2F2ZWZhY2UtYmxvYiJ9LCAKICAgIHsic3VjY2Vzc19hY3Rpb25fcmVkaXJlY3QiOiAiaHR0cDovL2xvY2FsaG9zdC8ifSwKICAgIFsic3RhcnRzLXdpdGgiLCAiJENvbnRlbnQtVHlwZSIsICIiXSwKICBdCn0KCg==" -F signature="M+Ysm3CVZSWvQ1kZUfZu8s3+1Qw=" http://waveface-blob.s3.amazonaws.com
 
+		curl $TF_API_URI -F file=@"$IPA_NAME" -F dsym=@"$DSYM_ZIP_NAME" -F api_token="$TF_API_TOKEN" -F team_token="$TF_TEAM_TOKEN" -F notes="$TF_NOTES" -F notify="$TF_NOTIFY" -F distribution_lists="$TF_DIST_LISTS"; bailIfError
+
+
 	fi
 
 }
