@@ -159,9 +159,6 @@
 	
 	[self addRepeatingDataRetrievalBlocks:[self defaultDataRetrievalBlocks]];
 	[self rescheduleAutomaticRemoteUpdates];
-  
-  if (!self.monitoredHosts)
-    self.monitoredHosts = [NSArray arrayWithObject:self.engine.context.baseURL];
 	
 	return self;
 

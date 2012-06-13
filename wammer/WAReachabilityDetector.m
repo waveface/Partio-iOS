@@ -175,8 +175,14 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     
     nil] validator:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
     
-      //  Must have returned a status value
-      return (BOOL)!![inResponseOrNil objectForKey:@"status"];
+      //  Must have returned status value 200
+      NSNumber *httpStatusCode = [inResponseOrNil objectForKey:@"status"];
+      if (httpStatusCode) {
+          if ([httpStatusCode integerValue] == 200) {
+              return YES;
+          }
+      }
+      return NO;
       
     } successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
 
