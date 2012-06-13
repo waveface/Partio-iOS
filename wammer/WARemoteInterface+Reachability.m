@@ -77,7 +77,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
 - (void) setMonitoredHosts:(NSArray *)newAvailableHosts {
 
-  if (self.monitoredHosts == newAvailableHosts)
+  if ([self.monitoredHosts isEqualToArray:newAvailableHosts])
     return;
 
 	objc_setAssociatedObject(self, &kAvailableHosts, newAvailableHosts, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
