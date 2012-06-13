@@ -9,7 +9,7 @@
 	url = git://github.com/iridia/AQGridView.git
 [submodule "external/IRWebAPIKit"]
 	path = external/IRWebAPIKit
-	url = git://github.com/iridia/IRWebAPIKit.git
+	url = git://github.com/waveface/IRWebAPIKit.git
 [submodule "external/mockingBird"]
 	path = external/mockingBird
 	url = git://github.com/waveface/mockingBird.git
