@@ -91,12 +91,20 @@
 	}
 
 	if (!WAApplicationHasDebuggerAttached()) {
-	
-		WF_TESTFLIGHT(^ {
 		
-			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
-			nil]];
+		WF_TESTFLIGHT(^ {
+			
+			// REMOVE BEFORE FLIGHT, we still need to know who you're during testing stage
+			#define TESTING 1
+			#ifdef TESTING
+						[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+			
+			#else
+								[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+																		(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
+																		nil]];
+			#endif
+			
 			
 			[TestFlight takeOff:kWATestflightTeamToken];
 			
@@ -108,7 +116,8 @@
 			}];
 			
 			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-		
+			
+			
 		});
 		
 		WF_CRASHLYTICS(^ {
