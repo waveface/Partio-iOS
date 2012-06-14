@@ -47,7 +47,7 @@ typedef struct sockaddr_in WASocketAddress;
 + (id) detectorForURL:(NSURL *)aHostURL;
 
 - (id) initWithAddress:(WASocketAddress)anAddress;	//	Detectors initialized by address struct refs will NOT handle application layer stuff
-- (id) initWithURL:(NSURL *)aHostURL;
+- (id) initWithURL:(NSURL *)aHostURL interval:(NSTimeInterval)interval;
 
 @property (nonatomic, readwrite, weak) id<WAReachabilityDetectorDelegate> delegate;
 

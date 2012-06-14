@@ -97,7 +97,16 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 + (id) detectorForURL:(NSURL *)aHostURL {
 
-  return [[self alloc] initWithURL:aHostURL];
+	if (aHostURL == [WARemoteInterface sharedInterface].engine.context.baseURL) {
+
+		// cloud is reachable in most conditions, no need to work so hard
+		return [[self alloc] initWithURL:aHostURL interval:30];
+
+	} else {
+
+		return [[self alloc] initWithURL:aHostURL interval:5];
+
+	}
 
 }
 
@@ -125,7 +134,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 }
 
-- (id) initWithURL:(NSURL *)aHostURL {
+- (id) initWithURL:(NSURL *)aHostURL interval:(NSTimeInterval)interval {
 
   NSParameterAssert(aHostURL);
   
@@ -134,6 +143,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     return nil;
       
 	self.hostURL = aHostURL;
+	[self.recurrenceMachine setRecurrenceInterval:interval];
 	[self.recurrenceMachine addRecurringOperation:[self newPulseCheckerPrototype]];
 	[self.recurrenceMachine scheduleOperationsNow];
 	
@@ -147,7 +157,6 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 		return recurrenceMachine;
 	
 	recurrenceMachine = [[IRRecurrenceMachine alloc] init];
-	recurrenceMachine.recurrenceInterval = 5;
 	
 	return recurrenceMachine;
 
@@ -162,10 +171,20 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	return [IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
 	
     [nrSelf.recurrenceMachine beginPostponingOperations];
+
+	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+
+	// DO NOT ping stations if not under WIFI
+	if ((self.hostURL != ri.engine.context.baseURL) && !ri.hasWiFiConnection) {
+
+		[nrSelf.recurrenceMachine endPostponingOperations];
+		return;
+
+	}
     
-    [[WARemoteInterface sharedInterface].engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
+    [ri.engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
     
-      [WARemoteInterface sharedInterface].userIdentifier, @"user_id",
+      ri.userIdentifier, @"user_id",
       [hostURL absoluteString], @"for_host",
     
     nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
