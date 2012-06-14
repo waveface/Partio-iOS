@@ -104,7 +104,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 	} else {
 
-		return [[self alloc] initWithURL:aHostURL interval:5];
+		return [[self alloc] initWithURL:aHostURL interval:10];
 
 	}
 
@@ -190,7 +190,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     nil] options:[NSDictionary dictionaryWithObjectsAndKeys:
     
       [NSURL URLWithString:@"reachability/ping" relativeToURL:hostURL], kIRWebAPIEngineRequestHTTPBaseURL,
-      [NSNumber numberWithDouble:10.0f], kIRWebAPIRequestTimeout,
+	  [NSNumber numberWithDouble: (self.hostURL == ri.engine.context.baseURL) ? 10.0f : 3.0f], kIRWebAPIRequestTimeout,
     
     nil] validator:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
     
