@@ -12,11 +12,18 @@
 	#import <QuartzCore/QuartzCore.h>
 
 	#if WF_USES_TESTFLIGHT
+	
 		#import	"TestFlight.h"
 		#define WF_TESTFLIGHT(...) do { (__VA_ARGS__)(); } while (0)	
+	
+		#define NSLog(__FORMAT__, ...) TFLog((@"%s [Line %d] " __FORMAT__), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+		
 	#else
 		#define TestFlight (id)nil
 		#define WF_TESTFLIGHT(...) do {  } while (0)	
+		
+	
+
 	#endif
 	
 	#if WF_USES_CRASHLYTICS
