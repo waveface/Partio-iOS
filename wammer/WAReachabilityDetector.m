@@ -111,7 +111,10 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 			return arc4random() % currentValue;
 		}
 
-		currentValue *= 2;
+		if (currentValue < 512) {
+			currentValue *= 2;
+		}
+
 		return arc4random() % currentValue;
 
 	} copy];
