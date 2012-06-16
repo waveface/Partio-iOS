@@ -217,7 +217,7 @@ static NSString * const kWACompositionViewWindowInterfaceBoundsNotificationHandl
 				case UIViewAnimationCurveEaseOut:return UIViewAnimationOptionCurveEaseOut;
 				case UIViewAnimationCurveEaseInOut: return UIViewAnimationOptionCurveEaseInOut;
 				case UIViewAnimationCurveLinear: return UIViewAnimationOptionCurveLinear;
-				default: return 0;
+				default: return UIViewAnimationOptionCurveLinear;
 			}
 		})());
 		
