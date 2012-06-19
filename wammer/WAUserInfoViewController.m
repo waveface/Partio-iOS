@@ -369,6 +369,7 @@
 	if (hitCell == syncTableViewCell) {
 	
 		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
+		[[WABlobSyncManager sharedManager] performBlobSyncNow];
 		
 	} else if (hitCell == stationNagCell) {
 	

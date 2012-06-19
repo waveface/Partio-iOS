@@ -146,7 +146,7 @@
 - (BOOL) isPerformingBlobSync {
 
 	NSParameterAssert(recurrenceMachine);
-	return ![recurrenceMachine isPostponingOperations];
+	return !![recurrenceMachine isPostponingOperations];
 
 }
 
@@ -162,6 +162,10 @@
 	
 	return canSync;
 
+}
+
+- (void) performBlobSyncNow {
+	[[self recurrenceMachine] scheduleOperationsNow];
 }
 
 - (void) setNumberOfFiles:(NSUInteger)newNumberOfFiles {
@@ -274,13 +278,10 @@
 			context = nil;
 			
 			dispatch_async(dispatch_get_main_queue(), ^{
-				
 				[wRecurrenceMachine endPostponingOperations];
-			
 			});
 			
 			callback(nil);
-			
 		}];
 		
 		for (IRAsyncOperation *op in syncOperations)
