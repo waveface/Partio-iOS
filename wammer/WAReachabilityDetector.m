@@ -198,22 +198,20 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 	NSAssert1(self.hostURL, @"%s should only be invoked for detectors with an URL and no Internet address", __PRETTY_FUNCTION__);
 	
-	__block __typeof__(self) nrSelf = self;
-
+	__weak WAReachabilityDetector *wSelf = self;
+	
 	return [IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
 	
-    [nrSelf.recurrenceMachine beginPostponingOperations];
+    [wSelf.recurrenceMachine beginPostponingOperations];
 
-	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
-
-	// DO NOT ping stations if not under WIFI
-	if ((self.hostURL != ri.engine.context.baseURL) && !ri.hasWiFiConnection) {
-
-		[nrSelf.recurrenceMachine endPostponingOperations];
+	//	DO NOT ping stations if not under WIFI
+	
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	if ([self.hostURL isEqual:ri.engine.context.baseURL] && ![ri hasWiFiConnection]) {
+		[wSelf.recurrenceMachine endPostponingOperations];
 		return;
-
 	}
-    
+
     [ri.engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
     
       ri.userIdentifier, @"user_id",
@@ -251,15 +249,15 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 
-			[nrSelf.recurrenceMachine endPostponingOperations];
+			[wSelf.recurrenceMachine endPostponingOperations];
 			
 			if ([results isEqual:(id)kCFBooleanTrue]) {
 			
-				nrSelf.state = WAReachabilityStateAvailable;
+				wSelf.state = WAReachabilityStateAvailable;
 			
 			} else {
 			
-				nrSelf.state = WAReachabilityStateNotAvailable;
+				wSelf.state = WAReachabilityStateNotAvailable;
 			
 			}
 		
