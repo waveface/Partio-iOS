@@ -182,7 +182,8 @@
 
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
 
-	[self beginNetworkActivity];
+	// beginNetworkActivity is already called during request transformation, DO NOT call it again here
+	//[self beginNetworkActivity];
 
 }
 

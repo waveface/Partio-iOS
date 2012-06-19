@@ -19,8 +19,8 @@ DSYM_NAME="$PROJECT_NAME.app.dSYM"
 IPA_NAME="$PROJECT_NAME.app.ipa"
 DSYM_ZIP_NAME="$PROJECT_NAME.app.dSYM.zip"
 
-GIT_LATEST_TAG="`git describe --abbrev=0`"
-GIT_INFO="`git show $GIT_LATEST_TAG`"
+GIT_LATEST_TAG="`git describe --abbrev=0 --tags`"
+GIT_INFO="`git log --stat --summary HEAD...$GIT_LATEST_TAG`"
 
 TF_API_URI="http://testflightapp.com/api/builds.json"
 TF_NOTES="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) # $COMMIT_SHA\n$GIT_INFO"
@@ -29,12 +29,22 @@ TF_DIST_LISTS="CI Responder"
 
 function AFTER_BUILD () {
 
-	xcodebuild build -target "wammer-iOS-Test" -configuration $BUILD_CONFIGURATION -sdk iphonesimulator SYMROOT="$TEMP_DIR"
+	if [ $VERSION_BUILD != $GIT_LATEST_TAG ]; then
 
-	cd $PRODUCT_DIR
+		git tag $VERSION_BUILD
+		git push origin $VERSION_BUILD
 
-	curl -F key="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) $COMMIT_SHA.dSYM.zip" -F file="@$DSYM_NAME" -F AWSAccessKeyId=AKIAJHAB2VXT477YWXRA -F acl=public-read -F filename="$DSYM_NAME" -F policy="CnsiZXhwaXJhdGlvbiI6ICIyMDIwLTAxLTAxVDAwOjAwOjAwWiIsCiAgImNvbmRpdGlvbnMiOiBbIAogICAgeyJidWNrZXQiOiAid2F2ZWZhY2UtYmxvYiIgfSwKICAgIHsic3VjY2Vzc19hY3Rpb25fcmVkaXJlY3QiOiAiaHR0cDovL2xvY2FsaG9zdC8iIH0sCiAgICB7ImFjbCI6ICJwdWJsaWMtcmVhZC13cml0ZSIgfSwKICAgIFsic3RhcnRzLXdpdGgiLCAiJENvbnRlbnQtVHlwZSIsICIiXQogIF0KfQoK" -F signature="idOKxQk6jL3rOviWQnIFxoLZkiM=" http://waveface-blob.s3.amazonaws.com
+		xcodebuild build -target "wammer-iOS-Test" -configuration $BUILD_CONFIGURATION -sdk iphonesimulator SYMROOT="$TEMP_DIR"
+
+		cd $PRODUCT_DIR
+
+		curl -F key="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) $COMMIT_SHA.dSYM.zip" -F file="@$DSYM_NAME" -F AWSAccessKeyId=AKIAJHAB2VXT477YWXRA -F acl=public-read -F filename="$DSYM_NAME" -F policy="CnsiZXhwaXJhdGlvbiI6ICIyMDIwLTAxLTAxVDAwOjAwOjAwWiIsCiAgImNvbmRpdGlvbnMiOiBbIAogICAgeyJidWNrZXQiOiAid2F2ZWZhY2UtYmxvYiIgfSwKICAgIHsic3VjY2Vzc19hY3Rpb25fcmVkaXJlY3QiOiAiaHR0cDovL2xvY2FsaG9zdC8iIH0sCiAgICB7ImFjbCI6ICJwdWJsaWMtcmVhZC13cml0ZSIgfSwKICAgIFsic3RhcnRzLXdpdGgiLCAiJENvbnRlbnQtVHlwZSIsICIiXQogIF0KfQoK" -F signature="idOKxQk6jL3rOviWQnIFxoLZkiM=" http://waveface-blob.s3.amazonaws.com
 	
-	curl -F key="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) $COMMIT_SHA.ipa" -F file="@$IPA_NAME" -F AWSAccessKeyId=AKIAJHAB2VXT477YWXRA -F acl=public-read -F filename="$IPA_NAME" -F policy="CnsiZXhwaXJhdGlvbiI6ICIyMDIwLTAxLTAxVDAwOjAwOjAwWiIsCiAgImNvbmRpdGlvbnMiOiBbIAogICAgeyJidWNrZXQiOiAid2F2ZWZhY2UtYmxvYiJ9LCAKICAgIHsic3VjY2Vzc19hY3Rpb25fcmVkaXJlY3QiOiAiaHR0cDovL2xvY2FsaG9zdC8ifSwKICAgIFsic3RhcnRzLXdpdGgiLCAiJENvbnRlbnQtVHlwZSIsICIiXSwKICBdCn0KCg==" -F signature="M+Ysm3CVZSWvQ1kZUfZu8s3+1Qw=" http://waveface-blob.s3.amazonaws.com
+		curl -F key="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) $COMMIT_SHA.ipa" -F file="@$IPA_NAME" -F AWSAccessKeyId=AKIAJHAB2VXT477YWXRA -F acl=public-read -F filename="$IPA_NAME" -F policy="CnsiZXhwaXJhdGlvbiI6ICIyMDIwLTAxLTAxVDAwOjAwOjAwWiIsCiAgImNvbmRpdGlvbnMiOiBbIAogICAgeyJidWNrZXQiOiAid2F2ZWZhY2UtYmxvYiJ9LCAKICAgIHsic3VjY2Vzc19hY3Rpb25fcmVkaXJlY3QiOiAiaHR0cDovL2xvY2FsaG9zdC8ifSwKICAgIFsic3RhcnRzLXdpdGgiLCAiJENvbnRlbnQtVHlwZSIsICIiXSwKICBdCn0KCg==" -F signature="M+Ysm3CVZSWvQ1kZUfZu8s3+1Qw=" http://waveface-blob.s3.amazonaws.com
+
+		curl $TF_API_URI -F file=@"$IPA_NAME" -F dsym=@"$DSYM_ZIP_NAME" -F api_token="$TF_API_TOKEN" -F team_token="$TF_TEAM_TOKEN" -F notes="$TF_NOTES" -F notify="$TF_NOTIFY" -F distribution_lists="$TF_DIST_LISTS"; bailIfError
+
+
+	fi
 
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>WARemoteEndpointURL</key>
+    <string>https://api.waveface.com/v2/</string>
+    <key>WARemoteEndpointCurrentVersion</key>
+    <integer>2</integer>
+    <key>WAAdvancedFeaturesEnabled</key>
+    <false/>
+    <key>WAUserRegistrationUsesWebVersion</key>
+    <true/>
+    <key>WAUserRegistrationEndpointURL</key>
+    <string>https://waveface.com/signup</string>
+    <key>WAUserFacebookAuthenticationEndpointURL</key>
+    <string>https://waveface.com/sns/facebook/signin</string>
+    <key>WAUserRequiresReauthentication</key>
+    <false/>
+    <key>WAUserPasswordResetEndpointURL</key>
+    <string>https://waveface.com/password/forgot</string>
+    <key>WAAlwaysAllowExpensiveRemoteOperations</key>
+    <false/>
+    <key>WAAlwaysDenyExpensiveRemoteOperations</key>
+    <true/>
+    <key>WADebugAutologinUserIdentifier</key>
+    <string>haskell@master.waveface.com</string>
+    <key>WADebugAutologinUserPassword</key>
+    <string>haskell</string>
+    <key>IRCrashReportRecipients</key>
+    <array>
+        <string>Waveface &lt;redmine@waveface.com&gt;</string>
+    </array>
+    <key>IRCrashReportingEnabled</key>
+    <true/>
+    <key>WADebugLastScanSyncBezelsVisible</key>
+    <false/>
+    <key>WADebugUsesDiscreteArticleFlip</key>
+    <false/>
+    <key>WADucklingsEnabled</key>
+    <false/>
+    <key>WAStreamFeaturesURL</key>
+    <string>http://waveface.com/stream/features</string>
+</dict>
+</plist>
