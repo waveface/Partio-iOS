@@ -164,7 +164,7 @@
 			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
 				
-			[AppDelegate() beginNetworkActivity];
+			//[AppDelegate() beginNetworkActivity];
 
 			[wSelf beginPerformingAutomaticRemoteUpdates];		
 			[wSelf beginPostponingDataRetrievalTimerFiring];
@@ -174,14 +174,14 @@
 				[wSelf endPerformingAutomaticRemoteUpdates];		
 				[wSelf endPostponingDataRetrievalTimerFiring];
 
-				[AppDelegate() endNetworkActivity];
+				//[AppDelegate() endNetworkActivity];
 				
 			} onFailure: ^ (NSError *error) {
 			
 				[wSelf endPerformingAutomaticRemoteUpdates];
 				[wSelf endPostponingDataRetrievalTimerFiring];
 				
-				[AppDelegate() endNetworkActivity];
+				//[AppDelegate() endNetworkActivity];
 				
 			}];
 		
@@ -192,7 +192,7 @@
 			if (!wSelf.userToken || !wSelf.apiKey || !wSelf.primaryGroupIdentifier)
 				return;
 				
-			[AppDelegate() beginNetworkActivity];
+			//[AppDelegate() beginNetworkActivity];
 
 			[wSelf beginPerformingAutomaticRemoteUpdates];		
 			[wSelf beginPostponingDataRetrievalTimerFiring];
@@ -202,14 +202,14 @@
 				[wSelf endPerformingAutomaticRemoteUpdates];		
 				[wSelf endPostponingDataRetrievalTimerFiring];
 
-				[AppDelegate() endNetworkActivity];
+				//[AppDelegate() endNetworkActivity];
 				
 			} onFailure: ^ {
 			
 				[wSelf endPerformingAutomaticRemoteUpdates];		
 				[wSelf endPostponingDataRetrievalTimerFiring];
 				
-				[AppDelegate() endNetworkActivity];
+				//[AppDelegate() endNetworkActivity];
 				
 			}];
 		

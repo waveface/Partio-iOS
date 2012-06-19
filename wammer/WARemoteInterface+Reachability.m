@@ -233,7 +233,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
       return;
       
     [wSelf beginPostponingDataRetrievalTimerFiring];
-    [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
+    //[((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
     [wSelf retrieveAssociatedStationsOfCurrentUserOnSuccess:^(NSArray *stationReps) {
 		
@@ -277,7 +277,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
         
         [wSelf endPostponingDataRetrievalTimerFiring];
 				
-				[AppDelegate() endNetworkActivity];
+				//[AppDelegate() endNetworkActivity];
       
       });
     
@@ -287,7 +287,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
       
         [wSelf endPostponingDataRetrievalTimerFiring];
 
-        [AppDelegate() endNetworkActivity];
+        //[AppDelegate() endNetworkActivity];
       
       });
         
