@@ -157,11 +157,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 	NSAssert1(self.hostURL, @"%s should only be invoked for detectors with an URL and no Internet address", __PRETTY_FUNCTION__);
 	
-	__block __typeof__(self) nrSelf = self;
-
+	__weak WAReachabilityDetector *wSelf = self;
+	
 	return [IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
 	
-    [nrSelf.recurrenceMachine beginPostponingOperations];
+    [wSelf.recurrenceMachine beginPostponingOperations];
     
     [[WARemoteInterface sharedInterface].engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
     
@@ -192,15 +192,15 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	
 		dispatch_async(dispatch_get_main_queue(), ^ {
 
-			[nrSelf.recurrenceMachine endPostponingOperations];
+			[wSelf.recurrenceMachine endPostponingOperations];
 			
 			if ([results isEqual:(id)kCFBooleanTrue]) {
 			
-				nrSelf.state = WAReachabilityStateAvailable;
+				wSelf.state = WAReachabilityStateAvailable;
 			
 			} else {
 			
-				nrSelf.state = WAReachabilityStateNotAvailable;
+				wSelf.state = WAReachabilityStateNotAvailable;
 			
 			}
 		

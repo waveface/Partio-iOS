@@ -183,7 +183,7 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 - (void) viewWillUnload {
 
 	[super viewWillUnload];
-	
+
 	for (UIGestureRecognizer *aGR in [self.view.gestureRecognizers copy])
 		[self.view removeGestureRecognizer:aGR];
 	
@@ -316,7 +316,18 @@ static NSString * const kObjectQueue = @"+[WAArticleViewController objectQueue]"
 - (void) viewDidDisappear:(BOOL)animated {
 
 	[super viewDidDisappear:animated];
-	[self didReceiveMemoryWarning];
+//	[self didReceiveMemoryWarning];
+	
+	for (UIGestureRecognizer *aGR in [self.view.gestureRecognizers copy])
+		[self.view removeGestureRecognizer:aGR];
+	
+	if (self.style & WACellArticleStyle) {
+	
+		[[[self class] objectQueue] addObject:self.view];
+	
+	}
+	
+	self.view = nil;
 	
 }
 
