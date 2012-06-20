@@ -110,6 +110,9 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
   NSString *cloudHost = [self.engine.context.baseURL host];
   BOOL incomingURLIsCloud = [[aHost host] isEqualToString:cloudHost];
+
+	#pragma mark FIXME FIXME DO NOT PUSH
+	return incomingURLIsCloud;	//	don’t even talk with Station
   
   if ([aRequestName hasPrefix:@"reachability"])
     return incomingURLIsCloud;

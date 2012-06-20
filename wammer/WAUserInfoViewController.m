@@ -21,11 +21,16 @@
 #import "IRMailComposeViewController.h"
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
+#import "WABlobSyncManager.h"
+
 @interface WAUserInfoViewController ()
+
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, retain) WAUser *user;
 
 - (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing;
+
+@property (nonatomic, readonly, assign) BOOL syncing;
 
 @end
 
@@ -145,7 +150,13 @@
 	
 	[self irObserveObject:ri keyPath:@"isPerformingAutomaticRemoteUpdates" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-		[wSelf handleRemoteInterfaceUpdateStatusChanged:[toValue boolValue]];
+		[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
+		
+	}];
+	
+	[self irObserveObject:wBlobSyncManager keyPath:@"operationQueue.operationCount" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
+	
+		[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
 		
 	}];
 	
@@ -335,6 +346,18 @@
 
 - (void) handleRemoteInterfaceUpdateStatusChanged:(BOOL)syncing {
 
+	if (![NSThread isMainThread]) {
+	
+		dispatch_async(dispatch_get_main_queue(), ^{
+		
+			[self handleRemoteInterfaceUpdateStatusChanged:syncing];
+			
+		});
+		
+		return;
+	
+	}
+	
 	UITableViewCell *cell = self.syncTableViewCell;
 	if (syncing) {
 		
@@ -487,6 +510,40 @@
 		return [[NSBundle mainBundle] displayVersionString];
 	
 	return NSLocalizedString(superAnswer, nil);
+
+}
+
++ (NSSet *) keyPathsForValuesAffectingSyncing {
+
+	return [NSSet setWithObjects:
+	
+		@"remoteInterface.performingAutomaticRemoteUpdates",
+		@"syncManager.operationQueue.operationCount",
+	
+	nil];
+
+}
+
+- (WARemoteInterface *) remoteInterface {
+	
+	return [WARemoteInterface sharedInterface];
+
+}
+
+- (WABlobSyncManager *) syncManager {
+
+	return [WABlobSyncManager sharedManager];
+
+}
+
+- (BOOL) isSyncing {
+
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	WABlobSyncManager * const sm = [WABlobSyncManager sharedManager];
+	
+	NSLog(@"%s: %x, %x", __PRETTY_FUNCTION__, ri.performingAutomaticRemoteUpdates, sm.operationQueue.operationCount);
+	
+	return ri.performingAutomaticRemoteUpdates || sm.operationQueue.operationCount;
 
 }
 

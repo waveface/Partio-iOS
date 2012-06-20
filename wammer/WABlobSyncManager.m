@@ -143,13 +143,6 @@
 
 }
 
-- (BOOL) isPerformingBlobSync {
-
-	NSParameterAssert(recurrenceMachine);
-	return !![recurrenceMachine isPostponingOperations];
-
-}
-
 - (BOOL) canPerformBlobSync {
 
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
@@ -165,7 +158,9 @@
 }
 
 - (void) performBlobSyncNow {
+	
 	[[self recurrenceMachine] scheduleOperationsNow];
+	
 }
 
 - (void) setNumberOfFiles:(NSUInteger)newNumberOfFiles {
