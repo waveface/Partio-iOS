@@ -13,6 +13,7 @@
 
 #import <objc/runtime.h>
 #import "WACompositionViewController+SubclassEyesOnly.h"
+#import "AGImagePickerController.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -33,11 +34,22 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 - (IRAction *) newPresentImagePickerControllerActionAnimated:(BOOL)animate sender:(id)sender {
 
 	__weak WACompositionViewController *wSelf = self;
-	__weak id wSender = sender;
+	
+	AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
+		NSLog(@"Failed. Error: %@", error);
+		if( error == nil ) {
+			[wSelf dismissModalViewControllerAnimated:YES];
+		}
+	} andSuccessBlock:^(NSArray *info) {
+		NSLog(@"Info: %@", info);
+		[wSelf handleSelectionWithArray:info];
+		[wSelf dismissModalViewControllerAnimated:YES];
+
+	}];
 	
 	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[wSelf presentImagePickerController:[wSelf newImagePickerController] sender:wSender animated:animate];
+		[wSelf presentModalViewController:imagePickerController animated:YES];
 	
 	}];
 
@@ -144,7 +156,16 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
+- (void) handleSelectionWithArray: (NSArray *)selectedAssets {
+	for (ALAsset *asset in selectedAssets) {
+		[self handleIncomingSelectedAssetURI:Nil representedAsset:asset];
+	}
+}
+
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
+	
+	NSLog(@"Assets URI Selected: %@", selectedAssetURI);
+	NSLog(@"ALAsset Selected: %@", representedAsset);
 	
 	if (selectedAssetURI || representedAsset) {
 
