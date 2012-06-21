@@ -1661,6 +1661,7 @@
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
+		FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 32.xcdatamodel"; sourceTree = "<group>"; };
 		FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTextEmphasisLabel.h; sourceTree = "<group>"; };
 		FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextEmphasisLabel.m; sourceTree = "<group>"; };
 		FF9DA0C513DFF89000D6B28B /* WAComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComment.h; sourceTree = "<group>"; };
@@ -4865,6 +4866,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */,
 				FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */,
 				FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */,
 				FF485CC0156A364C00A6175E /* WAModel 29.xcdatamodel */,
@@ -4897,7 +4899,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */;
+			currentVersion = FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
