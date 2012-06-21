@@ -63,7 +63,7 @@
 /* OK action in connection failure alert
    OK action in facebook login failure alert
    OK action in registration failure alert */
-"ACTION_OKAY" = "好";
+"ACTION_OKAY" = "確定";
 
 /* No comment provided by engineer. */
 "ACTION_OPEN_IN_SAFARI" = "使用 Safari 打開";
@@ -90,7 +90,7 @@
 "ACTION_SIGN_IN" = "登入";
 
 /* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳號登入";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "登出";
@@ -210,7 +210,7 @@
 
 /* Title for authentication failure in login view
    Title for authentication failure in web view */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "無效的帳號密碼";
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "密碼需為6-16個字元，無空白";
 
 /* Recovery notion for connection failure recovey */
 "ERROR_CONNECTION_FAILED_RECOVERY_NOTION" = "請稍候再嘗試登入";
@@ -364,7 +364,7 @@
 "SYNC_BUTTON_USABLE_TITLE" = "現在同步";
 
 /* In Account Info Sync Section */
-"SYNC_INFO_FOOTER" = "上次同步%@";
+"SYNC_INFO_FOOTER" = "上次同步：%@";
 
 /* Title on the text stack more / less toggle button for “Less” */
 "TEXT_ELEMENT_TOGGLE_LESS_TITLE" = "更少";
@@ -541,7 +541,7 @@
 "LOCAL_PENDING_OBJECTS_TITLE" = "本裝置尚未上傳原檔數量";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SYNC_INFO_FOOTER"; ObjectID = "aHi-Wv-Eu2"; */
-"SYNC_INFO_FOOTER" = "上次同步%@";
+"SYNC_INFO_FOOTER" = "上次同步：%@";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "btU-SG-jyB"; */
 "NOUN_NICKNAME" = "使用者名稱";
