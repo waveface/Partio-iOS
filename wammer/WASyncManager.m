@@ -14,6 +14,7 @@
 #import "WAReachabilityDetector.h"
 
 #import "WASyncManager+FullQualityFileSync.h"
+#import "WASyncManager+DirtyArticleSync.h"
 
 
 @interface WASyncManager ()
@@ -110,6 +111,7 @@
 	_recurrenceMachine.recurrenceInterval = 30;
 	
 	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
+	[_recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];
 	
 	return _recurrenceMachine;
 

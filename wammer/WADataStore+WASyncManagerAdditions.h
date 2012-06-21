@@ -14,4 +14,6 @@
 
 - (NSUInteger) numberOfFilesWithSyncableBlobsInContext:(NSManagedObjectContext *)context;
 
+- (void) enumerateDirtyArticlesInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAArticle *anArticle, NSUInteger index, BOOL *stop))block;
+
 @end

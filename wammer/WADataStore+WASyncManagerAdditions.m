@@ -54,4 +54,33 @@
 	
 }
 
+- (NSFetchRequest *) fetchRequestForDirtyArticlesInContext:(NSManagedObjectContext *)context {
+
+	return [context.persistentStoreCoordinator.managedObjectModel fetchRequestFromTemplateWithName:@"WAFRArticlesNeedingSync" substitutionVariables:[NSDictionary dictionary]];
+
+}
+
+- (void) enumerateDirtyArticlesInContext:(NSManagedObjectContext *)context usingBlock:(void(^)(WAArticle *anArticle, NSUInteger index, BOOL *stop))block {
+
+	NSParameterAssert(block);
+
+	if (!context)
+		context = [self disposableMOC];
+	
+	NSFetchRequest *fr = [self fetchRequestForDirtyArticlesInContext:context];
+	
+	fr.sortDescriptors = [NSArray arrayWithObjects:
+		[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO],
+	nil];
+	
+	NSArray *articles = [context executeFetchRequest:fr error:nil];
+	
+	[articles enumerateObjectsUsingBlock: ^ (WAArticle *anArticle, NSUInteger idx, BOOL *stop) {
+		
+		block(anArticle, idx, stop);
+		
+	}];
+
+}
+
 @end

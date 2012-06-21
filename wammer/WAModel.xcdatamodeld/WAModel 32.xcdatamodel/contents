@@ -222,13 +222,14 @@
     <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>
     <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="((draft == nil) OR (draft != 1)) AND ((hidden == nil) OR (hidden == 0))"/>
+    <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="resourceFilePath != nil AND resourceURL == nil AND article.draft == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>
-        <element name="WAArticle" positionX="0" positionY="0" width="0" height="285"/>
+        <element name="WAArticle" positionX="0" positionY="0" width="0" height="270"/>
         <element name="WAComment" positionX="0" positionY="0" width="0" height="0"/>
         <element name="WAFile" positionX="0" positionY="0" width="0" height="420"/>
         <element name="WAFilePageElement" positionX="0" positionY="0" width="0" height="0"/>

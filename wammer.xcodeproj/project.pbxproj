@@ -474,6 +474,7 @@
 		FF9737661551292200D6E7A9 /* WADiscreteLayoutArea.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */; };
 		FF9809311592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */; };
 		FF9809341592E59800462FCD /* WASyncManager+FullQualityFileSync.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */; };
+		FF9809371592EB2600462FCD /* WASyncManager+DirtyArticleSync.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
@@ -1668,6 +1669,8 @@
 		FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADataStore+WASyncManagerAdditions.m"; sourceTree = "<group>"; };
 		FF9809321592E59800462FCD /* WASyncManager+FullQualityFileSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FullQualityFileSync.h"; sourceTree = "<group>"; };
 		FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+FullQualityFileSync.m"; sourceTree = "<group>"; };
+		FF9809351592EB2600462FCD /* WASyncManager+DirtyArticleSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+DirtyArticleSync.h"; sourceTree = "<group>"; };
+		FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+DirtyArticleSync.m"; sourceTree = "<group>"; };
 		FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTextEmphasisLabel.h; sourceTree = "<group>"; };
 		FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextEmphasisLabel.m; sourceTree = "<group>"; };
 		FF9DA0C513DFF89000D6B28B /* WAComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComment.h; sourceTree = "<group>"; };
@@ -2106,6 +2109,8 @@
 				FF0024FE14B44D5400F54AAF /* WASyncManager.m */,
 				FF9809321592E59800462FCD /* WASyncManager+FullQualityFileSync.h */,
 				FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */,
+				FF9809351592EB2600462FCD /* WASyncManager+DirtyArticleSync.h */,
+				FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */,
 				FF98092F1592E4F700462FCD /* WADataStore+WASyncManagerAdditions.h */,
 				FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */,
 			);
@@ -4357,6 +4362,7 @@
 				4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */,
 				FF9809311592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m in Sources */,
 				FF9809341592E59800462FCD /* WASyncManager+FullQualityFileSync.m in Sources */,
+				FF9809371592EB2600462FCD /* WASyncManager+DirtyArticleSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
