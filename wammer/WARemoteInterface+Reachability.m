@@ -110,7 +110,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
   NSString *cloudHost = [self.engine.context.baseURL host];
   BOOL incomingURLIsCloud = [[aHost host] isEqualToString:cloudHost];
-  
+
   if ([aRequestName hasPrefix:@"reachability"])
     return incomingURLIsCloud;
     

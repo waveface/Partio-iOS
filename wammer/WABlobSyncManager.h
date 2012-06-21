@@ -30,10 +30,11 @@ enum {
 
 - (void) beginPostponingBlobSync;
 - (void) endPostponingBlobSync;
-- (BOOL) isPerformingBlobSync;
+
 - (void) performBlobSyncNow;
 
 @property (nonatomic, readonly, assign) NSUInteger numberOfFiles;
+@property (nonatomic, readonly, strong) NSOperationQueue *operationQueue;
 
 @end
 
