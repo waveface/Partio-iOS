@@ -46,6 +46,7 @@
 		NSAssert1(article, @"WAFile entity %@ must have already been associated with an article", pickedFile);
 		
 		article.representingFile = pickedFile;
+		article.dirty = (id)kCFBooleanTrue;
 		article.modificationDate = [NSDate date];
 		
 		NSCParameterAssert(article.representingFile == pickedFile);

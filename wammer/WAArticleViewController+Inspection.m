@@ -251,6 +251,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			//	Or, create -isBeingInspected on article items	
 			
 			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			article.dirty = (id)kCFBooleanTrue;
 			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
@@ -320,6 +321,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			WAArticle *article = wSelf.article;
 		
 			article.hidden = (id)kCFBooleanTrue;
+			article.dirty = (id)kCFBooleanTrue;
 			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
