@@ -88,7 +88,7 @@
 		4BF9827D157DF29000172C4B /* SignInWithFacebookButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF98279157DF29000172C4B /* SignInWithFacebookButton@2x.png */; };
 		4BF98280157DF71000172C4B /* FacebookLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9827E157DF71000172C4B /* FacebookLogo.png */; };
 		4BF98281157DF71000172C4B /* FacebookLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF9827F157DF71000172C4B /* FacebookLogo@2x.png */; };
-		FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */; };
+		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF0239CE155CCF7B00BC7400 /* WASliderKnob.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */; };
 		FF0239CF155CCF7B00BC7400 /* WASliderKnob@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */; };
 		FF0239D0155CCF7B00BC7400 /* WASliderKnobDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = FF0239CA155CCF7B00BC7400 /* WASliderKnobDisabled.png */; };
@@ -472,6 +472,9 @@
 		FF946023152D7EF10034D540 /* WAAppearance.m in Sources */ = {isa = PBXBuildFile; fileRef = FF946022152D7EF00034D540 /* WAAppearance.m */; };
 		FF96BDC8152420C3007B6405 /* WAArticleViewController+Inspection.m in Sources */ = {isa = PBXBuildFile; fileRef = FF96BDC7152420C3007B6405 /* WAArticleViewController+Inspection.m */; };
 		FF9737661551292200D6E7A9 /* WADiscreteLayoutArea.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9737651551292200D6E7A9 /* WADiscreteLayoutArea.m */; };
+		FF9809311592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */; };
+		FF9809341592E59800462FCD /* WASyncManager+FullQualityFileSync.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */; };
+		FF9809371592EB2600462FCD /* WASyncManager+DirtyArticleSync.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
@@ -1231,8 +1234,8 @@
 		4BF98279157DF29000172C4B /* SignInWithFacebookButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SignInWithFacebookButton@2x.png"; path = "Resources/SignInWithFacebookButton@2x.png"; sourceTree = "<group>"; };
 		4BF9827E157DF71000172C4B /* FacebookLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FacebookLogo.png; path = Resources/FacebookLogo.png; sourceTree = "<group>"; };
 		4BF9827F157DF71000172C4B /* FacebookLogo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FacebookLogo@2x.png"; path = "Resources/FacebookLogo@2x.png"; sourceTree = "<group>"; };
-		FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABlobSyncManager.h; sourceTree = "<group>"; };
-		FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABlobSyncManager.m; sourceTree = "<group>"; };
+		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
+		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF0239C8155CCF7B00BC7400 /* WASliderKnob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnob.png; path = Resources/WASliderKnob.png; sourceTree = "<group>"; };
 		FF0239C9155CCF7B00BC7400 /* WASliderKnob@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WASliderKnob@2x.png"; path = "Resources/WASliderKnob@2x.png"; sourceTree = "<group>"; };
 		FF0239CA155CCF7B00BC7400 /* WASliderKnobDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WASliderKnobDisabled.png; path = Resources/WASliderKnobDisabled.png; sourceTree = "<group>"; };
@@ -1661,6 +1664,13 @@
 		FF97382413D821DF003D1722 /* WADataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStore.m; sourceTree = "<group>"; };
 		FF97384713D8278E003D1722 /* WARemoteInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARemoteInterface.h; sourceTree = "<group>"; };
 		FF97384813D8278E003D1722 /* WARemoteInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARemoteInterface.m; sourceTree = "<group>"; };
+		FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 32.xcdatamodel"; sourceTree = "<group>"; };
+		FF98092F1592E4F700462FCD /* WADataStore+WASyncManagerAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WADataStore+WASyncManagerAdditions.h"; sourceTree = "<group>"; };
+		FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WADataStore+WASyncManagerAdditions.m"; sourceTree = "<group>"; };
+		FF9809321592E59800462FCD /* WASyncManager+FullQualityFileSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+FullQualityFileSync.h"; sourceTree = "<group>"; };
+		FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+FullQualityFileSync.m"; sourceTree = "<group>"; };
+		FF9809351592EB2600462FCD /* WASyncManager+DirtyArticleSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WASyncManager+DirtyArticleSync.h"; sourceTree = "<group>"; };
+		FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WASyncManager+DirtyArticleSync.m"; sourceTree = "<group>"; };
 		FF9A17B713FA5371009E4CC4 /* WAArticleTextEmphasisLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTextEmphasisLabel.h; sourceTree = "<group>"; };
 		FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextEmphasisLabel.m; sourceTree = "<group>"; };
 		FF9DA0C513DFF89000D6B28B /* WAComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComment.h; sourceTree = "<group>"; };
@@ -2095,8 +2105,14 @@
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
 			isa = PBXGroup;
 			children = (
-				FF0024FD14B44D5400F54AAF /* WABlobSyncManager.h */,
-				FF0024FE14B44D5400F54AAF /* WABlobSyncManager.m */,
+				FF0024FD14B44D5400F54AAF /* WASyncManager.h */,
+				FF0024FE14B44D5400F54AAF /* WASyncManager.m */,
+				FF9809321592E59800462FCD /* WASyncManager+FullQualityFileSync.h */,
+				FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */,
+				FF9809351592EB2600462FCD /* WASyncManager+DirtyArticleSync.h */,
+				FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */,
+				FF98092F1592E4F700462FCD /* WADataStore+WASyncManagerAdditions.h */,
+				FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */,
 			);
 			name = "Blob Syncing";
 			path = wammer;
@@ -4268,7 +4284,7 @@
 				FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */,
 				FF3AEEF814A30EEB00FC4E19 /* WAArticleViewController_FullScreen_Photo.m in Sources */,
 				FF91960D14AB09C400352E4D /* WADimmingView.m in Sources */,
-				FF0024FF14B44D5400F54AAF /* WABlobSyncManager.m in Sources */,
+				FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */,
 				FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */,
 				FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */,
 				FF72EAE514BDC30F0093EAB7 /* WAGestureWindow.m in Sources */,
@@ -4344,6 +4360,9 @@
 				FF559493157CF24F0048EA1B /* WAArticleStyle.m in Sources */,
 				FFD4F93F157E0A080027BF3F /* WAArticleView+ReuseSupport.m in Sources */,
 				4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */,
+				FF9809311592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m in Sources */,
+				FF9809341592E59800462FCD /* WASyncManager+FullQualityFileSync.m in Sources */,
+				FF9809371592EB2600462FCD /* WASyncManager+DirtyArticleSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4865,6 +4884,7 @@
 		FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */,
 				FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */,
 				FF50D683156B73B50021011D /* WAModel 30.xcdatamodel */,
 				FF485CC0156A364C00A6175E /* WAModel 29.xcdatamodel */,
@@ -4897,7 +4917,7 @@
 				FFCD324614B997B70035C4F5 /* WAModel 2.xcdatamodel */,
 				FFCD324E14B997B70035C4F5 /* WAModel.xcdatamodel */,
 			);
-			currentVersion = FFD06A41156E206800021C55 /* WAModel 31.xcdatamodel */;
+			currentVersion = FF9808C81592E27000462FCD /* WAModel 32.xcdatamodel */;
 			path = WAModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

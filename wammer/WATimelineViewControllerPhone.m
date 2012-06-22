@@ -10,6 +10,8 @@
 
 #import <objc/runtime.h>
 
+#import <TargetConditionals.h>
+
 #import "UIKit+IRAdditions.h"
 
 #import "WADefines.h"
@@ -863,6 +865,9 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	if (anAction == @selector(removeArticle:))
 		return YES;
 	
+	if (anAction == @selector(makeDirty:))
+		return YES;
+	
 	return NO;
 
 }
@@ -888,7 +893,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	menuController.arrowDirection = UIMenuControllerArrowDown;
 		
 	NSMutableArray *menuItems = [NSMutableArray array];
-		
+
+#if TARGET_IPHONE_SIMULATOR
+
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Make Dirty" action:@selector(makeDirty:)]];
+
+#endif
+
 	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:([article.favorite isEqual:(id)kCFBooleanTrue] ?
 		NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Action marking article as not favorite") :
 		NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Action marking article as favorite")) action:@selector(toggleFavorite:)]];
@@ -1019,6 +1030,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[controller managedActionSheet] showInView:self.navigationController.view];
 		
+}
+
+- (void) makeDirty:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
+	article.dirty = (id)kCFBooleanTrue;
+	[article.managedObjectContext save:nil];
+
 }
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {

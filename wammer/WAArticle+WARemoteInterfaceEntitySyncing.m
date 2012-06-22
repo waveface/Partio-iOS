@@ -646,24 +646,28 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
 				savedPost.draft = (id)kCFBooleanFalse;
 				
-				if (!savedPost.identifier) {
+				NSDictionary * const mapping = [WAArticle remoteDictionaryConfigurationMapping];
+				id (^valueForMappingKey)(NSString *) = ^ (NSString *hostKey) {
+					NSString *networkKey = [[mapping allKeysForObject:hostKey] lastObject];
+					return [[self class] transformedValue:[results objectForKey:networkKey] fromRemoteKeyPath:networkKey toLocalKeyPath:hostKey];
+				};
 				
-					NSDictionary *mapping = [WAArticle remoteDictionaryConfigurationMapping];
-					NSString *identifierHostKey = @"identifier";
-					NSString *identifierNetworkKey = [[mapping allKeysForObject:identifierHostKey] lastObject];
-					
-					NSString *identifier = [WAArticle transformedValue:[results objectForKey:identifierNetworkKey] fromRemoteKeyPath:identifierNetworkKey toLocalKeyPath:identifierHostKey];
-					
-					savedPost.identifier = identifier;
+				if (!savedPost.identifier)
+					savedPost.identifier = valueForMappingKey(@"identifier");
 				
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSCParameterAssert([touchedArticles containsObject:savedPost] && ([touchedArticles count] == 1));
+				
+				NSDate *remoteModDate = valueForMappingKey(@"modificationDate");	//	FIXME: may NOT have it
+				NSDate *localModDate = savedPost.modificationDate;
+				
+				NSCParameterAssert([remoteModDate isKindOfClass:[NSDate class]] && [localModDate isKindOfClass:[NSDate class]]);
+				if ([remoteModDate isEqualToDate:localModDate]) {
+					savedPost.dirty = (id)kCFBooleanFalse;
+					NSLog(@"post %@ is saved, and not dirty any more; it does not need further syncing", savedPost);
+				} else {
+					NSLog(@"post %@ is saved but needs additional syncing", savedPost);
 				}
-				
-				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-
-				if (savedPost)
-					NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
-				
-				NSParameterAssert([touchedObjects count]);
 				
 				NSError *savingError = nil;
 				BOOL didSave = [context save:&savingError];
