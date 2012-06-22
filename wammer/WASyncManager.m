@@ -108,7 +108,7 @@
 	
 	_recurrenceMachine = [[IRRecurrenceMachine alloc] init];
 	_recurrenceMachine.queue.maxConcurrentOperationCount = 1;
-	_recurrenceMachine.recurrenceInterval = 30;
+	_recurrenceMachine.recurrenceInterval = 5;
 	
 	[_recurrenceMachine addRecurringOperation:[self fullQualityFileSyncOperationPrototype]];
 	[_recurrenceMachine addRecurringOperation:[self dirtyArticleSyncOperationPrototype]];

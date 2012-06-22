@@ -9,18 +9,11 @@
 #import "WASyncManager+DirtyArticleSync.h"
 #import "Foundation+IRAdditions.h"
 #import "WADataStore+WASyncManagerAdditions.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 
 @implementation WASyncManager (DirtyArticleSync)
 
 - (IRAsyncOperation *) dirtyArticleSyncOperationPrototype {
-
-	//	Holds NSManagedObjectIDs of Article entities being synced to their last known modification dates
-
-	static NSMutableDictionary *idsToModDates = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-    idsToModDates = [NSMutableDictionary dictionary];
-	});
 
 	__block NSManagedObjectContext *context = nil;
 	
@@ -30,15 +23,28 @@
 		context = [ds disposableMOC];
 		
 		[context performBlockAndWait:^{
+		
+			NSMutableArray *articleURIs = [NSMutableArray array];
 			
 			[ds enumerateDirtyArticlesInContext:context usingBlock:^(WAArticle *anArticle, NSUInteger index, BOOL *stop) {
 			
-				NSLog(@"Found article %@ needing sync", anArticle);
-				
-				//	Emit sync operation for article
+				NSLog(@"Article %@ is dirty and needs to be synced if not already being so", anArticle);
+			
+				NSURL *articleURL = [[anArticle objectID] URIRepresentation];
+				[articleURIs addObject:articleURL];
 				
 			}];
-		
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+			
+				for (NSURL *articleURL in articleURIs)
+					if (![ds isUpdatingArticle:articleURL])
+						[ds updateArticle:articleURL onSuccess:nil onFailure:nil];
+				
+				callback((id)kCFBooleanTrue);
+				
+			});
+
 		}];
 		
 	} trampoline:^(IRAsyncOperationInvoker block) {
