@@ -158,7 +158,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
 	for (ALAsset *asset in selectedAssets) {
-		[self handleIncomingSelectedAssetURI:Nil representedAsset:asset];
+		[self handleIncomingSelectedAssetURI:nil representedAsset:asset];
 	}
 }
 
