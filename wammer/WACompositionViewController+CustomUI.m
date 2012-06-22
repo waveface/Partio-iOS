@@ -48,7 +48,7 @@
 		
 		WADataStore *ds = [WADataStore defaultStore];
 		NSManagedObjectContext *moc = [ds disposableMOC];
-		WAArticle *article = [moc irManagedObjectForURI:anArticleURLOrNil];
+		WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURLOrNil];
 		if (article) {
 			article.draft = (id)kCFBooleanFalse;
 			[moc save:nil];
