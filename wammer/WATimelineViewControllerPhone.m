@@ -864,9 +864,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	if (anAction == @selector(removeArticle:))
 		return YES;
+
+#if TARGET_IPHONE_SIMULATOR
 	
 	if (anAction == @selector(makeDirty:))
 		return YES;
+
+#endif
 	
 	return NO;
 
@@ -936,6 +940,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
 	
 	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+	article.dirty = (id)kCFBooleanTrue;
 	article.modificationDate = [NSDate date];
 	
 	NSError *savingError = nil;
@@ -999,6 +1004,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	IRAction *deleteAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Title for deleting an article from the Timeline") block:^ {
 	
 		article.hidden = (id)kCFBooleanTrue;
+		article.dirty = (id)kCFBooleanTrue;
 		article.modificationDate = [NSDate date];
 		
 		NSError *savingError = nil;

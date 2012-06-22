@@ -222,7 +222,7 @@
     <fetchRequest name="WAFRArticle" entity="WAArticle" predicateString="identifier == $Identifier"/>
     <fetchRequest name="WAFRArticleDrafts" entity="WAArticle" predicateString="draft == 1"/>
     <fetchRequest name="WAFRArticles" entity="WAArticle" predicateString="((draft == nil) OR (draft != 1)) AND ((hidden == nil) OR (hidden == 0))"/>
-    <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1"/>
+    <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1 AND draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="resourceFilePath != nil AND resourceURL == nil AND article.draft == 0"/>

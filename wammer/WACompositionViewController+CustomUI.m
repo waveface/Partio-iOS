@@ -43,8 +43,18 @@
 	
 		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 		[busyBezel show];
-	
-		[[WADataStore defaultStore] updateArticle:anArticleURLOrNil onSuccess: ^ {
+		
+		//	POINT OF NO RETURN
+		
+		WADataStore *ds = [WADataStore defaultStore];
+		NSManagedObjectContext *moc = [ds disposableMOC];
+		WAArticle *article = [moc irManagedObjectForURI:anArticleURLOrNil];
+		if (article) {
+			article.draft = (id)kCFBooleanFalse;
+			[moc save:nil];
+		}
+		
+		[ds updateArticle:anArticleURLOrNil onSuccess: ^ {
 		
 			dispatch_async(dispatch_get_main_queue(), ^ {
 			

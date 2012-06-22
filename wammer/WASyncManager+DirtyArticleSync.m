@@ -28,8 +28,6 @@
 			
 			[ds enumerateDirtyArticlesInContext:context usingBlock:^(WAArticle *anArticle, NSUInteger index, BOOL *stop) {
 			
-				NSLog(@"Article %@ is dirty and needs to be synced if not already being so", anArticle);
-			
 				NSURL *articleURL = [[anArticle objectID] URIRepresentation];
 				[articleURIs addObject:articleURL];
 				
@@ -53,7 +51,7 @@
 		
 	} callback:^(id results) {
 		
-		NSLog(@"callback res %@", results);
+		//	NO OP
 		
 	} callbackTrampoline:^(IRAsyncOperationInvoker block) {
 		
