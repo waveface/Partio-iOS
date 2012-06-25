@@ -51,6 +51,8 @@
 		WAArticle *article = (WAArticle *)[moc irManagedObjectForURI:anArticleURLOrNil];
 		if (article) {
 			article.draft = (id)kCFBooleanFalse;
+			article.dirty = (id)kCFBooleanTrue;
+			article.creationDeviceName = [UIDevice currentDevice].name;
 			[moc save:nil];
 		}
 		
