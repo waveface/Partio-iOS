@@ -205,11 +205,7 @@
 			
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
@@ -1110,11 +1106,7 @@
 			if (!anArticleURLOrNil)
 				return;
 				
-			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				

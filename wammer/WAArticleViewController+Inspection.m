@@ -264,11 +264,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			
 		} maintainingPositionForLayoutItem:article sender:wSelf completion:^{
 
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
@@ -332,7 +328,6 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			
 			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
 				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
 				(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
 				
 			nil] onSuccess:^{
