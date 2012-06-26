@@ -14,8 +14,6 @@
 
 
 NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpdateShowsBezels";
-NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleUpdateVisibilityOnly";
-
 
 @interface WADataStore (WARemoteInterfaceAdditions_Private)
 
@@ -102,8 +100,6 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 	
 	BOOL usesBezels = [[options objectForKey:kWADataStoreArticleUpdateShowsBezels] isEqual:(id)kCFBooleanTrue];
 	
-	BOOL updateVisibilityOnly = [[options objectForKey:kWADataStoreArticleUpdateVisibilityOnly] isEqual:(id)kCFBooleanTrue];
-
 	__weak WADataStore *wSelf = self;
 	
 	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];	//	Sigh
@@ -164,33 +160,12 @@ NSString * const kWADataStoreArticleUpdateVisibilityOnly = @"WADataStoreArticleU
 		
 	};
 	
-	
-	if (updateVisibilityOnly) {
-	
-		[[WARemoteInterface sharedInterface] configurePost:article.identifier inGroup:article.group.identifier withVisibilityStatus:![article.hidden isEqual:(id)kCFBooleanTrue] onSuccess:^{
+	[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
 		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				handleResult(YES, nil);
-			});
-			
-		} onFailure:^(NSError *error) {
+		handleResult(didFinish, error);
 		
-			dispatch_async(dispatch_get_main_queue(), ^{
-				handleResult(NO, error);
-			});
-			
-		}];
-	
-	} else {
-	
-		[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
-			
-			handleResult(didFinish, error);
-					
-		}];
-		
-	}
-	
+	}];
+
 }
 
 - (BOOL) isUpdatingArticle:(NSURL *)anObjectURI {
