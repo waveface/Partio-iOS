@@ -12,7 +12,7 @@
 
 - (void) retrieveAssociatedStationsOfCurrentUserOnSuccess:(void(^)(NSArray *stationReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
-	[self.engine fireAPIRequestNamed:@"users/findMyStation" withArguments:nil options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	[self.engine fireAPIRequestNamed:@"users/findMyStation" withArguments:nil options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (successBlock)
 			successBlock([inResponseOrNil valueForKeyPath:@"stations"]);
@@ -28,7 +28,7 @@
 		anIdentifier, @"station_id",
 		[anURL absoluteURL], @"location",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (successBlock)
 			successBlock([inResponseOrNil valueForKeyPath:@"station"]);
@@ -44,7 +44,7 @@
 		anIdentifier, @"station_id",
 		[anURL absoluteURL], @"location",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (successBlock)
 			successBlock();
@@ -59,7 +59,7 @@
 	
 		anIdentifier, @"station_id",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (successBlock)
 			successBlock();

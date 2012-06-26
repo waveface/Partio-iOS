@@ -202,15 +202,16 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 	
 	return [IRAsyncOperation operationWithWorkerBlock:^(void(^aCallback)(id)) {
 	
-    [wSelf.recurrenceMachine beginPostponingOperations];
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+		if (!ri.userToken)
+			return;
+    
+		[wSelf.recurrenceMachine beginPostponingOperations];
 
-	//	DO NOT ping stations if not under WIFI
-	
-	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	if ([self.hostURL isEqual:ri.engine.context.baseURL] && ![ri hasWiFiConnection]) {
-		[wSelf.recurrenceMachine endPostponingOperations];
-		return;
-	}
+		if (!([ri hasWiFiConnection] && [ri hasReachableStation])) {
+			[wSelf.recurrenceMachine endPostponingOperations];
+			return;
+		}
 
     [ri.engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
     
@@ -222,7 +223,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
       [NSURL URLWithString:@"reachability/ping" relativeToURL:hostURL], kIRWebAPIEngineRequestHTTPBaseURL,
 				  [NSNumber numberWithDouble:([self.hostURL isEqual:ri.engine.context.baseURL] ? 10.0f : 3.0f)], kIRWebAPIRequestTimeout,
     
-    nil] validator:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+    nil] validator:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
       //  Must have returned status value 200
       NSNumber *httpStatusCode = [inResponseOrNil objectForKey:@"status"];
@@ -234,11 +235,11 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
       }
       return NO;
       
-    } successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+    } successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 
       aCallback((id)kCFBooleanTrue);
 			
-    } failureHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+    } failureHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
     
 	  [self.recurrenceMachine setRecurrenceInterval:[self backOffBlock](NO)];
       aCallback((id)kCFBooleanFalse);

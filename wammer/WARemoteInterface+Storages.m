@@ -19,7 +19,7 @@ NSString * const kWARemoteInterfaceDropboxStorage = @"dropbox";
 		
 		aStorage, @"type",
 				
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -39,7 +39,7 @@ NSString * const kWARemoteInterfaceDropboxStorage = @"dropbox";
 		aStorage, @"type",
 		stationAccountOrNil, @"account",
 				
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -58,7 +58,7 @@ NSString * const kWARemoteInterfaceDropboxStorage = @"dropbox";
 		
 		aStorage, @"type",
 				
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -78,7 +78,7 @@ NSString * const kWARemoteInterfaceDropboxStorage = @"dropbox";
 		
 		aStorage, @"type",
 				
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;

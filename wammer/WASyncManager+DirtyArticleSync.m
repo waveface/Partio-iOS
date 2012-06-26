@@ -10,6 +10,7 @@
 #import "Foundation+IRAdditions.h"
 #import "WADataStore+WASyncManagerAdditions.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
+#import "WARemoteInterface.h"
 
 @implementation WASyncManager (DirtyArticleSync)
 
@@ -18,6 +19,10 @@
 	__block NSManagedObjectContext *context = nil;
 	
 	return [IRAsyncOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+		
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+		if (!ri.userToken)
+			return;
 		
 		WADataStore * const ds = [WADataStore defaultStore];
 		context = [ds disposableMOC];
