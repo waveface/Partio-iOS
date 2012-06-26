@@ -326,11 +326,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
