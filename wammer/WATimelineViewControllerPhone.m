@@ -10,6 +10,8 @@
 
 #import <objc/runtime.h>
 
+#import <TargetConditionals.h>
+
 #import "UIKit+IRAdditions.h"
 
 #import "WADefines.h"
@@ -862,6 +864,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	if (anAction == @selector(removeArticle:))
 		return YES;
+
+#if TARGET_IPHONE_SIMULATOR
+	
+	if (anAction == @selector(makeDirty:))
+		return YES;
+
+#endif
 	
 	return NO;
 
@@ -888,7 +897,13 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	menuController.arrowDirection = UIMenuControllerArrowDown;
 		
 	NSMutableArray *menuItems = [NSMutableArray array];
-		
+
+#if TARGET_IPHONE_SIMULATOR
+
+	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:@"Make Dirty" action:@selector(makeDirty:)]];
+
+#endif
+
 	[menuItems addObject:[[UIMenuItem alloc] initWithTitle:([article.favorite isEqual:(id)kCFBooleanTrue] ?
 		NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Action marking article as not favorite") :
 		NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Action marking article as favorite")) action:@selector(toggleFavorite:)]];
@@ -925,6 +940,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
 	
 	article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+	article.dirty = (id)kCFBooleanTrue;
 	article.modificationDate = [NSDate date];
 	
 	NSError *savingError = nil;
@@ -933,11 +949,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 	
-	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-		
-	nil] onSuccess:^{
+	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 		
 		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 		
@@ -988,6 +1000,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	IRAction *deleteAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_DELETE", @"Title for deleting an article from the Timeline") block:^ {
 	
 		article.hidden = (id)kCFBooleanTrue;
+		article.dirty = (id)kCFBooleanTrue;
 		article.modificationDate = [NSDate date];
 		
 		NSError *savingError = nil;
@@ -996,12 +1009,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 		
-		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
-			
-		nil] onSuccess:^{
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 			
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 			
@@ -1019,6 +1027,18 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[controller managedActionSheet] showInView:self.navigationController.view];
 		
+}
+
+- (void) makeDirty:(id)sender {
+
+	NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+	WAArticle *article = [self.fetchedResultsController objectAtIndexPath:selectedIndexPath];
+	
+	NSAssert1(selectedIndexPath && article, @"Selected index path %@ and underlying object must exist", selectedIndexPath);
+	
+	article.dirty = (id)kCFBooleanTrue;
+	[article.managedObjectContext save:nil];
+
 }
 
 - (void) handleDateSelect:(UIBarButtonItem *)sender {

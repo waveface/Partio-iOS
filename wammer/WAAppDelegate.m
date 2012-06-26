@@ -182,8 +182,8 @@
 
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
 
-	// beginNetworkActivity is already called during request transformation, DO NOT call it again here
-	//[self beginNetworkActivity];
+	// FIXME: beginNetworkActivity might be called again during request transformation and causes network activity indicator always visible
+	[self beginNetworkActivity];
 
 }
 

@@ -82,11 +82,12 @@
 	
 	} else {
 	
-		//	Else, make a new one.
+		WAArticle *article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+		article.dirty = (id)kCFBooleanTrue;
+		article.draft = (id)kCFBooleanTrue;
+		article.creationDate = [NSDate date];
 		
-		returnedController.article = [WAArticle objectInsertingIntoContext:returnedController.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		returnedController.article.draft = [NSNumber numberWithBool:YES];
-		returnedController.article.creationDate = [NSDate date];
+		returnedController.article = article;
 		
 	}
 	

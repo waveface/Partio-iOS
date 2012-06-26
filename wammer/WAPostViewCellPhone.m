@@ -92,6 +92,20 @@
 		
 		cell = [loadedObjects objectAtIndex:1];
 	
+	} else if ([identifier isEqualToString:@"PostCell-WebLinkOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-WebLinkOnly" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:0];
+
+	} else if ([identifier isEqualToString:@"PostCell-WebLinkOnlyNoPhoto"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-WebLinkOnly" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:1];
+
 	} else if ([identifier isEqualToString:@"PostCell-TextOnly"]) {
 	
 		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-Default" bundle:[NSBundle mainBundle]];
@@ -99,6 +113,27 @@
 		
 		cell = [loadedObjects objectAtIndex:0];
 	
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-1-PhotoOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageOnlyStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:0];
+
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-2-PhotoOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageOnlyStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:1];
+
+	} else if ([identifier isEqualToString:@"PostCell-Stacked-3-PhotoOnly"]) {
+
+		UINib *nib = [UINib nibWithNibName:@"WAPostViewCellPhone-ImageOnlyStack" bundle:[NSBundle mainBundle]];
+		NSArray *loadedObjects = [nib instantiateWithOwner:nil options:nil];
+
+		cell = [loadedObjects objectAtIndex:2];
+
 	}
 	
 	cell.selectedBackgroundView = ((^ {
@@ -128,10 +163,17 @@
 			
 			if (anyPreview.text || anyPreview.url || anyPreview.graphElement.text || anyPreview.graphElement.title) {
 			
-				if ([anyPreview.graphElement.representingImage.imageRemoteURL length] != 0)
-					return @"PostCell-WebLink";
-			
-				return @"PostCell-WebLinkNoPhoto";
+				if ([anyPreview.graphElement.representingImage.imageRemoteURL length] != 0) {
+					if ([article.text length] > 0) {
+						return @"PostCell-WebLink";
+					}
+					return @"PostCell-WebLinkOnly";
+				} else {
+					if ([article.text length] > 0) {
+						return @"PostCell-WebLinkNoPhoto";
+					}
+					return @"PostCell-WebLinkOnlyNoPhoto";
+				}
 			
 			}
 			
@@ -139,15 +181,48 @@
 		
 		}
 		
-		case 1:
-			return @"PostCell-Stacked-1-Photo";
+		case 1: {
+
+			if ([article.text length] > 0) {
+
+				return @"PostCell-Stacked-1-Photo";
+
+			} else {
+
+				return @"PostCell-Stacked-1-PhotoOnly";
+
+			}
+
+		}
 		
-		case 2:
-			return @"PostCell-Stacked-2-Photo";
+		case 2: {
+
+			if ([article.text length] > 0) {
+
+				return @"PostCell-Stacked-2-Photo";
+
+			} else {
+
+				return @"PostCell-Stacked-2-PhotoOnly";
+
+			}
+
+		}
 		
-		default:
-			return @"PostCell-Stacked-3-Photo";
-	
+		default: {
+
+			if ([article.text length] > 0) {
+
+				return @"PostCell-Stacked-3-Photo";
+
+			} else {
+
+				return @"PostCell-Stacked-3-PhotoOnly";
+
+			}
+
+		}
+
 	}
 	
 }

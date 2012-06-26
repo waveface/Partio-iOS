@@ -251,6 +251,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			//	Or, create -isBeingInspected on article items	
 			
 			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
+			article.dirty = (id)kCFBooleanTrue;
 			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
@@ -263,11 +264,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			
 		} maintainingPositionForLayoutItem:article sender:wSelf completion:^{
 
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
@@ -320,6 +317,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			WAArticle *article = wSelf.article;
 		
 			article.hidden = (id)kCFBooleanTrue;
+			article.dirty = (id)kCFBooleanTrue;
 			article.modificationDate = [NSDate date];
 			
 			NSError *savingError = nil;
@@ -328,12 +326,7 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 			
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				

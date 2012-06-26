@@ -10,6 +10,7 @@
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 
@@ -286,8 +287,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 				NSManagedObjectContext *context = [ds disposableMOC];
 				
-				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
+				for (WAArticle *article in touchedArticles)
+					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+						[context refreshObject:article mergeChanges:NO];
+
 				[context save:nil];
 				
 			} waitUntilDone:YES];
@@ -322,7 +327,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 				NSManagedObjectContext *context = [ds disposableMOC];
 				
-				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+
+				for (WAArticle *article in touchedArticles)
+					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+						[context refreshObject:article mergeChanges:NO];
 				
 				[context save:nil];
 				
@@ -603,30 +612,42 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		NSDictionary *preview = [context objectForKey:kPostWebPreview];
 		
 		if (isDraft) {
-		
-			[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview onSuccess:^(NSDictionary *postRep) {
-				
-				callback(postRep);
-				
-			} onFailure: ^ (NSError *error) {
-			
-				callback(error);
-				
-			}];
-					
-		} else {
-		
-			NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
-		
-			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
-			
-				callback(postRep);
-				
-			} onFailure:^(NSError *error) {
 
-				callback(error);
+			if (!isHidden) {
+
+				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview onSuccess:^(NSDictionary *postRep) {
+					
+					callback(postRep);
+
+				} onFailure: ^ (NSError *error) {
+
+					callback(error);
+
+				}];
+
+			}
+
+		} else {
+			
+			if (isHidden) {
 				
-			}];
+				[ri configurePost:postID inGroup:groupID withVisibilityStatus:YES onSuccess:nil onFailure:nil];
+
+			} else {
+
+				NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
+				
+				[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
+
+					callback(postRep);
+
+				} onFailure:^(NSError *error) {
+
+					callback(error);
+
+				}];
+
+			}
 		
 		}
 		
@@ -646,24 +667,29 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
 				savedPost.draft = (id)kCFBooleanFalse;
 				
-				if (!savedPost.identifier) {
+				NSDictionary * const mapping = [WAArticle remoteDictionaryConfigurationMapping];
+				id (^valueForMappingKey)(NSString *) = ^ (NSString *hostKey) {
+					NSString *networkKey = [[mapping allKeysForObject:hostKey] lastObject];
+					return [[self class] transformedValue:[results objectForKey:networkKey] fromRemoteKeyPath:networkKey toLocalKeyPath:hostKey];
+				};
 				
-					NSDictionary *mapping = [WAArticle remoteDictionaryConfigurationMapping];
-					NSString *identifierHostKey = @"identifier";
-					NSString *identifierNetworkKey = [[mapping allKeysForObject:identifierHostKey] lastObject];
-					
-					NSString *identifier = [WAArticle transformedValue:[results objectForKey:identifierNetworkKey] fromRemoteKeyPath:identifierNetworkKey toLocalKeyPath:identifierHostKey];
-					
-					savedPost.identifier = identifier;
+				if (!savedPost.identifier)
+					savedPost.identifier = valueForMappingKey(@"identifier");
 				
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSCParameterAssert([touchedArticles containsObject:savedPost] && ([touchedArticles count] == 1));
+				
+				NSDate *remoteModDate = valueForMappingKey(@"modificationDate");	//	FIXME: may NOT have it
+				NSDate *localModDate = savedPost.modificationDate;
+				
+				NSCParameterAssert([remoteModDate isKindOfClass:[NSDate class]] && [localModDate isKindOfClass:[NSDate class]]);
+				if ([remoteModDate isEqualToDate:localModDate]) {
+					savedPost.dirty = (id)kCFBooleanFalse;
+					NSLog(@"post %@ is saved, and not dirty any more; it does not need further syncing", savedPost);
+				} else {
+					NSLog(@"post %@ is saved but needs additional syncing", savedPost);
+					[context refreshObject:savedPost mergeChanges:NO];	//	throw away remote changes awaiting new sync resolution
 				}
-				
-				NSArray *touchedObjects = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:results] usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-
-				if (savedPost)
-					NSParameterAssert([[results valueForKeyPath:@"attachments"] count] == [savedPost.files count]);
-				
-				NSParameterAssert([touchedObjects count]);
 				
 				NSError *savingError = nil;
 				BOOL didSave = [context save:&savingError];

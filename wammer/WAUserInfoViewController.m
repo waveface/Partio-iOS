@@ -17,11 +17,11 @@
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
-#import "WABlobSyncManager.h"
+#import "WASyncManager.h"
 #import "IRMailComposeViewController.h"
 #import "IRRelativeDateFormatter+WAAdditions.h"
 
-#import "WABlobSyncManager.h"
+#import "WASyncManager.h"
 
 @interface WAUserInfoViewController ()
 
@@ -142,7 +142,7 @@
 	__weak WAUserInfoViewController *wSelf = self;
 	__weak WADataStore *wDataStore = [WADataStore defaultStore];
 	__weak WAUser *wMainUser = wSelf.user;
-	__weak WABlobSyncManager *wBlobSyncManager = [WABlobSyncManager sharedManager];
+	__weak WASyncManager *wBlobSyncManager = [WASyncManager sharedManager];
 	__weak WARemoteInterface *wRemoteInterface = [WARemoteInterface sharedInterface];
 	
 	NSKeyValueObservingOptions options = NSKeyValueObservingOptionInitial|NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew;
@@ -392,7 +392,7 @@
 	if (hitCell == syncTableViewCell) {
 	
 		[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-		[[WABlobSyncManager sharedManager] performBlobSyncNow];
+		[[WASyncManager sharedManager] performSyncNow];
 		
 	} else if (hitCell == stationNagCell) {
 	
@@ -530,16 +530,16 @@
 
 }
 
-- (WABlobSyncManager *) syncManager {
+- (WASyncManager *) syncManager {
 
-	return [WABlobSyncManager sharedManager];
+	return [WASyncManager sharedManager];
 
 }
 
 - (BOOL) isSyncing {
 
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
-	WABlobSyncManager * const sm = [WABlobSyncManager sharedManager];
+	WASyncManager * const sm = [WASyncManager sharedManager];
 	
 	NSLog(@"%s: %x, %x", __PRETTY_FUNCTION__, ri.performingAutomaticRemoteUpdates, sm.operationQueue.operationCount);
 	

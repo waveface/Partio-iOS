@@ -13,8 +13,6 @@
 
 
 extern NSString * const kWADataStoreArticleUpdateShowsBezels;	//	pass kCFBooleanTrue or kCFBooleanFalse
-extern NSString * const kWADataStoreArticleUpdateVisibilityOnly;	//	pass kCFBooleanTrue
-
 
 @interface WADataStore (WARemoteInterfaceAdditions)
 

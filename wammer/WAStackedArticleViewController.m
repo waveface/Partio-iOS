@@ -205,11 +205,7 @@
 			
 			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 			
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
@@ -570,39 +566,39 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 
-	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+//	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+//	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	
-	[busyBezel irPerformOnDeallocation:^{
-	
-		NSLog(@"busy bezel dying");
-		
-	}];
+//	[busyBezel irPerformOnDeallocation:^{
+//	
+//		NSLog(@"busy bezel dying");
+//		
+//	}];
 	
 	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:^{
 		
-		dispatch_async(dispatch_get_main_queue(), ^{
-		
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						
-		});
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//		
+//			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+//						
+//		});
 		
 	} onFailure:^{
 	
-		dispatch_async(dispatch_get_main_queue(), ^{
-		
-			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-			
-			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
-			
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-				
-				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-			});
-			
-		});
+//		dispatch_async(dispatch_get_main_queue(), ^{
+//		
+//			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+//			
+//			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+//			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
+//			
+//			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
+//				
+//				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+//				
+//			});
+//			
+//		});
 		
 	}];
 	
@@ -1110,11 +1106,7 @@
 			if (!anArticleURLOrNil)
 				return;
 				
-			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-				
-				(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-				
-			nil] onSuccess:^{
+			[[WADataStore defaultStore] updateArticle:anArticleURLOrNil withOptions:nil onSuccess:^{
 				
 				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 				
