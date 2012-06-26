@@ -631,7 +631,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 			if (isHidden) {
 				
-				[ri configurePost:postID inGroup:groupID withVisibilityStatus:YES onSuccess:nil onFailure:nil];
+				[ri configurePost:postID inGroup:groupID withVisibilityStatus:NO onSuccess:nil onFailure:nil];
 
 			} else {
 
