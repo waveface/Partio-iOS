@@ -151,31 +151,25 @@
 	[self irObserveObject:ri keyPath:@"isPerformingAutomaticRemoteUpdates" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
 		[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
-		
+
 	}];
 	
 	[self irObserveObject:wBlobSyncManager keyPath:@"operationQueue.operationCount" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
-	
-		[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
-		
+
+		// avoid blinking sync table view
+		if (![wSelf isSyncing]) {
+
+			[wSelf handleRemoteInterfaceUpdateStatusChanged:[wSelf isSyncing]];
+
+		}
+
 	}];
 	
 	[self irObserveObject:wDataStore keyPath:@"lastSyncSuccessDate" options:options context:nil withBlock:^(NSKeyValueChange kind, id fromValue, id toValue, NSIndexSet *indices, BOOL isPrior) {
 	
-		NSDate *date = [wDataStore lastSyncSuccessDate];
-
-		wSelf.lastSyncDateLabel.text = date ? [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date] : nil;
-		
-		if ([wSelf isViewLoaded]) {
-			
-			IRTableView *tv = wSelf.tableView;
-			NSUInteger sectionIndex = [tv indexPathForCell:wSelf.syncTableViewCell].section;
-			
-			[tv beginUpdates];
-			[tv reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
-			[tv endUpdates];
-			
-		}
+//		NSDate *date = [wDataStore lastSyncSuccessDate];
+//
+//		wSelf.lastSyncDateLabel.text = date ? [[IRRelativeDateFormatter sharedFormatter] stringFromDate:date] : nil;
 		
 	}];
 	
@@ -381,6 +375,13 @@
 		cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		[self.activity stopAnimating];
 		
+		IRTableView *tv = self.tableView;
+		NSUInteger sectionIndex = [tv indexPathForCell:self.syncTableViewCell].section;
+
+		[tv beginUpdates];
+		[tv reloadSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationNone];
+		[tv endUpdates];
+
 	}
 
 }
