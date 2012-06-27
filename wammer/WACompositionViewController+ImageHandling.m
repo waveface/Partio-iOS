@@ -191,10 +191,18 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		}
 		
 		if (representedAsset) {
-			NSData *fullResolutionData = UIImageJPEGRepresentation(
-			[UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage ]], 0.85);
+			UIImageOrientation orientation = UIImageOrientationUp;
+			NSNumber* orientationValue = [representedAsset valueForProperty:@"ALAssetPropertyOrientation"];
+			if (orientationValue != nil) {
+				orientation = [orientationValue intValue];
+			}
 			
-			finalFileURL = [[WADataStore defaultStore] 
+			CGFloat scale = 1.0;
+			UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
+			
+			NSData *fullResolutionData = UIImageJPEGRepresentation(image, 1.0);
+			
+			finalFileURL = [[WADataStore defaultStore]
 											persistentFileURLForData:fullResolutionData 
 											extension:[[representedAsset defaultRepresentation] UTI]];
 		}
