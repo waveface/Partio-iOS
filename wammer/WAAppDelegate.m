@@ -122,6 +122,8 @@
 
 	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	
+	[ri.engine.queue cancelAllOperations];
 
 	NSHTTPCookieStorage *cs = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 	for (NSHTTPCookie *cookie in [[cs cookies] copy])
@@ -182,8 +184,8 @@
 
 - (void) remoteResourcesManager:(IRRemoteResourcesManager *)managed didBeginDownloadingResourceAtURL:(NSURL *)anURL {
 
-	// beginNetworkActivity is already called during request transformation, DO NOT call it again here
-	//[self beginNetworkActivity];
+	// FIXME: beginNetworkActivity might be called again during request transformation and causes network activity indicator always visible
+	[self beginNetworkActivity];
 
 }
 

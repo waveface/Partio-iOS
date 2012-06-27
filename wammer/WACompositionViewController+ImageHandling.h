@@ -27,6 +27,8 @@
 
 - (BOOL) shouldDismissSelfOnCameraCancellation;
 
+- (void) handleSelectionWithArray: (NSArray *)selectedAssets;
+
 @end
 
 extern NSString * const WACompositionImageInsertionUsesCamera;

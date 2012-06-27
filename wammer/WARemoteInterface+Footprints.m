@@ -19,7 +19,7 @@
 	
 		anIdentifier, @"group_id",
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -39,7 +39,7 @@
 		aGroupIdentifier, @"group_id",
 		aPostIdentifier, @"post_id",
 	
-	nil], nil) validator: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	nil], nil) validator: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		BOOL generallyFine = (WARemoteInterfaceGenericNoErrorValidator())(inResponseOrNil, inResponseContext);
 		if (!generallyFine)
@@ -51,7 +51,7 @@
 		
 		return NO;
 		
-	} successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	} successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (successBlock)
 			successBlock();
@@ -70,7 +70,7 @@
 		aGroupIdentifier, @"group_id",
 		[postIdentifiers JSONString], @"post_id_array",
 	
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (!successBlock)
 			return;
@@ -103,7 +103,7 @@
 		aGroupIdentifier, @"group_id",
 		[postIdentifiers JSONString], @"last_read_input_array",
 	
-	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (successBlock)
 			successBlock();

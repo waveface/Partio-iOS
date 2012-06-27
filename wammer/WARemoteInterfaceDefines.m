@@ -11,7 +11,6 @@
 #import "IRWebAPIEngine+FormURLEncoding.h"
 
 NSString *kWARemoteInterfaceDomain = @"com.waveface.wammer.remoteInterface";
-NSString *kWARemoteInterfaceUnderlyingError = @"WARemoteInterfaceUnderlyingError";
 NSString *kWARemoteInterfaceUnderlyingContext = @"WARemoteInterfaceUnderlyingContext";
 NSString *kWARemoteInterfaceRemoteErrorCode = @"WARemoteInterfaceRemoteErrorCode";
 
@@ -33,15 +32,15 @@ NSString * WARemoteInterfaceEndpointReturnMessage (NSDictionary *response) {
 
 };
 
-NSError * WARemoteInterfaceGenericError (NSDictionary *response, NSDictionary *context) {
+NSError * WARemoteInterfaceGenericError (NSDictionary *response, IRWebAPIRequestContext *context) {
 
 	NSMutableDictionary *errorUserInfo = [NSMutableDictionary dictionary];
 	NSUInteger errorCode = WARemoteInterfaceEndpointReturnCode(response);
 	
 	[errorUserInfo setObject:[NSNumber numberWithUnsignedInt:WARemoteInterfaceEndpointReturnCode(response)] forKey:kWARemoteInterfaceRemoteErrorCode];
 	
-	if ([context objectForKey:kIRWebAPIEngineUnderlyingError])
-		[errorUserInfo setObject:[context objectForKey:kIRWebAPIEngineUnderlyingError] forKey:kWARemoteInterfaceUnderlyingError];
+	if (context.error)
+		[errorUserInfo setObject:context.error forKey:NSUnderlyingErrorKey];
 	
 	if (context)
 		[errorUserInfo setObject:context forKey:kWARemoteInterfaceUnderlyingContext];
@@ -57,7 +56,7 @@ IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NS
 	if (!aFailureBlock)
 		return (IRWebAPICallback)nil;
 	
-	return ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	return ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		NSError *error = WARemoteInterfaceGenericError(inResponseOrNil, inResponseContext);
 		
@@ -67,22 +66,12 @@ IRWebAPICallback WARemoteInterfaceGenericFailureHandler (void(^aFailureBlock)(NS
 
 };
 
-IRWebAPIResposeValidator WARemoteInterfaceGenericNoErrorValidator () {
+IRWebAPIResponseValidator WARemoteInterfaceGenericNoErrorValidator () {
 
-	return ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	return ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		BOOL answer = [[inResponseOrNil valueForKey:@"api_ret_code"] isEqual:[NSNumber numberWithInt:WASuccess]];
-		answer &= ([((NSHTTPURLResponse *)[inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse]) statusCode] == 200);
-		
-		if (!answer) {
-		
-			NSDictionary *originalContext = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextOriginalRequestContext];
-			
-			NSDictionary *usedContext = originalContext ? originalContext : inResponseContext;
-			
-			NSLog(@"%@ %@: %@", [usedContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL], [usedContext objectForKey:kIRWebAPIEngineRequestHTTPMethod], inResponseOrNil);
-			
-		}
+		answer &= (inResponseContext.urlResponse.statusCode == 200);
 		
 		return answer;
 	

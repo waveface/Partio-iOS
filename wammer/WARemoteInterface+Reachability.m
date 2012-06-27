@@ -231,7 +231,7 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
   
     if (!wSelf.userToken)
       return;
-      
+		
     [wSelf beginPostponingDataRetrievalTimerFiring];
     //[((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity];
   
@@ -301,20 +301,21 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
 
   __weak WARemoteInterface *wSelf = self;
 
-	return [^ (NSDictionary *inOriginalContext) {
+	return [^ (IRWebAPIRequestContext *context) {
 	
-    NSString *originalMethodName = [inOriginalContext objectForKey:kIRWebAPIEngineIncomingMethodName];
-    NSURL *originalURL = [inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPBaseURL];
+    NSString *originalMethodName = context.engineMethod;
+    NSURL *originalURL = context.baseURL;
 
     if ([originalMethodName hasPrefix:@"reachability"])
-      return inOriginalContext;
+      return context;
 
     if ([originalMethodName hasPrefix:@"loadedResource"]) {
-      if (![[originalURL host] isEqualToString:[[WARemoteInterface sharedInterface].engine.context.baseURL host]])
-        return inOriginalContext;
-      
-      if ([[inOriginalContext objectForKey:@"target"] isEqual:@"image"])
-        return inOriginalContext;
+			
+			if (![[originalURL host] isEqualToString:[[WARemoteInterface sharedInterface].engine.context.baseURL host]])
+				return context;
+
+			//	if ([[inOriginalContext objectForKey:@"target"] isEqual:@"image"])
+			//		return inOriginalContext;
       
     }
     
@@ -337,10 +338,9 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
     
     nil] componentsJoinedByString:@""]];
     
-    NSMutableDictionary *returnedContext = [inOriginalContext mutableCopy];
-    [returnedContext setObject:swizzledURL forKey:kIRWebAPIEngineRequestHTTPBaseURL];
+		context.baseURL = swizzledURL;
 		
-		return (NSDictionary *)returnedContext;
+		return context;
 	
 	} copy];
 

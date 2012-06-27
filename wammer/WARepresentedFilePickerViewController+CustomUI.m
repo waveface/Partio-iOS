@@ -67,11 +67,7 @@
 		
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 	
-		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-			
-		nil] onSuccess:^{
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 		
 			NSParameterAssert([NSThread isMainThread]);
 			

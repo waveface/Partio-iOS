@@ -22,7 +22,7 @@
 		(includesEntities ? @"true" : @"false"), @"include_entities",
 		dateString, @"since",
 
-	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		NSArray *changedArticleIDs = [inResponseOrNil valueForKeyPath:@"post_id_list"];
 		NSArray *changeOperations = [inResponseOrNil valueForKeyPath:@"usertrack_list"];
