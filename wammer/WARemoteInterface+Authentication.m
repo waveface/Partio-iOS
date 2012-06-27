@@ -37,7 +37,7 @@
 		};
 		
 		NSMutableDictionary *formMultipartFields = [context.formMultipartFields mutableCopy];
-		if (formMultipartFields) {
+		if ([[formMultipartFields allKeys] count]) {
 			
 			sign(formMultipartFields);
 			
@@ -48,7 +48,7 @@
 		}
 		
 		NSMutableDictionary *formURLEncodedFields = [context.formURLEncodingFields mutableCopy];
-		if (formURLEncodedFields) {
+		if ([[formURLEncodedFields allKeys] count]) {
 		
 			sign(formURLEncodedFields);
 			
