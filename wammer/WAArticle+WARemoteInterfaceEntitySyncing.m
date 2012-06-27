@@ -591,8 +591,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if ([anyPreview.graphElement.images count]) {
 			
 				NSMutableDictionary *previewEntity = [(NSDictionary *)results mutableCopy];
-				[previewEntity setObject:[[[anyPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
-				
+
+				// use the first preview image for thumbnail_url while creating posts
+				if (isDraft)
+					[previewEntity setObject:[[[anyPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
+
 				[context setObject:previewEntity forKey:kPostWebPreview];
 			
 			} else {
