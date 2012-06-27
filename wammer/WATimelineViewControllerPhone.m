@@ -949,11 +949,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 	[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 	
-	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-		(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-		
-	nil] onSuccess:^{
+	[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 		
 		[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 		
@@ -1013,12 +1009,7 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 		
 		[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
 		
-		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateShowsBezels,
-			(id)kCFBooleanTrue, kWADataStoreArticleUpdateVisibilityOnly,
-			
-		nil] onSuccess:^{
+		[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
 			
 			[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
 			

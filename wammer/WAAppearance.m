@@ -145,7 +145,7 @@ UIView * WAStandardTitleView (void) {
 
 	UIImageView *logotype = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WALogotype"]];
 	logotype.contentMode = UIViewContentModeScaleAspectFit;
-	logotype.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	logotype.autoresizingMask = UIViewAutoresizingNone;
 	[logotype sizeToFit];
 	
 	return logotype;

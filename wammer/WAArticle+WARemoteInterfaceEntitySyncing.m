@@ -10,6 +10,7 @@
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
 #import "WARemoteInterface.h"
 #import "WADataStore.h"
+#import "WADataStore+WARemoteInterfaceAdditions.h"
 #import "Foundation+IRAdditions.h"
 #import "IRAsyncOperation.h"
 
@@ -286,8 +287,12 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 				NSManagedObjectContext *context = [ds disposableMOC];
 				
-				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				
+				for (WAArticle *article in touchedArticles)
+					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+						[context refreshObject:article mergeChanges:NO];
+
 				[context save:nil];
 				
 			} waitUntilDone:YES];
@@ -322,7 +327,11 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 				NSManagedObjectContext *context = [ds disposableMOC];
 				
-				[WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+
+				for (WAArticle *article in touchedArticles)
+					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+						[context refreshObject:article mergeChanges:NO];
 				
 				[context save:nil];
 				
@@ -603,30 +612,42 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		NSDictionary *preview = [context objectForKey:kPostWebPreview];
 		
 		if (isDraft) {
-		
-			[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview onSuccess:^(NSDictionary *postRep) {
-				
-				callback(postRep);
-				
-			} onFailure: ^ (NSError *error) {
-			
-				callback(error);
-				
-			}];
-					
-		} else {
-		
-			NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
-		
-			[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
-			
-				callback(postRep);
-				
-			} onFailure:^(NSError *error) {
 
-				callback(error);
+			if (!isHidden) {
+
+				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview onSuccess:^(NSDictionary *postRep) {
+					
+					callback(postRep);
+
+				} onFailure: ^ (NSError *error) {
+
+					callback(error);
+
+				}];
+
+			}
+
+		} else {
+			
+			if (isHidden) {
 				
-			}];
+				[ri configurePost:postID inGroup:groupID withVisibilityStatus:NO onSuccess:nil onFailure:nil];
+
+			} else {
+
+				NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
+				
+				[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate onSuccess:^(NSDictionary *postRep) {
+
+					callback(postRep);
+
+				} onFailure:^(NSError *error) {
+
+					callback(error);
+
+				}];
+
+			}
 		
 		}
 		
@@ -667,6 +688,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 					NSLog(@"post %@ is saved, and not dirty any more; it does not need further syncing", savedPost);
 				} else {
 					NSLog(@"post %@ is saved but needs additional syncing", savedPost);
+					[context refreshObject:savedPost mergeChanges:NO];	//	throw away remote changes awaiting new sync resolution
 				}
 				
 				NSError *savingError = nil;

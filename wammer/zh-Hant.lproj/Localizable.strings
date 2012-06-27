@@ -501,6 +501,12 @@
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
 "FEB" = "FEB";
 
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "110"; */
+"FEB" = "FEB";
+
+/* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
+"FEB" = "FEB";
+
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 

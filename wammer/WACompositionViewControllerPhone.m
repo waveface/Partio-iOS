@@ -24,6 +24,8 @@
 
 #import "WADefines.h"
 
+#import "AGImagePickerController.h"
+#import "WACompositionViewController+ImageHandling.h"
 
 @interface WACompositionViewController (PhoneSubclassKnowledge) <IRTextAttributorDelegate>
 
@@ -273,7 +275,22 @@
 		
 			if ([self.article.files count]) {
 			
-				[self presentMediaListViewController:[self newMediaListViewController] sender:view animated:YES];
+				__weak WACompositionViewController *wSelf = self;
+	
+				AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
+					NSLog(@"Failed. Error: %@", error);
+					if( error == nil ) {
+						[wSelf dismissModalViewControllerAnimated:YES];
+					}
+				} andSuccessBlock:^(NSArray *info) {
+					NSLog(@"Info: %@", info);
+					[wSelf handleSelectionWithArray:info];
+					[wSelf dismissModalViewControllerAnimated:YES];
+
+				}];
+				[wSelf presentModalViewController:imagePickerController animated:YES];
+			
+//				[self presentMediaListViewController:[self newMediaListViewController] sender:view animated:YES];
 			
 			} else {
 			
