@@ -96,7 +96,7 @@
 
 + (IRWebAPIRequestContextTransformer) defaultBeginNetworkActivityTransformer {
 
-	return ^ (NSDictionary *inOriginalContext) {
+	return ^ (IRWebAPIRequestContext *inOriginalContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) beginNetworkActivity]; });
 		return inOriginalContext;
 	};
@@ -105,7 +105,7 @@
 
 + (IRWebAPIResponseContextTransformer) defaultEndNetworkActivityTransformer {
 
-	return ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+	return ^ (NSDictionary *inParsedResponse, IRWebAPIRequestContext *inResponseContext) {
 		dispatch_async(dispatch_get_main_queue(), ^ { [((WAAppDelegate *)[UIApplication sharedApplication].delegate) endNetworkActivity]; });
 		return inParsedResponse;
 	};
@@ -114,35 +114,34 @@
 
 + (IRWebAPIRequestContextTransformer) defaultDeviceInformationProvidingTransformer {
 
-  return ^ (NSDictionary *incomingContext) {
+  return ^ (IRWebAPIRequestContext *context) {
+	
+		static NSString *deviceInfo;
+		static dispatch_once_t onceToken;
+		dispatch_once(&onceToken, ^{
+
+			UIDevice *device = [UIDevice currentDevice];
+			NSBundle *bundle = [NSBundle mainBundle];
+
+			deviceInfo = [[NSDictionary dictionaryWithObjectsAndKeys:
+				
+				@"iOS", @"deviceType",
+				device.name, @"deviceName",
+				device.model, @"deviceModel",
+				device.systemName, @"deviceSystemName",
+				device.systemVersion, @"deviceSystemVersion",
+
+				[[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey], @"bundleVersion",
+				[[bundle infoDictionary] objectForKey:(id)kCFBundleNameKey], @"bundleName",
+				[[bundle infoDictionary] objectForKey:@"IRCommitSHA"], @"bundleCommit",
+
+			nil] JSONString];
+				
+		});
+	
+		[context setValue:deviceInfo forHeaderField:@"x-wf-origin"];
   
-    NSMutableDictionary *returnedContext = [incomingContext mutableCopy];
-    NSMutableDictionary *headerFields = [[returnedContext objectForKey:kIRWebAPIEngineRequestHTTPHeaderFields] mutableCopy];
-    
-    if (!headerFields) {
-     headerFields = [NSMutableDictionary dictionary];
-    }
-    
-   [returnedContext setObject:headerFields forKey:kIRWebAPIEngineRequestHTTPHeaderFields];
-   
-    UIDevice *device = [UIDevice currentDevice];
-    NSBundle *bundle = [NSBundle mainBundle];
-    
-    [headerFields setObject:[[NSDictionary dictionaryWithObjectsAndKeys:
-      
-      @"iOS", @"deviceType",
-      device.name, @"deviceName",
-      device.model, @"deviceModel",
-      device.systemName, @"deviceSystemName",
-      device.systemVersion, @"deviceSystemVersion",
-
-      [[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey], @"bundleVersion",
-      [[bundle infoDictionary] objectForKey:(id)kCFBundleNameKey], @"bundleName",
-      [[bundle infoDictionary] objectForKey:@"IRCommitSHA"], @"bundleCommit",
-
-    nil] JSONString] forKey:@"x-wf-origin"];
-    
-    return returnedContext;
+		return context;
   
   };
 
@@ -182,8 +181,6 @@
   
   [engine.globalRequestPreTransformers addObject:[self defaultHostSwizzlingTransformer]];
   [engine.globalRequestPreTransformers addObject:[[self class] defaultDeviceInformationProvidingTransformer]];
-	
-	engine.parser = [[self class] defaultParser];
 	
 	return self;
 

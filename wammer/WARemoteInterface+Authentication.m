@@ -9,59 +9,65 @@
 #import "WADefines.h"
 #import "WARemoteInterface+Authentication.h"
 #import "IRWebAPIEngine+FormURLEncoding.h"
+#import "IRWebAPIEngine+FormMultipart.h"
 
 @implementation WARemoteInterface (Authentication)
 
 - (IRWebAPIRequestContextTransformer) defaultV2AuthenticationSignatureBlock {
 
-	__weak WARemoteInterface *nrSelf = self;
+	__weak WARemoteInterface *wSelf = self;
 	
-	return ^ (NSDictionary *inOriginalContext) {
-			
-		NSMutableDictionary *mutatedContext = [inOriginalContext mutableCopy];
+	return ^ (IRWebAPIRequestContext *context) {
 		
 		BOOL shouldSign = YES;
 		
-		if ([[mutatedContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"auth/login"])
+		if ([context.engineMethod isEqualToString:@"auth/login"])
 			shouldSign = NO;
 		
 		void (^sign)(NSMutableDictionary *) = ^ (NSMutableDictionary *fields) {
 		
-			if (nrSelf.apiKey) {
-				[fields setObject:nrSelf.apiKey forKey:@"apikey"];
-				[fields setObject:nrSelf.apiKey forKey:@"api_key"];
+			if (wSelf.apiKey) {
+				[fields setObject:wSelf.apiKey forKey:@"apikey"];
+				[fields setObject:wSelf.apiKey forKey:@"api_key"];
 			}
 			
-			if (shouldSign && nrSelf.userToken)
-				[fields setObject:nrSelf.userToken forKey:@"session_token"];
+			if (shouldSign && wSelf.userToken)
+				[fields setObject:wSelf.userToken forKey:@"session_token"];
 
 		};
 		
-		NSMutableDictionary *formMultipartFields = [[inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey] mutableCopy];
-		if (formMultipartFields) {
+		NSMutableDictionary *formMultipartFields = [context.formMultipartFields mutableCopy];
+		if ([[formMultipartFields allKeys] count]) {
 			
 			sign(formMultipartFields);
-			[mutatedContext setObject:formMultipartFields forKey:kIRWebAPIEngineRequestContextFormMultipartFieldsKey];
+			
+			[formMultipartFields enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[context setValue:obj forFormMultipartField:key];
+			}];
 			
 		}
 		
-		NSMutableDictionary *formURLEncodedFields = [[inOriginalContext objectForKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey] mutableCopy];
-		if (formURLEncodedFields) {
+		NSMutableDictionary *formURLEncodedFields = [context.formURLEncodingFields mutableCopy];
+		if ([[formURLEncodedFields allKeys] count]) {
 		
 			sign(formURLEncodedFields);
-			[mutatedContext setObject:formURLEncodedFields forKey:kIRWebAPIEngineRequestContextFormURLEncodingFieldsKey];
-		
+			
+			[formURLEncodedFields enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+				[context setValue:obj forFormURLEncodingField:key];
+			}];
+			
 		}
 		
-		NSMutableDictionary *queryParams = [[inOriginalContext objectForKey:kIRWebAPIEngineRequestHTTPQueryParameters] mutableCopy];
-		
+		NSMutableDictionary *queryParams = [context.queryParams mutableCopy];
 		if (!queryParams)
 			queryParams = [NSMutableDictionary dictionary];
-		
-		sign(queryParams);
-		[mutatedContext setObject:queryParams forKey:kIRWebAPIEngineRequestHTTPQueryParameters];
 			
-		return (NSDictionary *)mutatedContext;
+		sign(queryParams);
+		[queryParams enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+			[context setValue:obj forQueryParam:key];
+		}];
+		
+		return context;
 	
 	};
 
@@ -71,21 +77,18 @@
 
   __weak WARemoteInterface *nrSelf = self;
 
-  return ^ (NSDictionary *inParsedResponse, NSDictionary *inResponseContext) {
+  return ^ (NSDictionary *inParsedResponse, IRWebAPIRequestContext *inResponseContext) {
   
-    NSHTTPURLResponse *urlResponse = [inResponseContext objectForKey:kIRWebAPIEngineResponseContextURLResponse];
+    NSHTTPURLResponse *urlResponse = inResponseContext.urlResponse;
 		
 		BOOL canIntercept = YES;
 		
 		if (![urlResponse isKindOfClass:[NSHTTPURLResponse class]])
 			canIntercept = NO;
 		
-		if ([[inResponseContext objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"reachability"])
+		if ([inResponseContext.engineMethod isEqualToString:@"reachability"])
 			canIntercept = NO;
     
-		if ([[[inResponseContext objectForKey:kIRWebAPIEngineResponseContextOriginalRequestContext] objectForKey:kIRWebAPIEngineIncomingMethodName] isEqualToString:@"reachability"])
-			canIntercept = NO;
-		
 		if (!canIntercept)
 			return inParsedResponse;
 		
@@ -124,7 +127,7 @@
     WADeviceName(), @"device_name",
     WADeviceIdentifier(), @"device_id",
 
-	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext) {
+	nil], nil) validator:^BOOL(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		if (![[inResponseOrNil objectForKey:@"session_token"] isKindOfClass:[NSString class]])
 			return NO;
@@ -134,7 +137,7 @@
 			
 		return YES;
 		
-	} successHandler: ^ (NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	} successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
 		NSDictionary *userEntity = [[self class] userEntityFromRepresentation:inResponseOrNil];
 		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
@@ -153,7 +156,7 @@
 	
 		@"POST", kIRWebAPIEngineRequestHTTPMethod,
 	
-	nil] validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, NSDictionary *inResponseContext, BOOL *outNotifyDelegate, BOOL *outShouldRetry) {
+	nil] validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 		
 		if (successBlock)
 			successBlock();

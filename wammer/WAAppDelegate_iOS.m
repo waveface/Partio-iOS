@@ -37,8 +37,6 @@
 #import "WATimelineViewControllerPhone.h"
 #import "WAUserInfoViewController.h"
 
-#import "WAStationDiscoveryFeedbackViewController.h"
-
 #import "IRLifetimeHelper.h"
 #import "WAOverlayBezel.h"
 
@@ -510,8 +508,11 @@
 
 - (void) handleAuthRequest:(NSString *)reason withOptions:(NSDictionary *)options completion:(void(^)(BOOL didFinish, NSError *error))block {
 
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	__weak WAAppDelegate_iOS *wAppDelegate = self;
-
+	
+	[ri.engine.queue cancelAllOperations];
+	
 	NSParameterAssert(!self.alreadyRequestingAuthentication);
 	self.alreadyRequestingAuthentication = YES;
 

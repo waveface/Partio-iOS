@@ -122,6 +122,8 @@
 
 	NSUserDefaults *sud = [NSUserDefaults standardUserDefaults];
 	WARemoteInterface *ri = [WARemoteInterface sharedInterface];
+	
+	[ri.engine.queue cancelAllOperations];
 
 	NSHTTPCookieStorage *cs = [NSHTTPCookieStorage sharedHTTPCookieStorage];
 	for (NSHTTPCookie *cookie in [[cs cookies] copy])

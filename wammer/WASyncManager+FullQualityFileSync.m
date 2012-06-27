@@ -157,6 +157,9 @@ static NSString * const kNumberOfFiles = @"-[WASyncManager(FullQualityFileSync) 
 
 	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	
+	if (!ri.userToken)
+		return NO;
+	
 	BOOL const hasReachableCloud = [ri hasReachableCloud];
 	BOOL const hasReachableStation = [ri hasReachableStation];
 	BOOL const endpointAvailable = hasReachableStation || hasReachableCloud;
