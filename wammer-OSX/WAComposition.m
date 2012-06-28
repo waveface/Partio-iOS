@@ -43,7 +43,7 @@
 	if (managedObjectContext)
 		return managedObjectContext;
 	
-	managedObjectContext = [[[WADataStore defaultStore] disposableMOC] retain];
+	managedObjectContext = [[WADataStore defaultStore] disposableMOC];
 	managedObjectContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy;
 	return managedObjectContext;
 
@@ -104,7 +104,7 @@
 	
 	self.article.text = [textStorage string];
 	
-	WAProgressIndicatorWindow *busyWindow = [[WAProgressIndicatorWindow fromNib] retain];
+	WAProgressIndicatorWindow *busyWindow = [WAProgressIndicatorWindow fromNib];
 	[NSApp beginSheet:busyWindow modalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:nil contextInfo:nil];
 	
 	[self.managedObjectContext save:nil];

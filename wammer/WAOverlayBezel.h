@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Waveface Inc. All rights reserved.
 //
 
+#import <TargetConditionals.h>
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIWindow+IRAdditions.h"

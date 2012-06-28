@@ -93,9 +93,9 @@
 		aGroupIdentifier, @"group_id",
 		datum, @"datum",
     
-                [NSString stringWithFormat:@"%@%i", 
+                [NSString stringWithFormat:@"%@%ld",
                   (positiveOrNegativeNumberOfPostsToExpandSearching > 0) ? @"+" : @"",
-                  positiveOrNegativeNumberOfPostsToExpandSearching
+                  (long)positiveOrNegativeNumberOfPostsToExpandSearching
                 ], @"limit",
                 
 		@"", @"filter",
@@ -181,7 +181,7 @@
 	[self.engine fireAPIRequestNamed:@"posts/getLatest" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
 	
 		aGroupIdentifier, @"group_id",
-		[NSNumber numberWithUnsignedInt:maxNumberOfReturnedPosts], @"limit",
+		[NSNumber numberWithUnsignedInteger:maxNumberOfReturnedPosts], @"limit",
 	
 	nil] options:nil validator:WARemoteInterfaceGenericNoErrorValidator() successHandler:^(NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	

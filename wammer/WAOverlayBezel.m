@@ -158,9 +158,13 @@
 	
 	UIApplication *app = [UIApplication sharedApplication];
 	UIWindow *window = app.keyWindow;
+
+#if TARGET_OS_IPHONE
 	
  	if (!window.rootViewController)
 		window = app.delegate.window;
+
+#endif
 	
 	if (!window.rootViewController)
 		window = [[UIApplication sharedApplication].windows objectAtIndex:0];

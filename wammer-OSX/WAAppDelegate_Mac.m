@@ -56,8 +56,6 @@
 	
 	[NSApp setNextResponder:self];
 	
-	BOOL authenticated = NO;
-	
 	if ([self hasAuthenticationData]) {
 	
 		[self presentTimeline];
@@ -68,7 +66,7 @@
 			[NSApp requestUserAttention:NSCriticalRequest];
 			
 		[[WAAuthRequestWindowController sharedController] setDelegate:self];
-		[[[WAAuthRequestWindowController sharedController] window] makeKeyAndOrderFront:self];
+		[(NSWindow *)[[WAAuthRequestWindowController sharedController] window] makeKeyAndOrderFront:self];
 		
 	}
 	
@@ -80,7 +78,7 @@
 		[NSApp requestUserAttention:NSCriticalRequest];
 		
 	[[WAAuthRequestWindowController sharedController] setDelegate:self];
-	[[[WAAuthRequestWindowController sharedController] window] makeKeyAndOrderFront:self];
+	[(NSWindow *)[[WAAuthRequestWindowController sharedController] window] makeKeyAndOrderFront:self];
 
 }
 
@@ -122,6 +120,11 @@
 
 	NSParameterAssert([self hasAuthenticationData]);
 
+	NSString *lastAuthenticatedUserIdentifier = [[NSUserDefaults standardUserDefaults] stringForKey:kWALastAuthenticatedUserIdentifier];
+		
+	if (lastAuthenticatedUserIdentifier)
+		[self bootstrapPersistentStoreWithUserIdentifier:lastAuthenticatedUserIdentifier];
+		
 	WATimelineWindowController *timelineWC = [WATimelineWindowController sharedController];
 	
 	timelineWC.nextResponder = self;
