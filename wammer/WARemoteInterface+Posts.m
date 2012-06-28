@@ -57,7 +57,7 @@
 	
 	if (updateTime) {
 
-		[sentData setObject:[formatter stringFromDate:createTime] forKey:@"update_time"];
+		[sentData setObject:[formatter stringFromDate:updateTime] forKey:@"update_time"];
 
 	}
 
