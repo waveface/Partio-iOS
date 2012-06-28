@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		1324577E15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */; };
 		13BD4D9915930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */; };
 		13BF6EDB159ADE0D00B660FF /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BF6EDA159ADE0D00B660FF /* Default-Landscape@2x.png */; };
@@ -1125,6 +1126,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		130F09EE159C3C74001796D0 /* WABackoffHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WABackoffHandler.h; sourceTree = "<group>"; };
+		130F09EF159C3C74001796D0 /* WABackoffHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WABackoffHandler.m; sourceTree = "<group>"; };
 		1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLinkOnly.xib"; sourceTree = "<group>"; };
 		13579F281575EB4000F09C04 /* WACompositionViewController+SubclassEyesOnly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+SubclassEyesOnly.h"; sourceTree = "<group>"; };
 		13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageOnlyStack.xib"; sourceTree = "<group>"; };
@@ -2667,6 +2670,8 @@
 			children = (
 				FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */,
 				FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */,
+				130F09EE159C3C74001796D0 /* WABackoffHandler.h */,
+				130F09EF159C3C74001796D0 /* WABackoffHandler.m */,
 				FFA69456147F6FC600F46347 /* WARemoteInterface+Reachability.h */,
 				FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */,
 				FFADFDB4148F5E4C00292D93 /* WARemoteInterface+Environment.h */,
@@ -4395,6 +4400,7 @@
 				4B31BAAB1591A74C00DC1A70 /* AGIPCGridItem.m in Sources */,
 				4B31BAAC1591A74C00DC1A70 /* AGIPCToolbarItem.m in Sources */,
 				4B31BAAD1591A74C00DC1A70 /* ALAsset+AGIPC.m in Sources */,
+				130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
