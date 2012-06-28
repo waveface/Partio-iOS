@@ -171,7 +171,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
               [NSDictionary dictionaryWithObjectsAndKeys:
                 ownObjectID, @"object_id",
                 @"slide", @"target",
-                [NSNumber numberWithUnsignedInt:(i + 1)], @"page",
+                [NSNumber numberWithUnsignedInteger:(i + 1)], @"page",
               nil]
               
             ) absoluteString], @"thumbnailURL",
