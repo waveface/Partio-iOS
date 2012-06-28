@@ -58,6 +58,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, readwrite, retain) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, readwrite, retain) IRActionSheetController *settingsActionSheetController;
+@property (nonatomic, readwrite) BOOL scrollToTopmostPost;
 
 - (void) refreshData;
 
@@ -78,6 +79,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 @synthesize fetchedResultsController;
 @synthesize managedObjectContext;
 @synthesize settingsActionSheetController;
+@synthesize scrollToTopmostPost;
 
 - (void) dealloc {
 	
@@ -164,6 +166,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	nil];
 	
+	[self setScrollToTopmostPost:NO];
 	 
 	return self;
   
@@ -454,6 +457,11 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	[super viewDidAppear:animated];
 	
 	[self.navigationController setToolbarHidden:NO animated:animated];
+
+	if ([self scrollToTopmostPost]) {
+		[[self tableView] scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+		[self setScrollToTopmostPost:NO];
+	}
 
 }
 
@@ -790,6 +798,10 @@ NSString * const kWAPostsViewControllerLastVisibleRects = @"WAPostsViewControlle
 	
 			[compositionVC dismissModalViewControllerAnimated:YES];
 			
+			if (!anURL && [compositionVC.article hasMeaningfulContent]) {
+				[self setScrollToTopmostPost:YES];
+			}
+
 		}
 		
 		compositionVC = nil;

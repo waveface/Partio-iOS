@@ -419,7 +419,7 @@
 	if ([self.photosView numberOfItems] == [newValue count])
 		return;
 	
-	NSParameterAssert(![self.photosView isAnimatingUpdates]);
+//	NSParameterAssert(![self.photosView isAnimatingUpdates]);
 	
 	switch (kind) {
 	

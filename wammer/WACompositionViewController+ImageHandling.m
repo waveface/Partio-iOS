@@ -41,7 +41,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[wSelf dismissModalViewControllerAnimated:YES];
 		}
 	} andSuccessBlock:^(NSArray *info) {
-		NSLog(@"Info: %@", info);
 		[wSelf handleSelectionWithArray:info];
 		[wSelf dismissModalViewControllerAnimated:YES];
 
@@ -164,9 +163,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
 	
-	NSLog(@"Assets URI Selected: %@", selectedAssetURI);
-	NSLog(@"ALAsset Selected: %@", representedAsset);
-	NSLog(@"URI: %@", [[representedAsset defaultRepresentation] url]);
+	if(representedAsset){
+		NSLog(@"URI: %@", [[representedAsset defaultRepresentation] url]);
+	}
 	
 	if (selectedAssetURI || representedAsset) {
 
@@ -200,16 +199,17 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			CGFloat scale = 1.0;
 			UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
 			
-			NSData *fullResolutionData = UIImageJPEGRepresentation(image, 1.0);
+			NSData *fullResolutionData = UIImageJPEGRepresentation(image, 0.8);
 			
 			finalFileURL = [[WADataStore defaultStore]
 											persistentFileURLForData:fullResolutionData 
 											extension:[[representedAsset defaultRepresentation] UTI]];
+			image = nil;
+			fullResolutionData = nil;
 		}
 					
 		stitchedFile.resourceType = (NSString *)kUTTypeImage;
 		stitchedFile.resourceFilePath = [finalFileURL path];
-		NSLog(@"Stitched File: %@", stitchedFile);
 		
 	} else {
 		
