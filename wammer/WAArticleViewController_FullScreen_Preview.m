@@ -530,6 +530,10 @@ enum {
 
 - (NSArray *) toolbarItems {
 
+	return [super toolbarItems];
+	
+	//	TBD: fix nav controller containment first
+	
 	if ([[super toolbarItems] count])
 		return [super toolbarItems];
 	

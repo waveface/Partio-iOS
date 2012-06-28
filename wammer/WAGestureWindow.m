@@ -15,6 +15,9 @@
 
 - (void) handleTapGesture:(UITapGestureRecognizer *)aTGR;
 
+- (void) handleAppWillChangeStatusBarOrientation:(NSNotification *)note;
+- (void) handleAppDidChangeStatusBarOrientation:(NSNotification *)note;
+
 @end
 
 
@@ -32,6 +35,10 @@
 	
 	[self addGestureRecognizer:tapGestureRecognizer];
 	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppWillChangeStatusBarOrientation:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleAppDidChangeStatusBarOrientation:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+
 	return self;
 
 }
@@ -60,6 +67,75 @@
 
 	if (onTap)
 		onTap();
+
+}
+
+- (void) setRootViewController:(UIViewController *)rootViewController {
+
+	[super setRootViewController:rootViewController];
+
+	[self tile];
+
+}
+
+- (void) handleAppWillChangeStatusBarOrientation:(NSNotification *)note {
+
+//	[self tile];
+	
+}
+
+- (void) handleAppDidChangeStatusBarOrientation:(NSNotification *)note {
+
+	[self tile];
+	
+}
+
+- (void) tile {
+
+	//	TBD remove
+	return;
+
+	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+
+	switch (orientation) {
+
+		case UIInterfaceOrientationLandscapeLeft: {
+			self.transform = CGAffineTransformMakeRotation(1.5f * M_PI);
+			break;
+		}
+		
+		case UIInterfaceOrientationLandscapeRight: {
+			self.transform = CGAffineTransformMakeRotation(0.5f * M_PI);
+			break;
+		}
+
+		case UIInterfaceOrientationPortrait: {
+			self.transform = CGAffineTransformMakeRotation(0.0f * M_PI);
+			break;
+		}
+		
+		case UIInterfaceOrientationPortraitUpsideDown: {
+			self.transform = CGAffineTransformMakeRotation(1.0f * M_PI);
+			break;
+		}
+
+	}
+	
+	CGRect newBounds = [UIScreen mainScreen].bounds;
+	newBounds.origin = CGPointZero;
+	
+	if (UIInterfaceOrientationIsLandscape(orientation)) {
+		newBounds.size = (CGSize){ newBounds.size.height, newBounds.size.width };
+	}
+	
+	self.bounds = newBounds;
+	self.rootViewController.view.bounds = self.bounds;
+
+}
+
+- (void) dealloc {
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 }
 

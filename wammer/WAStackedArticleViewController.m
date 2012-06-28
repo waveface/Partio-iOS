@@ -25,6 +25,10 @@
 #import "WACompositionViewController.h"
 #import "WAArticleCommentsViewController.h"
 
+#import "WAStackedArticleViewController+Favorite.h"
+
+#import "WAArticleDateItem.h"
+
 
 @interface WAStackedArticleViewController () <WAArticleCommentsViewControllerDelegate, WAArticleTextStackElementDelegate>
 
@@ -62,192 +66,135 @@
 	
 	__weak WAStackedArticleViewController *wSelf = self;
 	
-	IRBarButtonItem *articleDateItem = [IRBarButtonItem itemWithCustomView:((^ {
-					
-		IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
-		label.opaque = NO;
-		label.backgroundColor = nil;
-		
-		__weak IRLabel *wLabel = label;
-		[label irBind:@"attributedText" toObject:wSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
-			
-				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.creationDate];
-				NSString *device = wSelf.article.creationDeviceName;
-				NSString *string = [NSString stringWithFormat:@"%@ (%@)", relDate, device];
-				
-				UIFont * const font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
-				UIColor * const color = [UIColor colorWithWhite:0.5 alpha:1];
+	WAArticleDateItem *articleDateItem = [WAArticleDateItem instanceFromNib];
+	
+	[articleDateItem.dateLabel irBind:@"text" toObject:wSelf keyPath:@"article.presentationDate" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	
+		[^ (NSDate *fromDate, NSDate *toDate, NSString *changeKind) {
 
-				return [wLabel attributedStringForString:string font:font color:color];
-			
-			} copy], kIRBindingsValueTransformerBlock,
+			return [toDate description];
 		
-		nil]];
-		
-		[wSelf irPerformOnDeallocation:^{
-		
-			[wLabel irUnbind:@"attributedText"];
-			
-		}];
-		
-		return label;
-		
-	})())];
+		} copy], kIRBindingsValueTransformerBlock,
 	
-	IRBarButtonItem *commentsItem = ((^ {
+	nil]];
 	
-		IRBarButtonItem *commentsItem = [[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil];
+	[articleDateItem.deviceLabel irBind:@"text" toObject:wSelf keyPath:@"article.creationDeviceName" options:[NSDictionary dictionaryWithObjectsAndKeys:
 	
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		[^ (NSString *fromValue, NSString *toValue, NSString *changeKind) {
+
+			return toValue;
 		
-			case UIUserInterfaceIdiomPad: {
-				
-				[commentsItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
-					[UIColor clearColor], UITextAttributeTextShadowColor,
-					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
-				nil] forState:UIControlStateNormal];
-				
-				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-				
-				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-				
-				break;
-				
-			}
-			
-			case UIUserInterfaceIdiomPhone: {
-			
-				break;
-			
-			}
-		
-		}
-		
-		__weak IRBarButtonItem *wCommentsItem = commentsItem;
-		
-		commentsItem.block = ^ {
-		
-			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:wCommentsItem];
-			
-		};
-		
-		[commentsItem irBind:@"title" toObject:self keyPath:@"article.comments.@count" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
-			
-				NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
-				
-				return [NSString stringWithFormat:(numberOfComments == 0) ?
-					NSLocalizedString(@"COMMENTS_COUNT_ZERO_FORMAT_STRING", @"“%@ Comment” or “No Comment”") :
-						(numberOfComments == 1) ?
-							NSLocalizedString(@"COMMENTS_COUNT_ONE_FORMAT_STRING", @"“%@ Comment”") :
-								NSLocalizedString(@"COMMENTS_COUNT_MANY_FORMAT_STRING", @"“%@ Comments”"), inNewValue];
-			
-			} copy], kIRBindingsValueTransformerBlock,
-		
-		nil]];
-		
-		[wSelf irPerformOnDeallocation:^{
-		
-			[wCommentsItem irUnbind:@"title"];
-			
-		}];
-		
-		return commentsItem;
+		} copy], kIRBindingsValueTransformerBlock,
 	
-	})());
+	nil]];
 	
-	IRBarButtonItem *favoriteToggleItem = ((^ {
+	//	IRBarButtonItem *articleDateItem = [IRBarButtonItem itemWithCustomView:((^ {
+	//					
+	//		IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
+	//		label.opaque = NO;
+	//		label.backgroundColor = nil;
+	//		
+	//		__weak IRLabel *wLabel = label;
+	//		[label irBind:@"attributedText" toObject:wSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	//		
+	//			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	//			
+	//				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.creationDate];
+	//				NSString *device = wSelf.article.creationDeviceName;
+	//				NSString *string = [NSString stringWithFormat:@"%@ (%@)", relDate, device];
+	//				
+	//				UIFont * const font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
+	//				UIColor * const color = [UIColor colorWithWhite:0.5 alpha:1];
+	//
+	//				return [wLabel attributedStringForString:string font:font color:color];
+	//			
+	//			} copy], kIRBindingsValueTransformerBlock,
+	//		
+	//		nil]];
+			
+	//		[wSelf irPerformOnDeallocation:^{
+	//		
+	//			[wLabel irUnbind:@"attributedText"];
+	//			
+	//		}];
+	//		
+	//		return label;
+	//		
+	//	})())];
 	
-		IRBarButtonItem *item = [[IRBarButtonItem alloc] initWithTitle:@"Mark Favorite" style:UIBarButtonItemStyleBordered target:nil action:nil];
-		
-		__weak IRBarButtonItem *wItem = item;
-				
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-			case UIUserInterfaceIdiomPad: {
-				
-				[item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
-					[UIColor clearColor], UITextAttributeTextShadowColor,
-					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
-				nil] forState:UIControlStateNormal];
-				
-				[item setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-				
-				[item setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-				
-				break;
-				
-			}
-			
-			case UIUserInterfaceIdiomPhone: {
-			
-				break;
-			
-			}
-		
-		}
-		
-		item.block = ^ {
-		
-			WAArticle *article = wSelf.article;
-		
-			article.favorite = (NSNumber *)([article.favorite isEqual:(id)kCFBooleanTrue] ? kCFBooleanFalse : kCFBooleanTrue);
-			article.modificationDate = [NSDate date];
-			
-			NSError *savingError = nil;
-			if (![article.managedObjectContext save:&savingError])
-				NSLog(@"Error saving: %@", savingError);
-			
-			[[WARemoteInterface sharedInterface] beginPostponingDataRetrievalTimerFiring];
-			
-			[[WADataStore defaultStore] updateArticle:[[article objectID] URIRepresentation] withOptions:nil onSuccess:^{
-				
-				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-				
-			} onFailure:^(NSError *error) {
-				
-				[[WARemoteInterface sharedInterface] endPostponingDataRetrievalTimerFiring];
-				
-			}];
-			
-		};
-		
-		[item irBind:@"title" toObject:self keyPath:@"article.favorite" options:[NSDictionary dictionaryWithObjectsAndKeys:
-		
-			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
-			
-				BOOL articleMarkedFavorite = [inNewValue isEqual:(id)kCFBooleanTrue];
-			
-				return (articleMarkedFavorite) ?
-					NSLocalizedString(@"ACTION_UNMARK_FAVORITE", @"Bar button item title to unmark the article as a favorite") : 
-					NSLocalizedString(@"ACTION_MARK_FAVORITE", @"Bar button item title to mark the article as a favorite");
-				
-			} copy], kIRBindingsValueTransformerBlock,
-		
-		nil]];
-		
-		[wSelf irPerformOnDeallocation:^{
-		
-			[wItem irUnbind:@"title"];
-			
-		}];
-		
-		return item;
+	//	IRBarButtonItem *commentsItem = ((^ {
+	//	
+	//		IRBarButtonItem *commentsItem = [[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil];
+	//	
+	//		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	//		
+	//			case UIUserInterfaceIdiomPad: {
+	//				
+	//				[commentsItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
+	//					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
+	//					[UIColor clearColor], UITextAttributeTextShadowColor,
+	//					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
+	//				nil] forState:UIControlStateNormal];
+	//				
+	//				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+	//				
+	//				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+	//				
+	//				break;
+	//				
+	//			}
+	//			
+	//			case UIUserInterfaceIdiomPhone: {
+	//			
+	//				break;
+	//			
+	//			}
+	//		
+	//		}
+	//		
+	//		__weak IRBarButtonItem *wCommentsItem = commentsItem;
+	//		
+	//		commentsItem.block = ^ {
+	//		
+	//			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:wCommentsItem];
+	//			
+	//		};
+	//		
+	//		[commentsItem irBind:@"title" toObject:self keyPath:@"article.comments.@count" options:[NSDictionary dictionaryWithObjectsAndKeys:
+	//		
+	//			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
+	//			
+	//				NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
+	//				
+	//				return [NSString stringWithFormat:(numberOfComments == 0) ?
+	//					NSLocalizedString(@"COMMENTS_COUNT_ZERO_FORMAT_STRING", @"“%@ Comment” or “No Comment”") :
+	//						(numberOfComments == 1) ?
+	//							NSLocalizedString(@"COMMENTS_COUNT_ONE_FORMAT_STRING", @"“%@ Comment”") :
+	//								NSLocalizedString(@"COMMENTS_COUNT_MANY_FORMAT_STRING", @"“%@ Comments”"), inNewValue];
+	//			
+	//			} copy], kIRBindingsValueTransformerBlock,
+	//		
+	//		nil]];
+	//		
+	//		[wSelf irPerformOnDeallocation:^{
+	//		
+	//			[wCommentsItem irUnbind:@"title"];
+	//			
+	//		}];
+	//		
+	//		return commentsItem;
+	//	
+	//	})());
 	
-	})());
+	UIBarButtonItem *favoriteToggleItem = [self newFavoriteToggleItem];
 	
 	switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
 		case UIUserInterfaceIdiomPad: {
 			
 			NSMutableArray *barButtonItems = [NSMutableArray arrayWithObjects:
-				articleDateItem,
 				[IRBarButtonItem itemWithSystemItem:UIBarButtonSystemItemFlexibleSpace wiredAction:nil],
+				articleDateItem,
 			nil];
 			
 			if (WAAdvancedFeaturesEnabled())
@@ -255,7 +202,7 @@
 			
 			[barButtonItems addObjectsFromArray:[NSArray arrayWithObjects:
 				favoriteToggleItem,
-				commentsItem,
+				//	commentsItem,
 			nil]];
 			
 			self.headerBarButtonItems = barButtonItems;
@@ -268,10 +215,15 @@
 		
 		case UIUserInterfaceIdiomPhone: {
 			
-			self.headerBarButtonItems = [NSArray arrayWithObjects:articleDateItem, nil];
+			self.headerBarButtonItems = [NSArray arrayWithObjects:
+				[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+				[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+				articleDateItem,
+			nil];
 
 			NSMutableArray *barButtonItems = [NSMutableArray arrayWithObjects:
-				commentsItem,
+				favoriteToggleItem,
+				//	commentsItem,
 			nil];
 			
 			if (WAAdvancedFeaturesEnabled())
@@ -360,29 +312,29 @@
 
 - (UIButton *) textStackCellFoldingToggle {
 
-	if (textStackCellFoldingToggle)
-		return textStackCellFoldingToggle;
+	if (!textStackCellFoldingToggle) {
 		
-	textStackCellFoldingToggle = [UIButton buttonWithType:UIButtonTypeCustom];
-	[textStackCellFoldingToggle addTarget:self action:@selector(handleTextStackCellFoldingToggleTap:) forControlEvents:UIControlEventTouchUpInside];
+		textStackCellFoldingToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+		[textStackCellFoldingToggle addTarget:self action:@selector(handleTextStackCellFoldingToggleTap:) forControlEvents:UIControlEventTouchUpInside];
+		
+		[self.textStackCellFoldingToggle setContentEdgeInsets:(UIEdgeInsets){ 0, 16, 0, 16 }];
+		[self.textStackCellFoldingToggle setTitleEdgeInsets:(UIEdgeInsets){ -2, -4, 2, 4 }];
+		[self.textStackCellFoldingToggle setImageEdgeInsets:(UIEdgeInsets){ -2, -4, 2, 4 }];
+		[self.textStackCellFoldingToggle setTitleColor:[UIColor colorWithWhite:0.5 alpha:1] forState:UIControlStateNormal];
+		[self.textStackCellFoldingToggle setAdjustsImageWhenHighlighted:NO];
+		[self.textStackCellFoldingToggle.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
+		
+		UIImage *normalImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTag"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
+		UIImage *pressedImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTagPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
+		UIImage *disabledImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTagDisabled"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
+		
+		[self.textStackCellFoldingToggle setBackgroundImage:normalImage forState:UIControlStateNormal];
+		[self.textStackCellFoldingToggle setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
+		[self.textStackCellFoldingToggle setBackgroundImage:disabledImage forState:UIControlStateDisabled];
+		
+		[self configureTextStackCellFoldingToggle];
 	
-	[self.textStackCellFoldingToggle setContentEdgeInsets:(UIEdgeInsets){ 0, 16, 0, 16 }];
-	[self.textStackCellFoldingToggle setTitleEdgeInsets:(UIEdgeInsets){ -2, -4, 2, 4 }];
-	[self.textStackCellFoldingToggle setImageEdgeInsets:(UIEdgeInsets){ -2, -4, 2, 4 }];
-	[self.textStackCellFoldingToggle setTitleColor:[UIColor colorWithWhite:0.5 alpha:1] forState:UIControlStateNormal];
-	//	[self.textStackCellFoldingToggle setTitleColor:[UIColor colorWithWhite:1 alpha:1] forState:UIControlStateHighlighted];
-	[self.textStackCellFoldingToggle setAdjustsImageWhenHighlighted:NO];
-	[self.textStackCellFoldingToggle.titleLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
-	
-	UIImage *normalImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTag"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
-	UIImage *pressedImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTagPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
-	UIImage *disabledImage = [[UIImage imageNamed:@"WAArticleStackElementDropdownTagDisabled"] resizableImageWithCapInsets:(UIEdgeInsets){ 0, 8, 8, 8 }];
-	
-	[self.textStackCellFoldingToggle setBackgroundImage:normalImage forState:UIControlStateNormal];
-	[self.textStackCellFoldingToggle setBackgroundImage:pressedImage forState:UIControlStateHighlighted];
-	[self.textStackCellFoldingToggle setBackgroundImage:disabledImage forState:UIControlStateDisabled];
-	
-	[self configureTextStackCellFoldingToggle];
+	}
 	
 	return textStackCellFoldingToggle;
 
@@ -396,7 +348,6 @@
 
 		[self.textStackCellFoldingToggle setTitle:title forState:UIControlStateNormal];
 		[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WADownDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:0.5 alpha:1] shadow:nil] forState:UIControlStateNormal];
-		//	[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WADownDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:1 alpha:1] shadow:nil] forState:UIControlStateHighlighted];
 	
 	} else {
 	
@@ -404,7 +355,6 @@
 		
 		[self.textStackCellFoldingToggle setTitle:title forState:UIControlStateNormal];
 		[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WAUpDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:0.5 alpha:1] shadow:nil] forState:UIControlStateNormal];
-		//	[self.textStackCellFoldingToggle setImage:[[UIImage imageNamed:@"WAUpDoubleArrowGlyph"] irSolidImageWithFillColor:[UIColor colorWithWhite:1 alpha:1] shadow:nil] forState:UIControlStateHighlighted];
 	
 	}
 	
@@ -518,10 +468,6 @@
 
 - (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
-//	if ([commentsVC isViewLoaded])
-//	if (anElement == commentsVC.view)
-//		return YES;
-//	
 	return NO;
 
 }
@@ -551,8 +497,6 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller wantsState:(WAArticleCommentsViewControllerState)aState onFulfillment:(void (^)(void))aCompletionBlock {
 
-	//	Immediate fulfillment. :D
-	
 	if (aCompletionBlock)
 		aCompletionBlock();
 
@@ -566,41 +510,7 @@
 
 - (void) articleCommentsViewController:(WAArticleCommentsViewController *)controller didFinishComposingComment:(NSString *)commentText {
 
-//	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-//	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-	
-//	[busyBezel irPerformOnDeallocation:^{
-//	
-//		NSLog(@"busy bezel dying");
-//		
-//	}];
-	
-	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:^{
-		
-//		dispatch_async(dispatch_get_main_queue(), ^{
-//		
-//			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-//						
-//		});
-		
-	} onFailure:^{
-	
-//		dispatch_async(dispatch_get_main_queue(), ^{
-//		
-//			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-//			
-//			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-//			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
-//			
-//			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void){
-//				
-//				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-//				
-//			});
-//			
-//		});
-		
-	}];
+	[[WADataStore defaultStore] addComment:commentText onArticle:[[self.article objectID] URIRepresentation] onSuccess:nil onFailure:nil];
 	
 
 }
@@ -683,11 +593,24 @@
 	self.stackView.frame = self.wrapperView.bounds;
 	self.wrapperView.frame = self.view.bounds;
 	self.wrapperView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	
 	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-
-	self.stackView.bounces = YES;
-	self.stackView.alwaysBounceHorizontal = NO;	
-	self.stackView.alwaysBounceVertical = YES;
+	
+	self.stackView.alwaysBounceHorizontal = NO;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+		case UIUserInterfaceIdiomPad: {
+			self.stackView.bounces = YES;
+			self.stackView.alwaysBounceVertical = YES;
+			break;
+		}
+		case UIUserInterfaceIdiomPhone: {
+			self.stackView.bounces = NO;
+			self.stackView.alwaysBounceVertical = NO;
+			break;
+		}
+	}
+	
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
 	
@@ -778,7 +701,7 @@
 		}
 		
 	}
-		
+	
 	BOOL hasText = [self.article.text length];
 	BOOL showsComments = NO;
 	
@@ -925,11 +848,7 @@
 	[super viewWillAppear:animated];
 	[self.commentsVC viewWillAppear:animated];
 	
-	//	dispatch_async(dispatch_get_main_queue(), ^{
-	
-		[self.stackView layoutSubviews];
-		
-	//	});
+	[self.stackView layoutSubviews];
 
 }
 

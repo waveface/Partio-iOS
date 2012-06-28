@@ -128,7 +128,10 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 			wShownArticleVC.view.backgroundColor = [UIColor clearColor];
 			[wEnqueuedNavController.view layoutSubviews];
 			
-			[wShownStackedArticleVC handlePreferredInterfaceRect:wShownArticleVC.view.bounds];
+			CGRect interfaceRect = wShownArticleVC.view.bounds;
+			interfaceRect = CGRectInset(interfaceRect, 24.0f, 0.0f);
+			
+			[wShownStackedArticleVC handlePreferredInterfaceRect:interfaceRect];
 			
 			__block void (^poke)(UIView *) = ^ (UIView *aView) {
 			

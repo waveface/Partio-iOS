@@ -33,12 +33,14 @@
 
 
 @implementation WAArticleViewController_FullScreen_Photo
-@synthesize fetchedResultsController, gridView, requiresGalleryReload;
+@synthesize fetchedResultsController;
+@synthesize gridView = _gridView;
+@synthesize requiresGalleryReload;
 
 - (void) dealloc {
 
 	fetchedResultsController.delegate = nil;
-	gridView.delegate = nil;
+	_gridView.delegate = nil;
 
 }
 
@@ -46,30 +48,8 @@
 
 	[super viewDidLoad];
 	
-	UIView *gridViewWrapper = [[UIView alloc] initWithFrame:self.gridView.bounds];
-	gridViewWrapper.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"WAPhotoQueueBackground"]];
-	[gridViewWrapper addSubview:self.gridView];
-	
 	self.gridView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	
-	IRGradientView *topShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
-		CGRectGetWidth(gridViewWrapper.bounds),
-		3
-	}, kCAGravityTop)];
-	topShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-	[topShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0] anchor:irBottom];
-	[gridViewWrapper addSubview:topShadow];
-	
-	IRGradientView *bottomShadow = [[IRGradientView alloc] initWithFrame:IRGravitize(gridViewWrapper.bounds, (CGSize){
-		CGRectGetWidth(gridViewWrapper.bounds),
-		3
-	}, kCAGravityBottom)];
-	bottomShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleTopMargin;
-	[bottomShadow setLinearGradientFromColor:[UIColor colorWithWhite:0 alpha:0] anchor:irTop toColor:[UIColor colorWithWhite:0 alpha:0.125] anchor:irBottom];
-	[gridViewWrapper addSubview:bottomShadow];
-		
 	self.gridView.clipsToBounds = NO;
-	gridViewWrapper.clipsToBounds = YES;
 	
 	NSMutableArray *allStackElements = [self.stackView mutableStackElements];
 
@@ -78,11 +58,25 @@
 		[allStackElements removeObject:footerCell];
 	}
 	
+	UIView *gridViewWrapper = [[UIView alloc] initWithFrame:self.gridView.bounds];
+	gridViewWrapper.clipsToBounds = YES;
+	
+	CGFloat const kHeight = 4.0f;
+	CGFloat const kStartingAlpha = 0.35f;
+	
+	IRGradientView *shadowView = [IRGradientView new];
+	shadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+	shadowView.frame = IRGravitize(gridViewWrapper.bounds, (CGSize){
+		CGRectGetWidth(gridViewWrapper.bounds),
+		kHeight
+	}, kCAGravityTop);
+	
+	[shadowView setLinearGradientFromColor:[UIColor colorWithWhite:0.0f alpha:kStartingAlpha] anchor:irTop toColor:[UIColor colorWithWhite:0.0f alpha:0.0f] anchor:irBottom];
+	
+	[gridViewWrapper addSubview:self.gridView];
+	[gridViewWrapper addSubview:shadowView];
 	[allStackElements addObject:gridViewWrapper];
 	
-//	if (footerCell)
-//		[allStackElements addObject:footerCell];
-
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
 	
@@ -139,15 +133,6 @@
 	
 }
 
-//	- (void) viewDidAppear:(BOOL)animated {
-//
-//		[super viewDidAppear:animated];
-//		
-//		[self.stackView layoutSubviews];
-//		[self.gridView reloadData];
-//		
-//	}
-
 - (NSFetchedResultsController *) fetchedResultsController {
 
 	if (fetchedResultsController)
@@ -168,18 +153,21 @@
 
 - (AQGridView *) gridView {
 
-	if (gridView)
-		return gridView;
+	if (!_gridView) {
 	
-	gridView = [[AQGridView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 128 }}];
-	gridView.delegate = self;
-	gridView.dataSource = self;
+		_gridView = [[AQGridView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 320, 128 }}];
+		_gridView.delegate = self;
+		_gridView.dataSource = self;
+		
+		_gridView.bounces = YES;
+		_gridView.alwaysBounceVertical = YES;
+		_gridView.alwaysBounceHorizontal = NO;
+		
+		_gridView.contentInset = (UIEdgeInsets){ 4.0f, 0.0f, 0.0f, 0.0f };
 	
-	gridView.bounces = YES;
-	gridView.alwaysBounceVertical = YES;
-	gridView.alwaysBounceHorizontal = NO;
+	}
 	
-	return gridView;
+	return _gridView;
 
 }
 
@@ -204,13 +192,17 @@
 	
 		dequeuedCell = [WACompositionViewPhotoCell cellRepresentingFile:representedFile reuseIdentifier:identifier];
 		
+		dequeuedCell.style = WACompositionViewPhotoCellBorderedPlainStyle;
+		dequeuedCell.canRemove = NO;
+		
 	}
 	
-	dequeuedCell.frame = (CGRect){ CGPointZero, [self portraitGridCellSizeForGridView:gridView] };
-	dequeuedCell.canRemove = NO;
+	CGSize cellSize = [self portraitGridCellSizeForGridView:_gridView];
+	cellSize.width -= 8;
+	cellSize.height -= 8;
 	
-	[dequeuedCell setNeedsLayout];
-	
+	dequeuedCell.frame = (CGRect){ CGPointZero, cellSize };
+
 	return dequeuedCell;
 	
 }
@@ -248,7 +240,7 @@
 		
 		case UIUserInterfaceIdiomPhone: {
 		
-			return (CGSize){ 100, 100 };
+			return (CGSize){ 106, 106 };
 		
 			break;
 		
@@ -304,7 +296,7 @@
 		return;
 	}
 	
-	WACompositionViewPhotoCell *currentCell = (WACompositionViewPhotoCell *)[gridView cellForItemAtIndex:ownIndex];
+	WACompositionViewPhotoCell *currentCell = (WACompositionViewPhotoCell *)[_gridView cellForItemAtIndex:ownIndex];
 	if (![currentCell isKindOfClass:[WACompositionViewPhotoCell class]])
 		return;	//	It will just show new stuff the next time it shows up
 	
@@ -316,7 +308,7 @@
 		return;
 	
 	if (requiresGalleryReload)
-		[gridView reloadData];
+		[_gridView reloadData];
 
 }
 
@@ -368,7 +360,7 @@
 
 - (BOOL) stackView:(IRStackView *)aStackView shouldStretchElement:(UIView *)anElement {
 
-	if ((anElement == gridView) || [gridView isDescendantOfView:anElement])
+	if ((anElement == _gridView) || [_gridView isDescendantOfView:anElement])
 		return YES;
 	
 	return [super stackView:aStackView shouldStretchElement:anElement];
@@ -377,7 +369,7 @@
 
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
-	if ((anElement == gridView) || [gridView isDescendantOfView:anElement]) {
+	if ((anElement == _gridView) || [_gridView isDescendantOfView:anElement]) {
 		return (CGSize){
 			CGRectGetWidth(aStackView.bounds), 
 			128	//	Stretchable

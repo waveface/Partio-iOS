@@ -50,8 +50,7 @@
 /* No comment provided by engineer. */
 "ACTION_LATER" = "稍後再做";
 
-/* Action marking article as favorite
-   Bar button item title to mark the article as a favorite */
+/* Action marking article as favorite */
 "ACTION_MARK_FAVORITE" = "設為最愛";
 
 /* No comment provided by engineer. */
@@ -98,8 +97,7 @@
 /* Button title for showing a camera capture controller */
 "ACTION_TAKE_PHOTO_WITH_CAMERA" = "相機";
 
-/* Action marking article as not favorite
-   Bar button item title to unmark the article as a favorite */
+/* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
 
 /* No comment provided by engineer. */

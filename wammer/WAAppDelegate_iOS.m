@@ -189,7 +189,6 @@
 	WAPostAppEvent(@"AppVisit", [NSDictionary dictionaryWithObjectsAndKeys:@"app",@"category",@"visit", @"action", nil]);
 	
 	[[WARemoteInterface sharedInterface] performAutomaticRemoteUpdatesNow];
-//	[[DCIntrospect sharedIntrospector] start];
 	
 	return YES;
 	
