@@ -11,14 +11,13 @@
 #import "WARemoteInterface.h"
 #import "NSBlockOperation+NSCopying.h"
 #import "IRAsyncOperation.h"
+#import "WABackoffHandler.h"
 
 
 NSString * const kWAReachabilityDetectorDidUpdateStatusNotification = @"WAReachabilityDetectorDidUpdateStatusNotification";
 
 
 @interface WAReachabilityDetector ()
-
-typedef int (^WABackOffBlock) (BOOL resetBackOff);
 
 @property (nonatomic, readwrite, retain) NSURL *hostURL;
 @property (nonatomic, readwrite, assign) WASocketAddress hostAddress;
@@ -34,6 +33,8 @@ typedef int (^WABackOffBlock) (BOOL resetBackOff);
 - (void) recreateReachabilityRef;
 
 - (IRAsyncOperation *) newPulseCheckerPrototype NS_RETURNS_RETAINED;
+
+@property (nonatomic, readwrite, strong) WABackoffHandler *backoffHandler;
 
 @end
 
@@ -60,6 +61,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 @synthesize reachability;
 @synthesize state;
 @synthesize backOffBlock;
+@synthesize backoffHandler = _backoffHandler;
 
 + (void) load {
 
@@ -99,43 +101,29 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 }
 
-+ (WABackOffBlock) exponentialBackOffWithInitValue:(int)aInitValue {
-
-	__block int initValue = aInitValue;
-	__block int currentValue = aInitValue;
-
-	return [^int(BOOL resetBackOff) {
-
-		if (resetBackOff) {
-			currentValue = initValue;
-			return arc4random() % currentValue;
-		}
-
-		if (currentValue < 512) {
-			currentValue *= 2;
-		}
-
-		return arc4random() % currentValue;
-
-	} copy];
-
-}
-
 + (id) detectorForURL:(NSURL *)aHostURL {
 
-	if (aHostURL == [WARemoteInterface sharedInterface].engine.context.baseURL) {
+	if ([aHostURL isEqual:[WARemoteInterface sharedInterface].engine.context.baseURL]) {
 
-		return [[self alloc] initWithURL:aHostURL backOffBlock:^int(BOOL resetBackOff) {
+		return [[self alloc] initWithURL:aHostURL backOffBlock: ^ (BOOL resetBackOff) {
 
-			// cloud is highly available in most conditions, so ping it in fixed low frequency 
-			return 30;
+			//	cloud is highly available in most conditions, so ping it in fixed low frequency 
+			
+			return (NSTimeInterval) 30.0f;
 
 		}];
 
 	} else {
 
 		// use exponential back off to reduce unnecessary pings to unavailable stations
-		return [[self alloc] initWithURL:aHostURL backOffBlock:[self exponentialBackOffWithInitValue:4]];
+		
+		WABackoffHandler *backoffHandler = [[WABackoffHandler alloc] initWithInitialBackoffInterval:4.0f];
+		
+		WAReachabilityDetector *returnedObject = [[self alloc] initWithURL:aHostURL backOffBlock:backoffHandler.backoffBlock];
+		
+		returnedObject.backoffHandler = backoffHandler;
+		
+		return returnedObject;
 
 	}
 
@@ -165,7 +153,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
 
 }
 
-- (id) initWithURL:(NSURL *)aHostURL backOffBlock:(int (^)(BOOL))aBackOffBlock {
+- (id) initWithURL:(NSURL *)aHostURL backOffBlock:(WABackOffBlock)aBackOffBlock {
 
   NSParameterAssert(aHostURL);
   
@@ -208,10 +196,10 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     
 		[wSelf.recurrenceMachine beginPostponingOperations];
 
-		if (![ri hasWiFiConnection] && ![self.hostURL isEqual:ri.engine.context.baseURL]) {
-			[wSelf.recurrenceMachine endPostponingOperations];
-			return;
-		}
+//		if (![ri hasWiFiConnection] && ![self.hostURL isEqual:ri.engine.context.baseURL]) {
+//			[wSelf.recurrenceMachine endPostponingOperations];
+//			return;
+//		}
 
     [ri.engine fireAPIRequestNamed:@"reachability" withArguments:[NSDictionary dictionaryWithObjectsAndKeys:
     

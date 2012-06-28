@@ -166,7 +166,7 @@ static NSString * const WAPostsViewControllerPhone_RepresentedObjectURI = @"WAPo
 	
 	nil];
 	
-	[self setScrollToTopmostPost:YES];
+	[self setScrollToTopmostPost:NO];
 	 
 	return self;
   
