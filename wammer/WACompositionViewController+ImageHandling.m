@@ -41,7 +41,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[wSelf dismissModalViewControllerAnimated:YES];
 		}
 	} andSuccessBlock:^(NSArray *info) {
-		NSLog(@"Info: %@", info);
 		[wSelf handleSelectionWithArray:info];
 		[wSelf dismissModalViewControllerAnimated:YES];
 
@@ -200,7 +199,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			CGFloat scale = 1.0;
 			UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
 			
-			NSData *fullResolutionData = UIImageJPEGRepresentation(image, 1.0);
+			NSData *fullResolutionData = UIImageJPEGRepresentation(image, 0.8);
 			
 			finalFileURL = [[WADataStore defaultStore]
 											persistentFileURLForData:fullResolutionData 
