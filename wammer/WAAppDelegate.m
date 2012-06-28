@@ -321,7 +321,10 @@
 		
 	}
 	
-	NSParameterAssert([user.identifier isEqual:identifier]);
+	if (![user.identifier isEqual:identifier]) {
+		user.identifier = identifier;
+		[user.managedObjectContext save:nil];
+	}
 	
 #if DEBUG
 

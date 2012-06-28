@@ -31,16 +31,6 @@
 
 }
 
-- (void) dealloc {
-
-	[tableView release];
-	[arrayController release];
-	[managedObjectContext release];
-	
-	[super dealloc];
-
-}
-
 - (id) init {
 
 	self = [self initWithWindowNibName:@"WATimelineWindow"];
@@ -119,8 +109,8 @@
 	
 	[self.window.contentView setPostsFrameChangedNotifications:YES];
 	
-	__block __typeof__(self.tableView) nrTV = self.tableView;
-	__block id opaqueBlock = [[[NSNotificationCenter defaultCenter] addObserverForName:NSViewFrameDidChangeNotification object:self.window.contentView queue:nil usingBlock: ^ (NSNotification *note) {
+	__weak NSTableView *wTV = self.tableView;
+	__block id opaqueBlock = [[NSNotificationCenter defaultCenter] addObserverForName:NSViewFrameDidChangeNotification object:self.window.contentView queue:nil usingBlock: ^ (NSNotification *note) {
 	
 		static CGRect lastRect = (CGRect){ 0, 0, 0, 0 };
 		CGRect currentRect = ((NSView *)[note object]).frame;
@@ -129,16 +119,16 @@
 		//	[nrTV performSelector:@selector(noteHeightOfRowsWithIndexesChanged:) withObject:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, [nrTV numberOfRows] }] afterDelay:1];
 		
 		if (lastRect.size.width != currentRect.size.width)
-			[nrTV noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, [nrTV numberOfRows] }]];
+			[wTV noteHeightOfRowsWithIndexesChanged:[NSIndexSet indexSetWithIndexesInRange:(NSRange){ 0, [wTV numberOfRows] }]];
 		
 		lastRect = currentRect;
 		
-	}] retain];
+	}];
 	
 	[self irPerformOnDeallocation: ^ {
 	
 		[[NSNotificationCenter defaultCenter] removeObserver:opaqueBlock];
-		[opaqueBlock release];
+		opaqueBlock = nil;
 		
 	}];
     

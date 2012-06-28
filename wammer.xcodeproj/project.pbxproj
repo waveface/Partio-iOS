@@ -452,6 +452,7 @@
 		FF61CCB3149D40E500A6EB0B /* WAComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = FF61CCAF149D40E000A6EB0B /* WAComposition.m */; };
 		FF61CCB4149D40EB00A6EB0B /* WAComposition.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF61CCB0149D40E000A6EB0B /* WAComposition.xib */; };
 		FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */; };
+		FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA5156A518100C105D5 /* WAFile+LazyImages.m */; };
 		FF6D75D7152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
 		FF72EAE514BDC30F0093EAB7 /* WAGestureWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FF72EAE414BDC30F0093EAB7 /* WAGestureWindow.m */; };
@@ -473,8 +474,6 @@
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
 		FF897D32146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
 		FF897D35146A69A600DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */; };
-		FF8A71C714B3505400EC6D66 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF8A71BC14B3504000EC6D66 /* Sparkle.framework */; };
-		FF8A71C814B3505E00EC6D66 /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = FF8A71BC14B3504000EC6D66 /* Sparkle.framework */; };
 		FF8F4626146908B700D65864 /* WARemoteInterface+Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */; };
 		FF8F4629146909AD00D65864 /* WARemoteInterface+Users.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F4628146909AD00D65864 /* WARemoteInterface+Users.m */; };
 		FF8F462C146909DC00D65864 /* WARemoteInterface+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */; };
@@ -551,7 +550,6 @@
 		FFC648721445E96F00593E5E /* WAAuthRequestWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC648581445E92B00593E5E /* WAAuthRequestWindowController.m */; };
 		FFC648741445E97500593E5E /* WAAuthRequestWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC648561445E92B00593E5E /* WAAuthRequestWindow.xib */; };
 		FFC648751445E97E00593E5E /* UIImage+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC648521445E92B00593E5E /* UIImage+WAAdditions.m */; };
-		FFC648781445E98A00593E5E /* WANSImageFromUIImageTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6485D1445E92B00593E5E /* WANSImageFromUIImageTransformer.m */; };
 		FFC648791445E98D00593E5E /* WATimelineCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6485F1445E92B00593E5E /* WATimelineCellView.m */; };
 		FFC6487A1445E99000593E5E /* WATimelineWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC648601445E92B00593E5E /* WATimelineWindow.xib */; };
 		FFC6487B1445E99400593E5E /* WATimelineWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC648621445E92B00593E5E /* WATimelineWindowController.m */; };
@@ -635,6 +633,24 @@
 		FFD4F93C157E084E0027BF3F /* libIRObjectQueue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD4F937157E07F90027BF3F /* libIRObjectQueue.a */; };
 		FFD4F93F157E0A080027BF3F /* WAArticleView+ReuseSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD4F93E157E0A080027BF3F /* WAArticleView+ReuseSupport.m */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
+		FFDE51F3159AF8240086F9B0 /* JSONKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6C1519B93400F308E2 /* JSONKitX.framework */; };
+		FFDE51F4159AF8390086F9B0 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF11362D15627DEC0014AB32 /* WAArticle.m */; };
+		FFDE51F5159AF83C0086F9B0 /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
+		FFDE51F6159AF8470086F9B0 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = FF485CC6156A372600A6175E /* WAFile.m */; };
+		FFDE51F7159AF8470086F9B0 /* WAFile+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FFCD325114B9EA4D0035C4F5 /* WAFile+WAAdditions.m */; };
+		FFDE51F8159AF8470086F9B0 /* WAFile+WAConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDE9F156A4FCE00C105D5 /* WAFile+WAConstants.m */; };
+		FFDE51F9159AF8470086F9B0 /* WAFile+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA2156A50D400C105D5 /* WAFile+Validation.m */; };
+		FFDE51FA159AF8470086F9B0 /* WAFile+ImplicitBlobFulfillment.m in Sources */ = {isa = PBXBuildFile; fileRef = FF485CCB156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.m */; };
+		FFDE51FB159AF8470086F9B0 /* WAFile+FilePaths.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA8156A52A000C105D5 /* WAFile+FilePaths.m */; };
+		FFDE51FD159AF88A0086F9B0 /* WAOverlayBezel.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF4EAC81410EFE2007F444B /* WAOverlayBezel.m */; };
+		FFDE51FE159AF8E80086F9B0 /* WAStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FFF361BF1563CA10004A4D57 /* WAStorage.m */; };
+		FFDE520B159AF9EF0086F9B0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFDE520A159AF9E40086F9B0 /* UIKit.framework */; };
+		FFDE526F159AFDDF0086F9B0 /* WAUser+WARemoteEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF150153F622E00CF2203 /* WAUser+WARemoteEntitySyncing.m */; };
+		FFDE5270159AFDF40086F9B0 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF2E82FE14EE4921000C6044 /* WAPreview+WARemoteInterfaceEntitySyncing.m */; };
+		FFDE5271159AFDF40086F9B0 /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892414EE82A7005B452C /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m */; };
+		FFDE5272159AFDF40086F9B0 /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892714EE82B8005B452C /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m */; };
+		FFDE5273159AFE040086F9B0 /* WAOpenGraphElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC9DB1C14FF46EE004197EC /* WAOpenGraphElement.m */; };
+		FFDE5274159AFE0A0086F9B0 /* WAOpenGraphElementImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FF35892114EE7F8F005B452C /* WAOpenGraphElementImage.m */; };
 		FFE2E60C150F336D00555C16 /* WADiscreteLayoutHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */; };
 		FFE55FCC15404BAE001BE72A /* WADatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFE55FCA15404BAE001BE72A /* WADatePickerViewController.m */; };
 		FFE55FCD15404BAE001BE72A /* WADatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFE55FCB15404BAE001BE72A /* WADatePickerViewController.xib */; };
@@ -696,13 +712,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0D2AA93D14174FA000F4071B;
 			remoteInfo = Finch;
-		};
-		FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A53513D6C2CC00D54EC6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FF335A3A1445F12100E60C14;
-			remoteInfo = "wammer-OSX-Chameleon";
 		};
 		FF460D2A149CF8DA00DB7F0B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -935,48 +944,6 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = AQGridView;
 		};
-		FF8A71BB14B3504000EC6D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
-		FF8A71BD14B3504000EC6D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
-			remoteInfo = "Sparkle Test App";
-		};
-		FF8A71BF14B3504000EC6D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 612279D90DB5470200AB99EA;
-			remoteInfo = "Sparkle Unit Tests";
-		};
-		FF8A71C114B3504000EC6D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
-			remoteInfo = BinaryDelta;
-		};
-		FF8A71C314B3504000EC6D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55C14BB7136EEF1500649790;
-			remoteInfo = finish_installation;
-		};
-		FF8A71C514B3504D00EC6D66 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
 		FF9407FC1441E56C0012B827 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
@@ -1110,6 +1077,20 @@
 			remoteGlobalIDString = FF02C5EE1578A99300F2E6BA;
 			remoteInfo = IRObjectQueue;
 		};
+		FFDE5209159AF9E40086F9B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDE5202159AF9E30086F9B0 /* UIKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = UIKit;
+		};
+		FFDE520C159AF9F80086F9B0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FFDE5202159AF9E30086F9B0 /* UIKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = UIKit;
+		};
 		FFED705A15497D6B00E01FFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */;
@@ -1137,7 +1118,6 @@
 				FFF7F507149E55C6004EFB1B /* IRKeychainX.framework in Copy Frameworks */,
 				FFF7F508149E55C6004EFB1B /* IRWebAPIKitX.framework in Copy Frameworks */,
 				FFF7F509149E55C6004EFB1B /* IRRecurrenceMachineX.framework in Copy Frameworks */,
-				FF8A71C814B3505E00EC6D66 /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1668,7 +1648,6 @@
 		FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF897D33146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAFile+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF897D34146A69A500DA7199 /* WAFile+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAFile+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
-		FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = external/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		FF8CDE8313F3DAB700E08F28 /* WACompositionViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WACompositionViewPhotoCell.h; sourceTree = "<group>"; };
 		FF8CDE8413F3DAB700E08F28 /* WACompositionViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WACompositionViewPhotoCell.m; sourceTree = "<group>"; };
 		FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Authentication.h"; sourceTree = "<group>"; };
@@ -1803,8 +1782,6 @@
 		FFC648571445E92B00593E5E /* WAAuthRequestWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAuthRequestWindowController.h; sourceTree = "<group>"; };
 		FFC648581445E92B00593E5E /* WAAuthRequestWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAuthRequestWindowController.m; sourceTree = "<group>"; };
 		FFC6485A1445E92B00593E5E /* wammer-OSX-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "wammer-OSX-Prefix.pch"; path = "wammer-OSX/wammer-OSX-Prefix.pch"; sourceTree = SOURCE_ROOT; };
-		FFC6485C1445E92B00593E5E /* WANSImageFromUIImageTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANSImageFromUIImageTransformer.h; sourceTree = "<group>"; };
-		FFC6485D1445E92B00593E5E /* WANSImageFromUIImageTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WANSImageFromUIImageTransformer.m; sourceTree = "<group>"; };
 		FFC6485E1445E92B00593E5E /* WATimelineCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineCellView.h; sourceTree = "<group>"; };
 		FFC6485F1445E92B00593E5E /* WATimelineCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineCellView.m; sourceTree = "<group>"; };
 		FFC648601445E92B00593E5E /* WATimelineWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WATimelineWindow.xib; sourceTree = "<group>"; };
@@ -1849,6 +1826,7 @@
 		FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IRManagedObject+WAFileHandling.m"; sourceTree = "<group>"; };
 		FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreview.h; sourceTree = "<group>"; };
 		FFDDB4B51418BB5900FE9CE2 /* WAPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreview.m; sourceTree = "<group>"; };
+		FFDE5202159AF9E30086F9B0 /* UIKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIKit.xcodeproj; path = external/Chameleon/UIKit/UIKit.xcodeproj; sourceTree = "<group>"; };
 		FFE2E60A150F336D00555C16 /* WADiscreteLayoutHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WADiscreteLayoutHelpers.h; path = wammer/WADiscreteLayoutHelpers.h; sourceTree = "<group>"; };
 		FFE2E60B150F336D00555C16 /* WADiscreteLayoutHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WADiscreteLayoutHelpers.m; path = wammer/WADiscreteLayoutHelpers.m; sourceTree = "<group>"; };
 		FFE55FC915404BAE001BE72A /* WADatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADatePickerViewController.h; sourceTree = "<group>"; };
@@ -1918,7 +1896,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF8A71C714B3505400EC6D66 /* Sparkle.framework in Frameworks */,
 				FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */,
 				FF87FA4E149CF46D00B8207A /* Cocoa.framework in Frameworks */,
 				FF87FA4F149CF46D00B8207A /* CoreAudio.framework in Frameworks */,
@@ -1930,6 +1907,8 @@
 				FF460DB1149CFC3F00DB7F0B /* IRKeychainX.framework in Frameworks */,
 				FFC648921445EC4500593E5E /* IRWebAPIKitX.framework in Frameworks */,
 				FF460D33149CF8E400DB7F0B /* IRRecurrenceMachineX.framework in Frameworks */,
+				FFDE51F3159AF8240086F9B0 /* JSONKitX.framework in Frameworks */,
+				FFDE520B159AF9EF0086F9B0 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2546,7 +2525,7 @@
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 				FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */,
 				FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */,
-				FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */,
+				FFDE5202159AF9E30086F9B0 /* UIKit.xcodeproj */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2611,18 +2590,6 @@
 			);
 			name = Authentication;
 			path = wammer;
-			sourceTree = "<group>";
-		};
-		FF8A71AE14B3504000EC6D66 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				FF8A71BC14B3504000EC6D66 /* Sparkle.framework */,
-				FF8A71BE14B3504000EC6D66 /* Sparkle Test App.app */,
-				FF8A71C014B3504000EC6D66 /* Sparkle Unit Tests.octest */,
-				FF8A71C214B3504000EC6D66 /* BinaryDelta */,
-				FF8A71C414B3504000EC6D66 /* finish_installation.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		FF946020152D7EDD0034D540 /* Appearance */ = {
@@ -3035,8 +3002,6 @@
 				FFC648561445E92B00593E5E /* WAAuthRequestWindow.xib */,
 				FFC648571445E92B00593E5E /* WAAuthRequestWindowController.h */,
 				FFC648581445E92B00593E5E /* WAAuthRequestWindowController.m */,
-				FFC6485C1445E92B00593E5E /* WANSImageFromUIImageTransformer.h */,
-				FFC6485D1445E92B00593E5E /* WANSImageFromUIImageTransformer.m */,
 				FFC6485E1445E92B00593E5E /* WATimelineCellView.h */,
 				FFC6485F1445E92B00593E5E /* WATimelineCellView.m */,
 				FFC648601445E92B00593E5E /* WATimelineWindow.xib */,
@@ -3100,6 +3065,14 @@
 			children = (
 				FFD4F937157E07F90027BF3F /* libIRObjectQueue.a */,
 				FFD4F939157E07F90027BF3F /* IRObjectQueueTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FFDE5203159AF9E30086F9B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FFDE520A159AF9E40086F9B0 /* UIKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3294,8 +3267,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				FF335A3F1445F12B00E60C14 /* PBXTargetDependency */,
-				FF8A71C614B3504D00EC6D66 /* PBXTargetDependency */,
+				FFDE520D159AF9F80086F9B0 /* PBXTargetDependency */,
 				FF460DB0149CFC3B00DB7F0B /* PBXTargetDependency */,
 				FF460D30149CF8DF00DB7F0B /* PBXTargetDependency */,
 				FF460D32149CF8DF00DB7F0B /* PBXTargetDependency */,
@@ -3408,8 +3380,8 @@
 					ProjectRef = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
 				},
 				{
-					ProductGroup = FF8A71AE14B3504000EC6D66 /* Products */;
-					ProjectRef = FF8A71AD14B3504000EC6D66 /* Sparkle.xcodeproj */;
+					ProductGroup = FFDE5203159AF9E30086F9B0 /* Products */;
+					ProjectRef = FFDE5202159AF9E30086F9B0 /* UIKit.xcodeproj */;
 				},
 				{
 					ProductGroup = FFED705315497D6B00E01FFB /* Products */;
@@ -3623,41 +3595,6 @@
 			remoteRef = FF73A5DD13D6DD5000D54EC6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FF8A71BC14B3504000EC6D66 /* Sparkle.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Sparkle.framework;
-			remoteRef = FF8A71BB14B3504000EC6D66 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF8A71BE14B3504000EC6D66 /* Sparkle Test App.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Sparkle Test App.app";
-			remoteRef = FF8A71BD14B3504000EC6D66 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF8A71C014B3504000EC6D66 /* Sparkle Unit Tests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Sparkle Unit Tests.octest";
-			remoteRef = FF8A71BF14B3504000EC6D66 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF8A71C214B3504000EC6D66 /* BinaryDelta */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = BinaryDelta;
-			remoteRef = FF8A71C114B3504000EC6D66 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FF8A71C414B3504000EC6D66 /* finish_installation.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = finish_installation.app;
-			remoteRef = FF8A71C314B3504000EC6D66 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		FF9407FD1441E56C0012B827 /* libCrashReporter-iphoneos.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -3713,6 +3650,13 @@
 			fileType = wrapper.cfbundle;
 			path = IRObjectQueueTests.octest;
 			remoteRef = FFD4F938157E07F90027BF3F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FFDE520A159AF9E40086F9B0 /* UIKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UIKit.framework;
+			remoteRef = FFDE5209159AF9E40086F9B0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FFED705B15497D6B00E01FFB /* libWFPresentation.a */ = {
@@ -4224,7 +4168,6 @@
 				FFC6486F1445E95500593E5E /* WADefines.m in Sources */,
 				FFC648721445E96F00593E5E /* WAAuthRequestWindowController.m in Sources */,
 				FFC648751445E97E00593E5E /* UIImage+WAAdditions.m in Sources */,
-				FFC648781445E98A00593E5E /* WANSImageFromUIImageTransformer.m in Sources */,
 				FFC648791445E98D00593E5E /* WATimelineCellView.m in Sources */,
 				FFC6487B1445E99400593E5E /* WATimelineWindowController.m in Sources */,
 				FFC648821445EA2600593E5E /* WAComment.m in Sources */,
@@ -4265,6 +4208,23 @@
 				FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */,
 				FFBEF159153F629B00CF2203 /* WAUser.m in Sources */,
 				FFBEF163153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
+				FFDE51F4159AF8390086F9B0 /* WAArticle.m in Sources */,
+				FFDE51F5159AF83C0086F9B0 /* WAArticle+WAAdditions.m in Sources */,
+				FFDE51F6159AF8470086F9B0 /* WAFile.m in Sources */,
+				FFDE51F7159AF8470086F9B0 /* WAFile+WAAdditions.m in Sources */,
+				FFDE51F8159AF8470086F9B0 /* WAFile+WAConstants.m in Sources */,
+				FFDE51F9159AF8470086F9B0 /* WAFile+Validation.m in Sources */,
+				FFDE51FA159AF8470086F9B0 /* WAFile+ImplicitBlobFulfillment.m in Sources */,
+				FFDE51FB159AF8470086F9B0 /* WAFile+FilePaths.m in Sources */,
+				FFDE51FD159AF88A0086F9B0 /* WAOverlayBezel.m in Sources */,
+				FFDE51FE159AF8E80086F9B0 /* WAStorage.m in Sources */,
+				FFDE526F159AFDDF0086F9B0 /* WAUser+WARemoteEntitySyncing.m in Sources */,
+				FFDE5270159AFDF40086F9B0 /* WAPreview+WARemoteInterfaceEntitySyncing.m in Sources */,
+				FFDE5271159AFDF40086F9B0 /* WAOpenGraphElementImage+WARemoteInterfaceEntitySyncing.m in Sources */,
+				FFDE5272159AFDF40086F9B0 /* WAOpenGraphElement+WARemoteInterfaceEntitySyncing.m in Sources */,
+				FFDE5273159AFE040086F9B0 /* WAOpenGraphElement.m in Sources */,
+				FFDE5274159AFE0A0086F9B0 /* WAOpenGraphElementImage.m in Sources */,
+				FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4446,11 +4406,6 @@
 			name = Finch;
 			targetProxy = FF22290F1463FF9B00541E31 /* PBXContainerItemProxy */;
 		};
-		FF335A3F1445F12B00E60C14 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FF335A3A1445F12100E60C14 /* wammer-OSX-Chameleon */;
-			targetProxy = FF335A3E1445F12B00E60C14 /* PBXContainerItemProxy */;
-		};
 		FF460D2B149CF8DA00DB7F0B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = IRFoundationsX;
@@ -4500,11 +4455,6 @@
 			isa = PBXTargetDependency;
 			name = JSONKitTouch;
 			targetProxy = FF586C701519B95900F308E2 /* PBXContainerItemProxy */;
-		};
-		FF8A71C614B3504D00EC6D66 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Sparkle;
-			targetProxy = FF8A71C514B3504D00EC6D66 /* PBXContainerItemProxy */;
 		};
 		FFA53E3514D934C7001E7B6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4560,6 +4510,11 @@
 			isa = PBXTargetDependency;
 			name = IRObjectQueue;
 			targetProxy = FFD4F93A157E08460027BF3F /* PBXContainerItemProxy */;
+		};
+		FFDE520D159AF9F80086F9B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = UIKit;
+			targetProxy = FFDE520C159AF9F80086F9B0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -4684,7 +4639,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 461;
+				CURRENT_PROJECT_VERSION = 462;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -4742,7 +4697,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 461;
+				CURRENT_PROJECT_VERSION = 462;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"WF_USES_TESTFLIGHT=$(WF_USES_TESTFLIGHT)",
