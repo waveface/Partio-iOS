@@ -451,6 +451,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					callback(attachmentIdentifier);
 
 				}];
+
+				[[WADataStore defaultStore] setLastSyncSuccessDate:[NSDate date]];
 				
 			} onFailure: ^ (NSError *error) {
 			

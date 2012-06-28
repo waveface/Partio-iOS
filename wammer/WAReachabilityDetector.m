@@ -208,7 +208,7 @@ static void WASCReachabilityCallback (SCNetworkReachabilityRef target, SCNetwork
     
 		[wSelf.recurrenceMachine beginPostponingOperations];
 
-		if (!([ri hasWiFiConnection] && [ri hasReachableStation])) {
+		if (![ri hasWiFiConnection] && ![self.hostURL isEqual:ri.engine.context.baseURL]) {
 			[wSelf.recurrenceMachine endPostponingOperations];
 			return;
 		}
