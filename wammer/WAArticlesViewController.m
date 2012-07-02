@@ -31,6 +31,8 @@
 #import "IASKAppSettingsViewController.h"
 #import "WADiscreteLayoutHelpers.h"
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 @interface WAArticlesViewController () <NSFetchedResultsControllerDelegate, WAArticleDraftsViewControllerDelegate>
 
 @property (nonatomic, readwrite, retain) NSFetchedResultsController *fetchedResultsController;

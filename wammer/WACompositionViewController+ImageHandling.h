@@ -9,6 +9,7 @@
 #import "WACompositionViewController.h"
 
 
+@class ALAsset;
 @interface WACompositionViewController (ImageHandling)
 
 - (IRImagePickerController *) newImagePickerController;

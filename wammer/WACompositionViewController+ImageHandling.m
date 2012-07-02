@@ -162,54 +162,55 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 }
 
 - (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
-	
-	if(representedAsset){
+
+	if (representedAsset) {
+		
 		NSLog(@"URI: %@", [[representedAsset defaultRepresentation] url]);
+		
 	}
 	
 	if (selectedAssetURI || representedAsset) {
+	
+		[self.managedObjectContext performBlock:^{
+		
+			WAArticle *capturedArticle = self.article;
+			WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
+			
+			NSCParameterAssert(capturedArticle);
+			
+			NSError *error = nil;
+			if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, capturedArticle, nil] error:&error])
+				NSLog(@"Error obtaining permanent object ID: %@", error);
 
-		WAArticle *capturedArticle = self.article;
-		WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-		
-		NSCParameterAssert(capturedArticle);
-		
-		NSError *error = nil;
-		if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, capturedArticle, nil] error:&error])
-			NSLog(@"Error obtaining permanent object ID: %@", error);
-
-		[capturedArticle willChangeValueForKey:@"files"];
-		[[capturedArticle mutableOrderedSetValueForKey:@"files"] addObject:stitchedFile];
-		[capturedArticle didChangeValueForKey:@"files"];
-		
-		NSURL *finalFileURL = nil;
-		
-		if (selectedAssetURI) {
-			finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
-			NSCParameterAssert([finalFileURL pathExtension]);
-		}
-		
-		if (representedAsset) {
-			UIImageOrientation orientation = UIImageOrientationUp;
-			NSNumber* orientationValue = [representedAsset valueForProperty:@"ALAssetPropertyOrientation"];
-			if (orientationValue != nil) {
-				orientation = [orientationValue intValue];
+			[capturedArticle willChangeValueForKey:@"files"];
+			[[capturedArticle mutableOrderedSetValueForKey:@"files"] addObject:stitchedFile];
+			[capturedArticle didChangeValueForKey:@"files"];
+			
+			NSURL *finalFileURL = nil;
+			
+			if (selectedAssetURI) {
+				finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
+				NSCParameterAssert([finalFileURL pathExtension]);
 			}
 			
-			CGFloat scale = 1.0;
-			UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
-			
-			NSData *fullResolutionData = UIImageJPEGRepresentation(image, 0.8);
-			
-			finalFileURL = [[WADataStore defaultStore]
-											persistentFileURLForData:fullResolutionData 
-											extension:[[representedAsset defaultRepresentation] UTI]];
-			image = nil;
-			fullResolutionData = nil;
-		}
-					
-		stitchedFile.resourceType = (NSString *)kUTTypeImage;
-		stitchedFile.resourceFilePath = [finalFileURL path];
+			if (representedAsset) {
+				UIImageOrientation orientation = [[representedAsset valueForProperty:ALAssetPropertyOrientation] intValue];
+				CGFloat scale = 1.0;
+				UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
+				
+				NSData *fullResolutionData = UIImageJPEGRepresentation(image, 0.8);
+				
+				finalFileURL = [[WADataStore defaultStore]
+												persistentFileURLForData:fullResolutionData 
+												extension:[[representedAsset defaultRepresentation] UTI]];
+				image = nil;
+				fullResolutionData = nil;
+			}
+						
+			stitchedFile.resourceType = (NSString *)kUTTypeImage;
+			stitchedFile.resourceFilePath = [finalFileURL path];
+		
+		}];
 		
 	} else {
 		

@@ -424,7 +424,7 @@ NSString * NSLocalizedStringFromWAReachabilityState (WAReachabilityState aState)
     case WAReachabilityStateNotAvailable:
       return NSLocalizedString(@"REACHABILITY_STATE_NOT_AVAILABLE", @"REACHABILITY_STATE_NOT_AVAILABLE");
     default:
-      return [NSString stringWithFormat:@"%ld", aState];
+      return [NSString stringWithFormat:@"%ld", (long)aState];
   };
 
 }
