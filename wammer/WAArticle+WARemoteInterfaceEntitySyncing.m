@@ -618,7 +618,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			if (!isHidden) {
 
-				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview createTime:self.creationDate updateTime:self.modificationDate onSuccess:^(NSDictionary *postRep) {
+				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview createTime:self.creationDate updateTime:self.modificationDate favorite:isFavorite onSuccess:^(NSDictionary *postRep) {
 					
 					callback(postRep);
 
