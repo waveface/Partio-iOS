@@ -203,8 +203,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 				finalFileURL = [[WADataStore defaultStore]
 												persistentFileURLForData:fullResolutionData 
 												extension:[[representedAsset defaultRepresentation] UTI]];
-				image = nil;
-				fullResolutionData = nil;
 			}
 						
 			stitchedFile.resourceType = (NSString *)kUTTypeImage;
