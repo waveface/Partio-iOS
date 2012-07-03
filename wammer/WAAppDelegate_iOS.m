@@ -6,49 +6,39 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
-#import "WAAppDelegate_iOS.h"
-
 #import <AVFoundation/AVFoundation.h>
 
-#import "WADefines.h"
+#import "WAAppDelegate_iOS.h"
 
+#import "WADefines.h"
 #import "WAAppDelegate.h"
+
+#import "WARemoteInterface.h"
 
 #import "WADataStore.h"
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WANavigationController.h"
-
 #import "WAAuthenticationRequestViewController.h"
 #import "WARegisterRequestViewController.h"
-
-#import "WARemoteInterface.h"
-
 #import "WAApplicationRootViewControllerDelegate.h"
-
 #import "WANavigationBar.h"
-
-#import "UIView+IRAdditions.h"
-
-#import "IRAlertView.h"
-#import "IRAction.h"
-
 #import "WAOverviewController.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WAUserInfoViewController.h"
-
-#import "IRLifetimeHelper.h"
 #import "WAOverlayBezel.h"
-
-#import "UIWindow+IRAdditions.h"
-
-#import "IASKSettingsReader.h"
-
-#import	"DCIntrospect.h"
-#import "UIKit+IRAdditions.h"
-
 #import "WARegisterRequestViewController+SubclassEyesOnly.h"
 #import "WALoginViewController.h"
+
+#import "Foundation+IRAdditions.h"
+#import "UIKit+IRAdditions.h"
+
+#import "IRSlidingSplitViewController.h"
+#import "WASlidingSplitViewController.h"
+
+#import "IASKSettingsReader.h"
+#import	"DCIntrospect.h"
+
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -92,17 +82,9 @@
 		
 		WF_TESTFLIGHT(^ {
 			
-			// REMOVE BEFORE FLIGHT, we still need to know who you're during testing stage
-			#define TESTING 1
-			#ifdef TESTING
-						[TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-			
-			#else
-								[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
-																		(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
-																		nil]];
-			#endif
-			
+			[TestFlight setOptions:[NSDictionary dictionaryWithObjectsAndKeys:
+				(id)kCFBooleanFalse, @"sendLogOnlyOnCrash",
+			nil]];
 			
 			[TestFlight takeOff:kWATestflightTeamToken];
 			
@@ -115,12 +97,11 @@
 			
 			objc_setAssociatedObject([TestFlight class], &kWAAppEventNotification, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 			
-			
 		});
 		
 		WF_CRASHLYTICS(^ {
 			
-			[Crashlytics startWithAPIKey:@"d79b0f823e42fdf1cdeb7e988a8453032fd85169"];
+			[Crashlytics startWithAPIKey:kWACrashlyticsAPIKey];
 			[Crashlytics sharedInstance].debugMode = YES;
 			
 		});
@@ -131,13 +112,14 @@
 			[GANTracker sharedTracker].debug = YES;
 			
 			id observer = [[NSNotificationCenter defaultCenter] addObserverForName:kWAAppEventNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+			
+				NSDictionary *userInfo = [note userInfo];
+				id category = [userInfo objectForKey:@"category"];
+				id action = [userInfo objectForKey:@"action"];
+				id label = [userInfo objectForKey:@"label"];
+				id value = [userInfo objectForKey:@"value"];
 				
-				[[GANTracker sharedTracker] 
-					trackEvent: [[note userInfo] objectForKey:@"category"]
-					action:	[[note userInfo] objectForKey:@"action"]
-					label:	[[note userInfo] objectForKey:@"label"]
-					value:	(NSInteger)[[note userInfo] objectForKey:@"value"]
-					withError:nil];
+				[[GANTracker sharedTracker] trackEvent:category action:action label:label value:value withError:nil];
 				
 			}];
 			
@@ -146,7 +128,7 @@
 		});
 		
 	}
-		
+	
 	AVAudioSession * const audioSession = [AVAudioSession sharedInstance];
 	[audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
 	[audioSession setActive:YES error:nil];
@@ -240,12 +222,15 @@
 	
 		case UIUserInterfaceIdiomPad: {
 		
+			IRSlidingSplitViewController *ssVC = [WASlidingSplitViewController new];
+		
 			WAOverviewController *presentedViewController = [[WAOverviewController alloc] init];
 			WANavigationController *rootNavC = [[WANavigationController alloc] initWithRootViewController:presentedViewController];
 			
 			[presentedViewController setDelegate:self];
 			
-			self.window.rootViewController = rootNavC;
+			ssVC.masterViewController = rootNavC;
+			self.window.rootViewController = ssVC;
 		
 			break;
 		
@@ -274,10 +259,6 @@
 
 			
 }
-
-
-
-
 
 - (void) applicationRootViewControllerDidRequestReauthentication:(id<WAApplicationRootViewController>)controller {
 

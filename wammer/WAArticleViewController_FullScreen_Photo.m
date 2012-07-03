@@ -18,6 +18,8 @@
 
 #import "WAArticle.h"
 
+#import "WAAppearance.h"
+
 
 @interface WAArticleViewController_FullScreen_Photo () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
 
@@ -75,6 +77,13 @@
 	
 	[gridViewWrapper addSubview:self.gridView];
 	[gridViewWrapper addSubview:shadowView];
+	
+	UIView *gridBackgroundView = WAStandardArticleStackCellCenterBackgroundView();
+	gridBackgroundView.frame = gridViewWrapper.bounds;
+	gridBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[gridViewWrapper addSubview:gridBackgroundView];
+	[gridViewWrapper sendSubviewToBack:gridBackgroundView];
+	
 	[allStackElements addObject:gridViewWrapper];
 	
 	[self.stackView layoutSubviews];

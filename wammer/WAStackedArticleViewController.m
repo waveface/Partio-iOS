@@ -488,10 +488,14 @@
 	if ((anElement == self.textStackCell) || [self.textStackCell isDescendantOfView:anElement])
 		preferredHeight = MIN(144, preferredHeight);
 	
-	return (CGSize){
+	CGSize answer = (CGSize){
 		CGRectGetWidth(aStackView.bounds),
 		preferredHeight
 	};
+	
+	NSLog(@"-> %@", NSStringFromCGSize(answer));
+	
+	return answer;
 
 }
 
@@ -824,6 +828,7 @@
 	}];
 	
 	footerShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+	footerShadow.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[footerCell addSubview:footerShadow];
 	
 	return footerCell;

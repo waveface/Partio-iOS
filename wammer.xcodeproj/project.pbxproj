@@ -87,6 +87,8 @@
 		FF0528B41508D1A100F585D7 /* WALocalizedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */; };
 		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
 		FF069E771576635500141CD9 /* WADataStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C5151520947100301887 /* WADataStoreTest.m */; };
+		FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */; };
+		FF09C0EE15A2E83800AEDDAE /* WASlidingSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF09C0ED15A2E83800AEDDAE /* WASlidingSplitViewController.m */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m */; };
 		FF0AC0CA149F7A8C00AA5611 /* WAArticleViewController_FullScreen_Photo.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_FullScreen_Photo.xib */; };
 		FF0AC0CB149F7A8C00AA5611 /* WAArticleViewController_Cell_Photo.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0AC0C6149F7A8B00AA5611 /* WAArticleViewController_Cell_Photo.xib */; };
@@ -255,7 +257,6 @@
 		FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA5156A518100C105D5 /* WAFile+LazyImages.m */; };
 		FF6D75D7152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
-		FF72EAE514BDC30F0093EAB7 /* WAGestureWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FF72EAE414BDC30F0093EAB7 /* WAGestureWindow.m */; };
 		FF73351214A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */; };
 		FF73351314A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */; };
 		FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */; };
@@ -732,6 +733,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = FF3BE06715375564004C5244;
 			remoteInfo = IRFoundationsTouchTestHost;
+		};
+		FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF2CD0581538AEDF00EC1063;
+			remoteInfo = IRSlidingSplitViewController;
+		};
+		FF09C0E115A2DD8700AEDDAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FF2CD01F1538AD1E00EC1063;
+			remoteInfo = IRSlidingSplitViewController;
 		};
 		FF1A10501462ACDB004FD00D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1290,6 +1305,9 @@
 		FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedLabel.m; sourceTree = "<group>"; };
 		FF06363814B346CB00E7AF78 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		FF0841471558E18900C47CC3 /* WARegisterRequestViewController+SubclassEyesOnly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARegisterRequestViewController+SubclassEyesOnly.h"; sourceTree = "<group>"; };
+		FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRSlidingSplitViewController.xcodeproj; path = external/IRSlidingSplitViewController/IRSlidingSplitViewController.xcodeproj; sourceTree = "<group>"; };
+		FF09C0EC15A2E83800AEDDAE /* WASlidingSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASlidingSplitViewController.h; sourceTree = "<group>"; };
+		FF09C0ED15A2E83800AEDDAE /* WASlidingSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASlidingSplitViewController.m; sourceTree = "<group>"; };
 		FF0AC0C2149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_FullScreen_Plaintext.h; sourceTree = "<group>"; };
 		FF0AC0C3149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_FullScreen_Plaintext.m; sourceTree = "<group>"; };
 		FF0AC0C5149F7A8B00AA5611 /* WAArticleViewController_FullScreen_Photo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAArticleViewController_FullScreen_Photo.xib; sourceTree = "<group>"; };
@@ -1444,8 +1462,6 @@
 		FF71262214FAB82F00BC2571 /* WAModel 17.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 17.xcdatamodel"; sourceTree = "<group>"; };
 		FF71D3F7140E0A0C0069B161 /* WAArticlesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticlesViewController.h; sourceTree = "<group>"; };
 		FF71D3F8140E0A0C0069B161 /* WAArticlesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticlesViewController.m; sourceTree = "<group>"; };
-		FF72EAE314BDC30F0093EAB7 /* WAGestureWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGestureWindow.h; sourceTree = "<group>"; };
-		FF72EAE414BDC30F0093EAB7 /* WAGestureWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGestureWindow.m; sourceTree = "<group>"; };
 		FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Storages.h"; sourceTree = "<group>"; };
 		FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Storages.m"; sourceTree = "<group>"; };
 		FF73A54213D6C2CC00D54EC6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -2048,6 +2064,7 @@
 				FFD4F93C157E084E0027BF3F /* libIRObjectQueue.a in Frameworks */,
 				FF1A10581462B0DF004FD00D /* libFinch.a in Frameworks */,
 				FFB117C6147F8B3D002094E5 /* libIRRecurrenceMachine.a in Frameworks */,
+				FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */,
 				FFED705E15497D7800E01FFB /* libWFPresentation.a in Frameworks */,
 				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
@@ -2246,6 +2263,14 @@
 				FF2228401463D6FB00541E31 /* WARemoteInterface+ScheduledDataRetrieval.m */,
 			);
 			name = "Scheduled Operations";
+			sourceTree = "<group>";
+		};
+		FF09C0D815A2DD6F00AEDDAE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FF1A10471462ACDB004FD00D /* Products */ = {
@@ -2532,6 +2557,8 @@
 				FF5B83B2140F935500A9D037 /* WAOverviewController.xib */,
 				FF1305EA14FD5539004BD3D6 /* WAOverviewController+ContextPresenting.h */,
 				FF1305EB14FD5539004BD3D6 /* WAOverviewController+ContextPresenting.m */,
+				FF09C0EC15A2E83800AEDDAE /* WASlidingSplitViewController.h */,
+				FF09C0ED15A2E83800AEDDAE /* WASlidingSplitViewController.m */,
 				FF586B901519B2B900F308E2 /* Discrete Layout */,
 			);
 			name = Overview;
@@ -2598,6 +2625,7 @@
 				FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */,
 				FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */,
 				FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */,
+				FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */,
 				FFED705215497D6B00E01FFB /* WFPresentation.xcodeproj */,
 				FFDE5202159AF9E30086F9B0 /* UIKit.xcodeproj */,
 			);
@@ -3221,8 +3249,6 @@
 				FF559492157CF24F0048EA1B /* WAArticleStyle.m */,
 				FF0FF9111501101000D6FE18 /* WAArticleTextStackElement.h */,
 				FF0FF9121501101000D6FE18 /* WAArticleTextStackElement.m */,
-				FF72EAE314BDC30F0093EAB7 /* WAGestureWindow.h */,
-				FF72EAE414BDC30F0093EAB7 /* WAGestureWindow.m */,
 				FFC350FB144434D80085BE78 /* WAArticleView.h */,
 				FFC350FC144434D80085BE78 /* WAArticleView.m */,
 				FFD4F93D157E0A080027BF3F /* WAArticleView+ReuseSupport.h */,
@@ -3444,6 +3470,7 @@
 				FFCFE07B142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07D142111E100B9E6AF /* PBXTargetDependency */,
 				FFCFE07F142111E100B9E6AF /* PBXTargetDependency */,
+				FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */,
 				FFCFE081142111E100B9E6AF /* PBXTargetDependency */,
 				FFA9990B1549A308004C9B52 /* PBXTargetDependency */,
 				FFCFE083142111E100B9E6AF /* PBXTargetDependency */,
@@ -3510,6 +3537,10 @@
 					ProjectRef = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
 				},
 				{
+					ProductGroup = FF09C0D815A2DD6F00AEDDAE /* Products */;
+					ProjectRef = FF09C0D715A2DD6F00AEDDAE /* IRSlidingSplitViewController.xcodeproj */;
+				},
+				{
 					ProductGroup = FFB3C170145E9A6600ED7A56 /* Products */;
 					ProjectRef = FFB3C16F145E9A6600ED7A56 /* IRTextAttributor.xcodeproj */;
 				},
@@ -3553,6 +3584,13 @@
 			fileType = wrapper.application;
 			path = IRFoundationsTouchTestHost.app;
 			remoteRef = 4B36253B15662DCA00F07032 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libIRSlidingSplitViewController.a;
+			remoteRef = FF09C0DE15A2DD6F00AEDDAE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF1A10511462ACDB004FD00D /* libFinch.a */ = {
@@ -4498,7 +4536,6 @@
 				FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */,
 				FFCD324F14B997B80035C4F5 /* WAModel.xcdatamodeld in Sources */,
 				FFCD325214B9EA4D0035C4F5 /* WAFile+WAAdditions.m in Sources */,
-				FF72EAE514BDC30F0093EAB7 /* WAGestureWindow.m in Sources */,
 				FF0505EF14C08900002EA455 /* WAButton.m in Sources */,
 				FFB44D5A14D692AA00080F07 /* WAArticleViewController_FullScreen_Preview.m in Sources */,
 				FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */,
@@ -4585,12 +4622,18 @@
 				FFA1F23F159C26B2003000AD /* WAStackedArticleViewController+Favorite.m in Sources */,
 				FFA1F492159C54C8003000AD /* WAArticleDateItem.m in Sources */,
 				130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */,
+				FF09C0EE15A2E83800AEDDAE /* WASlidingSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FF09C0E215A2DD8700AEDDAE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = IRSlidingSplitViewController;
+			targetProxy = FF09C0E115A2DD8700AEDDAE /* PBXContainerItemProxy */;
+		};
 		FF2229101463FF9B00541E31 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Finch;
@@ -4853,6 +4896,7 @@
 					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
 					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
 					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
+					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
@@ -4908,6 +4952,7 @@
 					"\"$(PROJECT_DIR)/external/IRKeychain\"/**",
 					"\"$(PROJECT_DIR)/external/IRDiscreteLayoutManager\"/**",
 					"\"$(PROJECT_DIR)/external/IRTextAttributor\"/**",
+					"\"$(PROJECT_DIR)/external/IRSlidingSplitViewController\"/**",
 					"\"$(PROJECT_DIR)/external/PLCrashReporter/Source\"",
 					"\"$(PROJECT_DIR)/external/Finch/Decoder\"",
 					"\"$(PROJECT_DIR)/external/Finch/Finch\"",
