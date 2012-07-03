@@ -544,7 +544,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		} completionBlock:^(id result) {
 		
-			NSCParameterAssert(result);
+			//	NSCParameterAssert(result);
 			
 			if (![result isKindOfClass:[NSString class]])
 				return;

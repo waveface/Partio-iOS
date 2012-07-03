@@ -317,7 +317,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}
 	
 	BOOL needsSendingResourceImage = !self.resourceURL;
-	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
+	BOOL needsSendingThumbnailImage = !self.thumbnailURL && [self smallestPresentableImage];
 	
 	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
 		
