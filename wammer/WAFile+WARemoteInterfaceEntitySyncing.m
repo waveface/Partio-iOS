@@ -316,7 +316,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	}
 	
-	BOOL needsSendingResourceImage = !self.resourceURL;
+	BOOL needsSendingResourceImage = !self.resourceURL && [self resourceImage];
 	BOOL needsSendingThumbnailImage = !self.thumbnailURL && [self smallestPresentableImage];
 	
 	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
@@ -355,6 +355,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			if (!isValidPath(thumbnailFilePath)) {
 			
 				UIImage *smallestImage = [file smallestPresentableImage];
+				NSCParameterAssert(smallestImage);
+
 				CGSize imageSize = smallestImage.size;
 				CGFloat const sideLength = 1024;
 				
