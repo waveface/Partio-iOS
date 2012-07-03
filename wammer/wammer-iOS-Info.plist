@@ -52,6 +52,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>waveface</string>
+				<string>fb357087874306060</string>
 			</array>
 		</dict>
 	</array>
