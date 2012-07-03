@@ -170,7 +170,25 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	}
 	
 	if (selectedAssetURI || representedAsset) {
-	
+		
+		if ([[selectedAssetURI scheme] isEqualToString:@"file"]) {
+			
+			//	need more definition in the API contract thru IRImagePicker’s completion block documentation
+			
+			NSFileManager * const fm = [NSFileManager defaultManager];
+			WADataStore * const ds = [WADataStore defaultStore];
+			NSURL *toURI = [[ds oneUseTemporaryFileURL] URLByAppendingPathExtension:[selectedAssetURI pathExtension]];
+			
+			NSError *error = nil;
+			if (![fm moveItemAtURL:selectedAssetURI toURL:toURI error:&error]) {
+				NSParameterAssert(NO);
+				NSLog(@"Error moving file to a safe location: %@", error);
+			}
+			
+			selectedAssetURI = toURI;
+			
+		}
+		
 		[self.managedObjectContext performBlock:^{
 		
 			WAArticle *capturedArticle = self.article;
