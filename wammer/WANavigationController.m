@@ -148,4 +148,25 @@
 
 }
 
+- (NSUInteger) supportedInterfaceOrientations {
+
+	UIViewController *topVC = self.topViewController;
+	NSUInteger mask = UIInterfaceOrientationPortrait;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortrait])
+		mask |= UIInterfaceOrientationMaskPortrait;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown])
+		mask |= UIInterfaceOrientationMaskPortraitUpsideDown;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeLeft])
+		mask |= UIInterfaceOrientationMaskLandscapeLeft;
+	
+	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationLandscapeRight])
+		mask |= UIInterfaceOrientationMaskLandscapeRight;
+	
+	return mask;
+
+}
+
 @end
