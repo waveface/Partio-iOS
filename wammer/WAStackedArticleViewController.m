@@ -88,104 +88,6 @@
 	
 	nil]];
 	
-	//	IRBarButtonItem *articleDateItem = [IRBarButtonItem itemWithCustomView:((^ {
-	//					
-	//		IRLabel *label = [[IRLabel alloc] initWithFrame:(CGRect){ (CGPoint){ 36, 32 }, (CGSize){ 256 , 24 } }];
-	//		label.opaque = NO;
-	//		label.backgroundColor = nil;
-	//		
-	//		__weak IRLabel *wLabel = label;
-	//		[label irBind:@"attributedText" toObject:wSelf keyPath:@"article" options:[NSDictionary dictionaryWithObjectsAndKeys:
-	//		
-	//			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
-	//			
-	//				NSString *relDate = [[IRRelativeDateFormatter sharedFormatter] stringFromDate:wSelf.article.creationDate];
-	//				NSString *device = wSelf.article.creationDeviceName;
-	//				NSString *string = [NSString stringWithFormat:@"%@ (%@)", relDate, device];
-	//				
-	//				UIFont * const font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14.0f];
-	//				UIColor * const color = [UIColor colorWithWhite:0.5 alpha:1];
-	//
-	//				return [wLabel attributedStringForString:string font:font color:color];
-	//			
-	//			} copy], kIRBindingsValueTransformerBlock,
-	//		
-	//		nil]];
-			
-	//		[wSelf irPerformOnDeallocation:^{
-	//		
-	//			[wLabel irUnbind:@"attributedText"];
-	//			
-	//		}];
-	//		
-	//		return label;
-	//		
-	//	})())];
-	
-	//	IRBarButtonItem *commentsItem = ((^ {
-	//	
-	//		IRBarButtonItem *commentsItem = [[IRBarButtonItem alloc] initWithTitle:@"Comments" style:UIBarButtonItemStyleBordered target:nil action:nil];
-	//	
-	//		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-	//		
-	//			case UIUserInterfaceIdiomPad: {
-	//				
-	//				[commentsItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
-	//					[UIColor colorWithWhite:.5 alpha:1], UITextAttributeTextColor,
-	//					[UIColor clearColor], UITextAttributeTextShadowColor,
-	//					[NSValue valueWithUIOffset:UIOffsetZero], UITextAttributeTextShadowOffset,
-	//				nil] forState:UIControlStateNormal];
-	//				
-	//				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButton"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-	//				
-	//				[commentsItem setBackgroundImage:[[UIImage imageNamed:@"WAGrayTranslucentBarButtonPressed"] resizableImageWithCapInsets:(UIEdgeInsets){ 4, 4, 5, 4 }] forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-	//				
-	//				break;
-	//				
-	//			}
-	//			
-	//			case UIUserInterfaceIdiomPhone: {
-	//			
-	//				break;
-	//			
-	//			}
-	//		
-	//		}
-	//		
-	//		__weak IRBarButtonItem *wCommentsItem = commentsItem;
-	//		
-	//		commentsItem.block = ^ {
-	//		
-	//			[wSelf presentCommentsViewController:[wSelf newArticleCommentsController] sender:wCommentsItem];
-	//			
-	//		};
-	//		
-	//		[commentsItem irBind:@"title" toObject:self keyPath:@"article.comments.@count" options:[NSDictionary dictionaryWithObjectsAndKeys:
-	//		
-	//			[^ (id inOldValue, id inNewValue, NSString *changeKind) {
-	//			
-	//				NSUInteger numberOfComments = [inNewValue isKindOfClass:[NSNumber class]] ? [(NSNumber *)inNewValue unsignedIntegerValue] : 0;
-	//				
-	//				return [NSString stringWithFormat:(numberOfComments == 0) ?
-	//					NSLocalizedString(@"COMMENTS_COUNT_ZERO_FORMAT_STRING", @"“%@ Comment” or “No Comment”") :
-	//						(numberOfComments == 1) ?
-	//							NSLocalizedString(@"COMMENTS_COUNT_ONE_FORMAT_STRING", @"“%@ Comment”") :
-	//								NSLocalizedString(@"COMMENTS_COUNT_MANY_FORMAT_STRING", @"“%@ Comments”"), inNewValue];
-	//			
-	//			} copy], kIRBindingsValueTransformerBlock,
-	//		
-	//		nil]];
-	//		
-	//		[wSelf irPerformOnDeallocation:^{
-	//		
-	//			[wCommentsItem irUnbind:@"title"];
-	//			
-	//		}];
-	//		
-	//		return commentsItem;
-	//	
-	//	})());
-	
 	UIBarButtonItem *favoriteToggleItem = [self newFavoriteToggleItem];
 	
 	switch ([UIDevice currentDevice].userInterfaceIdiom) {
@@ -689,8 +591,26 @@
 			
 			case UIUserInterfaceIdiomPhone: {
 			
+				CGRect textStackCellRect = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 44.0f }};
+			
 				topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
-				topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 24 }};
+				topTextStackCell.frame = textStackCellRect;
+				
+				UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:textStackCellRect];
+				toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+				[topTextStackCell.contentView addSubview:toolbar];
+				
+				UIImage *toolbarBackground = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackground"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+				UIImage *toolbarBackgroundLandscapePhone = [[UIImage imageNamed:@"WAArticleStackHeaderBarBackgroundLandscapePhone"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+				
+				NSCParameterAssert(toolbarBackground);
+				NSCParameterAssert(toolbarBackgroundLandscapePhone);
+				
+				[toolbar setBackgroundImage:toolbarBackground forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsDefault];
+				[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
+
+				toolbar.items = self.headerBarButtonItems;
+				[toolbar layoutSubviews];
 				
 				self.headerView = topTextStackCell;
 				
@@ -718,19 +638,28 @@
 	}
 	
 	if (showsComments) {
+		
 		if (hasText) {
+			
 			WAArticleTextStackCell *commentsSeparatorCell = [WAArticleTextStackCell cellFromNib];
 			commentsSeparatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 			commentsSeparatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(commentsSeparatorCell.bounds), 24 }};
 			[self.stackView addStackElementsObject:commentsSeparatorCell];
+			
 		}
+		
 		[self.stackView addStackElementsObject:self.commentsVC.view];
+		
 	}
+	
+	if (hasText) {
 
-	WAArticleTextStackCell *contentsSeparatorCell = [WAArticleTextStackCell cellFromNib];
-	contentsSeparatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
-	contentsSeparatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(contentsSeparatorCell.bounds), 24 }};
-	[self.stackView addStackElementsObject:contentsSeparatorCell];
+		WAArticleTextStackCell *contentsSeparatorCell = [WAArticleTextStackCell cellFromNib];
+		contentsSeparatorCell.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
+		contentsSeparatorCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(contentsSeparatorCell.bounds), 24 }};
+		[self.stackView addStackElementsObject:contentsSeparatorCell];
+	
+	}
 	
 #if 0
 	
@@ -753,30 +682,13 @@
 	self.stackView.onDidLayoutSubviews = ^ {
 		
 		[wSelf.textStackCellFoldingToggleWrapperView.superview bringSubviewToFront:wSelf.textStackCellFoldingToggleWrapperView];
+		[wSelf.headerView.superview bringSubviewToFront:wSelf.headerView];
 		
-		switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		
-			case UIUserInterfaceIdiomPad: {
-			
-				[wSelf.headerView.superview bringSubviewToFront:wSelf.headerView];
+		wSelf.headerView.center = (CGPoint){
+			wSelf.headerView.center.x,
+			MAX(0, wSelf.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(wSelf.headerView.bounds)
+		};
 				
-				wSelf.headerView.center = (CGPoint){
-					wSelf.headerView.center.x,
-					MAX(0, wSelf.stackView.contentOffset.y) + 0.5 * CGRectGetHeight(wSelf.headerView.bounds)
-				};
-				
-				break;
-			
-			}
-			
-			case UIUserInterfaceIdiomPhone: {
-			
-				break;
-			
-			}
-		
-		}
-		
 	};
 
 	if (self.onViewDidLoad)

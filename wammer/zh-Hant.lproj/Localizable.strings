@@ -131,15 +131,6 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "更換封面相片";
 
-/* “%@ Comments” */
-"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ 則筆記";
-
-/* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ 則筆記";
-
-/* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "沒有筆記";
-
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i 張照片";
 
