@@ -493,8 +493,6 @@
 		preferredHeight
 	};
 	
-	NSLog(@"-> %@", NSStringFromCGSize(answer));
-	
 	return answer;
 
 }
@@ -601,19 +599,8 @@
 	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	
 	self.stackView.alwaysBounceHorizontal = NO;
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		case UIUserInterfaceIdiomPad: {
-			self.stackView.bounces = YES;
-			self.stackView.alwaysBounceVertical = YES;
-			break;
-		}
-		case UIUserInterfaceIdiomPhone: {
-			self.stackView.bounces = NO;
-			self.stackView.alwaysBounceVertical = NO;
-			break;
-		}
-	}
+	self.stackView.bounces = NO;
+	self.stackView.alwaysBounceVertical = NO;
 	
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
