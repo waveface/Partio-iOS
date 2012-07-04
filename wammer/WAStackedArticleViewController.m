@@ -258,6 +258,15 @@
 		
 	textStackCell = [WAArticleTextStackElement cellFromNib];
 	
+	if (!textStackCell.backgroundView)
+		textStackCell.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+	
+	UIImageView *quotationMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WAArticleViewQuotationMark"]];
+	[quotationMark sizeToFit];
+	quotationMark.frame = CGRectOffset(quotationMark.frame, 8, -16);
+	
+	[textStackCell.backgroundView addSubview:quotationMark];
+		
 	[textStackCell.textStackCellLabel irBind:@"text" toObject:self.article keyPath:@"text" options:[NSDictionary dictionaryWithObjectsAndKeys:
 		(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
 	nil]];
@@ -663,11 +672,12 @@
 	
 	} else {
 	
+		WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
+		
 		switch ([UIDevice currentDevice].userInterfaceIdiom) {
 		
 			case UIUserInterfaceIdiomPad: {
 			
-				WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
 				topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
 				topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 48 }};
 				
@@ -679,7 +689,6 @@
 			
 			case UIUserInterfaceIdiomPhone: {
 			
-				WAArticleTextStackCell *topTextStackCell = [WAArticleTextStackCell cellFromNib];
 				topTextStackCell.backgroundView = WAStandardArticleStackCellTopBackgroundView();
 				topTextStackCell.frame = (CGRect){ CGPointZero, (CGSize){ CGRectGetWidth(topCell.bounds), 24 }};
 				
@@ -1047,6 +1056,38 @@
 	} else {
 	
 		//	?
+	
+	}
+
+}
+
+- (BOOL) shouldAutorotate {
+
+	return YES;
+
+}
+
+- (NSUInteger) supportedInterfaceOrientations {
+
+	return UIInterfaceOrientationPortrait;
+
+}
+
+- (UIInterfaceOrientation) preferredInterfaceOrientationForPresentation {
+
+	return UIInterfaceOrientationPortrait;
+
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPhone:
+			return (UIInterfaceOrientationPortrait == interfaceOrientation);
+		
+		default:
+			return YES;
 	
 	}
 

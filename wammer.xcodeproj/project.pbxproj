@@ -576,6 +576,10 @@
 		FFBEF161153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
 		FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
 		FFBEF163153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */; };
+		FFBF598F15A43D6C003D650D /* WAArticleViewQuotationMark~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FFBF598B15A43D6C003D650D /* WAArticleViewQuotationMark~ipad.png */; };
+		FFBF599015A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFBF598C15A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png */; };
+		FFBF599115A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FFBF598D15A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png */; };
+		FFBF599215A43D6C003D650D /* WAArticleViewQuotationMark~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFBF598E15A43D6C003D650D /* WAArticleViewQuotationMark~iphone@2x.png */; };
 		FFC350FD144434D80085BE78 /* WAArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC350FC144434D80085BE78 /* WAArticleView.m */; };
 		FFC6200E149CF03A0097C377 /* WADefines+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6200D149CF03A0097C377 /* WADefines+iOS.m */; };
 		FFC6200F149CF0EE0097C377 /* WARemoteInterfaceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF22283D1463D2BE00541E31 /* WARemoteInterfaceContext.m */; };
@@ -1871,6 +1875,10 @@
 		FFBEF156153F629B00CF2203 /* WAUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAUser.m; sourceTree = "<group>"; };
 		FFBEF15F153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAStorage+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FFBEF160153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAStorage+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		FFBF598B15A43D6C003D650D /* WAArticleViewQuotationMark~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleViewQuotationMark~ipad.png"; path = "Resources/WAArticleViewQuotationMark~ipad.png"; sourceTree = "<group>"; };
+		FFBF598C15A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleViewQuotationMark~ipad@2x.png"; path = "Resources/WAArticleViewQuotationMark~ipad@2x.png"; sourceTree = "<group>"; };
+		FFBF598D15A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleViewQuotationMark~iphone.png"; path = "Resources/WAArticleViewQuotationMark~iphone.png"; sourceTree = "<group>"; };
+		FFBF598E15A43D6C003D650D /* WAArticleViewQuotationMark~iphone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleViewQuotationMark~iphone@2x.png"; path = "Resources/WAArticleViewQuotationMark~iphone@2x.png"; sourceTree = "<group>"; };
 		FFC08608153D661A00A42C3B /* WAModel 23.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 23.xcdatamodel"; sourceTree = "<group>"; };
 		FFC097F1152F0F3500228E20 /* WAModel 20.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 20.xcdatamodel"; sourceTree = "<group>"; };
 		FFC0FCE8153C4A240058DC5C /* WAModel 22.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 22.xcdatamodel"; sourceTree = "<group>"; };
@@ -2986,6 +2994,10 @@
 				FFA1F305159C434B003000AD /* WAArticleStackHeaderBarBackground@2x.png */,
 				FFA1F306159C434B003000AD /* WAArticleStackHeaderBarBackgroundLandscapePhone.png */,
 				FFA1F307159C434B003000AD /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png */,
+				FFBF598B15A43D6C003D650D /* WAArticleViewQuotationMark~ipad.png */,
+				FFBF598C15A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png */,
+				FFBF598D15A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png */,
+				FFBF598E15A43D6C003D650D /* WAArticleViewQuotationMark~iphone@2x.png */,
 				FFA1F308159C434B003000AD /* WAAttachmentDisabledGlyph.png */,
 				FFA1F309159C434B003000AD /* WAAttachmentDisabledGlyph@2x.png */,
 				FFA1F30A159C434B003000AD /* WAAttachmentGlyph.png */,
@@ -4201,6 +4213,10 @@
 				FFA1F48E159C434B003000AD /* WAUserGlyphLarge.png in Resources */,
 				FFA1F48F159C434B003000AD /* WAUserGlyphLarge@2x.png in Resources */,
 				FFA1F494159C54D7003000AD /* WAArticleDateItem.xib in Resources */,
+				FFBF598F15A43D6C003D650D /* WAArticleViewQuotationMark~ipad.png in Resources */,
+				FFBF599015A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png in Resources */,
+				FFBF599115A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png in Resources */,
+				FFBF599215A43D6C003D650D /* WAArticleViewQuotationMark~iphone@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
