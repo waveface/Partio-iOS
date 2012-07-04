@@ -24,7 +24,7 @@
 - (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated;
 - (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated;
 
-- (void) handleIncomingSelectedAssetURI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
+- (void) handleIncomingSelectedAssetImage:(UIImage *)image URI:(NSURL *)aFileURL representedAsset:(ALAsset *)photoLibraryAsset;
 
 - (BOOL) shouldDismissSelfOnCameraCancellation;
 
