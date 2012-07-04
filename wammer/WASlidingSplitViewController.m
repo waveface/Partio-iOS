@@ -21,7 +21,7 @@
 
 - (CGPoint) detailViewTranslationForGestureTranslation:(CGPoint)translation {
 
-	return (CGPoint){ 0.0f, translation.y };
+	return (CGPoint){ 0.0f, MAX(0, translation.y) };
 
 }
 
