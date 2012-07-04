@@ -488,10 +488,12 @@
 	if ((anElement == self.textStackCell) || [self.textStackCell isDescendantOfView:anElement])
 		preferredHeight = MIN(144, preferredHeight);
 	
-	return (CGSize){
+	CGSize answer = (CGSize){
 		CGRectGetWidth(aStackView.bounds),
 		preferredHeight
 	};
+	
+	return answer;
 
 }
 
@@ -597,19 +599,8 @@
 	self.stackView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	
 	self.stackView.alwaysBounceHorizontal = NO;
-	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-		case UIUserInterfaceIdiomPad: {
-			self.stackView.bounces = YES;
-			self.stackView.alwaysBounceVertical = YES;
-			break;
-		}
-		case UIUserInterfaceIdiomPhone: {
-			self.stackView.bounces = NO;
-			self.stackView.alwaysBounceVertical = NO;
-			break;
-		}
-	}
+	self.stackView.bounces = NO;
+	self.stackView.alwaysBounceVertical = NO;
 	
 	self.stackView.showsHorizontalScrollIndicator = NO;	
 	self.stackView.showsVerticalScrollIndicator = NO;
@@ -824,6 +815,7 @@
 	}];
 	
 	footerShadow.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+	footerShadow.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[footerCell addSubview:footerShadow];
 	
 	return footerCell;
