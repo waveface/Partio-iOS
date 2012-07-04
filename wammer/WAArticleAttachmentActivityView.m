@@ -173,10 +173,4 @@
 
 }
 
-- (void) dealloc {
-
-	NSParameterAssert([NSThread isMainThread]);
-
-}
-
 @end
