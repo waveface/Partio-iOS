@@ -262,6 +262,7 @@
 		FF75E75C1484C1F30063CED7 /* WARegisterRequestWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */; };
 		FF7997A91490A23C000CE08D /* WAFilePageElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997A81490A23C000CE08D /* WAFilePageElement.m */; };
 		FF7997AC1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7997AB1490A87F000CE08D /* WAFilePageElement+WARemoteInterfaceEntitySyncing.m */; };
+		FF79B8AD15A4115E000A537A /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		FF7D12F414F26D7D007EF2B7 /* WACompositionViewControllerPad.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D12F314F26D7D007EF2B7 /* WACompositionViewControllerPad.m */; };
 		FF7D12F714F26DB2007EF2B7 /* WACompositionViewControllerPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7D12F614F26DB2007EF2B7 /* WACompositionViewControllerPhone.m */; };
 		FF7EB68E1467E472002718DC /* WARemoteInterfaceDefines.m in Sources */ = {isa = PBXBuildFile; fileRef = FF7EB68D1467E472002718DC /* WARemoteInterfaceDefines.m */; };
@@ -4450,6 +4451,7 @@
 				FFDE5273159AFE040086F9B0 /* WAOpenGraphElement.m in Sources */,
 				FFDE5274159AFE0A0086F9B0 /* WAOpenGraphElementImage.m in Sources */,
 				FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */,
+				FF79B8AD15A4115E000A537A /* WABackoffHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
