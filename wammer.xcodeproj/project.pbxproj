@@ -253,6 +253,11 @@
 		FF5ACC22152D917E00F1DF3D /* WANavigationState.m in Sources */ = {isa = PBXBuildFile; fileRef = FF5ACC21152D917E00F1DF3D /* WANavigationState.m */; };
 		FF61CCB3149D40E500A6EB0B /* WAComposition.m in Sources */ = {isa = PBXBuildFile; fileRef = FF61CCAF149D40E000A6EB0B /* WAComposition.m */; };
 		FF61CCB4149D40EB00A6EB0B /* WAComposition.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF61CCB0149D40E000A6EB0B /* WAComposition.xib */; };
+		FF66D58915A56A9F00851F1B /* WANavigationBar.png in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58715A56A9F00851F1B /* WANavigationBar.png */; };
+		FF66D58A15A56A9F00851F1B /* WANavigationBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58815A56A9F00851F1B /* WANavigationBar@2x.png */; };
+		FF66D58C15A577AC00851F1B /* WATextFoldingToggleItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */; };
+		FF66D58F15A5986800851F1B /* WAArticleStackHeaderBarBackground@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58D15A5986700851F1B /* WAArticleStackHeaderBarBackground@2x~iphone.png */; };
+		FF66D59015A5986800851F1B /* WAArticleStackHeaderBarBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58E15A5986700851F1B /* WAArticleStackHeaderBarBackground~iphone.png */; };
 		FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */; };
 		FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA5156A518100C105D5 /* WAFile+LazyImages.m */; };
 		FF6D75D7152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */; };
@@ -474,8 +479,6 @@
 		FFA1F444159C434B003000AD /* WALinkGlyph@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F34A159C434B003000AD /* WALinkGlyph@2x.png */; };
 		FFA1F445159C434B003000AD /* WALogotype.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F34B159C434B003000AD /* WALogotype.png */; };
 		FFA1F446159C434B003000AD /* WALogotype@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F34C159C434B003000AD /* WALogotype@2x.png */; };
-		FFA1F447159C434B003000AD /* WANavigationBar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F34D159C434B003000AD /* WANavigationBar@2x.png */; };
-		FFA1F448159C434B003000AD /* WANavigationBarLandscapePhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F34E159C434B003000AD /* WANavigationBarLandscapePhone@2x.png */; };
 		FFA1F449159C434B003000AD /* WAOverlayBezel-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F34F159C434B003000AD /* WAOverlayBezel-Checkmark.png */; };
 		FFA1F44A159C434B003000AD /* WAOverlayBezel-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F350159C434B003000AD /* WAOverlayBezel-Checkmark@2x.png */; };
 		FFA1F44B159C434B003000AD /* WAOverlayBezel-Cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F351159C434B003000AD /* WAOverlayBezel-Cloud.png */; };
@@ -1457,6 +1460,11 @@
 		FF61CCB0149D40E000A6EB0B /* WAComposition.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAComposition.xib; sourceTree = "<group>"; };
 		FF666C23140CD2B200C35CED /* IRKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRKeychain.xcodeproj; path = external/IRKeychain/IRKeychain.xcodeproj; sourceTree = "<group>"; };
 		FF666C2F140CD31C00C35CED /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		FF66D58715A56A9F00851F1B /* WANavigationBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WANavigationBar.png; path = Resources/WANavigationBar.png; sourceTree = "<group>"; };
+		FF66D58815A56A9F00851F1B /* WANavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WANavigationBar@2x.png"; path = "Resources/WANavigationBar@2x.png"; sourceTree = "<group>"; };
+		FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WATextFoldingToggleItem.xib; sourceTree = "<group>"; };
+		FF66D58D15A5986700851F1B /* WAArticleStackHeaderBarBackground@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackHeaderBarBackground@2x~iphone.png"; path = "Resources/WAArticleStackHeaderBarBackground@2x~iphone.png"; sourceTree = "<group>"; };
+		FF66D58E15A5986700851F1B /* WAArticleStackHeaderBarBackground~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackHeaderBarBackground~iphone.png"; path = "Resources/WAArticleStackHeaderBarBackground~iphone.png"; sourceTree = "<group>"; };
 		FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAComment+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAComment+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
 		FF6D75D5152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARepresentedFilePickerViewController.h; sourceTree = "<group>"; };
@@ -1748,8 +1756,6 @@
 		FFA1F34A159C434B003000AD /* WALinkGlyph@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WALinkGlyph@2x.png"; path = "Resources/WALinkGlyph@2x.png"; sourceTree = "<group>"; };
 		FFA1F34B159C434B003000AD /* WALogotype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = WALogotype.png; path = Resources/WALogotype.png; sourceTree = "<group>"; };
 		FFA1F34C159C434B003000AD /* WALogotype@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WALogotype@2x.png"; path = "Resources/WALogotype@2x.png"; sourceTree = "<group>"; };
-		FFA1F34D159C434B003000AD /* WANavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WANavigationBar@2x.png"; path = "Resources/WANavigationBar@2x.png"; sourceTree = "<group>"; };
-		FFA1F34E159C434B003000AD /* WANavigationBarLandscapePhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WANavigationBarLandscapePhone@2x.png"; path = "Resources/WANavigationBarLandscapePhone@2x.png"; sourceTree = "<group>"; };
 		FFA1F34F159C434B003000AD /* WAOverlayBezel-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAOverlayBezel-Checkmark.png"; path = "Resources/WAOverlayBezel-Checkmark.png"; sourceTree = "<group>"; };
 		FFA1F350159C434B003000AD /* WAOverlayBezel-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAOverlayBezel-Checkmark@2x.png"; path = "Resources/WAOverlayBezel-Checkmark@2x.png"; sourceTree = "<group>"; };
 		FFA1F351159C434B003000AD /* WAOverlayBezel-Cloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAOverlayBezel-Cloud.png"; path = "Resources/WAOverlayBezel-Cloud.png"; sourceTree = "<group>"; };
@@ -2992,8 +2998,10 @@
 				FFA1F303159C434B003000AD /* WAArticleStackElementDropdownTagPressed@2x.png */,
 				FFA1F304159C434B003000AD /* WAArticleStackHeaderBarBackground.png */,
 				FFA1F305159C434B003000AD /* WAArticleStackHeaderBarBackground@2x.png */,
+				FF66D58D15A5986700851F1B /* WAArticleStackHeaderBarBackground@2x~iphone.png */,
 				FFA1F306159C434B003000AD /* WAArticleStackHeaderBarBackgroundLandscapePhone.png */,
 				FFA1F307159C434B003000AD /* WAArticleStackHeaderBarBackgroundLandscapePhone@2x.png */,
+				FF66D58E15A5986700851F1B /* WAArticleStackHeaderBarBackground~iphone.png */,
 				FFBF598B15A43D6C003D650D /* WAArticleViewQuotationMark~ipad.png */,
 				FFBF598C15A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png */,
 				FFBF598D15A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png */,
@@ -3067,8 +3075,8 @@
 				FFA1F34A159C434B003000AD /* WALinkGlyph@2x.png */,
 				FFA1F34B159C434B003000AD /* WALogotype.png */,
 				FFA1F34C159C434B003000AD /* WALogotype@2x.png */,
-				FFA1F34D159C434B003000AD /* WANavigationBar@2x.png */,
-				FFA1F34E159C434B003000AD /* WANavigationBarLandscapePhone@2x.png */,
+				FF66D58715A56A9F00851F1B /* WANavigationBar.png */,
+				FF66D58815A56A9F00851F1B /* WANavigationBar@2x.png */,
 				FFA1F34F159C434B003000AD /* WAOverlayBezel-Checkmark.png */,
 				FFA1F350159C434B003000AD /* WAOverlayBezel-Checkmark@2x.png */,
 				FFA1F351159C434B003000AD /* WAOverlayBezel-Cloud.png */,
@@ -3282,6 +3290,7 @@
 				FFA1F490159C54C8003000AD /* WAArticleDateItem.h */,
 				FFA1F491159C54C8003000AD /* WAArticleDateItem.m */,
 				FFA1F493159C54D7003000AD /* WAArticleDateItem.xib */,
+				FF66D58B15A577AC00851F1B /* WATextFoldingToggleItem.xib */,
 				FFA1F23D159C26B2003000AD /* WAStackedArticleViewController+Favorite.h */,
 				FFA1F23E159C26B2003000AD /* WAStackedArticleViewController+Favorite.m */,
 				FF3AEEF614A30EEB00FC4E19 /* WAArticleViewController_FullScreen_Photo.h */,
@@ -4139,8 +4148,6 @@
 				FFA1F444159C434B003000AD /* WALinkGlyph@2x.png in Resources */,
 				FFA1F445159C434B003000AD /* WALogotype.png in Resources */,
 				FFA1F446159C434B003000AD /* WALogotype@2x.png in Resources */,
-				FFA1F447159C434B003000AD /* WANavigationBar@2x.png in Resources */,
-				FFA1F448159C434B003000AD /* WANavigationBarLandscapePhone@2x.png in Resources */,
 				FFA1F449159C434B003000AD /* WAOverlayBezel-Checkmark.png in Resources */,
 				FFA1F44A159C434B003000AD /* WAOverlayBezel-Checkmark@2x.png in Resources */,
 				FFA1F44B159C434B003000AD /* WAOverlayBezel-Cloud.png in Resources */,
@@ -4217,6 +4224,11 @@
 				FFBF599015A43D6C003D650D /* WAArticleViewQuotationMark~ipad@2x.png in Resources */,
 				FFBF599115A43D6C003D650D /* WAArticleViewQuotationMark~iphone.png in Resources */,
 				FFBF599215A43D6C003D650D /* WAArticleViewQuotationMark~iphone@2x.png in Resources */,
+				FF66D58915A56A9F00851F1B /* WANavigationBar.png in Resources */,
+				FF66D58A15A56A9F00851F1B /* WANavigationBar@2x.png in Resources */,
+				FF66D58C15A577AC00851F1B /* WATextFoldingToggleItem.xib in Resources */,
+				FF66D58F15A5986800851F1B /* WAArticleStackHeaderBarBackground@2x~iphone.png in Resources */,
+				FF66D59015A5986800851F1B /* WAArticleStackHeaderBarBackground~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

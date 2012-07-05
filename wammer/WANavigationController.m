@@ -21,16 +21,16 @@
 
 + (id) alloc {
 
-  UIViewController *fauxVC = [[UIViewController alloc] init];
-  WANavigationController *fauxNavController = [super alloc];
-  fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
-  
-  NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
-  NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
-  [unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
+	UIViewController *fauxVC = [[UIViewController alloc] init];
+	WANavigationController *fauxNavController = [super alloc];
+	fauxNavController = [fauxNavController initWithRootViewController:fauxVC];
+	
+	NSData *fauxNavCData = [NSKeyedArchiver archivedDataWithRootObject:fauxNavController];
+	NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:fauxNavCData];
+	[unarchiver setClass:[WANavigationBar class] forClassName:@"UINavigationBar"];
 
-  return [unarchiver decodeObjectForKey:@"root"];
-    
+	return [unarchiver decodeObjectForKey:@"root"];
+		
 }
 
 - (id) initWithRootViewController:(UIViewController *)presentedViewController {
@@ -53,11 +53,10 @@
 	[super viewDidLoad];
 	
 	WANavigationBar *navigationBar = (WANavigationBar *)self.navigationBar;
-	
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBar"] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setBackgroundImage:[UIImage imageNamed:@"WANavigationBarLandscapePhone"] forBarMetrics:UIBarMetricsLandscapePhone];
+				
 	if ([navigationBar isKindOfClass:[WANavigationBar class]]) {
-		
-		navigationBar.customBackgroundView = [WANavigationBar defaultShadowBackgroundView];
-		navigationBar.suppressesDefaultAppearance = NO;
 		
 		__weak WANavigationBar *wNavigationBar = navigationBar;
 		
@@ -93,6 +92,7 @@
 			
 			}
 			
+			[wNavigationBar layoutSubviews];
 			[wNavigationBar.layer addAnimation:((^ {
 			
 				//	This is here to compensate the lack of a smooth fade transition when we re-set the background images
