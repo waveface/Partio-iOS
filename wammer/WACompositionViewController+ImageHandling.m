@@ -64,7 +64,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
 		[wSelf.managedObjectContext save:nil];
-		[wSelf handleIncomingSelectedAssetImage:image URI:selectedAssetURI representedAsset:representedAsset];
+		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
 		[wSelf dismissImagePickerController:nrImagePickerController animated:YES];
 		
 		nrImagePickerController = nil;
@@ -123,7 +123,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
 		[wSelf.managedObjectContext save:nil];
-		[wSelf handleIncomingSelectedAssetImage:image URI:selectedAssetURI representedAsset:representedAsset];
+		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
 		[wSelf dismissCameraCapturePickerController:nrPickerController animated:YES];
 		
 		nrPickerController = nil;
@@ -162,11 +162,11 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
 	for (ALAsset *asset in selectedAssets) {
-		[self handleIncomingSelectedAssetImage:nil URI:nil representedAsset:asset];
+		[self handleIncomingSelectedAssetImage:nil representedAsset:asset];
 	}
 }
 
-- (void) handleIncomingSelectedAssetImage:(UIImage *)image URI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
+- (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
 
 	if (representedAsset) {
 		
@@ -174,25 +174,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 	}
 	
-	if (image || selectedAssetURI || representedAsset) {
-		
-		if ([[selectedAssetURI scheme] isEqualToString:@"file"]) {
-			
-			//	need more definition in the API contract thru IRImagePicker’s completion block documentation
-			
-			NSFileManager * const fm = [NSFileManager defaultManager];
-			WADataStore * const ds = [WADataStore defaultStore];
-			NSURL *toURI = [[ds oneUseTemporaryFileURL] URLByAppendingPathExtension:[selectedAssetURI pathExtension]];
-			
-			NSError *error = nil;
-			if (![fm moveItemAtURL:selectedAssetURI toURL:toURI error:&error]) {
-				NSParameterAssert(NO);
-				NSLog(@"Error moving file to a safe location: %@", error);
-			}
-			
-			selectedAssetURI = toURI;
-			
-		}
+	if (image || representedAsset) {
 		
 		NSManagedObjectContext *context = self.managedObjectContext;
 		NSManagedObjectID *articleID = [self.article objectID];
@@ -219,11 +201,6 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			
 			if (image) {
 				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 1.0f) extension:@"jpeg"];
-				NSCParameterAssert([finalFileURL pathExtension]);
-			}
-			
-			if (selectedAssetURI) {
-				finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
 				NSCParameterAssert([finalFileURL pathExtension]);
 			}
 			
