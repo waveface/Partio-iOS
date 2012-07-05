@@ -273,97 +273,74 @@
 	
 		case WAArticleAttachmentActivityViewAttachmentsStyle: {
 		
-			if ([self.article.files count]) {
+			[self handleImageAttachmentInsertionRequestWithSender:view];
 			
-				__weak WACompositionViewController *wSelf = self;
-	
-				AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
-					NSLog(@"Failed. Error: %@", error);
-					if( error == nil ) {
-						[wSelf dismissModalViewControllerAnimated:YES];
-					}
-				} andSuccessBlock:^(NSArray *info) {
-					NSLog(@"Info: %@", info);
-					[wSelf handleSelectionWithArray:info];
-					[wSelf dismissModalViewControllerAnimated:YES];
+			__weak WACompositionViewControllerPhone *nrSelf = self;
+			
+			NSOrderedSet *capturedFiles = [self.article.files copy];
+			BOOL (^filesChanged)(void) = ^ {
+				return (BOOL)![nrSelf.article.files isEqual:capturedFiles];
+			};
+			
+			CALayer *crossfadeLayer = nrSelf.view.window.layer;
+			
+			void (^crossfade)(void(^)(void)) = ^ (void(^aBlock)(void)) {
+			
+				CATransition *transition = [CATransition animation];
+				transition.type = kCATransitionFade;
+				transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+				transition.duration = 0.3;
+				transition.removedOnCompletion = YES;
+				transition.fillMode = kCAFillModeForwards;
+				
+				[CATransaction begin];
+				[CATransaction setDisableActions:YES];
+				
+				aBlock();
+				
+				[crossfadeLayer addAnimation:transition forKey:kCATransition];
+				
+				[CATransaction commit];
+				
+			};
+			
+			
+			self.onDismissCameraCaptureControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+			
+				nrSelf.onDismissCameraCaptureControllerAnimated = nil;
+				
+				if (!filesChanged())
+					return;
+				
+				*overrideDefault = YES;
+				
+				crossfade(^ {
+				
+					[nrSelf dismissCameraCapturePickerController:controller animated:NO];
+					[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
+				
+				});
+								
+			};
+			
+			self.onDismissImagePickerControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
+			
+				nrSelf.onDismissImagePickerControllerAnimated = nil;
 
-				}];
-				[wSelf presentModalViewController:imagePickerController animated:YES];
+				if (!filesChanged())
+					return;
+				
+				*overrideDefault = YES;
 			
-//				[self presentMediaListViewController:[self newMediaListViewController] sender:view animated:YES];
-			
-			} else {
-			
-				[self handleImageAttachmentInsertionRequestWithSender:view];
-				
-				__weak WACompositionViewControllerPhone *nrSelf = self;
-				
-				NSOrderedSet *capturedFiles = [self.article.files copy];
-				BOOL (^filesChanged)(void) = ^ {
-					return (BOOL)![nrSelf.article.files isEqual:capturedFiles];
-				};
-				
-				CALayer *crossfadeLayer = nrSelf.view.window.layer;
-				
-				void (^crossfade)(void(^)(void)) = ^ (void(^aBlock)(void)) {
-				
-					CATransition *transition = [CATransition animation];
-					transition.type = kCATransitionFade;
-					transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-					transition.duration = 0.3;
-					transition.removedOnCompletion = YES;
-					transition.fillMode = kCAFillModeForwards;
-					
-					[CATransaction begin];
-					[CATransaction setDisableActions:YES];
-					
-					aBlock();
-					
-					[crossfadeLayer addAnimation:transition forKey:kCATransition];
-					
-					[CATransaction commit];
-					
-				};
-				
-				
-				self.onDismissCameraCaptureControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
-				
-					nrSelf.onDismissCameraCaptureControllerAnimated = nil;
-					
-					if (!filesChanged())
-						return;
-					
-					*overrideDefault = YES;
-					
-					crossfade(^ {
-					
-						[nrSelf dismissCameraCapturePickerController:controller animated:NO];
-						[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
-					
-					});
-									
-				};
-				
-				self.onDismissImagePickerControllerAnimated = ^ (IRImagePickerController *controller, BOOL animated, BOOL *overrideDefault) {
-				
-					nrSelf.onDismissImagePickerControllerAnimated = nil;
+				crossfade(^ {
 
-					if (!filesChanged())
-						return;
-					
-					*overrideDefault = YES;
+					[nrSelf dismissImagePickerController:controller animated:NO];
+					[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
 				
-					crossfade(^ {
-
-						[nrSelf dismissImagePickerController:controller animated:NO];
-						[nrSelf presentMediaListViewController:[nrSelf newMediaListViewController] sender:nil animated:NO];
-					
-					});
-				
-				};
-				
-			}
-										 
+				});
+			
+			};
+														 
 			break;
 			
 		}
