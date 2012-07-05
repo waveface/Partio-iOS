@@ -2,8 +2,8 @@
 //  WAFile.h
 //  wammer
 //
-//  Created by Evadne Wu on 5/21/12.
-//  Copyright (c) 2012 Waveface. All rights reserved.
+//  Created by 冠凱 邱 on 12/7/5.
+//  Copyright (c) 2012年 Waveface. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -28,14 +28,15 @@
 @property (nonatomic, retain) NSString * resourceFilePath;
 @property (nonatomic, retain) NSString * resourceType;
 @property (nonatomic, retain) NSString * resourceURL;
+@property (nonatomic, retain) NSString * smallThumbnailFilePath;
+@property (nonatomic, retain) NSString * smallThumbnailURL;
 @property (nonatomic, retain) NSString * text;
-@property (nonatomic, retain) UIImage * thumbnail DEPRECATED_ATTRIBUTE;
+@property (nonatomic, retain) id thumbnail;
 @property (nonatomic, retain) NSString * thumbnailFilePath;
 @property (nonatomic, retain) NSString * thumbnailURL;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * title;
-@property (nonatomic, retain) NSString * smallThumbnailFilePath;
-@property (nonatomic, retain) NSString * smallThumbnailURL;
+@property (nonatomic, retain) NSString * assetURL;
 @property (nonatomic, retain) WAArticle *article;
 @property (nonatomic, retain) WAUser *owner;
 @property (nonatomic, retain) NSOrderedSet *pageElements;
