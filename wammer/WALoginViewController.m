@@ -17,6 +17,7 @@
 #import "IRAction.h"
 #import "IRAlertView.h"
 
+#import "WATutorialViewController.h"
 
 @interface WALoginViewController () <UITextFieldDelegate>
 
@@ -277,6 +278,20 @@
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
+	
+	
+//	
+//	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
+//	[facebook authorize];
+//	
+//	return;
+
+
+	// show tutorial here
+	WATutorialViewController *tutorialViewController = [[WATutorialViewController alloc]init];
+	[self.navigationController pushViewController:tutorialViewController animated:YES];
+	
+	return;
 	
 	self.usernameField.text = nil;
 	self.passwordField.text = nil;
