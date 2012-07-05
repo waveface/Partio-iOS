@@ -15,6 +15,7 @@
 #import "UIImage+IRAdditions.h"
 #import "UIImage+WAAdditions.h"
 #import "QuartzCore+IRAdditions.h"
+#import "ALAssetRepresentation+IRAdditions.h"
 
 
 NSString * kWAFileEntitySyncingErrorDomain = @"com.waveface.wammer.file.entitySyncing";
@@ -316,8 +317,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	}
 	
-	BOOL needsSendingResourceImage = !self.resourceURL && [self resourceImage];
-	BOOL needsSendingThumbnailImage = !self.thumbnailURL && [self smallestPresentableImage];
+	BOOL needsSendingResourceImage = !self.resourceURL;
+	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
 	
 	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
 		
@@ -336,15 +337,65 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	};
 	
-	if (!isValidPath(self.resourceFilePath)) {
-		NSLog(@"Resource file path %@ is not valid.  Skipping.", self.resourceFilePath);
-		canSendResourceImage = NO;
-	}
-	
 	NSMutableArray *operations = [NSMutableArray array];
 	NSManagedObjectContext *context = [ds disposableMOC];
 	context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
-	
+
+	if (!isValidPath(self.resourceFilePath)) {
+
+		if ([self.assetURL length]) {
+			
+			NSURL *capturedURL = [NSURL URLWithString:self.assetURL];
+			NSLog(@"capturedURL %@", capturedURL);
+
+			[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+
+				[[ALAssetsLibrary new] assetForURL:capturedURL resultBlock:^(ALAsset *asset) {
+					
+					if (asset) {
+						
+						UIImage *assetImage = [[asset defaultRepresentation] irImage];
+						NSData *assetImageData = UIImageJPEGRepresentation(assetImage, 1.0f);
+						NSURL *fileURL = [[WADataStore defaultStore] persistentFileURLForData:assetImageData extension:@"jpeg"];
+						
+						WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
+						file.resourceFilePath = [fileURL path];
+						
+						NSError *error = nil;
+						
+						BOOL didSave = [context save:&error];
+						NSCAssert2(didSave, @"Unable to copy asset %@: %@", [[asset defaultRepresentation] url], error);
+						
+						callback(didSave ? (id)kCFBooleanTrue : (id)kCFBooleanFalse);
+						
+					}
+					
+				} failureBlock:^(NSError *error) {
+					
+					NSLog(@"Error: %@", error);
+					
+					callback(error);
+					
+				}];
+
+			} trampoline:^(IRAsyncOperationInvoker block) {
+
+				[context performBlock:block];
+
+			} callback:nil callbackTrampoline:^(IRAsyncOperationInvoker block) {
+
+				[context performBlock:block];
+
+			}]];
+
+		} else {
+
+			NSLog(@"Resource file path %@ is not valid.  Skipping.", self.resourceFilePath);
+			canSendResourceImage = NO;
+
+		}
+	}
+		
 	if (needsSendingThumbnailImage && canSendThumbnailImage) {
 	
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {

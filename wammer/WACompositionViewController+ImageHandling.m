@@ -197,27 +197,16 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
 			[article didChangeValueForKey:@"files"];
 			
-			NSURL *finalFileURL = nil;
-			
 			if (image) {
-				finalFileURL = [[WADataStore defaultStore] persistentFileURLForData:UIImageJPEGRepresentation(image, 1.0f) extension:@"jpeg"];
-				NSCParameterAssert([finalFileURL pathExtension]);
+				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
 			}
 			
 			if (representedAsset) {
-				UIImageOrientation orientation = [[representedAsset valueForProperty:ALAssetPropertyOrientation] intValue];
-				CGFloat scale = 1.0;
-				UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
-				
-				NSData *fullResolutionData = UIImageJPEGRepresentation(image, 0.8);
-				
-				finalFileURL = [[WADataStore defaultStore]
-												persistentFileURLForData:fullResolutionData 
-												extension:[[representedAsset defaultRepresentation] UTI]];
+				file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			}
 
 			file.resourceType = (NSString *)kUTTypeImage;
-			file.resourceFilePath = [finalFileURL path];
 			
 			article.dirty = (id)kCFBooleanTrue;
 			
