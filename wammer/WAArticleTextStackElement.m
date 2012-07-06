@@ -51,7 +51,7 @@
 	self.backgroundView = WAStandardArticleStackCellCenterBackgroundView();
 
 	WAArticleTextEmphasisLabel *cellLabel = self.textStackCellLabel;
-	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 0, 36, 0, 32 };
+	UIEdgeInsets cellLabelInsets = (UIEdgeInsets){ 16, 36, 16, 32 };
 	cellLabel.frame = UIEdgeInsetsInsetRect(self.contentView.bounds, cellLabelInsets);
 	cellLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.contentView addSubview:cellLabel];

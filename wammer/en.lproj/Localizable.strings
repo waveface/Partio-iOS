@@ -131,15 +131,6 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
-/* “%@ Comments” */
-"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Notes";
-
-/* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Note";
-
-/* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Notes";
-
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 
