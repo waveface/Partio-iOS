@@ -182,7 +182,7 @@
 	
 	UIImageView *quotationMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WAArticleViewQuotationMark"]];
 	[quotationMark sizeToFit];
-	quotationMark.frame = CGRectOffset(quotationMark.frame, 8, -16);
+	quotationMark.frame = CGRectOffset(quotationMark.frame, 8, 8);
 	
 	[_textStackCell.backgroundView addSubview:quotationMark];
 		
