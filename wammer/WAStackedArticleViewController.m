@@ -993,24 +993,6 @@
 
 }
 
-- (BOOL) shouldAutorotate {
-
-	return YES;
-
-}
-
-- (NSUInteger) supportedInterfaceOrientations {
-
-	return UIInterfaceOrientationPortrait;
-
-}
-
-- (UIInterfaceOrientation) preferredInterfaceOrientationForPresentation {
-
-	return UIInterfaceOrientationPortrait;
-
-}
-
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 
 	switch ([UIDevice currentDevice].userInterfaceIdiom) {
