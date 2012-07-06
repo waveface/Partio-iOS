@@ -148,6 +148,8 @@
 
 }
 
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+
 - (NSUInteger) supportedInterfaceOrientations {
 
 	UIViewController *topVC = self.topViewController;
@@ -168,5 +170,7 @@
 	return mask;
 
 }
+
+#endif
 
 @end
