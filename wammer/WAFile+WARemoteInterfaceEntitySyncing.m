@@ -349,9 +349,13 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSLog(@"capturedURL %@", capturedURL);
 
 			[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
+				
+				NSParameterAssert(![NSThread isMainThread]);
 
 				[[ALAssetsLibrary new] assetForURL:capturedURL resultBlock:^(ALAsset *asset) {
 					
+					NSParameterAssert(![NSThread isMainThread]);
+
 					if (asset) {
 						
 						UIImage *assetImage = [[asset defaultRepresentation] irImage];
@@ -371,6 +375,8 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 					}
 					
 				} failureBlock:^(NSError *error) {
+					
+					NSParameterAssert(![NSThread isMainThread]);
 					
 					NSLog(@"Error: %@", error);
 					
@@ -397,7 +403,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}
 		
 	if (needsSendingThumbnailImage && canSendThumbnailImage) {
-	
+		
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
@@ -584,18 +590,28 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}]];
 	
 	
-	__block NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-	[operations addObject:[NSBlockOperation blockOperationWithBlock:^ {
-		queue = nil;
-	}]];
-	[queue setSuspended:YES];
 	[operations enumerateObjectsUsingBlock:^(IRAsyncBarrierOperation *op, NSUInteger idx, BOOL *stop) {
 		if (idx > 0)
 			[op addDependency:(IRAsyncBarrierOperation *)[operations objectAtIndex:(idx - 1)]];
 	}];
-	[queue addOperations:operations waitUntilFinished:NO];
-	[queue setSuspended:NO];
+	
+	[[[self class] sharedSyncQueue] addOperations:operations waitUntilFinished:NO];
 
+}
+
++ (NSOperationQueue *) sharedSyncQueue {
+	
+	static NSOperationQueue *queue = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+    
+		queue = [NSOperationQueue new];
+		queue.maxConcurrentOperationCount = 1;
+		
+	});
+	
+	return queue;
+	
 }
 
 @end
