@@ -24,10 +24,14 @@
 		130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		1324577E15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */; };
 		13BD4D9915930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */; };
+		4B0E57F515AA77A7003F9D24 /* FacebookImportConfirmation@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B0E57F415AA77A7003F9D24 /* FacebookImportConfirmation@2x.png */; };
+		4B1C5CE115A506F1009EEF0A /* Facebook+Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C5CE015A506F1009EEF0A /* Facebook+Singleton.m */; };
+		4B1C5CE215A506F1009EEF0A /* Facebook+Singleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C5CE015A506F1009EEF0A /* Facebook+Singleton.m */; };
 		4B1C660014EE2C0D003398AF /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		4B2560FB15A7C26600424EF6 /* CoverBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B2560FA15A7C26600424EF6 /* CoverBackground@2x.png */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
 		4B31BAA11591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA8B1591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png */; };
@@ -69,6 +73,8 @@
 		4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */; };
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
+		4B8A7E9015AADA8D0062DB52 /* TutorialButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8A7E8E15AADA8D0062DB52 /* TutorialButton.png */; };
+		4B8A7E9115AADA8D0062DB52 /* TutorialButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8A7E8F15AADA8D0062DB52 /* TutorialButtonPressed.png */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
@@ -86,6 +92,14 @@
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
+		4BF3654D15A5452400E40E42 /* WATutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3654B15A5452400E40E42 /* WATutorialViewController.m */; };
+		4BF3654E15A5452400E40E42 /* WATutorialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3654C15A5452400E40E42 /* WATutorialViewController.xib */; };
+		4BF3655B15A564A600E40E42 /* TutorialBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3655715A564A600E40E42 /* TutorialBackground@2x.png */; };
+		4BF3655C15A564A600E40E42 /* TutorialPage1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3655815A564A600E40E42 /* TutorialPage1@2x.png */; };
+		4BF3655D15A564A600E40E42 /* TutorialPage2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3655915A564A600E40E42 /* TutorialPage2@2x.png */; };
+		4BF3655E15A564A600E40E42 /* TutorialPage3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3655A15A564A600E40E42 /* TutorialPage3@2x.png */; };
+		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
+		4BF3663415A7B79400E40E42 /* LoginPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4BF3663315A7B79400E40E42 /* LoginPhone.storyboard */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
 		FF0527EB14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */; };
@@ -1147,8 +1161,11 @@
 		1324577D15983CB600A97139 /* WAPostViewCellPhone-WebLinkOnly.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLinkOnly.xib"; sourceTree = "<group>"; };
 		13579F281575EB4000F09C04 /* WACompositionViewController+SubclassEyesOnly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WACompositionViewController+SubclassEyesOnly.h"; sourceTree = "<group>"; };
 		13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageOnlyStack.xib"; sourceTree = "<group>"; };
+		4B0E57F415AA77A7003F9D24 /* FacebookImportConfirmation@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "FacebookImportConfirmation@2x.png"; path = "Resources/Tutorial/FacebookImportConfirmation@2x.png"; sourceTree = "<group>"; };
 		4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
+		4B1C5CDF15A506F1009EEF0A /* Facebook+Singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Facebook+Singleton.h"; sourceTree = "<group>"; };
+		4B1C5CE015A506F1009EEF0A /* Facebook+Singleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Facebook+Singleton.m"; sourceTree = "<group>"; };
 		4B1C65F714EE2C0C003398AF /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCrossHairView.h; sourceTree = "<group>"; };
 		4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCCrossHairView.m; sourceTree = "<group>"; };
 		4B1C65F914EE2C0C003398AF /* DCFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCFrameView.h; sourceTree = "<group>"; };
@@ -1159,6 +1176,7 @@
 		4B1C65FE14EE2C0D003398AF /* DCStatusBarOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCStatusBarOverlay.h; sourceTree = "<group>"; };
 		4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DCStatusBarOverlay.m; sourceTree = "<group>"; };
 		4B225D181404F63900F9A1CE /* WAPostViewCellPhone-ImageStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageStack.xib"; sourceTree = "<group>"; };
+		4B2560FA15A7C26600424EF6 /* CoverBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CoverBackground@2x.png"; path = "Resources/CoverBackground@2x.png"; sourceTree = "<group>"; };
 		4B31BA871591A74C00DC1A70 /* AGImagePickerController+Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AGImagePickerController+Constants.h"; sourceTree = "<group>"; };
 		4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AGImagePickerController+Constants.m"; sourceTree = "<group>"; };
 		4B31BA891591A74C00DC1A70 /* AGImagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGImagePickerController.h; sourceTree = "<group>"; };
@@ -1224,6 +1242,8 @@
 		4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSTextFieldSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKPSToggleSwitchSpecifierViewCell.xib; sourceTree = "<group>"; };
 		4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IASKSpecifierValuesView.xib; sourceTree = "<group>"; };
+		4B8A7E8E15AADA8D0062DB52 /* TutorialButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TutorialButton.png; path = Resources/Tutorial/TutorialButton.png; sourceTree = "<group>"; };
+		4B8A7E8F15AADA8D0062DB52 /* TutorialButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = TutorialButtonPressed.png; path = Resources/Tutorial/TutorialButtonPressed.png; sourceTree = "<group>"; };
 		4B8CA96814BBE7BA006E06BB /* wammer-iOS-Test.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "wammer-iOS-Test.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4B8CA97114BBE7BA006E06BB /* wammer-iOS-Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "wammer-iOS-Tests-Info.plist"; sourceTree = "<group>"; };
@@ -1263,6 +1283,16 @@
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
 		4BF243DE14F23B7C00F4636C /* IRActionSheetController+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRActionSheetController+WAAdditions.h"; path = "wammer/IRActionSheetController+WAAdditions.h"; sourceTree = "<group>"; };
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
+		4BF3654A15A5452400E40E42 /* WATutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATutorialViewController.h; sourceTree = "<group>"; };
+		4BF3654B15A5452400E40E42 /* WATutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATutorialViewController.m; sourceTree = "<group>"; };
+		4BF3654C15A5452400E40E42 /* WATutorialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WATutorialViewController.xib; sourceTree = "<group>"; };
+		4BF3655715A564A600E40E42 /* TutorialBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TutorialBackground@2x.png"; path = "Resources/tutorial/TutorialBackground@2x.png"; sourceTree = "<group>"; };
+		4BF3655815A564A600E40E42 /* TutorialPage1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TutorialPage1@2x.png"; path = "Resources/tutorial/TutorialPage1@2x.png"; sourceTree = "<group>"; };
+		4BF3655915A564A600E40E42 /* TutorialPage2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TutorialPage2@2x.png"; path = "Resources/tutorial/TutorialPage2@2x.png"; sourceTree = "<group>"; };
+		4BF3655A15A564A600E40E42 /* TutorialPage3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TutorialPage3@2x.png"; path = "Resources/tutorial/TutorialPage3@2x.png"; sourceTree = "<group>"; };
+		4BF3656415A5914000E40E42 /* WARemoteInterface+Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Facebook.h"; sourceTree = "<group>"; };
+		4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Facebook.m"; sourceTree = "<group>"; };
+		4BF3663315A7B79400E40E42 /* LoginPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginPhone.storyboard; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF0505ED14C088FF002EA455 /* WAButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAButton.h; sourceTree = "<group>"; };
@@ -2664,6 +2694,12 @@
 				FFBACA76146BCF8B007DF1E5 /* WARegisterRequestViewController.m */,
 				FF75E75A1484C1F30063CED7 /* WARegisterRequestWebViewController.h */,
 				FF75E75B1484C1F30063CED7 /* WARegisterRequestWebViewController.m */,
+				4B1C5CDF15A506F1009EEF0A /* Facebook+Singleton.h */,
+				4B1C5CE015A506F1009EEF0A /* Facebook+Singleton.m */,
+				4BF3663315A7B79400E40E42 /* LoginPhone.storyboard */,
+				4BF3654A15A5452400E40E42 /* WATutorialViewController.h */,
+				4BF3654B15A5452400E40E42 /* WATutorialViewController.m */,
+				4BF3654C15A5452400E40E42 /* WATutorialViewController.xib */,
 			);
 			name = Authentication;
 			path = wammer;
@@ -2792,6 +2828,8 @@
 				FF8F463414690A1E00D65864 /* WARemoteInterface+Attachments.m */,
 				FF8F4624146908B700D65864 /* WARemoteInterface+Authentication.h */,
 				FF8F4625146908B700D65864 /* WARemoteInterface+Authentication.m */,
+				4BF3656415A5914000E40E42 /* WARemoteInterface+Facebook.h */,
+				4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */,
 				FF8F463914690A2A00D65864 /* WARemoteInterface+Footprints.h */,
 				FF8F463A14690A2A00D65864 /* WARemoteInterface+Footprints.m */,
 				FF8F4630146909E900D65864 /* WARemoteInterface+Groups.h */,
@@ -2852,6 +2890,10 @@
 		FFC2E04C13DD706600816EA1 /* iOS Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4B8A7E8E15AADA8D0062DB52 /* TutorialButton.png */,
+				4B8A7E8F15AADA8D0062DB52 /* TutorialButtonPressed.png */,
+				4B0E57F415AA77A7003F9D24 /* FacebookImportConfirmation@2x.png */,
+				4B2560FA15A7C26600424EF6 /* CoverBackground@2x.png */,
 				FFA1F29C159C434B003000AD /* CameraPressed.png */,
 				FFA1F29D159C434B003000AD /* CameraPressed@2x.png */,
 				FFA1F29E159C434B003000AD /* Default-Landscape.png */,
@@ -2940,6 +2982,10 @@
 				FFA1F2F1159C434B003000AD /* tagFavorite@2x.png */,
 				FFA1F2F2159C434B003000AD /* TagHighlight.png */,
 				FFA1F2F3159C434B003000AD /* TagHighlight@2x.png */,
+				4BF3655715A564A600E40E42 /* TutorialBackground@2x.png */,
+				4BF3655815A564A600E40E42 /* TutorialPage1@2x.png */,
+				4BF3655915A564A600E40E42 /* TutorialPage2@2x.png */,
+				4BF3655A15A564A600E40E42 /* TutorialPage3@2x.png */,
 				FFA1F2F4159C434B003000AD /* TagNormal.png */,
 				FFA1F2F5159C434B003000AD /* TagNormal@2x.png */,
 				FFA1F2F6159C434B003000AD /* timelineDefault.png */,
@@ -4150,6 +4196,16 @@
 				FFA1F48F159C434B003000AD /* WAUserGlyphLarge@2x.png in Resources */,
 				FFA1F494159C54D7003000AD /* WAArticleDateItem.xib in Resources */,
 				4BD77BB415A2A01C00CA8486 /* FBDialog.bundle in Resources */,
+				4BF3654E15A5452400E40E42 /* WATutorialViewController.xib in Resources */,
+				4BF3655B15A564A600E40E42 /* TutorialBackground@2x.png in Resources */,
+				4BF3655C15A564A600E40E42 /* TutorialPage1@2x.png in Resources */,
+				4BF3655D15A564A600E40E42 /* TutorialPage2@2x.png in Resources */,
+				4BF3655E15A564A600E40E42 /* TutorialPage3@2x.png in Resources */,
+				4BF3663415A7B79400E40E42 /* LoginPhone.storyboard in Resources */,
+				4B2560FB15A7C26600424EF6 /* CoverBackground@2x.png in Resources */,
+				4B0E57F515AA77A7003F9D24 /* FacebookImportConfirmation@2x.png in Resources */,
+				4B8A7E9015AADA8D0062DB52 /* TutorialButton.png in Resources */,
+				4B8A7E9115AADA8D0062DB52 /* TutorialButtonPressed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4331,6 +4387,7 @@
 				FF2AC3BA156FD8B20033ADD6 /* WAArticle.m in Sources */,
 				4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */,
 				4BD77BBD15A2EAC500CA8486 /* WAFacebookTests.m in Sources */,
+				4B1C5CE215A506F1009EEF0A /* Facebook+Singleton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4572,6 +4629,9 @@
 				FFA1F23F159C26B2003000AD /* WAStackedArticleViewController+Favorite.m in Sources */,
 				FFA1F492159C54C8003000AD /* WAArticleDateItem.m in Sources */,
 				130F09F0159C3C74001796D0 /* WABackoffHandler.m in Sources */,
+				4B1C5CE115A506F1009EEF0A /* Facebook+Singleton.m in Sources */,
+				4BF3654D15A5452400E40E42 /* WATutorialViewController.m in Sources */,
+				4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

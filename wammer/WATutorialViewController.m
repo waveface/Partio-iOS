@@ -14,9 +14,12 @@
 
 @implementation WATutorialViewController
 @synthesize scrollView;
+@synthesize introductionView;
+@synthesize pageControl;
+@synthesize startButton;
 
 const CGFloat kScrollObjWidth = 320.0;
-const NSUInteger kNumberOfPages = 3;
+const NSUInteger kNumberOfPages = 5;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,22 +33,14 @@ const NSUInteger kNumberOfPages = 3;
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
-	
-	// load images
-	CGFloat x = 0;
-	
-	for (NSUInteger i = 1; i <= kNumberOfPages; i++) {
-		NSString *imageName = [NSString stringWithFormat:@"TutorialPage%d", i];
-		UIImage *image = [UIImage imageNamed:imageName];
-		UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-		CGRect frame = imageView.frame;
-		frame.origin = (CGPoint){x, 0};
-		imageView.frame = frame;
-		
-		x += kScrollObjWidth;
-		[scrollView addSubview:imageView];
-	}
+	[scrollView addSubview:self.introductionView];
+
 	[scrollView setContentSize:(CGSize){kNumberOfPages*kScrollObjWidth, [scrollView bounds].size.height}];
+	scrollView.delegate = self;
+	pageControl.numberOfPages = kNumberOfPages;
+	introductionView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"TutorialBackground"]];
+	[[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.17 green:0.19 blue:0.21 alpha:0.9]];
+	[[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.31	green:0.54 blue:0.58 alpha:1]];
 
 }
 
@@ -62,6 +57,15 @@ const NSUInteger kNumberOfPages = 3;
 
 - (void)viewDidUnload {
 	[self setScrollView:nil];
+	[self setPageControl:nil];
+	[self setStartButton:nil];
 	[super viewDidUnload];
 }
+
+- (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
+	int page = floor((aScrollView.contentOffset.x - kScrollObjWidth / 2) / kScrollObjWidth) + 1;
+	
+	self.pageControl.currentPage = page;
+}
+
 @end

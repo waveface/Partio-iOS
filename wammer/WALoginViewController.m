@@ -17,9 +17,10 @@
 #import "IRAction.h"
 #import "IRAlertView.h"
 
+#import "Facebook+Singleton.h"
 #import "WATutorialViewController.h"
 
-@interface WALoginViewController () <UITextFieldDelegate>
+@interface WALoginViewController () <UITextFieldDelegate, FBSessionDelegate>
 
 - (void)localize:(UIView *) view;
 
@@ -278,49 +279,59 @@
 }
 
 - (IBAction)facebookSignInAction:(id)sender {
-	
-	
-//	
-//	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
-//	[facebook authorize];
-//	
-//	return;
 
-
+	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
+	[facebook authorize];
+	
 	// show tutorial here
-	WATutorialViewController *tutorialViewController = [[WATutorialViewController alloc]init];
-	[self.navigationController pushViewController:tutorialViewController animated:YES];
+	// TODO show tutorial only in first time.
+  #define kFirstTime @"FirstUse"
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSString *firstTime = [defaults objectForKey:kFirstTime];
 	
-	return;
+	if (firstTime == nil) {
+		[defaults setBool:NO forKey:kFirstTime];
+		[defaults synchronize];
+		WATutorialViewController *tutorialViewController = [[WATutorialViewController alloc]init];
+		[self.navigationController pushViewController:tutorialViewController animated:YES];
+	}
+	
+	[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep) {
+
+		// no op here
+		
+	} onFailure:^(NSError *error) {
+		// no op failed
+	}];
+	
 	
 	self.usernameField.text = nil;
 	self.passwordField.text = nil;
 
-	__weak WALoginViewController *wSelf = self;
-	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
-		
-			if (error) {
-				
-				[wSelf presentError:error completion:^{
-				
-				[wSelf.navigationController popToViewController:wSelf animated:YES];
-				}];
-				
-				return;
-				
-			}
-			
-      wSelf.username = vc.username;
-      wSelf.password = vc.password;
-      wSelf.token = vc.token;
-      wSelf.userID = vc.userID;
-      wSelf.performsAuthenticationOnViewDidAppear = YES;
-
-      [wSelf.navigationController popToViewController:wSelf animated:YES];
-			
-		}];
-		
-		[self.navigationController pushViewController:authRequestVC animated:YES];
+//	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
+//		
+//			if (error) {
+//				
+//				[wSelf presentError:error completion:^{
+//				
+//				[wSelf.navigationController popToViewController:wSelf animated:YES];
+//				}];
+//				
+//				return;
+//				
+//			}
+//			
+//      wSelf.username = vc.username;
+//      wSelf.password = vc.password;
+//      wSelf.token = vc.token;
+//      wSelf.userID = vc.userID;
+//      wSelf.performsAuthenticationOnViewDidAppear = YES;
+//
+//      [wSelf.navigationController popToViewController:wSelf animated:YES];
+//			
+//		}];
+//		
+//		[self.navigationController pushViewController:authRequestVC animated:YES];
 		
 }
 

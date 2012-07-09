@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WATutorialViewController : UIViewController
+@interface WATutorialViewController : UIViewController <UIScrollViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *introductionView;
+@property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
+@property (strong, nonatomic) IBOutlet UIButton *startButton;
 
 @end
