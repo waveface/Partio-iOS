@@ -361,6 +361,9 @@
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
 
+/* Alert on no location service enabled when open photo library */
+"TURN_ON_LOCATION_SERVICE" = "Turn On Location Services to Allow Stream to Access Your Photo Library";
+
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";
 
