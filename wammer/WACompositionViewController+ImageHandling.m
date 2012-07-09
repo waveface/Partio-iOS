@@ -120,7 +120,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:[self newImagePickerController] animated:animated];
+	[topNonModalVC(self) presentModalViewController:(controller ? controller : [self newImagePickerController]) animated:animated];
 	
 	topNonModalVC = nil;
 
