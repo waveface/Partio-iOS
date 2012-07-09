@@ -68,10 +68,10 @@
 
 @end
 
-
 @implementation WAAppDelegate_iOS
 @synthesize window = _window;
 @synthesize alreadyRequestingAuthentication;
+@synthesize facebook;
 
 - (void) bootstrap {
 	
@@ -532,7 +532,15 @@
 		
 	};
 	
-	WALoginViewController *loginVC = [[WALoginViewController alloc] init];
+	WALoginViewController *loginVC;
+	
+	if (UIUserInterfaceIdiomPhone == [UIDevice currentDevice].userInterfaceIdiom ) {
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoginPhone" bundle:nil];
+		UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+		loginVC = (WALoginViewController *)[navigationController topViewController];
+	} else {
+		loginVC = [[WALoginViewController alloc] init];
+	}
 	loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
 		
 		if (error) {
@@ -621,16 +629,38 @@ static unsigned int networkActivityStackingCount = 0;
 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-  
-    url, @"url",
-    sourceApplication, @"sourceApplication",
-    annotation, @"annotation",
-  
-  nil]];
+	//fb357087874306060://authorize/#access_token=BAAFExPZCm0AwBAE0Rrkx45WrF9P9rSjttvmKqWCHFXCiflQCCaaA57AxiD4SUxjESg0VdMilsRcynBzIaxljzcmenZAXephyorGP7h3Eg7o6lahje3ox5f8bRJf99FPkmUKaTVWQZDZD&expires_in=5105534&code=AQDk-SBy1kclksewM5uX1W0GlTd0_Jc8VQT6gXb0grblRTPBSN8YPgdTVqYmi1Vuv0hnmskQpIxkjTOKBxRt__VQ4IdiJdThklKvzcZprTjD5Lhgid2U-O9lZ6JFclAyNQGbpy1cdsMWEkHoW0vDLNTiJqyAk2qZ5qbi0atfKNdxHFDtK9ee7338KoDR_8nOaxMeymONNrceZfzrRj48EYYy
 
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+														
+														url, @"url",
+														sourceApplication, @"sourceApplication",
+														annotation, @"annotation",
+														
+														nil];
+
+	if ([[[url scheme] substringToIndex:2] isEqualToString:@"fb"]) {
+		if(!self.facebook){
+			self.facebook = [[Facebook alloc] initWithAppId:@"357087874306060" andDelegate:self];
+		}
+		[self.facebook handleOpenURL:url];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kWAFacebookDidLoginNotification object:url userInfo:userInfo];
+		
+	} else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
+	}
   return YES;
 
+}
+
+#define kFBAccessTokenKey  @"FBAccessTokenKey"
+#define kFBExpirationDateKey  @"FBExpirationDateKey"
+
+- (void)fbDidLogin {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults setObject:[self.facebook accessToken] forKey:kFBAccessTokenKey];
+	[defaults setObject:[self.facebook expirationDate] forKey:kFBExpirationDateKey];
+	[defaults synchronize];
 }
 
 - (void) applicationDidReceiveMemoryWarning:(UIApplication *)application {
