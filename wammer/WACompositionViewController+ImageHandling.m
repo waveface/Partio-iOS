@@ -83,7 +83,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[wSelf presentModalViewController:imagePickerController animated:YES];
+		[wSelf presentImagePickerController:imagePickerController sender:sender animated:YES];
 	
 	}];
 

@@ -110,8 +110,20 @@
 				articleDateItem,
 			nil];
 			
-			if (WAAdvancedFeaturesEnabled())
+			if (WAAdvancedFeaturesEnabled()) {
+			
+				__weak WAStackedArticleViewController *wSelf = self;
+				
+				[barButtonItems addObject:[IRBarButtonItem itemWithTitle:@"Copy" action:^ {
+				
+					for (WAFile *aFile in self.article.files)
+						[[aFile bestPresentableImage] irWriteToSavedPhotosAlbumWithCompletion:nil];
+				
+				}]];
+				
 				[barButtonItems addObject:[self editButtonItem]];
+				
+			}
 			
 			[barButtonItems addObjectsFromArray:[NSArray arrayWithObjects:
 				favoriteToggleItem,
