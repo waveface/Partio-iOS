@@ -110,8 +110,20 @@
 				articleDateItem,
 			nil];
 			
-			if (WAAdvancedFeaturesEnabled())
+			if (WAAdvancedFeaturesEnabled()) {
+			
+				__weak WAStackedArticleViewController *wSelf = self;
+				
+				[barButtonItems addObject:[IRBarButtonItem itemWithTitle:@"Copy" action:^ {
+				
+					for (WAFile *aFile in self.article.files)
+						[[aFile bestPresentableImage] irWriteToSavedPhotosAlbumWithCompletion:nil];
+				
+				}]];
+				
 				[barButtonItems addObject:[self editButtonItem]];
+				
+			}
 			
 			[barButtonItems addObjectsFromArray:[NSArray arrayWithObjects:
 				favoriteToggleItem,
@@ -182,7 +194,7 @@
 	
 	UIImageView *quotationMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"WAArticleViewQuotationMark"]];
 	[quotationMark sizeToFit];
-	quotationMark.frame = CGRectOffset(quotationMark.frame, 8, -16);
+	quotationMark.frame = CGRectOffset(quotationMark.frame, 8, 8);
 	
 	[_textStackCell.backgroundView addSubview:quotationMark];
 		
@@ -990,24 +1002,6 @@
 		//	?
 	
 	}
-
-}
-
-- (BOOL) shouldAutorotate {
-
-	return YES;
-
-}
-
-- (NSUInteger) supportedInterfaceOrientations {
-
-	return UIInterfaceOrientationPortrait;
-
-}
-
-- (UIInterfaceOrientation) preferredInterfaceOrientationForPresentation {
-
-	return UIInterfaceOrientationPortrait;
 
 }
 

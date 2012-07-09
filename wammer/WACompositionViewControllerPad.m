@@ -378,7 +378,6 @@
 	}
 	
 	cell.representedFile = representedFile;
-//	cell.image = [representedFile smallestPresentableImage];
 	cell.clipsToBounds = NO;
 	cell.selectionStyle = AQGridViewCellSelectionStyleNone;
 	
@@ -409,6 +408,8 @@
 }
 
 - (void) handleFilesChangeKind:(NSKeyValueChange)kind oldValue:(id)oldValue newValue:(id)newValue indices:(NSIndexSet *)indices isPrior:(BOOL)isPrior {
+
+	NSCParameterAssert([NSThread isMainThread]);
 
 	if (![self isViewLoaded])
 		return;

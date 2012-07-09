@@ -18,11 +18,11 @@
 - (void) handleImageAttachmentInsertionRequestWithSender:(id)sender;
 - (void) handleImageAttachmentInsertionRequestWithOptions:(NSDictionary *)options sender:(id)sender;
 
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated;
-- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated;
+- (void) presentImagePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated;
+- (void) dismissImagePickerController:(UIViewController *)controller animated:(BOOL)animated;
 
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated;
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated;
+- (void) presentCameraCapturePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated;
+- (void) dismissCameraCapturePickerController:(UIViewController *)controller animated:(BOOL)animated;
 
 - (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)photoLibraryAsset;
 

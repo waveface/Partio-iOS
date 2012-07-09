@@ -6,6 +6,8 @@
 //  Copyright (c) 2011 Waveface. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "IRAsyncOperation.h"
 
 #import "WAFile+WARemoteInterfaceEntitySyncing.h"
@@ -278,8 +280,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 
 	if (!WAIsSyncableObject(self)) {
 		
-		NSLog(@"%s: %@ is not syncable.", __PRETTY_FUNCTION__, self);
-		
 		if (completionBlock)
 			completionBlock(NO, nil);
 		
@@ -346,7 +346,6 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 		if ([self.assetURL length]) {
 			
 			NSURL *capturedURL = [NSURL URLWithString:self.assetURL];
-			NSLog(@"capturedURL %@", capturedURL);
 
 			[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 				

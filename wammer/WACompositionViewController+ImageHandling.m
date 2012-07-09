@@ -35,15 +35,47 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
+	__block AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
+		
 		NSLog(@"Failed. Error: %@", error);
-		if( error == nil ) {
-			[wSelf dismissModalViewControllerAnimated:YES];
+		
+		if (!error) {
+			
+			[wSelf dismissImagePickerController:imagePickerController animated:YES];
+			imagePickerController = nil;
+			
+		} else if ([[error domain] isEqualToString:ALAssetsLibraryErrorDomain] && error.code == ALAssetsLibraryAccessUserDeniedError) {
+			
+			NSCParameterAssert(![NSThread isMainThread]);
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+
+				NSCParameterAssert([NSThread isMainThread]);
+				
+				NSString *title = NSLocalizedString(@"TURN_ON_LOCATION_SERVICE", @"Alert on no location service enabled when open photo library");
+				IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:^{
+					
+					[wSelf dismissImagePickerController:imagePickerController animated:YES];
+					imagePickerController = nil;
+					
+				}];
+				
+				[[IRAlertView alertViewWithTitle:nil message:title cancelAction:nil otherActions:[NSArray arrayWithObjects:okayAction, nil]] show];
+
+			});
+			
 		}
+		
 	} andSuccessBlock:^(NSArray *info) {
-		[wSelf.managedObjectContext save:nil];
-		[wSelf handleSelectionWithArray:info];
-		[wSelf dismissModalViewControllerAnimated:YES];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[wSelf.managedObjectContext save:nil];
+			[wSelf handleSelectionWithArray:info];
+			[wSelf dismissImagePickerController:imagePickerController animated:YES];
+			imagePickerController = nil;
+		
+		});
 
 	}];
 	
@@ -51,7 +83,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[wSelf presentModalViewController:imagePickerController animated:YES];
+		[wSelf presentImagePickerController:imagePickerController sender:sender animated:YES];
 	
 	}];
 
@@ -77,7 +109,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
+- (void) presentImagePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
@@ -88,13 +120,13 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:[self newImagePickerController] animated:animated];
+	[topNonModalVC(self) presentModalViewController:(controller ? controller : [self newImagePickerController]) animated:animated];
 	
 	topNonModalVC = nil;
 
 }
 
-- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+- (void) dismissImagePickerController:(UIViewController *)controller animated:(BOOL)animated {
 
 	[controller dismissModalViewControllerAnimated:animated];
 
@@ -137,7 +169,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
+- (void) presentCameraCapturePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
@@ -154,26 +186,21 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+- (void) dismissCameraCapturePickerController:(UIViewController *)controller animated:(BOOL)animated {
 
 	[controller dismissModalViewControllerAnimated:animated];
 
 }
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
-	for (ALAsset *asset in selectedAssets) {
+	
+	for (ALAsset *asset in selectedAssets)
 		[self handleIncomingSelectedAssetImage:nil representedAsset:asset];
-	}
+	
 }
 
 - (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
 
-	if (representedAsset) {
-		
-		NSLog(@"URI: %@", [[representedAsset defaultRepresentation] url]);
-		
-	}
-	
 	if (image || representedAsset) {
 		
 		NSManagedObjectContext *context = self.managedObjectContext;

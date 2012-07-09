@@ -345,12 +345,32 @@
 			WAFile *file = (WAFile *)[displayedFiles objectAtIndex:idx];
 			
 			[iv irUnbind:@"image"];
-			
-			[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
-			
-				(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
-			
-			nil]];
+
+			if (!file.smallestPresentableImage && file.assetURL) {
+
+				ALAssetsLibrary * const library = [[self class] assetsLibrary];
+				[library assetForURL:[NSURL URLWithString:file.assetURL] resultBlock:^(ALAsset *asset) {
+
+					dispatch_async(dispatch_get_main_queue(), ^{
+						
+						iv.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
+						
+					});
+
+				} failureBlock:^(NSError *error) {
+
+					NSLog(@"Unable to retrieve assets for URL %@", file.assetURL);
+
+				}];
+
+			} else {
+
+				[iv irBind:@"image" toObject:file keyPath:@"smallestPresentableImage" options:[NSDictionary dictionaryWithObjectsAndKeys:
+																																											 
+					(id)kCFBooleanTrue, kIRBindingsAssignOnMainThreadOption,
+																																											 
+				nil]];
+			}
 			
 		}];
 		
@@ -482,4 +502,17 @@
 
 }
 
++ (ALAssetsLibrary *) assetsLibrary {
+
+	static ALAssetsLibrary *library = nil;
+	static dispatch_once_t onceToken = 0;
+	dispatch_once(&onceToken, ^{
+
+    library = [ALAssetsLibrary new];
+
+	});
+
+	return library;
+
+}
 @end
