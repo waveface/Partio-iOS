@@ -586,15 +586,18 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if (![results isKindOfClass:[NSDictionary class]])
 				return;
 			
-			if ([anyPreview.graphElement.images count]) {
+			WAArticle *savedPost = (WAArticle *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:postEntityURL];
+			WAPreview *savedPreview = [savedPost.previews anyObject];
+
+			if ([savedPreview.graphElement.images count]) {
 			
 				NSMutableDictionary *previewEntity = [(NSDictionary *)results mutableCopy];
 
 				// use the first preview image for thumbnail_url while creating posts
 				if (isDraft) {
-					[previewEntity setObject:[[[anyPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
+					[previewEntity setObject:[[[savedPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
 				} else {
-					NSString *thumbnailURL = anyPreview.graphElement.representingImage.imageRemoteURL;
+					NSString *thumbnailURL = savedPreview.graphElement.representingImage.imageRemoteURL;
 					[previewEntity setObject:(thumbnailURL ? thumbnailURL : @"") forKey:@"thumbnail_url"];
 				}
 
