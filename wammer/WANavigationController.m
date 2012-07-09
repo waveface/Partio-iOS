@@ -12,12 +12,18 @@
 #import "QuartzCore+IRAdditions.h"
 
 
+@interface WANavigationController ()
+@property (nonatomic, readwrite, assign) BOOL poppingViewController;
+@end
+
+
 @implementation WANavigationController
 
 @synthesize onViewDidLoad;
 @synthesize willPushViewControllerAnimated, didPushViewControllerAnimated;
 @synthesize onDismissModalViewControllerAnimated;
 @synthesize disablesAutomaticKeyboardDismissal;
+@synthesize poppingViewController = _poppingViewController;
 
 + (id) alloc {
 
@@ -135,7 +141,13 @@
 
 - (UIViewController *) popViewControllerAnimated:(BOOL)animated {
 
-	return [super popViewControllerAnimated:animated];
+	_poppingViewController = YES;
+
+	UIViewController *viewController = [super popViewControllerAnimated:animated];
+	
+	_poppingViewController = NO;
+	
+	return viewController;
 
 }
 
@@ -148,12 +160,22 @@
 
 }
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
-
 - (NSUInteger) supportedInterfaceOrientations {
 
+	#if __IPHONE_OS_VERSION_MIN_REQUIRED < 60000
+		#define UIInterfaceOrientationMaskLandscapeLeft 16
+		#define UIInterfaceOrientationMaskLandscapeRight 8
+		#define UIInterfaceOrientationMaskPortrait 2
+		#define UIInterfaceOrientationMaskPortraitUpsideDown 4
+	#endif
+
 	UIViewController *topVC = self.topViewController;
-	NSUInteger mask = UIInterfaceOrientationPortrait;
+	
+	if (_poppingViewController)
+		if ([self.viewControllers count] > 1)
+			topVC = [self.viewControllers objectAtIndex:([self.viewControllers count] - 2)];
+	
+	NSUInteger mask = 0;
 	
 	if ([topVC shouldAutorotateToInterfaceOrientation:UIInterfaceOrientationPortrait])
 		mask |= UIInterfaceOrientationMaskPortrait;
@@ -170,7 +192,5 @@
 	return mask;
 
 }
-
-#endif
 
 @end
