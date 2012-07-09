@@ -47,25 +47,37 @@
 
 	//	Either use the asset, or use the smallest presentable image!
 
-	if (_representedFile == file) {
-		self.image = file.smallestPresentableImage;
-		return;
-	}
+//	if (_representedFile == file) {
+//		self.image = file.smallestPresentableImage;
+//		return;
+//	}
 	
 	self.image = nil;
 	
 	_representedFile = file;
 	
-	if (_representedFile.assetURL) {
+	__weak WACompositionViewPhotoCell *wSelf = self;
+	NSString *assetURLString = _representedFile.assetURL;
+	BOOL (^representedFileAssetChanged)(void) = ^ {
+		return (BOOL)![wSelf.representedFile.assetURL isEqual:assetURLString];
+	};
+	
+	if (assetURLString) {
 	
 		[self irUnbind:@"image"];
 		
 		ALAssetsLibrary * const library = [[self class] assetsLibrary];
-		NSURL *assetURL = [NSURL URLWithString:_representedFile.assetURL];
+		NSURL *assetURL = [NSURL URLWithString:assetURLString];
 		
 		[library assetForURL:assetURL resultBlock:^(ALAsset *asset) {
 		
+			if (representedFileAssetChanged())
+				return;
+		
 			dispatch_async(dispatch_get_main_queue(), ^{
+			
+				if (representedFileAssetChanged())
+					return;
 			
 				self.image = [UIImage imageWithCGImage:[asset aspectRatioThumbnail]];
 				
