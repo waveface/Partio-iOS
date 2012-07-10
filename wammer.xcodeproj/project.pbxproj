@@ -79,7 +79,6 @@
 		4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD2C33E157C95150038E878 /* WALoginViewController.m */; };
 		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
 		4BD77BB415A2A01C00CA8486 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BD77BA715A2A01C00CA8486 /* FBDialog.bundle */; };
-		4BD77BB515A2A01C00CA8486 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD77BAD15A2A01C00CA8486 /* libfacebook_ios_sdk.a */; };
 		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
 		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
 		4BD77BBD15A2EAC500CA8486 /* WAFacebookTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD77BBC15A2EAC400CA8486 /* WAFacebookTests.m */; };
@@ -95,7 +94,6 @@
 		FF0528B11508D0FE00F585D7 /* WALocalizedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B01508D0FE00F585D7 /* WALocalizedButton.m */; };
 		FF0528B41508D1A100F585D7 /* WALocalizedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */; };
 		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
-		FF069E771576635500141CD9 /* WADataStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C5151520947100301887 /* WADataStoreTest.m */; };
 		FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */; };
 		FF09C0EE15A2E83800AEDDAE /* WASlidingSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF09C0ED15A2E83800AEDDAE /* WASlidingSplitViewController.m */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m */; };
@@ -267,6 +265,7 @@
 		FF66D59015A5986800851F1B /* WAArticleStackHeaderBarBackground~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = FF66D58E15A5986700851F1B /* WAArticleStackHeaderBarBackground~iphone.png */; };
 		FF67F05414724F60006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */; };
 		FF680463159AFF0F00EBF63B /* WAFile+LazyImages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4BDEA5156A518100C105D5 /* WAFile+LazyImages.m */; };
+		FF6B02A915AC0A49009D8BDB /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */; };
 		FF6D75D7152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */; };
 		FF72BD331427824600B5D838 /* WAFauxRootNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC81D0F14277F0300B41DB9 /* WAFauxRootNavigationController.m */; };
 		FF73351214A23B9C00813750 /* WARemoteInterface+Storages.m in Sources */ = {isa = PBXBuildFile; fileRef = FF73351114A23B9C00813750 /* WARemoteInterface+Storages.m */; };
@@ -949,6 +948,20 @@
 			remoteGlobalIDString = D2AAC07E0554694100DB518D;
 			remoteInfo = IRKeychain;
 		};
+		FF6B02A515AC0A2A009D8BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC07E0554694100DB518D;
+			remoteInfo = "facebook-ios-sdk";
+		};
+		FF6B02A715AC0A3E009D8BDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC07D0554694100DB518D;
+			remoteInfo = "facebook-ios-sdk";
+		};
 		FF72C187142789FA00B5D838 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
@@ -1452,6 +1465,7 @@
 		FF66D58E15A5986700851F1B /* WAArticleStackHeaderBarBackground~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "WAArticleStackHeaderBarBackground~iphone.png"; path = "Resources/WAArticleStackHeaderBarBackground~iphone.png"; sourceTree = "<group>"; };
 		FF67F05214724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAComment+WARemoteInterfaceEntitySyncing.h"; sourceTree = "<group>"; };
 		FF67F05314724F5F006715D5 /* WAComment+WARemoteInterfaceEntitySyncing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAComment+WARemoteInterfaceEntitySyncing.m"; sourceTree = "<group>"; };
+		FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "facebook-ios-sdk.xcodeproj"; path = "external/Facebook/src/facebook-ios-sdk.xcodeproj"; sourceTree = "<group>"; };
 		FF6D75D5152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WARepresentedFilePickerViewController.h; sourceTree = "<group>"; };
 		FF6D75D6152DC89F00D3EDB4 /* WARepresentedFilePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WARepresentedFilePickerViewController.m; sourceTree = "<group>"; };
 		FF6FFCC313F86445000C582D /* WAGalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryViewController.h; sourceTree = "<group>"; };
@@ -2063,9 +2077,9 @@
 				FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */,
 				FFED705E15497D7800E01FFB /* libWFPresentation.a in Frameworks */,
 				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
+				FF6B02A915AC0A49009D8BDB /* libfacebook_ios_sdk.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */,
-				4BD77BB515A2A01C00CA8486 /* libfacebook_ios_sdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2544,6 +2558,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FF6B029F15AC0A2A009D8BDB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FF6E168314F2EB6500AE1C05 /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
@@ -2633,6 +2655,7 @@
 				FFC9D96614FF28B2004197EC /* Google Analytics SDK */,
 				4B733B7A14987A81005CAE8D /* InAppSettingsKit */,
 				FFA774CB14ADBE6F0044674B /* Testflight SDK */,
+				FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */,
 				FF586C611519B93400F308E2 /* JSONKit.xcodeproj */,
 				FF73A5B413D6DC8000D54EC6 /* AQGridView.xcodeproj */,
 				FF61636314161A61004738D3 /* CrashReporter.xcodeproj */,
@@ -3470,6 +3493,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FF6B02A815AC0A3E009D8BDB /* PBXTargetDependency */,
 				FFD4F93B157E08460027BF3F /* PBXTargetDependency */,
 				FF586C6F1519B94E00F308E2 /* PBXTargetDependency */,
 				FFB117C5147F8B34002094E5 /* PBXTargetDependency */,
@@ -3520,6 +3544,10 @@
 				{
 					ProductGroup = FF61636414161A61004738D3 /* Products */;
 					ProjectRef = FF61636314161A61004738D3 /* CrashReporter.xcodeproj */;
+				},
+				{
+					ProductGroup = FF6B029F15AC0A2A009D8BDB /* Products */;
+					ProjectRef = FF6B029E15AC0A2A009D8BDB /* facebook-ios-sdk.xcodeproj */;
 				},
 				{
 					ProductGroup = FF1A10471462ACDB004FD00D /* Products */;
@@ -3747,6 +3775,13 @@
 			fileType = archive.ar;
 			path = libIRKeychain.a;
 			remoteRef = FF666C2A140CD2B200C35CED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FF6B02A615AC0A2A009D8BDB /* libfacebook_ios_sdk.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libfacebook_ios_sdk.a;
+			remoteRef = FF6B02A515AC0A2A009D8BDB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FF72C188142789FA00B5D838 /* IRFoundationsX.framework */ = {
@@ -4680,6 +4715,11 @@
 			isa = PBXTargetDependency;
 			name = JSONKitTouch;
 			targetProxy = FF586C6E1519B94E00F308E2 /* PBXContainerItemProxy */;
+		};
+		FF6B02A815AC0A3E009D8BDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "facebook-ios-sdk";
+			targetProxy = FF6B02A715AC0A3E009D8BDB /* PBXContainerItemProxy */;
 		};
 		FFA53E3514D934C7001E7B6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
