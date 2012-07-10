@@ -352,7 +352,6 @@
 		FFA1F3C5159C434B003000AD /* iPhoneFav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2CB159C434B003000AD /* iPhoneFav@2x.png */; };
 		FFA1F3C6159C434B003000AD /* iPhoneUnfav.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2CC159C434B003000AD /* iPhoneUnfav.png */; };
 		FFA1F3C7159C434B003000AD /* iPhoneUnfav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2CD159C434B003000AD /* iPhoneUnfav@2x.png */; };
-		FFA1F3C8159C434B003000AD /* lightBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2CE159C434B003000AD /* lightBackground.png */; };
 		FFA1F3C9159C434B003000AD /* LoginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2CF159C434B003000AD /* LoginBackground.png */; };
 		FFA1F3CA159C434B003000AD /* LoginBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2D0159C434B003000AD /* LoginBackground@2x.png */; };
 		FFA1F3CB159C434B003000AD /* LoginBackgroundPad.png in Resources */ = {isa = PBXBuildFile; fileRef = FFA1F2D1159C434B003000AD /* LoginBackgroundPad.png */; };
@@ -1629,7 +1628,6 @@
 		FFA1F2CB159C434B003000AD /* iPhoneFav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhoneFav@2x.png"; path = "Resources/iPhoneFav@2x.png"; sourceTree = "<group>"; };
 		FFA1F2CC159C434B003000AD /* iPhoneUnfav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhoneUnfav.png; path = Resources/iPhoneUnfav.png; sourceTree = "<group>"; };
 		FFA1F2CD159C434B003000AD /* iPhoneUnfav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhoneUnfav@2x.png"; path = "Resources/iPhoneUnfav@2x.png"; sourceTree = "<group>"; };
-		FFA1F2CE159C434B003000AD /* lightBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lightBackground.png; path = Resources/lightBackground.png; sourceTree = "<group>"; };
 		FFA1F2CF159C434B003000AD /* LoginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackground.png; path = Resources/LoginBackground.png; sourceTree = "<group>"; };
 		FFA1F2D0159C434B003000AD /* LoginBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground@2x.png"; path = "Resources/LoginBackground@2x.png"; sourceTree = "<group>"; };
 		FFA1F2D1159C434B003000AD /* LoginBackgroundPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundPad.png; path = Resources/LoginBackgroundPad.png; sourceTree = "<group>"; };
@@ -2942,7 +2940,6 @@
 				FFA1F2CB159C434B003000AD /* iPhoneFav@2x.png */,
 				FFA1F2CC159C434B003000AD /* iPhoneUnfav.png */,
 				FFA1F2CD159C434B003000AD /* iPhoneUnfav@2x.png */,
-				FFA1F2CE159C434B003000AD /* lightBackground.png */,
 				FFA1F2CF159C434B003000AD /* LoginBackground.png */,
 				FFA1F2D0159C434B003000AD /* LoginBackground@2x.png */,
 				FFA1F2D1159C434B003000AD /* LoginBackgroundPad.png */,
@@ -4021,7 +4018,6 @@
 				FFA1F3C5159C434B003000AD /* iPhoneFav@2x.png in Resources */,
 				FFA1F3C6159C434B003000AD /* iPhoneUnfav.png in Resources */,
 				FFA1F3C7159C434B003000AD /* iPhoneUnfav@2x.png in Resources */,
-				FFA1F3C8159C434B003000AD /* lightBackground.png in Resources */,
 				FFA1F3C9159C434B003000AD /* LoginBackground.png in Resources */,
 				FFA1F3CA159C434B003000AD /* LoginBackground@2x.png in Resources */,
 				FFA1F3CB159C434B003000AD /* LoginBackgroundPad.png in Resources */,
