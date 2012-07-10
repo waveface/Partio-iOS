@@ -40,8 +40,10 @@ const NSUInteger kNumberOfPages = 5;
 	scrollView.delegate = self;
 	pageControl.numberOfPages = kNumberOfPages;
 	introductionView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"TutorialBackground"]];
-	[[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.17 green:0.19 blue:0.21 alpha:0.9]];
-	[[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.31	green:0.54 blue:0.58 alpha:1]];
+
+	
+//		[[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.17 green:0.19 blue:0.21 alpha:0.9]];
+//		[[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.31	green:0.54 blue:0.58 alpha:1]];
 
 }
 
