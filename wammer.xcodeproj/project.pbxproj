@@ -78,6 +78,13 @@
 		4BCE003F157E6ECD00E18D24 /* WALoginViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BCE003E157E6ECD00E18D24 /* WALoginViewController~ipad.xib */; };
 		4BD2C340157C95150038E878 /* WALoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD2C33E157C95150038E878 /* WALoginViewController.m */; };
 		4BD2C341157C95150038E878 /* WALoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BD2C33F157C95150038E878 /* WALoginViewController.xib */; };
+		4BD77BB415A2A01C00CA8486 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BD77BA715A2A01C00CA8486 /* FBDialog.bundle */; };
+		4BD77BB515A2A01C00CA8486 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD77BAD15A2A01C00CA8486 /* libfacebook_ios_sdk.a */; };
+		4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 130F09EF159C3C74001796D0 /* WABackoffHandler.m */; };
+		4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FF0CC558158A41150034BD1B /* libxml2.dylib */; };
+		4BD77BBD15A2EAC500CA8486 /* WAFacebookTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BD77BBC15A2EAC400CA8486 /* WAFacebookTests.m */; };
+		4BD77BBE15A2EE5D00CA8486 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4BD77BA715A2A01C00CA8486 /* FBDialog.bundle */; };
+		4BD77BBF15A2EE6700CA8486 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD77BAD15A2A01C00CA8486 /* libfacebook_ios_sdk.a */; };
 		4BE6910D14EB8159002B9790 /* WAPreviewInspectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */; };
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
@@ -564,8 +571,6 @@
 		FFB3C17A145E9A7900ED7A56 /* libIRTextAttributor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFB3C177145E9A6600ED7A56 /* libIRTextAttributor.a */; };
 		FFB44D5A14D692AA00080F07 /* WAArticleViewController_FullScreen_Preview.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB44D5914D692AA00080F07 /* WAArticleViewController_FullScreen_Preview.m */; };
 		FFB6A4F914C6C38F0092AF5F /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD14F0514C5E24C0053116F /* Crashlytics.framework */; };
-		FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTestBase.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */; };
-		FFB7D3AB1546CFAD00CE005C /* WALayoutManagerTestGeneric.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */; };
 		FFB81F42148C8AA000FB11B1 /* WASingleFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */; };
 		FFB81F43148C8AA000FB11B1 /* WASingleFileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */; };
 		FFB81F47148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFB81F46148C8B0700FB11B1 /* WASingleFileViewController~iphone.xib */; };
@@ -832,34 +837,6 @@
 			remoteGlobalIDString = FF0F650E14C2DDAA0037787A;
 			remoteInfo = IRFoundationsTest;
 		};
-		FF586BB41519B54100F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFBA66E2140E12AD00BE5A1D /* IRDiscreteLayoutManager.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF55E1951407CE8400D8F3C7;
-			remoteInfo = IRDiscreteLayoutManager;
-		};
-		FF586BB61519B54100F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A59513D6DC6500D54EC6 /* IRFoundations.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF0A8BA81337AFB700DDA47C;
-			remoteInfo = IRFoundationsTouch;
-		};
-		FF586BB81519B54100F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF73A59E13D6DC6A00D54EC6 /* IRWebAPIKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF7408231296A8D200571D46;
-			remoteInfo = IRWebAPIKitTouch;
-		};
-		FF586BBB1519B5A200F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FFA69459147F800300F46347 /* IRRecurrenceMachine.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF2228281463C77300541E31;
-			remoteInfo = IRRecurrenceMachine;
-		};
 		FF586C691519B93400F308E2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
@@ -875,13 +852,6 @@
 			remoteInfo = JSONKitX;
 		};
 		FF586C6E1519B94E00F308E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FF586BCA1519B72600F308E2;
-			remoteInfo = JSONKitTouch;
-		};
-		FF586C701519B95900F308E2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FF586C611519B93400F308E2 /* JSONKit.xcodeproj */;
 			proxyType = 1;
@@ -1297,6 +1267,23 @@
 		4BD2C33D157C95150038E878 /* WALoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALoginViewController.h; sourceTree = "<group>"; };
 		4BD2C33E157C95150038E878 /* WALoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALoginViewController.m; sourceTree = "<group>"; };
 		4BD2C33F157C95150038E878 /* WALoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WALoginViewController.xib; sourceTree = "<group>"; };
+		4BD77BA515A2A01C00CA8486 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
+		4BD77BA615A2A01C00CA8486 /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
+		4BD77BA715A2A01C00CA8486 /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBDialog.bundle; sourceTree = "<group>"; };
+		4BD77BA815A2A01C00CA8486 /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBDialog.h; sourceTree = "<group>"; };
+		4BD77BA915A2A01C00CA8486 /* FBFrictionlessRequestSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBFrictionlessRequestSettings.h; sourceTree = "<group>"; };
+		4BD77BAA15A2A01C00CA8486 /* FBLoginDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBLoginDialog.h; sourceTree = "<group>"; };
+		4BD77BAB15A2A01C00CA8486 /* FBRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRequest.h; sourceTree = "<group>"; };
+		4BD77BAC15A2A01C00CA8486 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		4BD77BAD15A2A01C00CA8486 /* libfacebook_ios_sdk.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libfacebook_ios_sdk.a; sourceTree = "<group>"; };
+		4BD77BAE15A2A01C00CA8486 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		4BD77BAF15A2A01C00CA8486 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		4BD77BB015A2A01C00CA8486 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		4BD77BB115A2A01C00CA8486 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		4BD77BB215A2A01C00CA8486 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		4BD77BB315A2A01C00CA8486 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		4BD77BBB15A2EAC400CA8486 /* WAFacebookTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookTests.h; sourceTree = "<group>"; };
+		4BD77BBC15A2EAC400CA8486 /* WAFacebookTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookTests.m; sourceTree = "<group>"; };
 		4BE6910A14EB8159002B9790 /* WAPreviewInspectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreviewInspectionViewController.h; sourceTree = "<group>"; };
 		4BE6910B14EB8159002B9790 /* WAPreviewInspectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAPreviewInspectionViewController.m; sourceTree = "<group>"; };
 		4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAPreviewInspectionViewController.xib; sourceTree = "<group>"; };
@@ -1437,8 +1424,6 @@
 		FF5401581534125700FFF871 /* WARepresentedFilePickerViewController+CustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARepresentedFilePickerViewController+CustomUI.h"; sourceTree = "<group>"; };
 		FF54C4BB15206B0D00301887 /* WARemoteInterface+Usertracks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Usertracks.h"; sourceTree = "<group>"; };
 		FF54C4BC15206B0D00301887 /* WARemoteInterface+Usertracks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Usertracks.m"; sourceTree = "<group>"; };
-		FF54C5141520947100301887 /* WADataStoreTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WADataStoreTest.h; sourceTree = "<group>"; };
-		FF54C5151520947100301887 /* WADataStoreTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WADataStoreTest.m; sourceTree = "<group>"; };
 		FF55841F142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+DiscreteLayoutAdditions.h"; sourceTree = "<group>"; };
 		FF558420142B3D6200404F13 /* WAArticle+DiscreteLayoutAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+DiscreteLayoutAdditions.m"; sourceTree = "<group>"; };
 		FF559491157CF24F0048EA1B /* WAArticleStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleStyle.h; sourceTree = "<group>"; };
@@ -1855,12 +1840,6 @@
 		FFB44D5814D692AA00080F07 /* WAArticleViewController_FullScreen_Preview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleViewController_FullScreen_Preview.h; sourceTree = "<group>"; };
 		FFB44D5914D692AA00080F07 /* WAArticleViewController_FullScreen_Preview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleViewController_FullScreen_Preview.m; sourceTree = "<group>"; };
 		FFB67956141E345C006F84E3 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTestBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTestBase.h; sourceTree = "<group>"; };
-		FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTestBase.m; sourceTree = "<group>"; };
-		FFB7D3A91546CFAD00CE005C /* WALayoutManagerTestGeneric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTestGeneric.h; sourceTree = "<group>"; };
-		FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTestGeneric.m; sourceTree = "<group>"; };
-		FFB7D3AC1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALayoutManagerTestFavoriteMutation.h; sourceTree = "<group>"; };
-		FFB7D3AD1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALayoutManagerTestFavoriteMutation.m; sourceTree = "<group>"; };
 		FFB81F3F148C8AA000FB11B1 /* WASingleFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASingleFileViewController.h; sourceTree = "<group>"; };
 		FFB81F40148C8AA000FB11B1 /* WASingleFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASingleFileViewController.m; sourceTree = "<group>"; };
 		FFB81F41148C8AA000FB11B1 /* WASingleFileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WASingleFileViewController.xib; sourceTree = "<group>"; };
@@ -2018,7 +1997,9 @@
 				FF24B4FA1552B31E00DD9379 /* libc++.dylib in Frameworks */,
 				FF24B4FB1552B31E00DD9379 /* libc++abi.dylib in Frameworks */,
 				FF24B4FC1552B31E00DD9379 /* libsqlite3.0.dylib in Frameworks */,
+				4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */,
 				FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */,
+				4BD77BBF15A2EE6700CA8486 /* libfacebook_ios_sdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2084,6 +2065,7 @@
 				FF586C6D1519B94300F308E2 /* libJSONKitTouch.a in Frameworks */,
 				FF42755A14F4E8AE00824505 /* libTestFlight.a in Frameworks */,
 				FFC9D96914FF28B2004197EC /* libGoogleAnalytics.a in Frameworks */,
+				4BD77BB515A2A01C00CA8486 /* libfacebook_ios_sdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2236,10 +2218,9 @@
 			children = (
 				4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */,
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
-				FFE978641546CC94002DD303 /* Layout Manager Tests */,
-				FF54C5141520947100301887 /* WADataStoreTest.h */,
-				FF54C5151520947100301887 /* WADataStoreTest.m */,
 				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
+				4BD77BBB15A2EAC400CA8486 /* WAFacebookTests.h */,
+				4BD77BBC15A2EAC400CA8486 /* WAFacebookTests.m */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -2253,6 +2234,29 @@
 				4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		4BD77BA415A2A01C00CA8486 /* facebook-ios-sdk */ = {
+			isa = PBXGroup;
+			children = (
+				4BD77BA515A2A01C00CA8486 /* Facebook.h */,
+				4BD77BA615A2A01C00CA8486 /* FBConnect.h */,
+				4BD77BA715A2A01C00CA8486 /* FBDialog.bundle */,
+				4BD77BA815A2A01C00CA8486 /* FBDialog.h */,
+				4BD77BA915A2A01C00CA8486 /* FBFrictionlessRequestSettings.h */,
+				4BD77BAA15A2A01C00CA8486 /* FBLoginDialog.h */,
+				4BD77BAB15A2A01C00CA8486 /* FBRequest.h */,
+				4BD77BAC15A2A01C00CA8486 /* JSON.h */,
+				4BD77BAD15A2A01C00CA8486 /* libfacebook_ios_sdk.a */,
+				4BD77BAE15A2A01C00CA8486 /* NSObject+SBJSON.h */,
+				4BD77BAF15A2A01C00CA8486 /* NSString+SBJSON.h */,
+				4BD77BB015A2A01C00CA8486 /* SBJSON.h */,
+				4BD77BB115A2A01C00CA8486 /* SBJsonBase.h */,
+				4BD77BB215A2A01C00CA8486 /* SBJsonParser.h */,
+				4BD77BB315A2A01C00CA8486 /* SBJsonWriter.h */,
+			);
+			name = "facebook-ios-sdk";
+			path = "external/Facebook/lib/facebook-ios-sdk";
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -3343,19 +3347,6 @@
 			path = wammer;
 			sourceTree = "<group>";
 		};
-		FFE978641546CC94002DD303 /* Layout Manager Tests */ = {
-			isa = PBXGroup;
-			children = (
-				FFB7260B1518E5CA008CA6E5 /* WALayoutManagerTestBase.h */,
-				FFB7260C1518E5CA008CA6E5 /* WALayoutManagerTestBase.m */,
-				FFB7D3A91546CFAD00CE005C /* WALayoutManagerTestGeneric.h */,
-				FFB7D3AA1546CFAD00CE005C /* WALayoutManagerTestGeneric.m */,
-				FFB7D3AC1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.h */,
-				FFB7D3AD1546D00B00CE005C /* WALayoutManagerTestFavoriteMutation.m */,
-			);
-			name = "Layout Manager Tests";
-			sourceTree = "<group>";
-		};
 		FFED705315497D6B00E01FFB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -3379,6 +3370,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4BD77BA415A2A01C00CA8486 /* facebook-ios-sdk */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
 				FF24B3B61552AC7100DD9379 /* libstdc++.dylib */,
 				FF24B3B41552AC6D00DD9379 /* libc++.dylib */,
@@ -3431,11 +3423,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				FF586C711519B95900F308E2 /* PBXTargetDependency */,
-				FF586BBC1519B5A200F308E2 /* PBXTargetDependency */,
-				FF586BB51519B54100F308E2 /* PBXTargetDependency */,
-				FF586BB71519B54100F308E2 /* PBXTargetDependency */,
-				FF586BB91519B54100F308E2 /* PBXTargetDependency */,
 				FFA53E3514D934C7001E7B6B /* PBXTargetDependency */,
 			);
 			name = "wammer-iOS-Test";
@@ -3883,6 +3870,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */,
+				4BD77BBE15A2EE5D00CA8486 /* FBDialog.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4229,6 +4217,7 @@
 				FF66D58C15A577AC00851F1B /* WATextFoldingToggleItem.xib in Resources */,
 				FF66D58F15A5986800851F1B /* WAArticleStackHeaderBarBackground@2x~iphone.png in Resources */,
 				FF66D59015A5986800851F1B /* WAArticleStackHeaderBarBackground~iphone.png in Resources */,
+				4BD77BB415A2A01C00CA8486 /* FBDialog.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4351,7 +4340,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FFB7260D1518E5CA008CA6E5 /* WALayoutManagerTestBase.m in Sources */,
 				FFCEF41315199F000021AECB /* WAArticle+DiscreteLayoutAdditions.m in Sources */,
 				FFCEF41415199F000021AECB /* WAArticle+WAAdditions.m in Sources */,
 				FFCEF41615199F000021AECB /* WAComment.m in Sources */,
@@ -4400,7 +4388,6 @@
 				FF2EA24115384CAB003B965A /* WAOverlayBezel.m in Sources */,
 				FFBEF158153F629B00CF2203 /* WAUser.m in Sources */,
 				FFBEF162153F664100CF2203 /* WAStorage+WARemoteInterfaceEntitySyncing.m in Sources */,
-				FFB7D3AB1546CFAD00CE005C /* WALayoutManagerTestGeneric.m in Sources */,
 				FF24B4FE1552B32500DD9379 /* WADiscreteLayoutArea.m in Sources */,
 				FF485CCD156A4F4300A6175E /* WAFile+ImplicitBlobFulfillment.m in Sources */,
 				FFCF28BD156B99AF00B70D63 /* WAFile+WAConstants.m in Sources */,
@@ -4409,7 +4396,8 @@
 				FFCF28C0156B99AF00B70D63 /* WAFile+LazyImages.m in Sources */,
 				FF2AC3B9156FD8AC0033ADD6 /* WAStorage.m in Sources */,
 				FF2AC3BA156FD8B20033ADD6 /* WAArticle.m in Sources */,
-				FF069E771576635500141CD9 /* WADataStoreTest.m in Sources */,
+				4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */,
+				4BD77BBD15A2EAC500CA8486 /* WAFacebookTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4688,35 +4676,10 @@
 			name = IRKeychainX;
 			targetProxy = FF460DAF149CFC3B00DB7F0B /* PBXContainerItemProxy */;
 		};
-		FF586BB51519B54100F308E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRDiscreteLayoutManager;
-			targetProxy = FF586BB41519B54100F308E2 /* PBXContainerItemProxy */;
-		};
-		FF586BB71519B54100F308E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRFoundationsTouch;
-			targetProxy = FF586BB61519B54100F308E2 /* PBXContainerItemProxy */;
-		};
-		FF586BB91519B54100F308E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRWebAPIKitTouch;
-			targetProxy = FF586BB81519B54100F308E2 /* PBXContainerItemProxy */;
-		};
-		FF586BBC1519B5A200F308E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = IRRecurrenceMachine;
-			targetProxy = FF586BBB1519B5A200F308E2 /* PBXContainerItemProxy */;
-		};
 		FF586C6F1519B94E00F308E2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JSONKitTouch;
 			targetProxy = FF586C6E1519B94E00F308E2 /* PBXContainerItemProxy */;
-		};
-		FF586C711519B95900F308E2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = JSONKitTouch;
-			targetProxy = FF586C701519B95900F308E2 /* PBXContainerItemProxy */;
 		};
 		FFA53E3514D934C7001E7B6B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4849,6 +4812,10 @@
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -4870,6 +4837,10 @@
 				GCC_PREFIX_HEADER = "wammer-iOS-Tests/wammer-iOS-Tests-Prefix.pch";
 				INFOPLIST_FILE = "wammer-iOS-Tests/wammer-iOS-Tests-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -5087,6 +5058,7 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
+					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
@@ -5113,6 +5085,7 @@
 					"\"$(SRCROOT)/external/TestflightSDK\"",
 					"\"$(SRCROOT)/wammer\"",
 					"\"$(SRCROOT)/external/GoogleAnalyticsSDK\"",
+					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = "wammer-iOS";
 				PROVISIONING_PROFILE = "";
