@@ -7,6 +7,7 @@
 //
 
 #import "WATutorialViewController.h"
+#import "WAAppDelegate_iOS.h"
 
 @interface WATutorialViewController ()
 
@@ -68,4 +69,8 @@ const NSUInteger kNumberOfPages = 5;
 	self.pageControl.currentPage = page;
 }
 
+- (IBAction)enterTimeline:(id)sender {
+	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS *)[UIApplication sharedApplication].delegate;
+	[appDelegate recreateViewHierarchy];
+}
 @end

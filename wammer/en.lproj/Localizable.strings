@@ -412,9 +412,6 @@
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d year";
 
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "4Kf-KB-xV8"; */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
-
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "F8D-Cb-rIK"; */
 "ACTION_SIGN_IN" = "Login";
 

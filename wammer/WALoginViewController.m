@@ -19,6 +19,7 @@
 
 #import "Facebook+Singleton.h"
 #import "WATutorialViewController.h"
+#import "WAAppDelegate_iOS.h"
 
 @interface WALoginViewController () <UITextFieldDelegate, FBSessionDelegate>
 
@@ -278,32 +279,55 @@
 	});
 }
 
+#define kFirstTime @"FirstTime"
+
 - (IBAction)facebookSignInAction:(id)sender {
 
 	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
-	[facebook authorize];
 	
-	// show tutorial here
-	// TODO show tutorial only in first time.
-  #define kFirstTime @"FirstUse"
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSString *firstTime = [defaults objectForKey:kFirstTime];
-	
-	if (firstTime == nil) {
-		[defaults setBool:NO forKey:kFirstTime];
-		[defaults synchronize];
-		WATutorialViewController *tutorialViewController = [[WATutorialViewController alloc]init];
-		[self.navigationController pushViewController:tutorialViewController animated:YES];
+	//Quick guess for firstime user
+	BOOL isFirstTime = YES;
+	if ([[NSUserDefaults standardUserDefaults] objectForKey:kFirstTime]) {
+		isFirstTime = NO;
 	}
 	
-	[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep) {
-
-		// no op here
-		
-	} onFailure:^(NSError *error) {
-		// no op failed
-	}];
+	[facebook authorize];
 	
+	if( isFirstTime ) { // & first time use
+		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kFirstTime];
+		[self performSegueWithIdentifier: @"FirstTimeTutorial" sender: self];
+		void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
+			
+			[WARemoteInterface sharedInterface].userIdentifier = inUserID;
+			[WARemoteInterface sharedInterface].userToken = inUserToken;
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = inUserGroupID;
+			
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				
+				if (self.completionBlock)
+					self.completionBlock(self, nil);
+				
+			});
+			
+		};
+		
+		[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *inToken) {
+			
+			NSString *inUserID = [userRep objectForKey:@"user_id"];
+			NSArray *allGroups = [userRep objectForKey:@"groups"];
+			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+			
+			handleAuthSuccess(inUserID, inToken, groupID);
+			
+		} onFailure:^(NSError *error) {
+			// no op failed
+		}];
+	} else {
+		WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)[UIApplication sharedApplication].delegate;
+		[appDelegate recreateViewHierarchy];
+	}
+	
+	return;
 	
 	self.usernameField.text = nil;
 	self.passwordField.text = nil;

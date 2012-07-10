@@ -14,5 +14,6 @@
 @property (strong, nonatomic) IBOutlet UIView *introductionView;
 @property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (strong, nonatomic) IBOutlet UIButton *startButton;
+- (IBAction)enterTimeline:(id)sender;
 
 @end

@@ -14,4 +14,6 @@
 @property (nonatomic, readwrite, retain) UIWindow *window;
 @property (strong, nonatomic) Facebook *facebook;
 
+- (void) recreateViewHierarchy;
+
 @end

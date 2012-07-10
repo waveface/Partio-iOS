@@ -10,6 +10,6 @@
 
 @interface WARemoteInterface (Facebook)
 
-- (void) signupUserWithFacebookToken:(NSString *) accessToken withOptions: (NSDictionary *)options onSuccess:(void(^)(NSDictionary *userRep)) successBlock onFailure: (void(^)(NSError *error)) failureBlock;
+- (void) signupUserWithFacebookToken:(NSString *) accessToken withOptions: (NSDictionary *)options onSuccess:(void(^)(NSDictionary *userRep, NSString *token)) successBlock onFailure: (void(^)(NSError *error)) failureBlock;
 
 @end

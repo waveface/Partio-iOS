@@ -10,7 +10,7 @@
 
 @implementation WARemoteInterface (Facebook)
 
-- (void)signupUserWithFacebookToken:(NSString *)accessToken withOptions:(NSDictionary *)options onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void)signupUserWithFacebookToken:(NSString *)accessToken withOptions:(NSDictionary *)options onSuccess:(void (^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void (^)(NSError *))failureBlock {
   
   NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
                            @"facebook", @"sns",
@@ -19,13 +19,22 @@
                            @"yes", @"subscribed",
                            @"ZH_TW", @"lang",
                            nil];
-  [self.engine fireAPIRequestNamed:@"auth/signup" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
-    
-		if (successBlock)
-			successBlock([inResponseOrNil valueForKeyPath:@"user"]);
-		
-	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
-
+  [self.engine fireAPIRequestNamed:@"auth/signup"
+										 withArguments:nil
+													 options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil)
+												 validator:WARemoteInterfaceGenericNoErrorValidator()
+										successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+											
+											NSDictionary *userEntity = [[self class] userEntityFromRepresentation:inResponseOrNil];
+											NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
+											
+											if (successBlock) {
+												successBlock(userEntity, incomingToken);
+											}
+											
+										}
+										failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+	
 }
 
 @end

@@ -8,7 +8,6 @@
         <!--Login View Controller-->
         <scene sceneID="DK2-OC-qaX">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Nut-4G-Jl5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="Init" id="cdN-1D-DTN" customClass="WALoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="QFQ-ms-ZLO">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
@@ -18,21 +17,24 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4Kf-KB-xV8">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hasAttributedTitle="NO" lineBreakMode="middleTruncation" id="4Kf-KB-xV8">
                                 <rect key="frame" x="20" y="307" width="280" height="44"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <state key="normal" title="ACTION_SIGN_IN_WITH_FACEBOOK">
+                                <state key="normal">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="selected">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="XEY-Yt-LIh" kind="push" id="hBF-GK-Evx"/>
+                                    <action selector="facebookSignInAction:" destination="cdN-1D-DTN" eventType="touchUpInside" id="ij0-a8-7Oc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="F8D-Cb-rIK">
@@ -80,17 +82,21 @@
                         <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="blackTranslucent"/>
                     </view>
                     <navigationItem key="navigationItem" id="ovk-EO-Ipe"/>
+                    <connections>
+                        <segue destination="XEY-Yt-LIh" kind="push" identifier="FirstTimeTutorial" id="lhO-ze-6xs"/>
+                    </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nut-4G-Jl5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="565" y="507"/>
         </scene>
         <!--Tutorial View Controller-->
         <scene sceneID="oM5-0g-uxc">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aix-al-Pza" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="XEY-Yt-LIh" customClass="WATutorialViewController" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="eyl-c5-hPf"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aix-al-Pza" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1118" y="507"/>
         </scene>
@@ -189,7 +195,6 @@
         <!--Navigation Controller-->
         <scene sceneID="tL3-MP-3K0">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Xf-Ug-8fL" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" navigationBarHidden="YES" id="DOp-VC-4LN" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="OZ3-E1-P5N"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yrd-P9-3vH">
@@ -199,6 +204,7 @@
                         <segue destination="cdN-1D-DTN" kind="relationship" relationship="rootViewController" id="MB0-ve-6Mg"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Xf-Ug-8fL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="68" y="507"/>
         </scene>
@@ -227,6 +233,7 @@
         <class className="WATutorialViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WATutorialViewController.h"/>
             <relationships>
+                <relationship kind="action" name="enterTimeline:"/>
                 <relationship kind="outlet" name="introductionView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
                 <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
