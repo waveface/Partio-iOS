@@ -111,13 +111,13 @@
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
 /* “%@ Comments” */
-"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Comments";
+"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Notes";
 
 /* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Comment";
+"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Notes";
 
 /* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Comments";
+"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Notes";
 
 /* No comment provided by engineer. */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
@@ -383,7 +383,7 @@
 "ACTION_SEND" = "Stream!";
 
 /* Class = "IBUILabel"; text = "COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE"; ObjectID = "35"; */
-"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Comments";
+"COMMENTS_VIEW_CONTROLLER_NO_COMMENTS_TITLE" = "No Notes";
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_TITLE"; ObjectID = "25"; */
 "COMPOSITION_NO_PHOTO_REMINDER_TITLE" = "To add a photo, press the camera icon.";
