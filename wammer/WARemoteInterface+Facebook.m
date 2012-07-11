@@ -11,13 +11,20 @@
 @implementation WARemoteInterface (Facebook)
 
 - (void)signupUserWithFacebookToken:(NSString *)accessToken withOptions:(NSDictionary *)options onSuccess:(void (^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void (^)(NSError *))failureBlock {
+
+	NSString *preferredLanguage = @"en";
+	
+	NSArray *preferredLanguages = [NSLocale preferredLanguages];
+	if ([preferredLanguages count] > 0 && [[preferredLanguages objectAtIndex:0] isEqualToString:@"zh-Hant"]) {
+		preferredLanguage = @"zh_tw";
+	}
   
   NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
                            @"facebook", @"sns",
                            accessToken, @"auth_token",
                            @"yes", @"sns_connect",
                            @"yes", @"subscribed",
-                           @"ZH_TW", @"lang",
+                           preferredLanguage, @"lang",
                            nil];
   [self.engine fireAPIRequestNamed:@"auth/signup"
 										 withArguments:nil

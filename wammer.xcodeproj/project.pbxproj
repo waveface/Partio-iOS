@@ -34,6 +34,8 @@
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660314EE2C0D003398AF /* DCStatusBarOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FF14EE2C0D003398AF /* DCStatusBarOverlay.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B2560FB15A7C26600424EF6 /* CoverBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B2560FA15A7C26600424EF6 /* CoverBackground@2x.png */; };
+		4B284E5415AD244200D138C5 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
+		4B284E5515AD24C500D138C5 /* WATests_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */; };
 		4B31BA9F1591A74C00DC1A70 /* AGImagePickerController+Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA881591A74C00DC1A70 /* AGImagePickerController+Constants.m */; };
 		4B31BAA01591A74C00DC1A70 /* AGImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA8A1591A74C00DC1A70 /* AGImagePickerController.m */; };
 		4B31BAA11591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA8B1591A74C00DC1A70 /* AGIPC-Checkmark-iPad.png */; };
@@ -81,7 +83,6 @@
 		4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 4B8CA97214BBE7BA006E06BB /* InfoPlist.strings */; };
 		4B8DFB7214FDFC34000B41C5 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */; };
 		4B8DFB7414FDFC3D000B41C5 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */; };
-		4BB94A6515ABD79C00796201 /* TutorialWelcome@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB94A6415ABD79C00796201 /* TutorialWelcome@2x.png */; };
 		4BB94A8415AC245700796201 /* TutorialDesktop.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB94A7815AC245700796201 /* TutorialDesktop.png */; };
 		4BB94A8515AC245700796201 /* TutorialDesktop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB94A7A15AC245700796201 /* TutorialDesktop@2x.png */; };
 		4BB94A8615AC245700796201 /* TutorialMoment.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BB94A7C15AC245700796201 /* TutorialMoment.png */; };
@@ -117,7 +118,6 @@
 		FF0528B11508D0FE00F585D7 /* WALocalizedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B01508D0FE00F585D7 /* WALocalizedButton.m */; };
 		FF0528B41508D1A100F585D7 /* WALocalizedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */; };
 		FF06363914B346CB00E7AF78 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF06363814B346CB00E7AF78 /* QuartzCore.framework */; };
-		FF069E771576635500141CD9 /* WADataStoreTest.m in Sources */ = {isa = PBXBuildFile; fileRef = FF54C5151520947100301887 /* WADataStoreTest.m */; };
 		FF09C0E015A2DD7D00AEDDAE /* libIRSlidingSplitViewController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF09C0DF15A2DD6F00AEDDAE /* libIRSlidingSplitViewController.a */; };
 		FF09C0EE15A2E83800AEDDAE /* WASlidingSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF09C0ED15A2E83800AEDDAE /* WASlidingSplitViewController.m */; };
 		FF0AC0C4149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AC0C3149F734600AA5611 /* WAArticleViewController_FullScreen_Plaintext.m */; };
@@ -1287,7 +1287,6 @@
 		4B8DFB7114FDFC34000B41C5 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		4B8DFB7314FDFC3D000B41C5 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		4B989DC1141F395D00DD13C9 /* WAPostViewCellPhone-WebLink.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-WebLink.xib"; sourceTree = "<group>"; };
-		4BB94A6415ABD79C00796201 /* TutorialWelcome@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "TutorialWelcome@2x.png"; path = "Resources/Tutorial/TutorialWelcome@2x.png"; sourceTree = "<group>"; };
 		4BB94A7915AC245700796201 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/TutorialDesktop.png; sourceTree = "<group>"; };
 		4BB94A7B15AC245700796201 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = "en.lproj/TutorialDesktop@2x.png"; sourceTree = "<group>"; };
 		4BB94A7D15AC245700796201 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/TutorialMoment.png; sourceTree = "<group>"; };
@@ -3058,7 +3057,6 @@
 				4B8A7E8F15AADA8D0062DB52 /* TutorialButtonPressed.png */,
 				4BF3655915A564A600E40E42 /* TutorialPage2@2x.png */,
 				4BF3655A15A564A600E40E42 /* TutorialPage3@2x.png */,
-				4BB94A6415ABD79C00796201 /* TutorialWelcome@2x.png */,
 				FFA1F2FC159C434B003000AD /* WAActionGlyph.png */,
 				FFA1F2FD159C434B003000AD /* WAActionGlyph@2x.png */,
 				FFA1F2FE159C434B003000AD /* WAArticleStackElementDropdownTag.png */,
@@ -4284,7 +4282,6 @@
 				4B0E57F515AA77A7003F9D24 /* FacebookImportConfirmation@2x.png in Resources */,
 				4B8A7E9015AADA8D0062DB52 /* TutorialButton.png in Resources */,
 				4B8A7E9115AADA8D0062DB52 /* TutorialButtonPressed.png in Resources */,
-				4BB94A6515ABD79C00796201 /* TutorialWelcome@2x.png in Resources */,
 				4BB94A8415AC245700796201 /* TutorialDesktop.png in Resources */,
 				4BB94A8515AC245700796201 /* TutorialDesktop@2x.png in Resources */,
 				4BB94A8615AC245700796201 /* TutorialMoment.png in Resources */,
@@ -4483,6 +4480,8 @@
 				4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */,
 				4BD77BBD15A2EAC500CA8486 /* WAFacebookTests.m in Sources */,
 				4B1C5CE215A506F1009EEF0A /* Facebook+Singleton.m in Sources */,
+				4B284E5415AD244200D138C5 /* WAFile.m in Sources */,
+				4B284E5515AD24C500D138C5 /* WATests_iOS.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -329,6 +329,7 @@
 		
 	} onFailure:^(NSError *error) {
 		// no op failed
+		isFirstTime = YES;
 	}];
 	
 	
