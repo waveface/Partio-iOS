@@ -79,6 +79,8 @@
 		4B733BB514987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA014987A81005CAE8D /* IASKPSTextFieldSpecifierViewCell.xib */; };
 		4B733BB614987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA114987A81005CAE8D /* IASKPSToggleSwitchSpecifierViewCell.xib */; };
 		4B733BB714987A81005CAE8D /* IASKSpecifierValuesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4B733BA214987A81005CAE8D /* IASKSpecifierValuesView.xib */; };
+		4B80892115AD39FC008301A9 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4B284F7B15AD2AEF00D138C5 /* FBDialog.bundle */; };
+		4B80892215AD3A02008301A9 /* libfacebook_ios_sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B284F8115AD2AEF00D138C5 /* libfacebook_ios_sdk.a */; };
 		4B8A7E9015AADA8D0062DB52 /* TutorialButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8A7E8E15AADA8D0062DB52 /* TutorialButton.png */; };
 		4B8A7E9115AADA8D0062DB52 /* TutorialButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B8A7E8F15AADA8D0062DB52 /* TutorialButtonPressed.png */; };
 		4B8CA96A14BBE7BA006E06BB /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8CA96914BBE7BA006E06BB /* SenTestingKit.framework */; };
@@ -2040,6 +2042,7 @@
 				FF24B4FC1552B31E00DD9379 /* libsqlite3.0.dylib in Frameworks */,
 				4BD77BBA15A2C8B300CA8486 /* libxml2.dylib in Frameworks */,
 				FF24B4FD1552B31E00DD9379 /* libz.dylib in Frameworks */,
+				4B80892215AD3A02008301A9 /* libfacebook_ios_sdk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3932,6 +3935,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */,
+				4B80892115AD39FC008301A9 /* FBDialog.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4962,6 +4966,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
+					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
@@ -4987,6 +4992,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/external/Facebook/lib/facebook-ios-sdk\"",
+					"\"$(SRCROOT)/wammer/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
