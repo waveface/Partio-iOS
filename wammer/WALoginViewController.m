@@ -17,8 +17,11 @@
 #import "IRAction.h"
 #import "IRAlertView.h"
 
+#import "Facebook+Singleton.h"
+#import "WATutorialViewController.h"
+#import "WAAppDelegate_iOS.h"
 
-@interface WALoginViewController () <UITextFieldDelegate>
+@interface WALoginViewController () <UITextFieldDelegate, FBSessionDelegate>
 
 - (void)localize:(UIView *) view;
 
@@ -276,36 +279,96 @@
 	});
 }
 
+#define kFirstTime @"FirstTime"
+
 - (IBAction)facebookSignInAction:(id)sender {
+
+	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
+	
+	//Quick guess for firstime user
+	BOOL __block isFirstTime = NO;
+	
+	// wait for user status information
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	busyBezel.caption = NSLocalizedString(@"ACTION_WAITING_FOR_FACEBOOK", @"Bezel showed in Login view for Facebook Authentication");
+	
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	self.view.userInteractionEnabled = NO;
+	
+	[facebook authorize];
+	
+	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
+		
+		[WARemoteInterface sharedInterface].userIdentifier = inUserID;
+		[WARemoteInterface sharedInterface].userToken = inUserToken;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = inUserGroupID;
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
+			
+			if (self.completionBlock)
+				self.completionBlock(self, nil);
+				
+				self.view.userInteractionEnabled = YES;
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			
+		});
+		
+	};
+	
+	[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *inToken) {
+		
+		NSString *inUserID = [userRep objectForKey:@"user_id"];
+		NSArray *allGroups = [userRep objectForKey:@"groups"];
+		NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+		
+		if ([@"created" isEqualToString: (NSString *)[userRep objectForKey:@"state"] ]){
+			isFirstTime = YES;
+		}
+		
+		handleAuthSuccess(inUserID, inToken, groupID);
+		
+	} onFailure:^(NSError *error) {
+		// no op failed
+		isFirstTime = YES;
+	}];
+	
+	
+	if( isFirstTime ) { // show tutorial
+		[self performSegueWithIdentifier: @"FirstTimeTutorial" sender: self];
+	} else {
+		WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)[UIApplication sharedApplication].delegate;
+		[appDelegate recreateViewHierarchy];
+	}
+	
+	return;
 	
 	self.usernameField.text = nil;
 	self.passwordField.text = nil;
 
-	__weak WALoginViewController *wSelf = self;
-	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
-		
-			if (error) {
-				
-				[wSelf presentError:error completion:^{
-				
-				[wSelf.navigationController popToViewController:wSelf animated:YES];
-				}];
-				
-				return;
-				
-			}
-			
-      wSelf.username = vc.username;
-      wSelf.password = vc.password;
-      wSelf.token = vc.token;
-      wSelf.userID = vc.userID;
-      wSelf.performsAuthenticationOnViewDidAppear = YES;
-
-      [wSelf.navigationController popToViewController:wSelf animated:YES];
-			
-		}];
-		
-		[self.navigationController pushViewController:authRequestVC animated:YES];
+//	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
+//		
+//			if (error) {
+//				
+//				[wSelf presentError:error completion:^{
+//				
+//				[wSelf.navigationController popToViewController:wSelf animated:YES];
+//				}];
+//				
+//				return;
+//				
+//			}
+//			
+//      wSelf.username = vc.username;
+//      wSelf.password = vc.password;
+//      wSelf.token = vc.token;
+//      wSelf.userID = vc.userID;
+//      wSelf.performsAuthenticationOnViewDidAppear = YES;
+//
+//      [wSelf.navigationController popToViewController:wSelf animated:YES];
+//			
+//		}];
+//		
+//		[self.navigationController pushViewController:authRequestVC animated:YES];
 		
 }
 
