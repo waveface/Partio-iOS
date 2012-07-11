@@ -746,7 +746,7 @@ enum {
 
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
-	CGFloat minWrappedViewHeight = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ? 384 : CGRectGetHeight(aStackView.bounds);
+	CGFloat minWrappedViewHeight = MAX(16, ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) ?  384.0f : 16.0f);
 	
 	if ([[self wrappedView] isDescendantOfView:anElement])
 		return (CGSize){ CGRectGetWidth(aStackView.bounds), minWrappedViewHeight };	//	Stretchable

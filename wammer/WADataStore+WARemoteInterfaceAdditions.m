@@ -102,7 +102,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 	
 	__weak WADataStore *wSelf = self;
 	
-	NSManagedObjectContext *context = [self defaultAutoUpdatedMOC];	//	Sigh
+	NSManagedObjectContext *context = [self disposableMOC];	//	Sigh
 	WAArticle *article = (WAArticle *)[context irManagedObjectForURI:anArticleURI];
 	
 	[[wSelf articlesCurrentlyBeingUpdated] addObject:anArticleURI];
@@ -137,8 +137,6 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 	
 		dispatch_async(dispatch_get_main_queue(), ^{
 					
-			NSCParameterAssert([NSThread isMainThread]);
-		
 			if (usesBezels) {
 				
 				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
@@ -160,9 +158,13 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 		
 	};
 	
-	[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
-		
-		handleResult(didFinish, error);
+	[context performBlock:^ {
+	
+		[article synchronizeWithCompletion:^(BOOL didFinish, NSError *error) {
+			
+			handleResult(didFinish, error);
+			
+		}];
 		
 	}];
 

@@ -73,3 +73,6 @@
 [submodule "external/Facebook"]
 	path = external/Facebook
 	url = git@github.com:waveface/facebook-ios-sdk.git
+[submodule "external/IRSlidingSplitViewController"]
+	path = external/IRSlidingSplitViewController
+	url = git://github.com/iridia/IRSlidingSplitViewController.git

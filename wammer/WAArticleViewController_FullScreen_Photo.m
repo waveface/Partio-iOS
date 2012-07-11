@@ -18,6 +18,8 @@
 
 #import "WAArticle.h"
 
+#import "WAAppearance.h"
+
 
 @interface WAArticleViewController_FullScreen_Photo () <AQGridViewDelegate, AQGridViewDataSource, NSFetchedResultsControllerDelegate>
 
@@ -61,20 +63,17 @@
 	UIView *gridViewWrapper = [[UIView alloc] initWithFrame:self.gridView.bounds];
 	gridViewWrapper.clipsToBounds = YES;
 	
-	CGFloat const kHeight = 4.0f;
-	CGFloat const kStartingAlpha = 0.35f;
-	
-	IRGradientView *shadowView = [IRGradientView new];
-	shadowView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-	shadowView.frame = IRGravitize(gridViewWrapper.bounds, (CGSize){
-		CGRectGetWidth(gridViewWrapper.bounds),
-		kHeight
-	}, kCAGravityTop);
-	
-	[shadowView setLinearGradientFromColor:[UIColor colorWithWhite:0.0f alpha:kStartingAlpha] anchor:irTop toColor:[UIColor colorWithWhite:0.0f alpha:0.0f] anchor:irBottom];
-	
 	[gridViewWrapper addSubview:self.gridView];
-	[gridViewWrapper addSubview:shadowView];
+	
+	UIView *gridBackgroundView = WAStandardArticleStackCellCenterBackgroundView();
+	gridBackgroundView.frame = gridViewWrapper.bounds;
+	gridBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
+	[gridViewWrapper addSubview:gridBackgroundView];
+	[gridViewWrapper sendSubviewToBack:gridBackgroundView];
+	
+	gridViewWrapper.clipsToBounds = NO;
+	self.gridView.clipsToBounds = NO;
+	
 	[allStackElements addObject:gridViewWrapper];
 	
 	[self.stackView layoutSubviews];
@@ -94,42 +93,13 @@
 
 	[super viewWillAppear:animated];
 	
-	switch ([UIDevice currentDevice].userInterfaceIdiom) {
-	
-		case UIUserInterfaceIdiomPad: {
-	
-			if ([UIViewController respondsToSelector:@selector(attemptRotationToDeviceOrientation)])
-				[UIViewController performSelector:@selector(attemptRotationToDeviceOrientation)];
-				
-			for (UIWindow *aWindow in [UIApplication sharedApplication].windows) {
-			
-				UIViewController *rootVC = aWindow.rootViewController;
-				if ([rootVC isViewLoaded])
-					[rootVC.view layoutSubviews];
-				
-				UINavigationController *rootNavC = [rootVC isKindOfClass:[UINavigationController class]] ? (UINavigationController *)rootVC : nil;
-				if (rootNavC) {
-					BOOL navBarHidden = rootNavC.navigationBarHidden;
-					[rootNavC setNavigationBarHidden:YES animated:NO];
-					[rootNavC setNavigationBarHidden:NO animated:NO];
-					[rootNavC setNavigationBarHidden:YES animated:NO];
-					[rootNavC setNavigationBarHidden:navBarHidden animated:NO];
-				}
-			
-			}
-			
-			break;
-		
-		}
-		
-		case UIUserInterfaceIdiomPhone: {
-			break;
-		}
-	
-	}
-	
 	[self.stackView layoutSubviews];
 	[self.gridView reloadData];
+	
+	self.gridView.contentOffset = (CGPoint){
+		-1 * self.gridView.contentInset.left,
+		-1 * self.gridView.contentInset.top
+	};
 	
 }
 
@@ -370,10 +340,29 @@
 - (CGSize) sizeThatFitsElement:(UIView *)anElement inStackView:(IRStackView *)aStackView {
 
 	if ((anElement == _gridView) || [_gridView isDescendantOfView:anElement]) {
-		return (CGSize){
-			CGRectGetWidth(aStackView.bounds), 
-			128	//	Stretchable
-		};
+	
+		switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+			case UIUserInterfaceIdiomPad: {
+			
+				return (CGSize){
+					CGRectGetWidth(aStackView.bounds),
+					1.0f
+				};
+			
+			}
+		
+			case UIUserInterfaceIdiomPhone: {
+		
+				return (CGSize){
+					CGRectGetWidth(aStackView.bounds),
+					(MIN(_gridView.numberOfRows, 2) * _gridView.gridCellSize.height) + _gridView.contentInset.top + _gridView.contentInset.bottom
+				};
+			
+			}
+			
+		}
+		
 	}
 	
 	return [super sizeThatFitsElement:anElement inStackView:aStackView];

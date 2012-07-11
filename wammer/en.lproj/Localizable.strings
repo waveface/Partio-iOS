@@ -134,15 +134,6 @@
 /* Title for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_TITLE" = "Pick Photo";
 
-/* “%@ Comments” */
-"COMMENTS_COUNT_MANY_FORMAT_STRING" = "%@ Notes";
-
-/* “%@ Comment” */
-"COMMENTS_COUNT_ONE_FORMAT_STRING" = "%@ Note";
-
-/* “%@ Comment” or “No Comment” */
-"COMMENTS_COUNT_ZERO_FORMAT_STRING" = "No Notes";
-
 /* add photo button in composition view */
 "COMPOSITION_MANY_PHOTOS_BUTTON_CAPTION_FORMAT" = "%i Photos";
 
@@ -372,6 +363,9 @@
 
 /* Title on the text stack more / less toggle button for “More” */
 "TEXT_ELEMENT_TOGGLE_MORE_TITLE" = "More";
+
+/* Alert on no location service enabled when open photo library */
+"TURN_ON_LOCATION_SERVICE" = "Turn On Location Services to Allow Stream to Access Your Photo Library";
 
 /* Settings for User popover */
 "USER_INFO_CONTROLLER_TITLE" = "User";

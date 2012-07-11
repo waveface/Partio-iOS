@@ -27,7 +27,6 @@
 #import "WADataStore.h"
 #import "WAArticle+WARemoteInterfaceEntitySyncing.h"
 
-#import "WAGestureWindow.h"
 #import "WAButton.h"
 
 #import "WAArticle+DiscreteLayoutAdditions.h"

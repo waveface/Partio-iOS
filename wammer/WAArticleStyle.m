@@ -19,7 +19,7 @@ WAArticleStyle WASuggestedStyleForArticle (WAArticle *anArticle) {
 			return WAPreviewArticleStyle;
 			
 	for (WAFile *aFile in anArticle.files)
-		if (aFile.resourceURL || aFile.thumbnailURL || [aFile.remoteResourceType isEqualToString:@"image"])
+		if (aFile.resourceURL || aFile.resourceFilePath || aFile.thumbnailURL || aFile.thumbnailFilePath || aFile.largeThumbnailURL || aFile.largeThumbnailFilePath || aFile.smallThumbnailURL || aFile.smallThumbnailFilePath || [aFile.remoteResourceType isEqualToString:@"image"])
 			return WAPhotosArticleStyle;
 	
 	return WAPlaintextArticleStyle;

@@ -35,20 +35,55 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
+	__block AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
+		
 		NSLog(@"Failed. Error: %@", error);
-		if( error == nil ) {
-			[wSelf dismissModalViewControllerAnimated:YES];
+		
+		if (!error) {
+			
+			[wSelf dismissImagePickerController:imagePickerController animated:YES];
+			imagePickerController = nil;
+			
+		} else if ([[error domain] isEqualToString:ALAssetsLibraryErrorDomain] && error.code == ALAssetsLibraryAccessUserDeniedError) {
+			
+			NSCParameterAssert(![NSThread isMainThread]);
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+
+				NSCParameterAssert([NSThread isMainThread]);
+				
+				NSString *title = NSLocalizedString(@"TURN_ON_LOCATION_SERVICE", @"Alert on no location service enabled when open photo library");
+				IRAction *okayAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", nil) block:^{
+					
+					[wSelf dismissImagePickerController:imagePickerController animated:YES];
+					imagePickerController = nil;
+					
+				}];
+				
+				[[IRAlertView alertViewWithTitle:nil message:title cancelAction:nil otherActions:[NSArray arrayWithObjects:okayAction, nil]] show];
+
+			});
+			
 		}
+		
 	} andSuccessBlock:^(NSArray *info) {
-		[wSelf handleSelectionWithArray:info];
-		[wSelf dismissModalViewControllerAnimated:YES];
+		
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[wSelf.managedObjectContext save:nil];
+			[wSelf handleSelectionWithArray:info];
+			[wSelf dismissImagePickerController:imagePickerController animated:YES];
+			imagePickerController = nil;
+		
+		});
 
 	}];
 	
+	[imagePickerController setShouldShowSavedPhotosOnTop:YES];
+
 	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
-		[wSelf presentModalViewController:imagePickerController animated:YES];
+		[wSelf presentImagePickerController:imagePickerController sender:sender animated:YES];
 	
 	}];
 
@@ -58,9 +93,10 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	__block IRImagePickerController *nrImagePickerController = [IRImagePickerController photoLibraryPickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
-		[wSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[wSelf.managedObjectContext save:nil];
+		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
 		[wSelf dismissImagePickerController:nrImagePickerController animated:YES];
 		
 		nrImagePickerController = nil;
@@ -73,7 +109,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) presentImagePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
+- (void) presentImagePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
@@ -84,13 +120,13 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 		
 	} copy];
 	
-	[topNonModalVC(self) presentModalViewController:[self newImagePickerController] animated:animated];
+	[topNonModalVC(self) presentModalViewController:(controller ? controller : [self newImagePickerController]) animated:animated];
 	
 	topNonModalVC = nil;
 
 }
 
-- (void) dismissImagePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+- (void) dismissImagePickerController:(UIViewController *)controller animated:(BOOL)animated {
 
 	[controller dismissModalViewControllerAnimated:animated];
 
@@ -116,9 +152,10 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 	__weak WACompositionViewController *wSelf = self;
 	
-	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(NSURL *selectedAssetURI, ALAsset *representedAsset) {
+	__block IRImagePickerController *nrPickerController = [IRImagePickerController cameraImageCapturePickerWithCompletionBlock:^(UIImage *image, NSURL *selectedAssetURI, ALAsset *representedAsset) {
 		
-		[wSelf handleIncomingSelectedAssetURI:selectedAssetURI representedAsset:representedAsset];
+		[wSelf.managedObjectContext save:nil];
+		[wSelf handleIncomingSelectedAssetImage:image representedAsset:representedAsset];
 		[wSelf dismissCameraCapturePickerController:nrPickerController animated:YES];
 		
 		nrPickerController = nil;
@@ -132,7 +169,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) presentCameraCapturePickerController:(IRImagePickerController *)controller sender:(id)sender animated:(BOOL)animated {
+- (void) presentCameraCapturePickerController:(UIViewController *)controller sender:(id)sender animated:(BOOL)animated {
 
 	__block UIViewController * (^topNonModalVC)(UIViewController *) = [^ (UIViewController *aVC) {
 		
@@ -149,67 +186,61 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 }
 
-- (void) dismissCameraCapturePickerController:(IRImagePickerController *)controller animated:(BOOL)animated {
+- (void) dismissCameraCapturePickerController:(UIViewController *)controller animated:(BOOL)animated {
 
 	[controller dismissModalViewControllerAnimated:animated];
 
 }
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
-	for (ALAsset *asset in selectedAssets) {
-		[self handleIncomingSelectedAssetURI:nil representedAsset:asset];
-	}
+	
+	for (ALAsset *asset in selectedAssets)
+		[self handleIncomingSelectedAssetImage:nil representedAsset:asset];
+	
 }
 
-- (void) handleIncomingSelectedAssetURI:(NSURL *)selectedAssetURI representedAsset:(ALAsset *)representedAsset {
+- (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
 
-	if (representedAsset) {
+	if (image || representedAsset) {
 		
-		NSLog(@"URI: %@", [[representedAsset defaultRepresentation] url]);
+		NSManagedObjectContext *context = self.managedObjectContext;
+		NSManagedObjectID *articleID = [self.article objectID];
+		NSCParameterAssert(![articleID isTemporaryID]);
 		
-	}
-	
-	if (selectedAssetURI || representedAsset) {
-	
+		NSURL *articleURI = [articleID URIRepresentation];
+		
 		[self.managedObjectContext performBlock:^{
 		
-			WAArticle *capturedArticle = self.article;
-			WAFile *stitchedFile = (WAFile *)[WAFile objectInsertingIntoContext:self.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
-			
-			NSCParameterAssert(capturedArticle);
+			WAArticle *article = (WAArticle *)[context irManagedObjectForURI:articleURI];
+			NSCParameterAssert(article);
+						
+			WAFile *file = (WAFile *)[WAFile objectInsertingIntoContext:article.managedObjectContext withRemoteDictionary:[NSDictionary dictionary]];
 			
 			NSError *error = nil;
-			if (![stitchedFile.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:stitchedFile, capturedArticle, nil] error:&error])
+			if (![file.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObjects:file, article, nil] error:&error])
 				NSLog(@"Error obtaining permanent object ID: %@", error);
 
-			[capturedArticle willChangeValueForKey:@"files"];
-			[[capturedArticle mutableOrderedSetValueForKey:@"files"] addObject:stitchedFile];
-			[capturedArticle didChangeValueForKey:@"files"];
+			[article willChangeValueForKey:@"files"];
+			[[article mutableOrderedSetValueForKey:@"files"] addObject:file];
+			[article didChangeValueForKey:@"files"];
 			
-			NSURL *finalFileURL = nil;
-			
-			if (selectedAssetURI) {
-				finalFileURL = [[WADataStore defaultStore] persistentFileURLForFileAtURL:selectedAssetURI];
-				NSCParameterAssert([finalFileURL pathExtension]);
+			if (image) {
+				NSData *imageData = UIImageJPEGRepresentation(image, 1.0f);
+				file.resourceFilePath = [[[WADataStore defaultStore] persistentFileURLForData:imageData extension:@"jpeg"] path];
 			}
 			
 			if (representedAsset) {
-				UIImageOrientation orientation = [[representedAsset valueForProperty:ALAssetPropertyOrientation] intValue];
-				CGFloat scale = 1.0;
-				UIImage *image = [UIImage imageWithCGImage:[[representedAsset defaultRepresentation] fullResolutionImage] scale:scale orientation:orientation];
-				
-				NSData *fullResolutionData = UIImageJPEGRepresentation(image, 0.8);
-				
-				finalFileURL = [[WADataStore defaultStore]
-												persistentFileURLForData:fullResolutionData 
-												extension:[[representedAsset defaultRepresentation] UTI]];
-				image = nil;
-				fullResolutionData = nil;
+				file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			}
-						
-			stitchedFile.resourceType = (NSString *)kUTTypeImage;
-			stitchedFile.resourceFilePath = [finalFileURL path];
-		
+
+			file.resourceType = (NSString *)kUTTypeImage;
+			
+			article.dirty = (id)kCFBooleanTrue;
+			
+			NSError *savingError = nil;
+			if (![context save:&savingError])
+				NSLog(@"Error saving: %s %@", __PRETTY_FUNCTION__, savingError);
+			
 		}];
 		
 	} else {

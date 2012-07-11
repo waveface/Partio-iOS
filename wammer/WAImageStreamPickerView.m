@@ -315,7 +315,7 @@ static NSString * kWAImageStreamPickerComponentThumbnail = @"WAImageStreamPicker
 	}];
 	
 	
-	if (selectedItemIndex != NSNotFound) {
+	if ((selectedItemIndex != NSNotFound) && ([self.items count] > selectedItemIndex)) {
 	
 		id item = [self.items objectAtIndex:selectedItemIndex];
 		UIImage *thumbnailImage = [delegate thumbnailForItem:item inImageStreamPickerView:self];

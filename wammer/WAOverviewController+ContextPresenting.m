@@ -12,9 +12,9 @@
 #import "WAFauxRootNavigationController.h"
 #import "WANavigationBar.h"
 #import "WAButton.h"
-#import "WAGestureWindow.h"
 #import "IRTransparentToolbar.h"
 #import "WAStackedArticleViewController.h"
+#import "IRSlidingSplitViewController.h"
 
 NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 
@@ -42,10 +42,12 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 }
 
 - (WAArticleViewController *) presentDetailedContextForArticle:(WAArticle *)article {
+
+	__weak IRSlidingSplitViewController *rootSSVC = (IRSlidingSplitViewController *)self.navigationController.parentViewController;
+	NSCParameterAssert([rootSSVC isKindOfClass:[IRSlidingSplitViewController class]]);
 	
-	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-	
-	__weak WAOverviewController *wSelf = self;
+	UIApplication * const app = [UIApplication sharedApplication];
+	[app beginIgnoringInteractionEvents];
 	
 	self.presentedArticle = article;
 	
@@ -54,84 +56,65 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 	
 	UINavigationController *enqueuedNavController = [self wrappingNavigationControllerForContextViewController:shownArticleVC];
 	
-	UIWindow * const containingWindow = self.navigationController.view.window;
-	CGAffineTransform const containingWindowTransform = containingWindow.rootViewController.view.transform;
-	CGRect const containingWindowBounds = CGRectApplyAffineTransform(containingWindow.bounds, containingWindowTransform);
-	
-	UIView *containerView = [[UIView alloc] initWithFrame:containingWindowBounds];
-	containerView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
-	containerView.center = irCGRectAnchor(containingWindow.bounds, irCenter, YES);
-	containerView.transform = containingWindowTransform;
-	
-	UIWindow *currentKeyWindow = [UIApplication sharedApplication].keyWindow;
-	UIColor *backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-			
-	UIScreen *usedScreen = [UIApplication sharedApplication].keyWindow.screen;
-	if (!usedScreen)
-		usedScreen = [UIScreen mainScreen];
-	
-	__block WAGestureWindow *containerWindow = [[WAGestureWindow alloc] initWithFrame:usedScreen.bounds];
-	containerWindow.backgroundColor = backgroundColor;
-	containerWindow.opaque = NO;
-	containerWindow.rootViewController = enqueuedNavController;
-	
-	__weak WAArticleViewController *wShownArticleVC = shownArticleVC;
-	
-	containerWindow.onTap = ^ {
-		
-		[wSelf dismissArticleContextViewController:wShownArticleVC];
-		containerWindow.onTap = nil;
-		
-	};
-	
-	
-	containerWindow.onGestureRecognizeShouldReceiveTouch = ^ (UIGestureRecognizer *recognizer, UITouch *touch) {
-	
-		if (wShownArticleVC.modalViewController)
-			return NO;
-		
-		UINavigationController *navC = wShownArticleVC.navigationController;
-		
-		if (navC) {
-		
-			if (navC.modalViewController)
-				return NO;
-		
-			if (!navC.navigationBarHidden)
-			if (CGRectContainsPoint(navC.navigationBar.bounds, [touch locationInView:navC.navigationBar]))
-				return NO;
-			
-			if (!navC.toolbarHidden)
-			if (CGRectContainsPoint(navC.toolbar.bounds, [touch locationInView:navC.toolbar]))
-				return NO;
-		
-		}
-		
-		CGPoint locationInShownArticleVC = [touch locationInView:wShownArticleVC.view];
-		
-		if ([wShownArticleVC isKindOfClass:[WAStackedArticleViewController class]])
-			return (BOOL)![(WAStackedArticleViewController *)wShownArticleVC isPointInsideInterfaceRect:locationInShownArticleVC];
-		
-		return NO;
-	
-	};
-	
-	[enqueuedNavController setNavigationBarHidden:YES animated:NO];
-	
-	__weak UINavigationController *wEnqueuedNavController = enqueuedNavController;
-	__weak WAStackedArticleViewController *wShownStackedArticleVC = [shownArticleVC isKindOfClass:[WAStackedArticleViewController class]] ? (WAStackedArticleViewController *)shownArticleVC : nil;
+	[rootSSVC setShowingMasterViewController:YES animated:YES completion:^(BOOL didFinish) {
 
-	wShownStackedArticleVC.onViewDidLoad = ^ (WAArticleViewController *self, UIView *ownView) {
+		[rootSSVC setDetailViewController:enqueuedNavController animated:NO completion:^(BOOL didFinish) {
+			
+			[rootSSVC setShowingMasterViewController:NO animated:YES completion:^(BOOL didFinish) {
+			
+				[app endIgnoringInteractionEvents];
+				
+			}];
+			
+		}];
+		
+	}];
+	
+	return shownArticleVC;
+
+}
+
+- (void) dismissArticleContextViewController:(WAArticleViewController *)controller {
+
+	__weak IRSlidingSplitViewController *rootSSVC = (IRSlidingSplitViewController *)self.navigationController.parentViewController;
+	NSCParameterAssert([rootSSVC isKindOfClass:[IRSlidingSplitViewController class]]);
+	
+	UIApplication * const app = [UIApplication sharedApplication];
+	[app beginIgnoringInteractionEvents];
+	
+	[rootSSVC setShowingMasterViewController:YES animated:YES completion:^(BOOL didFinish) {
+	
+		[rootSSVC setDetailViewController:nil animated:NO completion:^(BOOL didFinish) {
+		
+			[app endIgnoringInteractionEvents];
+			
+		}];
+		
+	}];
+
+}
+
+- (WAArticleViewController *) newContextViewControllerForArticle:(WAArticle *)article {
+
+	WAArticleStyle style = WAFullScreenArticleStyle|WASuggestedStyleForArticle(article);
+	WAArticleViewController *articleVC	= [WAArticleViewController controllerForArticle:article style:style];
+	articleVC.hostingViewController = self;
+	
+	__weak WAOverviewController *wSelf = self;
+	__weak WAArticleViewController *wArticleVC = articleVC;
+	__weak WAStackedArticleViewController *wStackedArticleVC = [articleVC isKindOfClass:[WAStackedArticleViewController class]] ? (WAStackedArticleViewController *)articleVC : nil;
+	
+	wStackedArticleVC.onViewDidLoad = (void(^)(WAArticleViewController *, UIView *)) ^ (WAStackedArticleViewController *self, UIView *ownView) {
 	
 		IRCATransact(^{
 		
-			wShownArticleVC.view.backgroundColor = [UIColor clearColor];
-			[wEnqueuedNavController.view layoutSubviews];
+			self.view.backgroundColor = [UIColor clearColor];
+			[self.navigationController.view layoutSubviews];
 			
-			CGRect interfaceRect = wShownArticleVC.view.bounds;
+			CGRect interfaceRect = self.view.bounds;
 			interfaceRect = CGRectInset(interfaceRect, 24.0f, 0.0f);
 			
-			[wShownStackedArticleVC handlePreferredInterfaceRect:interfaceRect];
+			[self handlePreferredInterfaceRect:interfaceRect];
 			
 			__block void (^poke)(UIView *) = ^ (UIView *aView) {
 			
@@ -142,24 +125,24 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 				
 			};
 			
-			poke(wShownArticleVC.view);
+			poke(self.view);
 			poke = nil;
 		
 		});							
 	
 	};
 	
-	if ([wShownStackedArticleVC isViewLoaded])
-		wShownStackedArticleVC.onViewDidLoad(wShownStackedArticleVC, wShownStackedArticleVC.view);
+	if ([wStackedArticleVC isViewLoaded])
+		wStackedArticleVC.onViewDidLoad(wStackedArticleVC, wStackedArticleVC.view);
 	
-	wShownStackedArticleVC.onPullTop = ^ (UIScrollView *aSV) {
+	wStackedArticleVC.onPullTop = ^ (UIScrollView *aSV) {
 		
 		[aSV setContentOffset:aSV.contentOffset animated:NO];
-		[wSelf dismissArticleContextViewController:wShownArticleVC];
+		[wSelf dismissArticleContextViewController:wStackedArticleVC];
 		
 	};
 	
-	wShownStackedArticleVC.headerView = ((^ {
+	wStackedArticleVC.headerView = ((^ {
 		
 		IRView *enclosingView = [[IRView alloc] initWithFrame:(CGRect){ CGPointZero, (CGSize){ 64, 64 }}];
 		
@@ -184,7 +167,7 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		[toolbar setBackgroundImage:toolbarBackgroundLandscapePhone forToolbarPosition:UIToolbarPositionAny barMetrics:UIBarMetricsLandscapePhone];
 						
 		toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-		toolbar.items = wShownStackedArticleVC.headerBarButtonItems;
+		toolbar.items = wStackedArticleVC.headerBarButtonItems;
 		
 		enclosingView.onLayoutSubviews = ^ {
 		
@@ -201,11 +184,10 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 		closeButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
 		
 		__weak WAButton *wCloseButton = closeButton;
-		__weak WAArticleViewController *wShownArticleVC = shownArticleVC;
 		
 		closeButton.action = ^ {
 		
-			[wSelf dismissArticleContextViewController:wShownArticleVC];
+			[wSelf dismissArticleContextViewController:wArticleVC];
 			wCloseButton.action = nil;
 		
 		};
@@ -214,126 +196,28 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 									
 	})());
 	
-	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-	
-	[CATransaction begin];
-	
-	[containerWindow makeKeyAndVisible];
-	
-	UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
-	
-	UIView *rootView = containerWindow.rootViewController.view;
-	CGRect toFrame = rootView.frame;
-	CGRect fromFrame = rootView.frame = [rootView.superview convertRect:CGRectOffset(rootView.bounds, 0, CGRectGetHeight(rootView.bounds)) fromView:rootView];
-	
-	UIColor *fromBackgroundColor = [UIColor clearColor];
-	UIColor *toBackgroundColor = containerWindow.backgroundColor;
-					
-	containerWindow.backgroundColor = fromBackgroundColor;
-	containerWindow.rootViewController.view.frame = fromFrame;
-	
-	[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations:^{
-	
-		containerWindow.backgroundColor = toBackgroundColor;
-		containerWindow.rootViewController.view.frame = toFrame;
-	
-	} completion:nil];
-	
-	[CATransaction commit];
-				
-	void (^dismissBlock)(void) = ^ {
-			
-		UIView *rootView = containerWindow.rootViewController.view;
-		NSParameterAssert(rootView);
-		
-		UIViewAnimationOptions animationOptions = UIViewAnimationOptionCurveEaseInOut;
-		
-		[UIView animateWithDuration:0.35 delay:0 options:animationOptions animations:^{
-		
-			rootView.frame = [rootView.superview convertRect:CGRectOffset(rootView.bounds, 0, CGRectGetHeight(rootView.bounds)) fromView:rootView];
-			containerWindow.backgroundColor = nil;
-			
-		} completion:^(BOOL finished) {
-		
-			@autoreleasepool {
-					
-				containerWindow.rootViewController = nil;
-				
-			}
-		
-			containerWindow.hidden = YES;
-			containerWindow.userInteractionEnabled = NO;
-			
-			[containerWindow resignKeyWindow];
-			containerWindow = nil;
-			
-			//	Potentially smoofy
-			
-			NSArray *allCurrentWindows = [UIApplication sharedApplication].windows;
-			__block BOOL hasFoundCapturedKeyWindow = NO;
-			
-			[allCurrentWindows enumerateObjectsUsingBlock: ^ (UIWindow *aWindow, NSUInteger idx, BOOL *stop) {
-			
-				if (aWindow == currentKeyWindow) {
-					[aWindow makeKeyAndVisible];
-					hasFoundCapturedKeyWindow = YES;
-					*stop = YES;
-					return;
-				}
-				
-				if (!hasFoundCapturedKeyWindow)
-				if (idx == ([allCurrentWindows count] - 1))
-					[[allCurrentWindows objectAtIndex:0] becomeKeyWindow];
-				
-			}];
-			
-		}];
-	
-	};
-	
-	[self setDismissBlock:dismissBlock forArticleContextViewController:shownArticleVC];
-	
-	return shownArticleVC;
-	
-}
 
-- (void) dismissArticleContextViewController:(WAArticleViewController *)controller {
-
-	self.presentedArticle = nil;
-
-	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 	
-	(([self dismissBlockForArticleContextViewController:controller])());
-	[self setDismissBlock:nil forArticleContextViewController:controller];
 	
-	[[UIApplication sharedApplication] endIgnoringInteractionEvents];
-
-}
-
-- (WAArticleViewController *) newContextViewControllerForArticle:(WAArticle *)article {
-
-	__weak WAOverviewController *wSelf = self;
 	
-	WAArticleStyle style = WAFullScreenArticleStyle|WASuggestedStyleForArticle(article);
-	WAArticleViewController *returnedVC	= [WAArticleViewController controllerForArticle:article style:style];
 	
-	returnedVC.hostingViewController = self;
 	
-	__weak WAArticleViewController *wReturnedVC = returnedVC;
-	UINavigationItem *navItem = returnedVC.navigationItem;
+	
+	
+	UINavigationItem *navItem = articleVC.navigationItem;
 	
 	if (!navItem.leftBarButtonItem) {
 		
 		navItem.hidesBackButton = NO;
 		navItem.leftBarButtonItem = WABackBarButtonItem(nil, @"Back", ^ {
 
-			[wSelf dismissArticleContextViewController:wReturnedVC];
+			[wSelf dismissArticleContextViewController:wArticleVC];
 
 		});
 	
 	}
 
-	return returnedVC;
+	return articleVC;
 
 }
 
@@ -358,6 +242,8 @@ NSString * const kPresentedArticle = @"WAOverviewController_presentedArticle";
 	if ([returnedNavC isViewLoaded])
 	if (returnedNavC.onViewDidLoad)
 		returnedNavC.onViewDidLoad(returnedNavC);
+	
+	[returnedNavC setNavigationBarHidden:YES animated:NO];
 	
 	return returnedNavC;
 

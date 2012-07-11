@@ -544,8 +544,6 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 		} completionBlock:^(id result) {
 		
-			NSCParameterAssert(result);
-			
 			if (![result isKindOfClass:[NSString class]])
 				return;
 			
@@ -570,7 +568,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	if (previewURL) {
 
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorkerBlock:^(IRAsyncOperationCallback callback) {
-		
+
 			[ri retrievePreviewForURL:previewURL onSuccess:^(NSDictionary *aPreviewRep) {
 
 				callback(aPreviewRep);
@@ -588,13 +586,20 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			if (![results isKindOfClass:[NSDictionary class]])
 				return;
 			
-			if ([anyPreview.graphElement.images count]) {
+			WAArticle *savedPost = (WAArticle *)[[[WADataStore defaultStore] disposableMOC] irManagedObjectForURI:postEntityURL];
+			WAPreview *savedPreview = [savedPost.previews anyObject];
+
+			if ([savedPreview.graphElement.images count]) {
 			
 				NSMutableDictionary *previewEntity = [(NSDictionary *)results mutableCopy];
 
 				// use the first preview image for thumbnail_url while creating posts
-				if (isDraft)
-					[previewEntity setObject:[[[anyPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
+				if (isDraft) {
+					[previewEntity setObject:[[[savedPreview.graphElement.images array] objectAtIndex:0] imageRemoteURL] forKey:@"thumbnail_url"];
+				} else {
+					NSString *thumbnailURL = savedPreview.graphElement.representingImage.imageRemoteURL;
+					[previewEntity setObject:(thumbnailURL ? thumbnailURL : @"") forKey:@"thumbnail_url"];
+				}
 
 				[context setObject:previewEntity forKey:kPostWebPreview];
 			
