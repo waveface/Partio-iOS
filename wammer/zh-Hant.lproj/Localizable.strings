@@ -100,6 +100,9 @@
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
 
+/* Bezel showed in Login view for Facebook Authentication */
+"ACTION_WAITING_FOR_FACEBOOK" = "ACTION_WAITING_FOR_FACEBOOK";
+
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
 
@@ -406,6 +409,15 @@
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d年";
 
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "F8D-Cb-rIK"; */
+"ACTION_SIGN_IN" = "登入";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "HBf-5z-7wY"; */
+"ACTION_SIGN_UP" = "按這裡註冊";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "niQ-qq-0KO"; */
+"ACTION_SIGN_UP_HELP" = "還沒有帳號嗎?";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
 "ACTION_SEND" = "傳送";
 
@@ -510,6 +522,9 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
+
+/* Class = "IBUIButton"; normalTitle = "START_STREAM"; ObjectID = "132"; */
+"START_STREAM" = "START_STREAM";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
