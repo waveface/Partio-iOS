@@ -192,7 +192,7 @@
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 	
-	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
+	void (^handleAuthSuccess)(NSString *, NSString *, NSString *, NSDictionary *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID, NSDictionary *inUserRep) {
 
 		[WARemoteInterface sharedInterface].userIdentifier = inUserID;
 		[WARemoteInterface sharedInterface].userToken = inUserToken;
@@ -201,7 +201,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
 			if (self.completionBlock)
-				self.completionBlock(self, nil);
+				self.completionBlock(self, inUserRep, nil);
 			
 			self.view.userInteractionEnabled = YES;
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
@@ -215,7 +215,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			if (self.completionBlock)
-				self.completionBlock(self, error);
+				self.completionBlock(self, nil, error);
 			
 			self.view.userInteractionEnabled = YES;
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
@@ -234,7 +234,7 @@
 			NSArray *allGroups = [userRep objectForKey:@"groups"];
 			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
 			
-			handleAuthSuccess(self.userID, self.token, groupID);
+			handleAuthSuccess(self.userID, self.token, groupID, userRep);
 			
 		} onFailure:^(NSError *error) {
 			
@@ -250,7 +250,7 @@
 			NSArray *allGroups = [userRep objectForKey:@"groups"];
 			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
 			
-			handleAuthSuccess(inUserID, inToken, groupID);
+			handleAuthSuccess(inUserID, inToken, groupID, userRep);
 			
 		} onFailure: ^ (NSError *error) {
 			
@@ -303,8 +303,6 @@
 			NSArray *allGroups = [userRep objectForKey:@"groups"];
 			NSString *outGroupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
 			
-			BOOL isNewUser = [@"created" isEqualToString:(NSString *)[userRep objectForKey:@"state"]];
-			
 			[WARemoteInterface sharedInterface].userIdentifier = outUserID;
 			[WARemoteInterface sharedInterface].userToken = outToken;
 			[WARemoteInterface sharedInterface].primaryGroupIdentifier = outGroupID;
@@ -315,23 +313,12 @@
 			dispatch_async(dispatch_get_main_queue(), ^ {
 				
 				if (wSelf.completionBlock)
-					wSelf.completionBlock(wSelf, nil);
+					wSelf.completionBlock(wSelf, userRep, nil);
 					
 				wSelf.view.userInteractionEnabled = YES;
 				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				
 			});
-			
-			if (isNewUser) {
-			
-				[wSelf performSegueWithIdentifier:@"FirstTimeTutorial" sender:wSelf];
-			
-			} else {
-			
-				WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)[UIApplication sharedApplication].delegate;
-				[appDelegate recreateViewHierarchy];
-			
-			}
 			
 		} onFailure:^(NSError *error) {
 		

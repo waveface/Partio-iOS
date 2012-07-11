@@ -518,13 +518,18 @@
 	WALoginViewController *loginVC;
 	
 	if (UIUserInterfaceIdiomPhone == [UIDevice currentDevice].userInterfaceIdiom ) {
+		
 		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoginPhone" bundle:nil];
 		UINavigationController *navigationController = [storyboard instantiateInitialViewController];
 		loginVC = (WALoginViewController *)[navigationController topViewController];
+		
 	} else {
+		
 		loginVC = [[WALoginViewController alloc] init];
+		
 	}
-	loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
+	
+	loginVC.completionBlock = ^(WALoginViewController *self, NSDictionary *userRep, NSError *error) {
 		
 		if (error) {
 
