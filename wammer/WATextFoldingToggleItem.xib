@@ -129,7 +129,6 @@
 			<string key="TagHighlight.png">{38, 25}</string>
 			<string key="TagNormal.png">{38, 25}</string>
 		</dictionary>
-		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">1884</string>
 	</data>
 </archive>
