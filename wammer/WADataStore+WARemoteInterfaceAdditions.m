@@ -237,7 +237,16 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 			context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
 			
 			WAUser *user = [wSelf mainUserInContext:context];
-			NSCParameterAssert(user);
+			if (!user) {
+			
+				//	Fresh user with “seeding” database.
+				
+				if (failureBlock);
+					failureBlock();
+				
+				return;
+				
+			}
 			
 			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:0];
 			

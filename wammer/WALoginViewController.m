@@ -17,6 +17,11 @@
 #import "IRAction.h"
 #import "IRAlertView.h"
 
+#import "WATutorialViewController.h"
+#import "WAAppDelegate_iOS.h"
+
+#import "WAFacebookInterface.h"
+#import "WAFacebookInterfaceSubclass.h"
 
 @interface WALoginViewController () <UITextFieldDelegate>
 
@@ -175,19 +180,13 @@
   if( !(([self.username length] && [self.password length]) ||([self.userID length] && [self.token length])))
 		return;
 
-//	if (WAAdvancedFeaturesEnabled()) {
-//		[[NSUserDefaults standardUserDefaults] setObject:self.username forKey:kWADebugAutologinUserIdentifier];
-//		[[NSUserDefaults standardUserDefaults] setObject:self.password forKey:kWADebugAutologinUserPassword];
-//		[[NSUserDefaults standardUserDefaults] synchronize];
-//	}
-  
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"ACTION_PROCESSING", @"Action title for processing stuff");
 	
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 	self.view.userInteractionEnabled = NO;
 	
-	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
+	void (^handleAuthSuccess)(NSString *, NSString *, NSString *, NSDictionary *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID, NSDictionary *inUserRep) {
 
 		[WARemoteInterface sharedInterface].userIdentifier = inUserID;
 		[WARemoteInterface sharedInterface].userToken = inUserToken;
@@ -196,7 +195,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^ {
 			
 			if (self.completionBlock)
-				self.completionBlock(self, nil);
+				self.completionBlock(self, inUserRep, nil);
 			
 			self.view.userInteractionEnabled = YES;
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
@@ -210,7 +209,7 @@
 		dispatch_async(dispatch_get_main_queue(), ^ {
 		
 			if (self.completionBlock)
-				self.completionBlock(self, error);
+				self.completionBlock(self, nil, error);
 			
 			self.view.userInteractionEnabled = YES;
 			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
@@ -229,7 +228,7 @@
 			NSArray *allGroups = [userRep objectForKey:@"groups"];
 			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
 			
-			handleAuthSuccess(self.userID, self.token, groupID);
+			handleAuthSuccess(self.userID, self.token, groupID, userRep);
 			
 		} onFailure:^(NSError *error) {
 			
@@ -245,7 +244,7 @@
 			NSArray *allGroups = [userRep objectForKey:@"groups"];
 			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
 			
-			handleAuthSuccess(inUserID, inToken, groupID);
+			handleAuthSuccess(inUserID, inToken, groupID, userRep);
 			
 		} onFailure: ^ (NSError *error) {
 			
@@ -276,37 +275,55 @@
 	});
 }
 
+#define kFirstTime @"FirstTime"
+
 - (IBAction)facebookSignInAction:(id)sender {
+
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	busyBezel.caption = NSLocalizedString(@"ACTION_WAITING_FOR_FACEBOOK", @"Bezel showed in Login view for Facebook Authentication");
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	self.view.userInteractionEnabled = NO;
 	
-	self.usernameField.text = nil;
-	self.passwordField.text = nil;
-
 	__weak WALoginViewController *wSelf = self;
-	__weak WAAuthenticationRequestViewController *authRequestVC = [WAAuthenticationRequestWebViewController controllerWithCompletion:^(WAAuthenticationRequestViewController *vc, NSError *error) {
-		
-			if (error) {
-				
-				[wSelf presentError:error completion:^{
-				
-				[wSelf.navigationController popToViewController:wSelf animated:YES];
-				}];
-				
-				return;
-				
-			}
+	
+	WAFacebookInterface * const fbInterface = [WAFacebookInterface sharedInterface];
+	
+	[fbInterface authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
+	
+		[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:fbInterface.facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *outToken) {
 			
-      wSelf.username = vc.username;
-      wSelf.password = vc.password;
-      wSelf.token = vc.token;
-      wSelf.userID = vc.userID;
-      wSelf.performsAuthenticationOnViewDidAppear = YES;
-
-      [wSelf.navigationController popToViewController:wSelf animated:YES];
+			NSString *outUserID = [userRep objectForKey:@"user_id"];
+			
+			NSArray *allGroups = [userRep objectForKey:@"groups"];
+			NSString *outGroupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+			
+			[WARemoteInterface sharedInterface].userIdentifier = outUserID;
+			[WARemoteInterface sharedInterface].userToken = outToken;
+			[WARemoteInterface sharedInterface].primaryGroupIdentifier = outGroupID;
+			
+			wSelf.userID = outUserID;
+			wSelf.token = outToken;
+			
+			dispatch_async(dispatch_get_main_queue(), ^ {
+				
+				if (wSelf.completionBlock)
+					wSelf.completionBlock(wSelf, userRep, nil);
+					
+				wSelf.view.userInteractionEnabled = YES;
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				
+			});
+			
+		} onFailure:^(NSError *error) {
+		
+			//	nope!
+			
+			[wSelf performSegueWithIdentifier:@"FirstTimeTutorial" sender:wSelf];
 			
 		}];
-		
-		[self.navigationController pushViewController:authRequestVC animated:YES];
-		
+	
+	}];
+	
 }
 
 - (IBAction)registerAction:(id)sender {

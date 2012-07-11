@@ -100,6 +100,9 @@
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
+/* Bezel showed in Login view for Facebook Authentication */
+"ACTION_WAITING_FOR_FACEBOOK" = "ACTION_WAITING_FOR_FACEBOOK";
+
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";
 
@@ -406,6 +409,15 @@
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d year";
 
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "F8D-Cb-rIK"; */
+"ACTION_SIGN_IN" = "Login";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "HBf-5z-7wY"; */
+"ACTION_SIGN_UP" = "Sign up now";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "niQ-qq-0KO"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
 "ACTION_SEND" = "Stream!";
 
@@ -510,6 +522,9 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
+
+/* Class = "IBUIButton"; normalTitle = "START_STREAM"; ObjectID = "132"; */
+"START_STREAM" = "START_STREAM";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";

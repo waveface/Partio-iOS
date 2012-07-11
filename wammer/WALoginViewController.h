@@ -12,7 +12,8 @@
 extern NSString * kWAAuthenticationRequestUserFailure;
 
 @class WALoginViewController, IRAction;
-typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSError *error);
+
+typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSDictionary *userRep, NSError *error);
 
 @interface WALoginViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITextField *usernameField;
@@ -24,7 +25,7 @@ typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSEr
 @property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (strong, nonatomic) IBOutlet UIView *loginContainerView;
 
-@property (strong, nonatomic)WALoginViewControllerCallback completionBlock;
+@property (strong, nonatomic) WALoginViewControllerCallback completionBlock;
 - (void) presentError:(NSError *)error completion:(void(^)(void))block;
 
 - (IBAction)signInAction:(id)sender;

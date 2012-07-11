@@ -152,7 +152,7 @@
     <fetchRequest name="WAFRArticlesNeedingSync" entity="WAArticle" predicateString="dirty == 1 AND draft == 0"/>
     <fetchRequest name="WAFRCommentsForArticle" entity="WAComment" predicateString="article == $Article"/>
     <fetchRequest name="WAFRFilesForArticle" entity="WAFile" predicateString="article == $Article"/>
-    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="resourceFilePath != nil AND resourceURL == nil AND article.draft == 0"/>
+    <fetchRequest name="WAFRFilesWithSyncableBlobs" entity="WAFile" predicateString="resourceFilePath != nil AND resourceURL == nil AND article.draft == 0 AND article.dirty == 0"/>
     <fetchRequest name="WAFRImagesForArticle" entity="WAFile" predicateString="article == $Article AND remoteResourceType == &quot;image&quot;"/>
     <fetchRequest name="WAFRUser" entity="WAUser" predicateString="identifier == $Identifier"/>
     <elements>

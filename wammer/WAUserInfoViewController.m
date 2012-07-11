@@ -123,21 +123,8 @@
 	activity.frame = CGRectMake(300.0-10.0-18.0, 14.0, 20.0, 20.0);	
 
 	[self.syncTableViewCell insertSubview:activity atIndex:0];
-	
+	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
   [self.tableView reloadData];
-	
-	switch (UI_USER_INTERFACE_IDIOM()){
-			
-		case UIUserInterfaceIdiomPhone: {
-		
-			self.tableView.backgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-			self.tableView.backgroundView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"lightBackground"]];
-			
-			break;
-		
-		}
-		
-	}
 	
 	__weak WAUserInfoViewController *wSelf = self;
 	__weak WADataStore *wDataStore = [WADataStore defaultStore];

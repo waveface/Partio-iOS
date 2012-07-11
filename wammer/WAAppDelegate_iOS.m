@@ -39,6 +39,11 @@
 #import "IASKSettingsReader.h"
 #import	"DCIntrospect.h"
 
+#import "WAFacebookInterface.h"
+#import "WAFacebookInterfaceSubclass.h"
+
+#import "WATutorialViewController.h"
+
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -57,7 +62,6 @@
 - (BOOL) isRunningAuthRequest;
 
 @end
-
 
 @implementation WAAppDelegate_iOS
 @synthesize window = _window;
@@ -513,8 +517,21 @@
 		
 	};
 	
-	WALoginViewController *loginVC = [[WALoginViewController alloc] init];
-	loginVC.completionBlock = ^(WALoginViewController *self, NSError *error) {
+	WALoginViewController *loginVC;
+	
+	if (UIUserInterfaceIdiomPhone == [UIDevice currentDevice].userInterfaceIdiom ) {
+		
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"LoginPhone" bundle:nil];
+		UINavigationController *navigationController = [storyboard instantiateInitialViewController];
+		loginVC = (WALoginViewController *)[navigationController topViewController];
+		
+	} else {
+		
+		loginVC = [[WALoginViewController alloc] init];
+		
+	}
+	
+	loginVC.completionBlock = ^(WALoginViewController *self, NSDictionary *userRep, NSError *error) {
 		
 		if (error) {
 
@@ -524,9 +541,25 @@
 		}
 		
 		if (userIDChanged()) {
+		
+			if ([[userRep valueForKeyPath:@"state"] isEqual:@"created"]) {
 			
-			handleAuthSuccess();
-			[wAppDelegate recreateViewHierarchy];
+				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithCompletion:^{
+
+					handleAuthSuccess();
+					[wAppDelegate recreateViewHierarchy];
+					
+				}];
+				
+				[wAppDelegate clearViewHierarchy];
+				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
+			
+			} else {
+		
+				handleAuthSuccess();
+				[wAppDelegate recreateViewHierarchy];
+				
+			}
 			
 		} else {
 			
@@ -602,14 +635,24 @@ static unsigned int networkActivityStackingCount = 0;
 
 - (BOOL) application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
 
-  [[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:[NSDictionary dictionaryWithObjectsAndKeys:
-  
-    url, @"url",
-    sourceApplication, @"sourceApplication",
-    annotation, @"annotation",
-  
-  nil]];
+	if ([[url scheme] hasPrefix:@"fb"]) {
+	
+		//	fb357087874306060://authorize/#access_token=BAAFExPZCm0AwBAE0Rrkx45WrF9P9rSjttvmKqWCHFXCiflQCCaaA57AxiD4SUxjESg0VdMilsRcynBzIaxljzcmenZAXephyorGP7h3Eg7o6lahje3ox5f8bRJf99FPkmUKaTVWQZDZD&expires_in=5105534&code=AQDk-SBy1kclksewM5uX1W0GlTd0_Jc8VQT6gXb0grblRTPBSN8YPgdTVqYmi1Vuv0hnmskQpIxkjTOKBxRt__VQ4IdiJdThklKvzcZprTjD5Lhgid2U-O9lZ6JFclAyNQGbpy1cdsMWEkHoW0vDLNTiJqyAk2qZ5qbi0atfKNdxHFDtK9ee7338KoDR_8nOaxMeymONNrceZfzrRj48EYYy
 
+		[[WAFacebookInterface sharedInterface].facebook handleOpenURL:url];
+		
+	} else {
+	
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			url, @"url",
+			sourceApplication, @"sourceApplication",
+			annotation, @"annotation",
+		nil];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:kWAApplicationDidReceiveRemoteURLNotification object:url userInfo:userInfo];
+		
+	}
+	
   return YES;
 
 }
