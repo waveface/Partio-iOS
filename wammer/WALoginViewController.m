@@ -286,7 +286,7 @@
 	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
 	
 	//Quick guess for firstime user
-	BOOL __block isFirstTime = NO;
+	BOOL __block isFirstTime = YES;
 	
 	// wait for user status information
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
