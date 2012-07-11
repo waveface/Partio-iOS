@@ -42,8 +42,10 @@ const NSUInteger kNumberOfPages = 5;
 	introductionView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"TutorialBackground"]];
 
 	
-//		[[UIPageControl appearance] setPageIndicatorTintColor:[UIColor colorWithRed:0.17 green:0.19 blue:0.21 alpha:0.9]];
-//		[[UIPageControl appearance] setCurrentPageIndicatorTintColor:[UIColor colorWithRed:0.31	green:0.54 blue:0.58 alpha:1]];
+	if( [pageControl respondsToSelector:@selector(setPageIndicatorTintColor:)] ){
+		[[UIPageControl appearance] performSelector:@selector(setPageIndicatorTintColor:) withObject: [UIColor colorWithRed:0.17 green:0.19 blue:0.21 alpha:0.9]];
+		[[UIPageControl appearance] performSelector:@selector(setCurrentPageIndicatorTintColor:) withObject:[UIColor colorWithRed:0.31	green:0.54 blue:0.58 alpha:1]];
+	}
 
 }
 
