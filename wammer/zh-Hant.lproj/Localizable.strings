@@ -100,6 +100,9 @@
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
 
+/* Bezel showed in Login view for Facebook Authentication */
+"ACTION_WAITING_FOR_FACEBOOK" = "ACTION_WAITING_FOR_FACEBOOK";
+
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
 

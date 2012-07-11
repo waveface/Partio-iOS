@@ -286,42 +286,54 @@
 	Facebook *facebook = [Facebook sharedInstanceWithDelegate:self];
 	
 	//Quick guess for firstime user
-	BOOL isFirstTime = YES;
-	if ([[NSUserDefaults standardUserDefaults] objectForKey:kFirstTime]) {
-		isFirstTime = NO;
-	}
+	BOOL __block isFirstTime = NO;
+	
+	// wait for user status information
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	busyBezel.caption = NSLocalizedString(@"ACTION_WAITING_FOR_FACEBOOK", @"Bezel showed in Login view for Facebook Authentication");
+	
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+	self.view.userInteractionEnabled = NO;
 	
 	[facebook authorize];
 	
-	if( isFirstTime ) { // & first time use
-		[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kFirstTime];
-		[self performSegueWithIdentifier: @"FirstTimeTutorial" sender: self];
-		void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
-			
-			[WARemoteInterface sharedInterface].userIdentifier = inUserID;
-			[WARemoteInterface sharedInterface].userToken = inUserToken;
-			[WARemoteInterface sharedInterface].primaryGroupIdentifier = inUserGroupID;
-			
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				
-				if (self.completionBlock)
-					self.completionBlock(self, nil);
-				
-			});
-			
-		};
+	void (^handleAuthSuccess)(NSString *, NSString *, NSString *) = ^ (NSString *inUserID, NSString *inUserToken, NSString *inUserGroupID) {
 		
-		[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *inToken) {
+		[WARemoteInterface sharedInterface].userIdentifier = inUserID;
+		[WARemoteInterface sharedInterface].userToken = inUserToken;
+		[WARemoteInterface sharedInterface].primaryGroupIdentifier = inUserGroupID;
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-			NSString *inUserID = [userRep objectForKey:@"user_id"];
-			NSArray *allGroups = [userRep objectForKey:@"groups"];
-			NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+			if (self.completionBlock)
+				self.completionBlock(self, nil);
+				
+				self.view.userInteractionEnabled = YES;
+				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-			handleAuthSuccess(inUserID, inToken, groupID);
-			
-		} onFailure:^(NSError *error) {
-			// no op failed
-		}];
+		});
+		
+	};
+	
+	[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *inToken) {
+		
+		NSString *inUserID = [userRep objectForKey:@"user_id"];
+		NSArray *allGroups = [userRep objectForKey:@"groups"];
+		NSString *groupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+		
+		if ([@"created" isEqualToString: (NSString *)[userRep objectForKey:@"state"] ]){
+			isFirstTime = YES;
+		}
+		
+		handleAuthSuccess(inUserID, inToken, groupID);
+		
+	} onFailure:^(NSError *error) {
+		// no op failed
+	}];
+	
+	
+	if( isFirstTime ) { // show tutorial
+		[self performSegueWithIdentifier: @"FirstTimeTutorial" sender: self];
 	} else {
 		WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS*)[UIApplication sharedApplication].delegate;
 		[appDelegate recreateViewHierarchy];
