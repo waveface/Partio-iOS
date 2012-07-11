@@ -297,15 +297,17 @@
 	[self addSubview:self.captionLabel];
 	[self.captionLabel sizeToFit];
 	
+	CGSize captionSize = (CGSize){
+		MIN(MAX(0, (CGRectGetWidth(self.bounds) - 16)), CGRectGetWidth(self.captionLabel.frame)),
+		CGRectGetHeight(self.captionLabel.frame)
+	};
+
 	self.captionLabel.frame = CGRectIntegral((CGRect){
 		(CGPoint){
-			CGRectGetMidX(self.bounds) - (0.5f * CGRectGetWidth(self.captionLabel.frame)),
+			CGRectGetMidX(self.bounds) - (0.5f * captionSize.width),
 			CGRectGetMinY(self.bounds) + 10
 		},
-		(CGSize){
-			MIN(MAX(0, (CGRectGetWidth(self.bounds) - 16)), CGRectGetWidth(self.captionLabel.frame)),
-			CGRectGetHeight(self.captionLabel.frame)
-		}
+		captionSize
 	});
 	
 	if (!CATransform3DEqualToTransform(self.layer.transform, self.deviceOrientationTransform))

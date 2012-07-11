@@ -40,9 +40,13 @@ extern NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotific
 extern NSString * const kWASettingsDidRequestActionNotification;
 
 extern NSString * const kWAFacebookDidLoginNotification;
+extern NSString * const kWAFacebookAppID;
+extern NSString * const kWAFacebookTokenKey;
+extern NSString * const kWAFacebookExpirationDateKey;
 
 extern NSString * const kWATestflightTeamToken;
 extern NSString * const kWACrashlyticsAPIKey;
+
 extern NSString * const kWAGoogleAnalyticsAccountID;
 extern NSInteger  const kWAGoogleAnalyticsDispatchInterval;
 

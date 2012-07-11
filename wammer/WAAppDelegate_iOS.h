@@ -7,12 +7,10 @@
 //
 
 #import "WAAppDelegate.h"
-#import "FBConnect.h"
 
-@interface WAAppDelegate_iOS : WAAppDelegate <UIApplicationDelegate, UIAlertViewDelegate, FBSessionDelegate>
+@interface WAAppDelegate_iOS : WAAppDelegate <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, readwrite, retain) UIWindow *window;
-@property (strong, nonatomic) Facebook *facebook;
 
 - (void) recreateViewHierarchy;
 

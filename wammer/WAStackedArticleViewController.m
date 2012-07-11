@@ -112,7 +112,7 @@
 			
 			if (WAAdvancedFeaturesEnabled()) {
 			
-				__weak WAStackedArticleViewController *wSelf = self;
+				//	__weak WAStackedArticleViewController *wSelf = self;
 				
 				[barButtonItems addObject:[IRBarButtonItem itemWithTitle:@"Copy" action:^ {
 				
