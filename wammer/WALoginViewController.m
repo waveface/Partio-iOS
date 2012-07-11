@@ -180,12 +180,6 @@
   if( !(([self.username length] && [self.password length]) ||([self.userID length] && [self.token length])))
 		return;
 
-//	if (WAAdvancedFeaturesEnabled()) {
-//		[[NSUserDefaults standardUserDefaults] setObject:self.username forKey:kWADebugAutologinUserIdentifier];
-//		[[NSUserDefaults standardUserDefaults] setObject:self.password forKey:kWADebugAutologinUserPassword];
-//		[[NSUserDefaults standardUserDefaults] synchronize];
-//	}
-  
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"ACTION_PROCESSING", @"Action title for processing stuff");
 	

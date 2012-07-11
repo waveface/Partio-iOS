@@ -10,10 +10,13 @@
 
 @interface WATutorialViewController : UIViewController <UIScrollViewDelegate>
 
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIView *introductionView;
-@property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
-@property (strong, nonatomic) IBOutlet UIButton *startButton;
-- (IBAction)enterTimeline:(id)sender;
++ (WATutorialViewController *) controllerWithCompletion:(void(^)(void))completion;
+
+@property (nonatomic, readwrite, weak) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, readwrite, weak) IBOutlet UIView *introductionView;
+@property (nonatomic, readwrite, weak) IBOutlet UIPageControl *pageControl;
+@property (nonatomic, readwrite, weak) IBOutlet UIButton *startButton;
+
+- (IBAction) enterTimeline:(id)sender;
 
 @end

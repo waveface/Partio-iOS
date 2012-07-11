@@ -42,6 +42,8 @@
 #import "WAFacebookInterface.h"
 #import "WAFacebookInterfaceSubclass.h"
 
+#import "WATutorialViewController.h"
+
 
 @interface WAAppDelegate_iOS () <WAApplicationRootViewControllerDelegate>
 
@@ -539,9 +541,25 @@
 		}
 		
 		if (userIDChanged()) {
+		
+			if ([[userRep valueForKeyPath:@"state"] isEqual:@"created"]) {
 			
-			handleAuthSuccess();
-			[wAppDelegate recreateViewHierarchy];
+				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithCompletion:^{
+
+					handleAuthSuccess();
+					[wAppDelegate recreateViewHierarchy];
+					
+				}];
+				
+				[wAppDelegate clearViewHierarchy];
+				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
+			
+			} else {
+		
+				handleAuthSuccess();
+				[wAppDelegate recreateViewHierarchy];
+				
+			}
 			
 		} else {
 			

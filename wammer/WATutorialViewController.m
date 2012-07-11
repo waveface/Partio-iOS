@@ -11,70 +11,62 @@
 
 @interface WATutorialViewController ()
 
+@property (nonatomic, readwrite, copy) void (^completionBlock)(void);
+
 @end
 
 @implementation WATutorialViewController
-@synthesize scrollView;
-@synthesize introductionView;
-@synthesize pageControl;
-@synthesize startButton;
+@synthesize scrollView = _scrollView;
+@synthesize introductionView = _introductionView;
+@synthesize pageControl = _pageControl;
+@synthesize startButton = _startButton;
+@synthesize completionBlock = _completionBlock;
 
 const CGFloat kScrollObjWidth = 320.0;
 const NSUInteger kNumberOfPages = 5;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
++ (WATutorialViewController *) controllerWithCompletion:(void(^)(void))completion {
 
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-	[scrollView addSubview:self.introductionView];
-
-	[scrollView setContentSize:(CGSize){kNumberOfPages*kScrollObjWidth, [scrollView bounds].size.height}];
-	scrollView.delegate = self;
-	pageControl.numberOfPages = kNumberOfPages;
-	introductionView.backgroundColor =  [UIColor colorWithPatternImage:[UIImage imageNamed:@"TutorialBackground"]];
-
+	WATutorialViewController *controller = [self new];
+	controller.completionBlock = completion;
 	
-	if( [pageControl respondsToSelector:@selector(setPageIndicatorTintColor:)] ){
-		[[UIPageControl appearance] performSelector:@selector(setPageIndicatorTintColor:) withObject: [UIColor colorWithRed:0.17 green:0.19 blue:0.21 alpha:0.9]];
-		[[UIPageControl appearance] performSelector:@selector(setCurrentPageIndicatorTintColor:) withObject:[UIColor colorWithRed:0.31	green:0.54 blue:0.58 alpha:1]];
-	}
+	return controller;
 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void) viewDidLoad {
+	
+	[super viewDidLoad];
+	
+	[_scrollView addSubview:self.introductionView];
+	
+	_scrollView.contentSize = (CGSize){ kNumberOfPages * kScrollObjWidth, CGRectGetHeight(_scrollView.bounds) };
+	_scrollView.delegate = self;
+	_pageControl.numberOfPages = kNumberOfPages;
+	_introductionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"TutorialBackground"]];
+
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (void)viewDidUnload {
-	[self setScrollView:nil];
-	[self setPageControl:nil];
-	[self setStartButton:nil];
-	[super viewDidUnload];
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
-	int page = floor((aScrollView.contentOffset.x - kScrollObjWidth / 2) / kScrollObjWidth) + 1;
 	
-	self.pageControl.currentPage = page;
+	self.pageControl.currentPage = floor((aScrollView.contentOffset.x - kScrollObjWidth / 2) / kScrollObjWidth) + 1;
+	
 }
 
-- (IBAction)enterTimeline:(id)sender {
-	WAAppDelegate_iOS *appDelegate = (WAAppDelegate_iOS *)[UIApplication sharedApplication].delegate;
-	[appDelegate recreateViewHierarchy];
+- (IBAction) enterTimeline:(id)sender {
+
+	if (self.completionBlock) {
+		self.completionBlock();
+		return;
+	}
+	
+	[(WAAppDelegate_iOS *)[UIApplication sharedApplication].delegate recreateViewHierarchy];
+	
 }
 @end
