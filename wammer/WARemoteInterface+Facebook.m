@@ -7,6 +7,7 @@
 //
 
 #import "WARemoteInterface+Facebook.h"
+#import "WADefines.h"
 
 @implementation WARemoteInterface (Facebook)
 
