@@ -185,6 +185,7 @@
 		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
+		FF3FF83215AEA670003CF6CC /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
 		FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
 		FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */; };
 		FF426FC6155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC1155102AF0053D1CA /* WFPreviewTemplate_Discrete_Web_Image.html */; };
@@ -579,7 +580,6 @@
 		FFA2585815408CDD00FE661C /* WAPickerPaneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA2585715408CDD00FE661C /* WAPickerPaneViewController.m */; };
 		FFA2585C15408D6D00FE661C /* WAFilterPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA2585A15408D6C00FE661C /* WAFilterPickerViewController.m */; };
 		FFA2585D15408D6D00FE661C /* WAFilterPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFA2585B15408D6C00FE661C /* WAFilterPickerViewController.xib */; };
-		FFA3705C15AD4D9600283901 /* LoginPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FFA3705B15AD4D9600283901 /* LoginPhone.storyboard */; };
 		FFA69452147F6E7800F46347 /* WAReachabilityDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */; };
 		FFA69458147F6FC600F46347 /* WARemoteInterface+Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA69457147F6FC600F46347 /* WARemoteInterface+Reachability.m */; };
 		FFA87D04143F01450074AAE4 /* WANavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA87D03143F01450074AAE4 /* WANavigationController.m */; };
@@ -1406,6 +1406,8 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/WFPresentation/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/WFPresentation/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
+		FF3FF83015AEA670003CF6CC /* WAFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebook.h; sourceTree = "<group>"; };
+		FF3FF83115AEA670003CF6CC /* WAFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebook.m; sourceTree = "<group>"; };
 		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
 		FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAGalleryImageScrollView.m; sourceTree = "<group>"; };
 		FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate_Discrete_Plaintext.html; path = external/WFPresentation/Source/WFPreviewTemplate_Discrete_Plaintext.html; sourceTree = SOURCE_ROOT; };
@@ -1845,7 +1847,6 @@
 		FFA2585915408D6C00FE661C /* WAFilterPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFilterPickerViewController.h; sourceTree = "<group>"; };
 		FFA2585A15408D6C00FE661C /* WAFilterPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFilterPickerViewController.m; sourceTree = "<group>"; };
 		FFA2585B15408D6C00FE661C /* WAFilterPickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WAFilterPickerViewController.xib; sourceTree = "<group>"; };
-		FFA3705B15AD4D9600283901 /* LoginPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginPhone.storyboard; sourceTree = "<group>"; };
 		FFA5CD67140CEB8400875256 /* WAApplicationRootViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAApplicationRootViewControllerDelegate.h; sourceTree = "<group>"; };
 		FFA69450147F6E7800F46347 /* WAReachabilityDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAReachabilityDetector.h; sourceTree = "<group>"; };
 		FFA69451147F6E7800F46347 /* WAReachabilityDetector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAReachabilityDetector.m; sourceTree = "<group>"; };
@@ -2589,7 +2590,6 @@
 				FF1305EB14FD5539004BD3D6 /* WAOverviewController+ContextPresenting.m */,
 				FF09C0EC15A2E83800AEDDAE /* WASlidingSplitViewController.h */,
 				FF09C0ED15A2E83800AEDDAE /* WASlidingSplitViewController.m */,
-				FFA3705B15AD4D9600283901 /* LoginPhone.storyboard */,
 				FF586B901519B2B900F308E2 /* Discrete Layout */,
 			);
 			name = Overview;
@@ -2915,6 +2915,8 @@
 		FFBBA42615AD5D4900E95C66 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				FF3FF83015AEA670003CF6CC /* WAFacebook.h */,
+				FF3FF83115AEA670003CF6CC /* WAFacebook.m */,
 				FFBBA42315AD5D4400E95C66 /* WAFacebookInterface.h */,
 				FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */,
 				FFC1E6B515AD6494009C4A17 /* WAFacebookInterfaceSubclass.h */,
@@ -4241,7 +4243,6 @@
 				FFA1F48E159C434B003000AD /* WAUserGlyphLarge.png in Resources */,
 				FFA1F48F159C434B003000AD /* WAUserGlyphLarge@2x.png in Resources */,
 				FFA1F494159C54D7003000AD /* WAArticleDateItem.xib in Resources */,
-				FFA3705C15AD4D9600283901 /* LoginPhone.storyboard in Resources */,
 				4BF3655B15A564A600E40E42 /* TutorialBackground@2x.png in Resources */,
 				4BF3655D15A564A600E40E42 /* TutorialPage2@2x.png in Resources */,
 				4BF3655E15A564A600E40E42 /* TutorialPage3@2x.png in Resources */,
@@ -4696,6 +4697,7 @@
 				13A1BFB415A572CE00526F39 /* WAFile.m in Sources */,
 				FF6B02AD15AC0B20009D8BDB /* WATutorialViewController.m in Sources */,
 				FFBBA42515AD5D4400E95C66 /* WAFacebookInterface.m in Sources */,
+				FF3FF83215AEA670003CF6CC /* WAFacebook.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

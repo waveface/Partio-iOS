@@ -33,6 +33,8 @@
 @property NSString *userID;
 @property NSString *token;
 
+- (void) handleFacebookInterface:(WAFacebookInterface *)fbInterface didFinish:(BOOL)didFinish withError:(NSError *)error;
+
 @end
 
 @implementation WALoginViewController
@@ -275,55 +277,71 @@
 	});
 }
 
-#define kFirstTime @"FirstTime"
+- (IBAction) facebookSignInAction:(id)sender {
+	
+	WAFacebookInterface * const fbInterface = [WAFacebookInterface sharedInterface];
+	
+	__weak WALoginViewController *wSelf = self;
+	__weak WAFacebookInterface *wFBInterface = fbInterface;
+	
+	[fbInterface authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
+	
+		if (!didFinish)
+			return;
+			
+		[wSelf handleFacebookInterface:wFBInterface didFinish:didFinish withError:error];
+			
+	}];
+	
+}
 
-- (IBAction)facebookSignInAction:(id)sender {
+- (void) handleFacebookInterface:(WAFacebookInterface *)fbInterface didFinish:(BOOL)didFinish withError:(NSError *)error {
+
+	__weak WALoginViewController *wSelf = self;
+
+	[[UIApplication sharedApplication] beginIgnoringInteractionEvents];
 
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"ACTION_WAITING_FOR_FACEBOOK", @"Bezel showed in Login view for Facebook Authentication");
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
-	self.view.userInteractionEnabled = NO;
 	
-	__weak WALoginViewController *wSelf = self;
-	
-	WAFacebookInterface * const fbInterface = [WAFacebookInterface sharedInterface];
-	
-	[fbInterface authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
-	
-		[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:fbInterface.facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *outToken) {
-			
-			NSString *outUserID = [userRep objectForKey:@"user_id"];
-			
-			NSArray *allGroups = [userRep objectForKey:@"groups"];
-			NSString *outGroupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
-			
-			[WARemoteInterface sharedInterface].userIdentifier = outUserID;
-			[WARemoteInterface sharedInterface].userToken = outToken;
-			[WARemoteInterface sharedInterface].primaryGroupIdentifier = outGroupID;
-			
-			wSelf.userID = outUserID;
-			wSelf.token = outToken;
-			
-			dispatch_async(dispatch_get_main_queue(), ^ {
-				
-				if (wSelf.completionBlock)
-					wSelf.completionBlock(wSelf, userRep, nil);
-					
-				wSelf.view.userInteractionEnabled = YES;
-				[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-				
-			});
-			
-		} onFailure:^(NSError *error) {
+	WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+
+	[ri signupUserWithFacebookToken:fbInterface.facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *outToken) {
 		
-			//	nope!
+		NSString *outUserID = [userRep objectForKey:@"user_id"];
+		
+		NSArray *allGroups = [userRep objectForKey:@"groups"];
+		NSString *outGroupID = [allGroups count] ? [[allGroups objectAtIndex:0] valueForKey:@"group_id"] : nil;
+		
+		ri.userIdentifier = outUserID;
+		ri.userToken = outToken;
+		ri.primaryGroupIdentifier = outGroupID;
+		
+		wSelf.userID = outUserID;
+		wSelf.token = outToken;
+		
+		dispatch_async(dispatch_get_main_queue(), ^ {
 			
-			[wSelf performSegueWithIdentifier:@"FirstTimeTutorial" sender:wSelf];
+			if (wSelf.completionBlock)
+				wSelf.completionBlock(wSelf, userRep, nil);
+				
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-		}];
+		});
+		
+		[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		
+	} onFailure:^(NSError *error) {
 	
+		//	nope!
+		
+		[wSelf performSegueWithIdentifier:@"FirstTimeTutorial" sender:wSelf];
+		
+		[[UIApplication sharedApplication] endIgnoringInteractionEvents];
+		
 	}];
-	
+
 }
 
 - (IBAction)registerAction:(id)sender {
