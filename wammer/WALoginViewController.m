@@ -279,6 +279,8 @@
 
 - (IBAction)facebookSignInAction:(id)sender {
 
+	WAFacebookInterface * const fbInterface = [WAFacebookInterface sharedInterface];
+	
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	busyBezel.caption = NSLocalizedString(@"ACTION_WAITING_FOR_FACEBOOK", @"Bezel showed in Login view for Facebook Authentication");
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
@@ -286,11 +288,13 @@
 	
 	__weak WALoginViewController *wSelf = self;
 	
-	WAFacebookInterface * const fbInterface = [WAFacebookInterface sharedInterface];
-	
 	[fbInterface authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
-	
+		
 		[[WARemoteInterface sharedInterface] signupUserWithFacebookToken:fbInterface.facebook.accessToken withOptions:nil onSuccess:^(NSDictionary *userRep, NSString *outToken) {
+			
+			NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+			[defaults setObject:fbInterface.facebook.accessToken forKey:kFBAccessToken];
+			[defaults setObject:fbInterface.facebook.expirationDate forKey:kFBExpirationDate];
 			
 			NSString *outUserID = [userRep objectForKey:@"user_id"];
 			
@@ -316,10 +320,8 @@
 			
 		} onFailure:^(NSError *error) {
 		
-			//	nope!
-			
-			[wSelf performSegueWithIdentifier:@"FirstTimeTutorial" sender:wSelf];
-			
+			// alert badge here! 
+								
 		}];
 	
 	}];

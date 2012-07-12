@@ -91,7 +91,15 @@ static NSString * const WAFacebookCallbackDidNotLoginMethodName = @"WAFacebookCa
 		
 	}];
 	
-	[fbInstance authorize:fbPermissions];
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	fbInstance.accessToken = [defaults objectForKey:kFBAccessToken];
+	fbInstance.expirationDate = (NSDate *)[defaults objectForKey:kFBExpirationDate];
+	
+	if (fbInstance.isSessionValid){
+		[self fbDidLogin];
+	} else {
+		[fbInstance authorize:fbPermissions];
+	}
 
 }
 
