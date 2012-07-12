@@ -101,7 +101,7 @@
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
 
 /* Bezel showed in Login view for Facebook Authentication */
-"ACTION_WAITING_FOR_FACEBOOK" = "ACTION_WAITING_FOR_FACEBOOK";
+"ACTION_WAITING_FOR_FACEBOOK" = "Processing";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";

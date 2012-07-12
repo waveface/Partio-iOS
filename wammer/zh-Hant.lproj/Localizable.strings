@@ -101,7 +101,7 @@
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
 
 /* Bezel showed in Login view for Facebook Authentication */
-"ACTION_WAITING_FOR_FACEBOOK" = "ACTION_WAITING_FOR_FACEBOOK";
+"ACTION_WAITING_FOR_FACEBOOK" = "處理中";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
