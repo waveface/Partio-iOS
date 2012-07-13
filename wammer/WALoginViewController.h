@@ -1,36 +1,24 @@
 //
-//  WALoginViewController.h
+//  WALogInViewController.h
 //  wammer
 //
-//  Created by jamie on 6/4/12.
+//  Created by Evadne Wu on 7/13/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-//	Error reasons which can be found within the error sent to the controller’s completion block
-extern NSString * kWAAuthenticationRequestUserFailure;
 
-@class WALoginViewController, IRAction;
+typedef void (^WALogInViewControllerCallback)(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error);
 
-typedef void (^WALoginViewControllerCallback) (WALoginViewController *self, NSDictionary *userRep, NSError *error);
 
-@interface WALoginViewController : UIViewController
-@property (strong, nonatomic) IBOutlet UITextField *usernameField;
-@property (strong, nonatomic) IBOutlet UITextField *passwordField;
-@property (strong, nonatomic) IBOutlet UILabel *signUpLabel;
-@property (strong, nonatomic) IBOutlet UIButton *signUpButton;
-@property (strong, nonatomic) IBOutlet UIButton *signInButton;
-@property (strong, nonatomic) IBOutlet UIButton *signInWithFacebookButton;
-@property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
-@property (strong, nonatomic) IBOutlet UIView *loginContainerView;
+@interface WALogInViewController : UITableViewController
 
-@property (strong, nonatomic) WALoginViewControllerCallback completionBlock;
-- (void) presentError:(NSError *)error completion:(void(^)(void))block;
++ (WALogInViewController *) controllerWithCompletion:(WALogInViewControllerCallback)block;
 
-- (IBAction)signInAction:(id)sender;
-- (IBAction)facebookSignInAction:(id)sender;
-- (IBAction)registerAction:(id)sender;
-- (IBAction)resignAllFields:(id)sender;
+- (IBAction) handleDone:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UITextField *emailField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordField;
 
 @end

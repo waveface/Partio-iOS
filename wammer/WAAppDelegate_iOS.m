@@ -19,16 +19,12 @@
 #import "WADataStore+WARemoteInterfaceAdditions.h"
 
 #import "WANavigationController.h"
-#import "WAAuthenticationRequestViewController.h"
-#import "WARegisterRequestViewController.h"
 #import "WAApplicationRootViewControllerDelegate.h"
 #import "WANavigationBar.h"
 #import "WAOverviewController.h"
 #import "WATimelineViewControllerPhone.h"
 #import "WAUserInfoViewController.h"
 #import "WAOverlayBezel.h"
-#import "WARegisterRequestViewController+SubclassEyesOnly.h"
-#import "WALoginViewController.h"
 
 #import "Foundation+IRAdditions.h"
 #import "UIKit+IRAdditions.h"
@@ -42,6 +38,7 @@
 #import "WAFacebookInterface.h"
 #import "WAFacebookInterfaceSubclass.h"
 
+#import "WAWelcomeViewController.h"
 #import "WATutorialViewController.h"
 
 
@@ -517,36 +514,60 @@
 		
 	};
 	
-	WALoginViewController *loginVC = [[WALoginViewController alloc] init];
+	__block WAWelcomeViewController *welcomeVC = [WAWelcomeViewController controllerWithCompletion:^(NSString *token, NSDictionary *userRep, NSArray *groupReps, NSError *error) {
 	
-	loginVC.completionBlock = ^(WALoginViewController *self, NSDictionary *userRep, NSError *error) {
-		
 		if (error) {
-
-			[self presentError:error completion:nil];
+		
+			NSString *message = [error localizedDescription];
+			IRAction *okAction = [IRAction actionWithTitle:NSLocalizedString(@"ACTION_OKAY", @"Alert Dismissal Action") block:nil];
+		
+			IRAlertView *alertView = [IRAlertView alertViewWithTitle:nil message:message cancelAction:okAction otherActions:nil];
+			[alertView show];
+		
+			welcomeVC = nil;
 			return;
 			
 		}
 		
+		NSString *userStatus = [userRep valueForKeyPath:@"state"];
+		NSString *userID = [userRep valueForKeyPath:@"user_id"];
+		
+		BOOL userNewlyCreated = [userStatus isEqual:@"created"];
+		BOOL userIsFromFacebook = ![[userRep valueForKeyPath:@"sns.@count"] isEqual:[NSNumber numberWithUnsignedInteger:0]];
+		
+		NSString *primaryGroupID = [[[groupReps filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+		
+			return [[evaluatedObject valueForKeyPath:@"creator_id"] isEqual:userID];
+			
+		}]] lastObject] valueForKeyPath:@"group_id"];
+		
+		WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+		
+		ri.userIdentifier = userID;
+		ri.userToken = token;
+		ri.primaryGroupIdentifier = primaryGroupID;
+		
 		if (userIDChanged()) {
 		
-			if ([[userRep valueForKeyPath:@"state"] isEqual:@"created"]) {
+			if (userNewlyCreated) {
 			
-				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithCompletion:^{
+				WATutorialInstantiationOption options = userIsFromFacebook ? WATutorialInstantiationOptionShowFacebookIntegrationToggle : WATutorialInstantiationOptionDefault;
+				
+				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithOption:options completion:^(BOOL didFinish, NSError *error) {
 
 					handleAuthSuccess();
 					[wAppDelegate recreateViewHierarchy];
 					
 				}];
-				
+			
 				[wAppDelegate clearViewHierarchy];
 				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
-			
+
 			} else {
-		
+			
 				handleAuthSuccess();
 				[wAppDelegate recreateViewHierarchy];
-				
+			
 			}
 			
 		} else {
@@ -555,25 +576,29 @@
 			
 		}
 		
-		[self dismissViewControllerAnimated:NO completion:^{
+		return;
+		
+		[welcomeVC dismissViewControllerAnimated:NO completion:^{
 			
 			UIViewController *rootVC = wAppDelegate.window.rootViewController;
 			
-			[rootVC presentViewController:self.navigationController animated:NO completion:^{
+			[rootVC presentViewController:welcomeVC.navigationController animated:NO completion:^{
 				
-				[self dismissViewControllerAnimated:YES completion:^{
+				[welcomeVC dismissViewControllerAnimated:YES completion:^{
 					
 					//	?
+					
+					welcomeVC = nil;
 					
 				}];
 				
 			}];
 			
 		}];
-
-	};
+				
+	}];
 	
-	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:loginVC];
+	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
 	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
 	
 	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];

@@ -1,25 +1,24 @@
 //
-//  WALogInViewController.m
+//  WASignUpViewController.m
 //  wammer
 //
 //  Created by Evadne Wu on 7/13/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
-#import "WALogInViewController.h"
+#import "WASignUpViewController.h"
 #import "WARemoteInterface.h"
 
-@interface WALogInViewController ()
-
+@interface WASignUpViewController ()
 + (UIStoryboard *) storyboard;
-@property (nonatomic, readwrite, copy) WALogInViewControllerCallback callback;
-
+@property (nonatomic, readwrite, copy) WASignUpViewControllerCallback callback;
 @end
 
 
-@implementation WALogInViewController
+@implementation WASignUpViewController
 @synthesize emailField = _emailField;
 @synthesize passwordField = _passwordField;
+@synthesize nicknameField = _nicknameField;
 @synthesize callback = _callback;
 
 + (UIStoryboard *) storyboard {
@@ -28,10 +27,10 @@
 
 }
 
-+ (WALogInViewController *) controllerWithCompletion:(WALogInViewControllerCallback)block {
++ (WASignUpViewController *) controllerWithCompletion:(WASignUpViewControllerCallback)block {
 
-	WALogInViewController *controller = (WALogInViewController *)[[self storyboard] instantiateInitialViewController];
-	NSCParameterAssert([controller isKindOfClass:[WALogInViewController class]]);
+	WASignUpViewController *controller = (WASignUpViewController *)[[self storyboard] instantiateInitialViewController];
+	NSCParameterAssert([controller isKindOfClass:[WASignUpViewController class]]);
 	
 	controller.callback = block;
 	
@@ -43,27 +42,30 @@
 
 	NSString *userName = self.emailField.text;
 	NSString *password = self.passwordField.text;
+	NSString *nickname = self.nicknameField.text;
 	
-	[[WARemoteInterface sharedInterface] retrieveTokenForUser:userName password:password onSuccess:^(NSDictionary *userRep, NSString *token,NSArray *groupReps) {
+	[[WARemoteInterface sharedInterface] registerUser:userName password:password nickname:nickname onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
 	
+		//	do something with token
+		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			if (self.callback)
 				self.callback(token, userRep, groupReps, nil);
-		
+
 		});
 		
 	} onFailure:^(NSError *error) {
-		
+	
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			if (self.callback)
 				self.callback(nil, nil, nil, error);
 		
 		});
-
+		
 	}];
-	
+
 }
 
 @end

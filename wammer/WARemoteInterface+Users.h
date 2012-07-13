@@ -14,7 +14,7 @@
 + (NSDictionary *) userEntityFromRepresentation:(NSDictionary *)remoteResponse;
 
 //	POST auth/signup
-- (void) registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void(^)(NSString *token, NSDictionary *userRep, NSArray *groupReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	GET users/get
 - (void) retrieveUser:(NSString *)anIdentifier onSuccess:(void(^)(NSDictionary *userRep))successBlock onFailure:(void(^)(NSError *error))failureBlock;

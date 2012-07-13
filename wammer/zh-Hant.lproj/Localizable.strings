@@ -21,7 +21,6 @@
 
 /* Action title for Cancelling
    Action title for cancelling stuff
-   Cancel action in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "取消";
@@ -59,9 +58,7 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "新文章";
 
-/* OK action in connection failure alert
-   OK action in facebook login failure alert
-   OK action in registration failure alert */
+/* Alert Dismissal Action */
 "ACTION_OKAY" = "確定";
 
 /* No comment provided by engineer. */
@@ -70,26 +67,11 @@
 /* No comment provided by engineer. */
 "ACTION_PRINT" = "列印";
 
-/* Action title for processing stuff */
-"ACTION_PROCESSING" = "處理中";
-
-/* Action title for registering */
-"ACTION_REGISTER_USER" = "註冊";
-
 /* No comment provided by engineer. */
 "ACTION_RESET" = "重設";
 
-/* Action title for resetting password in login view */
-"ACTION_RESET_PASSWORD" = "重設密碼";
-
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "存成草稿";
-
-/* Action title for signing in */
-"ACTION_SIGN_IN" = "登入";
-
-/* Action title for signing in thru Facebook */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "登出";
@@ -99,9 +81,6 @@
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "取消最愛";
-
-/* Bezel showed in Login view for Facebook Authentication */
-"ACTION_WAITING_FOR_FACEBOOK" = "ACTION_WAITING_FOR_FACEBOOK";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "啓用除錯功能後，請重新登入。";
@@ -121,12 +100,6 @@
 
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "附加檔案";
-
-/* Title for login view */
-"AUTH_REQUEST_TITLE" = "Stream";
-
-/* Title for the Facebook linking controller */
-"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "連接 Facebook";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "選擇喜歡的相片作為封面。";
@@ -194,31 +167,6 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
-/* Description for authentication failure */
-"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
-
-/* Recovery notion for authentication failure recovery */
-"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "您可以重設密碼或新增一個帳號";
-
-/* Title for authentication failure in login view
-   Title for authentication failure in web view */
-"ERROR_AUTHENTICATION_FAILED_TITLE" = "密碼需為6-16個字元，無空白";
-
-/* Recovery notion for connection failure recovey */
-"ERROR_CONNECTION_FAILED_RECOVERY_NOTION" = "請稍候再嘗試登入";
-
-/* Title for connection failure in login view */
-"ERROR_CONNECTION_FAILED_TITLE" = "無法連接網際網路";
-
-/* Description for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Stream現在無法為您註冊";
-
-/* Recovery notion for registration failure recovery */
-"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "請稍候再嘗試登錄";
-
-/* Title for registration failure */
-"ERROR_USER_REGISTRATION_FAILED_TITLE" = "無法註冊";
-
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "所有貼文";
 
@@ -261,21 +209,6 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "草稿";
 
-/* Title for nick name
-   Title for nickname */
-"NOUN_NICKNAME" = "使用者名稱";
-
-/* Noun for Password
-   Title for password */
-"NOUN_PASSWORD" = "密碼";
-
-/* Title for password confirmation */
-"NOUN_PASSWORD_CONFIRMATION" = "確認密碼";
-
-/* Noun for Username
-   Title for username */
-"NOUN_USERNAME" = "電子郵件";
-
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d 張照片";
 
@@ -312,9 +245,6 @@
 
 /* REACHABILITY_STATE_UNKNOWN */
 "REACHABILITY_STATE_UNKNOWN" = "不可用";
-
-/* Title for registration request view */
-"REGISTER_REQUEST_TITLE" = "註冊";
 
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "是否要清除所有設定？";
@@ -421,54 +351,6 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
-/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "11"; */
-"NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
-"ACTION_SIGN_IN" = "登入";
-
-/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "13"; */
-"NOUN_PASSWORD" = "密碼";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
-
-/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "15"; */
-"NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
-"NOUN_PASSWORD" = "密碼";
-
-/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "22"; */
-"ACTION_SIGN_UP_HELP" = "還沒有帳號嗎?";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "23"; */
-"ACTION_SIGN_UP" = "按這裡註冊";
-
-/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "5"; */
-"NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "6"; */
-"ACTION_SIGN_UP_HELP" = "還沒有帳號嗎?";
-
-/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "8"; */
-"NOUN_PASSWORD" = "密碼";
-
-/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "10"; */
-"NOUN_USERNAME" = "電子郵件";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "11"; */
-"ACTION_SIGN_IN" = "登入";
-
-/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "12"; */
-"NOUN_PASSWORD" = "密碼";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "13"; */
-"ACTION_SIGN_IN_WITH_FACEBOOK" = "使用 Facebook 帳戶登入";
-
-/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "14"; */
-"ACTION_SIGN_UP" = "按這裡註冊";
-
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 
@@ -513,9 +395,6 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
-
-/* Class = "IBUIButton"; normalTitle = "START_STREAM"; ObjectID = "132"; */
-"START_STREAM" = "START_STREAM";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";

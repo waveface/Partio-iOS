@@ -35,7 +35,7 @@
 
 }
 
-- (void) registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void (^)(NSDictionary *))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void) registerUser:(NSString *)anIdentifier password:(NSString *)aPassword nickname:(NSString *)aNickname onSuccess:(void (^)(NSString *, NSDictionary *, NSArray *))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aNickname);
@@ -48,8 +48,13 @@
 				
 	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
-		if (successBlock)
-			successBlock([inResponseOrNil valueForKeyPath:@"user"]);
+		if (successBlock) {
+			successBlock(
+				[inResponseOrNil valueForKeyPath:@"session_token"],
+				[inResponseOrNil valueForKeyPath:@"user"],
+				[inResponseOrNil valueForKeyPath:@"groups"]
+			);
+		}
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 

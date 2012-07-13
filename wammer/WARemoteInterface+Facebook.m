@@ -10,7 +10,7 @@
 
 @implementation WARemoteInterface (Facebook)
 
-- (void)signupUserWithFacebookToken:(NSString *)accessToken withOptions:(NSDictionary *)options onSuccess:(void (^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void (^)(NSError *))failureBlock {
+- (void)signupUserWithFacebookToken:(NSString *)accessToken withOptions:(NSDictionary *)options onSuccess:(void (^)(NSString *token, NSDictionary *userRep, NSArray *groupReps))successBlock onFailure:(void (^)(NSError *))failureBlock {
 
 	NSString *preferredLanguage = @"en";
 	
@@ -19,28 +19,25 @@
 		preferredLanguage = @"zh_tw";
 	}
   
-  NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                           @"facebook", @"sns",
-                           accessToken, @"auth_token",
-                           @"yes", @"sns_connect",
-                           @"yes", @"subscribed",
-                           preferredLanguage, @"lang",
-                           nil];
-  [self.engine fireAPIRequestNamed:@"auth/signup"
-										 withArguments:nil
-													 options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil)
-												 validator:WARemoteInterfaceGenericNoErrorValidator()
-										successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
+	NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
+		accessToken, @"auth_token",
+		preferredLanguage, @"lang",
+		@"facebook", @"sns",
+		@"yes", @"sns_connect",
+		@"yes", @"subscribed",
+	nil];
+	
+	[self.engine fireAPIRequestNamed:@"auth/signup" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 											
-											NSDictionary *userEntity = [[self class] userEntityFromRepresentation:inResponseOrNil];
-											NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
-											
-											if (successBlock) {
-												successBlock(userEntity, incomingToken);
-											}
-											
-										}
-										failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
+		if (successBlock) {
+			successBlock(
+				[inResponseOrNil valueForKeyPath:@"session_token"],
+				[[self class] userEntityFromRepresentation:inResponseOrNil],
+				[inResponseOrNil valueForKeyPath:@"groups"]
+			);
+		}
+
+	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];
 	
 }
 
