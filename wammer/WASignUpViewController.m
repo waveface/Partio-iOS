@@ -38,6 +38,14 @@
 
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+
+	[super viewWillAppear:animated];
+	
+	[self.navigationController setNavigationBarHidden:NO animated:animated];
+
+}
+
 - (IBAction) handleDone:(id)sender {
 
 	NSString *userName = self.emailField.text;
