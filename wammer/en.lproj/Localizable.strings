@@ -21,6 +21,7 @@
 
 /* Action title for Cancelling
    Action title for cancelling stuff
+   Cancel action in login view
    Cancel.
    Title for cancelling an action */
 "ACTION_CANCEL" = "Cancel";
@@ -58,7 +59,9 @@
 /* Action title for creating a new post */
 "ACTION_NEW_POST" = "New Post";
 
-/* Alert Dismissal Action */
+/* OK action in connection failure alert
+   OK action in facebook login failure alert
+   OK action in registration failure alert */
 "ACTION_OKAY" = "OK";
 
 /* No comment provided by engineer. */
@@ -67,11 +70,26 @@
 /* No comment provided by engineer. */
 "ACTION_PRINT" = "Print";
 
+/* Action title for processing stuff */
+"ACTION_PROCESSING" = "Processing";
+
+/* Action title for registering */
+"ACTION_REGISTER_USER" = "Register";
+
 /* No comment provided by engineer. */
 "ACTION_RESET" = "Reset";
 
+/* Action title for resetting password in login view */
+"ACTION_RESET_PASSWORD" = "Forgot";
+
 /* Action title for saving a draft */
 "ACTION_SAVE_DRAFT" = "Save Draft";
+
+/* Action title for signing in */
+"ACTION_SIGN_IN" = "Login";
+
+/* Action title for signing in thru Facebook */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
 
 /* Action title for Signing Out */
 "ACTION_SIGN_OUT" = "Logout";
@@ -81,6 +99,9 @@
 
 /* Action marking article as not favorite */
 "ACTION_UNMARK_FAVORITE" = "Unfavorite";
+
+/* Bezel showed in Login view for Facebook Authentication */
+"ACTION_WAITING_FOR_FACEBOOK" = "Processing";
 
 /* No comment provided by engineer. */
 "ADVANCED_FEATURES_DISABLED_DESCRIPTION" = "Advanced features are now disabled.  Login again to populate changes.";
@@ -100,6 +121,12 @@
 
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
+
+/* Title for login view */
+"AUTH_REQUEST_TITLE" = "Stream";
+
+/* Title for the Facebook linking controller */
+"AUTH_WITH_FACEBOOK_REQUEST_TITLE" = "Facebook";
 
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
@@ -167,6 +194,31 @@
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
+/* Description for authentication failure */
+"ERROR_AUTHENTICATION_FAILED_DESCRIPTION" = " ";
+
+/* Recovery notion for authentication failure recovery */
+"ERROR_AUTHENTICATION_FAILED_RECOVERY_NOTION" = "Please reset your password, or register a new account.";
+
+/* Title for authentication failure in login view
+   Title for authentication failure in web view */
+"ERROR_AUTHENTICATION_FAILED_TITLE" = "Email or password is invalid";
+
+/* Recovery notion for connection failure recovey */
+"ERROR_CONNECTION_FAILED_RECOVERY_NOTION" = "Please try login again later";
+
+/* Title for connection failure in login view */
+"ERROR_CONNECTION_FAILED_TITLE" = "Unable to connect to Internet";
+
+/* Description for registration failure */
+"ERROR_USER_REGISTRATION_FAILED_DESCRIPTION" = "Waveface is unable to register your account: ";
+
+/* Recovery notion for registration failure recovery */
+"ERROR_USER_REGISTRATION_FAILED_RECOVERY_NOTION" = "Please try registrating again later.";
+
+/* Title for registration failure */
+"ERROR_USER_REGISTRATION_FAILED_TITLE" = "Unable to Register";
+
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
 
@@ -209,6 +261,21 @@
 /* Plural noun for draft objects */
 "NOUN_DRAFTS" = "Drafts";
 
+/* Title for nick name
+   Title for nickname */
+"NOUN_NICKNAME" = "Name";
+
+/* Noun for Password
+   Title for password */
+"NOUN_PASSWORD" = "Password";
+
+/* Title for password confirmation */
+"NOUN_PASSWORD_CONFIRMATION" = "Confirm Password";
+
+/* Noun for Username
+   Title for username */
+"NOUN_USERNAME" = "Email";
+
 /* Photo information in cell */
 "NUMBER_OF_PHOTOS" = "%d photos";
 
@@ -245,6 +312,9 @@
 
 /* REACHABILITY_STATE_UNKNOWN */
 "REACHABILITY_STATE_UNKNOWN" = "Offline";
+
+/* Title for registration request view */
+"REGISTER_REQUEST_TITLE" = "Register";
 
 /* No comment provided by engineer. */
 "RESET_SETTINGS_CONFIRMATION_DESCRIPTION" = "All settings will be reset. Unsaved changes will be lost.";
@@ -339,6 +409,15 @@
 /* No comment provided by engineer. */
 "YEAR_SINGULAR" = "%d year";
 
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "F8D-Cb-rIK"; */
+"ACTION_SIGN_IN" = "Login";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "HBf-5z-7wY"; */
+"ACTION_SIGN_UP" = "Sign up now";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "niQ-qq-0KO"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_SEND"; ObjectID = "29"; */
 "ACTION_SEND" = "Stream!";
 
@@ -350,6 +429,54 @@
 
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "11"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "12"; */
+"ACTION_SIGN_IN" = "Login";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "13"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "14"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "15"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "17"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "22"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "23"; */
+"ACTION_SIGN_UP" = "Sign up now";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_USERNAME"; ObjectID = "5"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUILabel"; text = "ACTION_SIGN_UP_HELP"; ObjectID = "6"; */
+"ACTION_SIGN_UP_HELP" = "New to Waveface Stream?";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "10"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "11"; */
+"ACTION_SIGN_IN" = "Login";
+
+/* Class = "IBUITextField"; placeholder = "NOUN_PASSWORD"; ObjectID = "12"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN_WITH_FACEBOOK"; ObjectID = "13"; */
+"ACTION_SIGN_IN_WITH_FACEBOOK" = "Login with Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "14"; */
+"ACTION_SIGN_UP" = "Sign up now";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
@@ -395,6 +522,9 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
+
+/* Class = "IBUIButton"; normalTitle = "START_STREAM"; ObjectID = "132"; */
+"START_STREAM" = "START_STREAM";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
