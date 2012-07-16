@@ -16,6 +16,11 @@ typedef void (^WAWelcomeViewControllerCallback)(NSString *token, NSDictionary *u
 
 + (WAWelcomeViewController *) controllerWithCompletion:(WAWelcomeViewControllerCallback)block;
 
+@property (weak, nonatomic) IBOutlet UIImageView *greenTextureView;
+@property (weak, nonatomic) IBOutlet UIButton *facebookButton;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *signUpButton;
+
 - (IBAction) handleFacebookConnect:(id)sender;
 - (IBAction) handleLogin:(id)sender;
 - (IBAction) handleSignUp:(id)sender;

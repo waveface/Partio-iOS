@@ -20,6 +20,10 @@
 
 
 @implementation WAWelcomeViewController
+@synthesize greenTextureView = _greenTextureView;
+@synthesize facebookButton = _facebookButton;
+@synthesize loginButton = _loginButton;
+@synthesize signUpButton = _signUpButton;
 @synthesize callback = _callback;
 
 + (WAWelcomeViewController *) controllerWithCompletion:(WAWelcomeViewControllerCallback)block {
@@ -35,6 +39,43 @@
 	
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 	
+}
+
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	
+	UIImageView *textureView = self.greenTextureView;
+	textureView.backgroundColor = [UIColor colorWithPatternImage:textureView.image];
+	textureView.image = nil;
+	
+	UIImage * (^stretch)(UIImage *) = ^ (UIImage *image) {
+	
+		return [image stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f];
+	
+	};
+
+	void (^heckle)(UIButton *, UIControlState) = ^ (UIButton *button, UIControlState state) {
+	
+		[button setBackgroundImage:stretch([button backgroundImageForState:state]) forState:state];
+
+	};
+	
+	void (^heckleAll)(UIButton *) = ^ (UIButton * button) {
+	
+		heckle(button, UIControlStateNormal);
+		heckle(button, UIControlStateHighlighted);
+		heckle(button, UIControlStateSelected);
+		heckle(button, UIControlStateDisabled);
+		heckle(button, UIControlStateReserved);
+		heckle(button, UIControlStateApplication);
+	
+	};
+	
+	heckleAll(self.facebookButton);
+	heckleAll(self.loginButton);
+	heckleAll(self.signUpButton);
+
 }
 
 - (IBAction) handleFacebookConnect:(id)sender {
@@ -108,5 +149,12 @@
 	
 	[self.navigationController pushViewController:signUpVC animated:YES];
 
+}
+- (void)viewDidUnload {
+    [self setGreenTextureView:nil];
+    [self setFacebookButton:nil];
+    [self setLoginButton:nil];
+    [self setSignUpButton:nil];
+    [super viewDidUnload];
 }
 @end
