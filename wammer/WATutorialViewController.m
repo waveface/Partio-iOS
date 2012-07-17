@@ -28,6 +28,7 @@
 @synthesize pageStartStream = _pageStartStream;
 @synthesize option = _option;
 @synthesize callback = _callback;
+@synthesize pages = _pages;
 
 + (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block {
 
