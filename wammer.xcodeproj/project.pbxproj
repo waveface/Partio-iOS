@@ -393,7 +393,6 @@
 		FFCCDDCB15B4190200AEBB85 /* TutorialWelcome~iphone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDDBA15B4190200AEBB85 /* TutorialWelcome~iphone@2x.png */; };
 		FFCCDF4915B41B0000AEBB85 /* CameraPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */; };
 		FFCCDF4A15B41B0000AEBB85 /* CameraPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */; };
-		FFCCDF4B15B41B0000AEBB85 /* CoverBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE3E15B41B0000AEBB85 /* CoverBackground@2x.png */; };
 		FFCCDF4C15B41B0000AEBB85 /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */; };
 		FFCCDF4D15B41B0000AEBB85 /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */; };
 		FFCCDF4E15B41B0000AEBB85 /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */; };
@@ -444,16 +443,10 @@
 		FFCCDF7B15B41B0000AEBB85 /* iPhoneFav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE6E15B41B0000AEBB85 /* iPhoneFav@2x.png */; };
 		FFCCDF7C15B41B0000AEBB85 /* iPhoneUnfav.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE6F15B41B0000AEBB85 /* iPhoneUnfav.png */; };
 		FFCCDF7D15B41B0000AEBB85 /* iPhoneUnfav@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7015B41B0000AEBB85 /* iPhoneUnfav@2x.png */; };
-		FFCCDF7E15B41B0000AEBB85 /* LoginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7115B41B0000AEBB85 /* LoginBackground.png */; };
-		FFCCDF7F15B41B0000AEBB85 /* LoginBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7215B41B0000AEBB85 /* LoginBackground@2x.png */; };
-		FFCCDF8015B41B0000AEBB85 /* LoginBackground~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7315B41B0000AEBB85 /* LoginBackground~ipad.png */; };
-		FFCCDF8115B41B0000AEBB85 /* LoginBackground~ipad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7415B41B0000AEBB85 /* LoginBackground~ipad@2x.png */; };
 		FFCCDF8215B41B0000AEBB85 /* LoginBackgroundWithImage.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7515B41B0000AEBB85 /* LoginBackgroundWithImage.png */; };
 		FFCCDF8315B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7615B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png */; };
 		FFCCDF8415B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7715B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png */; };
 		FFCCDF8515B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7815B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png */; };
-		FFCCDF8715B41B0000AEBB85 /* LoginViewPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7A15B41B0000AEBB85 /* LoginViewPhone.png */; };
-		FFCCDF8815B41B0000AEBB85 /* LoginViewPhone@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7B15B41B0000AEBB85 /* LoginViewPhone@2x.png */; };
 		FFCCDF8915B41B0000AEBB85 /* Logotype.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7C15B41B0000AEBB85 /* Logotype.png */; };
 		FFCCDF8A15B41B0000AEBB85 /* Logotype@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */; };
 		FFCCDF8B15B41B0000AEBB85 /* NotePressed.png in Resources */ = {isa = PBXBuildFile; fileRef = FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */; };
@@ -1711,7 +1704,6 @@
 		FFCCDDDB15B4193A00AEBB85 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "zh-Hant"; path = "zh-Hant.lproj/TutorialDesktop~ipad.png"; sourceTree = "<group>"; };
 		FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = CameraPressed.png; path = Resources/CameraPressed.png; sourceTree = "<group>"; };
 		FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CameraPressed@2x.png"; path = "Resources/CameraPressed@2x.png"; sourceTree = "<group>"; };
-		FFCCDE3E15B41B0000AEBB85 /* CoverBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "CoverBackground@2x.png"; path = "Resources/CoverBackground@2x.png"; sourceTree = "<group>"; };
 		FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape.png"; path = "Resources/Default-Landscape.png"; sourceTree = "<group>"; };
 		FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x.png"; path = "Resources/Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait.png"; path = "Resources/Default-Portrait.png"; sourceTree = "<group>"; };
@@ -1762,16 +1754,10 @@
 		FFCCDE6E15B41B0000AEBB85 /* iPhoneFav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhoneFav@2x.png"; path = "Resources/iPhoneFav@2x.png"; sourceTree = "<group>"; };
 		FFCCDE6F15B41B0000AEBB85 /* iPhoneUnfav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhoneUnfav.png; path = Resources/iPhoneUnfav.png; sourceTree = "<group>"; };
 		FFCCDE7015B41B0000AEBB85 /* iPhoneUnfav@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPhoneUnfav@2x.png"; path = "Resources/iPhoneUnfav@2x.png"; sourceTree = "<group>"; };
-		FFCCDE7115B41B0000AEBB85 /* LoginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackground.png; path = Resources/LoginBackground.png; sourceTree = "<group>"; };
-		FFCCDE7215B41B0000AEBB85 /* LoginBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground@2x.png"; path = "Resources/LoginBackground@2x.png"; sourceTree = "<group>"; };
-		FFCCDE7315B41B0000AEBB85 /* LoginBackground~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground~ipad.png"; path = "Resources/LoginBackground~ipad.png"; sourceTree = "<group>"; };
-		FFCCDE7415B41B0000AEBB85 /* LoginBackground~ipad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackground~ipad@2x.png"; path = "Resources/LoginBackground~ipad@2x.png"; sourceTree = "<group>"; };
 		FFCCDE7515B41B0000AEBB85 /* LoginBackgroundWithImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImage.png; path = Resources/LoginBackgroundWithImage.png; sourceTree = "<group>"; };
 		FFCCDE7615B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImage@2x.png"; path = "Resources/LoginBackgroundWithImage@2x.png"; sourceTree = "<group>"; };
 		FFCCDE7715B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginBackgroundWithImageLandscape.png; path = Resources/LoginBackgroundWithImageLandscape.png; sourceTree = "<group>"; };
 		FFCCDE7815B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginBackgroundWithImageLandscape@2x.png"; path = "Resources/LoginBackgroundWithImageLandscape@2x.png"; sourceTree = "<group>"; };
-		FFCCDE7A15B41B0000AEBB85 /* LoginViewPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LoginViewPhone.png; path = Resources/LoginViewPhone.png; sourceTree = "<group>"; };
-		FFCCDE7B15B41B0000AEBB85 /* LoginViewPhone@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "LoginViewPhone@2x.png"; path = "Resources/LoginViewPhone@2x.png"; sourceTree = "<group>"; };
 		FFCCDE7C15B41B0000AEBB85 /* Logotype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Logotype.png; path = Resources/Logotype.png; sourceTree = "<group>"; };
 		FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Logotype@2x.png"; path = "Resources/Logotype@2x.png"; sourceTree = "<group>"; };
 		FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = NotePressed.png; path = Resources/NotePressed.png; sourceTree = "<group>"; };
@@ -2989,7 +2975,6 @@
 				FFCCDDBA15B4190200AEBB85 /* TutorialWelcome~iphone@2x.png */,
 				FFCCDE3C15B41B0000AEBB85 /* CameraPressed.png */,
 				FFCCDE3D15B41B0000AEBB85 /* CameraPressed@2x.png */,
-				FFCCDE3E15B41B0000AEBB85 /* CoverBackground@2x.png */,
 				FFCCDE3F15B41B0000AEBB85 /* Default-Landscape.png */,
 				FFCCDE4015B41B0000AEBB85 /* Default-Landscape@2x.png */,
 				FFCCDE4115B41B0000AEBB85 /* Default-Portrait.png */,
@@ -3040,16 +3025,10 @@
 				FFCCDE6E15B41B0000AEBB85 /* iPhoneFav@2x.png */,
 				FFCCDE6F15B41B0000AEBB85 /* iPhoneUnfav.png */,
 				FFCCDE7015B41B0000AEBB85 /* iPhoneUnfav@2x.png */,
-				FFCCDE7115B41B0000AEBB85 /* LoginBackground.png */,
-				FFCCDE7215B41B0000AEBB85 /* LoginBackground@2x.png */,
-				FFCCDE7315B41B0000AEBB85 /* LoginBackground~ipad.png */,
-				FFCCDE7415B41B0000AEBB85 /* LoginBackground~ipad@2x.png */,
 				FFCCDE7515B41B0000AEBB85 /* LoginBackgroundWithImage.png */,
 				FFCCDE7615B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png */,
 				FFCCDE7715B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png */,
 				FFCCDE7815B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png */,
-				FFCCDE7A15B41B0000AEBB85 /* LoginViewPhone.png */,
-				FFCCDE7B15B41B0000AEBB85 /* LoginViewPhone@2x.png */,
 				FFCCDE7C15B41B0000AEBB85 /* Logotype.png */,
 				FFCCDE7D15B41B0000AEBB85 /* Logotype@2x.png */,
 				FFCCDE7E15B41B0000AEBB85 /* NotePressed.png */,
@@ -4075,7 +4054,6 @@
 				FFCCDDCB15B4190200AEBB85 /* TutorialWelcome~iphone@2x.png in Resources */,
 				FFCCDF4915B41B0000AEBB85 /* CameraPressed.png in Resources */,
 				FFCCDF4A15B41B0000AEBB85 /* CameraPressed@2x.png in Resources */,
-				FFCCDF4B15B41B0000AEBB85 /* CoverBackground@2x.png in Resources */,
 				FFCCDF4C15B41B0000AEBB85 /* Default-Landscape.png in Resources */,
 				FFCCDF4D15B41B0000AEBB85 /* Default-Landscape@2x.png in Resources */,
 				FFCCDF4E15B41B0000AEBB85 /* Default-Portrait.png in Resources */,
@@ -4126,16 +4104,10 @@
 				FFCCDF7B15B41B0000AEBB85 /* iPhoneFav@2x.png in Resources */,
 				FFCCDF7C15B41B0000AEBB85 /* iPhoneUnfav.png in Resources */,
 				FFCCDF7D15B41B0000AEBB85 /* iPhoneUnfav@2x.png in Resources */,
-				FFCCDF7E15B41B0000AEBB85 /* LoginBackground.png in Resources */,
-				FFCCDF7F15B41B0000AEBB85 /* LoginBackground@2x.png in Resources */,
-				FFCCDF8015B41B0000AEBB85 /* LoginBackground~ipad.png in Resources */,
-				FFCCDF8115B41B0000AEBB85 /* LoginBackground~ipad@2x.png in Resources */,
 				FFCCDF8215B41B0000AEBB85 /* LoginBackgroundWithImage.png in Resources */,
 				FFCCDF8315B41B0000AEBB85 /* LoginBackgroundWithImage@2x.png in Resources */,
 				FFCCDF8415B41B0000AEBB85 /* LoginBackgroundWithImageLandscape.png in Resources */,
 				FFCCDF8515B41B0000AEBB85 /* LoginBackgroundWithImageLandscape@2x.png in Resources */,
-				FFCCDF8715B41B0000AEBB85 /* LoginViewPhone.png in Resources */,
-				FFCCDF8815B41B0000AEBB85 /* LoginViewPhone@2x.png in Resources */,
 				FFCCDF8915B41B0000AEBB85 /* Logotype.png in Resources */,
 				FFCCDF8A15B41B0000AEBB85 /* Logotype@2x.png in Resources */,
 				FFCCDF8B15B41B0000AEBB85 /* NotePressed.png in Resources */,

@@ -600,6 +600,7 @@
 	
 	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
 	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+	authRequestWrapperVC.navigationBar.tintColor =  [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
 	
 	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
 	

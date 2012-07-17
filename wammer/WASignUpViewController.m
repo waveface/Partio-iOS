@@ -38,6 +38,17 @@
 
 }
 
+- (void) viewDidLoad {
+
+	[super viewDidLoad];
+	
+	UIView *bgView = [[UIView alloc] initWithFrame:CGRectZero];
+	bgView.backgroundColor = [UIColor colorWithRed:203.0f/255.0f green:227.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+	
+	self.tableView.backgroundView = bgView;
+
+}
+
 - (void) viewWillAppear:(BOOL)animated {
 
 	[super viewWillAppear:animated];
