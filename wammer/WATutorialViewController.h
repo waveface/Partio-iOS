@@ -2,21 +2,35 @@
 //  WATutorialViewController.h
 //  wammer
 //
-//  Created by jamie on 7/5/12.
+//  Created by Evadne Wu on 7/13/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "UIKit+IRAdditions.h"
 
-@interface WATutorialViewController : UIViewController <UIScrollViewDelegate>
 
-+ (WATutorialViewController *) controllerWithCompletion:(void(^)(void))completion;
+enum WATutorialInstantiationOption {
+	WATutorialInstantiationOptionDefault,
+  WATutorialInstantiationOptionShowFacebookIntegrationToggle
+};
 
-@property (nonatomic, readwrite, weak) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, readwrite, weak) IBOutlet UIView *introductionView;
-@property (nonatomic, readwrite, weak) IBOutlet UIPageControl *pageControl;
-@property (nonatomic, readwrite, weak) IBOutlet UIButton *startButton;
+typedef NSUInteger WATutorialInstantiationOption;
 
-- (IBAction) enterTimeline:(id)sender;
+typedef void (^WATutorialViewControllerCallback)(BOOL didFinish, NSError *error);
+
+
+@interface WATutorialViewController : UIViewController
+
++ (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block;
+
+@property (weak, nonatomic) IBOutlet IRPaginatedView *paginatedView;
+@property (weak, nonatomic) IBOutlet UIView *pageWelcomeToStream;
+@property (weak, nonatomic) IBOutlet UIView *pageReliveYourMoments;
+@property (weak, nonatomic) IBOutlet UIView *pageInstallStation;
+@property (weak, nonatomic) IBOutlet UIView *pageToggleFacebook;
+@property (weak, nonatomic) IBOutlet UIView *pageStartStream;
+
+- (IBAction) handleGo:(id)sender;
 
 @end

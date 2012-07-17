@@ -14,7 +14,7 @@
 - (IRWebAPIResponseContextTransformer) defaultV2AuthenticationListeningBlock;
 
 //	POST auth/login
-- (void) retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock;
+- (void) retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token, NSArray *groupReps))successBlock onFailure:(void(^)(NSError *error))failureBlock;
 
 //	POST auth/logout
 - (void) discardToken:(NSString *)aToken onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock;

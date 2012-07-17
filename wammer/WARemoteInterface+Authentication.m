@@ -115,7 +115,7 @@
 
 }
 
-- (void) retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+- (void) retrieveTokenForUser:(NSString *)anIdentifier password:(NSString *)aPassword onSuccess:(void(^)(NSDictionary *userRep, NSString *token, NSArray *groupReps))successBlock onFailure:(void(^)(NSError *error))failureBlock {
 
 	NSParameterAssert(anIdentifier);
 	NSParameterAssert(aPassword);
@@ -143,7 +143,7 @@
 		NSString *incomingToken = (NSString *)[inResponseOrNil objectForKey:@"session_token"];
 		
 		if (successBlock) {
-			successBlock(userEntity, incomingToken);
+			successBlock(userEntity, incomingToken, [inResponseOrNil valueForKeyPath:@"groups"]);
 		}
 		
 	} failureHandler:WARemoteInterfaceGenericFailureHandler(failureBlock)];

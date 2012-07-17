@@ -8,6 +8,7 @@
 
 #import "WAFacebookInterface.h"
 #import "Facebook.h"
+#import "WAFacebook.h"
 #import "WADefines.h"
 #import "WAFacebookInterfaceSubclass.h"
 
@@ -48,7 +49,7 @@ static NSString * const WAFacebookCallbackDidNotLoginMethodName = @"WAFacebookCa
 
 	if (!_facebook) {
 	
-		_facebook = [[Facebook alloc] initWithAppId:kWAFacebookAppID andDelegate:self];
+		_facebook = [[WAFacebook alloc] initWithAppId:kWAFacebookAppID andDelegate:self];
 	
 	}
 	
@@ -63,6 +64,8 @@ static NSString * const WAFacebookCallbackDidNotLoginMethodName = @"WAFacebookCa
 	__weak NSNotificationCenter * const center = [NSNotificationCenter defaultCenter];
 	
 	__block id listener = [center addObserverForName:WAFacebookCallbackTrampolineNotification object:self queue:nil usingBlock:^(NSNotification *note) {
+		
+		NSLog(@"note %@", note);
 	
 		NSDictionary *userInfo = [note userInfo];
 		NSString *methodName = [userInfo objectForKey:WAFacebookCallbackTrampolineMethodNameKey];

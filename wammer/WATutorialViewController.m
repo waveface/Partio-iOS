@@ -2,71 +2,110 @@
 //  WATutorialViewController.m
 //  wammer
 //
-//  Created by jamie on 7/5/12.
+//  Created by Evadne Wu on 7/13/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import "WATutorialViewController.h"
-#import "WAAppDelegate_iOS.h"
 
-@interface WATutorialViewController ()
+@interface WATutorialViewController () <IRPaginatedViewDelegate>
 
-@property (nonatomic, readwrite, copy) void (^completionBlock)(void);
+@property (nonatomic, readwrite, assign) WATutorialInstantiationOption option;
+@property (nonatomic, readwrite, copy) WATutorialViewControllerCallback callback;
+
+@property (nonatomic, readonly, strong) NSArray *pages;
+- (NSArray *) copyPages;
 
 @end
 
+
 @implementation WATutorialViewController
-@synthesize scrollView = _scrollView;
-@synthesize introductionView = _introductionView;
-@synthesize pageControl = _pageControl;
-@synthesize startButton = _startButton;
-@synthesize completionBlock = _completionBlock;
+@synthesize paginatedView = _paginatedView;
+@synthesize pageWelcomeToStream = _pageWelcomeToStream;
+@synthesize pageReliveYourMoments = _pageReliveYourMoments;
+@synthesize pageInstallStation = _pageInstallStation;
+@synthesize pageToggleFacebook = _pageToggleFacebook;
+@synthesize pageStartStream = _pageStartStream;
+@synthesize option = _option;
+@synthesize callback = _callback;
 
-const CGFloat kScrollObjWidth = 320.0;
-const NSUInteger kNumberOfPages = 5;
++ (WATutorialViewController *) controllerWithOption:(WATutorialInstantiationOption)option completion:(WATutorialViewControllerCallback)block {
 
-+ (WATutorialViewController *) controllerWithCompletion:(void(^)(void))completion {
-
-	WATutorialViewController *controller = [self new];
-	controller.completionBlock = completion;
+	WATutorialViewController *tutorialVC = [WATutorialViewController new];
+	tutorialVC.option = option;
+	tutorialVC.callback = block;
 	
-	return controller;
+	return tutorialVC;
 
 }
 
 - (void) viewDidLoad {
-	
+
 	[super viewDidLoad];
 	
-	[_scrollView addSubview:self.introductionView];
+	NSCParameterAssert(self.paginatedView);
+	NSCParameterAssert(self.pageWelcomeToStream);
+	NSCParameterAssert(self.pageReliveYourMoments);
+	NSCParameterAssert(self.pageInstallStation);
+	NSCParameterAssert(self.pageToggleFacebook);
+	NSCParameterAssert(self.pageStartStream);
 	
-	_scrollView.contentSize = (CGSize){ kNumberOfPages * kScrollObjWidth, CGRectGetHeight(_scrollView.bounds) };
-	_scrollView.delegate = self;
-	_pageControl.numberOfPages = kNumberOfPages;
-	_introductionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"TutorialBackground"]];
+	_pages = [self copyPages];
+	[self.paginatedView reloadViews];
 
 }
 
-- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-	
+- (NSUInteger) numberOfViewsInPaginatedView:(IRPaginatedView *)paginatedView {
+
+	return [self.pages count];
+
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)aScrollView {
-	
-	self.pageControl.currentPage = floor((aScrollView.contentOffset.x - kScrollObjWidth / 2) / kScrollObjWidth) + 1;
-	
+- (UIView *) viewForPaginatedView:(IRPaginatedView *)paginatedView atIndex:(NSUInteger)index {
+
+	return [self.pages objectAtIndex:index];
+
 }
 
-- (IBAction) enterTimeline:(id)sender {
+- (UIViewController *) viewControllerForSubviewAtIndex:(NSUInteger)index inPaginatedView:(IRPaginatedView *)paginatedView {
 
-	if (self.completionBlock) {
-		self.completionBlock();
-		return;
-	}
+	return nil;
+
+}
+
+- (void) paginatedView:(IRPaginatedView *)paginatedView willShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
+	//	?
+
+}
+
+- (void) paginatedView:(IRPaginatedView *)paginatedView didShowView:(UIView *)aView atIndex:(NSUInteger)index {
+
+	//	?
+
+}
+
+- (NSArray *) copyPages {
+
+	NSMutableArray *array = [NSMutableArray array];
 	
-	[(WAAppDelegate_iOS *)[UIApplication sharedApplication].delegate recreateViewHierarchy];
+	[array addObject:self.pageWelcomeToStream];
+	[array addObject:self.pageReliveYourMoments];
+	[array addObject:self.pageInstallStation];
 	
+	if (self.option & WATutorialInstantiationOptionShowFacebookIntegrationToggle)
+		[array addObject:self.pageToggleFacebook];
+	
+	[array addObject:self.pageStartStream];
+	
+	return array;
+
+}
+
+- (IBAction) handleGo:(id)sender {
+
+	if (self.callback)
+		self.callback(YES, nil);
+		
 }
 @end
