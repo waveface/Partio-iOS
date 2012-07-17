@@ -18,6 +18,7 @@ typedef void (^WALogInViewControllerCallback)(NSString *token, NSDictionary *use
 
 - (IBAction) handleDone:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneItem;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 

@@ -18,6 +18,7 @@ typedef void (^WASignUpViewControllerCallback)(NSString *userToken, NSDictionary
 
 - (IBAction) handleDone:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *doneItem;
 @property (weak, nonatomic) IBOutlet UITextField *emailField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (weak, nonatomic) IBOutlet UITextField *nicknameField;

@@ -16,6 +16,7 @@
 
 
 @implementation WASignUpViewController
+@synthesize doneItem = _doneItem;
 @synthesize emailField = _emailField;
 @synthesize passwordField = _passwordField;
 @synthesize nicknameField = _nicknameField;
@@ -46,6 +47,7 @@
 	bgView.backgroundColor = [UIColor colorWithRed:203.0f/255.0f green:227.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
 	
 	self.tableView.backgroundView = bgView;
+	self.doneItem.enabled = [self isPopulated];
 
 }
 
@@ -57,7 +59,49 @@
 
 }
 
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+
+	self.doneItem.enabled = [self isPopulated];
+
+	return YES;
+
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField {
+
+	if (!textField.text.length)
+		return NO;
+	
+	if (textField == _emailField) {
+		
+		[_passwordField becomeFirstResponder];
+		
+	} else if (textField == _passwordField) {
+	
+		[_nicknameField becomeFirstResponder];
+	
+	} else if (textField == _nicknameField) {
+	
+		if ([self isPopulated])
+			[self handleDone:nil];
+	
+	}
+	
+	return YES;
+
+}
+
+- (BOOL) isPopulated {
+
+	return [self.emailField.text length] && [self.passwordField.text length] && [self.nicknameField.text length];
+
+}
+
 - (IBAction) handleDone:(id)sender {
+
+	[self.emailField resignFirstResponder];
+	[self.passwordField resignFirstResponder];
+	[self.nicknameField resignFirstResponder];
 
 	NSString *userName = self.emailField.text;
 	NSString *password = self.passwordField.text;
@@ -87,4 +131,8 @@
 
 }
 
+- (void)viewDidUnload {
+	[self setDoneItem:nil];
+	[super viewDidUnload];
+}
 @end
