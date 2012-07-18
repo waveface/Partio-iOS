@@ -33,6 +33,12 @@
 
 }
 
+- (void) dealloc {
+	
+	[self removeObserver:self forKeyPath:@"detailViewController.view.frame"];
+
+}
+
 - (CGRect) rectForDetailView {
 
 	if (self.showingMasterViewController)

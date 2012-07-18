@@ -559,6 +559,21 @@
 					[wAppDelegate recreateViewHierarchy];
 					
 				}];
+				
+				switch ([UIDevice currentDevice].userInterfaceIdiom) {
+				
+					case UIUserInterfaceIdiomPad: {
+						tutorialVC.modalPresentationStyle = UIModalPresentationFormSheet;
+						break;
+					}
+					
+					case UIUserInterfaceIdiomPhone:
+					default: {
+						tutorialVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+					}
+
+				}
+
 			
 				[wAppDelegate clearViewHierarchy];
 				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
@@ -599,7 +614,21 @@
 	}];
 	
 	UINavigationController *authRequestWrapperVC = [[UINavigationController alloc] initWithRootViewController:welcomeVC];
-	authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+	
+	switch ([UIDevice currentDevice].userInterfaceIdiom) {
+	
+		case UIUserInterfaceIdiomPad: {
+			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationFormSheet;
+			break;
+		}
+		
+		case UIUserInterfaceIdiomPhone:
+		default: {
+			authRequestWrapperVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+		}
+
+	}
+	
 	authRequestWrapperVC.navigationBar.tintColor =  [UIColor colorWithRed:98.0/255.0 green:176.0/255.0 blue:195.0/255.0 alpha:0.0];
 	
 	[self.window.rootViewController presentViewController:authRequestWrapperVC animated:NO completion:nil];
