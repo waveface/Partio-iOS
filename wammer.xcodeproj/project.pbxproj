@@ -86,6 +86,7 @@
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
+		FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
 		FF0527EB14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */; };
 		FF0527F614F3BF860030D099 /* WAArticleAttachmentActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0527F514F3BF860030D099 /* WAArticleAttachmentActivityView.m */; };
@@ -1299,6 +1300,7 @@
 		4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Facebook.m"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
+		FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
 		FF0505ED14C088FF002EA455 /* WAButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAButton.h; sourceTree = "<group>"; };
 		FF0505EE14C088FF002EA455 /* WAButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAButton.m; sourceTree = "<group>"; };
 		FF0527EA14F3AA9B0030D099 /* WACompositionViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WACompositionViewControllerPhone.xib; sourceTree = "<group>"; };
@@ -2747,6 +2749,7 @@
 				FF56850415AF72FA00706CC2 /* WAWelcomeViewController.h */,
 				FF56850515AF72FA00706CC2 /* WAWelcomeViewController.m */,
 				FF56850615AF72FA00706CC2 /* WAWelcomeViewController.xib */,
+				FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */,
 				FF56850B15AF75CF00706CC2 /* WASignUpViewController.h */,
 				FF56850C15AF75CF00706CC2 /* WASignUpViewController.m */,
 				FF56850915AF74A700706CC2 /* WASignUpViewController.storyboard */,
@@ -4313,6 +4316,7 @@
 				FFCCE05315B41B0000AEBB85 /* WAUserGlyph@2x.png in Resources */,
 				FFCCE05415B41B0000AEBB85 /* WAUserGlyphLarge.png in Resources */,
 				FFCCE05515B41B0000AEBB85 /* WAUserGlyphLarge@2x.png in Resources */,
+				FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
