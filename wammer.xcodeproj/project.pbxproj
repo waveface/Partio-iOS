@@ -308,6 +308,7 @@
 		FF9809311592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809301592E4F700462FCD /* WADataStore+WASyncManagerAdditions.m */; };
 		FF9809341592E59800462FCD /* WASyncManager+FullQualityFileSync.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809331592E59800462FCD /* WASyncManager+FullQualityFileSync.m */; };
 		FF9809371592EB2600462FCD /* WASyncManager+DirtyArticleSync.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9809361592EB2600462FCD /* WASyncManager+DirtyArticleSync.m */; };
+		FF9DB05415B68BE100CEBE99 /* WATutorialViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF9DB05315B68BE100CEBE99 /* WATutorialViewController~ipad.xib */; };
 		FF9E137014A3018500524CA0 /* WAStackedArticleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */; };
 		FFA06556143B227B00145079 /* WANavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA06555143B227B00145079 /* WANavigationBar.m */; };
 		FFA0B1AC145FF786008760C1 /* WACompositionViewController+CustomUI.m in Sources */ = {isa = PBXBuildFile; fileRef = FFA0B1AB145FF786008760C1 /* WACompositionViewController+CustomUI.m */; };
@@ -1573,6 +1574,7 @@
 		FF9A17B813FA5371009E4CC4 /* WAArticleTextEmphasisLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTextEmphasisLabel.m; sourceTree = "<group>"; };
 		FF9DA0C513DFF89000D6B28B /* WAComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAComment.h; sourceTree = "<group>"; };
 		FF9DA0C613DFF89000D6B28B /* WAComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAComment.m; sourceTree = "<group>"; };
+		FF9DB05315B68BE100CEBE99 /* WATutorialViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = "WATutorialViewController~ipad.xib"; path = "wammer/WATutorialViewController~ipad.xib"; sourceTree = "<group>"; };
 		FF9E136E14A3018500524CA0 /* WAStackedArticleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAStackedArticleViewController.h; sourceTree = "<group>"; };
 		FF9E136F14A3018500524CA0 /* WAStackedArticleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAStackedArticleViewController.m; sourceTree = "<group>"; };
 		FFA06554143B227B00145079 /* WANavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WANavigationBar.h; sourceTree = "<group>"; };
@@ -2589,6 +2591,7 @@
 				FF6BD00515AFBD9D0046AAC8 /* WATutorialViewController.h */,
 				FF6BD00615AFBD9D0046AAC8 /* WATutorialViewController.m */,
 				FF6BD00715AFBD9D0046AAC8 /* WATutorialViewController.xib */,
+				FF9DB05315B68BE100CEBE99 /* WATutorialViewController~ipad.xib */,
 			);
 			name = Tutorial;
 			sourceTree = "<group>";
@@ -4317,6 +4320,7 @@
 				FFCCE05415B41B0000AEBB85 /* WAUserGlyphLarge.png in Resources */,
 				FFCCE05515B41B0000AEBB85 /* WAUserGlyphLarge@2x.png in Resources */,
 				FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */,
+				FF9DB05415B68BE100CEBE99 /* WATutorialViewController~ipad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

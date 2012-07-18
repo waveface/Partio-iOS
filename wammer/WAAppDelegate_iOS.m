@@ -559,6 +559,21 @@
 					[wAppDelegate recreateViewHierarchy];
 					
 				}];
+				
+				switch ([UIDevice currentDevice].userInterfaceIdiom) {
+				
+					case UIUserInterfaceIdiomPad: {
+						tutorialVC.modalPresentationStyle = UIModalPresentationFormSheet;
+						break;
+					}
+					
+					case UIUserInterfaceIdiomPhone:
+					default: {
+						tutorialVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+					}
+
+				}
+
 			
 				[wAppDelegate clearViewHierarchy];
 				[wAppDelegate.window.rootViewController presentViewController:tutorialVC animated:NO completion:nil];
