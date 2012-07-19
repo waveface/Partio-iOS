@@ -168,6 +168,7 @@
 		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
+		FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		FF3FF83215AEA670003CF6CC /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
 		FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
 		FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */; };
@@ -287,6 +288,7 @@
 		FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4B149CF46D00B8207A /* CoreData.framework */; };
 		FF87FA51149CF46D00B8207A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4C149CF46D00B8207A /* CoreFoundation.framework */; };
 		FF87FA52149CF46D00B8207A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4D149CF46D00B8207A /* Foundation.framework */; };
+		FF88370615B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
 		FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
 		FF897D32146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
@@ -1393,6 +1395,8 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/WFPresentation/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/WFPresentation/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
+		FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitch.h; sourceTree = "<group>"; };
+		FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitch.m; sourceTree = "<group>"; };
 		FF3FF83015AEA670003CF6CC /* WAFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebook.h; sourceTree = "<group>"; };
 		FF3FF83115AEA670003CF6CC /* WAFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebook.m; sourceTree = "<group>"; };
 		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
@@ -1520,6 +1524,8 @@
 		FF87FA4B149CF46D00B8207A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		FF87FA4C149CF46D00B8207A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		FF87FA4D149CF46D00B8207A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		FF88370415B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+SocialNetworks.h"; sourceTree = "<group>"; };
+		FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+SocialNetworks.m"; sourceTree = "<group>"; };
 		FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 14.xcdatamodel"; sourceTree = "<group>"; };
 		FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WAAdditions.h"; sourceTree = "<group>"; };
 		FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WAAdditions.m"; sourceTree = "<group>"; };
@@ -2898,6 +2904,8 @@
 				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
 				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
 				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF88370415B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.h */,
+				FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */,
 				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
 				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
 				FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */,
@@ -2955,6 +2963,8 @@
 				FFBBA42315AD5D4400E95C66 /* WAFacebookInterface.h */,
 				FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */,
 				FFC1E6B515AD6494009C4A17 /* WAFacebookInterfaceSubclass.h */,
+				FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */,
+				FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */,
 			);
 			name = Facebook;
 			path = wammer;
@@ -4748,6 +4758,8 @@
 				FF56850D15AF75CF00706CC2 /* WASignUpViewController.m in Sources */,
 				FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */,
 				FF6BD00815AFBD9D0046AAC8 /* WATutorialViewController.m in Sources */,
+				FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */,
+				FF88370615B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
