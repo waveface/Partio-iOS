@@ -549,7 +549,7 @@
 		
 		if (userIDChanged()) {
 		
-			if (userNewlyCreated) {
+			if (YES || userNewlyCreated) {
 			
 				WATutorialInstantiationOption options = userIsFromFacebook ? WATutorialInstantiationOptionShowFacebookIntegrationToggle : WATutorialInstantiationOptionDefault;
 				

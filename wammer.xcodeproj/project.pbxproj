@@ -168,6 +168,7 @@
 		FF3B1B2914EBA3C7009CFFD1 /* WFPreviewPrint.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */; };
 		FF3B1B2A14EBA3C7009CFFD1 /* WFPreviewScreen.css in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */; };
 		FF3B1B2B14EBA3C7009CFFD1 /* WFPreviewTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */; };
+		FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */; };
 		FF3FF83215AEA670003CF6CC /* WAFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3FF83115AEA670003CF6CC /* WAFacebook.m */; };
 		FF4050751573817A001A14DA /* WAGalleryImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4050741573817A001A14DA /* WAGalleryImageScrollView.m */; };
 		FF426FC5155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html in Resources */ = {isa = PBXBuildFile; fileRef = FF426FC0155102AF0053D1CA /* WFPreviewTemplate_Discrete_Plaintext.html */; };
@@ -1393,6 +1394,8 @@
 		FF3B1B2514EBA3C7009CFFD1 /* WFPreviewPrint.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewPrint.css; path = external/WFPresentation/Source/WFPreviewPrint.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2614EBA3C7009CFFD1 /* WFPreviewScreen.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = WFPreviewScreen.css; path = external/WFPresentation/Source/WFPreviewScreen.css; sourceTree = SOURCE_ROOT; };
 		FF3B1B2714EBA3C7009CFFD1 /* WFPreviewTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = WFPreviewTemplate.html; path = external/WFPresentation/Source/WFPreviewTemplate.html; sourceTree = SOURCE_ROOT; };
+		FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebookConnectionSwitch.h; sourceTree = "<group>"; };
+		FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebookConnectionSwitch.m; sourceTree = "<group>"; };
 		FF3FF83015AEA670003CF6CC /* WAFacebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFacebook.h; sourceTree = "<group>"; };
 		FF3FF83115AEA670003CF6CC /* WAFacebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFacebook.m; sourceTree = "<group>"; };
 		FF4050731573817A001A14DA /* WAGalleryImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAGalleryImageScrollView.h; sourceTree = "<group>"; };
@@ -2955,6 +2958,8 @@
 				FFBBA42315AD5D4400E95C66 /* WAFacebookInterface.h */,
 				FFBBA42415AD5D4400E95C66 /* WAFacebookInterface.m */,
 				FFC1E6B515AD6494009C4A17 /* WAFacebookInterfaceSubclass.h */,
+				FF3B37AF15B690FF00AE357A /* WAFacebookConnectionSwitch.h */,
+				FF3B37B015B690FF00AE357A /* WAFacebookConnectionSwitch.m */,
 			);
 			name = Facebook;
 			path = wammer;
@@ -4748,6 +4753,7 @@
 				FF56850D15AF75CF00706CC2 /* WASignUpViewController.m in Sources */,
 				FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */,
 				FF6BD00815AFBD9D0046AAC8 /* WATutorialViewController.m in Sources */,
+				FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
