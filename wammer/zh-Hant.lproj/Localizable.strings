@@ -29,6 +29,9 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
+/* SHort action title for connecting Facebook creds */
+"ACTION_CONNECT_FACEBOOK_SHORT" = "ACTION_CONNECT_FACEBOOK_SHORT";
+
 /* Action deleting an article
    Title for deleting an article from the Overview
    Title for deleting an article from the Timeline */
@@ -36,6 +39,9 @@
 
 /* Action title for discarding a draft */
 "ACTION_DISCARD" = "丟棄草稿";
+
+/* Short action title for disconnecting Facebook creds */
+"ACTION_DISCONNECT_FACEBOOK" = "ACTION_DISCONNECT_FACEBOOK";
 
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
@@ -166,6 +172,18 @@
 
 /* Failed, underlying error description %@ */
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
+
+/* Message for alert view asking if user wants to connect her Facebook account */
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "FACEBOOK_CONNECT_REQUEST_MESSAGE";
+
+/* Title for alert view asking if user wants to connect her Facebook account */
+"FACEBOOK_CONNECT_REQUEST_TITLE" = "FACEBOOK_CONNECT_REQUEST_TITLE";
+
+/* Message for alert view asking if user wants to disconnect her Facebook account */
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "FACEBOOK_DISCONNECT_REQUEST_MESSAGE";
+
+/* Title for alert view asking if user wants to disconnect her Facebook account */
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "FACEBOOK_DISCONNECT_REQUEST_TITLE";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "所有貼文";
@@ -402,6 +420,9 @@
 /* Class = "IBUITableViewSection"; headerTitle = "SERVICE_INFO_HEADER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_HEADER" = "服務資訊";
 
+/* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
+"FACEBOOK_CONNECT_TITLE" = "FACEBOOK_CONNECT_TITLE";
+
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
 
@@ -422,6 +443,9 @@
 
 /* Class = "IBUILabel"; text = "NOUN_CURRENT_DEVICE"; ObjectID = "fZ9-vs-r6f"; */
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
+
+/* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
+"SOCIAL_NETWORK_HEADER" = "SOCIAL_NETWORK_HEADER";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";

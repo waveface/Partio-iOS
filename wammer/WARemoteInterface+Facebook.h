@@ -9,12 +9,8 @@
 #import "WARemoteInterface.h"
 
 
-
 @interface WARemoteInterface (Facebook)
 
 - (void) signupUserWithFacebookToken:(NSString *) accessToken withOptions: (NSDictionary *)options onSuccess:(void(^)(NSString *token, NSDictionary *userRep, NSArray *groupReps)) successBlock onFailure: (void(^)(NSError *error)) failureBlock;
-
-- (void) facebookImportEnabledWithOptions:(NSDictionary *)options onSuccess:(void(^)(NSUInteger status))successBlock onFailure:(void(^)(NSError *))failureBlock;
-- (void) setFacebookImportEnabled:(BOOL)enable withOptions:(NSDictionary *)options onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock;
 
 @end

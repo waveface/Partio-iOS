@@ -288,6 +288,7 @@
 		FF87FA50149CF46D00B8207A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4B149CF46D00B8207A /* CoreData.framework */; };
 		FF87FA51149CF46D00B8207A /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4C149CF46D00B8207A /* CoreFoundation.framework */; };
 		FF87FA52149CF46D00B8207A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF87FA4D149CF46D00B8207A /* Foundation.framework */; };
+		FF88370615B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */; };
 		FF88E14514E8D7DC00B347A8 /* WAArticle+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */; };
 		FF897D2F146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D2E146A520000DA7199 /* WARemoteInterfaceEntitySyncing.m */; };
 		FF897D32146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m in Sources */ = {isa = PBXBuildFile; fileRef = FF897D31146A53B500DA7199 /* WAArticle+WARemoteInterfaceEntitySyncing.m */; };
@@ -1523,6 +1524,8 @@
 		FF87FA4B149CF46D00B8207A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		FF87FA4C149CF46D00B8207A /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		FF87FA4D149CF46D00B8207A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		FF88370415B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+SocialNetworks.h"; sourceTree = "<group>"; };
+		FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+SocialNetworks.m"; sourceTree = "<group>"; };
 		FF88E14214E8D7A500B347A8 /* WAModel 14.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WAModel 14.xcdatamodel"; sourceTree = "<group>"; };
 		FF88E14314E8D7DC00B347A8 /* WAArticle+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticle+WAAdditions.h"; sourceTree = "<group>"; };
 		FF88E14414E8D7DC00B347A8 /* WAArticle+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticle+WAAdditions.m"; sourceTree = "<group>"; };
@@ -2901,6 +2904,8 @@
 				FF8F462B146909DC00D65864 /* WARemoteInterface+Posts.m */,
 				FF8F463614690A2300D65864 /* WARemoteInterface+Previews.h */,
 				FF8F463714690A2300D65864 /* WARemoteInterface+Previews.m */,
+				FF88370415B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.h */,
+				FF88370515B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m */,
 				FF8F462D146909E300D65864 /* WARemoteInterface+Stations.h */,
 				FF8F462E146909E300D65864 /* WARemoteInterface+Stations.m */,
 				FF73351014A23B9C00813750 /* WARemoteInterface+Storages.h */,
@@ -4754,6 +4759,7 @@
 				FF6BCFA415AF78D00046AAC8 /* WALogInViewController.m in Sources */,
 				FF6BD00815AFBD9D0046AAC8 /* WATutorialViewController.m in Sources */,
 				FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */,
+				FF88370615B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

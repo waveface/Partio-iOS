@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class WAFacebookInterface;
-@interface WAFacebookConnectionSwitch : UISwitch
 
-@property (nonatomic, readwrite, weak) WAFacebookInterface *facebookInterface;
+@interface WAFacebookConnectionSwitch : UISwitch
 
 @end

@@ -42,14 +42,4 @@
 	
 }
 
-- (void) facebookImportEnabledWithOptions:(NSDictionary *)options onSuccess:(void(^)(NSUInteger status))successBlock onFailure:(void(^)(NSError *))failureBlock {
-	
-	
-	
-}
-
-- (void) setFacebookImportEnabled:(BOOL)enable withOptions:(NSDictionary *)options onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *))failureBlock {
-
-}
-
 @end
