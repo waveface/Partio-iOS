@@ -724,6 +724,7 @@
 		FFD21B0F15132A1300FDC0EF /* WAModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FFCD324114B997B70035C4F5 /* WAModel.xcdatamodeld */; };
 		FFD4F93C157E084E0027BF3F /* libIRObjectQueue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFD4F937157E07F90027BF3F /* libIRObjectQueue.a */; };
 		FFD4F93F157E0A080027BF3F /* WAArticleView+ReuseSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD4F93E157E0A080027BF3F /* WAArticleView+ReuseSupport.m */; };
+		FFD5295715B94DCA008DA71B /* WALocalizedTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FFD5295615B94DCA008DA71B /* WALocalizedTextField.m */; };
 		FFDBBE3B150A091100E1E3DB /* IRManagedObject+WAFileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */; };
 		FFDE51F3159AF8240086F9B0 /* JSONKitX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF586C6C1519B93400F308E2 /* JSONKitX.framework */; };
 		FFDE51F4159AF8390086F9B0 /* WAArticle.m in Sources */ = {isa = PBXBuildFile; fileRef = FF11362D15627DEC0014AB32 /* WAArticle.m */; };
@@ -1998,6 +1999,8 @@
 		FFD4F92E157E07F90027BF3F /* IRObjectQueue.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = IRObjectQueue.xcodeproj; path = external/IRObjectQueue/IRObjectQueue.xcodeproj; sourceTree = "<group>"; };
 		FFD4F93D157E0A080027BF3F /* WAArticleView+ReuseSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WAArticleView+ReuseSupport.h"; sourceTree = "<group>"; };
 		FFD4F93E157E0A080027BF3F /* WAArticleView+ReuseSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WAArticleView+ReuseSupport.m"; sourceTree = "<group>"; };
+		FFD5295515B94DCA008DA71B /* WALocalizedTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WALocalizedTextField.h; sourceTree = "<group>"; };
+		FFD5295615B94DCA008DA71B /* WALocalizedTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WALocalizedTextField.m; sourceTree = "<group>"; };
 		FFDBBE39150A091000E1E3DB /* IRManagedObject+WAFileHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IRManagedObject+WAFileHandling.h"; sourceTree = "<group>"; };
 		FFDBBE3A150A091100E1E3DB /* IRManagedObject+WAFileHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IRManagedObject+WAFileHandling.m"; sourceTree = "<group>"; };
 		FFDDB4B41418BB5900FE9CE2 /* WAPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAPreview.h; sourceTree = "<group>"; };
@@ -2348,6 +2351,8 @@
 				FF0528B01508D0FE00F585D7 /* WALocalizedButton.m */,
 				FF0528B21508D1A100F585D7 /* WALocalizedLabel.h */,
 				FF0528B31508D1A100F585D7 /* WALocalizedLabel.m */,
+				FFD5295515B94DCA008DA71B /* WALocalizedTextField.h */,
+				FFD5295615B94DCA008DA71B /* WALocalizedTextField.m */,
 				FF0505ED14C088FF002EA455 /* WAButton.h */,
 				FF0505EE14C088FF002EA455 /* WAButton.m */,
 				FF91960B14AB09C400352E4D /* WADimmingView.h */,
@@ -4760,6 +4765,7 @@
 				FF6BD00815AFBD9D0046AAC8 /* WATutorialViewController.m in Sources */,
 				FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */,
 				FF88370615B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m in Sources */,
+				FFD5295715B94DCA008DA71B /* WALocalizedTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

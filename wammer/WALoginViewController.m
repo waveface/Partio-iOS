@@ -42,6 +42,18 @@
 
 }
 
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+	
+	self.title = NSLocalizedString(@"SIGN_IN_CONTROLLER_TITLE", @"Title for view controller signing the user in");
+
+	return self;
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];
@@ -51,7 +63,7 @@
 	
 	self.tableView.backgroundView = bgView;
 	self.doneItem.enabled = [self isPopulated];
-
+	
 }
 
 - (void) viewWillAppear:(BOOL)animated {

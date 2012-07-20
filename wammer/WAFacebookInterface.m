@@ -64,9 +64,7 @@ static NSString * const WAFacebookCallbackDidNotLoginMethodName = @"WAFacebookCa
 	__weak NSNotificationCenter * const center = [NSNotificationCenter defaultCenter];
 	
 	__block id listener = [center addObserverForName:WAFacebookCallbackTrampolineNotification object:self queue:nil usingBlock:^(NSNotification *note) {
-		
-		NSLog(@"note %@", note);
-	
+
 		NSDictionary *userInfo = [note userInfo];
 		NSString *methodName = [userInfo objectForKey:WAFacebookCallbackTrampolineMethodNameKey];
 		

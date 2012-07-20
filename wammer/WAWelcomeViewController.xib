@@ -67,7 +67,7 @@
 						<double key="IBUIImageEdgeInsets.bottom">0.0</double>
 						<double key="IBUIImageEdgeInsets.left">-20</double>
 						<double key="IBUIImageEdgeInsets.right">0.0</double>
-						<string key="IBUINormalTitle">Connect with Facebook</string>
+						<string key="IBUINormalTitle">ACTION_CONNECT_FACEBOOK</string>
 						<object class="NSColor" key="IBUIHighlightedTitleColor" id="303528851">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MQA</bytes>
@@ -118,7 +118,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">Login</string>
+						<string key="IBUINormalTitle">ACTION_SIGN_IN</string>
 						<reference key="IBUIHighlightedTitleColor" ref="303528851"/>
 						<reference key="IBUISelectedTitleColor" ref="493722317"/>
 						<reference key="IBUINormalTitleColor" ref="493722317"/>
@@ -141,12 +141,13 @@
 						<string key="NSFrame">{{172, 395}, {128, 45}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
-						<string key="IBUINormalTitle">Sign Up</string>
+						<string key="IBUINormalTitle">ACTION_SIGN_UP</string>
 						<reference key="IBUIHighlightedTitleColor" ref="303528851"/>
 						<reference key="IBUISelectedTitleColor" ref="493722317"/>
 						<reference key="IBUINormalTitleColor" ref="493722317"/>
@@ -366,8 +367,10 @@
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="16.CustomClassName">WALocalizedButton</string>
 				<string key="16.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="16.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
+				<string key="4.CustomClassName">WALocalizedButton</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="4.IBUIButtonInspectorSelectedEdgeInsetMetadataKey"/>
 				<real value="0.0" key="4.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
@@ -375,6 +378,7 @@
 				<string key="57.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="58.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="8.CustomClassName">WALocalizedButton</string>
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="2" key="8.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
 			</dictionary>
@@ -386,6 +390,14 @@
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">WALocalizedButton</string>
+					<string key="superclassName">UIButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/WALocalizedButton.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">WAWelcomeViewController</string>
 					<string key="superclassName">UIViewController</string>
