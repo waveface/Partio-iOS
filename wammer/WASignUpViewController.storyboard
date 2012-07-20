@@ -24,7 +24,7 @@
                                             <rect key="frame" x="10" y="1" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="USERNAME_PLACEHOLDER" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" id="2Vk-4J-QH3">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="USERNAME_PLACEHOLDER" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" id="2Vk-4J-QH3" customClass="WALocalizedTextField">
                                                     <rect key="frame" x="110" y="7" width="180" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -51,7 +51,7 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="PASSWORD_PLACEHOLDER" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" id="g7o-DD-LvS">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="PASSWORD_PLACEHOLDER" adjustsFontSizeToFit="NO" minimumFontSize="17" clearButtonMode="whileEditing" id="g7o-DD-LvS" customClass="WALocalizedTextField">
                                                     <rect key="frame" x="110" y="7" width="180" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -78,7 +78,7 @@
                                             <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="NICKNAME_PLACEHOLDER" minimumFontSize="17" id="YnT-se-P50">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="NICKNAME_PLACEHOLDER" minimumFontSize="17" id="YnT-se-P50" customClass="WALocalizedTextField">
                                                     <rect key="frame" x="110" y="7" width="180" height="31"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -129,6 +129,9 @@
     <classes>
         <class className="WALocalizedLabel" superclassName="UILabel">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedLabel.h"/>
+        </class>
+        <class className="WALocalizedTextField" superclassName="UITextField">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/WALocalizedTextField.h"/>
         </class>
         <class className="WASignUpViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/WASignUpViewController.h"/>

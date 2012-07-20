@@ -493,7 +493,7 @@
 "ACTION_CONTACT_DEVELOPER" = "Contact";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
-"ACTION_CONNECT_FACEBOOK" = "ACTION_CONNECT_FACEBOOK";
+"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
 "ACTION_SIGN_IN" = "Sign In";
