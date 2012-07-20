@@ -29,7 +29,7 @@
    Title for the action responsible for presenting a controller changing the representing file of an article */
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
-/* SHort action title for connecting Facebook creds */
+/* Short action title for connecting Facebook creds */
 "ACTION_CONNECT_FACEBOOK_SHORT" = "ACTION_CONNECT_FACEBOOK_SHORT";
 
 /* Action deleting an article

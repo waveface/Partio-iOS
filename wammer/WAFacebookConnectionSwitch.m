@@ -105,169 +105,310 @@
 
 	NSCParameterAssert(sender == self);
 	
+	if (self.on) {
+		
+		[[self newFacebookConnectAlertView] show];
+	
+	} else {
+	
+		[[self newFacebookDisconnectAlertView] show];
+			
+	}
+	
+}
+
+- (IRAlertView *) newFacebookConnectAlertView {
+
+	__weak WAFacebookConnectionSwitch * const wSelf = self;
+	
+	NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
+	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
+		
+		[wSelf setOn:NO animated:YES];
+		
+	}];
+	
+	NSString *connectTitle = NSLocalizedString(@"ACTION_CONNECT_FACEBOOK_SHORT", @"Short action title for connecting Facebook creds");
+	IRAction *connectAction = [IRAction actionWithTitle:connectTitle block:^{
+	
+		[wSelf handleFacebookConnect:nil];
+				
+	}];
+	
+	NSString *alertTitle = NSLocalizedString(@"FACEBOOK_CONNECT_REQUEST_TITLE", @"Title for alert view asking if user wants to connect her Facebook account");
+	NSString *alertMessage = NSLocalizedString(@"FACEBOOK_CONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to connect her Facebook account");
+
+	IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertMessage cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:connectAction, nil]];
+		
+	return alertView;
+
+}
+
+- (void) handleFacebookConnect:(id)sender {
+
 	__weak WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
 	__weak WAFacebookInterface * const fi = [WAFacebookInterface sharedInterface];
 	__weak WAFacebookConnectionSwitch * const wSelf = self;
 	
-	if (self.on) {
+	NSString *initialToken = fi.facebook.accessToken;
+
+	if ([initialToken length]) {
+	
+		WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+		[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 		
-		NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
-		IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
+		[wSelf connectFacebookWithToken:initialToken onSuccess:^{
 			
-			[wSelf setOn:NO animated:YES];
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 			
-		}];
+			WAOverlayBezel *doneBezel = [WAOverlayBezel bezelWithStyle:WACheckmarkBezelStyle];
+			[doneBezel showWithAnimation:WAOverlayBezelAnimationNone];
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+				[doneBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+			});
+			
+			[wSelf setOn:YES animated:YES];
+			[wSelf setEnabled:YES];
+
+		} onFailure:^(NSError *error) {
 		
-		NSString *connectTitle = NSLocalizedString(@"ACTION_CONNECT_FACEBOOK_SHORT", @"SHort action title for connecting Facebook creds");
-		IRAction *connectAction = [IRAction actionWithTitle:connectTitle block:^{
-		
-			[fi authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
-				dispatch_async(dispatch_get_main_queue(), ^{
+			[wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
+			
+				if (token) {
 				
-					if (!didFinish) {
-					
-						WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-						[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-						
-						[wSelf setOn:NO animated:YES];
-						wSelf.enabled = YES;
-						
-						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-						
-							[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-							
-						});
-						
-						return;
-					
-					}
-				
-					wSelf.enabled = NO;
+					[wSelf setEnabled:NO];
 					[wSelf setOn:YES animated:YES];
 					
 					WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 					[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 					
-					[ri connectSocialNetwork:@"facebook" withToken:fi.facebook.accessToken onSuccess:^{
-					
-						if (!wSelf)
-							return;
-					
-						dispatch_async(dispatch_get_main_queue(), ^{
+					[wSelf connectFacebookWithToken:token onSuccess:^{
 						
-							[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 
-							wSelf.enabled = YES;
-							[wSelf setOn:YES animated:YES];
-							
-						});
-						
+						[wSelf setEnabled:YES];
+						[wSelf setOn:YES animated:YES];
+
 					} onFailure:^(NSError *error) {
-					
-						if (!wSelf)
-							return;
-					
-						dispatch_async(dispatch_get_main_queue(), ^{
 						
-							[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
-							
-							WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-							[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-							
-							[wSelf setOn:NO animated:YES];
-							wSelf.enabled = YES;
-							
-							dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-							
-								[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-								
-							});
-							
+						[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+						
+						WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+						[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
+						dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+							[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 						});
 						
-					}];
-				
-				});		
+						[wSelf setEnabled:YES];
+						[wSelf setOn:NO animated:YES];
 
+					}];
+
+				} else {
+				
+					WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+					[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
+					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+						[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+					});
+					
+					[wSelf setEnabled:YES];
+					[wSelf setOn:NO animated:YES];
+					
+					return;
+				
+				}
+				
 			}];
 			
-			wSelf.on = NO;
-			
 		}];
 		
-		NSString *alertTitle = NSLocalizedString(@"FACEBOOK_CONNECT_REQUEST_TITLE", @"Title for alert view asking if user wants to connect her Facebook account");
-		NSString *alertMessage = NSLocalizedString(@"FACEBOOK_CONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to connect her Facebook account");
-	
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertMessage cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:connectAction, nil]];
-		[alertView show];
-	
 	} else {
-	
-		NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
-		IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
-			
-			[wSelf setOn:YES animated:YES];
-			
-		}];
-		
-		NSString *disconnectTitle = NSLocalizedString(@"ACTION_DISCONNECT_FACEBOOK", @"Short action title for disconnecting Facebook creds");
-		IRAction *disconnectAction = [IRAction actionWithTitle:disconnectTitle block:^{
-		
-			wSelf.enabled = NO;
-		
-			WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
-			[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 
-			[ri disconnectSocialNetwork:@"facebook" purgeData:NO onSuccess:^{
-
-				dispatch_async(dispatch_get_main_queue(), ^{
+		[wSelf requestFacebookTokenWithCompletion:^(NSString *token, NSError *error) {
+		
+			if (token) {
+			
+				[wSelf setEnabled:NO];
+				[wSelf setOn:YES animated:YES];
+				
+				WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+				[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+				
+				[wSelf connectFacebookWithToken:token onSuccess:^{
 					
 					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-			
-					if (!wSelf)
-						return;
 
-					wSelf.enabled = YES;
-					wSelf.on = NO;
+					[wSelf setEnabled:YES];
+					[wSelf setOn:YES animated:YES];
+
+				} onFailure:^(NSError *error) {
 					
-				});
-				
-			} onFailure:^(NSError *error) {
-			
-				dispatch_async(dispatch_get_main_queue(), ^{
-				
 					[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
 					
 					WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-					[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
-
-					if (!wSelf)
-						return;
-					
-					[wSelf setOn:YES animated:YES];
-					wSelf.enabled = YES;
-					
+					[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
 					dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-					
 						[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-						
 					});
+					
+					[wSelf setEnabled:YES];
+					[wSelf setOn:NO animated:YES];
 
+				}];
+
+			} else {
+			
+				WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+				[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
+				dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+					[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 				});
 				
-			}];
-
+				[wSelf setEnabled:YES];
+				[wSelf setOn:NO animated:YES];
+				
+				return;
+			
+			}
+			
 		}];
 		
-		NSString *alertTitle = NSLocalizedString(@"FACEBOOK_DISCONNECT_REQUEST_TITLE", @"Title for alert view asking if user wants to disconnect her Facebook account");
-		NSString *alertMessage = NSLocalizedString(@"FACEBOOK_DISCONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to disconnect her Facebook account");
-
-		IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertMessage cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:disconnectAction, nil]];
-		[alertView show];
-			
-	}
+		wSelf.on = NO;
 	
+	}
+
+}
+
+- (IRAlertView *) newFacebookDisconnectAlertView {
+
+	__weak WAFacebookConnectionSwitch * const wSelf = self;
+	
+	NSString *cancelTitle = NSLocalizedString(@"ACTION_CANCEL", nil);
+	IRAction *cancelAction = [IRAction actionWithTitle:cancelTitle block:^{
+		
+		[wSelf setOn:YES animated:YES];
+		
+	}];
+	
+	NSString *disconnectTitle = NSLocalizedString(@"ACTION_DISCONNECT_FACEBOOK", @"Short action title for disconnecting Facebook creds");
+	IRAction *disconnectAction = [IRAction actionWithTitle:disconnectTitle block:^{
+	
+		[wSelf handleFacebookDisconnect:nil];
+	
+	}];
+	
+	NSString *alertTitle = NSLocalizedString(@"FACEBOOK_DISCONNECT_REQUEST_TITLE", @"Title for alert view asking if user wants to disconnect her Facebook account");
+	NSString *alertMessage = NSLocalizedString(@"FACEBOOK_DISCONNECT_REQUEST_MESSAGE", @"Message for alert view asking if user wants to disconnect her Facebook account");
+
+	IRAlertView *alertView = [IRAlertView alertViewWithTitle:alertTitle message:alertMessage cancelAction:cancelAction otherActions:[NSArray arrayWithObjects:disconnectAction, nil]];
+	
+	return alertView;
+
+}
+
+- (void) handleFacebookDisconnect:(id)sender {
+
+	__weak WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	__weak WAFacebookConnectionSwitch * const wSelf = self;
+	
+	wSelf.enabled = NO;
+
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+
+	[ri disconnectSocialNetwork:@"facebook" purgeData:NO onSuccess:^{
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+	
+			if (!wSelf)
+				return;
+
+			wSelf.enabled = YES;
+			wSelf.on = NO;
+			
+		});
+		
+	} onFailure:^(NSError *error) {
+	
+		dispatch_async(dispatch_get_main_queue(), ^{
+		
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationNone];
+			
+			WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+			[errorBezel showWithAnimation:WAOverlayBezelAnimationNone];
+
+			if (!wSelf)
+				return;
+			
+			[wSelf setOn:YES animated:YES];
+			wSelf.enabled = YES;
+			
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+			
+				[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+				
+			});
+
+		});
+		
+	}];
+
+}
+
+- (void) connectFacebookWithToken:(NSString *)token onSuccess:(void(^)(void))successBlock onFailure:(void(^)(NSError *error))failureBlock {
+
+	__weak WARemoteInterface * const ri = [WARemoteInterface sharedInterface];
+	
+	[ri connectSocialNetwork:@"facebook" withToken:token onSuccess:^{
+	
+		if (successBlock) {
+		
+			dispatch_async(dispatch_get_main_queue(), ^{
+			
+				successBlock();
+				
+			});
+		
+		}
+		
+	} onFailure:^(NSError *error) {
+	
+		if (failureBlock) {
+			
+			dispatch_async(dispatch_get_main_queue(), ^{
+			
+				failureBlock(error);
+				
+			});
+			
+		}
+		
+	}];
+
+}
+
+- (void) requestFacebookTokenWithCompletion:(void(^)(NSString *token, NSError *error))block {
+
+	__weak WAFacebookInterface * const fi = [WAFacebookInterface sharedInterface];
+	
+	[fi authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
+	
+		NSString *token = didFinish ? fi.facebook.accessToken : nil;
+	
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			if (block)
+				block(token, error);
+			
+		});
+		
+	}];
+
 }
 
 @end
