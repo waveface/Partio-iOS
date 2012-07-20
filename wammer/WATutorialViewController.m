@@ -26,6 +26,7 @@
 @synthesize pageInstallStation = _pageInstallStation;
 @synthesize pageToggleFacebook = _pageToggleFacebook;
 @synthesize pageStartStream = _pageStartStream;
+@synthesize goButton = _goButton;
 @synthesize option = _option;
 @synthesize callback = _callback;
 @synthesize pages = _pages;
@@ -53,6 +54,31 @@
 	
 	_pages = [self copyPages];
 	[self.paginatedView reloadViews];
+	
+	UIImage * (^stretch)(UIImage *) = ^ (UIImage *image) {
+	
+		return [image stretchableImageWithLeftCapWidth:5.0f topCapHeight:0.0f];
+	
+	};
+
+	void (^heckle)(UIButton *, UIControlState) = ^ (UIButton *button, UIControlState state) {
+	
+		[button setBackgroundImage:stretch([button backgroundImageForState:state]) forState:state];
+
+	};
+	
+	void (^heckleAll)(UIButton *) = ^ (UIButton * button) {
+	
+		heckle(button, UIControlStateNormal);
+		heckle(button, UIControlStateHighlighted);
+		heckle(button, UIControlStateSelected);
+		heckle(button, UIControlStateDisabled);
+		heckle(button, UIControlStateReserved);
+		heckle(button, UIControlStateApplication);
+	
+	};
+	
+	heckleAll(self.goButton);
 
 }
 
@@ -109,4 +135,5 @@
 		self.callback(YES, nil);
 		
 }
+
 @end

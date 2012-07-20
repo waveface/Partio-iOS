@@ -282,8 +282,14 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
+/* Title for view controller signing the user in */
+"SIGN_IN_CONTROLLER_TITLE" = "SIGN_IN_CONTROLLER_TITLE";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
+
+/* Title for view controller signing the user up */
+"SIGN_UP_CONTROLLER_TITLE" = "SIGN_UP_CONTROLLER_TITLE";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -369,6 +375,18 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = " ";
 
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 
@@ -402,6 +420,24 @@
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
 "FEB" = "FEB";
 
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "me@example.com";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "Password";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "LGa-aa-QPo"; */
+"NOUN_NICKNAME" = "Name";
+
+/* Class = "IBUITextField"; placeholder = "NICKNAME_PLACEHOLDER"; ObjectID = "YnT-se-P50"; */
+"NICKNAME_PLACEHOLDER" = "John Appleseed";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "Email";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "••••••••";
+
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
 
@@ -413,6 +449,12 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
@@ -445,8 +487,26 @@
 "NOUN_CURRENT_DEVICE" = "Device";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"SOCIAL_NETWORK_HEADER" = "SOCIAL_NETWORK_HEADER";
+"SOCIAL_NETWORK_HEADER" = "Social Networks";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "Contact";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
+"ACTION_CONNECT_FACEBOOK" = "ACTION_CONNECT_FACEBOOK";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
+"ACTION_SIGN_IN" = "Sign In";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
+"ACTION_SIGN_UP" = "Sign Up";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "8"; */
+"ACTION_CONNECT_FACEBOOK" = "Connect with Facebook";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "9"; */
+"ACTION_SIGN_UP" = "Sign Up";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
+"ACTION_SIGN_IN" = "Sign In";
 

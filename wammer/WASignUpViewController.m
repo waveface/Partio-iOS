@@ -39,6 +39,18 @@
 
 }
 
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (!self)
+		return nil;
+	
+	self.title = NSLocalizedString(@"SIGN_UP_CONTROLLER_TITLE", @"Title for view controller signing the user up");
+	
+	return self;
+
+}
+
 - (void) viewDidLoad {
 
 	[super viewDidLoad];

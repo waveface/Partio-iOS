@@ -282,8 +282,14 @@
 /* Title to show explaining WiFi Sync */
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
 
+/* Title for view controller signing the user in */
+"SIGN_IN_CONTROLLER_TITLE" = "SIGN_IN_CONTROLLER_TITLE";
+
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
+
+/* Title for view controller signing the user up */
+"SIGN_UP_CONTROLLER_TITLE" = "SIGN_UP_CONTROLLER_TITLE";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
@@ -369,6 +375,18 @@
 /* Class = "IBUILabel"; text = "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION"; ObjectID = "26"; */
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "USERNAME_PLACEHOLDER";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "NOUN_PASSWORD";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "電子郵件";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "PASSWORD_PLACEHOLDER";
+
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
 
@@ -402,6 +420,24 @@
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "114"; */
 "FEB" = "FEB";
 
+/* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
+"USERNAME_PLACEHOLDER" = "USERNAME_PLACEHOLDER";
+
+/* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
+"NOUN_PASSWORD" = "NOUN_PASSWORD";
+
+/* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "LGa-aa-QPo"; */
+"NOUN_NICKNAME" = "使用者名稱";
+
+/* Class = "IBUITextField"; placeholder = "NICKNAME_PLACEHOLDER"; ObjectID = "YnT-se-P50"; */
+"NICKNAME_PLACEHOLDER" = "NICKNAME_PLACEHOLDER";
+
+/* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
+"NOUN_USERNAME" = "電子郵件";
+
+/* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
+"PASSWORD_PLACEHOLDER" = "PASSWORD_PLACEHOLDER";
+
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
 
@@ -413,6 +449,12 @@
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS"; ObjectID = "10"; */
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
+"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
@@ -449,4 +491,22 @@
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
+"ACTION_CONNECT_FACEBOOK" = "ACTION_CONNECT_FACEBOOK";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
+"ACTION_SIGN_IN" = "ACTION_SIGN_IN";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
+"ACTION_SIGN_UP" = "ACTION_SIGN_UP";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "8"; */
+"ACTION_CONNECT_FACEBOOK" = "ACTION_CONNECT_FACEBOOK";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "9"; */
+"ACTION_SIGN_UP" = "ACTION_SIGN_UP";
+
+/* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
+"ACTION_SIGN_IN" = "ACTION_SIGN_IN";
 
