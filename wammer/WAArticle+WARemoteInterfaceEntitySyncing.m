@@ -124,6 +124,26 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
+	NSMutableArray *fullAttachmentList = [incomingRepresentation objectForKey:@"attachment_id_array"];
+	NSMutableArray *attachmentList = [[incomingRepresentation objectForKey:@"attachments"] mutableCopy];
+	
+	if ([fullAttachmentList count] > [attachmentList count]) {
+		// dedup
+		for (NSDictionary *attachment in attachmentList) {
+			[fullAttachmentList removeObjectIdenticalTo:[attachment objectForKey:@"object_id"]];
+		}
+		
+		for (NSString *objectID in fullAttachmentList) {
+			NSDictionary *attach = [NSDictionary dictionaryWithObjectsAndKeys:
+															objectID, @"object_id",
+															creatorID, @"creator_id",
+															articleID, @"post_id",
+															nil];
+			[attachmentList addObject:attach];
+		}
+		[returnedDictionary setObject:attachmentList forKey:@"attachments"];
+	}
+	
 	if ([creatorID length])
 		[returnedDictionary setObject:[NSDictionary dictionaryWithObject:creatorID forKey:@"user_id"] forKey:@"owner"];
 
@@ -278,89 +298,96 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}];
     
 	} else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchStrategy]) {
-	
+		
 		NSDate *usedDate = [ds lastNewPostsUpdateDate];
 		
-		[ri retrievePostsCreatedSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps, NSDate *continuation) {
-		
-			[ds performBlock:^{
-			
-				NSManagedObjectContext *context = [ds disposableMOC];
-				
-				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-				
-				for (WAArticle *article in touchedArticles)
-					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
-						[context refreshObject:article mergeChanges:NO];
-
-				[context save:nil];
-				
-			} waitUntilDone:YES];
-			
-			if (continuation) {
-				[ds setLastNewPostsUpdateDate:continuation];
-			}
-
-		} onSuccess:^(NSDate *continuation) {
-		
-			if (continuation) {
-				[ds setLastNewPostsUpdateDate:continuation];
-			}
-			
-			if (completionBlock)
-				completionBlock(YES, nil);
-			
-		} onFailure:^(NSError *error) {
-		
-			if (completionBlock)
-				completionBlock(NO, error);
-			
-		}];
+		[ri retrievePostsCreatedSince:usedDate
+													inGroup:usedGroupIdentifier
+											 onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
+		 {
+		 
+			 [ds performBlock:^{
+				 
+				 NSManagedObjectContext *context = [ds disposableMOC];
+				 
+				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				 
+				 for (WAArticle *article in touchedArticles)
+					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+						 [context refreshObject:article mergeChanges:NO];
+				 
+				 [context save:nil];
+				 
+			 } waitUntilDone:YES];
+			 
+			 if (continuation) {
+				 [ds setLastNewPostsUpdateDate:continuation];
+			 }
+		 
+		 }
+												onSuccess:^(NSDate *continuation) {
+													
+													if (continuation) {
+														[ds setLastNewPostsUpdateDate:continuation];
+													}
+													
+													if (completionBlock)
+														completionBlock(YES, nil);
+													
+												}
+												onFailure:^(NSError *error) {
+													
+													if (completionBlock)
+														completionBlock(NO, error);
+													
+												}];
       
   } else if ([syncStrategy isEqual:kWAArticleSyncDeltaFetchStrategy]) {
-	
+		
 		NSDate *usedDate = [ds lastChangedPostsUpdateDate];
 		
-		[ri retrieveChangedArticlesSince:usedDate inGroup:usedGroupIdentifier onProgress:^(NSArray *changedArticleReps, NSDate *continuation) {
+		[ri retrieveChangedArticlesSince:usedDate
+														 inGroup:usedGroupIdentifier
+													onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
+		 {
+			 [ds performBlock:^{
+				 NSManagedObjectContext *context = [ds disposableMOC];
+				 
+				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
+				 
+				 for (WAArticle *article in touchedArticles)
+					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+						 [context refreshObject:article mergeChanges:NO];
+				 
+				 [context save:nil];
+			 }
+					waitUntilDone:YES];
+			 
+			 if (continuation) {
+				 [ds setLastChangedPostsUpdateDate:continuation];
+			 }
+		 }
+													 onSuccess:^(NSDate *continuation) {
+														 
+														 if (continuation) {
+															 [ds setLastChangedPostsUpdateDate:continuation];
+														 }
+														 
+														 if (completionBlock)
+															 completionBlock(YES, nil);
+														 
+													 }
+													 onFailure:^(NSError *error) {
+														 
+														 if (completionBlock)
+															 completionBlock(NO, error);
+														 
+													 }];
 		
-			[ds performBlock:^{
-			
-				NSManagedObjectContext *context = [ds disposableMOC];
-				
-				NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
-
-				for (WAArticle *article in touchedArticles)
-					if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
-						[context refreshObject:article mergeChanges:NO];
-				
-				[context save:nil];
-				
-			} waitUntilDone:YES];
-			
-			if (continuation) {
-				[ds setLastChangedPostsUpdateDate:continuation];
-			}
-
-		} onSuccess:^(NSDate *continuation) {
-		
-			if (continuation) {
-				[ds setLastChangedPostsUpdateDate:continuation];
-			}
-			
-			if (completionBlock)
-				completionBlock(YES, nil);
-			
-		} onFailure:^(NSError *error) {
-		
-			if (completionBlock)
-				completionBlock(NO, error);
-			
-		}];
-				
   } else {
-  
+		
     NSParameterAssert(NO);
-  
+		
   }
   
 }
