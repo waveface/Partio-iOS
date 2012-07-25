@@ -639,7 +639,30 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 			
 			if (isHidden) {
 				
-				[ri configurePost:postID inGroup:groupID withVisibilityStatus:NO onSuccess:nil onFailure:nil];
+				[ri configurePost:postID inGroup:groupID withVisibilityStatus:NO onSuccess:^{
+
+					// FIXME: clear dirty flag of the article immediately after calling hide API
+					// it's a workaround because the response and parameters of hide and update APIs are different.
+					// still buggy and needs refactoring
+					WADataStore *ds = [WADataStore defaultStore];
+
+					[ds performBlock:^{
+
+						NSManagedObjectContext *context = [ds disposableMOC];
+						WAArticle *savedPost = (WAArticle *)[context irManagedObjectForURI:postEntityURL];
+						savedPost.dirty = (id)kCFBooleanFalse;
+						NSError *savingError = nil;
+						BOOL didSave = [context save:&savingError];
+
+						completionBlock(didSave, savingError);
+
+					} waitUntilDone:NO];
+
+				} onFailure:^(NSError *error) {
+
+					callback(error);
+
+				}];
 
 			} else {
 
