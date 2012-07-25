@@ -26,6 +26,7 @@
 		13A1BFB415A572CE00526F39 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
 		13A1BFB515A572CE00526F39 /* WAFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A1BFB315A572CE00526F39 /* WAFile.m */; };
 		13BD4D9915930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */; };
+		4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */; };
 		4B1C660014EE2C0D003398AF /* DCCrossHairView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65F814EE2C0C003398AF /* DCCrossHairView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660114EE2C0D003398AF /* DCFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FA14EE2C0C003398AF /* DCFrameView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		4B1C660214EE2C0D003398AF /* DCIntrospect.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B1C65FC14EE2C0D003398AF /* DCIntrospect.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1202,6 +1203,7 @@
 		13A1BFB215A572CE00526F39 /* WAFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAFile.h; sourceTree = "<group>"; };
 		13A1BFB315A572CE00526F39 /* WAFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAFile.m; sourceTree = "<group>"; };
 		13BD4D9815930A480062EA3A /* WAPostViewCellPhone-ImageOnlyStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAPostViewCellPhone-ImageOnlyStack.xib"; sourceTree = "<group>"; };
+		4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PostWithCompleteAttachmentInformation.txt; sourceTree = "<group>"; };
 		4B1527A013E29E72006E9737 /* WATimelineViewControllerPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WATimelineViewControllerPhone.h; sourceTree = "<group>"; };
 		4B1527A113E29E72006E9737 /* WATimelineViewControllerPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WATimelineViewControllerPhone.m; sourceTree = "<group>"; usesTabs = 1; };
 		4B1C65F714EE2C0C003398AF /* DCCrossHairView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCCrossHairView.h; sourceTree = "<group>"; };
@@ -2287,6 +2289,7 @@
 				4B3225E715BE4CE400934DA4 /* WAAttachmentsTests.h */,
 				4B3225E815BE4CE400934DA4 /* WAAttachmentsTests.m */,
 				4B6220DD15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt */,
+				4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -3966,6 +3969,7 @@
 			files = (
 				4B8CA97414BBE7BA006E06BB /* InfoPlist.strings in Resources */,
 				4B6220DE15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt in Resources */,
+				4B0C3EEF15BF89A300CAA346 /* PostWithCompleteAttachmentInformation.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
