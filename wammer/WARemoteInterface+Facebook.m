@@ -21,11 +21,15 @@
 	}
   
 	NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys:
+
 		accessToken, @"auth_token",
 		preferredLanguage, @"lang",
 		@"facebook", @"sns",
 		@"yes", @"sns_connect",
 		@"yes", @"subscribed",
+		WADeviceName(), @"device_name",
+		WADeviceIdentifier(), @"device_id",
+
 	nil];
 	
 	[self.engine fireAPIRequestNamed:@"auth/signup" withArguments:nil options:WARemoteInterfaceEnginePostFormEncodedOptionsDictionary(payload, nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
