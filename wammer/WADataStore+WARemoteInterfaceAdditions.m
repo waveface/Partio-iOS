@@ -251,7 +251,7 @@ NSString * const kWADataStoreArticleUpdateShowsBezels = @"WADataStoreArticleUpda
 			NSArray *touchedUsers = [WAUser insertOrUpdateObjectsUsingContext:context withRemoteResponse:[NSArray arrayWithObject:userRep] usingMapping:nil options:0];
 			
 			NSCParameterAssert([touchedUsers count] == 1);
-			NSCParameterAssert([touchedUsers containsObject:user]);
+//			NSCParameterAssert([touchedUsers containsObject:user]);
 			
 			NSError *savingError = nil;
 			if (![context save:&savingError])
