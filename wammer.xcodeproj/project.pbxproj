@@ -85,6 +85,14 @@
 		4BE6910E14EB8159002B9790 /* WAPreviewInspectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4BE6910C14EB8159002B9790 /* WAPreviewInspectionViewController.xib */; };
 		4BF243E014F23B7C00F4636C /* IRActionSheetController+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */; };
 		4BF3656615A5914000E40E42 /* WARemoteInterface+Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */; };
+		80316A0A15C0EC20009D43F0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 803169F815C0EC20009D43F0 /* .gitignore */; };
+		80316A0B15C0EC20009D43F0 /* IRAQAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */; };
+		80316A0C15C0EC20009D43F0 /* IRAQAlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FC15C0EC20009D43F0 /* IRAQAlbumListViewController.m */; };
+		80316A0D15C0EC20009D43F0 /* IRAQPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 803169FF15C0EC20009D43F0 /* IRAQPhotoCell.m */; };
+		80316A0E15C0EC20009D43F0 /* IRAQPhotoGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0215C0EC20009D43F0 /* IRAQPhotoGridViewController.m */; };
+		80316A0F15C0EC20009D43F0 /* IRAQPhotoPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0515C0EC20009D43F0 /* IRAQPhotoPickerController.m */; };
+		80316A1015C0EC20009D43F0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 80316A0715C0EC20009D43F0 /* README.md */; };
+		80316A1115C0EC20009D43F0 /* UIViewController+IRAQAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */; };
 		FF0024FF14B44D5400F54AAF /* WASyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0024FE14B44D5400F54AAF /* WASyncManager.m */; };
 		FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */; };
 		FF0505EF14C08900002EA455 /* WAButton.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0505EE14C088FF002EA455 /* WAButton.m */; };
@@ -1302,6 +1310,24 @@
 		4BF243DF14F23B7C00F4636C /* IRActionSheetController+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRActionSheetController+WAAdditions.m"; path = "wammer/IRActionSheetController+WAAdditions.m"; sourceTree = "<group>"; };
 		4BF3656415A5914000E40E42 /* WARemoteInterface+Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WARemoteInterface+Facebook.h"; sourceTree = "<group>"; };
 		4BF3656515A5914000E40E42 /* WARemoteInterface+Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WARemoteInterface+Facebook.m"; sourceTree = "<group>"; };
+		803169F815C0EC20009D43F0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		803169F915C0EC20009D43F0 /* IRAQAlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQAlbumCell.h; sourceTree = "<group>"; };
+		803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQAlbumCell.m; sourceTree = "<group>"; };
+		803169FB15C0EC20009D43F0 /* IRAQAlbumListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQAlbumListViewController.h; sourceTree = "<group>"; };
+		803169FC15C0EC20009D43F0 /* IRAQAlbumListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQAlbumListViewController.m; sourceTree = "<group>"; };
+		803169FD15C0EC20009D43F0 /* IRAQAlbumListViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQAlbumListViewControllerDelegate.h; sourceTree = "<group>"; };
+		803169FE15C0EC20009D43F0 /* IRAQPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQPhotoCell.h; sourceTree = "<group>"; };
+		803169FF15C0EC20009D43F0 /* IRAQPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQPhotoCell.m; sourceTree = "<group>"; };
+		80316A0015C0EC20009D43F0 /* IRAQPhotoCellSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQPhotoCellSubclass.h; sourceTree = "<group>"; };
+		80316A0115C0EC20009D43F0 /* IRAQPhotoGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQPhotoGridViewController.h; sourceTree = "<group>"; };
+		80316A0215C0EC20009D43F0 /* IRAQPhotoGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQPhotoGridViewController.m; sourceTree = "<group>"; };
+		80316A0315C0EC20009D43F0 /* IRAQPhotoGridViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQPhotoGridViewControllerDelegate.h; sourceTree = "<group>"; };
+		80316A0415C0EC20009D43F0 /* IRAQPhotoPickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQPhotoPickerController.h; sourceTree = "<group>"; };
+		80316A0515C0EC20009D43F0 /* IRAQPhotoPickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IRAQPhotoPickerController.m; sourceTree = "<group>"; };
+		80316A0615C0EC20009D43F0 /* IRAQPhotoPickerControllerSubclass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRAQPhotoPickerControllerSubclass.h; sourceTree = "<group>"; };
+		80316A0715C0EC20009D43F0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		80316A0815C0EC20009D43F0 /* UIViewController+IRAQAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+IRAQAdditions.h"; sourceTree = "<group>"; };
+		80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+IRAQAdditions.m"; sourceTree = "<group>"; };
 		FF0024FD14B44D5400F54AAF /* WASyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WASyncManager.h; sourceTree = "<group>"; };
 		FF0024FE14B44D5400F54AAF /* WASyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WASyncManager.m; sourceTree = "<group>"; };
 		FF01135615B6522F0058C6ED /* WAWelcomeViewController~ipad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "WAWelcomeViewController~ipad.xib"; sourceTree = "<group>"; };
@@ -2299,6 +2325,32 @@
 				4B8CA97814BBE7BA006E06BB /* wammer-iOS-Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		803169F715C0EC20009D43F0 /* IRAQPhotoPicker */ = {
+			isa = PBXGroup;
+			children = (
+				803169F815C0EC20009D43F0 /* .gitignore */,
+				803169F915C0EC20009D43F0 /* IRAQAlbumCell.h */,
+				803169FA15C0EC20009D43F0 /* IRAQAlbumCell.m */,
+				803169FB15C0EC20009D43F0 /* IRAQAlbumListViewController.h */,
+				803169FC15C0EC20009D43F0 /* IRAQAlbumListViewController.m */,
+				803169FD15C0EC20009D43F0 /* IRAQAlbumListViewControllerDelegate.h */,
+				803169FE15C0EC20009D43F0 /* IRAQPhotoCell.h */,
+				803169FF15C0EC20009D43F0 /* IRAQPhotoCell.m */,
+				80316A0015C0EC20009D43F0 /* IRAQPhotoCellSubclass.h */,
+				80316A0115C0EC20009D43F0 /* IRAQPhotoGridViewController.h */,
+				80316A0215C0EC20009D43F0 /* IRAQPhotoGridViewController.m */,
+				80316A0315C0EC20009D43F0 /* IRAQPhotoGridViewControllerDelegate.h */,
+				80316A0415C0EC20009D43F0 /* IRAQPhotoPickerController.h */,
+				80316A0515C0EC20009D43F0 /* IRAQPhotoPickerController.m */,
+				80316A0615C0EC20009D43F0 /* IRAQPhotoPickerControllerSubclass.h */,
+				80316A0715C0EC20009D43F0 /* README.md */,
+				80316A0815C0EC20009D43F0 /* UIViewController+IRAQAdditions.h */,
+				80316A0915C0EC20009D43F0 /* UIViewController+IRAQAdditions.m */,
+			);
+			name = IRAQPhotoPicker;
+			path = external/IRAQPhotoPicker;
 			sourceTree = "<group>";
 		};
 		FF0024F914B44CC500F54AAF /* Blob Syncing */ = {
@@ -3465,6 +3517,7 @@
 		FFFDEFB414211D5C0083BEFB /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				803169F715C0EC20009D43F0 /* IRAQPhotoPicker */,
 				4B31BA861591A74C00DC1A70 /* AGImagePickerController */,
 				FF24B3B61552AC7100DD9379 /* libstdc++.dylib */,
 				FF24B3B41552AC6D00DD9379 /* libc++.dylib */,
@@ -4336,6 +4389,8 @@
 				FFCCE05515B41B0000AEBB85 /* WAUserGlyphLarge@2x.png in Resources */,
 				FF01135715B6522F0058C6ED /* WAWelcomeViewController~ipad.xib in Resources */,
 				FF9DB05415B68BE100CEBE99 /* WATutorialViewController~ipad.xib in Resources */,
+				80316A0A15C0EC20009D43F0 /* .gitignore in Resources */,
+				80316A1015C0EC20009D43F0 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4766,6 +4821,12 @@
 				FF3B37B115B690FF00AE357A /* WAFacebookConnectionSwitch.m in Sources */,
 				FF88370615B7E90800E6CD92 /* WARemoteInterface+SocialNetworks.m in Sources */,
 				FFD5295715B94DCA008DA71B /* WALocalizedTextField.m in Sources */,
+				80316A0B15C0EC20009D43F0 /* IRAQAlbumCell.m in Sources */,
+				80316A0C15C0EC20009D43F0 /* IRAQAlbumListViewController.m in Sources */,
+				80316A0D15C0EC20009D43F0 /* IRAQPhotoCell.m in Sources */,
+				80316A0E15C0EC20009D43F0 /* IRAQPhotoGridViewController.m in Sources */,
+				80316A0F15C0EC20009D43F0 /* IRAQPhotoPickerController.m in Sources */,
+				80316A1115C0EC20009D43F0 /* UIViewController+IRAQAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
