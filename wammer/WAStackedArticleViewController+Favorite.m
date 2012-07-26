@@ -54,8 +54,8 @@
 				
 				case UIUserInterfaceIdiomPhone: {
 					edgeDelta = 8.0f;
-					faveImage = [UIImage imageNamed:@"iPhoneFav"];
-					unfaveImage = [UIImage imageNamed:@"iPhoneUnfav"];
+					faveImage = [UIImage imageNamed:@"Fav~iphone"];
+					unfaveImage = [UIImage imageNamed:@"Unfav~iphone"];
 					break;
 				}
 				
