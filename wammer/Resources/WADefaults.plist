@@ -38,6 +38,8 @@
 	<false/>
 	<key>WADucklingsEnabled</key>
 	<false/>
+	<key>WAFacebookAppID</key>
+	<string>357087874306060</string>
 	<key>WAStreamFeaturesURL</key>
 	<string>http://waveface.com/stream/features</string>
 </dict>
