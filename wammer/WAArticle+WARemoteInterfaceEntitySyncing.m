@@ -124,13 +124,13 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	NSString *groupID = [incomingRepresentation objectForKey:@"group_id"];
 	NSString *representingFileID = [incomingRepresentation objectForKey:@"cover_attach"];
 
-	NSMutableArray *fullAttachmentList = [incomingRepresentation objectForKey:@"attachment_id_array"];
+	NSMutableArray *fullAttachmentList = [[incomingRepresentation objectForKey:@"attachment_id_array"] mutableCopy];
 	NSMutableArray *attachmentList = [[incomingRepresentation objectForKey:@"attachments"] mutableCopy];
 	
 	if ([fullAttachmentList count] > [attachmentList count]) {
 		// dedup
 		for (NSDictionary *attachment in attachmentList) {
-			[fullAttachmentList removeObjectIdenticalTo:[attachment objectForKey:@"object_id"]];
+			[fullAttachmentList removeObject:[attachment objectForKey:@"object_id"]];
 		}
 		
 		for (NSString *objectID in fullAttachmentList) {
