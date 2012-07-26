@@ -93,11 +93,15 @@
 	__weak WAFacebookInterface *wFBInterface = [WAFacebookInterface sharedInterface];
 	
 	[wFBInterface authenticateWithCompletion:^(BOOL didFinish, NSError *error) {
-	
+		
 		if (!didFinish) {
-			if (wSelf.callback) {
-				wSelf.callback(nil, nil, nil, error);
-			}
+				
+			/*
+			 
+				The Did Not Login notification will be fired if the user gets back into the application by tapping the Cancel button in the third party application or on the web auth form
+		 
+			*/
+			
 			return;
 		}
 		

@@ -295,6 +295,9 @@ static NSString * const kCoverPhotoSwitchPopoverController = @"-[WAArticleViewCo
 		if ([popoverController isPopoverVisible])
 			return;
 		
+		if (![self isViewLoaded] || !self.view.window)
+			return;
+		
 		[popoverController presentPopoverFromRect:self.view.bounds inView:wSelf.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		
 	}];
