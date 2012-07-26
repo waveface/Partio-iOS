@@ -2,10 +2,10 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12A269</string>
+		<string key="IBDocument.SystemVersion">11E53</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<string key="IBDocument.AppKitVersion">1138.47</string>
+		<string key="IBDocument.HIToolboxVersion">569.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">1498</string>
@@ -109,7 +109,7 @@
 					<object class="IBUIButton" id="526518817">
 						<reference key="NSNextResponder" ref="212188768"/>
 						<int key="NSvFlags">264</int>
-						<string key="NSFrame">{{120, 516}, {128, 45}}</string>
+						<string key="NSFrame">{{290, 516}, {128, 45}}</string>
 						<reference key="NSSuperview" ref="212188768"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="705348407"/>
@@ -138,9 +138,10 @@
 					<object class="IBUIButton" id="705348407">
 						<reference key="NSNextResponder" ref="212188768"/>
 						<int key="NSvFlags">264</int>
-						<string key="NSFrame">{{290, 516}, {132, 45}}</string>
+						<string key="NSFrame">{{120, 516}, {132, 45}}</string>
 						<reference key="NSSuperview" ref="212188768"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -331,8 +332,8 @@
 							<reference ref="515928356"/>
 							<reference ref="525163494"/>
 							<reference ref="321811197"/>
-							<reference ref="526518817"/>
 							<reference ref="705348407"/>
+							<reference ref="526518817"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
