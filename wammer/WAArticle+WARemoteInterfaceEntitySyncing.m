@@ -623,7 +623,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 			if (!isHidden) {
 
-				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview createTime:self.creationDate updateTime:self.modificationDate favorite:isFavorite onSuccess:^(NSDictionary *postRep) {
+				[ri createPostInGroup:groupID withContentText:postText attachments:attachments preview:preview createTime:postCreationDate updateTime:postModificationDate favorite:isFavorite onSuccess:^(NSDictionary *postRep) {
 					
 					callback(postRep);
 
@@ -668,7 +668,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 
 				NSDate *lastPostModDate = [context objectForKey:kPostExistingRemoteRepDate];
 				
-				[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate updateTime:self.modificationDate onSuccess:^(NSDictionary *postRep) {
+				[ri updatePost:postID inGroup:groupID withText:postText attachments:attachments mainAttachment:postCoverPhotoID preview:preview favorite:isFavorite hidden:isHidden replacingDataWithDate:lastPostModDate updateTime:postModificationDate onSuccess:^(NSDictionary *postRep) {
 
 					callback(postRep);
 
