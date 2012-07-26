@@ -50,7 +50,7 @@ NSString * const kWARemoteInterfaceDidObserveAuthenticationFailureNotification =
 NSString * const kWASettingsDidRequestActionNotification = @"kWASettingsDidRequestActionNotification";
 
 NSString * const kWAFacebookDidLoginNotification = @"kWAFacebookDidLoginNotification";
-NSString * const kWAFacebookAppID = @"357087874306060";
+NSString * const kWAFacebookAppID = @"WAFacebookAppID";
 NSString * const kWAFacebookTokenKey = @"FBAccessTokenKey";
 NSString * const kWAFacebookExpirationDateKey = @"FBExpirationDateKey";
 

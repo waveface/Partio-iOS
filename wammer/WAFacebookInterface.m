@@ -49,7 +49,7 @@ static NSString * const WAFacebookCallbackDidNotLoginMethodName = @"WAFacebookCa
 
 	if (!_facebook) {
 	
-		_facebook = [[WAFacebook alloc] initWithAppId:kWAFacebookAppID andDelegate:self];
+		_facebook = [[WAFacebook alloc] initWithAppId:[[NSUserDefaults standardUserDefaults] objectForKey:kWAFacebookAppID] andDelegate:self];
 	
 	}
 	
