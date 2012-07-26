@@ -118,6 +118,9 @@
 	
 		static NSString *deviceInfo;
 		static dispatch_once_t onceToken;
+	  
+		static NSString *verString;
+	  
 		dispatch_once(&onceToken, ^{
 
 			UIDevice *device = [UIDevice currentDevice];
@@ -137,9 +140,12 @@
 
 			nil] JSONString];
 				
+			verString = [NSString stringWithFormat:@"%@.%@", [[bundle infoDictionary] objectForKey:@"CFBundleShortVersionString"], [[bundle infoDictionary] objectForKey:(id)kCFBundleVersionKey]];
+
 		});
 	
 		[context setValue:deviceInfo forHeaderField:@"x-wf-origin"];
+		[context setValue:verString forHeaderField:@"Waveface-Stream"];
   
 		return context;
   

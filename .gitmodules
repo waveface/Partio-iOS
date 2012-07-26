@@ -76,3 +76,6 @@
 [submodule "external/Facebook"]
 	path = external/Facebook
 	url = git@github.com:waveface/facebook-ios-sdk.git
+[submodule "external/IRAQPhotoPicker"]
+	path = external/IRAQPhotoPicker
+	url = git@github.com:waveface/IRAQPhotoPickerController.git

@@ -13,7 +13,7 @@
 
 #import <objc/runtime.h>
 #import "WACompositionViewController+SubclassEyesOnly.h"
-#import "AGImagePickerController.h"
+#import "IRAQPhotoPickerController.h"
 
 NSString * const WACompositionImageInsertionUsesCamera = @"WACompositionImageInsertionUsesCamera";
 NSString * const WACompositionImageInsertionAnimatePresentation = @"WACompositionImageInsertionAnimatePresentation";
@@ -34,16 +34,17 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 - (IRAction *) newPresentImagePickerControllerActionAnimated:(BOOL)animate sender:(id)sender {
 
 	__weak WACompositionViewController *wSelf = self;
-	
-	__block AGImagePickerController *imagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
-		
-		NSLog(@"Failed. Error: %@", error);
-		
+	__block IRAQPhotoPickerController *imagePickerController = [[IRAQPhotoPickerController alloc] initWithAssetsLibrary:nil completion:^(NSArray *selectedAssets, NSError *error) {		
 		if (!error) {
-			
-			[wSelf dismissImagePickerController:imagePickerController animated:YES];
-			imagePickerController = nil;
-			
+			dispatch_async(dispatch_get_main_queue(), ^{
+				
+				[wSelf.managedObjectContext save:nil];
+				[wSelf handleSelectionWithArray:selectedAssets];
+				[wSelf dismissImagePickerController:imagePickerController animated:YES];
+				imagePickerController = nil;
+				
+			});
+						
 		} else if ([[error domain] isEqualToString:ALAssetsLibraryErrorDomain] && error.code == ALAssetsLibraryAccessUserDeniedError) {
 			
 			NSCParameterAssert(![NSThread isMainThread]);
@@ -65,22 +66,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			});
 			
 		}
-		
-	} andSuccessBlock:^(NSArray *info) {
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			
-			[wSelf.managedObjectContext save:nil];
-			[wSelf handleSelectionWithArray:info];
-			[wSelf dismissImagePickerController:imagePickerController animated:YES];
-			imagePickerController = nil;
-		
-		});
 
 	}];
 	
-	[imagePickerController setShouldShowSavedPhotosOnTop:YES];
-
 	return [IRAction actionWithTitle:NSLocalizedString(@"ACTION_INSERT_PHOTO_FROM_LIBRARY", @"Button title for showing an image picker") block: ^ {
 	
 		[wSelf presentImagePickerController:imagePickerController sender:sender animated:YES];
