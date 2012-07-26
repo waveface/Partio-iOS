@@ -45,6 +45,8 @@
 		anIdentifier, @"email",
 		aPassword, @"password",
 		aNickname, @"nickname",
+		WADeviceName(), @"device_name",
+	  WADeviceIdentifier(), @"device_id",
 				
 	nil], nil) validator:WARemoteInterfaceGenericNoErrorValidator() successHandler: ^ (NSDictionary *inResponseOrNil, IRWebAPIRequestContext *inResponseContext) {
 	
