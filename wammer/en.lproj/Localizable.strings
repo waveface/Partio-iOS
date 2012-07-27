@@ -30,7 +30,7 @@
 "ACTION_CHANGE_REPRESENTING_FILE" = "Change Cover";
 
 /* Short action title for connecting Facebook creds */
-"ACTION_CONNECT_FACEBOOK_SHORT" = "ACTION_CONNECT_FACEBOOK_SHORT";
+"ACTION_CONNECT_FACEBOOK_SHORT" = "Start importing";
 
 /* Action deleting an article
    Title for deleting an article from the Overview
@@ -41,7 +41,7 @@
 "ACTION_DISCARD" = "Discard";
 
 /* Short action title for disconnecting Facebook creds */
-"ACTION_DISCONNECT_FACEBOOK" = "ACTION_DISCONNECT_FACEBOOK";
+"ACTION_DISCONNECT_FACEBOOK" = "Stop importing";
 
 /* In iPad composition view */
 "ACTION_DONE" = "Stream!";
@@ -174,16 +174,16 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "A necessary task failed: %@ — Your post has been saved as a draft.";
 
 /* Message for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "FACEBOOK_CONNECT_REQUEST_MESSAGE";
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "Stream will start importing ports from your Facebook account";
 
 /* Title for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_TITLE" = "FACEBOOK_CONNECT_REQUEST_TITLE";
+"FACEBOOK_CONNECT_REQUEST_TITLE" = "Confirm to import from Facebook";
 
 /* Message for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "FACEBOOK_DISCONNECT_REQUEST_MESSAGE";
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "Stream will stop importing posts from your Facebook account";
 
 /* Title for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "FACEBOOK_DISCONNECT_REQUEST_TITLE";
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "Confirm to stop importing";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "All Posts";
@@ -283,13 +283,13 @@
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ Stream only sends your original photos via Wi-Fi connection. \n\nIf you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
 
 /* Title for view controller signing the user in */
-"SIGN_IN_CONTROLLER_TITLE" = "SIGN_IN_CONTROLLER_TITLE";
+"SIGN_IN_CONTROLLER_TITLE" = "Log In";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "Are you sure?";
 
 /* Title for view controller signing the user up */
-"SIGN_UP_CONTROLLER_TITLE" = "SIGN_UP_CONTROLLER_TITLE";
+"SIGN_UP_CONTROLLER_TITLE" = "Sign Up";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "Loading Document…";
@@ -451,10 +451,10 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 of %2";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
+"ACTION_DISMISS_TUTORIAL" = "Finish";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
+"ACTION_DISMISS_TUTORIAL" = "Finish";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ Stream uses Wi-Fi to send original size photos back to your PC. If you don't have Stream installed on your PC, or it's not up and running, we keep the photos in a temporary cloud space for up to 30 days.";
@@ -463,7 +463,7 @@
 "SERVICE_INFO_HEADER" = "Service Info";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "FACEBOOK_CONNECT_TITLE";
+"FACEBOOK_CONNECT_TITLE" = "Facebook Import";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "Account Info";

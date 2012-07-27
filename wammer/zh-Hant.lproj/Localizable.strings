@@ -30,7 +30,7 @@
 "ACTION_CHANGE_REPRESENTING_FILE" = "更換封面";
 
 /* Short action title for connecting Facebook creds */
-"ACTION_CONNECT_FACEBOOK_SHORT" = "ACTION_CONNECT_FACEBOOK_SHORT";
+"ACTION_CONNECT_FACEBOOK_SHORT" = "同步";
 
 /* Action deleting an article
    Title for deleting an article from the Overview
@@ -41,7 +41,7 @@
 "ACTION_DISCARD" = "丟棄草稿";
 
 /* Short action title for disconnecting Facebook creds */
-"ACTION_DISCONNECT_FACEBOOK" = "ACTION_DISCONNECT_FACEBOOK";
+"ACTION_DISCONNECT_FACEBOOK" = "停止";
 
 /* In iPad composition view */
 "ACTION_DONE" = "完成";
@@ -174,16 +174,16 @@
 "ERROR_ARTICLE_ENTITY_SYNC_FAILURE_WITH_UNDERLYING_ERROR_DESCRIPTION_FORMAT" = "上傳時發生錯誤：%@。本文已存成草稿。";
 
 /* Message for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "FACEBOOK_CONNECT_REQUEST_MESSAGE";
+"FACEBOOK_CONNECT_REQUEST_MESSAGE" = "啟動之後，Stream將會開始同步您在Facebook上的新貼文。";
 
 /* Title for alert view asking if user wants to connect her Facebook account */
-"FACEBOOK_CONNECT_REQUEST_TITLE" = "FACEBOOK_CONNECT_REQUEST_TITLE";
+"FACEBOOK_CONNECT_REQUEST_TITLE" = "確認同步Facebook";
 
 /* Message for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "FACEBOOK_DISCONNECT_REQUEST_MESSAGE";
+"FACEBOOK_DISCONNECT_REQUEST_MESSAGE" = "確認取消後，Stream將會停止同步您在Facebook上的新貼文。";
 
 /* Title for alert view asking if user wants to disconnect her Facebook account */
-"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "FACEBOOK_DISCONNECT_REQUEST_TITLE";
+"FACEBOOK_DISCONNECT_REQUEST_TITLE" = "確認取消Facebook同步";
 
 /* Display title for a fetch request working against all the articles */
 "FETCH_REQUEST_ALL_ARTICLES_DISPLAY_TITLE" = "所有貼文";
@@ -283,13 +283,13 @@
 "SERVICE_INFO_WITHOUT_WIFI" = "⚠ 僅會在 Wi-Fi 連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有 30 天的時間將檔案從雲端送回 PC 保存。";
 
 /* Title for view controller signing the user in */
-"SIGN_IN_CONTROLLER_TITLE" = "SIGN_IN_CONTROLLER_TITLE";
+"SIGN_IN_CONTROLLER_TITLE" = "登入";
 
 /* Confirmation text for Signing Out */
 "SIGN_OUT_CONFIRMATION" = "確定登出？";
 
 /* Title for view controller signing the user up */
-"SIGN_UP_CONTROLLER_TITLE" = "SIGN_UP_CONTROLLER_TITLE";
+"SIGN_UP_CONTROLLER_TITLE" = "註冊";
 
 /* No comment provided by engineer. */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
@@ -376,16 +376,16 @@
 "COMPOSITION_NO_PHOTO_REMINDER_DESCRIPTION" = "您可以插入一些照片";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
-"USERNAME_PLACEHOLDER" = "USERNAME_PLACEHOLDER";
+"USERNAME_PLACEHOLDER" = "me@example.com";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
-"NOUN_PASSWORD" = "NOUN_PASSWORD";
+"NOUN_PASSWORD" = "密碼";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
 "NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
-"PASSWORD_PLACEHOLDER" = "PASSWORD_PLACEHOLDER";
+"PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Class = "IBUILabel"; text = "FEB"; ObjectID = "50"; */
 "FEB" = "FEB";
@@ -421,22 +421,22 @@
 "FEB" = "FEB";
 
 /* Class = "IBUITextField"; placeholder = "USERNAME_PLACEHOLDER"; ObjectID = "2Vk-4J-QH3"; */
-"USERNAME_PLACEHOLDER" = "USERNAME_PLACEHOLDER";
+"USERNAME_PLACEHOLDER" = "me@example.com";
 
 /* Class = "IBUILabel"; text = "NOUN_PASSWORD"; ObjectID = "KhS-eb-yB8"; */
-"NOUN_PASSWORD" = "NOUN_PASSWORD";
+"NOUN_PASSWORD" = "密碼";
 
 /* Class = "IBUILabel"; text = "NOUN_NICKNAME"; ObjectID = "LGa-aa-QPo"; */
 "NOUN_NICKNAME" = "使用者名稱";
 
 /* Class = "IBUITextField"; placeholder = "NICKNAME_PLACEHOLDER"; ObjectID = "YnT-se-P50"; */
-"NICKNAME_PLACEHOLDER" = "NICKNAME_PLACEHOLDER";
+"NICKNAME_PLACEHOLDER" = "John Appleseed";
 
 /* Class = "IBUILabel"; text = "NOUN_USERNAME"; ObjectID = "afM-HJ-Q3v"; */
 "NOUN_USERNAME" = "電子郵件";
 
 /* Class = "IBUITextField"; placeholder = "PASSWORD_PLACEHOLDER"; ObjectID = "g7o-DD-LvS"; */
-"PASSWORD_PLACEHOLDER" = "PASSWORD_PLACEHOLDER";
+"PASSWORD_PLACEHOLDER" = "••••••••";
 
 /* Class = "IBUILabel"; text = "STATE_LOADING_SINGLE_DOCUMENT"; ObjectID = "5"; */
 "STATE_LOADING_SINGLE_DOCUMENT" = "正在載入文件…";
@@ -451,10 +451,10 @@
 "STATE_LOADING_SINGLE_DOCUMENT_PROGRESS" = "%1 / %2";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
+"ACTION_DISMISS_TUTORIAL" = "完成";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
-"ACTION_DISMISS_TUTORIAL" = "ACTION_DISMISS_TUTORIAL";
+"ACTION_DISMISS_TUTORIAL" = "完成";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
@@ -463,7 +463,7 @@
 "SERVICE_INFO_HEADER" = "服務資訊";
 
 /* Class = "IBUILabel"; text = "FACEBOOK_CONNECT_TITLE"; ObjectID = "Fh9-Wq-UDR"; */
-"FACEBOOK_CONNECT_TITLE" = "FACEBOOK_CONNECT_TITLE";
+"FACEBOOK_CONNECT_TITLE" = "Facebook同步";
 
 /* Class = "IBUITableViewSection"; headerTitle = "ACCOUNT_INFO_HEADER"; ObjectID = "Gw1-xy-FWK"; */
 "ACCOUNT_INFO_HEADER" = "帳戶資訊";
@@ -487,26 +487,26 @@
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"SOCIAL_NETWORK_HEADER" = "SOCIAL_NETWORK_HEADER";
+"SOCIAL_NETWORK_HEADER" = "Facebook狀態";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "4"; */
-"ACTION_CONNECT_FACEBOOK" = "ACTION_CONNECT_FACEBOOK";
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "8"; */
-"ACTION_SIGN_IN" = "ACTION_SIGN_IN";
+"ACTION_SIGN_IN" = "登入";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "16"; */
-"ACTION_SIGN_UP" = "ACTION_SIGN_UP";
+"ACTION_SIGN_UP" = "註冊";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_CONNECT_FACEBOOK"; ObjectID = "8"; */
-"ACTION_CONNECT_FACEBOOK" = "ACTION_CONNECT_FACEBOOK";
+"ACTION_CONNECT_FACEBOOK" = "連結Facebook帳號";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_UP"; ObjectID = "9"; */
-"ACTION_SIGN_UP" = "ACTION_SIGN_UP";
+"ACTION_SIGN_UP" = "註冊";
 
 /* Class = "IBUIButton"; normalTitle = "ACTION_SIGN_IN"; ObjectID = "10"; */
-"ACTION_SIGN_IN" = "ACTION_SIGN_IN";
+"ACTION_SIGN_IN" = "登入";
 
