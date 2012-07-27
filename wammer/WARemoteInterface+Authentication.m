@@ -28,7 +28,6 @@
 		
 			if (wSelf.apiKey) {
 				[fields setObject:wSelf.apiKey forKey:@"apikey"];
-				[fields setObject:wSelf.apiKey forKey:@"api_key"];
 			}
 			
 			if (shouldSign && wSelf.userToken)
