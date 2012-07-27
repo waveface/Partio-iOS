@@ -712,3 +712,15 @@ static unsigned int networkActivityStackingCount = 0;
 }
 
 @end
+
+
+@implementation UINavigationController (KeyboardDismiss)
+
+// implement this method to avoid non-auto-dismissed keyboard bug on iPad
+// ref: http://stackoverflow.com/questions/3372333/ipad-keyboard-will-not-dismiss-if-modal-view-controller-presentation-style-is-ui
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
+	return NO;
+}
+
+@end
