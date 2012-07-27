@@ -25,7 +25,7 @@ GIT_INFO="`git log --stat --summary HEAD...$GIT_LATEST_TAG`"
 TF_API_URI="http://testflightapp.com/api/builds.json"
 TF_NOTES="$PROJECT_NAME $VERSION_MARKETING ($VERSION_BUILD) # $COMMIT_SHA\n$GIT_INFO"
 TF_NOTIFY="True"
-TF_DIST_LISTS="CI Responder"
+TF_DIST_LISTS="Developer"
 
 function AFTER_BUILD () {
 
