@@ -250,7 +250,7 @@ enum {
 
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$BODY" withString:(usedSummary ? usedSummary : @"")];
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$TITLE" withString:(usedTitle ? usedTitle : @"")];
-	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"TITLE_LINK" withString:[preview url] ? [preview url] : @""];
+	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$LINK" withString:preview.graphElement.url ? preview.graphElement.url : @""];
 	templatedSummary = [templatedSummary stringByReplacingOccurrencesOfString:@"$SOURCE" withString:(usedProviderName ? usedProviderName : @"")];
 	
 	[summaryWebView loadHTMLString:(templatedSummary ? templatedSummary : usedSummary) baseURL:summaryTemplateBaseURL];
