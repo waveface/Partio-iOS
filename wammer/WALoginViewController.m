@@ -48,8 +48,6 @@
 	if (!self)
 		return nil;
 	
-	self.title = NSLocalizedString(@"SIGN_IN_CONTROLLER_TITLE", @"Title for view controller signing the user in");
-
 	return self;
 
 }
@@ -63,7 +61,8 @@
 	
 	self.tableView.backgroundView = bgView;
 	self.doneItem.enabled = [self isPopulated];
-	
+	self.title = NSLocalizedString(@"SIGN_IN_CONTROLLER_TITLE", @"Title for view controller signing the user in");
+		
 }
 
 - (void) viewWillAppear:(BOOL)animated {
