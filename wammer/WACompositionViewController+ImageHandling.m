@@ -31,10 +31,20 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 @implementation WACompositionViewController (ImageHandling)
 
++ (ALAssetsLibrary *) defaultAssetsLibrary {
+	static dispatch_once_t onceToken = 0;
+	static ALAssetsLibrary *library = nil;
+	dispatch_once(&onceToken, ^{
+		library = [[ALAssetsLibrary alloc] init];
+	});
+	return library;
+}
+
 - (IRAction *) newPresentImagePickerControllerActionAnimated:(BOOL)animate sender:(id)sender {
 
+	ALAssetsLibrary *assetsLibrary = [WACompositionViewController defaultAssetsLibrary];
 	__weak WACompositionViewController *wSelf = self;
-	__block IRAQPhotoPickerController *imagePickerController = [[IRAQPhotoPickerController alloc] initWithAssetsLibrary:nil completion:^(NSArray *selectedAssets, NSError *error) {		
+	__block IRAQPhotoPickerController *imagePickerController = [[IRAQPhotoPickerController alloc] initWithAssetsLibrary:assetsLibrary completion:^(NSArray *selectedAssets, NSError *error) {
 		if (!error) {
 			dispatch_async(dispatch_get_main_queue(), ^{
 				
@@ -182,9 +192,9 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 
 - (void) handleSelectionWithArray: (NSArray *)selectedAssets {
 	
-	for (ALAsset *asset in selectedAssets)
+	for (ALAsset *asset in selectedAssets) 
 		[self handleIncomingSelectedAssetImage:nil representedAsset:asset];
-	
+		
 }
 
 - (void) handleIncomingSelectedAssetImage:(UIImage *)image representedAsset:(ALAsset *)representedAsset {
@@ -220,7 +230,7 @@ NSString * const kDismissesSelfIfCameraCancelled = @"-[WACompositionViewControll
 			if (representedAsset) {
 				file.assetURL = [[[representedAsset defaultRepresentation] url] absoluteString];
 			}
-
+				
 			file.resourceType = (NSString *)kUTTypeImage;
 			
 			article.dirty = (id)kCFBooleanTrue;
