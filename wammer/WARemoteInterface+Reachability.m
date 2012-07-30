@@ -126,9 +126,6 @@ static NSString * const kNetworkState = @"-[WARemoteInterface(Reachability) netw
   if ([aRequestName hasPrefix:@"groups/"])
     return incomingURLIsCloud;
     
-  if ([aRequestName hasPrefix:@"usertracks/"])
-    return incomingURLIsCloud;
-	
   WAReachabilityDetector *detectorForHost = [self.monitoredHostsToReachabilityDetectors objectForKey:aHost];
   
   if (!detectorForHost)

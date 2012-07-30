@@ -1,13 +1,13 @@
 //
-//  WAFacebookTests.h
+//  WAAttachmentsTests.h
 //  wammer
 //
-//  Created by jamie on 7/3/12.
+//  Created by jamie on 7/24/12.
 //  Copyright (c) 2012 Waveface. All rights reserved.
 //
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface WAFacebookTests : SenTestCase
+@interface WAAttachmentsTests : SenTestCase
 
 @end
