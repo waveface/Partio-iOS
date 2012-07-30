@@ -557,6 +557,7 @@
 				WATutorialViewController *tutorialVC = [WATutorialViewController controllerWithOption:options completion:^(BOOL didFinish, NSError *error) {
 
 					handleAuthSuccess();
+					[wAppDelegate clearViewHierarchy];
 					[wAppDelegate recreateViewHierarchy];
 					
 				}];
@@ -582,6 +583,7 @@
 			} else {
 			
 				handleAuthSuccess();
+				[wAppDelegate clearViewHierarchy];
 				[wAppDelegate recreateViewHierarchy];
 			
 			}
