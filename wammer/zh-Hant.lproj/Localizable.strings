@@ -453,8 +453,20 @@
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
 "ACTION_DISMISS_TUTORIAL" = "完成";
 
+/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH"; ObjectID = "55"; */
+"FACEBOOK_IMPORT_TUTORIAL_SWITCH" = "Facebook同步";
+
+/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL"; ObjectID = "56"; */
+"FACEBOOK_IMPORT_TUTORIAL" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
+
 /* Class = "IBUIButton"; normalTitle = "ACTION_DISMISS_TUTORIAL"; ObjectID = "43"; */
 "ACTION_DISMISS_TUTORIAL" = "完成";
+
+/* Class = "IBUITextView"; text = "FACEBOOK_IMPORT_TUTORIAL_IPAD"; ObjectID = "46"; */
+"FACEBOOK_IMPORT_TUTORIAL_IPAD" = "Stream可以將您過去張貼在Facebook上面的資料下載並且存放到您個人的時間軸上。未來您在Facebook上面的新貼文，都會同步備份到您的Stream。\n\n您可以在主畫面中的帳戶資訊，啓動或者停止這項同步功能。";
+
+/* Class = "IBUILabel"; text = "FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD"; ObjectID = "49"; */
+"FACEBOOK_IMPORT_TUTORIAL_SWITCH_IPAD" = "Facebook同步";
 
 /* Class = "IBUITableViewSection"; footerTitle = "SERVICE_INFO_FOOTER"; ObjectID = "9vM-w4-lTb"; */
 "SERVICE_INFO_FOOTER" = "⚠ 僅會在Wi-Fi連線時上傳原檔\n\n在 Wi-Fi 環境中，Stream 會幫您將原始檔案妥善保存。只要下載並且開啓 PC 上的 Stream，您有30天的時間將檔案從雲端送回PC保存";
