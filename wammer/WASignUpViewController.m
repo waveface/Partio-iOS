@@ -8,10 +8,12 @@
 
 #import "WASignUpViewController.h"
 #import "WARemoteInterface.h"
+#import "WAOverlayBezel.h"
 
 @interface WASignUpViewController ()
 + (UIStoryboard *) storyboard;
 @property (nonatomic, readwrite, copy) WASignUpViewControllerCallback callback;
+@property (nonatomic, readwrite, assign) BOOL inProgress;
 @end
 
 
@@ -21,6 +23,7 @@
 @synthesize passwordField = _passwordField;
 @synthesize nicknameField = _nicknameField;
 @synthesize callback = _callback;
+@synthesize inProgress = _inProgress;
 
 + (UIStoryboard *) storyboard {
 
@@ -59,6 +62,7 @@
 	self.tableView.backgroundView = bgView;
 	self.doneItem.enabled = [self isPopulated];
 	self.title = NSLocalizedString(@"SIGN_UP_CONTROLLER_TITLE", @"Title for view controller signing the user up");
+	self.inProgress = NO;
 
 }
 
@@ -110,6 +114,12 @@
 
 - (IBAction) handleDone:(id)sender {
 
+	if (self.inProgress) {
+		return;
+	} else {
+		self.inProgress = YES;
+	}
+
 	[self.emailField resignFirstResponder];
 	[self.passwordField resignFirstResponder];
 	[self.nicknameField resignFirstResponder];
@@ -117,10 +127,13 @@
 	NSString *userName = self.emailField.text;
 	NSString *password = self.passwordField.text;
 	NSString *nickname = self.nicknameField.text;
-	
+
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+
 	[[WARemoteInterface sharedInterface] registerUser:userName password:password nickname:nickname onSuccess:^(NSString *token, NSDictionary *userRep, NSArray *groupReps) {
 	
-		//	do something with token
+		[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
@@ -131,6 +144,14 @@
 		
 	} onFailure:^(NSError *error) {
 	
+		[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+		
+		WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+		[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+			[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+		});
+
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			if (self.callback)
