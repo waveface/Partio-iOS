@@ -8,11 +8,14 @@
 
 #import "WALogInViewController.h"
 #import "WARemoteInterface.h"
+#import "WAOverlayBezel.h"
+
 
 @interface WALogInViewController () <UITextFieldDelegate>
 
 + (UIStoryboard *) storyboard;
 @property (nonatomic, readwrite, copy) WALogInViewControllerCallback callback;
+@property (nonatomic, readwrite, assign) BOOL inProgress;
 
 - (BOOL) isPopulated;
 
@@ -24,6 +27,7 @@
 @synthesize emailField = _emailField;
 @synthesize passwordField = _passwordField;
 @synthesize callback = _callback;
+@synthesize inProgress = _inProgress;
 
 + (UIStoryboard *) storyboard {
 
@@ -109,14 +113,25 @@
 
 - (IBAction) handleDone:(id)sender {
 
+	if (self.inProgress) {
+		return;
+	} else {
+		self.inProgress = YES;
+	}
+
 	[_emailField resignFirstResponder];
 	[_passwordField resignFirstResponder];
 
 	NSString *userName = self.emailField.text;
 	NSString *password = self.passwordField.text;
 	
+	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
+	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
+
 	[[WARemoteInterface sharedInterface] retrieveTokenForUser:userName password:password onSuccess:^(NSDictionary *userRep, NSString *token,NSArray *groupReps) {
 	
+		[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			if (self.callback)
@@ -126,6 +141,14 @@
 		
 	} onFailure:^(NSError *error) {
 		
+		[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+
+		WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
+		[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+			[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+		});
+
 		dispatch_async(dispatch_get_main_queue(), ^{
 			
 			if (self.callback)
