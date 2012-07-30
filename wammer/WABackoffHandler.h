@@ -12,8 +12,8 @@
 
 @interface WABackoffHandler : NSObject
 
-- (id) initWithInitialBackoffInterval:(NSTimeInterval)interval;
-
-@property (nonatomic, readonly, copy) WABackOffBlock backoffBlock;
+- (id) initWithInitialBackoffInterval:(NSTimeInterval)interval valueFixed:(BOOL)fixed;
+- (NSTimeInterval) nextInterval;
+- (NSTimeInterval) firstInterval;
 
 @end

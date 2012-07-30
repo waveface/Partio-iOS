@@ -11,13 +11,15 @@
 @interface WABackoffHandler ()
 @property (nonatomic, readwrite, assign) NSTimeInterval initialValue;
 @property (nonatomic, readwrite, assign) NSTimeInterval currentValue;
+@property (nonatomic, readwrite, assign) BOOL fixed;
 @end
 
 @implementation WABackoffHandler
 @synthesize initialValue = _initialValue;
 @synthesize currentValue = _currentValue;
+@synthesize fixed = _fixed;
 
-- (id) initWithInitialBackoffInterval:(NSTimeInterval)interval {
+- (id) initWithInitialBackoffInterval:(NSTimeInterval)interval valueFixed:(BOOL)fixed {
 	
 	self = [super init];
 	if (!self)
@@ -25,30 +27,29 @@
 	
 	_initialValue = interval;
 	_currentValue = interval;
+	_fixed = fixed;
 	
 	return self;
 	
 }
 
-- (WABackOffBlock) backoffBlock {
+- (NSTimeInterval)nextInterval
+{
+	if (self.fixed) {
+		return self.initialValue;
+	}
 	
-	__weak WABackoffHandler *wSelf = self;
+	if (self.currentValue < 512) {
+		self.currentValue *= 2;
+	}
 	
-	return [ ^ (BOOL resetBackOff) {
-		
-		if (resetBackOff) {
-			wSelf.currentValue = wSelf.initialValue;
-			return (NSTimeInterval)(arc4random() % (int)round(wSelf.currentValue));
-		}
-		
-		if (wSelf.currentValue  < 512) {
-			wSelf.currentValue *= 2;
-		}
-		
-		return (NSTimeInterval)(arc4random() % (int)round(wSelf.currentValue));
-	
-	} copy];
-	
+	return (NSTimeInterval)(arc4random() % (int)round(self.currentValue));
+}
+
+- (NSTimeInterval)firstInterval
+{
+	self.currentValue = self.initialValue;
+	return (NSTimeInterval)(arc4random() % (int)round(self.currentValue));
 }
 
 @end
