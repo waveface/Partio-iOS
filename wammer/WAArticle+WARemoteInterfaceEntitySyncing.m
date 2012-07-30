@@ -134,10 +134,24 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		}
 		
 		for (NSString *objectID in fullAttachmentList) {
+			NSString *attachString = @"/v2/attachments/view?object_id=%@&image_meta=%@";
+			NSString *smallString = [NSString stringWithFormat:attachString, objectID, @"small"];
+			NSString *mediumString =[NSString stringWithFormat:attachString, objectID, @"medium"];
+			NSDictionary *smallDict = [NSDictionary dictionaryWithObjectsAndKeys:
+																 smallString, @"url",
+																 nil];
+			NSDictionary *mediumDict = [NSDictionary dictionaryWithObjectsAndKeys:
+																 mediumString, @"url",
+																 nil];
+			NSDictionary *imageMeta = [NSDictionary dictionaryWithObjectsAndKeys:
+//																 smallDict,  @"small",
+																 mediumDict, @"medium",
+																 nil];
 			NSDictionary *attach = [NSDictionary dictionaryWithObjectsAndKeys:
 															objectID, @"object_id",
 															creatorID, @"creator_id",
 															articleID, @"post_id",
+															imageMeta, @"image_meta",
 															nil];
 			[attachmentList addObject:attach];
 		}

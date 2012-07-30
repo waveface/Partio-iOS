@@ -75,10 +75,7 @@
 	self.gridView.clipsToBounds = NO;
 	
 	[allStackElements addObject:gridViewWrapper];
-	
-	[self.stackView layoutSubviews];
-	[self.gridView reloadData];
-	
+		
 }
 
 - (void) viewDidUnload {

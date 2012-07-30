@@ -8,6 +8,7 @@
 
 #import "WAAttachmentsTests.h"
 #import "WADataStore.h"
+#import "WADataStore+FetchingConveniences.h"
 #import "WAArticle.h"
 
 @implementation WAAttachmentsTests {
@@ -46,8 +47,24 @@
 	
 	WAArticle *article = [touchedArticles objectAtIndex:0];
 	STAssertTrue([article.files count] == 20, @"attachments should be decorated to 20");
+	
+	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:article];
+	
+	NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc]
+																													initWithFetchRequest:fetchRequest
+																													managedObjectContext:article.managedObjectContext
+																													sectionNameKeyPath:nil
+																													cacheName:nil];
+	NSError *fetchError = nil;
+	if (![fetchedResultsController performFetch:&fetchError])
+		NSLog(@"Error fetching: %@", fetchError);
+	
+	STAssertTrue([[fetchedResultsController fetchedObjects]count] == 20, @"should be 20");
+	
 	[context refreshObject:article mergeChanges:NO];
 	[context save:nil];
+	
+	
 }
 
 - (void)testArticleWithFullInformation {
