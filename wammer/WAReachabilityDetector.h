@@ -25,8 +25,6 @@ enum WAReachabilityState {
 
 typedef struct sockaddr_in WASocketAddress;
 
-typedef NSTimeInterval (^WABackOffBlock) (BOOL resetBackOff);
-
 
 @class WAReachabilityDetector;
 @protocol WAReachabilityDetectorDelegate <NSObject>
@@ -35,7 +33,7 @@ typedef NSTimeInterval (^WABackOffBlock) (BOOL resetBackOff);
 
 @end
 
-
+@class WABackoffHandler;
 @class IRRecurrenceMachine;
 @interface WAReachabilityDetector : NSObject
 
@@ -45,7 +43,7 @@ typedef NSTimeInterval (^WABackOffBlock) (BOOL resetBackOff);
 + (id) detectorForURL:(NSURL *)aHostURL;
 
 - (id) initWithAddress:(WASocketAddress)anAddress;	//	Detectors initialized by address struct refs will NOT handle application layer stuff
-- (id) initWithURL:(NSURL *)aHostURL backOffBlock:(WABackOffBlock)aBackOffBlock;
+- (id) initWithURL:(NSURL *)aHostURL backOffHandler:(WABackoffHandler *)aBackOffHandler;
 
 @property (nonatomic, readwrite, weak) id<WAReachabilityDetectorDelegate> delegate;
 
