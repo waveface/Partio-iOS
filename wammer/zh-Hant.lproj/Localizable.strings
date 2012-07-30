@@ -499,7 +499,7 @@
 "NOUN_CURRENT_DEVICE" = "裝置名稱";
 
 /* Class = "IBUITableViewSection"; headerTitle = "SOCIAL_NETWORK_HEADER"; ObjectID = "qoR-fT-NMh"; */
-"SOCIAL_NETWORK_HEADER" = "Facebook狀態";
+"SOCIAL_NETWORK_HEADER" = "Facebook 設定";
 
 /* Class = "IBUILabel"; text = "ACTION_CONTACT_DEVELOPER"; ObjectID = "vuN-4r-WXb"; */
 "ACTION_CONTACT_DEVELOPER" = "聯絡我們";
