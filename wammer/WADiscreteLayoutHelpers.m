@@ -278,8 +278,8 @@ NSArray * WADefaultLayoutGridsMake (void) {
 			
 			[[IRDiscreteLayoutGrid alloc] initWithIdentifier:@"5_non_faves_A_landscape" contentSize:landscapeSize layoutAreas:[NSArray arrayWithObjects:
 				area(@"A", notFave, layoutBlock(3, 2, 0, 0, 1, 1), singleXStack),
-				area(@"B", notFave, layoutBlock(3, 2, 1, 1, 1, 1), singleXStack),
-				area(@"C", notFave, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
+				area(@"B", notFave, layoutBlock(3, 2, 0, 1, 1, 1), singleXStack),
+				area(@"C", notFave, layoutBlock(3, 2, 1, 1, 1, 1), singleXStack),
 				area(@"D", combo,		layoutBlock(3, 2, 1, 0, 2, 1), singleXStack),
 				area(@"E", notFave, layoutBlock(3, 2, 2, 1, 1, 1), singleXStack),
 			nil]]
