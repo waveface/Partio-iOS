@@ -107,6 +107,18 @@
 /* title in attachments view */
 "ATTACHMENTS_VIEW_TITLE" = "Attachments";
 
+/* Authentication Error Description */
+"AUTH_ERROR_ALREADY_REGISTERED" = "This Email has already been registered. Please enter a new Email.";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_FORMAT" = "Email format is invalid.";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_EMAIL_PWD" = "Email or password is invalid.";
+
+/* Authentication Error Description */
+"AUTH_ERROR_INVALID_PWD_FORMAT" = "Password format is invalid.";
+
 /* Prompt for Cover Image picker */
 "CHANGE_REPRESENTING_FILE_PROMPT" = "Select a new Cover Photo for this post.";
 

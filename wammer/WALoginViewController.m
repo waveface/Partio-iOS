@@ -128,11 +128,14 @@
 	WAOverlayBezel *busyBezel = [WAOverlayBezel bezelWithStyle:WAActivityIndicatorBezelStyle];
 	[busyBezel showWithAnimation:WAOverlayBezelAnimationFade];
 
+	__weak WALogInViewController *wSelf = self;
 	[[WARemoteInterface sharedInterface] retrieveTokenForUser:userName password:password onSuccess:^(NSDictionary *userRep, NSString *token,NSArray *groupReps) {
 	
-		[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
+		wSelf.inProgress = NO;
 
 		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
 			if (self.callback)
 				self.callback(token, userRep, groupReps, nil);
@@ -141,15 +144,11 @@
 		
 	} onFailure:^(NSError *error) {
 		
-		[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-
-		WAOverlayBezel *errorBezel = [WAOverlayBezel bezelWithStyle:WAErrorBezelStyle];
-		[errorBezel showWithAnimation:WAOverlayBezelAnimationFade];
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-			[errorBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
-		});
+		wSelf.inProgress = NO;
 
 		dispatch_async(dispatch_get_main_queue(), ^{
+
+			[busyBezel dismissWithAnimation:WAOverlayBezelAnimationFade];
 			
 			if (self.callback)
 				self.callback(nil, nil, nil, error);
