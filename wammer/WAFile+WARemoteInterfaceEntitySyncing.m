@@ -317,8 +317,14 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	
 	}
 	
-	BOOL needsSendingResourceImage = !self.resourceURL && [self resourceImage];
-	BOOL needsSendingThumbnailImage = !self.thumbnailURL && [self smallestPresentableImage];
+	
+	/* Steven: for redmine #1701, there is a strange issue, when we check [self smallestPresentableImage] for needsSendingThumbnailImage here,
+	 * this will cause the second and other photos will not be copied from Asset Library, an unknown hang in operation queue. 
+	 * The root cause is unknown. But if we didn't call smallestPresetableImage here, it would work fine. As a workaround, we don't test this here
+	 * And not to invoke smallestPresentableImage for needsSendingThumbnailImage should be fine
+	 */
+	BOOL needsSendingResourceImage = !self.resourceURL;
+	BOOL needsSendingThumbnailImage = !self.thumbnailURL;
 	
 	BOOL (^isValidPath)(NSString *) = ^ (NSString *aPath) {
 		
@@ -348,7 +354,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 			NSURL *capturedURL = [NSURL URLWithString:self.assetURL];
 
 			[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
-				
+
 				NSParameterAssert(![NSThread isMainThread]);
 
 				[[ALAssetsLibrary new] assetForURL:capturedURL resultBlock:^(ALAsset *asset) {
@@ -402,7 +408,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}
 		
 	if (needsSendingThumbnailImage && canSendThumbnailImage) {
-		
+
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
@@ -481,7 +487,7 @@ NSString * const kWAFileSyncFullQualityStrategy = @"WAFileSyncFullQualityStrateg
 	}
 	
 	if (needsSendingResourceImage && canSendResourceImage) {
-	
+
 		[operations addObject:[IRAsyncBarrierOperation operationWithWorker:^(IRAsyncOperationCallback callback) {
 			
 			WAFile *file = (WAFile *)[context irManagedObjectForURI:ownURL];
