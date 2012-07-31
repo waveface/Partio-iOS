@@ -232,7 +232,7 @@
 
 /* In iPad overview
    iPhone Timeline */
-"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted at %2$@ from %3$@";
+"NUMBER_OF_PHOTOS_CREATE_TIME_FROM_DEVICE" = "%1$@ posted %2$@ from %3$@";
 
 /* In iPad overview */
 "PHOTO_NOUN" = "1 photo";
