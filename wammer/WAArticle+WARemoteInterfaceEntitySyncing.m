@@ -144,7 +144,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 																 mediumString, @"url",
 																 nil];
 			NSDictionary *imageMeta = [NSDictionary dictionaryWithObjectsAndKeys:
-//																 smallDict,  @"small",
+																 smallDict,  @"small",
 																 mediumDict, @"medium",
 																 nil];
 			NSDictionary *attach = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -152,6 +152,8 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 															creatorID, @"creator_id",
 															articleID, @"post_id",
 															imageMeta, @"image_meta",
+															@"unknown.jpeg", @"file_name",
+															@"image", @"type",
 															nil];
 			[attachmentList addObject:attach];
 		}
