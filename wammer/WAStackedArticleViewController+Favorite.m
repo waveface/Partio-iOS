@@ -47,15 +47,15 @@
 				
 				case UIUserInterfaceIdiomPad: {
 					edgeDelta = 0.0f;
-					faveImage = [UIImage imageNamed:@"HeartHighlight"];
-					unfaveImage = [UIImage imageNamed:@"HeartNormal"];
+					faveImage = [UIImage imageNamed:@"Fav"];
+					unfaveImage = [UIImage imageNamed:@"Unfav"];
 					break;
 				}
 				
 				case UIUserInterfaceIdiomPhone: {
 					edgeDelta = 8.0f;
-					faveImage = [UIImage imageNamed:@"Fav~iphone"];
-					unfaveImage = [UIImage imageNamed:@"Unfav~iphone"];
+					faveImage = [UIImage imageNamed:@"Fav"];
+					unfaveImage = [UIImage imageNamed:@"Unfav"];
 					break;
 				}
 				
