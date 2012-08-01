@@ -25,4 +25,17 @@
 	
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if ([keyPath isEqualToString:@"article.presentationDate"]) {
+
+		[self.dateLabel setText:[NSDateFormatter localizedStringFromDate:(NSDate *)[change objectForKey:NSKeyValueChangeNewKey] dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterMediumStyle]];
+
+	} else if ([keyPath isEqualToString:@"article.creationDeviceName"]) {
+
+		[self.deviceLabel setText:(NSString *)[change objectForKey:NSKeyValueChangeNewKey]];
+
+	}
+}
+
 @end
