@@ -317,7 +317,10 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 		
 		NSDate *usedDate = [ds lastNewPostsUpdateDate];
 		
-		[ri retrievePostsCreatedSince:usedDate
+		/* Steven: request for all post with one second later then lastNewPostsUpdateDate to prevent fetching the same article
+		 * a better solution should be to check modificationDate with last_modify time and prevent update to data model
+		 */
+		[ri retrievePostsCreatedSince:[NSDate dateWithTimeInterval:1 sinceDate:usedDate]
 													inGroup:usedGroupIdentifier
 											 onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
 		 {

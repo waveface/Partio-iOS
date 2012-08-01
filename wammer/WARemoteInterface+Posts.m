@@ -144,7 +144,7 @@
 			if (![postReps count]) {
 				
 				if (successBlock)
-					successBlock(continuation);
+					successBlock(nil);
 				
 				getSince = nil;
 				
@@ -166,7 +166,7 @@
 			if ([latestTimestamp isEqualToDate:continuation]) {
 			
 				if (successBlock)
-					successBlock(continuation);
+					successBlock(nil);
 					
 				getSince = nil;
 				
