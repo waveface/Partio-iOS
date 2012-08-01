@@ -22,9 +22,6 @@
 [submodule "external/IRDiscreteLayoutManager"]
 	path = external/IRDiscreteLayoutManager
 	url = git://github.com/iridia/IRDiscreteLayoutManager.git
-[submodule "external/PLCrashReporter"]
-	path = external/PLCrashReporter
-	url = git://github.com/iridia/PLCrashReporter.git
 [submodule "external/Chameleon"]
 	path = external/Chameleon
 	url = git://github.com/iridia/Chameleon.git
@@ -37,9 +34,6 @@
 [submodule "external/IRTextAttributor"]
 	path = external/IRTextAttributor
 	url = git://github.com/iridia/IRTextAttributor.git
-[submodule "external/Finch"]
-	path = external/Finch
-	url = git://github.com/iridia/Finch.git
 [submodule "external/IRRecurrenceMachine"]
 	path = external/IRRecurrenceMachine
 	url = git://github.com/iridia/IRRecurrenceMachine.git
