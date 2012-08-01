@@ -1,13 +1,12 @@
 //
 //  WAAttachmentsTests.h
-//  wammer
 //
 //  Created by jamie on 7/24/12.
-//  Copyright (c) 2012 Waveface. All rights reserved.
+//  Copyright (c) 2012 Waveface Inc. All rights reserved.
 //
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface WAAttachmentsTests : SenTestCase
+@interface WAArticleTests : SenTestCase
 
 @end

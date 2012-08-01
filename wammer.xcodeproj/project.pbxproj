@@ -50,7 +50,7 @@
 		4B31BAAC1591A74C00DC1A70 /* AGIPCToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA9B1591A74C00DC1A70 /* AGIPCToolbarItem.m */; };
 		4B31BAAD1591A74C00DC1A70 /* ALAsset+AGIPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B31BA9D1591A74C00DC1A70 /* ALAsset+AGIPC.m */; };
 		4B31BAAE1591A74C00DC1A70 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4B31BA9E1591A74C00DC1A70 /* LICENSE */; };
-		4B3225E915BE4CE400934DA4 /* WAAttachmentsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3225E815BE4CE400934DA4 /* WAAttachmentsTests.m */; };
+		4B3225E915BE4CE400934DA4 /* WAArticleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B3225E815BE4CE400934DA4 /* WAArticleTests.m */; };
 		4B362548156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */; };
 		4B52734015624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html in Resources */ = {isa = PBXBuildFile; fileRef = 4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */; };
 		4B52734415625B3500C6F55D /* ProviderIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 4B52734315625B3500C6F55D /* ProviderIcon.png */; };
@@ -1251,8 +1251,8 @@
 		4B31BA9C1591A74C00DC1A70 /* ALAsset+AGIPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ALAsset+AGIPC.h"; sourceTree = "<group>"; };
 		4B31BA9D1591A74C00DC1A70 /* ALAsset+AGIPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ALAsset+AGIPC.m"; sourceTree = "<group>"; };
 		4B31BA9E1591A74C00DC1A70 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		4B3225E715BE4CE400934DA4 /* WAAttachmentsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAAttachmentsTests.h; sourceTree = "<group>"; };
-		4B3225E815BE4CE400934DA4 /* WAAttachmentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAAttachmentsTests.m; sourceTree = "<group>"; };
+		4B3225E715BE4CE400934DA4 /* WAArticleTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WAArticleTests.h; sourceTree = "<group>"; };
+		4B3225E815BE4CE400934DA4 /* WAArticleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WAArticleTests.m; sourceTree = "<group>"; };
 		4B362546156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "IRRelativeDateFormatter+WAAdditions.h"; path = "wammer/IRRelativeDateFormatter+WAAdditions.h"; sourceTree = "<group>"; };
 		4B362547156630D400F07032 /* IRRelativeDateFormatter+WAAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "IRRelativeDateFormatter+WAAdditions.m"; path = "wammer/IRRelativeDateFormatter+WAAdditions.m"; sourceTree = "<group>"; };
 		4B52733F15624E1800C6F55D /* WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; path = "external/WFPresentation/Source/WFPreviewTemplate-Discrete_Web_ImageWithDescription_Horizontal_for_6.html"; sourceTree = "<group>"; };
@@ -2312,13 +2312,13 @@
 		4B8CA96F14BBE7BA006E06BB /* iOS Tests */ = {
 			isa = PBXGroup;
 			children = (
+				4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */,
+				4B6220DD15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt */,
+				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
+				4B3225E715BE4CE400934DA4 /* WAArticleTests.h */,
+				4B3225E815BE4CE400934DA4 /* WAArticleTests.m */,
 				4B8CA97514BBE7BA006E06BB /* WATests_iOS.h */,
 				4B8CA97614BBE7BA006E06BB /* WATests_iOS.m */,
-				4B8CA97014BBE7BA006E06BB /* Supporting Files */,
-				4B3225E715BE4CE400934DA4 /* WAAttachmentsTests.h */,
-				4B3225E815BE4CE400934DA4 /* WAAttachmentsTests.m */,
-				4B6220DD15BE839000893766 /* PostWithIncompleteAttachmentInformation.txt */,
-				4B0C3EED15BF868400CAA346 /* PostWithCompleteAttachmentInformation.txt */,
 			);
 			name = "iOS Tests";
 			path = "wammer-iOS-Tests";
@@ -4583,7 +4583,7 @@
 				4BD77BB915A2C10500CA8486 /* WABackoffHandler.m in Sources */,
 				4B284E5415AD244200D138C5 /* WAFile.m in Sources */,
 				4B284E5515AD24C500D138C5 /* WATests_iOS.m in Sources */,
-				4B3225E915BE4CE400934DA4 /* WAAttachmentsTests.m in Sources */,
+				4B3225E915BE4CE400934DA4 /* WAArticleTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
