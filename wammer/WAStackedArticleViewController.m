@@ -77,29 +77,10 @@
 	if (!self)
 		return nil;
 	
-	__weak WAStackedArticleViewController *wSelf = self;
-	
 	self.articleDateItem = [WAArticleDateItem instanceFromNib];
-	
-	[self.articleDateItem.dateLabel irBind:@"text" toObject:wSelf keyPath:@"article.presentationDate" options:[NSDictionary dictionaryWithObjectsAndKeys:
-	
-		[^ (NSDate *fromDate, NSDate *toDate, NSString *changeKind) {
 
-			return [toDate description];
-		
-		} copy], kIRBindingsValueTransformerBlock,
-	
-	nil]];
-	
-	[self.articleDateItem.deviceLabel irBind:@"text" toObject:wSelf keyPath:@"article.creationDeviceName" options:[NSDictionary dictionaryWithObjectsAndKeys:
-	
-		[^ (NSString *fromValue, NSString *toValue, NSString *changeKind) {
-
-			return toValue;
-		
-		} copy], kIRBindingsValueTransformerBlock,
-	
-	nil]];
+	[self addObserver:self.articleDateItem forKeyPath:@"article.presentationDate" options:NSKeyValueObservingOptionNew context:nil];
+	[self addObserver:self.articleDateItem forKeyPath:@"article.creationDeviceName" options:NSKeyValueObservingOptionNew context:nil];
 	
 	UIBarButtonItem *favoriteToggleItem = [self newFavoriteToggleItem];
 	
@@ -114,8 +95,6 @@
 			
 			if (WAAdvancedFeaturesEnabled()) {
 			
-				//	__weak WAStackedArticleViewController *wSelf = self;
-				
 				[barButtonItems addObject:[IRBarButtonItem itemWithTitle:@"Copy" action:^ {
 				
 					for (WAFile *aFile in self.article.files)
@@ -171,10 +150,8 @@
 
 - (void) dealloc {
 
-	// dateLabel & deviceLabel will not be deallocated automatically because they are weak references
-	// so we need to call irUnbind manually to avoid sending notification to deallocated object (self).
-	[self.articleDateItem.dateLabel irUnbind:@"text"];
-	[self.articleDateItem.deviceLabel irUnbind:@"text"];
+	[self removeObserver:self.articleDateItem forKeyPath:@"article.presentationDate"];
+	[self removeObserver:self.articleDateItem forKeyPath:@"article.creationDeviceName"];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	
