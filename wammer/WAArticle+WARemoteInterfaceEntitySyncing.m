@@ -316,11 +316,7 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 	} else if ([syncStrategy isEqual:kWAArticleSyncFullyFetchStrategy]) {
 		
 		NSDate *usedDate = [ds lastNewPostsUpdateDate];
-		
-		/* Steven: request for all post with one second later then lastNewPostsUpdateDate to prevent fetching the same article
-		 * a better solution should be to check modificationDate with last_modify time and prevent update to data model
-		 */
-		[ri retrievePostsCreatedSince:[NSDate dateWithTimeInterval:1 sinceDate:usedDate]
+		[ri retrievePostsCreatedSince:usedDate
 													inGroup:usedGroupIdentifier
 											 onProgress:^(NSArray *changedArticleReps, NSDate *continuation)
 		 {
@@ -331,11 +327,22 @@ NSString * const kWAArticleSyncSessionInfo = @"WAArticleSyncSessionInfo";
 				 
 				 NSArray *touchedArticles = [WAArticle insertOrUpdateObjectsUsingContext:context withRemoteResponse:changedArticleReps usingMapping:nil options:IRManagedObjectOptionIndividualOperations];
 				 
-				 for (WAArticle *article in touchedArticles)
-					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]])
+				 /* Steven: we examin each touched article is really touched by checking its modifiedDate.
+				  * If the modifiedDate is later then current lastNewPostsUpdateDate, then we update these articles.
+				  * If not, don't change them. It won't cause a data store change, and won't cause the timeline refresh */
+				 BOOL changed = NO;
+				 for (WAArticle *article in touchedArticles) {
+					 NSComparisonResult dateComparison = [article.modificationDate compare:usedDate];
+					 if (dateComparison == NSOrderedSame || dateComparison == NSOrderedAscending)
+						 continue;
+					 if ([ds isUpdatingArticle:[[article objectID] URIRepresentation]]) {
+						 changed = YES;
 						 [context refreshObject:article mergeChanges:NO];
+					 }
+				 }
 				 
-				 [context save:nil];
+				 if (changed)
+					 [context save:nil];
 				 
 			 } waitUntilDone:YES];
 			 
