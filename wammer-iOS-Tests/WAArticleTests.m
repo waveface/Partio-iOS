@@ -1,17 +1,16 @@
 //
 //  WAAttachmentsTests.m
-//  wammer
 //
 //  Created by jamie on 7/24/12.
-//  Copyright (c) 2012 Waveface. All rights reserved.
+//  Copyright (c) 2012 Waveface Inc. All rights reserved.
 //
 
-#import "WAAttachmentsTests.h"
+#import "WAArticleTests.h"
 #import "WADataStore.h"
 #import "WADataStore+FetchingConveniences.h"
 #import "WAArticle.h"
 
-@implementation WAAttachmentsTests {
+@implementation WAArticleTests {
 	NSManagedObjectContext *context;
 }
 
@@ -39,6 +38,7 @@
 - (void)testArticleWithIncompletedAttachmentShouldBeDecorated {
 	NSArray *changedArticleReps = [self loadDataFile:@"PostWithIncompleteAttachmentInformation"];
 	STAssertNotNil(changedArticleReps, @"should be a JSON array");
+	
 	NSArray *touchedArticles = [WAArticle
 															insertOrUpdateObjectsUsingContext:context
 															withRemoteResponse:changedArticleReps
@@ -46,25 +46,30 @@
 															options:IRManagedObjectOptionIndividualOperations];
 	
 	WAArticle *article = [touchedArticles objectAtIndex:0];
-	STAssertTrue([article.files count] == 20, @"attachments should be decorated to 20");
+	
+	STAssertEquals((NSUInteger)20, [article.files count],
+								 @"attachments should be decorated to 20");
 	
 	NSFetchRequest *fetchRequest = [[WADataStore defaultStore] newFetchRequestForFilesInArticle:article];
 	
-	NSFetchedResultsController *fetchedResultsController = [[NSFetchedResultsController alloc]
-																													initWithFetchRequest:fetchRequest
-																													managedObjectContext:article.managedObjectContext
-																													sectionNameKeyPath:nil
-																													cacheName:nil];
+	NSFetchedResultsController *fetchedResultsController =
+	[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+																			managedObjectContext:article.managedObjectContext
+																				sectionNameKeyPath:nil
+																								 cacheName:nil];
 	NSError *fetchError = nil;
 	if (![fetchedResultsController performFetch:&fetchError])
 		NSLog(@"Error fetching: %@", fetchError);
 	
-	STAssertTrue([[fetchedResultsController fetchedObjects]count] == 20, @"should be 20");
+	STAssertEquals((NSUInteger)20, [[fetchedResultsController fetchedObjects] count],
+								 @"Should be 20.");
 	
-	[context refreshObject:article mergeChanges:NO];
-	[context save:nil];
-	
-	
+	for (WAFile *photo in [fetchedResultsController fetchedObjects]) {
+		STAssertEqualObjects(@"public.jpeg", photo.resourceType, @"Type must be jpeg.");
+		STAssertEqualObjects(@"image", photo.remoteResourceType, @"Must be an image.");
+		STAssertNotNil(photo.smallThumbnailURL, @"Small thumbnail required");
+		STAssertNotNil(photo.thumbnailURL, @"Medium thumbnail required");
+	}
 }
 
 - (void)testArticleWithFullInformation {
@@ -76,6 +81,7 @@
 																 usingMapping:nil
 																 options:IRManagedObjectOptionIndividualOperations];
 	WAArticle *article = [trasnformedArticle objectAtIndex:0];
-	STAssertTrue([article.files count] == 4, @"");
+	STAssertEquals((NSUInteger)4, [article.files count],
+								 @"This post should have 4 attachments");
 }
 @end
